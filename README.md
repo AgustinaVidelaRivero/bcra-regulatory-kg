@@ -26,7 +26,6 @@ Etapa de diseño — modelado del schema y exploración del corpus normativo.
 bcra-regulatory-kg/
 ├── docs/
 │   ├── schema/    # Diseño y diagramas de la ontología
-│   └── decisions/ # Decisiones de diseño documentadas
 ├── data/
 │   ├── raw/       # PDFs descargados del BCRA (gitignored)
 │   ├── processed/ # Texto extraído y limpio (gitignored)
