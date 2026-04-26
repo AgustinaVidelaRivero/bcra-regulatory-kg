@@ -1,0 +1,117 @@
+# ========================================================================
+# Toy Knowledge Graph — UdeSA academic structure
+# Used for learning RDF/Turtle/SPARQL fundamentals before modeling BCRA.
+# ========================================================================
+
+@prefix :     <http://example.org/udesa/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ========================================================================
+# CLASSES
+# ========================================================================
+
+:Departamento a rdfs:Class ;
+              rdfs:label "Departamento académico" .
+
+:Carrera      a rdfs:Class ;
+              rdfs:label "Carrera de grado" .
+
+:Materia      a rdfs:Class ;
+              rdfs:label "Materia o asignatura" .
+
+:Profesor     a rdfs:Class ;
+              rdfs:label "Profesor" .
+
+:Estudiante   a rdfs:Class ;
+              rdfs:label "Estudiante" .
+
+# ========================================================================
+# DEPARTAMENTOS
+# ========================================================================
+
+:DeptoComputacion a :Departamento ;
+                  rdfs:label "Departamento de Matemática y Ciencias" .
+
+:DeptoEconomia    a :Departamento ;
+                  rdfs:label "Departamento de Economía" .
+
+# ========================================================================
+# CARRERAS
+# ========================================================================
+
+:IngenieriaIA       a :Carrera ;
+                    rdfs:label "Ingeniería en Inteligencia Artificial" ;
+                    :perteneceA :DeptoComputacion .
+
+:IngenieriaSoftware a :Carrera ;
+                    rdfs:label "Ingeniería de Software" ;
+                    :perteneceA :DeptoComputacion .
+
+:LicEconomia        a :Carrera ;
+                    rdfs:label "Licenciatura en Economía" ;
+                    :perteneceA :DeptoEconomia .
+
+# ========================================================================
+# MATERIAS
+# ========================================================================
+
+:Algoritmos a :Materia ;
+            rdfs:label "Algoritmos y Estructuras de Datos" ;
+            :perteneceA :IngenieriaIA ;
+            :dictadaPor :ProfFulano ;
+            :año 2 .
+
+:MachineLearning a :Materia ;
+                 rdfs:label "Machine Learning" ;
+                 :perteneceA :IngenieriaIA ;
+                 :dictadaPor :ProfFulano ;
+                 :tieneCorrelativa :Algoritmos ;
+                 :año 3 .
+
+:NLP a :Materia ;
+     rdfs:label "Procesamiento de Lenguaje Natural" ;
+     :perteneceA :IngenieriaIA ;
+     :dictadaPor :ProfDelCorro ;
+     :tieneCorrelativa :MachineLearning ;
+     :año 4 .
+
+:BasesDatos a :Materia ;
+            rdfs:label "Bases de Datos" ;
+            :perteneceA :IngenieriaSoftware ;
+            :dictadaPor :ProfFulano ;
+            :año 3 .
+
+:Microeconomia a :Materia ;
+               rdfs:label "Microeconomía" ;
+               :perteneceA :LicEconomia ;
+               :dictadaPor :ProfMengano ;
+               :año 2 .
+
+# ========================================================================
+# PROFESORES
+# ========================================================================
+
+:ProfDelCorro a :Profesor ;
+              rdfs:label "Luciano del Corro" .
+
+:ProfFulano   a :Profesor ;
+              rdfs:label "Profesor Fulano" .
+
+:ProfMengano  a :Profesor ;
+              rdfs:label "Profesor Mengano" .
+
+# ========================================================================
+# ESTUDIANTES
+# ========================================================================
+
+:AgusVR a :Estudiante ;
+        rdfs:label "Agustina Videla Rivero" ;
+        :estudia :IngenieriaIA ;
+        :cursa :NLP .
+
+:EstudianteX a :Estudiante ;
+             rdfs:label "Estudiante X" ;
+             :estudia :LicEconomia ;
+             :cursa :Microeconomia .
