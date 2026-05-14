@@ -148,8 +148,7 @@ class RateLimitedClient:
     """
 
     def __init__(self, log_fn: Callable[[str], None]):
-        self.session = requests.Session()
-        self.session.headers.update(HEADERS)
+        self.session = self._make_session()
         self._last_request_at: dict[str, float] = {}
         self._consecutive_503: dict[str, int] = {}
         self._slow_mode_hosts: set[str] = set()
@@ -160,7 +159,35 @@ class RateLimitedClient:
         self.total_request_time = 0.0
         self.total_request_errors = 0
         self.persistent_failures: list[str] = []
+        # Recycling: cada N attempts (exitosos o no) creamos una Session nueva.
+        # Defensa en profundidad contra (a) keep-alive zombie con CDN BCRA,
+        # (b) TIME_WAIT exhaustion del SO con Connection: close en runs largos.
+        # Ver memoria project_bug_workers_deadlock.md.
+        self._recycle_threshold = 200
+        self._attempts_since_recycle = 0
+        self.session_recycle_count = 0
         self.log = log_fn
+
+    @staticmethod
+    def _make_session() -> requests.Session:
+        s = requests.Session()
+        s.headers.update(HEADERS)
+        return s
+
+    def _maybe_recycle_session(self) -> None:
+        """Si pasamos el threshold, creamos Session nueva. Asignación atómica;
+        la session vieja queda viva mientras workers en flight la usen
+        (cada uno toma snapshot local en `get()`); el GC la libera después."""
+        with self._stats_lock:
+            self._attempts_since_recycle += 1
+            if self._attempts_since_recycle < self._recycle_threshold:
+                return
+            self._attempts_since_recycle = 0
+            self.session_recycle_count += 1
+            recycle_n = self.session_recycle_count
+            total = self.total_requests
+        self.session = self._make_session()
+        self.log(f"[recycle-session] #{recycle_n} (total_requests={total})")
 
     def _acquire_slot(self, host: str) -> None:
         """Adquiere el siguiente slot del token bucket compartido.
@@ -185,12 +212,14 @@ class RateLimitedClient:
         for attempt in range(1, MAX_ATTEMPTS + 1):
             self._acquire_slot(host)
             t0 = time.time()
+            local_session = self.session  # snapshot estable: protege contra reciclaje concurrente
             try:
-                resp = self.session.get(url, timeout=timeout, allow_redirects=True)
+                resp = local_session.get(url, timeout=timeout, allow_redirects=True)
             except (requests.Timeout, requests.ConnectionError) as e:
                 dt = time.time() - t0
                 with self._stats_lock:
                     self.total_request_errors += 1
+                self._maybe_recycle_session()  # cada attempt consume un puerto efímero
                 self.log(f"[net-err] {url} attempt={attempt}/{MAX_ATTEMPTS} dt={dt:.1f}s {type(e).__name__}: {str(e)[:120]}")
                 if attempt < MAX_ATTEMPTS:
                     time.sleep(RETRY_SLEEP)
@@ -204,6 +233,7 @@ class RateLimitedClient:
             with self._stats_lock:
                 self.total_requests += 1
                 self.total_request_time += dt
+            self._maybe_recycle_session()
 
             if resp.status_code == 503:
                 with self._rate_lock:
@@ -655,6 +685,9 @@ def step_B2(client: RateLimitedClient, ws: Workspace) -> dict:
         ("https://www.argentina.gob.ar/normativa/nacional/decreto-609-2019-327251/texto",
          RAW_DIR / "00_marco_legal/Decreto_609_2019.html",
          "Decreto_609_2019"),
+        ("https://servicios.infoleg.gob.ar/infolegInternet/anexos/15000-19999/16071/texact.htm",
+         RAW_DIR / "00_marco_legal/Ley_21526_LEF.html",
+         "Ley_21526"),
     ]
     for url, out, num in html_targets:
         if out.exists() and out.stat().st_size > 1024:
@@ -980,7 +1013,7 @@ STEPS: dict[str, Callable[[RateLimitedClient, Workspace], dict]] = {
     "B3": step_B3,
     "B4": lambda c, w: step_B_letra(c, w, "A", (6770, 8500), "02_comunicaciones_A", MULC_ONLY, workers=2),
     "B5": lambda c, w: step_B5(c, w, workers=2),
-    "B6": lambda c, w: step_B_letra(c, w, "B", (11000, 13000), "03_comunicaciones_B", MULC_ONLY, workers=2),
+    "B6": lambda c, w: step_B_letra(c, w, "B", (11870, 13200), "03_comunicaciones_B", MULC_ONLY, workers=2),
     "B7": lambda c, w: step_B_letra(c, w, "C", (90000, 100000), "04_comunicaciones_C", MULC_ONLY, workers=2),
     "B8": lambda c, w: step_B_letra(c, w, "P", (50000, 55000), "05_comunicaciones_P", MULC_ONLY, workers=2),
     "B9": step_B9,

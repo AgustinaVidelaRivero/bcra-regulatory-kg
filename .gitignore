@@ -25,8 +25,13 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Project-specific data (regenerable)
-data/raw/*.pdf
+# Project-specific data — el corpus descargado (PDFs/HTMLs) NO se versiona.
+# El patrón anterior `data/raw/*.pdf` sólo cubría el primer nivel; los PDFs
+# viven en subdirectorios (02_comunicaciones_A/, etc.) — usar ** para cubrirlos.
+# SÍ se versiona la metadata del corpus: manifiesto.csv, checkpoint.json, log.txt.
+data/raw/**/*.pdf
+data/raw/**/*.html
+data/raw/_backups/
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
