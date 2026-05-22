@@ -80,6 +80,38 @@ python scripts/download_bcra.py B4 --mulc-only
 
 Es idempotente: archivos ya descargados se saltean automáticamente.
 
+### Cómo correr el scraper periódicamente
+
+El BCRA actualiza los Textos Ordenados frecuentemente (típicamente al incorporar una nueva Comunicación A). Para mantener el corpus al día, el scraper puede correrse periódicamente (ej. mensual o semanal). El diseño actual es:
+
+**Modo "detectar nuevos TOs en el índice oficial"** (caso más común):
+
+```bash
+python scripts/download_bcra.py B1
+```
+
+Por idempotencia, los TOs ya en disco se saltean instantáneamente y solo se descargan los TOs nuevos que el BCRA haya agregado al índice oficial (ver `step_B1` docstring y el snapshot del índice en `scripts/download_bcra.py`). Si el índice del BCRA cambia con TOs nuevos, conviene actualizar el snapshot hardcodeado en `step_B1` re-extrayendo desde https://www.bcra.gob.ar/ordenamiento-y-resumenes/ (página JS-rendered, no accesible por `curl` plano — ver caveat 3).
+
+**Modo "re-bajar TOs con cambios de contenido"** (caso menos frecuente, no automatizado todavía):
+
+El `skip-existing` actual NO detecta cuándo un PDF en el servidor cambió respecto al archivo local. Para forzar re-descarga de TOs específicos cuando se sabe que cambiaron:
+
+```bash
+# Borrar manualmente los archivos a re-bajar, después correr el step:
+rm data/raw/01_textos_ordenados/actuales/TO_clasificacion_deudores_actual.pdf
+python scripts/download_bcra.py B1
+```
+
+A futuro, para detección automática de cambios, conviene extender el cliente HTTP con verificación de `Last-Modified` / `ETag` y comparación con `manifiesto.csv`. Esto NO está implementado todavía.
+
+**Para automatizar la corrida periódica** (cron, GitHub Actions, etc.): el script está listo desde el punto de vista de idempotencia y output a `manifiesto.csv`/`log.txt`. Lo que falta agregar:
+
+- Wrapper que notifique vía email / Slack si hay nuevos TOs descargados o si aparecen `[persistent-fail]` en el log.
+- Schedule en cron (ej: `0 9 * * 1` para los lunes a las 9 AM) o equivalente.
+- Política de retención del `log.txt` (rotación, archivado).
+
+Estos elementos NO están armados en esta versión — el script solo está preparado para ser invocado periódicamente sin efectos colaterales destructivos.
+
 ## Setup
 
 Requiere Python 3.11+.

@@ -215,7 +215,11 @@ class RateLimitedClient:
             local_session = self.session  # snapshot estable: protege contra reciclaje concurrente
             try:
                 resp = local_session.get(url, timeout=timeout, allow_redirects=True)
-            except (requests.Timeout, requests.ConnectionError) as e:
+            except requests.exceptions.RequestException as e:
+                # Catch-all amplio: cubre Timeout, ConnectionError, ChunkedEncodingError,
+                # SSLError y cualquier futura subclase de RequestException. El comportamiento
+                # downstream (log [net-err], retry, [persistent-fail]) es el adecuado para
+                # todas estas. Decisión documentada en bug #3 de project_bug_workers_deadlock.
                 dt = time.time() - t0
                 with self._stats_lock:
                     self.total_request_errors += 1
@@ -584,65 +588,355 @@ def check_corpus_size(ws: Workspace) -> None:
 # -- Pasos B1..B9 ---------------------------------------------------------
 
 def step_B1(client: RateLimitedClient, ws: Workspace) -> dict:
+    """Descarga los Textos Ordenados vigentes del BCRA.
+
+    Listado oficial: 158 entradas del índice del BCRA (104 Normativa General
+    + 54 Régimen Informativo). Dedup por URL: 157 únicos (t-optico.pdf
+    aparece 2 veces). Snapshot del 2026-05-15 obtenido post-reunión con Juan.
+
+    Fuente: https://www.bcra.gob.ar/ordenamiento-y-resumenes/ (la página
+    renderiza la lista vía JavaScript, no es accesible por HTTP plano;
+    ver caveat 3 en project_corpus_caveats.md).
+
+    Idempotencia y re-ejecución periódica:
+    - Si un PDF ya está en disco con el mismo path destino, `download_and_save`
+      retorna `skip-existing` instantáneo (no toca red, no toca manifiesto).
+    - Re-correr `python scripts/download_bcra.py B1` baja solo los TOs nuevos
+      (los que el BCRA agregó al índice) o los que cambiaron de URL.
+    - Para detectar TOs que CAMBIARON contenido (mismo path pero PDF actualizado):
+      esto NO está cubierto por skip-existing. Para captura de cambios
+      periódica, hay que (a) borrar manualmente los archivos de TOs a re-bajar,
+      o (b) extender el script con verificación de hash/Last-Modified.
+    - Para automatizar la corrida periódica (mensual, semanal): ver README,
+      sección "Cómo correr el scraper periódicamente" (a documentar).
+
+    Etiquetas en comentarios:
+    - [E] = matched existente en disco (snapshot sesión 1); idempotencia salta.
+    - [N] = nuevo en este snapshot del índice oficial.
+
+    Huérfanos conocidos en disco (sesión 1, NO en el índice oficial):
+      t-fdrc.pdf, t-ri-coc.pdf, RI-planNIIF.pdf, t-ri-pl.pdf
+    Se conservan en disco por trazabilidad; pueden ser obsoletos o renombrados.
+    """
     ws.log("=== B.1 START — Textos Ordenados actuales ===")
     base = RAW_DIR / "01_textos_ordenados/actuales"
-    # Inventario de TOs vigentes del BCRA (43 documentos, scope RECOMENDADO).
-    # Reconstruido por brute-force GET + WebSearch + script legacy. Ver caveat 3.
     items = [
-        # I.A — Solvencia y liquidez
-        ("https://www.bcra.gob.ar/pdfs/texord/t-capmin.pdf",  base / "TO_capitales_minimos_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-disres.pdf",  base / "TO_distribucion_resultados_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-efeMin.pdf",  base / "TO_efectivo_minimo_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-afiltr.pdf",  base / "TO_asistencia_iliquidez_transitoria_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-fdrc.pdf",    base / "TO_fraccionamiento_riesgo_crediticio_actual.pdf"),
-        # I.B — Crédito
-        ("https://www.bcra.gob.ar/pdfs/texord/t-gescre.pdf",  base / "TO_gestion_crediticia_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-gerc.pdf",    base / "TO_grandes_exposiciones_riesgo_credito_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-gracre.pdf",  base / "TO_graduacion_credito_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-finsec.pdf",  base / "TO_financiamiento_sector_publico_no_financiero_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-cladeu.pdf",  base / "TO_clasificacion_deudores_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-prevmi.pdf",  base / "TO_previsiones_minimas_incobrabilidad_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-garant.pdf",  base / "TO_garantias_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-evacre.pdf",  base / "TO_evaluaciones_crediticias_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-cescar.pdf",  base / "TO_cesion_cartera_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-polcre.pdf",  base / "TO_politica_credito_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-apnf.pdf",    base / "TO_asistencia_proveedores_no_financieros_credito_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ceninf.pdf",  base / "TO_centrales_informacion_crediticia_actual.pdf"),
-        # I.C — Tasas, garantías públicas, seguro depósitos
-        ("https://www.bcra.gob.ar/pdfs/texord/t-tasint.pdf",  base / "TO_tasas_interes_operaciones_credito_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-fgarcp.pdf",  base / "TO_fondos_garantia_caracter_publico_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-seggar.pdf",  base / "TO_seguro_garantia_depositos_actual.pdf"),
-        # I.D — Gobierno corporativo, gestión de riesgos, tecnología
-        ("https://www.bcra.gob.ar/pdfs/texord/t-lingob.pdf",  base / "TO_lineamientos_gobierno_societario_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-lingeef.pdf", base / "TO_lineamientos_gestion_riesgos_ef_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-rmrtsd.pdf",  base / "TO_requisitos_minimos_riesgos_tecnologia_seguridad_actual.pdf"),
-        # I.E — Protección al usuario
-        ("https://www.bcra.gob.ar/pdfs/texord/t-pusf.pdf",    base / "TO_proteccion_usuarios_servicios_financieros_actual.pdf"),
-        # I.F — Operatoria cambiaria (los 2 ya en disco; idempotencia los saltea)
-        ("https://www.bcra.gob.ar/Pdfs/Texord/t-excbio.pdf",  base / "TO_exterior_cambios_actual.pdf"),
-        ("https://www.bcra.gob.ar/Pdfs/Texord/t-opecam.pdf",  base / "TO_operadores_cambio_actual.pdf"),
-        # II — Entidades financieras
-        ("https://www.bcra.gob.ar/pdfs/texord/t-expaef.pdf",  base / "TO_expansion_entidades_financieras_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-autenf.pdf",  base / "TO_autoridades_entidades_financieras_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-fclef.pdf",   base / "TO_fideicomisos_financieros_lef_actual.pdf"),
-        # III — Productos: depósitos y sistema de pagos
-        ("https://www.bcra.gob.ar/pdfs/texord/t-depaho.pdf",  base / "TO_depositos_ahorro_cuenta_sueldo_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-depinv.pdf",  base / "TO_depositos_inversiones_plazo_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-snp-spd.pdf", base / "TO_sistema_nacional_pagos_servicios_pago_actual.pdf"),
-        # IV — PLD-FT
-        ("https://www.bcra.gob.ar/pdfs/texord/t-lavdin.pdf",  base / "TO_prevencion_lavado_dinero_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-docvig.pdf",  base / "TO_documentos_identificacion_vigencia_actual.pdf"),
-        # V — Comunicaciones
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ordcom.pdf",  base / "TO_ordenamiento_emision_comunicaciones_actual.pdf"),
-        # VI — Régimen Informativo (general, no las secciones t-SO-s##)
-        ("https://www.bcra.gob.ar/pdfs/texord/t-optico.pdf",       base / "TO_presentacion_informaciones_soportes_opticos_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ri-cm.pdf",        base / "TO_regimen_informativo_contable_mensual_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ri-coc.pdf",       base / "TO_regimen_informativo_contable_operaciones_cambios_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ri-pl.pdf",        base / "TO_regimen_informativo_pld_ft_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ri-tar.pdf",       base / "TO_regimen_informativo_tarjetas_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/t-ri-transpa.pdf",   base / "TO_regimen_informativo_transparencia_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/RI-NIIF.pdf",        base / "TO_regimen_informativo_niif_actual.pdf"),
-        ("https://www.bcra.gob.ar/pdfs/texord/RI-planNIIF.pdf",    base / "TO_regimen_informativo_niif_plan_cuentas_actual.pdf"),
+        # === NORMATIVA GENERAL ===
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-adfsp.pdf',  # [N] Adelantos del Banco Central a las entidades financieras
+         base / 'TO_adelantos_del_banco_central_a_las_entidades_financieras_con__actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-actgar.pdf',  # [N] Afectación de activos en garantía
+         base / 'TO_afectacion_de_activos_en_garantia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-adrei.pdf',  # [N] Agregación de datos sobre riesgos y elaboración de informes
+         base / 'TO_agregacion_de_datos_sobre_riesgos_y_elaboracion_de_informes_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-seggar.pdf',  # [E] Aplicación del sistema de seguro de garantía de depósitos
+         base / 'TO_seguro_garantia_depositos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-afiltr.pdf',  # [E] Asistencia financiera por iliquidez transitoria
+         base / 'TO_asistencia_iliquidez_transitoria_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-asomut.pdf',  # [N] Asociaciones mutuales Reglamentación de actividad financiera
+         base / 'TO_asociaciones_mutuales_reglamentacion_de_su_actividad_financi_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-autenf.pdf',  # [E] Autoridades de entidades financieras
+         base / 'TO_autoridades_entidades_financieras_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ayccef.pdf',  # [N] Autorización y composición del capital de entidades financieras
+         base / 'TO_autorizacion_y_composicion_del_capital_de_entidades_financie_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cajasc.pdf',  # [N] Cajas de Crédito Cooperativas
+         base / 'TO_cajas_de_credito_cooperativas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-capmin.pdf',  # [E] Capitales mínimos de las entidades financieras
+         base / 'TO_capitales_minimos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-inspag.pdf',  # [N] Características de los instrumentos de pago
+         base / 'TO_caracteristicas_de_los_instrumentos_de_pago_que_emiten_las_e_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cateloc.pdf',  # [N] Categorización de localidades para entidades financieras
+         base / 'TO_categorizacion_de_localidades_para_entidades_financieras_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cryl.pdf',  # [N] Central de registro y liquidación de instrumentos de deuda
+         base / 'TO_central_de_registro_y_liquidacion_de_instrumentos_de_deuda_p_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ceninf.pdf',  # [E] Centrales de información
+         base / 'TO_centrales_informacion_crediticia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cedin.pdf',  # [N] Certificados de depósitos para la inversión
+         base / 'TO_certificados_de_depositos_para_la_inversion_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cescar.PDF',  # [E] Cesión de cartera de créditos
+         base / 'TO_cesion_cartera_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cirmo3.pdf',  # [N] Circulación monetaria
+         base / 'TO_circulacion_monetaria_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-cladeu.pdf',  # [E] Clasificación de deudores
+         base / 'TO_clasificacion_deudores_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-coltit.pdf',  # [N] Colocación de títulos valores de deuda y obtención de líneas
+         base / 'TO_colocacion_de_titulos_valores_de_deuda_y_obtencion_de_lineas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-icmecma.pdf',  # [N] Comunicación por medios electrónicos para el medio ambiente
+         base / 'TO_comunicacion_por_medios_electronicos_para_el_cuidado_del_med_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-convca.pdf',  # [N] Conversión cambiaria
+         base / 'TO_conversion_cambiaria_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ctavis.pdf',  # [N] Cuentas a la vista cajas de crédito cooperativas
+         base / 'TO_cuentas_a_la_vista_abiertas_en_las_cajas_de_credito_cooperat_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ccbcra.pdf',  # [N] Cuentas corrientes y otras cuentas a la vista
+         base / 'TO_cuentas_corrientes_y_otras_cuentas_a_la_vista_de_las_entidad_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ctacor.pdf',  # [N] Cuentas de corresponsalía
+         base / 'TO_cuentas_de_corresponsalia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-depaho.pdf',  # [E] Depósitos de ahorro, cuenta sueldo y especiales
+         base / 'TO_depositos_ahorro_cuenta_sueldo_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-depinv.pdf',  # [E] Depósitos e inversiones a plazo
+         base / 'TO_depositos_inversiones_plazo_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-micemp.pdf',  # [N] Determinación de la condición de micro pequeña mediana empresa
+         base / 'TO_determinacion_de_la_condicion_de_micro_pequena_o_mediana_emp_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-dmrd.pdf',  # [N] Disciplina de Mercado Requisitos mínimos de divulgación
+         base / 'TO_disciplina_de_mercado_requisitos_minimos_de_divulgacion_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-jAFIP.pdf',  # [N] Disposiciones judiciales originadas en juicios entablados por ARCA
+         base / 'TO_disposiciones_judiciales_originadas_en_juicios_entablados_po_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-disres.pdf',  # [E] Distribución de resultados
+         base / 'TO_distribucion_resultados_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-docvig.pdf',  # [E] Documentos de identificación en vigencia
+         base / 'TO_documentos_identificacion_vigencia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-efemin.pdf',  # [E] Efectivo mínimo
+         base / 'TO_efectivo_minimo_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-evacre.pdf',  # [E] Evaluaciones crediticias
+         base / 'TO_evaluaciones_crediticias_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-expaef.pdf',  # [E] Expansión de entidades financieras
+         base / 'TO_expansion_entidades_financieras_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-excbio.pdf',  # [E] Exterior y cambios
+         base / 'TO_exterior_cambios_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-fclef.pdf',  # [E] Fideicomisos financieros comprendidos en la LEF
+         base / 'TO_fideicomisos_financieros_lef_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-finsec.pdf',  # [E] Financiamiento al sector público no financiero
+         base / 'TO_financiamiento_sector_publico_no_financiero_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-fabcra.pdf',  # [N] Firmas Autorizadas ante el BCRA
+         base / 'TO_firmas_autorizadas_ante_el_bcra_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-fgarcp.pdf',  # [E] Fondos de garantía de carácter público
+         base / 'TO_fondos_garantia_caracter_publico_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-garant.pdf',  # [E] Garantías
+         base / 'TO_garantias_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-garopt.pdf',  # [N] Garantías por intermediación en operaciones entre terceros
+         base / 'TO_garantias_por_intermediacion_en_operaciones_entre_terceros_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-gescre.pdf',  # [E] Gestión crediticia
+         base / 'TO_gestion_crediticia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-graloc.pdf',  # [N] Gestión de riesgos asociados a liquidación de operaciones de cambio
+         base / 'TO_gestion_de_riesgos_asociados_a_la_liquidacion_de_operaciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-gracre.pdf',  # [E] Graduación del crédito
+         base / 'TO_graduacion_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-gerc.pdf',  # [E] Grandes exposiciones al riesgo de crédito
+         base / 'TO_grandes_exposiciones_riesgo_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-horari.pdf',  # [N] Horario de las entidades financieras
+         base / 'TO_horario_de_las_entidades_financieras_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-incuca.pdf',  # [N] Incumplimientos de capitales mínimos y relaciones técnicas
+         base / 'TO_incumplimientos_de_capitales_minimos_y_relaciones_tecnicas_c_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-consyr.pdf',  # [N] Instrumentación, conservación y reproducción de documentos
+         base / 'TO_instrumentacion_conservacion_y_reproduccion_de_documentos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-fimipyme.pdf',  # [N] Línea de financiamiento para la inversión productiva MiPyME
+         base / 'TO_linea_de_financiamiento_para_la_inversion_productiva_de_mipy_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-lingob.pdf',  # [E] Lineamientos para el gobierno societario en entidades financieras
+         base / 'TO_lineamientos_gobierno_societario_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-lingeef.pdf',  # [E] Lineamientos para la gestión de riesgos en EF
+         base / 'TO_lineamientos_gestion_riesgos_ef_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-rrci.pdf',  # [N] Lineamientos para la respuesta y recuperación ante ciberincidentes
+         base / 'TO_lineamientos_para_la_respuesta_y_recuperacion_ante_ciberinci_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-manori.pdf',  # [N] Manuales de originación y administración de préstamos
+         base / 'TO_manuales_de_originacion_y_administracion_de_prestamos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-seguef.pdf',  # [N] Medidas mínimas de seguridad en entidades financieras
+         base / 'TO_medidas_minimas_de_seguridad_en_entidades_financieras_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI2-AE.pdf',  # [N] Normas mínimas auditorías externas casas y agencias de cambio
+         base / 'TO_normas_minimas_sobre_auditorias_externas_para_casas_y_agenci_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-nmaeef.pdf',  # [N] Normas mínimas auditorías externas para entidades financieras
+         base / 'TO_normas_minimas_sobre_auditorias_externas_para_entidades_fina_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI2-CI.pdf',  # [N] Normas mínimas controles internos casas y agencias de cambio
+         base / 'TO_normas_minimas_sobre_controles_internos_para_casas_y_agencia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-nmcief.pdf',  # [N] Normas mínimas controles internos para entidades financieras
+         base / 'TO_normas_minimas_sobre_controles_internos_para_entidades_finan_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-opefci.pdf',  # [N] Operaciones al contado a liquidar y a término pases cauciones
+         base / 'TO_operaciones_al_contado_a_liquidar_y_a_termino_pases_caucione_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-opecam.pdf',  # [E] Operadores de cambio
+         base / 'TO_operadores_cambio_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ordcom.pdf',  # [E] Ordenamiento, emisión y divulgación de Comunicaciones
+         base / 'TO_ordenamiento_emision_comunicaciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-osapsa.pdf',  # [N] Otros servicios y actividades prestados por sujetos alcanzados
+         base / 'TO_otros_servicios_y_actividades_prestados_por_sujetos_alcanzad_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pagjub.pdf',  # [N] Pago de beneficios de la seguridad social por cuenta de ANSES
+         base / 'TO_pago_de_beneficios_de_la_seguridad_social_por_cuenta_de_la_a_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-retype.pdf',  # [N] Pago de retiros y pensiones militares
+         base / 'TO_pago_de_retiros_y_pensiones_militares_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pfmipyme.pdf',  # [N] Plataformas para el financiamiento MiPyME
+         base / 'TO_plataformas_para_el_financiamiento_mipyme_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-polcre.pdf',  # [E] Política de crédito
+         base / 'TO_politica_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pognme.pdf',  # [N] Posición global neta de moneda extranjera
+         base / 'TO_posicion_global_neta_de_moneda_extranjera_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-optico.pdf',  # [E] Presentación de informaciones al BCRA
+         base / 'TO_presentacion_informaciones_soportes_opticos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-lavdin.pdf',  # [E] Prevención del lavado de activos del financiamiento del terrorismo
+         base / 'TO_prevencion_lavado_dinero_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-prevmi.pdf',  # [E] Previsiones mínimas por riesgo de incobrabilidad
+         base / 'TO_previsiones_minimas_incobrabilidad_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pimf.pdf',  # [N] Principios para las infraestructuras del mercado financiero
+         base / 'TO_principios_para_las_infraestructuras_del_mercado_financiero_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pusf.pdf',  # [E] Protección de los usuarios de servicios financieros
+         base / 'TO_proteccion_usuarios_servicios_financieros_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-pscpp.pdf',  # [N] Proveedores de servicios de créditos entre particulares por plataformas
+         base / 'TO_proveedores_de_servicios_de_creditos_entre_particulares_a_tr_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-psp.pdf',  # [N] Proveedores de servicios de pago
+         base / 'TO_proveedores_de_servicios_de_pago_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-apnf.pdf',  # [E] Proveedores no financieros de crédito
+         base / 'TO_asistencia_proveedores_no_financieros_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-raapal.pdf',  # [N] Ratio de apalancamiento
+         base / 'TO_ratio_de_apalancamiento_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ratio.pdf',  # [N] Ratio de cobertura de liquidez
+         base / 'TO_ratio_de_cobertura_de_liquidez_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ratiofn.pdf',  # [N] Ratio de fondeo neto estable
+         base / 'TO_ratio_de_fondeo_neto_estable_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-rdbcra.pdf',  # [N] Régimen disciplinario a cargo del BCRA
+         base / 'TO_regimen_disciplinario_a_cargo_del_banco_central_de_la_republ_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-regpri.pdf',  # [N] Régimen para facilitar privatización de Bancos Provinciales y Municipales
+         base / 'TO_regimen_para_facilitar_la_privatizacion_de_bancos_provincial_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ctacte.pdf',  # [N] Reglamentación de la cuenta corriente bancaria
+         base / 'TO_reglamentacion_de_la_cuenta_corriente_bancaria_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-relact.pdf',  # [N] Relación para los activos inmovilizados y otros conceptos
+         base / 'TO_relacion_para_los_activos_inmovilizados_y_otros_conceptos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-repefe.pdf',  # [N] Representantes de entidades financieras del exterior no autorizadas
+         base / 'TO_representantes_de_entidades_financieras_del_exterior_no_auto_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-rmrtsd.pdf',  # [E] Requisitos mínimos gestión y control riesgos de tecnología y seguridad
+         base / 'TO_requisitos_minimos_riesgos_tecnologia_seguridad_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-rmgcti.pdf',  # [N] Requisitos mínimos gestión y control riesgos tecnología seguridad EF
+         base / 'TO_requisitos_minimos_para_la_gestion_y_control_de_los_riesgos__actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-reqcac.pdf',  # [N] Requisitos Operativos Mínimos Tecnología Sistemas Casas y Agencias
+         base / 'TO_requisitos_operativos_minimos_de_tecnologia_y_sistemas_de_in_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-secfin.pdf',  # [N] Secreto financiero
+         base / 'TO_secreto_financiero_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-servco.pdf',  # [N] Servicios complementarios de la actividad financiera
+         base / 'TO_servicios_complementarios_de_la_actividad_financiera_y_activ_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-atm.pdf',  # [N] Sistema Nacional de Pagos Cajeros automáticos
+         base / 'TO_sistema_nacional_de_pagos_cajeros_automaticos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-cec.pdf',  # [N] Sistema Nacional de Pagos Cámaras electrónicas de compensación
+         base / 'TO_sistema_nacional_de_pagos_camaras_electronicas_de_compensaci_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-cheq.pdf',  # [N] Sistema Nacional de Pagos Cheques y otros instrumentos compensables
+         base / 'TO_sistema_nacional_de_pagos_cheques_y_otros_instrumentos_compe_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-debin.pdf',  # [N] Sistema Nacional de Pagos Débito Inmediato
+         base / 'TO_sistema_nacional_de_pagos_debito_inmediato_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-dd.pdf',  # [N] Sistema Nacional de Pagos Débitos Directos
+         base / 'TO_sistema_nacional_de_pagos_debitos_directos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-mep.pdf',  # [N] Sistema Nacional de Pagos MEP
+         base / 'TO_sistema_nacional_de_pagos_medio_electronico_de_pagos_mep_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-spd.pdf',  # [E] Sistema Nacional de Pagos Servicios de pago
+         base / 'TO_sistema_nacional_pagos_servicios_pago_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-snp-tr-nc.pdf',  # [N] Sistema Nacional de Pagos Transferencias Normas complementarias
+         base / 'TO_sistema_nacional_de_pagos_transferencias_normas_complementar_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-SNP-tr.pdf',  # [N] Sistema Nacional de Pagos Transferencias
+         base / 'TO_sistema_nacional_de_pagos_transferencias_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-socgar.pdf',  # [N] Sociedades de garantía recíproca inscriptas en el Banco Central
+         base / 'TO_sociedades_de_garantia_reciproca_inscriptas_en_el_banco_cent_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-supcon.pdf',  # [N] Supervisión consolidada
+         base / 'TO_supervision_consolidada_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-tasint.pdf',  # [E] Tasas de interés en las operaciones de crédito
+         base / 'TO_tasas_interes_operaciones_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-traval.pdf',  # [N] Transportadoras de valores
+         base / 'TO_transportadoras_de_valores_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-venliq.pdf',  # [N] Ventanilla de liquidez del BCRA
+         base / 'TO_ventanilla_de_liquidez_del_bcra_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-verac.pdf',  # [N] Veracidad de las registraciones contables
+         base / 'TO_veracidad_de_las_registraciones_contables_actual.pdf'),
+        # === RÉGIMEN INFORMATIVO ===
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI2-CS.pdf',  # [N] RI Casas y Agencias de Cambio Contable Anual
+         base / 'TO_ri_casas_y_agencias_de_cambio_contable_anual_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI2-PM.pdf',  # [N] RI Casas y Agencias de Cambio Plan y Manual de Cuentas
+         base / 'TO_ri_casas_y_agencias_de_cambio_plan_y_manual_de_cuentas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/RI-DCPC.pdf',  # [N] RI Disposiciones complementarias al plan de cuentas
+         base / 'TO_ri_disposiciones_complementarias_al_plan_de_cuentas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/RI-NIIF.pdf',  # [E] RI Estados financieros para publicación trimestral anual (NIIF)
+         base / 'TO_regimen_informativo_niif_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-FCEM.pdf',  # [N] RI Facturas de Crédito Electrónicas MiPyME
+         base / 'TO_ri_facturas_de_credito_electronicas_mipyme_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-ICPIPSP.pdf',  # [N] RI Informe Contadores Públicos Independientes sobre cumplimiento
+         base / 'TO_ri_informe_de_contadores_publicos_independientes_sobre_cumpl_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-IESINAP.pdf',  # [N] RI Informe especial cumplimiento Proveedores no financieros
+         base / 'TO_ri_informe_especial_de_cumplimiento_requerido_por_las_normas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-IECCM.pdf',  # [N] RI Informe Especial Capitales Mínimos
+         base / 'TO_ri_informe_especial_respecto_del_cumplimiento_de_capitales_m_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-IEPSP.pdf',  # [N] RI Informe especial cumplimiento Proveedores no financieros
+         base / 'TO_ri_informe_especial_sobre_el_cumplimiento_de_las_normas_prov_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/manual.pdf',  # [N] RI Manual de Cuentas vigente al 31-12-17
+         base / 'TO_ri_manual_de_cuentas_vigente_al_31_12_17_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/plandecuentas.pdf',  # [N] RI Plan de cuentas
+         base / 'TO_ri_plan_de_cuentas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ri-pnp.pdf',  # [N] RI Plan de negocios y proyecciones
+         base / 'TO_ri_plan_de_negocios_y_proyecciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PFMIPYME.pdf',  # [N] RI Plataformas para el Financiamiento MiPyME
+         base / 'TO_ri_plataformas_para_el_financiamiento_mipyme_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-LAFT.pdf',  # [N] RI Prevención del Lavado de Activos Financiamiento del Terrorismo
+         base / 'TO_ri_prevencion_del_lavado_de_activos_del_financiamiento_del_t_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PSCPP.pdf',  # [N] RI Proveedores de servicios de créditos entre particulares
+         base / 'TO_ri_proveedores_de_servicios_de_creditos_entre_particulares_a_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PSPAPT.pdf',  # [N] RI Proveedores de Servicios de Pago Adquirentes pagos con tarjeta
+         base / 'TO_ri_proveedores_de_servicios_de_pago_adquirentes_de_pagos_con_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PSPII.pdf',  # [N] RI Proveedores de Servicios de Pago Información Contable
+         base / 'TO_ri_proveedores_de_servicios_de_pago_informacion_contable_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PSPRCA.pdf',  # [N] RI Proveedores de Servicios de Pago Redes de Cajeros Automáticos
+         base / 'TO_ri_proveedores_de_servicios_de_pago_redes_de_cajeros_automat_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PSP.pdf',  # [N] RI Proveedores de servicios de pago que ofrecen cuentas de pago
+         base / 'TO_ri_proveedores_de_servicios_de_pago_que_ofrecen_cuentas_de_p_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-ACSF.pdf',  # [N] RI Cont Mensual Agencias complementarias de servicios financieros
+         base / 'TO_ri_cont_mensual_agencias_complementarias_de_servicios_financ_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-AO.pdf',  # [N] RI Cont Mensual Anticipo de Operaciones
+         base / 'TO_ri_cont_mensual_anticipo_de_operaciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RIbspc.pdf',  # [N] RI Cont Mensual Balance de Saldos
+         base / 'TO_ri_cont_mensual_balance_de_saldos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-BDP.pdf',  # [N] RI Cont Mensual Base de Datos Padrón
+         base / 'TO_ri_cont_mensual_base_de_datos_padron_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-CHR.pdf',  # [N] RI Cont Mensual Cheques Rechazados
+         base / 'TO_ri_cont_mensual_cheques_rechazados_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-DSF.pdf',  # [N] RI Cont Mensual Deudores del Sistema Financiero
+         base / 'TO_ri_cont_mensual_deudores_del_sistema_financiero_y_composicio_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-RML.pdf',  # [N] RI Cont Mensual Efectivo mínimo y aplicación de recursos
+         base / 'TO_ri_cont_mensual_efectivo_minimo_y_aplicacion_de_recursos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-Con.pdf',  # [N] RI Cont Mensual Estado de Consolidación de Entidades Locales
+         base / 'TO_ri_cont_mensual_estado_de_consolidacion_de_entidades_locales_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-ESD.PDF',  # [N] RI Cont Mensual Estado de Situación de Deudores Consolidado
+         base / 'TO_ri_cont_mensual_estado_de_situacion_de_deudores_consolidado_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-CM.pdf',  # [E] RI Cont Mensual Exigencia e integración de capitales mínimos
+         base / 'TO_regimen_informativo_contable_mensual_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-TAR.pdf',  # [E] RI Cont Mensual Financiamiento con tarjetas de crédito
+         base / 'TO_regimen_informativo_tarjetas_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-GERC.pdf',  # [N] RI Cont Mensual Grandes exposiciones al riesgo de crédito
+         base / 'TO_ri_cont_mensual_grandes_exposiciones_al_riesgo_de_credito_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-II-31-12-19.pdf',  # [N] RI Cont Mensual Información Institucional EF y Cambiarias
+         base / 'TO_ri_cont_mensual_informacion_institucional_de_entidades_finan_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-ITME.pdf',  # [N] RI Cont Mensual Información sobre tenencias en moneda extranjera
+         base / 'TO_ri_cont_mensual_informacion_sobre_tenencias_en_moneda_extran_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-MSRL.pdf',  # [N] RI Cont Mensual Medición y Seguimiento del Riesgo de Liquidez
+         base / 'TO_ri_cont_mensual_medicion_y_seguimiento_del_riesgo_de_liquide_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-MMSEF.pdf',  # [N] RI Cont Mensual Medidas mínimas de seguridad en EF
+         base / 'TO_ri_cont_mensual_medidas_minimas_de_seguridad_en_entidades_fi_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-nge.pdf',  # [N] RI Cont Mensual Normas generales
+         base / 'TO_ri_cont_mensual_normas_generales_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-OT.pdf',  # [N] RI Cont Mensual Operaciones a Término
+         base / 'TO_ri_cont_mensual_operaciones_a_termino_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-OC.pdf',  # [N] RI Cont Mensual Operaciones de Cambio
+         base / 'TO_ri_cont_mensual_operaciones_de_cambio_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-Rem.pdf',  # [N] RI Cont Mensual Pago de Remuneraciones en Cuenta Bancaria
+         base / 'TO_ri_cont_mensual_pago_de_remuneraciones_mediante_acreditacion_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-PGN.pdf',  # [N] RI Cont Mensual Posición Global Neta en Moneda Extranjera
+         base / 'TO_ri_cont_mensual_posicion_global_neta_en_moneda_extranjera_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-RCL.pdf',  # [N] RI Cont Mensual Ratio de Cobertura de Liquidez
+         base / 'TO_ri_cont_mensual_ratio_de_cobertura_de_liquidez_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-CR.pdf',  # [N] RI Cont Mensual Reclamos
+         base / 'TO_ri_cont_mensual_reclamos_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-AI.pdf',  # [N] RI Cont Mensual Relación para activos inmovilizados
+         base / 'TO_ri_cont_mensual_relacion_para_los_activos_inmovilizados_y_ot_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-SAOFE.pdf',  # [N] RI Cont Mensual Seguimiento anticipos y otras financiaciones exportaciones
+         base / 'TO_ri_cont_mensual_seguimiento_de_anticipos_y_otras_financiacio_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-SECOEXPO.pdf',  # [N] RI Cont Mensual Seguimiento negociaciones de divisas exportaciones
+         base / 'TO_ri_cont_mensual_seguimiento_de_las_negociaciones_de_divisas__actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI–SPI.pdf',  # [N] RI Cont Mensual Seguimiento de Pagos de Importaciones
+         base / 'TO_ri_cont_mensual_seguimiento_de_pagos_de_importaciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-TVF.pdf',  # [N] RI Cont Mensual Títulos Valores
+         base / 'TO_ri_cont_mensual_titulos_valores_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-Transpa.pdf',  # [E] RI Cont Mensual Transparencia
+         base / 'TO_regimen_informativo_transparencia_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-SEF.pdf',  # [N] RI Cont Mensual Unidades de servicios de las EF
+         base / 'TO_ri_cont_mensual_unidades_de_servicios_de_las_entidades_finan_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-TII.pdf',  # [N] RI Cont Mensual Transferencias Inmediatas Intraentidades
+         base / 'TO_ri_cont_mensual_transferencias_inmediatas_intraentidades_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-ri-cc.pdf',  # [N] RI para Cajas de Crédito contable
+         base / 'TO_ri_para_cajas_de_credito_contable_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-CcNA.pdf',  # [N] RI para Cajas de Crédito Normas de Auditoría
+         base / 'TO_ri_para_cajas_de_credito_normas_de_auditoria_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-CCPNP.pdf',  # [N] RI para Cajas de Crédito Plan de Negocios y Proyecciones
+         base / 'TO_ri_para_cajas_de_credito_plan_de_negocios_y_proyecciones_actual.pdf'),
+        ('https://www.bcra.gob.ar/archivos/Pdfs/Texord/t-RI-TSA.pdf',  # [N] RI para supervisión
+         base / 'TO_ri_para_supervision_actual.pdf'),
     ]
     counts = {"ok": 0, "skip": 0, "fail": 0}
     for url, out in items:
