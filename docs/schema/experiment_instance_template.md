@@ -36,7 +36,19 @@ Leé el protocolo completo del experimento antes de empezar: `docs/schema/experi
 Diseñá el conjunto de tipos de entidad y tipos de relación del KG siguiendo tu `[ESTRATEGIA]` asignada. El schema es la variable del experimento: puede ser tan distinto del de las otras instancias como tu estrategia lo dicte. Las únicas restricciones son las reglas de modelado comunes (ver abajo).
 
 ### Paso 2 — Documentar el schema en `schema.md`
-Escribí `data/experiment/[CARPETA_RUN]/schema.md` con: los tipos de entidad (con definición de cada uno), los tipos de relación (con dominio y rango), las decisiones de diseño y su justificación según la estrategia, y cómo la estrategia influyó en el resultado.
+Escribí `data/experiment/[CARPETA_RUN]/schema.md` con: los tipos de entidad (con definición de cada uno), los tipos de relación (con dominio y rango), las decisiones de diseño y su justificación según la estrategia, y cómo la estrategia influyó en el resultado.ç
+
+### Paso 2.5 — Smoke test sobre 1 TO antes del full run (recomendado)
+
+Antes de procesar los 5 TOs, ejecutá el pipeline sobre el TO más chico del subset (TO_proteccion_usuarios_servicios_financieros_actual.pdf, 36 chunks). Esto te permite:
+- Validar la integración con la API y el formato Pydantic.
+- Detectar rate limits o errores transitorios temprano.
+- Medir costo real por chunk y re-proyectar el costo del full run.
+- Verificar que tu schema produce extracciones razonables.
+
+PARÁ después del smoke test y reportá costo real, cobertura y 
+extracción cruda de los primeros chunks. Si todo OK, seguís con los 
+4 TOs restantes. Esta es buena práctica derivada del Run 1.
 
 ### Paso 3 — Construir el KG sobre los 5 PDFs del subset
 Construí el Knowledge Graph extrayendo entidades y relaciones de los 5 PDFs en `data/experiment/subset/` usando el schema del Paso 1. Los 5 PDFs son los Textos Ordenados del subset (ver protocolo, sección a).
@@ -52,6 +64,7 @@ Escribí `data/experiment/[CARPETA_RUN]/report.md` con:
 - **Identificación del run.** Encabezado con tu `[NOMBRE_RUN]` exacto, para que la fase de comparación posterior pueda ubicarte.
 - **Métricas del protocolo (sección d).** Tiempo de construcción, costo (tokens + USD), nodos por tipo, edges por tipo, densidad, nº de tipos de entidad, nº de tipos de relación, cobertura por TO.
 - **Inventario del directorio `code/`.** Lista de cada script/notebook en tu `code/` con 1-2 líneas que describan qué hace (extractor, post-procesador, ensamblador JSON, validador, etc.). Sirve para reproducibilidad y para que la fase de evaluación entienda qué hizo cada estrategia.
+- Análisis post-hoc de predicados: nº de predicados únicos crudos, ratio predicados/edges, predicados normalizados (singular/plural, casing, acentos), grupos fusionables. Esto es métrica comparativa clave: las distintas estrategias del experimento varían mucho en verbosidad del vocabulario de relaciones.
 
 ---
 
@@ -70,8 +83,7 @@ Estas valen para las 5 estrategias por igual (protocolo, sección c):
 
 - **Formato JSON obligatorio**: respetá la estructura de la sección b del protocolo. No negociable. `provenance` obligatorio en nodos y edges.
 - **Modelo de extracción**: usá Claude Haiku para la extracción de tripletas. Es un experimento exploratorio, no de producción.
-- **Límite de costo**: máximo USD 5 de inferencia para esta instancia. Si te acercás al límite, parreal y reportá lo que tengas.
-- **Aislamiento de carpeta**: escribí SOLO dentro de `data/experiment/[CARPETA_RUN]/`. NO toques las carpetas de las otras instancias (`run_*` que no sean la tuya), ni nada fuera de `data/experiment/`.
+- Límite de costo: máximo USD 11 de inferencia para esta instancia. Este presupuesto fue calibrado empíricamente sobre los datos reales del Run 1 — Cookbook de Anthropic. La estimación inicial de USD 5 era ~3x optimista. Si te acercás al límite, parás y reportás lo que tengas.- **Aislamiento de carpeta**: escribí SOLO dentro de `data/experiment/[CARPETA_RUN]/`. NO toques las carpetas de las otras instancias (`run_*` que no sean la tuya), ni nada fuera de `data/experiment/`.
 - **`data/experiment/subset/` es READ-ONLY.** Leés los 5 PDFs desde ahí, NUNCA escribís ahí. No se modifica, no se crean archivos auxiliares en ese directorio (caches, conversiones a texto, índices, embeddings, splits por sección, etc.). Si necesitás pre-procesar los PDFs (extraer texto, chunkear, generar embeddings, hacer índice de páginas), todos esos outputs van a tu carpeta de run — típicamente bajo `data/experiment/[CARPETA_RUN]/code/cache/` o equivalente. El subset compartido se queda intacto para garantizar que las 5 instancias procesan exactamente el mismo input.
 - **NO evaluar tu propio KG.** La evaluación es comparativa y la hace una fase posterior. Tu trabajo termina en el Paso 5 (report.md con métricas descriptivas, sin auto-evaluación de calidad).
 - **NO hacer commits.** Los maneja la autora manualmente.
