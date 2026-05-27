@@ -1,0 +1,131 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0186",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 6 > Sección 6 — preámbulo /b",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "InstrumentoFinanciero",
+        "label": "derivado de crédito de primer incumplimiento",
+        "properties": {
+          "description": "Instrumento financiero estructurado cuya cobertura o indemnización se activa al primer incumplimiento en una canasta de instrumentos de crédito de referencia subyacentes."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "InstrumentoFinanciero",
+        "label": "instrumentos de crédito de referencia",
+        "properties": {
+          "description": "Instrumentos de crédito subyacentes que conforman la canasta de referencia para un derivado de crédito de primer incumplimiento."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Obligacion",
+        "label": "exigencia de capital por riesgo específico para derivado de primer incumplimiento",
+        "properties": {
+          "description": "Exigencia de capital regulatorio para un derivado de crédito de primer incumplimiento, calculada como el menor entre la suma de exigencias de capital de instrumentos de referencia y el máximo pago posible por evento crediticio.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "ConceptoDefinido",
+        "label": "máximo pago posible por evento crediticio",
+        "properties": {
+          "description": "Valor máximo que puede ser pagado por el derivado de crédito en caso de ocurrencia de un evento crediticio conforme al contrato."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Obligacion",
+        "label": "facultad de reducción de exigencias de capital por cobertura",
+        "properties": {
+          "description": "Facultad de la entidad para reducir las exigencias de capital por riesgo específico de instrumentos de crédito cuando posee cobertura mediante derivado de crédito.",
+          "modalidad": "facultad"
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Requisito",
+        "label": "tener posición en instrumento de crédito cubierta por derivado",
+        "properties": {
+          "description": "Condición necesaria: la entidad debe poseer una posición en instrumento de crédito de referencia y el derivado debe proporcionar cobertura a esa posición."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "restricción de reducción de capital a instrumento de menor exigencia",
+        "properties": {
+          "description": "Cuando la entidad tiene múltiples posiciones en instrumentos de crédito de referencia, la reducción de capital solo se aplica al instrumento con menor exigencia de capital por riesgo específico.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que posee derivados de crédito e instrumentos de crédito y debe cumplir exigencias de capital regulatorio."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "ConceptoDefinido",
+        "label": "evento crediticio",
+        "properties": {
+          "description": "Evento especificado contractualmente que activa el pago de cobertura o indemnización en un derivado de crédito."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e3",
+        "target": "e1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e3",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e6",
+        "target": "e5",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e8",
+        "target": "e3",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e8",
+        "target": "e5",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e7",
+        "target": "e5",
+        "relation": "excepcion_a"
+      },
+      {
+        "source": "e1",
+        "target": "e9",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e5",
+        "target": "e1",
+        "relation": "aplica_a"
+      }
+    ]
+  },
+  "input_tokens": 5569,
+  "output_tokens": 1274,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

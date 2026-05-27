@@ -1,0 +1,129 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0075",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 2 > Punto 1",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "CD_GI_001",
+        "type": "ConceptoDefinido",
+        "label": "empresa con grado de inversión",
+        "properties": {
+          "description": "Empresa con capacidad suficiente para atender puntualmente sus compromisos financieros aun ante cambios adversos en la coyuntura económica y en las condiciones de los negocios."
+        }
+      },
+      {
+        "local_id": "CD_FGPI_001",
+        "type": "ConceptoDefinido",
+        "label": "financiación especializada de grandes proyectos de infraestructura",
+        "properties": {
+          "description": "Financiación en la que la entidad financiera prestamista considera los ingresos generados por un único proyecto como fuente de repago y respaldo del crédito, excluyendo proyectos inmobiliarios."
+        }
+      },
+      {
+        "local_id": "CD_EP_001",
+        "type": "ConceptoDefinido",
+        "label": "etapa preoperativa",
+        "properties": {
+          "description": "Etapa en la que el ente gestor aún no cuenta con flujo de fondos positivo suficiente para cubrir obligaciones contractuales y la deuda de largo plazo no es decreciente."
+        }
+      },
+      {
+        "local_id": "CD_SPE_001",
+        "type": "ConceptoDefinido",
+        "label": "ente de propósito especial",
+        "properties": {
+          "description": "Ente creado al solo efecto de financiar o gestionar un proyecto de infraestructura."
+        }
+      },
+      {
+        "local_id": "OB_CONS_001",
+        "type": "Obligacion",
+        "label": "considerar definiciones para asignar ponderadores de riesgo",
+        "properties": {
+          "description": "Las entidades financieras deberán considerar las definiciones establecidas para asignar los ponderadores de riesgo.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "REQ_COTIZ_001",
+        "type": "Requisito",
+        "label": "haber emitido títulos valores cotizados en bolsas reconocidas",
+        "properties": {
+          "description": "La empresa con grado de inversión o su controlante debe haber emitido títulos valores que coticen en bolsas o mercados de valores reconocidos."
+        }
+      },
+      {
+        "local_id": "REQ_CARACT_001",
+        "type": "Requisito",
+        "label": "cumplir características de financiación especializada",
+        "properties": {
+          "description": "La financiación especializada debe cumplir al menos una de las características: otorgarse a un ente de propósito especial, que el ente prestatario carezca de otros activos significativos, o que los términos contractuales concedan alto control sobre ingresos y activos del proyecto."
+        }
+      },
+      {
+        "local_id": "REQ_FLUJO_001",
+        "type": "Requisito",
+        "label": "cumplir condiciones de etapa preoperativa",
+        "properties": {
+          "description": "El ente no debe contar con flujo de fondos positivo suficiente para cubrir obligaciones contractuales y la deuda de largo plazo no debe ser decreciente."
+        }
+      },
+      {
+        "local_id": "SJ_ENT_FIN_001",
+        "type": "SujetoRegulado",
+        "label": "entidades financieras",
+        "properties": {
+          "description": "Entidades financieras sujetas a la obligación de asignar ponderadores de riesgo conforme a las definiciones establecidas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "SJ_ENT_FIN_001",
+        "target": "OB_CONS_001",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "OB_CONS_001",
+        "target": "CD_GI_001",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "OB_CONS_001",
+        "target": "CD_FGPI_001",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "OB_CONS_001",
+        "target": "CD_EP_001",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "REQ_COTIZ_001",
+        "target": "CD_GI_001",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "REQ_CARACT_001",
+        "target": "CD_FGPI_001",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "REQ_CARACT_001",
+        "target": "CD_SPE_001",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "REQ_FLUJO_001",
+        "target": "CD_EP_001",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 6680,
+  "output_tokens": 1390,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

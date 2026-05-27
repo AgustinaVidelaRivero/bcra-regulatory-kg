@@ -1,0 +1,212 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0158",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 4 > Punto 4.7",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_suscripcion_bopreal",
+        "type": "Operacion",
+        "label": "suscripción de bonos BOPREAL",
+        "properties": {
+          "description": "Operación que permite a clientes suscribir BOPREAL por montos adeudados de capital e intereses vencidos con contrapartes vinculadas."
+        }
+      },
+      {
+        "local_id": "sujeto_deudor",
+        "type": "SujetoRegulado",
+        "label": "cliente deudor con contrapartes vinculadas",
+        "properties": {
+          "description": "Persona jurídica que mantiene deudas de capital e intereses vencidos con contrapartes vinculadas y puede suscribir BOPREAL."
+        }
+      },
+      {
+        "local_id": "inst_bopreal",
+        "type": "InstrumentoFinanciero",
+        "label": "Bonos para la Reconstrucción de una Argentina Libre (BOPREAL)",
+        "properties": {
+          "description": "Instrumento financiero que puede suscribirse como pago de deudas vencidas con contrapartes vinculadas."
+        }
+      },
+      {
+        "local_id": "oblig_conformidad_bcra",
+        "type": "Obligacion",
+        "label": "conformidad previa del BCRA para suscripción de BOPREAL",
+        "properties": {
+          "description": "Obligación de obtener conformidad previa del BCRA para la suscripción de BOPREAL por deudores con contrapartes vinculadas.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "oblig_documentacion",
+        "type": "Obligacion",
+        "label": "contar con documentación que avale la deuda",
+        "properties": {
+          "description": "La entidad que ofrece la suscripción debe contar con documentación que acredite la existencia y monto de la deuda.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "req_declaracion_relevamiento",
+        "type": "Requisito",
+        "label": "declaración en Relevamiento de activos y pasivos externos",
+        "properties": {
+          "description": "La operación debe estar declarada en la última presentación vencida del Relevamiento de activos y pasivos externos, cuando corresponda."
+        }
+      },
+      {
+        "local_id": "req_complementarios",
+        "type": "Requisito",
+        "label": "requisitos complementarios",
+        "properties": {
+          "description": "El cliente debe cumplir los requisitos complementarios establecidos en los puntos 3.16.1 a 3.16.4."
+        }
+      },
+      {
+        "local_id": "req_mercado_cambios",
+        "type": "Requisito",
+        "label": "requisitos de acceso al mercado de cambios",
+        "properties": {
+          "description": "El cliente debe cumplir con los requisitos aplicables para acceso al mercado de cambios según el tipo de operación y normativa vigente."
+        }
+      },
+      {
+        "local_id": "concepto_contrapartes_vinculadas",
+        "type": "ConceptoDefinido",
+        "label": "contrapartes vinculadas",
+        "properties": {
+          "description": "Concepto regulatorio que refiere a personas vinculadas con el deudor en operaciones de deuda comercial y financiera."
+        }
+      },
+      {
+        "local_id": "concepto_deuda_comercial",
+        "type": "ConceptoDefinido",
+        "label": "deuda comercial por importaciones",
+        "properties": {
+          "description": "Deuda originada en importación de bienes y servicios con contrapartes vinculadas."
+        }
+      },
+      {
+        "local_id": "concepto_deuda_financiera",
+        "type": "ConceptoDefinido",
+        "label": "deuda financiera con contrapartes vinculadas",
+        "properties": {
+          "description": "Deuda de naturaleza financiera contraída con contrapartes vinculadas."
+        }
+      },
+      {
+        "local_id": "umbral_fecha_comercial",
+        "type": "Umbral",
+        "label": "intereses vencidos hasta 04/07/24 en deuda comercial",
+        "properties": {
+          "description": "Límite temporal para intereses compensatorios vencidos en deudas comerciales por importaciones.",
+          "valor": "04/07/24",
+          "unidad": "fecha"
+        }
+      },
+      {
+        "local_id": "umbral_fecha_financiera",
+        "type": "Umbral",
+        "label": "intereses vencidos hasta 31/12/24 en deuda financiera",
+        "properties": {
+          "description": "Límite temporal para intereses compensatorios vencidos en deudas financieras.",
+          "valor": "31/12/24",
+          "unidad": "fecha"
+        }
+      },
+      {
+        "local_id": "organismo_bcra",
+        "type": "OrganismoRegulador",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que otorga conformidad previa para suscripción de BOPREAL."
+        }
+      },
+      {
+        "local_id": "entidad_oferente",
+        "type": "SujetoRegulado",
+        "label": "entidad que concreta la oferta de suscripción",
+        "properties": {
+          "description": "Entidad financiera que presenta la oferta de suscripción de BOPREAL en nombre del cliente."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "sujeto_deudor",
+        "target": "op_suscripcion_bopreal",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "sujeto_deudor",
+        "target": "oblig_conformidad_bcra",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "entidad_oferente",
+        "target": "oblig_documentacion",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "organismo_bcra",
+        "relation": "requiere_autorizacion_de"
+      },
+      {
+        "source": "oblig_documentacion",
+        "target": "req_declaracion_relevamiento",
+        "relation": "requiere"
+      },
+      {
+        "source": "oblig_conformidad_bcra",
+        "target": "req_complementarios",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "oblig_conformidad_bcra",
+        "target": "req_mercado_cambios",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "inst_bopreal",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "concepto_contrapartes_vinculadas",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "concepto_deuda_comercial",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "concepto_deuda_financiera",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "umbral_fecha_comercial",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "umbral_fecha_financiera",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "op_suscripcion_bopreal",
+        "target": "organismo_bcra",
+        "relation": "supervisado_por"
+      }
+    ]
+  },
+  "input_tokens": 6589,
+  "output_tokens": 2196,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

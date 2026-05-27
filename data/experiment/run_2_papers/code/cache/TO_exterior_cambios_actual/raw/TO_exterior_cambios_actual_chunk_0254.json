@@ -1,0 +1,137 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0254",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 8 > Sección 8 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op1",
+        "type": "Operacion",
+        "label": "reimportación de mercadería rechazada en destino",
+        "properties": {
+          "description": "Reimportación de bienes que fueron rechazados total o parcialmente en destino, permitiendo el giro de divisas proporcional al monto FOB de la reimportación respecto al monto FOB original de la exportación rechazada."
+        }
+      },
+      {
+        "local_id": "req1",
+        "type": "Requisito",
+        "label": "certificación de afectación del SEPAIMPO",
+        "properties": {
+          "description": "Certificación emitida por la entidad encargada del seguimiento en el SEPAIMPO que acredita la reimportación de la mercadería exportada rechazada."
+        }
+      },
+      {
+        "local_id": "obl1",
+        "type": "Obligacion",
+        "label": "contar con certificación de afectación para reimportación",
+        "properties": {
+          "description": "La entidad debe contar con la correspondiente certificación de afectación emitida por la entidad encargada del seguimiento en el SEPAIMPO.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "op2",
+        "type": "Operacion",
+        "label": "exportaciones con bienes importados temporalmente sin uso de divisas",
+        "properties": {
+          "description": "Exportaciones que incorporan bienes importados temporalmente sin uso de divisas mediante subregímenes EC03, EG03, EC04 o EG13, permitiendo acreditar divisas por el valor de los bienes importados temporalmente."
+        }
+      },
+      {
+        "local_id": "req2",
+        "type": "Requisito",
+        "label": "factura de exportación por monto neto",
+        "properties": {
+          "description": "Factura de exportación por el monto neto entre el valor del permiso de embarque y el valor de los insumos importados temporalmente sin giro de divisas."
+        }
+      },
+      {
+        "local_id": "req3",
+        "type": "Requisito",
+        "label": "factura o factura pro forma del proveedor",
+        "properties": {
+          "description": "Factura o factura pro forma del proveedor del bien importado temporariamente, por el monto del despacho a plaza, en la que conste que el bien fue enviado sin cargo."
+        }
+      },
+      {
+        "local_id": "req4",
+        "type": "Requisito",
+        "label": "certificación de afectación del despacho de importación temporal",
+        "properties": {
+          "description": "Certificación de afectación emitida por la entidad encargada del seguimiento en el SEPAIMPO del despacho de importación temporal para transformación."
+        }
+      },
+      {
+        "local_id": "op3",
+        "type": "Operacion",
+        "label": "faltantes, mermas y deficiencias en permisos de embarque",
+        "properties": {
+          "description": "Operación que permite acreditar divisas por el valor de deducciones en el precio acordadas con el cliente del exterior originadas en diferencias entre cantidades embarcadas y arribadas o arribo de bienes defectuosos."
+        }
+      },
+      {
+        "local_id": "concepto1",
+        "type": "ConceptoDefinido",
+        "label": "faltantes, mermas y deficiencias",
+        "properties": {
+          "description": "Diferencias entre las cantidades o volúmenes de bienes embarcados y los arribados a destino, o arribo de bienes defectuosos que no cumplían las condiciones de calidad previstas."
+        }
+      },
+      {
+        "local_id": "org1",
+        "type": "OrganismoRegulador",
+        "label": "SEPAIMPO",
+        "properties": {
+          "description": "Entidad encargada del seguimiento de despachos de importación temporal para transformación y reimportación de mercadería."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "obl1",
+        "target": "req1",
+        "relation": "requiere"
+      },
+      {
+        "source": "op1",
+        "target": "req1",
+        "relation": "requiere"
+      },
+      {
+        "source": "op2",
+        "target": "req2",
+        "relation": "requiere"
+      },
+      {
+        "source": "op2",
+        "target": "req3",
+        "relation": "requiere"
+      },
+      {
+        "source": "op2",
+        "target": "req4",
+        "relation": "requiere"
+      },
+      {
+        "source": "req1",
+        "target": "org1",
+        "relation": "dirigido_a"
+      },
+      {
+        "source": "req4",
+        "target": "org1",
+        "relation": "dirigido_a"
+      },
+      {
+        "source": "op3",
+        "target": "concepto1",
+        "relation": "usa_concepto"
+      }
+    ]
+  },
+  "input_tokens": 4221,
+  "output_tokens": 1370,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

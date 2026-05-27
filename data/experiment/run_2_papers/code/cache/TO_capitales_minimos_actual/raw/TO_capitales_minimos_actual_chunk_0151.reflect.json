@@ -1,0 +1,156 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0151",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "ent_1",
+        "type": "SujetoRegulado",
+        "label": "miembro compensador",
+        "properties": {
+          "description": "Intermediario financiero que actúa entre clientes y la Cámara de Compensación, recibiendo activos en garantía y transfiriendo exposiciones."
+        }
+      },
+      {
+        "local_id": "ent_2",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera cliente",
+        "properties": {
+          "description": "Entidad financiera que es cliente de un miembro compensador y realiza transacciones mediadas por este."
+        }
+      },
+      {
+        "local_id": "ent_3",
+        "type": "SujetoRegulado",
+        "label": "cámara de compensación (CCP)",
+        "properties": {
+          "description": "Contraparte central que identifica transacciones, mantiene garantías y gestiona exposiciones de miembros compensadores y clientes."
+        }
+      },
+      {
+        "local_id": "ent_4",
+        "type": "Operacion",
+        "label": "transacción compensada",
+        "properties": {
+          "description": "Operación financiera ejecutada entre miembro compensador y CCP por indicación del cliente, identificada como transacción de cliente."
+        }
+      },
+      {
+        "local_id": "ent_5",
+        "type": "Requisito",
+        "label": "período de riesgo de margen mínimo de 5 días",
+        "properties": {
+          "description": "Período temporal mínimo aplicable para el cálculo de la Exposición en Incumplimiento (EAD) reducida en operaciones compensadas."
+        }
+      },
+      {
+        "local_id": "ent_6",
+        "type": "Obligacion",
+        "label": "utilizar EAD reducida para cálculo de CVA",
+        "properties": {
+          "description": "Obligación de usar la Exposición en Incumplimiento reducida en el cálculo del ajuste de valuación de crédito conforme punto 4.2.3.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "ent_7",
+        "type": "Obligacion",
+        "label": "permitir transferencia de garantías en insolvencia",
+        "properties": {
+          "description": "Obligación de permitir transferencia de garantías de clientes en caso de impago o insolvencia del miembro compensador, sin impedimentos legales salvo orden judicial.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "ent_8",
+        "type": "Requisito",
+        "label": "revisión legal adecuada de acuerdos",
+        "properties": {
+          "description": "El cliente debe realizar revisión legal que acredite que los acuerdos de protección serán legales, válidos, vinculantes y exigibles bajo leyes aplicables."
+        }
+      },
+      {
+        "local_id": "ent_9",
+        "type": "ConceptoDefinido",
+        "label": "protección contra pérdidas por insolvencia",
+        "properties": {
+          "description": "Concepto regulatorio que establece garantías mantenidas bajo acuerdos que impiden que el cliente sufra pérdidas por insolvencia del miembro compensador, otros clientes o conjuntamente."
+        }
+      },
+      {
+        "local_id": "ent_10",
+        "type": "InstrumentoFinanciero",
+        "label": "garantía (colateral)",
+        "properties": {
+          "description": "Activos aportados como margen inicial o en garantía de operaciones compensadas, mantenidos por la CCP o el miembro compensador."
+        }
+      },
+      {
+        "local_id": "ent_11",
+        "type": "Umbral",
+        "label": "período de riesgo de margen 5 días",
+        "properties": {
+          "valor": "5",
+          "unidad": "días",
+          "description": "Período mínimo de riesgo de margen requerido para cálculos de exposición."
+        }
+      },
+      {
+        "local_id": "ent_12",
+        "type": "ConceptoDefinido",
+        "label": "ajuste de valuación de crédito (CVA)",
+        "properties": {
+          "description": "Concepto regulatorio de valuación que se calcula utilizando la EAD reducida según lo establecido en punto 4.2.3."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "ent_1",
+        "target": "ent_4",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "ent_2",
+        "target": "ent_4",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "ent_6",
+        "target": "ent_12",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "ent_6",
+        "target": "ent_5",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_4",
+        "target": "ent_10",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "ent_3",
+        "target": "ent_7",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "ent_8",
+        "target": "ent_7",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "ent_7",
+        "target": "ent_9",
+        "relation": "aplica_a"
+      }
+    ]
+  },
+  "input_tokens": 6274,
+  "output_tokens": 1549,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

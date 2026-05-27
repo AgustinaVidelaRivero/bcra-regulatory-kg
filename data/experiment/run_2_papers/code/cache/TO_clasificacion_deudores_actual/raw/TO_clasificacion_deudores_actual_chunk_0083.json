@@ -1,0 +1,169 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual_chunk_0083",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Sección 7 > Punto 7.3",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "ob_1",
+        "type": "Obligacion",
+        "label": "recategorización obligatoria del deudor",
+        "properties": {
+          "description": "Obligación de recategorizar al deudor cuando existe discrepancia de más de un nivel entre la clasificación asignada por la entidad financiera y las de al menos otras dos entidades acreedoras.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "req_1",
+        "type": "Requisito",
+        "label": "discrepancia de más de un nivel en clasificación",
+        "properties": {
+          "description": "Condición: diferencia mayor a un nivel entre la clasificación de la entidad financiera y las otorgadas por al menos dos otras entidades acreedoras."
+        }
+      },
+      {
+        "local_id": "req_2",
+        "type": "Requisito",
+        "label": "acreencias representan 40% o más del total",
+        "properties": {
+          "description": "Las acreencias de las al menos dos entidades en conjunto deben representar el 40% o más del total informado por todos los acreedores."
+        }
+      },
+      {
+        "local_id": "umb_1",
+        "type": "Umbral",
+        "label": "40% de acreencias totales",
+        "properties": {
+          "description": "Umbral cuantitativo mínimo de acreencias que activa la obligación de recategorización.",
+          "valor": "40",
+          "unidad": "porcentaje"
+        }
+      },
+      {
+        "local_id": "umb_2",
+        "type": "Umbral",
+        "label": "más de un nivel de diferencia",
+        "properties": {
+          "description": "Discrepancia en categorías que activa la obligación.",
+          "valor": "más de uno",
+          "unidad": "niveles de clasificación"
+        }
+      },
+      {
+        "local_id": "plazo_1",
+        "type": "Plazo",
+        "label": "a partir del mes siguiente",
+        "properties": {
+          "description": "La recategorización se efectuará a partir del mes siguiente al de puesta a disposición de la información de la Central de deudores.",
+          "duracion": "mensual",
+          "unidad": "mes"
+        }
+      },
+      {
+        "local_id": "concepto_1",
+        "type": "ConceptoDefinido",
+        "label": "Central de deudores del sistema financiero",
+        "properties": {
+          "description": "Fuente de información regulatoria que centraliza datos sobre clasificaciones de deudores otorgadas por acreedores."
+        }
+      },
+      {
+        "local_id": "concepto_2",
+        "type": "ConceptoDefinido",
+        "label": "categorías de clasificación de deudores",
+        "properties": {
+          "description": "Categorías 1 a 5 utilizadas para clasificar a los deudores según su evaluación de riesgo."
+        }
+      },
+      {
+        "local_id": "concepto_3",
+        "type": "ConceptoDefinido",
+        "label": "categoría inmediata superior",
+        "properties": {
+          "description": "La categoría de menor riesgo inmediatamente superior a aquella en la que registre mayor nivel de endeudamiento."
+        }
+      },
+      {
+        "local_id": "sujeto_1",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Entidad que asigna clasificación inicial al deudor y está obligada a recategorizar."
+        }
+      },
+      {
+        "local_id": "sujeto_2",
+        "type": "SujetoRegulado",
+        "label": "otras entidades acreedoras",
+        "properties": {
+          "description": "Entidades o fideicomisos financieros y entidades no financieras emisoras de tarjetas de crédito cuyas clasificaciones se consideran para la recategorización."
+        }
+      },
+      {
+        "local_id": "sujeto_3",
+        "type": "SujetoRegulado",
+        "label": "deudor",
+        "properties": {
+          "description": "Sujeto cuya clasificación debe ser recategorizada según las condiciones establecidas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "sujeto_1",
+        "target": "ob_1",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "req_1",
+        "target": "ob_1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req_2",
+        "target": "ob_1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "ob_1",
+        "target": "umb_1",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "ob_1",
+        "target": "umb_2",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "ob_1",
+        "target": "plazo_1",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "ob_1",
+        "target": "sujeto_3",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "ob_1",
+        "target": "concepto_1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "ob_1",
+        "target": "concepto_2",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "ob_1",
+        "target": "concepto_3",
+        "relation": "usa_concepto"
+      }
+    ]
+  },
+  "input_tokens": 3702,
+  "output_tokens": 1569,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

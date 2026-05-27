@@ -1,0 +1,168 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0238",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 7 > Punto 7.11",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_1",
+        "type": "Operacion",
+        "label": "aplicación de divisas de cobros de exportaciones de bienes",
+        "properties": {
+          "description": "Aplicación de divisas provenientes de cobros de exportaciones de bienes a la cancelación de vencimientos de capital e intereses de financiaciones asociadas a importaciones."
+        }
+      },
+      {
+        "local_id": "op_2",
+        "type": "Operacion",
+        "label": "financiación comercial por importación de bienes otorgada por proveedor exterior",
+        "properties": {
+          "description": "Financiación comercial por importación de bienes donde el proveedor del exterior es el otorgante."
+        }
+      },
+      {
+        "local_id": "op_3",
+        "type": "Operacion",
+        "label": "financiación comercial por importación con desembolsos aplicados a pagos anticipados o diferidos",
+        "properties": {
+          "description": "Financiación comercial por importación donde los desembolsos en divisas se aplicaron neto de gastos de forma directa e íntegra a pagos anticipados, a la vista y/o diferidos al proveedor exterior o a pagos de fletes."
+        }
+      },
+      {
+        "local_id": "if_1",
+        "type": "InstrumentoFinanciero",
+        "label": "garantía de entidad financiera local o exterior",
+        "properties": {
+          "description": "Garantía que puede respaldar las financiaciones comerciales, otorgada por entidades financieras locales o del exterior."
+        }
+      },
+      {
+        "local_id": "if_2",
+        "type": "InstrumentoFinanciero",
+        "label": "garantía de agencia oficial de crédito a la exportación",
+        "properties": {
+          "description": "Garantía que puede respaldar las financiaciones comerciales, otorgada por agencia oficial de crédito a la exportación del exterior."
+        }
+      },
+      {
+        "local_id": "suj_1",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera del exterior",
+        "properties": {
+          "description": "Entidad financiera localizada en el exterior que otorga financiaciones comerciales o líneas de crédito."
+        }
+      },
+      {
+        "local_id": "suj_2",
+        "type": "SujetoRegulado",
+        "label": "agencia oficial de crédito a la exportación del exterior",
+        "properties": {
+          "description": "Agencia oficial de crédito a la exportación del exterior que puede otorgar financiaciones o garantías."
+        }
+      },
+      {
+        "local_id": "suj_3",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera local",
+        "properties": {
+          "description": "Entidad financiera localizada en territorio local que puede otorgar financiaciones basadas en líneas de crédito de entidades financieras del exterior."
+        }
+      },
+      {
+        "local_id": "req_1",
+        "type": "Requisito",
+        "label": "acuerdo entre partes para garantías",
+        "properties": {
+          "description": "Las financiaciones comerciales podrán contar con garantías siempre que las partes así lo acuerden."
+        }
+      },
+      {
+        "local_id": "req_2",
+        "type": "Requisito",
+        "label": "desembolsos aplicados neto de gastos de forma directa e íntegra",
+        "properties": {
+          "description": "Los desembolsos en divisas deben ser aplicados neto de gastos, de forma directa e íntegra a los pagos especificados."
+        }
+      },
+      {
+        "local_id": "conc_1",
+        "type": "ConceptoDefinido",
+        "label": "bienes habilitados para aplicación de cobros de exportaciones",
+        "properties": {
+          "description": "Bienes cuyas importaciones pueden financiarse con aplicación de divisas de cobros de exportaciones."
+        }
+      },
+      {
+        "local_id": "obl_1",
+        "type": "Obligacion",
+        "label": "admisión de aplicación de divisas a cancelación de vencimientos",
+        "properties": {
+          "description": "Se admitirá la aplicación de divisas de cobros de exportaciones de bienes a la cancelación de vencimientos de capital e intereses de las operaciones especificadas.",
+          "modalidad": "facultad"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "op_1",
+        "target": "obl_1",
+        "relation": "parte_de_procedimiento"
+      },
+      {
+        "source": "op_2",
+        "target": "op_1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "op_3",
+        "target": "op_1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "op_2",
+        "target": "if_1",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op_2",
+        "target": "if_2",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op_2",
+        "target": "req_1",
+        "relation": "requiere"
+      },
+      {
+        "source": "op_3",
+        "target": "req_2",
+        "relation": "requiere"
+      },
+      {
+        "source": "suj_1",
+        "target": "op_2",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "suj_2",
+        "target": "if_2",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "suj_3",
+        "target": "op_3",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "op_1",
+        "target": "conc_1",
+        "relation": "aplica_a"
+      }
+    ]
+  },
+  "input_tokens": 3686,
+  "output_tokens": 1648,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

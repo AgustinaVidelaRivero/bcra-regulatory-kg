@@ -1,0 +1,177 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0070",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 1 > Punto 2.2",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_cobro_exportacion_servicios",
+        "type": "Operacion",
+        "label": "cobro de exportaciones de servicios",
+        "properties": {
+          "description": "Percepción de fondos por la prestación de servicios por parte de residentes a no residentes, que debe ingresarse y liquidarse en el mercado de cambios."
+        }
+      },
+      {
+        "local_id": "oblig_ingreso_liquidacion",
+        "type": "Obligacion",
+        "label": "ingreso y liquidación en mercado de cambios",
+        "properties": {
+          "description": "Deber de ingresar y liquidar los cobros por prestación de servicios en el mercado de cambios dentro del plazo establecido.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "plazo_20_dias_habiles",
+        "type": "Plazo",
+        "label": "20 días hábiles",
+        "properties": {
+          "description": "Plazo máximo para ingreso y liquidación contado a partir de la percepción en exterior o país o acreditación en cuentas del exterior.",
+          "duracion": "20",
+          "unidad": "días hábiles"
+        }
+      },
+      {
+        "local_id": "sujeto_residente",
+        "type": "SujetoRegulado",
+        "label": "residente prestador de servicios",
+        "properties": {
+          "description": "Persona física o jurídica residente que presta servicios a no residentes."
+        }
+      },
+      {
+        "local_id": "concepto_vpu_rigi",
+        "type": "ConceptoDefinido",
+        "label": "Vehículo de Proyecto Único adherido a RIGI",
+        "properties": {
+          "description": "Entidad que ha declarado ante la Autoridad de Aplicación su intención de hacer uso de beneficios del artículo 198 de la Ley 27.742."
+        }
+      },
+      {
+        "local_id": "excepcion_vpu_rigi",
+        "type": "Obligacion",
+        "label": "excepción para VPU RIGI",
+        "properties": {
+          "description": "Excepción a la obligación de liquidación prevista en el punto 14.1.3 para VPU adheridos a RIGI.",
+          "modalidad": "excepcion"
+        }
+      },
+      {
+        "local_id": "requisito_gastos_habituales",
+        "type": "Requisito",
+        "label": "deducción de gastos habituales de transferencia",
+        "properties": {
+          "description": "Para fondos percibidos o acreditados en exterior, se puede considerar cumplido el ingreso por el monto equivalente a los gastos habituales debitados por entidades financieras del exterior."
+        }
+      },
+      {
+        "local_id": "excepcion_liquidacion_general",
+        "type": "Obligacion",
+        "label": "excepción de obligación de liquidación",
+        "properties": {
+          "description": "Quedan exceptuados de la obligación de liquidación los cobros de exportaciones de servicios que ingresan en plazos normativos y cumplen condiciones específicas.",
+          "modalidad": "excepcion"
+        }
+      },
+      {
+        "local_id": "concepto_personas_humanas",
+        "type": "ConceptoDefinido",
+        "label": "servicios prestados por personas humanas",
+        "properties": {
+          "description": "Cobros de exportaciones de servicios prestados específicamente por personas físicas."
+        }
+      },
+      {
+        "local_id": "concepto_codigos_servicios",
+        "type": "ConceptoDefinido",
+        "label": "códigos de concepto de servicios elegibles",
+        "properties": {
+          "description": "Códigos S01 a S22 que clasifican tipos específicos de servicios exportados (mantenimiento, construcción, telecomunicaciones, informática, etc.) que califican para la excepción."
+        }
+      },
+      {
+        "local_id": "norma_ley_27742",
+        "type": "NormaReferenciada",
+        "label": "Ley 27.742 artículo 198",
+        "properties": {
+          "description": "Norma que establece beneficios para entidades adheridas al Régimen de Incentivo para Grandes Inversiones."
+        }
+      },
+      {
+        "local_id": "norma_punto_14_1_3",
+        "type": "NormaReferenciada",
+        "label": "punto 14.1.3 del Texto Ordenado",
+        "properties": {
+          "description": "Norma interna que prevé la excepción para VPU RIGI."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "sujeto_residente",
+        "target": "oblig_ingreso_liquidacion",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "sujeto_residente",
+        "target": "op_cobro_exportacion_servicios",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "oblig_ingreso_liquidacion",
+        "target": "op_cobro_exportacion_servicios",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "oblig_ingreso_liquidacion",
+        "target": "plazo_20_dias_habiles",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "concepto_vpu_rigi",
+        "target": "excepcion_vpu_rigi",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "excepcion_vpu_rigi",
+        "target": "oblig_ingreso_liquidacion",
+        "relation": "excepcion_a"
+      },
+      {
+        "source": "op_cobro_exportacion_servicios",
+        "target": "requisito_gastos_habituales",
+        "relation": "requiere"
+      },
+      {
+        "source": "excepcion_liquidacion_general",
+        "target": "oblig_ingreso_liquidacion",
+        "relation": "excepcion_a"
+      },
+      {
+        "source": "excepcion_liquidacion_general",
+        "target": "concepto_personas_humanas",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "excepcion_liquidacion_general",
+        "target": "concepto_codigos_servicios",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "concepto_vpu_rigi",
+        "target": "norma_ley_27742",
+        "relation": "definido_por"
+      },
+      {
+        "source": "excepcion_vpu_rigi",
+        "target": "norma_punto_14_1_3",
+        "relation": "referencia"
+      }
+    ]
+  },
+  "input_tokens": 3935,
+  "output_tokens": 1870,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

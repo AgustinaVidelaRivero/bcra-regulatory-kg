@@ -1,0 +1,165 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0339",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 13 > Anexo d > Punto 13.3",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "Operacion",
+        "label": "acceso al mercado de cambios para pago de servicios",
+        "properties": {
+          "description": "Operación que permite al cliente acceder al mercado de cambios para el pago de servicios prestados o devengados a partir del 13/12/23."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Obligacion",
+        "label": "encuadre en situaciones normativas especificadas para acceso anticipado",
+        "properties": {
+          "description": "El acceso al mercado de cambios con antelación a plazos previstos requiere verificación de encuadre en situaciones normativas específicas.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Requisito",
+        "label": "financiación en moneda extranjera para importaciones de servicios",
+        "properties": {
+          "description": "El cliente accede al mercado de cambios con fondos originados en una financiación en moneda extranjera otorgada por una entidad financiera local para importaciones de servicios."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Requisito",
+        "label": "compatibilidad de fechas de vencimiento y montos de capital",
+        "properties": {
+          "description": "Las fechas de vencimiento y montos de capital de la financiación otorgada deben ser compatibles con lo previsto en los plazos estándar."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Plazo",
+        "label": "15 días corridos adicionales desde prestación o devengamiento",
+        "properties": {
+          "description": "Plazo adicional computado desde la fecha estimada de prestación o devengamiento del servicio cuando la financiación es anterior a esa fecha.",
+          "unidad": "días corridos",
+          "duracion": "15"
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "ConceptoDefinido",
+        "label": "servicios de fletes por importaciones de bienes (S30)",
+        "properties": {
+          "description": "Concepto normativo S30 referido a servicios de fletes por operaciones de importaciones de bienes."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "financiación para S30 hasta fecha estimada de embarque más 15 días",
+        "properties": {
+          "description": "Para operaciones S30, la financiación debe otorgarse hasta la fecha estimada de embarque de los bienes en origen más un plazo adicional de 15 días corridos.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Plazo",
+        "label": "15 días corridos adicionales desde embarque estimado de bienes",
+        "properties": {
+          "description": "Plazo adicional computado desde la fecha estimada de embarque de los bienes en origen para operaciones S30.",
+          "unidad": "días corridos",
+          "duracion": "15"
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera local",
+        "properties": {
+          "description": "Entidad financiera local que otorga la financiación en moneda extranjera para importaciones de servicios."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "SujetoRegulado",
+        "label": "cliente",
+        "properties": {
+          "description": "Sujeto que accede al mercado de cambios para realizar el pago de servicios."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "InstrumentoFinanciero",
+        "label": "financiación en moneda extranjera",
+        "properties": {
+          "description": "Instrumento financiero consistente en un crédito en moneda extranjera otorgado para financiar importaciones de servicios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e10",
+        "target": "e1",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e10",
+        "target": "e2",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e2",
+        "target": "e1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e3",
+        "target": "e2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e4",
+        "target": "e2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e1",
+        "target": "e5",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "e1",
+        "target": "e11",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e9",
+        "target": "e1",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e2",
+        "target": "e6",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e7",
+        "target": "e6",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e7",
+        "target": "e8",
+        "relation": "tiene_plazo"
+      }
+    ]
+  },
+  "input_tokens": 6407,
+  "output_tokens": 1537,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

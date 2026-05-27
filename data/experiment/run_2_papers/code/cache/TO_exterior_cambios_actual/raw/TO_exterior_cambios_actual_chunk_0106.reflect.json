@@ -1,0 +1,167 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0106",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 3 > Sección 3 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "ent_1",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Entidad que otorga acceso al mercado de cambios a clientes para operaciones de recompra y rescate de títulos de deuda."
+        }
+      },
+      {
+        "local_id": "ent_2",
+        "type": "SujetoRegulado",
+        "label": "cliente",
+        "properties": {
+          "description": "Cliente de la entidad que accede al mercado de cambios para realizar operaciones sobre títulos de deuda."
+        }
+      },
+      {
+        "local_id": "ent_3",
+        "type": "Operacion",
+        "label": "pago de prima de recompra o rescate anticipado",
+        "properties": {
+          "description": "Pago de prima de recompra, rescate anticipado o similar mediante acceso al mercado de cambios, limitado al 5% del capital recomprado."
+        }
+      },
+      {
+        "local_id": "ent_4",
+        "type": "Umbral",
+        "label": "máximo 5% del capital recomprado",
+        "properties": {
+          "description": "Límite cuantitativo para pago de prima de recompra o rescate anticipado.",
+          "valor": "5",
+          "unidad": "porcentaje del monto de capital recomprado y/o rescatado"
+        }
+      },
+      {
+        "local_id": "ent_5",
+        "type": "Requisito",
+        "label": "liquidación simultánea de fondos desde el exterior",
+        "properties": {
+          "description": "Liquidación de fondos ingresados desde el exterior por nuevo título de deuda debe ser simultánea con el pago de prima, con monto que exceda el capital precancelado."
+        }
+      },
+      {
+        "local_id": "ent_6",
+        "type": "Operacion",
+        "label": "pago de gastos de emisión y servicios de no residentes",
+        "properties": {
+          "description": "Pago de gastos de emisión u otros servicios prestados por no residentes en marco de emisión de nuevos títulos o recompra/rescate, a fecha de cierre sin liquidación equivalente requerida."
+        }
+      },
+      {
+        "local_id": "ent_7",
+        "type": "Requisito",
+        "label": "pago a fecha de cierre de operación",
+        "properties": {
+          "description": "Gastos de emisión y servicios de no residentes deben pagarse a fecha de cierre de operación de recompra/rescate sin necesidad de liquidación de fondos equivalente."
+        }
+      },
+      {
+        "local_id": "ent_8",
+        "type": "Operacion",
+        "label": "precancelación simultánea con nuevo endeudamiento financiero",
+        "properties": {
+          "description": "Precancelación de capital e intereses de un título de deuda de forma simultánea con liquidación de otros endeudamientos financieros."
+        }
+      },
+      {
+        "local_id": "ent_9",
+        "type": "Requisito",
+        "label": "vida promedio del nuevo endeudamiento mayor a la precancelada",
+        "properties": {
+          "description": "Vida promedio del nuevo endeudamiento debe ser mayor a la vida promedio remanente del título de deuda que se precancela."
+        }
+      },
+      {
+        "local_id": "ent_10",
+        "type": "Requisito",
+        "label": "vencimientos acumulados no superen los del título precancelado",
+        "properties": {
+          "description": "Monto acumulado de vencimientos de capital del nuevo endeudamiento no podrá superar el monto acumulado de vencimientos del título precancelado en ningún momento."
+        }
+      },
+      {
+        "local_id": "ent_11",
+        "type": "Operacion",
+        "label": "precancelación simultánea con emisión de nuevo título",
+        "properties": {
+          "description": "Precancelación de capital e intereses de título de deuda en forma simultánea con liquidación de nuevo título de deuda del mismo tipo con registro público en el país."
+        }
+      },
+      {
+        "local_id": "ent_12",
+        "type": "Requisito",
+        "label": "nuevo título en moneda extranjera con servicios pagaderos en extranjero",
+        "properties": {
+          "description": "Nuevo título debe estar denominado y suscripto en moneda extranjera con servicios pagaderos en moneda extranjera y registro público en el país."
+        }
+      },
+      {
+        "local_id": "ent_13",
+        "type": "Requisito",
+        "label": "vida promedio del nuevo título mayor a la precancelada",
+        "properties": {
+          "description": "Vida promedio del nuevo título de deuda debe ser mayor a la vida promedio remanente del título precancelado."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "ent_3",
+        "target": "ent_4",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "ent_3",
+        "target": "ent_5",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_2",
+        "target": "ent_3",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "ent_6",
+        "target": "ent_7",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_2",
+        "target": "ent_6",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "ent_8",
+        "target": "ent_9",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_8",
+        "target": "ent_10",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_11",
+        "target": "ent_12",
+        "relation": "requiere"
+      },
+      {
+        "source": "ent_11",
+        "target": "ent_13",
+        "relation": "requiere"
+      }
+    ]
+  },
+  "input_tokens": 6886,
+  "output_tokens": 1689,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

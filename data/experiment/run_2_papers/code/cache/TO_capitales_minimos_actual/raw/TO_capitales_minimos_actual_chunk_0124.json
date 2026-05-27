@@ -1,0 +1,152 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0124",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "ConceptoDefinido",
+        "label": "TH + MTA",
+        "properties": {
+          "description": "La mayor exposición que se podría alcanzar sin activar un VM; representa el nivel de activos que es necesario mantener en todo momento."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "ConceptoDefinido",
+        "label": "NICA (Net Independent Collateral Amount)",
+        "properties": {
+          "description": "Monto neto de garantía independiente que la entidad podrá utilizar para compensar su exposición en caso de incumplimiento de la contraparte."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "ConceptoDefinido",
+        "label": "ICA (Independent Collateral Amount)",
+        "properties": {
+          "description": "Monto de garantía independiente que representa el activo recibido en garantía que la entidad puede ejecutar en caso de incumplimiento de la contraparte, o el parámetro Independent Amount (IA)."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "ConceptoDefinido",
+        "label": "IA (Independent Amount)",
+        "properties": {
+          "description": "Parámetro que representa un monto independiente tal como se define en la documentación usual para operaciones de garantía."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "ConceptoDefinido",
+        "label": "VM (Variation Margin)",
+        "properties": {
+          "description": "Margen de variación; su activación constituye un límite para la exposición máxima sin VM (TH + MTA)."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Requisito",
+        "label": "segregación de activos en garantía",
+        "properties": {
+          "description": "Los activos aportados por la contraparte pueden estar segregados o no; los no segregados aportados por la entidad no disminuyen el NICA."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "ConceptoDefinido",
+        "label": "cláusulas de abandono o ruptura (walkaway clauses)",
+        "properties": {
+          "description": "Cláusulas que permiten a la parte que no ha incumplido realizar pagos limitados o ningún pago a la parte que sí ha incumplido, incluso cuando esta última sea acreedora neta."
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Obligacion",
+        "label": "no computar en términos netos contratos con walkaway clauses",
+        "properties": {
+          "description": "Los contratos con cláusulas de abandono o ruptura no podrán computarse en términos netos al efecto del cómputo de la exigencia de capital.",
+          "modalidad": "prohibicion"
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "ConceptoDefinido",
+        "label": "EPF (Exposición Potencial Futura)",
+        "properties": {
+          "description": "Resultado del producto entre la suma de los adicionales correspondientes a cada clase de activos y un multiplicador que reconoce la garantía en exceso o el valor de mercado negativo."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que participa en operaciones de garantía y debe mantener capital mínimo."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "Umbral",
+        "label": "mínimo de 0 para ICA",
+        "properties": {
+          "description": "Se establece un mínimo de 0 en el cálculo del ICA para evitar que el costo de reposición sea negativo cuando una entidad financiera tenga NICA mayor que TH + MTA.",
+          "valor": "0",
+          "unidad": "unidades de cuenta"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e2",
+        "target": "e6",
+        "relation": "requiere"
+      },
+      {
+        "source": "e2",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e3",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e8",
+        "target": "e7",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e8",
+        "target": "e9",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e9",
+        "target": "e1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e9",
+        "target": "e3",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e10",
+        "target": "e8",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e3",
+        "target": "e11",
+        "relation": "tiene_umbral"
+      }
+    ]
+  },
+  "input_tokens": 4111,
+  "output_tokens": 1461,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

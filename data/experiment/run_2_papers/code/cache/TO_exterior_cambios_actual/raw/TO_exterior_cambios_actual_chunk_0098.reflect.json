@@ -1,0 +1,152 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0098",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 3 > Sección 3 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op1",
+        "type": "Operacion",
+        "label": "precancelación de capital e intereses",
+        "properties": {
+          "description": "Operación de cancelación anticipada de capital e intereses de endeudamientos financieros."
+        }
+      },
+      {
+        "local_id": "op2",
+        "type": "Operacion",
+        "label": "canje de títulos de deuda",
+        "properties": {
+          "description": "Operación de canje donde se reemplazan títulos existentes por nuevos títulos de deuda."
+        }
+      },
+      {
+        "local_id": "op3",
+        "type": "Operacion",
+        "label": "otorgamiento de nuevo endeudamiento financiero",
+        "properties": {
+          "description": "Operación de otorgamiento de nuevo endeudamiento financiero por entidad financiera local a partir de línea de crédito del exterior."
+        }
+      },
+      {
+        "local_id": "if1",
+        "type": "InstrumentoFinanciero",
+        "label": "títulos de deuda",
+        "properties": {
+          "description": "Instrumentos de deuda objeto de canje o precancelación."
+        }
+      },
+      {
+        "local_id": "if2",
+        "type": "InstrumentoFinanciero",
+        "label": "endeudamiento financiero",
+        "properties": {
+          "description": "Instrumento de crédito otorgado por entidad financiera local a partir de línea de crédito del exterior."
+        }
+      },
+      {
+        "local_id": "req1",
+        "type": "Requisito",
+        "label": "vida promedio nuevo título mayor a vida promedio remanente",
+        "properties": {
+          "description": "Requisito de que la vida promedio de los nuevos títulos sea mayor a la vida promedio remanente del título canjeado."
+        }
+      },
+      {
+        "local_id": "req2",
+        "type": "Requisito",
+        "label": "vencimientos acumulados no superen los del título canjeado",
+        "properties": {
+          "description": "Requisito de que el monto acumulado de vencimientos de capital de nuevos títulos no supere el de títulos canjeados hasta vencimiento final."
+        }
+      },
+      {
+        "local_id": "req3",
+        "type": "Requisito",
+        "label": "precancelación simultánea con liquidación de nuevo endeudamiento",
+        "properties": {
+          "description": "Requisito de que la precancelación sea efectuada de manera simultánea con fondos liquidados del nuevo endeudamiento."
+        }
+      },
+      {
+        "local_id": "req4",
+        "type": "Requisito",
+        "label": "vida promedio nuevo endeudamiento mayor a vida promedio remanente",
+        "properties": {
+          "description": "Requisito de que la vida promedio del nuevo endeudamiento sea mayor a la vida promedio remanente de la deuda precancelada."
+        }
+      },
+      {
+        "local_id": "req5",
+        "type": "Requisito",
+        "label": "vencimientos acumulados no superen los de deuda precancelada",
+        "properties": {
+          "description": "Requisito de que monto acumulado de vencimientos de capital del nuevo endeudamiento no supere el de la deuda precancelada."
+        }
+      },
+      {
+        "local_id": "cd1",
+        "type": "ConceptoDefinido",
+        "label": "vehículo de proyecto único adherido al rigi",
+        "properties": {
+          "description": "Cliente que es un VPU adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que precancela endeudamientos financieros."
+        }
+      },
+      {
+        "local_id": "sr1",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera local",
+        "properties": {
+          "description": "Entidad que otorga nuevo endeudamiento financiero a partir de línea de crédito del exterior."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "req1",
+        "target": "op2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req2",
+        "target": "op2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "op2",
+        "target": "if1",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "req3",
+        "target": "op3",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req4",
+        "target": "op3",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req5",
+        "target": "op3",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "op3",
+        "target": "if2",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op1",
+        "target": "if2",
+        "relation": "involucra_instrumento"
+      }
+    ]
+  },
+  "input_tokens": 5988,
+  "output_tokens": 1424,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

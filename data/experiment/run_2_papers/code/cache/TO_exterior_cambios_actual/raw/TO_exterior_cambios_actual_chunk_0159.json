@@ -1,0 +1,173 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0159",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "Obligacion",
+        "label": "contar con declaración jurada del cliente",
+        "properties": {
+          "description": "La entidad debe obtener una declaración jurada del cliente que certifique que la deuda está pendiente de pago, que no ha utilizado este mecanismo previamente por esta deuda, y que conoce las restricciones de acceso al mercado de cambios.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Requisito",
+        "label": "deuda pendiente de pago",
+        "properties": {
+          "description": "Condición que debe constar en la declaración jurada: la deuda por la cual se solicita la suscripción se encuentra pendiente de pago."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Requisito",
+        "label": "no utilización previa del mecanismo",
+        "properties": {
+          "description": "El cliente debe declarar que no ha utilizado ya este mecanismo por esta deuda específica."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Requisito",
+        "label": "conocimiento de restricciones de acceso al mercado de cambios",
+        "properties": {
+          "description": "El cliente debe tomar conocimiento de que no tendrá acceso al mercado de cambios para pagar el equivalente de la deuda suscrita, excepto mediante canje y arbitraje con fondos depositados en cuenta local originados en cobros de capital e intereses de bonos BOPREAL."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Requisito",
+        "label": "firma por cliente, representante legal o apoderado",
+        "properties": {
+          "description": "La declaración jurada debe estar firmada por el cliente, su representante legal o un apoderado con facultades suficientes para asumir el compromiso en nombre del cliente."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Operacion",
+        "label": "realización de boleto de venta de cambio",
+        "properties": {
+          "description": "La entidad debe realizar un boleto de venta de cambio a nombre del cliente identificando el tipo de operación mediante códigos de concepto específicos (I12, I13 o P28)."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "ConceptoDefinido",
+        "label": "I12 - Registro de intereses compensatorios por deudas comerciales con contrapartes vinculadas por adjudicación de bonos BOPREAL",
+        "properties": {
+          "description": "Código de concepto que identifica registro de intereses compensatorios derivados de deudas comerciales con contrapartes vinculadas por adjudicación de bonos BOPREAL."
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "ConceptoDefinido",
+        "label": "I13 - Registro de intereses compensatorios por deudas financieras con contrapartes vinculadas por adjudicación de bonos BOPREAL",
+        "properties": {
+          "description": "Código de concepto que identifica registro de intereses compensatorios derivados de deudas financieras con contrapartes vinculadas por adjudicación de bonos BOPREAL."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "ConceptoDefinido",
+        "label": "P28 - Registro de deudas con contrapartes vinculadas por adjudicación de bonos BOPREAL",
+        "properties": {
+          "description": "Código de concepto que identifica registro de deudas con contrapartes vinculadas por adjudicación de bonos BOPREAL."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "InstrumentoFinanciero",
+        "label": "bonos BOPREAL",
+        "properties": {
+          "description": "Instrumento financiero cuya adjudicación genera las deudas y operaciones de cambio reguladas en este fragmento."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera que realiza la operación",
+        "properties": {
+          "description": "La entidad que debe realizar el boleto de venta de cambio y obtener la documentación del cliente."
+        }
+      },
+      {
+        "local_id": "e12",
+        "type": "SujetoRegulado",
+        "label": "cliente",
+        "properties": {
+          "description": "Persona o representante que solicita la suscripción y cuya deuda está asociada a los bonos BOPREAL."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e11",
+        "target": "e1",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "requiere"
+      },
+      {
+        "source": "e1",
+        "target": "e3",
+        "relation": "requiere"
+      },
+      {
+        "source": "e1",
+        "target": "e4",
+        "relation": "requiere"
+      },
+      {
+        "source": "e1",
+        "target": "e5",
+        "relation": "requiere"
+      },
+      {
+        "source": "e11",
+        "target": "e6",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e6",
+        "target": "e7",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e6",
+        "target": "e8",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e6",
+        "target": "e9",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e6",
+        "target": "e10",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e2",
+        "target": "e10",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e4",
+        "target": "e10",
+        "relation": "usa_concepto"
+      }
+    ]
+  },
+  "input_tokens": 3780,
+  "output_tokens": 1725,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

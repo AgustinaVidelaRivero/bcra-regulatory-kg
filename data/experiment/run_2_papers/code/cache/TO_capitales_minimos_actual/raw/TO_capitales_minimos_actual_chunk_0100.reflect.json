@@ -1,0 +1,186 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0100",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 2 > Punto 3.1 /d",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_exclusion",
+        "type": "InstrumentoFinanciero",
+        "label": "opción de exclusión (clean-up call)",
+        "properties": {
+          "description": "Opción que permite rescatar posiciones de titulización antes de que hayan sido canceladas todas las exposiciones subyacentes. En titulizaciones tradicionales se ejerce mediante recompra de posiciones; en operaciones sintéticas adopta la forma de una cláusula que extingue la protección crediticia."
+        }
+      },
+      {
+        "local_id": "titulizacion_trad",
+        "type": "Operacion",
+        "label": "operación de titulización tradicional",
+        "properties": {
+          "description": "Titulización en la que la opción de exclusión se ejerce mediante recompra de posiciones de titulización pendientes."
+        }
+      },
+      {
+        "local_id": "titulizacion_sint",
+        "type": "Operacion",
+        "label": "operación de titulización sintética",
+        "properties": {
+          "description": "Titulización en la que la opción de exclusión adopta la forma de una cláusula que extingue la protección crediticia."
+        }
+      },
+      {
+        "local_id": "req_ejercicio_discrecional",
+        "type": "Requisito",
+        "label": "ejercicio discretional de la opción",
+        "properties": {
+          "description": "El ejercicio de la opción de exclusión no debe ser obligatorio, sino estar sujeto a la discrecionalidad de la entidad originante."
+        }
+      },
+      {
+        "local_id": "req_no_proteccion",
+        "type": "Requisito",
+        "label": "ausencia de mejora crediticia implícita",
+        "properties": {
+          "description": "La opción de exclusión no debe estar estructurada para evitar que inversores y proveedores de mejoras crediticias absorban pérdidas, ni para proporcionar cualquier otro tipo de mejora crediticia."
+        }
+      },
+      {
+        "local_id": "umbral_10pct",
+        "type": "Umbral",
+        "label": "saldo del 10% o menos del valor original",
+        "properties": {
+          "description": "La opción de exclusión solo puede ejercerse cuando quede pendiente un 10% o menos del valor original de la cartera subyacente o de los títulos valores emitidos.",
+          "valor": "10",
+          "unidad": "porcentaje"
+        }
+      },
+      {
+        "local_id": "req_umbral_10pct",
+        "type": "Requisito",
+        "label": "ejercicio solo al alcanzarse el umbral del 10%",
+        "properties": {
+          "description": "Solo puede ejercerse la opción cuando quede pendiente un 10% o menos del valor original de la cartera subyacente o títulos valores emitidos."
+        }
+      },
+      {
+        "local_id": "obl_no_exigencia_capital",
+        "type": "Obligacion",
+        "label": "no exigencia de capital por opción de exclusión conforme",
+        "properties": {
+          "description": "La presencia de una opción de exclusión no originará exigencia de capital alguna siempre que se cumpla con la totalidad de los requisitos especificados.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "obl_exigencia_capital_incumplimiento",
+        "type": "Obligacion",
+        "label": "exigencia de capital por opción de exclusión incumplida",
+        "properties": {
+          "description": "Operaciones de titulización que incluyan una opción de exclusión que no cumpla la totalidad de los criterios resultarán en una exigencia de capital para la entidad originante.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "obl_trato_como_no_titulizado",
+        "type": "Obligacion",
+        "label": "tratamiento de exposiciones como no titulizadas",
+        "properties": {
+          "description": "En titulizaciones tradicionales, las exposiciones subyacentes se tratarán como si no estuviesen titulizadas.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "obl_deduccion_ganancia",
+        "type": "Obligacion",
+        "label": "deducción de ganancia por venta del capital ordinario nivel uno",
+        "properties": {
+          "description": "La entidad financiera debe deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de titulización.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "concepto_co_n1",
+        "type": "ConceptoDefinido",
+        "label": "capital ordinario de nivel uno (CO n1)",
+        "properties": {
+          "description": "Componente del capital de las entidades financieras sujeto a deducción de ganancias por venta en operaciones de titulización."
+        }
+      },
+      {
+        "local_id": "sujeto_entidad_originante",
+        "type": "SujetoRegulado",
+        "label": "entidad originante",
+        "properties": {
+          "description": "Entidad financiera que realiza la operación de titulización y que tiene discrecionalidad sobre el ejercicio de la opción de exclusión."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "obl_no_exigencia_capital",
+        "target": "op_exclusion",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "req_ejercicio_discrecional",
+        "target": "obl_no_exigencia_capital",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req_no_proteccion",
+        "target": "obl_no_exigencia_capital",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req_umbral_10pct",
+        "target": "obl_no_exigencia_capital",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "obl_no_exigencia_capital",
+        "target": "umbral_10pct",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "obl_trato_como_no_titulizado",
+        "target": "titulizacion_trad",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "sujeto_entidad_originante",
+        "target": "obl_no_exigencia_capital",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "sujeto_entidad_originante",
+        "target": "obl_exigencia_capital_incumplimiento",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "sujeto_entidad_originante",
+        "target": "obl_trato_como_no_titulizado",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "sujeto_entidad_originante",
+        "target": "obl_deduccion_ganancia",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "obl_deduccion_ganancia",
+        "target": "concepto_co_n1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "obl_exigencia_capital_incumplimiento",
+        "target": "obl_no_exigencia_capital",
+        "relation": "excepcion_a"
+      }
+    ]
+  },
+  "input_tokens": 7046,
+  "output_tokens": 2089,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

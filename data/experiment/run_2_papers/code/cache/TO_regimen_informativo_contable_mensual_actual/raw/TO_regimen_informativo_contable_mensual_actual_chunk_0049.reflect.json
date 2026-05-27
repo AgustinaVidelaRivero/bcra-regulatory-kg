@@ -1,0 +1,157 @@
+{
+  "chunk_id": "TO_regimen_informativo_contable_mensual_actual_chunk_0049",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "Obligacion",
+        "label": "informar posición comprada y vendida por banda y moneda",
+        "properties": {
+          "description": "Las entidades financieras deben informar las posiciones compradas (partida 561000) y vendidas (partida 562000) del día, para cada moneda según tabla SISCEN T 0003 y banda (1 a 15), únicamente el último día de cada período.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Requisito",
+        "label": "informar sin signo las posiciones",
+        "properties": {
+          "description": "Las partidas 561000 y 562000 deben informarse sin signo (valores absolutos)."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Requisito",
+        "label": "utilizar tabla SISCEN T 0003 para codificación de monedas",
+        "properties": {
+          "description": "El código de moneda M debe extraerse de la Tabla SISCEN T 0003, excluyendo monedas sin código SWIFT."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "ConceptoDefinido",
+        "label": "banda de vencimiento",
+        "properties": {
+          "description": "Clasificación de instrumentos según plazo de vencimiento, de banda 1 a 15, cada una unívocamente unida a un ponderador específico (0,00% a 12,50%)."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Umbral",
+        "label": "ponderador por banda de vencimiento",
+        "properties": {
+          "valor": "0,00 a 12,50",
+          "unidad": "porcentaje",
+          "description": "Factor de ponderación asignado a cada banda (1-15), que va desde 0,00% (banda 1) a 12,50% (banda 15)."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Plazo",
+        "label": "período de información mensual",
+        "properties": {
+          "duracion": "mensual",
+          "unidad": "mes",
+          "description": "La información se reporta mensualmente; las posiciones deben informarse únicamente el último día de cada período."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "ConceptoDefinido",
+        "label": "cartera de negociación",
+        "properties": {
+          "description": "Conjunto de posiciones compradas y vendidas mantenidas por la entidad para propósitos de negociación, sobre el cual se determina la posición ponderada neta."
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "ConceptoDefinido",
+        "label": "desestimaciones verticales",
+        "properties": {
+          "description": "Total de ajustes o eliminaciones aplicadas dentro de una zona de vencimiento (partida 552200)."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "ConceptoDefinido",
+        "label": "desestimaciones horizontales",
+        "properties": {
+          "description": "Total de ajustes o eliminaciones aplicadas entre zonas de vencimiento distintas (partida 552300)."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "Procedimiento",
+        "label": "exigencia e integración de capitales mínimos",
+        "properties": {
+          "description": "Régimen informativo contable mensual que requiere el cálculo y reporte de capitales mínimos conforme a las partidas y ponderadores especificados."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "OrganismoRegulador",
+        "label": "SEFyC",
+        "properties": {
+          "description": "Organismo regulador a quien se dirigen los informes; retiene disposición sobre datos no reportados en el último día del período."
+        }
+      },
+      {
+        "local_id": "e12",
+        "type": "NormaReferenciada",
+        "label": "Comunicación A 6333",
+        "properties": {
+          "description": "Norma que establece el régimen informativo contable mensual para exigencia e integración de capitales mínimos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "requiere"
+      },
+      {
+        "source": "e1",
+        "target": "e3",
+        "relation": "requiere"
+      },
+      {
+        "source": "e1",
+        "target": "e6",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "e1",
+        "target": "e5",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e10",
+        "target": "e11",
+        "relation": "dirigido_a"
+      },
+      {
+        "source": "e1",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e7",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e10",
+        "target": "e12",
+        "relation": "referencia"
+      }
+    ]
+  },
+  "input_tokens": 6173,
+  "output_tokens": 1499,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

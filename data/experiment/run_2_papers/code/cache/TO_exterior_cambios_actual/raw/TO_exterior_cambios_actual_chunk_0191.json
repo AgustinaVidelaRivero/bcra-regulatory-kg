@@ -1,0 +1,154 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0191",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 5 > Punto 6.4",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_termino",
+        "type": "Operacion",
+        "label": "operaciones a término",
+        "properties": {
+          "description": "Operaciones en las cuales la liquidación está pactada en un plazo mayor a 2 días hábiles desde la fecha de concertación."
+        }
+      },
+      {
+        "local_id": "umbral_dias",
+        "type": "Umbral",
+        "label": "2 días hábiles",
+        "properties": {
+          "description": "Plazo que diferencia operaciones al contado de operaciones a término.",
+          "valor": "2",
+          "unidad": "días hábiles"
+        }
+      },
+      {
+        "local_id": "entrega_instrumentos",
+        "type": "Requisito",
+        "label": "entrega efectiva de instrumentos en mercado de cambios",
+        "properties": {
+          "description": "Condición que genera sujeción a normas cambiarias y acceso al mercado de cambios."
+        }
+      },
+      {
+        "local_id": "norma_cambiaria",
+        "type": "Obligacion",
+        "label": "sujeción a normas cambiarias",
+        "properties": {
+          "description": "Obligación que aplica cuando se prevé entrega efectiva de instrumentos operados en mercado de cambios.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "acceso_mercado_cambios",
+        "type": "Obligacion",
+        "label": "acceso al mercado de cambios en fecha de liquidación",
+        "properties": {
+          "description": "Las operaciones a término con entrega de instrumentos se consideran acceso al mercado de cambios a concretarse en la fecha de liquidación.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "exc_derivados",
+        "type": "Obligacion",
+        "label": "excepción para derivados en ley argentina con liquidación en moneda doméstica",
+        "properties": {
+          "description": "No están sujetas a normas cambiarias las concertaciones y cancelaciones de futuros, forwards, opciones y derivados instrumentados bajo ley argentina con liquidación por compensación en moneda doméstica sin obligaciones de pago en moneda extranjera.",
+          "modalidad": "prohibicion"
+        }
+      },
+      {
+        "local_id": "residente_ph",
+        "type": "ConceptoDefinido",
+        "label": "residente: persona humana",
+        "properties": {
+          "description": "Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año."
+        }
+      },
+      {
+        "local_id": "residente_pj",
+        "type": "ConceptoDefinido",
+        "label": "residente: persona jurídica",
+        "properties": {
+          "description": "Persona jurídica constituida en un país, o sucursal de persona jurídica extranjera inscripta para realizar actividades de manera habitual en el país."
+        }
+      },
+      {
+        "local_id": "residente_patrimonio",
+        "type": "ConceptoDefinido",
+        "label": "residente: patrimonios y otras universalidades",
+        "properties": {
+          "description": "Patrimonios, fideicomisos, fondos comunes de inversión, sucesiones indivisas y otros patrimonios cuya residencia está determinada por la residencia del fiduciario o representante legal."
+        }
+      },
+      {
+        "local_id": "plazo_año",
+        "type": "Plazo",
+        "label": "al menos un año",
+        "properties": {
+          "description": "Plazo de permanencia que permite presumir residencia de una persona humana en un país.",
+          "unidad": "años",
+          "duracion": "1"
+        }
+      },
+      {
+        "local_id": "op_vinculadas",
+        "type": "ConceptoDefinido",
+        "label": "operaciones con contrapartes vinculadas",
+        "properties": {
+          "description": "Operaciones entre un residente y una contraparte que mantienen tipos de relaciones descriptos en normas de grandes exposiciones al riesgo de crédito."
+        }
+      },
+      {
+        "local_id": "norma_grandes_exposiciones",
+        "type": "NormaReferenciada",
+        "label": "normas de grandes exposiciones al riesgo de crédito, punto 1.2.2",
+        "properties": {
+          "description": "Norma que define tipos de relaciones entre residentes y contrapartes vinculadas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "op_termino",
+        "target": "umbral_dias",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "op_termino",
+        "target": "entrega_instrumentos",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "norma_cambiaria",
+        "target": "entrega_instrumentos",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "op_termino",
+        "target": "norma_cambiaria",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "acceso_mercado_cambios",
+        "target": "entrega_instrumentos",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "exc_derivados",
+        "target": "norma_cambiaria",
+        "relation": "excepcion_a"
+      },
+      {
+        "source": "op_vinculadas",
+        "target": "norma_grandes_exposiciones",
+        "relation": "definido_por"
+      }
+    ]
+  },
+  "input_tokens": 4032,
+  "output_tokens": 1557,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

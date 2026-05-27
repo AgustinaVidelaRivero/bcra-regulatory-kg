@@ -1,0 +1,138 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0125",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 3 > Punto 3.15",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "SujetoRegulado",
+        "label": "entidades financieras",
+        "properties": {
+          "description": "Instituciones financieras que cancelan líneas de crédito del exterior y acceden al mercado de cambios."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Operacion",
+        "label": "cancelación de líneas de crédito del exterior",
+        "properties": {
+          "description": "Operación de cancelación de líneas de crédito otorgadas por entidades financieras del exterior aplicadas a financiación de operaciones de comercio exterior."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "InstrumentoFinanciero",
+        "label": "línea de crédito del exterior",
+        "properties": {
+          "description": "Línea de crédito otorgada por entidades financieras extranjeras aplicada a operaciones de exportación o importación de residentes."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Operacion",
+        "label": "financiación de operaciones de exportación",
+        "properties": {
+          "description": "Operación de financiación destinada a exportación de residentes."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Operacion",
+        "label": "financiación de operaciones de importación",
+        "properties": {
+          "description": "Operación de financiación destinada a importación de bienes y servicios de residentes, sujeta a condiciones específicas."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Obligacion",
+        "label": "acceso al mercado de cambios para cancelación a vencimiento",
+        "properties": {
+          "description": "Las entidades financieras tendrán acceso al mercado de cambios a partir del vencimiento para cancelación de líneas de crédito del exterior.",
+          "modalidad": "facultad"
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "acceso al mercado de cambios para precancelación",
+        "properties": {
+          "description": "Las entidades financieras podrán acceder al mercado de cambios para precancelar líneas de crédito cuando la financiación local haya sido precancelada por el deudor.",
+          "modalidad": "facultad"
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Requisito",
+        "label": "conformidad previa del BCRA para precancelación",
+        "properties": {
+          "description": "El acceso al mercado de cambios por clientes para precancelación de financiaciones requiere conformidad previa del BCRA."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "Requisito",
+        "label": "validación de declaración de Relevamiento de activos y pasivos externos",
+        "properties": {
+          "description": "La entidad debe contar con validación de la declaración del Relevamiento de activos y pasivos externos, en la medida que sea aplicable."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "OrganismoRegulador",
+        "label": "BCRA",
+        "properties": {
+          "description": "Banco Central de la República Argentina, otorga conformidad previa para acceso al mercado de cambios en precancelaciones."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e1",
+        "target": "e6",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e1",
+        "target": "e7",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "e2",
+        "target": "e3",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e6",
+        "target": "e2",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e8",
+        "relation": "condicion_de_aplicabilidad",
+        "target": "e7"
+      },
+      {
+        "source": "e2",
+        "target": "e9",
+        "relation": "requiere"
+      },
+      {
+        "source": "e7",
+        "target": "e10",
+        "relation": "requiere_autorizacion_de"
+      }
+    ]
+  },
+  "input_tokens": 5884,
+  "output_tokens": 1257,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

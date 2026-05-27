@@ -1,0 +1,167 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0115",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 3 > Punto 3.5",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "Operacion",
+        "label": "compra de divisas simultánea con liquidación",
+        "properties": {
+          "description": "Compra de divisas que se realiza en forma simultánea con la liquidación de divisas y/o a partir de fondos ingresados a nombre del exportador en cuenta de corresponsalía en el exterior."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Requisito",
+        "label": "fondos ingresados en cuenta de corresponsalía exterior",
+        "properties": {
+          "description": "Fondos que deben estar ingresados a nombre del exportador en una cuenta de corresponsalía en el exterior de una entidad local."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "InstrumentoFinanciero",
+        "label": "garantía en moneda extranjera",
+        "properties": {
+          "description": "Garantía acumulada en moneda extranjera para la cancelación de servicios de capital e intereses de endeudamientos."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Umbral",
+        "label": "límite de garantía acumulada",
+        "properties": {
+          "description": "Las garantías acumuladas en moneda extranjera no pueden superar el 125% de los servicios por capital e intereses.",
+          "valor": "125",
+          "unidad": "porcentaje"
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "ConceptoDefinido",
+        "label": "servicios de capital e intereses",
+        "properties": {
+          "description": "Monto de servicios de capital e intereses a abonar en el mes corriente y los siguientes 6 meses calendario según cronograma de vencimientos."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "SujetoRegulado",
+        "label": "fiducicomiso constituido en el país",
+        "properties": {
+          "description": "Fiducicomiso constituido en el país para garantizar la atención de los servicios de capital e intereses de endeudamientos."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "liquidación de fondos no utilizados en divisas",
+        "properties": {
+          "description": "Los fondos en moneda extranjera que no se utilicen en la cancelación del servicio de deuda y/o mantenimiento de garantía exigida deben ser liquidados en el mercado de cambios.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Plazo",
+        "label": "5 días hábiles posteriores al vencimiento",
+        "properties": {
+          "description": "Plazo para liquidar fondos no utilizados en el mercado de cambios.",
+          "duracion": "5",
+          "unidad": "días hábiles"
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "Procedimiento",
+        "label": "confección de boleto de cambio para depósitos en moneda extranjera",
+        "properties": {
+          "description": "Procedimiento de registro de operaciones mediante boleto de cambio bajo el concepto A19 para constitución de depósitos en moneda extranjera aplicados al pago de servicios de deuda."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "Requisito",
+        "label": "boleto de cambio concepto A19",
+        "properties": {
+          "description": "Documento requerido para registrar operaciones: boleto de cambio bajo concepto A19 para constitución de depósitos en moneda extranjera."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "Procedimiento",
+        "label": "boleto de compra y venta al aplicar fondos",
+        "properties": {
+          "description": "Al momento de aplicar los fondos adquiridos se debe efectuar boleto de compra bajo el mismo concepto y otro de venta por concepto correspondiente a cancelación del servicio de deuda."
+        }
+      },
+      {
+        "local_id": "e12",
+        "type": "SujetoRegulado",
+        "label": "entidad interviniente",
+        "properties": {
+          "description": "Entidad financiera que interviene en las operaciones de constitución de depósitos y garantías en moneda extranjera."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e2",
+        "target": "e1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e1",
+        "target": "e3",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e3",
+        "target": "e4",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e5",
+        "target": "e3",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e6",
+        "target": "e3",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "e12",
+        "target": "e7",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e7",
+        "target": "e8",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "e9",
+        "target": "e12",
+        "relation": "ejecutado_por"
+      },
+      {
+        "source": "e9",
+        "target": "e10",
+        "relation": "requiere"
+      },
+      {
+        "source": "e11",
+        "target": "e12",
+        "relation": "ejecutado_por"
+      }
+    ]
+  },
+  "input_tokens": 6190,
+  "output_tokens": 1602,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

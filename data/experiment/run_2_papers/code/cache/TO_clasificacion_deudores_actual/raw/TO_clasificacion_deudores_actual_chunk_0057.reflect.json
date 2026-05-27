@@ -1,0 +1,153 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual_chunk_0057",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Sección 3 > Punto 4.6",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op1",
+        "type": "Operacion",
+        "label": "financiaciones sin responsabilidad para el cedente",
+        "properties": {
+          "description": "Operaciones de financiación amparadas con seguros de crédito por riesgo comercial y seguros de riesgo de crédito con alcance de comprador público, sin responsabilidad para el cedente."
+        }
+      },
+      {
+        "local_id": "seguro1",
+        "type": "InstrumentoFinanciero",
+        "label": "seguro de crédito por riesgo comercial",
+        "properties": {
+          "description": "Instrumento de cobertura de riesgo que ampara operaciones de financiación."
+        }
+      },
+      {
+        "local_id": "seguro2",
+        "type": "InstrumentoFinanciero",
+        "label": "seguro de riesgo de crédito con alcance de comprador público",
+        "properties": {
+          "description": "Instrumento de cobertura de riesgo de crédito específicamente para comprador público."
+        }
+      },
+      {
+        "local_id": "concepto1",
+        "type": "ConceptoDefinido",
+        "label": "cartera de consumo",
+        "properties": {
+          "description": "Categoría de cartera según la cual se clasifican deudores para operaciones de financiación."
+        }
+      },
+      {
+        "local_id": "oblig1",
+        "type": "Obligacion",
+        "label": "clasificar a la compañía de seguros en función de la mora",
+        "properties": {
+          "description": "Obligación de clasificar al asegurador según criterios aplicables a cartera de consumo, considerando la fecha de vencimiento de la primera obligación vencida impaga.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "req1",
+        "type": "Requisito",
+        "label": "no haber sido rechazado el reclamo",
+        "properties": {
+          "description": "Condición previa para iniciar el conteo de mora: el reclamo al asegurador no debe haber sido rechazado."
+        }
+      },
+      {
+        "local_id": "req2",
+        "type": "Requisito",
+        "label": "verificación de falta de pago del siniestro",
+        "properties": {
+          "description": "Condición de que se constate la falta de pago del siniestro luego de vencidos los plazos comprometidos en la póliza."
+        }
+      },
+      {
+        "local_id": "plazo1",
+        "type": "Plazo",
+        "label": "180 o 270 días",
+        "properties": {
+          "description": "Plazos comprometidos en la póliza de seguros para el pago del siniestro.",
+          "duracion": "180 o 270",
+          "unidad": "días"
+        }
+      },
+      {
+        "local_id": "oblig2",
+        "type": "Obligacion",
+        "label": "no incluir en clasificación a deudores en cesión sin responsabilidad",
+        "properties": {
+          "description": "Excepción: los deudores que resulten de operaciones de cesión sin responsabilidad para el cedente no serán objeto de clasificación.",
+          "modalidad": "prohibicion"
+        }
+      },
+      {
+        "local_id": "req3",
+        "type": "Requisito",
+        "label": "cumplimiento de requisitos sobre Garantías",
+        "properties": {
+          "description": "Condición de que la operación haya reunido en origen los requisitos establecidos en normas sobre Garantías."
+        }
+      },
+      {
+        "local_id": "org1",
+        "type": "OrganismoRegulador",
+        "label": "bcra",
+        "properties": {
+          "description": "Banco Central de la República Argentina, autoridad que emite y supervisa criterios de clasificación de deudores."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "oblig1",
+        "target": "concepto1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "oblig1",
+        "target": "op1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "req1",
+        "target": "oblig1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req2",
+        "target": "oblig1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "oblig1",
+        "target": "plazo1",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "op1",
+        "target": "seguro1",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op1",
+        "target": "seguro2",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "oblig2",
+        "target": "oblig1",
+        "relation": "excepcion_a"
+      },
+      {
+        "source": "req3",
+        "target": "oblig1",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 5502,
+  "output_tokens": 1433,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

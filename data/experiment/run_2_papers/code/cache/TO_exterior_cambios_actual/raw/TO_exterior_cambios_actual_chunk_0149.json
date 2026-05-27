@@ -1,0 +1,193 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0149",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 4 > Punto 4.3",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op1",
+        "type": "Operacion",
+        "label": "transacciones de títulos valores concertadas en el exterior",
+        "properties": {
+          "description": "Transacciones de títulos valores cuya concertación ocurre en el exterior."
+        }
+      },
+      {
+        "local_id": "op2",
+        "type": "Operacion",
+        "label": "liquidación en pesos en el país",
+        "properties": {
+          "description": "Liquidación de transacciones en moneda pesos dentro del territorio nacional."
+        }
+      },
+      {
+        "local_id": "op3",
+        "type": "Operacion",
+        "label": "operaciones concertadas en el país",
+        "properties": {
+          "description": "Transacciones de títulos valores cuya concertación ocurre dentro del país."
+        }
+      },
+      {
+        "local_id": "op4",
+        "type": "Operacion",
+        "label": "compraventa de títulos valores con liquidación en moneda extranjera",
+        "properties": {
+          "description": "Operaciones de compraventa de títulos valores con liquidación en divisas."
+        }
+      },
+      {
+        "local_id": "suj1",
+        "type": "SujetoRegulado",
+        "label": "clientes que no sean personas humanas residentes",
+        "properties": {
+          "description": "Personas jurídicas o no residentes que realizan operaciones con títulos valores."
+        }
+      },
+      {
+        "local_id": "obl1",
+        "type": "Obligacion",
+        "label": "no liquidar transacciones de títulos valores del exterior en pesos",
+        "properties": {
+          "description": "Prohibición de liquidar en pesos las transacciones de títulos valores concertadas en el exterior.",
+          "modalidad": "prohibicion"
+        }
+      },
+      {
+        "local_id": "obl2",
+        "type": "Obligacion",
+        "label": "liquidar mediante transferencia de fondos o cable desde cuentas locales",
+        "properties": {
+          "description": "Las operaciones de compraventa con liquidación en moneda extranjera deben abonarse por transferencia desde cuentas a la vista locales o cable.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "req1",
+        "type": "Requisito",
+        "label": "transferencia desde cuentas a la vista a nombre del cliente en entidades financieras locales",
+        "properties": {
+          "description": "Mecanismo de pago mediante transferencia de fondos desde cuentas a la vista en entidades financieras locales."
+        }
+      },
+      {
+        "local_id": "req2",
+        "type": "Requisito",
+        "label": "cable sobre cuentas bancarias en entidad del exterior",
+        "properties": {
+          "description": "Mecanismo de pago contra cable sobre cuentas bancarias en entidad del exterior conforme a estándares GAFI."
+        }
+      },
+      {
+        "local_id": "req3",
+        "type": "Requisito",
+        "label": "cable sobre cuenta de terceros en exterior conforme a GAFI",
+        "properties": {
+          "description": "Mecanismo de pago contra cable sobre cuenta de terceros en exterior que cumpla estándares del Grupo de Acción Financiera Internacional."
+        }
+      },
+      {
+        "local_id": "concepto1",
+        "type": "ConceptoDefinido",
+        "label": "Recomendaciones del Grupo de Acción Financiera Internacional",
+        "properties": {
+          "description": "Estándares internacionales para prevención de lavado de activos y financiamiento del terrorismo."
+        }
+      },
+      {
+        "local_id": "inst1",
+        "type": "InstrumentoFinanciero",
+        "label": "bonos BOPREAL",
+        "properties": {
+          "description": "Títulos valores BOPREAL adquiridos en suscripción primaria."
+        }
+      },
+      {
+        "local_id": "umbral1",
+        "type": "Umbral",
+        "label": "valor de mercado de operaciones de venta posterior",
+        "properties": {
+          "description": "El valor de mercado de ventas posteriores no debe superar la diferencia entre valor obtenido por venta de BOPREAL en exterior.",
+          "valor": "no debe superar la diferencia entre valor de venta de BOPREAL",
+          "unidad": "moneda extranjera"
+        }
+      },
+      {
+        "local_id": "plazo1",
+        "type": "Plazo",
+        "label": "a partir del 01/04/24",
+        "properties": {
+          "description": "Fecha a partir de la cual se permite liquidar otras ventas de títulos valores.",
+          "duracion": "a partir del 01/04/24"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "obl1",
+        "target": "op1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "obl1",
+        "target": "op2",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "suj1",
+        "target": "obl2",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "obl2",
+        "target": "op4",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "obl2",
+        "target": "req1",
+        "relation": "requiere"
+      },
+      {
+        "source": "obl2",
+        "target": "req2",
+        "relation": "requiere"
+      },
+      {
+        "source": "req3",
+        "target": "obl2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "req2",
+        "target": "concepto1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "req3",
+        "target": "concepto1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "op4",
+        "target": "inst1",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "op4",
+        "target": "umbral1",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "op4",
+        "target": "plazo1",
+        "relation": "tiene_plazo"
+      }
+    ]
+  },
+  "input_tokens": 3830,
+  "output_tokens": 1758,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

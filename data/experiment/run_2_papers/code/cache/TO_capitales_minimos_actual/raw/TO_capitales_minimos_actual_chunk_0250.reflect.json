@@ -1,0 +1,177 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0250",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 8 > Punto 8.4",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "CDCOn1",
+        "type": "ConceptoDefinido",
+        "label": "conceptos deducibles del capital ordinario de nivel uno",
+        "properties": {
+          "description": "Diferencia positiva entre previsiones regulatorias y contables, según normas sobre incobrabilidad y NIIF 9, deducible del capital ordinario de nivel uno."
+        }
+      },
+      {
+        "local_id": "prev_reg",
+        "type": "ConceptoDefinido",
+        "label": "previsión regulatoria",
+        "properties": {
+          "description": "Importe resultante de la aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad."
+        }
+      },
+      {
+        "local_id": "prev_contable",
+        "type": "ConceptoDefinido",
+        "label": "previsión contable",
+        "properties": {
+          "description": "Previsión contable correspondiente al balance de saldos al 30.11.19 o por aplicación de NIIF 9 punto 5.5 sobre deterioro de valor."
+        }
+      },
+      {
+        "local_id": "niif9",
+        "type": "NormaReferenciada",
+        "label": "NIIF 9",
+        "properties": {
+          "description": "Norma Internacional de Información Financiera 9, punto 5.5 sobre Deterioro de Valor."
+        }
+      },
+      {
+        "local_id": "prev_sit_normal",
+        "type": "ConceptoDefinido",
+        "label": "previsión por riesgo de incobrabilidad cartera situación normal",
+        "properties": {
+          "description": "Importe de previsión por riesgo de incobrabilidad correspondiente a cartera en situación normal, computado como patrimonio neto complementario."
+        }
+      },
+      {
+        "local_id": "deducible_impuesto",
+        "type": "ConceptoDefinido",
+        "label": "saldo a favor por impuesto ganancia mínima presunta deducible",
+        "properties": {
+          "description": "Saldo a favor neto de previsiones por aplicación del impuesto a la ganancia mínima presunta que excedan el 10% del patrimonio neto bruto del mes anterior."
+        }
+      },
+      {
+        "local_id": "umbral_10pct",
+        "type": "Umbral",
+        "label": "10% patrimonio neto bruto",
+        "properties": {
+          "description": "Límite porcentual para deducción de saldos a favor por impuesto a la ganancia mínima presunta.",
+          "valor": "10",
+          "unidad": "%"
+        }
+      },
+      {
+        "local_id": "deducible_activos_diferidos",
+        "type": "ConceptoDefinido",
+        "label": "saldos a favor activos por impuestos diferidos",
+        "properties": {
+          "description": "Saldos a favor provenientes de activos por impuestos diferidos deducibles del capital ordinario."
+        }
+      },
+      {
+        "local_id": "corresponsalia_no_completa",
+        "type": "ConceptoDefinido",
+        "label": "saldos corresponsalía bancos exterior incumplimiento normativo",
+        "properties": {
+          "description": "Saldos en cuentas de corresponsalía respecto de bancos del exterior que no cumplan con requisitos de evaluaciones crediticias, deducibles del capital ordinario."
+        }
+      },
+      {
+        "local_id": "req_investment_grade",
+        "type": "Requisito",
+        "label": "calificación internacional riesgo investment grade",
+        "properties": {
+          "description": "Requisito que los bancos del exterior cuenten con calificación internacional de riesgo comprendida en la categoría investment grade."
+        }
+      },
+      {
+        "local_id": "deduccion_mayor_saldo",
+        "type": "Requisito",
+        "label": "deducción por mayor saldo mensual",
+        "properties": {
+          "description": "La deducción se realiza por el mayor saldo en cada banco del exterior registrado durante el mes de determinación de RPC."
+        }
+      },
+      {
+        "local_id": "excepcion_casa_matriz",
+        "type": "ConceptoDefinido",
+        "label": "saldos corresponsalía casa matriz y filiales",
+        "properties": {
+          "description": "Saldos en cuentas de corresponsalía respecto de casa matriz de sucursales locales o sucursales y subsidiarias en otros países que no se deducen."
+        }
+      },
+      {
+        "local_id": "eval_crediticia_norma",
+        "type": "NormaReferenciada",
+        "label": "evaluaciones crediticias",
+        "properties": {
+          "description": "Norma sobre evaluaciones crediticias que establece requisitos de calificación de bancos del exterior."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "CDCOn1",
+        "target": "prev_reg",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "CDCOn1",
+        "target": "prev_contable",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "prev_contable",
+        "target": "niif9",
+        "relation": "definido_por"
+      },
+      {
+        "source": "CDCOn1",
+        "target": "prev_sit_normal",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "CDCOn1",
+        "target": "deducible_impuesto",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "CDCOn1",
+        "target": "deducible_activos_diferidos",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "CDCOn1",
+        "target": "corresponsalia_no_completa",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "umbral_10pct",
+        "target": "deducible_impuesto",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "req_investment_grade",
+        "target": "eval_crediticia_norma",
+        "relation": "referencia"
+      },
+      {
+        "source": "req_investment_grade",
+        "target": "corresponsalia_no_completa",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "deduccion_mayor_saldo",
+        "target": "corresponsalia_no_completa",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 6943,
+  "output_tokens": 1809,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

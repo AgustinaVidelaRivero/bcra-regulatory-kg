@@ -1,0 +1,167 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0144",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "ConceptoDefinido",
+        "label": "ponderador de contraparte",
+        "properties": {
+          "description": "Factor de ponderación aplicable a la contraparte según su categoría (sector público no financiero, Banco Central, u otras contrapartes)."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Umbral",
+        "label": "ponderador 0% para sector público no financiero y Banco Central",
+        "properties": {
+          "description": "Ponderador aplicable al sector público no financiero y Banco Central.",
+          "valor": "0",
+          "unidad": "%"
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Umbral",
+        "label": "ponderador 3% para resto de contrapartes",
+        "properties": {
+          "description": "Ponderador aplicable al resto de las contrapartes.",
+          "valor": "3",
+          "unidad": "%"
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Umbral",
+        "label": "ponderador 10% para entidades del exterior sin evaluación crediticia conforme",
+        "properties": {
+          "description": "Ponderador aplicable a entidades del exterior que no cumplen con normas sobre evaluaciones crediticias.",
+          "valor": "10",
+          "unidad": "%"
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "ConceptoDefinido",
+        "label": "calificación internacional de riesgo investment grade",
+        "properties": {
+          "description": "Requisito de calificación internacional de riesgo que debe cumplirse para aplicar ponderadores reducidos a entidades del exterior."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "ConceptoDefinido",
+        "label": "exposición al incumplimiento de contraparte (EADiTotal)",
+        "properties": {
+          "description": "Exposición al incumplimiento de la contraparte, agregada para todos los conjuntos de neteo e incluido el efecto del activo en garantía, con aplicación de factor de descuento."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "InstrumentoFinanciero",
+        "label": "swap de incumplimiento crediticio",
+        "properties": {
+          "description": "Instrumento de cobertura contratado para cubrir el riesgo de CVA, cuyo valor nocional se pondera según la contraparte de referencia."
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "ConceptoDefinido",
+        "label": "riesgo de CVA",
+        "properties": {
+          "description": "Riesgo de ajuste de valor de crédito que se cubre mediante swaps de incumplimiento crediticio e índices CDS."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "InstrumentoFinanciero",
+        "label": "swap de incumplimiento crediticio sobre índices (index CDS)",
+        "properties": {
+          "description": "Instrumento de cobertura sobre índices contratado para cubrir el riesgo de CVA, cuyo valor nocional se descuenta según plazo residual."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "ConceptoDefinido",
+        "label": "plazo residual promedio ponderado",
+        "properties": {
+          "description": "Plazo residual promedio medido en años ponderado de los nocionales en transacciones con la contraparte."
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "Obligacion",
+        "label": "elegibilidad de coberturas para cómputo de exigencia de capital",
+        "properties": {
+          "description": "Solo las coberturas utilizadas con propósito de mitigar riesgo de CVA y gestionadas como tales son elegibles para considerarse en el cómputo de la exigencia de capital.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e12",
+        "type": "Requisito",
+        "label": "cumplimiento de normas sobre evaluaciones crediticias",
+        "properties": {
+          "description": "Requisito de cumplimiento de puntos 3.1 o 3.2 de normas sobre evaluaciones crediticias para entidades del exterior."
+        }
+      },
+      {
+        "local_id": "e13",
+        "type": "NormaReferenciada",
+        "label": "normas sobre evaluaciones crediticias",
+        "properties": {
+          "description": "Normas citadas que establecen puntos 3.1 y 3.2 sobre evaluaciones crediticias a las que deben someterse entidades del exterior."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e1",
+        "target": "e3",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e1",
+        "target": "e4",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e12",
+        "target": "e5",
+        "relation": "requiere"
+      },
+      {
+        "source": "e12",
+        "target": "e13",
+        "relation": "referencia"
+      },
+      {
+        "source": "e11",
+        "target": "e7",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e11",
+        "target": "e9",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e11",
+        "target": "e8",
+        "relation": "aplica_a"
+      }
+    ]
+  },
+  "input_tokens": 6784,
+  "output_tokens": 1608,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

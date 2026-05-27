@@ -1,0 +1,164 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0199",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 6 > Sección 6 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "E1",
+        "type": "ConceptoDefinido",
+        "label": "subyacente",
+        "properties": {
+          "description": "Posición o instrumento sobre el cual se calcula el riesgo en opciones, clasificado por tipo: tasas de interés, acciones, índices bursátiles, moneda extranjera, oro o productos básicos.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E2",
+        "type": "ConceptoDefinido",
+        "label": "efecto gamma",
+        "properties": {
+          "description": "Medida del riesgo asociado a opciones sobre un subyacente, que puede ser positivo o negativo. Solo se incluyen en el cálculo de capital los efectos gamma netos negativos.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E3",
+        "type": "ConceptoDefinido",
+        "label": "riesgo gamma",
+        "properties": {
+          "description": "Riesgo derivado del cambio en la delta de una opción. La exigencia de capital se calcula como suma del valor absoluto de los efectos gamma negativos netos.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E4",
+        "type": "Obligacion",
+        "label": "exigencia de capital por riesgo gamma",
+        "properties": {
+          "description": "La entidad debe computar la exigencia de capital total por riesgo gamma sumando el valor absoluto de los efectos gamma negativos netos.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "E5",
+        "type": "ConceptoDefinido",
+        "label": "riesgo vega",
+        "properties": {
+          "description": "Riesgo derivado del cambio en la volatilidad de una opción. Se calcula considerando un cambio proporcional de la volatilidad de ±25%.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E6",
+        "type": "Obligacion",
+        "label": "exigencia de capital por riesgo vega",
+        "properties": {
+          "description": "La entidad debe calcular la exigencia de capital multiplicando la suma de los coeficientes vega de todas las opciones sobre el mismo subyacente por un cambio de volatilidad de ±25%, y sumar el valor absoluto de las exigencias individuales.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "E7",
+        "type": "Obligacion",
+        "label": "determinación diaria de integración de capital",
+        "properties": {
+          "description": "La integración de capital debe determinarse en forma diaria considerando la RPC del último día del mes anterior y el cambio de valor diario del portafolio de activos.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "E8",
+        "type": "ConceptoDefinido",
+        "label": "RPC",
+        "properties": {
+          "description": "Ratio de Patrimonio Computable, utilizado como base de cálculo en la determinación diaria de integración de capital.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E9",
+        "type": "ConceptoDefinido",
+        "label": "portafolio de activos",
+        "properties": {
+          "description": "Conjunto de activos incluidos en los cálculos de la exigencia por riesgo de mercado, cuyo valor se monitorea diariamente.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E10",
+        "type": "Requisito",
+        "label": "considerar variación desde incorporación de activos",
+        "properties": {
+          "description": "Cuando se incorporan activos durante el mes, se debe tomar solamente la variación en el valor desde su incorporación, no desde el inicio del mes.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E11",
+        "type": "Requisito",
+        "label": "considerar pérdida o ganancia en cierre de posiciones",
+        "properties": {
+          "description": "En caso de venta de activos, debe tenerse en cuenta la pérdida o ganancia entre el precio de venta y el último precio al que fue valuada la posición.",
+          "modalidad": null
+        }
+      },
+      {
+        "local_id": "E12",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que debe cumplir con la determinación diaria de integración de capital según lo establecido en la norma.",
+          "modalidad": null
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "E4",
+        "target": "E2",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "E2",
+        "target": "E1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "E6",
+        "target": "E5",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "E12",
+        "target": "E7",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "E7",
+        "target": "E8",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "E7",
+        "target": "E9",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "E10",
+        "target": "E7",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "E11",
+        "target": "E7",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 6161,
+  "output_tokens": 1592,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

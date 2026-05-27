@@ -1,0 +1,91 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0333",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 11 > Anexo d > Punto 12.1",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "op_importacion_aeronaves",
+        "type": "Operacion",
+        "label": "importación de aeronaves",
+        "properties": {
+          "description": "Importación de bienes clasificados en posiciones arancelarias NCM 8802.xx.xx, regulada por normas de comercio exterior."
+        }
+      },
+      {
+        "local_id": "suj_empresa_aeronavegacion",
+        "type": "SujetoRegulado",
+        "label": "empresa que presta servicios de aeronavegación",
+        "properties": {
+          "description": "Entidad que presta servicios de aeronavegación y está exceptuada de restricciones a la importación de determinadas posiciones arancelarias."
+        }
+      },
+      {
+        "local_id": "oblig_excepcion_importacion",
+        "type": "Obligacion",
+        "label": "excepción a restricción de importación para aeronavegación",
+        "properties": {
+          "description": "Las importaciones de posiciones arancelarias NCM 8802.20, 8802.30 y 8802.40 quedan exceptuadas cuando las realiza empresa que presta servicios de aeronavegación.",
+          "modalidad": "excepcion"
+        }
+      },
+      {
+        "local_id": "umbral_ncm_8802",
+        "type": "Umbral",
+        "label": "posiciones arancelarias NCM 8802.11 a 8802.40",
+        "properties": {
+          "description": "Clasificación arancelaria que identifica bienes (partes y accesorios de aeronaves) sujetos a regulación especial de importación.",
+          "valor": "8802.11.00 a 8802.40.90"
+        }
+      },
+      {
+        "local_id": "ref_norm_10_10_2",
+        "type": "NormaReferenciada",
+        "label": "puntos 10.10.2.1 y 10.10.2.2",
+        "properties": {
+          "description": "Normas internas del texto ordenado que regulan posiciones arancelarias y restricciones de importación."
+        }
+      },
+      {
+        "local_id": "ref_norm_comunicacion_8307",
+        "type": "NormaReferenciada",
+        "label": "Comunicación 'A' 8307",
+        "properties": {
+          "description": "Norma vigente desde 26/08/2025 que regula normas de importaciones de bienes en materia de exterior y cambios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "suj_empresa_aeronavegacion",
+        "target": "op_importacion_aeronaves",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "oblig_excepcion_importacion",
+        "target": "op_importacion_aeronaves",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "oblig_excepcion_importacion",
+        "target": "umbral_ncm_8802",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "oblig_excepcion_importacion",
+        "target": "ref_norm_10_10_2",
+        "relation": "referencia"
+      },
+      {
+        "source": "op_importacion_aeronaves",
+        "target": "umbral_ncm_8802",
+        "relation": "tiene_umbral"
+      }
+    ]
+  },
+  "input_tokens": 3873,
+  "output_tokens": 946,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

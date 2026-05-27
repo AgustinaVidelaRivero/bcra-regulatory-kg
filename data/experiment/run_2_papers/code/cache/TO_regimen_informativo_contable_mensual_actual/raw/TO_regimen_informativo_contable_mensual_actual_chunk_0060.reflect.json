@@ -1,0 +1,139 @@
+{
+  "chunk_id": "TO_regimen_informativo_contable_mensual_actual_chunk_0060",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Sección 5 > Sección 5 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "SujetoRegulado",
+        "label": "entidades financieras del grupo 2",
+        "properties": {
+          "description": "Entidades financieras pertenecientes al Grupo 2 que también pertenezcan a los Grupos A, B o C, excluyendo subsidiarias o sucursales de entidades G-SIB."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Obligacion",
+        "label": "informar reducción de exigencia en partidas 36000001 o 36000004",
+        "properties": {
+          "description": "Las entidades del Grupo 2 deben informar la reducción de exigencia cuando el promedio de las exigencias por riesgo crediticio de los 36 meses anteriores resulte inferior al informado en el código 70300000.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Requisito",
+        "label": "promedio de exigencias por riesgo crediticio inferior a código 70300000",
+        "properties": {
+          "description": "El límite aplicable sobre el promedio de las exigencias por riesgo crediticio de los 36 meses anteriores debe resultar inferior al informado en el código 70300000."
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "ConceptoDefinido",
+        "label": "exigencia por riesgo crediticio (ERC)",
+        "properties": {
+          "description": "Partida 70100000 más la suma de partidas 8XX00000, expresadas en moneda homogénea del mes anterior al cálculo."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Plazo",
+        "label": "36 meses anteriores al período a informar",
+        "properties": {
+          "description": "Período de 36 meses previo al período de reporte.",
+          "duracion": "36",
+          "unidad": "meses"
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "Umbral",
+        "label": "partida 70300000",
+        "properties": {
+          "description": "Valor de referencia respecto del cual se compara el promedio de exigencias por riesgo crediticio calculado.",
+          "valor": "partida 70300000",
+          "unidad": "código contable"
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "informar reducciones especiales de exigencia en partidas 36000002, 36000003, 36000005 o 36000006",
+        "properties": {
+          "description": "Cuando la calificación de la entidad permite aplicar porcentajes menores, las reducciones de exigencia se reflejan en las partidas especificadas, siempre que su importe resulte inferior al registrado en la partida 70300000.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Requisito",
+        "label": "cumplir requisitos de entidad grupo 2 (grupos A, B, C, no G-SIB)",
+        "properties": {
+          "description": "La reducción de exigencia aplica solo a entidades que cumplen los requisitos de ser Grupo 2 perteneciente a Grupos A, B o C y no ser subsidiaria o sucursal de entidades G-SIB."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "Requisito",
+        "label": "calificación de entidad permite porcentajes menores",
+        "properties": {
+          "description": "La calificación de la entidad en todos los aspectos previstos en las pertinentes disposiciones normativas debe permitir la aplicación de porcentajes menores a los indicados en el punto 5.1.3.2."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e3",
+        "target": "e2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e2",
+        "target": "e4",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e2",
+        "target": "e5",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "e2",
+        "target": "e6",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e8",
+        "target": "e2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "e1",
+        "target": "e7",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e7",
+        "target": "e6",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "e9",
+        "target": "e7",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 5605,
+  "output_tokens": 1421,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

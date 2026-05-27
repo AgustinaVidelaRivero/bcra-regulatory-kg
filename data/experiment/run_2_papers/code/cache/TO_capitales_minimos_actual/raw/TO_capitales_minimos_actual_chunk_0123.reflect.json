@@ -1,0 +1,144 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual_chunk_0123",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Sección 4 > Sección 4 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "ConceptoDefinido",
+        "label": "valor actual de mercado de operaciones con derivados",
+        "properties": {
+          "description": "Valor V en el conjunto de neteo para operaciones con derivados."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "ConceptoDefinido",
+        "label": "valor neto de activos recibidos y dados en garantía",
+        "properties": {
+          "description": "Valor C calculado con metodología NICA, aplicando aforos a activos en garantía."
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "ConceptoDefinido",
+        "label": "metodología NICA",
+        "properties": {
+          "description": "Metodología para calcular el valor neto de activos en garantía mediante aforos."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "ConceptoDefinido",
+        "label": "aforos",
+        "properties": {
+          "description": "Ajustes porcentuales aplicados a activos en garantía, iguales a los usados en transacciones REPO."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "ConceptoDefinido",
+        "label": "exposición presente respecto de la contraparte",
+        "properties": {
+          "description": "Valor CR que no puede tener valor negativo, representando la exposición actual con contraparte."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "ConceptoDefinido",
+        "label": "margen de variación",
+        "properties": {
+          "description": "Valor VM que protege a las partes de la exposición por cambios en el valor de mercado del contrato derivado."
+        }
+      },
+      {
+        "local_id": "e8",
+        "type": "Operacion",
+        "label": "operaciones bilaterales con margen de variación unidireccional",
+        "properties": {
+          "description": "Operaciones donde la entidad financiera entrega pero no recibe garantía se tratan como sin márgenes."
+        }
+      },
+      {
+        "local_id": "e9",
+        "type": "ConceptoDefinido",
+        "label": "CR para operaciones con margen",
+        "properties": {
+          "description": "Mayor exposición que no alcanza a activar aumento del VM, calculada según fórmula CR = máx. (V - C; TH + MTA - NICA; 0)."
+        }
+      },
+      {
+        "local_id": "e10",
+        "type": "Umbral",
+        "label": "umbral positivo (TH)",
+        "properties": {
+          "description": "Threshold antes de que la contraparte deba aportar garantías a la entidad.",
+          "valor": "variable según acuerdo",
+          "unidad": "importe en divisa"
+        }
+      },
+      {
+        "local_id": "e11",
+        "type": "Umbral",
+        "label": "monto mínimo de transferencia (MTA)",
+        "properties": {
+          "description": "Monto mínimo de transferencia aplicable a la contraparte para intercambio de garantías.",
+          "valor": "variable según acuerdo",
+          "unidad": "importe en divisa"
+        }
+      },
+      {
+        "local_id": "e12",
+        "type": "InstrumentoFinanciero",
+        "label": "operaciones con derivados",
+        "properties": {
+          "description": "Contratos derivados cuyo valor de mercado y exposición se calculan conforme a metodologías definidas."
+        }
+      },
+      {
+        "local_id": "e13",
+        "type": "InstrumentoFinanciero",
+        "label": "transacciones REPO",
+        "properties": {
+          "description": "Operaciones de recompra cuya metodología de aforos se aplica análogamente a operaciones con derivados."
+        }
+      },
+      {
+        "local_id": "e14",
+        "type": "Requisito",
+        "label": "acuerdo de margen de variación",
+        "properties": {
+          "description": "Acuerdo que establece condiciones como umbrales y montos mínimos para intercambio de garantías."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e2",
+        "target": "e3",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e9",
+        "target": "e1",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e9",
+        "target": "e2",
+        "relation": "usa_concepto"
+      },
+      {
+        "source": "e8",
+        "target": "e14",
+        "relation": "requiere"
+      }
+    ]
+  },
+  "input_tokens": 6746,
+  "output_tokens": 1322,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}

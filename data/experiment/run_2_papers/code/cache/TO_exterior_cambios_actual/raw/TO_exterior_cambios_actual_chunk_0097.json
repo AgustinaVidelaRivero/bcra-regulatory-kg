@@ -1,0 +1,202 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0097",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 3 > Sección 3 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "E1",
+        "type": "Operacion",
+        "label": "recompra y/o rescate de deuda",
+        "properties": {
+          "description": "Operación mediante la cual se recompra o rescata deuda emitida, permitiendo la precancelación de capital e intereses con acceso al mercado de cambios."
+        }
+      },
+      {
+        "local_id": "E2",
+        "type": "Operacion",
+        "label": "refinanciación de deuda",
+        "properties": {
+          "description": "Operación de refinanciación de endeudamiento mediante emisión de nuevos títulos de deuda."
+        }
+      },
+      {
+        "local_id": "E3",
+        "type": "Requisito",
+        "label": "monto acumulado vencimientos capital no supera deuda cancelada",
+        "properties": {
+          "description": "El monto acumulado de vencimientos de capital del nuevo endeudamiento no puede superar hasta la fecha de vencimiento el monto acumulado de vencimientos de la deuda que se cancela."
+        }
+      },
+      {
+        "local_id": "E4",
+        "type": "Requisito",
+        "label": "liquidación simultánea de fondos desde exterior",
+        "properties": {
+          "description": "Requiere que la liquidación de fondos ingresados desde el exterior por el nuevo título de deuda sea simultánea con el pago de prima y exceda el monto de capital precancelado."
+        }
+      },
+      {
+        "local_id": "E5",
+        "type": "Obligacion",
+        "label": "precancelación de intereses devengados",
+        "properties": {
+          "description": "La precancelación de intereses corresponde a los intereses devengados por la deuda refinanciada hasta la fecha de cierre, sin necesidad de liquidación de fondos equivalente.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "E6",
+        "type": "Facultad",
+        "label": "pagar prima de recompra o rescate anticipado",
+        "properties": {
+          "description": "La entidad puede otorgar acceso al mercado de cambios para pagar prima de recompra, rescate anticipado o similar hasta el 5% del monto de capital recomprado y/o rescatado."
+        }
+      },
+      {
+        "local_id": "E7",
+        "type": "Umbral",
+        "label": "5% del monto de capital",
+        "properties": {
+          "description": "Límite máximo de prima de recompra o rescate anticipado expresado como porcentaje del capital.",
+          "valor": "5",
+          "unidad": "%"
+        }
+      },
+      {
+        "local_id": "E8",
+        "type": "Obligacion",
+        "label": "pagar gastos de emisión y servicios de no residentes",
+        "properties": {
+          "description": "Pagar a la fecha de cierre de la operación los gastos de emisión u otros servicios prestados por no residentes en el marco de la emisión de nuevos títulos, sin necesidad de liquidación de fondos equivalente.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "E9",
+        "type": "Operacion",
+        "label": "canje de títulos de deuda",
+        "properties": {
+          "description": "Proceso de canje de títulos de deuda emitidos por el cliente en el que se puede concretar precancelación de intereses."
+        }
+      },
+      {
+        "local_id": "E10",
+        "type": "Requisito",
+        "label": "vida promedio nuevo endeudamiento mayor a vida promedio remanente",
+        "properties": {
+          "description": "La vida promedio del nuevo endeudamiento debe ser mayor a la vida promedio remanente de la deuda que se precancela."
+        }
+      },
+      {
+        "local_id": "E11",
+        "type": "Requisito",
+        "label": "liquidación simultánea de fondos nuevo endeudamiento",
+        "properties": {
+          "description": "La precancelación de capital e intereses debe efectuarse simultáneamente con los fondos liquidados de un nuevo endeudamiento financiero."
+        }
+      },
+      {
+        "local_id": "E12",
+        "type": "InstrumentoFinanciero",
+        "label": "título de deuda emitido",
+        "properties": {
+          "description": "Instrumento financiero representativo de deuda emitido por el cliente, objeto de operaciones de refinanciación, recompra, rescate o canje."
+        }
+      },
+      {
+        "local_id": "E13",
+        "type": "SujetoRegulado",
+        "label": "cliente",
+        "properties": {
+          "description": "Sujeto que emite títulos de deuda y realiza operaciones de refinanciación, recompra, rescate o canje de deuda."
+        }
+      },
+      {
+        "local_id": "E14",
+        "type": "SujetoRegulado",
+        "label": "entidad financiera",
+        "properties": {
+          "description": "Entidad que otorga acceso al mercado de cambios al cliente para operaciones de recompra, rescate y pago de gastos asociados."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "E3",
+        "target": "E1",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "E4",
+        "target": "E6",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "E5",
+        "target": "E1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "E6",
+        "target": "E7",
+        "relation": "tiene_umbral"
+      },
+      {
+        "source": "E8",
+        "target": "E1",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "E1",
+        "target": "E12",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "E2",
+        "target": "E12",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "E9",
+        "target": "E12",
+        "relation": "involucra_instrumento"
+      },
+      {
+        "source": "E14",
+        "target": "E6",
+        "relation": "puede_realizar"
+      },
+      {
+        "source": "E13",
+        "target": "E5",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "E13",
+        "target": "E8",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "E10",
+        "target": "E2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "E11",
+        "target": "E2",
+        "relation": "condicion_de_aplicabilidad"
+      },
+      {
+        "source": "E3",
+        "target": "E2",
+        "relation": "condicion_de_aplicabilidad"
+      }
+    ]
+  },
+  "input_tokens": 4110,
+  "output_tokens": 1948,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "extract",
+  "error": null
+}

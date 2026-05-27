@@ -1,0 +1,106 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual_chunk_0305",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Sección 10 > Anexo d > Sección 10 — preámbulo",
+  "raw_output": {
+    "entities": [
+      {
+        "local_id": "e1",
+        "type": "SujetoRegulado",
+        "label": "entidad a cargo del seguimiento de pagos",
+        "properties": {
+          "description": "Entidad financiera responsable del seguimiento de pagos con registro de ingreso aduanero pendiente."
+        }
+      },
+      {
+        "local_id": "e2",
+        "type": "Obligacion",
+        "label": "informar operaciones no regularizadas en SEPAIMPO",
+        "properties": {
+          "description": "La entidad debe informar en el SEPAIMPO las operaciones de importadores que no hayan regularizado su situación dentro del plazo establecido.",
+          "modalidad": "obligacion"
+        }
+      },
+      {
+        "local_id": "e3",
+        "type": "Plazo",
+        "label": "5 días hábiles siguientes al vencimiento",
+        "properties": {
+          "description": "Período para informar el incumplimiento en la regularización de pagos.",
+          "duracion": "5",
+          "unidad": "días hábiles"
+        }
+      },
+      {
+        "local_id": "e4",
+        "type": "Operacion",
+        "label": "pago con registro de ingreso aduanero pendiente",
+        "properties": {
+          "description": "Transacción de pago que permanece pendiente de regularización con registro aduanero."
+        }
+      },
+      {
+        "local_id": "e5",
+        "type": "Procedimiento",
+        "label": "informe en SEPAIMPO",
+        "properties": {
+          "description": "Procedimiento de reporte de operaciones incumplidas en el sistema SEPAIMPO."
+        }
+      },
+      {
+        "local_id": "e6",
+        "type": "ConceptoDefinido",
+        "label": "tipos de pase correspondientes a fecha de transferencia",
+        "properties": {
+          "description": "Criterio para determinar montos pendientes en operaciones facturadas en monedas distintas a la moneda de transferencia, considerando el tipo de pase a la fecha de transferencia de fondos."
+        }
+      },
+      {
+        "local_id": "e7",
+        "type": "Obligacion",
+        "label": "considerar tipos de pase para cálculo de pendientes en monedas distintas",
+        "properties": {
+          "description": "La entidad encargada del seguimiento debe considerar los tipos de pase correspondientes a la fecha de transferencia para determinar montos pendientes en facturas en monedas distintas.",
+          "modalidad": "obligacion"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "e1",
+        "target": "e2",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e2",
+        "target": "e3",
+        "relation": "tiene_plazo"
+      },
+      {
+        "source": "e2",
+        "target": "e4",
+        "relation": "aplica_a"
+      },
+      {
+        "source": "e5",
+        "target": "e4",
+        "relation": "parte_de_procedimiento"
+      },
+      {
+        "source": "e1",
+        "target": "e7",
+        "relation": "obligado_a"
+      },
+      {
+        "source": "e7",
+        "target": "e6",
+        "relation": "usa_concepto"
+      }
+    ]
+  },
+  "input_tokens": 4829,
+  "output_tokens": 925,
+  "model": "claude-haiku-4-5",
+  "pass_kind": "reflect",
+  "error": null
+}
