@@ -1,0 +1,108 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::2.3",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.3. Cómputo de los conceptos comprendidos.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales Mínimos",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Cómputo de conceptos en base mensual",
+      "properties": {
+        "tipo": "cómputo",
+        "description": "Cómputo de los conceptos comprendidos sobre la base de los saldos al último día de cada mes (capitales, intereses, primas, actualizaciones por CER y diferencias de cotización)"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Obligacion",
+      "label": "Computar conceptos sobre saldos mensuales",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Los conceptos comprendidos se computarán sobre la base de los saldos al último día de cada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de Estabilización de Referencia CER– y diferencias de cotización, según corresponda, netos de las previsiones por riesgos de incobrabilidad –incluyendo, de corresponder, las previsiones contabilizadas en el pasivo– y desvalorización y de las depreciaciones y amortizaciones acumuladas que les sean atribuibles y demás cuentas regularizadoras, sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A).",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Restriccion",
+      "label": "Límite de deducción de previsión normal",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A)."
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Operacion",
+      "label": "Cómputo consolidado trimestral",
+      "properties": {
+        "tipo": "cómputo",
+        "description": "Se considerarán los saldos al cierre del trimestre, aplicando en los demás aspectos las correspondientes disposiciones establecidas."
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Computar saldos al cierre trimestral",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Se considerarán los saldos al cierre del trimestre, aplicando en los demás aspectos las correspondientes disposiciones establecidas.",
+        "plazo": "trimestral"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "e5",
+      "target": "e4",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4653,
+  "out_tokens": 1178,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

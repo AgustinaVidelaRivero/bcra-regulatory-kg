@@ -1,0 +1,196 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::3.17__p1",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.17. ii) el resto del capital que vencía fue, como mínimo, refinanciado con un (parte 2)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones con el exterior y mercado de cambios",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "vigente"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "Exportadores",
+      "properties": {
+        "categoria": "sujetos obligados"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Residentes",
+      "properties": {
+        "categoria": "residentes"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Fideicomisos",
+      "properties": {
+        "categoria": "fideicomiso financiero"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras locales",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "o1",
+      "type": "Operacion",
+      "label": "Depósito de cobros de exportación",
+      "properties": {
+        "tipo": "depósito"
+      }
+    },
+    {
+      "local_id": "o2",
+      "type": "Operacion",
+      "label": "Liquidación de divisas",
+      "properties": {
+        "tipo": "operación con moneda extranjera"
+      }
+    },
+    {
+      "local_id": "o3",
+      "type": "Operacion",
+      "label": "Compra de moneda extranjera",
+      "properties": {
+        "tipo": "compra venta de moneda extranjera"
+      }
+    },
+    {
+      "local_id": "o4",
+      "type": "Operacion",
+      "label": "Constitución de garantías",
+      "properties": {
+        "tipo": "garantía"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Mantener depósito de cobros",
+      "properties": {
+        "descripcion": "Los cobros deben permanecer depositados en virtud de lo exigido en el contrato del financiamiento",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Cumplir condiciones acceso mercado",
+      "properties": {
+        "descripcion": "Cumplir las condiciones previstas en el punto 3.11.3. para acceder al mercado para la compra de moneda extranjera",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Plazo máximo liquidación de divisas",
+      "properties": {
+        "descripcion": "El plazo para la liquidación de divisas no debe ser posterior a la fecha hasta la cual los cobros deben permanecer depositados según el contrato de financiamiento, salvo que se solicite ampliación hasta el quinto día hábil posterior",
+        "tipo": "limite_cuantitativo",
+        "umbral": "quinto día hábil"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Ampliación plazo liquidación",
+      "properties": {
+        "descripcion": "El exportador podrá solicitar que el plazo sea ampliado hasta el quinto día hábil posterior a la fecha de vencimiento del depósito contractual"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "exc1",
+      "target": "r1",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "r1",
+      "target": "o2",
+      "predicate": "limita"
+    },
+    {
+      "source": "ob1",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob1",
+      "target": "o1",
+      "predicate": "regula"
+    },
+    {
+      "source": "ob2",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob2",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob2",
+      "target": "o3",
+      "predicate": "regula"
+    },
+    {
+      "source": "e1",
+      "target": "o1",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e2",
+      "target": "o3",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e3",
+      "target": "o3",
+      "predicate": "ejecuta"
+    }
+  ],
+  "in_tokens": 4663,
+  "out_tokens": 1580,
+  "validation": {
+    "entities_in": 13,
+    "entities_out": 13,
+    "relations_in": 14,
+    "relations_out": 13,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 1
+  },
+  "error": null
+}

@@ -1,0 +1,176 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::7.2",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.2. Exigencia de capital por riesgo operacional para entidades del grupo 2.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capital mínimo por riesgo operacional",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "2a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 8383",
+      "properties": {
+        "codigo": "A-8383",
+        "tipo": "A",
+        "numero": "8383"
+      }
+    },
+    {
+      "local_id": "ef1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras grupo 2",
+      "properties": {
+        "categoria": "entidades financieras grupo 2"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Cálculo exigencia capital riesgo operacional",
+      "properties": {
+        "tipo": "calculo de exigencia de capital"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Determinación ingreso bruto",
+      "properties": {
+        "tipo": "calculo de ingreso bruto"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Determinar mensualmente exigencia capital operacional",
+      "properties": {
+        "descripcion": "Se determinará mensualmente aplicando la siguiente expresión: C_RO = máx(IB_t/12.500, K_0) donde C_RO es exigencia de capital por riesgo operacional, con parámetro α = 15%.",
+        "tipo": "calculo",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Calcular ingreso bruto períodos de 12 meses",
+      "properties": {
+        "descripcion": "IB: ingreso bruto de períodos de 12 meses consecutivos –siempre que sea positivo–, correspondientes a los últimos 36 meses anteriores al mes en que se efectúa el cálculo, expresado en moneda homogénea del mes anterior al que se efectúa el cálculo. El IB se define como la suma de: i) ingresos financieros y por servicios menos egresos financieros y por servicios, ii) utilidades diversas menos pérdidas diversas, y iii) resultado monetario total.",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "ob3",
+      "type": "Obligacion",
+      "label": "Excluir conceptos específicos de rubros contables",
+      "properties": {
+        "descripcion": "De los rubros contables mencionados en i) y ii) se excluirán los siguientes conceptos: cargos provenientes de la constitución de previsiones, desafectación de previsiones constituidas en ejercicios anteriores y créditos recuperados en el ejercicio castigados en ejercicios anteriores; el resultado proveniente de participaciones en entidades financieras y en empresas, en la medida que se trate de conceptos deducibles de la responsabilidad patrimonial computable; y resultados provenientes de la venta de especies clasificadas y medidas a costo amortizado o valor razonable con cambios en ORI.",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "res1",
+      "type": "Restriccion",
+      "label": "Límite máximo de períodos para n",
+      "properties": {
+        "descripcion": "n: número de períodos de 12 meses consecutivos en los cuales el IB es positivo, tomando en cuenta los últimos 36 meses anteriores al mes en que se efectúa el cálculo. El valor máximo de n es 3, no admitiéndose la superposición de meses en la conformación de los períodos.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "3"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Exigencia de capital cuando n es cero",
+      "properties": {
+        "descripcion": "Cuando n sea igual a cero (n=0), deberá observarse una exigencia equivalente al límite previsto en el punto 7.3."
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "res1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "exc1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "ob1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob1",
+      "target": "op1",
+      "predicate": "regula"
+    },
+    {
+      "source": "ob2",
+      "target": "op2",
+      "predicate": "regula"
+    },
+    {
+      "source": "ob3",
+      "target": "op2",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "res1",
+      "target": "op1",
+      "predicate": "limita"
+    },
+    {
+      "source": "exc1",
+      "target": "res1",
+      "predicate": "exceptua"
+    }
+  ],
+  "in_tokens": 4940,
+  "out_tokens": 1725,
+  "validation": {
+    "entities_in": 10,
+    "entities_out": 10,
+    "relations_in": 13,
+    "relations_out": 13,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

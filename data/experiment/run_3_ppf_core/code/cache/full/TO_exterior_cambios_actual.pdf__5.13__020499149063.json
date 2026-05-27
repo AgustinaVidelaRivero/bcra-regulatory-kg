@@ -1,0 +1,142 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::5.13",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.13. Operaciones que impliquen importación y/o exportación de moneda nacional.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones de cambio",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Importación y exportación de moneda nacional",
+      "properties": {
+        "tipo": "cambio",
+        "description": "Operaciones de cambio que impliquen la importación y/o exportación de monedas y billetes de pesos argentinos"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidades financieras"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Restriccion",
+      "label": "Contraparte autorizada para cambio",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Las entidades podrán concretar operaciones de cambio que impliquen la importación y/o exportación de monedas y billetes de pesos argentinos siempre que la contraparte sea alguna de las previstas en el punto 5.12"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Operacion",
+      "label": "Importación de billetes de pesos",
+      "properties": {
+        "tipo": "cambio",
+        "description": "Importación de billetes de pesos argentinos"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Restriccion",
+      "label": "Sujeción a disposiciones de compra de moneda extranjera",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Las operaciones que impliquen la importación de billetes de pesos argentinos quedarán también sujetas a las disposiciones establecidas para la compra de moneda extranjera por parte de no residentes"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Excepcion",
+      "label": "Excepción de liquidación de divisas",
+      "properties": {
+        "description": "La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local estará exceptuada de lo dispuesto en el primer párrafo del punto"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Operacion",
+      "label": "Liquidación de divisas remitidas",
+      "properties": {
+        "tipo": "cambio",
+        "description": "Liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "e4",
+      "predicate": "limita"
+    },
+    {
+      "source": "e6",
+      "target": "e3",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e2",
+      "target": "e4",
+      "predicate": "ejecuta"
+    }
+  ],
+  "in_tokens": 4520,
+  "out_tokens": 1198,
+  "validation": {
+    "entities_in": 8,
+    "entities_out": 8,
+    "relations_in": 10,
+    "relations_out": 10,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

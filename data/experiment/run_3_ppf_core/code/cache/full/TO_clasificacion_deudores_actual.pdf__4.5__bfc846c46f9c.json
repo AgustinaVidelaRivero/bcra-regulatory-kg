@@ -1,0 +1,71 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::4.5",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 4.5. Deudores que no deben ser objeto de clasificación.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Restriccion",
+      "label": "Exclusión de deudores de clasificación",
+      "properties": {
+        "descripcion": "Deudores que no deben ser objeto de clasificación",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Excepcion",
+      "label": "Financiaciones con seguros de crédito",
+      "properties": {
+        "descripcion": "Financiaciones sin responsabilidad para el cedente amparadas con seguros de crédito por riesgo comercial y con seguros de riesgo de crédito con alcance de comprador público"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "e1",
+      "target": "e3",
+      "predicate": "prohibe"
+    }
+  ],
+  "in_tokens": 4449,
+  "out_tokens": 506,
+  "validation": {
+    "entities_in": 4,
+    "entities_out": 4,
+    "relations_in": 3,
+    "relations_out": 3,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

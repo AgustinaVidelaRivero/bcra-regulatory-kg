@@ -1,0 +1,119 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::1",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1. Todos los derivados de crédito que hagan referencia a una misma enti-",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "1a"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Comunicacion",
+      "label": "Com. A 6260",
+      "properties": {
+        "codigo": "A-6260",
+        "tipo": "A",
+        "numero": "6260"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Derivados de crédito",
+      "properties": {
+        "tipo": "derivados de crédito"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Compensación de derivados",
+      "properties": {
+        "tipo": "compensación",
+        "description": "Compensación plena entre derivados de crédito que hagan referencia a una misma entidad"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Obligacion",
+      "label": "Determinación de nocional efectivo",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Determinar un nocional efectivo único a nivel de entidad mediante sumatoria de nocionales ajustados multiplicados por ajustes delta regulatorios y factor plazo"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Cálculo de factor SF regulatorio",
+      "properties": {
+        "tipo": "calculo",
+        "description": "SF (Crédito) se determinará en función de la calificación crediticia cuando se referencie a un único deudor, o dependerá de si el índice es grado de inversión o especulativo cuando se trate de un índice"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "e1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "regula"
+    },
+    {
+      "source": "e5",
+      "target": "e2",
+      "predicate": "regula"
+    },
+    {
+      "source": "e4",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e5",
+      "target": "e6",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 4690,
+  "out_tokens": 916,
+  "validation": {
+    "entities_in": 7,
+    "entities_out": 7,
+    "relations_in": 7,
+    "relations_out": 7,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

@@ -1,0 +1,163 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::14.3",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 14.3. Otros beneficios.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Régimen de Cambios y Exterior",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "VPU adherido al RIGI",
+      "properties": {
+        "categoria": "VPU con adhesión RIGI"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Cobro de exportaciones de bienes",
+      "properties": {
+        "tipo": "Cobro de exportaciones de bienes y servicios",
+        "description": "Cobros de exportaciones de bienes y servicios sujetos a la obligación de ingreso y liquidación en el mercado de cambios"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Pago de intereses y capital",
+      "properties": {
+        "tipo": "Pago de intereses y capital",
+        "description": "Pagos de intereses devengados impagos hasta la fecha de aplicación y/o capital pendiente de las operaciones enunciadas en los puntos 14.2.1.1. al 14.2.1.11."
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Limitación proporción capital ingresado",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "En la medida que correspondan a la porción del capital equivalente a la proporción de los fondos recibidos por el VPU por la financiación que puede computarse como ingresada y liquidada por el mercado de cambios"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Operacion",
+      "label": "Repatriación de aportes de inversión",
+      "properties": {
+        "tipo": "Repatriación de aportes de inversión directa",
+        "description": "Repatriaciones de los aportes de inversión directa de sus accionistas no residentes que fueron destinados a financiar el proyecto"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Restriccion",
+      "label": "Límite monto acumulado repatriaciones",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "umbral": "monto acumulado de repatriaciones ≤ suma de aportes de inversión directa ingresados y liquidados",
+        "description": "El monto acumulado de las repatriaciones de capital del no residente sea menor o igual a la suma de sus aportes de inversión directa en el VPU que pueden computarse como ingresados y liquidados por el mercado de cambios"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Obligacion",
+      "label": "Incorporación a seguimiento APX",
+      "properties": {
+        "tipo": "presentacion_informativa",
+        "plazo": "En todos los casos",
+        "description": "La operación deberá estar incorporada al 'Seguimiento de anticipos y otras financiaciones de exportación de bienes' y tener asignado el correspondiente número de identificación (número APX)"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Operacion",
+      "label": "Acumulación fondos en cuentas exterior",
+      "properties": {
+        "tipo": "Acumulación de fondos en cuentas del exterior y/o del país",
+        "description": "Los fondos originados en el cobro de exportaciones de bienes y servicios por parte de un VPU adherido, que se encuentran alcanzados por la obligación de ingreso y liquidación en el mercado de cambios, sean acumulados en cuentas del exterior y/o del país destinadas a garantizar la cancelación de los vencimientos de los endeudamientos"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "Restriccion",
+      "label": "Restricción destino garantía endeudamientos",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Los fondos acumulados deben estar destinados a garantizar la cancelación de los vencimientos de los endeudamientos comprendidos en el punto 3.5"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "e2",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "limita"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "e5",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e7",
+      "predicate": "requiere"
+    },
+    {
+      "source": "e8",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e9",
+      "target": "e8",
+      "predicate": "limita"
+    },
+    {
+      "source": "e1",
+      "target": "e8",
+      "predicate": "ejecuta"
+    }
+  ],
+  "in_tokens": 4808,
+  "out_tokens": 1660,
+  "validation": {
+    "entities_in": 10,
+    "entities_out": 10,
+    "relations_in": 11,
+    "relations_out": 10,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 1
+  },
+  "error": null
+}

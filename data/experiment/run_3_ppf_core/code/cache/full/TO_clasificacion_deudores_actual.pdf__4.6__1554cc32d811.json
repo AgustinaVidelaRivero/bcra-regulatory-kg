@@ -1,0 +1,161 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::4.6",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de deudores",
+      "properties": {
+        "materia": "Clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "5a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 6558",
+      "properties": {
+        "codigo": "A-6558",
+        "tipo": "A",
+        "numero": "6558"
+      }
+    },
+    {
+      "local_id": "ent1",
+      "type": "EntidadFinanciera",
+      "label": "Compañías de seguros",
+      "properties": {
+        "categoria": "compañía de seguros"
+      }
+    },
+    {
+      "local_id": "ent2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades cedentes",
+      "properties": {
+        "categoria": "cedente"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Financiación con seguro de crédito",
+      "properties": {
+        "tipo": "financiación amparada con seguro de crédito por riesgo comercial"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Cesión sin responsabilidad",
+      "properties": {
+        "tipo": "cesión de operaciones sin responsabilidad para el cedente"
+      }
+    },
+    {
+      "local_id": "op3",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor según mora"
+      }
+    },
+    {
+      "local_id": "res1",
+      "type": "Restriccion",
+      "label": "Exclusión de deudores en cesión",
+      "properties": {
+        "descripcion": "No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "obl1",
+      "type": "Obligacion",
+      "label": "Clasificar compañía según mora",
+      "properties": {
+        "descripcion": "Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la primera obligación vencida impaga",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "obl2",
+      "type": "Obligacion",
+      "label": "Aplicar criterios con requisitos",
+      "properties": {
+        "descripcion": "Sólo se aplicarán los criterios precedentes cuando se trate de operaciones del título que, en origen, hayan reunido los requisitos pertinentes establecidos en las normas sobre 'Garantías'",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Excepción por rechazo de reclamo",
+      "properties": {
+        "descripcion": "La clasificación se verifica a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos en la póliza (180 o 270 días)"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "obl1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "res1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "exc1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl1",
+      "target": "ent1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl1",
+      "target": "op3",
+      "predicate": "regula"
+    },
+    {
+      "source": "res1",
+      "target": "ent2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res1",
+      "target": "op2",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "obl2",
+      "target": "op1",
+      "predicate": "condiciona"
+    }
+  ],
+  "in_tokens": 4673,
+  "out_tokens": 1392,
+  "validation": {
+    "entities_in": 11,
+    "entities_out": 11,
+    "relations_in": 10,
+    "relations_out": 9,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 1
+  },
+  "error": null
+}

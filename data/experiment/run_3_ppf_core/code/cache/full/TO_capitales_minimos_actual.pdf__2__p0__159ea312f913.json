@@ -1,0 +1,301 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::2__p0",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "1a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 6260",
+      "properties": {
+        "codigo": "A-6260",
+        "tipo": "A",
+        "numero": "6260"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "No compensación total entre entidades",
+      "properties": {
+        "descripcion": "Los adicionales de entidades diferentes no se podrán compensar totalmente",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "No compensación de componentes idiosincrásicos",
+      "properties": {
+        "descripcion": "La compensación no estará disponible para los componentes idiosincrásicos",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "r3",
+      "type": "Restriccion",
+      "label": "No cobertura entre conjuntos commodities",
+      "properties": {
+        "descripcion": "No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y productos agrícolas–",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "r4",
+      "type": "Restriccion",
+      "label": "No coberturas entre categorías derivados commodities",
+      "properties": {
+        "descripcion": "No se podrán hacer coberturas entre las cuatro grandes categorías de derivados sobre 'commodities'",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "o1",
+      "type": "Operacion",
+      "label": "Compensación de adicionales",
+      "properties": {
+        "tipo": "compensación de adicionales en derivados"
+      }
+    },
+    {
+      "local_id": "o2",
+      "type": "Operacion",
+      "label": "Operaciones con derivados sobre crédito",
+      "properties": {
+        "tipo": "operación con derivados sobre índices de crédito"
+      }
+    },
+    {
+      "local_id": "o3",
+      "type": "Operacion",
+      "label": "Operaciones con derivados sobre acciones",
+      "properties": {
+        "tipo": "operación con derivados sobre acciones"
+      }
+    },
+    {
+      "local_id": "o4",
+      "type": "Operacion",
+      "label": "Operaciones con derivados sobre commodities",
+      "properties": {
+        "tipo": "operación con derivados sobre commodities"
+      }
+    },
+    {
+      "local_id": "ef1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Ponderar componentes por factor correlación",
+      "properties": {
+        "descripcion": "Ambos componentes se ponderarán por un factor de correlación que determinará el grado de compensación/cobertura dentro de esta clase de activo",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Aplicar factor de correlación mayor a crédito",
+      "properties": {
+        "descripcion": "Los derivados que hagan referencia a índices de crédito se considerarán como si hicieran referencia a entidades determinadas pero se les aplicará un mayor factor de correlación",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "ob3",
+      "type": "Obligacion",
+      "label": "Aplicar modelo factor único a derivados acciones",
+      "properties": {
+        "descripcion": "Se utilizará un modelo de factor único para dividir el riesgo de cada entidad de referencia en sus componentes sistemático e idiosincrásico",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "ob4",
+      "type": "Obligacion",
+      "label": "Calcular nocional efectivo con ajustes delta",
+      "properties": {
+        "descripcion": "El nocional efectivo para cada entidad será la sumatoria de los nocionales ajustados a nivel de operación, multiplicados por los ajustes delta regulatorios y el factor plazo",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "ob5",
+      "type": "Obligacion",
+      "label": "Aplicar factor de cobertura a operaciones commodities",
+      "properties": {
+        "descripcion": "La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "ob6",
+      "type": "Obligacion",
+      "label": "Dividir riesgo commodities en componentes",
+      "properties": {
+        "descripcion": "Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus componentes sistemático e idiosincrásico",
+        "tipo": "calculo"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "r1",
+      "target": "o1",
+      "predicate": "limita"
+    },
+    {
+      "source": "r2",
+      "target": "o1",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "r3",
+      "target": "o4",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "r4",
+      "target": "o4",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob1",
+      "target": "o1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob2",
+      "target": "o2",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob3",
+      "target": "o3",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob4",
+      "target": "o1",
+      "predicate": "regula"
+    },
+    {
+      "source": "ob5",
+      "target": "o4",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob6",
+      "target": "o4",
+      "predicate": "regula"
+    },
+    {
+      "source": "r1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r3",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r4",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob4",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob6",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 6639,
+  "out_tokens": 2511,
+  "validation": {
+    "entities_in": 17,
+    "entities_out": 17,
+    "relations_in": 26,
+    "relations_out": 26,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

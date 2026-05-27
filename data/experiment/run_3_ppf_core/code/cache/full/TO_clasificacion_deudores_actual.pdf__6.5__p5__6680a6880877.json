@@ -1,0 +1,149 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::6.5__p5",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6.5. Niveles de clasificación. (parte 6)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "clasificacion de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Otorgamiento de financiación",
+      "properties": {
+        "tipo": "otorgamiento de financiación"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Clientes privados no financieros",
+      "properties": {
+        "categoria": "cliente del sector privado no financiero"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Límite de deuda otorgamiento",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "descripcion": "Clientes del sector privado no financiero, cuya deuda (por todo concepto) más el importe de la financiación solicitada, al momento del otorgamiento de ésta, exceda del 2,5 % de la responsabilidad patrimonial computable de la entidad del último día del mes anterior al que corresponda o el equivalente al importe de referencia establecido en el punto 3.7., de ambos el menor",
+        "umbral": "2,5 % de la responsabilidad patrimonial computable"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Presentar declaración jurada vinculación",
+      "properties": {
+        "tipo": "presentacion_informativa",
+        "descripcion": "No hayan presentado declaración jurada sobre si revisten o no el carácter de vinculados al respectivo intermediario financiero o si su relación con éste implica la existencia de influencia controlante, o no hayan actualizado la presentada con anterioridad"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Excepcion",
+      "label": "Excepción deudores concurso período",
+      "properties": {
+        "descripcion": "Deudores en concurso o con acuerdo preventivo extrajudicial solicitado o en gestión judicial que, por un período de hasta 540 días contados a partir de la apertura del concurso, solicitud del acuerdo preventivo o inicio de las gestiones judiciales de cobro, según corresponda, no hubiesen presentado la documentación que permita realizarla, siempre que se cuente con informe de abogado de la entidad financiera acreedora sobre la razonabilidad del recupero de los créditos comprendidos"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Obligacion",
+      "label": "Evaluación periódica deudores",
+      "properties": {
+        "tipo": "otra",
+        "descripcion": "Corresponderá clasificar en esta categoría a los clientes que, cualquiera sea el motivo (entre ellos por no contar con legajo o por no haber proporcionado información confiable y/o actualizada), no hayan sido evaluados con la periodicidad correspondiente"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e4",
+      "target": "e8",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e6",
+      "target": "e5",
+      "predicate": "exceptua_obligacion"
+    },
+    {
+      "source": "e7",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e6",
+      "target": "e7",
+      "predicate": "exceptua_obligacion"
+    }
+  ],
+  "in_tokens": 5092,
+  "out_tokens": 1426,
+  "validation": {
+    "entities_in": 9,
+    "entities_out": 9,
+    "relations_in": 10,
+    "relations_out": 10,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

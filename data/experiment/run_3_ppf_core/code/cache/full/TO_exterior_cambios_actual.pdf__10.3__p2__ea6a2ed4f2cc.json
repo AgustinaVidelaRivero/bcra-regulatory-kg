@@ -1,0 +1,98 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::10.3__p2",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso aduanero. (parte 3)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones de cambio y pagos de importaciones",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Concertación de cambio para pago de importaciones",
+      "properties": {
+        "tipo": "concertacion de cambio",
+        "description": "Concertación de cambio por la venta de divisas para el pago de importaciones a un mismo beneficiario del exterior"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Confección de boleto de cambio",
+      "properties": {
+        "tipo": "confeccion de boleto de cambio",
+        "description": "Confección de un único boleto de cambio por el monto total de la transferencia"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Obligacion",
+      "label": "Incluir anexo con datos de despachos",
+      "properties": {
+        "tipo": "presentacion_informativa",
+        "description": "El boleto de cambio deberá contener un anexo con la firma del cliente en el cual conste el listado de las oficializaciones de los despachos de importación y el monto en divisas pagado que corresponde a cada uno",
+        "plazo": "N/A"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Límite de múltiples despachos de importación",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Cuando la concertación de cambio involucre el pago de dos o más oficializaciones de despachos de importación, se podrá confeccionar un único boleto de cambio"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "e4",
+      "target": "e2",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4472,
+  "out_tokens": 816,
+  "validation": {
+    "entities_in": 5,
+    "entities_out": 5,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

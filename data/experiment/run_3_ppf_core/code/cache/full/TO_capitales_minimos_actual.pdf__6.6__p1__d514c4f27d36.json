@@ -1,0 +1,115 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::6.6__p1",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 2)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Exigencia de capital por riesgo de posiciones en opciones",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Cálculo efecto gamma neto",
+      "properties": {
+        "tipo": "cálculo",
+        "description": "Sumar los efectos individuales gamma de cada opción sobre el mismo subyacente para obtener un efecto gamma neto, que puede ser positivo o negativo"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Restriccion",
+      "label": "Inclusión limitada efectos gamma negativos",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Sólo se incluirán en el cálculo de capital los efectos gamma netos que sean negativos"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Obligacion",
+      "label": "Calcular exigencia capital riesgo gamma",
+      "properties": {
+        "tipo": "calculo",
+        "description": "La exigencia de capital total por el riesgo gamma será la suma del valor absoluto de los efectos gamma negativos netos calculados conforme a lo previsto precedentemente"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Obligacion",
+      "label": "Calcular exigencia capital riesgo vega",
+      "properties": {
+        "tipo": "calculo",
+        "description": "La exigencia de capital por el riesgo vega se obtendrá multiplicando la suma de los coeficientes vega de todas las opciones sobre el mismo subyacente por un cambio proporcional de la volatilidad de ± 25%"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Calcular exigencia total capital riesgo vega",
+      "properties": {
+        "tipo": "calculo",
+        "description": "La exigencia total de capital por riesgo vega será la suma del valor absoluto de las exigencias de capital individual que se hayan calculado para dicho riesgo"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Operacion",
+      "label": "Valoración opciones sobre productos básicos",
+      "properties": {
+        "tipo": "valoración",
+        "description": "Opciones sobre productos básicos individuales según lo previsto en el punto 6.5"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "regula"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4612,
+  "out_tokens": 1007,
+  "validation": {
+    "entities_in": 7,
+    "entities_out": 7,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

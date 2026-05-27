@@ -1,0 +1,104 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::12.1",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Posiciones arancelarias y excepciones a importaciones",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "4a. Comunicación A 8307"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 8307",
+      "properties": {
+        "codigo": "A-8307",
+        "tipo": "A",
+        "numero": "8307"
+      }
+    },
+    {
+      "local_id": "rest1",
+      "type": "Restriccion",
+      "label": "Arancel a importaciones de aeronaves",
+      "properties": {
+        "descripcion": "Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Excepción para aeronavegación",
+      "properties": {
+        "descripcion": "Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación"
+      }
+    },
+    {
+      "local_id": "ef1",
+      "type": "EntidadFinanciera",
+      "label": "Empresas de aeronavegación",
+      "properties": {
+        "categoria": "empresa que presta servicios de aeronavegación"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Importación de aeronaves",
+      "properties": {
+        "tipo": "importación de bienes (aeronaves)"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "rest1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "exc1",
+      "target": "rest1",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "exc1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "rest1",
+      "target": "op1",
+      "predicate": "limita"
+    },
+    {
+      "source": "rest1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 4901,
+  "out_tokens": 878,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

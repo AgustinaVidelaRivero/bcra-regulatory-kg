@@ -1,0 +1,115 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::11.5",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 11.5. A los efectos de determinar la exigencia de capital mínimo por riesgo de crédito",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Requerimientos de capital mínimo por riesgo de crédito",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Financiación a actividad agrícola",
+      "properties": {
+        "tipo": "financiación",
+        "description": "Financiaciones a clientes con actividad agrícola que no sean Mipyme y mantengan un acopio de su producción por un valor superior al 5% de su capacidad de cosecha anual"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Restriccion",
+      "label": "Factor multiplicador 4 para capital mínimo agrícola",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "descripcion": "El importe resultante de la Sección 2 deberá ser multiplicado por un factor igual a 4",
+        "umbral": "factor 4"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Clientes con actividad agrícola",
+      "properties": {
+        "categoria": "clientes con actividad agrícola no Mipyme"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Requisito acopio producción agrícola",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "descripcion": "Clientes que mantengan un acopio de su producción por un valor superior al 5% de su capacidad de cosecha anual"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Excepcion",
+      "label": "Vigencia temporal financiaciones agrícolas",
+      "properties": {
+        "descripcion": "Financiaciones acordadas a partir del 18/05/2020 y hasta el 31/10/24, y financiaciones en pesos que se acuerden a partir del 01/11/24 y hasta el 10/04/26"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e4",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "e2",
+      "predicate": "exceptua"
+    }
+  ],
+  "in_tokens": 4524,
+  "out_tokens": 970,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 8,
+    "relations_out": 8,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

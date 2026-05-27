@@ -1,0 +1,206 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::1.2",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 1.2. Criterios especiales de imputación.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "1.0"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 2729",
+      "properties": {
+        "codigo": "A-2729",
+        "tipo": "A",
+        "numero": "2729"
+      }
+    },
+    {
+      "local_id": "com2",
+      "type": "Comunicacion",
+      "label": "Com. A 2950",
+      "properties": {
+        "codigo": "A-2950",
+        "tipo": "A",
+        "numero": "2950"
+      }
+    },
+    {
+      "local_id": "ef1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Cesión de créditos",
+      "properties": {
+        "tipo": "cesión de créditos sin responsabilidad"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Evaluación de deudor",
+      "properties": {
+        "tipo": "evaluación de deudor como sujeto de crédito"
+      }
+    },
+    {
+      "local_id": "op3",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor en categoría"
+      }
+    },
+    {
+      "local_id": "op4",
+      "type": "Operacion",
+      "label": "Otorgamiento de crédito",
+      "properties": {
+        "tipo": "otorgamiento de crédito a deudor en concurso"
+      }
+    },
+    {
+      "local_id": "op5",
+      "type": "Operacion",
+      "label": "Imputación de crédito",
+      "properties": {
+        "tipo": "imputación de crédito al pagador"
+      }
+    },
+    {
+      "local_id": "res1",
+      "type": "Restriccion",
+      "label": "Clasificación irrecuperable sin evaluación",
+      "properties": {
+        "descripcion": "En caso de no efectuarse la evaluación de créditos cedidos sin responsabilidad, cualquiera sea el motivo, estos clientes se clasificarán en categoría irrecuperable",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "res2",
+      "type": "Restriccion",
+      "label": "Imputación condicional en concurso",
+      "properties": {
+        "descripcion": "Los créditos otorgados a deudores en concurso preventivo con posterioridad al pedido de concurso sólo podrán imputarse al tercero si cuentan con garantías que permitan su cobro al vencimiento",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "obl1",
+      "type": "Obligacion",
+      "label": "Evaluación como sujeto de crédito",
+      "properties": {
+        "descripcion": "Realizar respecto de los firmantes, libradores, deudores, codeudores o aceptantes su evaluación como sujetos de crédito con la pertinente apertura del legajo",
+        "tipo": "calculo",
+        "plazo": "al momento de la cesión de crédito"
+      }
+    },
+    {
+      "local_id": "obl2",
+      "type": "Obligacion",
+      "label": "Imputación al firmante o pagador",
+      "properties": {
+        "descripcion": "Los créditos cedidos a favor de la entidad sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos",
+        "tipo": "asignacion"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "to",
+      "target": "com2",
+      "predicate": "modificada_por"
+    },
+    {
+      "source": "res1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "res2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl2",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res2",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl1",
+      "target": "op2",
+      "predicate": "regula"
+    },
+    {
+      "source": "obl2",
+      "target": "op5",
+      "predicate": "regula"
+    },
+    {
+      "source": "res1",
+      "target": "op3",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "res2",
+      "target": "op5",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4961,
+  "out_tokens": 1700,
+  "validation": {
+    "entities_in": 13,
+    "entities_out": 13,
+    "relations_in": 14,
+    "relations_out": 14,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

@@ -1,0 +1,156 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::6.6",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6.6. Recategorización obligatoria.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "Clasificación de deudores de la cartera comercial",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "Comunicación A 7443"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Obligacion",
+      "label": "Recategorizar deudor por discrepancia",
+      "properties": {
+        "descripcion": "Se deberá recategorizar al deudor cuando exista una discrepancia de más de un nivel entre la clasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o fideicomisos financieros en categorías inferiores a la asignada por aquella, cuyas acreencias –en conjunto– representen el 40 % o más del total informado por todos los acreedores, según la última información disponible en la Central de deudores del sistema financiero.",
+        "tipo": "otra",
+        "plazo": "a partir del mes siguiente al de puesta a disposición de la información"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor en categoría"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "EntidadFinanciera",
+      "label": "Fideicomisos financieros",
+      "properties": {
+        "categoria": "fiduciario financiero"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Restriccion",
+      "label": "Condición umbral acreencias 40%",
+      "properties": {
+        "descripcion": "Las acreencias de al menos otras dos entidades o fideicomisos financieros en categorías inferiores deben representar el 40 % o más del total informado por todos los acreedores.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "40%"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Restriccion",
+      "label": "Discrepancia mínima más de un nivel",
+      "properties": {
+        "descripcion": "Debe existir una discrepancia de más de un nivel entre la clasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades.",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Excepcion",
+      "label": "Asistencias no consideradas en recategorización",
+      "properties": {
+        "descripcion": "Las asistencias otorgadas en las condiciones a que se refiere el segundo párrafo del punto 6.5 no serán consideradas a los fines de la recategorización obligatoria."
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Obligacion",
+      "label": "Considerar deudor en observación",
+      "properties": {
+        "descripcion": "Cuando deba recategorizarse al deudor en la categoría 2, será considerado en observación según punto 6.5.2.1.",
+        "tipo": "otra"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e8",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e1",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e1",
+      "target": "e4",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e1",
+      "target": "e2",
+      "predicate": "regula"
+    },
+    {
+      "source": "e7",
+      "target": "e1",
+      "predicate": "exceptua_obligacion"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e4",
+      "target": "e2",
+      "predicate": "ejecuta"
+    }
+  ],
+  "in_tokens": 4888,
+  "out_tokens": 1512,
+  "validation": {
+    "entities_in": 9,
+    "entities_out": 9,
+    "relations_in": 14,
+    "relations_out": 11,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 1,
+    "rel_dropped_domain_range": 2
+  },
+  "error": null
+}

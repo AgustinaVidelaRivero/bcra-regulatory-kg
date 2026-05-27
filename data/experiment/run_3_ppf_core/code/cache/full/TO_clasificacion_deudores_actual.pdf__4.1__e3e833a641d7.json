@@ -1,0 +1,78 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::4.1",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 4.1. Niveles de clasificación.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "clasificacion_deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Clasificación de clientes",
+      "properties": {
+        "tipo": "clasificacion_de_deudor",
+        "description": "Agrupamiento de los clientes en orden decreciente de calidad, en razón directa al riesgo de incobrabilidad"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Obligacion",
+      "label": "Evaluar capacidad de pago",
+      "properties": {
+        "tipo": "calculo",
+        "description": "El criterio básico a ser utilizado para efectuar la clasificación es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía de la entidad financiera",
+        "plazo": "futuro"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "regula"
+    },
+    {
+      "source": "e2",
+      "target": "e3",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 4451,
+  "out_tokens": 577,
+  "validation": {
+    "entities_in": 4,
+    "entities_out": 4,
+    "relations_in": 4,
+    "relations_out": 4,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

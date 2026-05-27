@@ -1,0 +1,134 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::5.15",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.15. Suspensión de operaciones por incumplimiento en el registro ante el BCRA.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones en divisas y cambios",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "6a. COMUNICACIÓN A 8191"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades cambiarias",
+      "properties": {
+        "categoria": "casa de cambio"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Suspensión de operaciones en divisas",
+      "properties": {
+        "tipo": "prohibicion",
+        "descripcion": "Las entidades financieras deberán suspender sus operaciones en divisas en el caso de que registren un atraso mayor a 4 (cuatro) días hábiles en la validación en algún apartado del régimen informativo de operaciones cambiarias"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Suspensión de operaciones cambiarias",
+      "properties": {
+        "tipo": "prohibicion",
+        "descripcion": "Las entidades cambiarias deberán suspender sus operaciones en caso de encontrarse en la situación indicada precedentemente"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Operaciones en divisas",
+      "properties": {
+        "tipo": "operación cambiaria"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Validación en régimen informativo",
+      "properties": {
+        "tipo": "presentación informativa de operaciones cambiarias"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Regularización de situación informativa",
+      "properties": {
+        "descripcion": "La suspensión se mantiene hasta que se regularice su situación en materia informativa"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "exc1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r1",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r2",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r1",
+      "target": "op1",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "r2",
+      "target": "op1",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "exc1",
+      "target": "r1",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "exc1",
+      "target": "r2",
+      "predicate": "exceptua"
+    }
+  ],
+  "in_tokens": 4574,
+  "out_tokens": 1032,
+  "validation": {
+    "entities_in": 8,
+    "entities_out": 8,
+    "relations_in": 9,
+    "relations_out": 9,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

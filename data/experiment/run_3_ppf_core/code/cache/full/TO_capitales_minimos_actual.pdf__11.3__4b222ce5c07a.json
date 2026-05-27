@@ -1,0 +1,106 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::11.3",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 11.3. A los efectos de la determinación de la RPC, a partir del 01/02/13 comenzarán a",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Requerimientos de Capital y Patrimonio",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Determinación de Relación de Patrimonio Contable",
+      "properties": {
+        "tipo": "cálculo de índice de solvencia"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Restriccion",
+      "label": "Exclusión de instrumentos que no cumplen criterios",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "descripcion": "A partir del 01/02/13 comenzarán a excluirse los instrumentos de capital que dejen de cumplir los criterios para ser considerados capital adicional de nivel uno o patrimonio neto complementario"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Inclusión de instrumentos en RPC",
+      "properties": {
+        "tipo": "computación de capital"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Límite de reconocimiento al 90% con reducción anual",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "descripcion": "Su reconocimiento como RPC se limitará al 90% del valor obtenido a partir de esa fecha, reduciéndose cada doce meses dicho límite en 10 puntos porcentuales",
+        "umbral": "90%"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Cálculo de monto mediante metodología vigente",
+      "properties": {
+        "tipo": "calculo",
+        "descripcion": "Se computará el importe que surja de aplicar a los valores contables de los instrumentos a fin de cada mes la metodología vigente a aquella fecha",
+        "plazo": "mensual"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e3",
+      "predicate": "limita"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "e3",
+      "predicate": "regula"
+    }
+  ],
+  "in_tokens": 4598,
+  "out_tokens": 875,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

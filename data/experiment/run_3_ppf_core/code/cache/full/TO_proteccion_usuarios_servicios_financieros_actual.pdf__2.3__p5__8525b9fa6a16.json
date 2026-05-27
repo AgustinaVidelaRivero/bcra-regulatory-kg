@@ -1,0 +1,172 @@
+{
+  "chunk_id": "TO_proteccion_usuarios_servicios_financieros_actual.pdf::2.3__p5",
+  "doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 6)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Protección de Usuarios de Servicios Financieros",
+      "properties": {
+        "materia": "protección de usuarios",
+        "archivo": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+        "version": "6a. Comunicación A 8433"
+      }
+    },
+    {
+      "local_id": "c1",
+      "type": "Comunicacion",
+      "label": "Com. A 8433",
+      "properties": {
+        "codigo": "A-8433",
+        "tipo": "A",
+        "numero": "8433"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras emisoras de tarjetas de crédito",
+      "properties": {
+        "categoria": "emisora de tarjeta de crédito"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "EntidadFinanciera",
+      "label": "Empresas no financieras emisoras de tarjetas de crédito",
+      "properties": {
+        "categoria": "empresa no financiera emisora de tarjeta"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Cancelación de consumos en dólares",
+      "properties": {
+        "tipo": "cancelación de consumos en dólares",
+        "description": "Cancelación de consumos en dólares de tarjetas de crédito en moneda extranjera o en pesos"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Aplicación de tipo de cambio vendedor",
+      "properties": {
+        "tipo": "aplicación de tipo de cambio",
+        "description": "Aplicación del tipo de cambio vendedor al momento de cancelación o día hábil inmediato anterior"
+      }
+    },
+    {
+      "local_id": "op3",
+      "type": "Operacion",
+      "label": "Débito automático de resumen",
+      "properties": {
+        "tipo": "débito automático",
+        "description": "Débito automático del resumen de la tarjeta"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Límite de tipo de cambio en cancelación",
+      "properties": {
+        "descripcion": "Se aplicará como máximo el tipo de cambio vendedor",
+        "tipo": "limite_cualitativo",
+        "description": "Los consumos en dólares de tarjetas de crédito podrán ser cancelados en pesos, siendo aplicable como máximo en este caso el tipo de cambio vendedor"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Especificación de tipo de cambio por canal",
+      "properties": {
+        "descripcion": "Para débito automático aplicará tipo de cambio vendedor para operaciones electrónicas",
+        "tipo": "limite_cualitativo",
+        "description": "Si hubiera pactado el débito automático del resumen de la tarjeta, aplicará el tipo de cambio vendedor para operaciones efectuadas a través de medios electrónicos de pago del cierre del mismo día hábil del pago"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Publicación de tipo de cambio vendedor",
+      "properties": {
+        "descripcion": "Publicación del tipo de cambio vendedor por canales electrónicos",
+        "tipo": "presentacion_informativa",
+        "description": "Se debe publicar el tipo de cambio vendedor por canales electrónicos el mismo día hábil de la fecha de pago, o el hábil inmediato anterior cuando el pago se efectúe un día inhábil"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "c1",
+      "predicate": "modificada_por"
+    },
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r1",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r2",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r1",
+      "target": "op1",
+      "predicate": "limita"
+    },
+    {
+      "source": "r2",
+      "target": "op3",
+      "predicate": "limita"
+    },
+    {
+      "source": "ob1",
+      "target": "e3",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "ob1",
+      "target": "op2",
+      "predicate": "regula"
+    }
+  ],
+  "in_tokens": 4861,
+  "out_tokens": 1542,
+  "validation": {
+    "entities_in": 11,
+    "entities_out": 11,
+    "relations_in": 10,
+    "relations_out": 10,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

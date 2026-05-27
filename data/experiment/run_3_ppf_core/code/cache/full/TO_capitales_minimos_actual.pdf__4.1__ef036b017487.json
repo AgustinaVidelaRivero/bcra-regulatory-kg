@@ -1,0 +1,176 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::4.1",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.1. Exigencia de capital por riesgo de crédito de contraparte para operaciones DvP f",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Exigencia de capital por riesgo de crédito de contraparte",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "2a"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Comunicacion",
+      "label": "Com. A 8171",
+      "properties": {
+        "codigo": "A-8171",
+        "tipo": "A",
+        "numero": "8171"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Obligacion",
+      "label": "Desarrollar sistema seguimiento riesgo contraparte",
+      "properties": {
+        "descripcion": "Las entidades deberán desarrollar, implementar y mejorar sistemas para realizar un seguimiento adecuado de la exposición al riesgo de crédito de contraparte procedente de esas operaciones y obtener información que permita intervenir en el momento oportuno.",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Operacion",
+      "label": "Operaciones con títulos valores pendientes de liquidación",
+      "properties": {
+        "tipo": "operación con títulos valores, oro o moneda extranjera pendiente de liquidación"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Operacion",
+      "label": "Operaciones DvP fallidas",
+      "properties": {
+        "tipo": "entrega contra pago con contraprestación no recibida en plazo de 5 días hábiles"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Restriccion",
+      "label": "Exigencia de capital operaciones DvP fallidas",
+      "properties": {
+        "descripcion": "Cuando la contraprestación no sea recibida en el plazo de cinco días hábiles desde la fecha de liquidación, se deberá calcular la exigencia de capital multiplicando la exposición actual positiva a fin de mes de la operación por el factor correspondiente: Entre 5 y 15 días hábiles 8%, Entre 16 y 30 días 50%, Entre 31 y 45 días 75%, 46 o más días 100%.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "8%-100% según días de atraso"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Operacion",
+      "label": "Operaciones no DvP",
+      "properties": {
+        "tipo": "operación sin entrega contra pago simultánea"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Obligacion",
+      "label": "Aplicar ponderador operaciones no DvP",
+      "properties": {
+        "descripcion": "La entidad financiera que haya realizado el pago/entrega considerará su exposición como un préstamo si al final de la jornada todavía no ha recibido la contrapartida pertinente, debiendo aplicar los ponderadores establecidos en el punto 2.12.",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "Restriccion",
+      "label": "Ponderador 1250% operaciones no DvP incumplidas",
+      "properties": {
+        "descripcion": "Si al quinto día hábil aún no se concretó la contrapartida pactada, la entidad financiera que haya realizado el pago/entrega asignará un ponderador de 1250% al monto equivalente al valor transferido más el costo de reposición, si lo hubiera.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "1250%"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "e1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e3",
+      "target": "e4",
+      "predicate": "regula"
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e6",
+      "target": "e5",
+      "predicate": "limita"
+    },
+    {
+      "source": "e8",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e8",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e8",
+      "target": "e7",
+      "predicate": "regula"
+    },
+    {
+      "source": "e9",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e9",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e9",
+      "target": "e7",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 5282,
+  "out_tokens": 1628,
+  "validation": {
+    "entities_in": 10,
+    "entities_out": 10,
+    "relations_in": 13,
+    "relations_out": 13,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

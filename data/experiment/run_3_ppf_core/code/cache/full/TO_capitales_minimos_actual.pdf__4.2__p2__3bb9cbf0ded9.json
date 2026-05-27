@@ -1,0 +1,263 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::4.2__p2",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 3)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capital mínimo por riesgo de crédito de contraparte",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "1a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 6260",
+      "properties": {
+        "codigo": "A-6260",
+        "tipo": "A",
+        "numero": "6260"
+      }
+    },
+    {
+      "local_id": "ef1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Asignación de derivado a clase de activo",
+      "properties": {
+        "tipo": "asignación de riesgo",
+        "description": "Asignación de cada derivado a una clase de activo sobre la base de su factor de riesgo principal, conforme a las clases: tasa de interés, tipo de cambio, crédito, acciones y productos básicos"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Cálculo de nocional ajustado",
+      "properties": {
+        "tipo": "cálculo",
+        "description": "Cálculo del nocional ajustado a partir del nocional real o del precio de cada operación"
+      }
+    },
+    {
+      "local_id": "op3",
+      "type": "Operacion",
+      "label": "Cálculo de factor plazo",
+      "properties": {
+        "tipo": "cálculo",
+        "description": "Cálculo del factor plazo (MF) para reflejar el horizonte temporal adecuado al tipo de la operación, diferenciando entre operaciones con márgenes y sin márgenes"
+      }
+    },
+    {
+      "local_id": "op4",
+      "type": "Operacion",
+      "label": "Aplicación de ajuste delta",
+      "properties": {
+        "tipo": "cálculo",
+        "description": "Aplicación al nocional ajustado de cada operación de un ajuste delta según el tipo de posición (larga o corta) y tipo de instrumento (opción, CDO, otro)"
+      }
+    },
+    {
+      "local_id": "op5",
+      "type": "Operacion",
+      "label": "Aplicación de factor volatilidad",
+      "properties": {
+        "tipo": "cálculo",
+        "description": "Aplicación a cada nocional efectivo de un factor que refleja su volatilidad"
+      }
+    },
+    {
+      "local_id": "op6",
+      "type": "Operacion",
+      "label": "Separación por conjunto de cobertura",
+      "properties": {
+        "tipo": "clasificación",
+        "description": "Separación de las operaciones dentro de cada clase de activo por conjunto de cobertura, aplicando método de agregación para obtener un total por clase"
+      }
+    },
+    {
+      "local_id": "obl1",
+      "type": "Obligacion",
+      "label": "Asignar derivados a clases de activo",
+      "properties": {
+        "descripcion": "Las operaciones se ajustarán a procedimientos de asignación de cada derivado a una clase de activo sobre la base de su factor de riesgo principal",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "obl2",
+      "type": "Obligacion",
+      "label": "Calcular nocional ajustado con duration",
+      "properties": {
+        "descripcion": "Para derivados de tasa de interés y créditos, el nocional ajustado será el producto del nocional de la operación convertido a pesos y el plazo regulatorio (supervisory duration)",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "obl3",
+      "type": "Obligacion",
+      "label": "Considerar sensibilidad y volatilidad",
+      "properties": {
+        "descripcion": "En operaciones más complejas con más de un factor de riesgo, las entidades deberán tomar en consideración la sensibilidad y volatilidad de los subyacentes para determinar el factor de riesgo principal",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "obl4",
+      "type": "Obligacion",
+      "label": "Aplicar fórmulas específicas EPE",
+      "properties": {
+        "descripcion": "El adicional para cada clase de activo se computará usando fórmulas específicas que calculan la correspondiente EPE efectiva",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "res1",
+      "type": "Restriccion",
+      "label": "Período supervisory duration mínimo",
+      "properties": {
+        "descripcion": "El período supervisory duration no podrá ser menor que 10 días hábiles",
+        "tipo": "limite_cuantitativo",
+        "umbral": "10 días hábiles"
+      }
+    },
+    {
+      "local_id": "res2",
+      "type": "Restriccion",
+      "label": "Límite en identificación factor riesgo principal",
+      "properties": {
+        "descripcion": "Cuando sea posible identificar claramente el factor principal, la operación se imputará a una de las clases de activos establecidas (tasa de interés, tipo de cambio, crédito, acciones y productos básicos)",
+        "tipo": "limite_cualitativo"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "obl1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "res1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "res2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "obl1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl2",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl3",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl4",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res1",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "res2",
+      "target": "ef1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "obl1",
+      "target": "op1",
+      "predicate": "regula"
+    },
+    {
+      "source": "obl2",
+      "target": "op2",
+      "predicate": "regula"
+    },
+    {
+      "source": "obl3",
+      "target": "op1",
+      "predicate": "regula"
+    },
+    {
+      "source": "obl4",
+      "target": "op1",
+      "predicate": "regula"
+    },
+    {
+      "source": "res1",
+      "target": "op2",
+      "predicate": "limita"
+    },
+    {
+      "source": "res2",
+      "target": "op1",
+      "predicate": "limita"
+    },
+    {
+      "source": "op1",
+      "target": "obl1",
+      "predicate": "requiere"
+    },
+    {
+      "source": "op2",
+      "target": "obl2",
+      "predicate": "requiere"
+    }
+  ],
+  "in_tokens": 6528,
+  "out_tokens": 2358,
+  "validation": {
+    "entities_in": 15,
+    "entities_out": 15,
+    "relations_in": 21,
+    "relations_out": 21,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

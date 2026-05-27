@@ -1,0 +1,109 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::4.4",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 4.4. Financiaciones cubiertas con garantías preferidas “A”.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "clasificacion_deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Evaluación de capacidad de repago",
+      "properties": {
+        "tipo": "evaluacion_crediticia",
+        "description": "Evaluación de la capacidad de repago respecto de las financiaciones"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Restriccion",
+      "label": "Excención de evaluación por garantías preferidas A",
+      "properties": {
+        "tipo": "prohibicion",
+        "descripcion": "No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones respaldadas con garantías preferidas A",
+        "description": "No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Clasificación de deudores",
+      "properties": {
+        "tipo": "clasificacion",
+        "description": "Clasificación de deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Prohibición de clasificación por cobertura total",
+      "properties": {
+        "tipo": "prohibicion",
+        "descripcion": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A no serán objeto de clasificación",
+        "description": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A no serán objeto de clasificación, sin perjuicio de su información según las normas que se establezcan en los regímenes respectivos"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Información de deudores según regímenes",
+      "properties": {
+        "tipo": "presentacion_informativa",
+        "plazo": "sin especificar",
+        "description": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A deberán ser informados según las normas que se establezcan en los regímenes respectivos"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "e3",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "e3",
+      "predicate": "condiciona"
+    }
+  ],
+  "in_tokens": 4463,
+  "out_tokens": 968,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

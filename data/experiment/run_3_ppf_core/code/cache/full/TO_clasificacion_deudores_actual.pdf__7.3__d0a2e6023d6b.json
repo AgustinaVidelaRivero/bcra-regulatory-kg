@@ -1,0 +1,190 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::7.3",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 7.3. Recategorización obligatoria.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "Clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Recategorización de deudor",
+      "properties": {
+        "tipo": "recategorización de deudor",
+        "description": "Recategorización al deudor cuando exista discrepancia de más de un nivel entre la clasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o fideicomisos financieros o entidades no financieras emisoras de tarjetas de crédito"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Clasificación de deudor",
+      "properties": {
+        "tipo": "clasificación de deudor",
+        "description": "Clasificación efectuada según la evaluación de las entidades en categorías 1 a 5"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Restriccion",
+      "label": "Discrepancia de más de un nivel en clasificación",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "descripcion": "Se deberá recategorizar cuando exista discrepancia de más de un nivel entre clasificaciones, cuyas acreencias representen 40% o más del total informado",
+        "description": "Se deberá recategorizar al deudor cuando exista una discrepancia de más de un nivel entre la clasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o fideicomisos financieros o entidades no financieras emisoras de tarjetas de crédito en categorías inferiores, cuyas acreencias –en conjunto– representen el 40 % o más del total informado por todos los acreedores"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Restriccion",
+      "label": "Umbral mínimo de 40% en acreencias",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "umbral": "40%",
+        "descripcion": "Las acreencias en conjunto deben representar el 40 % o más del total informado por todos los acreedores",
+        "description": "Las acreencias de al menos dos entidades u otros acreedores deben representar el 40 % o más del total informado por todos los acreedores según la última información disponible en la Central de deudores del sistema financiero"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Recategorización a categoría superior",
+      "properties": {
+        "tipo": "asignacion",
+        "plazo": "a partir del mes siguiente",
+        "descripcion": "Recategorización del deudor a partir del mes siguiente al de puesta a disposición de la pertinente información, al menos en la categoría inmediata superior a aquella en la que registre mayor nivel de endeudamiento",
+        "description": "La recategorización del deudor se efectuará a partir del mes siguiente al de puesta a disposición de la pertinente información de dicha central, al menos en la categoría inmediata superior a aquella en la que registre mayor nivel de endeudamiento"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "EntidadFinanciera",
+      "label": "Fideicomisos financieros",
+      "properties": {
+        "categoria": "fideicomiso financiero"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "EntidadFinanciera",
+      "label": "Entidades no financieras emisoras de tarjetas",
+      "properties": {
+        "categoria": "entidad no financiera emisora de tarjetas de crédito"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "regula"
+    },
+    {
+      "source": "e4",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e5",
+      "target": "e1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "e6",
+      "target": "e2",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e7",
+      "target": "e2",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e8",
+      "target": "e2",
+      "predicate": "ejecuta"
+    },
+    {
+      "source": "e3",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e3",
+      "target": "e7",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e3",
+      "target": "e8",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e5",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e5",
+      "target": "e7",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e5",
+      "target": "e8",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 4695,
+  "out_tokens": 1798,
+  "validation": {
+    "entities_in": 9,
+    "entities_out": 9,
+    "relations_in": 17,
+    "relations_out": 17,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

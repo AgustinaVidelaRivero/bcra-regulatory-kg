@@ -1,0 +1,194 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::4.3",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 4.3. Operaciones con títulos valores.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "operaciones con el exterior y cambios",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Restriccion",
+      "label": "Prohibición de liquidación en pesos exterior",
+      "properties": {
+        "descripcion": "Las transacciones de títulos valores concertadas en el exterior no podrán liquidarse en pesos en el país",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Transacciones de títulos valores en exterior",
+      "properties": {
+        "tipo": "compraventa de títulos valores"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Liquidación en pesos en el país",
+      "properties": {
+        "tipo": "liquidación de operaciones"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Excepcion",
+      "label": "Excepción: operaciones concertadas en país",
+      "properties": {
+        "descripcion": "se podrán liquidar en pesos en el país solamente aquellas operaciones concertadas en el país"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Abono por mecanismos autorizados",
+      "properties": {
+        "descripcion": "Las operaciones de compraventa de títulos valores con liquidación en moneda extranjera que concreten clientes que no sean personas humanas residentes deberán abonarse por alguno de los siguientes mecanismos",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Operacion",
+      "label": "Transferencia de fondos a cuenta local",
+      "properties": {
+        "tipo": "transferencia de fondos"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Restriccion",
+      "label": "Limitación territorial cable bancario",
+      "properties": {
+        "descripcion": "contra cable sobre cuentas bancarias a nombre del cliente en una entidad del exterior que no esté constituida en países o territorios donde no se aplican o no se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Operacion",
+      "label": "Liquidación por cable bancario",
+      "properties": {
+        "tipo": "liquidación por cable"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "Restriccion",
+      "label": "Limitación territorial cuenta terceros",
+      "properties": {
+        "descripcion": "contra cable sobre una cuenta de terceros en el exterior que no se encuentre radicada en países o territorios donde no se aplican o no se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "e10",
+      "type": "Excepcion",
+      "label": "Excepción: venta BOPREAL suscripción primaria",
+      "properties": {
+        "descripcion": "cuando se trate de la venta de bonos BOPREAL adquiridos por el vendedor en una suscripción primaria por operaciones elegibles en los puntos 4.4., 4.5., 4.6.1. y 4.7"
+      }
+    },
+    {
+      "local_id": "e11",
+      "type": "Operacion",
+      "label": "Venta de bonos BOPREAL",
+      "properties": {
+        "tipo": "compraventa de títulos valores"
+      }
+    },
+    {
+      "local_id": "e12",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras locales",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e13",
+      "type": "EntidadFinanciera",
+      "label": "Clientes personas no humanas residentes",
+      "properties": {
+        "categoria": "cliente"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e1",
+      "target": "e2",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "e4",
+      "target": "e1",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e5",
+      "target": "e13",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e5",
+      "target": "e6",
+      "predicate": "regula"
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e7",
+      "target": "e8",
+      "predicate": "limita"
+    },
+    {
+      "source": "e9",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e9",
+      "target": "e11",
+      "predicate": "limita"
+    },
+    {
+      "source": "e10",
+      "target": "e9",
+      "predicate": "exceptua"
+    }
+  ],
+  "in_tokens": 4824,
+  "out_tokens": 1666,
+  "validation": {
+    "entities_in": 14,
+    "entities_out": 14,
+    "relations_in": 11,
+    "relations_out": 11,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

@@ -1,0 +1,181 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::2__p1",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 2)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "1a"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Ajuste de valuación del crédito",
+      "properties": {
+        "tipo": "cálculo de ajuste de valuación",
+        "description": "Valuar a precios de mercado el riesgo de contraparte esperado, pérdidas conocidas como ajustes de valuación del crédito (CVA)"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Obligacion",
+      "label": "Observar exigencia capital CVA",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Las entidades financieras deberán observar una exigencia de capital por el riesgo de pérdidas derivadas de valuar a precios de mercado el riesgo de contraparte esperado –pérdidas conocidas como ajustes de valuación del crédito, CVA–",
+        "plazo": "horizonte de riesgo de un año"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Excepcion",
+      "label": "Exención operaciones de financiación",
+      "properties": {
+        "description": "Las entidades no observarán esta exigencia de capital cuando se trate de operaciones de financiación con títulos valores –tales como las operaciones de pase– y en las operaciones celebradas con una entidad de contraparte central (CCP)"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Operacion",
+      "label": "Operaciones de financiación con títulos",
+      "properties": {
+        "tipo": "financiación",
+        "description": "Operaciones de financiación con títulos valores –tales como las operaciones de pase–"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Operacion",
+      "label": "Operaciones con contraparte central",
+      "properties": {
+        "tipo": "operación de contraparte central",
+        "description": "Operaciones celebradas con una entidad de contraparte central (CCP)"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Restriccion",
+      "label": "Limitación de coberturas CVA admisibles",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "Las únicas coberturas admisibles para el cálculo de la exigencia de capital por riesgo de CVA son los swaps de incumplimiento crediticio de referencia única (single-name CDS), los swaps de incumplimiento crediticio contingentes de referencia única, otros instrumentos de cobertura equivalentes cuya referencia directa sea la contraparte y swaps de incumplimiento crediticio sobre índices. No deberán considerarse en el cálculo del K(CVA) otros tipos de cobertura del riesgo de contraparte"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Restriccion",
+      "label": "Prohibición coberturas CDS por tramos",
+      "properties": {
+        "tipo": "prohibicion",
+        "description": "En particular, no constituyen coberturas de CVA admisibles los swaps de incumplimiento crediticio por tramos o de enésimo incumplimiento"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "Obligacion",
+      "label": "Cálculo EAD vigente neto CVA",
+      "properties": {
+        "tipo": "calculo",
+        "description": "EAD vigente para una contraparte es el mayor valor entre cero y la EAD con la contraparte, neta de los ajustes de valuación del crédito correspondientes a esa contraparte (CVA) que la entidad ya hubiera imputado a resultados"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e8",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e9",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e2",
+      "target": "e1",
+      "predicate": "regula"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "exceptua_obligacion"
+    },
+    {
+      "source": "e7",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e7",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e8",
+      "target": "e6",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e8",
+      "target": "e1",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "e9",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e9",
+      "target": "e6",
+      "predicate": "aplica_a"
+    }
+  ],
+  "in_tokens": 6490,
+  "out_tokens": 1827,
+  "validation": {
+    "entities_in": 10,
+    "entities_out": 10,
+    "relations_in": 17,
+    "relations_out": 14,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 3
+  },
+  "error": null
+}

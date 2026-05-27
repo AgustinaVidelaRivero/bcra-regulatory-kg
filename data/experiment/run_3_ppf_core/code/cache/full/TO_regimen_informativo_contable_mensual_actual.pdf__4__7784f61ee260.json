@@ -1,0 +1,180 @@
+{
+  "chunk_id": "TO_regimen_informativo_contable_mensual_actual.pdf::4",
+  "doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Régimen Informativo Contable Mensual",
+      "properties": {
+        "materia": "Exigencia e Integración de Capitales Mínimos",
+        "archivo": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "version": "2a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 6585",
+      "properties": {
+        "codigo": "A-6585",
+        "tipo": "A",
+        "numero": "6585"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Cálculo de riesgo EVE estandarizada",
+      "properties": {
+        "tipo": "cálculo de medida de riesgo",
+        "description": "Cálculo de la medida de riesgo EVE estandarizada para cartera de inversión, incluyendo variaciones del valor económico del patrimonio por escenarios de tasa de interés en distintas monedas"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Calcular medida total riesgo opciones",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Calcular la medida total del riesgo por opciones automáticas (código 3613000X/M KAO)",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Calcular valor económico patrimonio",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Calcular el valor económico del patrimonio en pesos y moneda extranjera (códigos 3612000X/M) mediante sumatoria de bandas temporales",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob3",
+      "type": "Obligacion",
+      "label": "Calcular valor económico escenario 0",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Calcular el valor económico del patrimonio para el escenario 0 en pesos y moneda extranjera (código 36110000/M)",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob4",
+      "type": "Obligacion",
+      "label": "Calcular variación valor económico",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Calcular la variación del valor económico del patrimonio (código 3610000X/M) como diferencia entre escenarios",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob5",
+      "type": "Obligacion",
+      "label": "Sumar pérdidas por escenario",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Registrar la suma de pérdidas por escenario (código 3650000X) tomando valores mayores a cero de 3610000X/M",
+        "plazo": "mensual"
+      }
+    },
+    {
+      "local_id": "ob6",
+      "type": "Obligacion",
+      "label": "Asignar flujos de fondos",
+      "properties": {
+        "tipo": "asignacion",
+        "description": "Asignar flujos de fondos según criterio de bandas temporales (opción 1) o puntos medios (opción 2) para el cálculo del riesgo EVE (código 38000000)",
+        "plazo": "mensual"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "op1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob5",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "ob1",
+      "target": "op1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob2",
+      "target": "op1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob3",
+      "target": "op1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob4",
+      "target": "op1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob5",
+      "target": "op1",
+      "predicate": "condiciona"
+    },
+    {
+      "source": "ob6",
+      "target": "op1",
+      "predicate": "condiciona"
+    }
+  ],
+  "in_tokens": 4889,
+  "out_tokens": 1558,
+  "validation": {
+    "entities_in": 9,
+    "entities_out": 9,
+    "relations_in": 14,
+    "relations_out": 14,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

@@ -1,0 +1,174 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::7.4",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.4. Nuevas entidades.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "3a"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras grupo 1",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras grupo 2",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Exigencia capital mínimo por riesgo operacional",
+      "properties": {
+        "descripcion": "La exigencia mensual de capital mínimo por riesgo operacional de las entidades financieras de los grupos 1 y 2 correspondiente al primer mes será equivalente al 10% de la sumatoria de las exigencias determinadas por los riesgos de crédito y de mercado –en este caso, para las posiciones del último día– de ese mes.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "10%"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Exigencia capital segundo a trigésimo sexto mes",
+      "properties": {
+        "descripcion": "A partir del segundo y hasta el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del promedio de las exigencias determinadas para los meses transcurridos hasta el período de cálculo –inclusive–, resultantes de considerar los riesgos mencionados en el párrafo precedente.",
+        "tipo": "limite_cuantitativo",
+        "umbral": "10%"
+      }
+    },
+    {
+      "local_id": "r3",
+      "type": "Restriccion",
+      "label": "Metodología cálculo desde trigésimo séptimo mes",
+      "properties": {
+        "descripcion": "Desde el trigésimo séptimo mes, la exigencia mensual se calculará de acuerdo con la metodología establecida para el grupo 1 o el grupo 2, según corresponda.",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "o1",
+      "type": "Operacion",
+      "label": "Cálculo exigencia capital mínimo operacional",
+      "properties": {
+        "tipo": "cálculo de capital mínimo por riesgo operacional"
+      }
+    },
+    {
+      "local_id": "c1",
+      "type": "Comunicacion",
+      "label": "Com. A 8383",
+      "properties": {
+        "codigo": "A-8383",
+        "tipo": "A",
+        "numero": "8383"
+      }
+    },
+    {
+      "local_id": "c2",
+      "type": "Comunicacion",
+      "label": "Com. A 8329",
+      "properties": {
+        "codigo": "A-8329",
+        "tipo": "A",
+        "numero": "8329"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "r1",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r1",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r2",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r2",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r3",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r3",
+      "target": "e2",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "r1",
+      "target": "o1",
+      "predicate": "limita"
+    },
+    {
+      "source": "r2",
+      "target": "o1",
+      "predicate": "limita"
+    },
+    {
+      "source": "r3",
+      "target": "o1",
+      "predicate": "limita"
+    },
+    {
+      "source": "to",
+      "target": "c1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "to",
+      "target": "c2",
+      "predicate": "referencia"
+    }
+  ],
+  "in_tokens": 4871,
+  "out_tokens": 1461,
+  "validation": {
+    "entities_in": 9,
+    "entities_out": 9,
+    "relations_in": 14,
+    "relations_out": 14,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

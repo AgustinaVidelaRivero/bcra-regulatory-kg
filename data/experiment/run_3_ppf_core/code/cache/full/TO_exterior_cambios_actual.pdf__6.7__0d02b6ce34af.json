@@ -1,0 +1,91 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::6.7",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 6.7. Posición general de cambios (PGC).",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Posición de cambios y activos externos",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Operacion",
+      "label": "Posición general de cambios",
+      "properties": {
+        "tipo": "posicion de cambios",
+        "description": "Totalidad de los activos externos líquidos de la entidad, netos de los saldos deudores de corresponsalía originados en la operatoria del mercado de cambios. Incluye compras y ventas concertadas en el mercado de cambios pendientes de liquidación."
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Compra venta divisas",
+      "properties": {
+        "tipo": "compra venta de divisas",
+        "description": "Compras y ventas concertadas en el mercado de cambios y que se encuentran pendientes de liquidación."
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Restriccion",
+      "label": "Exclusión de activos de la PGC",
+      "properties": {
+        "tipo": "limite_cualitativo",
+        "description": "No formarán parte de la PGC: inversiones directas en el exterior, activos externos de terceros en custodia, ventas y compras a término de divisas o valores externos, depósitos en el BCRA en moneda extranjera en cuentas a nombre de la entidad y demás activos locales en moneda extranjera."
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidades financieras"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "limita"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4635,
+  "out_tokens": 772,
+  "validation": {
+    "entities_in": 5,
+    "entities_out": 5,
+    "relations_in": 5,
+    "relations_out": 5,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

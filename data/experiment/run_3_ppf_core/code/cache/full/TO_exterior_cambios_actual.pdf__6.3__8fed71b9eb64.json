@@ -1,0 +1,65 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::6.3",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 6.3. Operaciones al contado.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones de cambios y exterior",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Operaciones al contado",
+      "properties": {
+        "tipo": "operación de cambios al contado",
+        "description": "Operaciones en las cuales la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación"
+      }
+    },
+    {
+      "local_id": "rest1",
+      "type": "Restriccion",
+      "label": "Plazo máximo de liquidación contado",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "umbral": "2 días hábiles",
+        "description": "La liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "op1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "rest1",
+      "target": "op1",
+      "predicate": "limita"
+    },
+    {
+      "source": "rest1",
+      "target": "to",
+      "predicate": "establecida_en"
+    }
+  ],
+  "in_tokens": 4408,
+  "out_tokens": 492,
+  "validation": {
+    "entities_in": 3,
+    "entities_out": 3,
+    "relations_in": 3,
+    "relations_out": 3,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

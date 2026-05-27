@@ -1,0 +1,98 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::12.2",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 12.2. Desde el 01/01/25 y hasta el 31/12/25, las entidades financieras clasificadas en",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales Mínimos",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Conversión de compromisos pasivos",
+      "properties": {
+        "tipo": "conversión de compromisos pasivos a equivalentes crediticios",
+        "description": "convertir los compromisos pasibles de ser cancelados discrecional y unilateralmente por la entidad financiera, o que se cancelen automáticamente en caso de deterioro de la solvencia del deudor en equivalentes crediticios mediante la aplicación de los CCF"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Restriccion",
+      "label": "Aplicación de CCF por período",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "descripcion": "Aplicación de CCF del 0% desde 01/01/25 al 30/06/25 y del 5% desde 01/07/25 al 31/12/25",
+        "description": "Desde el 01/01/25 y hasta el 31/12/25, las entidades financieras clasificadas en el grupo 2 que al 01/01/25 pertenezcan a los grupos B y C deberán convertir los compromisos mediante la aplicación de los CCF de acuerdo con el siguiente cronograma: 01/01/25 al 30/06/25 0%; 01/07/25 al 31/12/25 5%"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Obligacion",
+      "label": "Convertir compromisos en equivalentes",
+      "properties": {
+        "tipo": "otra",
+        "plazo": "01/01/25 hasta 31/12/25",
+        "description": "Las entidades financieras clasificadas en el grupo 2 que al 01/01/25 pertenezcan a los grupos B y C deberán convertir los compromisos pasibles de ser cancelados discrecional y unilateralmente por la entidad financiera, o que se cancelen automáticamente en caso de deterioro de la solvencia del deudor en equivalentes crediticios"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e3",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e4",
+      "target": "e1",
+      "predicate": "aplica_a"
+    },
+    {
+      "source": "e3",
+      "target": "e2",
+      "predicate": "limita"
+    },
+    {
+      "source": "e4",
+      "target": "e2",
+      "predicate": "regula"
+    }
+  ],
+  "in_tokens": 4581,
+  "out_tokens": 981,
+  "validation": {
+    "entities_in": 5,
+    "entities_out": 5,
+    "relations_in": 6,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}

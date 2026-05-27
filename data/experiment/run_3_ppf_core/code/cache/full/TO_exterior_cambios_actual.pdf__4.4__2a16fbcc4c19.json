@@ -1,0 +1,137 @@
+{
+  "chunk_id": "TO_exterior_cambios_actual.pdf::4.4",
+  "doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 4.4. y 4.5. y su valor nominal, si el primero resultase menor.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Exterior y Cambios",
+      "properties": {
+        "materia": "Operaciones de cambio y exterior",
+        "archivo": "TO_exterior_cambios_actual.pdf",
+        "version": "9a. COMUNICACIÓN A 8307"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Comunicacion",
+      "label": "Com. A 8307",
+      "properties": {
+        "codigo": "A-8307",
+        "tipo": "A",
+        "numero": "8307"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Restriccion",
+      "label": "Prohibición de liquidación en billetes extranjeros",
+      "properties": {
+        "descripcion": "En ningún caso se permite la liquidación de estas operaciones mediante el pago en billetes en moneda extranjera o mediante su depósito en cuentas custodia o en cuentas de terceros",
+        "tipo": "prohibicion"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Operacion",
+      "label": "Liquidación de operaciones",
+      "properties": {
+        "tipo": "liquidación"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Excepcion",
+      "label": "Excepción operaciones contra cable",
+      "properties": {
+        "descripcion": "excepto que se trate de operaciones contra cable que utilicen cuentas de terceros en el marco de lo contemplado en el punto 4.3.2.3"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Operacion",
+      "label": "Operaciones contra cable",
+      "properties": {
+        "tipo": "operación contra cable"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Restriccion",
+      "label": "Inaplicabilidad de requisitos en compras de títulos valores",
+      "properties": {
+        "descripcion": "Los requisitos previstos en los puntos 4.3.2.1. y 4.3.2.2. no resultarán aplicables en las compras de títulos valores que sean concretadas por los clientes con fondos en moneda extranjera recibidos en los 15 (quince) días hábiles previos a partir del cobro de capital y/o intereses de títulos de deuda emitidos por residentes",
+        "tipo": "limite_cualitativo"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Operacion",
+      "label": "Compra de títulos valores",
+      "properties": {
+        "tipo": "compra de títulos valores"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Excepcion",
+      "label": "Excepción reinversión neutral en materia impositiva",
+      "properties": {
+        "descripcion": "la reinversión de los fondos por parte del beneficiario resulte neutra en materia impositiva respecto de la operatoria de acreditación de los fondos en una cuenta a la vista del beneficiario en una entidad financiera y su posterior débito para la compra de valores"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "EntidadFinanciera",
+      "label": "Entidades financieras",
+      "properties": {
+        "categoria": "entidad financiera"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e2",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e2",
+      "target": "e3",
+      "predicate": "prohibe"
+    },
+    {
+      "source": "e4",
+      "target": "e2",
+      "predicate": "exceptua"
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "e6",
+      "target": "e7",
+      "predicate": "limita"
+    },
+    {
+      "source": "e8",
+      "target": "e6",
+      "predicate": "exceptua"
+    }
+  ],
+  "in_tokens": 4697,
+  "out_tokens": 1244,
+  "validation": {
+    "entities_in": 10,
+    "entities_out": 10,
+    "relations_in": 7,
+    "relations_out": 6,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 1
+  },
+  "error": null
+}

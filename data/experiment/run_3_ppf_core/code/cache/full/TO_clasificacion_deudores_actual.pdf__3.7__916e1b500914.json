@@ -1,0 +1,75 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::3.7",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 3.7. Importe de referencia.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "Clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "5a"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 7443",
+      "properties": {
+        "codigo": "A-7443",
+        "tipo": "A",
+        "numero": "7443"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Clasificación en categoría Micro",
+      "properties": {
+        "tipo": "clasificación de deudor",
+        "description": "Determinación del importe de referencia basado en el nivel máximo del valor de ventas totales anuales para la categoría Micro del sector Comercio"
+      }
+    },
+    {
+      "local_id": "rest1",
+      "type": "Restriccion",
+      "label": "Importe de referencia límite",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "descripcion": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio",
+        "umbral": "nivel máximo de ventas totales anuales sector Comercio categoría Micro"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "rest1",
+      "target": "to",
+      "predicate": "establecida_en"
+    },
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia"
+    },
+    {
+      "source": "rest1",
+      "target": "op1",
+      "predicate": "limita"
+    }
+  ],
+  "in_tokens": 4465,
+  "out_tokens": 568,
+  "validation": {
+    "entities_in": 4,
+    "entities_out": 4,
+    "relations_in": 3,
+    "relations_out": 3,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0
+  },
+  "error": null
+}
