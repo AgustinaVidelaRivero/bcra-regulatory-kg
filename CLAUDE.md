@@ -38,6 +38,32 @@ El smoke del Run 1 costó USD 0.72 y reveló los 6 problemas que de otro modo hu
 
 ---
 
+## Lecciones del Run 2 (para futuras instancias paralelas)
+
+Cinco fixes operativos que el Run 2 tuvo que descubrir en el camino. Heredar.
+
+### 1. Re-chunking grueso es probable que sea necesario
+
+El chunking inicial del Run 2 cortaba en cada punto numerado (cualquier profundidad: `1.`, `1.1.1.1.`, `1.1.1.1.1.`) y daba 1.520 chunks → proyección ~USD 25, fuera de presupuesto. Aplicar `MAX_CUT_DEPTH=2` (solo cortar en puntos de profundidad ≤2, los subpuntos más profundos quedan acumulados en el padre) bajó a 504 chunks de ~2.6K chars cada uno, similar al Run 1. **Para tu estrategia:** dimensionar el chunking en función del presupuesto, no solo de la granularidad ideal.
+
+### 2. Ajustes empíricos del vocabulario después del smoke
+
+Si tu estrategia usa vocabulario controlado (predicados o tipos cerrados), el smoke probablemente revele patrones recurrentes donde el LLM usa el vocabulario con dominios/rangos legítimos que el schema no contempló. Resistir el impulso de cortar todo y **revisar manualmente los 5-10 patrones más recurrentes** antes de decidir si afilás el prompt o aflojás el schema. En Run 2, 4 ajustes mínimos al schema + 5 ejemplos negativos en el SYSTEM_PROMPT bajaron las violaciones V3+V4 sin sacrificar la diferenciación.
+
+### 3. Logging por chunk es no-negociable
+
+Primer full run del Run 2: corrió 108 minutos sin output (asyncio.gather espera todo antes de imprimir), fue killed sin diagnóstico. Solución: clase `ProgressTracker` que imprime cada 5 chunks con (chunks completados/total + %, costo acumulado, rate chunks/min sobre últimos 5, throttle events, fails, ETA) y loggea cada 429/timeout individual inmediatamente. **Print con `flush=True` siempre**. Sin esto, debug de runs largos es imposible y se queman horas y dólares.
+
+### 4. Backoff conservador no agresivo
+
+Backoff inicial: 5 reintentos con base 4.0 → hasta 124 s atascados por chunk con 429. Bajado a 3 reintentos con base 2.0 → máximo 14 s por chunk. Combinado con `concurrency=2` (no 3), eliminó throttling completamente en el full run final (0 errores 429 sobre ~500 chunks). **Asunción del backoff agresivo (retry largo recupera más) no se cumple con TPM limits de Haiku 4.5 tier 1**: lo que pasa es que tres tareas en backoff serializan el throughput.
+
+### 5. Cache + reanudación incremental es lo que salvó al Run 2
+
+Cada chunk se cachea individualmente al completarse exitosamente. Cualquier kill del proceso (UI accidental, timeout, falta de visibilidad) no pierde el trabajo hecho. Re-lanzar el mismo comando reanuda desde el último chunk completo. El full run del Run 2 se completó en **3 reanudaciones consecutivas** (kill 1 a 42% del extract, kill 2 a 69% del retry, cierre final con los 60 retries pendientes) sin re-pagar lo ya hecho. **Importante:** NO cachear respuestas con `error != None` para que reintenten en runs posteriores. Y al filtrar cache, contar solo las entradas sin error como "cacheadas" para que el `ProgressTracker` no se confunda con el conteo de total esperado.
+
+---
+
 ## Restricciones operativas que todas las instancias respetan
 
 - `data/experiment/subset/` es **READ-ONLY**: leer los 5 PDFs, jamás escribir ahí.
