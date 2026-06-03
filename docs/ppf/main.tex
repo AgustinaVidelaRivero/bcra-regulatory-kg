@@ -1,0 +1,178 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Paquetes de Idioma y Codificación ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[T1]{fontenc}
+
+% --- Formato de Página y Márgenes ---
+\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing % Interlineado 1.5
+
+% --- Paquetes para Ciencia y Gráficos ---
+\usepackage{amsmath, amsfonts, amssymb} % Matemáticas
+\usepackage{graphicx} % Imágenes
+\usepackage{booktabs} % Tablas profesionales
+\usepackage{hyperref} % Enlaces y marcadores
+
+% --- Configuración de Bibliografía ---
+% \usepackage[backend=biber,style=apa]{biblatex}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{bibliografia.bib} % Archivo de referencias
+
+% ======================================================
+% COMIENZO DEL DOCUMENTO
+% ======================================================
+
+\begin{document}
+
+% --- PORTADA ---
+\begin{titlepage}
+
+	\begin{figure}
+	\centering
+	%descargar imagen desde https://images.udesa.edu.ar/sites/default/files/2023-04/logo_azul_vert_hipng.png
+	\includegraphics[width=0.45\linewidth]{logo_azul_vert_hipng.png}
+	\end{figure}
+
+    \centering
+    {\bfseries \Large Universidad de San Andrés \par}
+    \vspace{5mm}
+    {\Large Departamento Ingeniería \par}
+    \vspace{5mm}
+    {\Large Ingeniería en Inteligencia Artificial \par}
+	\vspace{10mm}
+
+    {\LARGE Propuesta Preliminar de Proyecto Final \par}
+	\vspace{20mm}
+    
+    % Modificar con los datos del PF
+    {\bfseries\LARGE Knowledge Graph para la regulación del Banco Central de la República Argentina \par}    \vfill
+    {\Large \textbf{Autor:} Agustina Videla Rivero \par}
+    \vspace{5mm}
+    {\Large \textbf{Legajo:} 34376 \par}
+    \vspace{5mm}
+    {\Large \textbf{Mentor:} Luciano Manuel Del Corro \par}
+    % Descomentar si hay comentor
+    \vspace{5mm}
+    {\Large \textbf{Comentor:} Juan Wisznia \par}
+    \vspace{15mm}    
+    {\large \textbf{Fecha de finalización estimada:} Octubre 2026\par}
+    \vspace{10mm}    
+    {\large Victoria, Buenos Aires --- Mayo 2026 \par}
+\end{titlepage}
+
+% --- ÍNDICE ---
+\newpage
+\tableofcontents
+\newpage
+
+% --- CONTENIDO ---
+% Completar con la propuesta del PF
+
+\section*{Resumen / Abstract}
+\addcontentsline{toc}{section}{Resumen / Abstract}
+El cumplimiento de la normativa del Banco Central de la República Argentina (BCRA) constituye una tarea compleja para entidades financieras, profesionales del sector y consumidores debido al volumen, dinamismo y densidad referencial del corpus normativo. La regulación se distribuye en múltiples Textos Ordenados que cubren operatoria cambiaria, clasificación de deudores, capitales mínimos, garantías y otros temas, junto con miles de Comunicaciones que se modifican y referencian mutuamente de manera continua. Decisiones operativas concretas, como restricciones cambiarias derivadas de operaciones bursátiles previas o requerimientos prudenciales sobre clasificación de deudores, derivan de la intersección de varias normas cuya interpretación conjunta resulta opaca incluso para profesionales del sector. Los Modelos de Lenguaje de Gran Escala (LLMs) ofrecen una vía para automatizar este tipo de consultas, pero presentan limitaciones críticas en dominios donde se exige precisión factual y trazabilidad documental. Las técnicas de \textit{Retrieval-Augmented Generation} (RAG) basadas en \textit{embeddings} densos mitigan parcialmente el problema, pero no capturan la estructura referencial explícita entre normas ni habilitan el razonamiento sobre cadenas causales que conectan operaciones con restricciones.
+ 
+Esta propuesta plantea el diseño, construcción y evaluación de un \textit{Knowledge Graph} (KG) que modele estructuralmente la regulación del BCRA, con énfasis en la calidad del modelado y la trazabilidad documental de cada elemento del grafo a su fuente normativa. La contribución central del trabajo es el modelado riguroso del KG sobre un corpus regulatorio complejo en castellano, junto con una metodología de evaluación que combine métricas estructurales sobre el grafo construido, evaluación de la calidad de extracción a nivel de tripleta contra un \textit{gold standard}, y métricas funcionales sobre los casos de uso aplicados. La utilidad del KG se demostrará a través de dos de estos casos: un sistema agéntico de explicabilidad que, dado un \textit{log} de operaciones de un cliente o entidad, reconstruye la cadena causal de normas que justifica una restricción operativa específica, evaluado sobre escenarios representativos de distintos dominios regulatorios (e.g., régimen cambiario, clasificación de deudores); y una comparación cabeza a cabeza contra un sistema RAG tradicional sobre el mismo corpus.
+
+Los resultados esperados incluyen un \textit{Knowledge Graph} público y trazable sobre la regulación del BCRA, una metodología de evaluación replicable de KGs construidos sobre normativa financiera, un \textit{gold standard} de tripletas y un \textit{eval set} curado como recursos publicables, y evidencia empírica sobre la utilidad y los \textit{trade-offs} de las arquitecturas KG-RAG en dominios regulatorios complejos en lengua castellana. El proyecto contribuye un caso de estudio en la intersección entre inteligencia artificial y regulación financiera latinoamericana, abordando vacíos identificados en la literatura internacional sobre \textit{faithfulness} y \textit{citation accuracy} en sistemas de \textit{question answering} regulatorio.
+
+\section{Motivación}
+Los Modelos de Lenguaje de Gran Escala han demostrado capacidades destacadas en tareas de comprensión y generación de texto, pero su adopción en dominios regulados como el financiero, el farmacéutico o el legal enfrenta limitaciones fundamentales. Las respuestas generadas pueden contener afirmaciones plausibles pero factualmente incorrectas, fenómeno denominado alucinación \cite{ji2023hallucination}, y carecen por defecto de mecanismos para verificar el origen de cada hecho que producen. En contextos donde la precisión y la trazabilidad son requisitos no negociables, esta brecha entre capacidad y confiabilidad bloquea la aplicación efectiva de la tecnología.
+ 
+El cumplimiento regulatorio en el sector financiero argentino ilustra esta tensión con particular claridad. Las entidades supervisadas por el Banco Central de la República Argentina deben interpretar y aplicar un cuerpo normativo extenso, dinámico y densamente referenciado, que regula la operatoria del sistema financiero argentino en sus múltiples dimensiones: política monetaria y cambiaria, supervisión prudencial de entidades, operatoria crediticia, tasas de interés, protección al usuario de servicios financieros y sistemas de pago, entre otras. Las Comunicaciones del BCRA se modifican, derogan y consolidan continuamente, y un mismo concepto suele estar regulado por múltiples normas que se citan mutuamente. Decisiones operativas concretas, como la imposibilidad de adquirir divisas durante un período tras la compra de un activo bursátil, derivan de combinaciones específicas de normas cuya interpretación conjunta resulta opaca incluso para profesionales del sector. Un sistema de asistencia que responda consultas o explique restricciones operativas sobre esta normativa no solo debe producir información factualmente correcta, sino también permitir auditar la procedencia exacta de cada afirmación generada.
+ 
+La técnica de \textit{Retrieval-Augmented Generation} \cite{lewis2020rag} mitiga parcialmente este problema al condicionar la generación del LLM con fragmentos de texto recuperados de una base documental, lo que reduce la dependencia del modelo en su conocimiento paramétrico potencialmente desactualizado o erróneo. Sin embargo, las arquitecturas RAG tradicionales basadas en \textit{embeddings} densos sobre fragmentos de texto presentan limitaciones documentadas cuando el corpus tiene estructura referencial compleja: la unidad de recuperación, el \textit{chunk}, no captura las relaciones explícitas entre entidades regulatorias, y la navegación entre normas relacionadas depende de la calidad incierta de la similitud semántica entre fragmentos.
+
+Los \textit{Knowledge Graphs} ofrecen una representación estructurada del conocimiento basada en relaciones explícitas entre entidades, lo que habilita razonamiento sobre hechos, navegación entre conceptos relacionados y trazabilidad nativa cuando cada hecho extraído se vincula a su fuente textual original \cite{hogan2021knowledge}. Trabajos recientes han comenzado a explorar la integración de KGs con LLMs en dominios regulados con resultados prometedores; sin embargo, la literatura presenta vacíos metodológicos persistentes en la evaluación rigurosa de fidelidad factual, la comparación con \textit{baselines} fuertes y la cobertura de idiomas distintos al inglés, vacíos que se detallan en la siguiente sección sobre el Estado del Arte y que el presente trabajo busca abordar.
+ 
+La regulación del BCRA constituye un escenario particularmente apto para investigar estos vacíos. Es de acceso público, está densamente \textit{cross}-referenciada, regula operaciones de alto impacto económico para empresas y particulares y, hasta donde se ha relevado, no existe un \textit{Knowledge Graph} público que la represente. Adicionalmente, el contexto argentino aporta el desafío metodológico de operar sobre datos en castellano técnico-financiero y con una estructura referencial localmente característica, contribuyendo evidencia empírica a una conversación académica dominada hasta el momento por casos en inglés.
+
+La presente propuesta plantea diseñar, construir y evaluar un \textit{Knowledge Graph} estructurado de la regulación del BCRA, con énfasis en la calidad del modelado como contribución central. Su utilidad se demostrará a través de dos casos de uso aplicados: un sistema agéntico de explicabilidad de restricciones operativas y una comparación empírica contra arquitecturas RAG tradicionales. El proyecto aporta un artefacto técnico utilizable, recursos publicables (gold standard de tripletas y eval set curado) y evidencia empírica novedosa sobre la viabilidad de las arquitecturas KG-RAG en dominios regulatorios complejos en lengua castellana, con potencial de extensión a normativa de otros bancos centrales y organismos regulatorios.
+ 
+\section{Estado del Arte}
+El problema de extraer y estructurar información de textos regulatorios para automatizar consultas precede a la era de los Modelos de Lenguaje de Gran Escala. Los primeros sistemas combinaban módulos especializados de Reconocimiento de Entidades Nombradas (NER) y Extracción de Relaciones (RE), con \textit{pipelines} tradicionales basados en arquitecturas como \textit{bi-LSTM-CRF} \cite{lample2016neural} y \textit{Semantic Role Labeling} profundo \cite{he2017deep}, complementados con métodos de extracción abierta como \textit{ClausIE} \cite{delcorro2013clausie} y \textit{OpenIE} \cite{etzioni2011open}. Khetan et al. \cite{khetan2021kganchored} aplicaron este paradigma al \textit{Federal Register} estadounidense, anclando la extracción a un esquema \textit{task-specific} de siete tipos de entidad para detectar cambios en umbrales regulatorios. Estos enfoques pre-LLM enfrentaban limitaciones de escala, transferibilidad entre dominios y dependencia de anotaciones manuales costosas, lo que restringía su aplicación a corpus específicos y previamente etiquetados.
+ 
+La irrupción de los LLMs cambió el panorama metodológico. Lewis et al. \cite{lewis2020rag} formalizaron \textit{Retrieval-Augmented Generation}, una arquitectura que reduce alucinaciones condicionando la generación con texto recuperado dinámicamente desde una base documental. RAG se convirtió rápidamente en el paradigma dominante para \textit{question answering} factual y se extendió al dominio regulatorio: Kim y Min \cite{kim2024qarag} propusieron QA-RAG, una variante con \textit{re-ranking} basado en respuestas hipotéticas, demostrando mejoras sobre RAG convencional en regulación farmacéutica; Hillebrand et al. \cite{hillebrand2024rag} reportaron mejoras en cumplimiento empresarial mediante un \textit{chatbot} con búsqueda híbrida y \textit{relevance boosting}, evaluado sobre 124 consultas anotadas por expertos. Sin embargo, estos enfoques heredan las limitaciones estructurales de RAG basado en \textit{embeddings} densos: la fragmentación del corpus en \textit{chunks} disuelve las referencias cruzadas entre normas, y la recuperación por similitud semántica resulta especialmente frágil en corpus regulatorios donde términos cercanos en \textit{embedding space} pueden corresponder a normas con efectos jurídicos opuestos.
+ 
+Paralelamente, los \textit{Knowledge Graphs} consolidaron su rol como representación estructurada del conocimiento \cite{hogan2021knowledge}. Un \textit{Knowledge Graph} (KG) modela entidades del mundo real como nodos y las relaciones entre ellas como aristas etiquetadas, expresando típicamente cada hecho como una tripleta Sujeto-Predicado-Objeto (e.g., \textit{Comunicación A 7106 - modifica - Punto 3.16.3.4 del Texto Ordenado}). Pan et al. \cite{pan2024unifying} mapean sistemáticamente la integración LLM-KG en tres paradigmas: \textit{KG-augmented LLMs}, \textit{LLM-augmented KGs} y arquitecturas \textit{synergized}. La construcción automática de KGs con LLMs evolucionó desde \textit{pipelines} \textit{zero-shot} iterativos \cite{carta2023iterative} hacia métodos \textit{schema-aware} con \textit{prefix-tuning} aplicados a corpus legales \cite{li2024jkem} y arquitecturas multi-agente que abordan explícitamente \textit{coreference resolution} \textit{type-aware} en documentos largos \cite{meher2025corekg, meher2025linkkg}. Tamašauskaitė y Groth \cite{tamasauskaite2023defining} consolidaron una revisión sistemática del proceso de desarrollo de KGs en seis pasos canónicos —identificación de datos, construcción de ontología, extracción de conocimiento, procesamiento, construcción del KG, y mantenimiento—, marco metodológico adoptado en trabajos posteriores.
+ 
+La intersección KG-RAG emergió como vía prometedora para combinar las fortalezas de ambas técnicas. Edge et al. \cite{edge2024graphrag} propusieron \textit{GraphRAG}, un \textit{framework} de Microsoft que combina construcción de KG vía LLM con detección de comunidades y \textit{query-focused summarization}, hoy implementación de referencia para experimentación comparativa. Específicamente sobre dominios regulados, Agarwal et al. \cite{agarwal2025ragulating} desarrollaron \textit{RAGulating Compliance}: una arquitectura multi-agente sobre la \textit{Food and Drug Administration} estadounidense que extrae tripletas en modo \textit{schema-light} —es decir, sin definir los tipos de entidad y relación a priori, sino dejándolos emerger de los datos— y las co-embede junto con sus secciones fuente en una única base vectorial, reportando mejoras en navegabilidad entre normas relacionadas pero un incremento marginal en \textit{answer accuracy}. Arun et al. \cite{arun2025finreflect} propusieron \textit{FinReflectKG} con un \textit{loop} de \textit{feedback} iterativo y reglas de validación estructural, alcanzando 64{,}8\% de cumplimiento sobre KGs construidos a partir de declaraciones 10-K de empresas estadounidenses. En el dominio legal, d'Amato et al. \cite{damato2025legalkg} compararon \textit{pipelines} \textit{bottom-up} tradicionales contra enfoques basados en LLM sobre 73 sentencias del Tribunal Europeo de Derechos Humanos, evidenciando complementariedad entre ambos paradigmas. Más recientemente, Arun et al. \cite{arun2025finreflectmultihop} extendieron este trabajo con un \textit{benchmark} de QA \textit{multi-hop} sobre el mismo corpus financiero, reportando una mejora aproximada del 24\% en \textit{correctness} y una reducción del 84{,}5\% en consumo de \textit{tokens} en arquitecturas KG-RAG comparadas contra recuperación tradicional basada en ventanas de página, evidencia empírica que motiva directamente la comparación cabeza a cabeza contra sistemas RAG tradicionales propuesta en el presente trabajo.
+ 
+Una revisión transversal de estos trabajos revela vacíos persistentes que el presente proyecto aborda. Primero, ningún trabajo evalúa cuantitativamente \textit{faithfulness} ni \textit{citation accuracy} mediante métricas estándar como RAGAS \cite{es2024ragas} o FActScore \cite{min2023factscore}, pese a que la reducción de alucinaciones es la motivación declarada de KG-RAG. Segundo, las comparaciones empíricas entre KG-RAG y RAG basado en \textit{embeddings} carecen de \textit{baselines} fuertes e independientes; los pocos resultados publicados son auto-comparativos o ambiguos según el umbral elegido. Tercero, los corpus evaluados se concentran en inglés —con la única excepción del derecho penal chino \cite{li2024jkem}—, sin evidencia empírica sobre regulación financiera en castellano. Cuarto, los costos computacionales y de inferencia rara vez se reportan, lo que impide evaluar la viabilidad práctica de los sistemas propuestos.
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+Diseñar, construir y evaluar un Knowledge Graph sobre la regulación del Banco Central de la República Argentina, con énfasis en la calidad del modelado, la trazabilidad documental y el rigor de la evaluación de extracción, demostrando su utilidad mediante dos casos de uso aplicados: un sistema agéntico de explicabilidad de restricciones operativas derivadas del corpus regulatorio, y una comparación empírica contra sistemas RAG tradicionales.
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+    \item Diseñar un esquema de modelado del \textit{Knowledge Graph} que capture las entidades regulatorias y relaciones causales propias de la regulación del BCRA, con la intención de validarlo iterativamente sobre un subset acotado del corpus.
+
+    \item Construir el \textit{Knowledge Graph} sobre el corpus seleccionado de regulación del BCRA, garantizando la trazabilidad documental de cada elemento del grafo a su fuente normativa.
+
+    \item Diseñar e implementar una metodología de evaluación rigurosa que combine métricas estructurales del grafo construido, evaluación de la calidad de extracción a nivel de tripleta contra un \textit{gold standard}, y métricas funcionales sobre los casos de uso aplicados, incluyendo \textit{faithfulness} y \textit{citation accuracy}.
+
+    \item Implementar y evaluar, como primer caso de uso aplicado, un sistema agéntico de explicabilidad que, dado un \textit{log} de operaciones financieras de un cliente o entidad, reconstruya la cadena causal de normas que justifica una restricción operativa específica, evaluado sobre escenarios representativos de distintos dominios regulatorios (e.g., régimen cambiario, clasificación de deudores).
+    
+    \item Implementar y evaluar, como segundo caso de uso aplicado, una comparación empírica entre un sistema KG-RAG y un sistema RAG tradicional sobre el mismo corpus, en términos de calidad de respuesta y trazabilidad.
+    
+\end{enumerate}
+
+\section{Metodología y Plan de Trabajo}
+
+\subsection{Datos}
+El corpus está compuesto por la regulación del BCRA accesible públicamente desde el sitio web del organismo, incluyendo los Textos Ordenados vigentes (que abarcan operatoria cambiaria, clasificación de deudores, capitales mínimos, garantías, tasas de interés, entre otros), su marco legal asociado y las Comunicaciones emitidas en el período de referencia. La descarga se realiza programáticamente mediante \textit{scraping} estructurado, manteniendo manifiesto y \textit{logs} para garantizar reproducibilidad. Como conjunto de evaluación se construirá un \textit{eval set} curado, dimensionado durante la fase de modelado, cubriendo consultas factuales directas, razonamiento sobre múltiples normas, y reconstrucción explicativa de cadenas causales de restricción. La construcción rigurosa del \textit{eval set} constituye una actividad central del proyecto y su tamaño final se reportará junto con los criterios de muestreo aplicados.
+
+\subsection{Construcción y evaluación del Knowledge Graph}
+El foco central del proyecto es el modelado riguroso del KG. Se seguirá un esquema híbrido \textit{schema-light} con elementos \textit{schema-based} mínimos sobre entidades \textit{core} del dominio (Comunicación, Texto Ordenado, Artículo, Entidad Financiera, Operación, Restricción, Excepción), inspirado en \textit{RAGulating Compliance} \cite{agarwal2025ragulating}. La extracción de tripletas se realizará mediante LLMs con \textit{prompting} estructurado, incorporando \textit{coreference resolution} \textit{type-aware} \cite{meher2025linkkg} y un módulo de canonicalización de entidades. Cada elemento del grafo mantendrá un puntero explícito a su sección fuente, materializando la trazabilidad documental como propiedad nativa del modelado. La estrategia de modelado privilegia la iteración rápida sobre subsets acotados antes de escalar al corpus completo, dado que cambios en el modelado generan efectos \textit{downstream} significativos sobre los casos de uso.
+ 
+La evaluación se desarrollará en dos planos complementarios. La \textbf{evaluación principal} es sobre el KG construido y comprende dos componentes. Por un lado, métricas de calidad estructural del grafo (densidad, conectividad, ratio de duplicación) y cobertura de \textit{Competency Questions} definidas a priori. Por el otro, evaluación de la calidad de extracción a nivel de tripleta mediante métricas de \textit{precision} y \textit{recall} contra un \textit{gold standard} construido por anotación manual sobre una muestra representativa del corpus. La metodología precisa de construcción del \textit{gold standard} y los criterios de muestreo constituyen un objetivo de diseño explícito de la fase inicial del proyecto. La \textbf{evaluación funcional} mide la utilidad del grafo en los dos casos de uso aplicados: para el sistema de explicabilidad se medirá precisión y completitud de las cadenas causales reconstruidas; para la comparación KG-RAG vs RAG tradicional se utilizarán \textit{faithfulness}, \textit{answer correctness} y una métrica propia de \textit{citation accuracy}, complementadas con FActScore \cite{min2023factscore} y RAGAS \cite{es2024ragas}. Se reportará adicionalmente costo y latencia de inferencia, atendiendo el vacío de viabilidad práctica identificado en el estado del arte. Los experimentos se ejecutarán sobre infraestructura \textit{cloud} provista por la Universidad de San Andrés.
+
+\subsection{Plan de trabajo}
+
+El proyecto se desarrolla entre marzo y octubre de 2026 según la siguiente cronología:
+
+\begin{itemize}
+    \item \textbf{Marzo--Abril 2026 (completado)}: investigación bibliográfica del estado del arte, definición del scope, descarga inicial del corpus regulatorio del BCRA y exploración preliminar del esquema de modelado.
+    \item \textbf{Mayo 2026}: completar el corpus mediante \textit{scraping}, diseñar e iterar el esquema del KG.
+    \item \textbf{Junio 2026}: implementar la primera versión del \textit{pipeline} de extracción y producir la primera versión completa del KG sobre el corpus.
+    \item \textbf{Julio 2026}: construir el \textit{gold standard} de tripletas para evaluación de extracción y ejecutar la evaluación estructural y de calidad del KG construido.
+    \item \textbf{Agosto 2026}: construir el \textit{eval set} para los casos de uso aplicados con criterios de muestreo explícitos.
+    \item \textbf{Septiembre 2026}: implementar y evaluar el primer caso de uso aplicado (sistema agéntico de explicabilidad).
+    \item \textbf{Octubre 2026}: implementar y evaluar el segundo caso de uso aplicado (comparación KG-RAG vs RAG tradicional), análisis integral de resultados, redacción final del informe y preparación de la defensa.
+\end{itemize}
+
+\section{Análisis de Factibilidad}
+El proyecto es realizable bajo las condiciones identificadas. Los datos requeridos son de acceso público: la regulación del BCRA está disponible desde el sitio web del organismo y no presenta restricciones legales para su uso académico ni para la publicación posterior de los resultados. La descarga programática del corpus se encuentra parcialmente completada al momento de la propuesta, validando empíricamente la viabilidad técnica del \textit{scraping} y permitiendo estimar con precisión el volumen final del corpus de trabajo. Al tratarse exclusivamente de regulación pública, no se manipulan datos personales ni información comercialmente sensible, lo que elimina riesgos asociados a privacidad o cumplimiento regulatorio.
+
+En términos de cómputo, el proyecto cuenta con presupuesto asignado en infraestructura Amazon Web Services provisto por la Universidad de San Andrés, suficiente para los volúmenes de inferencia previstos. 
+
+El proyecto cuenta con supervisión académica por parte del mentor Luciano del Corro y del comentor Juan Wisznia, ambos del Departamento de Ingeniería de la Universidad de San Andrés, con encuentros de seguimiento periódicos previstos durante todo el desarrollo. El alcance de la propuesta ha sido consensuado con el equipo de mentoría.
+
+El factor temporal es el principal vector de riesgo. La cronología contempla ocho meses de trabajo, de los cuales dos meses iniciales (marzo--abril) se encuentran completados al momento de la presentación de esta propuesta. Los seis meses restantes contemplan dos casos de uso aplicados, junto con la construcción rigurosa del KG y del \textit{eval set}. Como plan de mitigación se establece una priorización explícita: el modelado, construcción y evaluación rigurosa del KG (estructural y de calidad de extracción), junto con la construcción del \textit{eval set}, constituyen las contribuciones metodológicas centrales del trabajo y deben completarse íntegramente. Los dos casos de uso aplicados se desarrollarán en orden secuencial; en caso de ajuste del cronograma, se priorizará el sistema agéntico de explicabilidad por sobre la comparación KG-RAG vs RAG tradicional.
+
+\section{Resultados Esperados}
+
+El proyecto producirá los siguientes artefactos verificables:
+
+\begin{itemize}
+    \item Un \textit{Knowledge Graph} público y trazable sobre la regulación del BCRA, con esquema documentado, función de \textit{provenance} sobre las fuentes normativas, y disponibilidad para consulta y replicación.
+    \item Una metodología de evaluación de KGs sobre normativa financiera en castellano, replicable sobre otros corpus regulatorios, con métricas estructurales, de calidad de extracción a nivel de tripleta, y funcionales claramente especificadas.
+    \item Un \textit{gold standard} de tripletas anotadas manualmente y un \textit{eval set} curado, ambos publicados como recursos para la comunidad investigadora.
+    \item Un sistema agéntico de explicabilidad capaz de reconstruir, dado un \textit{log} de operaciones de un cliente o entidad, la cadena causal de normas que justifica una restricción operativa específica, evaluado sobre casos representativos del corpus regulatorio.
+    \item Una comparación empírica entre arquitecturas KG-RAG y RAG tradicional sobre el mismo corpus regulatorio, reportando \textit{faithfulness}, \textit{citation accuracy}, costo computacional y latencia, con \textit{baselines} explícitos y reproducibles.
+    \item Evidencia empírica novedosa sobre los \textit{trade-offs} de precisión, trazabilidad y costo de las arquitecturas KG-RAG en dominios regulatorios complejos en lengua castellana, contribuyendo al estado del arte internacional con un caso de estudio sobre regulación financiera latinoamericana hasta ahora ausente en la literatura revisada.
+\end{itemize}
+
+
+% --- BIBLIOGRAFIA ---
+\section{Bibliografía}
+\printbibliography[heading=none]
+
+\end{document} 
+
