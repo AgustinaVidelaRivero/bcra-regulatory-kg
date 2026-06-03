@@ -175,6 +175,21 @@ El `type` canónico mostrado en el campo top-level del nodo es el `type_raw` **m
 - `entidad_financiera` aparece con 8 tipos crudos distintos: `Sujeto obligado`, `Agente regulado`, `Sujeto regulado`, `Institución regulada`, `Sujeto regulador`, `Entidad regulada`, `Categoría de contraparte`, `Tipo de entidad financiera`.
 - `sefyc` con 5: `Autoridad regulatoria`, `Órgano regulador`, `Órgano de supervisión`, `Entidad reguladora`, `Autoridad reguladora` — todos legítimas variantes para la misma autoridad.
 
+#### `properties.name_variants` — variantes de label que el slug fusionó
+
+Cuando dos o más nombres distintos producen el mismo slug (lowercase + sin acentos + snake_case), el slug-dedup los fusiona en un único nodo y registra los nombres originales en `properties.name_variants`. Si solo se observó una forma del nombre, el campo queda como `[]`.
+
+**Alcance:** 29 nodos (0,9 % del total) tienen variantes registradas. Son casi enteramente diferencias de **casing y guiones** dentro de denominaciones que el TO usa con grafías inconsistentes:
+
+- `mipyme` con `MiPyME`, `MiPyMe`, `Mipyme` (tres variantes).
+- `sefyc` con `SEFYC`, `SEFyC`.
+- `metodo_delta_plus` con `Método delta plus`, `Método delta-plus`.
+- `tarjetas_de_credito` con `Tarjetas de Crédito`, `Tarjetas de crédito`.
+- `superintendencia_de_entidades_financieras_y_cambiarias_sefyc` con `Superintendencia de Entidades Financieras y Cambiarias (SEFYC)` y `…(SEFyC)`.
+- `responsabilidad_patrimonial_computable` con `Responsabilidad Patrimonial Computable` y `Responsabilidad patrimonial computable`.
+
+**Limitación deliberada del scope:** el campo **NO** captura sinónimos semánticos (p. ej. `BCRA` vs `Banco Central de la República Argentina`), porque por decisión de diseño los sinónimos producen slugs distintos y quedan como **nodos separados** (sección 4.1, sin heurística de plurales ni sinónimos). Para esta estrategia, esos casos son señal del corpus que la FASE 2.3 puede medir.
+
 ### 4.3 Clustering semántico de tipos: NO se aplicó
 
 Probé `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` con cosine similarity a umbrales [0.85, 0.88, 0.90, 0.92] y dos estrategias:
@@ -206,7 +221,19 @@ Resultado: **0 nodos dropeados**, **0 edges dropeados**. El refuerzo del SYSTEM_
 ## 5. Decisiones más generales bajo la estrategia
 
 1. **Una entidad por nodo, label como identificador corto** (reglas 5 y 6 del SYSTEM_PROMPT): las enumeraciones se desagregan ("los bancos públicos, privados y cooperativos" → 3 entidades) y los labels son frases nominales cortas (mediana = 4 palabras, p90 = 8, máx = 18). La elaboración va en `description`.
-2. **Provenance obligatorio en cada nodo y cada edge** (regla del protocolo). En nodos se preserva además `properties.all_provenances` con todas las observaciones cross-chunk. La `location` es `p.<página>` o `p.<a>-<b>` cuando el chunk abarca varias páginas; `pypdf` no produce estructura de secciones limpia, por lo que el detalle interno del chunk solo aparece cuando Haiku lo identificó explícitamente en `location_hint`.
+2. **Provenance obligatorio en cada nodo y cada edge** (regla del protocolo). En nodos se preserva además `properties.all_provenances` con todas las observaciones cross-chunk. El formato de `location` es `p.<página>` o `p.<a>-<b>` (cuando el chunk abarca varias páginas) **concatenado con el `location_hint` estructural** que el modelo identificó dentro del chunk, separados por `" / "`.
+
+   **Cobertura observada del `location_hint`:** el modelo sostuvo grounding estructural fino con alta densidad. **El 100 % de los nodos y el 100 % de los edges del KG llevan una location compuesta** (`p.<rango> / <hint>`), no apenas el rango de página. Ejemplos representativos sacados del KG real:
+
+   - `p.1-5 / Punto 1.1.1` — `Usuario de servicios financieros`
+   - `p.1-5 / Punto 1.1.2.1` — `Entidad financiera`
+   - `p.9-11 / Punto 2.3.1.1, inciso vii) y ss.` — sobre características de tarjeta de crédito
+   - `p.18-20 / Sección 2.3.10, 2.4` — sobre obligaciones de los sujetos obligados
+   - `p.28-32 / Punto 3.2.1.1, párrafo segundo` — sobre el Comité de Protección de los Usuarios
+   - `p.6-8 / Punto 2.3.1.1, inciso ii)` — sobre razón social/CUIT/domicilio legal
+   - `p.33-35 / Párrafo inicial, Sección 5` — sobre tramitación de sumarios cambiarios
+
+   Aunque `pypdf` no expone una estructura jerárquica de secciones a nivel del parser, los TOs del BCRA contienen las referencias numéricas (puntos, incisos, secciones, anexos) en el cuerpo del texto, y el SYSTEM_PROMPT le pidió al modelo que registrara ese "ubicación textual interna" en `location_hint`. Haiku 4.5 lo respetó con la granularidad que se ve arriba — punto numerado o sección + inciso + párrafo. Esto convierte a la `location` en una **cita rastreable hacia el TO** y no apenas un rango de páginas.
 3. **Predicados crudos preservados** en `edges[].properties.predicate_raw`. La métrica comparativa del experimento es justamente la verbosidad léxica del vocabulario de relaciones; truncarla en la normalización superficial la habría arruinado.
 4. **`properties.version = "vigente"`** en todos los nodos. Para este experimento se modela solo la versión vigente de cada TO (regla 2 del protocolo).
 5. **Modelo de extracción: Claude Haiku 4.5** (`claude-haiku-4-5`), temperature 0, max_tokens_out 16 384. Concurrency 3 (lección Run 1), backoff conservador (3 reintentos, base 2.0).
