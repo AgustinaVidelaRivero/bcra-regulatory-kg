@@ -1,0 +1,79 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0002__punto_10_2_fiduciarios_de_fideicomisos_f",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 10.2 — Fiduciarios de fideicomisos financieros comprendidos en la Ley de Entidades Fi- + Punto 10.4 — Proveedores de servicios de créditos entre particulares a través de plataformas. + Punto 1.1 — Criterio",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"clasificacion_deudores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudores\",\n      \"properties\": {\n        \"description\": \"Evaluación de la calidad de los obligados en orden al cumplimiento de sus compromisos financieros.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_situacion_particular\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evaluación de situación particular\",\n      \"properties\": {\n        \"description\": \"Base de evaluación para la clasificación de deudores considerando la situación particular del cliente.\"\n      }\n    },\n    {\n      \"id\": \"cliente_entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes de la entidad\",\n      \"properties\": {\n        \"description\": \"Personas residentes en el país o exterior, de sectores público, privado, financiero y no financiero, que reciben financiaciones.\"\n      }\n    },\n    {\n      \"id\": \"financiaciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Financiaciones\",\n      \"properties\": {\n        \"description\": \"Operaciones de crédito otorgadas por la entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"cumplimiento_compromisos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cumplimiento de compromisos\",\n      \"properties\": {\n        \"description\": \"Capacidad del obligado para honrar sus obligaciones financieras.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"cliente_entidad_financiera\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"clasificacion_deudores\",\n      \"target\": \"evaluacion_situacion_particular\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"financiaciones\",\n      \"target\": \"cliente_entidad_financiera\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"cumplimiento_compromisos\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"fundamenta\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3633,
+  "output_tokens": 600,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 5,
+  "relations_count": 4,
+  "parsed": {
+    "entities": [
+      {
+        "id": "clasificacion_deudores",
+        "type": "Operacion",
+        "label": "Clasificación de deudores",
+        "properties": {
+          "description": "Evaluación de la calidad de los obligados en orden al cumplimiento de sus compromisos financieros."
+        }
+      },
+      {
+        "id": "evaluacion_situacion_particular",
+        "type": "Restriccion",
+        "label": "Evaluación de situación particular",
+        "properties": {
+          "description": "Base de evaluación para la clasificación de deudores considerando la situación particular del cliente."
+        }
+      },
+      {
+        "id": "cliente_entidad_financiera",
+        "type": "Concepto",
+        "label": "Clientes de la entidad",
+        "properties": {
+          "description": "Personas residentes en el país o exterior, de sectores público, privado, financiero y no financiero, que reciben financiaciones."
+        }
+      },
+      {
+        "id": "financiaciones",
+        "type": "Operacion",
+        "label": "Financiaciones",
+        "properties": {
+          "description": "Operaciones de crédito otorgadas por la entidad financiera."
+        }
+      },
+      {
+        "id": "cumplimiento_compromisos",
+        "type": "Concepto",
+        "label": "Cumplimiento de compromisos",
+        "properties": {
+          "description": "Capacidad del obligado para honrar sus obligaciones financieras."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "cliente_entidad_financiera",
+        "target": "clasificacion_deudores",
+        "predicate": "requiere"
+      },
+      {
+        "source": "clasificacion_deudores",
+        "target": "evaluacion_situacion_particular",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "financiaciones",
+        "target": "cliente_entidad_financiera",
+        "predicate": "comprende"
+      },
+      {
+        "source": "cumplimiento_compromisos",
+        "target": "clasificacion_deudores",
+        "predicate": "fundamenta"
+      }
+    ]
+  }
+}

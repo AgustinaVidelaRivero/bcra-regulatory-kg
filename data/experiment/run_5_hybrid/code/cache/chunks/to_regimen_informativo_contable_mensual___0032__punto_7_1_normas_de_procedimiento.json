@@ -1,0 +1,145 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0032__punto_7_1_normas_de_procedimiento",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 7.1 — Normas de procedimiento",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"franquicia_otorgada_bcra\",\n      \"type\": \"Operacion\",\n      \"label\": \"Franquicia otorgada por el BCRA\",\n      \"properties\": {\n        \"description\": \"Facilidad o beneficio otorgado por el BCRA que implica una disminución de exigencia regulatoria.\"\n      }\n    },\n    {\n      \"id\": \"reporte_franquicia_mensual\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reporte de franquicias en régimen informativo\",\n      \"properties\": {\n        \"description\": \"Las entidades deben incluir en códigos 60100000 a 61100000 los importes derivados de franquicias otorgadas por el BCRA, consignando número, fecha de Resolución o nota de comunicación.\"\n      }\n    },\n    {\n      \"id\": \"descripcion_detallada_calculo_franquicia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Descripción detallada del cálculo de franquicia\",\n      \"properties\": {\n        \"description\": \"Debe agregarse una descripción detallada del cálculo de la franquicia para el período informado, basada en la Resolución o nota que la otorgó.\"\n      }\n    },\n    {\n      \"id\": \"calculo_importe_mes_n\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de importe mensual con franquicia\",\n      \"properties\": {\n        \"description\": \"Para códigos 60100000, 60200000, 60300000 y 60400000, el cálculo del importe del mes n debe considerar exigencia de riesgo de crédito, exigencia por riesgo de mercado, exigencia por riesgo operacional, responsabilidad patrimonial computable y franquicia informada.\"\n      }\n    },\n    {\n      \"id\": \"codigo_60100000_61100000\",\n      \"type\": \"Concepto\",\n      \"label\": \"Códigos contables 60100000 a 61100000\",\n      \"properties\": {\n        \"description\": \"Rangos de códigos utilizados para informar importes derivados de franquicias otorgadas.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"facilidad_disminucion_exigencia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Facilidad que implica disminución de exigencia\",\n      \"properties\": {\n        \"description\": \"Beneficio regulatorio que reduce requisitos de capital o riesgo.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_riesgo_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Requerimiento de capital por exposición a riesgo de crédito, incluyendo INC.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_riesgo_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Requerimiento de capital por exposición a riesgo de mercado al último día del mes.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_riesgo_operacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Requerimiento de capital por riesgo operacional del mes.\"\n      }\n    },\n    {\n      \"id\": \"responsabilidad_patrimonial_computable\",\n      \"type\": \"Concepto\",\n      \"label\": \"Responsabilidad Patrimonial Computable\",\n      \"properties\": {\n        \"description\": \"Capital disponible para cubrir requisitos regulatorios informado en el mes.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"reporte_franquicia_mensual\",\n      \"target\": \"franquicia_otorgada_bcra\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reporte_franquicia_mensual\",\n      \"target\": \"codigo_60100000_61100000\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"descripcion_detallada_calculo_franquicia\",\n      \"target\": \"franquicia_otorgada_bcra\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"calculo_importe_mes_n\",\n      \"target\": \"exigencia_riesgo_credito\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"calculo_importe_mes_n\",\n      \"target\": \"exigencia_riesgo_mercado\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"calculo_importe_mes_n\",\n      \"target\": \"exigencia_riesgo_operacional\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"calculo_importe_mes_n\",\n      \"target\": \"responsabilidad_patrimonial_computable\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"franquicia_otorgada_bcra\",\n      \"target\": \"bcra\",\n      \"predicate\": \"otorgada_por\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3819,
+  "output_tokens": 1466,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "franquicia_otorgada_bcra",
+        "type": "Operacion",
+        "label": "Franquicia otorgada por el BCRA",
+        "properties": {
+          "description": "Facilidad o beneficio otorgado por el BCRA que implica una disminución de exigencia regulatoria."
+        }
+      },
+      {
+        "id": "reporte_franquicia_mensual",
+        "type": "Restriccion",
+        "label": "Reporte de franquicias en régimen informativo",
+        "properties": {
+          "description": "Las entidades deben incluir en códigos 60100000 a 61100000 los importes derivados de franquicias otorgadas por el BCRA, consignando número, fecha de Resolución o nota de comunicación."
+        }
+      },
+      {
+        "id": "descripcion_detallada_calculo_franquicia",
+        "type": "Restriccion",
+        "label": "Descripción detallada del cálculo de franquicia",
+        "properties": {
+          "description": "Debe agregarse una descripción detallada del cálculo de la franquicia para el período informado, basada en la Resolución o nota que la otorgó."
+        }
+      },
+      {
+        "id": "calculo_importe_mes_n",
+        "type": "Restriccion",
+        "label": "Cálculo de importe mensual con franquicia",
+        "properties": {
+          "description": "Para códigos 60100000, 60200000, 60300000 y 60400000, el cálculo del importe del mes n debe considerar exigencia de riesgo de crédito, exigencia por riesgo de mercado, exigencia por riesgo operacional, responsabilidad patrimonial computable y franquicia informada."
+        }
+      },
+      {
+        "id": "codigo_60100000_61100000",
+        "type": "Concepto",
+        "label": "Códigos contables 60100000 a 61100000",
+        "properties": {
+          "description": "Rangos de códigos utilizados para informar importes derivados de franquicias otorgadas."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "facilidad_disminucion_exigencia",
+        "type": "Concepto",
+        "label": "Facilidad que implica disminución de exigencia",
+        "properties": {
+          "description": "Beneficio regulatorio que reduce requisitos de capital o riesgo."
+        }
+      },
+      {
+        "id": "exigencia_riesgo_credito",
+        "type": "Concepto",
+        "label": "Exigencia por riesgo de crédito",
+        "properties": {
+          "description": "Requerimiento de capital por exposición a riesgo de crédito, incluyendo INC."
+        }
+      },
+      {
+        "id": "exigencia_riesgo_mercado",
+        "type": "Concepto",
+        "label": "Exigencia por riesgo de mercado",
+        "properties": {
+          "description": "Requerimiento de capital por exposición a riesgo de mercado al último día del mes."
+        }
+      },
+      {
+        "id": "exigencia_riesgo_operacional",
+        "type": "Concepto",
+        "label": "Exigencia por riesgo operacional",
+        "properties": {
+          "description": "Requerimiento de capital por riesgo operacional del mes."
+        }
+      },
+      {
+        "id": "responsabilidad_patrimonial_computable",
+        "type": "Concepto",
+        "label": "Responsabilidad Patrimonial Computable",
+        "properties": {
+          "description": "Capital disponible para cubrir requisitos regulatorios informado en el mes."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "reporte_franquicia_mensual",
+        "target": "franquicia_otorgada_bcra",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reporte_franquicia_mensual",
+        "target": "codigo_60100000_61100000",
+        "predicate": "requiere"
+      },
+      {
+        "source": "descripcion_detallada_calculo_franquicia",
+        "target": "franquicia_otorgada_bcra",
+        "predicate": "especifica"
+      },
+      {
+        "source": "calculo_importe_mes_n",
+        "target": "exigencia_riesgo_credito",
+        "predicate": "considera"
+      },
+      {
+        "source": "calculo_importe_mes_n",
+        "target": "exigencia_riesgo_mercado",
+        "predicate": "considera"
+      },
+      {
+        "source": "calculo_importe_mes_n",
+        "target": "exigencia_riesgo_operacional",
+        "predicate": "considera"
+      },
+      {
+        "source": "calculo_importe_mes_n",
+        "target": "responsabilidad_patrimonial_computable",
+        "predicate": "considera"
+      },
+      {
+        "source": "franquicia_otorgada_bcra",
+        "target": "bcra",
+        "predicate": "otorgada_por"
+      }
+    ]
+  }
+}

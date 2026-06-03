@@ -1,0 +1,126 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0021__punto_4_exigencia_e_integracion_de_capit",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exigencia_riesgo_operacional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Cálculo de exigencia de capital mínimo por riesgo operacional según categoría de entidad (A, B, C) con porcentajes del 20%, 17% y 14% respectivamente, basado en promedio móvil de 36 meses de ERC.\"\n      }\n    },\n    {\n      \"id\": \"categoria_entidad_a\",\n      \"type\": \"Concepto\",\n      \"label\": \"Categoría de entidad A\",\n      \"properties\": {\n        \"description\": \"Entidad clasificada como categoría A con exigencia del 20% por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"categoria_entidad_b\",\n      \"type\": \"Concepto\",\n      \"label\": \"Categoría de entidad B\",\n      \"properties\": {\n        \"description\": \"Entidad clasificada como categoría B con exigencia del 17% por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"categoria_entidad_c\",\n      \"type\": \"Concepto\",\n      \"label\": \"Categoría de entidad C\",\n      \"properties\": {\n        \"description\": \"Entidad clasificada como categoría C con exigencia del 14% por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_notificacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de exigencia por última calificación\",\n      \"properties\": {\n        \"description\": \"Se utilizará la última calificación informada para determinar la exigencia a integrar en el tercer mes siguiente al de notificación.\"\n      }\n    },\n    {\n      \"id\": \"partida_3600000y\",\n      \"type\": \"Concepto\",\n      \"label\": \"Partida 3600000Y\",\n      \"properties\": {\n        \"description\": \"Partida única a informar que refleja la situación de la entidad respecto de su calificación por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"promedio_exigencias_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo promedio exigencias riesgo crédito\",\n      \"properties\": {\n        \"description\": \"El BCRA calculará el promedio de exigencias por riesgo de crédito en base a los datos informados en períodos previos.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_nuevas_entidades\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia capital mínimo nuevas entidades\",\n      \"properties\": {\n        \"description\": \"La exigencia mensual de capital mínimo por riesgo operacional para nuevas entidades se determinará conforme a las normas sobre Capitales mínimos de entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria responsable de determinar exigencias de capital mínimo y calcular promedios.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"exigencia_riesgo_operacional\",\n      \"target\": \"categoria_entidad_a\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_riesgo_operacional\",\n      \"target\": \"categoria_entidad_b\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_riesgo_operacional\",\n      \"target\": \"categoria_entidad_c\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calificacion_notificacion\",\n      \"target\": \"exigencia_riesgo_operacional\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"partida_3600000y\",\n      \"target\": \"promedio_exigencias_riesgo_credito\",\n      \"predicate\": \"informa\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"promedio_exigencias_riesgo_credito\",\n      \"predicate\": \"calcula\"\n    },\n    {\n      \"source\": \"exigencia_nuevas_entidades\",\n      \"target\": \"bcra\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3866,
+  "output_tokens": 1222,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exigencia_riesgo_operacional",
+        "type": "Restriccion",
+        "label": "Exigencia por riesgo operacional",
+        "properties": {
+          "description": "Cálculo de exigencia de capital mínimo por riesgo operacional según categoría de entidad (A, B, C) con porcentajes del 20%, 17% y 14% respectivamente, basado en promedio móvil de 36 meses de ERC."
+        }
+      },
+      {
+        "id": "categoria_entidad_a",
+        "type": "Concepto",
+        "label": "Categoría de entidad A",
+        "properties": {
+          "description": "Entidad clasificada como categoría A con exigencia del 20% por riesgo operacional."
+        }
+      },
+      {
+        "id": "categoria_entidad_b",
+        "type": "Concepto",
+        "label": "Categoría de entidad B",
+        "properties": {
+          "description": "Entidad clasificada como categoría B con exigencia del 17% por riesgo operacional."
+        }
+      },
+      {
+        "id": "categoria_entidad_c",
+        "type": "Concepto",
+        "label": "Categoría de entidad C",
+        "properties": {
+          "description": "Entidad clasificada como categoría C con exigencia del 14% por riesgo operacional."
+        }
+      },
+      {
+        "id": "calificacion_notificacion",
+        "type": "Restriccion",
+        "label": "Cálculo de exigencia por última calificación",
+        "properties": {
+          "description": "Se utilizará la última calificación informada para determinar la exigencia a integrar en el tercer mes siguiente al de notificación."
+        }
+      },
+      {
+        "id": "partida_3600000y",
+        "type": "Concepto",
+        "label": "Partida 3600000Y",
+        "properties": {
+          "description": "Partida única a informar que refleja la situación de la entidad respecto de su calificación por riesgo operacional."
+        }
+      },
+      {
+        "id": "promedio_exigencias_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Cálculo promedio exigencias riesgo crédito",
+        "properties": {
+          "description": "El BCRA calculará el promedio de exigencias por riesgo de crédito en base a los datos informados en períodos previos."
+        }
+      },
+      {
+        "id": "exigencia_nuevas_entidades",
+        "type": "Restriccion",
+        "label": "Exigencia capital mínimo nuevas entidades",
+        "properties": {
+          "description": "La exigencia mensual de capital mínimo por riesgo operacional para nuevas entidades se determinará conforme a las normas sobre Capitales mínimos de entidades financieras."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria responsable de determinar exigencias de capital mínimo y calcular promedios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "exigencia_riesgo_operacional",
+        "target": "categoria_entidad_a",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_riesgo_operacional",
+        "target": "categoria_entidad_b",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_riesgo_operacional",
+        "target": "categoria_entidad_c",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calificacion_notificacion",
+        "target": "exigencia_riesgo_operacional",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "partida_3600000y",
+        "target": "promedio_exigencias_riesgo_credito",
+        "predicate": "informa"
+      },
+      {
+        "source": "bcra",
+        "target": "promedio_exigencias_riesgo_credito",
+        "predicate": "calcula"
+      },
+      {
+        "source": "exigencia_nuevas_entidades",
+        "target": "bcra",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

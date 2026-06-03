@@ -1,0 +1,115 @@
+{
+  "chunk_id": "to_proteccion_usuarios_servicios_financi__0025__punto_1_4_registro_de_reintegros_de_impo",
+  "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 1.4 — Registro de Reintegros de Importes (RRI). + Punto 1.5 — Registro de Denuncias ante las Instancias Judiciales y/o Administrativas de Defe",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"registro_reintegros_importes\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Registro de Reintegros de Importes\",\n      \"properties\": {\n        \"description\": \"Registro en el que se asientan los montos reintegrados a usuarios, identificando al usuario afectado, causal del evento, productos y casas involucradas.\"\n      }\n    },\n    {\n      \"id\": \"registro_denuncias_judiciales_administrativas\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Registro de Denuncias ante Instancias Judiciales y Administrativas\",\n      \"properties\": {\n        \"description\": \"Registro de todas las intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor, con identificación del usuario afectado, importe involucrado, causal del evento, productos y casas involucradas.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_asentar_reintegros\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Obligación de asentar reintegros\",\n      \"properties\": {\n        \"description\": \"Las entidades deben asentar en el registro los montos reintegrados a usuarios, identificando al usuario afectado, causal generadora del evento, productos y casas involucradas.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_asentar_denuncias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Obligación de asentar denuncias\",\n      \"properties\": {\n        \"description\": \"Las entidades deben asentar todas las intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor, identificando usuario afectado, importe involucrado, causal generadora y productos y casas involucradas.\"\n      }\n    },\n    {\n      \"id\": \"concepto_usuario_afectado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Usuario afectado\",\n      \"properties\": {\n        \"description\": \"Persona física o jurídica que ha sido perjudicada por un evento regulado y que debe ser identificada en registros informativos.\"\n      }\n    },\n    {\n      \"id\": \"concepto_causal_evento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Causal generadora del evento\",\n      \"properties\": {\n        \"description\": \"Motivo o causa que originó el evento de reintegro o denuncia que debe ser especificado en los registros.\"\n      }\n    },\n    {\n      \"id\": \"concepto_productos_casas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Productos y casas involucradas\",\n      \"properties\": {\n        \"description\": \"Identificación de los productos financieros y entidades (casas) que participaron en la operación que originó el evento.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_asentar_reintegros\",\n      \"target\": \"registro_reintegros_importes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_asentar_denuncias\",\n      \"target\": \"registro_denuncias_judiciales_administrativas\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_asentar_reintegros\",\n      \"target\": \"concepto_usuario_afectado\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_asentar_reintegros\",\n      \"target\": \"concepto_causal_evento\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_asentar_reintegros\",\n      \"target\": \"concepto_productos_casas\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_asentar_denuncias\",\n      \"target\": \"concepto_usuario_afectado\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_asentar_denuncias\",\n      \"target\": \"concepto_causal_evento\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_asentar_denuncias\",\n      \"target\": \"concepto_productos_casas\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3581,
+  "output_tokens": 1167,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 7,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "registro_reintegros_importes",
+        "type": "RegimenInformativo",
+        "label": "Registro de Reintegros de Importes",
+        "properties": {
+          "description": "Registro en el que se asientan los montos reintegrados a usuarios, identificando al usuario afectado, causal del evento, productos y casas involucradas."
+        }
+      },
+      {
+        "id": "registro_denuncias_judiciales_administrativas",
+        "type": "RegimenInformativo",
+        "label": "Registro de Denuncias ante Instancias Judiciales y Administrativas",
+        "properties": {
+          "description": "Registro de todas las intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor, con identificación del usuario afectado, importe involucrado, causal del evento, productos y casas involucradas."
+        }
+      },
+      {
+        "id": "restriccion_asentar_reintegros",
+        "type": "Restriccion",
+        "label": "Obligación de asentar reintegros",
+        "properties": {
+          "description": "Las entidades deben asentar en el registro los montos reintegrados a usuarios, identificando al usuario afectado, causal generadora del evento, productos y casas involucradas."
+        }
+      },
+      {
+        "id": "restriccion_asentar_denuncias",
+        "type": "Restriccion",
+        "label": "Obligación de asentar denuncias",
+        "properties": {
+          "description": "Las entidades deben asentar todas las intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor, identificando usuario afectado, importe involucrado, causal generadora y productos y casas involucradas."
+        }
+      },
+      {
+        "id": "concepto_usuario_afectado",
+        "type": "Concepto",
+        "label": "Usuario afectado",
+        "properties": {
+          "description": "Persona física o jurídica que ha sido perjudicada por un evento regulado y que debe ser identificada en registros informativos."
+        }
+      },
+      {
+        "id": "concepto_causal_evento",
+        "type": "Concepto",
+        "label": "Causal generadora del evento",
+        "properties": {
+          "description": "Motivo o causa que originó el evento de reintegro o denuncia que debe ser especificado en los registros."
+        }
+      },
+      {
+        "id": "concepto_productos_casas",
+        "type": "Concepto",
+        "label": "Productos y casas involucradas",
+        "properties": {
+          "description": "Identificación de los productos financieros y entidades (casas) que participaron en la operación que originó el evento."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_asentar_reintegros",
+        "target": "registro_reintegros_importes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_asentar_denuncias",
+        "target": "registro_denuncias_judiciales_administrativas",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_asentar_reintegros",
+        "target": "concepto_usuario_afectado",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_asentar_reintegros",
+        "target": "concepto_causal_evento",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_asentar_reintegros",
+        "target": "concepto_productos_casas",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_asentar_denuncias",
+        "target": "concepto_usuario_afectado",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_asentar_denuncias",
+        "target": "concepto_causal_evento",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_asentar_denuncias",
+        "target": "concepto_productos_casas",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

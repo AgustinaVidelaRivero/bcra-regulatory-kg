@@ -1,0 +1,204 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0052__punto_2_los_adicionales_de_todas_las_ent",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2 — Los adicionales de todas las entidades se agruparán en un ún ico conjun- (parte 2/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"factor_sf_cobertura_operaciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor SF para operaciones sobre bases\",\n      \"properties\": {\n        \"description\": \"El SF a aplicar a un conjunto de cobertura de operaciones sobre bases será el que corresponda a la clase de activo pertinente multiplicado por 0,5.\"\n      }\n    },\n    {\n      \"id\": \"factor_sf_volatilidad\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor SF para operaciones sobre volatilidad\",\n      \"properties\": {\n        \"description\": \"El factor a aplicar a un conjunto de operaciones sobre volatilidad será el que corresponda a la clase de activo multiplicado por 5.\"\n      }\n    },\n    {\n      \"id\": \"tratamiento_margenes_multiples\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento de acuerdos de márgenes múltiples\",\n      \"properties\": {\n        \"description\": \"Si a un único conjunto de neteo le aplican múltiples acuerdos sobre márgenes, el conjunto se dividirá en subconjuntos de neteo para alinearse con sus respectivos acuerdos. Este tratamiento aplica al CR y la EPF.\"\n      }\n    },\n    {\n      \"id\": \"margen_acuerdo_multiples_conjuntos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acuerdo sobre márgenes para múltiples conjuntos\",\n      \"properties\": {\n        \"description\": \"Si un único acuerdo sobre márgenes aplica a múltiples conjuntos de neteo, el CR será igual a la suma de exposiciones sin garantías menos activos en garantía disponibles, incluyendo VM y NICA.\"\n      }\n    },\n    {\n      \"id\": \"intercambio_garantias_valor_neto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Intercambio de garantías basado en valor neto\",\n      \"properties\": {\n        \"description\": \"Cuando un acuerdo sobre márgenes aplique a varios conjuntos de neteo, las garantías se intercambiarán en base al valor de mercado neto de todas las transacciones cubiertas por el acuerdo.\"\n      }\n    },\n    {\n      \"id\": \"cva_ajuste_valuacion_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por CVA\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deberán observar una exigencia de capital por el riesgo de pérdidas derivadas de valuar a precios de mercado el riesgo de contraparte esperado (ajustes de valuación del crédito).\"\n      }\n    },\n    {\n      \"id\": \"excepcion_cva_financiacion_titulos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de CVA para operaciones con títulos\",\n      \"properties\": {\n        \"description\": \"Las entidades no observarán la exigencia de capital por CVA en operaciones de financiación con títulos valores, tales como operaciones de pase.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_cva_contraparte_central\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de CVA para operaciones con CCP\",\n      \"properties\": {\n        \"description\": \"Las entidades no observarán la exigencia de capital por CVA en operaciones celebradas con una entidad de contraparte central (CCP).\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"conjunto_neteo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conjunto de neteo\",\n      \"properties\": {\n        \"description\": \"Agrupación de exposiciones sujetas a acuerdos de márgenes y neteo.\"\n      }\n    },\n    {\n      \"id\": \"acuerdo_margenes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Acuerdo sobre márgenes\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"riesgo_credito_contraparte\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exposición al riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Determinación de la exposición al riesgo de incumplimiento de la contraparte.\"\n      }\n    },\n    {\n      \"id\": \"financiacion_titulos_valores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de financiación con títulos valores\",\n      \"properties\": {\n        \"description\": \"Operaciones de financiación con títulos valores, incluyendo operaciones de pase.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_ccp\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones con contraparte central\",\n      \"properties\": {\n        \"description\": \"Operaciones celebradas con una entidad de contraparte central (CCP).\"\n      }\n    },\n    {\n      \"id\": \"clase_activo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clase de activo\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"exposicion_no_margined\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposiciones sin garantías\",\n      \"properties\": {\n        \"description\": \"Exposiciones dentro del conjunto sin considerar las garantías.\"\n      }\n    },\n    {\n      \"id\": \"activos_garantia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos en garantía\",\n      \"properties\": {\n        \"description\": \"Activos disponibles en el marco de un acuerdo sobre márgenes, incluyendo VM y NICA.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"cva_ajuste_valuacion_credito\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"cva_ajuste_valuacion_credito\",\n      \"target\": \"riesgo_credito_contraparte\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_cva_financiacion_titulos\",\n      \"target\": \"cva_ajuste_valuacion_credito\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_cva_contraparte_central\",\n      \"target\": \"cva_ajuste_valuacion_credito\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_cva_financiacion_titulos\",\n      \"target\": \"financiacion_titulos_valores\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"excepcion_cva_contraparte_central\",\n      \"target\": \"operaciones_ccp\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"factor_sf_cobertura_operaciones\",\n      \"target\": \"clase_activo\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"factor_sf_volatilidad\",\n      \"target\": \"clase_activo\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"tratamiento_margenes_multiples\",\n      \"target\": \"conjunto_neteo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"margen_acuerdo_multiples_conjuntos\",\n      \"target\": \"acuerdo_margenes\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"intercambio_garantias_valor_neto\",\n      \"target\": \"activos_garantia\",\n      \"predicate\": \"regula\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4443,
+  "output_tokens": 2113,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 17,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "factor_sf_cobertura_operaciones",
+        "type": "Restriccion",
+        "label": "Factor SF para operaciones sobre bases",
+        "properties": {
+          "description": "El SF a aplicar a un conjunto de cobertura de operaciones sobre bases será el que corresponda a la clase de activo pertinente multiplicado por 0,5."
+        }
+      },
+      {
+        "id": "factor_sf_volatilidad",
+        "type": "Restriccion",
+        "label": "Factor SF para operaciones sobre volatilidad",
+        "properties": {
+          "description": "El factor a aplicar a un conjunto de operaciones sobre volatilidad será el que corresponda a la clase de activo multiplicado por 5."
+        }
+      },
+      {
+        "id": "tratamiento_margenes_multiples",
+        "type": "Restriccion",
+        "label": "Tratamiento de acuerdos de márgenes múltiples",
+        "properties": {
+          "description": "Si a un único conjunto de neteo le aplican múltiples acuerdos sobre márgenes, el conjunto se dividirá en subconjuntos de neteo para alinearse con sus respectivos acuerdos. Este tratamiento aplica al CR y la EPF."
+        }
+      },
+      {
+        "id": "margen_acuerdo_multiples_conjuntos",
+        "type": "Restriccion",
+        "label": "Acuerdo sobre márgenes para múltiples conjuntos",
+        "properties": {
+          "description": "Si un único acuerdo sobre márgenes aplica a múltiples conjuntos de neteo, el CR será igual a la suma de exposiciones sin garantías menos activos en garantía disponibles, incluyendo VM y NICA."
+        }
+      },
+      {
+        "id": "intercambio_garantias_valor_neto",
+        "type": "Restriccion",
+        "label": "Intercambio de garantías basado en valor neto",
+        "properties": {
+          "description": "Cuando un acuerdo sobre márgenes aplique a varios conjuntos de neteo, las garantías se intercambiarán en base al valor de mercado neto de todas las transacciones cubiertas por el acuerdo."
+        }
+      },
+      {
+        "id": "cva_ajuste_valuacion_credito",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por CVA",
+        "properties": {
+          "description": "Las entidades financieras deberán observar una exigencia de capital por el riesgo de pérdidas derivadas de valuar a precios de mercado el riesgo de contraparte esperado (ajustes de valuación del crédito)."
+        }
+      },
+      {
+        "id": "excepcion_cva_financiacion_titulos",
+        "type": "Excepcion",
+        "label": "Exención de CVA para operaciones con títulos",
+        "properties": {
+          "description": "Las entidades no observarán la exigencia de capital por CVA en operaciones de financiación con títulos valores, tales como operaciones de pase."
+        }
+      },
+      {
+        "id": "excepcion_cva_contraparte_central",
+        "type": "Excepcion",
+        "label": "Exención de CVA para operaciones con CCP",
+        "properties": {
+          "description": "Las entidades no observarán la exigencia de capital por CVA en operaciones celebradas con una entidad de contraparte central (CCP)."
+        }
+      },
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {}
+      },
+      {
+        "id": "conjunto_neteo",
+        "type": "Concepto",
+        "label": "Conjunto de neteo",
+        "properties": {
+          "description": "Agrupación de exposiciones sujetas a acuerdos de márgenes y neteo."
+        }
+      },
+      {
+        "id": "acuerdo_margenes",
+        "type": "Concepto",
+        "label": "Acuerdo sobre márgenes",
+        "properties": {}
+      },
+      {
+        "id": "riesgo_credito_contraparte",
+        "type": "Operacion",
+        "label": "Exposición al riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Determinación de la exposición al riesgo de incumplimiento de la contraparte."
+        }
+      },
+      {
+        "id": "financiacion_titulos_valores",
+        "type": "Operacion",
+        "label": "Operaciones de financiación con títulos valores",
+        "properties": {
+          "description": "Operaciones de financiación con títulos valores, incluyendo operaciones de pase."
+        }
+      },
+      {
+        "id": "operaciones_ccp",
+        "type": "Operacion",
+        "label": "Operaciones con contraparte central",
+        "properties": {
+          "description": "Operaciones celebradas con una entidad de contraparte central (CCP)."
+        }
+      },
+      {
+        "id": "clase_activo",
+        "type": "Concepto",
+        "label": "Clase de activo",
+        "properties": {}
+      },
+      {
+        "id": "exposicion_no_margined",
+        "type": "Concepto",
+        "label": "Exposiciones sin garantías",
+        "properties": {
+          "description": "Exposiciones dentro del conjunto sin considerar las garantías."
+        }
+      },
+      {
+        "id": "activos_garantia",
+        "type": "Concepto",
+        "label": "Activos en garantía",
+        "properties": {
+          "description": "Activos disponibles en el marco de un acuerdo sobre márgenes, incluyendo VM y NICA."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_generico",
+        "target": "cva_ajuste_valuacion_credito",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "cva_ajuste_valuacion_credito",
+        "target": "riesgo_credito_contraparte",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_cva_financiacion_titulos",
+        "target": "cva_ajuste_valuacion_credito",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_cva_contraparte_central",
+        "target": "cva_ajuste_valuacion_credito",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_cva_financiacion_titulos",
+        "target": "financiacion_titulos_valores",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "excepcion_cva_contraparte_central",
+        "target": "operaciones_ccp",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "factor_sf_cobertura_operaciones",
+        "target": "clase_activo",
+        "predicate": "referencia"
+      },
+      {
+        "source": "factor_sf_volatilidad",
+        "target": "clase_activo",
+        "predicate": "referencia"
+      },
+      {
+        "source": "tratamiento_margenes_multiples",
+        "target": "conjunto_neteo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "margen_acuerdo_multiples_conjuntos",
+        "target": "acuerdo_margenes",
+        "predicate": "especifica"
+      },
+      {
+        "source": "intercambio_garantias_valor_neto",
+        "target": "activos_garantia",
+        "predicate": "regula"
+      }
+    ]
+  }
+}

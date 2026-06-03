@@ -1,0 +1,152 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0044__punto_3_uva_uvi_parte_2_2",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 3 — UVA/UVI: (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"calculo_medida_riesgo_eve_estandarizada\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de la medida de riesgo EVE estandarizada\",\n      \"properties\": {\n        \"description\": \"Cálculos de riesgo de tasa de interés que deben informarse considerando escenarios y monedas específicas.\"\n      }\n    },\n    {\n      \"id\": \"medida_total_riesgo_opciones_automaticas_kao\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Medida total del riesgo por opciones automáticas\",\n      \"properties\": {\n        \"description\": \"Se informa el componente adicional por opciones automáticas sobre tasas de interés vendidas, explícitas o implícitas, por cada moneda y escenario (partidas 3613000X/M).\"\n      }\n    },\n    {\n      \"id\": \"entidades_grupo_a\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades del Grupo A\",\n      \"properties\": {\n        \"description\": \"Sujetos obligados a calcular el componente adicional por opciones automáticas sobre tasas de interés.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"valor_economico_patrimonio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Valor económico del patrimonio\",\n      \"properties\": {\n        \"description\": \"Mide el valor económico del patrimonio para todas las bandas temporales en 6 escenarios por moneda significativa (partidas 3612000X/M). No incluye opciones automáticas sobre tasas de interés.\"\n      }\n    },\n    {\n      \"id\": \"valor_economico_patrimonio_escenario_base\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Valor económico del patrimonio escenario base\",\n      \"properties\": {\n        \"description\": \"Calculado con la estructura de tasas de interés vigentes en el escenario 0 o base (partidas 36110000/M).\"\n      }\n    },\n    {\n      \"id\": \"variacion_valor_economico_patrimonio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Variación del valor económico del patrimonio\",\n      \"properties\": {\n        \"description\": \"Diferencia entre EVE0 del escenario base y EVE del escenario de perturbación, más el riesgo KAO (partida 3610000X/M).\"\n      }\n    },\n    {\n      \"id\": \"suma_perdidas_por_escenario\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suma de pérdidas por escenario\",\n      \"properties\": {\n        \"description\": \"Suma únicamente pérdidas registradas en monedas de diferentes escenarios sin compensar con resultados positivos, sin signo negativo (partida 3650000X).\"\n      }\n    },\n    {\n      \"id\": \"lineamientos_gestion_riesgos_entidades_financieras\",\n      \"type\": \"Documento\",\n      \"label\": \"Lineamientos para la gestión de riesgos\",\n      \"properties\": {\n        \"description\": \"Normas de referencia que establecen puntos 5.4.3, 5.4.4.3, 5.4.4.4 sobre opciones automáticas y medidas de riesgo.\"\n      }\n    },\n    {\n      \"id\": \"cuadros_11_2_1_a_b\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Cuadros 11.2.1.a y b\",\n      \"properties\": {\n        \"description\": \"Reportes de posiciones en pesos (M=001) o dólares estadounidenses (M=010) con los que deben ser consistentes los cálculos.\"\n      }\n    },\n    {\n      \"id\": \"pesos_moneda\",\n      \"type\": \"Moneda\",\n      \"label\": \"Pesos\",\n      \"properties\": {\n        \"description\": \"Moneda código 001 para cálculos de riesgo EVE.\"\n      }\n    },\n    {\n      \"id\": \"dolares_estadounidenses_moneda\",\n      \"type\": \"Moneda\",\n      \"label\": \"Dólares estadounidenses\",\n      \"properties\": {\n        \"description\": \"Moneda código 010 para cálculos de riesgo EVE.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidades_grupo_a\",\n      \"target\": \"medida_total_riesgo_opciones_automaticas_kao\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidades_grupo_a\",\n      \"target\": \"valor_economico_patrimonio\",\n      \"predicate\": \"calcula\"\n    },\n    {\n      \"source\": \"medida_total_riesgo_opciones_automaticas_kao\",\n      \"target\": \"lineamientos_gestion_riesgos_entidades_financieras\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"valor_economico_patrimonio\",\n      \"target\": \"lineamientos_gestion_riesgos_entidades_financieras\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"variacion_valor_economico_patrimonio\",\n      \"target\": \"lineamientos_gestion_riesgos_entidades_financieras\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"suma_perdidas_por_escenario\",\n      \"target\": \"lineamientos_gestion_riesgos_entidades_financieras\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"calculo_medida_riesgo_eve_estandarizada\",\n      \"target\": \"cuadros_11_2_1_a_b\",\n      \"predicate\": \"requiere_consistencia_con\"\n    },\n    {\n      \"source\": \"medida_total_riesgo_opciones_automaticas_kao\",\n      \"target\": \"pesos_moneda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"medida_total_riesgo_opciones_automaticas_kao\",\n      \"target\": \"dolares_estadounidenses_moneda\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4457,
+  "output_tokens": 1702,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "calculo_medida_riesgo_eve_estandarizada",
+        "type": "Operacion",
+        "label": "Cálculo de la medida de riesgo EVE estandarizada",
+        "properties": {
+          "description": "Cálculos de riesgo de tasa de interés que deben informarse considerando escenarios y monedas específicas."
+        }
+      },
+      {
+        "id": "medida_total_riesgo_opciones_automaticas_kao",
+        "type": "Restriccion",
+        "label": "Medida total del riesgo por opciones automáticas",
+        "properties": {
+          "description": "Se informa el componente adicional por opciones automáticas sobre tasas de interés vendidas, explícitas o implícitas, por cada moneda y escenario (partidas 3613000X/M)."
+        }
+      },
+      {
+        "id": "entidades_grupo_a",
+        "type": "EntidadFinanciera",
+        "label": "Entidades del Grupo A",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "valor_economico_patrimonio",
+        "type": "Restriccion",
+        "label": "Valor económico del patrimonio",
+        "properties": {
+          "description": "Mide el valor económico del patrimonio para todas las bandas temporales en 6 escenarios por moneda significativa (partidas 3612000X/M). No incluye opciones automáticas sobre tasas de interés."
+        }
+      },
+      {
+        "id": "valor_economico_patrimonio_escenario_base",
+        "type": "Restriccion",
+        "label": "Valor económico del patrimonio escenario base",
+        "properties": {
+          "description": "Calculado con la estructura de tasas de interés vigentes en el escenario 0 o base (partidas 36110000/M)."
+        }
+      },
+      {
+        "id": "variacion_valor_economico_patrimonio",
+        "type": "Restriccion",
+        "label": "Variación del valor económico del patrimonio",
+        "properties": {
+          "description": "Diferencia entre EVE0 del escenario base y EVE del escenario de perturbación, más el riesgo KAO (partida 3610000X/M)."
+        }
+      },
+      {
+        "id": "suma_perdidas_por_escenario",
+        "type": "Restriccion",
+        "label": "Suma de pérdidas por escenario",
+        "properties": {
+          "description": "Suma únicamente pérdidas registradas en monedas de diferentes escenarios sin compensar con resultados positivos, sin signo negativo (partida 3650000X)."
+        }
+      },
+      {
+        "id": "lineamientos_gestion_riesgos_entidades_financieras",
+        "type": "Documento",
+        "label": "Lineamientos para la gestión de riesgos",
+        "properties": {
+          "description": "Normas de referencia que establecen puntos 5.4.3, 5.4.4.3, 5.4.4.4 sobre opciones automáticas y medidas de riesgo."
+        }
+      },
+      {
+        "id": "cuadros_11_2_1_a_b",
+        "type": "RegimenInformativo",
+        "label": "Cuadros 11.2.1.a y b",
+        "properties": {
+          "description": "Reportes de posiciones en pesos (M=001) o dólares estadounidenses (M=010) con los que deben ser consistentes los cálculos."
+        }
+      },
+      {
+        "id": "pesos_moneda",
+        "type": "Moneda",
+        "label": "Pesos",
+        "properties": {
+          "description": "Moneda código 001 para cálculos de riesgo EVE."
+        }
+      },
+      {
+        "id": "dolares_estadounidenses_moneda",
+        "type": "Moneda",
+        "label": "Dólares estadounidenses",
+        "properties": {
+          "description": "Moneda código 010 para cálculos de riesgo EVE."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidades_grupo_a",
+        "target": "medida_total_riesgo_opciones_automaticas_kao",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidades_grupo_a",
+        "target": "valor_economico_patrimonio",
+        "predicate": "calcula"
+      },
+      {
+        "source": "medida_total_riesgo_opciones_automaticas_kao",
+        "target": "lineamientos_gestion_riesgos_entidades_financieras",
+        "predicate": "referencia"
+      },
+      {
+        "source": "valor_economico_patrimonio",
+        "target": "lineamientos_gestion_riesgos_entidades_financieras",
+        "predicate": "referencia"
+      },
+      {
+        "source": "variacion_valor_economico_patrimonio",
+        "target": "lineamientos_gestion_riesgos_entidades_financieras",
+        "predicate": "referencia"
+      },
+      {
+        "source": "suma_perdidas_por_escenario",
+        "target": "lineamientos_gestion_riesgos_entidades_financieras",
+        "predicate": "referencia"
+      },
+      {
+        "source": "calculo_medida_riesgo_eve_estandarizada",
+        "target": "cuadros_11_2_1_a_b",
+        "predicate": "requiere_consistencia_con"
+      },
+      {
+        "source": "medida_total_riesgo_opciones_automaticas_kao",
+        "target": "pesos_moneda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "medida_total_riesgo_opciones_automaticas_kao",
+        "target": "dolares_estadounidenses_moneda",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

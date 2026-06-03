@@ -1,0 +1,142 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0008__punto_2_3_computo_de_los_conceptos_compr",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.3 — Cómputo de los conceptos comprendidos.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"concepto_comprendido\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conceptos comprendidos\",\n      \"properties\": {\n        \"description\": \"Elementos que integran el cómputo de capitales mínimos: capitales, intereses, primas, actualizaciones por CER, diferencias de cotización.\"\n      }\n    },\n    {\n      \"id\": \"base_individual_mensual\",\n      \"type\": \"Concepto\",\n      \"label\": \"Base individual mensual\",\n      \"properties\": {\n        \"description\": \"Cómputo de conceptos sobre saldos al último día de cada mes, netos de previsiones y depreciaciones.\"\n      }\n    },\n    {\n      \"id\": \"base_consolidada_mensual\",\n      \"type\": \"Concepto\",\n      \"label\": \"Base consolidada mensual\",\n      \"properties\": {\n        \"description\": \"Cómputo consolidado de conceptos sobre saldos al último día de cada mes.\"\n      }\n    },\n    {\n      \"id\": \"base_consolidada_trimestral\",\n      \"type\": \"Concepto\",\n      \"label\": \"Base consolidada trimestral\",\n      \"properties\": {\n        \"description\": \"Cómputo consolidado de conceptos sobre saldos al cierre del trimestre.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_neto_previsiones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cómputo neto de previsiones por riesgo\",\n      \"properties\": {\n        \"description\": \"Los conceptos se computarán netos de previsiones por riesgos de incobrabilidad, depreciaciones y amortizaciones acumuladas.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exclusion_previsiones_deudores_normales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de previsión para deudores clasificados en situación normal\",\n      \"properties\": {\n        \"description\": \"No se deducirá el 100% de la previsión por riesgo de incobrabilidad de deudores clasificados en situación normal.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exclusion_financiaciones_garantizadas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de previsión para financiaciones con garantías preferidas A\",\n      \"properties\": {\n        \"description\": \"No se deducirá previsión de financiaciones cubiertas con garantías preferidas tipo A.\"\n      }\n    },\n    {\n      \"id\": \"documento_clasificacion_deudores\",\n      \"type\": \"Documento\",\n      \"label\": \"TO sobre Clasificación de Deudores\",\n      \"properties\": {\n        \"description\": \"Texto Ordenado que regula la clasificación de deudores, puntos 6.5.1 y 7.2.1.\"\n      }\n    },\n    {\n      \"id\": \"deudor_situacion_normal\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor en situación normal\",\n      \"properties\": {\n        \"description\": \"Clasificación de deudor conforme al TO sobre Clasificación de Deudores.\"\n      }\n    },\n    {\n      \"id\": \"garantia_preferida_a\",\n      \"type\": \"Concepto\",\n      \"label\": \"Garantía preferida tipo A\",\n      \"properties\": {\n        \"description\": \"Categoría de garantía que cubre financiaciones, exenta de deducción de previsión.\"\n      }\n    },\n    {\n      \"id\": \"coeficiente_cer\",\n      \"type\": \"Concepto\",\n      \"label\": \"Coeficiente de Estabilización de Referencia CER\",\n      \"properties\": {\n        \"description\": \"Índice de actualización de conceptos en el cómputo de capitales mínimos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_neto_previsiones\",\n      \"target\": \"concepto_comprendido\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_previsiones_deudores_normales\",\n      \"target\": \"deudor_situacion_normal\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_financiaciones_garantizadas\",\n      \"target\": \"garantia_preferida_a\",\n      \"predicate\": \"referencia_a\"\n    },\n    {\n      \"source\": \"deudor_situacion_normal\",\n      \"target\": \"documento_clasificacion_deudores\",\n      \"predicate\": \"define_en\"\n    },\n    {\n      \"source\": \"base_individual_mensual\",\n      \"target\": \"concepto_comprendido\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"base_consolidada_mensual\",\n      \"target\": \"concepto_comprendido\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"base_consolidada_trimestral\",\n      \"target\": \"concepto_comprendido\",\n      \"predicate\": \"comprende\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3695,
+  "output_tokens": 1368,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "concepto_comprendido",
+        "type": "Concepto",
+        "label": "Conceptos comprendidos",
+        "properties": {
+          "description": "Elementos que integran el cómputo de capitales mínimos: capitales, intereses, primas, actualizaciones por CER, diferencias de cotización."
+        }
+      },
+      {
+        "id": "base_individual_mensual",
+        "type": "Concepto",
+        "label": "Base individual mensual",
+        "properties": {
+          "description": "Cómputo de conceptos sobre saldos al último día de cada mes, netos de previsiones y depreciaciones."
+        }
+      },
+      {
+        "id": "base_consolidada_mensual",
+        "type": "Concepto",
+        "label": "Base consolidada mensual",
+        "properties": {
+          "description": "Cómputo consolidado de conceptos sobre saldos al último día de cada mes."
+        }
+      },
+      {
+        "id": "base_consolidada_trimestral",
+        "type": "Concepto",
+        "label": "Base consolidada trimestral",
+        "properties": {
+          "description": "Cómputo consolidado de conceptos sobre saldos al cierre del trimestre."
+        }
+      },
+      {
+        "id": "restriccion_neto_previsiones",
+        "type": "Restriccion",
+        "label": "Cómputo neto de previsiones por riesgo",
+        "properties": {
+          "description": "Los conceptos se computarán netos de previsiones por riesgos de incobrabilidad, depreciaciones y amortizaciones acumuladas."
+        }
+      },
+      {
+        "id": "restriccion_exclusion_previsiones_deudores_normales",
+        "type": "Restriccion",
+        "label": "Exclusión de previsión para deudores clasificados en situación normal",
+        "properties": {
+          "description": "No se deducirá el 100% de la previsión por riesgo de incobrabilidad de deudores clasificados en situación normal."
+        }
+      },
+      {
+        "id": "restriccion_exclusion_financiaciones_garantizadas",
+        "type": "Restriccion",
+        "label": "Exclusión de previsión para financiaciones con garantías preferidas A",
+        "properties": {
+          "description": "No se deducirá previsión de financiaciones cubiertas con garantías preferidas tipo A."
+        }
+      },
+      {
+        "id": "documento_clasificacion_deudores",
+        "type": "Documento",
+        "label": "TO sobre Clasificación de Deudores",
+        "properties": {
+          "description": "Texto Ordenado que regula la clasificación de deudores, puntos 6.5.1 y 7.2.1."
+        }
+      },
+      {
+        "id": "deudor_situacion_normal",
+        "type": "Concepto",
+        "label": "Deudor en situación normal",
+        "properties": {
+          "description": "Clasificación de deudor conforme al TO sobre Clasificación de Deudores."
+        }
+      },
+      {
+        "id": "garantia_preferida_a",
+        "type": "Concepto",
+        "label": "Garantía preferida tipo A",
+        "properties": {
+          "description": "Categoría de garantía que cubre financiaciones, exenta de deducción de previsión."
+        }
+      },
+      {
+        "id": "coeficiente_cer",
+        "type": "Concepto",
+        "label": "Coeficiente de Estabilización de Referencia CER",
+        "properties": {
+          "description": "Índice de actualización de conceptos en el cómputo de capitales mínimos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_neto_previsiones",
+        "target": "concepto_comprendido",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_exclusion_previsiones_deudores_normales",
+        "target": "deudor_situacion_normal",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_exclusion_financiaciones_garantizadas",
+        "target": "garantia_preferida_a",
+        "predicate": "referencia_a"
+      },
+      {
+        "source": "deudor_situacion_normal",
+        "target": "documento_clasificacion_deudores",
+        "predicate": "define_en"
+      },
+      {
+        "source": "base_individual_mensual",
+        "target": "concepto_comprendido",
+        "predicate": "comprende"
+      },
+      {
+        "source": "base_consolidada_mensual",
+        "target": "concepto_comprendido",
+        "predicate": "comprende"
+      },
+      {
+        "source": "base_consolidada_trimestral",
+        "target": "concepto_comprendido",
+        "predicate": "comprende"
+      }
+    ]
+  }
+}

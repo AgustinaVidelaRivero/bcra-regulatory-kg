@@ -1,0 +1,171 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0013__punto_2_11",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.11",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exposicion_corto_plazo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposiciones de corto plazo\",\n      \"properties\": {\n        \"description\": \"Exposiciones denominadas en pesos con fuente de fondos en esa moneda y plazo contractual original de hasta 3 meses, o exposiciones vinculadas con comercio exterior con plazo de hasta 6 meses.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_grupo_1\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras del grupo 1\",\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"metodo_scra\",\n      \"type\": \"Operacion\",\n      \"label\": \"Asignación de ponderadores de riesgo\",\n      \"properties\": {\n        \"description\": \"Utilización del Método de Evaluación del Riesgo de Crédito Estandarizado (SCRA) para asignar ponderadores de riesgo a contrapartes.\"\n      }\n    },\n    {\n      \"id\": \"encuadramiento_grado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Encuadramiento en grado de riesgo\",\n      \"properties\": {\n        \"description\": \"Las contrapartes se deberán encuadrar en alguno de los grados A, B o C según criterios de capacidad de pago y cumplimiento de requisitos regulatorios.\"\n      }\n    },\n    {\n      \"id\": \"grado_a\",\n      \"type\": \"Concepto\",\n      \"label\": \"Grado A\",\n      \"properties\": {\n        \"description\": \"Grado asignado a entidades financieras prestatarias que evidencian adecuada capacidad para cumplir compromisos financieros y observan requisitos regulatorios mínimos sujetos a divulgación.\"\n      }\n    },\n    {\n      \"id\": \"grado_b\",\n      \"type\": \"Concepto\",\n      \"label\": \"Grado B\",\n      \"properties\": {\n        \"description\": \"Grado asignado a entidades financieras prestatarias que evidencian riesgo de crédito sustancial con capacidad de pago supeditada a condiciones económicas favorables u observan requisitos regulatorios mínimos sin márgenes contracíclico y de conservación.\"\n      }\n    },\n    {\n      \"id\": \"grado_c\",\n      \"type\": \"Concepto\",\n      \"label\": \"Grado C\",\n      \"properties\": {\n        \"description\": \"Grado asignado a exposiciones a entidades financieras prestatarias que evidencian riesgo de incumplimiento material, no cumplen requisitos regulatorios mínimos, tienen opinión auditada adversa, o son evaluadas como grado C en debida diligencia.\"\n      }\n    },\n    {\n      \"id\": \"capacidad_cumplimiento_financiero\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Capacidad de cumplimiento financiero\",\n      \"properties\": {\n        \"description\": \"Para grado A: evidencia adecuada capacidad de cumplir en tiempo y forma compromisos financieros independientemente de coyuntura económica.\"\n      }\n    },\n    {\n      \"id\": \"requisitos_regulatorios_minimos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requisitos regulatorios mínimos\",\n      \"properties\": {\n        \"description\": \"Requisitos regulatorios mínimos sujetos a divulgación establecidos en normativa correspondiente, incluyendo margen contracíclico y de conservación de capital, sin incluir normas sobre liquidez.\"\n      }\n    },\n    {\n      \"id\": \"proceso_debida_diligencia\",\n      \"type\": \"Operacion\",\n      \"label\": \"Proceso de debida diligencia\",\n      \"properties\": {\n        \"description\": \"Proceso mediante el cual la entidad financiera prestamista evalúa si la contraparte cumple requisitos para asignación de grado.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_grupo_2\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras del grupo 2\",\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"asignacion_ponderadores_grupo_2\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación de ponderadores a grupo 2\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras del grupo 2 deberán asignar a sus contrapartes los ponderadores de riesgo previstos en punto 2.12.\"\n      }\n    },\n    {\n      \"id\": \"entidad_prestataria\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera prestataria\",\n      \"properties\": {\n        \"description\": \"Contraparte que recibe financiamiento y es sujeto de evaluación de riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"entidad_prestamista\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera prestamista\",\n      \"properties\": {\n        \"description\": \"Entidad que otorga exposición y realiza evaluación de riesgo sobre la contraparte.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_grupo_1\",\n      \"target\": \"metodo_scra\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"metodo_scra\",\n      \"target\": \"encuadramiento_grado\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"encuadramiento_grado\",\n      \"target\": \"entidad_prestataria\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"capacidad_cumplimiento_financiero\",\n      \"target\": \"grado_a\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"requisitos_regulatorios_minimos\",\n      \"target\": \"grado_a\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"entidad_prestamista\",\n      \"target\": \"proceso_debida_diligencia\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"proceso_debida_diligencia\",\n      \"target\": \"encuadramiento_grado\",\n      \"predicate\": \"informa\"\n    },\n    {\n      \"source\": \"entidad_financiera_grupo_2\",\n      \"target\": \"asignacion_ponderadores_grupo_2\",\n      \"predicate\": \"realiza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4743,
+  "output_tokens": 1795,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exposicion_corto_plazo",
+        "type": "Concepto",
+        "label": "Exposiciones de corto plazo",
+        "properties": {
+          "description": "Exposiciones denominadas en pesos con fuente de fondos en esa moneda y plazo contractual original de hasta 3 meses, o exposiciones vinculadas con comercio exterior con plazo de hasta 6 meses."
+        }
+      },
+      {
+        "id": "entidad_financiera_grupo_1",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras del grupo 1",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "metodo_scra",
+        "type": "Operacion",
+        "label": "Asignación de ponderadores de riesgo",
+        "properties": {
+          "description": "Utilización del Método de Evaluación del Riesgo de Crédito Estandarizado (SCRA) para asignar ponderadores de riesgo a contrapartes."
+        }
+      },
+      {
+        "id": "encuadramiento_grado",
+        "type": "Restriccion",
+        "label": "Encuadramiento en grado de riesgo",
+        "properties": {
+          "description": "Las contrapartes se deberán encuadrar en alguno de los grados A, B o C según criterios de capacidad de pago y cumplimiento de requisitos regulatorios."
+        }
+      },
+      {
+        "id": "grado_a",
+        "type": "Concepto",
+        "label": "Grado A",
+        "properties": {
+          "description": "Grado asignado a entidades financieras prestatarias que evidencian adecuada capacidad para cumplir compromisos financieros y observan requisitos regulatorios mínimos sujetos a divulgación."
+        }
+      },
+      {
+        "id": "grado_b",
+        "type": "Concepto",
+        "label": "Grado B",
+        "properties": {
+          "description": "Grado asignado a entidades financieras prestatarias que evidencian riesgo de crédito sustancial con capacidad de pago supeditada a condiciones económicas favorables u observan requisitos regulatorios mínimos sin márgenes contracíclico y de conservación."
+        }
+      },
+      {
+        "id": "grado_c",
+        "type": "Concepto",
+        "label": "Grado C",
+        "properties": {
+          "description": "Grado asignado a exposiciones a entidades financieras prestatarias que evidencian riesgo de incumplimiento material, no cumplen requisitos regulatorios mínimos, tienen opinión auditada adversa, o son evaluadas como grado C en debida diligencia."
+        }
+      },
+      {
+        "id": "capacidad_cumplimiento_financiero",
+        "type": "Restriccion",
+        "label": "Capacidad de cumplimiento financiero",
+        "properties": {
+          "description": "Para grado A: evidencia adecuada capacidad de cumplir en tiempo y forma compromisos financieros independientemente de coyuntura económica."
+        }
+      },
+      {
+        "id": "requisitos_regulatorios_minimos",
+        "type": "Restriccion",
+        "label": "Requisitos regulatorios mínimos",
+        "properties": {
+          "description": "Requisitos regulatorios mínimos sujetos a divulgación establecidos en normativa correspondiente, incluyendo margen contracíclico y de conservación de capital, sin incluir normas sobre liquidez."
+        }
+      },
+      {
+        "id": "proceso_debida_diligencia",
+        "type": "Operacion",
+        "label": "Proceso de debida diligencia",
+        "properties": {
+          "description": "Proceso mediante el cual la entidad financiera prestamista evalúa si la contraparte cumple requisitos para asignación de grado."
+        }
+      },
+      {
+        "id": "entidad_financiera_grupo_2",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras del grupo 2",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "asignacion_ponderadores_grupo_2",
+        "type": "Restriccion",
+        "label": "Asignación de ponderadores a grupo 2",
+        "properties": {
+          "description": "Las entidades financieras del grupo 2 deberán asignar a sus contrapartes los ponderadores de riesgo previstos en punto 2.12."
+        }
+      },
+      {
+        "id": "entidad_prestataria",
+        "type": "Concepto",
+        "label": "Entidad financiera prestataria",
+        "properties": {
+          "description": "Contraparte que recibe financiamiento y es sujeto de evaluación de riesgo de crédito."
+        }
+      },
+      {
+        "id": "entidad_prestamista",
+        "type": "Concepto",
+        "label": "Entidad financiera prestamista",
+        "properties": {
+          "description": "Entidad que otorga exposición y realiza evaluación de riesgo sobre la contraparte."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_grupo_1",
+        "target": "metodo_scra",
+        "predicate": "realiza"
+      },
+      {
+        "source": "metodo_scra",
+        "target": "encuadramiento_grado",
+        "predicate": "requiere"
+      },
+      {
+        "source": "encuadramiento_grado",
+        "target": "entidad_prestataria",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "capacidad_cumplimiento_financiero",
+        "target": "grado_a",
+        "predicate": "define"
+      },
+      {
+        "source": "requisitos_regulatorios_minimos",
+        "target": "grado_a",
+        "predicate": "define"
+      },
+      {
+        "source": "entidad_prestamista",
+        "target": "proceso_debida_diligencia",
+        "predicate": "realiza"
+      },
+      {
+        "source": "proceso_debida_diligencia",
+        "target": "encuadramiento_grado",
+        "predicate": "informa"
+      },
+      {
+        "source": "entidad_financiera_grupo_2",
+        "target": "asignacion_ponderadores_grupo_2",
+        "predicate": "realiza"
+      }
+    ]
+  }
+}

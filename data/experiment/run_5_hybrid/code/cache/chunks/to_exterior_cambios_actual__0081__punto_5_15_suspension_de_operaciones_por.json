@@ -1,0 +1,172 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0081__punto_5_15_suspension_de_operaciones_por",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.15 — Suspensión de operaciones por incumplimiento en el registro ante el BCRA.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA que realizan operaciones en divisas\"\n      }\n    },\n    {\n      \"id\": \"entidad_cambiaria\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades cambiarias\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados autorizados para operar cambios\"\n      }\n    },\n    {\n      \"id\": \"suspension_operaciones_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suspensión de operaciones en divisas\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben suspender sus operaciones en divisas cuando registren atraso mayor a 4 días hábiles en validación de algún apartado del régimen informativo de operaciones cambiarias.\"\n      }\n    },\n    {\n      \"id\": \"suspension_operaciones_cambiarias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suspensión de operaciones cambiarias\",\n      \"properties\": {\n        \"description\": \"Las entidades cambiarias deben suspender sus operaciones cuando se encuentren en situación de atraso mayor a 4 días hábiles en validación del régimen informativo.\"\n      }\n    },\n    {\n      \"id\": \"atraso_validacion_informativa\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Atraso en validación de régimen informativo\",\n      \"properties\": {\n        \"description\": \"Incumplimiento que se configura cuando el atraso en la validación en algún apartado del régimen informativo de operaciones cambiarias supera 4 días hábiles.\"\n      }\n    },\n    {\n      \"id\": \"ejecucion_automatica_suspension\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ejecución automática de la suspensión\",\n      \"properties\": {\n        \"description\": \"La suspensión procede sin que medie comunicación alguna del BCRA una vez configurada la causal.\"\n      }\n    },\n    {\n      \"id\": \"vigencia_suspension\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Vigencia de la suspensión\",\n      \"properties\": {\n        \"description\": \"La suspensión se mantiene hasta que la entidad regularice su situación en materia informativa.\"\n      }\n    },\n    {\n      \"id\": \"bcra_autoridad\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"BCRA - autoridad reguladora del sistema financiero argentino\"\n      }\n    },\n    {\n      \"id\": \"operacion_cambio\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones en divisas\",\n      \"properties\": {\n        \"description\": \"Transacciones de cambio de monedas extranjeras\"\n      }\n    },\n    {\n      \"id\": \"regimen_informativo_cambios\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Régimen informativo de operaciones cambiarias\",\n      \"properties\": {\n        \"description\": \"Sistema de reporte y validación de datos sobre operaciones cambiarias que deben cumplir las entidades\"\n      }\n    },\n    {\n      \"id\": \"cuatro_dias_habiles\",\n      \"type\": \"Plazo\",\n      \"label\": \"Cuatro días hábiles\",\n      \"properties\": {\n        \"description\": \"Umbral temporal que define el atraso admisible en validación antes de proceder a suspensión automática\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"suspension_operaciones_divisas\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entidad_cambiaria\",\n      \"target\": \"suspension_operaciones_cambiarias\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"suspension_operaciones_divisas\",\n      \"target\": \"operacion_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"suspension_operaciones_cambiarias\",\n      \"target\": \"operacion_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"atraso_validacion_informativa\",\n      \"target\": \"regimen_informativo_cambios\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"suspension_operaciones_divisas\",\n      \"target\": \"atraso_validacion_informativa\",\n      \"predicate\": \"se_activa_por\"\n    },\n    {\n      \"source\": \"suspension_operaciones_cambiarias\",\n      \"target\": \"atraso_validacion_informativa\",\n      \"predicate\": \"se_activa_por\"\n    },\n    {\n      \"source\": \"atraso_validacion_informativa\",\n      \"target\": \"cuatro_dias_habiles\",\n      \"predicate\": \"supera_umbral\"\n    },\n    {\n      \"source\": \"ejecucion_automatica_suspension\",\n      \"target\": \"suspension_operaciones_divisas\",\n      \"predicate\": \"caracteriza\"\n    },\n    {\n      \"source\": \"ejecucion_automatica_suspension\",\n      \"target\": \"suspension_operaciones_cambiarias\",\n      \"predicate\": \"caracteriza\"\n    },\n    {\n      \"source\": \"vigencia_suspension\",\n      \"target\": \"suspension_operaciones_divisas\",\n      \"predicate\": \"define_duracion\"\n    },\n    {\n      \"source\": \"vigencia_suspension\",\n      \"target\": \"suspension_operaciones_cambiarias\",\n      \"predicate\": \"define_duracion\"\n    },\n    {\n      \"source\": \"bcra_autoridad\",\n      \"target\": \"regimen_informativo_cambios\",\n      \"predicate\": \"establece\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3616,
+  "output_tokens": 1604,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 13,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA que realizan operaciones en divisas"
+        }
+      },
+      {
+        "id": "entidad_cambiaria",
+        "type": "Concepto",
+        "label": "Entidades cambiarias",
+        "properties": {
+          "description": "Sujetos regulados autorizados para operar cambios"
+        }
+      },
+      {
+        "id": "suspension_operaciones_divisas",
+        "type": "Restriccion",
+        "label": "Suspensión de operaciones en divisas",
+        "properties": {
+          "description": "Las entidades financieras deben suspender sus operaciones en divisas cuando registren atraso mayor a 4 días hábiles en validación de algún apartado del régimen informativo de operaciones cambiarias."
+        }
+      },
+      {
+        "id": "suspension_operaciones_cambiarias",
+        "type": "Restriccion",
+        "label": "Suspensión de operaciones cambiarias",
+        "properties": {
+          "description": "Las entidades cambiarias deben suspender sus operaciones cuando se encuentren en situación de atraso mayor a 4 días hábiles en validación del régimen informativo."
+        }
+      },
+      {
+        "id": "atraso_validacion_informativa",
+        "type": "Restriccion",
+        "label": "Atraso en validación de régimen informativo",
+        "properties": {
+          "description": "Incumplimiento que se configura cuando el atraso en la validación en algún apartado del régimen informativo de operaciones cambiarias supera 4 días hábiles."
+        }
+      },
+      {
+        "id": "ejecucion_automatica_suspension",
+        "type": "Restriccion",
+        "label": "Ejecución automática de la suspensión",
+        "properties": {
+          "description": "La suspensión procede sin que medie comunicación alguna del BCRA una vez configurada la causal."
+        }
+      },
+      {
+        "id": "vigencia_suspension",
+        "type": "Restriccion",
+        "label": "Vigencia de la suspensión",
+        "properties": {
+          "description": "La suspensión se mantiene hasta que la entidad regularice su situación en materia informativa."
+        }
+      },
+      {
+        "id": "bcra_autoridad",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "BCRA - autoridad reguladora del sistema financiero argentino"
+        }
+      },
+      {
+        "id": "operacion_cambio",
+        "type": "Operacion",
+        "label": "Operaciones en divisas",
+        "properties": {
+          "description": "Transacciones de cambio de monedas extranjeras"
+        }
+      },
+      {
+        "id": "regimen_informativo_cambios",
+        "type": "RegimenInformativo",
+        "label": "Régimen informativo de operaciones cambiarias",
+        "properties": {
+          "description": "Sistema de reporte y validación de datos sobre operaciones cambiarias que deben cumplir las entidades"
+        }
+      },
+      {
+        "id": "cuatro_dias_habiles",
+        "type": "Plazo",
+        "label": "Cuatro días hábiles",
+        "properties": {
+          "description": "Umbral temporal que define el atraso admisible en validación antes de proceder a suspensión automática"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_generico",
+        "target": "suspension_operaciones_divisas",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entidad_cambiaria",
+        "target": "suspension_operaciones_cambiarias",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "suspension_operaciones_divisas",
+        "target": "operacion_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "suspension_operaciones_cambiarias",
+        "target": "operacion_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "atraso_validacion_informativa",
+        "target": "regimen_informativo_cambios",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "suspension_operaciones_divisas",
+        "target": "atraso_validacion_informativa",
+        "predicate": "se_activa_por"
+      },
+      {
+        "source": "suspension_operaciones_cambiarias",
+        "target": "atraso_validacion_informativa",
+        "predicate": "se_activa_por"
+      },
+      {
+        "source": "atraso_validacion_informativa",
+        "target": "cuatro_dias_habiles",
+        "predicate": "supera_umbral"
+      },
+      {
+        "source": "ejecucion_automatica_suspension",
+        "target": "suspension_operaciones_divisas",
+        "predicate": "caracteriza"
+      },
+      {
+        "source": "ejecucion_automatica_suspension",
+        "target": "suspension_operaciones_cambiarias",
+        "predicate": "caracteriza"
+      },
+      {
+        "source": "vigencia_suspension",
+        "target": "suspension_operaciones_divisas",
+        "predicate": "define_duracion"
+      },
+      {
+        "source": "vigencia_suspension",
+        "target": "suspension_operaciones_cambiarias",
+        "predicate": "define_duracion"
+      },
+      {
+        "source": "bcra_autoridad",
+        "target": "regimen_informativo_cambios",
+        "predicate": "establece"
+      }
+    ]
+  }
+}

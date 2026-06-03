@@ -1,0 +1,173 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0014__punto_4_4_financiaciones_cubiertas_con_g",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 4.4 — Financiaciones cubiertas con garantías preferidas “A”. + Punto 4.5 — Deudores que no deben ser objeto de clasificación. + Punto 4.6 — Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"financiaciones_garantias_preferidas_a\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Financiaciones cubiertas con garantías preferidas A\",\n      \"properties\": {\n        \"description\": \"Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_capacidad_repago\",\n      \"type\": \"Operacion\",\n      \"label\": \"Evaluación de capacidad de repago\",\n      \"properties\": {\n        \"description\": \"Análisis de la capacidad de repago del deudor respecto de financiaciones.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_evaluacion_garantias_a\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de evaluación para garantías preferidas A\",\n      \"properties\": {\n        \"description\": \"No corresponde la evaluación de la capacidad de repago respecto de las financiaciones respaldadas con garantías preferidas 'A'.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudores\",\n      \"properties\": {\n        \"description\": \"Proceso de clasificar deudores conforme a criterios regulados.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_clasificacion_garantias_totales\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de clasificación por cobertura total\",\n      \"properties\": {\n        \"description\": \"Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_cesion_sin_responsabilidad\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de cesión sin responsabilidad cedente\",\n      \"properties\": {\n        \"description\": \"Operaciones de cesión en las que el cedente no asume responsabilidad.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_clasificacion_cesion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de clasificación para cesiones sin responsabilidad\",\n      \"properties\": {\n        \"description\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_asegurador_mora\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación de asegurador por mora\",\n      \"properties\": {\n        \"description\": \"Clasificar a la compañía de seguros en función de la mora según criterios aplicables para cartera de consumo, considerando fecha de vencimiento de primera obligación vencida impaga.\"\n      }\n    },\n    {\n      \"id\": \"criterios_cartera_consumo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Criterios aplicables cartera de consumo\",\n      \"properties\": {\n        \"description\": \"Conjunto de criterios de clasificación para operaciones de cartera de consumo.\"\n      }\n    },\n    {\n      \"id\": \"seguros_riesgo_credito\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Seguros de riesgo de crédito con alcance comprador público\",\n      \"properties\": {\n        \"description\": \"Seguros que cubren riesgo comercial y riesgo de crédito con alcance de comprador público.\"\n      }\n    },\n    {\n      \"id\": \"poliza_seguros\",\n      \"type\": \"Documento\",\n      \"label\": \"Póliza de seguros\",\n      \"properties\": {\n        \"description\": \"Documento que establece plazos de cobertura (180 o 270 días según corresponda) para reclamaciones.\"\n      }\n    },\n    {\n      \"id\": \"garantias_preferidas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Garantías preferidas\",\n      \"properties\": {\n        \"description\": \"Garantías con categoría preferida según normas reguladas, tipo A.\"\n      }\n    },\n    {\n      \"id\": \"normas_garantias\",\n      \"type\": \"Concepto\",\n      \"label\": \"Normas sobre garantías\",\n      \"properties\": {\n        \"description\": \"Marco normativo que establece requisitos pertinentes para operaciones de título.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"excepcion_evaluacion_garantias_a\",\n      \"target\": \"evaluacion_capacidad_repago\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_clasificacion_garantias_totales\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_clasificacion_cesion\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"financiaciones_garantias_preferidas_a\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"clasificacion_asegurador_mora\",\n      \"target\": \"criterios_cartera_consumo\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"clasificacion_asegurador_mora\",\n      \"target\": \"poliza_seguros\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"operaciones_cesion_sin_responsabilidad\",\n      \"target\": \"seguros_riesgo_credito\",\n      \"predicate\": \"ampara\"\n    },\n    {\n      \"source\": \"clasificacion_asegurador_mora\",\n      \"target\": \"seguros_riesgo_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"financiaciones_garantias_preferidas_a\",\n      \"target\": \"garantias_preferidas\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"operaciones_cesion_sin_responsabilidad\",\n      \"target\": \"normas_garantias\",\n      \"predicate\": \"cumple\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3860,
+  "output_tokens": 1678,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "financiaciones_garantias_preferidas_a",
+        "type": "Restriccion",
+        "label": "Financiaciones cubiertas con garantías preferidas A",
+        "properties": {
+          "description": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación."
+        }
+      },
+      {
+        "id": "evaluacion_capacidad_repago",
+        "type": "Operacion",
+        "label": "Evaluación de capacidad de repago",
+        "properties": {
+          "description": "Análisis de la capacidad de repago del deudor respecto de financiaciones."
+        }
+      },
+      {
+        "id": "excepcion_evaluacion_garantias_a",
+        "type": "Excepcion",
+        "label": "Exención de evaluación para garantías preferidas A",
+        "properties": {
+          "description": "No corresponde la evaluación de la capacidad de repago respecto de las financiaciones respaldadas con garantías preferidas 'A'."
+        }
+      },
+      {
+        "id": "clasificacion_deudores",
+        "type": "Operacion",
+        "label": "Clasificación de deudores",
+        "properties": {
+          "description": "Proceso de clasificar deudores conforme a criterios regulados."
+        }
+      },
+      {
+        "id": "excepcion_clasificacion_garantias_totales",
+        "type": "Excepcion",
+        "label": "Exención de clasificación por cobertura total",
+        "properties": {
+          "description": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación."
+        }
+      },
+      {
+        "id": "operaciones_cesion_sin_responsabilidad",
+        "type": "Operacion",
+        "label": "Operaciones de cesión sin responsabilidad cedente",
+        "properties": {
+          "description": "Operaciones de cesión en las que el cedente no asume responsabilidad."
+        }
+      },
+      {
+        "id": "excepcion_clasificacion_cesion",
+        "type": "Excepcion",
+        "label": "Exención de clasificación para cesiones sin responsabilidad",
+        "properties": {
+          "description": "No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente."
+        }
+      },
+      {
+        "id": "clasificacion_asegurador_mora",
+        "type": "Restriccion",
+        "label": "Clasificación de asegurador por mora",
+        "properties": {
+          "description": "Clasificar a la compañía de seguros en función de la mora según criterios aplicables para cartera de consumo, considerando fecha de vencimiento de primera obligación vencida impaga."
+        }
+      },
+      {
+        "id": "criterios_cartera_consumo",
+        "type": "Concepto",
+        "label": "Criterios aplicables cartera de consumo",
+        "properties": {
+          "description": "Conjunto de criterios de clasificación para operaciones de cartera de consumo."
+        }
+      },
+      {
+        "id": "seguros_riesgo_credito",
+        "type": "InstrumentoFinanciero",
+        "label": "Seguros de riesgo de crédito con alcance comprador público",
+        "properties": {
+          "description": "Seguros que cubren riesgo comercial y riesgo de crédito con alcance de comprador público."
+        }
+      },
+      {
+        "id": "poliza_seguros",
+        "type": "Documento",
+        "label": "Póliza de seguros",
+        "properties": {
+          "description": "Documento que establece plazos de cobertura (180 o 270 días según corresponda) para reclamaciones."
+        }
+      },
+      {
+        "id": "garantias_preferidas",
+        "type": "Concepto",
+        "label": "Garantías preferidas",
+        "properties": {
+          "description": "Garantías con categoría preferida según normas reguladas, tipo A."
+        }
+      },
+      {
+        "id": "normas_garantias",
+        "type": "Concepto",
+        "label": "Normas sobre garantías",
+        "properties": {
+          "description": "Marco normativo que establece requisitos pertinentes para operaciones de título."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "excepcion_evaluacion_garantias_a",
+        "target": "evaluacion_capacidad_repago",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_clasificacion_garantias_totales",
+        "target": "clasificacion_deudores",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_clasificacion_cesion",
+        "target": "clasificacion_deudores",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "financiaciones_garantias_preferidas_a",
+        "target": "clasificacion_deudores",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "clasificacion_asegurador_mora",
+        "target": "criterios_cartera_consumo",
+        "predicate": "aplica"
+      },
+      {
+        "source": "clasificacion_asegurador_mora",
+        "target": "poliza_seguros",
+        "predicate": "considera"
+      },
+      {
+        "source": "operaciones_cesion_sin_responsabilidad",
+        "target": "seguros_riesgo_credito",
+        "predicate": "ampara"
+      },
+      {
+        "source": "clasificacion_asegurador_mora",
+        "target": "seguros_riesgo_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "financiaciones_garantias_preferidas_a",
+        "target": "garantias_preferidas",
+        "predicate": "requiere"
+      },
+      {
+        "source": "operaciones_cesion_sin_responsabilidad",
+        "target": "normas_garantias",
+        "predicate": "cumple"
+      }
+    ]
+  }
+}

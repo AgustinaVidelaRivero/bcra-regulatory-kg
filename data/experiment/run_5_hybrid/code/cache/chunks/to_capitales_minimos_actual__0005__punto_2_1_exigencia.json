@@ -1,0 +1,149 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0005__punto_2_1_exigencia",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.1 — Exigencia.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exigencia_capital_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Se calcula aplicando la fórmula CRC = (k x 0,08 x APRC) + INC, donde k es un factor vinculado a la calificación asignada por la SEFYC, APRC son activos ponderados por riesgo de crédito, e INC es inversiones no computables.\"\n      }\n    },\n    {\n      \"id\": \"factor_k_calificacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor k según calificación de la SEFYC\",\n      \"properties\": {\n        \"description\": \"Factor vinculado a la calificación asignada a la entidad por la SEFYC con escala: calificación 1 (k=1), 2 (k=1,03), 3 (k=1,08), 4 (k=1,13), 5 (k=1,19). En ausencia de comunicación, k=1,03.\"\n      }\n    },\n    {\n      \"id\": \"calculo_factor_k_notificacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de factor k post-notificación\",\n      \"properties\": {\n        \"description\": \"Se utilizará la última calificación informada para calcular la exigencia que corresponda integrar al tercer mes siguiente a la notificación.\"\n      }\n    },\n    {\n      \"id\": \"activos_ponderados_riesgo_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos ponderados por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"APRC determinados mediante suma de valores obtenidos aplicando: A x p + PFB x CCF x p + no DvP + (DVP + RCD + INC inversiones significativas) x 12,5\"\n      }\n    },\n    {\n      \"id\": \"autoridad_sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"SEFYC; autoridad que evalúa y asigna calificaciones a las entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"exposiciones_crediticias\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposiciones crediticias\",\n      \"properties\": {\n        \"description\": \"Activos computables y exposiciones incluidas en el cálculo de activos ponderados por riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"partidas_fuera_balance\",\n      \"type\": \"Concepto\",\n      \"label\": \"Partidas fuera de balance\",\n      \"properties\": {\n        \"description\": \"PFB; conceptos computables no registrados en el balance de saldos.\"\n      }\n    },\n    {\n      \"id\": \"factor_conversion_crediticia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor de conversión crediticia\",\n      \"properties\": {\n        \"description\": \"CCF; factor aplicado a partidas fuera de balance en el cálculo de activos ponderados.\"\n      }\n    },\n    {\n      \"id\": \"ponderador_riesgo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ponderador de riesgo\",\n      \"properties\": {\n        \"description\": \"p; ponderador de riesgo expresado en tanto por uno, aplicado a exposiciones y operaciones.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_sin_entrega_contra_pago\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones sin entrega contra pago\",\n      \"properties\": {\n        \"description\": \"no DvP; operaciones cuyo importe se determina aplicando el ponderador de riesgo correspondiente.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"exigencia_capital_riesgo_credito\",\n      \"target\": \"factor_k_calificacion\",\n      \"predicate\": \"incorpora\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_credito\",\n      \"target\": \"activos_ponderados_riesgo_credito\",\n      \"predicate\": \"incorpora\"\n    },\n    {\n      \"source\": \"factor_k_calificacion\",\n      \"target\": \"autoridad_sefyc\",\n      \"predicate\": \"asignado_por\"\n    },\n    {\n      \"source\": \"calculo_factor_k_notificacion\",\n      \"target\": \"factor_k_calificacion\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"activos_ponderados_riesgo_credito\",\n      \"target\": \"exposiciones_crediticias\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"activos_ponderados_riesgo_credito\",\n      \"target\": \"partidas_fuera_balance\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"activos_ponderados_riesgo_credito\",\n      \"target\": \"operaciones_sin_entrega_contra_pago\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"partidas_fuera_balance\",\n      \"target\": \"factor_conversion_crediticia\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"exposiciones_crediticias\",\n      \"target\": \"ponderador_riesgo\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"operaciones_sin_entrega_contra_pago\",\n      \"target\": \"ponderador_riesgo\",\n      \"predicate\": \"aplica\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3890,
+  "output_tokens": 1571,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exigencia_capital_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo de crédito",
+        "properties": {
+          "description": "Se calcula aplicando la fórmula CRC = (k x 0,08 x APRC) + INC, donde k es un factor vinculado a la calificación asignada por la SEFYC, APRC son activos ponderados por riesgo de crédito, e INC es inversiones no computables."
+        }
+      },
+      {
+        "id": "factor_k_calificacion",
+        "type": "Restriccion",
+        "label": "Factor k según calificación de la SEFYC",
+        "properties": {
+          "description": "Factor vinculado a la calificación asignada a la entidad por la SEFYC con escala: calificación 1 (k=1), 2 (k=1,03), 3 (k=1,08), 4 (k=1,13), 5 (k=1,19). En ausencia de comunicación, k=1,03."
+        }
+      },
+      {
+        "id": "calculo_factor_k_notificacion",
+        "type": "Restriccion",
+        "label": "Cálculo de factor k post-notificación",
+        "properties": {
+          "description": "Se utilizará la última calificación informada para calcular la exigencia que corresponda integrar al tercer mes siguiente a la notificación."
+        }
+      },
+      {
+        "id": "activos_ponderados_riesgo_credito",
+        "type": "Concepto",
+        "label": "Activos ponderados por riesgo de crédito",
+        "properties": {
+          "description": "APRC determinados mediante suma de valores obtenidos aplicando: A x p + PFB x CCF x p + no DvP + (DVP + RCD + INC inversiones significativas) x 12,5"
+        }
+      },
+      {
+        "id": "autoridad_sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "SEFYC; autoridad que evalúa y asigna calificaciones a las entidades financieras."
+        }
+      },
+      {
+        "id": "exposiciones_crediticias",
+        "type": "Concepto",
+        "label": "Exposiciones crediticias",
+        "properties": {
+          "description": "Activos computables y exposiciones incluidas en el cálculo de activos ponderados por riesgo de crédito."
+        }
+      },
+      {
+        "id": "partidas_fuera_balance",
+        "type": "Concepto",
+        "label": "Partidas fuera de balance",
+        "properties": {
+          "description": "PFB; conceptos computables no registrados en el balance de saldos."
+        }
+      },
+      {
+        "id": "factor_conversion_crediticia",
+        "type": "Concepto",
+        "label": "Factor de conversión crediticia",
+        "properties": {
+          "description": "CCF; factor aplicado a partidas fuera de balance en el cálculo de activos ponderados."
+        }
+      },
+      {
+        "id": "ponderador_riesgo",
+        "type": "Concepto",
+        "label": "Ponderador de riesgo",
+        "properties": {
+          "description": "p; ponderador de riesgo expresado en tanto por uno, aplicado a exposiciones y operaciones."
+        }
+      },
+      {
+        "id": "operaciones_sin_entrega_contra_pago",
+        "type": "Operacion",
+        "label": "Operaciones sin entrega contra pago",
+        "properties": {
+          "description": "no DvP; operaciones cuyo importe se determina aplicando el ponderador de riesgo correspondiente."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "exigencia_capital_riesgo_credito",
+        "target": "factor_k_calificacion",
+        "predicate": "incorpora"
+      },
+      {
+        "source": "exigencia_capital_riesgo_credito",
+        "target": "activos_ponderados_riesgo_credito",
+        "predicate": "incorpora"
+      },
+      {
+        "source": "factor_k_calificacion",
+        "target": "autoridad_sefyc",
+        "predicate": "asignado_por"
+      },
+      {
+        "source": "calculo_factor_k_notificacion",
+        "target": "factor_k_calificacion",
+        "predicate": "regula"
+      },
+      {
+        "source": "activos_ponderados_riesgo_credito",
+        "target": "exposiciones_crediticias",
+        "predicate": "comprende"
+      },
+      {
+        "source": "activos_ponderados_riesgo_credito",
+        "target": "partidas_fuera_balance",
+        "predicate": "comprende"
+      },
+      {
+        "source": "activos_ponderados_riesgo_credito",
+        "target": "operaciones_sin_entrega_contra_pago",
+        "predicate": "comprende"
+      },
+      {
+        "source": "partidas_fuera_balance",
+        "target": "factor_conversion_crediticia",
+        "predicate": "aplica"
+      },
+      {
+        "source": "exposiciones_crediticias",
+        "target": "ponderador_riesgo",
+        "predicate": "aplica"
+      },
+      {
+        "source": "operaciones_sin_entrega_contra_pago",
+        "target": "ponderador_riesgo",
+        "predicate": "aplica"
+      }
+    ]
+  }
+}

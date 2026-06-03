@@ -1,0 +1,170 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0011__punto_3_6_aprobacion_de_la_clasificacion",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 3.6 — Aprobación de la clasificación.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"clasificacion_deudores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudores\",\n      \"properties\": {\n        \"description\": \"Acción de clasificar deudores según su riesgo de incobrabilidad, realizada por las unidades funcionales de la entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"calculo_previsiones_riesgo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de previsiones por riesgo de incobrabilidad\",\n      \"properties\": {\n        \"description\": \"Determinación de previsiones tanto regulatorias como contables conforme NIIF 9 para financiaciones que excedan el 2,5% de la RPC.\"\n      }\n    },\n    {\n      \"id\": \"aprobacion_directorio_clasificacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Aprobación por Directorio de clasificación y previsiones\",\n      \"properties\": {\n        \"description\": \"Para financiaciones que excedan 2,5% de RPC del mes anterior, la clasificación de deudores y cálculo de previsiones debe contar con previa aprobación del Directorio o Consejo de Administración por mayoría simple, o dos tercios si hay clientes vinculados.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_prestamista\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad financiera prestamista\",\n      \"properties\": {\n        \"description\": \"Sujeto autorizado que otorga financiaciones y debe cumplir con la clasificación de deudores regulada.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"umbral_financiacion_rpc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Umbral de financiación del 2,5% de RPC\",\n      \"properties\": {\n        \"description\": \"Aplica la obligación de aprobación solo a financiaciones que excedan el 2,5% de la RPC de la entidad financiera del mes anterior.\"\n      }\n    },\n    {\n      \"id\": \"conformidad_fundada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conformidad con opinión fundada\",\n      \"properties\": {\n        \"description\": \"La aprobación del Directorio debe constar con opinión fundada sobre la clasificación de cada deudor y el nivel de previsiones calculadas.\"\n      }\n    },\n    {\n      \"id\": \"mayorias_aprobacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mayorías requeridas para aprobación\",\n      \"properties\": {\n        \"description\": \"Mayoría simple para casos generales; dos tercios de la totalidad de miembros cuando se trate de clientes vinculados.\"\n      }\n    },\n    {\n      \"id\": \"toma_conocimiento_sin_observaciones\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Aprobación por toma de conocimiento\",\n      \"properties\": {\n        \"description\": \"La toma de conocimiento sin formulación de observaciones por parte del Directorio o Consejo de Administración de las opiniones fundadas emitidas por unidades funcionales cumple el requisito de aprobación previa, siempre que sea anterior a la remisión a SEFyC.\"\n      }\n    },\n    {\n      \"id\": \"remision_sefyc\",\n      \"type\": \"Operacion\",\n      \"label\": \"Remisión de informaciones a SEFyC\",\n      \"properties\": {\n        \"description\": \"Presentación de informaciones contables y complementarias a la Superintendencia de Entidades Financieras y Cambiarias.\"\n      }\n    },\n    {\n      \"id\": \"sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"SEFyC\",\n      \"properties\": {\n        \"description\": \"Superintendencia de Entidades Financieras y Cambiarias, autoridad regulatoria.\"\n      }\n    },\n    {\n      \"id\": \"niif_9\",\n      \"type\": \"Concepto\",\n      \"label\": \"Norma Internacional de Información Financiera 9\",\n      \"properties\": {\n        \"description\": \"Estándar contable aplicable al cálculo de previsiones por riesgo de incobrabilidad.\"\n      }\n    },\n    {\n      \"id\": \"clientes_vinculados\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes vinculados\",\n      \"properties\": {\n        \"description\": \"Deudores que tienen relaciones especiales con la entidad financiera, sujetos a mayoría de dos tercios para aprobación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"aprobacion_directorio_clasificacion\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"aprobacion_directorio_clasificacion\",\n      \"target\": \"calculo_previsiones_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"aprobacion_directorio_clasificacion\",\n      \"target\": \"entidad_financiera_prestamista\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"umbral_financiacion_rpc\",\n      \"target\": \"aprobacion_directorio_clasificacion\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"conformidad_fundada\",\n      \"target\": \"aprobacion_directorio_clasificacion\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"mayorias_aprobacion\",\n      \"target\": \"aprobacion_directorio_clasificacion\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"toma_conocimiento_sin_observaciones\",\n      \"target\": \"aprobacion_directorio_clasificacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"aprobacion_directorio_clasificacion\",\n      \"target\": \"remision_sefyc\",\n      \"predicate\": \"precede_a\"\n    },\n    {\n      \"source\": \"calculo_previsiones_riesgo\",\n      \"target\": \"niif_9\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"mayorias_aprobacion\",\n      \"target\": \"clientes_vinculados\",\n      \"predicate\": \"diferencia_por\"\n    },\n    {\n      \"source\": \"remision_sefyc\",\n      \"target\": \"sefyc\",\n      \"predicate\": \"se_presenta_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3764,
+  "output_tokens": 1783,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "clasificacion_deudores",
+        "type": "Operacion",
+        "label": "Clasificación de deudores",
+        "properties": {
+          "description": "Acción de clasificar deudores según su riesgo de incobrabilidad, realizada por las unidades funcionales de la entidad financiera."
+        }
+      },
+      {
+        "id": "calculo_previsiones_riesgo",
+        "type": "Operacion",
+        "label": "Cálculo de previsiones por riesgo de incobrabilidad",
+        "properties": {
+          "description": "Determinación de previsiones tanto regulatorias como contables conforme NIIF 9 para financiaciones que excedan el 2,5% de la RPC."
+        }
+      },
+      {
+        "id": "aprobacion_directorio_clasificacion",
+        "type": "Restriccion",
+        "label": "Aprobación por Directorio de clasificación y previsiones",
+        "properties": {
+          "description": "Para financiaciones que excedan 2,5% de RPC del mes anterior, la clasificación de deudores y cálculo de previsiones debe contar con previa aprobación del Directorio o Consejo de Administración por mayoría simple, o dos tercios si hay clientes vinculados."
+        }
+      },
+      {
+        "id": "entidad_financiera_prestamista",
+        "type": "EntidadFinanciera",
+        "label": "Entidad financiera prestamista",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "umbral_financiacion_rpc",
+        "type": "Restriccion",
+        "label": "Umbral de financiación del 2,5% de RPC",
+        "properties": {
+          "description": "Aplica la obligación de aprobación solo a financiaciones que excedan el 2,5% de la RPC de la entidad financiera del mes anterior."
+        }
+      },
+      {
+        "id": "conformidad_fundada",
+        "type": "Restriccion",
+        "label": "Conformidad con opinión fundada",
+        "properties": {
+          "description": "La aprobación del Directorio debe constar con opinión fundada sobre la clasificación de cada deudor y el nivel de previsiones calculadas."
+        }
+      },
+      {
+        "id": "mayorias_aprobacion",
+        "type": "Restriccion",
+        "label": "Mayorías requeridas para aprobación",
+        "properties": {
+          "description": "Mayoría simple para casos generales; dos tercios de la totalidad de miembros cuando se trate de clientes vinculados."
+        }
+      },
+      {
+        "id": "toma_conocimiento_sin_observaciones",
+        "type": "Excepcion",
+        "label": "Aprobación por toma de conocimiento",
+        "properties": {
+          "description": "La toma de conocimiento sin formulación de observaciones por parte del Directorio o Consejo de Administración de las opiniones fundadas emitidas por unidades funcionales cumple el requisito de aprobación previa, siempre que sea anterior a la remisión a SEFyC."
+        }
+      },
+      {
+        "id": "remision_sefyc",
+        "type": "Operacion",
+        "label": "Remisión de informaciones a SEFyC",
+        "properties": {
+          "description": "Presentación de informaciones contables y complementarias a la Superintendencia de Entidades Financieras y Cambiarias."
+        }
+      },
+      {
+        "id": "sefyc",
+        "type": "Autoridad",
+        "label": "SEFyC",
+        "properties": {
+          "description": "Superintendencia de Entidades Financieras y Cambiarias, autoridad regulatoria."
+        }
+      },
+      {
+        "id": "niif_9",
+        "type": "Concepto",
+        "label": "Norma Internacional de Información Financiera 9",
+        "properties": {
+          "description": "Estándar contable aplicable al cálculo de previsiones por riesgo de incobrabilidad."
+        }
+      },
+      {
+        "id": "clientes_vinculados",
+        "type": "Concepto",
+        "label": "Clientes vinculados",
+        "properties": {
+          "description": "Deudores que tienen relaciones especiales con la entidad financiera, sujetos a mayoría de dos tercios para aprobación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "aprobacion_directorio_clasificacion",
+        "target": "clasificacion_deudores",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "aprobacion_directorio_clasificacion",
+        "target": "calculo_previsiones_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "aprobacion_directorio_clasificacion",
+        "target": "entidad_financiera_prestamista",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "umbral_financiacion_rpc",
+        "target": "aprobacion_directorio_clasificacion",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "conformidad_fundada",
+        "target": "aprobacion_directorio_clasificacion",
+        "predicate": "requiere"
+      },
+      {
+        "source": "mayorias_aprobacion",
+        "target": "aprobacion_directorio_clasificacion",
+        "predicate": "especifica"
+      },
+      {
+        "source": "toma_conocimiento_sin_observaciones",
+        "target": "aprobacion_directorio_clasificacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "aprobacion_directorio_clasificacion",
+        "target": "remision_sefyc",
+        "predicate": "precede_a"
+      },
+      {
+        "source": "calculo_previsiones_riesgo",
+        "target": "niif_9",
+        "predicate": "aplica"
+      },
+      {
+        "source": "mayorias_aprobacion",
+        "target": "clientes_vinculados",
+        "predicate": "diferencia_por"
+      },
+      {
+        "source": "remision_sefyc",
+        "target": "sefyc",
+        "predicate": "se_presenta_a"
+      }
+    ]
+  }
+}

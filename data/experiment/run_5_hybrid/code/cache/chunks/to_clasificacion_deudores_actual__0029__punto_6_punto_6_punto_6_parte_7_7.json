@@ -1,0 +1,186 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0029__punto_6_punto_6_punto_6_parte_7_7",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6 + Punto 6 + Punto 6 (parte 7/7)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"deudores_excluidos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudores excluidos\",\n      \"properties\": {\n        \"description\": \"Deudores que fueron excluidos de categorías especiales y deben clasificarse conforme disposiciones generales.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudores\",\n      \"properties\": {\n        \"description\": \"Operación regulada de evaluar y asignar categoría de riesgo a los deudores según su perfil.\"\n      }\n    },\n    {\n      \"id\": \"prevision_deudas\",\n      \"type\": \"Operacion\",\n      \"label\": \"Provisión de deudas\",\n      \"properties\": {\n        \"description\": \"Operación de constituir reservas para el riesgo de incobrabilidad de deudas.\"\n      }\n    },\n    {\n      \"id\": \"cartera_comercial\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera comercial\",\n      \"properties\": {\n        \"description\": \"Conjunto de financiaciones otorgadas a clientes del sector privado no financiero.\"\n      }\n    },\n    {\n      \"id\": \"clientes_sector_privado_no_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes sector privado no financiero\",\n      \"properties\": {\n        \"description\": \"Deudores del sector privado no financiero que solicitan financiación a entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_deuda_umbrales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límites de deuda para clasificación especial\",\n      \"properties\": {\n        \"description\": \"La deuda del cliente más la financiación solicitada no debe exceder el 2,5% de responsabilidad patrimonial computable o el importe de referencia del punto 3.7, el que sea menor.\"\n      }\n    },\n    {\n      \"id\": \"declaracion_vinculacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Declaración jurada sobre vinculación\",\n      \"properties\": {\n        \"description\": \"El cliente debe presentar declaración jurada indicando si reviste carácter de vinculado o si existe influencia controlante con el intermediario financiero.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_concurso_540dias\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción por concurso y acuerdo preventivo\",\n      \"properties\": {\n        \"description\": \"Deudores en concurso, con acuerdo preventivo extrajudicial solicitado o en gestión judicial quedan exentos hasta 540 días de presentar documentación si cuentan con informe de abogado sobre razonabilidad del recupero.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_periodicidad\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evaluación periódica de deudores\",\n      \"properties\": {\n        \"description\": \"Clientes deben ser evaluados con la periodicidad correspondiente; su incumplimiento genera clasificación especial.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_acreedora\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera acreedora\",\n      \"properties\": {\n        \"description\": \"Intermediario financiero acreedor que otorgó la financiación.\"\n      }\n    },\n    {\n      \"id\": \"informe_abogado_recupero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Informe de abogado sobre recupero\",\n      \"properties\": {\n        \"description\": \"Dictamen jurídico de abogado de la entidad financiera acerca de la razonabilidad del recupero de los créditos.\"\n      }\n    },\n    {\n      \"id\": \"previsiones_minimas_incobrabilidad\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Previsiones mínimas por incobrabilidad\",\n      \"properties\": {\n        \"description\": \"Norma que requiere constituir reservas mínimas según punto 2.2.3.2, independiente de la clasificación otorgada.\"\n      }\n    },\n    {\n      \"id\": \"legajo_cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Legajo del cliente\",\n      \"properties\": {\n        \"description\": \"Documentación de archivo del cliente que debe existir para evaluación periódica.\"\n      }\n    },\n    {\n      \"id\": \"informacion_confiable_actualizada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Información confiable y actualizada\",\n      \"properties\": {\n        \"description\": \"El cliente debe proporcionar información confiable y actualizada para permitir su evaluación adecuada.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"deudores_excluidos\",\n      \"target\": \"clasificacion_deudores\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"deudores_excluidos\",\n      \"target\": \"prevision_deudas\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"clasificacion_deudores\",\n      \"target\": \"cartera_comercial\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_deuda_umbrales\",\n      \"target\": \"clientes_sector_privado_no_financiero\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"declaracion_vinculacion\",\n      \"target\": \"clientes_sector_privado_no_financiero\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_concurso_540dias\",\n      \"target\": \"declaracion_vinculacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"evaluacion_periodicidad\",\n      \"target\": \"clientes_sector_privado_no_financiero\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_concurso_540dias\",\n      \"target\": \"evaluacion_periodicidad\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"informe_abogado_recupero\",\n      \"target\": \"excepcion_concurso_540dias\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"previsiones_minimas_incobrabilidad\",\n      \"target\": \"clientes_sector_privado_no_financiero\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"informacion_confiable_actualizada\",\n      \"target\": \"clientes_sector_privado_no_financiero\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4290,
+  "output_tokens": 1857,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "deudores_excluidos",
+        "type": "Concepto",
+        "label": "Deudores excluidos",
+        "properties": {
+          "description": "Deudores que fueron excluidos de categorías especiales y deben clasificarse conforme disposiciones generales."
+        }
+      },
+      {
+        "id": "clasificacion_deudores",
+        "type": "Operacion",
+        "label": "Clasificación de deudores",
+        "properties": {
+          "description": "Operación regulada de evaluar y asignar categoría de riesgo a los deudores según su perfil."
+        }
+      },
+      {
+        "id": "prevision_deudas",
+        "type": "Operacion",
+        "label": "Provisión de deudas",
+        "properties": {
+          "description": "Operación de constituir reservas para el riesgo de incobrabilidad de deudas."
+        }
+      },
+      {
+        "id": "cartera_comercial",
+        "type": "Concepto",
+        "label": "Cartera comercial",
+        "properties": {
+          "description": "Conjunto de financiaciones otorgadas a clientes del sector privado no financiero."
+        }
+      },
+      {
+        "id": "clientes_sector_privado_no_financiero",
+        "type": "Concepto",
+        "label": "Clientes sector privado no financiero",
+        "properties": {
+          "description": "Deudores del sector privado no financiero que solicitan financiación a entidades financieras."
+        }
+      },
+      {
+        "id": "restriccion_deuda_umbrales",
+        "type": "Restriccion",
+        "label": "Límites de deuda para clasificación especial",
+        "properties": {
+          "description": "La deuda del cliente más la financiación solicitada no debe exceder el 2,5% de responsabilidad patrimonial computable o el importe de referencia del punto 3.7, el que sea menor."
+        }
+      },
+      {
+        "id": "declaracion_vinculacion",
+        "type": "Restriccion",
+        "label": "Declaración jurada sobre vinculación",
+        "properties": {
+          "description": "El cliente debe presentar declaración jurada indicando si reviste carácter de vinculado o si existe influencia controlante con el intermediario financiero."
+        }
+      },
+      {
+        "id": "excepcion_concurso_540dias",
+        "type": "Excepcion",
+        "label": "Excepción por concurso y acuerdo preventivo",
+        "properties": {
+          "description": "Deudores en concurso, con acuerdo preventivo extrajudicial solicitado o en gestión judicial quedan exentos hasta 540 días de presentar documentación si cuentan con informe de abogado sobre razonabilidad del recupero."
+        }
+      },
+      {
+        "id": "evaluacion_periodicidad",
+        "type": "Restriccion",
+        "label": "Evaluación periódica de deudores",
+        "properties": {
+          "description": "Clientes deben ser evaluados con la periodicidad correspondiente; su incumplimiento genera clasificación especial."
+        }
+      },
+      {
+        "id": "entidad_financiera_acreedora",
+        "type": "Concepto",
+        "label": "Entidad financiera acreedora",
+        "properties": {
+          "description": "Intermediario financiero acreedor que otorgó la financiación."
+        }
+      },
+      {
+        "id": "informe_abogado_recupero",
+        "type": "Concepto",
+        "label": "Informe de abogado sobre recupero",
+        "properties": {
+          "description": "Dictamen jurídico de abogado de la entidad financiera acerca de la razonabilidad del recupero de los créditos."
+        }
+      },
+      {
+        "id": "previsiones_minimas_incobrabilidad",
+        "type": "Restriccion",
+        "label": "Previsiones mínimas por incobrabilidad",
+        "properties": {
+          "description": "Norma que requiere constituir reservas mínimas según punto 2.2.3.2, independiente de la clasificación otorgada."
+        }
+      },
+      {
+        "id": "legajo_cliente",
+        "type": "Concepto",
+        "label": "Legajo del cliente",
+        "properties": {
+          "description": "Documentación de archivo del cliente que debe existir para evaluación periódica."
+        }
+      },
+      {
+        "id": "informacion_confiable_actualizada",
+        "type": "Restriccion",
+        "label": "Información confiable y actualizada",
+        "properties": {
+          "description": "El cliente debe proporcionar información confiable y actualizada para permitir su evaluación adecuada."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "deudores_excluidos",
+        "target": "clasificacion_deudores",
+        "predicate": "requiere"
+      },
+      {
+        "source": "deudores_excluidos",
+        "target": "prevision_deudas",
+        "predicate": "requiere"
+      },
+      {
+        "source": "clasificacion_deudores",
+        "target": "cartera_comercial",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_deuda_umbrales",
+        "target": "clientes_sector_privado_no_financiero",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "declaracion_vinculacion",
+        "target": "clientes_sector_privado_no_financiero",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_concurso_540dias",
+        "target": "declaracion_vinculacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "evaluacion_periodicidad",
+        "target": "clientes_sector_privado_no_financiero",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_concurso_540dias",
+        "target": "evaluacion_periodicidad",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "informe_abogado_recupero",
+        "target": "excepcion_concurso_540dias",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "previsiones_minimas_incobrabilidad",
+        "target": "clientes_sector_privado_no_financiero",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "informacion_confiable_actualizada",
+        "target": "clientes_sector_privado_no_financiero",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

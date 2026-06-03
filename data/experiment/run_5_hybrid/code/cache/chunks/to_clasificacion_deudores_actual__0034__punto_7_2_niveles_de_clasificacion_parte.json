@@ -1,0 +1,167 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0034__punto_7_2_niveles_de_clasificacion_parte",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 7.2 — Niveles de clasificación. (parte 2/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"garantias_adicionales_cobertura\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cómputo de garantías adicionales\",\n      \"properties\": {\n        \"description\": \"Se admite computar el 50% de garantías adicionales constituidas sobre bienes no vinculados a la explotación del deudor, excepto hipotecas sobre inmuebles rurales que son computables, observando márgenes de cobertura.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"reclasificacion_pago_periodico\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación por refinanciación con pagos periódicos\",\n      \"properties\": {\n        \"description\": \"Clientes con deudas refinanciadas mediante obligaciones mensuales o bimestrales pueden reclasificarse al nivel superior si cumplen puntualmente o con atrasos ≤31 días en 2 cuotas consecutivas, o si cancelan ≥5% de obligaciones refinanciadas en otros esquemas.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"reclasificacion_deuda_restante\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Condición de resto de deudas para reclasificación\",\n      \"properties\": {\n        \"description\": \"El deudor refinanciado solo puede reclasificarse si el resto de sus deudas reúnen como mínimo las condiciones previstas en el nivel inmediato superior.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"permanencia_minima_180_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Permanencia mínima de 180 días tras crédito adicional\",\n      \"properties\": {\n        \"description\": \"Deudor clasificado que refinancia su deuda y recibe crédito adicional debe permanecer en la categoría al menos 180 días desde la fecha del crédito adicional o del acuerdo de refinanciación, la más reciente.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"reclasificacion_atraso_mayor_31_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación inmediata por atraso mayor a 31 días\",\n      \"properties\": {\n        \"description\": \"Si se verifica atraso mayor a 31 días en pago de servicios de deuda refinanciada, corresponde reclasificación inmediata según total de días de atraso efectivos más atraso mínimo normativo de la categoría actual.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"nivel_riesgo_alto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo alto: atrasos 180 días a un año\",\n      \"properties\": {\n        \"description\": \"Comprende clientes con atrasos mayores a 180 días hasta un año.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"nivel_riesgo_alto_insolvencia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo alto: procedimientos concursales\",\n      \"properties\": {\n        \"description\": \"Incluye deudores que hayan solicitado concurso preventivo, celebrado acuerdo preventivo extrajudicial no homologado o cuya quiebra haya sido requerida si obligaciones son ≥20% del patrimonio o entre 5%-20% con pedido de quiebra persistente tras 90 días.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"reclasificacion_levantamiento_quiebra\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Reclasificación tras levantamiento de pedido de quiebra\",\n      \"properties\": {\n        \"description\": \"Si se levanta el pedido de quiebra, el deudor puede reclasificarse en niveles superiores según situación previa si se observan condiciones allí previstas.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"deudor_refinanciado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor refinanciado\",\n      \"properties\": {\n        \"description\": \"Cliente cuyas deudas han sido refinanciadas con obligaciones de pago periódico o crédito adicional.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Persona deudora que mantiene relación de crédito con entidad financiera.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"garantias_normas\",\n      \"type\": \"Documento\",\n      \"label\": \"Normas sobre Garantías\",\n      \"properties\": {\n        \"description\": \"Norma regulatoria que establece márgenes de cobertura para garantías.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"previsiones_riesgo_incobrabilidad\",\n      \"type\": \"Documento\",\n      \"label\": \"Normas sobre provisiones por riesgo de incobrabilidad\",\n      \"properties\": {\n        \"description\": \"Punto 2.2.5 de normas sobre previsiones mínimas por riesgo de incobrabilidad.\",\n        \"categoria\": null\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"reclasificacion_pago_periodico\",\n      \"target\": \"deudor_refinanciado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reclasificacion_deuda_restante\",\n      \"target\": \"deudor_refinanciado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"permanencia_minima_180_dias\",\n      \"target\": \"deudor_refinanciado\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reclasificacion_atraso_mayor_31_dias\",\n      \"target\": \"deudor_refinanciado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"garantias_adicionales_cobertura\",\n      \"target\": \"garantias_normas\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"permanencia_minima_180_dias\",\n      \"target\": \"previsiones_riesgo_incobrabilidad\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"reclasificacion_levantamiento_quiebra\",\n      \"target\": \"nivel_riesgo_alto_insolvencia\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"reclasificacion_levantamiento_quiebra\",\n      \"target\": \"cliente\",\n      \"predicate\": \"exime_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4403,
+  "output_tokens": 1863,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "garantias_adicionales_cobertura",
+        "type": "Restriccion",
+        "label": "Cómputo de garantías adicionales",
+        "properties": {
+          "description": "Se admite computar el 50% de garantías adicionales constituidas sobre bienes no vinculados a la explotación del deudor, excepto hipotecas sobre inmuebles rurales que son computables, observando márgenes de cobertura.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "reclasificacion_pago_periodico",
+        "type": "Restriccion",
+        "label": "Reclasificación por refinanciación con pagos periódicos",
+        "properties": {
+          "description": "Clientes con deudas refinanciadas mediante obligaciones mensuales o bimestrales pueden reclasificarse al nivel superior si cumplen puntualmente o con atrasos ≤31 días en 2 cuotas consecutivas, o si cancelan ≥5% de obligaciones refinanciadas en otros esquemas.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "reclasificacion_deuda_restante",
+        "type": "Restriccion",
+        "label": "Condición de resto de deudas para reclasificación",
+        "properties": {
+          "description": "El deudor refinanciado solo puede reclasificarse si el resto de sus deudas reúnen como mínimo las condiciones previstas en el nivel inmediato superior.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "permanencia_minima_180_dias",
+        "type": "Restriccion",
+        "label": "Permanencia mínima de 180 días tras crédito adicional",
+        "properties": {
+          "description": "Deudor clasificado que refinancia su deuda y recibe crédito adicional debe permanecer en la categoría al menos 180 días desde la fecha del crédito adicional o del acuerdo de refinanciación, la más reciente.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "reclasificacion_atraso_mayor_31_dias",
+        "type": "Restriccion",
+        "label": "Reclasificación inmediata por atraso mayor a 31 días",
+        "properties": {
+          "description": "Si se verifica atraso mayor a 31 días en pago de servicios de deuda refinanciada, corresponde reclasificación inmediata según total de días de atraso efectivos más atraso mínimo normativo de la categoría actual.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "nivel_riesgo_alto",
+        "type": "Restriccion",
+        "label": "Riesgo alto: atrasos 180 días a un año",
+        "properties": {
+          "description": "Comprende clientes con atrasos mayores a 180 días hasta un año.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "nivel_riesgo_alto_insolvencia",
+        "type": "Restriccion",
+        "label": "Riesgo alto: procedimientos concursales",
+        "properties": {
+          "description": "Incluye deudores que hayan solicitado concurso preventivo, celebrado acuerdo preventivo extrajudicial no homologado o cuya quiebra haya sido requerida si obligaciones son ≥20% del patrimonio o entre 5%-20% con pedido de quiebra persistente tras 90 días.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "reclasificacion_levantamiento_quiebra",
+        "type": "Excepcion",
+        "label": "Reclasificación tras levantamiento de pedido de quiebra",
+        "properties": {
+          "description": "Si se levanta el pedido de quiebra, el deudor puede reclasificarse en niveles superiores según situación previa si se observan condiciones allí previstas.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "deudor_refinanciado",
+        "type": "Concepto",
+        "label": "Deudor refinanciado",
+        "properties": {
+          "description": "Cliente cuyas deudas han sido refinanciadas con obligaciones de pago periódico o crédito adicional.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Persona deudora que mantiene relación de crédito con entidad financiera.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "garantias_normas",
+        "type": "Documento",
+        "label": "Normas sobre Garantías",
+        "properties": {
+          "description": "Norma regulatoria que establece márgenes de cobertura para garantías.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "previsiones_riesgo_incobrabilidad",
+        "type": "Documento",
+        "label": "Normas sobre provisiones por riesgo de incobrabilidad",
+        "properties": {
+          "description": "Punto 2.2.5 de normas sobre previsiones mínimas por riesgo de incobrabilidad.",
+          "categoria": null
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "reclasificacion_pago_periodico",
+        "target": "deudor_refinanciado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reclasificacion_deuda_restante",
+        "target": "deudor_refinanciado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "permanencia_minima_180_dias",
+        "target": "deudor_refinanciado",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reclasificacion_atraso_mayor_31_dias",
+        "target": "deudor_refinanciado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "garantias_adicionales_cobertura",
+        "target": "garantias_normas",
+        "predicate": "referencia"
+      },
+      {
+        "source": "permanencia_minima_180_dias",
+        "target": "previsiones_riesgo_incobrabilidad",
+        "predicate": "referencia"
+      },
+      {
+        "source": "reclasificacion_levantamiento_quiebra",
+        "target": "nivel_riesgo_alto_insolvencia",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "reclasificacion_levantamiento_quiebra",
+        "target": "cliente",
+        "predicate": "exime_a"
+      }
+    ]
+  }
+}

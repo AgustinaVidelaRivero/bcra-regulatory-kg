@@ -1,0 +1,113 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0133__punto_9_4_fecha_de_aplicacion_de_divisas",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 9.4 — Fecha de aplicación de divisas. + Punto 9.5 — Datos mínimos que conforman la certificación.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"fecha_aplicacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Fecha de aplicación de divisas\",\n      \"properties\": {\n        \"description\": \"La fecha de aplicación de divisas de cobros de exportaciones estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas.\"\n      }\n    },\n    {\n      \"id\": \"certificacion_aplicacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Contenido mínimo de certificación de aplicación\",\n      \"properties\": {\n        \"description\": \"La certificación de aplicación deberá contener: CUIT y denominación del exportador, fecha de emisión, permiso de embarque, fecha de aplicación, tipo de operación cancelada, concepto cancelado (capital y/o interés), moneda y monto de la aplicación.\"\n      }\n    },\n    {\n      \"id\": \"moneda_expresion_montos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Expresión de montos en moneda liquidada\",\n      \"properties\": {\n        \"description\": \"Los montos deberán estar expresados en la moneda que oportunamente fue liquidada por el mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"cobros_exportaciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros de exportaciones\",\n      \"properties\": {\n        \"description\": \"Operación de cobro de divisas generadas por exportaciones de bienes.\"\n      }\n    },\n    {\n      \"id\": \"anticipos_financiaciones_exportacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Anticipos y financiaciones de exportación\",\n      \"properties\": {\n        \"description\": \"Operaciones de anticipos y otras financiaciones de exportación de bienes.\"\n      }\n    },\n    {\n      \"id\": \"exportador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exportador\",\n      \"properties\": {\n        \"description\": \"Sujeto que realiza operaciones de exportación de bienes.\"\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Mercado donde se liquidan las divisas.\"\n      }\n    },\n    {\n      \"id\": \"permiso_embarque\",\n      \"type\": \"Documento\",\n      \"label\": \"Permiso de embarque\",\n      \"properties\": {\n        \"description\": \"Documento que autoriza el embarque de bienes exportados.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"certificacion_aplicacion_divisas\",\n      \"target\": \"cobros_exportaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"fecha_aplicacion_divisas\",\n      \"target\": \"cobros_exportaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"moneda_expresion_montos\",\n      \"target\": \"cobros_exportaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"certificacion_aplicacion_divisas\",\n      \"target\": \"permiso_embarque\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"certificacion_aplicacion_divisas\",\n      \"target\": \"exportador\",\n      \"predicate\": \"identifica\"\n    },\n    {\n      \"source\": \"moneda_expresion_montos\",\n      \"target\": \"mercado_cambios\",\n      \"predicate\": \"referencia\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3653,
+  "output_tokens": 969,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "fecha_aplicacion_divisas",
+        "type": "Restriccion",
+        "label": "Fecha de aplicación de divisas",
+        "properties": {
+          "description": "La fecha de aplicación de divisas de cobros de exportaciones estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas."
+        }
+      },
+      {
+        "id": "certificacion_aplicacion_divisas",
+        "type": "Restriccion",
+        "label": "Contenido mínimo de certificación de aplicación",
+        "properties": {
+          "description": "La certificación de aplicación deberá contener: CUIT y denominación del exportador, fecha de emisión, permiso de embarque, fecha de aplicación, tipo de operación cancelada, concepto cancelado (capital y/o interés), moneda y monto de la aplicación."
+        }
+      },
+      {
+        "id": "moneda_expresion_montos",
+        "type": "Restriccion",
+        "label": "Expresión de montos en moneda liquidada",
+        "properties": {
+          "description": "Los montos deberán estar expresados en la moneda que oportunamente fue liquidada por el mercado de cambios."
+        }
+      },
+      {
+        "id": "cobros_exportaciones",
+        "type": "Operacion",
+        "label": "Cobros de exportaciones",
+        "properties": {
+          "description": "Operación de cobro de divisas generadas por exportaciones de bienes."
+        }
+      },
+      {
+        "id": "anticipos_financiaciones_exportacion",
+        "type": "Operacion",
+        "label": "Anticipos y financiaciones de exportación",
+        "properties": {
+          "description": "Operaciones de anticipos y otras financiaciones de exportación de bienes."
+        }
+      },
+      {
+        "id": "exportador",
+        "type": "Concepto",
+        "label": "Exportador",
+        "properties": {
+          "description": "Sujeto que realiza operaciones de exportación de bienes."
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {
+          "description": "Mercado donde se liquidan las divisas."
+        }
+      },
+      {
+        "id": "permiso_embarque",
+        "type": "Documento",
+        "label": "Permiso de embarque",
+        "properties": {
+          "description": "Documento que autoriza el embarque de bienes exportados."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "certificacion_aplicacion_divisas",
+        "target": "cobros_exportaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "fecha_aplicacion_divisas",
+        "target": "cobros_exportaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "moneda_expresion_montos",
+        "target": "cobros_exportaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "certificacion_aplicacion_divisas",
+        "target": "permiso_embarque",
+        "predicate": "requiere"
+      },
+      {
+        "source": "certificacion_aplicacion_divisas",
+        "target": "exportador",
+        "predicate": "identifica"
+      },
+      {
+        "source": "moneda_expresion_montos",
+        "target": "mercado_cambios",
+        "predicate": "referencia"
+      }
+    ]
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0077__punto_5_10_operaciones_propias_de_las_en",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.10 — Operaciones propias de las entidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_cambiaria\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras y cambiarias\",\n      \"properties\": {\n        \"description\": \"Sujetos obligados por el régimen de operaciones de cambio\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"confeccion_boletos_cambio\",\n      \"type\": \"Operacion\",\n      \"label\": \"Confección de boletos de cambio\",\n      \"properties\": {\n        \"description\": \"Elaboración de comprobantes de cambio a nombre propio de la entidad\"\n      }\n    },\n    {\n      \"id\": \"cobros_pagos_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros y pagos en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Operaciones cambiarias propias en carácter de cliente para movimientos de fondos en moneda extranjera\"\n      }\n    },\n    {\n      \"id\": \"operaciones_cambio_canje_arbitraje\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de cambio, canje y arbitraje\",\n      \"properties\": {\n        \"description\": \"Transacciones realizadas con el BCRA y otras entidades financieras o cambiarias del país\"\n      }\n    },\n    {\n      \"id\": \"restriccion_boletos_cambio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Confección obligatoria de boletos de cambio\",\n      \"properties\": {\n        \"description\": \"Las entidades deben confeccionar boletos de cambio a nombre propio cuando correspondan a cobros/pagos en moneda extranjera o a operaciones de cambio, canje o arbitraje con el BCRA y otras entidades.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_registro_fecha_efecto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registro en fecha de efecto sobre PGC\",\n      \"properties\": {\n        \"description\": \"Las operaciones propias deben registrarse en la fecha en que se produce el efecto sobre la Posición Global de Cambios (PGC) de la entidad.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_no_registro_cambio\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de registro cambiario para créditos y depósitos\",\n      \"properties\": {\n        \"description\": \"No corresponde realizar registro cambiario a nombre de la entidad por movimientos en moneda extranjera en el país asociados a su operatoria de créditos y depósitos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_ingreso_liquidacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ingreso y liquidación de divisas\",\n      \"properties\": {\n        \"description\": \"Obligación de ingresar y liquidar divisas en el mercado de cambios cuando corresponda a operaciones propias de la entidad.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_cumplimiento_pgc\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Cumplimiento por ingreso a PGC\",\n      \"properties\": {\n        \"description\": \"El ingreso de fondos a la PGC de la entidad se considera cumplimiento de la obligación de ingreso y liquidación de divisas en el mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"posicion_global_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición Global de Cambios (PGC)\",\n      \"properties\": {\n        \"description\": \"Saldo neto de la posición en moneda extranjera de una entidad financiera\"\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Sistema de negociación regulada de moneda extranjera\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_cambiaria\",\n      \"target\": \"restriccion_boletos_cambio\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_boletos_cambio\",\n      \"target\": \"confeccion_boletos_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_boletos_cambio\",\n      \"target\": \"cobros_pagos_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_boletos_cambio\",\n      \"target\": \"operaciones_cambio_canje_arbitraje\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_cambiaria\",\n      \"target\": \"restriccion_registro_fecha_efecto\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_registro_fecha_efecto\",\n      \"target\": \"confeccion_boletos_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_no_registro_cambio\",\n      \"target\": \"restriccion_registro_fecha_efecto\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_cambiaria\",\n      \"target\": \"restriccion_ingreso_liquidacion_divisas\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_cumplimiento_pgc\",\n      \"target\": \"restriccion_ingreso_liquidacion_divisas\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"confeccion_boletos_cambio\",\n      \"target\": \"posicion_global_cambios\",\n      \"predicate\": \"registra_en\"\n    },\n    {\n      \"source\": \"operaciones_cambio_canje_arbitraje\",\n      \"target\": \"bcra\",\n      \"predicate\": \"se_realiza_con\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3671,
+  "output_tokens": 1696,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_cambiaria",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras y cambiarias",
+        "properties": {
+          "description": "Sujetos obligados por el régimen de operaciones de cambio",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "confeccion_boletos_cambio",
+        "type": "Operacion",
+        "label": "Confección de boletos de cambio",
+        "properties": {
+          "description": "Elaboración de comprobantes de cambio a nombre propio de la entidad"
+        }
+      },
+      {
+        "id": "cobros_pagos_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Cobros y pagos en moneda extranjera",
+        "properties": {
+          "description": "Operaciones cambiarias propias en carácter de cliente para movimientos de fondos en moneda extranjera"
+        }
+      },
+      {
+        "id": "operaciones_cambio_canje_arbitraje",
+        "type": "Operacion",
+        "label": "Operaciones de cambio, canje y arbitraje",
+        "properties": {
+          "description": "Transacciones realizadas con el BCRA y otras entidades financieras o cambiarias del país"
+        }
+      },
+      {
+        "id": "restriccion_boletos_cambio",
+        "type": "Restriccion",
+        "label": "Confección obligatoria de boletos de cambio",
+        "properties": {
+          "description": "Las entidades deben confeccionar boletos de cambio a nombre propio cuando correspondan a cobros/pagos en moneda extranjera o a operaciones de cambio, canje o arbitraje con el BCRA y otras entidades."
+        }
+      },
+      {
+        "id": "restriccion_registro_fecha_efecto",
+        "type": "Restriccion",
+        "label": "Registro en fecha de efecto sobre PGC",
+        "properties": {
+          "description": "Las operaciones propias deben registrarse en la fecha en que se produce el efecto sobre la Posición Global de Cambios (PGC) de la entidad."
+        }
+      },
+      {
+        "id": "excepcion_no_registro_cambio",
+        "type": "Excepcion",
+        "label": "Exención de registro cambiario para créditos y depósitos",
+        "properties": {
+          "description": "No corresponde realizar registro cambiario a nombre de la entidad por movimientos en moneda extranjera en el país asociados a su operatoria de créditos y depósitos."
+        }
+      },
+      {
+        "id": "restriccion_ingreso_liquidacion_divisas",
+        "type": "Restriccion",
+        "label": "Ingreso y liquidación de divisas",
+        "properties": {
+          "description": "Obligación de ingresar y liquidar divisas en el mercado de cambios cuando corresponda a operaciones propias de la entidad."
+        }
+      },
+      {
+        "id": "excepcion_cumplimiento_pgc",
+        "type": "Excepcion",
+        "label": "Cumplimiento por ingreso a PGC",
+        "properties": {
+          "description": "El ingreso de fondos a la PGC de la entidad se considera cumplimiento de la obligación de ingreso y liquidación de divisas en el mercado de cambios."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "posicion_global_cambios",
+        "type": "Concepto",
+        "label": "Posición Global de Cambios (PGC)",
+        "properties": {
+          "description": "Saldo neto de la posición en moneda extranjera de una entidad financiera"
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {
+          "description": "Sistema de negociación regulada de moneda extranjera"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_cambiaria",
+        "target": "restriccion_boletos_cambio",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_boletos_cambio",
+        "target": "confeccion_boletos_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_boletos_cambio",
+        "target": "cobros_pagos_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_boletos_cambio",
+        "target": "operaciones_cambio_canje_arbitraje",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entidad_financiera_cambiaria",
+        "target": "restriccion_registro_fecha_efecto",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_registro_fecha_efecto",
+        "target": "confeccion_boletos_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_no_registro_cambio",
+        "target": "restriccion_registro_fecha_efecto",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "entidad_financiera_cambiaria",
+        "target": "restriccion_ingreso_liquidacion_divisas",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_cumplimiento_pgc",
+        "target": "restriccion_ingreso_liquidacion_divisas",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "confeccion_boletos_cambio",
+        "target": "posicion_global_cambios",
+        "predicate": "registra_en"
+      },
+      {
+        "source": "operaciones_cambio_canje_arbitraje",
+        "target": "bcra",
+        "predicate": "se_realiza_con"
+      }
+    ]
+  }
+}

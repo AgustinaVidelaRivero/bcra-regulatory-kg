@@ -1,0 +1,97 @@
+{
+  "chunk_id": "to_proteccion_usuarios_servicios_financi__0025__punto_1_4_registro_de_reintegros_de_impo",
+  "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 1.4 — Registro de Reintegros de Importes (RRI). + Punto 1.5 — Registro de Denuncias ante las Instancias Judiciales y/o Administrativas de Defe",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"registro_reintegros_importes\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Registro de Reintegros de Importes\",\n      \"properties\": {\n        \"description\": \"Registro donde se asientan montos reintegrados a usuarios con identificación de afectado, causal, productos y casas involucradas\"\n      }\n    },\n    {\n      \"id\": \"registro_denuncias_judiciales_administrativas\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Registro de Denuncias ante Instancias Judiciales y Administrativas\",\n      \"properties\": {\n        \"description\": \"Registro de intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor\"\n      }\n    },\n    {\n      \"id\": \"reintegro_usuario\",\n      \"type\": \"Operacion\",\n      \"label\": \"Reintegro de montos a usuarios\",\n      \"properties\": {\n        \"description\": \"Acción de restituir importes a usuarios identificando causal, productos y casas involucradas\"\n      }\n    },\n    {\n      \"id\": \"denuncia_judicial_administrativa\",\n      \"type\": \"Operacion\",\n      \"label\": \"Denuncia ante instancias judiciales y administrativas\",\n      \"properties\": {\n        \"description\": \"Presentación de denuncias ante autoridades de defensa del consumidor\"\n      }\n    },\n    {\n      \"id\": \"usuario_afectado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Usuario afectado\",\n      \"properties\": {\n        \"description\": \"Sujeto destinatario de servicios financieros que resulta afectado por un evento\"\n      }\n    },\n    {\n      \"id\": \"causal_evento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Causal generadora del evento\",\n      \"properties\": {\n        \"description\": \"Motivo o causa que origina un evento con impacto en el usuario\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"registro_reintegros_importes\",\n      \"target\": \"reintegro_usuario\",\n      \"predicate\": \"registra\"\n    },\n    {\n      \"source\": \"registro_denuncias_judiciales_administrativas\",\n      \"target\": \"denuncia_judicial_administrativa\",\n      \"predicate\": \"registra\"\n    },\n    {\n      \"source\": \"reintegro_usuario\",\n      \"target\": \"usuario_afectado\",\n      \"predicate\": \"identifica\"\n    },\n    {\n      \"source\": \"denuncia_judicial_administrativa\",\n      \"target\": \"usuario_afectado\",\n      \"predicate\": \"identifica\"\n    },\n    {\n      \"source\": \"reintegro_usuario\",\n      \"target\": \"causal_evento\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"denuncia_judicial_administrativa\",\n      \"target\": \"causal_evento\",\n      \"predicate\": \"especifica\"\n    }\n  ]\n}\n```",
+  "input_tokens": 2744,
+  "output_tokens": 811,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 6,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "registro_reintegros_importes",
+        "type": "RegimenInformativo",
+        "label": "Registro de Reintegros de Importes",
+        "properties": {
+          "description": "Registro donde se asientan montos reintegrados a usuarios con identificación de afectado, causal, productos y casas involucradas"
+        }
+      },
+      {
+        "id": "registro_denuncias_judiciales_administrativas",
+        "type": "RegimenInformativo",
+        "label": "Registro de Denuncias ante Instancias Judiciales y Administrativas",
+        "properties": {
+          "description": "Registro de intervenciones originadas en denuncias ante instancias judiciales y/o administrativas de defensa del consumidor"
+        }
+      },
+      {
+        "id": "reintegro_usuario",
+        "type": "Operacion",
+        "label": "Reintegro de montos a usuarios",
+        "properties": {
+          "description": "Acción de restituir importes a usuarios identificando causal, productos y casas involucradas"
+        }
+      },
+      {
+        "id": "denuncia_judicial_administrativa",
+        "type": "Operacion",
+        "label": "Denuncia ante instancias judiciales y administrativas",
+        "properties": {
+          "description": "Presentación de denuncias ante autoridades de defensa del consumidor"
+        }
+      },
+      {
+        "id": "usuario_afectado",
+        "type": "Concepto",
+        "label": "Usuario afectado",
+        "properties": {
+          "description": "Sujeto destinatario de servicios financieros que resulta afectado por un evento"
+        }
+      },
+      {
+        "id": "causal_evento",
+        "type": "Concepto",
+        "label": "Causal generadora del evento",
+        "properties": {
+          "description": "Motivo o causa que origina un evento con impacto en el usuario"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "registro_reintegros_importes",
+        "target": "reintegro_usuario",
+        "predicate": "registra"
+      },
+      {
+        "source": "registro_denuncias_judiciales_administrativas",
+        "target": "denuncia_judicial_administrativa",
+        "predicate": "registra"
+      },
+      {
+        "source": "reintegro_usuario",
+        "target": "usuario_afectado",
+        "predicate": "identifica"
+      },
+      {
+        "source": "denuncia_judicial_administrativa",
+        "target": "usuario_afectado",
+        "predicate": "identifica"
+      },
+      {
+        "source": "reintegro_usuario",
+        "target": "causal_evento",
+        "predicate": "especifica"
+      },
+      {
+        "source": "denuncia_judicial_administrativa",
+        "target": "causal_evento",
+        "predicate": "especifica"
+      }
+    ]
+  }
+}

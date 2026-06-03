@@ -1,0 +1,87 @@
+{
+  "chunk_id": "to_proteccion_usuarios_servicios_financi__0002__punto_1_punto_1",
+  "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 1 + Punto 1",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"pspcp\",\n      \"type\": \"Concepto\",\n      \"label\": \"Proveedores de servicios de pago con cuentas\",\n      \"properties\": {\n        \"description\": \"Proveedores de servicios de pago que ofrecen cuentas de pago\"\n      }\n    },\n    {\n      \"id\": \"psi_billetera_digital\",\n      \"type\": \"Concepto\",\n      \"label\": \"Proveedores de iniciación de pago billetera digital\",\n      \"properties\": {\n        \"description\": \"Proveedores de servicios de pago que cumplen función de iniciación y prestan servicio de billetera digital\"\n      }\n    },\n    {\n      \"id\": \"sujetos_obligados\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sujetos obligados\",\n      \"properties\": {\n        \"description\": \"Entidades reguladas que ofrecen servicios financieros\"\n      }\n    },\n    {\n      \"id\": \"cumplimiento_normas_proteccion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Responsabilidad conjunta por cumplimiento normativo\",\n      \"properties\": {\n        \"description\": \"Cuando un tercero desarrolla tareas en nombre de sujetos obligados, ambos son responsables del cumplimiento de las normas de protección de usuarios\"\n      }\n    },\n    {\n      \"id\": \"tercero_prestador_tareas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tercero que desarrolla tareas en nombre\",\n      \"properties\": {\n        \"description\": \"Tercero que desarrolla tareas relativas a servicios ofrecidos por sujetos obligados o en su nombre\"\n      }\n    },\n    {\n      \"id\": \"instrumentos_acuerdo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acuerdo documentado de realización de tareas\",\n      \"properties\": {\n        \"description\": \"La responsabilidad conjunta debe establecerse en instrumentos que acuerden la realización de tareas por terceros\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"tercero_prestador_tareas\",\n      \"target\": \"sujetos_obligados\",\n      \"predicate\": \"desarrolla_tareas_en_nombre\"\n    },\n    {\n      \"source\": \"cumplimiento_normas_proteccion\",\n      \"target\": \"sujetos_obligados\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"cumplimiento_normas_proteccion\",\n      \"target\": \"tercero_prestador_tareas\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"instrumentos_acuerdo\",\n      \"target\": \"cumplimiento_normas_proteccion\",\n      \"predicate\": \"documenta\"\n    }\n  ]\n}\n```",
+  "input_tokens": 2773,
+  "output_tokens": 758,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 6,
+  "relations_count": 4,
+  "parsed": {
+    "entities": [
+      {
+        "id": "pspcp",
+        "type": "Concepto",
+        "label": "Proveedores de servicios de pago con cuentas",
+        "properties": {
+          "description": "Proveedores de servicios de pago que ofrecen cuentas de pago"
+        }
+      },
+      {
+        "id": "psi_billetera_digital",
+        "type": "Concepto",
+        "label": "Proveedores de iniciación de pago billetera digital",
+        "properties": {
+          "description": "Proveedores de servicios de pago que cumplen función de iniciación y prestan servicio de billetera digital"
+        }
+      },
+      {
+        "id": "sujetos_obligados",
+        "type": "Concepto",
+        "label": "Sujetos obligados",
+        "properties": {
+          "description": "Entidades reguladas que ofrecen servicios financieros"
+        }
+      },
+      {
+        "id": "cumplimiento_normas_proteccion",
+        "type": "Restriccion",
+        "label": "Responsabilidad conjunta por cumplimiento normativo",
+        "properties": {
+          "description": "Cuando un tercero desarrolla tareas en nombre de sujetos obligados, ambos son responsables del cumplimiento de las normas de protección de usuarios"
+        }
+      },
+      {
+        "id": "tercero_prestador_tareas",
+        "type": "Concepto",
+        "label": "Tercero que desarrolla tareas en nombre",
+        "properties": {
+          "description": "Tercero que desarrolla tareas relativas a servicios ofrecidos por sujetos obligados o en su nombre"
+        }
+      },
+      {
+        "id": "instrumentos_acuerdo",
+        "type": "Restriccion",
+        "label": "Acuerdo documentado de realización de tareas",
+        "properties": {
+          "description": "La responsabilidad conjunta debe establecerse en instrumentos que acuerden la realización de tareas por terceros"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "tercero_prestador_tareas",
+        "target": "sujetos_obligados",
+        "predicate": "desarrolla_tareas_en_nombre"
+      },
+      {
+        "source": "cumplimiento_normas_proteccion",
+        "target": "sujetos_obligados",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "cumplimiento_normas_proteccion",
+        "target": "tercero_prestador_tareas",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "instrumentos_acuerdo",
+        "target": "cumplimiento_normas_proteccion",
+        "predicate": "documenta"
+      }
+    ]
+  }
+}

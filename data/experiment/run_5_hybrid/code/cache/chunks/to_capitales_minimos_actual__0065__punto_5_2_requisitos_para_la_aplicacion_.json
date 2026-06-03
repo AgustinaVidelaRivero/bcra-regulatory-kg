@@ -1,0 +1,147 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0065__punto_5_2_requisitos_para_la_aplicacion_",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 5.2 — Requisitos para la aplicación de técnicas de coberturas del riesgo de crédito. (parte 3/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"swap_incumplimiento_crediticio\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Swap de incumplimiento crediticio\",\n      \"properties\": {\n        \"description\": \"Derivado de crédito que brinda protección crediticia equivalente a garantías\"\n      }\n    },\n    {\n      \"id\": \"swap_rendimiento_total\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Swap de rendimiento total\",\n      \"properties\": {\n        \"description\": \"Derivado de crédito que brinda protección crediticia equivalente a garantías\"\n      }\n    },\n    {\n      \"id\": \"restriccion_swaps_reconocimiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reconocimiento de swaps de incumplimiento y rendimiento total\",\n      \"properties\": {\n        \"description\": \"Solo se reconocerán swaps de incumplimiento crediticio y de rendimiento total que brinden protección crediticia equivalente a garantías\"\n      }\n    },\n    {\n      \"id\": \"excepcion_swap_retorno_total\",\n      \"type\": \"Excepcion\",\n      \"label\": \"No reconocimiento de protección en swap de retorno total\",\n      \"properties\": {\n        \"description\": \"Cuando una entidad compre protección crediticia mediante swap de retorno total, contabilice pagos netos recibidos como renta neta pero no contabilice deterioro del activo protegido, no se reconocerá la protección crediticia\"\n      }\n    },\n    {\n      \"id\": \"derivados_credito_otros\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Otros derivados de crédito\",\n      \"properties\": {\n        \"description\": \"Derivados de crédito distintos a swaps, incluyendo first-to-default y nth-to-default\"\n      }\n    },\n    {\n      \"id\": \"restriccion_derivados_no_reconocibles\",\n      \"type\": \"Restriccion\",\n      \"label\": \"No reconocimiento de otros derivados de crédito\",\n      \"properties\": {\n        \"description\": \"No podrán reconocerse como CRC otros tipos de derivados de crédito, incluyendo derivados de primer y/o de enésimo incumplimiento\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto que compra protección crediticia y realiza operaciones de cobertura de riesgo\"\n      }\n    },\n    {\n      \"id\": \"proteccion_crediticia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Protección crediticia\",\n      \"properties\": {\n        \"description\": \"Cobertura del riesgo de crédito mediante derivados y garantías\"\n      }\n    },\n    {\n      \"id\": \"crc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cobertura del riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Técnicas de cobertura reconocidas para mitigación del riesgo de crédito\"\n      }\n    },\n    {\n      \"id\": \"first_to_default\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivado first-to-default\",\n      \"properties\": {\n        \"description\": \"Derivado de crédito que cubre una canasta de obligaciones y se activa con el primer incumplimiento\"\n      }\n    },\n    {\n      \"id\": \"nth_to_default\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivado nth-to-default\",\n      \"properties\": {\n        \"description\": \"Derivado de crédito que cubre una canasta de obligaciones y se activa con un incumplimiento ulterior\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"excepcion_swap_retorno_total\",\n      \"target\": \"restriccion_swaps_reconocimiento\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_swaps_reconocimiento\",\n      \"target\": \"swap_incumplimiento_crediticio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_swaps_reconocimiento\",\n      \"target\": \"swap_rendimiento_total\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_derivados_no_reconocibles\",\n      \"target\": \"derivados_credito_otros\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_derivados_no_reconocibles\",\n      \"target\": \"first_to_default\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_derivados_no_reconocibles\",\n      \"target\": \"nth_to_default\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"swap_incumplimiento_crediticio\",\n      \"target\": \"proteccion_crediticia\",\n      \"predicate\": \"brinda\"\n    },\n    {\n      \"source\": \"swap_rendimiento_total\",\n      \"target\": \"proteccion_crediticia\",\n      \"predicate\": \"brinda\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3751,
+  "output_tokens": 1427,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "swap_incumplimiento_crediticio",
+        "type": "InstrumentoFinanciero",
+        "label": "Swap de incumplimiento crediticio",
+        "properties": {
+          "description": "Derivado de crédito que brinda protección crediticia equivalente a garantías"
+        }
+      },
+      {
+        "id": "swap_rendimiento_total",
+        "type": "InstrumentoFinanciero",
+        "label": "Swap de rendimiento total",
+        "properties": {
+          "description": "Derivado de crédito que brinda protección crediticia equivalente a garantías"
+        }
+      },
+      {
+        "id": "restriccion_swaps_reconocimiento",
+        "type": "Restriccion",
+        "label": "Reconocimiento de swaps de incumplimiento y rendimiento total",
+        "properties": {
+          "description": "Solo se reconocerán swaps de incumplimiento crediticio y de rendimiento total que brinden protección crediticia equivalente a garantías"
+        }
+      },
+      {
+        "id": "excepcion_swap_retorno_total",
+        "type": "Excepcion",
+        "label": "No reconocimiento de protección en swap de retorno total",
+        "properties": {
+          "description": "Cuando una entidad compre protección crediticia mediante swap de retorno total, contabilice pagos netos recibidos como renta neta pero no contabilice deterioro del activo protegido, no se reconocerá la protección crediticia"
+        }
+      },
+      {
+        "id": "derivados_credito_otros",
+        "type": "InstrumentoFinanciero",
+        "label": "Otros derivados de crédito",
+        "properties": {
+          "description": "Derivados de crédito distintos a swaps, incluyendo first-to-default y nth-to-default"
+        }
+      },
+      {
+        "id": "restriccion_derivados_no_reconocibles",
+        "type": "Restriccion",
+        "label": "No reconocimiento de otros derivados de crédito",
+        "properties": {
+          "description": "No podrán reconocerse como CRC otros tipos de derivados de crédito, incluyendo derivados de primer y/o de enésimo incumplimiento"
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto que compra protección crediticia y realiza operaciones de cobertura de riesgo"
+        }
+      },
+      {
+        "id": "proteccion_crediticia",
+        "type": "Concepto",
+        "label": "Protección crediticia",
+        "properties": {
+          "description": "Cobertura del riesgo de crédito mediante derivados y garantías"
+        }
+      },
+      {
+        "id": "crc",
+        "type": "Concepto",
+        "label": "Cobertura del riesgo de crédito",
+        "properties": {
+          "description": "Técnicas de cobertura reconocidas para mitigación del riesgo de crédito"
+        }
+      },
+      {
+        "id": "first_to_default",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivado first-to-default",
+        "properties": {
+          "description": "Derivado de crédito que cubre una canasta de obligaciones y se activa con el primer incumplimiento"
+        }
+      },
+      {
+        "id": "nth_to_default",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivado nth-to-default",
+        "properties": {
+          "description": "Derivado de crédito que cubre una canasta de obligaciones y se activa con un incumplimiento ulterior"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "excepcion_swap_retorno_total",
+        "target": "restriccion_swaps_reconocimiento",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_swaps_reconocimiento",
+        "target": "swap_incumplimiento_crediticio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_swaps_reconocimiento",
+        "target": "swap_rendimiento_total",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_derivados_no_reconocibles",
+        "target": "derivados_credito_otros",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_derivados_no_reconocibles",
+        "target": "first_to_default",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_derivados_no_reconocibles",
+        "target": "nth_to_default",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "swap_incumplimiento_crediticio",
+        "target": "proteccion_crediticia",
+        "predicate": "brinda"
+      },
+      {
+        "source": "swap_rendimiento_total",
+        "target": "proteccion_crediticia",
+        "predicate": "brinda"
+      }
+    ]
+  }
+}

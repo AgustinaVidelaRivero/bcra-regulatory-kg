@@ -1,0 +1,178 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0035__punto_7_2_niveles_de_clasificacion_parte",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 7.2 — Niveles de clasificación. (parte 3/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"nivel_clasificacion_irrecuperable\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación Irrecuperable\",\n      \"properties\": {\n        \"description\": \"Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, atrasos superiores a un año, o en gestión judicial/concurso preventivo con más de 540 días de atraso.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_nivel_superior_refinanciado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación a nivel superior deudor refinanciado\",\n      \"properties\": {\n        \"description\": \"Deudor refinanciado puede reclasificarse al nivel inmediato superior si cumple puntualmente o con atrasos ≤31 días, pagando 3 cuotas consecutivas, o cancela al menos 15% de obligaciones refinanciadas para financiaciones de pago único o superior a bimestral.\"\n      }\n    },\n    {\n      \"id\": \"permanencia_categoria_180_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Permanencia mínima 180 días con crédito adicional\",\n      \"properties\": {\n        \"description\": \"Deudor clasificado en categoría que refinancia deuda y recibe crédito adicional debe permanecer en la misma categoría por lo menos 180 días desde el otorgamiento del crédito adicional o acuerdo de refinanciación, la más reciente.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_inmediata_atraso_superior_31\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación inmediata por atraso superior a 31 días\",\n      \"properties\": {\n        \"description\": \"Si se verifica atraso mayor a 31 días en pago de servicios de deuda refinanciada, corresponde reclasificación inmediata considerando suma de días de atraso efectivo más atraso mínimo normativo de la categoría actual.\"\n      }\n    },\n    {\n      \"id\": \"condicion_atraso_540_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Atrasos hasta 540 días para concurso preventivo\",\n      \"properties\": {\n        \"description\": \"Para deudores en concurso preventivo, acuerdo preventivo extrajudicial o gestión judicial, se consideran atrasos de hasta 540 días para propósitos de clasificación.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_resto_deudas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Condiciones de resto de deudas para reclasificación\",\n      \"properties\": {\n        \"description\": \"Deudor refinanciado reclasificado solo si el resto de sus deudas reúnen, como mínimo, las condiciones previstas en el nivel de reclasificación.\"\n      }\n    },\n    {\n      \"id\": \"concepto_deudor_refinanciado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor refinanciado\",\n      \"properties\": {\n        \"description\": \"Cliente cuyas deudas han sido refinanciadas mediante obligaciones de pago periódico o modalidades alternativas.\"\n      }\n    },\n    {\n      \"id\": \"concepto_insolvencia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Insolvencia o quiebra\",\n      \"properties\": {\n        \"description\": \"Situación de cliente insolvente o en quiebra con nula o escasa posibilidad de recuperación del crédito.\"\n      }\n    },\n    {\n      \"id\": \"concepto_gestion_judicial\",\n      \"type\": \"Concepto\",\n      \"label\": \"Gestión judicial\",\n      \"properties\": {\n        \"description\": \"Estado de deudor que se encuentra sometido a procesos judiciales de insolvencia.\"\n      }\n    },\n    {\n      \"id\": \"concepto_concurso_preventivo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Concurso preventivo\",\n      \"properties\": {\n        \"description\": \"Procedimiento legal solicitado por deudor para reorganizar obligaciones.\"\n      }\n    },\n    {\n      \"id\": \"concepto_acuerdo_preventivo_extrajudicial\",\n      \"type\": \"Concepto\",\n      \"label\": \"Acuerdo preventivo extrajudicial\",\n      \"properties\": {\n        \"description\": \"Acuerdo de reestructuración de deuda realizado fuera del ámbito judicial.\"\n      }\n    },\n    {\n      \"id\": \"concepto_credito_adicional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Crédito adicional\",\n      \"properties\": {\n        \"description\": \"Financiamiento otorgado en adición a refinanciación previa, regulado en normas sobre previsiones mínimas por riesgo de incobrabilidad.\"\n      }\n    },\n    {\n      \"id\": \"autoridad_bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad reguladora que emite las normas de clasificación de deudores.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"nivel_clasificacion_irrecuperable\",\n      \"target\": \"concepto_insolvencia\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"nivel_clasificacion_irrecuperable\",\n      \"target\": \"concepto_gestion_judicial\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"nivel_clasificacion_irrecuperable\",\n      \"target\": \"concepto_concurso_preventivo\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"nivel_clasificacion_irrecuperable\",\n      \"target\": \"concepto_acuerdo_preventivo_extrajudicial\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"reclasificacion_nivel_superior_refinanciado\",\n      \"target\": \"concepto_deudor_refinanciado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"permanencia_categoria_180_dias\",\n      \"target\": \"concepto_credito_adicional\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"reclasificacion_inmediata_atraso_superior_31\",\n      \"target\": \"concepto_deudor_refinanciado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"autoridad_bcra\",\n      \"target\": \"nivel_clasificacion_irrecuperable\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"autoridad_bcra\",\n      \"target\": \"reclasificacion_nivel_superior_refinanciado\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"autoridad_bcra\",\n      \"target\": \"permanencia_categoria_180_dias\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"autoridad_bcra\",\n      \"target\": \"reclasificacion_inmediata_atraso_superior_31\",\n      \"predicate\": \"regula\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4940,
+  "output_tokens": 1963,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "nivel_clasificacion_irrecuperable",
+        "type": "Restriccion",
+        "label": "Clasificación Irrecuperable",
+        "properties": {
+          "description": "Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, atrasos superiores a un año, o en gestión judicial/concurso preventivo con más de 540 días de atraso."
+        }
+      },
+      {
+        "id": "reclasificacion_nivel_superior_refinanciado",
+        "type": "Restriccion",
+        "label": "Reclasificación a nivel superior deudor refinanciado",
+        "properties": {
+          "description": "Deudor refinanciado puede reclasificarse al nivel inmediato superior si cumple puntualmente o con atrasos ≤31 días, pagando 3 cuotas consecutivas, o cancela al menos 15% de obligaciones refinanciadas para financiaciones de pago único o superior a bimestral."
+        }
+      },
+      {
+        "id": "permanencia_categoria_180_dias",
+        "type": "Restriccion",
+        "label": "Permanencia mínima 180 días con crédito adicional",
+        "properties": {
+          "description": "Deudor clasificado en categoría que refinancia deuda y recibe crédito adicional debe permanecer en la misma categoría por lo menos 180 días desde el otorgamiento del crédito adicional o acuerdo de refinanciación, la más reciente."
+        }
+      },
+      {
+        "id": "reclasificacion_inmediata_atraso_superior_31",
+        "type": "Restriccion",
+        "label": "Reclasificación inmediata por atraso superior a 31 días",
+        "properties": {
+          "description": "Si se verifica atraso mayor a 31 días en pago de servicios de deuda refinanciada, corresponde reclasificación inmediata considerando suma de días de atraso efectivo más atraso mínimo normativo de la categoría actual."
+        }
+      },
+      {
+        "id": "condicion_atraso_540_dias",
+        "type": "Restriccion",
+        "label": "Atrasos hasta 540 días para concurso preventivo",
+        "properties": {
+          "description": "Para deudores en concurso preventivo, acuerdo preventivo extrajudicial o gestión judicial, se consideran atrasos de hasta 540 días para propósitos de clasificación."
+        }
+      },
+      {
+        "id": "reclasificacion_resto_deudas",
+        "type": "Restriccion",
+        "label": "Condiciones de resto de deudas para reclasificación",
+        "properties": {
+          "description": "Deudor refinanciado reclasificado solo si el resto de sus deudas reúnen, como mínimo, las condiciones previstas en el nivel de reclasificación."
+        }
+      },
+      {
+        "id": "concepto_deudor_refinanciado",
+        "type": "Concepto",
+        "label": "Deudor refinanciado",
+        "properties": {
+          "description": "Cliente cuyas deudas han sido refinanciadas mediante obligaciones de pago periódico o modalidades alternativas."
+        }
+      },
+      {
+        "id": "concepto_insolvencia",
+        "type": "Concepto",
+        "label": "Insolvencia o quiebra",
+        "properties": {
+          "description": "Situación de cliente insolvente o en quiebra con nula o escasa posibilidad de recuperación del crédito."
+        }
+      },
+      {
+        "id": "concepto_gestion_judicial",
+        "type": "Concepto",
+        "label": "Gestión judicial",
+        "properties": {
+          "description": "Estado de deudor que se encuentra sometido a procesos judiciales de insolvencia."
+        }
+      },
+      {
+        "id": "concepto_concurso_preventivo",
+        "type": "Concepto",
+        "label": "Concurso preventivo",
+        "properties": {
+          "description": "Procedimiento legal solicitado por deudor para reorganizar obligaciones."
+        }
+      },
+      {
+        "id": "concepto_acuerdo_preventivo_extrajudicial",
+        "type": "Concepto",
+        "label": "Acuerdo preventivo extrajudicial",
+        "properties": {
+          "description": "Acuerdo de reestructuración de deuda realizado fuera del ámbito judicial."
+        }
+      },
+      {
+        "id": "concepto_credito_adicional",
+        "type": "Concepto",
+        "label": "Crédito adicional",
+        "properties": {
+          "description": "Financiamiento otorgado en adición a refinanciación previa, regulado en normas sobre previsiones mínimas por riesgo de incobrabilidad."
+        }
+      },
+      {
+        "id": "autoridad_bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad reguladora que emite las normas de clasificación de deudores."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "nivel_clasificacion_irrecuperable",
+        "target": "concepto_insolvencia",
+        "predicate": "comprende"
+      },
+      {
+        "source": "nivel_clasificacion_irrecuperable",
+        "target": "concepto_gestion_judicial",
+        "predicate": "incluye"
+      },
+      {
+        "source": "nivel_clasificacion_irrecuperable",
+        "target": "concepto_concurso_preventivo",
+        "predicate": "incluye"
+      },
+      {
+        "source": "nivel_clasificacion_irrecuperable",
+        "target": "concepto_acuerdo_preventivo_extrajudicial",
+        "predicate": "incluye"
+      },
+      {
+        "source": "reclasificacion_nivel_superior_refinanciado",
+        "target": "concepto_deudor_refinanciado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "permanencia_categoria_180_dias",
+        "target": "concepto_credito_adicional",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "reclasificacion_inmediata_atraso_superior_31",
+        "target": "concepto_deudor_refinanciado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "autoridad_bcra",
+        "target": "nivel_clasificacion_irrecuperable",
+        "predicate": "regula"
+      },
+      {
+        "source": "autoridad_bcra",
+        "target": "reclasificacion_nivel_superior_refinanciado",
+        "predicate": "regula"
+      },
+      {
+        "source": "autoridad_bcra",
+        "target": "permanencia_categoria_180_dias",
+        "predicate": "regula"
+      },
+      {
+        "source": "autoridad_bcra",
+        "target": "reclasificacion_inmediata_atraso_superior_31",
+        "predicate": "regula"
+      }
+    ]
+  }
+}

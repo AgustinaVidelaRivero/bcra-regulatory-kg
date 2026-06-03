@@ -1,0 +1,153 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0082__punto_6_4_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.4 — Exigencia de capital por riesgo de tipo de cambio.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"capital_minimo_riesgo_cambio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Capital mínimo por riesgo de tipo de cambio\",\n      \"properties\": {\n        \"description\": \"Exigencia de capital mínimo necesario para cubrir el riesgo de mantener posiciones en moneda extranjera, incluido el oro.\"\n      }\n    },\n    {\n      \"id\": \"posicion_abierta_neta_moneda\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de posición abierta neta en cada moneda\",\n      \"properties\": {\n        \"description\": \"La posición abierta neta en cada moneda se calcula como la suma de: posición neta al contado, posición neta a plazo, garantías otorgadas, ingresos y egresos futuros no devengados con cobertura total, y equivalente delta neto de cartera de opciones.\"\n      }\n    },\n    {\n      \"id\": \"posicion_neta_contado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición neta al contado\",\n      \"properties\": {\n        \"description\": \"Conformada por todos los activos menos todos los pasivos al contado, incluyendo los intereses devengados, denominados en la moneda en cuestión.\"\n      }\n    },\n    {\n      \"id\": \"posicion_neta_plazo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición neta a plazo\",\n      \"properties\": {\n        \"description\": \"Conformada por importes a cobrar menos importes a pagar por operaciones de cambio a término, incluidos futuros sobre divisas y principal de swaps de monedas.\"\n      }\n    },\n    {\n      \"id\": \"garantias_otorgadas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Garantías otorgadas e instrumentos similares\",\n      \"properties\": {\n        \"description\": \"Cuando su ejecución sea segura y sea altamente probable que sean irrecuperables.\"\n      }\n    },\n    {\n      \"id\": \"ingresos_egresos_futuros_cobertura\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ingresos y egresos futuros con cobertura total\",\n      \"properties\": {\n        \"description\": \"Ingresos y egresos futuros netos no devengados que hayan sido objeto de cobertura total, a discreción de la entidad.\"\n      }\n    },\n    {\n      \"id\": \"equivalente_delta_opciones_divisas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Equivalente delta neto de cartera de opciones\",\n      \"properties\": {\n        \"description\": \"Equivalente delta neto de toda la cartera de opciones sobre divisas cuando la entidad no emplee el método simplificado del punto 6.6.2.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_riesgo_contrato_termino\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cómputo de exposición en contratos a término con moneda extranjera u oro\",\n      \"properties\": {\n        \"description\": \"Cuando la moneda extranjera o el oro formen parte de un contrato a término, la exposición al riesgo de tasa de interés o de tipo de cambio del otro lado del contrato se computará conforme a puntos 6.2 y 6.4.2.1.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_tipo_cambio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de tipo de cambio\",\n      \"properties\": {\n        \"description\": \"Riesgo inherente a la combinación de posiciones compradas y vendidas en diferentes monedas.\"\n      }\n    },\n    {\n      \"id\": \"moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda extranjera\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"oro\",\n      \"type\": \"Concepto\",\n      \"label\": \"Oro\",\n      \"properties\": {}\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"capital_minimo_riesgo_cambio\",\n      \"target\": \"riesgo_tipo_cambio\",\n      \"predicate\": \"cubre\"\n    },\n    {\n      \"source\": \"posicion_abierta_neta_moneda\",\n      \"target\": \"posicion_neta_contado\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"posicion_abierta_neta_moneda\",\n      \"target\": \"posicion_neta_plazo\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"posicion_abierta_neta_moneda\",\n      \"target\": \"garantias_otorgadas\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"posicion_abierta_neta_moneda\",\n      \"target\": \"ingresos_egresos_futuros_cobertura\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"posicion_abierta_neta_moneda\",\n      \"target\": \"equivalente_delta_opciones_divisas\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"capital_minimo_riesgo_cambio\",\n      \"target\": \"moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"capital_minimo_riesgo_cambio\",\n      \"target\": \"oro\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exposicion_riesgo_contrato_termino\",\n      \"target\": \"moneda_extranjera\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"exposicion_riesgo_contrato_termino\",\n      \"target\": \"oro\",\n      \"predicate\": \"regula\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4033,
+  "output_tokens": 1594,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "capital_minimo_riesgo_cambio",
+        "type": "Restriccion",
+        "label": "Capital mínimo por riesgo de tipo de cambio",
+        "properties": {
+          "description": "Exigencia de capital mínimo necesario para cubrir el riesgo de mantener posiciones en moneda extranjera, incluido el oro."
+        }
+      },
+      {
+        "id": "posicion_abierta_neta_moneda",
+        "type": "Restriccion",
+        "label": "Cálculo de posición abierta neta en cada moneda",
+        "properties": {
+          "description": "La posición abierta neta en cada moneda se calcula como la suma de: posición neta al contado, posición neta a plazo, garantías otorgadas, ingresos y egresos futuros no devengados con cobertura total, y equivalente delta neto de cartera de opciones."
+        }
+      },
+      {
+        "id": "posicion_neta_contado",
+        "type": "Concepto",
+        "label": "Posición neta al contado",
+        "properties": {
+          "description": "Conformada por todos los activos menos todos los pasivos al contado, incluyendo los intereses devengados, denominados en la moneda en cuestión."
+        }
+      },
+      {
+        "id": "posicion_neta_plazo",
+        "type": "Concepto",
+        "label": "Posición neta a plazo",
+        "properties": {
+          "description": "Conformada por importes a cobrar menos importes a pagar por operaciones de cambio a término, incluidos futuros sobre divisas y principal de swaps de monedas."
+        }
+      },
+      {
+        "id": "garantias_otorgadas",
+        "type": "Concepto",
+        "label": "Garantías otorgadas e instrumentos similares",
+        "properties": {
+          "description": "Cuando su ejecución sea segura y sea altamente probable que sean irrecuperables."
+        }
+      },
+      {
+        "id": "ingresos_egresos_futuros_cobertura",
+        "type": "Concepto",
+        "label": "Ingresos y egresos futuros con cobertura total",
+        "properties": {
+          "description": "Ingresos y egresos futuros netos no devengados que hayan sido objeto de cobertura total, a discreción de la entidad."
+        }
+      },
+      {
+        "id": "equivalente_delta_opciones_divisas",
+        "type": "Concepto",
+        "label": "Equivalente delta neto de cartera de opciones",
+        "properties": {
+          "description": "Equivalente delta neto de toda la cartera de opciones sobre divisas cuando la entidad no emplee el método simplificado del punto 6.6.2."
+        }
+      },
+      {
+        "id": "exposicion_riesgo_contrato_termino",
+        "type": "Restriccion",
+        "label": "Cómputo de exposición en contratos a término con moneda extranjera u oro",
+        "properties": {
+          "description": "Cuando la moneda extranjera o el oro formen parte de un contrato a término, la exposición al riesgo de tasa de interés o de tipo de cambio del otro lado del contrato se computará conforme a puntos 6.2 y 6.4.2.1."
+        }
+      },
+      {
+        "id": "riesgo_tipo_cambio",
+        "type": "Concepto",
+        "label": "Riesgo de tipo de cambio",
+        "properties": {
+          "description": "Riesgo inherente a la combinación de posiciones compradas y vendidas en diferentes monedas."
+        }
+      },
+      {
+        "id": "moneda_extranjera",
+        "type": "Concepto",
+        "label": "Moneda extranjera",
+        "properties": {}
+      },
+      {
+        "id": "oro",
+        "type": "Concepto",
+        "label": "Oro",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "capital_minimo_riesgo_cambio",
+        "target": "riesgo_tipo_cambio",
+        "predicate": "cubre"
+      },
+      {
+        "source": "posicion_abierta_neta_moneda",
+        "target": "posicion_neta_contado",
+        "predicate": "incluye"
+      },
+      {
+        "source": "posicion_abierta_neta_moneda",
+        "target": "posicion_neta_plazo",
+        "predicate": "incluye"
+      },
+      {
+        "source": "posicion_abierta_neta_moneda",
+        "target": "garantias_otorgadas",
+        "predicate": "incluye"
+      },
+      {
+        "source": "posicion_abierta_neta_moneda",
+        "target": "ingresos_egresos_futuros_cobertura",
+        "predicate": "incluye"
+      },
+      {
+        "source": "posicion_abierta_neta_moneda",
+        "target": "equivalente_delta_opciones_divisas",
+        "predicate": "incluye"
+      },
+      {
+        "source": "capital_minimo_riesgo_cambio",
+        "target": "moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "capital_minimo_riesgo_cambio",
+        "target": "oro",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exposicion_riesgo_contrato_termino",
+        "target": "moneda_extranjera",
+        "predicate": "regula"
+      },
+      {
+        "source": "exposicion_riesgo_contrato_termino",
+        "target": "oro",
+        "predicate": "regula"
+      }
+    ]
+  }
+}

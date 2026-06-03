@@ -1,0 +1,200 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0018__punto_5_1_normas_de_procedimiento",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 5.1 — Normas de procedimiento",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exigencia_capital_riesgo_operacional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Determinación mensual de la exigencia de capital por riesgo operacional para entidades del Grupo 1 mediante la fórmula CRO = BIC x ILM, donde BIC se calcula según componentes de negocio con coeficientes marginales escalonados.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"entidades_grupo_1\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades del Grupo 1\",\n      \"properties\": {\n        \"description\": \"Sujetos obligados a cumplir con la exigencia mensual de capital por riesgo operacional.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"componente_indicador_negocio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Componente del indicador de negocio\",\n      \"properties\": {\n        \"description\": \"Componente BIC calculado como suma ponderada de tramos de ingresos brutos con coeficientes marginales escalonados (12%, 15%, 18% según categorías).\"\n      }\n    },\n    {\n      \"id\": \"multiplicador_perdida_interna\",\n      \"type\": \"Concepto\",\n      \"label\": \"Multiplicador de pérdida interna\",\n      \"properties\": {\n        \"description\": \"Factor ILM fijo igual a 1 utilizado en el cálculo de la exigencia de capital por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"ingresos_brutos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ingresos brutos\",\n      \"properties\": {\n        \"description\": \"Base de cálculo BI determinada como valor absoluto de la suma de componentes: intereses/arrendamientos/dividendos, servicios, financiero y resultado monetario total.\"\n      }\n    },\n    {\n      \"id\": \"componente_intereses_arrendamientos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Componente intereses, arrendamientos y dividendos\",\n      \"properties\": {\n        \"description\": \"ILDCProm: componente de cálculo que agrupa ingresos por intereses, arrendamientos y dividendos.\"\n      }\n    },\n    {\n      \"id\": \"componente_servicios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Componente de servicios\",\n      \"properties\": {\n        \"description\": \"SCProm: componente de cálculo que agrupa ingresos por servicios.\"\n      }\n    },\n    {\n      \"id\": \"componente_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Componente financiero\",\n      \"properties\": {\n        \"description\": \"FCProm: componente de cálculo que agrupa ingresos de naturaleza financiera.\"\n      }\n    },\n    {\n      \"id\": \"resultado_monetario_total\",\n      \"type\": \"Concepto\",\n      \"label\": \"Resultado monetario total\",\n      \"properties\": {\n        \"description\": \"RMProm: componente de cálculo que incluye el resultado monetario total acumulado.\"\n      }\n    },\n    {\n      \"id\": \"reexpresion_inflacionaria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reexpresión por inflación de términos\",\n      \"properties\": {\n        \"description\": \"Cada término dentro de los 3 componentes de ingresos y el resultado monetario debe ser informado reexpresado por inflación respecto de cada uno de los 3 períodos de 12 meses. Para resultados, la reexpresión opera desde el mes de origen hasta cierre del período de 36 meses.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"informe_componentes_calculo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Informe de componentes de cálculo\",\n      \"properties\": {\n        \"description\": \"Se informarán por partidas los importes que surjan de realizar los cálculos para determinación de BIC y cada componente de ingresos brutos.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"tipo_cambio_vendedor_bna\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conversión a pesos por tipo de cambio BNA\",\n      \"properties\": {\n        \"description\": \"Se calculará el importe equivalente en pesos al tipo de cambio vendedor del Banco Nacional de Argentina al cierre del último día hábil del mes anterior.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"banco_nacional_argentina\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Nacional de Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad que establece el tipo de cambio vendedor de referencia para conversión de monedas.\"\n      }\n    },\n    {\n      \"id\": \"presentacion_informativa_mensual\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación de información de capital operacional\",\n      \"properties\": {\n        \"description\": \"Reporte mensual de exigencia de capital por riesgo operacional y sus componentes conforme a las fórmulas y metodologías establecidas.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"entidades_grupo_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"presentacion_informativa_mensual\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"componente_indicador_negocio\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"multiplicador_perdida_interna\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"componente_indicador_negocio\",\n      \"target\": \"ingresos_brutos\",\n      \"predicate\": \"se_calcula_de\"\n    },\n    {\n      \"source\": \"ingresos_brutos\",\n      \"target\": \"componente_intereses_arrendamientos\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"ingresos_brutos\",\n      \"target\": \"componente_servicios\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"ingresos_brutos\",\n      \"target\": \"componente_financiero\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"ingresos_brutos\",\n      \"target\": \"resultado_monetario_total\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"reexpresion_inflacionaria\",\n      \"target\": \"presentacion_informativa_mensual\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"informe_componentes_calculo\",\n      \"target\": \"entidades_grupo_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"tipo_cambio_vendedor_bna\",\n      \"target\": \"banco_nacional_argentina\",\n      \"predicate\": \"establece\"\n    },\n    {\n      \"source\": \"tipo_cambio_vendedor_bna\",\n      \"target\": \"presentacion_informativa_mensual\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4074,
+  "output_tokens": 2065,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 13,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exigencia_capital_riesgo_operacional",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo operacional",
+        "properties": {
+          "description": "Determinación mensual de la exigencia de capital por riesgo operacional para entidades del Grupo 1 mediante la fórmula CRO = BIC x ILM, donde BIC se calcula según componentes de negocio con coeficientes marginales escalonados.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "entidades_grupo_1",
+        "type": "EntidadFinanciera",
+        "label": "Entidades del Grupo 1",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "componente_indicador_negocio",
+        "type": "Concepto",
+        "label": "Componente del indicador de negocio",
+        "properties": {
+          "description": "Componente BIC calculado como suma ponderada de tramos de ingresos brutos con coeficientes marginales escalonados (12%, 15%, 18% según categorías)."
+        }
+      },
+      {
+        "id": "multiplicador_perdida_interna",
+        "type": "Concepto",
+        "label": "Multiplicador de pérdida interna",
+        "properties": {
+          "description": "Factor ILM fijo igual a 1 utilizado en el cálculo de la exigencia de capital por riesgo operacional."
+        }
+      },
+      {
+        "id": "ingresos_brutos",
+        "type": "Concepto",
+        "label": "Ingresos brutos",
+        "properties": {
+          "description": "Base de cálculo BI determinada como valor absoluto de la suma de componentes: intereses/arrendamientos/dividendos, servicios, financiero y resultado monetario total."
+        }
+      },
+      {
+        "id": "componente_intereses_arrendamientos",
+        "type": "Concepto",
+        "label": "Componente intereses, arrendamientos y dividendos",
+        "properties": {
+          "description": "ILDCProm: componente de cálculo que agrupa ingresos por intereses, arrendamientos y dividendos."
+        }
+      },
+      {
+        "id": "componente_servicios",
+        "type": "Concepto",
+        "label": "Componente de servicios",
+        "properties": {
+          "description": "SCProm: componente de cálculo que agrupa ingresos por servicios."
+        }
+      },
+      {
+        "id": "componente_financiero",
+        "type": "Concepto",
+        "label": "Componente financiero",
+        "properties": {
+          "description": "FCProm: componente de cálculo que agrupa ingresos de naturaleza financiera."
+        }
+      },
+      {
+        "id": "resultado_monetario_total",
+        "type": "Concepto",
+        "label": "Resultado monetario total",
+        "properties": {
+          "description": "RMProm: componente de cálculo que incluye el resultado monetario total acumulado."
+        }
+      },
+      {
+        "id": "reexpresion_inflacionaria",
+        "type": "Restriccion",
+        "label": "Reexpresión por inflación de términos",
+        "properties": {
+          "description": "Cada término dentro de los 3 componentes de ingresos y el resultado monetario debe ser informado reexpresado por inflación respecto de cada uno de los 3 períodos de 12 meses. Para resultados, la reexpresión opera desde el mes de origen hasta cierre del período de 36 meses.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "informe_componentes_calculo",
+        "type": "Restriccion",
+        "label": "Informe de componentes de cálculo",
+        "properties": {
+          "description": "Se informarán por partidas los importes que surjan de realizar los cálculos para determinación de BIC y cada componente de ingresos brutos.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "tipo_cambio_vendedor_bna",
+        "type": "Restriccion",
+        "label": "Conversión a pesos por tipo de cambio BNA",
+        "properties": {
+          "description": "Se calculará el importe equivalente en pesos al tipo de cambio vendedor del Banco Nacional de Argentina al cierre del último día hábil del mes anterior.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "banco_nacional_argentina",
+        "type": "Autoridad",
+        "label": "Banco Nacional de Argentina",
+        "properties": {
+          "description": "Autoridad que establece el tipo de cambio vendedor de referencia para conversión de monedas."
+        }
+      },
+      {
+        "id": "presentacion_informativa_mensual",
+        "type": "Operacion",
+        "label": "Presentación de información de capital operacional",
+        "properties": {
+          "description": "Reporte mensual de exigencia de capital por riesgo operacional y sus componentes conforme a las fórmulas y metodologías establecidas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "entidades_grupo_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "presentacion_informativa_mensual",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "componente_indicador_negocio",
+        "predicate": "requiere"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "multiplicador_perdida_interna",
+        "predicate": "requiere"
+      },
+      {
+        "source": "componente_indicador_negocio",
+        "target": "ingresos_brutos",
+        "predicate": "se_calcula_de"
+      },
+      {
+        "source": "ingresos_brutos",
+        "target": "componente_intereses_arrendamientos",
+        "predicate": "incluye"
+      },
+      {
+        "source": "ingresos_brutos",
+        "target": "componente_servicios",
+        "predicate": "incluye"
+      },
+      {
+        "source": "ingresos_brutos",
+        "target": "componente_financiero",
+        "predicate": "incluye"
+      },
+      {
+        "source": "ingresos_brutos",
+        "target": "resultado_monetario_total",
+        "predicate": "incluye"
+      },
+      {
+        "source": "reexpresion_inflacionaria",
+        "target": "presentacion_informativa_mensual",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "informe_componentes_calculo",
+        "target": "entidades_grupo_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "tipo_cambio_vendedor_bna",
+        "target": "banco_nacional_argentina",
+        "predicate": "establece"
+      },
+      {
+        "source": "tipo_cambio_vendedor_bna",
+        "target": "presentacion_informativa_mensual",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

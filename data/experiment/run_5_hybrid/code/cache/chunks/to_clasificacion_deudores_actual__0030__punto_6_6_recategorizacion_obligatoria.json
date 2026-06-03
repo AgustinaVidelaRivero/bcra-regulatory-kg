@@ -1,0 +1,131 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0030__punto_6_6_recategorizacion_obligatoria",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6.6 — Recategorización obligatoria.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"recategorizacion_obligatoria_deudor\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización obligatoria del deudor\",\n      \"properties\": {\n        \"description\": \"Se debe recategorizar al deudor cuando existe discrepancia de más de un nivel entre la clasificación de la entidad y las de al menos otras dos entidades o fideicomisos financieros en categorías inferiores, cuyas acreencias representen el 40% o más del total.\"\n      }\n    },\n    {\n      \"id\": \"recategorizacion_categoria_inmediata_superior\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización en categoría inmediata superior\",\n      \"properties\": {\n        \"description\": \"La recategorización se efectuará a partir del mes siguiente a la disponibilidad de la información de la Central de deudores, al menos en la categoría inmediata superior a aquella con mayor endeudamiento según entidades que representen el 40% o más del total.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_asistencias_recategorizacion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de asistencias en condiciones especiales\",\n      \"properties\": {\n        \"description\": \"Las asistencias otorgadas en las condiciones del segundo párrafo del punto 6.5 no serán consideradas a los fines de la recategorización obligatoria.\"\n      }\n    },\n    {\n      \"id\": \"recategorizacion_categoria_dos_observacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización en categoría 2 como observación\",\n      \"properties\": {\n        \"description\": \"Cuando deba recategorizarse al deudor en la categoría 2, será considerado 'en observación' según punto 6.5.2.1.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto que otorga clasificación de deudores y participa en la central de deudores del sistema financiero.\"\n      }\n    },\n    {\n      \"id\": \"fideicomiso_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fideicomiso financiero\",\n      \"properties\": {\n        \"description\": \"Instrumento financiero que, junto con entidades financieras, participa en la clasificación de deudores y en la Central de deudores.\"\n      }\n    },\n    {\n      \"id\": \"central_deudores_sistema_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Central de deudores del sistema financiero\",\n      \"properties\": {\n        \"description\": \"Base de información centralizada que registra clasificaciones de deudores asignadas por acreedores del sistema financiero.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudor\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudor\",\n      \"properties\": {\n        \"description\": \"Acción de asignar una categoría (1 a 5) a un deudor según su riesgo crediticio.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_categorias_1_a_5\",\n      \"type\": \"Concepto\",\n      \"label\": \"Categorías de clasificación 1 a 5\",\n      \"properties\": {\n        \"description\": \"Escala de categorías para evaluar deudores, consideradas en la recategorización obligatoria según evaluación de entidades.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"recategorizacion_obligatoria_deudor\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"recategorizacion_obligatoria_deudor\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exclusion_asistencias_recategorizacion\",\n      \"target\": \"recategorizacion_obligatoria_deudor\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"recategorizacion_categoria_inmediata_superior\",\n      \"target\": \"central_deudores_sistema_financiero\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"fideicomiso_financiero\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"clasificacion_deudor\",\n      \"target\": \"clasificacion_categorias_1_a_5\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"central_deudores_sistema_financiero\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"registra\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3956,
+  "output_tokens": 1352,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "recategorizacion_obligatoria_deudor",
+        "type": "Restriccion",
+        "label": "Recategorización obligatoria del deudor",
+        "properties": {
+          "description": "Se debe recategorizar al deudor cuando existe discrepancia de más de un nivel entre la clasificación de la entidad y las de al menos otras dos entidades o fideicomisos financieros en categorías inferiores, cuyas acreencias representen el 40% o más del total."
+        }
+      },
+      {
+        "id": "recategorizacion_categoria_inmediata_superior",
+        "type": "Restriccion",
+        "label": "Recategorización en categoría inmediata superior",
+        "properties": {
+          "description": "La recategorización se efectuará a partir del mes siguiente a la disponibilidad de la información de la Central de deudores, al menos en la categoría inmediata superior a aquella con mayor endeudamiento según entidades que representen el 40% o más del total."
+        }
+      },
+      {
+        "id": "exclusion_asistencias_recategorizacion",
+        "type": "Excepcion",
+        "label": "Exclusión de asistencias en condiciones especiales",
+        "properties": {
+          "description": "Las asistencias otorgadas en las condiciones del segundo párrafo del punto 6.5 no serán consideradas a los fines de la recategorización obligatoria."
+        }
+      },
+      {
+        "id": "recategorizacion_categoria_dos_observacion",
+        "type": "Restriccion",
+        "label": "Recategorización en categoría 2 como observación",
+        "properties": {
+          "description": "Cuando deba recategorizarse al deudor en la categoría 2, será considerado 'en observación' según punto 6.5.2.1."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto que otorga clasificación de deudores y participa en la central de deudores del sistema financiero."
+        }
+      },
+      {
+        "id": "fideicomiso_financiero",
+        "type": "Concepto",
+        "label": "Fideicomiso financiero",
+        "properties": {
+          "description": "Instrumento financiero que, junto con entidades financieras, participa en la clasificación de deudores y en la Central de deudores."
+        }
+      },
+      {
+        "id": "central_deudores_sistema_financiero",
+        "type": "Concepto",
+        "label": "Central de deudores del sistema financiero",
+        "properties": {
+          "description": "Base de información centralizada que registra clasificaciones de deudores asignadas por acreedores del sistema financiero."
+        }
+      },
+      {
+        "id": "clasificacion_deudor",
+        "type": "Operacion",
+        "label": "Clasificación de deudor",
+        "properties": {
+          "description": "Acción de asignar una categoría (1 a 5) a un deudor según su riesgo crediticio."
+        }
+      },
+      {
+        "id": "clasificacion_categorias_1_a_5",
+        "type": "Concepto",
+        "label": "Categorías de clasificación 1 a 5",
+        "properties": {
+          "description": "Escala de categorías para evaluar deudores, consideradas en la recategorización obligatoria según evaluación de entidades."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "recategorizacion_obligatoria_deudor",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "recategorizacion_obligatoria_deudor",
+        "target": "clasificacion_deudor",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exclusion_asistencias_recategorizacion",
+        "target": "recategorizacion_obligatoria_deudor",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "recategorizacion_categoria_inmediata_superior",
+        "target": "central_deudores_sistema_financiero",
+        "predicate": "requiere"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "clasificacion_deudor",
+        "predicate": "realiza"
+      },
+      {
+        "source": "fideicomiso_financiero",
+        "target": "clasificacion_deudor",
+        "predicate": "realiza"
+      },
+      {
+        "source": "clasificacion_deudor",
+        "target": "clasificacion_categorias_1_a_5",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "central_deudores_sistema_financiero",
+        "target": "clasificacion_deudor",
+        "predicate": "registra"
+      }
+    ]
+  }
+}

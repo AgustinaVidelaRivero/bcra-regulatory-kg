@@ -1,0 +1,120 @@
+{
+  "chunk_id": "to_proteccion_usuarios_servicios_financi__0001__punto_1_1_partes",
+  "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 1.1 — Partes.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"usuario_servicios_financieros\",\n      \"type\": \"Concepto\",\n      \"label\": \"Usuario de servicios financieros\",\n      \"properties\": {\n        \"description\": \"Personas humanas y jurídicas destinatarias finales de servicios ofrecidos por sujetos obligados, incluyendo deudores de créditos cedidos.\"\n      }\n    },\n    {\n      \"id\": \"sujeto_obligado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sujeto obligado\",\n      \"properties\": {\n        \"description\": \"Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto obligado comprendido en la Ley de Entidades Financieras.\"\n      }\n    },\n    {\n      \"id\": \"operador_cambio\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Operador de cambio\",\n      \"properties\": {\n        \"description\": \"Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios.\",\n        \"categoria\": \"agencia_cambio\"\n      }\n    },\n    {\n      \"id\": \"fiduciario_fideicomiso\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Fiduciario de fideicomiso acreedor\",\n      \"properties\": {\n        \"description\": \"Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.\",\n        \"categoria\": \"fideicomiso_financiero\"\n      }\n    },\n    {\n      \"id\": \"empresa_no_financiera_tarjeta\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Empresa emisora de tarjeta de crédito\",\n      \"properties\": {\n        \"description\": \"Empresa no financiera emisora de tarjetas de crédito y/o compra.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"proveedor_no_financiero_credito\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Proveedor no financiero de crédito\",\n      \"properties\": {\n        \"description\": \"Otros proveedores no financieros de crédito alcanzados por normas sobre proveedores no financieros de crédito.\",\n        \"categoria\": \"proveedor_no_financiero_credito\"\n      }\n    },\n    {\n      \"id\": \"deudor_credito_cedido\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor de crédito cedido\",\n      \"properties\": {\n        \"description\": \"Deudor de créditos cedidos por entidades financieras, incluido en la categoría de usuario de servicios financieros.\"\n      }\n    },\n    {\n      \"id\": \"relacion_consumo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Relación de consumo\",\n      \"properties\": {\n        \"description\": \"Vínculo entre usuario y sujeto obligado por el que el usuario está expuesto a servicios financieros.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"usuario_servicios_financieros\",\n      \"target\": \"sujeto_obligado\",\n      \"predicate\": \"consume_de\"\n    },\n    {\n      \"source\": \"sujeto_obligado\",\n      \"target\": \"usuario_servicios_financieros\",\n      \"predicate\": \"ofrece_servicios_a\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"deudor_credito_cedido\",\n      \"predicate\": \"cede_creditos_a\"\n    },\n    {\n      \"source\": \"fiduciario_fideicomiso\",\n      \"target\": \"usuario_servicios_financieros\",\n      \"predicate\": \"atiende_como\"\n    },\n    {\n      \"source\": \"deudor_credito_cedido\",\n      \"target\": \"usuario_servicios_financieros\",\n      \"predicate\": \"es_categoria_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3966,
+  "output_tokens": 1155,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "usuario_servicios_financieros",
+        "type": "Concepto",
+        "label": "Usuario de servicios financieros",
+        "properties": {
+          "description": "Personas humanas y jurídicas destinatarias finales de servicios ofrecidos por sujetos obligados, incluyendo deudores de créditos cedidos."
+        }
+      },
+      {
+        "id": "sujeto_obligado",
+        "type": "Concepto",
+        "label": "Sujeto obligado",
+        "properties": {
+          "description": "Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto obligado comprendido en la Ley de Entidades Financieras."
+        }
+      },
+      {
+        "id": "operador_cambio",
+        "type": "EntidadFinanciera",
+        "label": "Operador de cambio",
+        "properties": {
+          "description": "Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios.",
+          "categoria": "agencia_cambio"
+        }
+      },
+      {
+        "id": "fiduciario_fideicomiso",
+        "type": "EntidadFinanciera",
+        "label": "Fiduciario de fideicomiso acreedor",
+        "properties": {
+          "description": "Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.",
+          "categoria": "fideicomiso_financiero"
+        }
+      },
+      {
+        "id": "empresa_no_financiera_tarjeta",
+        "type": "EntidadFinanciera",
+        "label": "Empresa emisora de tarjeta de crédito",
+        "properties": {
+          "description": "Empresa no financiera emisora de tarjetas de crédito y/o compra.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "proveedor_no_financiero_credito",
+        "type": "EntidadFinanciera",
+        "label": "Proveedor no financiero de crédito",
+        "properties": {
+          "description": "Otros proveedores no financieros de crédito alcanzados por normas sobre proveedores no financieros de crédito.",
+          "categoria": "proveedor_no_financiero_credito"
+        }
+      },
+      {
+        "id": "deudor_credito_cedido",
+        "type": "Concepto",
+        "label": "Deudor de crédito cedido",
+        "properties": {
+          "description": "Deudor de créditos cedidos por entidades financieras, incluido en la categoría de usuario de servicios financieros."
+        }
+      },
+      {
+        "id": "relacion_consumo",
+        "type": "Concepto",
+        "label": "Relación de consumo",
+        "properties": {
+          "description": "Vínculo entre usuario y sujeto obligado por el que el usuario está expuesto a servicios financieros."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "usuario_servicios_financieros",
+        "target": "sujeto_obligado",
+        "predicate": "consume_de"
+      },
+      {
+        "source": "sujeto_obligado",
+        "target": "usuario_servicios_financieros",
+        "predicate": "ofrece_servicios_a"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "deudor_credito_cedido",
+        "predicate": "cede_creditos_a"
+      },
+      {
+        "source": "fiduciario_fideicomiso",
+        "target": "usuario_servicios_financieros",
+        "predicate": "atiende_como"
+      },
+      {
+        "source": "deudor_credito_cedido",
+        "target": "usuario_servicios_financieros",
+        "predicate": "es_categoria_de"
+      }
+    ]
+  }
+}

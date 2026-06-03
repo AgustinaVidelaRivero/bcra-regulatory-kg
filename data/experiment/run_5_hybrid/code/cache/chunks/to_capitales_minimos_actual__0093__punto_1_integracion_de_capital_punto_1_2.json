@@ -1,0 +1,90 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0093__punto_1_integracion_de_capital_punto_1_2",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1 — Integración de capital. + Punto 1.2 — el cambio de valor diario que se produzca en el portafolio de activos incluidos",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"integracion_capital_diaria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Integración de capital determinada en forma diaria\",\n      \"properties\": {\n        \"description\": \"La integración del capital se determinará considerando cambios en precios de mercado desde la última cotización registrada al cierre del mes inmediato anterior.\"\n      }\n    },\n    {\n      \"id\": \"calculo_exigencia_riesgo_mercado\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de exigencia por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Cálculo que considera cambios en precios de mercado de activos incluidos en el portafolio.\"\n      }\n    },\n    {\n      \"id\": \"variacion_valor_activos_incorporados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Variación de valor de activos incorporados durante el mes\",\n      \"properties\": {\n        \"description\": \"En caso de compras de activos durante el mes, se toma solo la variación en el valor desde su incorporación.\"\n      }\n    },\n    {\n      \"id\": \"perdida_ganancia_ventas_activos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Pérdida o ganancia en ventas de activos\",\n      \"properties\": {\n        \"description\": \"En caso de ventas de activos (cierre de posiciones), se debe registrar la pérdida o ganancia resultante entre el precio de venta y el último precio de valuación.\"\n      }\n    },\n    {\n      \"id\": \"portafolio_activos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Portafolio de activos\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"precio_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Precio de mercado\",\n      \"properties\": {\n        \"description\": \"Cotización de mercado de activos registrada al cierre del mes inmediato anterior.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"integracion_capital_diaria\",\n      \"target\": \"calculo_exigencia_riesgo_mercado\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"calculo_exigencia_riesgo_mercado\",\n      \"target\": \"portafolio_activos\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"calculo_exigencia_riesgo_mercado\",\n      \"target\": \"precio_mercado\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"variacion_valor_activos_incorporados\",\n      \"target\": \"integracion_capital_diaria\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"perdida_ganancia_ventas_activos\",\n      \"target\": \"integracion_capital_diaria\",\n      \"predicate\": \"especifica\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3690,
+  "output_tokens": 803,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 6,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "integracion_capital_diaria",
+        "type": "Restriccion",
+        "label": "Integración de capital determinada en forma diaria",
+        "properties": {
+          "description": "La integración del capital se determinará considerando cambios en precios de mercado desde la última cotización registrada al cierre del mes inmediato anterior."
+        }
+      },
+      {
+        "id": "calculo_exigencia_riesgo_mercado",
+        "type": "Operacion",
+        "label": "Cálculo de exigencia por riesgo de mercado",
+        "properties": {
+          "description": "Cálculo que considera cambios en precios de mercado de activos incluidos en el portafolio."
+        }
+      },
+      {
+        "id": "variacion_valor_activos_incorporados",
+        "type": "Restriccion",
+        "label": "Variación de valor de activos incorporados durante el mes",
+        "properties": {
+          "description": "En caso de compras de activos durante el mes, se toma solo la variación en el valor desde su incorporación."
+        }
+      },
+      {
+        "id": "perdida_ganancia_ventas_activos",
+        "type": "Restriccion",
+        "label": "Pérdida o ganancia en ventas de activos",
+        "properties": {
+          "description": "En caso de ventas de activos (cierre de posiciones), se debe registrar la pérdida o ganancia resultante entre el precio de venta y el último precio de valuación."
+        }
+      },
+      {
+        "id": "portafolio_activos",
+        "type": "Concepto",
+        "label": "Portafolio de activos",
+        "properties": {}
+      },
+      {
+        "id": "precio_mercado",
+        "type": "Concepto",
+        "label": "Precio de mercado",
+        "properties": {
+          "description": "Cotización de mercado de activos registrada al cierre del mes inmediato anterior."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "integracion_capital_diaria",
+        "target": "calculo_exigencia_riesgo_mercado",
+        "predicate": "requiere"
+      },
+      {
+        "source": "calculo_exigencia_riesgo_mercado",
+        "target": "portafolio_activos",
+        "predicate": "considera"
+      },
+      {
+        "source": "calculo_exigencia_riesgo_mercado",
+        "target": "precio_mercado",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "variacion_valor_activos_incorporados",
+        "target": "integracion_capital_diaria",
+        "predicate": "especifica"
+      },
+      {
+        "source": "perdida_ganancia_ventas_activos",
+        "target": "integracion_capital_diaria",
+        "predicate": "especifica"
+      }
+    ]
+  }
+}

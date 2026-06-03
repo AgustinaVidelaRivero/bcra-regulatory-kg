@@ -1,0 +1,362 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0132__punto_10_3_consideraciones_para_su_imple",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 10.3 — Consideraciones para su implementación. (parte 1/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"ecai_admisibles\",\n      \"type\": \"Concepto\",\n      \"label\": \"ECAI admisibles\",\n      \"properties\": {\n        \"description\": \"Agentes de calificación externa admitidos por el BCRA para asignar calificaciones crediticias.\"\n      }\n    },\n    {\n      \"id\": \"ponderadores_riesgo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ponderadores de riesgo\",\n      \"properties\": {\n        \"description\": \"Factores de ponderación previstos en la normativa para reflejar el riesgo crediticio de las exposiciones.\"\n      }\n    },\n    {\n      \"id\": \"entidades_financieras\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados que deben cumplir con los procesos de asignación de calificaciones y ponderación de riesgo.\"\n      }\n    },\n    {\n      \"id\": \"mapping_calificaciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Asignación de calificaciones de ECAI\",\n      \"properties\": {\n        \"description\": \"Proceso mediante el cual las entidades financieras asignan las calificaciones de ECAI a los ponderadores de riesgo, de forma objetiva y coherente con la distribución de niveles de riesgo.\"\n      }\n    },\n    {\n      \"id\": \"seleccion_ecai_consistente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Uso consistente de ECAI seleccionadas\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben utilizar las ECAI seleccionadas y sus calificaciones de forma consistente tanto para ponderación como para gestión de riesgos, sin cambiar arbitrariamente de ECAI ni seleccionar la mejor evaluación entre diferentes ECAI (prohibición de cherry-picking).\"\n      }\n    },\n    {\n      \"id\": \"prohibicion_cherry_picking\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición de cherry-picking\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras no pueden escoger la mejor de las evaluaciones proporcionadas por diferentes ECAI.\"\n      }\n    },\n    {\n      \"id\": \"informacion_ecai_utilizadas\",\n      \"type\": \"Operacion\",\n      \"label\": \"Informe de ECAI utilizadas\",\n      \"properties\": {\n        \"description\": \"Las entidades deben informar las ECAI que utilizan para ponderar riesgo, los ponderadores asociados a cada calificación y los activos ponderados por riesgo agregados por ponderador.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_unica\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento de calificación única\",\n      \"properties\": {\n        \"description\": \"Cuando existe una sola calificación crediticia de ECAI seleccionada, se utilizará esa calificación para determinar el ponderador de riesgo de la exposición.\"\n      }\n    },\n    {\n      \"id\": \"dos_calificaciones_ponderador_mayor\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Aplicación de ponderador mayor con dos calificaciones\",\n      \"properties\": {\n        \"description\": \"Cuando existen dos calificaciones de ECAI seleccionadas con ponderadores diferentes, se aplica el ponderador de riesgo más alto.\"\n      }\n    },\n    {\n      \"id\": \"mas_dos_calificaciones_dos_menores\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Uso de dos menores ponderadores con múltiples calificaciones\",\n      \"properties\": {\n        \"description\": \"Con más de dos calificaciones, se utilizan las dos que corresponden a menores ponderadores de riesgo, aplicando el mayor de ambos.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_emision_especifica\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderación basada en calificación específica de emisión\",\n      \"properties\": {\n        \"description\": \"Si existe calificación específica para la emisión, el ponderador de riesgo se basa en esa calificación.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_emisor_credito_no_calificado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Uso de calificación de emisor para crédito no calificado\",\n      \"properties\": {\n        \"description\": \"Cuando el prestatario fue evaluado como emisor, esa calificación se aplica a créditos quirografarios no subordinados no evaluados. Otras exposiciones crediticias no calificadas se tratan como no calificadas.\"\n      }\n    },\n    {\n      \"id\": \"baja_calificacion_ponderador_equivalente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador para baja calificación de emisor\",\n      \"properties\": {\n        \"description\": \"Cuando el emisor tiene baja calificación crediticia, una exposición crediticia no evaluada equiparable o subordinada recibe el mismo ponderador que corresponde a esa baja calificación.\"\n      }\n    },\n    {\n      \"id\": \"cobertura_completa_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cobertura completa del riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"La calificación debe tener en cuenta y reflejar toda la exposición al riesgo de crédito asumida por la entidad, incluyendo todos los pagos adeudados (principal e intereses).\"\n      }\n    },\n    {\n      \"id\": \"evitar_doble_computo_mejoras_crediticias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evitar doble cómputo de mejoras crediticias\",\n      \"properties\": {\n        \"description\": \"No se reconoce la cobertura del riesgo de crédito que ya está reflejada en la calificación específica de la emisión.\"\n      }\n    },\n    {\n      \"id\": \"moneda_extranjera_exposiciones_moneda_extranjera\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Calificaciones en moneda extranjera para exposiciones en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Las calificaciones en moneda extranjera se utilizan para ponderar exposiciones en moneda extranjera. Las calificaciones en moneda nacional se utilizan solo para exposiciones en esa moneda.\"\n      }\n    },\n    {\n      \"id\": \"calidad_crediticia_alta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Evaluación de crédito de alta calidad\",\n      \"properties\": {\n        \"description\": \"Calificación que corresponde a un ponderador de riesgo inferior a la de créditos no calificados.\"\n      }\n    },\n    {\n      \"id\": \"créditos_quirografarios_no_subordinados\",\n      \"type\": \"Concepto\",\n      \"label\": \"Créditos quirografarios no subordinados\",\n      \"properties\": {\n        \"description\": \"Créditos sin garantía específica que no tienen rango subordinado en la estructura de pasivos.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_equivalente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición equivalente\",\n      \"properties\": {\n        \"description\": \"Exposición con mismo prestatario que es igual o preferente en términos jurídicos al crédito evaluado.\"\n      }\n    },\n    {\n      \"id\": \"proceso_asignacion_objetivo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Proceso de asignación objetivo\",\n      \"properties\": {\n        \"description\": \"El mapping de calificaciones debe ser objetivo y ofrecer una distribución de ponderadores coherente con la distribución de niveles de riesgo de crédito, abarcando todos los ponderadores previstos.\"\n      }\n    },\n    {\n      \"id\": \"cobertura_todos_ponderadores\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cobertura de todos los ponderadores\",\n      \"properties\": {\n        \"description\": \"El proceso de asignación debe abarcar todos los ponderadores de riesgo previstos en la normativa.\"\n      }\n    },\n    {\n      \"id\": \"factores_asignacion_calidad_crediticia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factores a considerar en asignación de niveles de calidad\",\n      \"properties\": {\n        \"description\": \"Se debe considerar tamaño y alcance del conjunto de emisores, gama y significado de calificaciones crediticias, y definición de incumplimiento utilizada por ECAI.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_emision_particular\",\n      \"type\": \"Concepto\",\n      \"label\": \"Evaluación de emisión particular\",\n      \"properties\": {\n        \"description\": \"Calificación crediticia asignada a una emisión específica de un deudor.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_emisor\",\n      \"type\": \"Concepto\",\n      \"label\": \"Evaluación de emisor\",\n      \"properties\": {\n        \"description\": \"Calificación crediticia asignada al prestatario o emisor en general, no a una emisión específica.\"\n      }\n    },\n    {\n      \"id\": \"incumplimiento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Incumplimiento\",\n      \"properties\": {\n        \"description\": \"Situación en que el deudor no cumple con sus obligaciones de pago.\"\n      }\n    },\n    {\n      \"id\": \"activos_ponderados_riesgo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos ponderados por riesgo\",\n      \"properties\": {\n        \"description\": \"Medida del riesgo crediticio de los activos de una entidad financiera ajustada por sus ponderadores de riesgo.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidades_financieras\",\n      \"target\": \"mapping_calificaciones\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"mapping_calificaciones\",\n      \"target\": \"ecai_admisibles\",\n      \"predicate\": \"asigna\"\n    },\n    {\n      \"source\": \"mapping_calificaciones\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"asigna\"\n    },\n    {\n      \"source\": \"proceso_asignacion_objetivo\",\n      \"target\": \"mapping_calificaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"cobertura_todos_ponderadores\",\n      \"target\": \"mapping_calificaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"factores_asignacion_calidad_crediticia\",\n      \"target\": \"mapping_calificaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"seleccion_ecai_consistente\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"prohibicion_cherry_picking\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"informacion_ecai_utilizadas\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"calificacion_unica\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"dos_calificaciones_ponderador_mayor\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"mas_dos_calificaciones_dos_menores\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"calificacion_emision_especifica\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"calificacion_emisor_credito_no_calificado\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"baja_calificacion_ponderador_equivalente\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"cobertura_completa_riesgo_credito\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"evitar_doble_computo_mejoras_crediticias\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"moneda_extranjera_exposiciones_moneda_extranjera\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"calificacion_unica\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"dos_calificaciones_ponderador_mayor\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"mas_dos_calificaciones_dos_menores\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calificacion_emision_especifica\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calificacion_emisor_credito_no_calificado\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"baja_calificacion_ponderador_equivalente\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"moneda_extranjera_exposiciones_moneda_extranjera\",\n      \"target\": \"ponderadores_riesgo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"informacion_ecai_utilizadas\",\n      \"target\": \"ecai_admisibles\",\n      \"predicate\": \"informa\"\n    },\n    {\n      \"source\": \"informacion_ecai_utilizadas\",\n      \"target\": \"activos_ponderados_riesgo\",\n      \"predicate\": \"informa\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5322,
+  "output_tokens": 3981,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 26,
+  "relations_count": 27,
+  "parsed": {
+    "entities": [
+      {
+        "id": "ecai_admisibles",
+        "type": "Concepto",
+        "label": "ECAI admisibles",
+        "properties": {
+          "description": "Agentes de calificación externa admitidos por el BCRA para asignar calificaciones crediticias."
+        }
+      },
+      {
+        "id": "ponderadores_riesgo",
+        "type": "Concepto",
+        "label": "Ponderadores de riesgo",
+        "properties": {
+          "description": "Factores de ponderación previstos en la normativa para reflejar el riesgo crediticio de las exposiciones."
+        }
+      },
+      {
+        "id": "entidades_financieras",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados que deben cumplir con los procesos de asignación de calificaciones y ponderación de riesgo."
+        }
+      },
+      {
+        "id": "mapping_calificaciones",
+        "type": "Operacion",
+        "label": "Asignación de calificaciones de ECAI",
+        "properties": {
+          "description": "Proceso mediante el cual las entidades financieras asignan las calificaciones de ECAI a los ponderadores de riesgo, de forma objetiva y coherente con la distribución de niveles de riesgo."
+        }
+      },
+      {
+        "id": "seleccion_ecai_consistente",
+        "type": "Restriccion",
+        "label": "Uso consistente de ECAI seleccionadas",
+        "properties": {
+          "description": "Las entidades financieras deben utilizar las ECAI seleccionadas y sus calificaciones de forma consistente tanto para ponderación como para gestión de riesgos, sin cambiar arbitrariamente de ECAI ni seleccionar la mejor evaluación entre diferentes ECAI (prohibición de cherry-picking)."
+        }
+      },
+      {
+        "id": "prohibicion_cherry_picking",
+        "type": "Restriccion",
+        "label": "Prohibición de cherry-picking",
+        "properties": {
+          "description": "Las entidades financieras no pueden escoger la mejor de las evaluaciones proporcionadas por diferentes ECAI."
+        }
+      },
+      {
+        "id": "informacion_ecai_utilizadas",
+        "type": "Operacion",
+        "label": "Informe de ECAI utilizadas",
+        "properties": {
+          "description": "Las entidades deben informar las ECAI que utilizan para ponderar riesgo, los ponderadores asociados a cada calificación y los activos ponderados por riesgo agregados por ponderador."
+        }
+      },
+      {
+        "id": "calificacion_unica",
+        "type": "Restriccion",
+        "label": "Tratamiento de calificación única",
+        "properties": {
+          "description": "Cuando existe una sola calificación crediticia de ECAI seleccionada, se utilizará esa calificación para determinar el ponderador de riesgo de la exposición."
+        }
+      },
+      {
+        "id": "dos_calificaciones_ponderador_mayor",
+        "type": "Restriccion",
+        "label": "Aplicación de ponderador mayor con dos calificaciones",
+        "properties": {
+          "description": "Cuando existen dos calificaciones de ECAI seleccionadas con ponderadores diferentes, se aplica el ponderador de riesgo más alto."
+        }
+      },
+      {
+        "id": "mas_dos_calificaciones_dos_menores",
+        "type": "Restriccion",
+        "label": "Uso de dos menores ponderadores con múltiples calificaciones",
+        "properties": {
+          "description": "Con más de dos calificaciones, se utilizan las dos que corresponden a menores ponderadores de riesgo, aplicando el mayor de ambos."
+        }
+      },
+      {
+        "id": "calificacion_emision_especifica",
+        "type": "Restriccion",
+        "label": "Ponderación basada en calificación específica de emisión",
+        "properties": {
+          "description": "Si existe calificación específica para la emisión, el ponderador de riesgo se basa en esa calificación."
+        }
+      },
+      {
+        "id": "calificacion_emisor_credito_no_calificado",
+        "type": "Restriccion",
+        "label": "Uso de calificación de emisor para crédito no calificado",
+        "properties": {
+          "description": "Cuando el prestatario fue evaluado como emisor, esa calificación se aplica a créditos quirografarios no subordinados no evaluados. Otras exposiciones crediticias no calificadas se tratan como no calificadas."
+        }
+      },
+      {
+        "id": "baja_calificacion_ponderador_equivalente",
+        "type": "Restriccion",
+        "label": "Ponderador para baja calificación de emisor",
+        "properties": {
+          "description": "Cuando el emisor tiene baja calificación crediticia, una exposición crediticia no evaluada equiparable o subordinada recibe el mismo ponderador que corresponde a esa baja calificación."
+        }
+      },
+      {
+        "id": "cobertura_completa_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Cobertura completa del riesgo de crédito",
+        "properties": {
+          "description": "La calificación debe tener en cuenta y reflejar toda la exposición al riesgo de crédito asumida por la entidad, incluyendo todos los pagos adeudados (principal e intereses)."
+        }
+      },
+      {
+        "id": "evitar_doble_computo_mejoras_crediticias",
+        "type": "Restriccion",
+        "label": "Evitar doble cómputo de mejoras crediticias",
+        "properties": {
+          "description": "No se reconoce la cobertura del riesgo de crédito que ya está reflejada en la calificación específica de la emisión."
+        }
+      },
+      {
+        "id": "moneda_extranjera_exposiciones_moneda_extranjera",
+        "type": "Restriccion",
+        "label": "Calificaciones en moneda extranjera para exposiciones en moneda extranjera",
+        "properties": {
+          "description": "Las calificaciones en moneda extranjera se utilizan para ponderar exposiciones en moneda extranjera. Las calificaciones en moneda nacional se utilizan solo para exposiciones en esa moneda."
+        }
+      },
+      {
+        "id": "calidad_crediticia_alta",
+        "type": "Concepto",
+        "label": "Evaluación de crédito de alta calidad",
+        "properties": {
+          "description": "Calificación que corresponde a un ponderador de riesgo inferior a la de créditos no calificados."
+        }
+      },
+      {
+        "id": "créditos_quirografarios_no_subordinados",
+        "type": "Concepto",
+        "label": "Créditos quirografarios no subordinados",
+        "properties": {
+          "description": "Créditos sin garantía específica que no tienen rango subordinado en la estructura de pasivos."
+        }
+      },
+      {
+        "id": "exposicion_equivalente",
+        "type": "Concepto",
+        "label": "Exposición equivalente",
+        "properties": {
+          "description": "Exposición con mismo prestatario que es igual o preferente en términos jurídicos al crédito evaluado."
+        }
+      },
+      {
+        "id": "proceso_asignacion_objetivo",
+        "type": "Restriccion",
+        "label": "Proceso de asignación objetivo",
+        "properties": {
+          "description": "El mapping de calificaciones debe ser objetivo y ofrecer una distribución de ponderadores coherente con la distribución de niveles de riesgo de crédito, abarcando todos los ponderadores previstos."
+        }
+      },
+      {
+        "id": "cobertura_todos_ponderadores",
+        "type": "Restriccion",
+        "label": "Cobertura de todos los ponderadores",
+        "properties": {
+          "description": "El proceso de asignación debe abarcar todos los ponderadores de riesgo previstos en la normativa."
+        }
+      },
+      {
+        "id": "factores_asignacion_calidad_crediticia",
+        "type": "Restriccion",
+        "label": "Factores a considerar en asignación de niveles de calidad",
+        "properties": {
+          "description": "Se debe considerar tamaño y alcance del conjunto de emisores, gama y significado de calificaciones crediticias, y definición de incumplimiento utilizada por ECAI."
+        }
+      },
+      {
+        "id": "evaluacion_emision_particular",
+        "type": "Concepto",
+        "label": "Evaluación de emisión particular",
+        "properties": {
+          "description": "Calificación crediticia asignada a una emisión específica de un deudor."
+        }
+      },
+      {
+        "id": "evaluacion_emisor",
+        "type": "Concepto",
+        "label": "Evaluación de emisor",
+        "properties": {
+          "description": "Calificación crediticia asignada al prestatario o emisor en general, no a una emisión específica."
+        }
+      },
+      {
+        "id": "incumplimiento",
+        "type": "Concepto",
+        "label": "Incumplimiento",
+        "properties": {
+          "description": "Situación en que el deudor no cumple con sus obligaciones de pago."
+        }
+      },
+      {
+        "id": "activos_ponderados_riesgo",
+        "type": "Concepto",
+        "label": "Activos ponderados por riesgo",
+        "properties": {
+          "description": "Medida del riesgo crediticio de los activos de una entidad financiera ajustada por sus ponderadores de riesgo."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidades_financieras",
+        "target": "mapping_calificaciones",
+        "predicate": "realiza"
+      },
+      {
+        "source": "mapping_calificaciones",
+        "target": "ecai_admisibles",
+        "predicate": "asigna"
+      },
+      {
+        "source": "mapping_calificaciones",
+        "target": "ponderadores_riesgo",
+        "predicate": "asigna"
+      },
+      {
+        "source": "proceso_asignacion_objetivo",
+        "target": "mapping_calificaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "cobertura_todos_ponderadores",
+        "target": "mapping_calificaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "factores_asignacion_calidad_crediticia",
+        "target": "mapping_calificaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "seleccion_ecai_consistente",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "prohibicion_cherry_picking",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "informacion_ecai_utilizadas",
+        "target": "entidades_financieras",
+        "predicate": "realiza"
+      },
+      {
+        "source": "calificacion_unica",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "dos_calificaciones_ponderador_mayor",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "mas_dos_calificaciones_dos_menores",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "calificacion_emision_especifica",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "calificacion_emisor_credito_no_calificado",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "baja_calificacion_ponderador_equivalente",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "cobertura_completa_riesgo_credito",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "evitar_doble_computo_mejoras_crediticias",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "moneda_extranjera_exposiciones_moneda_extranjera",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "calificacion_unica",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "dos_calificaciones_ponderador_mayor",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "mas_dos_calificaciones_dos_menores",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calificacion_emision_especifica",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calificacion_emisor_credito_no_calificado",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "baja_calificacion_ponderador_equivalente",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "moneda_extranjera_exposiciones_moneda_extranjera",
+        "target": "ponderadores_riesgo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "informacion_ecai_utilizadas",
+        "target": "ecai_admisibles",
+        "predicate": "informa"
+      },
+      {
+        "source": "informacion_ecai_utilizadas",
+        "target": "activos_ponderados_riesgo",
+        "predicate": "informa"
+      }
+    ]
+  }
+}

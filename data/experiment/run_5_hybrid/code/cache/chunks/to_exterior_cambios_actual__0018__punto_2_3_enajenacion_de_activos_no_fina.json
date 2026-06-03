@@ -1,0 +1,108 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0018__punto_2_3_enajenacion_de_activos_no_fina",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 2.3 — Enajenación de activos no financieros no producidos.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"enajenacion_activos_no_financieros_no_producidos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Enajenación de activos no financieros no producidos\",\n      \"properties\": {\n        \"description\": \"Venta por residentes a no residentes de activos no financieros no producidos\"\n      }\n    },\n    {\n      \"id\": \"ingreso_liquidacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ingreso y liquidación de contravalor en divisas\",\n      \"properties\": {\n        \"description\": \"El contravalor percibido debe ingresarse en divisas y liquidarse en el mercado de cambios dentro de 20 días hábiles de la percepción o acreditación\"\n      }\n    },\n    {\n      \"id\": \"plazo_liquidacion\",\n      \"type\": \"Plazo\",\n      \"label\": \"Plazo de liquidación en mercado de cambios\",\n      \"properties\": {\n        \"description\": \"20 días hábiles desde la fecha de percepción en el exterior o en el país o de acreditación en cuentas del exterior\"\n      }\n    },\n    {\n      \"id\": \"excepcion_fondos_exterior\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención por gastos de transferencia de fondos\",\n      \"properties\": {\n        \"description\": \"Para fondos percibidos o acreditados en el exterior, se considera cumplido el ingreso y liquidación por el monto equivalente a los gastos habituales debitados por las entidades financieras del exterior por transferencia de fondos al país\"\n      }\n    },\n    {\n      \"id\": \"residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Residente\",\n      \"properties\": {\n        \"description\": \"Persona o entidad con domicilio o sede en el país que realiza operaciones de enajenación\"\n      }\n    },\n    {\n      \"id\": \"no_residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"No residente\",\n      \"properties\": {\n        \"description\": \"Persona o entidad domiciliada en el exterior que adquiere activos no financieros no producidos\"\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Mercado donde debe liquidarse el contravalor percibido en divisas\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera del exterior\",\n      \"properties\": {\n        \"description\": \"Institución financiera ubicada en el exterior que debita gastos de transferencia de fondos\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"enajenacion_activos_no_financieros_no_producidos\",\n      \"target\": \"ingreso_liquidacion_divisas\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ingreso_liquidacion_divisas\",\n      \"target\": \"plazo_liquidacion\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"excepcion_fondos_exterior\",\n      \"target\": \"ingreso_liquidacion_divisas\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"enajenacion_activos_no_financieros_no_producidos\",\n      \"target\": \"residente\",\n      \"predicate\": \"realizada_por\"\n    },\n    {\n      \"source\": \"ingreso_liquidacion_divisas\",\n      \"target\": \"mercado_cambios\",\n      \"predicate\": \"se_efectua_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3558,
+  "output_tokens": 1013,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "enajenacion_activos_no_financieros_no_producidos",
+        "type": "Operacion",
+        "label": "Enajenación de activos no financieros no producidos",
+        "properties": {
+          "description": "Venta por residentes a no residentes de activos no financieros no producidos"
+        }
+      },
+      {
+        "id": "ingreso_liquidacion_divisas",
+        "type": "Restriccion",
+        "label": "Ingreso y liquidación de contravalor en divisas",
+        "properties": {
+          "description": "El contravalor percibido debe ingresarse en divisas y liquidarse en el mercado de cambios dentro de 20 días hábiles de la percepción o acreditación"
+        }
+      },
+      {
+        "id": "plazo_liquidacion",
+        "type": "Plazo",
+        "label": "Plazo de liquidación en mercado de cambios",
+        "properties": {
+          "description": "20 días hábiles desde la fecha de percepción en el exterior o en el país o de acreditación en cuentas del exterior"
+        }
+      },
+      {
+        "id": "excepcion_fondos_exterior",
+        "type": "Excepcion",
+        "label": "Exención por gastos de transferencia de fondos",
+        "properties": {
+          "description": "Para fondos percibidos o acreditados en el exterior, se considera cumplido el ingreso y liquidación por el monto equivalente a los gastos habituales debitados por las entidades financieras del exterior por transferencia de fondos al país"
+        }
+      },
+      {
+        "id": "residente",
+        "type": "Concepto",
+        "label": "Residente",
+        "properties": {
+          "description": "Persona o entidad con domicilio o sede en el país que realiza operaciones de enajenación"
+        }
+      },
+      {
+        "id": "no_residente",
+        "type": "Concepto",
+        "label": "No residente",
+        "properties": {
+          "description": "Persona o entidad domiciliada en el exterior que adquiere activos no financieros no producidos"
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {
+          "description": "Mercado donde debe liquidarse el contravalor percibido en divisas"
+        }
+      },
+      {
+        "id": "entidad_financiera_exterior",
+        "type": "Concepto",
+        "label": "Entidad financiera del exterior",
+        "properties": {
+          "description": "Institución financiera ubicada en el exterior que debita gastos de transferencia de fondos"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "enajenacion_activos_no_financieros_no_producidos",
+        "target": "ingreso_liquidacion_divisas",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ingreso_liquidacion_divisas",
+        "target": "plazo_liquidacion",
+        "predicate": "requiere"
+      },
+      {
+        "source": "excepcion_fondos_exterior",
+        "target": "ingreso_liquidacion_divisas",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "enajenacion_activos_no_financieros_no_producidos",
+        "target": "residente",
+        "predicate": "realizada_por"
+      },
+      {
+        "source": "ingreso_liquidacion_divisas",
+        "target": "mercado_cambios",
+        "predicate": "se_efectua_en"
+      }
+    ]
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0003__punto_1_2_criterios_especiales_de_imputa",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 1.2 — Criterios especiales de imputación.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"creditos_cesion_sin_responsabilidad\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cesión de créditos sin responsabilidad\",\n      \"properties\": {\n        \"description\": \"Operación de cesión de créditos a favor de la entidad sin responsabilidad para el cedente, donde la unidad económica receptora de fondos se constituye como deudora.\"\n      }\n    },\n    {\n      \"id\": \"imputacion_cedidos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Imputación al firmante o deudor principal\",\n      \"properties\": {\n        \"description\": \"Los créditos cedidos sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos como principales y directos pagadores.\"\n      }\n    },\n    {\n      \"id\": \"evaluacion_legajo_cesion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evaluación como sujetos de crédito con apertura de legajo\",\n      \"properties\": {\n        \"description\": \"La entidad debe realizar evaluación de los deudores cedidos como sujetos de crédito con la pertinente apertura del legajo.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_irrecuperable_sin_evaluacion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Clasificación como irrecuperable por falta de evaluación\",\n      \"properties\": {\n        \"description\": \"Si no se efectúa la evaluación del cliente cedido por cualquier motivo, se clasifica en categoría irrecuperable.\"\n      }\n    },\n    {\n      \"id\": \"deudores_concurso_preventivo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudores en concurso preventivo\",\n      \"properties\": {\n        \"description\": \"Deudores que hayan solicitado su concurso preventivo.\"\n      }\n    },\n    {\n      \"id\": \"creditos_post_concurso_garantias_terceros\",\n      \"type\": \"Operacion\",\n      \"label\": \"Créditos otorgados post-concurso con garantías de terceros\",\n      \"properties\": {\n        \"description\": \"Créditos otorgados a deudor en concurso preventivo con posterioridad al pedido de concurso, que cuenten con garantías de terceros cobrables al vencimiento sin intervención del cliente en concurso.\"\n      }\n    },\n    {\n      \"id\": \"imputacion_tercero_pagador_concurso\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Imputación al tercero pagador o avalista en concurso\",\n      \"properties\": {\n        \"description\": \"A opción de la entidad, créditos post-concurso pueden imputarse al tercero constituido en principal o directo pagador o avalista o codeudor que haya renunciado al beneficio de excusión.\"\n      }\n    },\n    {\n      \"id\": \"garantias_preferidas_deudor_concurso\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento de documentos cedidos como garantías preferidas A\",\n      \"properties\": {\n        \"description\": \"Documentos o valores cedidos por deudor en concurso considerados garantías preferidas A cobrables directamente del tercero responsable pueden imputarse al tercero, ejemplos: facturas de crédito, facturas a consumidores, cupones de tarjetas.\"\n      }\n    },\n    {\n      \"id\": \"exencion_apertura_legajo_servicios_publicos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de apertura de legajo para servicios públicos y tarjetas\",\n      \"properties\": {\n        \"description\": \"No será obligatoria la apertura del legajo en casos de deudores por servicios públicos o por tarjetas de crédito con documentos cedidos como garantías preferidas.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"creditos_cesion_sin_responsabilidad\",\n      \"target\": \"imputacion_cedidos\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"imputacion_cedidos\",\n      \"target\": \"evaluacion_legajo_cesion\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"clasificacion_irrecuperable_sin_evaluacion\",\n      \"target\": \"evaluacion_legajo_cesion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"creditos_post_concurso_garantias_terceros\",\n      \"target\": \"imputacion_tercero_pagador_concurso\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"garantias_preferidas_deudor_concurso\",\n      \"target\": \"deudores_concurso_preventivo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exencion_apertura_legajo_servicios_publicos\",\n      \"target\": \"garantias_preferidas_deudor_concurso\",\n      \"predicate\": \"excepciona_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4028,
+  "output_tokens": 1373,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "creditos_cesion_sin_responsabilidad",
+        "type": "Operacion",
+        "label": "Cesión de créditos sin responsabilidad",
+        "properties": {
+          "description": "Operación de cesión de créditos a favor de la entidad sin responsabilidad para el cedente, donde la unidad económica receptora de fondos se constituye como deudora."
+        }
+      },
+      {
+        "id": "imputacion_cedidos",
+        "type": "Restriccion",
+        "label": "Imputación al firmante o deudor principal",
+        "properties": {
+          "description": "Los créditos cedidos sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos como principales y directos pagadores."
+        }
+      },
+      {
+        "id": "evaluacion_legajo_cesion",
+        "type": "Restriccion",
+        "label": "Evaluación como sujetos de crédito con apertura de legajo",
+        "properties": {
+          "description": "La entidad debe realizar evaluación de los deudores cedidos como sujetos de crédito con la pertinente apertura del legajo."
+        }
+      },
+      {
+        "id": "clasificacion_irrecuperable_sin_evaluacion",
+        "type": "Excepcion",
+        "label": "Clasificación como irrecuperable por falta de evaluación",
+        "properties": {
+          "description": "Si no se efectúa la evaluación del cliente cedido por cualquier motivo, se clasifica en categoría irrecuperable."
+        }
+      },
+      {
+        "id": "deudores_concurso_preventivo",
+        "type": "Concepto",
+        "label": "Deudores en concurso preventivo",
+        "properties": {
+          "description": "Deudores que hayan solicitado su concurso preventivo."
+        }
+      },
+      {
+        "id": "creditos_post_concurso_garantias_terceros",
+        "type": "Operacion",
+        "label": "Créditos otorgados post-concurso con garantías de terceros",
+        "properties": {
+          "description": "Créditos otorgados a deudor en concurso preventivo con posterioridad al pedido de concurso, que cuenten con garantías de terceros cobrables al vencimiento sin intervención del cliente en concurso."
+        }
+      },
+      {
+        "id": "imputacion_tercero_pagador_concurso",
+        "type": "Restriccion",
+        "label": "Imputación al tercero pagador o avalista en concurso",
+        "properties": {
+          "description": "A opción de la entidad, créditos post-concurso pueden imputarse al tercero constituido en principal o directo pagador o avalista o codeudor que haya renunciado al beneficio de excusión."
+        }
+      },
+      {
+        "id": "garantias_preferidas_deudor_concurso",
+        "type": "Restriccion",
+        "label": "Tratamiento de documentos cedidos como garantías preferidas A",
+        "properties": {
+          "description": "Documentos o valores cedidos por deudor en concurso considerados garantías preferidas A cobrables directamente del tercero responsable pueden imputarse al tercero, ejemplos: facturas de crédito, facturas a consumidores, cupones de tarjetas."
+        }
+      },
+      {
+        "id": "exencion_apertura_legajo_servicios_publicos",
+        "type": "Excepcion",
+        "label": "Exención de apertura de legajo para servicios públicos y tarjetas",
+        "properties": {
+          "description": "No será obligatoria la apertura del legajo en casos de deudores por servicios públicos o por tarjetas de crédito con documentos cedidos como garantías preferidas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "creditos_cesion_sin_responsabilidad",
+        "target": "imputacion_cedidos",
+        "predicate": "requiere"
+      },
+      {
+        "source": "imputacion_cedidos",
+        "target": "evaluacion_legajo_cesion",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "clasificacion_irrecuperable_sin_evaluacion",
+        "target": "evaluacion_legajo_cesion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "creditos_post_concurso_garantias_terceros",
+        "target": "imputacion_tercero_pagador_concurso",
+        "predicate": "requiere"
+      },
+      {
+        "source": "garantias_preferidas_deudor_concurso",
+        "target": "deudores_concurso_preventivo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exencion_apertura_legajo_servicios_publicos",
+        "target": "garantias_preferidas_deudor_concurso",
+        "predicate": "excepciona_a"
+      }
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0091__punto_6_punto_6",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6 + Punto 6",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"opciones_sobre_acciones\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Opciones sobre acciones\",\n      \"properties\": {\n        \"description\": \"Instrumento derivado cuyo subyacente son acciones en mercados nacionales\"\n      }\n    },\n    {\n      \"id\": \"mercado_nacional_acciones\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado nacional de acciones\",\n      \"properties\": {\n        \"description\": \"Cada mercado nacional se considera como subyacente separado para opciones sobre acciones\"\n      }\n    },\n    {\n      \"id\": \"posicion_ponderada_delta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición ponderada por delta\",\n      \"properties\": {\n        \"description\": \"Medida de exposición a cambios de precio del subyacente en opciones\"\n      }\n    },\n    {\n      \"id\": \"calculo_punto_6_3\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de requerimiento de capital\",\n      \"properties\": {\n        \"description\": \"Procedimiento de cálculo de capital mínimo requerido conforme punto 6.3\"\n      }\n    },\n    {\n      \"id\": \"opciones_sobre_oro\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Opciones sobre oro\",\n      \"properties\": {\n        \"description\": \"Instrumento derivado cuyo subyacente es oro\"\n      }\n    },\n    {\n      \"id\": \"opciones_sobre_moneda_extranjera\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Opciones sobre monedas extranjeras\",\n      \"properties\": {\n        \"description\": \"Instrumento derivado cuyo subyacente son monedas extranjeras\"\n      }\n    },\n    {\n      \"id\": \"equivalente_delta_opciones\",\n      \"type\": \"Concepto\",\n      \"label\": \"Equivalente delta de opciones\",\n      \"properties\": {\n        \"description\": \"Neto del equivalente delta de opciones sobre oro y monedas extranjeras\"\n      }\n    },\n    {\n      \"id\": \"exposicion_oro\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición en oro\",\n      \"properties\": {\n        \"description\": \"Posición de riesgo en oro a efectos del cálculo de capital mínimo\"\n      }\n    },\n    {\n      \"id\": \"exposicion_moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Posición de riesgo en monedas extranjeras a efectos del cálculo de capital mínimo\"\n      }\n    },\n    {\n      \"id\": \"restriccion_delta_acciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incorporación delta en opciones sobre acciones\",\n      \"properties\": {\n        \"description\": \"Cada mercado nacional se considera subyacente separado; posición ponderada por delta se incorpora al cálculo de capital\"\n      }\n    },\n    {\n      \"id\": \"restriccion_delta_oro_moneda\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incorporación delta en opciones sobre oro y monedas\",\n      \"properties\": {\n        \"description\": \"Neto del equivalente delta de opciones sobre oro y monedas extranjeras se incorpora a exposición correspondiente\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_delta_acciones\",\n      \"target\": \"opciones_sobre_acciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_delta_acciones\",\n      \"target\": \"posicion_ponderada_delta\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"posicion_ponderada_delta\",\n      \"target\": \"calculo_punto_6_3\",\n      \"predicate\": \"incorpora_en\"\n    },\n    {\n      \"source\": \"restriccion_delta_oro_moneda\",\n      \"target\": \"opciones_sobre_oro\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_delta_oro_moneda\",\n      \"target\": \"opciones_sobre_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"equivalente_delta_opciones\",\n      \"target\": \"exposicion_oro\",\n      \"predicate\": \"incorpora_en\"\n    },\n    {\n      \"source\": \"equivalente_delta_opciones\",\n      \"target\": \"exposicion_moneda_extranjera\",\n      \"predicate\": \"incorpora_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3510,
+  "output_tokens": 1283,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "opciones_sobre_acciones",
+        "type": "InstrumentoFinanciero",
+        "label": "Opciones sobre acciones",
+        "properties": {
+          "description": "Instrumento derivado cuyo subyacente son acciones en mercados nacionales"
+        }
+      },
+      {
+        "id": "mercado_nacional_acciones",
+        "type": "Concepto",
+        "label": "Mercado nacional de acciones",
+        "properties": {
+          "description": "Cada mercado nacional se considera como subyacente separado para opciones sobre acciones"
+        }
+      },
+      {
+        "id": "posicion_ponderada_delta",
+        "type": "Concepto",
+        "label": "Posición ponderada por delta",
+        "properties": {
+          "description": "Medida de exposición a cambios de precio del subyacente en opciones"
+        }
+      },
+      {
+        "id": "calculo_punto_6_3",
+        "type": "Operacion",
+        "label": "Cálculo de requerimiento de capital",
+        "properties": {
+          "description": "Procedimiento de cálculo de capital mínimo requerido conforme punto 6.3"
+        }
+      },
+      {
+        "id": "opciones_sobre_oro",
+        "type": "InstrumentoFinanciero",
+        "label": "Opciones sobre oro",
+        "properties": {
+          "description": "Instrumento derivado cuyo subyacente es oro"
+        }
+      },
+      {
+        "id": "opciones_sobre_moneda_extranjera",
+        "type": "InstrumentoFinanciero",
+        "label": "Opciones sobre monedas extranjeras",
+        "properties": {
+          "description": "Instrumento derivado cuyo subyacente son monedas extranjeras"
+        }
+      },
+      {
+        "id": "equivalente_delta_opciones",
+        "type": "Concepto",
+        "label": "Equivalente delta de opciones",
+        "properties": {
+          "description": "Neto del equivalente delta de opciones sobre oro y monedas extranjeras"
+        }
+      },
+      {
+        "id": "exposicion_oro",
+        "type": "Concepto",
+        "label": "Exposición en oro",
+        "properties": {
+          "description": "Posición de riesgo en oro a efectos del cálculo de capital mínimo"
+        }
+      },
+      {
+        "id": "exposicion_moneda_extranjera",
+        "type": "Concepto",
+        "label": "Exposición en moneda extranjera",
+        "properties": {
+          "description": "Posición de riesgo en monedas extranjeras a efectos del cálculo de capital mínimo"
+        }
+      },
+      {
+        "id": "restriccion_delta_acciones",
+        "type": "Restriccion",
+        "label": "Incorporación delta en opciones sobre acciones",
+        "properties": {
+          "description": "Cada mercado nacional se considera subyacente separado; posición ponderada por delta se incorpora al cálculo de capital"
+        }
+      },
+      {
+        "id": "restriccion_delta_oro_moneda",
+        "type": "Restriccion",
+        "label": "Incorporación delta en opciones sobre oro y monedas",
+        "properties": {
+          "description": "Neto del equivalente delta de opciones sobre oro y monedas extranjeras se incorpora a exposición correspondiente"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_delta_acciones",
+        "target": "opciones_sobre_acciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_delta_acciones",
+        "target": "posicion_ponderada_delta",
+        "predicate": "requiere"
+      },
+      {
+        "source": "posicion_ponderada_delta",
+        "target": "calculo_punto_6_3",
+        "predicate": "incorpora_en"
+      },
+      {
+        "source": "restriccion_delta_oro_moneda",
+        "target": "opciones_sobre_oro",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_delta_oro_moneda",
+        "target": "opciones_sobre_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "equivalente_delta_opciones",
+        "target": "exposicion_oro",
+        "predicate": "incorpora_en"
+      },
+      {
+        "source": "equivalente_delta_opciones",
+        "target": "exposicion_moneda_extranjera",
+        "predicate": "incorpora_en"
+      }
+    ]
+  }
+}

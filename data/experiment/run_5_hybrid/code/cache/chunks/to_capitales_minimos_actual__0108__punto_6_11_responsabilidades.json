@@ -1,0 +1,210 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0108__punto_6_11_responsabilidades",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.11 — Responsabilidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_opciones\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades que operan opciones\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que compren y/o vendan contratos de opciones, cualquiera sea su importe.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_activos_25pct\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades con activos superiores a 25% RPC\",\n      \"properties\": {\n        \"description\": \"Entidades que en cualquier día de un mes registren activos que en conjunto superen el 25% de la RPC registrada al último día del segundo mes anterior.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_compra_venta_opciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra y venta de opciones\",\n      \"properties\": {\n        \"description\": \"Operación de compra y/o venta de contratos de opciones.\"\n      }\n    },\n    {\n      \"id\": \"operacion_posiciones_activos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Administración de posiciones en activos\",\n      \"properties\": {\n        \"description\": \"Operación de tenencia de posiciones compradas y vendidas de activos que requieren capital mínimo por riesgo de mercado.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_designar_responsables\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Designación de responsables de riesgo\",\n      \"properties\": {\n        \"description\": \"Las entidades deben designar personas responsables del manejo de la política de administración del riesgo de mercado y de la correcta aplicación de la metodología de cálculo.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_cobertura_capital\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Responsabilidad de mantener posiciones cubiertas\",\n      \"properties\": {\n        \"description\": \"Los responsables designados deben adoptar los recaudos necesarios para mantener las posiciones cubiertas con el capital requerido, especialmente regularizar defectos de integración diaria que superen el 3% de la exigencia.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_informacion_sefyc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suministro de información a SEFyC\",\n      \"properties\": {\n        \"description\": \"Los responsables deben suministrar información en tiempo y forma a la SEFyC conforme al régimen informativo que se establezca.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_comunicar_cambios_nomina\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Comunicación de cambios en responsables\",\n      \"properties\": {\n        \"description\": \"Las modificaciones de la nómina de responsables designados, del Gerente General y del miembro del Directorio, Consejo de Administración o autoridad equivalente deben ser comunicadas a la SEFyC mediante el Régimen Informativo Información Institucional.\"\n      }\n    },\n    {\n      \"id\": \"concepto_riesgo_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Riesgo derivado de las posiciones en opciones y activos sujetas a exigencia de capital mínimo.\"\n      }\n    },\n    {\n      \"id\": \"concepto_rpc\",\n      \"type\": \"Concepto\",\n      \"label\": \"RPC\",\n      \"properties\": {\n        \"description\": \"Relación de Patrimonio y Capital, métrica de referencia para evaluar umbrales de activos.\"\n      }\n    },\n    {\n      \"id\": \"autoridad_sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que supervisa el cumplimiento del régimen informativo.\"\n      }\n    },\n    {\n      \"id\": \"regimen_informativo_institucional\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Régimen Informativo Información Institucional\",\n      \"properties\": {\n        \"description\": \"Régimen de presentación de información sobre responsables y cambios en la estructura de gobierno de entidades financieras y cambiarias.\"\n      }\n    },\n    {\n      \"id\": \"concepto_defectos_integracion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Defectos de integración diaria\",\n      \"properties\": {\n        \"description\": \"Incumplimientos en la integración diaria de capital mínimo requerido para posiciones en riesgo de mercado.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_opciones\",\n      \"target\": \"operacion_compra_venta_opciones\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera_activos_25pct\",\n      \"target\": \"operacion_posiciones_activos\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_designar_responsables\",\n      \"target\": \"operacion_posiciones_activos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_designar_responsables\",\n      \"target\": \"entidad_financiera_opciones\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_designar_responsables\",\n      \"target\": \"entidad_financiera_activos_25pct\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_cobertura_capital\",\n      \"target\": \"operacion_posiciones_activos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_cobertura_capital\",\n      \"target\": \"entidad_financiera_opciones\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_cobertura_capital\",\n      \"target\": \"entidad_financiera_activos_25pct\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_informacion_sefyc\",\n      \"target\": \"entidad_financiera_opciones\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_informacion_sefyc\",\n      \"target\": \"entidad_financiera_activos_25pct\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_informacion_sefyc\",\n      \"target\": \"autoridad_sefyc\",\n      \"predicate\": \"dirige_a\"\n    },\n    {\n      \"source\": \"restriccion_comunicar_cambios_nomina\",\n      \"target\": \"entidad_financiera_opciones\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_comunicar_cambios_nomina\",\n      \"target\": \"entidad_financiera_activos_25pct\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_informacion_sefyc\",\n      \"target\": \"regimen_informativo_institucional\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"restriccion_comunicar_cambios_nomina\",\n      \"target\": \"regimen_informativo_institucional\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"operacion_posiciones_activos\",\n      \"target\": \"concepto_riesgo_mercado\",\n      \"predicate\": \"expone_a\"\n    },\n    {\n      \"source\": \"restriccion_cobertura_capital\",\n      \"target\": \"concepto_defectos_integracion\",\n      \"predicate\": \"aborda\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3798,
+  "output_tokens": 2178,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 17,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_opciones",
+        "type": "EntidadFinanciera",
+        "label": "Entidades que operan opciones",
+        "properties": {
+          "description": "Entidades financieras que compren y/o vendan contratos de opciones, cualquiera sea su importe.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "entidad_financiera_activos_25pct",
+        "type": "EntidadFinanciera",
+        "label": "Entidades con activos superiores a 25% RPC",
+        "properties": {
+          "description": "Entidades que en cualquier día de un mes registren activos que en conjunto superen el 25% de la RPC registrada al último día del segundo mes anterior.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_compra_venta_opciones",
+        "type": "Operacion",
+        "label": "Compra y venta de opciones",
+        "properties": {
+          "description": "Operación de compra y/o venta de contratos de opciones."
+        }
+      },
+      {
+        "id": "operacion_posiciones_activos",
+        "type": "Operacion",
+        "label": "Administración de posiciones en activos",
+        "properties": {
+          "description": "Operación de tenencia de posiciones compradas y vendidas de activos que requieren capital mínimo por riesgo de mercado."
+        }
+      },
+      {
+        "id": "restriccion_designar_responsables",
+        "type": "Restriccion",
+        "label": "Designación de responsables de riesgo",
+        "properties": {
+          "description": "Las entidades deben designar personas responsables del manejo de la política de administración del riesgo de mercado y de la correcta aplicación de la metodología de cálculo."
+        }
+      },
+      {
+        "id": "restriccion_cobertura_capital",
+        "type": "Restriccion",
+        "label": "Responsabilidad de mantener posiciones cubiertas",
+        "properties": {
+          "description": "Los responsables designados deben adoptar los recaudos necesarios para mantener las posiciones cubiertas con el capital requerido, especialmente regularizar defectos de integración diaria que superen el 3% de la exigencia."
+        }
+      },
+      {
+        "id": "restriccion_informacion_sefyc",
+        "type": "Restriccion",
+        "label": "Suministro de información a SEFyC",
+        "properties": {
+          "description": "Los responsables deben suministrar información en tiempo y forma a la SEFyC conforme al régimen informativo que se establezca."
+        }
+      },
+      {
+        "id": "restriccion_comunicar_cambios_nomina",
+        "type": "Restriccion",
+        "label": "Comunicación de cambios en responsables",
+        "properties": {
+          "description": "Las modificaciones de la nómina de responsables designados, del Gerente General y del miembro del Directorio, Consejo de Administración o autoridad equivalente deben ser comunicadas a la SEFyC mediante el Régimen Informativo Información Institucional."
+        }
+      },
+      {
+        "id": "concepto_riesgo_mercado",
+        "type": "Concepto",
+        "label": "Riesgo de mercado",
+        "properties": {
+          "description": "Riesgo derivado de las posiciones en opciones y activos sujetas a exigencia de capital mínimo."
+        }
+      },
+      {
+        "id": "concepto_rpc",
+        "type": "Concepto",
+        "label": "RPC",
+        "properties": {
+          "description": "Relación de Patrimonio y Capital, métrica de referencia para evaluar umbrales de activos."
+        }
+      },
+      {
+        "id": "autoridad_sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "Autoridad regulatoria que supervisa el cumplimiento del régimen informativo."
+        }
+      },
+      {
+        "id": "regimen_informativo_institucional",
+        "type": "RegimenInformativo",
+        "label": "Régimen Informativo Información Institucional",
+        "properties": {
+          "description": "Régimen de presentación de información sobre responsables y cambios en la estructura de gobierno de entidades financieras y cambiarias."
+        }
+      },
+      {
+        "id": "concepto_defectos_integracion",
+        "type": "Concepto",
+        "label": "Defectos de integración diaria",
+        "properties": {
+          "description": "Incumplimientos en la integración diaria de capital mínimo requerido para posiciones en riesgo de mercado."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_opciones",
+        "target": "operacion_compra_venta_opciones",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera_activos_25pct",
+        "target": "operacion_posiciones_activos",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_designar_responsables",
+        "target": "operacion_posiciones_activos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_designar_responsables",
+        "target": "entidad_financiera_opciones",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_designar_responsables",
+        "target": "entidad_financiera_activos_25pct",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_cobertura_capital",
+        "target": "operacion_posiciones_activos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_cobertura_capital",
+        "target": "entidad_financiera_opciones",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_cobertura_capital",
+        "target": "entidad_financiera_activos_25pct",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_informacion_sefyc",
+        "target": "entidad_financiera_opciones",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_informacion_sefyc",
+        "target": "entidad_financiera_activos_25pct",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_informacion_sefyc",
+        "target": "autoridad_sefyc",
+        "predicate": "dirige_a"
+      },
+      {
+        "source": "restriccion_comunicar_cambios_nomina",
+        "target": "entidad_financiera_opciones",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_comunicar_cambios_nomina",
+        "target": "entidad_financiera_activos_25pct",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_informacion_sefyc",
+        "target": "regimen_informativo_institucional",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "restriccion_comunicar_cambios_nomina",
+        "target": "regimen_informativo_institucional",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "operacion_posiciones_activos",
+        "target": "concepto_riesgo_mercado",
+        "predicate": "expone_a"
+      },
+      {
+        "source": "restriccion_cobertura_capital",
+        "target": "concepto_defectos_integracion",
+        "predicate": "aborda"
+      }
+    ]
+  }
+}

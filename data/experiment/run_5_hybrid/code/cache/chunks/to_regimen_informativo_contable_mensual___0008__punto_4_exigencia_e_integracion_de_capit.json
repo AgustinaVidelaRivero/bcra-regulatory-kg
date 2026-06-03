@@ -1,0 +1,173 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0008__punto_4_exigencia_e_integracion_de_capit",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"ponderador_riesgo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ponderador de riesgo\",\n      \"properties\": {\n        \"description\": \"Factor aplicado según la contraparte, conforme a normas sobre Capitales mínimos de las entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Cálculo de la exigencia final (RCD) mediante la fórmula: RCD = 8% x p x EAD + K(CVA), donde p es el ponderador y EAD la exposición informada por contraparte.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado cuyas exposiciones de crédito y capital están sujetas a las normas sobre Capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Contraparte\",\n      \"properties\": {\n        \"description\": \"Entidad con la que la entidad financiera mantiene exposiciones crediticias.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_contraparte_central\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exposiciones con entidades de contraparte central\",\n      \"properties\": {\n        \"description\": \"Operaciones de entidades financieras con entidades de contraparte central, conforme al alcance del punto 4.3. de normas sobre Capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"partida_12500000\",\n      \"type\": \"Concepto\",\n      \"label\": \"Partida 12500000\",\n      \"properties\": {\n        \"description\": \"Código de registro para exposiciones con entidades de contraparte central, por cada ponderador aplicable.\"\n      }\n    },\n    {\n      \"id\": \"financiaciones_actividad_agricola\",\n      \"type\": \"Operacion\",\n      \"label\": \"Financiaciones a clientes con actividad agrícola\",\n      \"properties\": {\n        \"description\": \"Créditos a clientes con actividad agrícola que no sean MIPyMES y tengan ratio de acopio superior al 5% de su cosecha anual.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_adicional_capital_agricola\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia adicional capital riesgo agrícola\",\n      \"properties\": {\n        \"description\": \"Cargo adicional de capital para financiaciones agrícolas, resultante de aplicar factor 4 al importe registrado, menos la exigencia general calculada según ponderadores y CCF pertinentes.\"\n      }\n    },\n    {\n      \"id\": \"codigo_15000000\",\n      \"type\": \"Concepto\",\n      \"label\": \"Código 15000000\",\n      \"properties\": {\n        \"description\": \"Código para registro del cargo adicional de capital por financiaciones agrícolas no MIPyMES con alto ratio de acopio.\"\n      }\n    },\n    {\n      \"id\": \"mipymes\",\n      \"type\": \"Concepto\",\n      \"label\": \"MIPyMES\",\n      \"properties\": {\n        \"description\": \"Micro, pequeñas y medianas empresas, excluidas de la exigencia adicional de capital para financiaciones agrícolas.\"\n      }\n    },\n    {\n      \"id\": \"ratio_acopio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ratio de acopio\",\n      \"properties\": {\n        \"description\": \"Proporción de la cosecha anual acopiada; umbral del 5% determina aplicación de exigencia adicional de capital.\"\n      }\n    },\n    {\n      \"id\": \"ead_exposicion\",\n      \"type\": \"Concepto\",\n      \"label\": \"EAD (Exposure at Default)\",\n      \"properties\": {\n        \"description\": \"Exposición informada para cada contraparte, componente de la fórmula de cálculo de exigencia de capital.\"\n      }\n    },\n    {\n      \"id\": \"factor_4_ajuste\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor 4\",\n      \"properties\": {\n        \"description\": \"Multiplicador aplicado al importe de financiaciones agrícolas para determinar el cargo adicional de capital.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"ponderador_riesgo\",\n      \"target\": \"contraparte\",\n      \"predicate\": \"corresponde_a\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_credito\",\n      \"target\": \"ead_exposicion\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_credito\",\n      \"target\": \"ponderador_riesgo\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"exposicion_contraparte_central\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"involucra\"\n    },\n    {\n      \"source\": \"partida_12500000\",\n      \"target\": \"exposicion_contraparte_central\",\n      \"predicate\": \"registra\"\n    },\n    {\n      \"source\": \"exigencia_adicional_capital_agricola\",\n      \"target\": \"financiaciones_actividad_agricola\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_adicional_capital_agricola\",\n      \"target\": \"ratio_acopio\",\n      \"predicate\": \"depende_de\"\n    },\n    {\n      \"source\": \"financiaciones_actividad_agricola\",\n      \"target\": \"mipymes\",\n      \"predicate\": \"excluye\"\n    },\n    {\n      \"source\": \"codigo_15000000\",\n      \"target\": \"exigencia_adicional_capital_agricola\",\n      \"predicate\": \"registra\"\n    },\n    {\n      \"source\": \"factor_4_ajuste\",\n      \"target\": \"exigencia_adicional_capital_agricola\",\n      \"predicate\": \"determina\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4105,
+  "output_tokens": 1709,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "ponderador_riesgo",
+        "type": "Concepto",
+        "label": "Ponderador de riesgo",
+        "properties": {
+          "description": "Factor aplicado según la contraparte, conforme a normas sobre Capitales mínimos de las entidades financieras."
+        }
+      },
+      {
+        "id": "exigencia_capital_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo de crédito",
+        "properties": {
+          "description": "Cálculo de la exigencia final (RCD) mediante la fórmula: RCD = 8% x p x EAD + K(CVA), donde p es el ponderador y EAD la exposición informada por contraparte."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado cuyas exposiciones de crédito y capital están sujetas a las normas sobre Capitales mínimos."
+        }
+      },
+      {
+        "id": "contraparte",
+        "type": "Concepto",
+        "label": "Contraparte",
+        "properties": {
+          "description": "Entidad con la que la entidad financiera mantiene exposiciones crediticias."
+        }
+      },
+      {
+        "id": "exposicion_contraparte_central",
+        "type": "Operacion",
+        "label": "Exposiciones con entidades de contraparte central",
+        "properties": {
+          "description": "Operaciones de entidades financieras con entidades de contraparte central, conforme al alcance del punto 4.3. de normas sobre Capitales mínimos."
+        }
+      },
+      {
+        "id": "partida_12500000",
+        "type": "Concepto",
+        "label": "Partida 12500000",
+        "properties": {
+          "description": "Código de registro para exposiciones con entidades de contraparte central, por cada ponderador aplicable."
+        }
+      },
+      {
+        "id": "financiaciones_actividad_agricola",
+        "type": "Operacion",
+        "label": "Financiaciones a clientes con actividad agrícola",
+        "properties": {
+          "description": "Créditos a clientes con actividad agrícola que no sean MIPyMES y tengan ratio de acopio superior al 5% de su cosecha anual."
+        }
+      },
+      {
+        "id": "exigencia_adicional_capital_agricola",
+        "type": "Restriccion",
+        "label": "Exigencia adicional capital riesgo agrícola",
+        "properties": {
+          "description": "Cargo adicional de capital para financiaciones agrícolas, resultante de aplicar factor 4 al importe registrado, menos la exigencia general calculada según ponderadores y CCF pertinentes."
+        }
+      },
+      {
+        "id": "codigo_15000000",
+        "type": "Concepto",
+        "label": "Código 15000000",
+        "properties": {
+          "description": "Código para registro del cargo adicional de capital por financiaciones agrícolas no MIPyMES con alto ratio de acopio."
+        }
+      },
+      {
+        "id": "mipymes",
+        "type": "Concepto",
+        "label": "MIPyMES",
+        "properties": {
+          "description": "Micro, pequeñas y medianas empresas, excluidas de la exigencia adicional de capital para financiaciones agrícolas."
+        }
+      },
+      {
+        "id": "ratio_acopio",
+        "type": "Concepto",
+        "label": "Ratio de acopio",
+        "properties": {
+          "description": "Proporción de la cosecha anual acopiada; umbral del 5% determina aplicación de exigencia adicional de capital."
+        }
+      },
+      {
+        "id": "ead_exposicion",
+        "type": "Concepto",
+        "label": "EAD (Exposure at Default)",
+        "properties": {
+          "description": "Exposición informada para cada contraparte, componente de la fórmula de cálculo de exigencia de capital."
+        }
+      },
+      {
+        "id": "factor_4_ajuste",
+        "type": "Concepto",
+        "label": "Factor 4",
+        "properties": {
+          "description": "Multiplicador aplicado al importe de financiaciones agrícolas para determinar el cargo adicional de capital."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "ponderador_riesgo",
+        "target": "contraparte",
+        "predicate": "corresponde_a"
+      },
+      {
+        "source": "exigencia_capital_riesgo_credito",
+        "target": "ead_exposicion",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "exigencia_capital_riesgo_credito",
+        "target": "ponderador_riesgo",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "exposicion_contraparte_central",
+        "target": "entidad_financiera",
+        "predicate": "involucra"
+      },
+      {
+        "source": "partida_12500000",
+        "target": "exposicion_contraparte_central",
+        "predicate": "registra"
+      },
+      {
+        "source": "exigencia_adicional_capital_agricola",
+        "target": "financiaciones_actividad_agricola",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_adicional_capital_agricola",
+        "target": "ratio_acopio",
+        "predicate": "depende_de"
+      },
+      {
+        "source": "financiaciones_actividad_agricola",
+        "target": "mipymes",
+        "predicate": "excluye"
+      },
+      {
+        "source": "codigo_15000000",
+        "target": "exigencia_adicional_capital_agricola",
+        "predicate": "registra"
+      },
+      {
+        "source": "factor_4_ajuste",
+        "target": "exigencia_adicional_capital_agricola",
+        "predicate": "determina"
+      }
+    ]
+  }
+}

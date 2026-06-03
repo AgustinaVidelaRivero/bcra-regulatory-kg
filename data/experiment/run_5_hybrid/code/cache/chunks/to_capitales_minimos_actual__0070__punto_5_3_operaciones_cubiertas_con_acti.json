@@ -1,0 +1,173 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0070__punto_5_3_operaciones_cubiertas_con_acti",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 5.3 — Operaciones cubiertas con activos admitidos como garantía. (parte 5/5)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operaciones_cubiertas_activos_garantia\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones cubiertas con activos admitidos\",\n      \"properties\": {\n        \"description\": \"Operaciones de préstamo de valores, venta con acuerdo de recompra o compensación bajo acuerdos marco de neteo, cubiertas con activos admitidos como garantía.\"\n      }\n    },\n    {\n      \"id\": \"prestamo_valores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Préstamo de valores\",\n      \"properties\": {\n        \"description\": \"Operación donde un título se presta o se negocia de manera similar a un préstamo de valores.\"\n      }\n    },\n    {\n      \"id\": \"venta_acuerdo_recompra\",\n      \"type\": \"Operacion\",\n      \"label\": \"Venta con acuerdo de recompra\",\n      \"properties\": {\n        \"description\": \"Operación donde un título se vende con acuerdo de recompra o se negocia de manera similar.\"\n      }\n    },\n    {\n      \"id\": \"compra_acuerdo_reventa\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra con acuerdo de reventa\",\n      \"properties\": {\n        \"description\": \"Operación donde un título se compra con acuerdo de reventa o endeudamiento en valores.\"\n      }\n    },\n    {\n      \"id\": \"acuerdo_marco_neteo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Acuerdo marco de neteo\",\n      \"properties\": {\n        \"description\": \"Operación donde valores se entregan o reciben bajo acuerdos marco de neteo.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_neta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición neta\",\n      \"properties\": {\n        \"description\": \"Valor absoluto de la sumatoria de posiciones netas multiplicadas por sus aforadores respectivos.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_bruta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición bruta\",\n      \"properties\": {\n        \"description\": \"Sumatoria de posiciones netas multiplicadas por el valor absoluto de sus aforadores.\"\n      }\n    },\n    {\n      \"id\": \"aforo_aplicable\",\n      \"type\": \"Concepto\",\n      \"label\": \"Aforador de riesgo\",\n      \"properties\": {\n        \"description\": \"Factor de ajuste aplicado a posiciones netas para reflejar el riesgo de mercado y descalce de monedas.\"\n      }\n    },\n    {\n      \"id\": \"descalce_monedas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Descalce de monedas\",\n      \"properties\": {\n        \"description\": \"Diferencia entre la moneda del activo recibido en garantía y la moneda de liquidación de la operación.\"\n      }\n    },\n    {\n      \"id\": \"activo_recibido_garantia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activo recibido en garantía\",\n      \"properties\": {\n        \"description\": \"Efectivo o valores recibidos como garantía, valuados a precio de mercado.\"\n      }\n    },\n    {\n      \"id\": \"valor_contable_exposicion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Valor contable de exposición\",\n      \"properties\": {\n        \"description\": \"Importe total del efectivo y valores prestados, vendidos con recompra o entregados bajo acuerdos marco.\"\n      }\n    },\n    {\n      \"id\": \"posicion_neta_activo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición neta en activo\",\n      \"properties\": {\n        \"description\": \"Valor absoluto de la posición neta en un activo determinado dentro del conjunto compensable.\"\n      }\n    },\n    {\n      \"id\": \"posicion_neta_moneda\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición neta en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Valor absoluto de la posición neta en una moneda distinta de la moneda de liquidación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"operaciones_cubiertas_activos_garantia\",\n      \"target\": \"prestamo_valores\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"operaciones_cubiertas_activos_garantia\",\n      \"target\": \"venta_acuerdo_recompra\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"operaciones_cubiertas_activos_garantia\",\n      \"target\": \"compra_acuerdo_reventa\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"operaciones_cubiertas_activos_garantia\",\n      \"target\": \"acuerdo_marco_neteo\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"operaciones_cubiertas_activos_garantia\",\n      \"target\": \"activo_recibido_garantia\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"exposicion_neta\",\n      \"target\": \"posicion_neta_activo\",\n      \"predicate\": \"calcula_desde\"\n    },\n    {\n      \"source\": \"exposicion_bruta\",\n      \"target\": \"posicion_neta_activo\",\n      \"predicate\": \"calcula_desde\"\n    },\n    {\n      \"source\": \"aforo_aplicable\",\n      \"target\": \"posicion_neta_activo\",\n      \"predicate\": \"modifica\"\n    },\n    {\n      \"source\": \"aforo_aplicable\",\n      \"target\": \"descalce_monedas\",\n      \"predicate\": \"refleja\"\n    },\n    {\n      \"source\": \"posicion_neta_moneda\",\n      \"target\": \"descalce_monedas\",\n      \"predicate\": \"participa_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3874,
+  "output_tokens": 1630,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operaciones_cubiertas_activos_garantia",
+        "type": "Operacion",
+        "label": "Operaciones cubiertas con activos admitidos",
+        "properties": {
+          "description": "Operaciones de préstamo de valores, venta con acuerdo de recompra o compensación bajo acuerdos marco de neteo, cubiertas con activos admitidos como garantía."
+        }
+      },
+      {
+        "id": "prestamo_valores",
+        "type": "Operacion",
+        "label": "Préstamo de valores",
+        "properties": {
+          "description": "Operación donde un título se presta o se negocia de manera similar a un préstamo de valores."
+        }
+      },
+      {
+        "id": "venta_acuerdo_recompra",
+        "type": "Operacion",
+        "label": "Venta con acuerdo de recompra",
+        "properties": {
+          "description": "Operación donde un título se vende con acuerdo de recompra o se negocia de manera similar."
+        }
+      },
+      {
+        "id": "compra_acuerdo_reventa",
+        "type": "Operacion",
+        "label": "Compra con acuerdo de reventa",
+        "properties": {
+          "description": "Operación donde un título se compra con acuerdo de reventa o endeudamiento en valores."
+        }
+      },
+      {
+        "id": "acuerdo_marco_neteo",
+        "type": "Operacion",
+        "label": "Acuerdo marco de neteo",
+        "properties": {
+          "description": "Operación donde valores se entregan o reciben bajo acuerdos marco de neteo."
+        }
+      },
+      {
+        "id": "exposicion_neta",
+        "type": "Concepto",
+        "label": "Exposición neta",
+        "properties": {
+          "description": "Valor absoluto de la sumatoria de posiciones netas multiplicadas por sus aforadores respectivos."
+        }
+      },
+      {
+        "id": "exposicion_bruta",
+        "type": "Concepto",
+        "label": "Exposición bruta",
+        "properties": {
+          "description": "Sumatoria de posiciones netas multiplicadas por el valor absoluto de sus aforadores."
+        }
+      },
+      {
+        "id": "aforo_aplicable",
+        "type": "Concepto",
+        "label": "Aforador de riesgo",
+        "properties": {
+          "description": "Factor de ajuste aplicado a posiciones netas para reflejar el riesgo de mercado y descalce de monedas."
+        }
+      },
+      {
+        "id": "descalce_monedas",
+        "type": "Concepto",
+        "label": "Descalce de monedas",
+        "properties": {
+          "description": "Diferencia entre la moneda del activo recibido en garantía y la moneda de liquidación de la operación."
+        }
+      },
+      {
+        "id": "activo_recibido_garantia",
+        "type": "Concepto",
+        "label": "Activo recibido en garantía",
+        "properties": {
+          "description": "Efectivo o valores recibidos como garantía, valuados a precio de mercado."
+        }
+      },
+      {
+        "id": "valor_contable_exposicion",
+        "type": "Concepto",
+        "label": "Valor contable de exposición",
+        "properties": {
+          "description": "Importe total del efectivo y valores prestados, vendidos con recompra o entregados bajo acuerdos marco."
+        }
+      },
+      {
+        "id": "posicion_neta_activo",
+        "type": "Concepto",
+        "label": "Posición neta en activo",
+        "properties": {
+          "description": "Valor absoluto de la posición neta en un activo determinado dentro del conjunto compensable."
+        }
+      },
+      {
+        "id": "posicion_neta_moneda",
+        "type": "Concepto",
+        "label": "Posición neta en moneda extranjera",
+        "properties": {
+          "description": "Valor absoluto de la posición neta en una moneda distinta de la moneda de liquidación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "operaciones_cubiertas_activos_garantia",
+        "target": "prestamo_valores",
+        "predicate": "comprende"
+      },
+      {
+        "source": "operaciones_cubiertas_activos_garantia",
+        "target": "venta_acuerdo_recompra",
+        "predicate": "comprende"
+      },
+      {
+        "source": "operaciones_cubiertas_activos_garantia",
+        "target": "compra_acuerdo_reventa",
+        "predicate": "comprende"
+      },
+      {
+        "source": "operaciones_cubiertas_activos_garantia",
+        "target": "acuerdo_marco_neteo",
+        "predicate": "comprende"
+      },
+      {
+        "source": "operaciones_cubiertas_activos_garantia",
+        "target": "activo_recibido_garantia",
+        "predicate": "requiere"
+      },
+      {
+        "source": "exposicion_neta",
+        "target": "posicion_neta_activo",
+        "predicate": "calcula_desde"
+      },
+      {
+        "source": "exposicion_bruta",
+        "target": "posicion_neta_activo",
+        "predicate": "calcula_desde"
+      },
+      {
+        "source": "aforo_aplicable",
+        "target": "posicion_neta_activo",
+        "predicate": "modifica"
+      },
+      {
+        "source": "aforo_aplicable",
+        "target": "descalce_monedas",
+        "predicate": "refleja"
+      },
+      {
+        "source": "posicion_neta_moneda",
+        "target": "descalce_monedas",
+        "predicate": "participa_en"
+      }
+    ]
+  }
+}

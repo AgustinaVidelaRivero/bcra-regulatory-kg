@@ -1,0 +1,118 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0090__punto_6",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"posiciones_ponderadas_por_delta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posiciones ponderadas por delta\",\n      \"properties\": {\n        \"description\": \"Posiciones cuyos subyacentes son títulos de deuda o tasas de interés, sujetas a asignación a bandas temporales.\"\n      }\n    },\n    {\n      \"id\": \"titulos_deuda\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Títulos de deuda\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"tasas_interes\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Tasas de interés\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"bandas_temporales\",\n      \"type\": \"Concepto\",\n      \"label\": \"Bandas temporales\",\n      \"properties\": {\n        \"description\": \"Categorías temporales establecidas en el punto 6.2 para asignación de posiciones.\"\n      }\n    },\n    {\n      \"id\": \"informe_operacion_dos_partes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Informe de dos partes de operación\",\n      \"properties\": {\n        \"description\": \"Se informarán dos partes de la operación: una cuando el contrato subyacente entra en vigor y otra cuando vence.\"\n      }\n    },\n    {\n      \"id\": \"caps_floors_registro\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registro de caps y floors\",\n      \"properties\": {\n        \"description\": \"Los caps o floors se deben registrar como una combinación de un bono a interés variable y un conjunto de opciones europeas.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_compensadas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posiciones compensadas\",\n      \"properties\": {\n        \"description\": \"Disposiciones sobre posiciones compensadas del acápite i) del punto 6.2.3.5.\"\n      }\n    },\n    {\n      \"id\": \"opciones_europeas\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Opciones europeas\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"bono_interes_variable\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Bono a interés variable\",\n      \"properties\": {}\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"posiciones_ponderadas_por_delta\",\n      \"target\": \"titulos_deuda\",\n      \"predicate\": \"tiene_subyacente\"\n    },\n    {\n      \"source\": \"posiciones_ponderadas_por_delta\",\n      \"target\": \"tasas_interes\",\n      \"predicate\": \"tiene_subyacente\"\n    },\n    {\n      \"source\": \"informe_operacion_dos_partes\",\n      \"target\": \"posiciones_ponderadas_por_delta\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"caps_floors_registro\",\n      \"target\": \"posiciones_ponderadas_por_delta\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"caps_floors_registro\",\n      \"target\": \"bono_interes_variable\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"caps_floors_registro\",\n      \"target\": \"opciones_europeas\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"posiciones_compensadas\",\n      \"target\": \"posiciones_ponderadas_por_delta\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3528,
+  "output_tokens": 1000,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "posiciones_ponderadas_por_delta",
+        "type": "Concepto",
+        "label": "Posiciones ponderadas por delta",
+        "properties": {
+          "description": "Posiciones cuyos subyacentes son títulos de deuda o tasas de interés, sujetas a asignación a bandas temporales."
+        }
+      },
+      {
+        "id": "titulos_deuda",
+        "type": "InstrumentoFinanciero",
+        "label": "Títulos de deuda",
+        "properties": {}
+      },
+      {
+        "id": "tasas_interes",
+        "type": "InstrumentoFinanciero",
+        "label": "Tasas de interés",
+        "properties": {}
+      },
+      {
+        "id": "bandas_temporales",
+        "type": "Concepto",
+        "label": "Bandas temporales",
+        "properties": {
+          "description": "Categorías temporales establecidas en el punto 6.2 para asignación de posiciones."
+        }
+      },
+      {
+        "id": "informe_operacion_dos_partes",
+        "type": "Restriccion",
+        "label": "Informe de dos partes de operación",
+        "properties": {
+          "description": "Se informarán dos partes de la operación: una cuando el contrato subyacente entra en vigor y otra cuando vence."
+        }
+      },
+      {
+        "id": "caps_floors_registro",
+        "type": "Restriccion",
+        "label": "Registro de caps y floors",
+        "properties": {
+          "description": "Los caps o floors se deben registrar como una combinación de un bono a interés variable y un conjunto de opciones europeas."
+        }
+      },
+      {
+        "id": "posiciones_compensadas",
+        "type": "Concepto",
+        "label": "Posiciones compensadas",
+        "properties": {
+          "description": "Disposiciones sobre posiciones compensadas del acápite i) del punto 6.2.3.5."
+        }
+      },
+      {
+        "id": "opciones_europeas",
+        "type": "InstrumentoFinanciero",
+        "label": "Opciones europeas",
+        "properties": {}
+      },
+      {
+        "id": "bono_interes_variable",
+        "type": "InstrumentoFinanciero",
+        "label": "Bono a interés variable",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "posiciones_ponderadas_por_delta",
+        "target": "titulos_deuda",
+        "predicate": "tiene_subyacente"
+      },
+      {
+        "source": "posiciones_ponderadas_por_delta",
+        "target": "tasas_interes",
+        "predicate": "tiene_subyacente"
+      },
+      {
+        "source": "informe_operacion_dos_partes",
+        "target": "posiciones_ponderadas_por_delta",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "caps_floors_registro",
+        "target": "posiciones_ponderadas_por_delta",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "caps_floors_registro",
+        "target": "bono_interes_variable",
+        "predicate": "requiere"
+      },
+      {
+        "source": "caps_floors_registro",
+        "target": "opciones_europeas",
+        "predicate": "requiere"
+      },
+      {
+        "source": "posiciones_compensadas",
+        "target": "posiciones_ponderadas_por_delta",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

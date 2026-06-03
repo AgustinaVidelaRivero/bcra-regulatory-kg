@@ -1,0 +1,178 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0017__punto_2_9_exposiciones_con_garantia_hipo",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.9 — Exposiciones con garantía hipotecaria.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_grupo_1\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras del grupo 1\",\n      \"properties\": {\n        \"description\": \"Clasificación de entidades financieras sujetas a regulación de capitales mínimos por riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_grupo_2\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras del grupo 2\",\n      \"properties\": {\n        \"description\": \"Clasificación de entidades financieras sujetas a regulación de capitales mínimos por riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_garantia_hipotecaria\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exposición con garantía hipotecaria\",\n      \"properties\": {\n        \"description\": \"Operación de crédito garantizada por hipoteca sobre inmueble.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_exposicion_normativa_no_normativa\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación de exposiciones hipotecarias\",\n      \"properties\": {\n        \"description\": \"Las entidades del grupo 1 deben clasificar exposiciones con garantía hipotecaria en normativas y no normativas.\"\n      }\n    },\n    {\n      \"id\": \"garantia_hipotecaria_primer_grado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Garantía hipotecaria en primer grado\",\n      \"properties\": {\n        \"description\": \"La garantía hipotecaria deberá ser en primer grado, o cualquiera sea su grado de prelación siempre que la entidad sea la acreedora en todos los grados.\"\n      }\n    },\n    {\n      \"id\": \"inmueble_terminado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Inmueble terminado\",\n      \"properties\": {\n        \"description\": \"La exposición deberá estar garantizada por un inmueble terminado.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_inmueble_rural\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción inmueble rural\",\n      \"properties\": {\n        \"description\": \"Requisito de inmueble terminado no se aplica a inmuebles rurales.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_construccion_personas_humanas\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción construcción para personas humanas\",\n      \"properties\": {\n        \"description\": \"Requisito de inmueble terminado no se aplica a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin.\"\n      }\n    },\n    {\n      \"id\": \"construccion_hasta_4_unidades\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Construcción de hasta 4 unidades vivienda\",\n      \"properties\": {\n        \"description\": \"Construcción de hasta 4 unidades para vivienda, una de las cuales será la vivienda única, familiar y de ocupación permanente del prestatario.\"\n      }\n    },\n    {\n      \"id\": \"aseguramiento_finalizacion_construccion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Aseguramiento finalización construcción\",\n      \"properties\": {\n        \"description\": \"Entes alcanzados por el TO sobre Financiamiento al Sector Público No Financiero deben tener potestad legal y capacidad para asegurar finalización de construcción.\"\n      }\n    },\n    {\n      \"id\": \"relacion_loan_to_value\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Relación loan-to-value prudente\",\n      \"properties\": {\n        \"description\": \"Relación entre saldo de deuda y valor del inmueble debe calcularse de manera prudente sin deducir previsiones por riesgo de incobrabilidad.\"\n      }\n    },\n    {\n      \"id\": \"requisitos_exposicion_hipotecaria_normativa\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requisitos exposición hipotecaria normativa\",\n      \"properties\": {\n        \"description\": \"Conjunto de requisitos que debe cumplir una exposición con garantía hipotecaria para ser clasificada como normativa.\"\n      }\n    },\n    {\n      \"id\": \"ponderador_riesgo_grupo_2\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderadores de riesgo grupo 2\",\n      \"properties\": {\n        \"description\": \"Aplicación de ponderadores de riesgo previstos en puntos 2.12.8.1 y 2.12.8.2 para exposiciones hipotecarias del grupo 2.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_grupo_1\",\n      \"target\": \"clasificacion_exposicion_normativa_no_normativa\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"clasificacion_exposicion_normativa_no_normativa\",\n      \"target\": \"exposicion_garantia_hipotecaria\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"requisitos_exposicion_hipotecaria_normativa\",\n      \"target\": \"exposicion_garantia_hipotecaria\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"garantia_hipotecaria_primer_grado\",\n      \"target\": \"exposicion_garantia_hipotecaria\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"inmueble_terminado\",\n      \"target\": \"exposicion_garantia_hipotecaria\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_inmueble_rural\",\n      \"target\": \"inmueble_terminado\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_construccion_personas_humanas\",\n      \"target\": \"inmueble_terminado\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"construccion_hasta_4_unidades\",\n      \"target\": \"excepcion_construccion_personas_humanas\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"aseguramiento_finalizacion_construccion\",\n      \"target\": \"excepcion_construccion_personas_humanas\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"relacion_loan_to_value\",\n      \"target\": \"exposicion_garantia_hipotecaria\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ponderador_riesgo_grupo_2\",\n      \"target\": \"entidad_financiera_grupo_2\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4055,
+  "output_tokens": 1871,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_grupo_1",
+        "type": "Concepto",
+        "label": "Entidades financieras del grupo 1",
+        "properties": {
+          "description": "Clasificación de entidades financieras sujetas a regulación de capitales mínimos por riesgo de crédito."
+        }
+      },
+      {
+        "id": "entidad_financiera_grupo_2",
+        "type": "Concepto",
+        "label": "Entidades financieras del grupo 2",
+        "properties": {
+          "description": "Clasificación de entidades financieras sujetas a regulación de capitales mínimos por riesgo de crédito."
+        }
+      },
+      {
+        "id": "exposicion_garantia_hipotecaria",
+        "type": "Operacion",
+        "label": "Exposición con garantía hipotecaria",
+        "properties": {
+          "description": "Operación de crédito garantizada por hipoteca sobre inmueble."
+        }
+      },
+      {
+        "id": "clasificacion_exposicion_normativa_no_normativa",
+        "type": "Restriccion",
+        "label": "Clasificación de exposiciones hipotecarias",
+        "properties": {
+          "description": "Las entidades del grupo 1 deben clasificar exposiciones con garantía hipotecaria en normativas y no normativas."
+        }
+      },
+      {
+        "id": "garantia_hipotecaria_primer_grado",
+        "type": "Restriccion",
+        "label": "Garantía hipotecaria en primer grado",
+        "properties": {
+          "description": "La garantía hipotecaria deberá ser en primer grado, o cualquiera sea su grado de prelación siempre que la entidad sea la acreedora en todos los grados."
+        }
+      },
+      {
+        "id": "inmueble_terminado",
+        "type": "Restriccion",
+        "label": "Inmueble terminado",
+        "properties": {
+          "description": "La exposición deberá estar garantizada por un inmueble terminado."
+        }
+      },
+      {
+        "id": "excepcion_inmueble_rural",
+        "type": "Excepcion",
+        "label": "Excepción inmueble rural",
+        "properties": {
+          "description": "Requisito de inmueble terminado no se aplica a inmuebles rurales."
+        }
+      },
+      {
+        "id": "excepcion_construccion_personas_humanas",
+        "type": "Excepcion",
+        "label": "Excepción construcción para personas humanas",
+        "properties": {
+          "description": "Requisito de inmueble terminado no se aplica a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin."
+        }
+      },
+      {
+        "id": "construccion_hasta_4_unidades",
+        "type": "Restriccion",
+        "label": "Construcción de hasta 4 unidades vivienda",
+        "properties": {
+          "description": "Construcción de hasta 4 unidades para vivienda, una de las cuales será la vivienda única, familiar y de ocupación permanente del prestatario."
+        }
+      },
+      {
+        "id": "aseguramiento_finalizacion_construccion",
+        "type": "Restriccion",
+        "label": "Aseguramiento finalización construcción",
+        "properties": {
+          "description": "Entes alcanzados por el TO sobre Financiamiento al Sector Público No Financiero deben tener potestad legal y capacidad para asegurar finalización de construcción."
+        }
+      },
+      {
+        "id": "relacion_loan_to_value",
+        "type": "Restriccion",
+        "label": "Relación loan-to-value prudente",
+        "properties": {
+          "description": "Relación entre saldo de deuda y valor del inmueble debe calcularse de manera prudente sin deducir previsiones por riesgo de incobrabilidad."
+        }
+      },
+      {
+        "id": "requisitos_exposicion_hipotecaria_normativa",
+        "type": "Restriccion",
+        "label": "Requisitos exposición hipotecaria normativa",
+        "properties": {
+          "description": "Conjunto de requisitos que debe cumplir una exposición con garantía hipotecaria para ser clasificada como normativa."
+        }
+      },
+      {
+        "id": "ponderador_riesgo_grupo_2",
+        "type": "Restriccion",
+        "label": "Ponderadores de riesgo grupo 2",
+        "properties": {
+          "description": "Aplicación de ponderadores de riesgo previstos en puntos 2.12.8.1 y 2.12.8.2 para exposiciones hipotecarias del grupo 2."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_grupo_1",
+        "target": "clasificacion_exposicion_normativa_no_normativa",
+        "predicate": "realiza"
+      },
+      {
+        "source": "clasificacion_exposicion_normativa_no_normativa",
+        "target": "exposicion_garantia_hipotecaria",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "requisitos_exposicion_hipotecaria_normativa",
+        "target": "exposicion_garantia_hipotecaria",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "garantia_hipotecaria_primer_grado",
+        "target": "exposicion_garantia_hipotecaria",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "inmueble_terminado",
+        "target": "exposicion_garantia_hipotecaria",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_inmueble_rural",
+        "target": "inmueble_terminado",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_construccion_personas_humanas",
+        "target": "inmueble_terminado",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "construccion_hasta_4_unidades",
+        "target": "excepcion_construccion_personas_humanas",
+        "predicate": "especifica"
+      },
+      {
+        "source": "aseguramiento_finalizacion_construccion",
+        "target": "excepcion_construccion_personas_humanas",
+        "predicate": "especifica"
+      },
+      {
+        "source": "relacion_loan_to_value",
+        "target": "exposicion_garantia_hipotecaria",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ponderador_riesgo_grupo_2",
+        "target": "entidad_financiera_grupo_2",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

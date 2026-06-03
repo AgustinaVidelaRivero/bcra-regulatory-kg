@@ -1,0 +1,126 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0063__punto_4_4_y_4_5_y_su_valor_nominal_si_el",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 4.4 — y 4.5. y su valor nominal, si el primero resultase menor.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operacion_liquidacion_billetes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Liquidación de operaciones en billetes extranjeros\",\n      \"properties\": {\n        \"description\": \"Acción de liquidar operaciones cambiarias mediante pago en billetes en moneda extranjera o depósito en cuentas custodia o de terceros.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_prohibicion_liquidacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición de liquidación en billetes extranjeros\",\n      \"properties\": {\n        \"description\": \"No se permite la liquidación mediante pago en billetes en moneda extranjera ni depósito en cuentas custodia o cuentas de terceros.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_operaciones_cable\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para operaciones contra cable\",\n      \"properties\": {\n        \"description\": \"Se exceptúan operaciones contra cable que utilicen cuentas de terceros conforme punto 4.3.2.3.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_compras_titulos_valores\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requisitos para compras de títulos valores en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Requisitos previstos en puntos 4.3.2.1 y 4.3.2.2 aplicables a compras de títulos valores con fondos extranjeros.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_fondos_recibidos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para fondos recibidos en últimos 15 días\",\n      \"properties\": {\n        \"description\": \"No aplican requisitos 4.3.2.1 y 4.3.2.2 para compras de títulos valores financiadas con fondos extranjeros recibidos en los 15 días hábiles previos al cobro de capital e intereses de títulos de deuda de residentes.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_neutralidad_impositiva\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Condición de neutralidad impositiva en reinversión\",\n      \"properties\": {\n        \"description\": \"La reinversión de fondos por el beneficiario debe ser neutra en materia impositiva respecto de acreditación en cuenta a la vista y posterior débito para compra de valores.\"\n      }\n    },\n    {\n      \"id\": \"operacion_compra_titulos_valores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra de títulos valores\",\n      \"properties\": {\n        \"description\": \"Operación de adquisición de títulos valores realizadas por clientes con fondos en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"concepto_fondos_moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fondos en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Recursos en divisas recibidos por concepto de cobro de capital e intereses de títulos de deuda.\"\n      }\n    },\n    {\n      \"id\": \"plazo_15_dias_habiles\",\n      \"type\": \"Plazo\",\n      \"label\": \"Plazo de 15 días hábiles\",\n      \"properties\": {\n        \"description\": \"Período previo al cobro de capital e intereses dentro del cual deben haberse recibido los fondos en moneda extranjera.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_prohibicion_liquidacion\",\n      \"target\": \"operacion_liquidacion_billetes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_operaciones_cable\",\n      \"target\": \"restriccion_prohibicion_liquidacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_compras_titulos_valores\",\n      \"target\": \"operacion_compra_titulos_valores\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_fondos_recibidos\",\n      \"target\": \"restriccion_compras_titulos_valores\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_neutralidad_impositiva\",\n      \"target\": \"operacion_compra_titulos_valores\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"operacion_compra_titulos_valores\",\n      \"target\": \"concepto_fondos_moneda_extranjera\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"concepto_fondos_moneda_extranjera\",\n      \"target\": \"plazo_15_dias_habiles\",\n      \"predicate\": \"recibida_dentro_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3741,
+  "output_tokens": 1336,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operacion_liquidacion_billetes",
+        "type": "Operacion",
+        "label": "Liquidación de operaciones en billetes extranjeros",
+        "properties": {
+          "description": "Acción de liquidar operaciones cambiarias mediante pago en billetes en moneda extranjera o depósito en cuentas custodia o de terceros."
+        }
+      },
+      {
+        "id": "restriccion_prohibicion_liquidacion",
+        "type": "Restriccion",
+        "label": "Prohibición de liquidación en billetes extranjeros",
+        "properties": {
+          "description": "No se permite la liquidación mediante pago en billetes en moneda extranjera ni depósito en cuentas custodia o cuentas de terceros."
+        }
+      },
+      {
+        "id": "excepcion_operaciones_cable",
+        "type": "Excepcion",
+        "label": "Excepción para operaciones contra cable",
+        "properties": {
+          "description": "Se exceptúan operaciones contra cable que utilicen cuentas de terceros conforme punto 4.3.2.3."
+        }
+      },
+      {
+        "id": "restriccion_compras_titulos_valores",
+        "type": "Restriccion",
+        "label": "Requisitos para compras de títulos valores en moneda extranjera",
+        "properties": {
+          "description": "Requisitos previstos en puntos 4.3.2.1 y 4.3.2.2 aplicables a compras de títulos valores con fondos extranjeros."
+        }
+      },
+      {
+        "id": "excepcion_fondos_recibidos",
+        "type": "Excepcion",
+        "label": "Excepción para fondos recibidos en últimos 15 días",
+        "properties": {
+          "description": "No aplican requisitos 4.3.2.1 y 4.3.2.2 para compras de títulos valores financiadas con fondos extranjeros recibidos en los 15 días hábiles previos al cobro de capital e intereses de títulos de deuda de residentes."
+        }
+      },
+      {
+        "id": "restriccion_neutralidad_impositiva",
+        "type": "Restriccion",
+        "label": "Condición de neutralidad impositiva en reinversión",
+        "properties": {
+          "description": "La reinversión de fondos por el beneficiario debe ser neutra en materia impositiva respecto de acreditación en cuenta a la vista y posterior débito para compra de valores."
+        }
+      },
+      {
+        "id": "operacion_compra_titulos_valores",
+        "type": "Operacion",
+        "label": "Compra de títulos valores",
+        "properties": {
+          "description": "Operación de adquisición de títulos valores realizadas por clientes con fondos en moneda extranjera."
+        }
+      },
+      {
+        "id": "concepto_fondos_moneda_extranjera",
+        "type": "Concepto",
+        "label": "Fondos en moneda extranjera",
+        "properties": {
+          "description": "Recursos en divisas recibidos por concepto de cobro de capital e intereses de títulos de deuda."
+        }
+      },
+      {
+        "id": "plazo_15_dias_habiles",
+        "type": "Plazo",
+        "label": "Plazo de 15 días hábiles",
+        "properties": {
+          "description": "Período previo al cobro de capital e intereses dentro del cual deben haberse recibido los fondos en moneda extranjera."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_prohibicion_liquidacion",
+        "target": "operacion_liquidacion_billetes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_operaciones_cable",
+        "target": "restriccion_prohibicion_liquidacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_compras_titulos_valores",
+        "target": "operacion_compra_titulos_valores",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_fondos_recibidos",
+        "target": "restriccion_compras_titulos_valores",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_neutralidad_impositiva",
+        "target": "operacion_compra_titulos_valores",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "operacion_compra_titulos_valores",
+        "target": "concepto_fondos_moneda_extranjera",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "concepto_fondos_moneda_extranjera",
+        "target": "plazo_15_dias_habiles",
+        "predicate": "recibida_dentro_de"
+      }
+    ]
+  }
+}

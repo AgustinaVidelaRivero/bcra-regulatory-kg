@@ -1,0 +1,238 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0041__punto_3_2_tratamiento_de_las_posiciones_",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 3.2 — Tratamiento de las posiciones en fondos. (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_generica\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA comprendidos en la regulación de capitales mínimos.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"exposicion_riesgo_credito_contraparte\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exposición al riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Riesgo asociado a derivados que debe ponderarse aplicando factor de 1,5 antes del ponderador de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"calculo_ajuste_cva\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo del ajuste CVA\",\n      \"properties\": {\n        \"description\": \"En lugar de calcular el ajuste de valuación de crédito (CVA) según punto 4.2.3, las entidades deben multiplicar la exposición por factor de 1,5. Cuando CVA no sea aplicable, tampoco lo será el factor.\"\n      }\n    },\n    {\n      \"id\": \"ponderacion_residual_fba\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderación residual enfoque FBA\",\n      \"properties\": {\n        \"description\": \"Cuando no se pueda recurrir a LTA ni MBA, la inversión en fondo debe ponderarse al 1250%.\"\n      }\n    },\n    {\n      \"id\": \"inversion_fondos_anidados\",\n      \"type\": \"Operacion\",\n      \"label\": \"Inversión en fondos que invierten en otros fondos\",\n      \"properties\": {\n        \"description\": \"Tratamiento de estructuras de fondos anidados (Fondo A invierte en Fondo B, etc.).\"\n      }\n    },\n    {\n      \"id\": \"restriccion_fondos_anidados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Determinación de ponderadores en fondos anidados\",\n      \"properties\": {\n        \"description\": \"El ponderador para inversión del Fondo A en Fondo B se determina por LTA, MBA o FBA. Para inversiones subsiguientes (Fondo B en Fondo C), se usa LTA si fue usado para Fondo A-B; en caso contrario, FBA.\"\n      }\n    },\n    {\n      \"id\": \"uso_parcial_enfoques\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Uso parcial de enfoque combinado\",\n      \"properties\": {\n        \"description\": \"Las entidades pueden usar combinación de LTA, MBA y FBA para determinar requisito de capital en participación de fondo.\"\n      }\n    },\n    {\n      \"id\": \"ajuste_apalancamiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ajuste por apalancamiento en fondos\",\n      \"properties\": {\n        \"description\": \"Las entidades deben aplicar ajuste por apalancamiento (A/PN) al requisito de capital por participación en fondo, sujeto a tope de 1250%. Bajo MBA se usa máximo apalancamiento permitido por reglamento del fondo.\"\n      }\n    },\n    {\n      \"id\": \"calculo_ponderador_promedio_fondo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de ponderador riesgo promedio\",\n      \"properties\": {\n        \"description\": \"PR Promfondo = APRfondo / A total. Producto de PR Promfondo × Apalancamiento ≤ 1250%.\"\n      }\n    },\n    {\n      \"id\": \"lta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Enfoque LTA\",\n      \"properties\": {\n        \"description\": \"Uno de los tres enfoques para determinar ponderador de riesgo en inversiones en fondos.\"\n      }\n    },\n    {\n      \"id\": \"mba\",\n      \"type\": \"Concepto\",\n      \"label\": \"Enfoque MBA\",\n      \"properties\": {\n        \"description\": \"Uno de los tres enfoques para determinar ponderador de riesgo en inversiones en fondos, que permite usar máximo apalancamiento del reglamento del fondo.\"\n      }\n    },\n    {\n      \"id\": \"fba\",\n      \"type\": \"Concepto\",\n      \"label\": \"Enfoque FBA residual\",\n      \"properties\": {\n        \"description\": \"Enfoque residual de ponderación al 1250% cuando LTA y MBA no aplican.\"\n      }\n    },\n    {\n      \"id\": \"apalancamiento_fondo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Apalancamiento de fondo\",\n      \"properties\": {\n        \"description\": \"Razón entre total de activos (A) y patrimonio neto (PN) del fideicomiso. Apalancamiento = A / PN\"\n      }\n    },\n    {\n      \"id\": \"requisito_capital_fondo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Requisito de capital por inversión en fondo\",\n      \"properties\": {\n        \"description\": \"APRinversión calculado como PR Promfondo × Apalancamiento × Inversión, o equivalentemente APRfondo × % Participación.\"\n      }\n    },\n    {\n      \"id\": \"derivados\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivados\",\n      \"properties\": {\n        \"description\": \"Instrumentos financieros con exposición a riesgo de crédito de contraparte sujetos a ajuste CVA o factor 1,5.\"\n      }\n    },\n    {\n      \"id\": \"fideicomiso_fondo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fideicomiso fondo\",\n      \"properties\": {\n        \"description\": \"Estructura de fondo cuyo apalancamiento se mide por relación A/PN según reglamento.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_generica\",\n      \"target\": \"exposicion_riesgo_credito_contraparte\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"calculo_ajuste_cva\",\n      \"target\": \"exposicion_riesgo_credito_contraparte\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calculo_ajuste_cva\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"ponderacion_residual_fba\",\n      \"target\": \"inversion_fondos_anidados\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ponderacion_residual_fba\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_fondos_anidados\",\n      \"target\": \"inversion_fondos_anidados\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_fondos_anidados\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_fondos_anidados\",\n      \"target\": \"lta\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"restriccion_fondos_anidados\",\n      \"target\": \"mba\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"restriccion_fondos_anidados\",\n      \"target\": \"fba\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"uso_parcial_enfoques\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"ajuste_apalancamiento\",\n      \"target\": \"requisito_capital_fondo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ajuste_apalancamiento\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"ajuste_apalancamiento\",\n      \"target\": \"apalancamiento_fondo\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"calculo_ponderador_promedio_fondo\",\n      \"target\": \"requisito_capital_fondo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calculo_ponderador_promedio_fondo\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"requisito_capital_fondo\",\n      \"target\": \"apalancamiento_fondo\",\n      \"predicate\": \"depende_de\"\n    },\n    {\n      \"source\": \"entidad_financiera_generica\",\n      \"target\": \"inversion_fondos_anidados\",\n      \"predicate\": \"realiza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4674,
+  "output_tokens": 2484,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 16,
+  "relations_count": 18,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_generica",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA comprendidos en la regulación de capitales mínimos.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "exposicion_riesgo_credito_contraparte",
+        "type": "Operacion",
+        "label": "Exposición al riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Riesgo asociado a derivados que debe ponderarse aplicando factor de 1,5 antes del ponderador de contraparte."
+        }
+      },
+      {
+        "id": "calculo_ajuste_cva",
+        "type": "Restriccion",
+        "label": "Cálculo del ajuste CVA",
+        "properties": {
+          "description": "En lugar de calcular el ajuste de valuación de crédito (CVA) según punto 4.2.3, las entidades deben multiplicar la exposición por factor de 1,5. Cuando CVA no sea aplicable, tampoco lo será el factor."
+        }
+      },
+      {
+        "id": "ponderacion_residual_fba",
+        "type": "Restriccion",
+        "label": "Ponderación residual enfoque FBA",
+        "properties": {
+          "description": "Cuando no se pueda recurrir a LTA ni MBA, la inversión en fondo debe ponderarse al 1250%."
+        }
+      },
+      {
+        "id": "inversion_fondos_anidados",
+        "type": "Operacion",
+        "label": "Inversión en fondos que invierten en otros fondos",
+        "properties": {
+          "description": "Tratamiento de estructuras de fondos anidados (Fondo A invierte en Fondo B, etc.)."
+        }
+      },
+      {
+        "id": "restriccion_fondos_anidados",
+        "type": "Restriccion",
+        "label": "Determinación de ponderadores en fondos anidados",
+        "properties": {
+          "description": "El ponderador para inversión del Fondo A en Fondo B se determina por LTA, MBA o FBA. Para inversiones subsiguientes (Fondo B en Fondo C), se usa LTA si fue usado para Fondo A-B; en caso contrario, FBA."
+        }
+      },
+      {
+        "id": "uso_parcial_enfoques",
+        "type": "Restriccion",
+        "label": "Uso parcial de enfoque combinado",
+        "properties": {
+          "description": "Las entidades pueden usar combinación de LTA, MBA y FBA para determinar requisito de capital en participación de fondo."
+        }
+      },
+      {
+        "id": "ajuste_apalancamiento",
+        "type": "Restriccion",
+        "label": "Ajuste por apalancamiento en fondos",
+        "properties": {
+          "description": "Las entidades deben aplicar ajuste por apalancamiento (A/PN) al requisito de capital por participación en fondo, sujeto a tope de 1250%. Bajo MBA se usa máximo apalancamiento permitido por reglamento del fondo."
+        }
+      },
+      {
+        "id": "calculo_ponderador_promedio_fondo",
+        "type": "Restriccion",
+        "label": "Cálculo de ponderador riesgo promedio",
+        "properties": {
+          "description": "PR Promfondo = APRfondo / A total. Producto de PR Promfondo × Apalancamiento ≤ 1250%."
+        }
+      },
+      {
+        "id": "lta",
+        "type": "Concepto",
+        "label": "Enfoque LTA",
+        "properties": {
+          "description": "Uno de los tres enfoques para determinar ponderador de riesgo en inversiones en fondos."
+        }
+      },
+      {
+        "id": "mba",
+        "type": "Concepto",
+        "label": "Enfoque MBA",
+        "properties": {
+          "description": "Uno de los tres enfoques para determinar ponderador de riesgo en inversiones en fondos, que permite usar máximo apalancamiento del reglamento del fondo."
+        }
+      },
+      {
+        "id": "fba",
+        "type": "Concepto",
+        "label": "Enfoque FBA residual",
+        "properties": {
+          "description": "Enfoque residual de ponderación al 1250% cuando LTA y MBA no aplican."
+        }
+      },
+      {
+        "id": "apalancamiento_fondo",
+        "type": "Concepto",
+        "label": "Apalancamiento de fondo",
+        "properties": {
+          "description": "Razón entre total de activos (A) y patrimonio neto (PN) del fideicomiso. Apalancamiento = A / PN"
+        }
+      },
+      {
+        "id": "requisito_capital_fondo",
+        "type": "Operacion",
+        "label": "Requisito de capital por inversión en fondo",
+        "properties": {
+          "description": "APRinversión calculado como PR Promfondo × Apalancamiento × Inversión, o equivalentemente APRfondo × % Participación."
+        }
+      },
+      {
+        "id": "derivados",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivados",
+        "properties": {
+          "description": "Instrumentos financieros con exposición a riesgo de crédito de contraparte sujetos a ajuste CVA o factor 1,5."
+        }
+      },
+      {
+        "id": "fideicomiso_fondo",
+        "type": "Concepto",
+        "label": "Fideicomiso fondo",
+        "properties": {
+          "description": "Estructura de fondo cuyo apalancamiento se mide por relación A/PN según reglamento."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_generica",
+        "target": "exposicion_riesgo_credito_contraparte",
+        "predicate": "realiza"
+      },
+      {
+        "source": "calculo_ajuste_cva",
+        "target": "exposicion_riesgo_credito_contraparte",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calculo_ajuste_cva",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "ponderacion_residual_fba",
+        "target": "inversion_fondos_anidados",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ponderacion_residual_fba",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_fondos_anidados",
+        "target": "inversion_fondos_anidados",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_fondos_anidados",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_fondos_anidados",
+        "target": "lta",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "restriccion_fondos_anidados",
+        "target": "mba",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "restriccion_fondos_anidados",
+        "target": "fba",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "uso_parcial_enfoques",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "ajuste_apalancamiento",
+        "target": "requisito_capital_fondo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ajuste_apalancamiento",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "ajuste_apalancamiento",
+        "target": "apalancamiento_fondo",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "calculo_ponderador_promedio_fondo",
+        "target": "requisito_capital_fondo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calculo_ponderador_promedio_fondo",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "requisito_capital_fondo",
+        "target": "apalancamiento_fondo",
+        "predicate": "depende_de"
+      },
+      {
+        "source": "entidad_financiera_generica",
+        "target": "inversion_fondos_anidados",
+        "predicate": "realiza"
+      }
+    ]
+  }
+}

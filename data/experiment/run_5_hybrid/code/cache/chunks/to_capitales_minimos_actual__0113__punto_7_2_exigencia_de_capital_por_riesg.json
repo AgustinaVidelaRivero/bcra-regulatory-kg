@@ -1,0 +1,131 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0113__punto_7_2_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.2 — Exigencia de capital por riesgo operacional para entidades del grupo 2.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exigencia_capital_riesgo_operacional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Se determinará mensualmente aplicando expresión matemática basada en ingreso bruto de períodos de 12 meses consecutivos con coeficiente del 15%.\"\n      }\n    },\n    {\n      \"id\": \"ingreso_bruto_positivo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ingreso bruto positivo\",\n      \"properties\": {\n        \"description\": \"Suma de ingresos financieros y por servicios menos egresos, utilidades diversas menos pérdidas, y resultado monetario total, expresado en moneda homogénea del mes anterior al cálculo.\"\n      }\n    },\n    {\n      \"id\": \"periodo_12_meses_consecutivos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Período de 12 meses consecutivos\",\n      \"properties\": {\n        \"description\": \"Ventana temporal para cálculo de ingreso bruto, considerando últimos 36 meses anteriores al mes de cálculo, sin superposición de meses.\"\n      }\n    },\n    {\n      \"id\": \"limite_punto_7_3\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite del punto 7.3\",\n      \"properties\": {\n        \"description\": \"Exigencia aplicable cuando n sea igual a cero, es decir, cuando no hay períodos de 12 meses con ingreso bruto positivo en los últimos 36 meses.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_previsiones_crediticias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de previsiones y créditos recuperados\",\n      \"properties\": {\n        \"description\": \"Se excluyen del ingreso bruto: cargos de constitución de previsiones, desafectación de previsiones anteriores, y créditos recuperados castigados en ejercicios anteriores.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_participaciones_financieras\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de participaciones en entidades financieras\",\n      \"properties\": {\n        \"description\": \"Se excluye del ingreso bruto el resultado de participaciones en entidades financieras y empresas en la medida que sean deducibles de responsabilidad patrimonial computable.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_venta_especies\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de resultados por venta de especies\",\n      \"properties\": {\n        \"description\": \"Se excluyen resultados provenientes de venta de especies clasificadas a costo amortizado o valor razonable con cambios en ORI.\"\n      }\n    },\n    {\n      \"id\": \"entidad_grupo_2\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad del grupo 2\",\n      \"properties\": {\n        \"description\": \"Clasificación regulatoria de entidades financieras sujetas a exigencia de capital por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"coeficiente_15_porciento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Coeficiente 15%\",\n      \"properties\": {\n        \"description\": \"Factor fijo aplicado al cálculo de exigencia de capital por riesgo operacional.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"ingreso_bruto_positivo\",\n      \"predicate\": \"calcula_sobre\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"periodo_12_meses_consecutivos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"coeficiente_15_porciento\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"limite_punto_7_3\",\n      \"target\": \"exigencia_capital_riesgo_operacional\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"exclusion_previsiones_crediticias\",\n      \"target\": \"ingreso_bruto_positivo\",\n      \"predicate\": \"modifica\"\n    },\n    {\n      \"source\": \"exclusion_participaciones_financieras\",\n      \"target\": \"ingreso_bruto_positivo\",\n      \"predicate\": \"modifica\"\n    },\n    {\n      \"source\": \"exclusion_venta_especies\",\n      \"target\": \"ingreso_bruto_positivo\",\n      \"predicate\": \"modifica\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_operacional\",\n      \"target\": \"entidad_grupo_2\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3973,
+  "output_tokens": 1349,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exigencia_capital_riesgo_operacional",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo operacional",
+        "properties": {
+          "description": "Se determinará mensualmente aplicando expresión matemática basada en ingreso bruto de períodos de 12 meses consecutivos con coeficiente del 15%."
+        }
+      },
+      {
+        "id": "ingreso_bruto_positivo",
+        "type": "Concepto",
+        "label": "Ingreso bruto positivo",
+        "properties": {
+          "description": "Suma de ingresos financieros y por servicios menos egresos, utilidades diversas menos pérdidas, y resultado monetario total, expresado en moneda homogénea del mes anterior al cálculo."
+        }
+      },
+      {
+        "id": "periodo_12_meses_consecutivos",
+        "type": "Concepto",
+        "label": "Período de 12 meses consecutivos",
+        "properties": {
+          "description": "Ventana temporal para cálculo de ingreso bruto, considerando últimos 36 meses anteriores al mes de cálculo, sin superposición de meses."
+        }
+      },
+      {
+        "id": "limite_punto_7_3",
+        "type": "Restriccion",
+        "label": "Límite del punto 7.3",
+        "properties": {
+          "description": "Exigencia aplicable cuando n sea igual a cero, es decir, cuando no hay períodos de 12 meses con ingreso bruto positivo en los últimos 36 meses."
+        }
+      },
+      {
+        "id": "exclusion_previsiones_crediticias",
+        "type": "Restriccion",
+        "label": "Exclusión de previsiones y créditos recuperados",
+        "properties": {
+          "description": "Se excluyen del ingreso bruto: cargos de constitución de previsiones, desafectación de previsiones anteriores, y créditos recuperados castigados en ejercicios anteriores."
+        }
+      },
+      {
+        "id": "exclusion_participaciones_financieras",
+        "type": "Restriccion",
+        "label": "Exclusión de participaciones en entidades financieras",
+        "properties": {
+          "description": "Se excluye del ingreso bruto el resultado de participaciones en entidades financieras y empresas en la medida que sean deducibles de responsabilidad patrimonial computable."
+        }
+      },
+      {
+        "id": "exclusion_venta_especies",
+        "type": "Restriccion",
+        "label": "Exclusión de resultados por venta de especies",
+        "properties": {
+          "description": "Se excluyen resultados provenientes de venta de especies clasificadas a costo amortizado o valor razonable con cambios en ORI."
+        }
+      },
+      {
+        "id": "entidad_grupo_2",
+        "type": "Concepto",
+        "label": "Entidad del grupo 2",
+        "properties": {
+          "description": "Clasificación regulatoria de entidades financieras sujetas a exigencia de capital por riesgo operacional."
+        }
+      },
+      {
+        "id": "coeficiente_15_porciento",
+        "type": "Concepto",
+        "label": "Coeficiente 15%",
+        "properties": {
+          "description": "Factor fijo aplicado al cálculo de exigencia de capital por riesgo operacional."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "ingreso_bruto_positivo",
+        "predicate": "calcula_sobre"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "periodo_12_meses_consecutivos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "coeficiente_15_porciento",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "limite_punto_7_3",
+        "target": "exigencia_capital_riesgo_operacional",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "exclusion_previsiones_crediticias",
+        "target": "ingreso_bruto_positivo",
+        "predicate": "modifica"
+      },
+      {
+        "source": "exclusion_participaciones_financieras",
+        "target": "ingreso_bruto_positivo",
+        "predicate": "modifica"
+      },
+      {
+        "source": "exclusion_venta_especies",
+        "target": "ingreso_bruto_positivo",
+        "predicate": "modifica"
+      },
+      {
+        "source": "exigencia_capital_riesgo_operacional",
+        "target": "entidad_grupo_2",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

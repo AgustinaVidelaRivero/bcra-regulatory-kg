@@ -1,0 +1,186 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0078__punto_5_11_operaciones_de_cambio_entre_e",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.11 — Operaciones de cambio entre entidades. + Punto 5.12 — Operaciones de arbitrajes y canjes en el exterior de las entidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operaciones_cambio_entre_entidades\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de cambio entre entidades\",\n      \"properties\": {\n        \"description\": \"Compraventa de cambio realizada entre entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"realizacion_siopel\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Realización a través del SIOPEL\",\n      \"properties\": {\n        \"description\": \"Las operaciones de cambio entre entidades deberán ser realizadas a través del SIOPEL.\"\n      }\n    },\n    {\n      \"id\": \"liquidacion_movimientos_pesos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Movimientos en pesos por liquidación de cambio\",\n      \"properties\": {\n        \"description\": \"Los movimientos en pesos resultantes de la liquidación de operaciones de compraventa de cambio entre entidades deberán efectuarse obligatoriamente a través de cuentas abiertas en el BCRA o en entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_arbitrajes_canjes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de arbitrajes y canjes en el exterior\",\n      \"properties\": {\n        \"description\": \"Operaciones de arbitrajes y canjes que las entidades realizan en el exterior con contrapartes autorizadas.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_contrapartes_arbitrajes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Elegibilidad de contrapartes en arbitrajes y canjes\",\n      \"properties\": {\n        \"description\": \"Las operaciones de arbitrajes y canjes en el exterior solo pueden realizarse con contrapartes que cumplan criterios específicos de legitimidad y supervisión regulatoria.\"\n      }\n    },\n    {\n      \"id\": \"sucursal_agencia_bancos_oficiales\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Sucursal o agencia de bancos oficiales locales\",\n      \"properties\": {\n        \"description\": \"Autoriza operaciones de arbitrajes y canjes con sucursales o agencias en el exterior de bancos oficiales locales.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_estado_extranjero\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Entidad financiera del exterior de estados extranjeros\",\n      \"properties\": {\n        \"description\": \"Autoriza operaciones de arbitrajes y canjes con entidades financieras del exterior de propiedad total o mayoritaria de estados extranjeros.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_cambiaria_gafi\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Entidad financiera o cambiaria conforme recomendaciones GAFI\",\n      \"properties\": {\n        \"description\": \"Autoriza operaciones de arbitrajes y canjes con entidades financieras o cambiarias del exterior constituidas en países o territorios que aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional.\"\n      }\n    },\n    {\n      \"id\": \"compania_billetes_metales_preciosos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Compañía comercializadora de billetes y metales preciosos\",\n      \"properties\": {\n        \"description\": \"Autoriza operaciones de arbitrajes y canjes con compañías del exterior dedicadas a la compraventa de billetes y metales preciosos amonedados o en barras de buena entrega, cuya casa matriz esté radicada en país miembro del Comité de Supervisión Bancaria de Basilea.\"\n      }\n    },\n    {\n      \"id\": \"siopel\",\n      \"type\": \"SistemaOperativo\",\n      \"label\": \"SIOPEL\",\n      \"properties\": {\n        \"description\": \"Sistema de operación por el cual deben canalizarse las operaciones de cambio entre entidades.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que supervisa operaciones de cambio.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_local\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera local\",\n      \"properties\": {\n        \"description\": \"Institucion financiera autorizada a operar en la jurisdicción local donde pueden abrirse cuentas para liquidación de cambios.\"\n      }\n    },\n    {\n      \"id\": \"gafi\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Grupo de Acción Financiera Internacional\",\n      \"properties\": {\n        \"description\": \"Organismo internacional cuyas recomendaciones sirven como criterio de legitimidad regulatoria para contrapartes en el exterior.\"\n      }\n    },\n    {\n      \"id\": \"comite_basilea\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Comité de Supervisión Bancaria de Basilea\",\n      \"properties\": {\n        \"description\": \"Organismo internacional cuya membresía es criterio de elegibilidad para compañías comercializadoras de billetes y metales preciosos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"operaciones_cambio_entre_entidades\",\n      \"target\": \"realizacion_siopel\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"liquidacion_movimientos_pesos\",\n      \"target\": \"operaciones_cambio_entre_entidades\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"operaciones_arbitrajes_canjes\",\n      \"target\": \"restriccion_contrapartes_arbitrajes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"sucursal_agencia_bancos_oficiales\",\n      \"target\": \"restriccion_contrapartes_arbitrajes\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_estado_extranjero\",\n      \"target\": \"restriccion_contrapartes_arbitrajes\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_cambiaria_gafi\",\n      \"target\": \"restriccion_contrapartes_arbitrajes\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"compania_billetes_metales_preciosos\",\n      \"target\": \"restriccion_contrapartes_arbitrajes\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"realizacion_siopel\",\n      \"target\": \"siopel\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"liquidacion_movimientos_pesos\",\n      \"target\": \"bcra\",\n      \"predicate\": \"menciona\"\n    },\n    {\n      \"source\": \"entidad_financiera_cambiaria_gafi\",\n      \"target\": \"gafi\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"compania_billetes_metales_preciosos\",\n      \"target\": \"comite_basilea\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3811,
+  "output_tokens": 1967,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operaciones_cambio_entre_entidades",
+        "type": "Operacion",
+        "label": "Operaciones de cambio entre entidades",
+        "properties": {
+          "description": "Compraventa de cambio realizada entre entidades financieras locales."
+        }
+      },
+      {
+        "id": "realizacion_siopel",
+        "type": "Restriccion",
+        "label": "Realización a través del SIOPEL",
+        "properties": {
+          "description": "Las operaciones de cambio entre entidades deberán ser realizadas a través del SIOPEL."
+        }
+      },
+      {
+        "id": "liquidacion_movimientos_pesos",
+        "type": "Restriccion",
+        "label": "Movimientos en pesos por liquidación de cambio",
+        "properties": {
+          "description": "Los movimientos en pesos resultantes de la liquidación de operaciones de compraventa de cambio entre entidades deberán efectuarse obligatoriamente a través de cuentas abiertas en el BCRA o en entidades financieras locales."
+        }
+      },
+      {
+        "id": "operaciones_arbitrajes_canjes",
+        "type": "Operacion",
+        "label": "Operaciones de arbitrajes y canjes en el exterior",
+        "properties": {
+          "description": "Operaciones de arbitrajes y canjes que las entidades realizan en el exterior con contrapartes autorizadas."
+        }
+      },
+      {
+        "id": "restriccion_contrapartes_arbitrajes",
+        "type": "Restriccion",
+        "label": "Elegibilidad de contrapartes en arbitrajes y canjes",
+        "properties": {
+          "description": "Las operaciones de arbitrajes y canjes en el exterior solo pueden realizarse con contrapartes que cumplan criterios específicos de legitimidad y supervisión regulatoria."
+        }
+      },
+      {
+        "id": "sucursal_agencia_bancos_oficiales",
+        "type": "Excepcion",
+        "label": "Sucursal o agencia de bancos oficiales locales",
+        "properties": {
+          "description": "Autoriza operaciones de arbitrajes y canjes con sucursales o agencias en el exterior de bancos oficiales locales."
+        }
+      },
+      {
+        "id": "entidad_financiera_estado_extranjero",
+        "type": "Excepcion",
+        "label": "Entidad financiera del exterior de estados extranjeros",
+        "properties": {
+          "description": "Autoriza operaciones de arbitrajes y canjes con entidades financieras del exterior de propiedad total o mayoritaria de estados extranjeros."
+        }
+      },
+      {
+        "id": "entidad_financiera_cambiaria_gafi",
+        "type": "Excepcion",
+        "label": "Entidad financiera o cambiaria conforme recomendaciones GAFI",
+        "properties": {
+          "description": "Autoriza operaciones de arbitrajes y canjes con entidades financieras o cambiarias del exterior constituidas en países o territorios que aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional."
+        }
+      },
+      {
+        "id": "compania_billetes_metales_preciosos",
+        "type": "Excepcion",
+        "label": "Compañía comercializadora de billetes y metales preciosos",
+        "properties": {
+          "description": "Autoriza operaciones de arbitrajes y canjes con compañías del exterior dedicadas a la compraventa de billetes y metales preciosos amonedados o en barras de buena entrega, cuya casa matriz esté radicada en país miembro del Comité de Supervisión Bancaria de Basilea."
+        }
+      },
+      {
+        "id": "siopel",
+        "type": "SistemaOperativo",
+        "label": "SIOPEL",
+        "properties": {
+          "description": "Sistema de operación por el cual deben canalizarse las operaciones de cambio entre entidades."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que supervisa operaciones de cambio."
+        }
+      },
+      {
+        "id": "entidad_financiera_local",
+        "type": "Concepto",
+        "label": "Entidad financiera local",
+        "properties": {
+          "description": "Institucion financiera autorizada a operar en la jurisdicción local donde pueden abrirse cuentas para liquidación de cambios."
+        }
+      },
+      {
+        "id": "gafi",
+        "type": "Autoridad",
+        "label": "Grupo de Acción Financiera Internacional",
+        "properties": {
+          "description": "Organismo internacional cuyas recomendaciones sirven como criterio de legitimidad regulatoria para contrapartes en el exterior."
+        }
+      },
+      {
+        "id": "comite_basilea",
+        "type": "Autoridad",
+        "label": "Comité de Supervisión Bancaria de Basilea",
+        "properties": {
+          "description": "Organismo internacional cuya membresía es criterio de elegibilidad para compañías comercializadoras de billetes y metales preciosos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "operaciones_cambio_entre_entidades",
+        "target": "realizacion_siopel",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "liquidacion_movimientos_pesos",
+        "target": "operaciones_cambio_entre_entidades",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "operaciones_arbitrajes_canjes",
+        "target": "restriccion_contrapartes_arbitrajes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "sucursal_agencia_bancos_oficiales",
+        "target": "restriccion_contrapartes_arbitrajes",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "entidad_financiera_estado_extranjero",
+        "target": "restriccion_contrapartes_arbitrajes",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "entidad_financiera_cambiaria_gafi",
+        "target": "restriccion_contrapartes_arbitrajes",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "compania_billetes_metales_preciosos",
+        "target": "restriccion_contrapartes_arbitrajes",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "realizacion_siopel",
+        "target": "siopel",
+        "predicate": "requiere"
+      },
+      {
+        "source": "liquidacion_movimientos_pesos",
+        "target": "bcra",
+        "predicate": "menciona"
+      },
+      {
+        "source": "entidad_financiera_cambiaria_gafi",
+        "target": "gafi",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "compania_billetes_metales_preciosos",
+        "target": "comite_basilea",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

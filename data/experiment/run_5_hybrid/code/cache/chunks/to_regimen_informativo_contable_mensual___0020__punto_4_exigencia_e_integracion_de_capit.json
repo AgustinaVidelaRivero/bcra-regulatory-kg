@@ -1,0 +1,118 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0020__punto_4_exigencia_e_integracion_de_capit",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"reduccion_exigencia_grupo_2\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reducción de exigencia para entidades Grupo 2\",\n      \"properties\": {\n        \"description\": \"Reducción de exigencia por riesgo operacional aplicable a entidades financieras del Grupo 2 que pertenezcan a los Grupos A, B y C, siempre que no sean subsidiarias o sucursales de G-SIB.\"\n      }\n    },\n    {\n      \"id\": \"entidad_grupo_2_a_b_c\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades Grupo 2 Grupos A B C\",\n      \"properties\": {\n        \"description\": \"Entidades financieras del Grupo 2 que pertenecen a los Grupos A, B y C, excluidas subsidiarias o sucursales de entidades de importancia sistémica global.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_g_sib\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de subsidiarias y sucursales G-SIB\",\n      \"properties\": {\n        \"description\": \"No se aplica la reducción de exigencia a entidades que sean subsidiarias o sucursales de entidades de importancia sistémica global.\"\n      }\n    },\n    {\n      \"id\": \"reduccion_limite_general\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reducción con límite general\",\n      \"properties\": {\n        \"description\": \"La reducción se informa en partidas 36000001 ó 36000004 cuando el promedio de exigencias por riesgo crediticio de 36 meses anteriores resulta inferior al código 70300000.\"\n      }\n    },\n    {\n      \"id\": \"promedio_36_meses\",\n      \"type\": \"Concepto\",\n      \"label\": \"Promedio exigencias 36 meses\",\n      \"properties\": {\n        \"description\": \"Promedio de exigencias por riesgo de crédito de los 36 meses anteriores al período a informar, expresadas en moneda homogénea del mes anterior al cálculo.\"\n      }\n    },\n    {\n      \"id\": \"calculo_erc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cálculo ERC\",\n      \"properties\": {\n        \"description\": \"ERC = Partida 70100000 + suma de partidas 8XX00000, expresando el total de exigencias por riesgo crediticio.\"\n      }\n    },\n    {\n      \"id\": \"reduccion_limites_especiales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reducción con límites especiales\",\n      \"properties\": {\n        \"description\": \"Cuando la calificación de la entidad permite porcentajes menores, las reducciones se reflejan en partidas 36000002, 36000003, 36000005 o 36000006, siempre que sean inferiores a partida 70300000.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_entidad\",\n      \"type\": \"Concepto\",\n      \"label\": \"Calificación en aspectos normativos\",\n      \"properties\": {\n        \"description\": \"Evaluación de la entidad conforme a disposiciones normativas pertinentes para determinar aplicación de porcentajes menores de exigencia.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"reduccion_exigencia_grupo_2\",\n      \"target\": \"entidad_grupo_2_a_b_c\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_g_sib\",\n      \"target\": \"reduccion_exigencia_grupo_2\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"reduccion_limite_general\",\n      \"target\": \"entidad_grupo_2_a_b_c\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reduccion_limite_general\",\n      \"target\": \"promedio_36_meses\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"reduccion_limite_general\",\n      \"target\": \"calculo_erc\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"reduccion_limites_especiales\",\n      \"target\": \"entidad_grupo_2_a_b_c\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reduccion_limites_especiales\",\n      \"target\": \"calificacion_entidad\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4093,
+  "output_tokens": 1247,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "reduccion_exigencia_grupo_2",
+        "type": "Restriccion",
+        "label": "Reducción de exigencia para entidades Grupo 2",
+        "properties": {
+          "description": "Reducción de exigencia por riesgo operacional aplicable a entidades financieras del Grupo 2 que pertenezcan a los Grupos A, B y C, siempre que no sean subsidiarias o sucursales de G-SIB."
+        }
+      },
+      {
+        "id": "entidad_grupo_2_a_b_c",
+        "type": "Concepto",
+        "label": "Entidades Grupo 2 Grupos A B C",
+        "properties": {
+          "description": "Entidades financieras del Grupo 2 que pertenecen a los Grupos A, B y C, excluidas subsidiarias o sucursales de entidades de importancia sistémica global."
+        }
+      },
+      {
+        "id": "excepcion_g_sib",
+        "type": "Excepcion",
+        "label": "Exclusión de subsidiarias y sucursales G-SIB",
+        "properties": {
+          "description": "No se aplica la reducción de exigencia a entidades que sean subsidiarias o sucursales de entidades de importancia sistémica global."
+        }
+      },
+      {
+        "id": "reduccion_limite_general",
+        "type": "Restriccion",
+        "label": "Reducción con límite general",
+        "properties": {
+          "description": "La reducción se informa en partidas 36000001 ó 36000004 cuando el promedio de exigencias por riesgo crediticio de 36 meses anteriores resulta inferior al código 70300000."
+        }
+      },
+      {
+        "id": "promedio_36_meses",
+        "type": "Concepto",
+        "label": "Promedio exigencias 36 meses",
+        "properties": {
+          "description": "Promedio de exigencias por riesgo de crédito de los 36 meses anteriores al período a informar, expresadas en moneda homogénea del mes anterior al cálculo."
+        }
+      },
+      {
+        "id": "calculo_erc",
+        "type": "Concepto",
+        "label": "Cálculo ERC",
+        "properties": {
+          "description": "ERC = Partida 70100000 + suma de partidas 8XX00000, expresando el total de exigencias por riesgo crediticio."
+        }
+      },
+      {
+        "id": "reduccion_limites_especiales",
+        "type": "Restriccion",
+        "label": "Reducción con límites especiales",
+        "properties": {
+          "description": "Cuando la calificación de la entidad permite porcentajes menores, las reducciones se reflejan en partidas 36000002, 36000003, 36000005 o 36000006, siempre que sean inferiores a partida 70300000."
+        }
+      },
+      {
+        "id": "calificacion_entidad",
+        "type": "Concepto",
+        "label": "Calificación en aspectos normativos",
+        "properties": {
+          "description": "Evaluación de la entidad conforme a disposiciones normativas pertinentes para determinar aplicación de porcentajes menores de exigencia."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "reduccion_exigencia_grupo_2",
+        "target": "entidad_grupo_2_a_b_c",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_g_sib",
+        "target": "reduccion_exigencia_grupo_2",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "reduccion_limite_general",
+        "target": "entidad_grupo_2_a_b_c",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reduccion_limite_general",
+        "target": "promedio_36_meses",
+        "predicate": "requiere"
+      },
+      {
+        "source": "reduccion_limite_general",
+        "target": "calculo_erc",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "reduccion_limites_especiales",
+        "target": "entidad_grupo_2_a_b_c",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reduccion_limites_especiales",
+        "target": "calificacion_entidad",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

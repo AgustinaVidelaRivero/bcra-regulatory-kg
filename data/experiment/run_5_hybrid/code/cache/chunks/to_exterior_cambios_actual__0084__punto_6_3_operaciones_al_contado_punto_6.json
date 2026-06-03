@@ -1,0 +1,157 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0084__punto_6_3_operaciones_al_contado_punto_6",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 6.3 — Operaciones al contado. + Punto 6.4 — Operaciones a término.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operacion_contado\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones al contado\",\n      \"properties\": {\n        \"description\": \"Operaciones de cambio cuya liquidación está pactada dentro de un plazo de hasta 2 días hábiles desde la concertación.\"\n      }\n    },\n    {\n      \"id\": \"operacion_termino\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones a término\",\n      \"properties\": {\n        \"description\": \"Operaciones de cambio cuya liquidación está pactada en plazo mayor a 2 días hábiles desde la concertación.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_liquidacion_contado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de liquidación operaciones contado\",\n      \"properties\": {\n        \"description\": \"La liquidación por ambas partes debe estar pactada dentro de 2 días hábiles desde la concertación.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_liquidacion_termino\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de liquidación operaciones término\",\n      \"properties\": {\n        \"description\": \"La liquidación está pactada en plazo mayor a 2 días hábiles desde la concertación.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_entrega_instrumentos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Sujeción a norma cambiaria por entrega de instrumentos\",\n      \"properties\": {\n        \"description\": \"Operaciones a término con entrega efectiva de instrumentos quedan sujetas a norma cambiaria y se consideran acceso al mercado en fecha de liquidación.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_derivados\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención de derivados con liquidación en moneda doméstica\",\n      \"properties\": {\n        \"description\": \"No están sujetas a las normas cambiarias las concertaciones y cancelaciones de futuros, forwards, opciones y derivados bajo ley argentina liquidados por compensación en moneda doméstica sin obligaciones en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"concepto_acceso_mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Acceso al mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Se determina según la fecha de concertación para operaciones al contado y según fecha de liquidación para operaciones a término con entrega de instrumentos.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_futuros\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Futuros\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"instrumento_forwards\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Forwards\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"instrumento_opciones\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Opciones\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"instrumento_derivados\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivados financieros\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"concepto_compensacion_moneda_domestica\",\n      \"type\": \"Concepto\",\n      \"label\": \"Compensación en moneda doméstica\",\n      \"properties\": {\n        \"description\": \"Liquidación de instrumentos por compensación efectuada en moneda doméstica sin generar obligaciones en moneda extranjera.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_liquidacion_contado\",\n      \"target\": \"operacion_contado\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_liquidacion_termino\",\n      \"target\": \"operacion_termino\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_entrega_instrumentos\",\n      \"target\": \"operacion_termino\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"operacion_contado\",\n      \"target\": \"concepto_acceso_mercado_cambios\",\n      \"predicate\": \"constituye\"\n    },\n    {\n      \"source\": \"operacion_termino\",\n      \"target\": \"concepto_acceso_mercado_cambios\",\n      \"predicate\": \"constituye\"\n    },\n    {\n      \"source\": \"excepcion_derivados\",\n      \"target\": \"restriccion_entrega_instrumentos\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"instrumento_futuros\",\n      \"target\": \"excepcion_derivados\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"instrumento_forwards\",\n      \"target\": \"excepcion_derivados\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"instrumento_opciones\",\n      \"target\": \"excepcion_derivados\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"instrumento_derivados\",\n      \"target\": \"excepcion_derivados\",\n      \"predicate\": \"comprende\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3709,
+  "output_tokens": 1442,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operacion_contado",
+        "type": "Operacion",
+        "label": "Operaciones al contado",
+        "properties": {
+          "description": "Operaciones de cambio cuya liquidación está pactada dentro de un plazo de hasta 2 días hábiles desde la concertación."
+        }
+      },
+      {
+        "id": "operacion_termino",
+        "type": "Operacion",
+        "label": "Operaciones a término",
+        "properties": {
+          "description": "Operaciones de cambio cuya liquidación está pactada en plazo mayor a 2 días hábiles desde la concertación."
+        }
+      },
+      {
+        "id": "restriccion_liquidacion_contado",
+        "type": "Restriccion",
+        "label": "Plazo de liquidación operaciones contado",
+        "properties": {
+          "description": "La liquidación por ambas partes debe estar pactada dentro de 2 días hábiles desde la concertación."
+        }
+      },
+      {
+        "id": "restriccion_liquidacion_termino",
+        "type": "Restriccion",
+        "label": "Plazo de liquidación operaciones término",
+        "properties": {
+          "description": "La liquidación está pactada en plazo mayor a 2 días hábiles desde la concertación."
+        }
+      },
+      {
+        "id": "restriccion_entrega_instrumentos",
+        "type": "Restriccion",
+        "label": "Sujeción a norma cambiaria por entrega de instrumentos",
+        "properties": {
+          "description": "Operaciones a término con entrega efectiva de instrumentos quedan sujetas a norma cambiaria y se consideran acceso al mercado en fecha de liquidación."
+        }
+      },
+      {
+        "id": "excepcion_derivados",
+        "type": "Excepcion",
+        "label": "Exención de derivados con liquidación en moneda doméstica",
+        "properties": {
+          "description": "No están sujetas a las normas cambiarias las concertaciones y cancelaciones de futuros, forwards, opciones y derivados bajo ley argentina liquidados por compensación en moneda doméstica sin obligaciones en moneda extranjera."
+        }
+      },
+      {
+        "id": "concepto_acceso_mercado_cambios",
+        "type": "Concepto",
+        "label": "Acceso al mercado de cambios",
+        "properties": {
+          "description": "Se determina según la fecha de concertación para operaciones al contado y según fecha de liquidación para operaciones a término con entrega de instrumentos."
+        }
+      },
+      {
+        "id": "instrumento_futuros",
+        "type": "InstrumentoFinanciero",
+        "label": "Futuros",
+        "properties": {}
+      },
+      {
+        "id": "instrumento_forwards",
+        "type": "InstrumentoFinanciero",
+        "label": "Forwards",
+        "properties": {}
+      },
+      {
+        "id": "instrumento_opciones",
+        "type": "InstrumentoFinanciero",
+        "label": "Opciones",
+        "properties": {}
+      },
+      {
+        "id": "instrumento_derivados",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivados financieros",
+        "properties": {}
+      },
+      {
+        "id": "concepto_compensacion_moneda_domestica",
+        "type": "Concepto",
+        "label": "Compensación en moneda doméstica",
+        "properties": {
+          "description": "Liquidación de instrumentos por compensación efectuada en moneda doméstica sin generar obligaciones en moneda extranjera."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_liquidacion_contado",
+        "target": "operacion_contado",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_liquidacion_termino",
+        "target": "operacion_termino",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_entrega_instrumentos",
+        "target": "operacion_termino",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "operacion_contado",
+        "target": "concepto_acceso_mercado_cambios",
+        "predicate": "constituye"
+      },
+      {
+        "source": "operacion_termino",
+        "target": "concepto_acceso_mercado_cambios",
+        "predicate": "constituye"
+      },
+      {
+        "source": "excepcion_derivados",
+        "target": "restriccion_entrega_instrumentos",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "instrumento_futuros",
+        "target": "excepcion_derivados",
+        "predicate": "comprende"
+      },
+      {
+        "source": "instrumento_forwards",
+        "target": "excepcion_derivados",
+        "predicate": "comprende"
+      },
+      {
+        "source": "instrumento_opciones",
+        "target": "excepcion_derivados",
+        "predicate": "comprende"
+      },
+      {
+        "source": "instrumento_derivados",
+        "target": "excepcion_derivados",
+        "predicate": "comprende"
+      }
+    ]
+  }
+}

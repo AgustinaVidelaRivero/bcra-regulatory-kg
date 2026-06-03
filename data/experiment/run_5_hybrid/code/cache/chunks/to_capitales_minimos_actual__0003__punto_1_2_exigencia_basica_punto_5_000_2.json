@@ -1,0 +1,134 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0003__punto_1_2_exigencia_basica_punto_5_000_2",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1.2 — Exigencia básica. + Punto 5 — 000 2.500 + Punto 1.3 — Integración.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"banco\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Banco\",\n      \"properties\": {\n        \"description\": \"Entidad financiera sujeta a exigencias de capital mínimo según clasificación.\",\n        \"categoria\": \"banco_comercial\"\n      }\n    },\n    {\n      \"id\": \"compania_financiera\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Compañía financiera\",\n      \"properties\": {\n        \"description\": \"Entidad que realiza operaciones de comercio exterior.\",\n        \"categoria\": \"compania_financiera\"\n      }\n    },\n    {\n      \"id\": \"caja_credito_cooperativa\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Caja de crédito cooperativa\",\n      \"properties\": {\n        \"description\": \"Entidad excluida de las exigencias básicas generales.\",\n        \"categoria\": \"caja_credito\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_minimo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital mínimo\",\n      \"properties\": {\n        \"description\": \"Obligación de mantener capital mínimo según clase de entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_minimo_comercio_exterior\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital para comercio exterior\",\n      \"properties\": {\n        \"description\": \"Compañías financieras que realicen operaciones de comercio exterior en forma directa deben observar exigencias establecidas para bancos.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_minimo_riesgo_mercado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Integración determinada en forma diaria según punto 6.7.1.\"\n      }\n    },\n    {\n      \"id\": \"responsabilidad_patrimonial_computable\",\n      \"type\": \"Concepto\",\n      \"label\": \"Responsabilidad patrimonial computable\",\n      \"properties\": {\n        \"description\": \"Métrica de integración determinada por saldos de partidas admitidas al último día del mes bajo informe.\"\n      }\n    },\n    {\n      \"id\": \"operacion_comercio_exterior\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operación de comercio exterior\",\n      \"properties\": {\n        \"description\": \"Actividad regulada que realiza una compañía financiera en forma directa.\"\n      }\n    },\n    {\n      \"id\": \"integracion_capital\",\n      \"type\": \"Concepto\",\n      \"label\": \"Integración de capital\",\n      \"properties\": {\n        \"description\": \"Proceso de determinación de responsabilidad patrimonial computable basado en saldos mensuales o diarios según el tipo de exigencia.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"banco\",\n      \"target\": \"exigencia_capital_minimo\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"compania_financiera\",\n      \"target\": \"exigencia_capital_minimo\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"caja_credito_cooperativa\",\n      \"target\": \"exigencia_capital_minimo\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"compania_financiera\",\n      \"target\": \"operacion_comercio_exterior\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"exigencia_capital_minimo_comercio_exterior\",\n      \"target\": \"compania_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exigencia_capital_minimo_comercio_exterior\",\n      \"target\": \"operacion_comercio_exterior\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exigencia_capital_minimo\",\n      \"target\": \"responsabilidad_patrimonial_computable\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"exigencia_capital_minimo_riesgo_mercado\",\n      \"target\": \"integracion_capital\",\n      \"predicate\": \"define\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3624,
+  "output_tokens": 1195,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "banco",
+        "type": "EntidadFinanciera",
+        "label": "Banco",
+        "properties": {
+          "description": "Entidad financiera sujeta a exigencias de capital mínimo según clasificación.",
+          "categoria": "banco_comercial"
+        }
+      },
+      {
+        "id": "compania_financiera",
+        "type": "EntidadFinanciera",
+        "label": "Compañía financiera",
+        "properties": {
+          "description": "Entidad que realiza operaciones de comercio exterior.",
+          "categoria": "compania_financiera"
+        }
+      },
+      {
+        "id": "caja_credito_cooperativa",
+        "type": "EntidadFinanciera",
+        "label": "Caja de crédito cooperativa",
+        "properties": {
+          "description": "Entidad excluida de las exigencias básicas generales.",
+          "categoria": "caja_credito"
+        }
+      },
+      {
+        "id": "exigencia_capital_minimo",
+        "type": "Restriccion",
+        "label": "Exigencia de capital mínimo",
+        "properties": {
+          "description": "Obligación de mantener capital mínimo según clase de entidad financiera."
+        }
+      },
+      {
+        "id": "exigencia_capital_minimo_comercio_exterior",
+        "type": "Restriccion",
+        "label": "Exigencia de capital para comercio exterior",
+        "properties": {
+          "description": "Compañías financieras que realicen operaciones de comercio exterior en forma directa deben observar exigencias establecidas para bancos."
+        }
+      },
+      {
+        "id": "exigencia_capital_minimo_riesgo_mercado",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo de mercado",
+        "properties": {
+          "description": "Integración determinada en forma diaria según punto 6.7.1."
+        }
+      },
+      {
+        "id": "responsabilidad_patrimonial_computable",
+        "type": "Concepto",
+        "label": "Responsabilidad patrimonial computable",
+        "properties": {
+          "description": "Métrica de integración determinada por saldos de partidas admitidas al último día del mes bajo informe."
+        }
+      },
+      {
+        "id": "operacion_comercio_exterior",
+        "type": "Operacion",
+        "label": "Operación de comercio exterior",
+        "properties": {
+          "description": "Actividad regulada que realiza una compañía financiera en forma directa."
+        }
+      },
+      {
+        "id": "integracion_capital",
+        "type": "Concepto",
+        "label": "Integración de capital",
+        "properties": {
+          "description": "Proceso de determinación de responsabilidad patrimonial computable basado en saldos mensuales o diarios según el tipo de exigencia."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "banco",
+        "target": "exigencia_capital_minimo",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "compania_financiera",
+        "target": "exigencia_capital_minimo",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "caja_credito_cooperativa",
+        "target": "exigencia_capital_minimo",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "compania_financiera",
+        "target": "operacion_comercio_exterior",
+        "predicate": "realiza"
+      },
+      {
+        "source": "exigencia_capital_minimo_comercio_exterior",
+        "target": "compania_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exigencia_capital_minimo_comercio_exterior",
+        "target": "operacion_comercio_exterior",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exigencia_capital_minimo",
+        "target": "responsabilidad_patrimonial_computable",
+        "predicate": "requiere"
+      },
+      {
+        "source": "exigencia_capital_minimo_riesgo_mercado",
+        "target": "integracion_capital",
+        "predicate": "define"
+      }
+    ]
+  }
+}

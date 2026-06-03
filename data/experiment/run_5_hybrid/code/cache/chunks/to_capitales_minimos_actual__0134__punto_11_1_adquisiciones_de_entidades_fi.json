@@ -1,0 +1,108 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0134__punto_11_1_adquisiciones_de_entidades_fi",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 11.1 — Adquisiciones de entidades financieras. + Punto 11.2 — Fusión de entidades financieras. + Punto 11.3 — A los efectos de la determinación de la RPC, a partir del 01/02/13 comenzarán a ",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"determinacion_rpc_base_consolidada\",\n      \"type\": \"Operacion\",\n      \"label\": \"Determinación de RPC sobre base consolidada\",\n      \"properties\": {\n        \"description\": \"Cálculo del Ratio de Patrimonio Consolidado con adición de importes de previsiones del pasivo\"\n      }\n    },\n    {\n      \"id\": \"adicion_previsiones_pasivo_consolidada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Adición de previsiones del pasivo consolidadas\",\n      \"properties\": {\n        \"description\": \"La entidad que consolida puede adicionar el importe registrado en la partida específica en el rubro Previsiones del Pasivo para efectos del cálculo de RPC consolidada\"\n      }\n    },\n    {\n      \"id\": \"adicion_llave_negativa_rpc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Adición de llave de negocio negativa\",\n      \"properties\": {\n        \"description\": \"Se permite adicionar el importe de llave de negocio negativa registrado en previsiones del pasivo para determinación de RPC\"\n      }\n    },\n    {\n      \"id\": \"capital_adicional_nivel_uno\",\n      \"type\": \"Concepto\",\n      \"label\": \"Capital adicional de nivel uno\",\n      \"properties\": {\n        \"description\": \"Instrumentos de capital (CAn1) conforme a criterios establecidos en la Sección 8\"\n      }\n    },\n    {\n      \"id\": \"patrimonio_neto_complementario\",\n      \"type\": \"Concepto\",\n      \"label\": \"Patrimonio neto complementario\",\n      \"properties\": {\n        \"description\": \"Instrumentos financieros (PNc) que cumplen criterios de clasificación patrimonial\"\n      }\n    },\n    {\n      \"id\": \"reconocimiento_rpc_instrumentos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reconocimiento de RPC para instrumentos\",\n      \"properties\": {\n        \"description\": \"Límite del 90% para reconocimiento como RPC de instrumentos que pierdan criterios de CAn1 o PNc, reduciéndose 10 puntos porcentuales cada 12 meses\"\n      }\n    },\n    {\n      \"id\": \"metodologia_vigente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Metodología de cálculo vigente\",\n      \"properties\": {\n        \"description\": \"Método de aplicación a valores contables de instrumentos vigente al último día de cada mes\"\n      }\n    },\n    {\n      \"id\": \"rpc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ratio de Patrimonio Consolidado\",\n      \"properties\": {\n        \"description\": \"Indicador de suficiencia patrimonial de entidades financieras\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"adicion_previsiones_pasivo_consolidada\",\n      \"target\": \"determinacion_rpc_base_consolidada\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"adicion_llave_negativa_rpc\",\n      \"target\": \"rpc\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reconocimiento_rpc_instrumentos\",\n      \"target\": \"capital_adicional_nivel_uno\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"reconocimiento_rpc_instrumentos\",\n      \"target\": \"patrimonio_neto_complementario\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"reconocimiento_rpc_instrumentos\",\n      \"target\": \"metodologia_vigente\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3773,
+  "output_tokens": 1011,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "determinacion_rpc_base_consolidada",
+        "type": "Operacion",
+        "label": "Determinación de RPC sobre base consolidada",
+        "properties": {
+          "description": "Cálculo del Ratio de Patrimonio Consolidado con adición de importes de previsiones del pasivo"
+        }
+      },
+      {
+        "id": "adicion_previsiones_pasivo_consolidada",
+        "type": "Restriccion",
+        "label": "Adición de previsiones del pasivo consolidadas",
+        "properties": {
+          "description": "La entidad que consolida puede adicionar el importe registrado en la partida específica en el rubro Previsiones del Pasivo para efectos del cálculo de RPC consolidada"
+        }
+      },
+      {
+        "id": "adicion_llave_negativa_rpc",
+        "type": "Restriccion",
+        "label": "Adición de llave de negocio negativa",
+        "properties": {
+          "description": "Se permite adicionar el importe de llave de negocio negativa registrado en previsiones del pasivo para determinación de RPC"
+        }
+      },
+      {
+        "id": "capital_adicional_nivel_uno",
+        "type": "Concepto",
+        "label": "Capital adicional de nivel uno",
+        "properties": {
+          "description": "Instrumentos de capital (CAn1) conforme a criterios establecidos en la Sección 8"
+        }
+      },
+      {
+        "id": "patrimonio_neto_complementario",
+        "type": "Concepto",
+        "label": "Patrimonio neto complementario",
+        "properties": {
+          "description": "Instrumentos financieros (PNc) que cumplen criterios de clasificación patrimonial"
+        }
+      },
+      {
+        "id": "reconocimiento_rpc_instrumentos",
+        "type": "Restriccion",
+        "label": "Reconocimiento de RPC para instrumentos",
+        "properties": {
+          "description": "Límite del 90% para reconocimiento como RPC de instrumentos que pierdan criterios de CAn1 o PNc, reduciéndose 10 puntos porcentuales cada 12 meses"
+        }
+      },
+      {
+        "id": "metodologia_vigente",
+        "type": "Concepto",
+        "label": "Metodología de cálculo vigente",
+        "properties": {
+          "description": "Método de aplicación a valores contables de instrumentos vigente al último día de cada mes"
+        }
+      },
+      {
+        "id": "rpc",
+        "type": "Concepto",
+        "label": "Ratio de Patrimonio Consolidado",
+        "properties": {
+          "description": "Indicador de suficiencia patrimonial de entidades financieras"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "adicion_previsiones_pasivo_consolidada",
+        "target": "determinacion_rpc_base_consolidada",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "adicion_llave_negativa_rpc",
+        "target": "rpc",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reconocimiento_rpc_instrumentos",
+        "target": "capital_adicional_nivel_uno",
+        "predicate": "regula"
+      },
+      {
+        "source": "reconocimiento_rpc_instrumentos",
+        "target": "patrimonio_neto_complementario",
+        "predicate": "regula"
+      },
+      {
+        "source": "reconocimiento_rpc_instrumentos",
+        "target": "metodologia_vigente",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

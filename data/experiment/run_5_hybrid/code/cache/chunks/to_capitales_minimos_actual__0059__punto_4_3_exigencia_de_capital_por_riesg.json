@@ -1,0 +1,329 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0059__punto_4_3_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.3 — Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 6/8)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"ccp\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cámara de Compensación y Liquidación\",\n      \"properties\": {\n        \"description\": \"Entidad que actúa como contraparte central en operaciones de derivados y SFT\"\n      }\n    },\n    {\n      \"id\": \"miembro_compensador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Miembro compensador\",\n      \"properties\": {\n        \"description\": \"Participante de la CCP que realiza operaciones propias y brinda servicios de compensación a clientes\"\n      }\n    },\n    {\n      \"id\": \"cliente_ccp\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente del miembro compensador\",\n      \"properties\": {\n        \"description\": \"Contraparte del miembro compensador cuyas operaciones se garantizan en la CCP\"\n      }\n    },\n    {\n      \"id\": \"ead_exposicion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición (EAD)\",\n      \"properties\": {\n        \"description\": \"Valor de la exposición de la CCP con el miembro compensador incluyendo operaciones propias, de clientes y activos en garantía\"\n      }\n    },\n    {\n      \"id\": \"derivados_operacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones con derivados\",\n      \"properties\": {\n        \"description\": \"Transacciones con instrumentos derivados sujetas a reposición de márgenes y valuación diaria\"\n      }\n    },\n    {\n      \"id\": \"sft_operacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de financiamiento de valores (SFT)\",\n      \"properties\": {\n        \"description\": \"Transacciones de compra-venta con pacto de recompra u operaciones repo y préstamos de valores\"\n      }\n    },\n    {\n      \"id\": \"calculo_ead_derivados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de EAD para derivados\",\n      \"properties\": {\n        \"description\": \"La EAD para derivados se calcula aplicando el enfoque SA-CCR con MPOR de 10 días como si fuera una exposición bilateral entre la CCP y el miembro compensador\"\n      }\n    },\n    {\n      \"id\": \"calculo_ead_sft\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de EAD para SFT\",\n      \"properties\": {\n        \"description\": \"Para SFT, la EAD se calcula como máximo entre la exposición antes de mitigar menos margen inicial menos aporte al fondo de garantía, y cero\"\n      }\n    },\n    {\n      \"id\": \"margen_inicial\",\n      \"type\": \"Concepto\",\n      \"label\": \"Margen inicial\",\n      \"properties\": {\n        \"description\": \"Aportación del miembro compensador o cliente a la CCP para cubrir riesgo de cambios de valor\"\n      }\n    },\n    {\n      \"id\": \"fondo_garantia_incumplimiento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fondo de garantía para incumplimientos\",\n      \"properties\": {\n        \"description\": \"Aporte del miembro compensador que se aplica en caso de incumplimiento para reducir pérdidas de la CCP\"\n      }\n    },\n    {\n      \"id\": \"activos_garantia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos en garantía\",\n      \"properties\": {\n        \"description\": \"Bienes que la CCP puede utilizar en caso de incumplimiento del miembro compensador o cliente\"\n      }\n    },\n    {\n      \"id\": \"subcuentas_clientes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Subcuentas de clientes\",\n      \"properties\": {\n        \"description\": \"Cuentas individuales o colectivas separadas donde se mantienen operaciones y garantías de clientes del miembro compensador\"\n      }\n    },\n    {\n      \"id\": \"periodo_mantenimiento_minimo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Período de mantenimiento mínimo de garantías\",\n      \"properties\": {\n        \"description\": \"Plazo durante el cual deben mantenerse los activos en garantía: 10 días hábiles para derivados con reposición diaria; períodos mínimos especificados para SFT\"\n      }\n    },\n    {\n      \"id\": \"periodo_extendido_activos_iliquidos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Período extendido para activos ilíquidos\",\n      \"properties\": {\n        \"description\": \"Para conjuntos de neteo con activos ilíquidos o derivados OTC no sustituibles, el período mínimo es de 20 días hábiles\"\n      }\n    },\n    {\n      \"id\": \"periodo_extendido_concentracion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Período extendido por concentración\",\n      \"properties\": {\n        \"description\": \"El período de mantenimiento mínimo se extiende cuando operaciones o activos se concentran en una contraparte determinada\"\n      }\n    },\n    {\n      \"id\": \"mitigacion_exposicion_garantias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mitigación de exposición mediante garantías\",\n      \"properties\": {\n        \"description\": \"Todo activo en garantía al que pueda recurrir la CCP reduce la exposición a través del multiplicador de EPF\"\n      }\n    },\n    {\n      \"id\": \"sa_ccr_enfoque\",\n      \"type\": \"Concepto\",\n      \"label\": \"Enfoque SA-CCR\",\n      \"properties\": {\n        \"description\": \"Metodología estandarizada para calcular la exposición potencial futura en operaciones con derivados\"\n      }\n    },\n    {\n      \"id\": \"mpor\",\n      \"type\": \"Concepto\",\n      \"label\": \"Período de reposición de márgenes (MPOR)\",\n      \"properties\": {\n        \"description\": \"Plazo utilizado para calcular la exposición potencial futura en operaciones bilaterales de derivados\"\n      }\n    },\n    {\n      \"id\": \"aforos_sft\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Aforos aplicables a SFT\",\n      \"properties\": {\n        \"description\": \"Factores de descuento específicos aplicados a valores de activos en SFT para el cálculo de exposición\"\n      }\n    },\n    {\n      \"id\": \"asignacion_margen_inicial_productos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación de margen inicial entre SFT y derivados\",\n      \"properties\": {\n        \"description\": \"Cuando una cuenta contiene SFT y derivados, el margen inicial debe asignarse en proporción a las EAD específicas de cada producto\"\n      }\n    },\n    {\n      \"id\": \"asignacion_fondo_garantia_subcuentas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación de aporte al fondo por subcuenta\",\n      \"properties\": {\n        \"description\": \"Los aportes al fondo de garantía no separados por subcuentas deben asignarse según la porción de margen inicial de cada subcuenta\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_neteo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conjuntos de neteo\",\n      \"properties\": {\n        \"description\": \"Agrupaciones de operaciones entre la CCP y miembros compensadores para el cálculo de exposición neta\"\n      }\n    },\n    {\n      \"id\": \"reposicion_diaria_margenes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Reposición diaria de márgenes\",\n      \"properties\": {\n        \"description\": \"Proceso de ajuste diario de márgenes en operaciones con derivados y SFT\"\n      }\n    },\n    {\n      \"id\": \"valuacion_mercado\",\n      \"type\": \"Operacion\",\n      \"label\": \"Valuación diaria a precios de mercado\",\n      \"properties\": {\n        \"description\": \"Valoración de operaciones y activos en garantía según cotizaciones de mercado al cierre de cada día de cálculo\"\n      }\n    },\n    {\n      \"id\": \"entidades_miembros_compensadores\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras miembros compensadores\",\n      \"properties\": {\n        \"description\": \"Entidades autorizadas que actúan como miembros de la CCP\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"ccp\",\n      \"target\": \"miembro_compensador\",\n      \"predicate\": \"calcula_exposicion_con\"\n    },\n    {\n      \"source\": \"ccp\",\n      \"target\": \"cliente_ccp\",\n      \"predicate\": \"calcula_exposicion_con\"\n    },\n    {\n      \"source\": \"miembro_compensador\",\n      \"target\": \"cliente_ccp\",\n      \"predicate\": \"brinda_servicios_de_compensacion_a\"\n    },\n    {\n      \"source\": \"miembro_compensador\",\n      \"target\": \"subcuentas_clientes\",\n      \"predicate\": \"mantiene\"\n    },\n    {\n      \"source\": \"derivados_operacion\",\n      \"target\": \"calculo_ead_derivados\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"sft_operacion\",\n      \"target\": \"calculo_ead_sft\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"calculo_ead_derivados\",\n      \"target\": \"sa_ccr_enfoque\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"calculo_ead_derivados\",\n      \"target\": \"mpor\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"calculo_ead_sft\",\n      \"target\": \"margen_inicial\",\n      \"predicate\": \"descuenta\"\n    },\n    {\n      \"source\": \"calculo_ead_sft\",\n      \"target\": \"fondo_garantia_incumplimiento\",\n      \"predicate\": \"descuenta\"\n    },\n    {\n      \"source\": \"mitigacion_exposicion_garantias\",\n      \"target\": \"activos_garantia\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"mitigacion_exposicion_garantias\",\n      \"target\": \"fondo_garantia_incumplimiento\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"periodo_mantenimiento_minimo\",\n      \"target\": \"derivados_operacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"periodo_mantenimiento_minimo\",\n      \"target\": \"sft_operacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"periodo_extendido_activos_iliquidos\",\n      \"target\": \"conjuntos_neteo\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"periodo_extendido_concentracion\",\n      \"target\": \"conjuntos_neteo\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"asignacion_margen_inicial_productos\",\n      \"target\": \"derivados_operacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"asignacion_margen_inicial_productos\",\n      \"target\": \"sft_operacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"asignacion_fondo_garantia_subcuentas\",\n      \"target\": \"subcuentas_clientes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"aforos_sft\",\n      \"target\": \"sft_operacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reposicion_diaria_margenes\",\n      \"target\": \"margen_inicial\",\n      \"predicate\": \"actualiza\"\n    },\n    {\n      \"source\": \"valuacion_mercado\",\n      \"target\": \"ead_exposicion\",\n      \"predicate\": \"determina\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5256,
+  "output_tokens": 3312,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 25,
+  "relations_count": 22,
+  "parsed": {
+    "entities": [
+      {
+        "id": "ccp",
+        "type": "Concepto",
+        "label": "Cámara de Compensación y Liquidación",
+        "properties": {
+          "description": "Entidad que actúa como contraparte central en operaciones de derivados y SFT"
+        }
+      },
+      {
+        "id": "miembro_compensador",
+        "type": "Concepto",
+        "label": "Miembro compensador",
+        "properties": {
+          "description": "Participante de la CCP que realiza operaciones propias y brinda servicios de compensación a clientes"
+        }
+      },
+      {
+        "id": "cliente_ccp",
+        "type": "Concepto",
+        "label": "Cliente del miembro compensador",
+        "properties": {
+          "description": "Contraparte del miembro compensador cuyas operaciones se garantizan en la CCP"
+        }
+      },
+      {
+        "id": "ead_exposicion",
+        "type": "Concepto",
+        "label": "Exposición (EAD)",
+        "properties": {
+          "description": "Valor de la exposición de la CCP con el miembro compensador incluyendo operaciones propias, de clientes y activos en garantía"
+        }
+      },
+      {
+        "id": "derivados_operacion",
+        "type": "Operacion",
+        "label": "Operaciones con derivados",
+        "properties": {
+          "description": "Transacciones con instrumentos derivados sujetas a reposición de márgenes y valuación diaria"
+        }
+      },
+      {
+        "id": "sft_operacion",
+        "type": "Operacion",
+        "label": "Operaciones de financiamiento de valores (SFT)",
+        "properties": {
+          "description": "Transacciones de compra-venta con pacto de recompra u operaciones repo y préstamos de valores"
+        }
+      },
+      {
+        "id": "calculo_ead_derivados",
+        "type": "Restriccion",
+        "label": "Cálculo de EAD para derivados",
+        "properties": {
+          "description": "La EAD para derivados se calcula aplicando el enfoque SA-CCR con MPOR de 10 días como si fuera una exposición bilateral entre la CCP y el miembro compensador"
+        }
+      },
+      {
+        "id": "calculo_ead_sft",
+        "type": "Restriccion",
+        "label": "Cálculo de EAD para SFT",
+        "properties": {
+          "description": "Para SFT, la EAD se calcula como máximo entre la exposición antes de mitigar menos margen inicial menos aporte al fondo de garantía, y cero"
+        }
+      },
+      {
+        "id": "margen_inicial",
+        "type": "Concepto",
+        "label": "Margen inicial",
+        "properties": {
+          "description": "Aportación del miembro compensador o cliente a la CCP para cubrir riesgo de cambios de valor"
+        }
+      },
+      {
+        "id": "fondo_garantia_incumplimiento",
+        "type": "Concepto",
+        "label": "Fondo de garantía para incumplimientos",
+        "properties": {
+          "description": "Aporte del miembro compensador que se aplica en caso de incumplimiento para reducir pérdidas de la CCP"
+        }
+      },
+      {
+        "id": "activos_garantia",
+        "type": "Concepto",
+        "label": "Activos en garantía",
+        "properties": {
+          "description": "Bienes que la CCP puede utilizar en caso de incumplimiento del miembro compensador o cliente"
+        }
+      },
+      {
+        "id": "subcuentas_clientes",
+        "type": "Concepto",
+        "label": "Subcuentas de clientes",
+        "properties": {
+          "description": "Cuentas individuales o colectivas separadas donde se mantienen operaciones y garantías de clientes del miembro compensador"
+        }
+      },
+      {
+        "id": "periodo_mantenimiento_minimo",
+        "type": "Restriccion",
+        "label": "Período de mantenimiento mínimo de garantías",
+        "properties": {
+          "description": "Plazo durante el cual deben mantenerse los activos en garantía: 10 días hábiles para derivados con reposición diaria; períodos mínimos especificados para SFT"
+        }
+      },
+      {
+        "id": "periodo_extendido_activos_iliquidos",
+        "type": "Restriccion",
+        "label": "Período extendido para activos ilíquidos",
+        "properties": {
+          "description": "Para conjuntos de neteo con activos ilíquidos o derivados OTC no sustituibles, el período mínimo es de 20 días hábiles"
+        }
+      },
+      {
+        "id": "periodo_extendido_concentracion",
+        "type": "Restriccion",
+        "label": "Período extendido por concentración",
+        "properties": {
+          "description": "El período de mantenimiento mínimo se extiende cuando operaciones o activos se concentran en una contraparte determinada"
+        }
+      },
+      {
+        "id": "mitigacion_exposicion_garantias",
+        "type": "Restriccion",
+        "label": "Mitigación de exposición mediante garantías",
+        "properties": {
+          "description": "Todo activo en garantía al que pueda recurrir la CCP reduce la exposición a través del multiplicador de EPF"
+        }
+      },
+      {
+        "id": "sa_ccr_enfoque",
+        "type": "Concepto",
+        "label": "Enfoque SA-CCR",
+        "properties": {
+          "description": "Metodología estandarizada para calcular la exposición potencial futura en operaciones con derivados"
+        }
+      },
+      {
+        "id": "mpor",
+        "type": "Concepto",
+        "label": "Período de reposición de márgenes (MPOR)",
+        "properties": {
+          "description": "Plazo utilizado para calcular la exposición potencial futura en operaciones bilaterales de derivados"
+        }
+      },
+      {
+        "id": "aforos_sft",
+        "type": "Restriccion",
+        "label": "Aforos aplicables a SFT",
+        "properties": {
+          "description": "Factores de descuento específicos aplicados a valores de activos en SFT para el cálculo de exposición"
+        }
+      },
+      {
+        "id": "asignacion_margen_inicial_productos",
+        "type": "Restriccion",
+        "label": "Asignación de margen inicial entre SFT y derivados",
+        "properties": {
+          "description": "Cuando una cuenta contiene SFT y derivados, el margen inicial debe asignarse en proporción a las EAD específicas de cada producto"
+        }
+      },
+      {
+        "id": "asignacion_fondo_garantia_subcuentas",
+        "type": "Restriccion",
+        "label": "Asignación de aporte al fondo por subcuenta",
+        "properties": {
+          "description": "Los aportes al fondo de garantía no separados por subcuentas deben asignarse según la porción de margen inicial de cada subcuenta"
+        }
+      },
+      {
+        "id": "conjuntos_neteo",
+        "type": "Concepto",
+        "label": "Conjuntos de neteo",
+        "properties": {
+          "description": "Agrupaciones de operaciones entre la CCP y miembros compensadores para el cálculo de exposición neta"
+        }
+      },
+      {
+        "id": "reposicion_diaria_margenes",
+        "type": "Operacion",
+        "label": "Reposición diaria de márgenes",
+        "properties": {
+          "description": "Proceso de ajuste diario de márgenes en operaciones con derivados y SFT"
+        }
+      },
+      {
+        "id": "valuacion_mercado",
+        "type": "Operacion",
+        "label": "Valuación diaria a precios de mercado",
+        "properties": {
+          "description": "Valoración de operaciones y activos en garantía según cotizaciones de mercado al cierre de cada día de cálculo"
+        }
+      },
+      {
+        "id": "entidades_miembros_compensadores",
+        "type": "Concepto",
+        "label": "Entidades financieras miembros compensadores",
+        "properties": {
+          "description": "Entidades autorizadas que actúan como miembros de la CCP"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "ccp",
+        "target": "miembro_compensador",
+        "predicate": "calcula_exposicion_con"
+      },
+      {
+        "source": "ccp",
+        "target": "cliente_ccp",
+        "predicate": "calcula_exposicion_con"
+      },
+      {
+        "source": "miembro_compensador",
+        "target": "cliente_ccp",
+        "predicate": "brinda_servicios_de_compensacion_a"
+      },
+      {
+        "source": "miembro_compensador",
+        "target": "subcuentas_clientes",
+        "predicate": "mantiene"
+      },
+      {
+        "source": "derivados_operacion",
+        "target": "calculo_ead_derivados",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "sft_operacion",
+        "target": "calculo_ead_sft",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "calculo_ead_derivados",
+        "target": "sa_ccr_enfoque",
+        "predicate": "aplica"
+      },
+      {
+        "source": "calculo_ead_derivados",
+        "target": "mpor",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "calculo_ead_sft",
+        "target": "margen_inicial",
+        "predicate": "descuenta"
+      },
+      {
+        "source": "calculo_ead_sft",
+        "target": "fondo_garantia_incumplimiento",
+        "predicate": "descuenta"
+      },
+      {
+        "source": "mitigacion_exposicion_garantias",
+        "target": "activos_garantia",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "mitigacion_exposicion_garantias",
+        "target": "fondo_garantia_incumplimiento",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "periodo_mantenimiento_minimo",
+        "target": "derivados_operacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "periodo_mantenimiento_minimo",
+        "target": "sft_operacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "periodo_extendido_activos_iliquidos",
+        "target": "conjuntos_neteo",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "periodo_extendido_concentracion",
+        "target": "conjuntos_neteo",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "asignacion_margen_inicial_productos",
+        "target": "derivados_operacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "asignacion_margen_inicial_productos",
+        "target": "sft_operacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "asignacion_fondo_garantia_subcuentas",
+        "target": "subcuentas_clientes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "aforos_sft",
+        "target": "sft_operacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reposicion_diaria_margenes",
+        "target": "margen_inicial",
+        "predicate": "actualiza"
+      },
+      {
+        "source": "valuacion_mercado",
+        "target": "ead_exposicion",
+        "predicate": "determina"
+      }
+    ]
+  }
+}

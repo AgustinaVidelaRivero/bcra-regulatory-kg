@@ -1,0 +1,222 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0020__punto_6_5_niveles_de_clasificacion",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6.5 — Niveles de clasificación.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"cliente_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Persona o entidad que recibe financiaciones de una entidad financiera y está sujeta a clasificación de deudor.\"\n      }\n    },\n    {\n      \"id\": \"financiacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Otorgamiento de financiaciones\",\n      \"properties\": {\n        \"description\": \"Acción de la entidad de otorgar créditos o financiamientos a clientes.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudor\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación de deudor en categorías\",\n      \"properties\": {\n        \"description\": \"Cada cliente y sus financiaciones deben incluirse en una de cinco categorías definidas según condiciones específicas.\"\n      }\n    },\n    {\n      \"id\": \"asistencia_crediticia\",\n      \"type\": \"Operacion\",\n      \"label\": \"Asistencia crediticia registrada\",\n      \"properties\": {\n        \"description\": \"Historial de créditos otorgados previamente a un cliente registrado en el sistema.\"\n      }\n    },\n    {\n      \"id\": \"central_deudores\",\n      \"type\": \"Concepto\",\n      \"label\": \"Central de deudores\",\n      \"properties\": {\n        \"description\": \"Sistema de información que registra el saldo de deuda de clientes en el sistema financiero.\"\n      }\n    },\n    {\n      \"id\": \"analisis_flujo_fondos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Análisis de flujo de fondos proyectado\",\n      \"properties\": {\n        \"description\": \"Evaluación de la capacidad de pago del cliente basada en proyecciones de fondos.\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_flujo_fondos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Clasificación únicamente por flujo de fondos\",\n      \"properties\": {\n        \"description\": \"Clientes sin asistencia crediticia previa que reciben financiaciones menores al porcentaje del saldo de deuda pueden ser clasificados considerando solo análisis de flujo de fondos proyectado.\"\n      }\n    },\n    {\n      \"id\": \"refinanciacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Refinanciación de créditos\",\n      \"properties\": {\n        \"description\": \"Reestructuración de obligaciones de crédito existentes.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_refinanciacion_margenes\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de facilidades adicionales sobre márgenes\",\n      \"properties\": {\n        \"description\": \"No se consideran refinanciaciones las facilidades adicionales sobre márgenes acordados si implican nuevos desembolsos y no superan el 10% del cupo, son consistentes con el curso normal de negocios y existe capacidad para atender otras obligaciones.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_refinanciacion_expansion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de refinanciaciones por expansión\",\n      \"properties\": {\n        \"description\": \"No se consideran refinanciaciones las nuevas financiaciones y refinanciaciones asociadas a mayor inversión por expansión de actividades, demostrando que flujo de fondos permitirá afrontar todas las obligaciones.\"\n      }\n    },\n    {\n      \"id\": \"ley_emergencia_agropecuaria\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ley de Emergencia Agropecuaria\",\n      \"properties\": {\n        \"description\": \"Marco legal vinculado a disposiciones de emergencia para el sector agropecuario.\"\n      }\n    },\n    {\n      \"id\": \"productor_agropecuario\",\n      \"type\": \"Concepto\",\n      \"label\": \"Productor agropecuario\",\n      \"properties\": {\n        \"description\": \"Cliente dedicado a actividades agropecuarias sujeto a tratamiento especial en refinanciaciones.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_refinanciacion_agropecuaria\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de refinanciaciones por emergencia agropecuaria\",\n      \"properties\": {\n        \"description\": \"Las refinanciaciones otorgadas a productores agropecuarios bajo disposiciones de Ley de Emergencia Agropecuaria no se consideran refinanciaciones, pero la clasificación debe considerar flujo de fondos al concluir la emergencia, sin mejorar clasificación previa ni extender tratamiento más allá de la vigencia.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Institución que otorga financiaciones y clasifica deudores conforme a las normas.\"\n      }\n    },\n    {\n      \"id\": \"previsiones_minimas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Previsiones mínimas por riesgo de incobrabilidad\",\n      \"properties\": {\n        \"description\": \"Normas que establecen porcentajes de provisión según clasificación de deudor.\"\n      }\n    },\n    {\n      \"id\": \"obligaciones_financieras\",\n      \"type\": \"Concepto\",\n      \"label\": \"Obligaciones financieras\",\n      \"properties\": {\n        \"description\": \"Compromisos de pago del cliente con entidades financieras.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"cliente_financiero\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"sujeto_a\"\n    },\n    {\n      \"source\": \"cliente_financiero\",\n      \"target\": \"financiacion\",\n      \"predicate\": \"recibe\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"financiacion\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"clasificacion_deudor\",\n      \"target\": \"cliente_financiero\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"clasificacion_deudor\",\n      \"target\": \"financiacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"clasificacion_flujo_fondos\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"analisis_flujo_fondos\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"fundamenta\"\n    },\n    {\n      \"source\": \"central_deudores\",\n      \"target\": \"financiacion\",\n      \"predicate\": \"registra\"\n    },\n    {\n      \"source\": \"asistencia_crediticia\",\n      \"target\": \"cliente_financiero\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"exclusion_refinanciacion_margenes\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"exclusion_refinanciacion_expansion\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"exclusion_refinanciacion_agropecuaria\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"ley_emergencia_agropecuaria\",\n      \"target\": \"exclusion_refinanciacion_agropecuaria\",\n      \"predicate\": \"fundamenta\"\n    },\n    {\n      \"source\": \"productor_agropecuario\",\n      \"target\": \"exclusion_refinanciacion_agropecuaria\",\n      \"predicate\": \"beneficiario_de\"\n    },\n    {\n      \"source\": \"previsiones_minimas\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"vinculada_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4137,
+  "output_tokens": 2194,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 16,
+  "relations_count": 15,
+  "parsed": {
+    "entities": [
+      {
+        "id": "cliente_financiero",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Persona o entidad que recibe financiaciones de una entidad financiera y está sujeta a clasificación de deudor."
+        }
+      },
+      {
+        "id": "financiacion",
+        "type": "Operacion",
+        "label": "Otorgamiento de financiaciones",
+        "properties": {
+          "description": "Acción de la entidad de otorgar créditos o financiamientos a clientes."
+        }
+      },
+      {
+        "id": "clasificacion_deudor",
+        "type": "Restriccion",
+        "label": "Clasificación de deudor en categorías",
+        "properties": {
+          "description": "Cada cliente y sus financiaciones deben incluirse en una de cinco categorías definidas según condiciones específicas."
+        }
+      },
+      {
+        "id": "asistencia_crediticia",
+        "type": "Operacion",
+        "label": "Asistencia crediticia registrada",
+        "properties": {
+          "description": "Historial de créditos otorgados previamente a un cliente registrado en el sistema."
+        }
+      },
+      {
+        "id": "central_deudores",
+        "type": "Concepto",
+        "label": "Central de deudores",
+        "properties": {
+          "description": "Sistema de información que registra el saldo de deuda de clientes en el sistema financiero."
+        }
+      },
+      {
+        "id": "analisis_flujo_fondos",
+        "type": "Operacion",
+        "label": "Análisis de flujo de fondos proyectado",
+        "properties": {
+          "description": "Evaluación de la capacidad de pago del cliente basada en proyecciones de fondos."
+        }
+      },
+      {
+        "id": "clasificacion_flujo_fondos",
+        "type": "Excepcion",
+        "label": "Clasificación únicamente por flujo de fondos",
+        "properties": {
+          "description": "Clientes sin asistencia crediticia previa que reciben financiaciones menores al porcentaje del saldo de deuda pueden ser clasificados considerando solo análisis de flujo de fondos proyectado."
+        }
+      },
+      {
+        "id": "refinanciacion",
+        "type": "Operacion",
+        "label": "Refinanciación de créditos",
+        "properties": {
+          "description": "Reestructuración de obligaciones de crédito existentes."
+        }
+      },
+      {
+        "id": "exclusion_refinanciacion_margenes",
+        "type": "Excepcion",
+        "label": "Exclusión de facilidades adicionales sobre márgenes",
+        "properties": {
+          "description": "No se consideran refinanciaciones las facilidades adicionales sobre márgenes acordados si implican nuevos desembolsos y no superan el 10% del cupo, son consistentes con el curso normal de negocios y existe capacidad para atender otras obligaciones."
+        }
+      },
+      {
+        "id": "exclusion_refinanciacion_expansion",
+        "type": "Excepcion",
+        "label": "Exclusión de refinanciaciones por expansión",
+        "properties": {
+          "description": "No se consideran refinanciaciones las nuevas financiaciones y refinanciaciones asociadas a mayor inversión por expansión de actividades, demostrando que flujo de fondos permitirá afrontar todas las obligaciones."
+        }
+      },
+      {
+        "id": "ley_emergencia_agropecuaria",
+        "type": "Concepto",
+        "label": "Ley de Emergencia Agropecuaria",
+        "properties": {
+          "description": "Marco legal vinculado a disposiciones de emergencia para el sector agropecuario."
+        }
+      },
+      {
+        "id": "productor_agropecuario",
+        "type": "Concepto",
+        "label": "Productor agropecuario",
+        "properties": {
+          "description": "Cliente dedicado a actividades agropecuarias sujeto a tratamiento especial en refinanciaciones."
+        }
+      },
+      {
+        "id": "exclusion_refinanciacion_agropecuaria",
+        "type": "Excepcion",
+        "label": "Exclusión de refinanciaciones por emergencia agropecuaria",
+        "properties": {
+          "description": "Las refinanciaciones otorgadas a productores agropecuarios bajo disposiciones de Ley de Emergencia Agropecuaria no se consideran refinanciaciones, pero la clasificación debe considerar flujo de fondos al concluir la emergencia, sin mejorar clasificación previa ni extender tratamiento más allá de la vigencia."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Institución que otorga financiaciones y clasifica deudores conforme a las normas."
+        }
+      },
+      {
+        "id": "previsiones_minimas",
+        "type": "Restriccion",
+        "label": "Previsiones mínimas por riesgo de incobrabilidad",
+        "properties": {
+          "description": "Normas que establecen porcentajes de provisión según clasificación de deudor."
+        }
+      },
+      {
+        "id": "obligaciones_financieras",
+        "type": "Concepto",
+        "label": "Obligaciones financieras",
+        "properties": {
+          "description": "Compromisos de pago del cliente con entidades financieras."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "cliente_financiero",
+        "target": "clasificacion_deudor",
+        "predicate": "sujeto_a"
+      },
+      {
+        "source": "cliente_financiero",
+        "target": "financiacion",
+        "predicate": "recibe"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "financiacion",
+        "predicate": "realiza"
+      },
+      {
+        "source": "clasificacion_deudor",
+        "target": "cliente_financiero",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "clasificacion_deudor",
+        "target": "financiacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "clasificacion_flujo_fondos",
+        "target": "clasificacion_deudor",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "analisis_flujo_fondos",
+        "target": "clasificacion_deudor",
+        "predicate": "fundamenta"
+      },
+      {
+        "source": "central_deudores",
+        "target": "financiacion",
+        "predicate": "registra"
+      },
+      {
+        "source": "asistencia_crediticia",
+        "target": "cliente_financiero",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "exclusion_refinanciacion_margenes",
+        "target": "refinanciacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "exclusion_refinanciacion_expansion",
+        "target": "refinanciacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "exclusion_refinanciacion_agropecuaria",
+        "target": "refinanciacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "ley_emergencia_agropecuaria",
+        "target": "exclusion_refinanciacion_agropecuaria",
+        "predicate": "fundamenta"
+      },
+      {
+        "source": "productor_agropecuario",
+        "target": "exclusion_refinanciacion_agropecuaria",
+        "predicate": "beneficiario_de"
+      },
+      {
+        "source": "previsiones_minimas",
+        "target": "clasificacion_deudor",
+        "predicate": "vinculada_a"
+      }
+    ]
+  }
+}

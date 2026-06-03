@@ -1,0 +1,113 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0137__punto_11_6_los_titulos_publicos_nacional",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 11.6 — Los títulos públicos nacionales en pesos con rendimiento en moneda dual reciben  + Punto 12.1 — Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidades_financieras_funcionamiento_01_06_24\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras en funcionamiento\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que se encuentran en funcionamiento a partir del 01/06/24\"\n      }\n    },\n    {\n      \"id\": \"exigencia_basica_capital\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia básica de capital\",\n      \"properties\": {\n        \"description\": \"Integración de capital mínimo según categoría: 1.500 millones de pesos para Bancos, 700 millones para Restantes entidades (salvo Cajas de Crédito Cooperativas) en período 01/06/24 a 31/12/24\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_desde_01_01_25\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital desde 01/01/25\",\n      \"properties\": {\n        \"description\": \"Exigencia básica de capital conforme a tabla del punto 1.2 según categoría de la entidad, vigente a partir del 01/01/25\"\n      }\n    },\n    {\n      \"id\": \"programa_encuadramiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Programa de encuadramiento\",\n      \"properties\": {\n        \"description\": \"Presentación a SEFYC de un programa de encuadramiento dentro de 20 días corridos de registración o proyección de incumplimiento, con plazo máximo de 6 meses para cumplir exigencia\"\n      }\n    },\n    {\n      \"id\": \"plan_negocios_autoevaluacion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Plan de negocios y autoevaluación\",\n      \"properties\": {\n        \"description\": \"Plan de negocios, proyecciones e informe de autoevaluación del capital que determina exigencia básica desde 01/01/25\"\n      }\n    },\n    {\n      \"id\": \"sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"SEFYC, autoridad regulatoria receptora de programas de encuadramiento\"\n      }\n    },\n    {\n      \"id\": \"bancos\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Bancos\",\n      \"properties\": {\n        \"description\": \"Entidades clasificadas como Bancos sujetas a exigencias de capital mínimo\"\n      },\n      \"categoria\": \"otra\"\n    },\n    {\n      \"id\": \"restantes_entidades\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Restantes entidades financieras\",\n      \"properties\": {\n        \"description\": \"Entidades financieras distintas de Bancos y Cajas de Crédito Cooperativas, sujetas a exigencias de capital mínimo\"\n      },\n      \"categoria\": \"otra\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidades_financieras_funcionamiento_01_06_24\",\n      \"target\": \"exigencia_basica_capital\",\n      \"predicate\": \"debe_cumplir\"\n    },\n    {\n      \"source\": \"entidades_financieras_funcionamiento_01_06_24\",\n      \"target\": \"exigencia_capital_desde_01_01_25\",\n      \"predicate\": \"debe_cumplir\"\n    },\n    {\n      \"source\": \"bancos\",\n      \"target\": \"exigencia_basica_capital\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restantes_entidades\",\n      \"target\": \"exigencia_basica_capital\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"programa_encuadramiento\",\n      \"target\": \"sefyc\",\n      \"predicate\": \"presenta_a\"\n    },\n    {\n      \"source\": \"plan_negocios_autoevaluacion\",\n      \"target\": \"exigencia_capital_desde_01_01_25\",\n      \"predicate\": \"determina\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3828,
+  "output_tokens": 1161,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidades_financieras_funcionamiento_01_06_24",
+        "type": "Concepto",
+        "label": "Entidades financieras en funcionamiento",
+        "properties": {
+          "description": "Entidades financieras que se encuentran en funcionamiento a partir del 01/06/24"
+        }
+      },
+      {
+        "id": "exigencia_basica_capital",
+        "type": "Restriccion",
+        "label": "Exigencia básica de capital",
+        "properties": {
+          "description": "Integración de capital mínimo según categoría: 1.500 millones de pesos para Bancos, 700 millones para Restantes entidades (salvo Cajas de Crédito Cooperativas) en período 01/06/24 a 31/12/24"
+        }
+      },
+      {
+        "id": "exigencia_capital_desde_01_01_25",
+        "type": "Restriccion",
+        "label": "Exigencia de capital desde 01/01/25",
+        "properties": {
+          "description": "Exigencia básica de capital conforme a tabla del punto 1.2 según categoría de la entidad, vigente a partir del 01/01/25"
+        }
+      },
+      {
+        "id": "programa_encuadramiento",
+        "type": "Restriccion",
+        "label": "Programa de encuadramiento",
+        "properties": {
+          "description": "Presentación a SEFYC de un programa de encuadramiento dentro de 20 días corridos de registración o proyección de incumplimiento, con plazo máximo de 6 meses para cumplir exigencia"
+        }
+      },
+      {
+        "id": "plan_negocios_autoevaluacion",
+        "type": "Concepto",
+        "label": "Plan de negocios y autoevaluación",
+        "properties": {
+          "description": "Plan de negocios, proyecciones e informe de autoevaluación del capital que determina exigencia básica desde 01/01/25"
+        }
+      },
+      {
+        "id": "sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "SEFYC, autoridad regulatoria receptora de programas de encuadramiento"
+        }
+      },
+      {
+        "id": "bancos",
+        "type": "EntidadFinanciera",
+        "label": "Bancos",
+        "properties": {
+          "description": "Entidades clasificadas como Bancos sujetas a exigencias de capital mínimo"
+        }
+      },
+      {
+        "id": "restantes_entidades",
+        "type": "EntidadFinanciera",
+        "label": "Restantes entidades financieras",
+        "properties": {
+          "description": "Entidades financieras distintas de Bancos y Cajas de Crédito Cooperativas, sujetas a exigencias de capital mínimo"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidades_financieras_funcionamiento_01_06_24",
+        "target": "exigencia_basica_capital",
+        "predicate": "debe_cumplir"
+      },
+      {
+        "source": "entidades_financieras_funcionamiento_01_06_24",
+        "target": "exigencia_capital_desde_01_01_25",
+        "predicate": "debe_cumplir"
+      },
+      {
+        "source": "bancos",
+        "target": "exigencia_basica_capital",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restantes_entidades",
+        "target": "exigencia_basica_capital",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "programa_encuadramiento",
+        "target": "sefyc",
+        "predicate": "presenta_a"
+      },
+      {
+        "source": "plan_negocios_autoevaluacion",
+        "target": "exigencia_capital_desde_01_01_25",
+        "predicate": "determina"
+      }
+    ]
+  }
+}

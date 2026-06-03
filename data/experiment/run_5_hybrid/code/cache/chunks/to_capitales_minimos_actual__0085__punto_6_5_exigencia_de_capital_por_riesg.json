@@ -1,0 +1,187 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0085__punto_6_5_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.5 — Exigencia de capital por riesgo de posiciones en productos básicos –“commodities",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"riesgo_posiciones_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo de posiciones en commodities\",\n      \"properties\": {\n        \"description\": \"Cubre el riesgo de mantener posiciones en productos básicos, incluidos metales preciosos excepto el oro.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_commodities\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras con posiciones en commodities\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que utilizan forwards y demás derivados sobre productos básicos.\"\n      }\n    },\n    {\n      \"id\": \"producto_basico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Producto básico o materia prima\",\n      \"properties\": {\n        \"description\": \"Todo producto físico negociado o negociable en un mercado secundario, excluido el oro.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_direccional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo direccional\",\n      \"properties\": {\n        \"description\": \"Riesgo de cambios en los precios de contado de productos básicos.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_base\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de base\",\n      \"properties\": {\n        \"description\": \"Riesgo de que el precio relativo entre productos básicos similares cambie en el tiempo.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_tasa_interes_commodities\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de tasa de interés en commodities\",\n      \"properties\": {\n        \"description\": \"Riesgo de que cambie el costo de mantener posiciones a plazo y opciones.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_brecha_futuro\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de brecha a futuro\",\n      \"properties\": {\n        \"description\": \"Riesgo de que el precio a futuro cambie por motivos distintos a un cambio en tasas de interés.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_tipo_cambio_commodities\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de tipo de cambio en commodities\",\n      \"properties\": {\n        \"description\": \"Exposición al riesgo de tipo de cambio derivada de financiamiento de posiciones en productos básicos.\"\n      }\n    },\n    {\n      \"id\": \"neteado_posiciones_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Neteado de posiciones en productos básicos\",\n      \"properties\": {\n        \"description\": \"Posiciones cortas y largas pueden netearse solo para un mismo producto básico. No se admite compensación entre diferentes productos básicos ni entre subcategorías.\"\n      }\n    },\n    {\n      \"id\": \"medicion_exposicion_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Medición de exposición en commodities\",\n      \"properties\": {\n        \"description\": \"Expresar cada posición en producto básico en unidad estándar de medida. Convertir posición neta a pesos usando precio de contado y tipo de cambio de referencia del BCRA.\"\n      }\n    },\n    {\n      \"id\": \"conversion_derivados_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conversión de derivados a posiciones nocionales\",\n      \"properties\": {\n        \"description\": \"Futuros, forwards, swaps y opciones sobre productos básicos deben convertirse en posiciones nocionales conforme a reglas específicas por instrumento.\"\n      }\n    },\n    {\n      \"id\": \"requerimiento_capital_riesgo_direccional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requerimiento de capital por riesgo direccional\",\n      \"properties\": {\n        \"description\": \"Capital requerido del 15% de la posición neta, corta o larga, en cada producto básico.\"\n      }\n    },\n    {\n      \"id\": \"requerimiento_capital_riesgos_adicionales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requerimiento de capital adicional por riesgos de base y brecha\",\n      \"properties\": {\n        \"description\": \"Capital adicional del 3% de la posición bruta (largas más cortas) en cada producto básico por riesgos de base, tasa de interés y brecha a futuro.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"forwards_derivados_commodities\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Forwards y derivados en commodities\",\n      \"properties\": {\n        \"description\": \"Instrumentos financieros derivados como futuros, forwards, swaps y opciones sobre productos básicos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"riesgo_posiciones_commodities\",\n      \"target\": \"entidad_financiera_commodities\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"riesgo_posiciones_commodities\",\n      \"target\": \"producto_basico\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"neteado_posiciones_commodities\",\n      \"target\": \"producto_basico\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"medicion_exposicion_commodities\",\n      \"target\": \"entidad_financiera_commodities\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"conversion_derivados_commodities\",\n      \"target\": \"forwards_derivados_commodities\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"requerimiento_capital_riesgo_direccional\",\n      \"target\": \"riesgo_direccional\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"requerimiento_capital_riesgos_adicionales\",\n      \"target\": \"riesgo_base\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"requerimiento_capital_riesgos_adicionales\",\n      \"target\": \"riesgo_tasa_interes_commodities\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"requerimiento_capital_riesgos_adicionales\",\n      \"target\": \"riesgo_brecha_futuro\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"medicion_exposicion_commodities\",\n      \"target\": \"bcra\",\n      \"predicate\": \"requiere_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4689,
+  "output_tokens": 1876,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "riesgo_posiciones_commodities",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo de posiciones en commodities",
+        "properties": {
+          "description": "Cubre el riesgo de mantener posiciones en productos básicos, incluidos metales preciosos excepto el oro."
+        }
+      },
+      {
+        "id": "entidad_financiera_commodities",
+        "type": "Concepto",
+        "label": "Entidades financieras con posiciones en commodities",
+        "properties": {
+          "description": "Entidades financieras que utilizan forwards y demás derivados sobre productos básicos."
+        }
+      },
+      {
+        "id": "producto_basico",
+        "type": "Concepto",
+        "label": "Producto básico o materia prima",
+        "properties": {
+          "description": "Todo producto físico negociado o negociable en un mercado secundario, excluido el oro."
+        }
+      },
+      {
+        "id": "riesgo_direccional",
+        "type": "Concepto",
+        "label": "Riesgo direccional",
+        "properties": {
+          "description": "Riesgo de cambios en los precios de contado de productos básicos."
+        }
+      },
+      {
+        "id": "riesgo_base",
+        "type": "Concepto",
+        "label": "Riesgo de base",
+        "properties": {
+          "description": "Riesgo de que el precio relativo entre productos básicos similares cambie en el tiempo."
+        }
+      },
+      {
+        "id": "riesgo_tasa_interes_commodities",
+        "type": "Concepto",
+        "label": "Riesgo de tasa de interés en commodities",
+        "properties": {
+          "description": "Riesgo de que cambie el costo de mantener posiciones a plazo y opciones."
+        }
+      },
+      {
+        "id": "riesgo_brecha_futuro",
+        "type": "Concepto",
+        "label": "Riesgo de brecha a futuro",
+        "properties": {
+          "description": "Riesgo de que el precio a futuro cambie por motivos distintos a un cambio en tasas de interés."
+        }
+      },
+      {
+        "id": "riesgo_tipo_cambio_commodities",
+        "type": "Concepto",
+        "label": "Riesgo de tipo de cambio en commodities",
+        "properties": {
+          "description": "Exposición al riesgo de tipo de cambio derivada de financiamiento de posiciones en productos básicos."
+        }
+      },
+      {
+        "id": "neteado_posiciones_commodities",
+        "type": "Restriccion",
+        "label": "Neteado de posiciones en productos básicos",
+        "properties": {
+          "description": "Posiciones cortas y largas pueden netearse solo para un mismo producto básico. No se admite compensación entre diferentes productos básicos ni entre subcategorías."
+        }
+      },
+      {
+        "id": "medicion_exposicion_commodities",
+        "type": "Restriccion",
+        "label": "Medición de exposición en commodities",
+        "properties": {
+          "description": "Expresar cada posición en producto básico en unidad estándar de medida. Convertir posición neta a pesos usando precio de contado y tipo de cambio de referencia del BCRA."
+        }
+      },
+      {
+        "id": "conversion_derivados_commodities",
+        "type": "Restriccion",
+        "label": "Conversión de derivados a posiciones nocionales",
+        "properties": {
+          "description": "Futuros, forwards, swaps y opciones sobre productos básicos deben convertirse en posiciones nocionales conforme a reglas específicas por instrumento."
+        }
+      },
+      {
+        "id": "requerimiento_capital_riesgo_direccional",
+        "type": "Restriccion",
+        "label": "Requerimiento de capital por riesgo direccional",
+        "properties": {
+          "description": "Capital requerido del 15% de la posición neta, corta o larga, en cada producto básico."
+        }
+      },
+      {
+        "id": "requerimiento_capital_riesgos_adicionales",
+        "type": "Restriccion",
+        "label": "Requerimiento de capital adicional por riesgos de base y brecha",
+        "properties": {
+          "description": "Capital adicional del 3% de la posición bruta (largas más cortas) en cada producto básico por riesgos de base, tasa de interés y brecha a futuro."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "forwards_derivados_commodities",
+        "type": "InstrumentoFinanciero",
+        "label": "Forwards y derivados en commodities",
+        "properties": {
+          "description": "Instrumentos financieros derivados como futuros, forwards, swaps y opciones sobre productos básicos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "riesgo_posiciones_commodities",
+        "target": "entidad_financiera_commodities",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "riesgo_posiciones_commodities",
+        "target": "producto_basico",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "neteado_posiciones_commodities",
+        "target": "producto_basico",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "medicion_exposicion_commodities",
+        "target": "entidad_financiera_commodities",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "conversion_derivados_commodities",
+        "target": "forwards_derivados_commodities",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "requerimiento_capital_riesgo_direccional",
+        "target": "riesgo_direccional",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "requerimiento_capital_riesgos_adicionales",
+        "target": "riesgo_base",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "requerimiento_capital_riesgos_adicionales",
+        "target": "riesgo_tasa_interes_commodities",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "requerimiento_capital_riesgos_adicionales",
+        "target": "riesgo_brecha_futuro",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "medicion_exposicion_commodities",
+        "target": "bcra",
+        "predicate": "requiere_de"
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0083__punto_2_3_los_intereses_y_otros_ingresos",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.3 — Los intereses y otros ingresos devengados a cobrar y a pagar se incluirán en la",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_sujeto\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA comprendidos en la regulación de capitales mínimos\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"inclusion_intereses_ingresos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Inclusión de intereses e ingresos devengados\",\n      \"properties\": {\n        \"description\": \"Los intereses y otros ingresos devengados a cobrar y a pagar se incluirán en la posición, ya sea que correspondan a instrumentos de la cartera de negociación o de inversión.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_flujos_futuros\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión condicionada de flujos futuros esperados\",\n      \"properties\": {\n        \"description\": \"Las entidades podrán excluir ingresos y egresos futuros esperados pero aún no devengados, salvo que las cantidades sean ciertas y hayan sido cubiertas.\"\n      }\n    },\n    {\n      \"id\": \"consistencia_flujos_futuros\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Consistencia en la inclusión de flujos futuros\",\n      \"properties\": {\n        \"description\": \"La decisión de incluir ingresos y egresos futuros debe adoptarse de modo consistente. No se permitirá seleccionar solo los flujos futuros esperados que reduzcan la posición.\"\n      }\n    },\n    {\n      \"id\": \"operacion_calculo_posicion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de posición en capital mínimo\",\n      \"properties\": {\n        \"description\": \"Operación de determinación de la posición para fines de adecuación de capitales mínimos, incluyendo o excluyendo flujos según reglas aplicables.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_sujeto\",\n      \"target\": \"operacion_calculo_posicion\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"inclusion_intereses_ingresos\",\n      \"target\": \"operacion_calculo_posicion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exclusion_flujos_futuros\",\n      \"target\": \"operacion_calculo_posicion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"consistencia_flujos_futuros\",\n      \"target\": \"operacion_calculo_posicion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"inclusion_intereses_ingresos\",\n      \"target\": \"entidad_financiera_sujeto\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exclusion_flujos_futuros\",\n      \"target\": \"entidad_financiera_sujeto\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"consistencia_flujos_futuros\",\n      \"target\": \"entidad_financiera_sujeto\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3534,
+  "output_tokens": 918,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 5,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_sujeto",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA comprendidos en la regulación de capitales mínimos",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "inclusion_intereses_ingresos",
+        "type": "Restriccion",
+        "label": "Inclusión de intereses e ingresos devengados",
+        "properties": {
+          "description": "Los intereses y otros ingresos devengados a cobrar y a pagar se incluirán en la posición, ya sea que correspondan a instrumentos de la cartera de negociación o de inversión."
+        }
+      },
+      {
+        "id": "exclusion_flujos_futuros",
+        "type": "Restriccion",
+        "label": "Exclusión condicionada de flujos futuros esperados",
+        "properties": {
+          "description": "Las entidades podrán excluir ingresos y egresos futuros esperados pero aún no devengados, salvo que las cantidades sean ciertas y hayan sido cubiertas."
+        }
+      },
+      {
+        "id": "consistencia_flujos_futuros",
+        "type": "Restriccion",
+        "label": "Consistencia en la inclusión de flujos futuros",
+        "properties": {
+          "description": "La decisión de incluir ingresos y egresos futuros debe adoptarse de modo consistente. No se permitirá seleccionar solo los flujos futuros esperados que reduzcan la posición."
+        }
+      },
+      {
+        "id": "operacion_calculo_posicion",
+        "type": "Operacion",
+        "label": "Cálculo de posición en capital mínimo",
+        "properties": {
+          "description": "Operación de determinación de la posición para fines de adecuación de capitales mínimos, incluyendo o excluyendo flujos según reglas aplicables."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_sujeto",
+        "target": "operacion_calculo_posicion",
+        "predicate": "realiza"
+      },
+      {
+        "source": "inclusion_intereses_ingresos",
+        "target": "operacion_calculo_posicion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exclusion_flujos_futuros",
+        "target": "operacion_calculo_posicion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "consistencia_flujos_futuros",
+        "target": "operacion_calculo_posicion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "inclusion_intereses_ingresos",
+        "target": "entidad_financiera_sujeto",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exclusion_flujos_futuros",
+        "target": "entidad_financiera_sujeto",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "consistencia_flujos_futuros",
+        "target": "entidad_financiera_sujeto",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

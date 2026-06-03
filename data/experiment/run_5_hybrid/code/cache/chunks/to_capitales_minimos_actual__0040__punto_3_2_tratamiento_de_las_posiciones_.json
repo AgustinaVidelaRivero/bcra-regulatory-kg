@@ -1,0 +1,209 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0040__punto_3_2_tratamiento_de_las_posiciones_",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 3.2 — Tratamiento de las posiciones en fondos. (parte 1/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"participaciones_en_fondos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Participaciones en fondos\",\n      \"properties\": {\n        \"description\": \"Tenencia de participaciones en carteras de activos imputadas a la cartera de inversión, incluidas exposiciones fuera de balance como compromisos de suscripciones futuras.\"\n      }\n    },\n    {\n      \"id\": \"fondos_comunes_inversion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fondos comunes de inversión\",\n      \"properties\": {\n        \"description\": \"Fondos regidos por la Ley 24.083 de Fondos Comunes de Inversión, imputados a cartera de inversión.\"\n      }\n    },\n    {\n      \"id\": \"fideicomisos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fideicomisos\",\n      \"properties\": {\n        \"description\": \"Fideicomisos imputados a cartera de inversión, en la medida que el riesgo no se estructure a través de instrumentos con distinta prelación.\"\n      }\n    },\n    {\n      \"id\": \"enfoque_transparencia_lta\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Enfoque de transparencia\",\n      \"properties\": {\n        \"description\": \"Las exposiciones con el fondo se ponderarán como exposiciones directas. Requiere información suficiente con frecuencia mínima trimestral, verificada por tercero independiente.\"\n      }\n    },\n    {\n      \"id\": \"informacion_exposiciones_subyacentes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Información sobre exposiciones subyacentes\",\n      \"properties\": {\n        \"description\": \"El fondo debe proveer información financiera con frecuencia mínima trimestral y grado de detalle suficiente para cálculo de ponderadores de riesgo.\"\n      }\n    },\n    {\n      \"id\": \"verificacion_tercero_independiente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación por tercero independiente\",\n      \"properties\": {\n        \"description\": \"Las exposiciones subyacentes deben ser verificadas por tercero independiente como depositaria, custodio, agente de control de fideicomisos, auditor externo o compañía gerente.\"\n      }\n    },\n    {\n      \"id\": \"factor_multiplicador_derivados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor 1,5 en derivados de fondo\",\n      \"properties\": {\n        \"description\": \"Para exposiciones subyacentes a derivados del fondo que generan ponderación por riesgo de crédito, la exposición al riesgo de crédito de contraparte se multiplica por 1,5 antes de aplicar ponderador, excepto en CCP y SFT.\"\n      }\n    },\n    {\n      \"id\": \"ponderador_cálculos_terceros\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador sobre cálculos de terceros\",\n      \"properties\": {\n        \"description\": \"Si se usan cálculos de terceros para ponderadores de riesgo en fondos, se debe aplicar 1,2 veces el ponderador que correspondería a exposición directa.\"\n      }\n    },\n    {\n      \"id\": \"enfoque_reglamentario_mba\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Enfoque reglamentario\",\n      \"properties\": {\n        \"description\": \"Enfoque utilizable cuando no se reúnen requisitos del LTA. Las entidades usan información del reglamento del fondo, legislación nacional o divulgación del fondo.\"\n      }\n    },\n    {\n      \"id\": \"ponderacion_activos_mba\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderación de activos bajo MBA\",\n      \"properties\": {\n        \"description\": \"Los activos ponderados por riesgo del fondo son suma de exposiciones en activo, derivados/fuera de balance, y riesgo de crédito de contraparte, aplicando ponderadores máximos cuando corresponda.\"\n      }\n    },\n    {\n      \"id\": \"exposiciones_derivados_mba\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento derivados en MBA\",\n      \"properties\": {\n        \"description\": \"El nocional de posiciones en derivados se pondera según puntos 2.5 y 2.12. Si no hay información del subyacente, se toma total de nocionales. Si tampoco se conocen, se usa estimación conservadora basada en máximo del reglamento.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_credito_contraparte_mba\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo de crédito de contraparte en MBA\",\n      \"properties\": {\n        \"description\": \"Se calcula según Enfoque Estándar del punto 4.2. Sin costo de reposición se usa valor nocional. Sin factor de exposición potencial se aplica 15% máximo. Sin ambos se multiplica nocional por 1,15.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado que invierte en fondos y debe aplicar enfoques de cálculo de ponderadores de riesgo.\"\n      }\n    },\n    {\n      \"id\": \"tercero_independiente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tercero independiente\",\n      \"properties\": {\n        \"description\": \"Depositaria, custodio, agente de control de fideicomisos, auditor externo o compañía gerente que verifica exposiciones subyacentes.\"\n      }\n    },\n    {\n      \"id\": \"counterparty_risk\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Exposición al riesgo originado en operaciones con derivados y transacciones de financiación con títulos valores.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"participaciones_en_fondos\",\n      \"target\": \"enfoque_transparencia_lta\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"participaciones_en_fondos\",\n      \"target\": \"enfoque_reglamentario_mba\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"enfoque_transparencia_lta\",\n      \"target\": \"informacion_exposiciones_subyacentes\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"enfoque_transparencia_lta\",\n      \"target\": \"verificacion_tercero_independiente\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"informacion_exposiciones_subyacentes\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"verificacion_tercero_independiente\",\n      \"target\": \"tercero_independiente\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"factor_multiplicador_derivados\",\n      \"target\": \"participaciones_en_fondos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ponderador_cálculos_terceros\",\n      \"target\": \"participaciones_en_fondos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"enfoque_reglamentario_mba\",\n      \"target\": \"ponderacion_activos_mba\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"ponderacion_activos_mba\",\n      \"target\": \"exposiciones_derivados_mba\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"ponderacion_activos_mba\",\n      \"target\": \"riesgo_credito_contraparte_mba\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"riesgo_credito_contraparte_mba\",\n      \"target\": \"counterparty_risk\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"participaciones_en_fondos\",\n      \"target\": \"fondos_comunes_inversion\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"participaciones_en_fondos\",\n      \"target\": \"fideicomisos\",\n      \"predicate\": \"comprende\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5221,
+  "output_tokens": 2301,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 14,
+  "parsed": {
+    "entities": [
+      {
+        "id": "participaciones_en_fondos",
+        "type": "Operacion",
+        "label": "Participaciones en fondos",
+        "properties": {
+          "description": "Tenencia de participaciones en carteras de activos imputadas a la cartera de inversión, incluidas exposiciones fuera de balance como compromisos de suscripciones futuras."
+        }
+      },
+      {
+        "id": "fondos_comunes_inversion",
+        "type": "Concepto",
+        "label": "Fondos comunes de inversión",
+        "properties": {
+          "description": "Fondos regidos por la Ley 24.083 de Fondos Comunes de Inversión, imputados a cartera de inversión."
+        }
+      },
+      {
+        "id": "fideicomisos",
+        "type": "Concepto",
+        "label": "Fideicomisos",
+        "properties": {
+          "description": "Fideicomisos imputados a cartera de inversión, en la medida que el riesgo no se estructure a través de instrumentos con distinta prelación."
+        }
+      },
+      {
+        "id": "enfoque_transparencia_lta",
+        "type": "Restriccion",
+        "label": "Enfoque de transparencia",
+        "properties": {
+          "description": "Las exposiciones con el fondo se ponderarán como exposiciones directas. Requiere información suficiente con frecuencia mínima trimestral, verificada por tercero independiente."
+        }
+      },
+      {
+        "id": "informacion_exposiciones_subyacentes",
+        "type": "Restriccion",
+        "label": "Información sobre exposiciones subyacentes",
+        "properties": {
+          "description": "El fondo debe proveer información financiera con frecuencia mínima trimestral y grado de detalle suficiente para cálculo de ponderadores de riesgo."
+        }
+      },
+      {
+        "id": "verificacion_tercero_independiente",
+        "type": "Restriccion",
+        "label": "Verificación por tercero independiente",
+        "properties": {
+          "description": "Las exposiciones subyacentes deben ser verificadas por tercero independiente como depositaria, custodio, agente de control de fideicomisos, auditor externo o compañía gerente."
+        }
+      },
+      {
+        "id": "factor_multiplicador_derivados",
+        "type": "Restriccion",
+        "label": "Factor 1,5 en derivados de fondo",
+        "properties": {
+          "description": "Para exposiciones subyacentes a derivados del fondo que generan ponderación por riesgo de crédito, la exposición al riesgo de crédito de contraparte se multiplica por 1,5 antes de aplicar ponderador, excepto en CCP y SFT."
+        }
+      },
+      {
+        "id": "ponderador_cálculos_terceros",
+        "type": "Restriccion",
+        "label": "Ponderador sobre cálculos de terceros",
+        "properties": {
+          "description": "Si se usan cálculos de terceros para ponderadores de riesgo en fondos, se debe aplicar 1,2 veces el ponderador que correspondería a exposición directa."
+        }
+      },
+      {
+        "id": "enfoque_reglamentario_mba",
+        "type": "Restriccion",
+        "label": "Enfoque reglamentario",
+        "properties": {
+          "description": "Enfoque utilizable cuando no se reúnen requisitos del LTA. Las entidades usan información del reglamento del fondo, legislación nacional o divulgación del fondo."
+        }
+      },
+      {
+        "id": "ponderacion_activos_mba",
+        "type": "Restriccion",
+        "label": "Ponderación de activos bajo MBA",
+        "properties": {
+          "description": "Los activos ponderados por riesgo del fondo son suma de exposiciones en activo, derivados/fuera de balance, y riesgo de crédito de contraparte, aplicando ponderadores máximos cuando corresponda."
+        }
+      },
+      {
+        "id": "exposiciones_derivados_mba",
+        "type": "Restriccion",
+        "label": "Tratamiento derivados en MBA",
+        "properties": {
+          "description": "El nocional de posiciones en derivados se pondera según puntos 2.5 y 2.12. Si no hay información del subyacente, se toma total de nocionales. Si tampoco se conocen, se usa estimación conservadora basada en máximo del reglamento."
+        }
+      },
+      {
+        "id": "riesgo_credito_contraparte_mba",
+        "type": "Restriccion",
+        "label": "Riesgo de crédito de contraparte en MBA",
+        "properties": {
+          "description": "Se calcula según Enfoque Estándar del punto 4.2. Sin costo de reposición se usa valor nocional. Sin factor de exposición potencial se aplica 15% máximo. Sin ambos se multiplica nocional por 1,15."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que invierte en fondos y debe aplicar enfoques de cálculo de ponderadores de riesgo."
+        }
+      },
+      {
+        "id": "tercero_independiente",
+        "type": "Concepto",
+        "label": "Tercero independiente",
+        "properties": {
+          "description": "Depositaria, custodio, agente de control de fideicomisos, auditor externo o compañía gerente que verifica exposiciones subyacentes."
+        }
+      },
+      {
+        "id": "counterparty_risk",
+        "type": "Concepto",
+        "label": "Riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Exposición al riesgo originado en operaciones con derivados y transacciones de financiación con títulos valores."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "participaciones_en_fondos",
+        "target": "enfoque_transparencia_lta",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "participaciones_en_fondos",
+        "target": "enfoque_reglamentario_mba",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "enfoque_transparencia_lta",
+        "target": "informacion_exposiciones_subyacentes",
+        "predicate": "requiere"
+      },
+      {
+        "source": "enfoque_transparencia_lta",
+        "target": "verificacion_tercero_independiente",
+        "predicate": "requiere"
+      },
+      {
+        "source": "informacion_exposiciones_subyacentes",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "verificacion_tercero_independiente",
+        "target": "tercero_independiente",
+        "predicate": "requiere"
+      },
+      {
+        "source": "factor_multiplicador_derivados",
+        "target": "participaciones_en_fondos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ponderador_cálculos_terceros",
+        "target": "participaciones_en_fondos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "enfoque_reglamentario_mba",
+        "target": "ponderacion_activos_mba",
+        "predicate": "requiere"
+      },
+      {
+        "source": "ponderacion_activos_mba",
+        "target": "exposiciones_derivados_mba",
+        "predicate": "comprende"
+      },
+      {
+        "source": "ponderacion_activos_mba",
+        "target": "riesgo_credito_contraparte_mba",
+        "predicate": "comprende"
+      },
+      {
+        "source": "riesgo_credito_contraparte_mba",
+        "target": "counterparty_risk",
+        "predicate": "define"
+      },
+      {
+        "source": "participaciones_en_fondos",
+        "target": "fondos_comunes_inversion",
+        "predicate": "comprende"
+      },
+      {
+        "source": "participaciones_en_fondos",
+        "target": "fideicomisos",
+        "predicate": "comprende"
+      }
+    ]
+  }
+}

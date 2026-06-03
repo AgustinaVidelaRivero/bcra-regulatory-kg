@@ -1,0 +1,121 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0071__punto_5_3_boletos_de_cambio",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.3 — Boletos de cambio.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"boleto_cambio\",\n      \"type\": \"Documento\",\n      \"label\": \"Boleto de cambio\",\n      \"properties\": {\n        \"description\": \"Documento que registra una operación de cambio y contiene declaración jurada del ordenante sobre los datos de la operación.\"\n      }\n    },\n    {\n      \"id\": \"declaracion_jurada_ordenante\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Declaración jurada del ordenante\",\n      \"properties\": {\n        \"description\": \"El ordenante debe hacer constar en el boleto de cambio su carácter de declaración jurada sobre todos los datos contenidos, incluyendo el concepto de la operación y el cumplimiento de límites y requisitos establecidos.\"\n      }\n    },\n    {\n      \"id\": \"constatacion_genuinidad_operacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Constatación de genuinidad de la operación\",\n      \"properties\": {\n        \"description\": \"La entidad interviniente debe constatar el carácter genuino de la operación y el cumplimiento de los límites aplicables.\"\n      }\n    },\n    {\n      \"id\": \"firma_cliente_boleto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Firma del cliente en boleto\",\n      \"properties\": {\n        \"description\": \"El boleto debe constar con la firma del cliente que realiza la operación de cambio.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Identificación del cliente\",\n      \"properties\": {\n        \"description\": \"El cliente que realiza la operación de cambio debe ser identificado por la entidad de acuerdo con lo previsto en el punto 5.4.\"\n      }\n    },\n    {\n      \"id\": \"operacion_cambio\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operación de cambio\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"entidad_interviniente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad interviniente\",\n      \"properties\": {\n        \"description\": \"Entidad financiera que interviene en la operación de cambio y debe constatar requisitos y límites aplicables.\"\n      }\n    },\n    {\n      \"id\": \"cliente_operacion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente de la operación\",\n      \"properties\": {\n        \"description\": \"Persona que realiza la operación de cambio y debe firmar el boleto.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"declaracion_jurada_ordenante\",\n      \"target\": \"boleto_cambio\",\n      \"predicate\": \"consta_en\"\n    },\n    {\n      \"source\": \"declaracion_jurada_ordenante\",\n      \"target\": \"operacion_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"constatacion_genuinidad_operacion\",\n      \"target\": \"entidad_interviniente\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"constatacion_genuinidad_operacion\",\n      \"target\": \"operacion_cambio\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"firma_cliente_boleto\",\n      \"target\": \"boleto_cambio\",\n      \"predicate\": \"consta_en\"\n    },\n    {\n      \"source\": \"firma_cliente_boleto\",\n      \"target\": \"cliente_operacion\",\n      \"predicate\": \"exige_a\"\n    },\n    {\n      \"source\": \"identificacion_cliente\",\n      \"target\": \"cliente_operacion\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"identificacion_cliente\",\n      \"target\": \"entidad_interviniente\",\n      \"predicate\": \"requiere_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3547,
+  "output_tokens": 1050,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "boleto_cambio",
+        "type": "Documento",
+        "label": "Boleto de cambio",
+        "properties": {
+          "description": "Documento que registra una operación de cambio y contiene declaración jurada del ordenante sobre los datos de la operación."
+        }
+      },
+      {
+        "id": "declaracion_jurada_ordenante",
+        "type": "Restriccion",
+        "label": "Declaración jurada del ordenante",
+        "properties": {
+          "description": "El ordenante debe hacer constar en el boleto de cambio su carácter de declaración jurada sobre todos los datos contenidos, incluyendo el concepto de la operación y el cumplimiento de límites y requisitos establecidos."
+        }
+      },
+      {
+        "id": "constatacion_genuinidad_operacion",
+        "type": "Restriccion",
+        "label": "Constatación de genuinidad de la operación",
+        "properties": {
+          "description": "La entidad interviniente debe constatar el carácter genuino de la operación y el cumplimiento de los límites aplicables."
+        }
+      },
+      {
+        "id": "firma_cliente_boleto",
+        "type": "Restriccion",
+        "label": "Firma del cliente en boleto",
+        "properties": {
+          "description": "El boleto debe constar con la firma del cliente que realiza la operación de cambio."
+        }
+      },
+      {
+        "id": "identificacion_cliente",
+        "type": "Restriccion",
+        "label": "Identificación del cliente",
+        "properties": {
+          "description": "El cliente que realiza la operación de cambio debe ser identificado por la entidad de acuerdo con lo previsto en el punto 5.4."
+        }
+      },
+      {
+        "id": "operacion_cambio",
+        "type": "Operacion",
+        "label": "Operación de cambio",
+        "properties": {}
+      },
+      {
+        "id": "entidad_interviniente",
+        "type": "Concepto",
+        "label": "Entidad interviniente",
+        "properties": {
+          "description": "Entidad financiera que interviene en la operación de cambio y debe constatar requisitos y límites aplicables."
+        }
+      },
+      {
+        "id": "cliente_operacion",
+        "type": "Concepto",
+        "label": "Cliente de la operación",
+        "properties": {
+          "description": "Persona que realiza la operación de cambio y debe firmar el boleto."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "declaracion_jurada_ordenante",
+        "target": "boleto_cambio",
+        "predicate": "consta_en"
+      },
+      {
+        "source": "declaracion_jurada_ordenante",
+        "target": "operacion_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "constatacion_genuinidad_operacion",
+        "target": "entidad_interviniente",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "constatacion_genuinidad_operacion",
+        "target": "operacion_cambio",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "firma_cliente_boleto",
+        "target": "boleto_cambio",
+        "predicate": "consta_en"
+      },
+      {
+        "source": "firma_cliente_boleto",
+        "target": "cliente_operacion",
+        "predicate": "exige_a"
+      },
+      {
+        "source": "identificacion_cliente",
+        "target": "cliente_operacion",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "identificacion_cliente",
+        "target": "entidad_interviniente",
+        "predicate": "requiere_de"
+      }
+    ]
+  }
+}

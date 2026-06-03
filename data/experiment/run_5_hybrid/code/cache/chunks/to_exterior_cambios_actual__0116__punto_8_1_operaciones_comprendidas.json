@@ -1,0 +1,100 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0116__punto_8_1_operaciones_comprendidas",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 8.1 — Operaciones comprendidas.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"seguimiento_exportaciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Seguimiento de exportaciones\",\n      \"properties\": {\n        \"description\": \"Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el cumplido de embarque aduanero.\"\n      }\n    },\n    {\n      \"id\": \"exportacion_bienes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exportación de bienes\",\n      \"properties\": {\n        \"description\": \"Operación de exportación de bienes con oficialización y cumplido de embarque aduanero.\"\n      }\n    },\n    {\n      \"id\": \"exportador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exportador\",\n      \"properties\": {\n        \"description\": \"Sujeto que realiza operaciones de exportación de bienes.\"\n      }\n    },\n    {\n      \"id\": \"cobros_exportacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros por exportación\",\n      \"properties\": {\n        \"description\": \"Ingresos que recibe el exportador por la realización de una exportación.\"\n      }\n    },\n    {\n      \"id\": \"ingreso_liquidacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ingreso y liquidación de divisas\",\n      \"properties\": {\n        \"description\": \"Obligación de ingresar y liquidar las divisas provenientes de cobros por exportaciones, incluso cuando la exportación esté exceptuada del seguimiento.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_seguimiento_punto_8_5_17\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepciones del seguimiento\",\n      \"properties\": {\n        \"description\": \"Operaciones aduaneras exceptuadas del seguimiento conforme a lo detallado en el punto 8.5.17.\"\n      }\n    },\n    {\n      \"id\": \"fecha_02_09_2019\",\n      \"type\": \"Plazo\",\n      \"label\": \"02/09/2019\",\n      \"properties\": {\n        \"description\": \"Fecha a partir de la cual se comprenden las exportaciones en el seguimiento.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"seguimiento_exportaciones\",\n      \"target\": \"exportacion_bienes\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"excepcion_seguimiento_punto_8_5_17\",\n      \"target\": \"seguimiento_exportaciones\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"ingreso_liquidacion_divisas\",\n      \"target\": \"cobros_exportacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exportador\",\n      \"target\": \"cobros_exportacion\",\n      \"predicate\": \"recibe\"\n    },\n    {\n      \"source\": \"exportacion_bienes\",\n      \"target\": \"fecha_02_09_2019\",\n      \"predicate\": \"rige_desde\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3527,
+  "output_tokens": 851,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 7,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "seguimiento_exportaciones",
+        "type": "Operacion",
+        "label": "Seguimiento de exportaciones",
+        "properties": {
+          "description": "Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el cumplido de embarque aduanero."
+        }
+      },
+      {
+        "id": "exportacion_bienes",
+        "type": "Operacion",
+        "label": "Exportación de bienes",
+        "properties": {
+          "description": "Operación de exportación de bienes con oficialización y cumplido de embarque aduanero."
+        }
+      },
+      {
+        "id": "exportador",
+        "type": "Concepto",
+        "label": "Exportador",
+        "properties": {
+          "description": "Sujeto que realiza operaciones de exportación de bienes."
+        }
+      },
+      {
+        "id": "cobros_exportacion",
+        "type": "Operacion",
+        "label": "Cobros por exportación",
+        "properties": {
+          "description": "Ingresos que recibe el exportador por la realización de una exportación."
+        }
+      },
+      {
+        "id": "ingreso_liquidacion_divisas",
+        "type": "Restriccion",
+        "label": "Ingreso y liquidación de divisas",
+        "properties": {
+          "description": "Obligación de ingresar y liquidar las divisas provenientes de cobros por exportaciones, incluso cuando la exportación esté exceptuada del seguimiento."
+        }
+      },
+      {
+        "id": "excepcion_seguimiento_punto_8_5_17",
+        "type": "Excepcion",
+        "label": "Excepciones del seguimiento",
+        "properties": {
+          "description": "Operaciones aduaneras exceptuadas del seguimiento conforme a lo detallado en el punto 8.5.17."
+        }
+      },
+      {
+        "id": "fecha_02_09_2019",
+        "type": "Plazo",
+        "label": "02/09/2019",
+        "properties": {
+          "description": "Fecha a partir de la cual se comprenden las exportaciones en el seguimiento."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "seguimiento_exportaciones",
+        "target": "exportacion_bienes",
+        "predicate": "comprende"
+      },
+      {
+        "source": "excepcion_seguimiento_punto_8_5_17",
+        "target": "seguimiento_exportaciones",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "ingreso_liquidacion_divisas",
+        "target": "cobros_exportacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exportador",
+        "target": "cobros_exportacion",
+        "predicate": "recibe"
+      },
+      {
+        "source": "exportacion_bienes",
+        "target": "fecha_02_09_2019",
+        "predicate": "rige_desde"
+      }
+    ]
+  }
+}

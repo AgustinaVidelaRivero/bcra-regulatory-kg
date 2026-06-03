@@ -1,0 +1,161 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0112__punto_7_1_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.1 — Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 3/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_grupo_1\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades del grupo 1\",\n      \"properties\": {\n        \"description\": \"Entidades financieras incluidas en la categoría 1 con base imponible igual o inferior al equivalente en pesos de €1.000 millones\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_calculo_bic\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo del capital por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Determinación del BIC (capital por riesgo operacional) aplicando coeficientes marginales según la categoría y tamaño de la base imponible\"\n      }\n    },\n    {\n      \"id\": \"restriccion_bic_categoria_1\",\n      \"type\": \"Restriccion\",\n      \"label\": \"BIC para categoría 1\",\n      \"properties\": {\n        \"description\": \"Para entidades incluidas en la categoría 1, el BIC equivale al BI x 12%\"\n      }\n    },\n    {\n      \"id\": \"restriccion_bic_categoria_2\",\n      \"type\": \"Restriccion\",\n      \"label\": \"BIC para categoría 2\",\n      \"properties\": {\n        \"description\": \"Para entidades incluidas en la categoría 2, el incremento marginal del BIC derivado del aumento de una unidad del BI es del 15%\"\n      }\n    },\n    {\n      \"id\": \"restriccion_bic_categoria_3\",\n      \"type\": \"Restriccion\",\n      \"label\": \"BIC para categoría 3\",\n      \"properties\": {\n        \"description\": \"Para entidades incluidas en la categoría 3, el incremento marginal del BIC derivado del aumento de una unidad del BI es del 18%\"\n      }\n    },\n    {\n      \"id\": \"restriccion_divulgacion_perdidas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Divulgación de pérdidas anuales\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben dar a conocer al público de manera regular los datos sobre sus pérdidas anuales de los últimos 10 años, netas de recuperos y sujetas a exclusiones autorizadas por la SEFYC\"\n      }\n    },\n    {\n      \"id\": \"restriccion_divulgacion_partidas_bi\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Divulgación de partidas de base imponible\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben divulgar las partidas del BI para cada uno de los 3 períodos consecutivos de 12 meses de cálculo\"\n      }\n    },\n    {\n      \"id\": \"restriccion_acumulacion_datos_perdidas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acumulación de datos históricos de pérdidas\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras que no cuenten con datos de los últimos 10 años deben acumular y divulgar esos datos a partir del momento en que se encuentren alcanzadas por las disposiciones\"\n      }\n    },\n    {\n      \"id\": \"autoridad_sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"SEFYC, autoridad regulatoria competente para autorizar exclusiones de pérdidas\"\n      }\n    },\n    {\n      \"id\": \"concepto_base_imponible\",\n      \"type\": \"Concepto\",\n      \"label\": \"Base imponible\",\n      \"properties\": {\n        \"description\": \"BI, base de cálculo para determinar el capital mínimo por riesgo operacional\"\n      }\n    },\n    {\n      \"id\": \"concepto_capital_riesgo_operacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Capital por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"BIC, requerimiento de capital mínimo relacionado con el riesgo operacional de las entidades financieras\"\n      }\n    },\n    {\n      \"id\": \"concepto_tipo_cambio_vendedor\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tipo de cambio vendedor\",\n      \"properties\": {\n        \"description\": \"Tasa aplicada para convertir importes en euros a pesos argentinos al cierre de operaciones del último día hábil del mes anterior\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_grupo_1\",\n      \"target\": \"restriccion_bic_categoria_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_bic_categoria_1\",\n      \"target\": \"operacion_calculo_bic\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_bic_categoria_2\",\n      \"target\": \"operacion_calculo_bic\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_bic_categoria_3\",\n      \"target\": \"operacion_calculo_bic\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_divulgacion_perdidas\",\n      \"target\": \"entidad_financiera_grupo_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_divulgacion_partidas_bi\",\n      \"target\": \"entidad_financiera_grupo_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_acumulacion_datos_perdidas\",\n      \"target\": \"entidad_financiera_grupo_1\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"autoridad_sefyc\",\n      \"target\": \"restriccion_divulgacion_perdidas\",\n      \"predicate\": \"autoriza\"\n    },\n    {\n      \"source\": \"concepto_base_imponible\",\n      \"target\": \"concepto_capital_riesgo_operacional\",\n      \"predicate\": \"determina\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4016,
+  "output_tokens": 1679,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_grupo_1",
+        "type": "EntidadFinanciera",
+        "label": "Entidades del grupo 1",
+        "properties": {
+          "description": "Entidades financieras incluidas en la categoría 1 con base imponible igual o inferior al equivalente en pesos de €1.000 millones",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_calculo_bic",
+        "type": "Operacion",
+        "label": "Cálculo del capital por riesgo operacional",
+        "properties": {
+          "description": "Determinación del BIC (capital por riesgo operacional) aplicando coeficientes marginales según la categoría y tamaño de la base imponible"
+        }
+      },
+      {
+        "id": "restriccion_bic_categoria_1",
+        "type": "Restriccion",
+        "label": "BIC para categoría 1",
+        "properties": {
+          "description": "Para entidades incluidas en la categoría 1, el BIC equivale al BI x 12%"
+        }
+      },
+      {
+        "id": "restriccion_bic_categoria_2",
+        "type": "Restriccion",
+        "label": "BIC para categoría 2",
+        "properties": {
+          "description": "Para entidades incluidas en la categoría 2, el incremento marginal del BIC derivado del aumento de una unidad del BI es del 15%"
+        }
+      },
+      {
+        "id": "restriccion_bic_categoria_3",
+        "type": "Restriccion",
+        "label": "BIC para categoría 3",
+        "properties": {
+          "description": "Para entidades incluidas en la categoría 3, el incremento marginal del BIC derivado del aumento de una unidad del BI es del 18%"
+        }
+      },
+      {
+        "id": "restriccion_divulgacion_perdidas",
+        "type": "Restriccion",
+        "label": "Divulgación de pérdidas anuales",
+        "properties": {
+          "description": "Las entidades financieras deben dar a conocer al público de manera regular los datos sobre sus pérdidas anuales de los últimos 10 años, netas de recuperos y sujetas a exclusiones autorizadas por la SEFYC"
+        }
+      },
+      {
+        "id": "restriccion_divulgacion_partidas_bi",
+        "type": "Restriccion",
+        "label": "Divulgación de partidas de base imponible",
+        "properties": {
+          "description": "Las entidades financieras deben divulgar las partidas del BI para cada uno de los 3 períodos consecutivos de 12 meses de cálculo"
+        }
+      },
+      {
+        "id": "restriccion_acumulacion_datos_perdidas",
+        "type": "Restriccion",
+        "label": "Acumulación de datos históricos de pérdidas",
+        "properties": {
+          "description": "Las entidades financieras que no cuenten con datos de los últimos 10 años deben acumular y divulgar esos datos a partir del momento en que se encuentren alcanzadas por las disposiciones"
+        }
+      },
+      {
+        "id": "autoridad_sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "SEFYC, autoridad regulatoria competente para autorizar exclusiones de pérdidas"
+        }
+      },
+      {
+        "id": "concepto_base_imponible",
+        "type": "Concepto",
+        "label": "Base imponible",
+        "properties": {
+          "description": "BI, base de cálculo para determinar el capital mínimo por riesgo operacional"
+        }
+      },
+      {
+        "id": "concepto_capital_riesgo_operacional",
+        "type": "Concepto",
+        "label": "Capital por riesgo operacional",
+        "properties": {
+          "description": "BIC, requerimiento de capital mínimo relacionado con el riesgo operacional de las entidades financieras"
+        }
+      },
+      {
+        "id": "concepto_tipo_cambio_vendedor",
+        "type": "Concepto",
+        "label": "Tipo de cambio vendedor",
+        "properties": {
+          "description": "Tasa aplicada para convertir importes en euros a pesos argentinos al cierre de operaciones del último día hábil del mes anterior"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_grupo_1",
+        "target": "restriccion_bic_categoria_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_bic_categoria_1",
+        "target": "operacion_calculo_bic",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_bic_categoria_2",
+        "target": "operacion_calculo_bic",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_bic_categoria_3",
+        "target": "operacion_calculo_bic",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_divulgacion_perdidas",
+        "target": "entidad_financiera_grupo_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_divulgacion_partidas_bi",
+        "target": "entidad_financiera_grupo_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_acumulacion_datos_perdidas",
+        "target": "entidad_financiera_grupo_1",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "autoridad_sefyc",
+        "target": "restriccion_divulgacion_perdidas",
+        "predicate": "autoriza"
+      },
+      {
+        "source": "concepto_base_imponible",
+        "target": "concepto_capital_riesgo_operacional",
+        "predicate": "determina"
+      }
+    ]
+  }
+}

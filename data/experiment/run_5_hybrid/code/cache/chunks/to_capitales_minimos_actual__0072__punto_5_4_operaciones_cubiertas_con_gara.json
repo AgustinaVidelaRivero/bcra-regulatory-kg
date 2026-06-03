@@ -1,0 +1,153 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0072__punto_5_4_operaciones_cubiertas_con_gara",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 5.4 — Operaciones cubiertas con garantías (y contragarantías) personales y derivados d (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"franquicia_primera_perdida\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Franquicia a primera pérdida ponderada\",\n      \"properties\": {\n        \"description\": \"Las franquicias por debajo de las cuales no se recibirá compensación en caso de pérdida son equivalentes a las posiciones a primera pérdida y deben ser ponderadas por riesgo al 1250%.\"\n      }\n    },\n    {\n      \"id\": \"descalce_plazos_vencimiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Descalce de plazos de vencimiento\",\n      \"properties\": {\n        \"description\": \"Descalce ocurre cuando el plazo de vencimiento residual de la cobertura de riesgo de crédito es inferior al de la exposición subyacente. Ambos plazos deben medirse en forma conservadora.\"\n      }\n    },\n    {\n      \"id\": \"calculo_plazo_exposicion_subyacente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo del plazo de vencimiento de exposición\",\n      \"properties\": {\n        \"description\": \"Se calculará como el mayor plazo de vencimiento restante posible antes de que la contraparte deba cumplir su obligación, considerando períodos de gracia aplicables.\"\n      }\n    },\n    {\n      \"id\": \"calculo_plazo_crc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo del plazo de vencimiento de cobertura\",\n      \"properties\": {\n        \"description\": \"Se deben considerar opciones incorporadas que reduzcan el plazo de vencimiento para usar el menor plazo posible. Si el proveedor puede solicitar liquidación anticipada, se considera el plazo más corto.\"\n      }\n    },\n    {\n      \"id\": \"no_reconocimiento_crc_descalce\",\n      \"type\": \"Restriccion\",\n      \"label\": \"No reconocimiento de cobertura por descalce\",\n      \"properties\": {\n        \"description\": \"La cobertura de riesgo de crédito con plazo de vencimiento original inferior a un año o residual no mayor a tres meses no será reconocida en caso de descalce de plazos.\"\n      }\n    },\n    {\n      \"id\": \"reconocimiento_parcial_crc_descalce\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reconocimiento parcial de cobertura por descalce\",\n      \"properties\": {\n        \"description\": \"Cuando sea factible computar la cobertura, su reconocimiento será parcial aplicando la fórmula: Pa = P x (t – 0,25) / (T – 0,25)\"\n      }\n    },\n    {\n      \"id\": \"descalce_monedas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Descalce de monedas\",\n      \"properties\": {\n        \"description\": \"Cuando la protección crediticia y la exposición están denominadas en distintas monedas, la parte protegida se reduce mediante aforo Hfx del 8% con revaluación diaria.\"\n      }\n    },\n    {\n      \"id\": \"ajuste_aforo_raiz_cuadrada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento proporcional de aforo por plazo\",\n      \"properties\": {\n        \"description\": \"El aforo por descalce de monedas debe incrementarse proporcionalmente utilizando la fórmula de la raíz cuadrada del tiempo cuando corresponda.\"\n      }\n    },\n    {\n      \"id\": \"cobertura_riesgo_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cobertura de riesgo de crédito\"\n    },\n    {\n      \"id\": \"posicion_primera_perdida\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición a primera pérdida\"\n    },\n    {\n      \"id\": \"exposicion_subyacente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición subyacente\"\n    },\n    {\n      \"id\": \"proveedor_proteccion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Proveedor de protección\"\n    },\n    {\n      \"id\": \"entidad_compradora_proteccion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad compradora de protección\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"franquicia_primera_perdida\",\n      \"target\": \"posicion_primera_perdida\",\n      \"predicate\": \"equivale_a\"\n    },\n    {\n      \"source\": \"descalce_plazos_vencimiento\",\n      \"target\": \"cobertura_riesgo_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"descalce_plazos_vencimiento\",\n      \"target\": \"exposicion_subyacente\",\n      \"predicate\": \"vincula\"\n    },\n    {\n      \"source\": \"calculo_plazo_crc\",\n      \"target\": \"proveedor_proteccion\",\n      \"predicate\": \"obliga_a\"\n    },\n    {\n      \"source\": \"no_reconocimiento_crc_descalce\",\n      \"target\": \"cobertura_riesgo_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reconocimiento_parcial_crc_descalce\",\n      \"target\": \"cobertura_riesgo_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"descalce_monedas\",\n      \"target\": \"cobertura_riesgo_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ajuste_aforo_raiz_cuadrada\",\n      \"target\": \"descalce_monedas\",\n      \"predicate\": \"complementa\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4567,
+  "output_tokens": 1593,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "franquicia_primera_perdida",
+        "type": "Restriccion",
+        "label": "Franquicia a primera pérdida ponderada",
+        "properties": {
+          "description": "Las franquicias por debajo de las cuales no se recibirá compensación en caso de pérdida son equivalentes a las posiciones a primera pérdida y deben ser ponderadas por riesgo al 1250%."
+        }
+      },
+      {
+        "id": "descalce_plazos_vencimiento",
+        "type": "Restriccion",
+        "label": "Descalce de plazos de vencimiento",
+        "properties": {
+          "description": "Descalce ocurre cuando el plazo de vencimiento residual de la cobertura de riesgo de crédito es inferior al de la exposición subyacente. Ambos plazos deben medirse en forma conservadora."
+        }
+      },
+      {
+        "id": "calculo_plazo_exposicion_subyacente",
+        "type": "Restriccion",
+        "label": "Cálculo del plazo de vencimiento de exposición",
+        "properties": {
+          "description": "Se calculará como el mayor plazo de vencimiento restante posible antes de que la contraparte deba cumplir su obligación, considerando períodos de gracia aplicables."
+        }
+      },
+      {
+        "id": "calculo_plazo_crc",
+        "type": "Restriccion",
+        "label": "Cálculo del plazo de vencimiento de cobertura",
+        "properties": {
+          "description": "Se deben considerar opciones incorporadas que reduzcan el plazo de vencimiento para usar el menor plazo posible. Si el proveedor puede solicitar liquidación anticipada, se considera el plazo más corto."
+        }
+      },
+      {
+        "id": "no_reconocimiento_crc_descalce",
+        "type": "Restriccion",
+        "label": "No reconocimiento de cobertura por descalce",
+        "properties": {
+          "description": "La cobertura de riesgo de crédito con plazo de vencimiento original inferior a un año o residual no mayor a tres meses no será reconocida en caso de descalce de plazos."
+        }
+      },
+      {
+        "id": "reconocimiento_parcial_crc_descalce",
+        "type": "Restriccion",
+        "label": "Reconocimiento parcial de cobertura por descalce",
+        "properties": {
+          "description": "Cuando sea factible computar la cobertura, su reconocimiento será parcial aplicando la fórmula: Pa = P x (t – 0,25) / (T – 0,25)"
+        }
+      },
+      {
+        "id": "descalce_monedas",
+        "type": "Restriccion",
+        "label": "Descalce de monedas",
+        "properties": {
+          "description": "Cuando la protección crediticia y la exposición están denominadas en distintas monedas, la parte protegida se reduce mediante aforo Hfx del 8% con revaluación diaria."
+        }
+      },
+      {
+        "id": "ajuste_aforo_raiz_cuadrada",
+        "type": "Restriccion",
+        "label": "Incremento proporcional de aforo por plazo",
+        "properties": {
+          "description": "El aforo por descalce de monedas debe incrementarse proporcionalmente utilizando la fórmula de la raíz cuadrada del tiempo cuando corresponda."
+        }
+      },
+      {
+        "id": "cobertura_riesgo_credito",
+        "type": "Concepto",
+        "label": "Cobertura de riesgo de crédito",
+        "properties": {}
+      },
+      {
+        "id": "posicion_primera_perdida",
+        "type": "Concepto",
+        "label": "Posición a primera pérdida",
+        "properties": {}
+      },
+      {
+        "id": "exposicion_subyacente",
+        "type": "Concepto",
+        "label": "Exposición subyacente",
+        "properties": {}
+      },
+      {
+        "id": "proveedor_proteccion",
+        "type": "Concepto",
+        "label": "Proveedor de protección",
+        "properties": {}
+      },
+      {
+        "id": "entidad_compradora_proteccion",
+        "type": "Concepto",
+        "label": "Entidad compradora de protección",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "franquicia_primera_perdida",
+        "target": "posicion_primera_perdida",
+        "predicate": "equivale_a"
+      },
+      {
+        "source": "descalce_plazos_vencimiento",
+        "target": "cobertura_riesgo_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "descalce_plazos_vencimiento",
+        "target": "exposicion_subyacente",
+        "predicate": "vincula"
+      },
+      {
+        "source": "calculo_plazo_crc",
+        "target": "proveedor_proteccion",
+        "predicate": "obliga_a"
+      },
+      {
+        "source": "no_reconocimiento_crc_descalce",
+        "target": "cobertura_riesgo_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reconocimiento_parcial_crc_descalce",
+        "target": "cobertura_riesgo_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "descalce_monedas",
+        "target": "cobertura_riesgo_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ajuste_aforo_raiz_cuadrada",
+        "target": "descalce_monedas",
+        "predicate": "complementa"
+      }
+    ]
+  }
+}

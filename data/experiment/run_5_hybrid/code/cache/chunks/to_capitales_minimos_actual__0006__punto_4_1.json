@@ -1,0 +1,143 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0006__punto_4_1",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.1",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operaciones_dvp_fallidas\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de entrega contra pago fallidas\",\n      \"properties\": {\n        \"description\": \"Incluyen operaciones de pago contra pago (PvP) fallidas. El importe se determina multiplicando la exposición actual positiva por la exigencia de capital aplicable.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_credito_contraparte_derivados_otc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia por riesgo de crédito de contraparte en derivados OTC\",\n      \"properties\": {\n        \"description\": \"Exigencia de capital por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en punto 4.2.\"\n      }\n    },\n    {\n      \"id\": \"incremento_inversiones_significativas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por inversiones significativas en empresas\",\n      \"properties\": {\n        \"description\": \"Incremento por excesos a límites: participación en capital de cada empresa máximo 15%, total de participaciones máximo 60%. Los límites se aplican sobre la responsabilidad patrimonial computable del último día anterior.\"\n      }\n    },\n    {\n      \"id\": \"incremento_activos_inmovilizados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por activos inmovilizados y otros conceptos\",\n      \"properties\": {\n        \"description\": \"Incremento por excesos a los límites establecidos en la relación de activos inmovilizados y otros conceptos, excluidos los computados para inversiones significativas en empresas.\"\n      }\n    },\n    {\n      \"id\": \"incremento_financiamiento_sector_publico\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por límites de financiamiento al sector público\",\n      \"properties\": {\n        \"description\": \"Incremento por excesos a los límites establecidos en el TO sobre Financiamiento al Sector Público no Financiero, excluidos los computados para inversiones significativas en empresas.\"\n      }\n    },\n    {\n      \"id\": \"incremento_grandes_exposiciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por límites de grandes exposiciones al riesgo\",\n      \"properties\": {\n        \"description\": \"Incremento por excesos a los límites establecidos en el TO sobre Grandes Exposiciones al Riesgo de Crédito según acápite ii), punto 2.1 del TO sobre Incumplimientos de Capitales Mínimos, excluidos los computados para inversiones significativas en empresas.\"\n      }\n    },\n    {\n      \"id\": \"incremento_graduacion_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por límites de graduación del crédito\",\n      \"properties\": {\n        \"description\": \"Incremento por excesos a los límites de graduación del crédito establecidos en Sección 3 del respectivo TO.\"\n      }\n    },\n    {\n      \"id\": \"incremento_derivados_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Incremento por límite de derivados sobre commodities\",\n      \"properties\": {\n        \"description\": \"Incremento por exceso al límite de derivados sobre materias primas o productos básicos previsto en punto 1.2 del TO sobre Operaciones al Contado a Liquidar y a Término.\"\n      }\n    },\n    {\n      \"id\": \"exposicion_crediticia_cupos_ampliados\",\n      \"type\": \"Operacion\",\n      \"label\": \"Utilización de cupos crediticios ampliados\",\n      \"properties\": {\n        \"description\": \"Exposición crediticia resultante de la utilización de cupos crediticios ampliados respecto de asistencia financiera otorgada o tenencias de instrumentos de deuda de fideicomisos financieros o fondos fiduciarios.\"\n      }\n    },\n    {\n      \"id\": \"cronograma_computo_cupo_ampliado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cronograma de cómputo del cupo ampliado\",\n      \"properties\": {\n        \"description\": \"Cómputo progresivo de la utilización del cupo ampliado: 25% en primer mes, 50% en séptimo mes, 100% en decimotercer mes. Opera a partir del inicio de utilización económica de obras o generación de ingresos.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_capital_minimo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera sujeta a capital mínimo\",\n      \"properties\": {\n        \"description\": \"Entidad financiera que debe cumplir con exigencias de capital mínimo por riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"responsabilidad_patrimonial_computable\",\n      \"type\": \"Concepto\",\n      \"label\": \"Responsabilidad patrimonial computable\",\n      \"properties\": {\n        \"description\": \"Base sobre la cual se aplican los límites máximos de participaciones e inversiones significativas.\"\n      }\n    },\n    {\n      \"id\": \"sector_publico_no_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sector público no financiero\",\n      \"properties\": {\n        \"description\": \"Sector definido en Sección 1 del TO sobre Financiamiento al Sector Público no Financiero.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"incremento_inversiones_significativas\",\n      \"target\": \"responsabilidad_patrimonial_computable\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"cronograma_computo_cupo_ampliado\",\n      \"target\": \"exposicion_crediticia_cupos_ampliados\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"incremento_activos_inmovilizados\",\n      \"target\": \"incremento_inversiones_significativas\",\n      \"predicate\": \"excluye\"\n    },\n    {\n      \"source\": \"incremento_financiamiento_sector_publico\",\n      \"target\": \"sector_publico_no_financiero\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4485,
+  "output_tokens": 1710,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 4,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operaciones_dvp_fallidas",
+        "type": "Operacion",
+        "label": "Operaciones de entrega contra pago fallidas",
+        "properties": {
+          "description": "Incluyen operaciones de pago contra pago (PvP) fallidas. El importe se determina multiplicando la exposición actual positiva por la exigencia de capital aplicable."
+        }
+      },
+      {
+        "id": "riesgo_credito_contraparte_derivados_otc",
+        "type": "Restriccion",
+        "label": "Exigencia por riesgo de crédito de contraparte en derivados OTC",
+        "properties": {
+          "description": "Exigencia de capital por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en punto 4.2."
+        }
+      },
+      {
+        "id": "incremento_inversiones_significativas",
+        "type": "Restriccion",
+        "label": "Incremento por inversiones significativas en empresas",
+        "properties": {
+          "description": "Incremento por excesos a límites: participación en capital de cada empresa máximo 15%, total de participaciones máximo 60%. Los límites se aplican sobre la responsabilidad patrimonial computable del último día anterior."
+        }
+      },
+      {
+        "id": "incremento_activos_inmovilizados",
+        "type": "Restriccion",
+        "label": "Incremento por activos inmovilizados y otros conceptos",
+        "properties": {
+          "description": "Incremento por excesos a los límites establecidos en la relación de activos inmovilizados y otros conceptos, excluidos los computados para inversiones significativas en empresas."
+        }
+      },
+      {
+        "id": "incremento_financiamiento_sector_publico",
+        "type": "Restriccion",
+        "label": "Incremento por límites de financiamiento al sector público",
+        "properties": {
+          "description": "Incremento por excesos a los límites establecidos en el TO sobre Financiamiento al Sector Público no Financiero, excluidos los computados para inversiones significativas en empresas."
+        }
+      },
+      {
+        "id": "incremento_grandes_exposiciones",
+        "type": "Restriccion",
+        "label": "Incremento por límites de grandes exposiciones al riesgo",
+        "properties": {
+          "description": "Incremento por excesos a los límites establecidos en el TO sobre Grandes Exposiciones al Riesgo de Crédito según acápite ii), punto 2.1 del TO sobre Incumplimientos de Capitales Mínimos, excluidos los computados para inversiones significativas en empresas."
+        }
+      },
+      {
+        "id": "incremento_graduacion_credito",
+        "type": "Restriccion",
+        "label": "Incremento por límites de graduación del crédito",
+        "properties": {
+          "description": "Incremento por excesos a los límites de graduación del crédito establecidos en Sección 3 del respectivo TO."
+        }
+      },
+      {
+        "id": "incremento_derivados_commodities",
+        "type": "Restriccion",
+        "label": "Incremento por límite de derivados sobre commodities",
+        "properties": {
+          "description": "Incremento por exceso al límite de derivados sobre materias primas o productos básicos previsto en punto 1.2 del TO sobre Operaciones al Contado a Liquidar y a Término."
+        }
+      },
+      {
+        "id": "exposicion_crediticia_cupos_ampliados",
+        "type": "Operacion",
+        "label": "Utilización de cupos crediticios ampliados",
+        "properties": {
+          "description": "Exposición crediticia resultante de la utilización de cupos crediticios ampliados respecto de asistencia financiera otorgada o tenencias de instrumentos de deuda de fideicomisos financieros o fondos fiduciarios."
+        }
+      },
+      {
+        "id": "cronograma_computo_cupo_ampliado",
+        "type": "Restriccion",
+        "label": "Cronograma de cómputo del cupo ampliado",
+        "properties": {
+          "description": "Cómputo progresivo de la utilización del cupo ampliado: 25% en primer mes, 50% en séptimo mes, 100% en decimotercer mes. Opera a partir del inicio de utilización económica de obras o generación de ingresos."
+        }
+      },
+      {
+        "id": "entidad_financiera_capital_minimo",
+        "type": "Concepto",
+        "label": "Entidad financiera sujeta a capital mínimo",
+        "properties": {
+          "description": "Entidad financiera que debe cumplir con exigencias de capital mínimo por riesgo de crédito."
+        }
+      },
+      {
+        "id": "responsabilidad_patrimonial_computable",
+        "type": "Concepto",
+        "label": "Responsabilidad patrimonial computable",
+        "properties": {
+          "description": "Base sobre la cual se aplican los límites máximos de participaciones e inversiones significativas."
+        }
+      },
+      {
+        "id": "sector_publico_no_financiero",
+        "type": "Concepto",
+        "label": "Sector público no financiero",
+        "properties": {
+          "description": "Sector definido en Sección 1 del TO sobre Financiamiento al Sector Público no Financiero."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "incremento_inversiones_significativas",
+        "target": "responsabilidad_patrimonial_computable",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "cronograma_computo_cupo_ampliado",
+        "target": "exposicion_crediticia_cupos_ampliados",
+        "predicate": "regula"
+      },
+      {
+        "source": "incremento_activos_inmovilizados",
+        "target": "incremento_inversiones_significativas",
+        "predicate": "excluye"
+      },
+      {
+        "source": "incremento_financiamiento_sector_publico",
+        "target": "sector_publico_no_financiero",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

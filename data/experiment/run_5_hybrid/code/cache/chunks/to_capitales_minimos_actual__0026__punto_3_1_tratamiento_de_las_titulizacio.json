@@ -1,0 +1,161 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0026__punto_3_1_tratamiento_de_las_titulizacio",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 3.1 — Tratamiento de las titulizaciones. (parte 2/15)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_originante\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad financiera originante\",\n      \"properties\": {\n        \"description\": \"Sujeto que origina directa o indirectamente exposiciones subyacentes en titulización o patrocina programas ABCP.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_titulizacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Titulización de exposiciones\",\n      \"properties\": {\n        \"description\": \"Operación por la cual una entidad financiera transfiere el riesgo de crédito de exposiciones subyacentes a terceros mediante instrumentos de deuda.\"\n      }\n    },\n    {\n      \"id\": \"operacion_originar_exposiciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Originar exposiciones subyacentes\",\n      \"properties\": {\n        \"description\": \"Acción de generar directa o indirectamente las exposiciones que serán incluidas en una titulización.\"\n      }\n    },\n    {\n      \"id\": \"operacion_patrocinar_abcp\",\n      \"type\": \"Operacion\",\n      \"label\": \"Patrocinar programa ABCP\",\n      \"properties\": {\n        \"description\": \"Gestionar, organizar o colocar títulos valores respaldados por activos, o proveer liquidez y mejoras crediticias en programa ABCP.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exclusion_activos_titulizados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de exposiciones titulizadas del cálculo de activos ponderados\",\n      \"properties\": {\n        \"description\": \"La entidad originante podrá excluir exposiciones de titulización tradicional del cálculo de activos ponderados por riesgo solo si se cumplen requisitos operativos y se ha transferido el riesgo de crédito a terceros, debiendo computar exigencia de capital por posiciones de titulización que conserve.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_transferencia_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Transferencia de riesgo de crédito a terceros\",\n      \"properties\": {\n        \"description\": \"Requisito operativo: se ha transferido a uno o más terceros el riesgo de crédito asociado a las exposiciones titulizadas.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_proteccion_crediticia\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Instrumento de protección crediticia\",\n      \"properties\": {\n        \"description\": \"Instrumento cuya exposición está limitada a pérdidas hasta su vencimiento, incluyendo swaps de rendimiento total.\"\n      }\n    },\n    {\n      \"id\": \"concepto_spe\",\n      \"type\": \"Concepto\",\n      \"label\": \"SPE (Sociedad Propósito Especial)\",\n      \"properties\": {\n        \"description\": \"Entidad que mantiene activos u otras exposiciones respaldando la emisión de títulos valores en programas ABCP y de titulización.\"\n      }\n    },\n    {\n      \"id\": \"concepto_vencimiento_contractual\",\n      \"type\": \"Concepto\",\n      \"label\": \"Vencimiento contractual\",\n      \"properties\": {\n        \"description\": \"Plazo de vigencia de un instrumento de protección crediticia.\"\n      }\n    },\n    {\n      \"id\": \"concepto_margen_financiero_futuro\",\n      \"type\": \"Concepto\",\n      \"label\": \"Margen financiero futuro (excess spread)\",\n      \"properties\": {\n        \"description\": \"Recaudación bruta de ingresos financieros percibida por el SPE menos intereses de títulos de deuda, comisiones de administración, cargos por incobrabilidad y demás gastos con preferencia según contrato del SPE.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_cupon_mejora_crediticia\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Cupones de mejora crediticia\",\n      \"properties\": {\n        \"description\": \"Activo subordinado que representa el valor del margen financiero futuro (Credit-Enhancing Interest-Only Strip).\"\n      }\n    },\n    {\n      \"id\": \"instrumento_abcp\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Programa ABCP (Asset-Backed Commercial Paper)\",\n      \"properties\": {\n        \"description\": \"Programa por el que se emiten principalmente títulos valores con vencimiento original de hasta un año, respaldados por activos u exposiciones mantenidos en un SPE.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_originante\",\n      \"target\": \"operacion_titulizacion\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera_originante\",\n      \"target\": \"operacion_originar_exposiciones\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera_originante\",\n      \"target\": \"operacion_patrocinar_abcp\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_activos_titulizados\",\n      \"target\": \"entidad_financiera_originante\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_transferencia_riesgo_credito\",\n      \"target\": \"operacion_titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_activos_titulizados\",\n      \"target\": \"operacion_titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"instrumento_proteccion_crediticia\",\n      \"target\": \"concepto_vencimiento_contractual\",\n      \"predicate\": \"tiene\"\n    },\n    {\n      \"source\": \"instrumento_abcp\",\n      \"target\": \"concepto_spe\",\n      \"predicate\": \"respalda\"\n    },\n    {\n      \"source\": \"instrumento_cupon_mejora_crediticia\",\n      \"target\": \"concepto_margen_financiero_futuro\",\n      \"predicate\": \"representa\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4222,
+  "output_tokens": 1713,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_originante",
+        "type": "EntidadFinanciera",
+        "label": "Entidad financiera originante",
+        "properties": {
+          "description": "Sujeto que origina directa o indirectamente exposiciones subyacentes en titulización o patrocina programas ABCP.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_titulizacion",
+        "type": "Operacion",
+        "label": "Titulización de exposiciones",
+        "properties": {
+          "description": "Operación por la cual una entidad financiera transfiere el riesgo de crédito de exposiciones subyacentes a terceros mediante instrumentos de deuda."
+        }
+      },
+      {
+        "id": "operacion_originar_exposiciones",
+        "type": "Operacion",
+        "label": "Originar exposiciones subyacentes",
+        "properties": {
+          "description": "Acción de generar directa o indirectamente las exposiciones que serán incluidas en una titulización."
+        }
+      },
+      {
+        "id": "operacion_patrocinar_abcp",
+        "type": "Operacion",
+        "label": "Patrocinar programa ABCP",
+        "properties": {
+          "description": "Gestionar, organizar o colocar títulos valores respaldados por activos, o proveer liquidez y mejoras crediticias en programa ABCP."
+        }
+      },
+      {
+        "id": "restriccion_exclusion_activos_titulizados",
+        "type": "Restriccion",
+        "label": "Exclusión de exposiciones titulizadas del cálculo de activos ponderados",
+        "properties": {
+          "description": "La entidad originante podrá excluir exposiciones de titulización tradicional del cálculo de activos ponderados por riesgo solo si se cumplen requisitos operativos y se ha transferido el riesgo de crédito a terceros, debiendo computar exigencia de capital por posiciones de titulización que conserve."
+        }
+      },
+      {
+        "id": "restriccion_transferencia_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Transferencia de riesgo de crédito a terceros",
+        "properties": {
+          "description": "Requisito operativo: se ha transferido a uno o más terceros el riesgo de crédito asociado a las exposiciones titulizadas."
+        }
+      },
+      {
+        "id": "instrumento_proteccion_crediticia",
+        "type": "InstrumentoFinanciero",
+        "label": "Instrumento de protección crediticia",
+        "properties": {
+          "description": "Instrumento cuya exposición está limitada a pérdidas hasta su vencimiento, incluyendo swaps de rendimiento total."
+        }
+      },
+      {
+        "id": "concepto_spe",
+        "type": "Concepto",
+        "label": "SPE (Sociedad Propósito Especial)",
+        "properties": {
+          "description": "Entidad que mantiene activos u otras exposiciones respaldando la emisión de títulos valores en programas ABCP y de titulización."
+        }
+      },
+      {
+        "id": "concepto_vencimiento_contractual",
+        "type": "Concepto",
+        "label": "Vencimiento contractual",
+        "properties": {
+          "description": "Plazo de vigencia de un instrumento de protección crediticia."
+        }
+      },
+      {
+        "id": "concepto_margen_financiero_futuro",
+        "type": "Concepto",
+        "label": "Margen financiero futuro (excess spread)",
+        "properties": {
+          "description": "Recaudación bruta de ingresos financieros percibida por el SPE menos intereses de títulos de deuda, comisiones de administración, cargos por incobrabilidad y demás gastos con preferencia según contrato del SPE."
+        }
+      },
+      {
+        "id": "instrumento_cupon_mejora_crediticia",
+        "type": "InstrumentoFinanciero",
+        "label": "Cupones de mejora crediticia",
+        "properties": {
+          "description": "Activo subordinado que representa el valor del margen financiero futuro (Credit-Enhancing Interest-Only Strip)."
+        }
+      },
+      {
+        "id": "instrumento_abcp",
+        "type": "InstrumentoFinanciero",
+        "label": "Programa ABCP (Asset-Backed Commercial Paper)",
+        "properties": {
+          "description": "Programa por el que se emiten principalmente títulos valores con vencimiento original de hasta un año, respaldados por activos u exposiciones mantenidos en un SPE."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_originante",
+        "target": "operacion_titulizacion",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera_originante",
+        "target": "operacion_originar_exposiciones",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera_originante",
+        "target": "operacion_patrocinar_abcp",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_exclusion_activos_titulizados",
+        "target": "entidad_financiera_originante",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_transferencia_riesgo_credito",
+        "target": "operacion_titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_exclusion_activos_titulizados",
+        "target": "operacion_titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "instrumento_proteccion_crediticia",
+        "target": "concepto_vencimiento_contractual",
+        "predicate": "tiene"
+      },
+      {
+        "source": "instrumento_abcp",
+        "target": "concepto_spe",
+        "predicate": "respalda"
+      },
+      {
+        "source": "instrumento_cupon_mejora_crediticia",
+        "target": "concepto_margen_financiero_futuro",
+        "predicate": "representa"
+      }
+    ]
+  }
+}

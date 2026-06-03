@@ -1,0 +1,79 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0094__punto_6",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"defecto_integracion_diaria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Defecto de integración diaria de capital\",\n      \"properties\": {\n        \"description\": \"Incumplimiento en la integración diaria de la exigencia de capital por riesgo de mercado, excepto el último día del mes, originado en el cómputo de exigencias por riesgo de tasa, tipo de cambio y acciones.\"\n      }\n    },\n    {\n      \"id\": \"reposicion_capital_reduccion_posiciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Reposición de capital y reducción de posiciones\",\n      \"properties\": {\n        \"description\": \"Acción de reponer capital y/o reducir posiciones de activos financieros para cumplir requisitos de capital.\"\n      }\n    },\n    {\n      \"id\": \"plazo_diez_dias_habiles\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de diez días hábiles para corrección\",\n      \"properties\": {\n        \"description\": \"Plazo de diez días hábiles contados a partir de la primera deficiencia para reponerEl capital y/o reducir posiciones.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado comprendido en la regulación de capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_riesgo_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia de capital por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Requisito regulatorio de integración de capital para cubrir riesgo de mercado, incluyendo riesgo de tasa, tipo de cambio y acciones.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"reposicion_capital_reduccion_posiciones\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"defecto_integracion_diaria\",\n      \"target\": \"reposicion_capital_reduccion_posiciones\",\n      \"predicate\": \"obliga\"\n    },\n    {\n      \"source\": \"plazo_diez_dias_habiles\",\n      \"target\": \"reposicion_capital_reduccion_posiciones\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"defecto_integracion_diaria\",\n      \"target\": \"exigencia_capital_riesgo_mercado\",\n      \"predicate\": \"incumple\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3536,
+  "output_tokens": 737,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 5,
+  "relations_count": 4,
+  "parsed": {
+    "entities": [
+      {
+        "id": "defecto_integracion_diaria",
+        "type": "Restriccion",
+        "label": "Defecto de integración diaria de capital",
+        "properties": {
+          "description": "Incumplimiento en la integración diaria de la exigencia de capital por riesgo de mercado, excepto el último día del mes, originado en el cómputo de exigencias por riesgo de tasa, tipo de cambio y acciones."
+        }
+      },
+      {
+        "id": "reposicion_capital_reduccion_posiciones",
+        "type": "Operacion",
+        "label": "Reposición de capital y reducción de posiciones",
+        "properties": {
+          "description": "Acción de reponer capital y/o reducir posiciones de activos financieros para cumplir requisitos de capital."
+        }
+      },
+      {
+        "id": "plazo_diez_dias_habiles",
+        "type": "Restriccion",
+        "label": "Plazo de diez días hábiles para corrección",
+        "properties": {
+          "description": "Plazo de diez días hábiles contados a partir de la primera deficiencia para reponerEl capital y/o reducir posiciones."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado comprendido en la regulación de capitales mínimos."
+        }
+      },
+      {
+        "id": "exigencia_capital_riesgo_mercado",
+        "type": "Concepto",
+        "label": "Exigencia de capital por riesgo de mercado",
+        "properties": {
+          "description": "Requisito regulatorio de integración de capital para cubrir riesgo de mercado, incluyendo riesgo de tasa, tipo de cambio y acciones."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera",
+        "target": "reposicion_capital_reduccion_posiciones",
+        "predicate": "realiza"
+      },
+      {
+        "source": "defecto_integracion_diaria",
+        "target": "reposicion_capital_reduccion_posiciones",
+        "predicate": "obliga"
+      },
+      {
+        "source": "plazo_diez_dias_habiles",
+        "target": "reposicion_capital_reduccion_posiciones",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "defecto_integracion_diaria",
+        "target": "exigencia_capital_riesgo_mercado",
+        "predicate": "incumple"
+      }
+    ]
+  }
+}

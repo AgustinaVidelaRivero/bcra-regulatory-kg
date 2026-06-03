@@ -1,0 +1,260 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0158__punto_11_2_seguimiento_de_pagos_de_impor",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 11.2 — Seguimiento de pagos de importaciones realizados con anterioridad al registro de",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"pago_importaciones_registro_pendiente\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pago de importaciones con registro aduanero pendiente\",\n      \"properties\": {\n        \"description\": \"Pago de importaciones con registro de ingreso aduanero pendiente cursado por el mercado de cambios a partir del 02/09/19.\"\n      }\n    },\n    {\n      \"id\": \"entidad_seguimiento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad cursante seguimiento de pago\",\n      \"properties\": {\n        \"description\": \"Entidad que cursó el pago y es responsable de su seguimiento.\"\n      }\n    },\n    {\n      \"id\": \"sepaimpo\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Sistema de Seguimiento de Pagos de Importaciones\",\n      \"properties\": {\n        \"description\": \"Sistema donde se incorporan las operaciones cursadas a partir de su reporte en el RIOC.\"\n      }\n    },\n    {\n      \"id\": \"rioc\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Régimen Informativo de Operaciones de Cambios\",\n      \"properties\": {\n        \"description\": \"Régimen mediante el cual se reportan las operaciones al SEPAIMPO.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"verificacion_cumplimiento_plazos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificar cumplimiento de plazos registro importación\",\n      \"properties\": {\n        \"description\": \"Verificar el cumplimiento por parte del importador de los plazos previstos para el registro de oficialización de despachos de importación o reingreso de divisas, reportando al BCRA la falta de cumplimiento.\"\n      }\n    },\n    {\n      \"id\": \"reporte_afectaciones_despachos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reportar afectaciones de despachos de importación\",\n      \"properties\": {\n        \"description\": \"Reportar por el SEPAIMPO al BCRA las afectaciones de despachos de importación imputadas al pago.\"\n      }\n    },\n    {\n      \"id\": \"reporte_prorrogas_plazos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reportar prórrogas en plazos de operaciones\",\n      \"properties\": {\n        \"description\": \"Reportar en el SEPAIMPO las prórrogas concedidas en los plazos, indicando nueva fecha de vencimiento y motivo.\"\n      }\n    },\n    {\n      \"id\": \"registro_liquidaciones_devoluciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registrar liquidaciones de devoluciones de pagos\",\n      \"properties\": {\n        \"description\": \"Tomar registro de liquidaciones de divisas asociadas a devoluciones de pagos en base a certificación de la entidad cursante.\"\n      }\n    },\n    {\n      \"id\": \"reporte_cancelacion_garantias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reportar cancelación de garantías en plazo de 5 días\",\n      \"properties\": {\n        \"description\": \"Reportar en el SEPAIMPO dentro de 5 días hábiles la CUIT y nombre del cliente en casos de cancelación de garantías por importaciones de bienes.\"\n      }\n    },\n    {\n      \"id\": \"plazo_cinco_dias_habiles\",\n      \"type\": \"Plazo\",\n      \"label\": \"Cinco días hábiles\",\n      \"properties\": {\n        \"description\": \"Plazo para reportar cancelación de garantías desde acceso al mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"reporte_otras_circunstancias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reportar modificaciones del monto pendiente regularización\",\n      \"properties\": {\n        \"description\": \"Reportar todas las circunstancias que modifiquen el monto pendiente de regularización, incluyendo usos de márgenes normativos y tratamientos de siniestros.\"\n      }\n    },\n    {\n      \"id\": \"mantenimiento_registro_movimientos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mantener registro de movimientos con imputación\",\n      \"properties\": {\n        \"description\": \"Mantener un registro de todos los movimientos con imputación al pago de importación, disponible para el BCRA.\"\n      }\n    },\n    {\n      \"id\": \"archivo_documentacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Archivar documentación de seguimiento\",\n      \"properties\": {\n        \"description\": \"Archivar a disposición del BCRA toda la documentación utilizada en el seguimiento del pago.\"\n      }\n    },\n    {\n      \"id\": \"acceso_exclusivo_datos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acceso exclusivo a datos en SEPAIMPO\",\n      \"properties\": {\n        \"description\": \"Los datos asociados a cada pago pueden ser remitidos y/o consultados en el SEPAIMPO exclusivamente por la entidad que cursó el pago.\"\n      }\n    },\n    {\n      \"id\": \"importador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Importador\",\n      \"properties\": {\n        \"description\": \"Persona física o jurídica responsable del cumplimiento de plazos de registro de oficialización de despachos de importación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"pago_importaciones_registro_pendiente\",\n      \"target\": \"sepaimpo\",\n      \"predicate\": \"incorpora_a\"\n    },\n    {\n      \"source\": \"pago_importaciones_registro_pendiente\",\n      \"target\": \"rioc\",\n      \"predicate\": \"reporta_en\"\n    },\n    {\n      \"source\": \"entidad_seguimiento\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_seguimiento\",\n      \"target\": \"sepaimpo\",\n      \"predicate\": \"accede_a\"\n    },\n    {\n      \"source\": \"verificacion_cumplimiento_plazos\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"verificacion_cumplimiento_plazos\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reporte_afectaciones_despachos\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reporte_afectaciones_despachos\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reporte_prorrogas_plazos\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reporte_prorrogas_plazos\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"registro_liquidaciones_devoluciones\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"registro_liquidaciones_devoluciones\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reporte_cancelacion_garantias\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reporte_cancelacion_garantias\",\n      \"target\": \"plazo_cinco_dias_habiles\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"reporte_otras_circunstancias\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reporte_otras_circunstancias\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"mantenimiento_registro_movimientos\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"mantenimiento_registro_movimientos\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"archivo_documentacion\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"archivo_documentacion\",\n      \"target\": \"pago_importaciones_registro_pendiente\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"acceso_exclusivo_datos\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"acceso_exclusivo_datos\",\n      \"target\": \"sepaimpo\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"entidad_seguimiento\",\n      \"target\": \"bcra\",\n      \"predicate\": \"reporta_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4420,
+  "output_tokens": 2580,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 16,
+  "relations_count": 23,
+  "parsed": {
+    "entities": [
+      {
+        "id": "pago_importaciones_registro_pendiente",
+        "type": "Operacion",
+        "label": "Pago de importaciones con registro aduanero pendiente",
+        "properties": {
+          "description": "Pago de importaciones con registro de ingreso aduanero pendiente cursado por el mercado de cambios a partir del 02/09/19."
+        }
+      },
+      {
+        "id": "entidad_seguimiento",
+        "type": "Concepto",
+        "label": "Entidad cursante seguimiento de pago",
+        "properties": {
+          "description": "Entidad que cursó el pago y es responsable de su seguimiento."
+        }
+      },
+      {
+        "id": "sepaimpo",
+        "type": "RegimenInformativo",
+        "label": "Sistema de Seguimiento de Pagos de Importaciones",
+        "properties": {
+          "description": "Sistema donde se incorporan las operaciones cursadas a partir de su reporte en el RIOC."
+        }
+      },
+      {
+        "id": "rioc",
+        "type": "RegimenInformativo",
+        "label": "Régimen Informativo de Operaciones de Cambios",
+        "properties": {
+          "description": "Régimen mediante el cual se reportan las operaciones al SEPAIMPO."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "verificacion_cumplimiento_plazos",
+        "type": "Restriccion",
+        "label": "Verificar cumplimiento de plazos registro importación",
+        "properties": {
+          "description": "Verificar el cumplimiento por parte del importador de los plazos previstos para el registro de oficialización de despachos de importación o reingreso de divisas, reportando al BCRA la falta de cumplimiento."
+        }
+      },
+      {
+        "id": "reporte_afectaciones_despachos",
+        "type": "Restriccion",
+        "label": "Reportar afectaciones de despachos de importación",
+        "properties": {
+          "description": "Reportar por el SEPAIMPO al BCRA las afectaciones de despachos de importación imputadas al pago."
+        }
+      },
+      {
+        "id": "reporte_prorrogas_plazos",
+        "type": "Restriccion",
+        "label": "Reportar prórrogas en plazos de operaciones",
+        "properties": {
+          "description": "Reportar en el SEPAIMPO las prórrogas concedidas en los plazos, indicando nueva fecha de vencimiento y motivo."
+        }
+      },
+      {
+        "id": "registro_liquidaciones_devoluciones",
+        "type": "Restriccion",
+        "label": "Registrar liquidaciones de devoluciones de pagos",
+        "properties": {
+          "description": "Tomar registro de liquidaciones de divisas asociadas a devoluciones de pagos en base a certificación de la entidad cursante."
+        }
+      },
+      {
+        "id": "reporte_cancelacion_garantias",
+        "type": "Restriccion",
+        "label": "Reportar cancelación de garantías en plazo de 5 días",
+        "properties": {
+          "description": "Reportar en el SEPAIMPO dentro de 5 días hábiles la CUIT y nombre del cliente en casos de cancelación de garantías por importaciones de bienes."
+        }
+      },
+      {
+        "id": "plazo_cinco_dias_habiles",
+        "type": "Plazo",
+        "label": "Cinco días hábiles",
+        "properties": {
+          "description": "Plazo para reportar cancelación de garantías desde acceso al mercado de cambios."
+        }
+      },
+      {
+        "id": "reporte_otras_circunstancias",
+        "type": "Restriccion",
+        "label": "Reportar modificaciones del monto pendiente regularización",
+        "properties": {
+          "description": "Reportar todas las circunstancias que modifiquen el monto pendiente de regularización, incluyendo usos de márgenes normativos y tratamientos de siniestros."
+        }
+      },
+      {
+        "id": "mantenimiento_registro_movimientos",
+        "type": "Restriccion",
+        "label": "Mantener registro de movimientos con imputación",
+        "properties": {
+          "description": "Mantener un registro de todos los movimientos con imputación al pago de importación, disponible para el BCRA."
+        }
+      },
+      {
+        "id": "archivo_documentacion",
+        "type": "Restriccion",
+        "label": "Archivar documentación de seguimiento",
+        "properties": {
+          "description": "Archivar a disposición del BCRA toda la documentación utilizada en el seguimiento del pago."
+        }
+      },
+      {
+        "id": "acceso_exclusivo_datos",
+        "type": "Restriccion",
+        "label": "Acceso exclusivo a datos en SEPAIMPO",
+        "properties": {
+          "description": "Los datos asociados a cada pago pueden ser remitidos y/o consultados en el SEPAIMPO exclusivamente por la entidad que cursó el pago."
+        }
+      },
+      {
+        "id": "importador",
+        "type": "Concepto",
+        "label": "Importador",
+        "properties": {
+          "description": "Persona física o jurídica responsable del cumplimiento de plazos de registro de oficialización de despachos de importación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "pago_importaciones_registro_pendiente",
+        "target": "sepaimpo",
+        "predicate": "incorpora_a"
+      },
+      {
+        "source": "pago_importaciones_registro_pendiente",
+        "target": "rioc",
+        "predicate": "reporta_en"
+      },
+      {
+        "source": "entidad_seguimiento",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_seguimiento",
+        "target": "sepaimpo",
+        "predicate": "accede_a"
+      },
+      {
+        "source": "verificacion_cumplimiento_plazos",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "verificacion_cumplimiento_plazos",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reporte_afectaciones_despachos",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reporte_afectaciones_despachos",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reporte_prorrogas_plazos",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reporte_prorrogas_plazos",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "registro_liquidaciones_devoluciones",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "registro_liquidaciones_devoluciones",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reporte_cancelacion_garantias",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reporte_cancelacion_garantias",
+        "target": "plazo_cinco_dias_habiles",
+        "predicate": "requiere"
+      },
+      {
+        "source": "reporte_otras_circunstancias",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reporte_otras_circunstancias",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "mantenimiento_registro_movimientos",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "mantenimiento_registro_movimientos",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "archivo_documentacion",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "archivo_documentacion",
+        "target": "pago_importaciones_registro_pendiente",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "acceso_exclusivo_datos",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "acceso_exclusivo_datos",
+        "target": "sepaimpo",
+        "predicate": "regula"
+      },
+      {
+        "source": "entidad_seguimiento",
+        "target": "bcra",
+        "predicate": "reporta_a"
+      }
+    ]
+  }
+}

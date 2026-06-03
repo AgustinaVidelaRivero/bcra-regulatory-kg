@@ -1,0 +1,111 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0014__punto_1_8_las_distintas_consultas_o_pedi",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 1.8 — Las distintas consultas o pedidos de conformidad previa que realicen los cliente",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operacion_mercado_cambios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones en el mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Operaciones que deben ser cursadas a través de entidad autorizada para el tipo de operación específica.\"\n      }\n    },\n    {\n      \"id\": \"entidad_autorizada_cambios\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad autorizada a cursar operaciones\",\n      \"properties\": {\n        \"description\": \"Entidad que esté autorizada a cursar el tipo de operación específica en el mercado de cambios.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"restriccion_autorizacion_operaciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Autorización obligatoria para operaciones de cambios\",\n      \"properties\": {\n        \"description\": \"Las operaciones a cursar en el mercado de cambios deberán indefectiblemente efectuarse a través de una entidad que esté autorizada a cursar el tipo de operación contenida en ella.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_presentaciones_mesa_entrada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Presentaciones por mesa de entrada del BCRA\",\n      \"properties\": {\n        \"description\": \"Las presentaciones de las entidades deberán ser realizadas en la mesa de entrada del BCRA, dirigidas a la Gerencia Principal de Exterior y Cambios.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_contenido_presentaciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Contenido requerido en presentaciones\",\n      \"properties\": {\n        \"description\": \"Las presentaciones deberán constar de análisis del encuadre de la operación, nota original del cliente, datos para identificar la operación, y documentación relevante para análisis.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"gerencia_exterior_cambios\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Gerencia Principal de Exterior y Cambios\",\n      \"properties\": {\n        \"description\": \"Área del BCRA receptora de presentaciones sobre operaciones de cambios.\"\n      }\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Contraparte que realiza consultas o solicita conformidad previa para operaciones de cambios.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_autorizacion_operaciones\",\n      \"target\": \"operacion_mercado_cambios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_autorizacion_operaciones\",\n      \"target\": \"entidad_autorizada_cambios\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_presentaciones_mesa_entrada\",\n      \"target\": \"entidad_autorizada_cambios\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_contenido_presentaciones\",\n      \"target\": \"entidad_autorizada_cambios\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"gerencia_exterior_cambios\",\n      \"target\": \"bcra\",\n      \"predicate\": \"pertenece_a\"\n    },\n    {\n      \"source\": \"entidad_autorizada_cambios\",\n      \"target\": \"operacion_mercado_cambios\",\n      \"predicate\": \"realiza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3580,
+  "output_tokens": 1028,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operacion_mercado_cambios",
+        "type": "Operacion",
+        "label": "Operaciones en el mercado de cambios",
+        "properties": {
+          "description": "Operaciones que deben ser cursadas a través de entidad autorizada para el tipo de operación específica."
+        }
+      },
+      {
+        "id": "entidad_autorizada_cambios",
+        "type": "EntidadFinanciera",
+        "label": "Entidad autorizada a cursar operaciones",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "restriccion_autorizacion_operaciones",
+        "type": "Restriccion",
+        "label": "Autorización obligatoria para operaciones de cambios",
+        "properties": {
+          "description": "Las operaciones a cursar en el mercado de cambios deberán indefectiblemente efectuarse a través de una entidad que esté autorizada a cursar el tipo de operación contenida en ella."
+        }
+      },
+      {
+        "id": "restriccion_presentaciones_mesa_entrada",
+        "type": "Restriccion",
+        "label": "Presentaciones por mesa de entrada del BCRA",
+        "properties": {
+          "description": "Las presentaciones de las entidades deberán ser realizadas en la mesa de entrada del BCRA, dirigidas a la Gerencia Principal de Exterior y Cambios."
+        }
+      },
+      {
+        "id": "restriccion_contenido_presentaciones",
+        "type": "Restriccion",
+        "label": "Contenido requerido en presentaciones",
+        "properties": {
+          "description": "Las presentaciones deberán constar de análisis del encuadre de la operación, nota original del cliente, datos para identificar la operación, y documentación relevante para análisis."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "gerencia_exterior_cambios",
+        "type": "Autoridad",
+        "label": "Gerencia Principal de Exterior y Cambios",
+        "properties": {
+          "description": "Área del BCRA receptora de presentaciones sobre operaciones de cambios."
+        }
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Contraparte que realiza consultas o solicita conformidad previa para operaciones de cambios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_autorizacion_operaciones",
+        "target": "operacion_mercado_cambios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_autorizacion_operaciones",
+        "target": "entidad_autorizada_cambios",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_presentaciones_mesa_entrada",
+        "target": "entidad_autorizada_cambios",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_contenido_presentaciones",
+        "target": "entidad_autorizada_cambios",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "gerencia_exterior_cambios",
+        "target": "bcra",
+        "predicate": "pertenece_a"
+      },
+      {
+        "source": "entidad_autorizada_cambios",
+        "target": "operacion_mercado_cambios",
+        "predicate": "realiza"
+      }
+    ]
+  }
+}

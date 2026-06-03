@@ -1,0 +1,192 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0076__punto_5_9_posicion_general_de_cambios_y_",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.9 — Posición general de cambios y tenencias en moneda extranjera de las entidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA comprendidos en la regulación de cambios y moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"casa_agencia_cambio\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Casas y agencias de cambio\",\n      \"properties\": {\n        \"description\": \"Entidades autorizadas a operar cambios y mantener tenencias en moneda extranjera.\",\n        \"categoria\": \"casa_cambio\"\n      }\n    },\n    {\n      \"id\": \"posicion_general_cambios\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Posición general de cambios\",\n      \"properties\": {\n        \"description\": \"Tenencia neta de moneda extranjera y activos en divisa de una entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"tenencia_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Tenencia en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Mantener o incrementar posiciones de activos denominados en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_incremento_tenencias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Restricción incremento tenencias extranjeras\",\n      \"properties\": {\n        \"description\": \"Casas y agencias de cambio no pueden incrementar tenencias en moneda extranjera sin conformidad previa del BCRA respecto al promedio de agosto 2019 o stock al 02/09/19.\"\n      }\n    },\n    {\n      \"id\": \"compra_titulos_mercado_secundario\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra títulos valores mercado secundario\",\n      \"properties\": {\n        \"description\": \"Adquisición de títulos valores en el mercado secundario.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_compra_titulos_secundario\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición compra títulos en mercado secundario\",\n      \"properties\": {\n        \"description\": \"Entidades no pueden comprar títulos valores en mercado secundario con liquidación en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_pago_proveedores\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición pagos proveedores locales\",\n      \"properties\": {\n        \"description\": \"Entidades no pueden utilizar fondos de su posición general de cambios para realizar pagos a proveedores locales.\"\n      }\n    },\n    {\n      \"id\": \"venta_titulos_mercado_secundario\",\n      \"type\": \"Operacion\",\n      \"label\": \"Venta títulos en mercado secundario\",\n      \"properties\": {\n        \"description\": \"Venta de títulos valores adquiridos en suscripción primaria.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_plazo_venta_titulos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo mínimo venta títulos suscripción primaria\",\n      \"properties\": {\n        \"description\": \"Títulos adquiridos en suscripción primaria con liquidación contra cable solo pueden venderse en mercado secundario con liquidación en moneda extranjera tras 90 días corridos desde adquisición.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_venta_cable_exterior\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción ventas liquidación contra cable\",\n      \"properties\": {\n        \"description\": \"El plazo de 90 días no aplica a ventas realizadas con liquidación contra cable en cuentas del exterior.\"\n      }\n    },\n    {\n      \"id\": \"suscripcion_primaria\",\n      \"type\": \"Operacion\",\n      \"label\": \"Suscripción primaria títulos valores\",\n      \"properties\": {\n        \"description\": \"Adquisición de títulos valores en oferta de colocación primaria.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria y supervisora de entidades financieras y operaciones de cambios.\"\n      }\n    },\n    {\n      \"id\": \"libertad_pgc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Determinación libre posición general cambios\",\n      \"properties\": {\n        \"description\": \"Entidades financieras pueden determinar libremente el nivel de su posición general de cambios.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"casa_agencia_cambio\",\n      \"target\": \"tenencia_moneda_extranjera\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_incremento_tenencias\",\n      \"target\": \"tenencia_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_incremento_tenencias\",\n      \"target\": \"casa_agencia_cambio\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_compra_titulos_secundario\",\n      \"target\": \"compra_titulos_mercado_secundario\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_compra_titulos_secundario\",\n      \"target\": \"entidad_financiera_generico\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_pago_proveedores\",\n      \"target\": \"posicion_general_cambios\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"restriccion_pago_proveedores\",\n      \"target\": \"entidad_financiera_generico\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_plazo_venta_titulos\",\n      \"target\": \"venta_titulos_mercado_secundario\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_plazo_venta_titulos\",\n      \"target\": \"entidad_financiera_generico\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_venta_cable_exterior\",\n      \"target\": \"restriccion_plazo_venta_titulos\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"libertad_pgc\",\n      \"target\": \"entidad_financiera_generico\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"restriccion_incremento_tenencias\",\n      \"predicate\": \"autoriza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3890,
+  "output_tokens": 1887,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 12,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA comprendidos en la regulación de cambios y moneda extranjera."
+        }
+      },
+      {
+        "id": "casa_agencia_cambio",
+        "type": "EntidadFinanciera",
+        "label": "Casas y agencias de cambio",
+        "properties": {
+          "description": "Entidades autorizadas a operar cambios y mantener tenencias en moneda extranjera.",
+          "categoria": "casa_cambio"
+        }
+      },
+      {
+        "id": "posicion_general_cambios",
+        "type": "InstrumentoFinanciero",
+        "label": "Posición general de cambios",
+        "properties": {
+          "description": "Tenencia neta de moneda extranjera y activos en divisa de una entidad financiera."
+        }
+      },
+      {
+        "id": "tenencia_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Tenencia en moneda extranjera",
+        "properties": {
+          "description": "Mantener o incrementar posiciones de activos denominados en moneda extranjera."
+        }
+      },
+      {
+        "id": "restriccion_incremento_tenencias",
+        "type": "Restriccion",
+        "label": "Restricción incremento tenencias extranjeras",
+        "properties": {
+          "description": "Casas y agencias de cambio no pueden incrementar tenencias en moneda extranjera sin conformidad previa del BCRA respecto al promedio de agosto 2019 o stock al 02/09/19."
+        }
+      },
+      {
+        "id": "compra_titulos_mercado_secundario",
+        "type": "Operacion",
+        "label": "Compra títulos valores mercado secundario",
+        "properties": {
+          "description": "Adquisición de títulos valores en el mercado secundario."
+        }
+      },
+      {
+        "id": "restriccion_compra_titulos_secundario",
+        "type": "Restriccion",
+        "label": "Prohibición compra títulos en mercado secundario",
+        "properties": {
+          "description": "Entidades no pueden comprar títulos valores en mercado secundario con liquidación en moneda extranjera."
+        }
+      },
+      {
+        "id": "restriccion_pago_proveedores",
+        "type": "Restriccion",
+        "label": "Prohibición pagos proveedores locales",
+        "properties": {
+          "description": "Entidades no pueden utilizar fondos de su posición general de cambios para realizar pagos a proveedores locales."
+        }
+      },
+      {
+        "id": "venta_titulos_mercado_secundario",
+        "type": "Operacion",
+        "label": "Venta títulos en mercado secundario",
+        "properties": {
+          "description": "Venta de títulos valores adquiridos en suscripción primaria."
+        }
+      },
+      {
+        "id": "restriccion_plazo_venta_titulos",
+        "type": "Restriccion",
+        "label": "Plazo mínimo venta títulos suscripción primaria",
+        "properties": {
+          "description": "Títulos adquiridos en suscripción primaria con liquidación contra cable solo pueden venderse en mercado secundario con liquidación en moneda extranjera tras 90 días corridos desde adquisición."
+        }
+      },
+      {
+        "id": "excepcion_venta_cable_exterior",
+        "type": "Excepcion",
+        "label": "Excepción ventas liquidación contra cable",
+        "properties": {
+          "description": "El plazo de 90 días no aplica a ventas realizadas con liquidación contra cable en cuentas del exterior."
+        }
+      },
+      {
+        "id": "suscripcion_primaria",
+        "type": "Operacion",
+        "label": "Suscripción primaria títulos valores",
+        "properties": {
+          "description": "Adquisición de títulos valores en oferta de colocación primaria."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria y supervisora de entidades financieras y operaciones de cambios."
+        }
+      },
+      {
+        "id": "libertad_pgc",
+        "type": "Restriccion",
+        "label": "Determinación libre posición general cambios",
+        "properties": {
+          "description": "Entidades financieras pueden determinar libremente el nivel de su posición general de cambios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "casa_agencia_cambio",
+        "target": "tenencia_moneda_extranjera",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_incremento_tenencias",
+        "target": "tenencia_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_incremento_tenencias",
+        "target": "casa_agencia_cambio",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_compra_titulos_secundario",
+        "target": "compra_titulos_mercado_secundario",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_compra_titulos_secundario",
+        "target": "entidad_financiera_generico",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_pago_proveedores",
+        "target": "posicion_general_cambios",
+        "predicate": "regula"
+      },
+      {
+        "source": "restriccion_pago_proveedores",
+        "target": "entidad_financiera_generico",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_plazo_venta_titulos",
+        "target": "venta_titulos_mercado_secundario",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_plazo_venta_titulos",
+        "target": "entidad_financiera_generico",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_venta_cable_exterior",
+        "target": "restriccion_plazo_venta_titulos",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "libertad_pgc",
+        "target": "entidad_financiera_generico",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "bcra",
+        "target": "restriccion_incremento_tenencias",
+        "predicate": "autoriza"
+      }
+    ]
+  }
+}

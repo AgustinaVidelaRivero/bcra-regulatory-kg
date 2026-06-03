@@ -1,0 +1,181 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0084__punto_2_4_las_posiciones_a_termino_en_mo",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.4 — Las posiciones a término en moneda extranjera y en oro se valuarán a los tipos",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"valuacion_posiciones_termino_moneda_extranjera\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Valuación de posiciones a término en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Las posiciones a término en moneda extranjera y oro se valuarán a tipos de cambio de contado corrientes, o tasas de interés y tipos de cambio de contado si la entidad emplea valor actual neto.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_posiciones_deducibles\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de posiciones deducibles\",\n      \"properties\": {\n        \"description\": \"Las entidades pueden excluir posiciones comprendidas en partidas deducibles al determinar la posición abierta neta en cada moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"conversion_posicion_neta_pesos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conversión de posición neta a pesos\",\n      \"properties\": {\n        \"description\": \"El importe nominal o valor actual neto de posición neta en cada moneda y oro se convertirá a pesos usando tipo de cambio de referencia del dólar estadounidense del BCRA vigente al cierre del día.\"\n      }\n    },\n    {\n      \"id\": \"conversion_monedas_extranjeras_dolar\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conversión de monedas extranjeras a dólar\",\n      \"properties\": {\n        \"description\": \"Monedas extranjeras distintas de dólar estadounidense se convertirán a esta moneda usando tipos de pase comunicados por la mesa de operaciones del BCRA.\"\n      }\n    },\n    {\n      \"id\": \"sustitucion_posiciones_no_significativas\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Sustitución de posiciones no significativas\",\n      \"properties\": {\n        \"description\": \"Las posiciones no significativas de sucursales y subsidiarias en exterior pueden sustituirse por límites internos fijados por la entidad para cada moneda, los cuales se sumarán sin importar signo a la posición abierta neta.\"\n      }\n    },\n    {\n      \"id\": \"vigilancia_limites_posiciones_reales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Vigilancia de límites y posiciones reales\",\n      \"properties\": {\n        \"description\": \"Las entidades deben proveer evidencia de que vigilan permanentemente la correspondencia entre los límites internos fijados y las posiciones reales.\"\n      }\n    },\n    {\n      \"id\": \"calculo_posicion_neta_total\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de posición neta total\",\n      \"properties\": {\n        \"description\": \"La posición neta total se obtiene sumando el mayor valor absoluto entre posiciones netas vendidas y compradas, más el valor absoluto de la posición neta en oro.\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_riesgo_mercado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"La exigencia de capital será el 8% de la posición neta total.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado por el BCRA sujeto a normas de capital mínimo.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que difunde tipos de cambio de referencia y comunica tipos de pase.\"\n      }\n    },\n    {\n      \"id\": \"posicion_termino_moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición a término en moneda extranjera\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"posicion_oro\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición en oro\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"valor_actual_neto\",\n      \"type\": \"Concepto\",\n      \"label\": \"Valor actual neto\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"tipo_cambio_contado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tipo de cambio de contado\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"posicion_abierta_neta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posición abierta neta\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"sucursal_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sucursal en exterior\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"subsidiaria_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Subsidiaria en exterior\",\n      \"properties\": {}\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"valuacion_posiciones_termino_moneda_extranjera\",\n      \"target\": \"posicion_termino_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exclusion_posiciones_deducibles\",\n      \"target\": \"valuacion_posiciones_termino_moneda_extranjera\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"conversion_posicion_neta_pesos\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"sustitucion_posiciones_no_significativas\",\n      \"target\": \"conversion_posicion_neta_pesos\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"vigilancia_limites_posiciones_reales\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"calculo_posicion_neta_total\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"exigencia_capital_riesgo_mercado\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"tipo_cambio_contado\",\n      \"predicate\": \"difunde\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4034,
+  "output_tokens": 1830,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 17,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "valuacion_posiciones_termino_moneda_extranjera",
+        "type": "Restriccion",
+        "label": "Valuación de posiciones a término en moneda extranjera",
+        "properties": {
+          "description": "Las posiciones a término en moneda extranjera y oro se valuarán a tipos de cambio de contado corrientes, o tasas de interés y tipos de cambio de contado si la entidad emplea valor actual neto."
+        }
+      },
+      {
+        "id": "exclusion_posiciones_deducibles",
+        "type": "Excepcion",
+        "label": "Exclusión de posiciones deducibles",
+        "properties": {
+          "description": "Las entidades pueden excluir posiciones comprendidas en partidas deducibles al determinar la posición abierta neta en cada moneda extranjera."
+        }
+      },
+      {
+        "id": "conversion_posicion_neta_pesos",
+        "type": "Restriccion",
+        "label": "Conversión de posición neta a pesos",
+        "properties": {
+          "description": "El importe nominal o valor actual neto de posición neta en cada moneda y oro se convertirá a pesos usando tipo de cambio de referencia del dólar estadounidense del BCRA vigente al cierre del día."
+        }
+      },
+      {
+        "id": "conversion_monedas_extranjeras_dolar",
+        "type": "Restriccion",
+        "label": "Conversión de monedas extranjeras a dólar",
+        "properties": {
+          "description": "Monedas extranjeras distintas de dólar estadounidense se convertirán a esta moneda usando tipos de pase comunicados por la mesa de operaciones del BCRA."
+        }
+      },
+      {
+        "id": "sustitucion_posiciones_no_significativas",
+        "type": "Excepcion",
+        "label": "Sustitución de posiciones no significativas",
+        "properties": {
+          "description": "Las posiciones no significativas de sucursales y subsidiarias en exterior pueden sustituirse por límites internos fijados por la entidad para cada moneda, los cuales se sumarán sin importar signo a la posición abierta neta."
+        }
+      },
+      {
+        "id": "vigilancia_limites_posiciones_reales",
+        "type": "Restriccion",
+        "label": "Vigilancia de límites y posiciones reales",
+        "properties": {
+          "description": "Las entidades deben proveer evidencia de que vigilan permanentemente la correspondencia entre los límites internos fijados y las posiciones reales."
+        }
+      },
+      {
+        "id": "calculo_posicion_neta_total",
+        "type": "Operacion",
+        "label": "Cálculo de posición neta total",
+        "properties": {
+          "description": "La posición neta total se obtiene sumando el mayor valor absoluto entre posiciones netas vendidas y compradas, más el valor absoluto de la posición neta en oro."
+        }
+      },
+      {
+        "id": "exigencia_capital_riesgo_mercado",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo de mercado",
+        "properties": {
+          "description": "La exigencia de capital será el 8% de la posición neta total."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "EntidadFinanciera",
+        "label": "Entidad financiera",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que difunde tipos de cambio de referencia y comunica tipos de pase."
+        }
+      },
+      {
+        "id": "posicion_termino_moneda_extranjera",
+        "type": "Concepto",
+        "label": "Posición a término en moneda extranjera",
+        "properties": {}
+      },
+      {
+        "id": "posicion_oro",
+        "type": "Concepto",
+        "label": "Posición en oro",
+        "properties": {}
+      },
+      {
+        "id": "valor_actual_neto",
+        "type": "Concepto",
+        "label": "Valor actual neto",
+        "properties": {}
+      },
+      {
+        "id": "tipo_cambio_contado",
+        "type": "Concepto",
+        "label": "Tipo de cambio de contado",
+        "properties": {}
+      },
+      {
+        "id": "posicion_abierta_neta",
+        "type": "Concepto",
+        "label": "Posición abierta neta",
+        "properties": {}
+      },
+      {
+        "id": "sucursal_exterior",
+        "type": "Concepto",
+        "label": "Sucursal en exterior",
+        "properties": {}
+      },
+      {
+        "id": "subsidiaria_exterior",
+        "type": "Concepto",
+        "label": "Subsidiaria en exterior",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "valuacion_posiciones_termino_moneda_extranjera",
+        "target": "posicion_termino_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exclusion_posiciones_deducibles",
+        "target": "valuacion_posiciones_termino_moneda_extranjera",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "conversion_posicion_neta_pesos",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "sustitucion_posiciones_no_significativas",
+        "target": "conversion_posicion_neta_pesos",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "vigilancia_limites_posiciones_reales",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "calculo_posicion_neta_total",
+        "predicate": "realiza"
+      },
+      {
+        "source": "exigencia_capital_riesgo_mercado",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "bcra",
+        "target": "tipo_cambio_contado",
+        "predicate": "difunde"
+      }
+    ]
+  }
+}

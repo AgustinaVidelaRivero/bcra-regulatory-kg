@@ -1,0 +1,199 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0049__punto_1_se_calculara_un_nocional_efectiv",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1 — Se calculará un nocional efectivo D jk(IR) por banda temporal k dentro del + Punto 2 — La suma entre bandas temporales de un mismo conjunto de cobe rtura se",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"nocional_efectivo_banda_temporal\",\n      \"type\": \"Concepto\",\n      \"label\": \"Nocional efectivo por banda temporal\",\n      \"properties\": {\n        \"description\": \"Suma de nocionales ajustados a nivel de operación multiplicados por ajustes delta regulatorios y factor por plazo residual.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_moneda_banda\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones en moneda por banda temporal\",\n      \"properties\": {\n        \"description\": \"Operaciones en la moneda j incluidas en la banda temporal k.\"\n      }\n    },\n    {\n      \"id\": \"ajuste_delta_regulatorio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ajuste delta regulatorio\",\n      \"properties\": {\n        \"description\": \"Factor de ajuste aplicado a nivel de operación en cálculo de nocional efectivo.\"\n      }\n    },\n    {\n      \"id\": \"factor_plazo_residual\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor por plazo residual\",\n      \"properties\": {\n        \"description\": \"Factor de ajuste según tiempo restante hasta vencimiento de la operación.\"\n      }\n    },\n    {\n      \"id\": \"compensacion_bandas_temporales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Compensación entre bandas temporales\",\n      \"properties\": {\n        \"description\": \"Las entidades podrán optar por no reconocer compensaciones entre bandas temporales, en cuyo caso la fórmula se reduce a sumatoria sin compensación.\"\n      }\n    },\n    {\n      \"id\": \"adicional_conjunto_cobertura\",\n      \"type\": \"Concepto\",\n      \"label\": \"Adicional a nivel de conjunto de cobertura\",\n      \"properties\": {\n        \"description\": \"Producto del nocional efectivo y el factor regulatorio para tasas de interés.\"\n      }\n    },\n    {\n      \"id\": \"factor_regulatorio_tasas_interes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor regulatorio para tasas de interés\",\n      \"properties\": {\n        \"description\": \"Factor aplicable al nocional efectivo para cálculo del adicional por riesgo de tasa de interés.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA que aplican esta metodología de cálculo de capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"derivados_tipo_cambio\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivados de tipo de cambio\",\n      \"properties\": {\n        \"description\": \"Contratos derivados cuyo nocional se calcula como suma de nocionales ajustados multiplicados por deltas regulatorios.\"\n      }\n    },\n    {\n      \"id\": \"nocional_efectivo_tipo_cambio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Nocional efectivo derivados tipo de cambio\",\n      \"properties\": {\n        \"description\": \"Suma de todos los nocionales ajustados a nivel de operación multiplicados por deltas regulatorios para derivados de tipo de cambio.\"\n      }\n    },\n    {\n      \"id\": \"factor_regulatorio_tipo_cambio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor regulatorio tipo de cambio\",\n      \"properties\": {\n        \"description\": \"Factor idéntico para todos los conjuntos de cobertura de tipo de cambio.\"\n      }\n    },\n    {\n      \"id\": \"nocional_ajustado_moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Nocional ajustado moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Cantidad de moneda extranjera referenciada en contrato, expresada en pesos.\"\n      }\n    },\n    {\n      \"id\": \"conjunto_neteo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conjunto de neteo\",\n      \"properties\": {\n        \"description\": \"Agrupamiento de conjuntos de cobertura para cálculo de adicional total.\"\n      }\n    },\n    {\n      \"id\": \"derivados_credito\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivados de crédito\",\n      \"properties\": {\n        \"description\": \"Contratos derivados de crédito sujetos a dos niveles de compensación.\"\n      }\n    },\n    {\n      \"id\": \"exposiciones_derivados_credito\",\n      \"type\": \"Operacion\",\n      \"label\": \"Exposiciones en derivados de crédito\",\n      \"properties\": {\n        \"description\": \"Exposiciones originadas en derivados de crédito sujetas a niveles de compensación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"nocional_efectivo_banda_temporal\",\n      \"target\": \"operaciones_moneda_banda\",\n      \"predicate\": \"surge_de\"\n    },\n    {\n      \"source\": \"nocional_efectivo_banda_temporal\",\n      \"target\": \"ajuste_delta_regulatorio\",\n      \"predicate\": \"incorpora\"\n    },\n    {\n      \"source\": \"nocional_efectivo_banda_temporal\",\n      \"target\": \"factor_plazo_residual\",\n      \"predicate\": \"incorpora\"\n    },\n    {\n      \"source\": \"compensacion_bandas_temporales\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"adicional_conjunto_cobertura\",\n      \"target\": \"nocional_efectivo_banda_temporal\",\n      \"predicate\": \"calcula_a_partir_de\"\n    },\n    {\n      \"source\": \"adicional_conjunto_cobertura\",\n      \"target\": \"factor_regulatorio_tasas_interes\",\n      \"predicate\": \"incorpora\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"derivados_tipo_cambio\",\n      \"predicate\": \"opera\"\n    },\n    {\n      \"source\": \"nocional_efectivo_tipo_cambio\",\n      \"target\": \"factor_regulatorio_tipo_cambio\",\n      \"predicate\": \"se_multiplica_por\"\n    },\n    {\n      \"source\": \"nocional_ajustado_moneda_extranjera\",\n      \"target\": \"derivados_tipo_cambio\",\n      \"predicate\": \"cuantifica\"\n    },\n    {\n      \"source\": \"conjunto_neteo\",\n      \"target\": \"derivados_tipo_cambio\",\n      \"predicate\": \"agrupa\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"exposiciones_derivados_credito\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"exposiciones_derivados_credito\",\n      \"target\": \"derivados_credito\",\n      \"predicate\": \"origina_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4202,
+  "output_tokens": 1873,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 12,
+  "parsed": {
+    "entities": [
+      {
+        "id": "nocional_efectivo_banda_temporal",
+        "type": "Concepto",
+        "label": "Nocional efectivo por banda temporal",
+        "properties": {
+          "description": "Suma de nocionales ajustados a nivel de operación multiplicados por ajustes delta regulatorios y factor por plazo residual."
+        }
+      },
+      {
+        "id": "operaciones_moneda_banda",
+        "type": "Operacion",
+        "label": "Operaciones en moneda por banda temporal",
+        "properties": {
+          "description": "Operaciones en la moneda j incluidas en la banda temporal k."
+        }
+      },
+      {
+        "id": "ajuste_delta_regulatorio",
+        "type": "Concepto",
+        "label": "Ajuste delta regulatorio",
+        "properties": {
+          "description": "Factor de ajuste aplicado a nivel de operación en cálculo de nocional efectivo."
+        }
+      },
+      {
+        "id": "factor_plazo_residual",
+        "type": "Concepto",
+        "label": "Factor por plazo residual",
+        "properties": {
+          "description": "Factor de ajuste según tiempo restante hasta vencimiento de la operación."
+        }
+      },
+      {
+        "id": "compensacion_bandas_temporales",
+        "type": "Restriccion",
+        "label": "Compensación entre bandas temporales",
+        "properties": {
+          "description": "Las entidades podrán optar por no reconocer compensaciones entre bandas temporales, en cuyo caso la fórmula se reduce a sumatoria sin compensación."
+        }
+      },
+      {
+        "id": "adicional_conjunto_cobertura",
+        "type": "Concepto",
+        "label": "Adicional a nivel de conjunto de cobertura",
+        "properties": {
+          "description": "Producto del nocional efectivo y el factor regulatorio para tasas de interés."
+        }
+      },
+      {
+        "id": "factor_regulatorio_tasas_interes",
+        "type": "Concepto",
+        "label": "Factor regulatorio para tasas de interés",
+        "properties": {
+          "description": "Factor aplicable al nocional efectivo para cálculo del adicional por riesgo de tasa de interés."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA que aplican esta metodología de cálculo de capitales mínimos."
+        }
+      },
+      {
+        "id": "derivados_tipo_cambio",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivados de tipo de cambio",
+        "properties": {
+          "description": "Contratos derivados cuyo nocional se calcula como suma de nocionales ajustados multiplicados por deltas regulatorios."
+        }
+      },
+      {
+        "id": "nocional_efectivo_tipo_cambio",
+        "type": "Concepto",
+        "label": "Nocional efectivo derivados tipo de cambio",
+        "properties": {
+          "description": "Suma de todos los nocionales ajustados a nivel de operación multiplicados por deltas regulatorios para derivados de tipo de cambio."
+        }
+      },
+      {
+        "id": "factor_regulatorio_tipo_cambio",
+        "type": "Concepto",
+        "label": "Factor regulatorio tipo de cambio",
+        "properties": {
+          "description": "Factor idéntico para todos los conjuntos de cobertura de tipo de cambio."
+        }
+      },
+      {
+        "id": "nocional_ajustado_moneda_extranjera",
+        "type": "Concepto",
+        "label": "Nocional ajustado moneda extranjera",
+        "properties": {
+          "description": "Cantidad de moneda extranjera referenciada en contrato, expresada en pesos."
+        }
+      },
+      {
+        "id": "conjunto_neteo",
+        "type": "Concepto",
+        "label": "Conjunto de neteo",
+        "properties": {
+          "description": "Agrupamiento de conjuntos de cobertura para cálculo de adicional total."
+        }
+      },
+      {
+        "id": "derivados_credito",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivados de crédito",
+        "properties": {
+          "description": "Contratos derivados de crédito sujetos a dos niveles de compensación."
+        }
+      },
+      {
+        "id": "exposiciones_derivados_credito",
+        "type": "Operacion",
+        "label": "Exposiciones en derivados de crédito",
+        "properties": {
+          "description": "Exposiciones originadas en derivados de crédito sujetas a niveles de compensación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "nocional_efectivo_banda_temporal",
+        "target": "operaciones_moneda_banda",
+        "predicate": "surge_de"
+      },
+      {
+        "source": "nocional_efectivo_banda_temporal",
+        "target": "ajuste_delta_regulatorio",
+        "predicate": "incorpora"
+      },
+      {
+        "source": "nocional_efectivo_banda_temporal",
+        "target": "factor_plazo_residual",
+        "predicate": "incorpora"
+      },
+      {
+        "source": "compensacion_bandas_temporales",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "adicional_conjunto_cobertura",
+        "target": "nocional_efectivo_banda_temporal",
+        "predicate": "calcula_a_partir_de"
+      },
+      {
+        "source": "adicional_conjunto_cobertura",
+        "target": "factor_regulatorio_tasas_interes",
+        "predicate": "incorpora"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "derivados_tipo_cambio",
+        "predicate": "opera"
+      },
+      {
+        "source": "nocional_efectivo_tipo_cambio",
+        "target": "factor_regulatorio_tipo_cambio",
+        "predicate": "se_multiplica_por"
+      },
+      {
+        "source": "nocional_ajustado_moneda_extranjera",
+        "target": "derivados_tipo_cambio",
+        "predicate": "cuantifica"
+      },
+      {
+        "source": "conjunto_neteo",
+        "target": "derivados_tipo_cambio",
+        "predicate": "agrupa"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "exposiciones_derivados_credito",
+        "predicate": "realiza"
+      },
+      {
+        "source": "exposiciones_derivados_credito",
+        "target": "derivados_credito",
+        "predicate": "origina_en"
+      }
+    ]
+  }
+}

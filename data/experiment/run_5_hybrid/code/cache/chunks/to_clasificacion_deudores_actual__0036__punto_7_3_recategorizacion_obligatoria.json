@@ -1,0 +1,139 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0036__punto_7_3_recategorizacion_obligatoria",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 7.3 — Recategorización obligatoria.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"recategorizacion_obligatoria_discrepancia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización obligatoria por discrepancia\",\n      \"properties\": {\n        \"description\": \"Se deberá recategorizar al deudor cuando existe discrepancia de más de un nivel entre la clasificación de la entidad y las de al menos otras dos entidades o fideicomisos financieros o entidades no financieras emisoras de tarjetas, cuyas acreencias en conjunto representen 40% o más del total informado por todos los acreedores.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto que otorga clasificaciones de deudores según normativa BCRA.\"\n      }\n    },\n    {\n      \"id\": \"fideicomiso_financiero\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Fideicomiso financiero\",\n      \"properties\": {\n        \"description\": \"Entidad capaz de clasificar deudores y cuyos datos se consideran en la recategorización.\"\n      },\n      \"properties\": {\n        \"categoria\": \"fideicomiso_financiero\"\n      }\n    },\n    {\n      \"id\": \"entidad_no_financiera_tarjetas\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad no financiera emisora de tarjetas\",\n      \"properties\": {\n        \"description\": \"Entidad no financiera emisora de tarjetas de crédito en modalidad sistema cerrado que participa en clasificación de deudores.\"\n      },\n      \"properties\": {\n        \"categoria\": \"proveedor_no_financiero_credito\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudor\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudor\",\n      \"properties\": {\n        \"description\": \"Acción de asignar una categoría a un deudor conforme a su nivel de endeudamiento y comportamiento crediticio.\"\n      }\n    },\n    {\n      \"id\": \"recategorizacion_deudor\",\n      \"type\": \"Operacion\",\n      \"label\": \"Recategorización de deudor\",\n      \"properties\": {\n        \"description\": \"Acción de modificar la categoría asignada a un deudor a partir del mes siguiente a la disponibilidad de información de la Central de deudores.\"\n      }\n    },\n    {\n      \"id\": \"central_deudores_sistema_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Central de deudores del sistema financiero\",\n      \"properties\": {\n        \"description\": \"Base de datos central que concentra información de clasificaciones otorgadas por todas las entidades acreedoras.\"\n      }\n    },\n    {\n      \"id\": \"discrepancia_clasificacion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Discrepancia de clasificación\",\n      \"properties\": {\n        \"description\": \"Diferencia de más de un nivel entre la clasificación asignada por una entidad y las otorgadas por otras entidades acreedoras.\"\n      }\n    },\n    {\n      \"id\": \"umbral_acreencias_40_porciento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Umbral de acreencias 40%\",\n      \"properties\": {\n        \"description\": \"Las acreencias del conjunto de entidades cuyas clasificaciones se consideran deben representar el 40% o más del total informado por todos los acreedores.\"\n      }\n    },\n    {\n      \"id\": \"categorias_evaluacion_1_a_5\",\n      \"type\": \"Concepto\",\n      \"label\": \"Categorías de evaluación 1 a 5\",\n      \"properties\": {\n        \"description\": \"Rangos de clasificación de deudores definidos en normativa: categorías 1 a 5 según evaluación de entidades.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"recategorizacion_obligatoria_discrepancia\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"modifica\"\n    },\n    {\n      \"source\": \"recategorizacion_obligatoria_discrepancia\",\n      \"target\": \"discrepancia_clasificacion\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"recategorizacion_obligatoria_discrepancia\",\n      \"target\": \"umbral_acreencias_40_porciento\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"recategorizacion_deudor\",\n      \"target\": \"central_deudores_sistema_financiero\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"recategorizacion_deudor\",\n      \"target\": \"categorias_evaluacion_1_a_5\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"fideicomiso_financiero\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_no_financiera_tarjetas\",\n      \"target\": \"clasificacion_deudor\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"umbral_acreencias_40_porciento\",\n      \"target\": \"recategorizacion_obligatoria_discrepancia\",\n      \"predicate\": \"activa\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3745,
+  "output_tokens": 1462,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "recategorizacion_obligatoria_discrepancia",
+        "type": "Restriccion",
+        "label": "Recategorización obligatoria por discrepancia",
+        "properties": {
+          "description": "Se deberá recategorizar al deudor cuando existe discrepancia de más de un nivel entre la clasificación de la entidad y las de al menos otras dos entidades o fideicomisos financieros o entidades no financieras emisoras de tarjetas, cuyas acreencias en conjunto representen 40% o más del total informado por todos los acreedores."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto que otorga clasificaciones de deudores según normativa BCRA."
+        }
+      },
+      {
+        "id": "fideicomiso_financiero",
+        "type": "EntidadFinanciera",
+        "label": "Fideicomiso financiero",
+        "properties": {
+          "categoria": "fideicomiso_financiero"
+        }
+      },
+      {
+        "id": "entidad_no_financiera_tarjetas",
+        "type": "EntidadFinanciera",
+        "label": "Entidad no financiera emisora de tarjetas",
+        "properties": {
+          "categoria": "proveedor_no_financiero_credito"
+        }
+      },
+      {
+        "id": "clasificacion_deudor",
+        "type": "Operacion",
+        "label": "Clasificación de deudor",
+        "properties": {
+          "description": "Acción de asignar una categoría a un deudor conforme a su nivel de endeudamiento y comportamiento crediticio."
+        }
+      },
+      {
+        "id": "recategorizacion_deudor",
+        "type": "Operacion",
+        "label": "Recategorización de deudor",
+        "properties": {
+          "description": "Acción de modificar la categoría asignada a un deudor a partir del mes siguiente a la disponibilidad de información de la Central de deudores."
+        }
+      },
+      {
+        "id": "central_deudores_sistema_financiero",
+        "type": "Concepto",
+        "label": "Central de deudores del sistema financiero",
+        "properties": {
+          "description": "Base de datos central que concentra información de clasificaciones otorgadas por todas las entidades acreedoras."
+        }
+      },
+      {
+        "id": "discrepancia_clasificacion",
+        "type": "Concepto",
+        "label": "Discrepancia de clasificación",
+        "properties": {
+          "description": "Diferencia de más de un nivel entre la clasificación asignada por una entidad y las otorgadas por otras entidades acreedoras."
+        }
+      },
+      {
+        "id": "umbral_acreencias_40_porciento",
+        "type": "Restriccion",
+        "label": "Umbral de acreencias 40%",
+        "properties": {
+          "description": "Las acreencias del conjunto de entidades cuyas clasificaciones se consideran deben representar el 40% o más del total informado por todos los acreedores."
+        }
+      },
+      {
+        "id": "categorias_evaluacion_1_a_5",
+        "type": "Concepto",
+        "label": "Categorías de evaluación 1 a 5",
+        "properties": {
+          "description": "Rangos de clasificación de deudores definidos en normativa: categorías 1 a 5 según evaluación de entidades."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "recategorizacion_obligatoria_discrepancia",
+        "target": "clasificacion_deudor",
+        "predicate": "modifica"
+      },
+      {
+        "source": "recategorizacion_obligatoria_discrepancia",
+        "target": "discrepancia_clasificacion",
+        "predicate": "requiere"
+      },
+      {
+        "source": "recategorizacion_obligatoria_discrepancia",
+        "target": "umbral_acreencias_40_porciento",
+        "predicate": "aplica"
+      },
+      {
+        "source": "recategorizacion_deudor",
+        "target": "central_deudores_sistema_financiero",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "recategorizacion_deudor",
+        "target": "categorias_evaluacion_1_a_5",
+        "predicate": "considera"
+      },
+      {
+        "source": "fideicomiso_financiero",
+        "target": "clasificacion_deudor",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_no_financiera_tarjetas",
+        "target": "clasificacion_deudor",
+        "predicate": "realiza"
+      },
+      {
+        "source": "umbral_acreencias_40_porciento",
+        "target": "recategorizacion_obligatoria_discrepancia",
+        "predicate": "activa"
+      }
+    ]
+  }
+}

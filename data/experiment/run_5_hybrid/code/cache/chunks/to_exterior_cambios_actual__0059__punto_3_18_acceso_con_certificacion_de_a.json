@@ -1,0 +1,176 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0059__punto_3_18_acceso_con_certificacion_de_a",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.18 — Acceso con “Certificación de aumento de las exportaciones de bienes”. (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"decreto_277_22\",\n      \"type\": \"Documento\",\n      \"label\": \"Decreto 277/22\",\n      \"properties\": {\n        \"description\": \"Régimen de acceso a divisas para la producción incremental de petróleo y/o gas natural\"\n      }\n    },\n    {\n      \"id\": \"certificacion_aumento_exportaciones\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Certificación de aumento de exportaciones\",\n      \"properties\": {\n        \"description\": \"Certificación emitida para acceso a divisas por aumento de exportaciones de bienes\"\n      }\n    },\n    {\n      \"id\": \"certificacion_petroleo_gas\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Certificación de regímenes petróleo y gas\",\n      \"properties\": {\n        \"description\": \"Certificaciones emitidas para regímenes de acceso a divisas para producción incremental de petróleo y/o gas natural\"\n      }\n    },\n    {\n      \"id\": \"restriccion_deduccion_montos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Deducción de montos petróleo y gas\",\n      \"properties\": {\n        \"description\": \"Los montos de certificaciones por petróleo y gas deben deducirse del monto de certificación de aumento de exportaciones que pueden emitirse\"\n      }\n    },\n    {\n      \"id\": \"restriccion_verificacion_montos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación de montos máximos acumulados\",\n      \"properties\": {\n        \"description\": \"La entidad nominada debe constatar el monto máximo total que pueden acumular las certificaciones emitidas a favor de un exportador\"\n      }\n    },\n    {\n      \"id\": \"restriccion_verificacion_permisos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación de permisos en cumplimiento\",\n      \"properties\": {\n        \"description\": \"La entidad nominada debe verificar que el exportador no tiene permisos en situación de incumplimiento\"\n      }\n    },\n    {\n      \"id\": \"operacion_emision_certificacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Emisión de certificaciones\",\n      \"properties\": {\n        \"description\": \"Acto de emitir certificaciones de aumento de exportaciones de bienes\"\n      }\n    },\n    {\n      \"id\": \"entidad_nominada\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad nominada por exportador\",\n      \"properties\": {\n        \"description\": \"Entidad designada por el exportador para el seguimiento del mecanismo y emisión de certificaciones\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"exportador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exportador\",\n      \"properties\": {\n        \"description\": \"Sujeto beneficiario de las certificaciones de acceso a divisas\"\n      }\n    },\n    {\n      \"id\": \"restriccion_seleccion_entidad_nominada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Selección de entidad nominada inicial\",\n      \"properties\": {\n        \"description\": \"El BCRA designa como entidad nominada a aquella que constaba con mayor cantidad de permisos embarcados por el exportador en 2021\"\n      }\n    },\n    {\n      \"id\": \"restriccion_cambio_entidad_nominada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Procedimiento de cambio de entidad nominada\",\n      \"properties\": {\n        \"description\": \"El exportador puede modificar la entidad nominada; la entidad previa debe remitir detalle de certificaciones emitidas antes del cambio registrado\"\n      }\n    },\n    {\n      \"id\": \"concepto_beneficiario_directo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Beneficiario directo Decreto 277/22\",\n      \"properties\": {\n        \"description\": \"Cliente que es beneficiario directo del Decreto 277/22 con derecho a certificaciones de petróleo y gas\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_deduccion_montos\",\n      \"target\": \"certificacion_petroleo_gas\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_deduccion_montos\",\n      \"target\": \"certificacion_aumento_exportaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_verificacion_montos\",\n      \"target\": \"operacion_emision_certificacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_verificacion_permisos\",\n      \"target\": \"operacion_emision_certificacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entidad_nominada\",\n      \"target\": \"operacion_emision_certificacion\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"restriccion_seleccion_entidad_nominada\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"entidad_nominada\",\n      \"predicate\": \"designa\"\n    },\n    {\n      \"source\": \"exportador\",\n      \"target\": \"entidad_nominada\",\n      \"predicate\": \"nomina\"\n    },\n    {\n      \"source\": \"restriccion_cambio_entidad_nominada\",\n      \"target\": \"entidad_nominada\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"certificacion_aumento_exportaciones\",\n      \"target\": \"exportador\",\n      \"predicate\": \"beneficia_a\"\n    },\n    {\n      \"source\": \"decreto_277_22\",\n      \"target\": \"concepto_beneficiario_directo\",\n      \"predicate\": \"define\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4059,
+  "output_tokens": 1646,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "decreto_277_22",
+        "type": "Documento",
+        "label": "Decreto 277/22",
+        "properties": {
+          "description": "Régimen de acceso a divisas para la producción incremental de petróleo y/o gas natural"
+        }
+      },
+      {
+        "id": "certificacion_aumento_exportaciones",
+        "type": "InstrumentoFinanciero",
+        "label": "Certificación de aumento de exportaciones",
+        "properties": {
+          "description": "Certificación emitida para acceso a divisas por aumento de exportaciones de bienes"
+        }
+      },
+      {
+        "id": "certificacion_petroleo_gas",
+        "type": "InstrumentoFinanciero",
+        "label": "Certificación de regímenes petróleo y gas",
+        "properties": {
+          "description": "Certificaciones emitidas para regímenes de acceso a divisas para producción incremental de petróleo y/o gas natural"
+        }
+      },
+      {
+        "id": "restriccion_deduccion_montos",
+        "type": "Restriccion",
+        "label": "Deducción de montos petróleo y gas",
+        "properties": {
+          "description": "Los montos de certificaciones por petróleo y gas deben deducirse del monto de certificación de aumento de exportaciones que pueden emitirse"
+        }
+      },
+      {
+        "id": "restriccion_verificacion_montos",
+        "type": "Restriccion",
+        "label": "Verificación de montos máximos acumulados",
+        "properties": {
+          "description": "La entidad nominada debe constatar el monto máximo total que pueden acumular las certificaciones emitidas a favor de un exportador"
+        }
+      },
+      {
+        "id": "restriccion_verificacion_permisos",
+        "type": "Restriccion",
+        "label": "Verificación de permisos en cumplimiento",
+        "properties": {
+          "description": "La entidad nominada debe verificar que el exportador no tiene permisos en situación de incumplimiento"
+        }
+      },
+      {
+        "id": "operacion_emision_certificacion",
+        "type": "Operacion",
+        "label": "Emisión de certificaciones",
+        "properties": {
+          "description": "Acto de emitir certificaciones de aumento de exportaciones de bienes"
+        }
+      },
+      {
+        "id": "entidad_nominada",
+        "type": "Concepto",
+        "label": "Entidad nominada por exportador",
+        "properties": {
+          "description": "Entidad designada por el exportador para el seguimiento del mecanismo y emisión de certificaciones"
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "exportador",
+        "type": "Concepto",
+        "label": "Exportador",
+        "properties": {
+          "description": "Sujeto beneficiario de las certificaciones de acceso a divisas"
+        }
+      },
+      {
+        "id": "restriccion_seleccion_entidad_nominada",
+        "type": "Restriccion",
+        "label": "Selección de entidad nominada inicial",
+        "properties": {
+          "description": "El BCRA designa como entidad nominada a aquella que constaba con mayor cantidad de permisos embarcados por el exportador en 2021"
+        }
+      },
+      {
+        "id": "restriccion_cambio_entidad_nominada",
+        "type": "Restriccion",
+        "label": "Procedimiento de cambio de entidad nominada",
+        "properties": {
+          "description": "El exportador puede modificar la entidad nominada; la entidad previa debe remitir detalle de certificaciones emitidas antes del cambio registrado"
+        }
+      },
+      {
+        "id": "concepto_beneficiario_directo",
+        "type": "Concepto",
+        "label": "Beneficiario directo Decreto 277/22",
+        "properties": {
+          "description": "Cliente que es beneficiario directo del Decreto 277/22 con derecho a certificaciones de petróleo y gas"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_deduccion_montos",
+        "target": "certificacion_petroleo_gas",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_deduccion_montos",
+        "target": "certificacion_aumento_exportaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_verificacion_montos",
+        "target": "operacion_emision_certificacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_verificacion_permisos",
+        "target": "operacion_emision_certificacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entidad_nominada",
+        "target": "operacion_emision_certificacion",
+        "predicate": "realiza"
+      },
+      {
+        "source": "bcra",
+        "target": "restriccion_seleccion_entidad_nominada",
+        "predicate": "regula"
+      },
+      {
+        "source": "bcra",
+        "target": "entidad_nominada",
+        "predicate": "designa"
+      },
+      {
+        "source": "exportador",
+        "target": "entidad_nominada",
+        "predicate": "nomina"
+      },
+      {
+        "source": "restriccion_cambio_entidad_nominada",
+        "target": "entidad_nominada",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "certificacion_aumento_exportaciones",
+        "target": "exportador",
+        "predicate": "beneficia_a"
+      },
+      {
+        "source": "decreto_277_22",
+        "target": "concepto_beneficiario_directo",
+        "predicate": "define"
+      }
+    ]
+  }
+}

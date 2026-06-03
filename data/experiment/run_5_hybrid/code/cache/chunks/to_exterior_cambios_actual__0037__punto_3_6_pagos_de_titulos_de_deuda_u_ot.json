@@ -1,0 +1,167 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0037__punto_3_6_pagos_de_titulos_de_deuda_u_ot",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.6 — Pagos de títulos de deuda u otros valores representativos de deuda denominados y",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"acceso_mercado_cambios_pago_deudas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición acceso mercado cambios\",\n      \"properties\": {\n        \"description\": \"Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19, salvo excepciones específicas.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"cancelacion_financiaciones_moneda_extranjera\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Cancelación financiaciones moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Excepción que permite el acceso al mercado de cambios para cancelación en el país a partir del vencimiento de capital e intereses de financiaciones en moneda extranjera otorgadas por entidades financieras locales.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"entidades_financieras_locales\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Instituciones financieras autorizadas que otorgan financiaciones en moneda extranjera.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"pagos_tarjetas_credito_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pagos consumos tarjeta crédito moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Pagos por consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"cancelacion_giros_descubierto_dolares\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cancelación giros descubierto en dólares\",\n      \"properties\": {\n        \"description\": \"La cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses solo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"emisiones_titulos_deuda_refinanciamiento\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Emisiones títulos deuda refinanciamiento\",\n      \"properties\": {\n        \"description\": \"Excepción que permite emisiones de títulos de deuda realizadas a partir del 01/09/19 con objeto de refinanciar deudas comprendidas en punto 3.6.2 que conlleven incremento de vida promedio de obligaciones.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"emisiones_titulos_deuda_registro_publico\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Emisiones títulos deuda registro público\",\n      \"properties\": {\n        \"description\": \"Excepción que permite emisiones realizadas a partir del 29/11/19 de títulos de deuda con registro público en el país, denominados y suscritos en moneda extranjera, con servicios pagaderos en moneda extranjera, cuando la totalidad de fondos hayan sido liquidados en mercado de cambios.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"plazo_minimo_emision_titulos_entidades_financieras\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo mínimo 12 meses post emisión\",\n      \"properties\": {\n        \"description\": \"Para títulos de deuda emitidos por entidades financieras locales a través de operaciones concertadas a partir del 26/05/25, el pago debe tener lugar una vez transcurrido, como mínimo, 12 meses desde fecha de emisión.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Divisas extranjeras utilizadas en transacciones y obligaciones financieras.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Mercado donde se operan transacciones de divisas.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"titulos_deuda\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Títulos de deuda\",\n      \"properties\": {\n        \"description\": \"Valores representativos de deuda emitidos en el mercado.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"residentes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Residentes\",\n      \"properties\": {\n        \"description\": \"Personas físicas y jurídicas con domicilio en el país.\",\n        \"categoria\": null\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"acceso_mercado_cambios_pago_deudas\",\n      \"target\": \"pagos_tarjetas_credito_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"cancelacion_financiaciones_moneda_extranjera\",\n      \"target\": \"acceso_mercado_cambios_pago_deudas\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"entidades_financieras_locales\",\n      \"target\": \"pagos_tarjetas_credito_moneda_extranjera\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"cancelacion_giros_descubierto_dolares\",\n      \"target\": \"pagos_tarjetas_credito_moneda_extranjera\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"emisiones_titulos_deuda_refinanciamiento\",\n      \"target\": \"acceso_mercado_cambios_pago_deudas\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"emisiones_titulos_deuda_registro_publico\",\n      \"target\": \"acceso_mercado_cambios_pago_deudas\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"plazo_minimo_emision_titulos_entidades_financieras\",\n      \"target\": \"titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"plazo_minimo_emision_titulos_entidades_financieras\",\n      \"target\": \"entidades_financieras_locales\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3945,
+  "output_tokens": 1846,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "acceso_mercado_cambios_pago_deudas",
+        "type": "Restriccion",
+        "label": "Prohibición acceso mercado cambios",
+        "properties": {
+          "description": "Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19, salvo excepciones específicas.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "cancelacion_financiaciones_moneda_extranjera",
+        "type": "Excepcion",
+        "label": "Cancelación financiaciones moneda extranjera",
+        "properties": {
+          "description": "Excepción que permite el acceso al mercado de cambios para cancelación en el país a partir del vencimiento de capital e intereses de financiaciones en moneda extranjera otorgadas por entidades financieras locales.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "entidades_financieras_locales",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Instituciones financieras autorizadas que otorgan financiaciones en moneda extranjera.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "pagos_tarjetas_credito_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Pagos consumos tarjeta crédito moneda extranjera",
+        "properties": {
+          "description": "Pagos por consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "cancelacion_giros_descubierto_dolares",
+        "type": "Restriccion",
+        "label": "Cancelación giros descubierto en dólares",
+        "properties": {
+          "description": "La cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses solo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "emisiones_titulos_deuda_refinanciamiento",
+        "type": "Excepcion",
+        "label": "Emisiones títulos deuda refinanciamiento",
+        "properties": {
+          "description": "Excepción que permite emisiones de títulos de deuda realizadas a partir del 01/09/19 con objeto de refinanciar deudas comprendidas en punto 3.6.2 que conlleven incremento de vida promedio de obligaciones.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "emisiones_titulos_deuda_registro_publico",
+        "type": "Excepcion",
+        "label": "Emisiones títulos deuda registro público",
+        "properties": {
+          "description": "Excepción que permite emisiones realizadas a partir del 29/11/19 de títulos de deuda con registro público en el país, denominados y suscritos en moneda extranjera, con servicios pagaderos en moneda extranjera, cuando la totalidad de fondos hayan sido liquidados en mercado de cambios.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "plazo_minimo_emision_titulos_entidades_financieras",
+        "type": "Restriccion",
+        "label": "Plazo mínimo 12 meses post emisión",
+        "properties": {
+          "description": "Para títulos de deuda emitidos por entidades financieras locales a través de operaciones concertadas a partir del 26/05/25, el pago debe tener lugar una vez transcurrido, como mínimo, 12 meses desde fecha de emisión.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "moneda_extranjera",
+        "type": "Concepto",
+        "label": "Moneda extranjera",
+        "properties": {
+          "description": "Divisas extranjeras utilizadas en transacciones y obligaciones financieras.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {
+          "description": "Mercado donde se operan transacciones de divisas.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "titulos_deuda",
+        "type": "InstrumentoFinanciero",
+        "label": "Títulos de deuda",
+        "properties": {
+          "description": "Valores representativos de deuda emitidos en el mercado.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "residentes",
+        "type": "Concepto",
+        "label": "Residentes",
+        "properties": {
+          "description": "Personas físicas y jurídicas con domicilio en el país.",
+          "categoria": null
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "acceso_mercado_cambios_pago_deudas",
+        "target": "pagos_tarjetas_credito_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "cancelacion_financiaciones_moneda_extranjera",
+        "target": "acceso_mercado_cambios_pago_deudas",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "entidades_financieras_locales",
+        "target": "pagos_tarjetas_credito_moneda_extranjera",
+        "predicate": "realiza"
+      },
+      {
+        "source": "cancelacion_giros_descubierto_dolares",
+        "target": "pagos_tarjetas_credito_moneda_extranjera",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "emisiones_titulos_deuda_refinanciamiento",
+        "target": "acceso_mercado_cambios_pago_deudas",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "emisiones_titulos_deuda_registro_publico",
+        "target": "acceso_mercado_cambios_pago_deudas",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "plazo_minimo_emision_titulos_entidades_financieras",
+        "target": "titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "plazo_minimo_emision_titulos_entidades_financieras",
+        "target": "entidades_financieras_locales",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

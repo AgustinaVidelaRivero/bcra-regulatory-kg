@@ -1,0 +1,79 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0106__punto_6",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"ajuste_valor_corriente_posiciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ajuste del valor corriente de posiciones\",\n      \"properties\": {\n        \"description\": \"Las entidades deben ajustar el valor corriente de posiciones y vigilar en forma permanente la suficiencia del ajuste.\"\n      }\n    },\n    {\n      \"id\": \"calculo_ajuste_precios_liquidacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo del ajuste con precios de liquidación\",\n      \"properties\": {\n        \"description\": \"Para el cálculo del ajuste las entidades deben computar los precios a los que podrían liquidar las posiciones concentradas o vencidas y todo otro factor relevante para las posiciones menos líquidas.\"\n      }\n    },\n    {\n      \"id\": \"factores_relevantes_posiciones_iliquidas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factores relevantes para posiciones ilíquidas\",\n      \"properties\": {\n        \"description\": \"Tiempo necesario para cubrir la posición, riesgos dentro de ella, volatilidad del margen bid-ask, cotizaciones independientes, volúmenes negociados, concentraciones de mercado, antigüedad de posiciones, dependencia de modelos de valuación, riesgos de modelo.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos que deben cumplir con las obligaciones de ajuste y cálculo de posiciones.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_concentradas_vencidas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Posiciones concentradas o vencidas\",\n      \"properties\": {\n        \"description\": \"Posiciones que requieren computación de precios de liquidación en el cálculo del ajuste.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"ajuste_valor_corriente_posiciones\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"calculo_ajuste_precios_liquidacion\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"calculo_ajuste_precios_liquidacion\",\n      \"target\": \"factores_relevantes_posiciones_iliquidas\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"calculo_ajuste_precios_liquidacion\",\n      \"target\": \"posiciones_concentradas_vencidas\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3708,
+  "output_tokens": 749,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 5,
+  "relations_count": 4,
+  "parsed": {
+    "entities": [
+      {
+        "id": "ajuste_valor_corriente_posiciones",
+        "type": "Restriccion",
+        "label": "Ajuste del valor corriente de posiciones",
+        "properties": {
+          "description": "Las entidades deben ajustar el valor corriente de posiciones y vigilar en forma permanente la suficiencia del ajuste."
+        }
+      },
+      {
+        "id": "calculo_ajuste_precios_liquidacion",
+        "type": "Restriccion",
+        "label": "Cálculo del ajuste con precios de liquidación",
+        "properties": {
+          "description": "Para el cálculo del ajuste las entidades deben computar los precios a los que podrían liquidar las posiciones concentradas o vencidas y todo otro factor relevante para las posiciones menos líquidas."
+        }
+      },
+      {
+        "id": "factores_relevantes_posiciones_iliquidas",
+        "type": "Concepto",
+        "label": "Factores relevantes para posiciones ilíquidas",
+        "properties": {
+          "description": "Tiempo necesario para cubrir la posición, riesgos dentro de ella, volatilidad del margen bid-ask, cotizaciones independientes, volúmenes negociados, concentraciones de mercado, antigüedad de posiciones, dependencia de modelos de valuación, riesgos de modelo."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos que deben cumplir con las obligaciones de ajuste y cálculo de posiciones."
+        }
+      },
+      {
+        "id": "posiciones_concentradas_vencidas",
+        "type": "Concepto",
+        "label": "Posiciones concentradas o vencidas",
+        "properties": {
+          "description": "Posiciones que requieren computación de precios de liquidación en el cálculo del ajuste."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera",
+        "target": "ajuste_valor_corriente_posiciones",
+        "predicate": "realiza"
+      },
+      {
+        "source": "calculo_ajuste_precios_liquidacion",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "calculo_ajuste_precios_liquidacion",
+        "target": "factores_relevantes_posiciones_iliquidas",
+        "predicate": "considera"
+      },
+      {
+        "source": "calculo_ajuste_precios_liquidacion",
+        "target": "posiciones_concentradas_vencidas",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

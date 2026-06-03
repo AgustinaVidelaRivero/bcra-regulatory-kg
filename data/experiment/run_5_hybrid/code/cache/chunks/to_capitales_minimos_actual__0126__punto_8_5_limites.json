@@ -1,0 +1,153 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0126__punto_8_5_limites",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 8.5 — Límites.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"co_n1_capital\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite mínimo CO_n1\",\n      \"properties\": {\n        \"description\": \"Importe resultante de multiplicar 4,5% por los APR. Elemento neto de conceptos deducibles.\",\n        \"formula\": \"CO_n1 = 4,5% × APR\"\n      }\n    },\n    {\n      \"id\": \"pnb_capital\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite mínimo PNb\",\n      \"properties\": {\n        \"description\": \"Importe resultante de multiplicar 6% por los APR. Elemento neto de conceptos deducibles.\",\n        \"formula\": \"PNb = 6% × APR\"\n      }\n    },\n    {\n      \"id\": \"rpc_capital\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite mínimo RPC\",\n      \"properties\": {\n        \"description\": \"Importe resultante de multiplicar 8% por los APR. Elemento neto de conceptos deducibles.\",\n        \"formula\": \"RPC = 8% × APR\"\n      }\n    },\n    {\n      \"id\": \"apr_calculo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos ponderados por riesgo\",\n      \"properties\": {\n        \"description\": \"Suma de activos ponderados por riesgo de crédito más la multiplicación de exigencias por riesgo de mercado y operacional por 12,5.\",\n        \"formula\": \"APR = APR_c + [(RM + RO) × 12,5]\"\n      }\n    },\n    {\n      \"id\": \"apr_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos ponderados por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Determinados conforme a lo establecido en el punto 3.1.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Determinada conforme a lo establecido en la Sección 6.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_operacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Determinada conforme a lo establecido en la Sección 7.\"\n      }\n    },\n    {\n      \"id\": \"incumplimiento_limite_minimo\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Incumplimiento de límites mínimos de capital\",\n      \"properties\": {\n        \"description\": \"La falta de cumplimiento de cualquiera de estos límites mínimos es considerada incumplimiento de integración del capital mínimo.\"\n      }\n    },\n    {\n      \"id\": \"sancion_incumplimiento_capital\",\n      \"type\": \"Sancion\",\n      \"label\": \"Aplicación de sanciones por incumplimiento\",\n      \"properties\": {\n        \"description\": \"Corresponde la aplicación de lo previsto por el punto 1.4 y la Sección 1 de las normas sobre Incumplimientos de capitales mínimos y relaciones técnicas.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_bcra\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras del BCRA\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA en materia de capitales mínimos.\"\n      },\n      \"categoria\": \"otra\"\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"co_n1_capital\",\n      \"target\": \"apr_calculo\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"pnb_capital\",\n      \"target\": \"apr_calculo\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"rpc_capital\",\n      \"target\": \"apr_calculo\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"apr_calculo\",\n      \"target\": \"apr_credito\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"apr_calculo\",\n      \"target\": \"riesgo_mercado\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"apr_calculo\",\n      \"target\": \"riesgo_operacional\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"incumplimiento_limite_minimo\",\n      \"target\": \"co_n1_capital\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"incumplimiento_limite_minimo\",\n      \"target\": \"pnb_capital\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"incumplimiento_limite_minimo\",\n      \"target\": \"rpc_capital\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"sancion_incumplimiento_capital\",\n      \"target\": \"entidad_financiera_bcra\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3862,
+  "output_tokens": 1443,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "co_n1_capital",
+        "type": "Restriccion",
+        "label": "Límite mínimo CO_n1",
+        "properties": {
+          "description": "Importe resultante de multiplicar 4,5% por los APR. Elemento neto de conceptos deducibles.",
+          "formula": "CO_n1 = 4,5% × APR"
+        }
+      },
+      {
+        "id": "pnb_capital",
+        "type": "Restriccion",
+        "label": "Límite mínimo PNb",
+        "properties": {
+          "description": "Importe resultante de multiplicar 6% por los APR. Elemento neto de conceptos deducibles.",
+          "formula": "PNb = 6% × APR"
+        }
+      },
+      {
+        "id": "rpc_capital",
+        "type": "Restriccion",
+        "label": "Límite mínimo RPC",
+        "properties": {
+          "description": "Importe resultante de multiplicar 8% por los APR. Elemento neto de conceptos deducibles.",
+          "formula": "RPC = 8% × APR"
+        }
+      },
+      {
+        "id": "apr_calculo",
+        "type": "Concepto",
+        "label": "Activos ponderados por riesgo",
+        "properties": {
+          "description": "Suma de activos ponderados por riesgo de crédito más la multiplicación de exigencias por riesgo de mercado y operacional por 12,5.",
+          "formula": "APR = APR_c + [(RM + RO) × 12,5]"
+        }
+      },
+      {
+        "id": "apr_credito",
+        "type": "Concepto",
+        "label": "Activos ponderados por riesgo de crédito",
+        "properties": {
+          "description": "Determinados conforme a lo establecido en el punto 3.1."
+        }
+      },
+      {
+        "id": "riesgo_mercado",
+        "type": "Concepto",
+        "label": "Exigencia por riesgo de mercado",
+        "properties": {
+          "description": "Determinada conforme a lo establecido en la Sección 6."
+        }
+      },
+      {
+        "id": "riesgo_operacional",
+        "type": "Concepto",
+        "label": "Exigencia por riesgo operacional",
+        "properties": {
+          "description": "Determinada conforme a lo establecido en la Sección 7."
+        }
+      },
+      {
+        "id": "incumplimiento_limite_minimo",
+        "type": "Excepcion",
+        "label": "Incumplimiento de límites mínimos de capital",
+        "properties": {
+          "description": "La falta de cumplimiento de cualquiera de estos límites mínimos es considerada incumplimiento de integración del capital mínimo."
+        }
+      },
+      {
+        "id": "sancion_incumplimiento_capital",
+        "type": "Sancion",
+        "label": "Aplicación de sanciones por incumplimiento",
+        "properties": {
+          "description": "Corresponde la aplicación de lo previsto por el punto 1.4 y la Sección 1 de las normas sobre Incumplimientos de capitales mínimos y relaciones técnicas."
+        }
+      },
+      {
+        "id": "entidad_financiera_bcra",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras del BCRA",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA en materia de capitales mínimos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "co_n1_capital",
+        "target": "apr_calculo",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "pnb_capital",
+        "target": "apr_calculo",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "rpc_capital",
+        "target": "apr_calculo",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "apr_calculo",
+        "target": "apr_credito",
+        "predicate": "incluye"
+      },
+      {
+        "source": "apr_calculo",
+        "target": "riesgo_mercado",
+        "predicate": "incluye"
+      },
+      {
+        "source": "apr_calculo",
+        "target": "riesgo_operacional",
+        "predicate": "incluye"
+      },
+      {
+        "source": "incumplimiento_limite_minimo",
+        "target": "co_n1_capital",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "incumplimiento_limite_minimo",
+        "target": "pnb_capital",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "incumplimiento_limite_minimo",
+        "target": "rpc_capital",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "sancion_incumplimiento_capital",
+        "target": "entidad_financiera_bcra",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

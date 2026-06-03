@@ -1,0 +1,153 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0019__punto_4_exigencia_e_integracion_de_capit",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"exigencia_riesgo_operacional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Determinación mensual de la exigencia de capital mínimo por riesgo operacional mediante fórmula basada en ingreso bruto de períodos de 12 meses consecutivos.\",\n        \"categoria\": null\n      }\n    },\n    {\n      \"id\": \"entidades_grupo_2\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades del Grupo 2\",\n      \"properties\": {\n        \"description\": \"Categoría de entidades financieras sujetas a exigencia de capital mínimo por riesgo operacional con metodología específica.\"\n      }\n    },\n    {\n      \"id\": \"entidades_grupo_a\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades del Grupo A\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que reciben tratamiento especial cuando n=0 en el cálculo de exigencia por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"ingreso_bruto\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ingreso bruto\",\n      \"properties\": {\n        \"description\": \"Suma de ingresos y egresos financieros, por servicios, utilidades y pérdidas diversas, más resultado monetario total, en períodos de 12 meses consecutivos.\"\n      }\n    },\n    {\n      \"id\": \"capital_minimo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Capital mínimo requerido\",\n      \"properties\": {\n        \"description\": \"Exigencia de integración de capital mínimo conforme punto 7.3 de normas sobre capitales mínimos de entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"calculo_36_meses\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo sobre últimos 36 meses\",\n      \"properties\": {\n        \"description\": \"La exigencia se determina considerando los últimos 36 meses anteriores al mes de cálculo, con máximo de 3 períodos de 12 meses.\"\n      }\n    },\n    {\n      \"id\": \"reexpresion_moneda_homogenea\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reexpresión en moneda homogénea\",\n      \"properties\": {\n        \"description\": \"Los saldos y conceptos deben reexpresarse en moneda homogénea del mes anterior al que se efectúa el cálculo.\"\n      }\n    },\n    {\n      \"id\": \"tasa_riesgo_operacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tasa de exigencia operacional\",\n      \"properties\": {\n        \"description\": \"Porcentaje fijo del 15% aplicado al cálculo de exigencia por riesgo operacional (parámetro a).\"\n      }\n    },\n    {\n      \"id\": \"caso_n_cero\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exención cuando n es cero\",\n      \"properties\": {\n        \"description\": \"Cuando el número de períodos de 12 meses con ingreso bruto positivo es cero, se aplica exigencia equivalente al límite del punto 7.3 de normas de capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"tratamiento_grupo_a_punto_7_3_1\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Tratamiento especial Grupo A punto 7.3.1\",\n      \"properties\": {\n        \"description\": \"Entidades del Grupo A reciben tratamiento especial conforme punto 7.3.1 de normas de capitales mínimos con cálculo según punto 5.1.3.2.\"\n      }\n    },\n    {\n      \"id\": \"presentacion_resultados\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación de resultados\",\n      \"properties\": {\n        \"description\": \"Informe de resultados de cada período de 12 meses con reexpresión de conceptos desde mes de origen hasta cierre del período de cálculo.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"exigencia_riesgo_operacional\",\n      \"target\": \"entidades_grupo_2\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exigencia_riesgo_operacional\",\n      \"target\": \"ingreso_bruto\",\n      \"predicate\": \"depende_de\"\n    },\n    {\n      \"source\": \"caso_n_cero\",\n      \"target\": \"capital_minimo\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"caso_n_cero\",\n      \"target\": \"entidades_grupo_2\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"tratamiento_grupo_a_punto_7_3_1\",\n      \"target\": \"exigencia_riesgo_operacional\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"tratamiento_grupo_a_punto_7_3_1\",\n      \"target\": \"entidades_grupo_a\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"calculo_36_meses\",\n      \"target\": \"exigencia_riesgo_operacional\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reexpresion_moneda_homogenea\",\n      \"target\": \"presentacion_resultados\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"tasa_riesgo_operacional\",\n      \"target\": \"exigencia_riesgo_operacional\",\n      \"predicate\": \"define\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4169,
+  "output_tokens": 1587,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "exigencia_riesgo_operacional",
+        "type": "Restriccion",
+        "label": "Exigencia por riesgo operacional",
+        "properties": {
+          "description": "Determinación mensual de la exigencia de capital mínimo por riesgo operacional mediante fórmula basada en ingreso bruto de períodos de 12 meses consecutivos.",
+          "categoria": null
+        }
+      },
+      {
+        "id": "entidades_grupo_2",
+        "type": "Concepto",
+        "label": "Entidades del Grupo 2",
+        "properties": {
+          "description": "Categoría de entidades financieras sujetas a exigencia de capital mínimo por riesgo operacional con metodología específica."
+        }
+      },
+      {
+        "id": "entidades_grupo_a",
+        "type": "Concepto",
+        "label": "Entidades del Grupo A",
+        "properties": {
+          "description": "Entidades financieras que reciben tratamiento especial cuando n=0 en el cálculo de exigencia por riesgo operacional."
+        }
+      },
+      {
+        "id": "ingreso_bruto",
+        "type": "Concepto",
+        "label": "Ingreso bruto",
+        "properties": {
+          "description": "Suma de ingresos y egresos financieros, por servicios, utilidades y pérdidas diversas, más resultado monetario total, en períodos de 12 meses consecutivos."
+        }
+      },
+      {
+        "id": "capital_minimo",
+        "type": "Restriccion",
+        "label": "Capital mínimo requerido",
+        "properties": {
+          "description": "Exigencia de integración de capital mínimo conforme punto 7.3 de normas sobre capitales mínimos de entidades financieras."
+        }
+      },
+      {
+        "id": "calculo_36_meses",
+        "type": "Restriccion",
+        "label": "Cálculo sobre últimos 36 meses",
+        "properties": {
+          "description": "La exigencia se determina considerando los últimos 36 meses anteriores al mes de cálculo, con máximo de 3 períodos de 12 meses."
+        }
+      },
+      {
+        "id": "reexpresion_moneda_homogenea",
+        "type": "Restriccion",
+        "label": "Reexpresión en moneda homogénea",
+        "properties": {
+          "description": "Los saldos y conceptos deben reexpresarse en moneda homogénea del mes anterior al que se efectúa el cálculo."
+        }
+      },
+      {
+        "id": "tasa_riesgo_operacional",
+        "type": "Concepto",
+        "label": "Tasa de exigencia operacional",
+        "properties": {
+          "description": "Porcentaje fijo del 15% aplicado al cálculo de exigencia por riesgo operacional (parámetro a)."
+        }
+      },
+      {
+        "id": "caso_n_cero",
+        "type": "Excepcion",
+        "label": "Exención cuando n es cero",
+        "properties": {
+          "description": "Cuando el número de períodos de 12 meses con ingreso bruto positivo es cero, se aplica exigencia equivalente al límite del punto 7.3 de normas de capitales mínimos."
+        }
+      },
+      {
+        "id": "tratamiento_grupo_a_punto_7_3_1",
+        "type": "Excepcion",
+        "label": "Tratamiento especial Grupo A punto 7.3.1",
+        "properties": {
+          "description": "Entidades del Grupo A reciben tratamiento especial conforme punto 7.3.1 de normas de capitales mínimos con cálculo según punto 5.1.3.2."
+        }
+      },
+      {
+        "id": "presentacion_resultados",
+        "type": "Operacion",
+        "label": "Presentación de resultados",
+        "properties": {
+          "description": "Informe de resultados de cada período de 12 meses con reexpresión de conceptos desde mes de origen hasta cierre del período de cálculo."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "exigencia_riesgo_operacional",
+        "target": "entidades_grupo_2",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exigencia_riesgo_operacional",
+        "target": "ingreso_bruto",
+        "predicate": "depende_de"
+      },
+      {
+        "source": "caso_n_cero",
+        "target": "capital_minimo",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "caso_n_cero",
+        "target": "entidades_grupo_2",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "tratamiento_grupo_a_punto_7_3_1",
+        "target": "exigencia_riesgo_operacional",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "tratamiento_grupo_a_punto_7_3_1",
+        "target": "entidades_grupo_a",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "calculo_36_meses",
+        "target": "exigencia_riesgo_operacional",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reexpresion_moneda_homogenea",
+        "target": "presentacion_resultados",
+        "predicate": "requiere"
+      },
+      {
+        "source": "tasa_riesgo_operacional",
+        "target": "exigencia_riesgo_operacional",
+        "predicate": "define"
+      }
+    ]
+  }
+}

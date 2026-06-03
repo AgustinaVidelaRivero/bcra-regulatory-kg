@@ -1,0 +1,299 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0033__punto_7_2_niveles_de_clasificacion_parte",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 7.2 — Niveles de clasificación. (parte 1/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"situacion_normal\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Situación normal\",\n      \"properties\": {\n        \"description\": \"Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimiento normal hasta 61 días.\"\n      }\n    },\n    {\n      \"id\": \"atraso_maximo_31_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Atraso máximo 31 días\",\n      \"properties\": {\n        \"description\": \"Los clientes en situación normal no pueden registrar atrasos superiores a 31 días en el pago de obligaciones.\"\n      }\n    },\n    {\n      \"id\": \"adelantos_transitorios_cuenta_corriente\",\n      \"type\": \"Operacion\",\n      \"label\": \"Adelantos transitorios en cuenta corriente\",\n      \"properties\": {\n        \"description\": \"Adelantos otorgados en cuenta corriente que se consideran de cumplimiento normal hasta 61 días desde su otorgamiento.\"\n      }\n    },\n    {\n      \"id\": \"calculo_atraso_tarjetas_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de atraso en tarjetas de crédito\",\n      \"properties\": {\n        \"description\": \"Para financiaciones mediante tarjetas de crédito, los días de atraso se cuentan luego de imputar el pago mínimo exigido a cancelar la deuda en orden decreciente de antigüedad.\"\n      }\n    },\n    {\n      \"id\": \"refinanciacion_desde_niveles_inferiores\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización tras refinanciación\",\n      \"properties\": {\n        \"description\": \"Deudores refinanciados desde niveles inferiores solo pueden incluirse en situación normal si observan pautas de cada nivel y sus otras deudas reúnen condiciones para recategorización.\"\n      }\n    },\n    {\n      \"id\": \"limite_refinanciaciones_12_meses\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de refinanciaciones en 12 meses\",\n      \"properties\": {\n        \"description\": \"Deudores refinanciados sin atrasos pueden permanecer en situación normal si accedieron a máximo dos refinanciaciones en 12 meses desde la última otorgada.\"\n      }\n    },\n    {\n      \"id\": \"ampliacion_margen_crediticio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ampliación de margen crediticio\",\n      \"properties\": {\n        \"description\": \"Asistencia a deudores en situación normal que implique mayor deuda por capital neto de intereses y con evaluación de capacidad de pago no se considera refinanciación.\"\n      }\n    },\n    {\n      \"id\": \"sobregiros_cuenta_corriente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento de sobregiros\",\n      \"properties\": {\n        \"description\": \"Sobregiros que excedan márgenes acordados o sin margen previo asignado no se consideran refinanciación si se cancelan dentro de 30 días.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_refinanciaciones_distintas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación por refinanciaciones en condiciones distintas\",\n      \"properties\": {\n        \"description\": \"Refinanciaciones en condiciones distintas a las señaladas requieren reclasificación del deudor como mínimo al nivel inmediato inferior.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_bajo_en_observacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo bajo - En observación\",\n      \"properties\": {\n        \"description\": \"Clientes con incumplimientos ocasionales, atrasos de más de 31 hasta 90 días.\"\n      }\n    },\n    {\n      \"id\": \"atraso_31_90_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Atraso de 31 a 90 días\",\n      \"properties\": {\n        \"description\": \"Rango de atraso que clasifica al deudor en nivel de riesgo bajo en observación.\"\n      }\n    },\n    {\n      \"id\": \"convenios_pago_concordatos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Convenios de pago por concordatos\",\n      \"properties\": {\n        \"description\": \"Se considera la situación jurídica del deudor respecto a convenios de concordatos judiciales o extrajudiciales homologados a vencer cuando se haya cancelado al menos 10% del importe.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_obligaciones_periodicas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación tras pago de obligaciones periódicas\",\n      \"properties\": {\n        \"description\": \"Deudores con refinanciaciones de pago periódico pueden reclasificarse al nivel superior al cumplir puntualmente o con atrasos hasta 31 días la primera cuota, o al cancelar 5% de obligaciones refinanciadas.\"\n      }\n    },\n    {\n      \"id\": \"permanencia_categoria_credito_adicional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Permanencia tras crédito adicional\",\n      \"properties\": {\n        \"description\": \"Deudor refinanciado que recibe crédito adicional debe permanecer en riesgo bajo en observación al menos 180 días desde fecha de otorgamiento.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_atrasos_refinanciacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación inmediata por atrasos\",\n      \"properties\": {\n        \"description\": \"Atrasos mayores a 31 días en servicios de deuda refinanciada requieren reclasificación inmediata considerando suma de días de atraso efectivos y mínimos normativos.\"\n      }\n    },\n    {\n      \"id\": \"tratamiento_especial_refinanciacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo bajo - En tratamiento especial\",\n      \"properties\": {\n        \"description\": \"Primera refinanciación dentro del año calendario: cliente puede reclasificarse por única vez en esta situación tras pagar primera cuota, considerando únicamente mora en atrasos.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_medio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Riesgo medio\",\n      \"properties\": {\n        \"description\": \"Clientes que muestran incapacidad para cancelar obligaciones, con atrasos de más de 90 hasta 180 días.\"\n      }\n    },\n    {\n      \"id\": \"atraso_90_180_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Atraso de 90 a 180 días\",\n      \"properties\": {\n        \"description\": \"Rango de atraso que clasifica al deudor en nivel de riesgo medio.\"\n      }\n    },\n    {\n      \"id\": \"convenios_pago_riesgo_medio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Convenios de pago - Riesgo medio\",\n      \"properties\": {\n        \"description\": \"En riesgo medio se considera si deudor mantiene convenios de concordatos cuando aún no se ha cancelado el 10% del importe involucrado.\"\n      }\n    },\n    {\n      \"id\": \"deudor\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor\",\n      \"properties\": {\n        \"description\": \"Cliente u obligado que contrae deudas y es sujeto de clasificación.\"\n      }\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Persona que mantiene relaciones financieras con la entidad y es clasificada según su comportamiento de pago.\"\n      }\n    },\n    {\n      \"id\": \"obligaciones_financieras\",\n      \"type\": \"Concepto\",\n      \"label\": \"Obligaciones financieras\",\n      \"properties\": {\n        \"description\": \"Compromisos de pago que los deudores deben atender según cronograma establecido.\"\n      }\n    },\n    {\n      \"id\": \"refinanciacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Refinanciación\",\n      \"properties\": {\n        \"description\": \"Operación mediante la cual se reestructuran obligaciones de pago de un deudor, generalmente extendiendo plazos o modificando términos.\"\n      }\n    },\n    {\n      \"id\": \"tarjeta_credito\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Tarjeta de crédito\",\n      \"properties\": {\n        \"description\": \"Instrumento financiero que permite acceder a financiación con pago mínimo exigido en liquidaciones periódicas.\"\n      }\n    },\n    {\n      \"id\": \"concordato\",\n      \"type\": \"Concepto\",\n      \"label\": \"Concordato\",\n      \"properties\": {\n        \"description\": \"Acuerdo judicial o extrajudicial homologado, incluidos acuerdos preventivos extrajudiciales, para reestructuración de deudas.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"atraso_maximo_31_dias\",\n      \"target\": \"situacion_normal\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"adelantos_transitorios_cuenta_corriente\",\n      \"target\": \"situacion_normal\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calculo_atraso_tarjetas_credito\",\n      \"target\": \"tarjeta_credito\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"refinanciacion_desde_niveles_inferiores\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"limite_refinanciaciones_12_meses\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"limita\"\n    },\n    {\n      \"source\": \"ampliacion_margen_crediticio\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"sobregiros_cuenta_corriente\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"reclasificacion_refinanciaciones_distintas\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"riesgo_bajo_en_observacion\",\n      \"target\": \"atraso_31_90_dias\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"convenios_pago_concordatos\",\n      \"target\": \"concordato\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reclasificacion_obligaciones_periodicas\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"permanencia_categoria_credito_adicional\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reclasificacion_atrasos_refinanciacion\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"tratamiento_especial_refinanciacion\",\n      \"target\": \"refinanciacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"riesgo_medio\",\n      \"target\": \"atraso_90_180_dias\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"convenios_pago_riesgo_medio\",\n      \"target\": \"concordato\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5319,
+  "output_tokens": 3274,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 25,
+  "relations_count": 16,
+  "parsed": {
+    "entities": [
+      {
+        "id": "situacion_normal",
+        "type": "Restriccion",
+        "label": "Situación normal",
+        "properties": {
+          "description": "Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimiento normal hasta 61 días."
+        }
+      },
+      {
+        "id": "atraso_maximo_31_dias",
+        "type": "Restriccion",
+        "label": "Atraso máximo 31 días",
+        "properties": {
+          "description": "Los clientes en situación normal no pueden registrar atrasos superiores a 31 días en el pago de obligaciones."
+        }
+      },
+      {
+        "id": "adelantos_transitorios_cuenta_corriente",
+        "type": "Operacion",
+        "label": "Adelantos transitorios en cuenta corriente",
+        "properties": {
+          "description": "Adelantos otorgados en cuenta corriente que se consideran de cumplimiento normal hasta 61 días desde su otorgamiento."
+        }
+      },
+      {
+        "id": "calculo_atraso_tarjetas_credito",
+        "type": "Restriccion",
+        "label": "Cálculo de atraso en tarjetas de crédito",
+        "properties": {
+          "description": "Para financiaciones mediante tarjetas de crédito, los días de atraso se cuentan luego de imputar el pago mínimo exigido a cancelar la deuda en orden decreciente de antigüedad."
+        }
+      },
+      {
+        "id": "refinanciacion_desde_niveles_inferiores",
+        "type": "Restriccion",
+        "label": "Recategorización tras refinanciación",
+        "properties": {
+          "description": "Deudores refinanciados desde niveles inferiores solo pueden incluirse en situación normal si observan pautas de cada nivel y sus otras deudas reúnen condiciones para recategorización."
+        }
+      },
+      {
+        "id": "limite_refinanciaciones_12_meses",
+        "type": "Restriccion",
+        "label": "Límite de refinanciaciones en 12 meses",
+        "properties": {
+          "description": "Deudores refinanciados sin atrasos pueden permanecer en situación normal si accedieron a máximo dos refinanciaciones en 12 meses desde la última otorgada."
+        }
+      },
+      {
+        "id": "ampliacion_margen_crediticio",
+        "type": "Restriccion",
+        "label": "Ampliación de margen crediticio",
+        "properties": {
+          "description": "Asistencia a deudores en situación normal que implique mayor deuda por capital neto de intereses y con evaluación de capacidad de pago no se considera refinanciación."
+        }
+      },
+      {
+        "id": "sobregiros_cuenta_corriente",
+        "type": "Restriccion",
+        "label": "Tratamiento de sobregiros",
+        "properties": {
+          "description": "Sobregiros que excedan márgenes acordados o sin margen previo asignado no se consideran refinanciación si se cancelan dentro de 30 días."
+        }
+      },
+      {
+        "id": "reclasificacion_refinanciaciones_distintas",
+        "type": "Restriccion",
+        "label": "Reclasificación por refinanciaciones en condiciones distintas",
+        "properties": {
+          "description": "Refinanciaciones en condiciones distintas a las señaladas requieren reclasificación del deudor como mínimo al nivel inmediato inferior."
+        }
+      },
+      {
+        "id": "riesgo_bajo_en_observacion",
+        "type": "Restriccion",
+        "label": "Riesgo bajo - En observación",
+        "properties": {
+          "description": "Clientes con incumplimientos ocasionales, atrasos de más de 31 hasta 90 días."
+        }
+      },
+      {
+        "id": "atraso_31_90_dias",
+        "type": "Restriccion",
+        "label": "Atraso de 31 a 90 días",
+        "properties": {
+          "description": "Rango de atraso que clasifica al deudor en nivel de riesgo bajo en observación."
+        }
+      },
+      {
+        "id": "convenios_pago_concordatos",
+        "type": "Restriccion",
+        "label": "Convenios de pago por concordatos",
+        "properties": {
+          "description": "Se considera la situación jurídica del deudor respecto a convenios de concordatos judiciales o extrajudiciales homologados a vencer cuando se haya cancelado al menos 10% del importe."
+        }
+      },
+      {
+        "id": "reclasificacion_obligaciones_periodicas",
+        "type": "Restriccion",
+        "label": "Reclasificación tras pago de obligaciones periódicas",
+        "properties": {
+          "description": "Deudores con refinanciaciones de pago periódico pueden reclasificarse al nivel superior al cumplir puntualmente o con atrasos hasta 31 días la primera cuota, o al cancelar 5% de obligaciones refinanciadas."
+        }
+      },
+      {
+        "id": "permanencia_categoria_credito_adicional",
+        "type": "Restriccion",
+        "label": "Permanencia tras crédito adicional",
+        "properties": {
+          "description": "Deudor refinanciado que recibe crédito adicional debe permanecer en riesgo bajo en observación al menos 180 días desde fecha de otorgamiento."
+        }
+      },
+      {
+        "id": "reclasificacion_atrasos_refinanciacion",
+        "type": "Restriccion",
+        "label": "Reclasificación inmediata por atrasos",
+        "properties": {
+          "description": "Atrasos mayores a 31 días en servicios de deuda refinanciada requieren reclasificación inmediata considerando suma de días de atraso efectivos y mínimos normativos."
+        }
+      },
+      {
+        "id": "tratamiento_especial_refinanciacion",
+        "type": "Restriccion",
+        "label": "Riesgo bajo - En tratamiento especial",
+        "properties": {
+          "description": "Primera refinanciación dentro del año calendario: cliente puede reclasificarse por única vez en esta situación tras pagar primera cuota, considerando únicamente mora en atrasos."
+        }
+      },
+      {
+        "id": "riesgo_medio",
+        "type": "Restriccion",
+        "label": "Riesgo medio",
+        "properties": {
+          "description": "Clientes que muestran incapacidad para cancelar obligaciones, con atrasos de más de 90 hasta 180 días."
+        }
+      },
+      {
+        "id": "atraso_90_180_dias",
+        "type": "Restriccion",
+        "label": "Atraso de 90 a 180 días",
+        "properties": {
+          "description": "Rango de atraso que clasifica al deudor en nivel de riesgo medio."
+        }
+      },
+      {
+        "id": "convenios_pago_riesgo_medio",
+        "type": "Restriccion",
+        "label": "Convenios de pago - Riesgo medio",
+        "properties": {
+          "description": "En riesgo medio se considera si deudor mantiene convenios de concordatos cuando aún no se ha cancelado el 10% del importe involucrado."
+        }
+      },
+      {
+        "id": "deudor",
+        "type": "Concepto",
+        "label": "Deudor",
+        "properties": {
+          "description": "Cliente u obligado que contrae deudas y es sujeto de clasificación."
+        }
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Persona que mantiene relaciones financieras con la entidad y es clasificada según su comportamiento de pago."
+        }
+      },
+      {
+        "id": "obligaciones_financieras",
+        "type": "Concepto",
+        "label": "Obligaciones financieras",
+        "properties": {
+          "description": "Compromisos de pago que los deudores deben atender según cronograma establecido."
+        }
+      },
+      {
+        "id": "refinanciacion",
+        "type": "Operacion",
+        "label": "Refinanciación",
+        "properties": {
+          "description": "Operación mediante la cual se reestructuran obligaciones de pago de un deudor, generalmente extendiendo plazos o modificando términos."
+        }
+      },
+      {
+        "id": "tarjeta_credito",
+        "type": "InstrumentoFinanciero",
+        "label": "Tarjeta de crédito",
+        "properties": {
+          "description": "Instrumento financiero que permite acceder a financiación con pago mínimo exigido en liquidaciones periódicas."
+        }
+      },
+      {
+        "id": "concordato",
+        "type": "Concepto",
+        "label": "Concordato",
+        "properties": {
+          "description": "Acuerdo judicial o extrajudicial homologado, incluidos acuerdos preventivos extrajudiciales, para reestructuración de deudas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "atraso_maximo_31_dias",
+        "target": "situacion_normal",
+        "predicate": "define"
+      },
+      {
+        "source": "adelantos_transitorios_cuenta_corriente",
+        "target": "situacion_normal",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calculo_atraso_tarjetas_credito",
+        "target": "tarjeta_credito",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "refinanciacion_desde_niveles_inferiores",
+        "target": "refinanciacion",
+        "predicate": "regula"
+      },
+      {
+        "source": "limite_refinanciaciones_12_meses",
+        "target": "refinanciacion",
+        "predicate": "limita"
+      },
+      {
+        "source": "ampliacion_margen_crediticio",
+        "target": "refinanciacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "sobregiros_cuenta_corriente",
+        "target": "refinanciacion",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "reclasificacion_refinanciaciones_distintas",
+        "target": "refinanciacion",
+        "predicate": "requiere"
+      },
+      {
+        "source": "riesgo_bajo_en_observacion",
+        "target": "atraso_31_90_dias",
+        "predicate": "define"
+      },
+      {
+        "source": "convenios_pago_concordatos",
+        "target": "concordato",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reclasificacion_obligaciones_periodicas",
+        "target": "refinanciacion",
+        "predicate": "regula"
+      },
+      {
+        "source": "permanencia_categoria_credito_adicional",
+        "target": "refinanciacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reclasificacion_atrasos_refinanciacion",
+        "target": "refinanciacion",
+        "predicate": "requiere"
+      },
+      {
+        "source": "tratamiento_especial_refinanciacion",
+        "target": "refinanciacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "riesgo_medio",
+        "target": "atraso_90_180_dias",
+        "predicate": "define"
+      },
+      {
+        "source": "convenios_pago_riesgo_medio",
+        "target": "concordato",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

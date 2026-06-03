@@ -1,0 +1,126 @@
+{
+  "chunk_id": "to_proteccion_usuarios_servicios_financi__0035__punto_2_1_cuando_el_usuario_de_servicios",
+  "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+  "location": "Punto 2.1 — Cuando el usuario de servicios financieros reciba de la entidad una respuesta qu + Punto 4",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"usuario_servicios_financieros\",\n      \"type\": \"Concepto\",\n      \"label\": \"Usuario de servicios financieros\",\n      \"properties\": {\n        \"description\": \"Persona que utiliza servicios ofrecidos por entidades financieras reguladas por el BCRA.\"\n      }\n    },\n    {\n      \"id\": \"sujeto_obligado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sujeto obligado\",\n      \"properties\": {\n        \"description\": \"Entidad financiera comprendida en la regulación del BCRA sujeta a obligaciones de atención al usuario.\"\n      }\n    },\n    {\n      \"id\": \"reclamo_usuario\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación de reclamo ante sujeto obligado\",\n      \"properties\": {\n        \"description\": \"Acción mediante la cual el usuario presenta un reclamo ante la entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"plazo_diez_dias_habiles\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de diez días hábiles para respuesta\",\n      \"properties\": {\n        \"description\": \"La entidad financiera debe responder el reclamo del usuario dentro de diez (10) días hábiles desde su presentación.\"\n      }\n    },\n    {\n      \"id\": \"presentacion_bcra\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación ante el BCRA\",\n      \"properties\": {\n        \"description\": \"Acción mediante la cual el usuario informa al BCRA sobre insatisfacción con la respuesta o falta de respuesta de la entidad.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria competente que recibe presentaciones de usuarios sobre protección de servicios financieros.\"\n      }\n    },\n    {\n      \"id\": \"gerencia_principal_proteccion_usuario\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Gerencia Principal de Protección al Usuario\",\n      \"properties\": {\n        \"description\": \"Área del BCRA responsable de recibir y tramitar presentaciones de usuarios sobre protección en servicios financieros.\"\n      }\n    },\n    {\n      \"id\": \"medios_electronicos_habilitados\",\n      \"type\": \"Concepto\",\n      \"label\": \"Medios electrónicos habilitados\",\n      \"properties\": {\n        \"description\": \"Canales digitales disponibles en el sitio de Internet institucional del BCRA para presentaciones de usuarios.\"\n      }\n    },\n    {\n      \"id\": \"representante_legal_apoderado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Representante legal o apoderado del usuario\",\n      \"properties\": {\n        \"description\": \"Persona autorizada para actuar en nombre del usuario en presentaciones ante el BCRA.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"plazo_diez_dias_habiles\",\n      \"target\": \"reclamo_usuario\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"plazo_diez_dias_habiles\",\n      \"target\": \"sujeto_obligado\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"usuario_servicios_financieros\",\n      \"target\": \"reclamo_usuario\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"usuario_servicios_financieros\",\n      \"target\": \"presentacion_bcra\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"presentacion_bcra\",\n      \"target\": \"bcra\",\n      \"predicate\": \"informa_a\"\n    },\n    {\n      \"source\": \"presentacion_bcra\",\n      \"target\": \"gerencia_principal_proteccion_usuario\",\n      \"predicate\": \"dirige_a\"\n    },\n    {\n      \"source\": \"gerencia_principal_proteccion_usuario\",\n      \"target\": \"bcra\",\n      \"predicate\": \"integra\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3581,
+  "output_tokens": 1125,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "usuario_servicios_financieros",
+        "type": "Concepto",
+        "label": "Usuario de servicios financieros",
+        "properties": {
+          "description": "Persona que utiliza servicios ofrecidos por entidades financieras reguladas por el BCRA."
+        }
+      },
+      {
+        "id": "sujeto_obligado",
+        "type": "Concepto",
+        "label": "Sujeto obligado",
+        "properties": {
+          "description": "Entidad financiera comprendida en la regulación del BCRA sujeta a obligaciones de atención al usuario."
+        }
+      },
+      {
+        "id": "reclamo_usuario",
+        "type": "Operacion",
+        "label": "Presentación de reclamo ante sujeto obligado",
+        "properties": {
+          "description": "Acción mediante la cual el usuario presenta un reclamo ante la entidad financiera."
+        }
+      },
+      {
+        "id": "plazo_diez_dias_habiles",
+        "type": "Restriccion",
+        "label": "Plazo de diez días hábiles para respuesta",
+        "properties": {
+          "description": "La entidad financiera debe responder el reclamo del usuario dentro de diez (10) días hábiles desde su presentación."
+        }
+      },
+      {
+        "id": "presentacion_bcra",
+        "type": "Operacion",
+        "label": "Presentación ante el BCRA",
+        "properties": {
+          "description": "Acción mediante la cual el usuario informa al BCRA sobre insatisfacción con la respuesta o falta de respuesta de la entidad."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria competente que recibe presentaciones de usuarios sobre protección de servicios financieros."
+        }
+      },
+      {
+        "id": "gerencia_principal_proteccion_usuario",
+        "type": "Autoridad",
+        "label": "Gerencia Principal de Protección al Usuario",
+        "properties": {
+          "description": "Área del BCRA responsable de recibir y tramitar presentaciones de usuarios sobre protección en servicios financieros."
+        }
+      },
+      {
+        "id": "medios_electronicos_habilitados",
+        "type": "Concepto",
+        "label": "Medios electrónicos habilitados",
+        "properties": {
+          "description": "Canales digitales disponibles en el sitio de Internet institucional del BCRA para presentaciones de usuarios."
+        }
+      },
+      {
+        "id": "representante_legal_apoderado",
+        "type": "Concepto",
+        "label": "Representante legal o apoderado del usuario",
+        "properties": {
+          "description": "Persona autorizada para actuar en nombre del usuario en presentaciones ante el BCRA."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "plazo_diez_dias_habiles",
+        "target": "reclamo_usuario",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "plazo_diez_dias_habiles",
+        "target": "sujeto_obligado",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "usuario_servicios_financieros",
+        "target": "reclamo_usuario",
+        "predicate": "realiza"
+      },
+      {
+        "source": "usuario_servicios_financieros",
+        "target": "presentacion_bcra",
+        "predicate": "realiza"
+      },
+      {
+        "source": "presentacion_bcra",
+        "target": "bcra",
+        "predicate": "informa_a"
+      },
+      {
+        "source": "presentacion_bcra",
+        "target": "gerencia_principal_proteccion_usuario",
+        "predicate": "dirige_a"
+      },
+      {
+        "source": "gerencia_principal_proteccion_usuario",
+        "target": "bcra",
+        "predicate": "integra"
+      }
+    ]
+  }
+}

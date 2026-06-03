@@ -1,0 +1,290 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0033__punto_3_1_tratamiento_de_las_titulizacio",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 3.1 — Tratamiento de las titulizaciones. (parte 9/15)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"retitulizacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Retitulización\",\n      \"properties\": {\n        \"description\": \"Operación de titulización cuya cartera subyacente consiste en tramos de titulización y otros activos.\"\n      }\n    },\n    {\n      \"id\": \"titulizacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Titulización\",\n      \"properties\": {\n        \"description\": \"Operación de securitización de activos subyacentes con emisión de tramos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_ka_retitulizacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de KA en retitulizaciones\",\n      \"properties\": {\n        \"description\": \"Para retitulizaciones con cartera subyacente mixta, calcular KA por separado para cada subconjunto aplicando ponderadores (W) de conformidad con lo previsto, siendo KA equivalente al promedio ponderado por exposición nominal.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_cumplimiento_desconocido\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ajuste KA por cumplimiento desconocido\",\n      \"properties\": {\n        \"description\": \"Si se desconoce la situación de cumplimiento de 5% o menos de exposiciones subyacentes, ajustar el cálculo de KA. Si se desconoce para más del 5%, ponderar la posición de titulización al 1250%.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_ponderador_riesgo_menor_ka\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador RW cuando D ≤ KA\",\n      \"properties\": {\n        \"description\": \"Si el deudor (D) es menor o igual a KA, el ponderador de riesgo será de 1250%.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_ponderador_riesgo_mayor_ka\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador RW cuando A ≥ KA\",\n      \"properties\": {\n        \"description\": \"Si el activo (A) es mayor o igual a KA, el ponderador de riesgo será igual a KSSFA(KA) multiplicado por 12,5.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_ponderador_riesgo_intermedio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador RW cuando KA entre A y D\",\n      \"properties\": {\n        \"description\": \"Si KA es mayor que A y menor que D, el ponderador será un promedio ponderado entre 1250% y 12,5 veces KSSFA(KA).\"\n      }\n    },\n    {\n      \"id\": \"restriccion_minimo_ponderador_no_stc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mínimo ponderador titulizaciones sin criterios STC\",\n      \"properties\": {\n        \"description\": \"El ponderador resultante estará sujeto a un mínimo de 15% para titulizaciones que no cumplan con los criterios STC del punto 3.1.14.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_minimo_ponderador_stc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mínimo ponderador titulizaciones con criterios STC\",\n      \"properties\": {\n        \"description\": \"El ponderador resultante estará sujeto a un mínimo de 10% para tramos de máxima preferencia de titulizaciones que cumplan con criterios STC, y 15% para tramos subordinados.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_minimo_ponderador_retitulizacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Mínimo ponderador retitulizaciones\",\n      \"properties\": {\n        \"description\": \"El ponderador resultante estará sujeto a un mínimo de 100% para retitulizaciones.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_transparencia_preferencia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Tratamiento de transparencia para máxima preferencia\",\n      \"properties\": {\n        \"description\": \"Para posiciones de titulización de máxima preferencia se podrá aplicar el tratamiento de transparencia (look-through) conforme al punto 3.1.6, si resulta en ponderador menor que el mínimo aplicable.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exigencia_maxima_originante\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia máxima capital originante\",\n      \"properties\": {\n        \"description\": \"La exigencia de capital por posiciones de titulización retenidas o recompradas por la entidad originante no será mayor a la correspondiente si mantuviera la totalidad de exposiciones subyacentes.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_participacion_unico_tramo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de participación tramo único\",\n      \"properties\": {\n        \"description\": \"Para entidad con posiciones en un solo tramo, P equivale al porcentaje de posición de titulización en ese tramo, calculado como monto nominal de posiciones dividido monto nominal del tramo.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_participacion_multiples_tramos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de participación múltiples tramos\",\n      \"properties\": {\n        \"description\": \"Para entidad con posiciones en diferentes tramos, P equivale a la máxima participación considerados todos los tramos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exigencia_agregada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia máxima agregada\",\n      \"properties\": {\n        \"description\": \"La exigencia máxima agregada para todas las posiciones en la misma titulización será igual a P x KSA.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_deduccion_ganancias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Deducción de ganancias por ventas\",\n      \"properties\": {\n        \"description\": \"Al calcular la exigencia máxima de capital, se deducirá el total de ganancias por ventas y cupones de mejora crediticia (CEIO) relacionados con la titulización.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_exigencia_maxima_retitulizacion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción exigencia máxima en retitulizaciones\",\n      \"properties\": {\n        \"description\": \"La exigencia máxima de capital para originantes del presente punto no será de aplicación para el caso de retitulizaciones.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_originante\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidad financiera originante\",\n      \"properties\": {\n        \"description\": \"Entidad que retiene o recompra posiciones de titulización.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"criterios_stc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Criterios STC\",\n      \"properties\": {\n        \"description\": \"Criterios de titulizaciones simples y transparentes definidos en punto 3.1.14.\"\n      }\n    },\n    {\n      \"id\": \"tratamiento_transparencia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Tratamiento de transparencia (look-through)\",\n      \"properties\": {\n        \"description\": \"Método de asignación de ponderadores basado en los activos subyacentes de la titulización.\"\n      }\n    },\n    {\n      \"id\": \"kssfa_ka\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia KSSFA(KA)\",\n      \"properties\": {\n        \"description\": \"Exigencia de capital por unidad de posición de titulización calculada con parámetro p variable según tipo de titulización.\"\n      }\n    },\n    {\n      \"id\": \"parametro_p\",\n      \"type\": \"Concepto\",\n      \"label\": \"Parámetro p\",\n      \"properties\": {\n        \"description\": \"Factor multiplicador en cálculo KSSFA(KA): 0,5 para titulizaciones STC, 1 para no-STC, 1,5 para retitulizaciones.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"retitulizacion\",\n      \"target\": \"restriccion_ka_retitulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_ka_retitulizacion\",\n      \"target\": \"entidad_financiera_originante\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_cumplimiento_desconocido\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_ponderador_riesgo_menor_ka\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_ponderador_riesgo_mayor_ka\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_ponderador_riesgo_intermedio\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_minimo_ponderador_no_stc\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_minimo_ponderador_stc\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_minimo_ponderador_retitulizacion\",\n      \"target\": \"retitulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_transparencia_preferencia\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_exigencia_maxima_originante\",\n      \"target\": \"entidad_financiera_originante\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entidad_financiera_originante\",\n      \"target\": \"restriccion_participacion_unico_tramo\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera_originante\",\n      \"target\": \"restriccion_participacion_multiples_tramos\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_exigencia_agregada\",\n      \"target\": \"titulizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_deduccion_ganancias\",\n      \"target\": \"entidad_financiera_originante\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_exigencia_maxima_retitulizacion\",\n      \"target\": \"restriccion_exigencia_maxima_originante\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_exigencia_maxima_retitulizacion\",\n      \"target\": \"retitulizacion\",\n      \"predicate\": \"exime_a\"\n    },\n    {\n      \"source\": \"kssfa_ka\",\n      \"target\": \"criterios_stc\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"parametro_p\",\n      \"target\": \"criterios_stc\",\n      \"predicate\": \"varia_segun\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5024,
+  "output_tokens": 3279,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 22,
+  "relations_count": 19,
+  "parsed": {
+    "entities": [
+      {
+        "id": "retitulizacion",
+        "type": "Operacion",
+        "label": "Retitulización",
+        "properties": {
+          "description": "Operación de titulización cuya cartera subyacente consiste en tramos de titulización y otros activos."
+        }
+      },
+      {
+        "id": "titulizacion",
+        "type": "Operacion",
+        "label": "Titulización",
+        "properties": {
+          "description": "Operación de securitización de activos subyacentes con emisión de tramos."
+        }
+      },
+      {
+        "id": "restriccion_ka_retitulizacion",
+        "type": "Restriccion",
+        "label": "Cálculo de KA en retitulizaciones",
+        "properties": {
+          "description": "Para retitulizaciones con cartera subyacente mixta, calcular KA por separado para cada subconjunto aplicando ponderadores (W) de conformidad con lo previsto, siendo KA equivalente al promedio ponderado por exposición nominal."
+        }
+      },
+      {
+        "id": "restriccion_cumplimiento_desconocido",
+        "type": "Restriccion",
+        "label": "Ajuste KA por cumplimiento desconocido",
+        "properties": {
+          "description": "Si se desconoce la situación de cumplimiento de 5% o menos de exposiciones subyacentes, ajustar el cálculo de KA. Si se desconoce para más del 5%, ponderar la posición de titulización al 1250%."
+        }
+      },
+      {
+        "id": "restriccion_ponderador_riesgo_menor_ka",
+        "type": "Restriccion",
+        "label": "Ponderador RW cuando D ≤ KA",
+        "properties": {
+          "description": "Si el deudor (D) es menor o igual a KA, el ponderador de riesgo será de 1250%."
+        }
+      },
+      {
+        "id": "restriccion_ponderador_riesgo_mayor_ka",
+        "type": "Restriccion",
+        "label": "Ponderador RW cuando A ≥ KA",
+        "properties": {
+          "description": "Si el activo (A) es mayor o igual a KA, el ponderador de riesgo será igual a KSSFA(KA) multiplicado por 12,5."
+        }
+      },
+      {
+        "id": "restriccion_ponderador_riesgo_intermedio",
+        "type": "Restriccion",
+        "label": "Ponderador RW cuando KA entre A y D",
+        "properties": {
+          "description": "Si KA es mayor que A y menor que D, el ponderador será un promedio ponderado entre 1250% y 12,5 veces KSSFA(KA)."
+        }
+      },
+      {
+        "id": "restriccion_minimo_ponderador_no_stc",
+        "type": "Restriccion",
+        "label": "Mínimo ponderador titulizaciones sin criterios STC",
+        "properties": {
+          "description": "El ponderador resultante estará sujeto a un mínimo de 15% para titulizaciones que no cumplan con los criterios STC del punto 3.1.14."
+        }
+      },
+      {
+        "id": "restriccion_minimo_ponderador_stc",
+        "type": "Restriccion",
+        "label": "Mínimo ponderador titulizaciones con criterios STC",
+        "properties": {
+          "description": "El ponderador resultante estará sujeto a un mínimo de 10% para tramos de máxima preferencia de titulizaciones que cumplan con criterios STC, y 15% para tramos subordinados."
+        }
+      },
+      {
+        "id": "restriccion_minimo_ponderador_retitulizacion",
+        "type": "Restriccion",
+        "label": "Mínimo ponderador retitulizaciones",
+        "properties": {
+          "description": "El ponderador resultante estará sujeto a un mínimo de 100% para retitulizaciones."
+        }
+      },
+      {
+        "id": "restriccion_transparencia_preferencia",
+        "type": "Restriccion",
+        "label": "Tratamiento de transparencia para máxima preferencia",
+        "properties": {
+          "description": "Para posiciones de titulización de máxima preferencia se podrá aplicar el tratamiento de transparencia (look-through) conforme al punto 3.1.6, si resulta en ponderador menor que el mínimo aplicable."
+        }
+      },
+      {
+        "id": "restriccion_exigencia_maxima_originante",
+        "type": "Restriccion",
+        "label": "Exigencia máxima capital originante",
+        "properties": {
+          "description": "La exigencia de capital por posiciones de titulización retenidas o recompradas por la entidad originante no será mayor a la correspondiente si mantuviera la totalidad de exposiciones subyacentes."
+        }
+      },
+      {
+        "id": "restriccion_participacion_unico_tramo",
+        "type": "Restriccion",
+        "label": "Cálculo de participación tramo único",
+        "properties": {
+          "description": "Para entidad con posiciones en un solo tramo, P equivale al porcentaje de posición de titulización en ese tramo, calculado como monto nominal de posiciones dividido monto nominal del tramo."
+        }
+      },
+      {
+        "id": "restriccion_participacion_multiples_tramos",
+        "type": "Restriccion",
+        "label": "Cálculo de participación múltiples tramos",
+        "properties": {
+          "description": "Para entidad con posiciones en diferentes tramos, P equivale a la máxima participación considerados todos los tramos."
+        }
+      },
+      {
+        "id": "restriccion_exigencia_agregada",
+        "type": "Restriccion",
+        "label": "Exigencia máxima agregada",
+        "properties": {
+          "description": "La exigencia máxima agregada para todas las posiciones en la misma titulización será igual a P x KSA."
+        }
+      },
+      {
+        "id": "restriccion_deduccion_ganancias",
+        "type": "Restriccion",
+        "label": "Deducción de ganancias por ventas",
+        "properties": {
+          "description": "Al calcular la exigencia máxima de capital, se deducirá el total de ganancias por ventas y cupones de mejora crediticia (CEIO) relacionados con la titulización."
+        }
+      },
+      {
+        "id": "excepcion_exigencia_maxima_retitulizacion",
+        "type": "Excepcion",
+        "label": "Excepción exigencia máxima en retitulizaciones",
+        "properties": {
+          "description": "La exigencia máxima de capital para originantes del presente punto no será de aplicación para el caso de retitulizaciones."
+        }
+      },
+      {
+        "id": "entidad_financiera_originante",
+        "type": "EntidadFinanciera",
+        "label": "Entidad financiera originante",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "criterios_stc",
+        "type": "Concepto",
+        "label": "Criterios STC",
+        "properties": {
+          "description": "Criterios de titulizaciones simples y transparentes definidos en punto 3.1.14."
+        }
+      },
+      {
+        "id": "tratamiento_transparencia",
+        "type": "Concepto",
+        "label": "Tratamiento de transparencia (look-through)",
+        "properties": {
+          "description": "Método de asignación de ponderadores basado en los activos subyacentes de la titulización."
+        }
+      },
+      {
+        "id": "kssfa_ka",
+        "type": "Concepto",
+        "label": "Exigencia KSSFA(KA)",
+        "properties": {
+          "description": "Exigencia de capital por unidad de posición de titulización calculada con parámetro p variable según tipo de titulización."
+        }
+      },
+      {
+        "id": "parametro_p",
+        "type": "Concepto",
+        "label": "Parámetro p",
+        "properties": {
+          "description": "Factor multiplicador en cálculo KSSFA(KA): 0,5 para titulizaciones STC, 1 para no-STC, 1,5 para retitulizaciones."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "retitulizacion",
+        "target": "restriccion_ka_retitulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_ka_retitulizacion",
+        "target": "entidad_financiera_originante",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_cumplimiento_desconocido",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_ponderador_riesgo_menor_ka",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_ponderador_riesgo_mayor_ka",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_ponderador_riesgo_intermedio",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_minimo_ponderador_no_stc",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_minimo_ponderador_stc",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_minimo_ponderador_retitulizacion",
+        "target": "retitulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_transparencia_preferencia",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_exigencia_maxima_originante",
+        "target": "entidad_financiera_originante",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entidad_financiera_originante",
+        "target": "restriccion_participacion_unico_tramo",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera_originante",
+        "target": "restriccion_participacion_multiples_tramos",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_exigencia_agregada",
+        "target": "titulizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_deduccion_ganancias",
+        "target": "entidad_financiera_originante",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_exigencia_maxima_retitulizacion",
+        "target": "restriccion_exigencia_maxima_originante",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_exigencia_maxima_retitulizacion",
+        "target": "retitulizacion",
+        "predicate": "exime_a"
+      },
+      {
+        "source": "kssfa_ka",
+        "target": "criterios_stc",
+        "predicate": "define"
+      },
+      {
+        "source": "parametro_p",
+        "target": "criterios_stc",
+        "predicate": "varia_segun"
+      }
+    ]
+  }
+}

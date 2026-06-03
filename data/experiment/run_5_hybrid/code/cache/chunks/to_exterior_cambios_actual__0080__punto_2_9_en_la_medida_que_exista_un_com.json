@@ -1,0 +1,122 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0080__punto_2_9_en_la_medida_que_exista_un_com",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 2.9 — en la medida que exista un compromiso de la contraparte respecto a que dichos fo + Punto 5.14 — Liquidación de financiaciones en moneda extranjera otorgadas por entidades finan",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_local\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados que otorgan financiaciones en moneda extranjera\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_financiacion_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Otorgamiento de financiaciones en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Acción de las entidades financieras de otorgar fondos en moneda extranjera a clientes\"\n      }\n    },\n    {\n      \"id\": \"operacion_liquidacion_mercado_cambios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Liquidación en mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Operación de liquidación de fondos en moneda extranjera en el mercado cambiario\"\n      }\n    },\n    {\n      \"id\": \"restriccion_liquidacion_desembolso\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Liquidación en mercado de cambios al desembolso\",\n      \"properties\": {\n        \"description\": \"Los fondos recibidos por clientes en virtud de financiaciones en moneda extranjera deben ser liquidados en el mercado de cambios al momento del desembolso\"\n      }\n    },\n    {\n      \"id\": \"excepcion_suscripcion_primaria_titulos\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para financiaciones por suscripción primaria de títulos\",\n      \"properties\": {\n        \"description\": \"No aplica la liquidación obligatoria al desembolso en caso de financiaciones otorgadas a través de suscripción primaria de títulos de deuda o valores representativos de deuda\"\n      }\n    },\n    {\n      \"id\": \"operacion_suscripcion_primaria_titulos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Suscripción primaria de títulos de deuda\",\n      \"properties\": {\n        \"description\": \"Otorgamiento de financiaciones mediante suscripción de títulos de deuda o valores representativos de deuda\"\n      }\n    },\n    {\n      \"id\": \"concepto_cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes\",\n      \"properties\": {\n        \"description\": \"Contrapartes receptoras de financiaciones otorgadas por entidades financieras locales\"\n      }\n    },\n    {\n      \"id\": \"concepto_plazo_exportacion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Plazo de exportación\",\n      \"properties\": {\n        \"description\": \"Plazo máximo de 30 días corridos desde la concertación de cambio para la realización de exportación\"\n      }\n    },\n    {\n      \"id\": \"concepto_turismo_viajes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Demanda de turismo y viajes\",\n      \"properties\": {\n        \"description\": \"Finalidad de comercialización de fondos\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_local\",\n      \"target\": \"operacion_financiacion_moneda_extranjera\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_liquidacion_desembolso\",\n      \"target\": \"operacion_liquidacion_mercado_cambios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_liquidacion_desembolso\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_suscripcion_primaria_titulos\",\n      \"target\": \"restriccion_liquidacion_desembolso\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"operacion_financiacion_moneda_extranjera\",\n      \"target\": \"concepto_cliente\",\n      \"predicate\": \"beneficia_a\"\n    },\n    {\n      \"source\": \"operacion_suscripcion_primaria_titulos\",\n      \"target\": \"excepcion_suscripcion_primaria_titulos\",\n      \"predicate\": \"se_ampara_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3676,
+  "output_tokens": 1194,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_local",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Sujetos regulados que otorgan financiaciones en moneda extranjera",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_financiacion_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Otorgamiento de financiaciones en moneda extranjera",
+        "properties": {
+          "description": "Acción de las entidades financieras de otorgar fondos en moneda extranjera a clientes"
+        }
+      },
+      {
+        "id": "operacion_liquidacion_mercado_cambios",
+        "type": "Operacion",
+        "label": "Liquidación en mercado de cambios",
+        "properties": {
+          "description": "Operación de liquidación de fondos en moneda extranjera en el mercado cambiario"
+        }
+      },
+      {
+        "id": "restriccion_liquidacion_desembolso",
+        "type": "Restriccion",
+        "label": "Liquidación en mercado de cambios al desembolso",
+        "properties": {
+          "description": "Los fondos recibidos por clientes en virtud de financiaciones en moneda extranjera deben ser liquidados en el mercado de cambios al momento del desembolso"
+        }
+      },
+      {
+        "id": "excepcion_suscripcion_primaria_titulos",
+        "type": "Excepcion",
+        "label": "Excepción para financiaciones por suscripción primaria de títulos",
+        "properties": {
+          "description": "No aplica la liquidación obligatoria al desembolso en caso de financiaciones otorgadas a través de suscripción primaria de títulos de deuda o valores representativos de deuda"
+        }
+      },
+      {
+        "id": "operacion_suscripcion_primaria_titulos",
+        "type": "Operacion",
+        "label": "Suscripción primaria de títulos de deuda",
+        "properties": {
+          "description": "Otorgamiento de financiaciones mediante suscripción de títulos de deuda o valores representativos de deuda"
+        }
+      },
+      {
+        "id": "concepto_cliente",
+        "type": "Concepto",
+        "label": "Clientes",
+        "properties": {
+          "description": "Contrapartes receptoras de financiaciones otorgadas por entidades financieras locales"
+        }
+      },
+      {
+        "id": "concepto_plazo_exportacion",
+        "type": "Concepto",
+        "label": "Plazo de exportación",
+        "properties": {
+          "description": "Plazo máximo de 30 días corridos desde la concertación de cambio para la realización de exportación"
+        }
+      },
+      {
+        "id": "concepto_turismo_viajes",
+        "type": "Concepto",
+        "label": "Demanda de turismo y viajes",
+        "properties": {
+          "description": "Finalidad de comercialización de fondos"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_local",
+        "target": "operacion_financiacion_moneda_extranjera",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_liquidacion_desembolso",
+        "target": "operacion_liquidacion_mercado_cambios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_liquidacion_desembolso",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_suscripcion_primaria_titulos",
+        "target": "restriccion_liquidacion_desembolso",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "operacion_financiacion_moneda_extranjera",
+        "target": "concepto_cliente",
+        "predicate": "beneficia_a"
+      },
+      {
+        "source": "operacion_suscripcion_primaria_titulos",
+        "target": "excepcion_suscripcion_primaria_titulos",
+        "predicate": "se_ampara_en"
+      }
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0040__punto_3_7_pagos_de_endeudamientos_en_mon",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.7 — Pagos de endeudamientos en moneda extranjera de residentes por parte de fideicom",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_acceso_cambios\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades autorizadas para acceso cambios\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que pueden dar acceso al mercado de cambios\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_acceso_mercado_cambios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Acceso al mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Operación de acceso al mercado de cambios para realizar pagos\"\n      }\n    },\n    {\n      \"id\": \"operacion_pago_capital_intereses\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pagos de capital e intereses\",\n      \"properties\": {\n        \"description\": \"Pagos de capital y/o intereses de obligaciones en moneda extranjera\"\n      }\n    },\n    {\n      \"id\": \"restriccion_acceso_condicionado_cambios\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acceso al mercado condicionado a verificación\",\n      \"properties\": {\n        \"description\": \"Las entidades solo podrán dar acceso al mercado de cambios si verifican que el deudor hubiese tenido acceso para realizar el pago a su nombre por cumplimentar las disposiciones normativas aplicables\"\n      }\n    },\n    {\n      \"id\": \"concepto_fideicomiso_financiero\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fideicomisos constituidos en el país\",\n      \"properties\": {\n        \"description\": \"Fideicomisos constituidos en el país por un residente para garantizar la atención de servicios de capital e intereses\"\n      }\n    },\n    {\n      \"id\": \"concepto_residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Residente\",\n      \"properties\": {\n        \"description\": \"Persona residente que constituye fideicomiso para garantizar servicios\"\n      }\n    },\n    {\n      \"id\": \"concepto_deudor\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deudor\",\n      \"properties\": {\n        \"description\": \"Obligado al pago de capital e intereses\"\n      }\n    },\n    {\n      \"id\": \"concepto_disposiciones_normativas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Disposiciones normativas aplicables\",\n      \"properties\": {\n        \"description\": \"Marco normativo que debe cumplimentarse para acceder al mercado de cambios\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_acceso_cambios\",\n      \"target\": \"operacion_acceso_mercado_cambios\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_acceso_condicionado_cambios\",\n      \"target\": \"operacion_acceso_mercado_cambios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_acceso_condicionado_cambios\",\n      \"target\": \"entidad_financiera_acceso_cambios\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"operacion_acceso_mercado_cambios\",\n      \"target\": \"operacion_pago_capital_intereses\",\n      \"predicate\": \"habilita\"\n    },\n    {\n      \"source\": \"concepto_fideicomiso_financiero\",\n      \"target\": \"operacion_pago_capital_intereses\",\n      \"predicate\": \"garantiza\"\n    },\n    {\n      \"source\": \"concepto_residente\",\n      \"target\": \"concepto_fideicomiso_financiero\",\n      \"predicate\": \"constituye\"\n    },\n    {\n      \"source\": \"restriccion_acceso_condicionado_cambios\",\n      \"target\": \"concepto_disposiciones_normativas\",\n      \"predicate\": \"requiere\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3541,
+  "output_tokens": 1082,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_acceso_cambios",
+        "type": "EntidadFinanciera",
+        "label": "Entidades autorizadas para acceso cambios",
+        "properties": {
+          "description": "Entidades financieras que pueden dar acceso al mercado de cambios",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_acceso_mercado_cambios",
+        "type": "Operacion",
+        "label": "Acceso al mercado de cambios",
+        "properties": {
+          "description": "Operación de acceso al mercado de cambios para realizar pagos"
+        }
+      },
+      {
+        "id": "operacion_pago_capital_intereses",
+        "type": "Operacion",
+        "label": "Pagos de capital e intereses",
+        "properties": {
+          "description": "Pagos de capital y/o intereses de obligaciones en moneda extranjera"
+        }
+      },
+      {
+        "id": "restriccion_acceso_condicionado_cambios",
+        "type": "Restriccion",
+        "label": "Acceso al mercado condicionado a verificación",
+        "properties": {
+          "description": "Las entidades solo podrán dar acceso al mercado de cambios si verifican que el deudor hubiese tenido acceso para realizar el pago a su nombre por cumplimentar las disposiciones normativas aplicables"
+        }
+      },
+      {
+        "id": "concepto_fideicomiso_financiero",
+        "type": "Concepto",
+        "label": "Fideicomisos constituidos en el país",
+        "properties": {
+          "description": "Fideicomisos constituidos en el país por un residente para garantizar la atención de servicios de capital e intereses"
+        }
+      },
+      {
+        "id": "concepto_residente",
+        "type": "Concepto",
+        "label": "Residente",
+        "properties": {
+          "description": "Persona residente que constituye fideicomiso para garantizar servicios"
+        }
+      },
+      {
+        "id": "concepto_deudor",
+        "type": "Concepto",
+        "label": "Deudor",
+        "properties": {
+          "description": "Obligado al pago de capital e intereses"
+        }
+      },
+      {
+        "id": "concepto_disposiciones_normativas",
+        "type": "Concepto",
+        "label": "Disposiciones normativas aplicables",
+        "properties": {
+          "description": "Marco normativo que debe cumplimentarse para acceder al mercado de cambios"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_acceso_cambios",
+        "target": "operacion_acceso_mercado_cambios",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_acceso_condicionado_cambios",
+        "target": "operacion_acceso_mercado_cambios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_acceso_condicionado_cambios",
+        "target": "entidad_financiera_acceso_cambios",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "operacion_acceso_mercado_cambios",
+        "target": "operacion_pago_capital_intereses",
+        "predicate": "habilita"
+      },
+      {
+        "source": "concepto_fideicomiso_financiero",
+        "target": "operacion_pago_capital_intereses",
+        "predicate": "garantiza"
+      },
+      {
+        "source": "concepto_residente",
+        "target": "concepto_fideicomiso_financiero",
+        "predicate": "constituye"
+      },
+      {
+        "source": "restriccion_acceso_condicionado_cambios",
+        "target": "concepto_disposiciones_normativas",
+        "predicate": "requiere"
+      }
+    ]
+  }
+}

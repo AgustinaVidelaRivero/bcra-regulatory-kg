@@ -1,0 +1,319 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0078__punto_6_2_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.2 — Exigencia de capital por riesgo de tasa de interés. (parte 4/5)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"posiciones_titulos_deuda\",\n      \"type\": \"Operacion\",\n      \"label\": \"Posiciones en títulos de deuda\",\n      \"properties\": {\n        \"description\": \"Posiciones compradas y vendidas en títulos de deuda e instrumentos derivados imputadas a escalas de vencimientos.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_instrumentos_derivados\",\n      \"type\": \"Operacion\",\n      \"label\": \"Posiciones en instrumentos derivados\",\n      \"properties\": {\n        \"description\": \"Posiciones compradas y vendidas en instrumentos derivados imputadas a escalas de vencimientos.\"\n      }\n    },\n    {\n      \"id\": \"escala_vencimientos_15_bandas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Escala de vencimientos 15 bandas\",\n      \"properties\": {\n        \"description\": \"División en 15 bandas temporales cuando el cupón del instrumento es menor a 3%.\"\n      }\n    },\n    {\n      \"id\": \"escala_vencimientos_13_bandas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Escala de vencimientos 13 bandas\",\n      \"properties\": {\n        \"description\": \"División en 13 bandas temporales cuando el cupón del instrumento es igual o mayor a 3%.\"\n      }\n    },\n    {\n      \"id\": \"asignacion_plazo_residual_tasa_fija\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación por plazo residual tasa fija\",\n      \"properties\": {\n        \"description\": \"Instrumentos a tasa fija se asignan según su plazo residual.\"\n      }\n    },\n    {\n      \"id\": \"asignacion_plazo_ajuste_tasa_variable\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación por plazo ajuste tasa variable\",\n      \"properties\": {\n        \"description\": \"Instrumentos a tasa variable se asignan según plazo hasta siguiente ajuste del interés.\"\n      }\n    },\n    {\n      \"id\": \"ponderador_riesgo_tasa_variable\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador riesgo tasa variable\",\n      \"properties\": {\n        \"description\": \"El ponderador de riesgo depende de si el cupón representa rendimiento menor a 3% anual.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_posiciones_opuestas\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión posiciones opuestas\",\n      \"properties\": {\n        \"description\": \"Se pueden excluir posiciones opuestas por igual importe en misma especie.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_derivados_relacionados\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión derivados relacionados\",\n      \"properties\": {\n        \"description\": \"Se pueden excluir derivados (swaps, forwards, futuros, FRAs) estrechamente relacionados que cumplan condiciones.\"\n      }\n    },\n    {\n      \"id\": \"ponderacion_sensibilidad_tasa_interes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderación sensibilidad tasa interés\",\n      \"properties\": {\n        \"description\": \"Posiciones en cada banda temporal deben ponderarse por factor que refleje sensibilidad a cambios en tasas de interés.\"\n      }\n    },\n    {\n      \"id\": \"compensacion_posiciones_banda_temporal\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Compensación posiciones banda temporal\",\n      \"properties\": {\n        \"description\": \"Posiciones ponderadas se compensan (compradas/vendidas) dentro de cada banda temporal para obtener posición neta.\"\n      }\n    },\n    {\n      \"id\": \"desestimacion_vertical_basis_risk\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Desestimación vertical basis risk\",\n      \"properties\": {\n        \"description\": \"Exigencia adicional equivalente a 10% de la menor posición compensada para reflejar riesgos de base y brecha temporal.\"\n      }\n    },\n    {\n      \"id\": \"compensaciones_horizontales_intrazona\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Compensaciones horizontales intra-zona\",\n      \"properties\": {\n        \"description\": \"Compensaciones entre posiciones netas dentro de cada una de las tres zonas de bandas temporales.\"\n      }\n    },\n    {\n      \"id\": \"compensaciones_horizontales_interzonas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Compensaciones horizontales inter-zonas\",\n      \"properties\": {\n        \"description\": \"Compensaciones entre posiciones netas de las tres zonas con desestimaciones según proximidad de zonas.\"\n      }\n    },\n    {\n      \"id\": \"desestimacion_dentro_zona\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Desestimación dentro de zona\",\n      \"properties\": {\n        \"description\": \"Porcentaje de desestimación 40% aplicable a compensaciones dentro de zona 1, 30% para zona 3.\"\n      }\n    },\n    {\n      \"id\": \"desestimacion_zonas_adyacentes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Desestimación zonas adyacentes\",\n      \"properties\": {\n        \"description\": \"Porcentaje de desestimación 40% para zona 1, 100% para zona 2, 40% para zona 3 entre zonas adyacentes.\"\n      }\n    },\n    {\n      \"id\": \"desestimacion_zona_1_zona_3\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Desestimación zona 1 y 3\",\n      \"properties\": {\n        \"description\": \"Porcentaje de desestimación entre zona 1 y zona 3.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_monedas_residuales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Posiciones monedas residuales\",\n      \"properties\": {\n        \"description\": \"Posiciones brutas en monedas residuales sujetas a ponderadores de riesgo sin compensación.\"\n      }\n    },\n    {\n      \"id\": \"derivados_tasas_interes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Derivados de tasas de interés\",\n      \"properties\": {\n        \"description\": \"FRAs, futuros sobre bonos, swaps de tasas, cross-currency swaps y posiciones divisas a término.\"\n      }\n    },\n    {\n      \"id\": \"conversion_derivados_subyacente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conversión derivados a subyacente\",\n      \"properties\": {\n        \"description\": \"Derivados se deben convertir a posiciones en correspondiente subyacente para aplicar exigencias de capital.\"\n      }\n    },\n    {\n      \"id\": \"valuacion_prudente_nocional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Valuación prudente nocional\",\n      \"properties\": {\n        \"description\": \"Para valor mercado del nocional subyacente se seguirán disposiciones de valuación prudente.\"\n      }\n    },\n    {\n      \"id\": \"banda_temporal\",\n      \"type\": \"Concepto\",\n      \"label\": \"Banda temporal\",\n      \"properties\": {\n        \"description\": \"División temporal de posiciones en escala de vencimientos según plazo residual o ajuste.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_tasa_interes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de tasa de interés\",\n      \"properties\": {\n        \"description\": \"Riesgo derivado de cambios en tasas de interés que afecta valuación de instrumentos.\"\n      }\n    },\n    {\n      \"id\": \"cartera_negociacion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera de negociación\",\n      \"properties\": {\n        \"description\": \"Conjunto de derivados e instrumentos fuera de balance sensibles a cambios en tasas de interés.\"\n      }\n    },\n    {\n      \"id\": \"opciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Opciones\",\n      \"properties\": {\n        \"description\": \"Instrumentos derivados tratados conforme disposiciones especiales.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"escala_vencimientos_15_bandas\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"escala_vencimientos_15_bandas\",\n      \"target\": \"posiciones_instrumentos_derivados\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"escala_vencimientos_13_bandas\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"escala_vencimientos_13_bandas\",\n      \"target\": \"posiciones_instrumentos_derivados\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"asignacion_plazo_residual_tasa_fija\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"asignacion_plazo_ajuste_tasa_variable\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ponderador_riesgo_tasa_variable\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"exclusion_posiciones_opuestas\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"exclusion_derivados_relacionados\",\n      \"target\": \"posiciones_instrumentos_derivados\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"ponderacion_sensibilidad_tasa_interes\",\n      \"target\": \"banda_temporal\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"compensacion_posiciones_banda_temporal\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"desestimacion_vertical_basis_risk\",\n      \"target\": \"compensacion_posiciones_banda_temporal\",\n      \"predicate\": \"complementa\"\n    },\n    {\n      \"source\": \"compensaciones_horizontales_intrazona\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"compensaciones_horizontales_interzonas\",\n      \"target\": \"posiciones_titulos_deuda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"desestimacion_dentro_zona\",\n      \"target\": \"compensaciones_horizontales_intrazona\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"desestimacion_zonas_adyacentes\",\n      \"target\": \"compensaciones_horizontales_interzonas\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"posiciones_monedas_residuales\",\n      \"target\": \"ponderacion_sensibilidad_tasa_interes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"conversion_derivados_subyacente\",\n      \"target\": \"derivados_tasas_interes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"valuacion_prudente_nocional\",\n      \"target\": \"derivados_tasas_interes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"riesgo_tasa_interes\",\n      \"target\": \"banda_temporal\",\n      \"predicate\": \"afecta\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5426,
+  "output_tokens": 3262,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 25,
+  "relations_count": 20,
+  "parsed": {
+    "entities": [
+      {
+        "id": "posiciones_titulos_deuda",
+        "type": "Operacion",
+        "label": "Posiciones en títulos de deuda",
+        "properties": {
+          "description": "Posiciones compradas y vendidas en títulos de deuda e instrumentos derivados imputadas a escalas de vencimientos."
+        }
+      },
+      {
+        "id": "posiciones_instrumentos_derivados",
+        "type": "Operacion",
+        "label": "Posiciones en instrumentos derivados",
+        "properties": {
+          "description": "Posiciones compradas y vendidas en instrumentos derivados imputadas a escalas de vencimientos."
+        }
+      },
+      {
+        "id": "escala_vencimientos_15_bandas",
+        "type": "Restriccion",
+        "label": "Escala de vencimientos 15 bandas",
+        "properties": {
+          "description": "División en 15 bandas temporales cuando el cupón del instrumento es menor a 3%."
+        }
+      },
+      {
+        "id": "escala_vencimientos_13_bandas",
+        "type": "Restriccion",
+        "label": "Escala de vencimientos 13 bandas",
+        "properties": {
+          "description": "División en 13 bandas temporales cuando el cupón del instrumento es igual o mayor a 3%."
+        }
+      },
+      {
+        "id": "asignacion_plazo_residual_tasa_fija",
+        "type": "Restriccion",
+        "label": "Asignación por plazo residual tasa fija",
+        "properties": {
+          "description": "Instrumentos a tasa fija se asignan según su plazo residual."
+        }
+      },
+      {
+        "id": "asignacion_plazo_ajuste_tasa_variable",
+        "type": "Restriccion",
+        "label": "Asignación por plazo ajuste tasa variable",
+        "properties": {
+          "description": "Instrumentos a tasa variable se asignan según plazo hasta siguiente ajuste del interés."
+        }
+      },
+      {
+        "id": "ponderador_riesgo_tasa_variable",
+        "type": "Restriccion",
+        "label": "Ponderador riesgo tasa variable",
+        "properties": {
+          "description": "El ponderador de riesgo depende de si el cupón representa rendimiento menor a 3% anual."
+        }
+      },
+      {
+        "id": "exclusion_posiciones_opuestas",
+        "type": "Excepcion",
+        "label": "Exclusión posiciones opuestas",
+        "properties": {
+          "description": "Se pueden excluir posiciones opuestas por igual importe en misma especie."
+        }
+      },
+      {
+        "id": "exclusion_derivados_relacionados",
+        "type": "Excepcion",
+        "label": "Exclusión derivados relacionados",
+        "properties": {
+          "description": "Se pueden excluir derivados (swaps, forwards, futuros, FRAs) estrechamente relacionados que cumplan condiciones."
+        }
+      },
+      {
+        "id": "ponderacion_sensibilidad_tasa_interes",
+        "type": "Restriccion",
+        "label": "Ponderación sensibilidad tasa interés",
+        "properties": {
+          "description": "Posiciones en cada banda temporal deben ponderarse por factor que refleje sensibilidad a cambios en tasas de interés."
+        }
+      },
+      {
+        "id": "compensacion_posiciones_banda_temporal",
+        "type": "Restriccion",
+        "label": "Compensación posiciones banda temporal",
+        "properties": {
+          "description": "Posiciones ponderadas se compensan (compradas/vendidas) dentro de cada banda temporal para obtener posición neta."
+        }
+      },
+      {
+        "id": "desestimacion_vertical_basis_risk",
+        "type": "Restriccion",
+        "label": "Desestimación vertical basis risk",
+        "properties": {
+          "description": "Exigencia adicional equivalente a 10% de la menor posición compensada para reflejar riesgos de base y brecha temporal."
+        }
+      },
+      {
+        "id": "compensaciones_horizontales_intrazona",
+        "type": "Restriccion",
+        "label": "Compensaciones horizontales intra-zona",
+        "properties": {
+          "description": "Compensaciones entre posiciones netas dentro de cada una de las tres zonas de bandas temporales."
+        }
+      },
+      {
+        "id": "compensaciones_horizontales_interzonas",
+        "type": "Restriccion",
+        "label": "Compensaciones horizontales inter-zonas",
+        "properties": {
+          "description": "Compensaciones entre posiciones netas de las tres zonas con desestimaciones según proximidad de zonas."
+        }
+      },
+      {
+        "id": "desestimacion_dentro_zona",
+        "type": "Restriccion",
+        "label": "Desestimación dentro de zona",
+        "properties": {
+          "description": "Porcentaje de desestimación 40% aplicable a compensaciones dentro de zona 1, 30% para zona 3."
+        }
+      },
+      {
+        "id": "desestimacion_zonas_adyacentes",
+        "type": "Restriccion",
+        "label": "Desestimación zonas adyacentes",
+        "properties": {
+          "description": "Porcentaje de desestimación 40% para zona 1, 100% para zona 2, 40% para zona 3 entre zonas adyacentes."
+        }
+      },
+      {
+        "id": "desestimacion_zona_1_zona_3",
+        "type": "Restriccion",
+        "label": "Desestimación zona 1 y 3",
+        "properties": {
+          "description": "Porcentaje de desestimación entre zona 1 y zona 3."
+        }
+      },
+      {
+        "id": "posiciones_monedas_residuales",
+        "type": "Restriccion",
+        "label": "Posiciones monedas residuales",
+        "properties": {
+          "description": "Posiciones brutas en monedas residuales sujetas a ponderadores de riesgo sin compensación."
+        }
+      },
+      {
+        "id": "derivados_tasas_interes",
+        "type": "Operacion",
+        "label": "Derivados de tasas de interés",
+        "properties": {
+          "description": "FRAs, futuros sobre bonos, swaps de tasas, cross-currency swaps y posiciones divisas a término."
+        }
+      },
+      {
+        "id": "conversion_derivados_subyacente",
+        "type": "Restriccion",
+        "label": "Conversión derivados a subyacente",
+        "properties": {
+          "description": "Derivados se deben convertir a posiciones en correspondiente subyacente para aplicar exigencias de capital."
+        }
+      },
+      {
+        "id": "valuacion_prudente_nocional",
+        "type": "Restriccion",
+        "label": "Valuación prudente nocional",
+        "properties": {
+          "description": "Para valor mercado del nocional subyacente se seguirán disposiciones de valuación prudente."
+        }
+      },
+      {
+        "id": "banda_temporal",
+        "type": "Concepto",
+        "label": "Banda temporal",
+        "properties": {
+          "description": "División temporal de posiciones en escala de vencimientos según plazo residual o ajuste."
+        }
+      },
+      {
+        "id": "riesgo_tasa_interes",
+        "type": "Concepto",
+        "label": "Riesgo de tasa de interés",
+        "properties": {
+          "description": "Riesgo derivado de cambios en tasas de interés que afecta valuación de instrumentos."
+        }
+      },
+      {
+        "id": "cartera_negociacion",
+        "type": "Concepto",
+        "label": "Cartera de negociación",
+        "properties": {
+          "description": "Conjunto de derivados e instrumentos fuera de balance sensibles a cambios en tasas de interés."
+        }
+      },
+      {
+        "id": "opciones",
+        "type": "Operacion",
+        "label": "Opciones",
+        "properties": {
+          "description": "Instrumentos derivados tratados conforme disposiciones especiales."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "escala_vencimientos_15_bandas",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "escala_vencimientos_15_bandas",
+        "target": "posiciones_instrumentos_derivados",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "escala_vencimientos_13_bandas",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "escala_vencimientos_13_bandas",
+        "target": "posiciones_instrumentos_derivados",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "asignacion_plazo_residual_tasa_fija",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "asignacion_plazo_ajuste_tasa_variable",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ponderador_riesgo_tasa_variable",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "exclusion_posiciones_opuestas",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "exclusion_derivados_relacionados",
+        "target": "posiciones_instrumentos_derivados",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "ponderacion_sensibilidad_tasa_interes",
+        "target": "banda_temporal",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "compensacion_posiciones_banda_temporal",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "desestimacion_vertical_basis_risk",
+        "target": "compensacion_posiciones_banda_temporal",
+        "predicate": "complementa"
+      },
+      {
+        "source": "compensaciones_horizontales_intrazona",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "compensaciones_horizontales_interzonas",
+        "target": "posiciones_titulos_deuda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "desestimacion_dentro_zona",
+        "target": "compensaciones_horizontales_intrazona",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "desestimacion_zonas_adyacentes",
+        "target": "compensaciones_horizontales_interzonas",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "posiciones_monedas_residuales",
+        "target": "ponderacion_sensibilidad_tasa_interes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "conversion_derivados_subyacente",
+        "target": "derivados_tasas_interes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "valuacion_prudente_nocional",
+        "target": "derivados_tasas_interes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "riesgo_tasa_interes",
+        "target": "banda_temporal",
+        "predicate": "afecta"
+      }
+    ]
+  }
+}

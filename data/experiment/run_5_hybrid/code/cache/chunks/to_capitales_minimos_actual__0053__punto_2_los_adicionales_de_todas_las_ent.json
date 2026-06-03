@@ -1,0 +1,189 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0053__punto_2_los_adicionales_de_todas_las_ent",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2 — Los adicionales de todas las entidades se agruparán en un ún ico conjun- (parte 3/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Capital mínimo por riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Requerimiento de capital para operaciones con derivados OTC o negociados en mercados regulados, equivalente a la suma del requerimiento de EAD vigente y el capital por ajuste de valuación del crédito K(CVA).\"\n      }\n    },\n    {\n      \"id\": \"ponderador_sector_publico\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador sector público no financiero\",\n      \"properties\": {\n        \"description\": \"Ponderador de 0% aplicable al sector público no financiero y Banco Central para el cálculo de riesgo de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"ponderador_contrapartes_resto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador para resto de contrapartes\",\n      \"properties\": {\n        \"description\": \"Ponderador de 3% aplicable al resto de las contrapartes, o 10% para entidades del exterior que no cumplan con requisitos de evaluación crediticia.\"\n      }\n    },\n    {\n      \"id\": \"calificacion_internacional_investment_grade\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Calificación internacional investment grade\",\n      \"properties\": {\n        \"description\": \"Se requiere contar con calificación internacional de riesgo 'investment grade' para el cumplimiento de normas sobre evaluaciones crediticias.\"\n      }\n    },\n    {\n      \"id\": \"ead_vigente_contraparte\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cálculo de EAD vigente para contraparte\",\n      \"properties\": {\n        \"description\": \"Determinación del mayor valor entre cero y la EAD neta de ajustes de valuación del crédito CVA imputados a resultados.\"\n      }\n    },\n    {\n      \"id\": \"coberturas_admisibles_cva\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Coberturas admisibles para riesgo CVA\",\n      \"properties\": {\n        \"description\": \"Solo son admisibles para calcular exigencia de capital por CVA los swaps de incumplimiento crediticio single-name, swaps contingentes, instrumentos equivalentes y swaps sobre índices. No se admiten coberturas por tramos ni de enésimo incumplimiento.\"\n      }\n    },\n    {\n      \"id\": \"exclusion_coberturas_no_cva\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de otras coberturas de contraparte\",\n      \"properties\": {\n        \"description\": \"Otros tipos de cobertura del riesgo de contraparte no se consideran en K(CVA) y reciben el mismo tratamiento que cualquier instrumento de cartera para la exigencia de capital.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado que opera con derivados y debe cumplir con requisitos de capital mínimo por riesgo de crédito de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_cva\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de ajuste de valuación del crédito\",\n      \"properties\": {\n        \"description\": \"Riesgo derivado del cambio en el valor justo de un instrumento derivado debido al deterioro de la solvencia de la contraparte.\"\n      }\n    },\n    {\n      \"id\": \"derivados_otc\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones con derivados OTC\",\n      \"properties\": {\n        \"description\": \"Transacciones con derivados fuera de mercados regulados sujetas a requisitos de capital por riesgo de crédito de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"derivados_mercados_regulados\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones con derivados en mercados regulados\",\n      \"properties\": {\n        \"description\": \"Transacciones con derivados negociados en mercados regulados sujetas a requisitos de capital por riesgo de crédito de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"swaps_incumplimiento_crediticio\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Swaps de incumplimiento crediticio\",\n      \"properties\": {\n        \"description\": \"Instrumentos de cobertura utilizados para mitigar el riesgo de CVA, incluidos single-name CDS e index CDS.\"\n      }\n    },\n    {\n      \"id\": \"evaluaciones_crediticias\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Normas sobre evaluaciones crediticias\",\n      \"properties\": {\n        \"description\": \"Regimen que establece requisitos de calificación internacional de riesgo para determinar ponderadores aplicables a contrapartes del exterior.\"\n      }\n    },\n    {\n      \"id\": \"ead_total\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición al incumplimiento total\",\n      \"properties\": {\n        \"description\": \"Exposición agregada de una contraparte para todos los conjuntos de neteo, incluyendo efecto del activo en garantía y aplicando factor de descuento.\"\n      }\n    },\n    {\n      \"id\": \"ajustes_valuacion_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ajustes de valuación del crédito\",\n      \"properties\": {\n        \"description\": \"CVA: pérdidas por cambio en valor justo de derivados. DVA: ajustes por débito de la entidad.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"target\": \"derivados_otc\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"target\": \"derivados_mercados_regulados\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ponderador_sector_publico\",\n      \"target\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"ponderador_contrapartes_resto\",\n      \"target\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"calificacion_internacional_investment_grade\",\n      \"target\": \"ponderador_contrapartes_resto\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"coberturas_admisibles_cva\",\n      \"target\": \"riesgo_cva\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"exclusion_coberturas_no_cva\",\n      \"target\": \"coberturas_admisibles_cva\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"swaps_incumplimiento_crediticio\",\n      \"target\": \"riesgo_cva\",\n      \"predicate\": \"mitiga\"\n    },\n    {\n      \"source\": \"ead_vigente_contraparte\",\n      \"target\": \"capital_minimo_riesgo_credito_contraparte\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"evaluaciones_crediticias\",\n      \"target\": \"ponderador_contrapartes_resto\",\n      \"predicate\": \"condiciona\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5298,
+  "output_tokens": 2098,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "capital_minimo_riesgo_credito_contraparte",
+        "type": "Restriccion",
+        "label": "Capital mínimo por riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Requerimiento de capital para operaciones con derivados OTC o negociados en mercados regulados, equivalente a la suma del requerimiento de EAD vigente y el capital por ajuste de valuación del crédito K(CVA)."
+        }
+      },
+      {
+        "id": "ponderador_sector_publico",
+        "type": "Restriccion",
+        "label": "Ponderador sector público no financiero",
+        "properties": {
+          "description": "Ponderador de 0% aplicable al sector público no financiero y Banco Central para el cálculo de riesgo de contraparte."
+        }
+      },
+      {
+        "id": "ponderador_contrapartes_resto",
+        "type": "Restriccion",
+        "label": "Ponderador para resto de contrapartes",
+        "properties": {
+          "description": "Ponderador de 3% aplicable al resto de las contrapartes, o 10% para entidades del exterior que no cumplan con requisitos de evaluación crediticia."
+        }
+      },
+      {
+        "id": "calificacion_internacional_investment_grade",
+        "type": "Restriccion",
+        "label": "Calificación internacional investment grade",
+        "properties": {
+          "description": "Se requiere contar con calificación internacional de riesgo 'investment grade' para el cumplimiento de normas sobre evaluaciones crediticias."
+        }
+      },
+      {
+        "id": "ead_vigente_contraparte",
+        "type": "Operacion",
+        "label": "Cálculo de EAD vigente para contraparte",
+        "properties": {
+          "description": "Determinación del mayor valor entre cero y la EAD neta de ajustes de valuación del crédito CVA imputados a resultados."
+        }
+      },
+      {
+        "id": "coberturas_admisibles_cva",
+        "type": "Restriccion",
+        "label": "Coberturas admisibles para riesgo CVA",
+        "properties": {
+          "description": "Solo son admisibles para calcular exigencia de capital por CVA los swaps de incumplimiento crediticio single-name, swaps contingentes, instrumentos equivalentes y swaps sobre índices. No se admiten coberturas por tramos ni de enésimo incumplimiento."
+        }
+      },
+      {
+        "id": "exclusion_coberturas_no_cva",
+        "type": "Excepcion",
+        "label": "Exclusión de otras coberturas de contraparte",
+        "properties": {
+          "description": "Otros tipos de cobertura del riesgo de contraparte no se consideran en K(CVA) y reciben el mismo tratamiento que cualquier instrumento de cartera para la exigencia de capital."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que opera con derivados y debe cumplir con requisitos de capital mínimo por riesgo de crédito de contraparte."
+        }
+      },
+      {
+        "id": "riesgo_cva",
+        "type": "Concepto",
+        "label": "Riesgo de ajuste de valuación del crédito",
+        "properties": {
+          "description": "Riesgo derivado del cambio en el valor justo de un instrumento derivado debido al deterioro de la solvencia de la contraparte."
+        }
+      },
+      {
+        "id": "derivados_otc",
+        "type": "Operacion",
+        "label": "Operaciones con derivados OTC",
+        "properties": {
+          "description": "Transacciones con derivados fuera de mercados regulados sujetas a requisitos de capital por riesgo de crédito de contraparte."
+        }
+      },
+      {
+        "id": "derivados_mercados_regulados",
+        "type": "Operacion",
+        "label": "Operaciones con derivados en mercados regulados",
+        "properties": {
+          "description": "Transacciones con derivados negociados en mercados regulados sujetas a requisitos de capital por riesgo de crédito de contraparte."
+        }
+      },
+      {
+        "id": "swaps_incumplimiento_crediticio",
+        "type": "InstrumentoFinanciero",
+        "label": "Swaps de incumplimiento crediticio",
+        "properties": {
+          "description": "Instrumentos de cobertura utilizados para mitigar el riesgo de CVA, incluidos single-name CDS e index CDS."
+        }
+      },
+      {
+        "id": "evaluaciones_crediticias",
+        "type": "RegimenInformativo",
+        "label": "Normas sobre evaluaciones crediticias",
+        "properties": {
+          "description": "Regimen que establece requisitos de calificación internacional de riesgo para determinar ponderadores aplicables a contrapartes del exterior."
+        }
+      },
+      {
+        "id": "ead_total",
+        "type": "Concepto",
+        "label": "Exposición al incumplimiento total",
+        "properties": {
+          "description": "Exposición agregada de una contraparte para todos los conjuntos de neteo, incluyendo efecto del activo en garantía y aplicando factor de descuento."
+        }
+      },
+      {
+        "id": "ajustes_valuacion_credito",
+        "type": "Concepto",
+        "label": "Ajustes de valuación del crédito",
+        "properties": {
+          "description": "CVA: pérdidas por cambio en valor justo de derivados. DVA: ajustes por débito de la entidad."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "capital_minimo_riesgo_credito_contraparte",
+        "target": "derivados_otc",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "capital_minimo_riesgo_credito_contraparte",
+        "target": "derivados_mercados_regulados",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ponderador_sector_publico",
+        "target": "capital_minimo_riesgo_credito_contraparte",
+        "predicate": "integra"
+      },
+      {
+        "source": "ponderador_contrapartes_resto",
+        "target": "capital_minimo_riesgo_credito_contraparte",
+        "predicate": "integra"
+      },
+      {
+        "source": "calificacion_internacional_investment_grade",
+        "target": "ponderador_contrapartes_resto",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "coberturas_admisibles_cva",
+        "target": "riesgo_cva",
+        "predicate": "regula"
+      },
+      {
+        "source": "exclusion_coberturas_no_cva",
+        "target": "coberturas_admisibles_cva",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "swaps_incumplimiento_crediticio",
+        "target": "riesgo_cva",
+        "predicate": "mitiga"
+      },
+      {
+        "source": "ead_vigente_contraparte",
+        "target": "capital_minimo_riesgo_credito_contraparte",
+        "predicate": "integra"
+      },
+      {
+        "source": "evaluaciones_crediticias",
+        "target": "ponderador_contrapartes_resto",
+        "predicate": "condiciona"
+      }
+    ]
+  }
+}

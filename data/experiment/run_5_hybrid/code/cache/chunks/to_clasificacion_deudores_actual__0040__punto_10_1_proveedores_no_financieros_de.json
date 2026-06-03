@@ -1,0 +1,85 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0040__punto_10_1_proveedores_no_financieros_de",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 10.1 — Proveedores no financieros de crédito.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"proveedor_no_financiero_credito\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Proveedor no financiero de crédito\",\n      \"properties\": {\n        \"description\": \"Empresa no financiera emisora de tarjeta de crédito/compra u otro proveedor no financiero de crédito alcanzado por normas BCRA.\",\n        \"categoria\": \"proveedor_no_financiero_credito\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_deudores_mora\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de deudores según mora\",\n      \"properties\": {\n        \"description\": \"Clasificación de deudores en función de su situación de mora aplicando criterios de cartera de consumo o vivienda.\"\n      }\n    },\n    {\n      \"id\": \"cartera_consumo_vivienda\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera de consumo o vivienda\",\n      \"properties\": {\n        \"description\": \"Categoría de cartera regulatoria cuyos criterios de clasificación aplican a la evaluación de deudores.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_clasificacion_obligatoria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación obligatoria de deudores\",\n      \"properties\": {\n        \"description\": \"Los proveedores no financieros de crédito deben clasificar a sus deudores en función de la mora según criterios de cartera de consumo o vivienda, con recategorización obligatoria conforme punto 7.3.\"\n      }\n    },\n    {\n      \"id\": \"recategorizacion_obligatoria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Recategorización obligatoria\",\n      \"properties\": {\n        \"description\": \"Obligación de recategorización conforme disposiciones previstas en punto 7.3.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"proveedor_no_financiero_credito\",\n      \"target\": \"clasificacion_deudores_mora\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_obligatoria\",\n      \"target\": \"proveedor_no_financiero_credito\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_obligatoria\",\n      \"target\": \"clasificacion_deudores_mora\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"clasificacion_deudores_mora\",\n      \"target\": \"cartera_consumo_vivienda\",\n      \"predicate\": \"utiliza_criterios_de\"\n    },\n    {\n      \"source\": \"recategorizacion_obligatoria\",\n      \"target\": \"restriccion_clasificacion_obligatoria\",\n      \"predicate\": \"integra\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3517,
+  "output_tokens": 789,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 5,
+  "relations_count": 5,
+  "parsed": {
+    "entities": [
+      {
+        "id": "proveedor_no_financiero_credito",
+        "type": "EntidadFinanciera",
+        "label": "Proveedor no financiero de crédito",
+        "properties": {
+          "description": "Empresa no financiera emisora de tarjeta de crédito/compra u otro proveedor no financiero de crédito alcanzado por normas BCRA.",
+          "categoria": "proveedor_no_financiero_credito"
+        }
+      },
+      {
+        "id": "clasificacion_deudores_mora",
+        "type": "Operacion",
+        "label": "Clasificación de deudores según mora",
+        "properties": {
+          "description": "Clasificación de deudores en función de su situación de mora aplicando criterios de cartera de consumo o vivienda."
+        }
+      },
+      {
+        "id": "cartera_consumo_vivienda",
+        "type": "Concepto",
+        "label": "Cartera de consumo o vivienda",
+        "properties": {
+          "description": "Categoría de cartera regulatoria cuyos criterios de clasificación aplican a la evaluación de deudores."
+        }
+      },
+      {
+        "id": "restriccion_clasificacion_obligatoria",
+        "type": "Restriccion",
+        "label": "Clasificación obligatoria de deudores",
+        "properties": {
+          "description": "Los proveedores no financieros de crédito deben clasificar a sus deudores en función de la mora según criterios de cartera de consumo o vivienda, con recategorización obligatoria conforme punto 7.3."
+        }
+      },
+      {
+        "id": "recategorizacion_obligatoria",
+        "type": "Restriccion",
+        "label": "Recategorización obligatoria",
+        "properties": {
+          "description": "Obligación de recategorización conforme disposiciones previstas en punto 7.3."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "proveedor_no_financiero_credito",
+        "target": "clasificacion_deudores_mora",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_clasificacion_obligatoria",
+        "target": "proveedor_no_financiero_credito",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_clasificacion_obligatoria",
+        "target": "clasificacion_deudores_mora",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "clasificacion_deudores_mora",
+        "target": "cartera_consumo_vivienda",
+        "predicate": "utiliza_criterios_de"
+      },
+      {
+        "source": "recategorizacion_obligatoria",
+        "target": "restriccion_clasificacion_obligatoria",
+        "predicate": "integra"
+      }
+    ]
+  }
+}

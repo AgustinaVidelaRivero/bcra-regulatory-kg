@@ -1,0 +1,144 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0050__punto_1_todos_los_derivados_de_credito_q",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1 — Todos los derivados de crédito que hagan referencia a una mi sma enti-",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"derivados_credito\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Derivados de crédito\",\n      \"properties\": {\n        \"description\": \"Instrumentos financieros que hacen referencia a una misma entidad (deudor único o índice) y se compensan entre sí.\"\n      }\n    },\n    {\n      \"id\": \"nocional_efectivo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Nocional efectivo\",\n      \"properties\": {\n        \"description\": \"Valor resultante de la sumatoria de los nocionales ajustados a nivel de operación, multiplicados por ajustes delta regulatorios y factor plazo.\"\n      }\n    },\n    {\n      \"id\": \"nocional_ajustado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Nocional ajustado a nivel de operación\",\n      \"properties\": {\n        \"description\": \"Nocional de cada operación con derivado de crédito, ajustado según regulación.\"\n      }\n    },\n    {\n      \"id\": \"ajuste_delta_regulatorio\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ajuste delta regulatorio\",\n      \"properties\": {\n        \"description\": \"Factor de ajuste regulatorio aplicado al nocional de operaciones con derivados de crédito.\"\n      }\n    },\n    {\n      \"id\": \"factor_plazo\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor plazo\",\n      \"properties\": {\n        \"description\": \"Componente regulatorio que ajusta el nocional en función del plazo de la operación.\"\n      }\n    },\n    {\n      \"id\": \"factor_regulatorio_sf_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Factor regulatorio SF(Crédito)\",\n      \"properties\": {\n        \"description\": \"Factor que depende de calificación crediticia del deudor único o de características del índice (grado de inversión o especulativo).\"\n      }\n    },\n    {\n      \"id\": \"calificacion_crediticia\",\n      \"type\": \"Concepto\",\n      \"label\": \"Calificación crediticia\",\n      \"properties\": {\n        \"description\": \"Criterio de evaluación del deudor que determina el factor regulatorio en operaciones de crédito.\"\n      }\n    },\n    {\n      \"id\": \"indice_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Índice de crédito\",\n      \"properties\": {\n        \"description\": \"Referencia agregada que reemplaza un deudor único en operaciones de derivados de crédito; puede ser grado de inversión o especulativo.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_credito_contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Riesgo regulado en Sección 4 del régimen de capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"capital_minimo_riesgo_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Capital mínimo por riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Requisito regulatorio que exige mantener capital mínimo calculado sobre posiciones en derivados de crédito según nocional efectivo y factores regulatorios.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"derivados_credito\",\n      \"target\": \"nocional_efectivo\",\n      \"predicate\": \"determina\"\n    },\n    {\n      \"source\": \"nocional_efectivo\",\n      \"target\": \"nocional_ajustado\",\n      \"predicate\": \"calcula_desde\"\n    },\n    {\n      \"source\": \"nocional_efectivo\",\n      \"target\": \"ajuste_delta_regulatorio\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"nocional_efectivo\",\n      \"target\": \"factor_plazo\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"factor_regulatorio_sf_credito\",\n      \"target\": \"nocional_efectivo\",\n      \"predicate\": \"multiplica\"\n    },\n    {\n      \"source\": \"calificacion_crediticia\",\n      \"target\": \"factor_regulatorio_sf_credito\",\n      \"predicate\": \"determina\"\n    },\n    {\n      \"source\": \"indice_credito\",\n      \"target\": \"factor_regulatorio_sf_credito\",\n      \"predicate\": \"determina\"\n    },\n    {\n      \"source\": \"capital_minimo_riesgo_credito\",\n      \"target\": \"riesgo_credito_contraparte\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"capital_minimo_riesgo_credito\",\n      \"target\": \"derivados_credito\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3764,
+  "output_tokens": 1321,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "derivados_credito",
+        "type": "InstrumentoFinanciero",
+        "label": "Derivados de crédito",
+        "properties": {
+          "description": "Instrumentos financieros que hacen referencia a una misma entidad (deudor único o índice) y se compensan entre sí."
+        }
+      },
+      {
+        "id": "nocional_efectivo",
+        "type": "Concepto",
+        "label": "Nocional efectivo",
+        "properties": {
+          "description": "Valor resultante de la sumatoria de los nocionales ajustados a nivel de operación, multiplicados por ajustes delta regulatorios y factor plazo."
+        }
+      },
+      {
+        "id": "nocional_ajustado",
+        "type": "Concepto",
+        "label": "Nocional ajustado a nivel de operación",
+        "properties": {
+          "description": "Nocional de cada operación con derivado de crédito, ajustado según regulación."
+        }
+      },
+      {
+        "id": "ajuste_delta_regulatorio",
+        "type": "Concepto",
+        "label": "Ajuste delta regulatorio",
+        "properties": {
+          "description": "Factor de ajuste regulatorio aplicado al nocional de operaciones con derivados de crédito."
+        }
+      },
+      {
+        "id": "factor_plazo",
+        "type": "Concepto",
+        "label": "Factor plazo",
+        "properties": {
+          "description": "Componente regulatorio que ajusta el nocional en función del plazo de la operación."
+        }
+      },
+      {
+        "id": "factor_regulatorio_sf_credito",
+        "type": "Concepto",
+        "label": "Factor regulatorio SF(Crédito)",
+        "properties": {
+          "description": "Factor que depende de calificación crediticia del deudor único o de características del índice (grado de inversión o especulativo)."
+        }
+      },
+      {
+        "id": "calificacion_crediticia",
+        "type": "Concepto",
+        "label": "Calificación crediticia",
+        "properties": {
+          "description": "Criterio de evaluación del deudor que determina el factor regulatorio en operaciones de crédito."
+        }
+      },
+      {
+        "id": "indice_credito",
+        "type": "Concepto",
+        "label": "Índice de crédito",
+        "properties": {
+          "description": "Referencia agregada que reemplaza un deudor único en operaciones de derivados de crédito; puede ser grado de inversión o especulativo."
+        }
+      },
+      {
+        "id": "riesgo_credito_contraparte",
+        "type": "Concepto",
+        "label": "Riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Riesgo regulado en Sección 4 del régimen de capitales mínimos."
+        }
+      },
+      {
+        "id": "capital_minimo_riesgo_credito",
+        "type": "Restriccion",
+        "label": "Capital mínimo por riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Requisito regulatorio que exige mantener capital mínimo calculado sobre posiciones en derivados de crédito según nocional efectivo y factores regulatorios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "derivados_credito",
+        "target": "nocional_efectivo",
+        "predicate": "determina"
+      },
+      {
+        "source": "nocional_efectivo",
+        "target": "nocional_ajustado",
+        "predicate": "calcula_desde"
+      },
+      {
+        "source": "nocional_efectivo",
+        "target": "ajuste_delta_regulatorio",
+        "predicate": "aplica"
+      },
+      {
+        "source": "nocional_efectivo",
+        "target": "factor_plazo",
+        "predicate": "aplica"
+      },
+      {
+        "source": "factor_regulatorio_sf_credito",
+        "target": "nocional_efectivo",
+        "predicate": "multiplica"
+      },
+      {
+        "source": "calificacion_crediticia",
+        "target": "factor_regulatorio_sf_credito",
+        "predicate": "determina"
+      },
+      {
+        "source": "indice_credito",
+        "target": "factor_regulatorio_sf_credito",
+        "predicate": "determina"
+      },
+      {
+        "source": "capital_minimo_riesgo_credito",
+        "target": "riesgo_credito_contraparte",
+        "predicate": "regula"
+      },
+      {
+        "source": "capital_minimo_riesgo_credito",
+        "target": "derivados_credito",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

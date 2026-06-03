@@ -1,0 +1,156 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0114__punto_7_3_limite_para_las_entidades_del_",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.3 — Límite para las entidades del grupo 2.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"restriccion_limite_capital_grupo_a\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de capital grupo A\",\n      \"properties\": {\n        \"description\": \"La exigencia de capital mínimo por riesgo de crédito para entidades del grupo A no podrá superar el 20% del promedio de los últimos 36 meses, expresada en moneda homogénea.\",\n        \"categoria_aplicable\": \"grupo_a\"\n      }\n    },\n    {\n      \"id\": \"restriccion_limite_capital_grupo_b\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de capital grupo B\",\n      \"properties\": {\n        \"description\": \"La exigencia de capital mínimo por riesgo de crédito para entidades del grupo B no podrá superar el 17% del promedio de los últimos 36 meses, expresada en moneda homogénea.\",\n        \"categoria_aplicable\": \"grupo_b\"\n      }\n    },\n    {\n      \"id\": \"excepcion_reduccion_calificacion_123\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Reducción a 11% por calificación 1, 2 o 3\",\n      \"properties\": {\n        \"description\": \"El límite máximo se reduce a 11% cuando la entidad cuenta con calificación 1, 2 o 3 de la SEFYC en la última inspección respecto de: la entidad en conjunto, sistemas informáticos y labor de responsables de control interno.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_reduccion_calificacion_12\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Reducción a 7% por calificación 1 o 2\",\n      \"properties\": {\n        \"description\": \"El límite máximo disminuye a 7% cuando la entidad cuenta con calificación 1 o 2 en todos los aspectos evaluados: entidad en conjunto, sistemas informáticos y labor de responsables de control interno.\"\n      }\n    },\n    {\n      \"id\": \"concepto_exigencia_capital_minimo_riesgo_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exigencia de capital mínimo por riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Exigencia regulatoria de capital calculada según lo previsto en la Sección 2.\"\n      }\n    },\n    {\n      \"id\": \"concepto_calificacion_sefyc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Calificación SEFYC\",\n      \"properties\": {\n        \"description\": \"Valoración otorgada por la SEFYC en la última inspección sobre aspectos de la entidad financiera.\"\n      }\n    },\n    {\n      \"id\": \"autoridad_sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"SEFYC - Autoridad regulatoria que realiza inspecciones y otorga calificaciones.\"\n      }\n    },\n    {\n      \"id\": \"entidad_grupo_a\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades del grupo A\",\n      \"properties\": {\n        \"description\": \"Categoría de entidades financieras sujetas a límite de capital del 20%.\"\n      }\n    },\n    {\n      \"id\": \"entidad_grupo_b\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades del grupo B\",\n      \"properties\": {\n        \"description\": \"Categoría de entidades financieras sujetas a límite de capital del 17%.\"\n      }\n    },\n    {\n      \"id\": \"plazo_36_meses\",\n      \"type\": \"Plazo\",\n      \"label\": \"Promedio últimos 36 meses\",\n      \"properties\": {\n        \"description\": \"Período de 36 meses anteriores al mes de determinación de exigencia.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_limite_capital_grupo_a\",\n      \"target\": \"concepto_exigencia_capital_minimo_riesgo_credito\",\n      \"predicate\": \"limita\"\n    },\n    {\n      \"source\": \"restriccion_limite_capital_grupo_b\",\n      \"target\": \"concepto_exigencia_capital_minimo_riesgo_credito\",\n      \"predicate\": \"limita\"\n    },\n    {\n      \"source\": \"excepcion_reduccion_calificacion_123\",\n      \"target\": \"restriccion_limite_capital_grupo_b\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_reduccion_calificacion_12\",\n      \"target\": \"restriccion_limite_capital_grupo_b\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_limite_capital_grupo_a\",\n      \"target\": \"entidad_grupo_a\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_limite_capital_grupo_b\",\n      \"target\": \"entidad_grupo_b\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"autoridad_sefyc\",\n      \"target\": \"concepto_calificacion_sefyc\",\n      \"predicate\": \"otorga\"\n    },\n    {\n      \"source\": \"concepto_calificacion_sefyc\",\n      \"target\": \"excepcion_reduccion_calificacion_123\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"concepto_calificacion_sefyc\",\n      \"target\": \"excepcion_reduccion_calificacion_12\",\n      \"predicate\": \"condiciona\"\n    },\n    {\n      \"source\": \"plazo_36_meses\",\n      \"target\": \"restriccion_limite_capital_grupo_a\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"plazo_36_meses\",\n      \"target\": \"restriccion_limite_capital_grupo_b\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3864,
+  "output_tokens": 1672,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "restriccion_limite_capital_grupo_a",
+        "type": "Restriccion",
+        "label": "Límite de capital grupo A",
+        "properties": {
+          "description": "La exigencia de capital mínimo por riesgo de crédito para entidades del grupo A no podrá superar el 20% del promedio de los últimos 36 meses, expresada en moneda homogénea.",
+          "categoria_aplicable": "grupo_a"
+        }
+      },
+      {
+        "id": "restriccion_limite_capital_grupo_b",
+        "type": "Restriccion",
+        "label": "Límite de capital grupo B",
+        "properties": {
+          "description": "La exigencia de capital mínimo por riesgo de crédito para entidades del grupo B no podrá superar el 17% del promedio de los últimos 36 meses, expresada en moneda homogénea.",
+          "categoria_aplicable": "grupo_b"
+        }
+      },
+      {
+        "id": "excepcion_reduccion_calificacion_123",
+        "type": "Excepcion",
+        "label": "Reducción a 11% por calificación 1, 2 o 3",
+        "properties": {
+          "description": "El límite máximo se reduce a 11% cuando la entidad cuenta con calificación 1, 2 o 3 de la SEFYC en la última inspección respecto de: la entidad en conjunto, sistemas informáticos y labor de responsables de control interno."
+        }
+      },
+      {
+        "id": "excepcion_reduccion_calificacion_12",
+        "type": "Excepcion",
+        "label": "Reducción a 7% por calificación 1 o 2",
+        "properties": {
+          "description": "El límite máximo disminuye a 7% cuando la entidad cuenta con calificación 1 o 2 en todos los aspectos evaluados: entidad en conjunto, sistemas informáticos y labor de responsables de control interno."
+        }
+      },
+      {
+        "id": "concepto_exigencia_capital_minimo_riesgo_credito",
+        "type": "Concepto",
+        "label": "Exigencia de capital mínimo por riesgo de crédito",
+        "properties": {
+          "description": "Exigencia regulatoria de capital calculada según lo previsto en la Sección 2."
+        }
+      },
+      {
+        "id": "concepto_calificacion_sefyc",
+        "type": "Concepto",
+        "label": "Calificación SEFYC",
+        "properties": {
+          "description": "Valoración otorgada por la SEFYC en la última inspección sobre aspectos de la entidad financiera."
+        }
+      },
+      {
+        "id": "autoridad_sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "SEFYC - Autoridad regulatoria que realiza inspecciones y otorga calificaciones."
+        }
+      },
+      {
+        "id": "entidad_grupo_a",
+        "type": "Concepto",
+        "label": "Entidades del grupo A",
+        "properties": {
+          "description": "Categoría de entidades financieras sujetas a límite de capital del 20%."
+        }
+      },
+      {
+        "id": "entidad_grupo_b",
+        "type": "Concepto",
+        "label": "Entidades del grupo B",
+        "properties": {
+          "description": "Categoría de entidades financieras sujetas a límite de capital del 17%."
+        }
+      },
+      {
+        "id": "plazo_36_meses",
+        "type": "Plazo",
+        "label": "Promedio últimos 36 meses",
+        "properties": {
+          "description": "Período de 36 meses anteriores al mes de determinación de exigencia."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_limite_capital_grupo_a",
+        "target": "concepto_exigencia_capital_minimo_riesgo_credito",
+        "predicate": "limita"
+      },
+      {
+        "source": "restriccion_limite_capital_grupo_b",
+        "target": "concepto_exigencia_capital_minimo_riesgo_credito",
+        "predicate": "limita"
+      },
+      {
+        "source": "excepcion_reduccion_calificacion_123",
+        "target": "restriccion_limite_capital_grupo_b",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_reduccion_calificacion_12",
+        "target": "restriccion_limite_capital_grupo_b",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_limite_capital_grupo_a",
+        "target": "entidad_grupo_a",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_limite_capital_grupo_b",
+        "target": "entidad_grupo_b",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "autoridad_sefyc",
+        "target": "concepto_calificacion_sefyc",
+        "predicate": "otorga"
+      },
+      {
+        "source": "concepto_calificacion_sefyc",
+        "target": "excepcion_reduccion_calificacion_123",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "concepto_calificacion_sefyc",
+        "target": "excepcion_reduccion_calificacion_12",
+        "predicate": "condiciona"
+      },
+      {
+        "source": "plazo_36_meses",
+        "target": "restriccion_limite_capital_grupo_a",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "plazo_36_meses",
+        "target": "restriccion_limite_capital_grupo_b",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

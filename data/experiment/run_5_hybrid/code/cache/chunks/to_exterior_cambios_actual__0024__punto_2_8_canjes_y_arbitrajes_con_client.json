@@ -1,0 +1,127 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0024__punto_2_8_canjes_y_arbitrajes_con_client",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 2.8 — Canjes y arbitrajes con clientes asociados a ingresos de divisas del exterior.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_generica\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados por el BCRA que realizan operaciones de cambios.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_canjes_arbitrajes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Canjes y arbitrajes con clientes\",\n      \"properties\": {\n        \"description\": \"Operaciones de canje y arbitraje realizadas con clientes asociadas a ingresos de divisas del exterior.\"\n      }\n    },\n    {\n      \"id\": \"operacion_liquidacion_mercado_cambios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Liquidación en mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Operaciones alcanzadas por obligación de liquidación en el mercado de cambios oficial.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_exclusion_canjes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exclusión de canjes de obligación\",\n      \"properties\": {\n        \"description\": \"Las entidades podrán dar curso a canjes y arbitrajes solo en la medida que no correspondan a operaciones alcanzadas por la obligación de liquidación en el mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_acreditacion_divisas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acreditación de ingresos de divisas\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben permitir la acreditación de ingresos de divisas del exterior a las cuentas abiertas por el cliente en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_moneda_identica\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acreditación en moneda idéntica\",\n      \"properties\": {\n        \"description\": \"Cuando la transferencia corresponde a la misma moneda en que está denominada la cuenta, la entidad debe acreditar el mismo monto recibido del exterior.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_comisiones_individualizadas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Comisiones y cargos individualizados\",\n      \"properties\": {\n        \"description\": \"Cuando la entidad decide cobrar comisión y/o cargo por estas operaciones, debe instrumentarse a través de un concepto individualizado específicamente.\"\n      }\n    },\n    {\n      \"id\": \"concepto_cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Contraparte de la operación de cambios que realiza transferencias de divisas del exterior.\"\n      }\n    },\n    {\n      \"id\": \"concepto_moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Divisa en la que se denominan las cuentas del cliente y se acreditan ingresos del exterior.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_generica\",\n      \"target\": \"operacion_canjes_arbitrajes\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_canjes\",\n      \"target\": \"operacion_canjes_arbitrajes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_exclusion_canjes\",\n      \"target\": \"operacion_liquidacion_mercado_cambios\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_acreditacion_divisas\",\n      \"target\": \"entidad_financiera_generica\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_acreditacion_divisas\",\n      \"target\": \"operacion_canjes_arbitrajes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_moneda_identica\",\n      \"target\": \"operacion_canjes_arbitrajes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_comisiones_individualizadas\",\n      \"target\": \"operacion_canjes_arbitrajes\",\n      \"predicate\": \"aplica_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3582,
+  "output_tokens": 1215,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_generica",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados por el BCRA que realizan operaciones de cambios.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_canjes_arbitrajes",
+        "type": "Operacion",
+        "label": "Canjes y arbitrajes con clientes",
+        "properties": {
+          "description": "Operaciones de canje y arbitraje realizadas con clientes asociadas a ingresos de divisas del exterior."
+        }
+      },
+      {
+        "id": "operacion_liquidacion_mercado_cambios",
+        "type": "Operacion",
+        "label": "Liquidación en mercado de cambios",
+        "properties": {
+          "description": "Operaciones alcanzadas por obligación de liquidación en el mercado de cambios oficial."
+        }
+      },
+      {
+        "id": "restriccion_exclusion_canjes",
+        "type": "Restriccion",
+        "label": "Exclusión de canjes de obligación",
+        "properties": {
+          "description": "Las entidades podrán dar curso a canjes y arbitrajes solo en la medida que no correspondan a operaciones alcanzadas por la obligación de liquidación en el mercado de cambios."
+        }
+      },
+      {
+        "id": "restriccion_acreditacion_divisas",
+        "type": "Restriccion",
+        "label": "Acreditación de ingresos de divisas",
+        "properties": {
+          "description": "Las entidades financieras deben permitir la acreditación de ingresos de divisas del exterior a las cuentas abiertas por el cliente en moneda extranjera."
+        }
+      },
+      {
+        "id": "restriccion_moneda_identica",
+        "type": "Restriccion",
+        "label": "Acreditación en moneda idéntica",
+        "properties": {
+          "description": "Cuando la transferencia corresponde a la misma moneda en que está denominada la cuenta, la entidad debe acreditar el mismo monto recibido del exterior."
+        }
+      },
+      {
+        "id": "restriccion_comisiones_individualizadas",
+        "type": "Restriccion",
+        "label": "Comisiones y cargos individualizados",
+        "properties": {
+          "description": "Cuando la entidad decide cobrar comisión y/o cargo por estas operaciones, debe instrumentarse a través de un concepto individualizado específicamente."
+        }
+      },
+      {
+        "id": "concepto_cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Contraparte de la operación de cambios que realiza transferencias de divisas del exterior."
+        }
+      },
+      {
+        "id": "concepto_moneda_extranjera",
+        "type": "Concepto",
+        "label": "Moneda extranjera",
+        "properties": {
+          "description": "Divisa en la que se denominan las cuentas del cliente y se acreditan ingresos del exterior."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_generica",
+        "target": "operacion_canjes_arbitrajes",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_exclusion_canjes",
+        "target": "operacion_canjes_arbitrajes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_exclusion_canjes",
+        "target": "operacion_liquidacion_mercado_cambios",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_acreditacion_divisas",
+        "target": "entidad_financiera_generica",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_acreditacion_divisas",
+        "target": "operacion_canjes_arbitrajes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_moneda_identica",
+        "target": "operacion_canjes_arbitrajes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_comisiones_individualizadas",
+        "target": "operacion_canjes_arbitrajes",
+        "predicate": "aplica_a"
+      }
+    ]
+  }
+}

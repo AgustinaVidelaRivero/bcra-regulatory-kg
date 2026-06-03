@@ -1,0 +1,132 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0115__punto_7_4_nuevas_entidades",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 7.4 — Nuevas entidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidades_financieras_grupos_1_2\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras grupos 1 y 2\",\n      \"properties\": {\n        \"description\": \"Entidades financieras clasificadas en los grupos 1 y 2 sujetas a régimen de capitalización mínima por riesgo operacional.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_minimo_riesgo_operacional\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital mínimo por riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Requisito de mantener capital mínimo calculado según metodología escalonada: 10% de suma de exigencias por riesgo de crédito y mercado en mes 1; 10% de promedio de exigencias en meses 2-36; metodología estándar a partir de mes 37.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_operacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Categoría de riesgo financiero cuya cobertura se requiere mediante capital mínimo.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_credito\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Categoría de riesgo financiero cuya exigencia de capital se utiliza como base para calcular la exigencia por riesgo operacional.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_mercado\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Categoría de riesgo financiero cuya exigencia de capital se utiliza como base para calcular la exigencia por riesgo operacional, considerando posiciones del último día del mes.\"\n      }\n    },\n    {\n      \"id\": \"metodologia_escalonada_mes_1\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo mes 1 riesgo operacional\",\n      \"properties\": {\n        \"description\": \"El primer mes la exigencia será equivalente al 10% de la sumatoria de exigencias por riesgo de crédito y mercado de ese mes.\"\n      }\n    },\n    {\n      \"id\": \"metodologia_escalonada_meses_2_36\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo meses 2 a 36 riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Del segundo al trigésimo sexto mes la exigencia será equivalente al 10% del promedio de exigencias determinadas para los meses transcurridos hasta el período de cálculo inclusive.\"\n      }\n    },\n    {\n      \"id\": \"metodologia_estandar_mes_37\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo mes 37 en adelante riesgo operacional\",\n      \"properties\": {\n        \"description\": \"Desde el trigésimo séptimo mes se aplica la metodología estándar establecida para el grupo 1 o grupo 2 según corresponda.\"\n      }\n    },\n    {\n      \"id\": \"moneda_homogenea\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda homogénea del mes anterior\",\n      \"properties\": {\n        \"description\": \"Unidad de expresión de las exigencias de capital, establecida como moneda del mes anterior al que se efectúa el cálculo.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidades_financieras_grupos_1_2\",\n      \"target\": \"exigencia_capital_minimo_riesgo_operacional\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exigencia_capital_minimo_riesgo_operacional\",\n      \"target\": \"riesgo_operacional\",\n      \"predicate\": \"cubre\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_mes_1\",\n      \"target\": \"riesgo_credito\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_mes_1\",\n      \"target\": \"riesgo_mercado\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_meses_2_36\",\n      \"target\": \"riesgo_credito\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_meses_2_36\",\n      \"target\": \"riesgo_mercado\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_mes_1\",\n      \"target\": \"moneda_homogenea\",\n      \"predicate\": \"expresa_en\"\n    },\n    {\n      \"source\": \"metodologia_escalonada_meses_2_36\",\n      \"target\": \"moneda_homogenea\",\n      \"predicate\": \"expresa_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3943,
+  "output_tokens": 1396,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidades_financieras_grupos_1_2",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras grupos 1 y 2",
+        "properties": {
+          "description": "Entidades financieras clasificadas en los grupos 1 y 2 sujetas a régimen de capitalización mínima por riesgo operacional.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "exigencia_capital_minimo_riesgo_operacional",
+        "type": "Restriccion",
+        "label": "Exigencia de capital mínimo por riesgo operacional",
+        "properties": {
+          "description": "Requisito de mantener capital mínimo calculado según metodología escalonada: 10% de suma de exigencias por riesgo de crédito y mercado en mes 1; 10% de promedio de exigencias en meses 2-36; metodología estándar a partir de mes 37."
+        }
+      },
+      {
+        "id": "riesgo_operacional",
+        "type": "Concepto",
+        "label": "Riesgo operacional",
+        "properties": {
+          "description": "Categoría de riesgo financiero cuya cobertura se requiere mediante capital mínimo."
+        }
+      },
+      {
+        "id": "riesgo_credito",
+        "type": "Concepto",
+        "label": "Riesgo de crédito",
+        "properties": {
+          "description": "Categoría de riesgo financiero cuya exigencia de capital se utiliza como base para calcular la exigencia por riesgo operacional."
+        }
+      },
+      {
+        "id": "riesgo_mercado",
+        "type": "Concepto",
+        "label": "Riesgo de mercado",
+        "properties": {
+          "description": "Categoría de riesgo financiero cuya exigencia de capital se utiliza como base para calcular la exigencia por riesgo operacional, considerando posiciones del último día del mes."
+        }
+      },
+      {
+        "id": "metodologia_escalonada_mes_1",
+        "type": "Restriccion",
+        "label": "Cálculo mes 1 riesgo operacional",
+        "properties": {
+          "description": "El primer mes la exigencia será equivalente al 10% de la sumatoria de exigencias por riesgo de crédito y mercado de ese mes."
+        }
+      },
+      {
+        "id": "metodologia_escalonada_meses_2_36",
+        "type": "Restriccion",
+        "label": "Cálculo meses 2 a 36 riesgo operacional",
+        "properties": {
+          "description": "Del segundo al trigésimo sexto mes la exigencia será equivalente al 10% del promedio de exigencias determinadas para los meses transcurridos hasta el período de cálculo inclusive."
+        }
+      },
+      {
+        "id": "metodologia_estandar_mes_37",
+        "type": "Restriccion",
+        "label": "Cálculo mes 37 en adelante riesgo operacional",
+        "properties": {
+          "description": "Desde el trigésimo séptimo mes se aplica la metodología estándar establecida para el grupo 1 o grupo 2 según corresponda."
+        }
+      },
+      {
+        "id": "moneda_homogenea",
+        "type": "Concepto",
+        "label": "Moneda homogénea del mes anterior",
+        "properties": {
+          "description": "Unidad de expresión de las exigencias de capital, establecida como moneda del mes anterior al que se efectúa el cálculo."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidades_financieras_grupos_1_2",
+        "target": "exigencia_capital_minimo_riesgo_operacional",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exigencia_capital_minimo_riesgo_operacional",
+        "target": "riesgo_operacional",
+        "predicate": "cubre"
+      },
+      {
+        "source": "metodologia_escalonada_mes_1",
+        "target": "riesgo_credito",
+        "predicate": "considera"
+      },
+      {
+        "source": "metodologia_escalonada_mes_1",
+        "target": "riesgo_mercado",
+        "predicate": "considera"
+      },
+      {
+        "source": "metodologia_escalonada_meses_2_36",
+        "target": "riesgo_credito",
+        "predicate": "considera"
+      },
+      {
+        "source": "metodologia_escalonada_meses_2_36",
+        "target": "riesgo_mercado",
+        "predicate": "considera"
+      },
+      {
+        "source": "metodologia_escalonada_mes_1",
+        "target": "moneda_homogenea",
+        "predicate": "expresa_en"
+      },
+      {
+        "source": "metodologia_escalonada_meses_2_36",
+        "target": "moneda_homogenea",
+        "predicate": "expresa_en"
+      }
+    ]
+  }
+}

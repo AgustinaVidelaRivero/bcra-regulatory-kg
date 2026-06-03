@@ -1,0 +1,126 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0116__punto_8_1_determinacion",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 8.1 — Determinación.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"responsabilidad_patrimonial_computable\",\n      \"type\": \"Concepto\",\n      \"label\": \"Responsabilidad patrimonial computable\",\n      \"properties\": {\n        \"description\": \"Capital regulatorio total de las entidades financieras, determinado según la fórmula RPC = PNb + PNc para cumplir prescripciones de los artículos 30 y 32 de la Ley de Entidades Financieras.\"\n      }\n    },\n    {\n      \"id\": \"patrimonio_neto_basico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Patrimonio neto básico\",\n      \"properties\": {\n        \"description\": \"Capital de nivel uno, calculado como CO_n1 - CDCO_n1 + CA_n1 - CDCA_n1.\"\n      }\n    },\n    {\n      \"id\": \"patrimonio_neto_complementario\",\n      \"type\": \"Concepto\",\n      \"label\": \"Patrimonio neto complementario\",\n      \"properties\": {\n        \"description\": \"Capital de nivel dos, neto de las deducciones correspondientes (CDPNC).\"\n      }\n    },\n    {\n      \"id\": \"capital_ordinario_nivel_uno\",\n      \"type\": \"Concepto\",\n      \"label\": \"Capital ordinario de nivel uno\",\n      \"properties\": {\n        \"description\": \"Componente básico del patrimonio neto básico, identificado como CO_n1.\"\n      }\n    },\n    {\n      \"id\": \"conceptos_deducibles_capital_ordinario\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conceptos deducibles capital ordinario\",\n      \"properties\": {\n        \"description\": \"Deducciones aplicables al capital ordinario de nivel uno, identificadas como CDCO_n1.\"\n      }\n    },\n    {\n      \"id\": \"capital_adicional_nivel_uno\",\n      \"type\": \"Concepto\",\n      \"label\": \"Capital adicional de nivel uno\",\n      \"properties\": {\n        \"description\": \"Componente adicional del patrimonio neto básico, identificado como CA_n1.\"\n      }\n    },\n    {\n      \"id\": \"conceptos_deducibles_capital_adicional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Conceptos deducibles capital adicional\",\n      \"properties\": {\n        \"description\": \"Deducciones aplicables al capital adicional de nivel uno, identificadas como CDCA_n1.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_determinacion_rpc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Determinación de responsabilidad patrimonial\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben calcular su responsabilidad patrimonial computable según la fórmula RPC = PNb + PNc, conforme a normas reglamentarias de artículos 30 y 32 de la Ley de Entidades Financieras.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados cuya responsabilidad patrimonial computable debe ser determinada según las prescripciones aplicables.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_determinacion_rpc\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"responsabilidad_patrimonial_computable\",\n      \"target\": \"patrimonio_neto_basico\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"responsabilidad_patrimonial_computable\",\n      \"target\": \"patrimonio_neto_complementario\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"patrimonio_neto_basico\",\n      \"target\": \"capital_ordinario_nivel_uno\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"patrimonio_neto_basico\",\n      \"target\": \"conceptos_deducibles_capital_ordinario\",\n      \"predicate\": \"deduce\"\n    },\n    {\n      \"source\": \"patrimonio_neto_basico\",\n      \"target\": \"capital_adicional_nivel_uno\",\n      \"predicate\": \"incluye\"\n    },\n    {\n      \"source\": \"patrimonio_neto_basico\",\n      \"target\": \"conceptos_deducibles_capital_adicional\",\n      \"predicate\": \"deduce\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3668,
+  "output_tokens": 1221,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "responsabilidad_patrimonial_computable",
+        "type": "Concepto",
+        "label": "Responsabilidad patrimonial computable",
+        "properties": {
+          "description": "Capital regulatorio total de las entidades financieras, determinado según la fórmula RPC = PNb + PNc para cumplir prescripciones de los artículos 30 y 32 de la Ley de Entidades Financieras."
+        }
+      },
+      {
+        "id": "patrimonio_neto_basico",
+        "type": "Concepto",
+        "label": "Patrimonio neto básico",
+        "properties": {
+          "description": "Capital de nivel uno, calculado como CO_n1 - CDCO_n1 + CA_n1 - CDCA_n1."
+        }
+      },
+      {
+        "id": "patrimonio_neto_complementario",
+        "type": "Concepto",
+        "label": "Patrimonio neto complementario",
+        "properties": {
+          "description": "Capital de nivel dos, neto de las deducciones correspondientes (CDPNC)."
+        }
+      },
+      {
+        "id": "capital_ordinario_nivel_uno",
+        "type": "Concepto",
+        "label": "Capital ordinario de nivel uno",
+        "properties": {
+          "description": "Componente básico del patrimonio neto básico, identificado como CO_n1."
+        }
+      },
+      {
+        "id": "conceptos_deducibles_capital_ordinario",
+        "type": "Concepto",
+        "label": "Conceptos deducibles capital ordinario",
+        "properties": {
+          "description": "Deducciones aplicables al capital ordinario de nivel uno, identificadas como CDCO_n1."
+        }
+      },
+      {
+        "id": "capital_adicional_nivel_uno",
+        "type": "Concepto",
+        "label": "Capital adicional de nivel uno",
+        "properties": {
+          "description": "Componente adicional del patrimonio neto básico, identificado como CA_n1."
+        }
+      },
+      {
+        "id": "conceptos_deducibles_capital_adicional",
+        "type": "Concepto",
+        "label": "Conceptos deducibles capital adicional",
+        "properties": {
+          "description": "Deducciones aplicables al capital adicional de nivel uno, identificadas como CDCA_n1."
+        }
+      },
+      {
+        "id": "restriccion_determinacion_rpc",
+        "type": "Restriccion",
+        "label": "Determinación de responsabilidad patrimonial",
+        "properties": {
+          "description": "Las entidades financieras deben calcular su responsabilidad patrimonial computable según la fórmula RPC = PNb + PNc, conforme a normas reglamentarias de artículos 30 y 32 de la Ley de Entidades Financieras."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos regulados cuya responsabilidad patrimonial computable debe ser determinada según las prescripciones aplicables."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_determinacion_rpc",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "responsabilidad_patrimonial_computable",
+        "target": "patrimonio_neto_basico",
+        "predicate": "integra"
+      },
+      {
+        "source": "responsabilidad_patrimonial_computable",
+        "target": "patrimonio_neto_complementario",
+        "predicate": "integra"
+      },
+      {
+        "source": "patrimonio_neto_basico",
+        "target": "capital_ordinario_nivel_uno",
+        "predicate": "incluye"
+      },
+      {
+        "source": "patrimonio_neto_basico",
+        "target": "conceptos_deducibles_capital_ordinario",
+        "predicate": "deduce"
+      },
+      {
+        "source": "patrimonio_neto_basico",
+        "target": "capital_adicional_nivel_uno",
+        "predicate": "incluye"
+      },
+      {
+        "source": "patrimonio_neto_basico",
+        "target": "conceptos_deducibles_capital_adicional",
+        "predicate": "deduce"
+      }
+    ]
+  }
+}

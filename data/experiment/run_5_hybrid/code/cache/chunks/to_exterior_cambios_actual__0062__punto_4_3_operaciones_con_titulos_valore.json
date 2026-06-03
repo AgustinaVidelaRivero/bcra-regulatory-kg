@@ -1,0 +1,204 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0062__punto_4_3_operaciones_con_titulos_valore",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 4.3 — Operaciones con títulos valores.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"transacciones_titulos_valores_exterior\",\n      \"type\": \"Operacion\",\n      \"label\": \"Transacciones de títulos valores en el exterior\",\n      \"properties\": {\n        \"description\": \"Operaciones de compraventa de títulos valores concertadas en mercados externos.\"\n      }\n    },\n    {\n      \"id\": \"liquidacion_pesos_pais\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición de liquidación en pesos de operaciones exteriores\",\n      \"properties\": {\n        \"description\": \"Las transacciones de títulos valores concertadas en el exterior no podrán liquidarse en pesos en el país. Solo las operaciones concertadas en el país pueden liquidarse en pesos.\"\n      }\n    },\n    {\n      \"id\": \"compraventa_titulos_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compraventa de títulos valores con liquidación en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Operaciones de compraventa de títulos valores cuya liquidación se efectúa en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"clientes_no_personas_humanas_residentes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes que no son personas humanas residentes\",\n      \"properties\": {\n        \"description\": \"Sujetos que participan en operaciones de compraventa de títulos valores cuya liquidación es en moneda extranjera y que no califican como personas humanas residentes.\"\n      }\n    },\n    {\n      \"id\": \"transferencia_fondos_cuentas_vista\",\n      \"type\": \"Operacion\",\n      \"label\": \"Transferencia de fondos entre cuentas a la vista\",\n      \"properties\": {\n        \"description\": \"Mecanismo de liquidación mediante transferencia de fondos desde y hacia cuentas a la vista a nombre del cliente en entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"cable_cuentas_bancarias_exterior\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cable sobre cuentas bancarias en el exterior\",\n      \"properties\": {\n        \"description\": \"Mecanismo de liquidación mediante transferencia de fondos contra cable sobre cuentas bancarias a nombre del cliente en una entidad del exterior.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_paises_amlcft\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Restricción de países sin estándares AML/CFT\",\n      \"properties\": {\n        \"description\": \"Las cuentas en el exterior deben estar constituidas en países o territorios donde se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional.\"\n      }\n    },\n    {\n      \"id\": \"cable_cuenta_terceros_exterior\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cable sobre cuenta de terceros en el exterior\",\n      \"properties\": {\n        \"description\": \"Mecanismo de liquidación mediante transferencia sobre una cuenta de terceros en el exterior para ventas de bonos BOPREAL adquiridos en suscripción primaria.\"\n      }\n    },\n    {\n      \"id\": \"bonos_bopreal\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Bonos BOPREAL\",\n      \"properties\": {\n        \"description\": \"Títulos valores cuyas ventas pueden liquidarse contra cable sobre cuentas de terceros bajo condiciones especificadas.\"\n      }\n    },\n    {\n      \"id\": \"suscripcion_primaria_bopreal\",\n      \"type\": \"Operacion\",\n      \"label\": \"Suscripción primaria de bonos BOPREAL\",\n      \"properties\": {\n        \"description\": \"Adquisición inicial de bonos BOPREAL por parte del vendedor en operaciones elegibles según la normativa regulatoria.\"\n      }\n    },\n    {\n      \"id\": \"ventas_titulos_valores_posteriores\",\n      \"type\": \"Operacion\",\n      \"label\": \"Ventas de títulos valores posteriores a abril de 2024\",\n      \"properties\": {\n        \"description\": \"Otras ventas de títulos valores concertadas a partir del 01/04/24 que pueden liquidarse bajo las condiciones de moneda extranjera cuando su valor de mercado no supera ciertos límites.\"\n      }\n    },\n    {\n      \"id\": \"limite_valor_mercado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de valor de mercado para ventas alternativas\",\n      \"properties\": {\n        \"description\": \"El valor de mercado de operaciones de venta de títulos valores no debe superar la diferencia entre el valor obtenido por la venta en moneda extranjera de los bonos BOPREAL adquiridos en suscripción primaria.\"\n      }\n    },\n    {\n      \"id\": \"entidades_financieras_locales\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Instituciones financieras constituidas en el país que pueden recibir transferencias de fondos para liquidación de operaciones.\"\n      }\n    },\n    {\n      \"id\": \"entidad_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera del exterior\",\n      \"properties\": {\n        \"description\": \"Institución financiera constituida en el extranjero que puede mantener cuentas bancarias para liquidación de operaciones.\"\n      }\n    },\n    {\n      \"id\": \"grupo_accion_financiera_internacional\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Grupo de Acción Financiera Internacional\",\n      \"properties\": {\n        \"description\": \"Organismo internacional cuyas recomendaciones en materia de prevención de lavado de dinero y financiamiento del terrorismo constituyen estándares de referencia para la regulación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"transacciones_titulos_valores_exterior\",\n      \"target\": \"liquidacion_pesos_pais\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"compraventa_titulos_moneda_extranjera\",\n      \"target\": \"clientes_no_personas_humanas_residentes\",\n      \"predicate\": \"concierne_a\"\n    },\n    {\n      \"source\": \"compraventa_titulos_moneda_extranjera\",\n      \"target\": \"transferencia_fondos_cuentas_vista\",\n      \"predicate\": \"puede_liquidarse_por\"\n    },\n    {\n      \"source\": \"compraventa_titulos_moneda_extranjera\",\n      \"target\": \"cable_cuentas_bancarias_exterior\",\n      \"predicate\": \"puede_liquidarse_por\"\n    },\n    {\n      \"source\": \"compraventa_titulos_moneda_extranjera\",\n      \"target\": \"cable_cuenta_terceros_exterior\",\n      \"predicate\": \"puede_liquidarse_por\"\n    },\n    {\n      \"source\": \"cable_cuentas_bancarias_exterior\",\n      \"target\": \"restriccion_paises_amlcft\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"cable_cuenta_terceros_exterior\",\n      \"target\": \"restriccion_paises_amlcft\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"cable_cuenta_terceros_exterior\",\n      \"target\": \"bonos_bopreal\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"suscripcion_primaria_bopreal\",\n      \"target\": \"bonos_bopreal\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"ventas_titulos_valores_posteriores\",\n      \"target\": \"limite_valor_mercado\",\n      \"predicate\": \"sujeta_a\"\n    },\n    {\n      \"source\": \"transferencia_fondos_cuentas_vista\",\n      \"target\": \"entidades_financieras_locales\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"cable_cuentas_bancarias_exterior\",\n      \"target\": \"entidad_exterior\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_paises_amlcft\",\n      \"target\": \"grupo_accion_financiera_internacional\",\n      \"predicate\": \"referencia\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3896,
+  "output_tokens": 2229,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 13,
+  "parsed": {
+    "entities": [
+      {
+        "id": "transacciones_titulos_valores_exterior",
+        "type": "Operacion",
+        "label": "Transacciones de títulos valores en el exterior",
+        "properties": {
+          "description": "Operaciones de compraventa de títulos valores concertadas en mercados externos."
+        }
+      },
+      {
+        "id": "liquidacion_pesos_pais",
+        "type": "Restriccion",
+        "label": "Prohibición de liquidación en pesos de operaciones exteriores",
+        "properties": {
+          "description": "Las transacciones de títulos valores concertadas en el exterior no podrán liquidarse en pesos en el país. Solo las operaciones concertadas en el país pueden liquidarse en pesos."
+        }
+      },
+      {
+        "id": "compraventa_titulos_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Compraventa de títulos valores con liquidación en moneda extranjera",
+        "properties": {
+          "description": "Operaciones de compraventa de títulos valores cuya liquidación se efectúa en moneda extranjera."
+        }
+      },
+      {
+        "id": "clientes_no_personas_humanas_residentes",
+        "type": "Concepto",
+        "label": "Clientes que no son personas humanas residentes",
+        "properties": {
+          "description": "Sujetos que participan en operaciones de compraventa de títulos valores cuya liquidación es en moneda extranjera y que no califican como personas humanas residentes."
+        }
+      },
+      {
+        "id": "transferencia_fondos_cuentas_vista",
+        "type": "Operacion",
+        "label": "Transferencia de fondos entre cuentas a la vista",
+        "properties": {
+          "description": "Mecanismo de liquidación mediante transferencia de fondos desde y hacia cuentas a la vista a nombre del cliente en entidades financieras locales."
+        }
+      },
+      {
+        "id": "cable_cuentas_bancarias_exterior",
+        "type": "Operacion",
+        "label": "Cable sobre cuentas bancarias en el exterior",
+        "properties": {
+          "description": "Mecanismo de liquidación mediante transferencia de fondos contra cable sobre cuentas bancarias a nombre del cliente en una entidad del exterior."
+        }
+      },
+      {
+        "id": "restriccion_paises_amlcft",
+        "type": "Restriccion",
+        "label": "Restricción de países sin estándares AML/CFT",
+        "properties": {
+          "description": "Las cuentas en el exterior deben estar constituidas en países o territorios donde se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional."
+        }
+      },
+      {
+        "id": "cable_cuenta_terceros_exterior",
+        "type": "Operacion",
+        "label": "Cable sobre cuenta de terceros en el exterior",
+        "properties": {
+          "description": "Mecanismo de liquidación mediante transferencia sobre una cuenta de terceros en el exterior para ventas de bonos BOPREAL adquiridos en suscripción primaria."
+        }
+      },
+      {
+        "id": "bonos_bopreal",
+        "type": "InstrumentoFinanciero",
+        "label": "Bonos BOPREAL",
+        "properties": {
+          "description": "Títulos valores cuyas ventas pueden liquidarse contra cable sobre cuentas de terceros bajo condiciones especificadas."
+        }
+      },
+      {
+        "id": "suscripcion_primaria_bopreal",
+        "type": "Operacion",
+        "label": "Suscripción primaria de bonos BOPREAL",
+        "properties": {
+          "description": "Adquisición inicial de bonos BOPREAL por parte del vendedor en operaciones elegibles según la normativa regulatoria."
+        }
+      },
+      {
+        "id": "ventas_titulos_valores_posteriores",
+        "type": "Operacion",
+        "label": "Ventas de títulos valores posteriores a abril de 2024",
+        "properties": {
+          "description": "Otras ventas de títulos valores concertadas a partir del 01/04/24 que pueden liquidarse bajo las condiciones de moneda extranjera cuando su valor de mercado no supera ciertos límites."
+        }
+      },
+      {
+        "id": "limite_valor_mercado",
+        "type": "Restriccion",
+        "label": "Límite de valor de mercado para ventas alternativas",
+        "properties": {
+          "description": "El valor de mercado de operaciones de venta de títulos valores no debe superar la diferencia entre el valor obtenido por la venta en moneda extranjera de los bonos BOPREAL adquiridos en suscripción primaria."
+        }
+      },
+      {
+        "id": "entidades_financieras_locales",
+        "type": "Concepto",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Instituciones financieras constituidas en el país que pueden recibir transferencias de fondos para liquidación de operaciones."
+        }
+      },
+      {
+        "id": "entidad_exterior",
+        "type": "Concepto",
+        "label": "Entidad financiera del exterior",
+        "properties": {
+          "description": "Institución financiera constituida en el extranjero que puede mantener cuentas bancarias para liquidación de operaciones."
+        }
+      },
+      {
+        "id": "grupo_accion_financiera_internacional",
+        "type": "Autoridad",
+        "label": "Grupo de Acción Financiera Internacional",
+        "properties": {
+          "description": "Organismo internacional cuyas recomendaciones en materia de prevención de lavado de dinero y financiamiento del terrorismo constituyen estándares de referencia para la regulación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "transacciones_titulos_valores_exterior",
+        "target": "liquidacion_pesos_pais",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "compraventa_titulos_moneda_extranjera",
+        "target": "clientes_no_personas_humanas_residentes",
+        "predicate": "concierne_a"
+      },
+      {
+        "source": "compraventa_titulos_moneda_extranjera",
+        "target": "transferencia_fondos_cuentas_vista",
+        "predicate": "puede_liquidarse_por"
+      },
+      {
+        "source": "compraventa_titulos_moneda_extranjera",
+        "target": "cable_cuentas_bancarias_exterior",
+        "predicate": "puede_liquidarse_por"
+      },
+      {
+        "source": "compraventa_titulos_moneda_extranjera",
+        "target": "cable_cuenta_terceros_exterior",
+        "predicate": "puede_liquidarse_por"
+      },
+      {
+        "source": "cable_cuentas_bancarias_exterior",
+        "target": "restriccion_paises_amlcft",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "cable_cuenta_terceros_exterior",
+        "target": "restriccion_paises_amlcft",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "cable_cuenta_terceros_exterior",
+        "target": "bonos_bopreal",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "suscripcion_primaria_bopreal",
+        "target": "bonos_bopreal",
+        "predicate": "comprende"
+      },
+      {
+        "source": "ventas_titulos_valores_posteriores",
+        "target": "limite_valor_mercado",
+        "predicate": "sujeta_a"
+      },
+      {
+        "source": "transferencia_fondos_cuentas_vista",
+        "target": "entidades_financieras_locales",
+        "predicate": "requiere"
+      },
+      {
+        "source": "cable_cuentas_bancarias_exterior",
+        "target": "entidad_exterior",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_paises_amlcft",
+        "target": "grupo_accion_financiera_internacional",
+        "predicate": "referencia"
+      }
+    ]
+  }
+}

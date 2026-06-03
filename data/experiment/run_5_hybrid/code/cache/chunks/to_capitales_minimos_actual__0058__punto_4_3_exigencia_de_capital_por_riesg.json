@@ -1,0 +1,129 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0058__punto_4_3_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.3 — Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 5/8)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"miembros_compensadores\",\n      \"type\": \"Concepto\",\n      \"label\": \"Miembros compensadores\",\n      \"properties\": {\n        \"description\": \"Participantes de una QCCP que realizan aportes a fondos de garantía\"\n      }\n    },\n    {\n      \"id\": \"fondo_garantia_incumplimientos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Fondo de garantía para incumplimientos\",\n      \"properties\": {\n        \"description\": \"Fondo segregado por tipo de producto para garantizar incumplimientos de miembros compensadores\"\n      }\n    },\n    {\n      \"id\": \"segregacion_aportes_por_producto\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Segregación de aportes por tipo de producto\",\n      \"properties\": {\n        \"description\": \"Los aportes a fondos de garantía deben segregarse por tipo de producto y solo pueden utilizarse para tipos de productos específicos\"\n      }\n    },\n    {\n      \"id\": \"exigencia_capital_fondo_garantia\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital por exposición a fondo de garantía\",\n      \"properties\": {\n        \"description\": \"Se determina según fórmulas y metodología del punto, aplicada separadamente para cada producto sujeto a riesgo de crédito de contraparte\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_miembro_compensador\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras miembros compensadores\",\n      \"properties\": {\n        \"description\": \"Entidades financieras que participan como miembros en sistemas de compensación y garantía de una QCCP\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"ponderador_riesgo_cccp\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador de riesgo para aportes a fondo de QCCP\",\n      \"properties\": {\n        \"description\": \"Se determina considerando cantidad y calidad de recursos de la QCCP, exposición al riesgo de crédito de contraparte, y orden de aplicación de recursos ante incumplimiento\"\n      }\n    },\n    {\n      \"id\": \"qccp\",\n      \"type\": \"Concepto\",\n      \"label\": \"QCCP\",\n      \"properties\": {\n        \"description\": \"Contraparte central calificada que gestiona sistemas de compensación y garantía\"\n      }\n    },\n    {\n      \"id\": \"riesgo_credito_contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Riesgo derivado de la exposición a posibles incumplimientos de contrapartes\"\n      }\n    },\n    {\n      \"id\": \"requerimiento_capital_hipotico_ccp\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requerimiento de capital hipotético para CCP\",\n      \"properties\": {\n        \"description\": \"Cálculo del capital requerido por la CCP por su exposición al riesgo de crédito de contraparte frente a todos los miembros compensadores y sus clientes, utilizando ponderador del 20%\"\n      }\n    },\n    {\n      \"id\": \"clientes_miembros_compensadores\",\n      \"type\": \"Concepto\",\n      \"label\": \"Clientes de miembros compensadores\",\n      \"properties\": {\n        \"description\": \"Contrapartes de los miembros compensadores en operaciones compensadas por la QCCP\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_miembro_compensador\",\n      \"target\": \"segregacion_aportes_por_producto\",\n      \"predicate\": \"aplica\"\n    },\n    {\n      \"source\": \"segregacion_aportes_por_producto\",\n      \"target\": \"fondo_garantia_incumplimientos\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"exigencia_capital_fondo_garantia\",\n      \"target\": \"entidad_financiera_miembro_compensador\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"ponderador_riesgo_cccp\",\n      \"target\": \"entidad_financiera_miembro_compensador\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"ponderador_riesgo_cccp\",\n      \"target\": \"qccp\",\n      \"predicate\": \"considera\"\n    },\n    {\n      \"source\": \"requerimiento_capital_hipotico_ccp\",\n      \"target\": \"riesgo_credito_contraparte\",\n      \"predicate\": \"mide\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3897,
+  "output_tokens": 1310,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "miembros_compensadores",
+        "type": "Concepto",
+        "label": "Miembros compensadores",
+        "properties": {
+          "description": "Participantes de una QCCP que realizan aportes a fondos de garantía"
+        }
+      },
+      {
+        "id": "fondo_garantia_incumplimientos",
+        "type": "Concepto",
+        "label": "Fondo de garantía para incumplimientos",
+        "properties": {
+          "description": "Fondo segregado por tipo de producto para garantizar incumplimientos de miembros compensadores"
+        }
+      },
+      {
+        "id": "segregacion_aportes_por_producto",
+        "type": "Restriccion",
+        "label": "Segregación de aportes por tipo de producto",
+        "properties": {
+          "description": "Los aportes a fondos de garantía deben segregarse por tipo de producto y solo pueden utilizarse para tipos de productos específicos"
+        }
+      },
+      {
+        "id": "exigencia_capital_fondo_garantia",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por exposición a fondo de garantía",
+        "properties": {
+          "description": "Se determina según fórmulas y metodología del punto, aplicada separadamente para cada producto sujeto a riesgo de crédito de contraparte"
+        }
+      },
+      {
+        "id": "entidad_financiera_miembro_compensador",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras miembros compensadores",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "ponderador_riesgo_cccp",
+        "type": "Restriccion",
+        "label": "Ponderador de riesgo para aportes a fondo de QCCP",
+        "properties": {
+          "description": "Se determina considerando cantidad y calidad de recursos de la QCCP, exposición al riesgo de crédito de contraparte, y orden de aplicación de recursos ante incumplimiento"
+        }
+      },
+      {
+        "id": "qccp",
+        "type": "Concepto",
+        "label": "QCCP",
+        "properties": {
+          "description": "Contraparte central calificada que gestiona sistemas de compensación y garantía"
+        }
+      },
+      {
+        "id": "riesgo_credito_contraparte",
+        "type": "Concepto",
+        "label": "Riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Riesgo derivado de la exposición a posibles incumplimientos de contrapartes"
+        }
+      },
+      {
+        "id": "requerimiento_capital_hipotico_ccp",
+        "type": "Restriccion",
+        "label": "Requerimiento de capital hipotético para CCP",
+        "properties": {
+          "description": "Cálculo del capital requerido por la CCP por su exposición al riesgo de crédito de contraparte frente a todos los miembros compensadores y sus clientes, utilizando ponderador del 20%"
+        }
+      },
+      {
+        "id": "clientes_miembros_compensadores",
+        "type": "Concepto",
+        "label": "Clientes de miembros compensadores",
+        "properties": {
+          "description": "Contrapartes de los miembros compensadores en operaciones compensadas por la QCCP"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_miembro_compensador",
+        "target": "segregacion_aportes_por_producto",
+        "predicate": "aplica"
+      },
+      {
+        "source": "segregacion_aportes_por_producto",
+        "target": "fondo_garantia_incumplimientos",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "exigencia_capital_fondo_garantia",
+        "target": "entidad_financiera_miembro_compensador",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "ponderador_riesgo_cccp",
+        "target": "entidad_financiera_miembro_compensador",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "ponderador_riesgo_cccp",
+        "target": "qccp",
+        "predicate": "considera"
+      },
+      {
+        "source": "requerimiento_capital_hipotico_ccp",
+        "target": "riesgo_credito_contraparte",
+        "predicate": "mide"
+      }
+    ]
+  }
+}

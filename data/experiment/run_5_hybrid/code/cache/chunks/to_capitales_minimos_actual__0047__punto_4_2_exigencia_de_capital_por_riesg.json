@@ -1,0 +1,280 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0047__punto_4_2_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.2 — Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 5/5)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"ajuste_delta_regulatorio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ajuste delta regulatorio\",\n      \"properties\": {\n        \"description\": \"Parámetro delta aplicado a nocionales ajustados de operaciones con derivados, calculado según posición y tipo de instrumento.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_derivados_no_opciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Posiciones en derivados no opciones\",\n      \"properties\": {\n        \"description\": \"Operaciones con instrumentos derivados que no son opciones ni segmentos de CDO, con posiciones largas o cortas en factor de riesgo primario.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_opciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Posiciones en opciones\",\n      \"properties\": {\n        \"description\": \"Operaciones con instrumentos de opción, incluyendo opciones call y put, con cálculo delta diferenciado por tipo.\"\n      }\n    },\n    {\n      \"id\": \"posiciones_segmentos_cdo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Posiciones en segmentos CDO\",\n      \"properties\": {\n        \"description\": \"Operaciones con segmentos de obligaciones de deuda colateralizada, clasificadas como coberturas largas o cortas.\"\n      }\n    },\n    {\n      \"id\": \"calculo_parametros_subyacente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cálculo de parámetros del subyacente\",\n      \"properties\": {\n        \"description\": \"Las entidades deben calcular precio del subyacente (contado, forward, promedio), precio de ejercicio y última fecha contractual para opciones.\"\n      }\n    },\n    {\n      \"id\": \"volatilidad_opcion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Volatilidad de opción\",\n      \"properties\": {\n        \"description\": \"La volatilidad de la opción se especifica en base al factor regulatorio aplicable a la operación.\"\n      }\n    },\n    {\n      \"id\": \"factores_regulatorios_sf\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factores regulatorios específicos\",\n      \"properties\": {\n        \"description\": \"Factores específicos aplicados al nocional efectivo en base a volatilidad de cada clase de activo para obtener EPE efectiva.\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_cobertura_tasas_interes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conjuntos cobertura tasas interés\",\n      \"properties\": {\n        \"description\": \"Derivados sobre tasas de interés agrupados en un conjunto de cobertura por moneda.\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_cobertura_fx\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conjuntos cobertura derivados FX\",\n      \"properties\": {\n        \"description\": \"Derivados de cambio de monedas agrupados en un conjunto de cobertura por par de monedas.\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_cobertura_credito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conjunto cobertura derivados crédito\",\n      \"properties\": {\n        \"description\": \"Derivados de crédito agrupados en un único conjunto de cobertura.\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_cobertura_acciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conjunto cobertura derivados acciones\",\n      \"properties\": {\n        \"description\": \"Derivados sobre acciones agrupados en un único conjunto de cobertura.\"\n      }\n    },\n    {\n      \"id\": \"conjuntos_cobertura_commodities\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conjuntos cobertura derivados commodities\",\n      \"properties\": {\n        \"description\": \"Derivados sobre commodities divididos en cuatro conjuntos de cobertura: energía, metales, productos agrícolas y otros productos básicos.\"\n      }\n    },\n    {\n      \"id\": \"asignacion_basis_transactions\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Asignación basis transactions\",\n      \"properties\": {\n        \"description\": \"Derivados que referencian base entre dos factores de riesgo en una sola moneda se asignan a conjuntos específicos. SF se multiplica por 0,5.\"\n      }\n    },\n    {\n      \"id\": \"operaciones_volatilidad\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones sobre volatilidad\",\n      \"properties\": {\n        \"description\": \"Derivados referidos a volatilidad de un factor de riesgo, incluyendo swaps de varianza y opciones sobre volatilidad.\"\n      }\n    },\n    {\n      \"id\": \"factor_multiplicador_volatilidad\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor multiplicador volatilidad\",\n      \"properties\": {\n        \"description\": \"Cuando se aplica a conjuntos de operaciones sobre volatilidad, el SF correspondiente se multiplica por 5.\"\n      }\n    },\n    {\n      \"id\": \"cross_currency_swaps\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cross-currency swaps\",\n      \"properties\": {\n        \"description\": \"Acuerdos para intercambiar pagos de principal e intereses de préstamos denominados en monedas diferentes, reciben tratamiento FX ordinario.\"\n      }\n    },\n    {\n      \"id\": \"factor_plazo_sin_margen\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Factor de plazo sin margen variación\",\n      \"properties\": {\n        \"description\": \"Horizonte temporal mínimo es el menor entre un año y plazo residual del contrato, con mínimo 10 días hábiles.\"\n      }\n    },\n    {\n      \"id\": \"maturity_factor\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Maturity factor aplicado\",\n      \"properties\": {\n        \"description\": \"Nocional ajustado se multiplica por factor de plazo donde numerador es horizonte temporal mínimo y denominador es plazo residual.\"\n      }\n    },\n    {\n      \"id\": \"mpor_derivados_no_centralizados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"MPOR derivados no centralizados\",\n      \"properties\": {\n        \"description\": \"Período riesgo margen mínimo de 10 días hábiles para derivados no centralizados con márgenes diarios.\"\n      }\n    },\n    {\n      \"id\": \"mpor_derivados_centralizados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"MPOR derivados centralizados\",\n      \"properties\": {\n        \"description\": \"Período riesgo margen mínimo de 5 días hábiles para derivados centralizados con márgenes diarios entre miembro compensador y clientes.\"\n      }\n    },\n    {\n      \"id\": \"mpor_conjuntos_neteo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"MPOR conjuntos neteo\",\n      \"properties\": {\n        \"description\": \"Período riesgo margen mínimo de 20 días hábiles para conjuntos de neteo sin contraparte central con operaciones múltiples.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras sujetas a regulación de capitales mínimos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"ajuste_delta_regulatorio\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ajuste_delta_regulatorio\",\n      \"target\": \"posiciones_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"ajuste_delta_regulatorio\",\n      \"target\": \"posiciones_segmentos_cdo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"calculo_parametros_subyacente\",\n      \"target\": \"posiciones_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"volatilidad_opcion\",\n      \"target\": \"posiciones_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"factores_regulatorios_sf\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"factores_regulatorios_sf\",\n      \"target\": \"posiciones_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"factores_regulatorios_sf\",\n      \"target\": \"posiciones_segmentos_cdo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"asignacion_basis_transactions\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"factor_multiplicador_volatilidad\",\n      \"target\": \"operaciones_volatilidad\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"cross_currency_swaps\",\n      \"target\": \"conjuntos_cobertura_fx\",\n      \"predicate\": \"recibe_tratamiento\"\n    },\n    {\n      \"source\": \"factor_plazo_sin_margen\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"maturity_factor\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"mpor_derivados_no_centralizados\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"mpor_derivados_centralizados\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"mpor_conjuntos_neteo\",\n      \"target\": \"posiciones_derivados_no_opciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"calculo_parametros_subyacente\",\n      \"predicate\": \"debe_cumplir\"\n    }\n  ]\n}\n```",
+  "input_tokens": 5319,
+  "output_tokens": 2880,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 22,
+  "relations_count": 17,
+  "parsed": {
+    "entities": [
+      {
+        "id": "ajuste_delta_regulatorio",
+        "type": "Restriccion",
+        "label": "Ajuste delta regulatorio",
+        "properties": {
+          "description": "Parámetro delta aplicado a nocionales ajustados de operaciones con derivados, calculado según posición y tipo de instrumento."
+        }
+      },
+      {
+        "id": "posiciones_derivados_no_opciones",
+        "type": "Operacion",
+        "label": "Posiciones en derivados no opciones",
+        "properties": {
+          "description": "Operaciones con instrumentos derivados que no son opciones ni segmentos de CDO, con posiciones largas o cortas en factor de riesgo primario."
+        }
+      },
+      {
+        "id": "posiciones_opciones",
+        "type": "Operacion",
+        "label": "Posiciones en opciones",
+        "properties": {
+          "description": "Operaciones con instrumentos de opción, incluyendo opciones call y put, con cálculo delta diferenciado por tipo."
+        }
+      },
+      {
+        "id": "posiciones_segmentos_cdo",
+        "type": "Operacion",
+        "label": "Posiciones en segmentos CDO",
+        "properties": {
+          "description": "Operaciones con segmentos de obligaciones de deuda colateralizada, clasificadas como coberturas largas o cortas."
+        }
+      },
+      {
+        "id": "calculo_parametros_subyacente",
+        "type": "Restriccion",
+        "label": "Cálculo de parámetros del subyacente",
+        "properties": {
+          "description": "Las entidades deben calcular precio del subyacente (contado, forward, promedio), precio de ejercicio y última fecha contractual para opciones."
+        }
+      },
+      {
+        "id": "volatilidad_opcion",
+        "type": "Restriccion",
+        "label": "Volatilidad de opción",
+        "properties": {
+          "description": "La volatilidad de la opción se especifica en base al factor regulatorio aplicable a la operación."
+        }
+      },
+      {
+        "id": "factores_regulatorios_sf",
+        "type": "Restriccion",
+        "label": "Factores regulatorios específicos",
+        "properties": {
+          "description": "Factores específicos aplicados al nocional efectivo en base a volatilidad de cada clase de activo para obtener EPE efectiva."
+        }
+      },
+      {
+        "id": "conjuntos_cobertura_tasas_interes",
+        "type": "Restriccion",
+        "label": "Conjuntos cobertura tasas interés",
+        "properties": {
+          "description": "Derivados sobre tasas de interés agrupados en un conjunto de cobertura por moneda."
+        }
+      },
+      {
+        "id": "conjuntos_cobertura_fx",
+        "type": "Restriccion",
+        "label": "Conjuntos cobertura derivados FX",
+        "properties": {
+          "description": "Derivados de cambio de monedas agrupados en un conjunto de cobertura por par de monedas."
+        }
+      },
+      {
+        "id": "conjuntos_cobertura_credito",
+        "type": "Restriccion",
+        "label": "Conjunto cobertura derivados crédito",
+        "properties": {
+          "description": "Derivados de crédito agrupados en un único conjunto de cobertura."
+        }
+      },
+      {
+        "id": "conjuntos_cobertura_acciones",
+        "type": "Restriccion",
+        "label": "Conjunto cobertura derivados acciones",
+        "properties": {
+          "description": "Derivados sobre acciones agrupados en un único conjunto de cobertura."
+        }
+      },
+      {
+        "id": "conjuntos_cobertura_commodities",
+        "type": "Restriccion",
+        "label": "Conjuntos cobertura derivados commodities",
+        "properties": {
+          "description": "Derivados sobre commodities divididos en cuatro conjuntos de cobertura: energía, metales, productos agrícolas y otros productos básicos."
+        }
+      },
+      {
+        "id": "asignacion_basis_transactions",
+        "type": "Restriccion",
+        "label": "Asignación basis transactions",
+        "properties": {
+          "description": "Derivados que referencian base entre dos factores de riesgo en una sola moneda se asignan a conjuntos específicos. SF se multiplica por 0,5."
+        }
+      },
+      {
+        "id": "operaciones_volatilidad",
+        "type": "Operacion",
+        "label": "Operaciones sobre volatilidad",
+        "properties": {
+          "description": "Derivados referidos a volatilidad de un factor de riesgo, incluyendo swaps de varianza y opciones sobre volatilidad."
+        }
+      },
+      {
+        "id": "factor_multiplicador_volatilidad",
+        "type": "Restriccion",
+        "label": "Factor multiplicador volatilidad",
+        "properties": {
+          "description": "Cuando se aplica a conjuntos de operaciones sobre volatilidad, el SF correspondiente se multiplica por 5."
+        }
+      },
+      {
+        "id": "cross_currency_swaps",
+        "type": "Operacion",
+        "label": "Cross-currency swaps",
+        "properties": {
+          "description": "Acuerdos para intercambiar pagos de principal e intereses de préstamos denominados en monedas diferentes, reciben tratamiento FX ordinario."
+        }
+      },
+      {
+        "id": "factor_plazo_sin_margen",
+        "type": "Restriccion",
+        "label": "Factor de plazo sin margen variación",
+        "properties": {
+          "description": "Horizonte temporal mínimo es el menor entre un año y plazo residual del contrato, con mínimo 10 días hábiles."
+        }
+      },
+      {
+        "id": "maturity_factor",
+        "type": "Restriccion",
+        "label": "Maturity factor aplicado",
+        "properties": {
+          "description": "Nocional ajustado se multiplica por factor de plazo donde numerador es horizonte temporal mínimo y denominador es plazo residual."
+        }
+      },
+      {
+        "id": "mpor_derivados_no_centralizados",
+        "type": "Restriccion",
+        "label": "MPOR derivados no centralizados",
+        "properties": {
+          "description": "Período riesgo margen mínimo de 10 días hábiles para derivados no centralizados con márgenes diarios."
+        }
+      },
+      {
+        "id": "mpor_derivados_centralizados",
+        "type": "Restriccion",
+        "label": "MPOR derivados centralizados",
+        "properties": {
+          "description": "Período riesgo margen mínimo de 5 días hábiles para derivados centralizados con márgenes diarios entre miembro compensador y clientes."
+        }
+      },
+      {
+        "id": "mpor_conjuntos_neteo",
+        "type": "Restriccion",
+        "label": "MPOR conjuntos neteo",
+        "properties": {
+          "description": "Período riesgo margen mínimo de 20 días hábiles para conjuntos de neteo sin contraparte central con operaciones múltiples."
+        }
+      },
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidades",
+        "properties": {
+          "description": "Las entidades financieras sujetas a regulación de capitales mínimos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "ajuste_delta_regulatorio",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ajuste_delta_regulatorio",
+        "target": "posiciones_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "ajuste_delta_regulatorio",
+        "target": "posiciones_segmentos_cdo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "calculo_parametros_subyacente",
+        "target": "posiciones_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "volatilidad_opcion",
+        "target": "posiciones_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "factores_regulatorios_sf",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "factores_regulatorios_sf",
+        "target": "posiciones_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "factores_regulatorios_sf",
+        "target": "posiciones_segmentos_cdo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "asignacion_basis_transactions",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "factor_multiplicador_volatilidad",
+        "target": "operaciones_volatilidad",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "cross_currency_swaps",
+        "target": "conjuntos_cobertura_fx",
+        "predicate": "recibe_tratamiento"
+      },
+      {
+        "source": "factor_plazo_sin_margen",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "maturity_factor",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "mpor_derivados_no_centralizados",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "mpor_derivados_centralizados",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "mpor_conjuntos_neteo",
+        "target": "posiciones_derivados_no_opciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entidad_financiera_generico",
+        "target": "calculo_parametros_subyacente",
+        "predicate": "debe_cumplir"
+      }
+    ]
+  }
+}

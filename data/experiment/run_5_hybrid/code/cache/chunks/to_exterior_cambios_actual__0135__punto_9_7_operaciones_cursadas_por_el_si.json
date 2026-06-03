@@ -1,0 +1,105 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0135__punto_9_7_operaciones_cursadas_por_el_si",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 9.7 — Operaciones cursadas por el Sistema de Monedas Locales (SML).",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"sistema_monedas_locales\",\n      \"type\": \"Concepto\",\n      \"label\": \"Sistema de Monedas Locales\",\n      \"properties\": {\n        \"description\": \"Sistema a través del cual se cursan operaciones de anticipo de exportación.\"\n      }\n    },\n    {\n      \"id\": \"anticipo_exportacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Anticipo de exportación\",\n      \"properties\": {\n        \"description\": \"Financiamiento anticipado otorgado a exportadores cursado por el Sistema de Monedas Locales.\"\n      }\n    },\n    {\n      \"id\": \"entidad_acreditante\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad acreditante de fondos\",\n      \"properties\": {\n        \"description\": \"Entidad en la cual se acreditan los fondos al exportador por anticipos cursados por el SML.\"\n      }\n    },\n    {\n      \"id\": \"seguimiento_anticipos_financiaciones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Seguimiento de anticipos y financiaciones de exportación\",\n      \"properties\": {\n        \"description\": \"La entidad acreditante debe asumir el seguimiento de anticipos y otras financiaciones de exportación de bienes, tomando como monto ingresado el monto en moneda nacional acreditado. Para anticipos a Paraguay o Uruguay facturados en moneda local, se computa el equivalente en esa moneda.\"\n      }\n    },\n    {\n      \"id\": \"normas_generales_anticipos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Normas generales de seguimiento\",\n      \"properties\": {\n        \"description\": \"Normas generales que resultan de aplicación una vez que el anticipo se incorpora al seguimiento.\"\n      }\n    },\n    {\n      \"id\": \"exportador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exportador\",\n      \"properties\": {\n        \"description\": \"Sujeto beneficiario de los anticipos de exportación.\"\n      }\n    },\n    {\n      \"id\": \"moneda_nacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda nacional\",\n      \"properties\": {\n        \"description\": \"Moneda de referencia para el cálculo del monto ingresado en el seguimiento de anticipos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"anticipo_exportacion\",\n      \"target\": \"sistema_monedas_locales\",\n      \"predicate\": \"se_cursa_por\"\n    },\n    {\n      \"source\": \"entidad_acreditante\",\n      \"target\": \"anticipo_exportacion\",\n      \"predicate\": \"asume_seguimiento_de\"\n    },\n    {\n      \"source\": \"seguimiento_anticipos_financiaciones\",\n      \"target\": \"anticipo_exportacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"normas_generales_anticipos\",\n      \"target\": \"anticipo_exportacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"anticipo_exportacion\",\n      \"target\": \"exportador\",\n      \"predicate\": \"beneficia_a\"\n    },\n    {\n      \"source\": \"seguimiento_anticipos_financiaciones\",\n      \"target\": \"moneda_nacional\",\n      \"predicate\": \"usa_como_referencia\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3571,
+  "output_tokens": 915,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 7,
+  "relations_count": 6,
+  "parsed": {
+    "entities": [
+      {
+        "id": "sistema_monedas_locales",
+        "type": "Concepto",
+        "label": "Sistema de Monedas Locales",
+        "properties": {
+          "description": "Sistema a través del cual se cursan operaciones de anticipo de exportación."
+        }
+      },
+      {
+        "id": "anticipo_exportacion",
+        "type": "Operacion",
+        "label": "Anticipo de exportación",
+        "properties": {
+          "description": "Financiamiento anticipado otorgado a exportadores cursado por el Sistema de Monedas Locales."
+        }
+      },
+      {
+        "id": "entidad_acreditante",
+        "type": "Concepto",
+        "label": "Entidad acreditante de fondos",
+        "properties": {
+          "description": "Entidad en la cual se acreditan los fondos al exportador por anticipos cursados por el SML."
+        }
+      },
+      {
+        "id": "seguimiento_anticipos_financiaciones",
+        "type": "Restriccion",
+        "label": "Seguimiento de anticipos y financiaciones de exportación",
+        "properties": {
+          "description": "La entidad acreditante debe asumir el seguimiento de anticipos y otras financiaciones de exportación de bienes, tomando como monto ingresado el monto en moneda nacional acreditado. Para anticipos a Paraguay o Uruguay facturados en moneda local, se computa el equivalente en esa moneda."
+        }
+      },
+      {
+        "id": "normas_generales_anticipos",
+        "type": "Restriccion",
+        "label": "Normas generales de seguimiento",
+        "properties": {
+          "description": "Normas generales que resultan de aplicación una vez que el anticipo se incorpora al seguimiento."
+        }
+      },
+      {
+        "id": "exportador",
+        "type": "Concepto",
+        "label": "Exportador",
+        "properties": {
+          "description": "Sujeto beneficiario de los anticipos de exportación."
+        }
+      },
+      {
+        "id": "moneda_nacional",
+        "type": "Concepto",
+        "label": "Moneda nacional",
+        "properties": {
+          "description": "Moneda de referencia para el cálculo del monto ingresado en el seguimiento de anticipos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "anticipo_exportacion",
+        "target": "sistema_monedas_locales",
+        "predicate": "se_cursa_por"
+      },
+      {
+        "source": "entidad_acreditante",
+        "target": "anticipo_exportacion",
+        "predicate": "asume_seguimiento_de"
+      },
+      {
+        "source": "seguimiento_anticipos_financiaciones",
+        "target": "anticipo_exportacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "normas_generales_anticipos",
+        "target": "anticipo_exportacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "anticipo_exportacion",
+        "target": "exportador",
+        "predicate": "beneficia_a"
+      },
+      {
+        "source": "seguimiento_anticipos_financiaciones",
+        "target": "moneda_nacional",
+        "predicate": "usa_como_referencia"
+      }
+    ]
+  }
+}

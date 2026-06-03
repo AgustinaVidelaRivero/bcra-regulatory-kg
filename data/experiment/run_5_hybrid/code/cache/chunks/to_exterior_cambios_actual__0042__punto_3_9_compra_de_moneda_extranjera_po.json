@@ -1,0 +1,235 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0042__punto_3_9_compra_de_moneda_extranjera_po",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_local\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Entidades autorizadas a operar en el mercado de cambios local para personas humanas residentes.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"persona_humana_residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Persona humana residente\",\n      \"properties\": {\n        \"description\": \"Cliente residente en Argentina que accede al mercado de cambios para formación de activos externos.\"\n      }\n    },\n    {\n      \"id\": \"compra_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra de moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria con derivados.\"\n      }\n    },\n    {\n      \"id\": \"formacion_activos_externos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Formación de activos externos\",\n      \"properties\": {\n        \"description\": \"Propósito regulatorio identificado por códigos de concepto A01, A02, A03, A04, A06, A08, A14 y A24.\"\n      }\n    },\n    {\n      \"id\": \"remision_ayuda_familiar\",\n      \"type\": \"Concepto\",\n      \"label\": \"Remisión de ayuda familiar\",\n      \"properties\": {\n        \"description\": \"Propósito de transferencia de fondos al exterior para asistencia a familiares.\"\n      }\n    },\n    {\n      \"id\": \"operatoria_derivados\",\n      \"type\": \"Concepto\",\n      \"label\": \"Operatoria con derivados\",\n      \"properties\": {\n        \"description\": \"Operaciones con instrumentos derivados identificadas con código de concepto A05.\"\n      }\n    },\n    {\n      \"id\": \"limite_mensual_usd_200\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite mensual de USD 200\",\n      \"properties\": {\n        \"description\": \"El cliente no puede superar el equivalente a USD 200 en el mes calendario en el conjunto de entidades y conceptos permitidos.\"\n      }\n    },\n    {\n      \"id\": \"debito_cuenta_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Débito en cuenta del cliente\",\n      \"properties\": {\n        \"description\": \"La operación debe cursarse con débito en cuenta del cliente en entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"limite_efectivo_usd_100\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de efectivo USD 100\",\n      \"properties\": {\n        \"description\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario.\"\n      }\n    },\n    {\n      \"id\": \"declaracion_jurada_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Declaración jurada del cliente\",\n      \"properties\": {\n        \"description\": \"La entidad debe contar con declaración jurada del cliente confirmando cumplimiento de requisitos.\"\n      }\n    },\n    {\n      \"id\": \"verificacion_sistema_bcra\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación en sistema online BCRA\",\n      \"properties\": {\n        \"description\": \"La entidad debe constatar en sistema online del BCRA que lo declarado por el cliente es compatible con datos existentes.\"\n      }\n    },\n    {\n      \"id\": \"entrega_billetes_cheques\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Entrega de billetes o cheques de viajero\",\n      \"properties\": {\n        \"description\": \"Para operaciones de formación de activos externos, la entidad vendedora debe entregar billetes o cheques de viajero en moneda extranjera o acreditar fondos en cuenta del cliente.\"\n      }\n    },\n    {\n      \"id\": \"evidencia_ingresos_activos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evidencia de ingresos y activos\",\n      \"properties\": {\n        \"description\": \"La entidad debe obtener evidencia de que el cliente posee ingresos y/o activos consistentes con el ahorro en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que supervisa operaciones de cambios.\"\n      }\n    },\n    {\n      \"id\": \"punto_3_12_1\",\n      \"type\": \"Concepto\",\n      \"label\": \"Punto 3.12.1\",\n      \"properties\": {\n        \"description\": \"Normativa especial que puede excluir operaciones de acceso sin conformidad previa del BCRA.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_local\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"compra_moneda_extranjera\",\n      \"target\": \"persona_humana_residente\",\n      \"predicate\": \"beneficia_a\"\n    },\n    {\n      \"source\": \"compra_moneda_extranjera\",\n      \"target\": \"formacion_activos_externos\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"compra_moneda_extranjera\",\n      \"target\": \"remision_ayuda_familiar\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"compra_moneda_extranjera\",\n      \"target\": \"operatoria_derivados\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"limite_mensual_usd_200\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"debito_cuenta_cliente\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"limite_efectivo_usd_100\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"declaracion_jurada_cliente\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"verificacion_sistema_bcra\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entrega_billetes_cheques\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"evidencia_ingresos_activos\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"limite_mensual_usd_200\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"debito_cuenta_cliente\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"declaracion_jurada_cliente\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"verificacion_sistema_bcra\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entrega_billetes_cheques\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"evidencia_ingresos_activos\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"compra_moneda_extranjera\",\n      \"predicate\": \"regula\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4059,
+  "output_tokens": 2256,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 19,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_local",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Entidades autorizadas a operar en el mercado de cambios local para personas humanas residentes.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "persona_humana_residente",
+        "type": "Concepto",
+        "label": "Persona humana residente",
+        "properties": {
+          "description": "Cliente residente en Argentina que accede al mercado de cambios para formación de activos externos."
+        }
+      },
+      {
+        "id": "compra_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Compra de moneda extranjera",
+        "properties": {
+          "description": "Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria con derivados."
+        }
+      },
+      {
+        "id": "formacion_activos_externos",
+        "type": "Concepto",
+        "label": "Formación de activos externos",
+        "properties": {
+          "description": "Propósito regulatorio identificado por códigos de concepto A01, A02, A03, A04, A06, A08, A14 y A24."
+        }
+      },
+      {
+        "id": "remision_ayuda_familiar",
+        "type": "Concepto",
+        "label": "Remisión de ayuda familiar",
+        "properties": {
+          "description": "Propósito de transferencia de fondos al exterior para asistencia a familiares."
+        }
+      },
+      {
+        "id": "operatoria_derivados",
+        "type": "Concepto",
+        "label": "Operatoria con derivados",
+        "properties": {
+          "description": "Operaciones con instrumentos derivados identificadas con código de concepto A05."
+        }
+      },
+      {
+        "id": "limite_mensual_usd_200",
+        "type": "Restriccion",
+        "label": "Límite mensual de USD 200",
+        "properties": {
+          "description": "El cliente no puede superar el equivalente a USD 200 en el mes calendario en el conjunto de entidades y conceptos permitidos."
+        }
+      },
+      {
+        "id": "debito_cuenta_cliente",
+        "type": "Restriccion",
+        "label": "Débito en cuenta del cliente",
+        "properties": {
+          "description": "La operación debe cursarse con débito en cuenta del cliente en entidades financieras locales."
+        }
+      },
+      {
+        "id": "limite_efectivo_usd_100",
+        "type": "Restriccion",
+        "label": "Límite de efectivo USD 100",
+        "properties": {
+          "description": "Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario."
+        }
+      },
+      {
+        "id": "declaracion_jurada_cliente",
+        "type": "Restriccion",
+        "label": "Declaración jurada del cliente",
+        "properties": {
+          "description": "La entidad debe contar con declaración jurada del cliente confirmando cumplimiento de requisitos."
+        }
+      },
+      {
+        "id": "verificacion_sistema_bcra",
+        "type": "Restriccion",
+        "label": "Verificación en sistema online BCRA",
+        "properties": {
+          "description": "La entidad debe constatar en sistema online del BCRA que lo declarado por el cliente es compatible con datos existentes."
+        }
+      },
+      {
+        "id": "entrega_billetes_cheques",
+        "type": "Restriccion",
+        "label": "Entrega de billetes o cheques de viajero",
+        "properties": {
+          "description": "Para operaciones de formación de activos externos, la entidad vendedora debe entregar billetes o cheques de viajero en moneda extranjera o acreditar fondos en cuenta del cliente."
+        }
+      },
+      {
+        "id": "evidencia_ingresos_activos",
+        "type": "Restriccion",
+        "label": "Evidencia de ingresos y activos",
+        "properties": {
+          "description": "La entidad debe obtener evidencia de que el cliente posee ingresos y/o activos consistentes con el ahorro en moneda extranjera."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que supervisa operaciones de cambios."
+        }
+      },
+      {
+        "id": "punto_3_12_1",
+        "type": "Concepto",
+        "label": "Punto 3.12.1",
+        "properties": {
+          "description": "Normativa especial que puede excluir operaciones de acceso sin conformidad previa del BCRA."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_local",
+        "target": "compra_moneda_extranjera",
+        "predicate": "realiza"
+      },
+      {
+        "source": "compra_moneda_extranjera",
+        "target": "persona_humana_residente",
+        "predicate": "beneficia_a"
+      },
+      {
+        "source": "compra_moneda_extranjera",
+        "target": "formacion_activos_externos",
+        "predicate": "comprende"
+      },
+      {
+        "source": "compra_moneda_extranjera",
+        "target": "remision_ayuda_familiar",
+        "predicate": "comprende"
+      },
+      {
+        "source": "compra_moneda_extranjera",
+        "target": "operatoria_derivados",
+        "predicate": "comprende"
+      },
+      {
+        "source": "limite_mensual_usd_200",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "debito_cuenta_cliente",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "limite_efectivo_usd_100",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "declaracion_jurada_cliente",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "verificacion_sistema_bcra",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entrega_billetes_cheques",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "evidencia_ingresos_activos",
+        "target": "compra_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "limite_mensual_usd_200",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "debito_cuenta_cliente",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "declaracion_jurada_cliente",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "verificacion_sistema_bcra",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entrega_billetes_cheques",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "evidencia_ingresos_activos",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "bcra",
+        "target": "compra_moneda_extranjera",
+        "predicate": "regula"
+      }
+    ]
+  }
+}

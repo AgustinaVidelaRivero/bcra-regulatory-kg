@@ -1,0 +1,178 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0041__punto_3_8_compra_de_moneda_extranjera_po",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la for",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_local\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Entidades financieras autorizadas en el territorio nacional que participan en operaciones de cambio.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"persona_humana_residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Personas humanas residentes\",\n      \"properties\": {\n        \"description\": \"Personas físicas con residencia en Argentina que acceden al mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"compra_billetes_moneda_extranjera\",\n      \"type\": \"Operacion\",\n      \"label\": \"Compra de billetes en moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Operación de cambio para adquisición de billetes en moneda extranjera para tenencia o constitución de depósitos.\"\n      }\n    },\n    {\n      \"id\": \"debito_cuenta_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Débito en cuenta de cliente en entidades locales\",\n      \"properties\": {\n        \"description\": \"La operación debe cursarse con cargo a la cuenta del cliente en entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"limite_efectivo_usd_100\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de compra con efectivo USD 100 mensual\",\n      \"properties\": {\n        \"description\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades y conceptos.\"\n      }\n    },\n    {\n      \"id\": \"declaracion_jurada_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Declaración jurada de cumplimiento de límite\",\n      \"properties\": {\n        \"description\": \"La entidad debe contar con declaración jurada del cliente acreditando que cumple con el requisito de límite mensual.\"\n      }\n    },\n    {\n      \"id\": \"entrega_billetes_o_acreditacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Entrega de billetes o acreditación de fondos\",\n      \"properties\": {\n        \"description\": \"La entidad vendedora debe entregar los billetes en moneda extranjera o acreditar fondos en cuenta en moneda extranjera del cliente en entidades locales o exterior.\"\n      }\n    },\n    {\n      \"id\": \"registro_sistema_online_bcra\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registro en sistema online del BCRA\",\n      \"properties\": {\n        \"description\": \"La entidad debe registrar la operación en el sistema online implementado por el BCRA.\"\n      }\n    },\n    {\n      \"id\": \"evidencia_ingresos_activos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Evidencia de ingresos o activos consistentes\",\n      \"properties\": {\n        \"description\": \"La entidad debe obtener evidencia de que el cliente posee ingresos y/o activos consistentes con el ahorro en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria encargada de implementar y supervisar el sistema online de operaciones de cambio.\"\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Mercado regulado donde se realizan operaciones de compra y venta de moneda extranjera.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_local\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"debito_cuenta_cliente\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"limite_efectivo_usd_100\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"declaracion_jurada_cliente\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entrega_billetes_o_acreditacion\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"registro_sistema_online_bcra\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"evidencia_ingresos_activos\",\n      \"target\": \"compra_billetes_moneda_extranjera\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"debito_cuenta_cliente\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"declaracion_jurada_cliente\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entrega_billetes_o_acreditacion\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"registro_sistema_online_bcra\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"evidencia_ingresos_activos\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"registro_sistema_online_bcra\",\n      \"predicate\": \"implementa\"\n    },\n    {\n      \"source\": \"entidad_financiera_local\",\n      \"target\": \"mercado_cambios\",\n      \"predicate\": \"da_acceso_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3888,
+  "output_tokens": 1720,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 14,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_local",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Entidades financieras autorizadas en el territorio nacional que participan en operaciones de cambio.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "persona_humana_residente",
+        "type": "Concepto",
+        "label": "Personas humanas residentes",
+        "properties": {
+          "description": "Personas físicas con residencia en Argentina que acceden al mercado de cambios."
+        }
+      },
+      {
+        "id": "compra_billetes_moneda_extranjera",
+        "type": "Operacion",
+        "label": "Compra de billetes en moneda extranjera",
+        "properties": {
+          "description": "Operación de cambio para adquisición de billetes en moneda extranjera para tenencia o constitución de depósitos."
+        }
+      },
+      {
+        "id": "debito_cuenta_cliente",
+        "type": "Restriccion",
+        "label": "Débito en cuenta de cliente en entidades locales",
+        "properties": {
+          "description": "La operación debe cursarse con cargo a la cuenta del cliente en entidades financieras locales."
+        }
+      },
+      {
+        "id": "limite_efectivo_usd_100",
+        "type": "Restriccion",
+        "label": "Límite de compra con efectivo USD 100 mensual",
+        "properties": {
+          "description": "Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades y conceptos."
+        }
+      },
+      {
+        "id": "declaracion_jurada_cliente",
+        "type": "Restriccion",
+        "label": "Declaración jurada de cumplimiento de límite",
+        "properties": {
+          "description": "La entidad debe contar con declaración jurada del cliente acreditando que cumple con el requisito de límite mensual."
+        }
+      },
+      {
+        "id": "entrega_billetes_o_acreditacion",
+        "type": "Restriccion",
+        "label": "Entrega de billetes o acreditación de fondos",
+        "properties": {
+          "description": "La entidad vendedora debe entregar los billetes en moneda extranjera o acreditar fondos en cuenta en moneda extranjera del cliente en entidades locales o exterior."
+        }
+      },
+      {
+        "id": "registro_sistema_online_bcra",
+        "type": "Restriccion",
+        "label": "Registro en sistema online del BCRA",
+        "properties": {
+          "description": "La entidad debe registrar la operación en el sistema online implementado por el BCRA."
+        }
+      },
+      {
+        "id": "evidencia_ingresos_activos",
+        "type": "Restriccion",
+        "label": "Evidencia de ingresos o activos consistentes",
+        "properties": {
+          "description": "La entidad debe obtener evidencia de que el cliente posee ingresos y/o activos consistentes con el ahorro en moneda extranjera."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria encargada de implementar y supervisar el sistema online de operaciones de cambio."
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {
+          "description": "Mercado regulado donde se realizan operaciones de compra y venta de moneda extranjera."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_local",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "realiza"
+      },
+      {
+        "source": "debito_cuenta_cliente",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "limite_efectivo_usd_100",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "declaracion_jurada_cliente",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entrega_billetes_o_acreditacion",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "registro_sistema_online_bcra",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "evidencia_ingresos_activos",
+        "target": "compra_billetes_moneda_extranjera",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "debito_cuenta_cliente",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "declaracion_jurada_cliente",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entrega_billetes_o_acreditacion",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "registro_sistema_online_bcra",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "evidencia_ingresos_activos",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "bcra",
+        "target": "registro_sistema_online_bcra",
+        "predicate": "implementa"
+      },
+      {
+        "source": "entidad_financiera_local",
+        "target": "mercado_cambios",
+        "predicate": "da_acceso_a"
+      }
+    ]
+  }
+}

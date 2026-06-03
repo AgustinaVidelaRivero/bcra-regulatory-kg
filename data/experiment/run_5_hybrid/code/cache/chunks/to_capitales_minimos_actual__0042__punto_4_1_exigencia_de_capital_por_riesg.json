@@ -1,0 +1,184 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0042__punto_4_1_exigencia_de_capital_por_riesg",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.1 — Exigencia de capital por riesgo de crédito de contraparte para operaciones DvP f",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operacion_dvp\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones DvP con títulos valores\",\n      \"properties\": {\n        \"description\": \"Operaciones de entrega contra pago que implican intercambio simultáneo de valores por efectivo, expuestas al riesgo de pérdida por exposición actual positiva.\"\n      }\n    },\n    {\n      \"id\": \"operacion_contado_liquidar\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones contado a liquidar\",\n      \"properties\": {\n        \"description\": \"Operaciones con títulos valores, oro o moneda extranjera pendientes de liquidación.\"\n      }\n    },\n    {\n      \"id\": \"operacion_no_dvp\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones no DvP\",\n      \"properties\": {\n        \"description\": \"Operaciones en las que se entrega efectivo sin recibir contrapartida o se entregan efectos sin pago de efectivo.\"\n      }\n    },\n    {\n      \"id\": \"seguimiento_riesgo_contraparte\",\n      \"type\": \"Operacion\",\n      \"label\": \"Seguimiento de riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Desarrollo, implementación y mejora de sistemas para realizar seguimiento adecuado de exposición al riesgo de crédito de contraparte.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_dvp_fallida\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia de capital operaciones DvP fallidas\",\n      \"properties\": {\n        \"description\": \"Cuando la contraprestación no sea recibida en plazo de 5 días hábiles desde la fecha de liquidación, se calcula exigencia de capital multiplicando exposición actual positiva a fin de mes por factor según días de atraso: 8% (5-15 días), 50% (16-30 días), 75% (31-45 días), 100% (46+ días).\"\n      }\n    },\n    {\n      \"id\": \"restriccion_no_dvp_ponderador\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ponderador para operaciones no DvP fallidas\",\n      \"properties\": {\n        \"description\": \"Entidad financiera que realizó pago/entrega considera exposición como préstamo si no recibe contrapartida al final de jornada. Al quinto día hábil sin concreción, se asigna ponderador de 1250% al monto equivalente al valor transferido más costo de reposición.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_seguimiento_exposicion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Deber de seguimiento de exposición al riesgo de contraparte\",\n      \"properties\": {\n        \"description\": \"Las entidades deberán desarrollar, implementar y mejorar sistemas para realizar seguimiento adecuado de exposición al riesgo de crédito de contraparte y obtener información para intervenir en momento oportuno.\"\n      }\n    },\n    {\n      \"id\": \"concepto_exposicion_positiva\",\n      \"type\": \"Concepto\",\n      \"label\": \"Exposición actual positiva\",\n      \"properties\": {\n        \"description\": \"Diferencia positiva entre el valor de la operación al precio de liquidación convenido y su valor al precio actual de mercado.\"\n      }\n    },\n    {\n      \"id\": \"concepto_riesgo_contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Riesgo de crédito de contraparte\",\n      \"properties\": {\n        \"description\": \"Riesgo de pérdida por exposición al incumplimiento de la contraparte en operaciones con títulos valores, oro o moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {\n        \"description\": \"Sujeto regulado que realiza operaciones con títulos valores, oro o moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_dvp_titulo\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Títulos valores\",\n      \"properties\": {\n        \"description\": \"Activos financieros objeto de operaciones DvP y no DvP.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_dvp_oro\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Oro\",\n      \"properties\": {\n        \"description\": \"Activo objeto de operaciones DvP y no DvP.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_dvp_moneda\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Moneda extranjera\",\n      \"properties\": {\n        \"description\": \"Activo objeto de operaciones DvP y no DvP.\"\n      }\n    },\n    {\n      \"id\": \"plazo_cinco_dias\",\n      \"type\": \"Plazo\",\n      \"label\": \"Plazo de 5 días hábiles\",\n      \"properties\": {\n        \"description\": \"Plazo desde la fecha de liquidación acordada dentro del cual debe recibirse contraprestación en operaciones DvP.\"\n      }\n    },\n    {\n      \"id\": \"plazo_quinto_dia_habil\",\n      \"type\": \"Plazo\",\n      \"label\": \"Quinto día hábil\",\n      \"properties\": {\n        \"description\": \"Día a partir del cual se asigna ponderador de 1250% en operaciones no DvP no liquidadas.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_dvp_fallida\",\n      \"target\": \"operacion_dvp\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_no_dvp_ponderador\",\n      \"target\": \"operacion_no_dvp\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_seguimiento_exposicion\",\n      \"target\": \"seguimiento_riesgo_contraparte\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_dvp_fallida\",\n      \"target\": \"concepto_exposicion_positiva\",\n      \"predicate\": \"utiliza\"\n    },\n    {\n      \"source\": \"operacion_dvp\",\n      \"target\": \"concepto_riesgo_contraparte\",\n      \"predicate\": \"expone_a\"\n    },\n    {\n      \"source\": \"operacion_no_dvp\",\n      \"target\": \"concepto_riesgo_contraparte\",\n      \"predicate\": \"expone_a\"\n    },\n    {\n      \"source\": \"operacion_contado_liquidar\",\n      \"target\": \"concepto_riesgo_contraparte\",\n      \"predicate\": \"genera\"\n    },\n    {\n      \"source\": \"restriccion_no_dvp_ponderador\",\n      \"target\": \"plazo_quinto_dia_habil\",\n      \"predicate\": \"vence_en\"\n    },\n    {\n      \"source\": \"restriccion_dvp_fallida\",\n      \"target\": \"plazo_cinco_dias\",\n      \"predicate\": \"referencia\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4376,
+  "output_tokens": 1952,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operacion_dvp",
+        "type": "Operacion",
+        "label": "Operaciones DvP con títulos valores",
+        "properties": {
+          "description": "Operaciones de entrega contra pago que implican intercambio simultáneo de valores por efectivo, expuestas al riesgo de pérdida por exposición actual positiva."
+        }
+      },
+      {
+        "id": "operacion_contado_liquidar",
+        "type": "Operacion",
+        "label": "Operaciones contado a liquidar",
+        "properties": {
+          "description": "Operaciones con títulos valores, oro o moneda extranjera pendientes de liquidación."
+        }
+      },
+      {
+        "id": "operacion_no_dvp",
+        "type": "Operacion",
+        "label": "Operaciones no DvP",
+        "properties": {
+          "description": "Operaciones en las que se entrega efectivo sin recibir contrapartida o se entregan efectos sin pago de efectivo."
+        }
+      },
+      {
+        "id": "seguimiento_riesgo_contraparte",
+        "type": "Operacion",
+        "label": "Seguimiento de riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Desarrollo, implementación y mejora de sistemas para realizar seguimiento adecuado de exposición al riesgo de crédito de contraparte."
+        }
+      },
+      {
+        "id": "restriccion_dvp_fallida",
+        "type": "Restriccion",
+        "label": "Exigencia de capital operaciones DvP fallidas",
+        "properties": {
+          "description": "Cuando la contraprestación no sea recibida en plazo de 5 días hábiles desde la fecha de liquidación, se calcula exigencia de capital multiplicando exposición actual positiva a fin de mes por factor según días de atraso: 8% (5-15 días), 50% (16-30 días), 75% (31-45 días), 100% (46+ días)."
+        }
+      },
+      {
+        "id": "restriccion_no_dvp_ponderador",
+        "type": "Restriccion",
+        "label": "Ponderador para operaciones no DvP fallidas",
+        "properties": {
+          "description": "Entidad financiera que realizó pago/entrega considera exposición como préstamo si no recibe contrapartida al final de jornada. Al quinto día hábil sin concreción, se asigna ponderador de 1250% al monto equivalente al valor transferido más costo de reposición."
+        }
+      },
+      {
+        "id": "restriccion_seguimiento_exposicion",
+        "type": "Restriccion",
+        "label": "Deber de seguimiento de exposición al riesgo de contraparte",
+        "properties": {
+          "description": "Las entidades deberán desarrollar, implementar y mejorar sistemas para realizar seguimiento adecuado de exposición al riesgo de crédito de contraparte y obtener información para intervenir en momento oportuno."
+        }
+      },
+      {
+        "id": "concepto_exposicion_positiva",
+        "type": "Concepto",
+        "label": "Exposición actual positiva",
+        "properties": {
+          "description": "Diferencia positiva entre el valor de la operación al precio de liquidación convenido y su valor al precio actual de mercado."
+        }
+      },
+      {
+        "id": "concepto_riesgo_contraparte",
+        "type": "Concepto",
+        "label": "Riesgo de crédito de contraparte",
+        "properties": {
+          "description": "Riesgo de pérdida por exposición al incumplimiento de la contraparte en operaciones con títulos valores, oro o moneda extranjera."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {
+          "description": "Sujeto regulado que realiza operaciones con títulos valores, oro o moneda extranjera."
+        }
+      },
+      {
+        "id": "instrumento_dvp_titulo",
+        "type": "InstrumentoFinanciero",
+        "label": "Títulos valores",
+        "properties": {
+          "description": "Activos financieros objeto de operaciones DvP y no DvP."
+        }
+      },
+      {
+        "id": "instrumento_dvp_oro",
+        "type": "InstrumentoFinanciero",
+        "label": "Oro",
+        "properties": {
+          "description": "Activo objeto de operaciones DvP y no DvP."
+        }
+      },
+      {
+        "id": "instrumento_dvp_moneda",
+        "type": "InstrumentoFinanciero",
+        "label": "Moneda extranjera",
+        "properties": {
+          "description": "Activo objeto de operaciones DvP y no DvP."
+        }
+      },
+      {
+        "id": "plazo_cinco_dias",
+        "type": "Plazo",
+        "label": "Plazo de 5 días hábiles",
+        "properties": {
+          "description": "Plazo desde la fecha de liquidación acordada dentro del cual debe recibirse contraprestación en operaciones DvP."
+        }
+      },
+      {
+        "id": "plazo_quinto_dia_habil",
+        "type": "Plazo",
+        "label": "Quinto día hábil",
+        "properties": {
+          "description": "Día a partir del cual se asigna ponderador de 1250% en operaciones no DvP no liquidadas."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_dvp_fallida",
+        "target": "operacion_dvp",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_no_dvp_ponderador",
+        "target": "operacion_no_dvp",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_seguimiento_exposicion",
+        "target": "seguimiento_riesgo_contraparte",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_dvp_fallida",
+        "target": "concepto_exposicion_positiva",
+        "predicate": "utiliza"
+      },
+      {
+        "source": "operacion_dvp",
+        "target": "concepto_riesgo_contraparte",
+        "predicate": "expone_a"
+      },
+      {
+        "source": "operacion_no_dvp",
+        "target": "concepto_riesgo_contraparte",
+        "predicate": "expone_a"
+      },
+      {
+        "source": "operacion_contado_liquidar",
+        "target": "concepto_riesgo_contraparte",
+        "predicate": "genera"
+      },
+      {
+        "source": "restriccion_no_dvp_ponderador",
+        "target": "plazo_quinto_dia_habil",
+        "predicate": "vence_en"
+      },
+      {
+        "source": "restriccion_dvp_fallida",
+        "target": "plazo_cinco_dias",
+        "predicate": "referencia"
+      }
+    ]
+  }
+}

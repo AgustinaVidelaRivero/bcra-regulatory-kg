@@ -1,0 +1,178 @@
+{
+  "chunk_id": "to_regimen_informativo_contable_mensual___0017__punto_25_000_000_100_000_etc",
+  "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+  "location": "Punto 25.000 — 000, $ 100.000, etc.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"regimen_informativo_contable_mensual\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Régimen informativo contable mensual\",\n      \"properties\": {\n        \"description\": \"Régimen de información contable con periodicidad mensual regulado por el BCRA\"\n      }\n    },\n    {\n      \"id\": \"exigencia_integracion_capitales_minimos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia e integración de capitales mínimos\",\n      \"properties\": {\n        \"description\": \"Obligación de las entidades financieras de mantener y reportar capitales mínimos según normas del BCRA\"\n      }\n    },\n    {\n      \"id\": \"exigencia_integracion_riesgo_mercado\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Exigencia e integración por riesgo de mercado\",\n      \"properties\": {\n        \"description\": \"Requisito de integración de capital mínimo por exposición a riesgo de mercado en derivados\"\n      }\n    },\n    {\n      \"id\": \"reporte_opciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Reporte de opciones en derivados\",\n      \"properties\": {\n        \"description\": \"Presentación de información detallada sobre contratos de opciones incluyendo activo subyacente, vencimiento, delta, gamma, vega y precio\"\n      }\n    },\n    {\n      \"id\": \"contrato_futuro\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Contrato a término\",\n      \"properties\": {\n        \"description\": \"Derivado que confiere el derecho de compra o venta de un activo subyacente a plazo\"\n      }\n    },\n    {\n      \"id\": \"contrato_opcion\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Contrato de opción\",\n      \"properties\": {\n        \"description\": \"Derivado que confiere derecho (no obligación) de compra o venta de un activo subyacente\"\n      }\n    },\n    {\n      \"id\": \"activo_subyacente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activo subyacente\",\n      \"properties\": {\n        \"description\": \"Bien, título o instrumento sobre el cual se pacta un contrato de derivado\"\n      }\n    },\n    {\n      \"id\": \"titulo_publico\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Título público\",\n      \"properties\": {\n        \"description\": \"Valor emitido por el Estado, con cupón y plazo residual\"\n      }\n    },\n    {\n      \"id\": \"accion\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Acción\",\n      \"properties\": {\n        \"description\": \"Valor que representa participación en una sociedad anónima\"\n      }\n    },\n    {\n      \"id\": \"delta\",\n      \"type\": \"Concepto\",\n      \"label\": \"Delta\",\n      \"properties\": {\n        \"description\": \"Parámetro de sensibilidad de una opción respecto al cambio en el precio del activo subyacente\"\n      }\n    },\n    {\n      \"id\": \"gamma\",\n      \"type\": \"Concepto\",\n      \"label\": \"Gamma\",\n      \"properties\": {\n        \"description\": \"Parámetro de sensibilidad de segundo orden que mide el cambio del delta respecto al precio del subyacente\"\n      }\n    },\n    {\n      \"id\": \"vega\",\n      \"type\": \"Concepto\",\n      \"label\": \"Vega\",\n      \"properties\": {\n        \"description\": \"Parámetro de sensibilidad de la opción respecto a cambios en volatilidad\"\n      }\n    },\n    {\n      \"id\": \"comunicacion_a_6070\",\n      \"type\": \"Documento\",\n      \"label\": \"Comunicación A 6070\",\n      \"properties\": {\n        \"description\": \"Comunicación del BCRA que establece el régimen informativo contable mensual, vigente desde 23/9/2016\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"regimen_informativo_contable_mensual\",\n      \"target\": \"exigencia_integracion_capitales_minimos\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"exigencia_integracion_capitales_minimos\",\n      \"target\": \"exigencia_integracion_riesgo_mercado\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"exigencia_integracion_riesgo_mercado\",\n      \"target\": \"reporte_opciones\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"reporte_opciones\",\n      \"target\": \"contrato_opcion\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"contrato_opcion\",\n      \"target\": \"activo_subyacente\",\n      \"predicate\": \"tiene\"\n    },\n    {\n      \"source\": \"activo_subyacente\",\n      \"target\": \"titulo_publico\",\n      \"predicate\": \"puede_ser\"\n    },\n    {\n      \"source\": \"activo_subyacente\",\n      \"target\": \"accion\",\n      \"predicate\": \"puede_ser\"\n    },\n    {\n      \"source\": \"contrato_opcion\",\n      \"target\": \"delta\",\n      \"predicate\": \"requiere_parametro\"\n    },\n    {\n      \"source\": \"contrato_opcion\",\n      \"target\": \"gamma\",\n      \"predicate\": \"requiere_parametro\"\n    },\n    {\n      \"source\": \"contrato_opcion\",\n      \"target\": \"vega\",\n      \"predicate\": \"requiere_parametro\"\n    },\n    {\n      \"source\": \"comunicacion_a_6070\",\n      \"target\": \"regimen_informativo_contable_mensual\",\n      \"predicate\": \"establece\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4199,
+  "output_tokens": 1614,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "regimen_informativo_contable_mensual",
+        "type": "RegimenInformativo",
+        "label": "Régimen informativo contable mensual",
+        "properties": {
+          "description": "Régimen de información contable con periodicidad mensual regulado por el BCRA"
+        }
+      },
+      {
+        "id": "exigencia_integracion_capitales_minimos",
+        "type": "Restriccion",
+        "label": "Exigencia e integración de capitales mínimos",
+        "properties": {
+          "description": "Obligación de las entidades financieras de mantener y reportar capitales mínimos según normas del BCRA"
+        }
+      },
+      {
+        "id": "exigencia_integracion_riesgo_mercado",
+        "type": "Restriccion",
+        "label": "Exigencia e integración por riesgo de mercado",
+        "properties": {
+          "description": "Requisito de integración de capital mínimo por exposición a riesgo de mercado en derivados"
+        }
+      },
+      {
+        "id": "reporte_opciones",
+        "type": "Operacion",
+        "label": "Reporte de opciones en derivados",
+        "properties": {
+          "description": "Presentación de información detallada sobre contratos de opciones incluyendo activo subyacente, vencimiento, delta, gamma, vega y precio"
+        }
+      },
+      {
+        "id": "contrato_futuro",
+        "type": "InstrumentoFinanciero",
+        "label": "Contrato a término",
+        "properties": {
+          "description": "Derivado que confiere el derecho de compra o venta de un activo subyacente a plazo"
+        }
+      },
+      {
+        "id": "contrato_opcion",
+        "type": "InstrumentoFinanciero",
+        "label": "Contrato de opción",
+        "properties": {
+          "description": "Derivado que confiere derecho (no obligación) de compra o venta de un activo subyacente"
+        }
+      },
+      {
+        "id": "activo_subyacente",
+        "type": "Concepto",
+        "label": "Activo subyacente",
+        "properties": {
+          "description": "Bien, título o instrumento sobre el cual se pacta un contrato de derivado"
+        }
+      },
+      {
+        "id": "titulo_publico",
+        "type": "InstrumentoFinanciero",
+        "label": "Título público",
+        "properties": {
+          "description": "Valor emitido por el Estado, con cupón y plazo residual"
+        }
+      },
+      {
+        "id": "accion",
+        "type": "InstrumentoFinanciero",
+        "label": "Acción",
+        "properties": {
+          "description": "Valor que representa participación en una sociedad anónima"
+        }
+      },
+      {
+        "id": "delta",
+        "type": "Concepto",
+        "label": "Delta",
+        "properties": {
+          "description": "Parámetro de sensibilidad de una opción respecto al cambio en el precio del activo subyacente"
+        }
+      },
+      {
+        "id": "gamma",
+        "type": "Concepto",
+        "label": "Gamma",
+        "properties": {
+          "description": "Parámetro de sensibilidad de segundo orden que mide el cambio del delta respecto al precio del subyacente"
+        }
+      },
+      {
+        "id": "vega",
+        "type": "Concepto",
+        "label": "Vega",
+        "properties": {
+          "description": "Parámetro de sensibilidad de la opción respecto a cambios en volatilidad"
+        }
+      },
+      {
+        "id": "comunicacion_a_6070",
+        "type": "Documento",
+        "label": "Comunicación A 6070",
+        "properties": {
+          "description": "Comunicación del BCRA que establece el régimen informativo contable mensual, vigente desde 23/9/2016"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "regimen_informativo_contable_mensual",
+        "target": "exigencia_integracion_capitales_minimos",
+        "predicate": "comprende"
+      },
+      {
+        "source": "exigencia_integracion_capitales_minimos",
+        "target": "exigencia_integracion_riesgo_mercado",
+        "predicate": "especifica"
+      },
+      {
+        "source": "exigencia_integracion_riesgo_mercado",
+        "target": "reporte_opciones",
+        "predicate": "requiere"
+      },
+      {
+        "source": "reporte_opciones",
+        "target": "contrato_opcion",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "contrato_opcion",
+        "target": "activo_subyacente",
+        "predicate": "tiene"
+      },
+      {
+        "source": "activo_subyacente",
+        "target": "titulo_publico",
+        "predicate": "puede_ser"
+      },
+      {
+        "source": "activo_subyacente",
+        "target": "accion",
+        "predicate": "puede_ser"
+      },
+      {
+        "source": "contrato_opcion",
+        "target": "delta",
+        "predicate": "requiere_parametro"
+      },
+      {
+        "source": "contrato_opcion",
+        "target": "gamma",
+        "predicate": "requiere_parametro"
+      },
+      {
+        "source": "contrato_opcion",
+        "target": "vega",
+        "predicate": "requiere_parametro"
+      },
+      {
+        "source": "comunicacion_a_6070",
+        "target": "regimen_informativo_contable_mensual",
+        "predicate": "establece"
+      }
+    ]
+  }
+}

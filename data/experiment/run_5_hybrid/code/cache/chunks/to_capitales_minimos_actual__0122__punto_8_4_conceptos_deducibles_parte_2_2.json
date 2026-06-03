@@ -1,0 +1,144 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0122__punto_8_4_conceptos_deducibles_parte_2_2",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 8.4 — Conceptos deducibles. (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que formula requerimientos y supervisa el cumplimiento normativo de las entidades financieras.\"\n      }\n    },\n    {\n      \"id\": \"entidades_financieras\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras\",\n      \"properties\": {\n        \"description\": \"Sujetos comprendidos en la regulación del BCRA.\"\n      }\n    },\n    {\n      \"id\": \"deduccion_activos_conceptos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Deducción de activos y conceptos por requerimiento SEFyC\",\n      \"properties\": {\n        \"description\": \"Las entidades financieras deben deducir importes de activos u otros conceptos cuando las registraciones contables no reflejen la realidad económica y jurídica de las operaciones o cuando se hayan llevado a cabo acciones para desnaturalizar o disimular el carácter de las operaciones.\"\n      }\n    },\n    {\n      \"id\": \"verificacion_encuadramiento_normas\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación de encuadramiento normativo tras afectación RPC\",\n      \"properties\": {\n        \"description\": \"La afectación de la RPC por deducción determinará verificar el encuadramiento de normas que utilicen la RPC como base, desde el mes en que tenga efecto el requerimiento.\"\n      }\n    },\n    {\n      \"id\": \"ingreso_cargos_diez_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Ingreso de cargos dentro de 10 días hábiles\",\n      \"properties\": {\n        \"description\": \"Las entidades deben ingresar los cargos resultantes dentro de 10 días hábiles contados desde la notificación del requerimiento.\"\n      }\n    },\n    {\n      \"id\": \"intereses_mora_ingreso_tardio\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Abono de intereses por mora por ingreso fuera de término\",\n      \"properties\": {\n        \"description\": \"Si el ingreso de cargos se realiza fuera del término fijado, deben abonarse los intereses por mora que surjan de la aplicación de cada norma infringida.\"\n      }\n    },\n    {\n      \"id\": \"diferencias_insuficiencia_provisiones\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Diferencias por insuficiencia de constitución de provisiones\",\n      \"properties\": {\n        \"description\": \"Diferencias por insuficiencia de constitución de previsiones por riesgo de incobrabilidad determinadas por la SEFyC aplicando NIIF 9 punto 5.5, con efecto al cierre del mes siguiente a la notificación.\"\n      }\n    },\n    {\n      \"id\": \"rpc\",\n      \"type\": \"Concepto\",\n      \"label\": \"Responsabilidad Patrimonial Computable\",\n      \"properties\": {\n        \"description\": \"Concepto patrimonial cuya afectación por deducción de activos dispara obligaciones de verificación normativa.\"\n      }\n    },\n    {\n      \"id\": \"provisiones_riesgo_incobrabilidad\",\n      \"type\": \"Concepto\",\n      \"label\": \"Previsiones por riesgo de incobrabilidad\",\n      \"properties\": {\n        \"description\": \"Previsiones constituidas conforme NIIF 9 por deterioro de valor de activos financieros.\"\n      }\n    },\n    {\n      \"id\": \"niif_9\",\n      \"type\": \"Documento\",\n      \"label\": \"NIIF 9\",\n      \"properties\": {\n        \"description\": \"Norma Internacional de Información Financiera 9 aplicable al deterioro de valor de activos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"sefyc\",\n      \"target\": \"deduccion_activos_conceptos\",\n      \"predicate\": \"formula\"\n    },\n    {\n      \"source\": \"deduccion_activos_conceptos\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"deduccion_activos_conceptos\",\n      \"target\": \"rpc\",\n      \"predicate\": \"afecta\"\n    },\n    {\n      \"source\": \"verificacion_encuadramiento_normas\",\n      \"target\": \"rpc\",\n      \"predicate\": \"se_dispara_por\"\n    },\n    {\n      \"source\": \"ingreso_cargos_diez_dias\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"intereses_mora_ingreso_tardio\",\n      \"target\": \"ingreso_cargos_diez_dias\",\n      \"predicate\": \"sanciona_incumplimiento_de\"\n    },\n    {\n      \"source\": \"diferencias_insuficiencia_provisiones\",\n      \"target\": \"sefyc\",\n      \"predicate\": \"determina\"\n    },\n    {\n      \"source\": \"diferencias_insuficiencia_provisiones\",\n      \"target\": \"provisiones_riesgo_incobrabilidad\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"provisiones_riesgo_incobrabilidad\",\n      \"target\": \"niif_9\",\n      \"predicate\": \"se_constituye_conforme\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3852,
+  "output_tokens": 1511,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 10,
+  "relations_count": 9,
+  "parsed": {
+    "entities": [
+      {
+        "id": "sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "Autoridad regulatoria que formula requerimientos y supervisa el cumplimiento normativo de las entidades financieras."
+        }
+      },
+      {
+        "id": "entidades_financieras",
+        "type": "Concepto",
+        "label": "Entidades financieras",
+        "properties": {
+          "description": "Sujetos comprendidos en la regulación del BCRA."
+        }
+      },
+      {
+        "id": "deduccion_activos_conceptos",
+        "type": "Restriccion",
+        "label": "Deducción de activos y conceptos por requerimiento SEFyC",
+        "properties": {
+          "description": "Las entidades financieras deben deducir importes de activos u otros conceptos cuando las registraciones contables no reflejen la realidad económica y jurídica de las operaciones o cuando se hayan llevado a cabo acciones para desnaturalizar o disimular el carácter de las operaciones."
+        }
+      },
+      {
+        "id": "verificacion_encuadramiento_normas",
+        "type": "Restriccion",
+        "label": "Verificación de encuadramiento normativo tras afectación RPC",
+        "properties": {
+          "description": "La afectación de la RPC por deducción determinará verificar el encuadramiento de normas que utilicen la RPC como base, desde el mes en que tenga efecto el requerimiento."
+        }
+      },
+      {
+        "id": "ingreso_cargos_diez_dias",
+        "type": "Restriccion",
+        "label": "Ingreso de cargos dentro de 10 días hábiles",
+        "properties": {
+          "description": "Las entidades deben ingresar los cargos resultantes dentro de 10 días hábiles contados desde la notificación del requerimiento."
+        }
+      },
+      {
+        "id": "intereses_mora_ingreso_tardio",
+        "type": "Restriccion",
+        "label": "Abono de intereses por mora por ingreso fuera de término",
+        "properties": {
+          "description": "Si el ingreso de cargos se realiza fuera del término fijado, deben abonarse los intereses por mora que surjan de la aplicación de cada norma infringida."
+        }
+      },
+      {
+        "id": "diferencias_insuficiencia_provisiones",
+        "type": "Restriccion",
+        "label": "Diferencias por insuficiencia de constitución de provisiones",
+        "properties": {
+          "description": "Diferencias por insuficiencia de constitución de previsiones por riesgo de incobrabilidad determinadas por la SEFyC aplicando NIIF 9 punto 5.5, con efecto al cierre del mes siguiente a la notificación."
+        }
+      },
+      {
+        "id": "rpc",
+        "type": "Concepto",
+        "label": "Responsabilidad Patrimonial Computable",
+        "properties": {
+          "description": "Concepto patrimonial cuya afectación por deducción de activos dispara obligaciones de verificación normativa."
+        }
+      },
+      {
+        "id": "provisiones_riesgo_incobrabilidad",
+        "type": "Concepto",
+        "label": "Previsiones por riesgo de incobrabilidad",
+        "properties": {
+          "description": "Previsiones constituidas conforme NIIF 9 por deterioro de valor de activos financieros."
+        }
+      },
+      {
+        "id": "niif_9",
+        "type": "Documento",
+        "label": "NIIF 9",
+        "properties": {
+          "description": "Norma Internacional de Información Financiera 9 aplicable al deterioro de valor de activos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "sefyc",
+        "target": "deduccion_activos_conceptos",
+        "predicate": "formula"
+      },
+      {
+        "source": "deduccion_activos_conceptos",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "deduccion_activos_conceptos",
+        "target": "rpc",
+        "predicate": "afecta"
+      },
+      {
+        "source": "verificacion_encuadramiento_normas",
+        "target": "rpc",
+        "predicate": "se_dispara_por"
+      },
+      {
+        "source": "ingreso_cargos_diez_dias",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "intereses_mora_ingreso_tardio",
+        "target": "ingreso_cargos_diez_dias",
+        "predicate": "sanciona_incumplimiento_de"
+      },
+      {
+        "source": "diferencias_insuficiencia_provisiones",
+        "target": "sefyc",
+        "predicate": "determina"
+      },
+      {
+        "source": "diferencias_insuficiencia_provisiones",
+        "target": "provisiones_riesgo_incobrabilidad",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "provisiones_riesgo_incobrabilidad",
+        "target": "niif_9",
+        "predicate": "se_constituye_conforme"
+      }
+    ]
+  }
+}

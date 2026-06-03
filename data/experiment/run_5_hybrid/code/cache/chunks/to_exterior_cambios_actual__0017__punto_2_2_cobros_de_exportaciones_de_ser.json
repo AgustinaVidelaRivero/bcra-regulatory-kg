@@ -1,0 +1,150 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0017__punto_2_2_cobros_de_exportaciones_de_ser",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 2.2 — Cobros de exportaciones de servicios. (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"cobros_exportaciones_servicios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros de exportaciones de servicios\",\n      \"properties\": {\n        \"description\": \"Ingresos de divisas por prestación de servicios al exterior, incluyendo servicios turísticos, transporte de pasajeros y otros servicios contratados por no residentes.\"\n      }\n    },\n    {\n      \"id\": \"cuentas_virtuales\",\n      \"type\": \"Operacion\",\n      \"label\": \"Utilización de cuentas virtuales\",\n      \"properties\": {\n        \"description\": \"Mecanismo de pago mediante cuentas virtuales abiertas en instituciones autorizadas por la autoridad monetaria del país de radicación.\"\n      }\n    },\n    {\n      \"id\": \"servicios_turisticos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros por servicios turísticos\",\n      \"properties\": {\n        \"description\": \"Ingresos por cualquier tipo de servicio turístico en el país contratado por no residentes, incluyendo servicios de agencias mayoristas y minoristas de viajes.\"\n      }\n    },\n    {\n      \"id\": \"transporte_pasajeros\",\n      \"type\": \"Operacion\",\n      \"label\": \"Cobros por transporte de pasajeros\",\n      \"properties\": {\n        \"description\": \"Ingresos por servicios de transporte de pasajeros no residentes con destino en el país por vía terrestre, aérea o acuática.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_apertura_cuentas_virtuales\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Requisitos para apertura de cuentas virtuales\",\n      \"properties\": {\n        \"description\": \"Las cuentas virtuales deben estar abiertas en instituciones cuya operatoria esté autorizada por la autoridad monetaria equivalente del país de radicación y la tenencia de clave fiscal es condición para apertura.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_confeccion_boletos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Confección de boletos sin movimiento de pesos\",\n      \"properties\": {\n        \"description\": \"Se deben confeccionar dos boletos: boleto de compra por el concepto de servicios y boleto de venta bajo concepto A10 de débito/crédito de moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_liquidacion_moneda_local\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Liquidación por monto acreditado en moneda nacional\",\n      \"properties\": {\n        \"description\": \"Se considera cumplimentada la liquidación por el monto acreditado en moneda nacional en cuenta del exportador cuando cobros se ingresan mediante sistema de monedas locales.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_cobros_cancelacion_deuda\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Aplicación de cobros a cancelación de endeudamientos\",\n      \"properties\": {\n        \"description\": \"Se admite aplicar cobros de exportaciones de servicios a cancelación de capital e intereses de endeudamientos financieros y títulos valores con acceso al mercado de cambios, bajo requisitos especificados.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_cobros_acumulacion_cuentas\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Acumulación de cobros en cuentas abiertas\",\n      \"properties\": {\n        \"description\": \"Se admite que cobros de exportaciones de servicios sean acumulados en cuentas abiertas en entidades financieras locales o en el exterior para garantizar cancelación de servicios de deuda.\"\n      }\n    },\n    {\n      \"id\": \"concepto_moneda_nacional\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda nacional acreditada\",\n      \"properties\": {\n        \"description\": \"Monto equivalente en moneda nacional o moneda del país de destino en caso de servicios prestados a residentes paraguayos o uruguayos.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera_local\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Instituciones financieras autorizadas para abrir y mantener cuentas donde se acumulan cobros de exportaciones.\"\n      }\n    },\n    {\n      \"id\": \"autoridad_monetaria\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Autoridad monetaria\",\n      \"properties\": {\n        \"description\": \"Autoridad competente del país de radicación que autoriza la operatoria de instituciones que abren cuentas virtuales.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_apertura_cuentas_virtuales\",\n      \"target\": \"cuentas_virtuales\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_confeccion_boletos\",\n      \"target\": \"cobros_exportaciones_servicios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_liquidacion_moneda_local\",\n      \"target\": \"cobros_exportaciones_servicios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_cobros_cancelacion_deuda\",\n      \"target\": \"restriccion_liquidacion_moneda_local\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_cobros_acumulacion_cuentas\",\n      \"target\": \"restriccion_liquidacion_moneda_local\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"autoridad_monetaria\",\n      \"target\": \"restriccion_apertura_cuentas_virtuales\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"restriccion_apertura_cuentas_virtuales\",\n      \"target\": \"entidad_financiera_local\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4269,
+  "output_tokens": 1646,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "cobros_exportaciones_servicios",
+        "type": "Operacion",
+        "label": "Cobros de exportaciones de servicios",
+        "properties": {
+          "description": "Ingresos de divisas por prestación de servicios al exterior, incluyendo servicios turísticos, transporte de pasajeros y otros servicios contratados por no residentes."
+        }
+      },
+      {
+        "id": "cuentas_virtuales",
+        "type": "Operacion",
+        "label": "Utilización de cuentas virtuales",
+        "properties": {
+          "description": "Mecanismo de pago mediante cuentas virtuales abiertas en instituciones autorizadas por la autoridad monetaria del país de radicación."
+        }
+      },
+      {
+        "id": "servicios_turisticos",
+        "type": "Operacion",
+        "label": "Cobros por servicios turísticos",
+        "properties": {
+          "description": "Ingresos por cualquier tipo de servicio turístico en el país contratado por no residentes, incluyendo servicios de agencias mayoristas y minoristas de viajes."
+        }
+      },
+      {
+        "id": "transporte_pasajeros",
+        "type": "Operacion",
+        "label": "Cobros por transporte de pasajeros",
+        "properties": {
+          "description": "Ingresos por servicios de transporte de pasajeros no residentes con destino en el país por vía terrestre, aérea o acuática."
+        }
+      },
+      {
+        "id": "restriccion_apertura_cuentas_virtuales",
+        "type": "Restriccion",
+        "label": "Requisitos para apertura de cuentas virtuales",
+        "properties": {
+          "description": "Las cuentas virtuales deben estar abiertas en instituciones cuya operatoria esté autorizada por la autoridad monetaria equivalente del país de radicación y la tenencia de clave fiscal es condición para apertura."
+        }
+      },
+      {
+        "id": "restriccion_confeccion_boletos",
+        "type": "Restriccion",
+        "label": "Confección de boletos sin movimiento de pesos",
+        "properties": {
+          "description": "Se deben confeccionar dos boletos: boleto de compra por el concepto de servicios y boleto de venta bajo concepto A10 de débito/crédito de moneda extranjera."
+        }
+      },
+      {
+        "id": "restriccion_liquidacion_moneda_local",
+        "type": "Restriccion",
+        "label": "Liquidación por monto acreditado en moneda nacional",
+        "properties": {
+          "description": "Se considera cumplimentada la liquidación por el monto acreditado en moneda nacional en cuenta del exportador cuando cobros se ingresan mediante sistema de monedas locales."
+        }
+      },
+      {
+        "id": "excepcion_cobros_cancelacion_deuda",
+        "type": "Excepcion",
+        "label": "Aplicación de cobros a cancelación de endeudamientos",
+        "properties": {
+          "description": "Se admite aplicar cobros de exportaciones de servicios a cancelación de capital e intereses de endeudamientos financieros y títulos valores con acceso al mercado de cambios, bajo requisitos especificados."
+        }
+      },
+      {
+        "id": "excepcion_cobros_acumulacion_cuentas",
+        "type": "Excepcion",
+        "label": "Acumulación de cobros en cuentas abiertas",
+        "properties": {
+          "description": "Se admite que cobros de exportaciones de servicios sean acumulados en cuentas abiertas en entidades financieras locales o en el exterior para garantizar cancelación de servicios de deuda."
+        }
+      },
+      {
+        "id": "concepto_moneda_nacional",
+        "type": "Concepto",
+        "label": "Moneda nacional acreditada",
+        "properties": {
+          "description": "Monto equivalente en moneda nacional o moneda del país de destino en caso de servicios prestados a residentes paraguayos o uruguayos."
+        }
+      },
+      {
+        "id": "entidad_financiera_local",
+        "type": "Concepto",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "description": "Instituciones financieras autorizadas para abrir y mantener cuentas donde se acumulan cobros de exportaciones."
+        }
+      },
+      {
+        "id": "autoridad_monetaria",
+        "type": "Autoridad",
+        "label": "Autoridad monetaria",
+        "properties": {
+          "description": "Autoridad competente del país de radicación que autoriza la operatoria de instituciones que abren cuentas virtuales."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_apertura_cuentas_virtuales",
+        "target": "cuentas_virtuales",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_confeccion_boletos",
+        "target": "cobros_exportaciones_servicios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_liquidacion_moneda_local",
+        "target": "cobros_exportaciones_servicios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_cobros_cancelacion_deuda",
+        "target": "restriccion_liquidacion_moneda_local",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_cobros_acumulacion_cuentas",
+        "target": "restriccion_liquidacion_moneda_local",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "autoridad_monetaria",
+        "target": "restriccion_apertura_cuentas_virtuales",
+        "predicate": "regula"
+      },
+      {
+        "source": "restriccion_apertura_cuentas_virtuales",
+        "target": "entidad_financiera_local",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

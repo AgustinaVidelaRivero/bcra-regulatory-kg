@@ -1,0 +1,217 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0026__punto_3_1_pagos_de_importaciones_y_otras",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.1 — Pagos de importaciones y otras compras de bienes al exterior. + Punto 3.2 — Pagos de servicios prestados por no residentes. + Punto 3.3 — Pagos de intereses de deudas por importaciones de bienes y servicios.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operatoria_importaciones_bienes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Importaciones argentinas de bienes\",\n      \"properties\": {\n        \"description\": \"Operatoria de importaciones argentinas de bienes y otras compras de bienes al exterior.\"\n      }\n    },\n    {\n      \"id\": \"sistema_sepaimpo\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Sistema de seguimiento de pagos de importaciones\",\n      \"properties\": {\n        \"description\": \"SEPAIMPO: sistema de seguimiento de pagos de importaciones.\"\n      }\n    },\n    {\n      \"id\": \"pago_servicios_no_residentes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pagos de servicios prestados por no residentes\",\n      \"properties\": {\n        \"description\": \"Operatoria de pago de servicios prestados por no residentes.\"\n      }\n    },\n    {\n      \"id\": \"pago_intereses_deudas_importaciones\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pagos de intereses de deudas comerciales por importaciones\",\n      \"properties\": {\n        \"description\": \"Pagos de intereses de deudas comerciales por importaciones de bienes o servicios.\"\n      }\n    },\n    {\n      \"id\": \"entidades_financieras\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"Entidades financieras locales que operan en el mercado de cambios.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"acceso_mercado_cambios\",\n      \"type\": \"Operacion\",\n      \"label\": \"Acceso al mercado de cambios\",\n      \"properties\": {\n        \"description\": \"Acceso al mercado de cambios para cursar pagos de intereses.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_acceso_fecha_vencimiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Acceso al mercado según fecha de vencimiento\",\n      \"properties\": {\n        \"description\": \"El acceso al mercado de cambios tiene lugar a partir de la fecha de vencimiento del interés a pagar.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_conformidad_precancelacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conformidad previa BCRA para precancelación de intereses\",\n      \"properties\": {\n        \"description\": \"Se requiere conformidad previa del BCRA para precancelar servicios de intereses de deudas comerciales por importaciones.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_contraparte_vinculada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conformidad previa para contraparte vinculada\",\n      \"properties\": {\n        \"description\": \"Se requiere conformidad previa del BCRA cuando el acreedor sea contraparte vinculada al deudor y vencimiento hasta 04/07/24.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_vpu_rigi\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para VPU adherido a RIGI\",\n      \"properties\": {\n        \"description\": \"No aplica requisito de fecha de vencimiento si el cliente es VPU adherido al RIGI que concreta el pago según punto 14.2.1.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_operaciones_entidades_financieras\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para operaciones de entidades financieras locales\",\n      \"properties\": {\n        \"description\": \"No aplica conformidad previa cuando se trate de operaciones propias de entidades financieras locales.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_certificacion_exportaciones\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción para certificación de aumento de exportaciones\",\n      \"properties\": {\n        \"description\": \"No aplica conformidad previa cuando el cliente cuente con certificación de aumento de exportaciones 2021-2023.\"\n      }\n    },\n    {\n      \"id\": \"vpu_rigi\",\n      \"type\": \"Concepto\",\n      \"label\": \"Vehículo de Proyecto Único RIGI\",\n      \"properties\": {\n        \"description\": \"Vehículo de Proyecto Único adherido al Régimen de Incentivo para Grandes Inversiones.\"\n      }\n    },\n    {\n      \"id\": \"relevamiento_activos_pasivos\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Relevamiento de activos y pasivos externos\",\n      \"properties\": {\n        \"description\": \"Presentación de relevamiento de activos y pasivos externos.\"\n      }\n    },\n    {\n      \"id\": \"declaracion_operacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Declaración de operación en relevamiento\",\n      \"properties\": {\n        \"description\": \"La operación debe encontrarse declarada en la última presentación vencida del Relevamiento de activos y pasivos externos.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"BCRA: autoridad regulatoria que otorga conformidad para acceso al mercado de cambios.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidades_financieras\",\n      \"target\": \"acceso_mercado_cambios\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_acceso_fecha_vencimiento\",\n      \"target\": \"pago_intereses_deudas_importaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_conformidad_precancelacion\",\n      \"target\": \"pago_intereses_deudas_importaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_contraparte_vinculada\",\n      \"target\": \"pago_intereses_deudas_importaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_acceso_fecha_vencimiento\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_conformidad_precancelacion\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_contraparte_vinculada\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"excepcion_vpu_rigi\",\n      \"target\": \"restriccion_acceso_fecha_vencimiento\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_operaciones_entidades_financieras\",\n      \"target\": \"restriccion_contraparte_vinculada\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_certificacion_exportaciones\",\n      \"target\": \"restriccion_contraparte_vinculada\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"declaracion_operacion\",\n      \"target\": \"pago_intereses_deudas_importaciones\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"declaracion_operacion\",\n      \"target\": \"entidades_financieras\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"restriccion_conformidad_precancelacion\",\n      \"predicate\": \"autoriza\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"restriccion_contraparte_vinculada\",\n      \"predicate\": \"autoriza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4013,
+  "output_tokens": 2174,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 16,
+  "relations_count": 14,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operatoria_importaciones_bienes",
+        "type": "Operacion",
+        "label": "Importaciones argentinas de bienes",
+        "properties": {
+          "description": "Operatoria de importaciones argentinas de bienes y otras compras de bienes al exterior."
+        }
+      },
+      {
+        "id": "sistema_sepaimpo",
+        "type": "RegimenInformativo",
+        "label": "Sistema de seguimiento de pagos de importaciones",
+        "properties": {
+          "description": "SEPAIMPO: sistema de seguimiento de pagos de importaciones."
+        }
+      },
+      {
+        "id": "pago_servicios_no_residentes",
+        "type": "Operacion",
+        "label": "Pagos de servicios prestados por no residentes",
+        "properties": {
+          "description": "Operatoria de pago de servicios prestados por no residentes."
+        }
+      },
+      {
+        "id": "pago_intereses_deudas_importaciones",
+        "type": "Operacion",
+        "label": "Pagos de intereses de deudas comerciales por importaciones",
+        "properties": {
+          "description": "Pagos de intereses de deudas comerciales por importaciones de bienes o servicios."
+        }
+      },
+      {
+        "id": "entidades_financieras",
+        "type": "EntidadFinanciera",
+        "label": "Entidades financieras locales",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "acceso_mercado_cambios",
+        "type": "Operacion",
+        "label": "Acceso al mercado de cambios",
+        "properties": {
+          "description": "Acceso al mercado de cambios para cursar pagos de intereses."
+        }
+      },
+      {
+        "id": "restriccion_acceso_fecha_vencimiento",
+        "type": "Restriccion",
+        "label": "Acceso al mercado según fecha de vencimiento",
+        "properties": {
+          "description": "El acceso al mercado de cambios tiene lugar a partir de la fecha de vencimiento del interés a pagar."
+        }
+      },
+      {
+        "id": "restriccion_conformidad_precancelacion",
+        "type": "Restriccion",
+        "label": "Conformidad previa BCRA para precancelación de intereses",
+        "properties": {
+          "description": "Se requiere conformidad previa del BCRA para precancelar servicios de intereses de deudas comerciales por importaciones."
+        }
+      },
+      {
+        "id": "restriccion_contraparte_vinculada",
+        "type": "Restriccion",
+        "label": "Conformidad previa para contraparte vinculada",
+        "properties": {
+          "description": "Se requiere conformidad previa del BCRA cuando el acreedor sea contraparte vinculada al deudor y vencimiento hasta 04/07/24."
+        }
+      },
+      {
+        "id": "excepcion_vpu_rigi",
+        "type": "Excepcion",
+        "label": "Excepción para VPU adherido a RIGI",
+        "properties": {
+          "description": "No aplica requisito de fecha de vencimiento si el cliente es VPU adherido al RIGI que concreta el pago según punto 14.2.1."
+        }
+      },
+      {
+        "id": "excepcion_operaciones_entidades_financieras",
+        "type": "Excepcion",
+        "label": "Excepción para operaciones de entidades financieras locales",
+        "properties": {
+          "description": "No aplica conformidad previa cuando se trate de operaciones propias de entidades financieras locales."
+        }
+      },
+      {
+        "id": "excepcion_certificacion_exportaciones",
+        "type": "Excepcion",
+        "label": "Excepción para certificación de aumento de exportaciones",
+        "properties": {
+          "description": "No aplica conformidad previa cuando el cliente cuente con certificación de aumento de exportaciones 2021-2023."
+        }
+      },
+      {
+        "id": "vpu_rigi",
+        "type": "Concepto",
+        "label": "Vehículo de Proyecto Único RIGI",
+        "properties": {
+          "description": "Vehículo de Proyecto Único adherido al Régimen de Incentivo para Grandes Inversiones."
+        }
+      },
+      {
+        "id": "relevamiento_activos_pasivos",
+        "type": "RegimenInformativo",
+        "label": "Relevamiento de activos y pasivos externos",
+        "properties": {
+          "description": "Presentación de relevamiento de activos y pasivos externos."
+        }
+      },
+      {
+        "id": "declaracion_operacion",
+        "type": "Restriccion",
+        "label": "Declaración de operación en relevamiento",
+        "properties": {
+          "description": "La operación debe encontrarse declarada en la última presentación vencida del Relevamiento de activos y pasivos externos."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "BCRA: autoridad regulatoria que otorga conformidad para acceso al mercado de cambios."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidades_financieras",
+        "target": "acceso_mercado_cambios",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_acceso_fecha_vencimiento",
+        "target": "pago_intereses_deudas_importaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_conformidad_precancelacion",
+        "target": "pago_intereses_deudas_importaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_contraparte_vinculada",
+        "target": "pago_intereses_deudas_importaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_acceso_fecha_vencimiento",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_conformidad_precancelacion",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_contraparte_vinculada",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "excepcion_vpu_rigi",
+        "target": "restriccion_acceso_fecha_vencimiento",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_operaciones_entidades_financieras",
+        "target": "restriccion_contraparte_vinculada",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_certificacion_exportaciones",
+        "target": "restriccion_contraparte_vinculada",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "declaracion_operacion",
+        "target": "pago_intereses_deudas_importaciones",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "declaracion_operacion",
+        "target": "entidades_financieras",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "bcra",
+        "target": "restriccion_conformidad_precancelacion",
+        "predicate": "autoriza"
+      },
+      {
+        "source": "bcra",
+        "target": "restriccion_contraparte_vinculada",
+        "predicate": "autoriza"
+      }
+    ]
+  }
+}

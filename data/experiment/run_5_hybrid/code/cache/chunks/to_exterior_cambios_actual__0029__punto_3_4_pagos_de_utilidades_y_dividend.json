@@ -1,0 +1,143 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0029__punto_3_4_pagos_de_utilidades_y_dividend",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.4 — Pagos de utilidades y dividendos. (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"certificacion_acceso_divisas_petroleo_gas\",\n      \"type\": \"Documento\",\n      \"label\": \"Certificación acceso divisas producción petróleo gas\",\n      \"properties\": {\n        \"description\": \"Certificación emitida conforme punto 3.17 para régimen de acceso a divisas por producción incremental de petróleo y/o gas natural (Decreto 277/22).\",\n        \"norma_referenciada\": \"Decreto 277/22\"\n      }\n    },\n    {\n      \"id\": \"certificacion_aumento_exportaciones_bienes\",\n      \"type\": \"Documento\",\n      \"label\": \"Certificación aumento exportaciones bienes\",\n      \"properties\": {\n        \"description\": \"Certificación emitida conforme punto 3.18 para años 2021 a 2023 acreditando aumento de exportaciones de bienes.\",\n        \"periodo\": \"2021-2023\"\n      }\n    },\n    {\n      \"id\": \"pago_utilidades_dividendos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pago de utilidades y dividendos\",\n      \"properties\": {\n        \"description\": \"Acceso al mercado de cambios para abono de utilidades y dividendos a accionistas no residentes.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_conformidad_previa_bcra\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conformidad previa del BCRA\",\n      \"properties\": {\n        \"description\": \"Casos que no encuadren en los regímenes específicos requieren conformidad previa del BCRA para acceder al mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {\n        \"description\": \"Sujeto que realiza pagos de utilidades y dividendos y accede al mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que emite conformidades y supervisa acceso al mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"bonos_bopreal\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Bonos para la Reconstrucción de una Argentina Libre\",\n      \"properties\": {\n        \"description\": \"BOPREAL. Bonos suscritos por clientes hasta el equivalente del monto en moneda local de utilidades y dividendos pendientes de pago.\"\n      }\n    },\n    {\n      \"id\": \"accionistas_no_residentes\",\n      \"type\": \"Concepto\",\n      \"label\": \"Accionistas no residentes\",\n      \"properties\": {\n        \"description\": \"Beneficiarios de utilidades y dividendos sujetos a distribución mediante asamblea de accionistas.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_suscripcion_bopreal\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suscripción BOPREAL hasta equivalente utilidades pendientes\",\n      \"properties\": {\n        \"description\": \"Clientes pueden suscribir BOPREAL por hasta el equivalente en moneda local de utilidades y dividendos pendientes, sujeto a conformidad previa del BCRA y requisitos punto 4.6.1.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"cliente\",\n      \"target\": \"pago_utilidades_dividendos\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_conformidad_previa_bcra\",\n      \"target\": \"pago_utilidades_dividendos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_conformidad_previa_bcra\",\n      \"target\": \"cliente\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"certificacion_acceso_divisas_petroleo_gas\",\n      \"target\": \"pago_utilidades_dividendos\",\n      \"predicate\": \"acredita\"\n    },\n    {\n      \"source\": \"certificacion_aumento_exportaciones_bienes\",\n      \"target\": \"pago_utilidades_dividendos\",\n      \"predicate\": \"acredita\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"certificacion_acceso_divisas_petroleo_gas\",\n      \"predicate\": \"emite\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"certificacion_aumento_exportaciones_bienes\",\n      \"predicate\": \"emite\"\n    },\n    {\n      \"source\": \"restriccion_suscripcion_bopreal\",\n      \"target\": \"cliente\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_suscripcion_bopreal\",\n      \"target\": \"bcra\",\n      \"predicate\": \"requiere_conformidad_de\"\n    },\n    {\n      \"source\": \"bonos_bopreal\",\n      \"target\": \"pago_utilidades_dividendos\",\n      \"predicate\": \"canaliza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3791,
+  "output_tokens": 1403,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "certificacion_acceso_divisas_petroleo_gas",
+        "type": "Documento",
+        "label": "Certificación acceso divisas producción petróleo gas",
+        "properties": {
+          "description": "Certificación emitida conforme punto 3.17 para régimen de acceso a divisas por producción incremental de petróleo y/o gas natural (Decreto 277/22).",
+          "norma_referenciada": "Decreto 277/22"
+        }
+      },
+      {
+        "id": "certificacion_aumento_exportaciones_bienes",
+        "type": "Documento",
+        "label": "Certificación aumento exportaciones bienes",
+        "properties": {
+          "description": "Certificación emitida conforme punto 3.18 para años 2021 a 2023 acreditando aumento de exportaciones de bienes.",
+          "periodo": "2021-2023"
+        }
+      },
+      {
+        "id": "pago_utilidades_dividendos",
+        "type": "Operacion",
+        "label": "Pago de utilidades y dividendos",
+        "properties": {
+          "description": "Acceso al mercado de cambios para abono de utilidades y dividendos a accionistas no residentes."
+        }
+      },
+      {
+        "id": "restriccion_conformidad_previa_bcra",
+        "type": "Restriccion",
+        "label": "Conformidad previa del BCRA",
+        "properties": {
+          "description": "Casos que no encuadren en los regímenes específicos requieren conformidad previa del BCRA para acceder al mercado de cambios."
+        }
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {
+          "description": "Sujeto que realiza pagos de utilidades y dividendos y accede al mercado de cambios."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que emite conformidades y supervisa acceso al mercado de cambios."
+        }
+      },
+      {
+        "id": "bonos_bopreal",
+        "type": "InstrumentoFinanciero",
+        "label": "Bonos para la Reconstrucción de una Argentina Libre",
+        "properties": {
+          "description": "BOPREAL. Bonos suscritos por clientes hasta el equivalente del monto en moneda local de utilidades y dividendos pendientes de pago."
+        }
+      },
+      {
+        "id": "accionistas_no_residentes",
+        "type": "Concepto",
+        "label": "Accionistas no residentes",
+        "properties": {
+          "description": "Beneficiarios de utilidades y dividendos sujetos a distribución mediante asamblea de accionistas."
+        }
+      },
+      {
+        "id": "restriccion_suscripcion_bopreal",
+        "type": "Restriccion",
+        "label": "Suscripción BOPREAL hasta equivalente utilidades pendientes",
+        "properties": {
+          "description": "Clientes pueden suscribir BOPREAL por hasta el equivalente en moneda local de utilidades y dividendos pendientes, sujeto a conformidad previa del BCRA y requisitos punto 4.6.1."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "cliente",
+        "target": "pago_utilidades_dividendos",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_conformidad_previa_bcra",
+        "target": "pago_utilidades_dividendos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_conformidad_previa_bcra",
+        "target": "cliente",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "certificacion_acceso_divisas_petroleo_gas",
+        "target": "pago_utilidades_dividendos",
+        "predicate": "acredita"
+      },
+      {
+        "source": "certificacion_aumento_exportaciones_bienes",
+        "target": "pago_utilidades_dividendos",
+        "predicate": "acredita"
+      },
+      {
+        "source": "bcra",
+        "target": "certificacion_acceso_divisas_petroleo_gas",
+        "predicate": "emite"
+      },
+      {
+        "source": "bcra",
+        "target": "certificacion_aumento_exportaciones_bienes",
+        "predicate": "emite"
+      },
+      {
+        "source": "restriccion_suscripcion_bopreal",
+        "target": "cliente",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_suscripcion_bopreal",
+        "target": "bcra",
+        "predicate": "requiere_conformidad_de"
+      },
+      {
+        "source": "bonos_bopreal",
+        "target": "pago_utilidades_dividendos",
+        "predicate": "canaliza"
+      }
+    ]
+  }
+}

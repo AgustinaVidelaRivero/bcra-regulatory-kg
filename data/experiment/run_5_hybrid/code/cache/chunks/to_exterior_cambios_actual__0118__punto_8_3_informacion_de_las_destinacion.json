@@ -1,0 +1,131 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0118__punto_8_3_informacion_de_las_destinacion",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 8.3 — Información de las destinaciones de exportación a disposición de las entidades.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"sistema_secoexpo\",\n      \"type\": \"RegimenInformativo\",\n      \"label\": \"Sistema SECOEXPO\",\n      \"properties\": {\n        \"description\": \"Sistema dispuesto por el BCRA para que las entidades tomen conocimiento de permisos de embarque designados por exportadores y accedan a información de ARCA pertinente al seguimiento de negociaciones de divisas por exportaciones.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que dispone el sistema SECOEXPO.\"\n      }\n    },\n    {\n      \"id\": \"arca\",\n      \"type\": \"Autoridad\",\n      \"label\": \"ARCA\",\n      \"properties\": {\n        \"description\": \"Organismo que mantiene información sobre permisos de embarque y efectúa rectificaciones de datos reportados en SECOEXPO.\"\n      }\n    },\n    {\n      \"id\": \"entidad_nominada\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad nominada\",\n      \"properties\": {\n        \"description\": \"Entidad designada por un exportador para el seguimiento de un permiso de embarque en SECOEXPO.\"\n      }\n    },\n    {\n      \"id\": \"acceso_informacion_arca\",\n      \"type\": \"Operacion\",\n      \"label\": \"Acceso a información de ARCA\",\n      \"properties\": {\n        \"description\": \"Las entidades tendrán acceso a información disponible en ARCA pertinente a cumplimentar responsabilidades como entidad nominada.\"\n      }\n    },\n    {\n      \"id\": \"conocimiento_permisos_embarque\",\n      \"type\": \"Operacion\",\n      \"label\": \"Conocimiento de permisos de embarque\",\n      \"properties\": {\n        \"description\": \"La entidad toma conocimiento de los permisos de embarque para los cuales ha sido designada por un exportador.\"\n      }\n    },\n    {\n      \"id\": \"tramite_rectificacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Trámite de rectificación ante ARCA\",\n      \"properties\": {\n        \"description\": \"El exportador tramita rectificación de errores en forma de reporte de permiso de embarque directamente ante ARCA.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_rectificacion_directa\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Rectificación directa ante ARCA\",\n      \"properties\": {\n        \"description\": \"Si el exportador considera errores en reporte de permiso de embarque en SECOEXPO, debe tramitar rectificación directamente ante ARCA.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_validacion_rectificacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Validación de rectificación en SECOEXPO\",\n      \"properties\": {\n        \"description\": \"La entidad considera rectificada la información cuando se refleja en SECOEXPO o cuando dispone de documentación de ARCA que indique expresamente validez de datos del exportador.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"bcra\",\n      \"target\": \"sistema_secoexpo\",\n      \"predicate\": \"dispone\"\n    },\n    {\n      \"source\": \"sistema_secoexpo\",\n      \"target\": \"acceso_informacion_arca\",\n      \"predicate\": \"permite\"\n    },\n    {\n      \"source\": \"sistema_secoexpo\",\n      \"target\": \"conocimiento_permisos_embarque\",\n      \"predicate\": \"permite\"\n    },\n    {\n      \"source\": \"entidad_nominada\",\n      \"target\": \"acceso_informacion_arca\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_nominada\",\n      \"target\": \"conocimiento_permisos_embarque\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_rectificacion_directa\",\n      \"target\": \"tramite_rectificacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_validacion_rectificacion\",\n      \"target\": \"entidad_nominada\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"arca\",\n      \"target\": \"tramite_rectificacion\",\n      \"predicate\": \"recibe\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3731,
+  "output_tokens": 1213,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "sistema_secoexpo",
+        "type": "RegimenInformativo",
+        "label": "Sistema SECOEXPO",
+        "properties": {
+          "description": "Sistema dispuesto por el BCRA para que las entidades tomen conocimiento de permisos de embarque designados por exportadores y accedan a información de ARCA pertinente al seguimiento de negociaciones de divisas por exportaciones."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {
+          "description": "Autoridad regulatoria que dispone el sistema SECOEXPO."
+        }
+      },
+      {
+        "id": "arca",
+        "type": "Autoridad",
+        "label": "ARCA",
+        "properties": {
+          "description": "Organismo que mantiene información sobre permisos de embarque y efectúa rectificaciones de datos reportados en SECOEXPO."
+        }
+      },
+      {
+        "id": "entidad_nominada",
+        "type": "Concepto",
+        "label": "Entidad nominada",
+        "properties": {
+          "description": "Entidad designada por un exportador para el seguimiento de un permiso de embarque en SECOEXPO."
+        }
+      },
+      {
+        "id": "acceso_informacion_arca",
+        "type": "Operacion",
+        "label": "Acceso a información de ARCA",
+        "properties": {
+          "description": "Las entidades tendrán acceso a información disponible en ARCA pertinente a cumplimentar responsabilidades como entidad nominada."
+        }
+      },
+      {
+        "id": "conocimiento_permisos_embarque",
+        "type": "Operacion",
+        "label": "Conocimiento de permisos de embarque",
+        "properties": {
+          "description": "La entidad toma conocimiento de los permisos de embarque para los cuales ha sido designada por un exportador."
+        }
+      },
+      {
+        "id": "tramite_rectificacion",
+        "type": "Operacion",
+        "label": "Trámite de rectificación ante ARCA",
+        "properties": {
+          "description": "El exportador tramita rectificación de errores en forma de reporte de permiso de embarque directamente ante ARCA."
+        }
+      },
+      {
+        "id": "restriccion_rectificacion_directa",
+        "type": "Restriccion",
+        "label": "Rectificación directa ante ARCA",
+        "properties": {
+          "description": "Si el exportador considera errores en reporte de permiso de embarque en SECOEXPO, debe tramitar rectificación directamente ante ARCA."
+        }
+      },
+      {
+        "id": "restriccion_validacion_rectificacion",
+        "type": "Restriccion",
+        "label": "Validación de rectificación en SECOEXPO",
+        "properties": {
+          "description": "La entidad considera rectificada la información cuando se refleja en SECOEXPO o cuando dispone de documentación de ARCA que indique expresamente validez de datos del exportador."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "bcra",
+        "target": "sistema_secoexpo",
+        "predicate": "dispone"
+      },
+      {
+        "source": "sistema_secoexpo",
+        "target": "acceso_informacion_arca",
+        "predicate": "permite"
+      },
+      {
+        "source": "sistema_secoexpo",
+        "target": "conocimiento_permisos_embarque",
+        "predicate": "permite"
+      },
+      {
+        "source": "entidad_nominada",
+        "target": "acceso_informacion_arca",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_nominada",
+        "target": "conocimiento_permisos_embarque",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_rectificacion_directa",
+        "target": "tramite_rectificacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_validacion_rectificacion",
+        "target": "entidad_nominada",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "arca",
+        "target": "tramite_rectificacion",
+        "predicate": "recibe"
+      }
+    ]
+  }
+}

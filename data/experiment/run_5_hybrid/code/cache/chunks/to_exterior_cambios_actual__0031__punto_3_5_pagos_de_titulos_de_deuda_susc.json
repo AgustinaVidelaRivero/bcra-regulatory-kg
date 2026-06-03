@@ -1,0 +1,143 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0031__punto_3_5_pagos_de_titulos_de_deuda_susc",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.5 — Pagos de títulos de deuda suscriptos en el exterior y endeudamientos financieros (parte 2/2)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"pago_fletes_importacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Cómputo de fletes en operaciones de importación\",\n      \"properties\": {\n        \"description\": \"Se puede computar el valor de fletes que conste en documentación de transporte asociada al ingreso aduanero, cuando los fondos hayan sido destinados al pago directo al proveedor de servicios de fletes de importaciones.\"\n      }\n    },\n    {\n      \"id\": \"endeudamientos_financieros_punto_3_5\",\n      \"type\": \"Operacion\",\n      \"label\": \"Endeudamientos financieros comprendidos en punto 3.5\",\n      \"properties\": {\n        \"description\": \"Endeudamientos financieros encuadrados en punto 7.10.2.2.ii) que demuestren registro de ingreso aduanero de bienes por valor equivalente a la financiación recibida.\"\n      }\n    },\n    {\n      \"id\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Emisiones de títulos de deuda para refinanciación\",\n      \"properties\": {\n        \"description\": \"Emisiones de títulos de deuda con registro público realizadas entre 09/10/20 y 31/12/23 con vida promedio no inferior a 2 años, entregadas a acreedores de endeudamientos financieros y títulos de deuda con vencimientos entre 15/10/20 y 31/12/23.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_acceso_mercado_cambios_40_porciento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de acceso al mercado de cambios 40%\",\n      \"properties\": {\n        \"description\": \"El monto de capital por el cual se accedió al mercado de cambios hasta 31/12/23 no debe superar el 40% del monto del capital que vencía, salvo excepciones.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_acceso_cambios_liquidaciones_exteriores\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción: liquidaciones por deuda exterior\",\n      \"properties\": {\n        \"description\": \"Excepción al límite del 40% cuando el deudor registra liquidaciones en mercado de cambios a partir del 09/10/20 por emisiones de títulos de deuda en el exterior u otros endeudamientos financieros con el exterior.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_acceso_cambios_titulos_moneda_extranjera\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción: títulos en moneda extranjera pagaderos al exterior\",\n      \"properties\": {\n        \"description\": \"Excepción al límite del 40% cuando se registran liquidaciones por emisiones de títulos con registro público en el país denominadas en moneda extranjera y cuyos servicios sean pagaderos en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_certificacion_aumento_exportaciones\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Excepción: certificación de aumento de exportaciones\",\n      \"properties\": {\n        \"description\": \"Excepción al límite del 40% cuando se cuenta con certificación de aumento de exportaciones de bienes para los años 2021 a 2023.\"\n      }\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"moneda_extranjera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Moneda extranjera\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"comunicacion_a_7106\",\n      \"type\": \"Documento\",\n      \"label\": \"Comunicación A 7106\",\n      \"properties\": {\n        \"description\": \"Comunicación del BCRA que establece disposiciones sobre plan de refinanciación de deuda externa.\"\n      }\n    },\n    {\n      \"id\": \"comunicacion_a_7914\",\n      \"type\": \"Documento\",\n      \"label\": \"Comunicación A 7914\",\n      \"properties\": {\n        \"description\": \"Comunicación que recepta disposiciones sobre títulos de deuda y refinanciación.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"restriccion_acceso_mercado_cambios_40_porciento\",\n      \"target\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_acceso_cambios_liquidaciones_exteriores\",\n      \"target\": \"restriccion_acceso_mercado_cambios_40_porciento\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_acceso_cambios_titulos_moneda_extranjera\",\n      \"target\": \"restriccion_acceso_mercado_cambios_40_porciento\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"excepcion_certificacion_aumento_exportaciones\",\n      \"target\": \"restriccion_acceso_mercado_cambios_40_porciento\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"target\": \"mercado_cambios\",\n      \"predicate\": \"opera_en\"\n    },\n    {\n      \"source\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"target\": \"moneda_extranjera\",\n      \"predicate\": \"denomina_en\"\n    },\n    {\n      \"source\": \"comunicacion_a_7106\",\n      \"target\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"comunicacion_a_7914\",\n      \"target\": \"emisiones_titulos_deuda_refinanciacion\",\n      \"predicate\": \"recepta\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4165,
+  "output_tokens": 1663,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "pago_fletes_importacion",
+        "type": "Restriccion",
+        "label": "Cómputo de fletes en operaciones de importación",
+        "properties": {
+          "description": "Se puede computar el valor de fletes que conste en documentación de transporte asociada al ingreso aduanero, cuando los fondos hayan sido destinados al pago directo al proveedor de servicios de fletes de importaciones."
+        }
+      },
+      {
+        "id": "endeudamientos_financieros_punto_3_5",
+        "type": "Operacion",
+        "label": "Endeudamientos financieros comprendidos en punto 3.5",
+        "properties": {
+          "description": "Endeudamientos financieros encuadrados en punto 7.10.2.2.ii) que demuestren registro de ingreso aduanero de bienes por valor equivalente a la financiación recibida."
+        }
+      },
+      {
+        "id": "emisiones_titulos_deuda_refinanciacion",
+        "type": "Operacion",
+        "label": "Emisiones de títulos de deuda para refinanciación",
+        "properties": {
+          "description": "Emisiones de títulos de deuda con registro público realizadas entre 09/10/20 y 31/12/23 con vida promedio no inferior a 2 años, entregadas a acreedores de endeudamientos financieros y títulos de deuda con vencimientos entre 15/10/20 y 31/12/23."
+        }
+      },
+      {
+        "id": "restriccion_acceso_mercado_cambios_40_porciento",
+        "type": "Restriccion",
+        "label": "Límite de acceso al mercado de cambios 40%",
+        "properties": {
+          "description": "El monto de capital por el cual se accedió al mercado de cambios hasta 31/12/23 no debe superar el 40% del monto del capital que vencía, salvo excepciones."
+        }
+      },
+      {
+        "id": "excepcion_acceso_cambios_liquidaciones_exteriores",
+        "type": "Excepcion",
+        "label": "Excepción: liquidaciones por deuda exterior",
+        "properties": {
+          "description": "Excepción al límite del 40% cuando el deudor registra liquidaciones en mercado de cambios a partir del 09/10/20 por emisiones de títulos de deuda en el exterior u otros endeudamientos financieros con el exterior."
+        }
+      },
+      {
+        "id": "excepcion_acceso_cambios_titulos_moneda_extranjera",
+        "type": "Excepcion",
+        "label": "Excepción: títulos en moneda extranjera pagaderos al exterior",
+        "properties": {
+          "description": "Excepción al límite del 40% cuando se registran liquidaciones por emisiones de títulos con registro público en el país denominadas en moneda extranjera y cuyos servicios sean pagaderos en moneda extranjera."
+        }
+      },
+      {
+        "id": "excepcion_certificacion_aumento_exportaciones",
+        "type": "Excepcion",
+        "label": "Excepción: certificación de aumento de exportaciones",
+        "properties": {
+          "description": "Excepción al límite del 40% cuando se cuenta con certificación de aumento de exportaciones de bienes para los años 2021 a 2023."
+        }
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {}
+      },
+      {
+        "id": "moneda_extranjera",
+        "type": "Concepto",
+        "label": "Moneda extranjera",
+        "properties": {}
+      },
+      {
+        "id": "comunicacion_a_7106",
+        "type": "Documento",
+        "label": "Comunicación A 7106",
+        "properties": {
+          "description": "Comunicación del BCRA que establece disposiciones sobre plan de refinanciación de deuda externa."
+        }
+      },
+      {
+        "id": "comunicacion_a_7914",
+        "type": "Documento",
+        "label": "Comunicación A 7914",
+        "properties": {
+          "description": "Comunicación que recepta disposiciones sobre títulos de deuda y refinanciación."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "restriccion_acceso_mercado_cambios_40_porciento",
+        "target": "emisiones_titulos_deuda_refinanciacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_acceso_cambios_liquidaciones_exteriores",
+        "target": "restriccion_acceso_mercado_cambios_40_porciento",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_acceso_cambios_titulos_moneda_extranjera",
+        "target": "restriccion_acceso_mercado_cambios_40_porciento",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "excepcion_certificacion_aumento_exportaciones",
+        "target": "restriccion_acceso_mercado_cambios_40_porciento",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "emisiones_titulos_deuda_refinanciacion",
+        "target": "mercado_cambios",
+        "predicate": "opera_en"
+      },
+      {
+        "source": "emisiones_titulos_deuda_refinanciacion",
+        "target": "moneda_extranjera",
+        "predicate": "denomina_en"
+      },
+      {
+        "source": "comunicacion_a_7106",
+        "target": "emisiones_titulos_deuda_refinanciacion",
+        "predicate": "regula"
+      },
+      {
+        "source": "comunicacion_a_7914",
+        "target": "emisiones_titulos_deuda_refinanciacion",
+        "predicate": "recepta"
+      }
+    ]
+  }
+}

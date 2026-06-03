@@ -1,0 +1,176 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0074__punto_5_6_notificacion_al_cliente_de_acr",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.6 — Notificación al cliente de acreditación de fondos en cuentas de corresponsalía. + Punto 5.7 — Registro de las operaciones con clientes ante el BCRA.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"beneficiario\",\n      \"type\": \"Concepto\",\n      \"label\": \"Beneficiario\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"notificacion_recepcion_fondos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Notificación de recepción de fondos\",\n      \"properties\": {\n        \"description\": \"Las entidades deben informar al beneficiario la recepción de fondos en un plazo no mayor a un día hábil siguiente de la fecha de acreditación en la cuenta de corresponsalía.\"\n      }\n    },\n    {\n      \"id\": \"puesta_a_disposicion_fondos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Puesta a disposición de fondos\",\n      \"properties\": {\n        \"description\": \"Acreditación de fondos para concertación de cambio o acreditación en cuentas en moneda extranjera en entidad financiera local.\"\n      }\n    },\n    {\n      \"id\": \"registro_operaciones_mercado_cambios\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registro de operaciones en mercado de cambios\",\n      \"properties\": {\n        \"description\": \"La entidad debe registrar ante el BCRA toda operación que realice en el mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"registro_en_fecha_concertacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Registro en fecha de concertación\",\n      \"properties\": {\n        \"description\": \"El registro de operaciones debe realizarse en la fecha de su concertación en el mercado de cambios.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Identificación de cliente con documentos estándar\",\n      \"properties\": {\n        \"description\": \"Para el registro se utilizará CUIT, CUIL, CDI, CIE o DNI del cliente que realiza la operación.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_pasaporte_no_residente\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Identificación de no residente con pasaporte\",\n      \"properties\": {\n        \"description\": \"Se admite número de pasaporte u otro documento habilitante para no residentes o personal diplomático, consignando nombre y apellido completo y país emisor del instrumento.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_fondo_comun_inversion\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Identificación de fondo común de inversión\",\n      \"properties\": {\n        \"description\": \"Se admite código asignado por la Comisión Nacional de Valores cuando se trate de un fondo común de inversión.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_apoderado_entidad_financiera\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Identificación de entidad financiera como apoderada\",\n      \"properties\": {\n        \"description\": \"Se admite CUIT de la entidad financiera local cuando actúa como apoderada de no residente o en operaciones de renta, capital, rescates y ventas de títulos valores. Debe consignarse beneficiario final no residente.\"\n      }\n    },\n    {\n      \"id\": \"identificacion_apoderado_persona_residente\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Identificación de persona residente como apoderada\",\n      \"properties\": {\n        \"description\": \"Se admite CUIT o CUIL de persona humana residente que actúe como apoderada de no residente. Debe consignarse beneficiario final no residente.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {}\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"notificacion_recepcion_fondos\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"notificacion_recepcion_fondos\",\n      \"target\": \"beneficiario\",\n      \"predicate\": \"informa_a\"\n    },\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"puesta_a_disposicion_fondos\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera_generico\",\n      \"target\": \"registro_operaciones_mercado_cambios\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"registro_operaciones_mercado_cambios\",\n      \"target\": \"bcra\",\n      \"predicate\": \"informa_a\"\n    },\n    {\n      \"source\": \"registro_en_fecha_concertacion\",\n      \"target\": \"registro_operaciones_mercado_cambios\",\n      \"predicate\": \"especifica\"\n    },\n    {\n      \"source\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"target\": \"registro_operaciones_mercado_cambios\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"identificacion_pasaporte_no_residente\",\n      \"target\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"identificacion_fondo_comun_inversion\",\n      \"target\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"identificacion_apoderado_entidad_financiera\",\n      \"target\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"identificacion_apoderado_persona_residente\",\n      \"target\": \"identificacion_cliente_cuit_cuil_cdi_cie_dni\",\n      \"predicate\": \"excepciona_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4131,
+  "output_tokens": 1784,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 11,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {}
+      },
+      {
+        "id": "beneficiario",
+        "type": "Concepto",
+        "label": "Beneficiario",
+        "properties": {}
+      },
+      {
+        "id": "notificacion_recepcion_fondos",
+        "type": "Restriccion",
+        "label": "Notificación de recepción de fondos",
+        "properties": {
+          "description": "Las entidades deben informar al beneficiario la recepción de fondos en un plazo no mayor a un día hábil siguiente de la fecha de acreditación en la cuenta de corresponsalía."
+        }
+      },
+      {
+        "id": "puesta_a_disposicion_fondos",
+        "type": "Operacion",
+        "label": "Puesta a disposición de fondos",
+        "properties": {
+          "description": "Acreditación de fondos para concertación de cambio o acreditación en cuentas en moneda extranjera en entidad financiera local."
+        }
+      },
+      {
+        "id": "registro_operaciones_mercado_cambios",
+        "type": "Restriccion",
+        "label": "Registro de operaciones en mercado de cambios",
+        "properties": {
+          "description": "La entidad debe registrar ante el BCRA toda operación que realice en el mercado de cambios."
+        }
+      },
+      {
+        "id": "registro_en_fecha_concertacion",
+        "type": "Restriccion",
+        "label": "Registro en fecha de concertación",
+        "properties": {
+          "description": "El registro de operaciones debe realizarse en la fecha de su concertación en el mercado de cambios."
+        }
+      },
+      {
+        "id": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "type": "Restriccion",
+        "label": "Identificación de cliente con documentos estándar",
+        "properties": {
+          "description": "Para el registro se utilizará CUIT, CUIL, CDI, CIE o DNI del cliente que realiza la operación."
+        }
+      },
+      {
+        "id": "identificacion_pasaporte_no_residente",
+        "type": "Excepcion",
+        "label": "Identificación de no residente con pasaporte",
+        "properties": {
+          "description": "Se admite número de pasaporte u otro documento habilitante para no residentes o personal diplomático, consignando nombre y apellido completo y país emisor del instrumento."
+        }
+      },
+      {
+        "id": "identificacion_fondo_comun_inversion",
+        "type": "Excepcion",
+        "label": "Identificación de fondo común de inversión",
+        "properties": {
+          "description": "Se admite código asignado por la Comisión Nacional de Valores cuando se trate de un fondo común de inversión."
+        }
+      },
+      {
+        "id": "identificacion_apoderado_entidad_financiera",
+        "type": "Excepcion",
+        "label": "Identificación de entidad financiera como apoderada",
+        "properties": {
+          "description": "Se admite CUIT de la entidad financiera local cuando actúa como apoderada de no residente o en operaciones de renta, capital, rescates y ventas de títulos valores. Debe consignarse beneficiario final no residente."
+        }
+      },
+      {
+        "id": "identificacion_apoderado_persona_residente",
+        "type": "Excepcion",
+        "label": "Identificación de persona residente como apoderada",
+        "properties": {
+          "description": "Se admite CUIT o CUIL de persona humana residente que actúe como apoderada de no residente. Debe consignarse beneficiario final no residente."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {}
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_generico",
+        "target": "notificacion_recepcion_fondos",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "notificacion_recepcion_fondos",
+        "target": "beneficiario",
+        "predicate": "informa_a"
+      },
+      {
+        "source": "entidad_financiera_generico",
+        "target": "puesta_a_disposicion_fondos",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera_generico",
+        "target": "registro_operaciones_mercado_cambios",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "registro_operaciones_mercado_cambios",
+        "target": "bcra",
+        "predicate": "informa_a"
+      },
+      {
+        "source": "registro_en_fecha_concertacion",
+        "target": "registro_operaciones_mercado_cambios",
+        "predicate": "especifica"
+      },
+      {
+        "source": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "target": "registro_operaciones_mercado_cambios",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "identificacion_pasaporte_no_residente",
+        "target": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "identificacion_fondo_comun_inversion",
+        "target": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "identificacion_apoderado_entidad_financiera",
+        "target": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "identificacion_apoderado_persona_residente",
+        "target": "identificacion_cliente_cuit_cuil_cdi_cie_dni",
+        "predicate": "excepciona_a"
+      }
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0027__punto_3_18_por_el_equivalente_al_valor_q",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 3.18 — , por el equivalente al valor que se abona, o",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"certificacion_regimenes_acceso_divisas\",\n      \"type\": \"Documento\",\n      \"label\": \"Certificación regímenes acceso divisas\",\n      \"properties\": {\n        \"description\": \"Certificación por los regímenes de acceso a divisas para la producción incremental de petróleo y/o gas natural conforme Decreto 277/22\"\n      }\n    },\n    {\n      \"id\": \"cliente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cliente\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"pago_simultaneo_liquidacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Pago simultáneo con liquidación\",\n      \"properties\": {\n        \"description\": \"El pago debe concretarse de manera simultánea con la liquidación por un importe no menor al monto de intereses por el cual se accede al mercado de cambios\"\n      }\n    },\n    {\n      \"id\": \"endeudamientos_financieros_nuevos\",\n      \"type\": \"Operacion\",\n      \"label\": \"Nuevos endeudamientos financieros\",\n      \"properties\": {\n        \"description\": \"Endeudamientos financieros con vida promedio no inferior a 2 años y mínimo 1 año de gracia para pago de capital desde la fecha de acceso\"\n      }\n    },\n    {\n      \"id\": \"aportes_inversion_directa_no_residentes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Aportes inversión directa no residentes\",\n      \"properties\": {\n        \"description\": \"Nuevos aportes de inversión directa provenientes de no residentes\"\n      }\n    },\n    {\n      \"id\": \"restriccion_no_computo_otros_mecanismos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"No computable a otros mecanismos\",\n      \"properties\": {\n        \"description\": \"Los endeudamientos financieros y/o aportes de inversión extranjera directa no podrán ser computados a efectos de otros mecanismos considerados en la normativa cambiaria\"\n      }\n    },\n    {\n      \"id\": \"empresa_grupo_economico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Empresa residente grupo económico\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"obligacion_verificacion_requisitos\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Verificación requisitos normativos\",\n      \"properties\": {\n        \"description\": \"La entidad debe verificar el cumplimiento de la totalidad de los restantes requisitos normativos aplicables a la operación previamente a realizar el pedido al BCRA\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad financiera\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"intereses_compensatorios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Intereses compensatorios\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"bopreal\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Bonos para la Reconstrucción de una Argentina Libre\",\n      \"properties\": {\n        \"description\": \"BOPREAL: instrumento de deuda que clientes pueden suscribir hasta el monto de intereses compensatorios sujetos a conformidad previa\"\n      }\n    },\n    {\n      \"id\": \"restriccion_suscripcion_bopreal\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suscripción BOPREAL con conformidad previa\",\n      \"properties\": {\n        \"description\": \"Clientes pueden suscribir BOPREAL hasta el monto de intereses compensatorios conforme cumplan requisitos del punto 4.7\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"cliente\",\n      \"target\": \"certificacion_regimenes_acceso_divisas\",\n      \"predicate\": \"debe_contar_con\"\n    },\n    {\n      \"source\": \"pago_simultaneo_liquidacion\",\n      \"target\": \"endeudamientos_financieros_nuevos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"pago_simultaneo_liquidacion\",\n      \"target\": \"aportes_inversion_directa_no_residentes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_no_computo_otros_mecanismos\",\n      \"target\": \"endeudamientos_financieros_nuevos\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_no_computo_otros_mecanismos\",\n      \"target\": \"aportes_inversion_directa_no_residentes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"endeudamientos_financieros_nuevos\",\n      \"target\": \"empresa_grupo_economico\",\n      \"predicate\": \"puede_ser_ingresado_por\"\n    },\n    {\n      \"source\": \"aportes_inversion_directa_no_residentes\",\n      \"target\": \"empresa_grupo_economico\",\n      \"predicate\": \"puede_ser_ingresado_por\"\n    },\n    {\n      \"source\": \"obligacion_verificacion_requisitos\",\n      \"target\": \"entidad_financiera\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"bcra\",\n      \"predicate\": \"realiza_pedido_a\"\n    },\n    {\n      \"source\": \"restriccion_suscripcion_bopreal\",\n      \"target\": \"cliente\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_suscripcion_bopreal\",\n      \"target\": \"bopreal\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"bopreal\",\n      \"target\": \"intereses_compensatorios\",\n      \"predicate\": \"limitado_al_monto_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3936,
+  "output_tokens": 1694,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 13,
+  "relations_count": 12,
+  "parsed": {
+    "entities": [
+      {
+        "id": "certificacion_regimenes_acceso_divisas",
+        "type": "Documento",
+        "label": "Certificación regímenes acceso divisas",
+        "properties": {
+          "description": "Certificación por los regímenes de acceso a divisas para la producción incremental de petróleo y/o gas natural conforme Decreto 277/22"
+        }
+      },
+      {
+        "id": "cliente",
+        "type": "Concepto",
+        "label": "Cliente",
+        "properties": {}
+      },
+      {
+        "id": "pago_simultaneo_liquidacion",
+        "type": "Restriccion",
+        "label": "Pago simultáneo con liquidación",
+        "properties": {
+          "description": "El pago debe concretarse de manera simultánea con la liquidación por un importe no menor al monto de intereses por el cual se accede al mercado de cambios"
+        }
+      },
+      {
+        "id": "endeudamientos_financieros_nuevos",
+        "type": "Operacion",
+        "label": "Nuevos endeudamientos financieros",
+        "properties": {
+          "description": "Endeudamientos financieros con vida promedio no inferior a 2 años y mínimo 1 año de gracia para pago de capital desde la fecha de acceso"
+        }
+      },
+      {
+        "id": "aportes_inversion_directa_no_residentes",
+        "type": "Operacion",
+        "label": "Aportes inversión directa no residentes",
+        "properties": {
+          "description": "Nuevos aportes de inversión directa provenientes de no residentes"
+        }
+      },
+      {
+        "id": "restriccion_no_computo_otros_mecanismos",
+        "type": "Restriccion",
+        "label": "No computable a otros mecanismos",
+        "properties": {
+          "description": "Los endeudamientos financieros y/o aportes de inversión extranjera directa no podrán ser computados a efectos de otros mecanismos considerados en la normativa cambiaria"
+        }
+      },
+      {
+        "id": "empresa_grupo_economico",
+        "type": "Concepto",
+        "label": "Empresa residente grupo económico",
+        "properties": {}
+      },
+      {
+        "id": "obligacion_verificacion_requisitos",
+        "type": "Restriccion",
+        "label": "Verificación requisitos normativos",
+        "properties": {
+          "description": "La entidad debe verificar el cumplimiento de la totalidad de los restantes requisitos normativos aplicables a la operación previamente a realizar el pedido al BCRA"
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidad financiera",
+        "properties": {}
+      },
+      {
+        "id": "intereses_compensatorios",
+        "type": "Concepto",
+        "label": "Intereses compensatorios",
+        "properties": {}
+      },
+      {
+        "id": "bopreal",
+        "type": "InstrumentoFinanciero",
+        "label": "Bonos para la Reconstrucción de una Argentina Libre",
+        "properties": {
+          "description": "BOPREAL: instrumento de deuda que clientes pueden suscribir hasta el monto de intereses compensatorios sujetos a conformidad previa"
+        }
+      },
+      {
+        "id": "restriccion_suscripcion_bopreal",
+        "type": "Restriccion",
+        "label": "Suscripción BOPREAL con conformidad previa",
+        "properties": {
+          "description": "Clientes pueden suscribir BOPREAL hasta el monto de intereses compensatorios conforme cumplan requisitos del punto 4.7"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "cliente",
+        "target": "certificacion_regimenes_acceso_divisas",
+        "predicate": "debe_contar_con"
+      },
+      {
+        "source": "pago_simultaneo_liquidacion",
+        "target": "endeudamientos_financieros_nuevos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "pago_simultaneo_liquidacion",
+        "target": "aportes_inversion_directa_no_residentes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_no_computo_otros_mecanismos",
+        "target": "endeudamientos_financieros_nuevos",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_no_computo_otros_mecanismos",
+        "target": "aportes_inversion_directa_no_residentes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "endeudamientos_financieros_nuevos",
+        "target": "empresa_grupo_economico",
+        "predicate": "puede_ser_ingresado_por"
+      },
+      {
+        "source": "aportes_inversion_directa_no_residentes",
+        "target": "empresa_grupo_economico",
+        "predicate": "puede_ser_ingresado_por"
+      },
+      {
+        "source": "obligacion_verificacion_requisitos",
+        "target": "entidad_financiera",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "bcra",
+        "predicate": "realiza_pedido_a"
+      },
+      {
+        "source": "restriccion_suscripcion_bopreal",
+        "target": "cliente",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_suscripcion_bopreal",
+        "target": "bopreal",
+        "predicate": "regula"
+      },
+      {
+        "source": "bopreal",
+        "target": "intereses_compensatorios",
+        "predicate": "limitado_al_monto_de"
+      }
+    ]
+  }
+}

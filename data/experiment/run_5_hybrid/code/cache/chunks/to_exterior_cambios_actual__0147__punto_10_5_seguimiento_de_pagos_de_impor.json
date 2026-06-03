@@ -1,0 +1,189 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0147__punto_10_5_seguimiento_de_pagos_de_impor",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 10.5 — Seguimiento de pagos de importaciones con registro de ingreso aduanero pendiente (parte 3/3)",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"importador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Importador\",\n      \"properties\": {\n        \"description\": \"Sujeto que realiza operaciones de importación de bienes y es responsable de regularizar pagos con registro aduanero pendiente.\"\n      }\n    },\n    {\n      \"id\": \"proveedor_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Proveedor del exterior\",\n      \"properties\": {\n        \"description\": \"Sujeto externo responsable de la producción y embarque de bienes importados.\"\n      }\n    },\n    {\n      \"id\": \"causal_ajena_voluntad_importador\",\n      \"type\": \"Concepto\",\n      \"label\": \"Causal ajena a la voluntad del importador\",\n      \"properties\": {\n        \"description\": \"Demoras en producción, embarque, transporte, obtención de certificaciones, o actuaciones administrativas aduaneras que impiden la oficialización de la importación.\"\n      }\n    },\n    {\n      \"id\": \"demora_cuestiones_financieras\",\n      \"type\": \"Concepto\",\n      \"label\": \"Demora por cuestiones financieras o mercado\",\n      \"properties\": {\n        \"description\": \"Demora en efectuar la oficialización motivada en decisiones del importador por cuestiones financieras o de mercado.\"\n      }\n    },\n    {\n      \"id\": \"entidad_seguimiento\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidad a cargo del seguimiento\",\n      \"properties\": {\n        \"description\": \"Entidad financiera responsable del seguimiento de pagos con registro de ingreso aduanero pendiente.\"\n      }\n    },\n    {\n      \"id\": \"ampliacion_plazo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Ampliación del plazo de pago\",\n      \"properties\": {\n        \"description\": \"Extensión del plazo para regularizar pagos con registro aduanero pendiente cuando existen causales de demora ajenas al importador.\"\n      }\n    },\n    {\n      \"id\": \"documentacion_respaldo_causal\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Documentación de respaldo de causal de demora\",\n      \"properties\": {\n        \"description\": \"La documentación que avale la causal de la demora debe quedar archivada en la entidad a disposición del BCRA.\"\n      }\n    },\n    {\n      \"id\": \"denuncia_incumplimiento_regularizacion\",\n      \"type\": \"Operacion\",\n      \"label\": \"Denuncia por incumplimiento de regularización\",\n      \"properties\": {\n        \"description\": \"Reporte en SEPAIMPO de operaciones de importadores que no hubieran regularizado su situación dentro de los plazos establecidos.\"\n      }\n    },\n    {\n      \"id\": \"plazo_denuncia_incumplimiento\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo para denuncia de incumplimiento\",\n      \"properties\": {\n        \"description\": \"La entidad a cargo del seguimiento debe informar en SEPAIMPO dentro de 5 días hábiles siguientes a la fecha de vencimiento de los plazos establecidos.\"\n      }\n    },\n    {\n      \"id\": \"determinacion_montos_pendientes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Determinación de montos pendientes en monedas distintas\",\n      \"properties\": {\n        \"description\": \"Cálculo de montos pendientes en casos de facturaciones en monedas distintas a las monedas de transferencia.\"\n      }\n    },\n    {\n      \"id\": \"consideracion_tipos_pase\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Consideración de tipos de pase para transferencias\",\n      \"properties\": {\n        \"description\": \"La entidad debe considerar los tipos de pase correspondientes a la fecha de transferencia al beneficiario de los fondos.\"\n      }\n    },\n    {\n      \"id\": \"bcra\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Banco Central de la República Argentina\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"sepaimpo\",\n      \"type\": \"Concepto\",\n      \"label\": \"SEPAIMPO\",\n      \"properties\": {\n        \"description\": \"Sistema de información para reportar operaciones de importadores incumplidos.\"\n      }\n    },\n    {\n      \"id\": \"pago_registro_aduanero_pendiente\",\n      \"type\": \"Operacion\",\n      \"label\": \"Pago de importación con registro aduanero pendiente\",\n      \"properties\": {\n        \"description\": \"Operación de pago de importaciones que requiere regularización antes de vencer el plazo establecido.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"documentacion_respaldo_causal\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"documentacion_respaldo_causal\",\n      \"target\": \"ampliacion_plazo\",\n      \"predicate\": \"respalda\"\n    },\n    {\n      \"source\": \"plazo_denuncia_incumplimiento\",\n      \"target\": \"denuncia_incumplimiento_regularizacion\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"plazo_denuncia_incumplimiento\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"denuncia_incumplimiento_regularizacion\",\n      \"target\": \"sepaimpo\",\n      \"predicate\": \"informa_a\"\n    },\n    {\n      \"source\": \"consideracion_tipos_pase\",\n      \"target\": \"determinacion_montos_pendientes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"consideracion_tipos_pase\",\n      \"target\": \"entidad_seguimiento\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"entidad_seguimiento\",\n      \"target\": \"pago_registro_aduanero_pendiente\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"ampliacion_plazo\",\n      \"target\": \"causal_ajena_voluntad_importador\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"demora_cuestiones_financieras\",\n      \"target\": \"ampliacion_plazo\",\n      \"predicate\": \"excluye_de\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"ampliacion_plazo\",\n      \"predicate\": \"autoriza\"\n    },\n    {\n      \"source\": \"bcra\",\n      \"target\": \"documentacion_respaldo_causal\",\n      \"predicate\": \"supervisa\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4015,
+  "output_tokens": 1828,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 14,
+  "relations_count": 12,
+  "parsed": {
+    "entities": [
+      {
+        "id": "importador",
+        "type": "Concepto",
+        "label": "Importador",
+        "properties": {
+          "description": "Sujeto que realiza operaciones de importación de bienes y es responsable de regularizar pagos con registro aduanero pendiente."
+        }
+      },
+      {
+        "id": "proveedor_exterior",
+        "type": "Concepto",
+        "label": "Proveedor del exterior",
+        "properties": {
+          "description": "Sujeto externo responsable de la producción y embarque de bienes importados."
+        }
+      },
+      {
+        "id": "causal_ajena_voluntad_importador",
+        "type": "Concepto",
+        "label": "Causal ajena a la voluntad del importador",
+        "properties": {
+          "description": "Demoras en producción, embarque, transporte, obtención de certificaciones, o actuaciones administrativas aduaneras que impiden la oficialización de la importación."
+        }
+      },
+      {
+        "id": "demora_cuestiones_financieras",
+        "type": "Concepto",
+        "label": "Demora por cuestiones financieras o mercado",
+        "properties": {
+          "description": "Demora en efectuar la oficialización motivada en decisiones del importador por cuestiones financieras o de mercado."
+        }
+      },
+      {
+        "id": "entidad_seguimiento",
+        "type": "Concepto",
+        "label": "Entidad a cargo del seguimiento",
+        "properties": {
+          "description": "Entidad financiera responsable del seguimiento de pagos con registro de ingreso aduanero pendiente."
+        }
+      },
+      {
+        "id": "ampliacion_plazo",
+        "type": "Operacion",
+        "label": "Ampliación del plazo de pago",
+        "properties": {
+          "description": "Extensión del plazo para regularizar pagos con registro aduanero pendiente cuando existen causales de demora ajenas al importador."
+        }
+      },
+      {
+        "id": "documentacion_respaldo_causal",
+        "type": "Restriccion",
+        "label": "Documentación de respaldo de causal de demora",
+        "properties": {
+          "description": "La documentación que avale la causal de la demora debe quedar archivada en la entidad a disposición del BCRA."
+        }
+      },
+      {
+        "id": "denuncia_incumplimiento_regularizacion",
+        "type": "Operacion",
+        "label": "Denuncia por incumplimiento de regularización",
+        "properties": {
+          "description": "Reporte en SEPAIMPO de operaciones de importadores que no hubieran regularizado su situación dentro de los plazos establecidos."
+        }
+      },
+      {
+        "id": "plazo_denuncia_incumplimiento",
+        "type": "Restriccion",
+        "label": "Plazo para denuncia de incumplimiento",
+        "properties": {
+          "description": "La entidad a cargo del seguimiento debe informar en SEPAIMPO dentro de 5 días hábiles siguientes a la fecha de vencimiento de los plazos establecidos."
+        }
+      },
+      {
+        "id": "determinacion_montos_pendientes",
+        "type": "Operacion",
+        "label": "Determinación de montos pendientes en monedas distintas",
+        "properties": {
+          "description": "Cálculo de montos pendientes en casos de facturaciones en monedas distintas a las monedas de transferencia."
+        }
+      },
+      {
+        "id": "consideracion_tipos_pase",
+        "type": "Restriccion",
+        "label": "Consideración de tipos de pase para transferencias",
+        "properties": {
+          "description": "La entidad debe considerar los tipos de pase correspondientes a la fecha de transferencia al beneficiario de los fondos."
+        }
+      },
+      {
+        "id": "bcra",
+        "type": "Autoridad",
+        "label": "Banco Central de la República Argentina",
+        "properties": {}
+      },
+      {
+        "id": "sepaimpo",
+        "type": "Concepto",
+        "label": "SEPAIMPO",
+        "properties": {
+          "description": "Sistema de información para reportar operaciones de importadores incumplidos."
+        }
+      },
+      {
+        "id": "pago_registro_aduanero_pendiente",
+        "type": "Operacion",
+        "label": "Pago de importación con registro aduanero pendiente",
+        "properties": {
+          "description": "Operación de pago de importaciones que requiere regularización antes de vencer el plazo establecido."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "documentacion_respaldo_causal",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "documentacion_respaldo_causal",
+        "target": "ampliacion_plazo",
+        "predicate": "respalda"
+      },
+      {
+        "source": "plazo_denuncia_incumplimiento",
+        "target": "denuncia_incumplimiento_regularizacion",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "plazo_denuncia_incumplimiento",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "denuncia_incumplimiento_regularizacion",
+        "target": "sepaimpo",
+        "predicate": "informa_a"
+      },
+      {
+        "source": "consideracion_tipos_pase",
+        "target": "determinacion_montos_pendientes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "consideracion_tipos_pase",
+        "target": "entidad_seguimiento",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "entidad_seguimiento",
+        "target": "pago_registro_aduanero_pendiente",
+        "predicate": "realiza"
+      },
+      {
+        "source": "ampliacion_plazo",
+        "target": "causal_ajena_voluntad_importador",
+        "predicate": "requiere"
+      },
+      {
+        "source": "demora_cuestiones_financieras",
+        "target": "ampliacion_plazo",
+        "predicate": "excluye_de"
+      },
+      {
+        "source": "bcra",
+        "target": "ampliacion_plazo",
+        "predicate": "autoriza"
+      },
+      {
+        "source": "bcra",
+        "target": "documentacion_respaldo_causal",
+        "predicate": "supervisa"
+      }
+    ]
+  }
+}

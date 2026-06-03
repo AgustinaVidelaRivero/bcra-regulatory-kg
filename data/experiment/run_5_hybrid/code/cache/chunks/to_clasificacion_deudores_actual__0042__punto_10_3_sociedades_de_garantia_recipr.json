@@ -1,0 +1,121 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0042__punto_10_3_sociedades_de_garantia_recipr",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 10.3 — Sociedades de garantía recíproca y fondos de garantía de carácter público.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"sgr\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Sociedades de garantía recíproca\",\n      \"properties\": {\n        \"categoria\": \"sgr\"\n      }\n    },\n    {\n      \"id\": \"fondos_garantia_publicos\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Fondos de garantía de carácter público\",\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"clasificacion_mipymes\",\n      \"type\": \"Operacion\",\n      \"label\": \"Clasificación de MiPyMEs\",\n      \"properties\": {\n        \"description\": \"Clasificar a las MiPyMEs cuyas deudas hayan sido canceladas en cumplimiento de las garantías que respaldan las obligaciones.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_clasificacion_mora\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Clasificación según criterios de mora\",\n      \"properties\": {\n        \"description\": \"La clasificación se realizará en función de la mora, según los criterios aplicables para la cartera de consumo o vivienda y por aplicación de disposiciones previstas en punto 7.3.\"\n      }\n    },\n    {\n      \"id\": \"reclasificacion_obligatoria\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Reclasificación obligatoria\",\n      \"properties\": {\n        \"description\": \"Obligación de reclasificar conforme a los criterios de mora y disposiciones del punto 7.3.\"\n      }\n    },\n    {\n      \"id\": \"mipymes\",\n      \"type\": \"Concepto\",\n      \"label\": \"MiPyMEs\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"cartera_consumo_vivienda\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera de consumo o vivienda\",\n      \"properties\": {}\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"sgr\",\n      \"target\": \"clasificacion_mipymes\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"fondos_garantia_publicos\",\n      \"target\": \"clasificacion_mipymes\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_mora\",\n      \"target\": \"clasificacion_mipymes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_mora\",\n      \"target\": \"sgr\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_mora\",\n      \"target\": \"fondos_garantia_publicos\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reclasificacion_obligatoria\",\n      \"target\": \"clasificacion_mipymes\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"reclasificacion_obligatoria\",\n      \"target\": \"sgr\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"reclasificacion_obligatoria\",\n      \"target\": \"fondos_garantia_publicos\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"clasificacion_mipymes\",\n      \"target\": \"mipymes\",\n      \"predicate\": \"refiere_a\"\n    },\n    {\n      \"source\": \"restriccion_clasificacion_mora\",\n      \"target\": \"cartera_consumo_vivienda\",\n      \"predicate\": \"utiliza_criterios_de\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3545,
+  "output_tokens": 1000,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 7,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "sgr",
+        "type": "EntidadFinanciera",
+        "label": "Sociedades de garantía recíproca",
+        "properties": {
+          "categoria": "sgr"
+        }
+      },
+      {
+        "id": "fondos_garantia_publicos",
+        "type": "EntidadFinanciera",
+        "label": "Fondos de garantía de carácter público",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "clasificacion_mipymes",
+        "type": "Operacion",
+        "label": "Clasificación de MiPyMEs",
+        "properties": {
+          "description": "Clasificar a las MiPyMEs cuyas deudas hayan sido canceladas en cumplimiento de las garantías que respaldan las obligaciones."
+        }
+      },
+      {
+        "id": "restriccion_clasificacion_mora",
+        "type": "Restriccion",
+        "label": "Clasificación según criterios de mora",
+        "properties": {
+          "description": "La clasificación se realizará en función de la mora, según los criterios aplicables para la cartera de consumo o vivienda y por aplicación de disposiciones previstas en punto 7.3."
+        }
+      },
+      {
+        "id": "reclasificacion_obligatoria",
+        "type": "Restriccion",
+        "label": "Reclasificación obligatoria",
+        "properties": {
+          "description": "Obligación de reclasificar conforme a los criterios de mora y disposiciones del punto 7.3."
+        }
+      },
+      {
+        "id": "mipymes",
+        "type": "Concepto",
+        "label": "MiPyMEs",
+        "properties": {}
+      },
+      {
+        "id": "cartera_consumo_vivienda",
+        "type": "Concepto",
+        "label": "Cartera de consumo o vivienda",
+        "properties": {}
+      }
+    ],
+    "relations": [
+      {
+        "source": "sgr",
+        "target": "clasificacion_mipymes",
+        "predicate": "realiza"
+      },
+      {
+        "source": "fondos_garantia_publicos",
+        "target": "clasificacion_mipymes",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_clasificacion_mora",
+        "target": "clasificacion_mipymes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_clasificacion_mora",
+        "target": "sgr",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_clasificacion_mora",
+        "target": "fondos_garantia_publicos",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reclasificacion_obligatoria",
+        "target": "clasificacion_mipymes",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "reclasificacion_obligatoria",
+        "target": "sgr",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "reclasificacion_obligatoria",
+        "target": "fondos_garantia_publicos",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "clasificacion_mipymes",
+        "target": "mipymes",
+        "predicate": "refiere_a"
+      },
+      {
+        "source": "restriccion_clasificacion_mora",
+        "target": "cartera_consumo_vivienda",
+        "predicate": "utiliza_criterios_de"
+      }
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0095__punto_6_punto_1",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6 + Punto 1",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"deficiencia_persistente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Deficiencia persistente\",\n      \"properties\": {\n        \"description\": \"Situación en la que un defecto de integración de capitales mínimos se mantiene por un período superior a 10 días hábiles.\"\n      }\n    },\n    {\n      \"id\": \"plan_regularizacion_saneamiento\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación de plan de regularización\",\n      \"properties\": {\n        \"description\": \"Plan que las entidades deben presentar cuando persiste el defecto de integración por más de 10 días hábiles.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_plazo_10_dias\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de 10 días hábiles\",\n      \"properties\": {\n        \"description\": \"Término máximo dentro del cual las entidades deben presentar plan de regularización ante deficiencia persistente.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_plazo_5_dias_plan\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de 5 días hábiles\",\n      \"properties\": {\n        \"description\": \"Plazo siguiente a los 10 días hábiles de defecto para presentar plan de regularización y saneamiento.\"\n      }\n    },\n    {\n      \"id\": \"sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"Órgano que determina deficiencias y se expide sobre descargos de entidades.\"\n      }\n    },\n    {\n      \"id\": \"defecto_integracion\",\n      \"type\": \"Concepto\",\n      \"label\": \"Defecto de integración\",\n      \"properties\": {\n        \"description\": \"Incumplimiento en la integración de capitales mínimos requeridos.\"\n      }\n    },\n    {\n      \"id\": \"presentacion_descargo\",\n      \"type\": \"Operacion\",\n      \"label\": \"Presentación de descargo\",\n      \"properties\": {\n        \"description\": \"Acción que realiza la entidad para responder a deficiencias determinadas por la SEFyC.\"\n      }\n    },\n    {\n      \"id\": \"regularizacion_incumplimiento\",\n      \"type\": \"Operacion\",\n      \"label\": \"Regularización del incumplimiento\",\n      \"properties\": {\n        \"description\": \"Acción de subsanar el defecto de integración de capitales mínimos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_termino_descargo\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Término para presentar descargo\",\n      \"properties\": {\n        \"description\": \"Plazo de 5 días hábiles para que la entidad presente descargo ante deficiencias determinadas por la SEFyC.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_termino_sefyc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Término para pronunciamiento de SEFyC\",\n      \"properties\": {\n        \"description\": \"Plazo de 10 días hábiles para que la SEFyC se expida respecto del descargo presentado.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_10_dias_regularizacion\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Plazo de 10 días para regularización\",\n      \"properties\": {\n        \"description\": \"Término de 10 días hábiles contado desde la fecha en que queda firme el defecto de integración para regularizar el incumplimiento.\"\n      }\n    },\n    {\n      \"id\": \"entidad_financiera\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades\",\n      \"properties\": {\n        \"description\": \"Sujetos regulados que deben cumplir los requisitos de capitales mínimos.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"deficiencia_persistente\",\n      \"target\": \"plan_regularizacion_saneamiento\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"restriccion_plazo_5_dias_plan\",\n      \"target\": \"plan_regularizacion_saneamiento\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_plazo_10_dias\",\n      \"target\": \"deficiencia_persistente\",\n      \"predicate\": \"define\"\n    },\n    {\n      \"source\": \"sefyc\",\n      \"target\": \"deficiencia_persistente\",\n      \"predicate\": \"determina\"\n    },\n    {\n      \"source\": \"restriccion_termino_descargo\",\n      \"target\": \"presentacion_descargo\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_termino_sefyc\",\n      \"target\": \"sefyc\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"restriccion_10_dias_regularizacion\",\n      \"target\": \"regularizacion_incumplimiento\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"plan_regularizacion_saneamiento\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"presentacion_descargo\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"entidad_financiera\",\n      \"target\": \"regularizacion_incumplimiento\",\n      \"predicate\": \"realiza\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3686,
+  "output_tokens": 1534,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 12,
+  "relations_count": 10,
+  "parsed": {
+    "entities": [
+      {
+        "id": "deficiencia_persistente",
+        "type": "Concepto",
+        "label": "Deficiencia persistente",
+        "properties": {
+          "description": "Situación en la que un defecto de integración de capitales mínimos se mantiene por un período superior a 10 días hábiles."
+        }
+      },
+      {
+        "id": "plan_regularizacion_saneamiento",
+        "type": "Operacion",
+        "label": "Presentación de plan de regularización",
+        "properties": {
+          "description": "Plan que las entidades deben presentar cuando persiste el defecto de integración por más de 10 días hábiles."
+        }
+      },
+      {
+        "id": "restriccion_plazo_10_dias",
+        "type": "Restriccion",
+        "label": "Plazo de 10 días hábiles",
+        "properties": {
+          "description": "Término máximo dentro del cual las entidades deben presentar plan de regularización ante deficiencia persistente."
+        }
+      },
+      {
+        "id": "restriccion_plazo_5_dias_plan",
+        "type": "Restriccion",
+        "label": "Plazo de 5 días hábiles",
+        "properties": {
+          "description": "Plazo siguiente a los 10 días hábiles de defecto para presentar plan de regularización y saneamiento."
+        }
+      },
+      {
+        "id": "sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "Órgano que determina deficiencias y se expide sobre descargos de entidades."
+        }
+      },
+      {
+        "id": "defecto_integracion",
+        "type": "Concepto",
+        "label": "Defecto de integración",
+        "properties": {
+          "description": "Incumplimiento en la integración de capitales mínimos requeridos."
+        }
+      },
+      {
+        "id": "presentacion_descargo",
+        "type": "Operacion",
+        "label": "Presentación de descargo",
+        "properties": {
+          "description": "Acción que realiza la entidad para responder a deficiencias determinadas por la SEFyC."
+        }
+      },
+      {
+        "id": "regularizacion_incumplimiento",
+        "type": "Operacion",
+        "label": "Regularización del incumplimiento",
+        "properties": {
+          "description": "Acción de subsanar el defecto de integración de capitales mínimos."
+        }
+      },
+      {
+        "id": "restriccion_termino_descargo",
+        "type": "Restriccion",
+        "label": "Término para presentar descargo",
+        "properties": {
+          "description": "Plazo de 5 días hábiles para que la entidad presente descargo ante deficiencias determinadas por la SEFyC."
+        }
+      },
+      {
+        "id": "restriccion_termino_sefyc",
+        "type": "Restriccion",
+        "label": "Término para pronunciamiento de SEFyC",
+        "properties": {
+          "description": "Plazo de 10 días hábiles para que la SEFyC se expida respecto del descargo presentado."
+        }
+      },
+      {
+        "id": "restriccion_10_dias_regularizacion",
+        "type": "Restriccion",
+        "label": "Plazo de 10 días para regularización",
+        "properties": {
+          "description": "Término de 10 días hábiles contado desde la fecha en que queda firme el defecto de integración para regularizar el incumplimiento."
+        }
+      },
+      {
+        "id": "entidad_financiera",
+        "type": "Concepto",
+        "label": "Entidades",
+        "properties": {
+          "description": "Sujetos regulados que deben cumplir los requisitos de capitales mínimos."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "deficiencia_persistente",
+        "target": "plan_regularizacion_saneamiento",
+        "predicate": "requiere"
+      },
+      {
+        "source": "restriccion_plazo_5_dias_plan",
+        "target": "plan_regularizacion_saneamiento",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_plazo_10_dias",
+        "target": "deficiencia_persistente",
+        "predicate": "define"
+      },
+      {
+        "source": "sefyc",
+        "target": "deficiencia_persistente",
+        "predicate": "determina"
+      },
+      {
+        "source": "restriccion_termino_descargo",
+        "target": "presentacion_descargo",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_termino_sefyc",
+        "target": "sefyc",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "restriccion_10_dias_regularizacion",
+        "target": "regularizacion_incumplimiento",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "plan_regularizacion_saneamiento",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "presentacion_descargo",
+        "predicate": "realiza"
+      },
+      {
+        "source": "entidad_financiera",
+        "target": "regularizacion_incumplimiento",
+        "predicate": "realiza"
+      }
+    ]
+  }
+}

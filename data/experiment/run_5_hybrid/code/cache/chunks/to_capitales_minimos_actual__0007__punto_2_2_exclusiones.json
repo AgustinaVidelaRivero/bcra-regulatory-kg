@@ -1,0 +1,147 @@
+{
+  "chunk_id": "to_capitales_minimos_actual__0007__punto_2_2_exclusiones",
+  "source_doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 2.2 — Exclusiones.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"garantias_otorgadas_bcra\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Garantías otorgadas a favor del BCRA\",\n      \"properties\": {\n        \"description\": \"Exclusión del cálculo de la RPC para garantías otorgadas a favor del BCRA y por obligaciones directas.\"\n      }\n    },\n    {\n      \"id\": \"conceptos_deducibles_rpc\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Conceptos que deben deducirse para cálculo de RPC\",\n      \"properties\": {\n        \"description\": \"Norma que especifica qué conceptos deben deducirse en el cálculo de la Relación Patrimonial Computable.\"\n      }\n    },\n    {\n      \"id\": \"financiaciones_avales_sucursales_subsidiarias\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusión de financiaciones y avales de sucursales y subsidiarias\",\n      \"properties\": {\n        \"description\": \"Financiaciones, avales, fianzas y otras responsabilidades otorgadas por sucursales y subsidiarias locales por cuenta de casa matriz o sucursales en otros países, sujeto a requisitos específicos.\"\n      }\n    },\n    {\n      \"id\": \"sucursales_subsidiarias_locales\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Sucursales y subsidiarias locales\",\n      \"properties\": {\n        \"description\": \"Sucursales y subsidiarias locales de entidades financieras del exterior.\"\n      },\n      \"properties\": {\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"entidades_financieras_exterior\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras del exterior\",\n      \"properties\": {\n        \"description\": \"Casa matriz o entidad controlante ubicada en jurisdicción extranjera.\"\n      }\n    },\n    {\n      \"id\": \"supervision_consolidada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Supervisión sobre base consolidada\",\n      \"properties\": {\n        \"description\": \"Requisito que las normas del país donde esté situada la casa matriz o entidad controlante deben abarcar supervisión consolidada de sucursales y subsidiarias locales.\"\n      }\n    },\n    {\n      \"id\": \"evaluaciones_crediticias_ig\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Calificación internacional investment grade\",\n      \"properties\": {\n        \"description\": \"Exigencia de calificación internacional de riesgo comprendida en categoría investment grade conforme punto 3.1 TO Evaluaciones Crediticias.\"\n      }\n    },\n    {\n      \"id\": \"financiaciones_fondos_asignados\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Financiaciones atendidas con fondos asignados\",\n      \"properties\": {\n        \"description\": \"Las financiaciones deben ser atendidas por sucursales o subsidiarias locales solo con fondos provenientes de líneas asignadas por intermediarios del exterior.\"\n      }\n    },\n    {\n      \"id\": \"riesgo_cambio_prohibido\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Prohibición de asumir riesgo de cambio\",\n      \"properties\": {\n        \"description\": \"Si se otorga asistencia en moneda distinta de la de los recursos del exterior, la entidad local no podrá asumir el riesgo de cambio.\"\n      }\n    },\n    {\n      \"id\": \"contragarantias_casa_matriz\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Contragarantías de casa matriz o entidad controlante\",\n      \"properties\": {\n        \"description\": \"Para garantías otorgadas localmente debe existir contragarantía extendida por casa matriz o sucursales en otros países o entidad controlante del exterior, efectivizable irrestrictamente a simple requerimiento.\"\n      }\n    },\n    {\n      \"id\": \"rpc_relacion_patrimonial\",\n      \"type\": \"Concepto\",\n      \"label\": \"RPC (Relación Patrimonial Computable)\",\n      \"properties\": {\n        \"description\": \"Indicador de capital mínimo por riesgo de crédito de las entidades financieras.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"garantias_otorgadas_bcra\",\n      \"target\": \"conceptos_deducibles_rpc\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"financiaciones_avales_sucursales_subsidiarias\",\n      \"target\": \"conceptos_deducibles_rpc\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"sucursales_subsidiarias_locales\",\n      \"target\": \"financiaciones_avales_sucursales_subsidiarias\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"supervision_consolidada\",\n      \"target\": \"sucursales_subsidiarias_locales\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"evaluaciones_crediticias_ig\",\n      \"target\": \"sucursales_subsidiarias_locales\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"financiaciones_fondos_asignados\",\n      \"target\": \"sucursales_subsidiarias_locales\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"riesgo_cambio_prohibido\",\n      \"target\": \"sucursales_subsidiarias_locales\",\n      \"predicate\": \"recae_sobre\"\n    },\n    {\n      \"source\": \"contragarantias_casa_matriz\",\n      \"target\": \"sucursales_subsidiarias_locales\",\n      \"predicate\": \"recae_sobre\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3957,
+  "output_tokens": 1549,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 11,
+  "relations_count": 8,
+  "parsed": {
+    "entities": [
+      {
+        "id": "garantias_otorgadas_bcra",
+        "type": "Excepcion",
+        "label": "Garantías otorgadas a favor del BCRA",
+        "properties": {
+          "description": "Exclusión del cálculo de la RPC para garantías otorgadas a favor del BCRA y por obligaciones directas."
+        }
+      },
+      {
+        "id": "conceptos_deducibles_rpc",
+        "type": "Restriccion",
+        "label": "Conceptos que deben deducirse para cálculo de RPC",
+        "properties": {
+          "description": "Norma que especifica qué conceptos deben deducirse en el cálculo de la Relación Patrimonial Computable."
+        }
+      },
+      {
+        "id": "financiaciones_avales_sucursales_subsidiarias",
+        "type": "Excepcion",
+        "label": "Exclusión de financiaciones y avales de sucursales y subsidiarias",
+        "properties": {
+          "description": "Financiaciones, avales, fianzas y otras responsabilidades otorgadas por sucursales y subsidiarias locales por cuenta de casa matriz o sucursales en otros países, sujeto a requisitos específicos."
+        }
+      },
+      {
+        "id": "sucursales_subsidiarias_locales",
+        "type": "EntidadFinanciera",
+        "label": "Sucursales y subsidiarias locales",
+        "properties": {
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "entidades_financieras_exterior",
+        "type": "Concepto",
+        "label": "Entidades financieras del exterior",
+        "properties": {
+          "description": "Casa matriz o entidad controlante ubicada en jurisdicción extranjera."
+        }
+      },
+      {
+        "id": "supervision_consolidada",
+        "type": "Restriccion",
+        "label": "Supervisión sobre base consolidada",
+        "properties": {
+          "description": "Requisito que las normas del país donde esté situada la casa matriz o entidad controlante deben abarcar supervisión consolidada de sucursales y subsidiarias locales."
+        }
+      },
+      {
+        "id": "evaluaciones_crediticias_ig",
+        "type": "Restriccion",
+        "label": "Calificación internacional investment grade",
+        "properties": {
+          "description": "Exigencia de calificación internacional de riesgo comprendida en categoría investment grade conforme punto 3.1 TO Evaluaciones Crediticias."
+        }
+      },
+      {
+        "id": "financiaciones_fondos_asignados",
+        "type": "Restriccion",
+        "label": "Financiaciones atendidas con fondos asignados",
+        "properties": {
+          "description": "Las financiaciones deben ser atendidas por sucursales o subsidiarias locales solo con fondos provenientes de líneas asignadas por intermediarios del exterior."
+        }
+      },
+      {
+        "id": "riesgo_cambio_prohibido",
+        "type": "Restriccion",
+        "label": "Prohibición de asumir riesgo de cambio",
+        "properties": {
+          "description": "Si se otorga asistencia en moneda distinta de la de los recursos del exterior, la entidad local no podrá asumir el riesgo de cambio."
+        }
+      },
+      {
+        "id": "contragarantias_casa_matriz",
+        "type": "Restriccion",
+        "label": "Contragarantías de casa matriz o entidad controlante",
+        "properties": {
+          "description": "Para garantías otorgadas localmente debe existir contragarantía extendida por casa matriz o sucursales en otros países o entidad controlante del exterior, efectivizable irrestrictamente a simple requerimiento."
+        }
+      },
+      {
+        "id": "rpc_relacion_patrimonial",
+        "type": "Concepto",
+        "label": "RPC (Relación Patrimonial Computable)",
+        "properties": {
+          "description": "Indicador de capital mínimo por riesgo de crédito de las entidades financieras."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "garantias_otorgadas_bcra",
+        "target": "conceptos_deducibles_rpc",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "financiaciones_avales_sucursales_subsidiarias",
+        "target": "conceptos_deducibles_rpc",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "sucursales_subsidiarias_locales",
+        "target": "financiaciones_avales_sucursales_subsidiarias",
+        "predicate": "realiza"
+      },
+      {
+        "source": "supervision_consolidada",
+        "target": "sucursales_subsidiarias_locales",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "evaluaciones_crediticias_ig",
+        "target": "sucursales_subsidiarias_locales",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "financiaciones_fondos_asignados",
+        "target": "sucursales_subsidiarias_locales",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "riesgo_cambio_prohibido",
+        "target": "sucursales_subsidiarias_locales",
+        "predicate": "recae_sobre"
+      },
+      {
+        "source": "contragarantias_casa_matriz",
+        "target": "sucursales_subsidiarias_locales",
+        "predicate": "recae_sobre"
+      }
+    ]
+  }
+}

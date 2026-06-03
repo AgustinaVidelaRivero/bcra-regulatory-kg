@@ -1,0 +1,118 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0086__punto_6_6_operaciones_con_contrapartes_v",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 6.6 — Operaciones con contrapartes vinculadas. + Punto 6.7 — Posición general de cambios (PGC).",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"operaciones_contrapartes_vinculadas\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones con contrapartes vinculadas\",\n      \"properties\": {\n        \"description\": \"Operaciones en las que participan un residente y una contraparte que mantienen relaciones especificadas en el punto 1.2.2 de las normas sobre Grandes exposiciones al riesgo de crédito.\"\n      }\n    },\n    {\n      \"id\": \"posicion_general_cambios\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Posición general de cambios\",\n      \"properties\": {\n        \"description\": \"Totalidad de los activos externos líquidos de la entidad, netos de saldos deudores de corresponsalía originados en operatoria de cambios, más compras y ventas concertadas en mercado de cambios pendientes de liquidación.\"\n      }\n    },\n    {\n      \"id\": \"activos_externos_liquidos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Activos externos líquidos\",\n      \"properties\": {\n        \"description\": \"Monedas y billetes en moneda extranjera, disponibilidades en oro amonedado o barras de buena entrega, saldos acreedores de corresponsalía, depósitos a la vista en entidades del exterior, inversiones en títulos públicos externos y certificados de depósito a plazo.\"\n      }\n    },\n    {\n      \"id\": \"exclusiones_pgc\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Exclusiones de la posición general de cambios\",\n      \"properties\": {\n        \"description\": \"Inversiones directas en exterior, activos externos de terceros en custodia, ventas y compras a término de divisas, depósitos en BCRA en moneda extranjera, y demás activos locales en moneda extranjera.\"\n      }\n    },\n    {\n      \"id\": \"residente\",\n      \"type\": \"Concepto\",\n      \"label\": \"Residente\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Contraparte\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"mercado_cambios\",\n      \"type\": \"Concepto\",\n      \"label\": \"Mercado de cambios\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"entidad_financiera_generico\",\n      \"type\": \"Concepto\",\n      \"label\": \"Entidades financieras del exterior\",\n      \"properties\": {}\n    },\n    {\n      \"id\": \"grandes_exposiciones_credito\",\n      \"type\": \"RegimenNormativo\",\n      \"label\": \"Grandes exposiciones al riesgo de crédito\",\n      \"properties\": {\n        \"description\": \"Normas que definen los tipos de relaciones entre residente y contraparte vinculada.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"operaciones_contrapartes_vinculadas\",\n      \"target\": \"residente\",\n      \"predicate\": \"participan\"\n    },\n    {\n      \"source\": \"operaciones_contrapartes_vinculadas\",\n      \"target\": \"contraparte\",\n      \"predicate\": \"participan\"\n    },\n    {\n      \"source\": \"operaciones_contrapartes_vinculadas\",\n      \"target\": \"grandes_exposiciones_credito\",\n      \"predicate\": \"se_define_en\"\n    },\n    {\n      \"source\": \"posicion_general_cambios\",\n      \"target\": \"activos_externos_liquidos\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"posicion_general_cambios\",\n      \"target\": \"mercado_cambios\",\n      \"predicate\": \"incluye_operaciones_en\"\n    },\n    {\n      \"source\": \"exclusiones_pgc\",\n      \"target\": \"posicion_general_cambios\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"activos_externos_liquidos\",\n      \"target\": \"entidad_financiera_generico\",\n      \"predicate\": \"incluye_depositos_en\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3795,
+  "output_tokens": 1114,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 9,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "operaciones_contrapartes_vinculadas",
+        "type": "Operacion",
+        "label": "Operaciones con contrapartes vinculadas",
+        "properties": {
+          "description": "Operaciones en las que participan un residente y una contraparte que mantienen relaciones especificadas en el punto 1.2.2 de las normas sobre Grandes exposiciones al riesgo de crédito."
+        }
+      },
+      {
+        "id": "posicion_general_cambios",
+        "type": "Restriccion",
+        "label": "Posición general de cambios",
+        "properties": {
+          "description": "Totalidad de los activos externos líquidos de la entidad, netos de saldos deudores de corresponsalía originados en operatoria de cambios, más compras y ventas concertadas en mercado de cambios pendientes de liquidación."
+        }
+      },
+      {
+        "id": "activos_externos_liquidos",
+        "type": "Concepto",
+        "label": "Activos externos líquidos",
+        "properties": {
+          "description": "Monedas y billetes en moneda extranjera, disponibilidades en oro amonedado o barras de buena entrega, saldos acreedores de corresponsalía, depósitos a la vista en entidades del exterior, inversiones en títulos públicos externos y certificados de depósito a plazo."
+        }
+      },
+      {
+        "id": "exclusiones_pgc",
+        "type": "Excepcion",
+        "label": "Exclusiones de la posición general de cambios",
+        "properties": {
+          "description": "Inversiones directas en exterior, activos externos de terceros en custodia, ventas y compras a término de divisas, depósitos en BCRA en moneda extranjera, y demás activos locales en moneda extranjera."
+        }
+      },
+      {
+        "id": "residente",
+        "type": "Concepto",
+        "label": "Residente",
+        "properties": {}
+      },
+      {
+        "id": "contraparte",
+        "type": "Concepto",
+        "label": "Contraparte",
+        "properties": {}
+      },
+      {
+        "id": "mercado_cambios",
+        "type": "Concepto",
+        "label": "Mercado de cambios",
+        "properties": {}
+      },
+      {
+        "id": "entidad_financiera_generico",
+        "type": "Concepto",
+        "label": "Entidades financieras del exterior",
+        "properties": {}
+      },
+      {
+        "id": "grandes_exposiciones_credito",
+        "type": "RegimenNormativo",
+        "label": "Grandes exposiciones al riesgo de crédito",
+        "properties": {
+          "description": "Normas que definen los tipos de relaciones entre residente y contraparte vinculada."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "operaciones_contrapartes_vinculadas",
+        "target": "residente",
+        "predicate": "participan"
+      },
+      {
+        "source": "operaciones_contrapartes_vinculadas",
+        "target": "contraparte",
+        "predicate": "participan"
+      },
+      {
+        "source": "operaciones_contrapartes_vinculadas",
+        "target": "grandes_exposiciones_credito",
+        "predicate": "se_define_en"
+      },
+      {
+        "source": "posicion_general_cambios",
+        "target": "activos_externos_liquidos",
+        "predicate": "comprende"
+      },
+      {
+        "source": "posicion_general_cambios",
+        "target": "mercado_cambios",
+        "predicate": "incluye_operaciones_en"
+      },
+      {
+        "source": "exclusiones_pgc",
+        "target": "posicion_general_cambios",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "activos_externos_liquidos",
+        "target": "entidad_financiera_generico",
+        "predicate": "incluye_depositos_en"
+      }
+    ]
+  }
+}

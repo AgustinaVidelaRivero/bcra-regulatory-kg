@@ -1,0 +1,119 @@
+{
+  "chunk_id": "to_exterior_cambios_actual__0079__punto_5_13_operaciones_que_impliquen_imp",
+  "source_doc": "TO_exterior_cambios_actual.pdf",
+  "location": "Punto 5.13 — Operaciones que impliquen importación y/o exportación de moneda nacional.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"entidad_financiera_operaciones_cambio\",\n      \"type\": \"EntidadFinanciera\",\n      \"label\": \"Entidades que realizan operaciones de cambio\",\n      \"properties\": {\n        \"description\": \"Sujetos autorizados para concretar operaciones de cambio con importación y/o exportación de monedas y billetes de pesos argentinos.\",\n        \"categoria\": \"otra\"\n      }\n    },\n    {\n      \"id\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"type\": \"Operacion\",\n      \"label\": \"Operaciones de cambio con importación/exportación de moneda nacional\",\n      \"properties\": {\n        \"description\": \"Operaciones de cambio que impliquen la importación y/o exportación de monedas y billetes de pesos argentinos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_contraparte_autorizada\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Contraparte debe ser la prevista en punto 5.12\",\n      \"properties\": {\n        \"description\": \"Las operaciones de cambio con importación/exportación de moneda nacional solo pueden realizarse con contrapartes específicamente previstas en el punto 5.12.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_billetes_pesos_no_residentes\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Importación de billetes de pesos sujeta a normas de compra por no residentes\",\n      \"properties\": {\n        \"description\": \"Las operaciones que impliquen importación de billetes de pesos argentinos quedan también sujetas a las disposiciones establecidas para la compra de moneda extranjera por parte de no residentes.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_liquidacion_divisas\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Liquidación de divisas para adquisición de billetes excepcionada\",\n      \"properties\": {\n        \"description\": \"La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local está exceptuada de lo dispuesto en el primer párrafo del punto 5.13.\"\n      }\n    },\n    {\n      \"id\": \"concepto_contraparte\",\n      \"type\": \"Concepto\",\n      \"label\": \"Contraparte de la operación\",\n      \"properties\": {\n        \"description\": \"Sujeto que participa como contraparty en la operación de cambio.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_financiero_billetes_pesos\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Billetes de pesos argentinos\",\n      \"properties\": {\n        \"description\": \"Billetes denominados en moneda nacional (pesos argentinos) objeto de importación y exportación.\"\n      }\n    },\n    {\n      \"id\": \"instrumento_financiero_divisa\",\n      \"type\": \"InstrumentoFinanciero\",\n      \"label\": \"Divisas\",\n      \"properties\": {\n        \"description\": \"Moneda extranjera remitida a la entidad local para la adquisición de billetes en moneda nacional.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"entidad_financiera_operaciones_cambio\",\n      \"target\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"predicate\": \"realiza\"\n    },\n    {\n      \"source\": \"restriccion_contraparte_autorizada\",\n      \"target\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_billetes_pesos_no_residentes\",\n      \"target\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"target\": \"concepto_contraparte\",\n      \"predicate\": \"requiere\"\n    },\n    {\n      \"source\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"target\": \"instrumento_financiero_billetes_pesos\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"operacion_cambio_importacion_exportacion_moneda\",\n      \"target\": \"instrumento_financiero_divisa\",\n      \"predicate\": \"comprende\"\n    },\n    {\n      \"source\": \"excepcion_liquidacion_divisas\",\n      \"target\": \"restriccion_billetes_pesos_no_residentes\",\n      \"predicate\": \"excepciona_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 3560,
+  "output_tokens": 1244,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 8,
+  "relations_count": 7,
+  "parsed": {
+    "entities": [
+      {
+        "id": "entidad_financiera_operaciones_cambio",
+        "type": "EntidadFinanciera",
+        "label": "Entidades que realizan operaciones de cambio",
+        "properties": {
+          "description": "Sujetos autorizados para concretar operaciones de cambio con importación y/o exportación de monedas y billetes de pesos argentinos.",
+          "categoria": "otra"
+        }
+      },
+      {
+        "id": "operacion_cambio_importacion_exportacion_moneda",
+        "type": "Operacion",
+        "label": "Operaciones de cambio con importación/exportación de moneda nacional",
+        "properties": {
+          "description": "Operaciones de cambio que impliquen la importación y/o exportación de monedas y billetes de pesos argentinos."
+        }
+      },
+      {
+        "id": "restriccion_contraparte_autorizada",
+        "type": "Restriccion",
+        "label": "Contraparte debe ser la prevista en punto 5.12",
+        "properties": {
+          "description": "Las operaciones de cambio con importación/exportación de moneda nacional solo pueden realizarse con contrapartes específicamente previstas en el punto 5.12."
+        }
+      },
+      {
+        "id": "restriccion_billetes_pesos_no_residentes",
+        "type": "Restriccion",
+        "label": "Importación de billetes de pesos sujeta a normas de compra por no residentes",
+        "properties": {
+          "description": "Las operaciones que impliquen importación de billetes de pesos argentinos quedan también sujetas a las disposiciones establecidas para la compra de moneda extranjera por parte de no residentes."
+        }
+      },
+      {
+        "id": "excepcion_liquidacion_divisas",
+        "type": "Excepcion",
+        "label": "Liquidación de divisas para adquisición de billetes excepcionada",
+        "properties": {
+          "description": "La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local está exceptuada de lo dispuesto en el primer párrafo del punto 5.13."
+        }
+      },
+      {
+        "id": "concepto_contraparte",
+        "type": "Concepto",
+        "label": "Contraparte de la operación",
+        "properties": {
+          "description": "Sujeto que participa como contraparty en la operación de cambio."
+        }
+      },
+      {
+        "id": "instrumento_financiero_billetes_pesos",
+        "type": "InstrumentoFinanciero",
+        "label": "Billetes de pesos argentinos",
+        "properties": {
+          "description": "Billetes denominados en moneda nacional (pesos argentinos) objeto de importación y exportación."
+        }
+      },
+      {
+        "id": "instrumento_financiero_divisa",
+        "type": "InstrumentoFinanciero",
+        "label": "Divisas",
+        "properties": {
+          "description": "Moneda extranjera remitida a la entidad local para la adquisición de billetes en moneda nacional."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "entidad_financiera_operaciones_cambio",
+        "target": "operacion_cambio_importacion_exportacion_moneda",
+        "predicate": "realiza"
+      },
+      {
+        "source": "restriccion_contraparte_autorizada",
+        "target": "operacion_cambio_importacion_exportacion_moneda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_billetes_pesos_no_residentes",
+        "target": "operacion_cambio_importacion_exportacion_moneda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "operacion_cambio_importacion_exportacion_moneda",
+        "target": "concepto_contraparte",
+        "predicate": "requiere"
+      },
+      {
+        "source": "operacion_cambio_importacion_exportacion_moneda",
+        "target": "instrumento_financiero_billetes_pesos",
+        "predicate": "comprende"
+      },
+      {
+        "source": "operacion_cambio_importacion_exportacion_moneda",
+        "target": "instrumento_financiero_divisa",
+        "predicate": "comprende"
+      },
+      {
+        "source": "excepcion_liquidacion_divisas",
+        "target": "restriccion_billetes_pesos_no_residentes",
+        "predicate": "excepciona_a"
+      }
+    ]
+  }
+}

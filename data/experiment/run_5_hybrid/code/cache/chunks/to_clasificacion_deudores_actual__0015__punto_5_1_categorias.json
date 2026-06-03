@@ -1,0 +1,224 @@
+{
+  "chunk_id": "to_clasificacion_deudores_actual__0015__punto_5_1_categorias",
+  "source_doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 5.1 — Categorías.",
+  "raw_output": "```json\n{\n  \"entities\": [\n    {\n      \"id\": \"cartera_comercial\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera comercial\",\n      \"properties\": {\n        \"description\": \"Categoría de cartera que abarca todas las financiaciones con excepciones específicas vinculadas a créditos de consumo o vivienda.\"\n      }\n    },\n    {\n      \"id\": \"cartera_consumo_vivienda\",\n      \"type\": \"Concepto\",\n      \"label\": \"Cartera para consumo o vivienda\",\n      \"properties\": {\n        \"description\": \"Categoría de cartera que comprende créditos para consumo, vivienda, microcrédito y financiaciones comerciales de hasta dos veces el importe de referencia.\"\n      }\n    },\n    {\n      \"id\": \"creditos_consumo_vivienda\",\n      \"type\": \"Operacion\",\n      \"label\": \"Créditos para consumo o vivienda\",\n      \"properties\": {\n        \"description\": \"Financiaciones para consumo personal, familiar, profesional, adquisición de bienes, tarjetas de crédito, compra, construcción o refacción de vivienda propia.\"\n      }\n    },\n    {\n      \"id\": \"creditos_comerciales\",\n      \"type\": \"Operacion\",\n      \"label\": \"Créditos de naturaleza comercial\",\n      \"properties\": {\n        \"description\": \"Financiaciones vinculadas a la evolución de actividad productiva o comercial del cliente.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_limite_importe_doble\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite de importe doble para clasificación\",\n      \"properties\": {\n        \"description\": \"Créditos que superen dos veces el importe de referencia (punto 3.7) se clasifican según su vinculación a ingresos fijos o a actividad productiva.\"\n      }\n    },\n    {\n      \"id\": \"excepcion_opcion_entidad_doble\",\n      \"type\": \"Excepcion\",\n      \"label\": \"Opción de entidad para financiaciones comerciales menores\",\n      \"properties\": {\n        \"description\": \"Las entidades pueden agrupar financiaciones comerciales de hasta dos veces el importe de referencia junto con créditos de consumo o vivienda.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_aplicacion_general_cartera\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Aplicación general de opción a toda cartera\",\n      \"properties\": {\n        \"description\": \"La opción de agrupamiento debe aplicarse con carácter general a toda la cartera y estar prevista en el Manual de procedimientos.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_cambio_opcion_preaviso\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Preaviso para cambio de opción\",\n      \"properties\": {\n        \"description\": \"Cualquier cambio en la opción de agrupamiento requiere preaviso de 6 meses a la SEFyC.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_suma_creditos_cliente\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Suma de créditos por cliente para encuadramiento\",\n      \"properties\": {\n        \"description\": \"Cuando el cliente mantiene financiaciones de ambos conceptos, se suman los créditos para consumo o vivienda con los comerciales, ponderando garantías preferidas al 50%.\"\n      }\n    },\n    {\n      \"id\": \"restriccion_limite_microCredito\",\n      \"type\": \"Restriccion\",\n      \"label\": \"Límite para préstamos a microcrédito\",\n      \"properties\": {\n        \"description\": \"Préstamos a Instituciones de Microcrédito limitados al equivalente del 40% del importe de referencia establecido en punto 3.7.\"\n      }\n    },\n    {\n      \"id\": \"manual_procedimientos_clasificacion\",\n      \"type\": \"Documento\",\n      \"label\": \"Manual de procedimientos de clasificación\",\n      \"properties\": {\n        \"description\": \"Documento donde debe estar prevista la opción de agrupamiento de cartera elegida por la entidad.\"\n      }\n    },\n    {\n      \"id\": \"sefyc\",\n      \"type\": \"Autoridad\",\n      \"label\": \"Superintendencia de Entidades Financieras y Cambiarias\",\n      \"properties\": {\n        \"description\": \"Autoridad regulatoria que recibe notificación de cambios en opciones de agrupamiento de cartera.\"\n      }\n    },\n    {\n      \"id\": \"importe_referencia_punto_37\",\n      \"type\": \"Concepto\",\n      \"label\": \"Importe de referencia punto 3.7\",\n      \"properties\": {\n        \"description\": \"Valor de referencia establecido en punto 3.7 utilizado para determinar umbrales de clasificación de cartera.\"\n      }\n    },\n    {\n      \"id\": \"garantias_preferidas\",\n      \"type\": \"Concepto\",\n      \"label\": \"Garantías preferidas\",\n      \"properties\": {\n        \"description\": \"Garantías que se ponderan al 50% en el cálculo de suma de créditos por cliente.\"\n      }\n    },\n    {\n      \"id\": \"ingresos_fijos_periodicos\",\n      \"type\": \"Concepto\",\n      \"label\": \"Ingresos fijos o periódicos\",\n      \"properties\": {\n        \"description\": \"Fuente de repago del cliente que determina si crédito se clasifica en cartera comercial o consumo/vivienda.\"\n      }\n    }\n  ],\n  \"relations\": [\n    {\n      \"source\": \"creditos_consumo_vivienda\",\n      \"target\": \"cartera_consumo_vivienda\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"creditos_comerciales\",\n      \"target\": \"cartera_comercial\",\n      \"predicate\": \"integra\"\n    },\n    {\n      \"source\": \"restriccion_limite_importe_doble\",\n      \"target\": \"creditos_consumo_vivienda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_limite_importe_doble\",\n      \"target\": \"creditos_comerciales\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_opcion_entidad_doble\",\n      \"target\": \"restriccion_limite_importe_doble\",\n      \"predicate\": \"excepciona_a\"\n    },\n    {\n      \"source\": \"restriccion_aplicacion_general_cartera\",\n      \"target\": \"excepcion_opcion_entidad_doble\",\n      \"predicate\": \"aclara\"\n    },\n    {\n      \"source\": \"restriccion_cambio_opcion_preaviso\",\n      \"target\": \"excepcion_opcion_entidad_doble\",\n      \"predicate\": \"regula\"\n    },\n    {\n      \"source\": \"restriccion_suma_creditos_cliente\",\n      \"target\": \"creditos_consumo_vivienda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_suma_creditos_cliente\",\n      \"target\": \"creditos_comerciales\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"restriccion_limite_microCredito\",\n      \"target\": \"cartera_consumo_vivienda\",\n      \"predicate\": \"aplica_a\"\n    },\n    {\n      \"source\": \"excepcion_opcion_entidad_doble\",\n      \"target\": \"manual_procedimientos_clasificacion\",\n      \"predicate\": \"requiere_constar_en\"\n    },\n    {\n      \"source\": \"restriccion_cambio_opcion_preaviso\",\n      \"target\": \"sefyc\",\n      \"predicate\": \"notifica_a\"\n    },\n    {\n      \"source\": \"restriccion_limite_importe_doble\",\n      \"target\": \"importe_referencia_punto_37\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"restriccion_aplicacion_general_cartera\",\n      \"target\": \"importe_referencia_punto_37\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"restriccion_limite_microCredito\",\n      \"target\": \"importe_referencia_punto_37\",\n      \"predicate\": \"referencia\"\n    },\n    {\n      \"source\": \"restriccion_suma_creditos_cliente\",\n      \"target\": \"garantias_preferidas\",\n      \"predicate\": \"pondera\"\n    },\n    {\n      \"source\": \"creditos_comerciales\",\n      \"target\": \"ingresos_fijos_periodicos\",\n      \"predicate\": \"vincula_a\"\n    }\n  ]\n}\n```",
+  "input_tokens": 4189,
+  "output_tokens": 2320,
+  "attempt": 1,
+  "error": null,
+  "parsed_ok": true,
+  "entities_count": 15,
+  "relations_count": 17,
+  "parsed": {
+    "entities": [
+      {
+        "id": "cartera_comercial",
+        "type": "Concepto",
+        "label": "Cartera comercial",
+        "properties": {
+          "description": "Categoría de cartera que abarca todas las financiaciones con excepciones específicas vinculadas a créditos de consumo o vivienda."
+        }
+      },
+      {
+        "id": "cartera_consumo_vivienda",
+        "type": "Concepto",
+        "label": "Cartera para consumo o vivienda",
+        "properties": {
+          "description": "Categoría de cartera que comprende créditos para consumo, vivienda, microcrédito y financiaciones comerciales de hasta dos veces el importe de referencia."
+        }
+      },
+      {
+        "id": "creditos_consumo_vivienda",
+        "type": "Operacion",
+        "label": "Créditos para consumo o vivienda",
+        "properties": {
+          "description": "Financiaciones para consumo personal, familiar, profesional, adquisición de bienes, tarjetas de crédito, compra, construcción o refacción de vivienda propia."
+        }
+      },
+      {
+        "id": "creditos_comerciales",
+        "type": "Operacion",
+        "label": "Créditos de naturaleza comercial",
+        "properties": {
+          "description": "Financiaciones vinculadas a la evolución de actividad productiva o comercial del cliente."
+        }
+      },
+      {
+        "id": "restriccion_limite_importe_doble",
+        "type": "Restriccion",
+        "label": "Límite de importe doble para clasificación",
+        "properties": {
+          "description": "Créditos que superen dos veces el importe de referencia (punto 3.7) se clasifican según su vinculación a ingresos fijos o a actividad productiva."
+        }
+      },
+      {
+        "id": "excepcion_opcion_entidad_doble",
+        "type": "Excepcion",
+        "label": "Opción de entidad para financiaciones comerciales menores",
+        "properties": {
+          "description": "Las entidades pueden agrupar financiaciones comerciales de hasta dos veces el importe de referencia junto con créditos de consumo o vivienda."
+        }
+      },
+      {
+        "id": "restriccion_aplicacion_general_cartera",
+        "type": "Restriccion",
+        "label": "Aplicación general de opción a toda cartera",
+        "properties": {
+          "description": "La opción de agrupamiento debe aplicarse con carácter general a toda la cartera y estar prevista en el Manual de procedimientos."
+        }
+      },
+      {
+        "id": "restriccion_cambio_opcion_preaviso",
+        "type": "Restriccion",
+        "label": "Preaviso para cambio de opción",
+        "properties": {
+          "description": "Cualquier cambio en la opción de agrupamiento requiere preaviso de 6 meses a la SEFyC."
+        }
+      },
+      {
+        "id": "restriccion_suma_creditos_cliente",
+        "type": "Restriccion",
+        "label": "Suma de créditos por cliente para encuadramiento",
+        "properties": {
+          "description": "Cuando el cliente mantiene financiaciones de ambos conceptos, se suman los créditos para consumo o vivienda con los comerciales, ponderando garantías preferidas al 50%."
+        }
+      },
+      {
+        "id": "restriccion_limite_microCredito",
+        "type": "Restriccion",
+        "label": "Límite para préstamos a microcrédito",
+        "properties": {
+          "description": "Préstamos a Instituciones de Microcrédito limitados al equivalente del 40% del importe de referencia establecido en punto 3.7."
+        }
+      },
+      {
+        "id": "manual_procedimientos_clasificacion",
+        "type": "Documento",
+        "label": "Manual de procedimientos de clasificación",
+        "properties": {
+          "description": "Documento donde debe estar prevista la opción de agrupamiento de cartera elegida por la entidad."
+        }
+      },
+      {
+        "id": "sefyc",
+        "type": "Autoridad",
+        "label": "Superintendencia de Entidades Financieras y Cambiarias",
+        "properties": {
+          "description": "Autoridad regulatoria que recibe notificación de cambios en opciones de agrupamiento de cartera."
+        }
+      },
+      {
+        "id": "importe_referencia_punto_37",
+        "type": "Concepto",
+        "label": "Importe de referencia punto 3.7",
+        "properties": {
+          "description": "Valor de referencia establecido en punto 3.7 utilizado para determinar umbrales de clasificación de cartera."
+        }
+      },
+      {
+        "id": "garantias_preferidas",
+        "type": "Concepto",
+        "label": "Garantías preferidas",
+        "properties": {
+          "description": "Garantías que se ponderan al 50% en el cálculo de suma de créditos por cliente."
+        }
+      },
+      {
+        "id": "ingresos_fijos_periodicos",
+        "type": "Concepto",
+        "label": "Ingresos fijos o periódicos",
+        "properties": {
+          "description": "Fuente de repago del cliente que determina si crédito se clasifica en cartera comercial o consumo/vivienda."
+        }
+      }
+    ],
+    "relations": [
+      {
+        "source": "creditos_consumo_vivienda",
+        "target": "cartera_consumo_vivienda",
+        "predicate": "integra"
+      },
+      {
+        "source": "creditos_comerciales",
+        "target": "cartera_comercial",
+        "predicate": "integra"
+      },
+      {
+        "source": "restriccion_limite_importe_doble",
+        "target": "creditos_consumo_vivienda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_limite_importe_doble",
+        "target": "creditos_comerciales",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_opcion_entidad_doble",
+        "target": "restriccion_limite_importe_doble",
+        "predicate": "excepciona_a"
+      },
+      {
+        "source": "restriccion_aplicacion_general_cartera",
+        "target": "excepcion_opcion_entidad_doble",
+        "predicate": "aclara"
+      },
+      {
+        "source": "restriccion_cambio_opcion_preaviso",
+        "target": "excepcion_opcion_entidad_doble",
+        "predicate": "regula"
+      },
+      {
+        "source": "restriccion_suma_creditos_cliente",
+        "target": "creditos_consumo_vivienda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_suma_creditos_cliente",
+        "target": "creditos_comerciales",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "restriccion_limite_microCredito",
+        "target": "cartera_consumo_vivienda",
+        "predicate": "aplica_a"
+      },
+      {
+        "source": "excepcion_opcion_entidad_doble",
+        "target": "manual_procedimientos_clasificacion",
+        "predicate": "requiere_constar_en"
+      },
+      {
+        "source": "restriccion_cambio_opcion_preaviso",
+        "target": "sefyc",
+        "predicate": "notifica_a"
+      },
+      {
+        "source": "restriccion_limite_importe_doble",
+        "target": "importe_referencia_punto_37",
+        "predicate": "referencia"
+      },
+      {
+        "source": "restriccion_aplicacion_general_cartera",
+        "target": "importe_referencia_punto_37",
+        "predicate": "referencia"
+      },
+      {
+        "source": "restriccion_limite_microCredito",
+        "target": "importe_referencia_punto_37",
+        "predicate": "referencia"
+      },
+      {
+        "source": "restriccion_suma_creditos_cliente",
+        "target": "garantias_preferidas",
+        "predicate": "pondera"
+      },
+      {
+        "source": "creditos_comerciales",
+        "target": "ingresos_fijos_periodicos",
+        "predicate": "vincula_a"
+      }
+    ]
+  }
+}
