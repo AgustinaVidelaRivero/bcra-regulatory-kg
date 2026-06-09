@@ -1,0 +1,270 @@
+{
+  "metadata": {
+    "archivo": "dev_pool.json",
+    "uso": "desarrollo - nunca evaluar",
+    "descripcion": "Set de competency questions candidatas para evaluar sistemas de QA (KG-RAG) sobre 5 Textos Ordenados del BCRA. Diseñadas de forma ciega a los grafos: derivadas exclusivamente del texto fuente en data/experiment/subset/.",
+    "fecha_diseno": "2026-06-09",
+    "origen": "Preguntas restantes de candidatas.json (17) con correcciones de auditoría aplicadas. Reservadas para desarrollo/ajuste del harness; no usar para reportar resultados.",
+    "corpus": {
+      "proteccion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf (Protección de los Usuarios de Servicios Financieros, T.O. al 06/05/26, Com. A 8433)",
+      "clasificacion": "TO_clasificacion_deudores_actual.pdf (Clasificación de Deudores, T.O. al 19/12/25, Com. A 8378)",
+      "capitales": "TO_capitales_minimos_actual.pdf (Capitales Mínimos de las Entidades Financieras, T.O. al 09/04/26, Com. A 8418)",
+      "exterior": "TO_exterior_cambios_actual.pdf (Exterior y Cambios, T.O. al 25/08/25, Com. A 8307)",
+      "regimen": "TO_regimen_informativo_contable_mensual_actual.pdf (Régimen Informativo Contable Mensual - R.I. Capitales Mínimos R.I.-C.M.)"
+    },
+    "categorias": {
+      "factual_directa": "La respuesta está en una sección puntual de un solo TO.",
+      "multi_norma": "Requiere combinar 2+ secciones, idealmente cruzando TOs distintos.",
+      "cadena_restriccion_excepcion": "Qué aplica, qué lo exceptúa y bajo qué condición.",
+      "unanswerable": "Pregunta plausible del dominio cuya respuesta NO está en estos 5 TOs (mide si el sistema admite no saber)."
+    },
+    "total": 17,
+    "distribucion": {
+      "factual_directa": 9,
+      "multi_norma": 2,
+      "cadena_restriccion_excepcion": 5,
+      "unanswerable": 1
+    },
+    "campos": "id, pregunta, categoria, tos_fuente, ground_truth_secciones, cita_textual, respuesta_esperada, dificultad (1-3), nota (solo unanswerable)"
+  },
+  "preguntas": [
+    {
+      "id": "CQ-001",
+      "pregunta": "¿Dentro de qué plazo puede un usuario de servicios financieros revocar la aceptación de un producto o servicio contratado?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.3.1.1, acápite v)"
+      ],
+      "cita_textual": "el usuario de servicios financieros tiene derecho a revocar la aceptación del producto o servicio dentro del plazo de diez (10) días hábiles contados a partir de la fecha de recibido el contrato o de la disponibilidad efectiva del producto o servicio, lo que suceda último Se aclarará en esta misma cláusula que dicha revocación será sin costo ni responsabilidad alguna para el usuario de servicios financieros en la medida que no haya hecho uso del respectivo producto o servicio y que, en el caso de que lo haya utilizado, sólo se le cobrarán las comisiones y cargos previstos para la prestación, proporcionados al tiempo de utilización del servicio o producto.",
+      "respuesta_esperada": "Dentro de los 10 días hábiles contados desde la fecha en que recibió el contrato o desde la disponibilidad efectiva del producto/servicio, lo que suceda último. La revocación es sin costo si no usó el producto.",
+      "dificultad": 1
+    },
+    {
+      "id": "CQ-003",
+      "pregunta": "¿Con qué antelación mínima debe notificarse al usuario una modificación de las condiciones pactadas, como nuevas comisiones o cargos?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.3.4, acápite iv)"
+      ],
+      "cita_textual": "El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días corridos a su entrada en vigencia. Las modificaciones que resulten económicamente más beneficiosas para el usuario [...] no requieren notificación anticipada.",
+      "respuesta_esperada": "Con una antelación mínima de 60 días corridos a su entrada en vigencia. Las modificaciones más beneficiosas para el usuario (reducción de valores) no requieren notificación anticipada.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-005",
+      "pregunta": "¿Qué porcentaje mínimo de cajeros automáticos debe estar adaptado (software texto-a-voz, Braille, etc.) para usuarios con dificultades visuales?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.2.2 (Personas con dificultades visuales)"
+      ],
+      "cita_textual": "deberán alcanzar la cobertura del servicio con esos cajeros automáticos en al menos el 10 % del total de los equipos instalados, comenzando con aquellos emplazados en las localidades de mayor población",
+      "respuesta_esperada": "Al menos el 10% del total de cajeros instalados, comenzando por los emplazados en las localidades de mayor población.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-007",
+      "pregunta": "¿Qué rango de días de atraso corresponde a la categoría 'riesgo medio' en la cartera para consumo o vivienda?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 7.2.3 (Riesgo medio)"
+      ],
+      "cita_textual": "Comprende los clientes que muestran alguna incapacidad para cancelar sus obligaciones, con atrasos de más de 90 hasta 180 días.",
+      "respuesta_esperada": "Atrasos de más de 90 días y hasta 180 días.",
+      "dificultad": 1
+    },
+    {
+      "id": "CQ-009",
+      "pregunta": "¿Cuál es el criterio básico que debe utilizarse para clasificar a un deudor de la cartera comercial?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 4.2 (Criterio básico de clasificación)",
+        "Punto 6.2 (Criterio de clasificación)"
+      ],
+      "cita_textual": "El criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía de la entidad financiera. [...] El criterio básico de evaluación es la capacidad de repago del deudor en función del flujo financiero estimado y, sólo en segundo lugar, sobre la base de la liquidación de activos del cliente.",
+      "respuesta_esperada": "La capacidad de pago futura del deudor, evaluada principalmente sobre la base del flujo de fondos estimado y, sólo en segundo lugar, sobre la liquidación de activos.",
+      "dificultad": 1
+    },
+    {
+      "id": "CQ-011",
+      "pregunta": "¿Cómo se determina la exigencia de capital mínimo total que debe integrar una entidad financiera?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Punto 1.1 (Exigencia)"
+      ],
+      "cita_textual": "La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado [...] y operacional.",
+      "respuesta_esperada": "Es el mayor valor entre la exigencia básica y la suma de las exigencias por riesgo de crédito, de mercado y operacional.",
+      "dificultad": 1
+    },
+    {
+      "id": "CQ-012",
+      "pregunta": "¿Qué entidades financieras integran el 'Grupo 1' a los efectos de las normas sobre capitales mínimos?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Sección 2 (clasificación de entidades, acápite i)"
+      ],
+      "cita_textual": "Grupo 1: entidades calificadas por el BCRA como de importancia sistémica a nivel local (D-SIB) y sucursales o subsidiarias de bancos del exterior calificados como de importancia sistémica global (G-SIB). ii) Grupo 2: entidades financieras no comprendidas en el acápite i).",
+      "respuesta_esperada": "Las entidades calificadas por el BCRA como de importancia sistémica local (D-SIB) y las sucursales o subsidiarias de bancos del exterior calificados como de importancia sistémica global (G-SIB). El Grupo 2 son las demás.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-013",
+      "pregunta": "Para una entidad financiera nueva, ¿qué consecuencia tiene no integrar el capital mínimo exigido dentro de los 60 días corridos de otorgada la autorización?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Punto 1.4.1 (Nuevas entidades)"
+      ],
+      "cita_textual": "Revocación de la autorización para funcionar si no se integra el capital mínimo exigido dentro de los 60 días corridos de su otorgamiento.",
+      "respuesta_esperada": "La revocación de la autorización para funcionar.",
+      "dificultad": 1
+    },
+    {
+      "id": "CQ-022",
+      "pregunta": "¿Qué debe entregar el sujeto obligado al usuario antes de formalizar el contrato y qué información sobre la facultad de revocación debe contener?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.3.1.4 (Resumen informativo del contrato)",
+        "Punto 2.3.1.1, acápite v) y acápite xi) del 2.3.1.4"
+      ],
+      "cita_textual": "[2.3.1.4] Los sujetos obligados deberán entregar a los usuarios antes de su formalización un resumen del contrato en el que se sinteticen, en un lenguaje llano y coloquial, los términos y alcances de las principales cuestiones [...] xi) La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1.",
+      "respuesta_esperada": "Antes de formalizar debe entregar un resumen informativo del contrato en lenguaje llano (2.3.1.4) que, entre otras cuestiones, informe la facultad de revocación del apartado v) del punto 2.3.1.1 (derecho a revocar dentro de los 10 días hábiles).",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-023",
+      "pregunta": "¿Cómo se compone la responsabilidad patrimonial computable (RPC) y qué integra el patrimonio neto básico?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Punto 8.1 (Determinación)",
+        "Punto 8.2.1 (Capital ordinario de nivel uno)"
+      ],
+      "cita_textual": "RPC = PNb + PNc [...] PNb: patrimonio neto básico -capital de nivel uno-. PNb = COn1 - CDCOn1 + CAn1 - CDCAn1 [...] PNc: patrimonio neto complementario -capital de nivel dos-, neto de las deducciones correspondientes (CDPNc).",
+      "respuesta_esperada": "La RPC = PNb + PNc. El patrimonio neto básico (capital de nivel uno) = capital ordinario de nivel uno (COn1) menos sus conceptos deducibles, más el capital adicional de nivel uno (CAn1) menos sus deducibles. El PNc es el patrimonio neto complementario (capital de nivel dos) neto de deducciones.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-026",
+      "pregunta": "Un deudor de cartera comercial está clasificado como 'irrecuperable' y refinanció su deuda recibiendo crédito adicional. ¿Puede mejorar de categoría y bajo qué condiciones de permanencia?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 6.5.5.2 (Irrecuperable)"
+      ],
+      "cita_textual": "Cuando al menos se haya cumplido con el pago, sin haber incurrido en atrasos superiores a los 31 días del 15 % de las obligaciones refinanciadas y la totalidad de los intereses devengados, podrá reclasificarse al deudor en el nivel inmediato superior [...]. El deudor que [...] haya refinanciado su deuda [...] y recibido crédito adicional [...] deberá permanecer en esta categoría por lo menos 180 días [...]",
+      "respuesta_esperada": "Sí puede mejorar, pero recién tras cancelar (sin atrasos mayores a 31 días) al menos el 15% de las obligaciones refinanciadas y la totalidad de los intereses devengados; y si recibió crédito adicional no cancelado, debe permanecer en 'irrecuperable' al menos 180 días desde el crédito adicional o el acuerdo de refinanciación (el más reciente).",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-027",
+      "pregunta": "¿Cómo deben informar al BCRA los sujetos obligados las comisiones que cobran a los usuarios, y qué tratamiento tienen las reducciones de comisiones?",
+      "categoria": "factual_directa",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.5 (Información al BCRA)"
+      ],
+      "cita_textual": "Las altas [...] y los aumentos en las comisiones que deseen implementar deberán ser previamente informados al BCRA [...] y luego ser notificadas a los usuarios [...]. Las reducciones en las comisiones y/o cargos podrán aplicarse sin demora, sin perjuicio de que deberán ser informadas al BCRA dentro de los treinta (30) días corridos siguientes de su aplicación.",
+      "respuesta_esperada": "Las altas y aumentos de comisiones deben informarse previamente al BCRA mediante el régimen informativo y luego notificarse a los usuarios. Las reducciones pueden aplicarse sin demora, pero deben informarse al BCRA dentro de los 30 días corridos siguientes a su aplicación.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-029",
+      "pregunta": "¿Pueden cobrarse comisiones o cargos por operaciones realizadas por ventanilla a usuarios que son personas humanas? ¿Hay excepciones?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.3.2.2, acápite ii) a) (Conceptos no admitidos)"
+      ],
+      "cita_textual": "No podrán aplicarse comisiones ni cargos por los siguientes conceptos: a) Operaciones efectuadas por ventanilla por los usuarios de servicios financieros que sean personas humanas. [...] independientemente de las comisiones y/o cargos que correspondan por la gestión de cobro de dichos documentos y por los servicios que, por sus características, sólo pueden ser prestados por ventanilla (certificación de cheques, transferencias internacionales, etc.).",
+      "respuesta_esperada": "No pueden cobrarse comisiones/cargos a personas humanas por operaciones por ventanilla. Quedan exceptuados (sí pueden cobrarse) la gestión de cobro de documentos y los servicios que por su naturaleza sólo pueden prestarse por ventanilla, como certificación de cheques o transferencias internacionales.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-030",
+      "pregunta": "¿Puede el sujeto obligado percibir del usuario una comisión o cargo por el seguro de vida sobre saldo deudor? ¿Qué obligación tiene respecto de esa cobertura?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.3.12.1 (Seguros de vida sobre saldo deudor)"
+      ],
+      "cita_textual": "Los sujetos obligados no podrán percibir de los usuarios ningún tipo de comisión y/o cargo vinculado con estos seguros. Dichos sujetos deberán contratar un seguro sobre saldo deudor con cobertura de fallecimiento e invalidez total permanente respecto de aquellas financiaciones otorgadas a personas humanas. Alternativamente, podrán autoasegurar los riesgos [...] En ambos casos, la cobertura deberá extinguir totalmente el monto adeudado en caso de fallecimiento o invalidez total permanente del deudor.",
+      "respuesta_esperada": "No puede percibir ninguna comisión ni cargo por el seguro de vida sobre saldo deudor. Está obligado a contratar (para financiaciones a personas humanas) una cobertura de fallecimiento e invalidez total permanente, o bien autoasegurar esos riesgos; la cobertura debe extinguir totalmente la deuda en caso de fallecimiento o invalidez total permanente.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-032",
+      "pregunta": "En un crédito cedido a favor de la entidad sin responsabilidad para el cedente, ¿a quién se imputa el crédito para clasificarlo y qué ocurre si no se realiza la evaluación del deudor?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Punto 1.2.1 (Créditos incorporados por cesión sin responsabilidad)"
+      ],
+      "cita_textual": "Los créditos cedidos a favor de la entidad sin responsabilidad para el cedente [...] se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos consecuentemente en principales y directos pagadores, realizando respecto de ellos su evaluación como sujetos de crédito con la pertinente apertura del legajo. En caso de no efectuarse la evaluación, cualquiera sea el motivo, estos clientes se clasificarán en categoría 'irrecuperable'.",
+      "respuesta_esperada": "Se imputan al firmante, librador, deudor, codeudor o aceptante del instrumento (principal y directo pagador), con apertura del legajo y evaluación como sujetos de crédito. Si por cualquier motivo no se efectúa la evaluación, esos clientes se clasifican en categoría 'irrecuperable'.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-035",
+      "pregunta": "¿Bajo qué condiciones puede una entidad dar acceso al mercado de cambios para girar utilidades y dividendos a accionistas no residentes?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "exterior"
+      ],
+      "ground_truth_secciones": [
+        "Punto 3.4 (Pagos de utilidades y dividendos)"
+      ],
+      "cita_textual": "3.4.1. Las utilidades y dividendos correspondan a balances cerrados y auditados. 3.4.2. El monto total abonado por este concepto a accionistas no residentes, incluido el pago cuyo curso se está solicitando, no supere el monto en moneda local que les corresponda según la distribución determinada por la asamblea de accionistas. [...] 3.4.3. La entidad deberá verificar que el cliente haya dado cumplimiento [...] a la declaración de la última presentación vencida del 'Relevamiento de activos y pasivos externos'.",
+      "respuesta_esperada": "Debe cumplirse la totalidad de las condiciones: que las utilidades y dividendos correspondan a balances cerrados y auditados (3.4.1); que el total abonado a no residentes no supere el monto en moneda local determinado por la asamblea de accionistas (3.4.2); y que el cliente haya cumplido con el 'Relevamiento de activos y pasivos externos' (3.4.3).",
+      "dificultad": 3
+    },
+    {
+      "id": "dev_unans_1",
+      "pregunta": "¿Qué porcentaje mínimo de previsión por riesgo de incobrabilidad corresponde a un deudor clasificado en situación \"Irrecuperable\"?",
+      "categoria": "unanswerable",
+      "tos_fuente": [],
+      "ground_truth_secciones": [],
+      "cita_textual": "",
+      "respuesta_esperada": "No determinable a partir de estos 5 TOs. La 'Clasificación de Deudores' define la categoría de deudor 'Irrecuperable', pero los porcentajes de previsión se fijan en las normas sobre 'Previsiones mínimas por riesgo de incobrabilidad', Texto Ordenado que NO integra el subset. El sistema debería responder respondible=false y no inventar un porcentaje.",
+      "dificultad": 2,
+      "nota": "UNANSWERABLE de desarrollo (descartable, patrón 'referenciado pero no contenido'). La categoria 'Irrecuperable' SI vive en el subset (Clasificacion de Deudores), pero el valor concreto del porcentaje de prevision vive en un TO externo. Linea de remision que la justifica — TO_clasificacion_deudores_actual.pdf, p.31: '...sin perjuicio de que se trate de deudas que reunan todas las condiciones previstas por el punto 2.2.3.2. de las normas sobre \"Previsiones minimas por riesgo de incobrabilidad\".' Ese TO ('Previsiones minimas por riesgo de incobrabilidad') no esta en data/experiment/subset/, por lo que ningun grafo puede contener el porcentaje."
+    }
+  ]
+}
