@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación KG-RAG · Trazas y juez</title>
+<style>
+:root{
+  --bg:#0f1117; --card:#1a1d27; --card2:#232735; --ink:#e6e8ee; --mut:#8b90a0;
+  --acc:#6ea8fe; --green:#3fb950; --red:#f85149; --amber:#d29922; --line:#2b3040;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 22px 80px}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:20px;margin:48px 0 6px;padding-top:14px;border-top:1px solid var(--line)}
+.sub{color:var(--mut);margin:0 0 8px}
+.lead{color:var(--mut);max-width:760px}
+code,.mono{font-family:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0}
+.q{font-size:17px;font-weight:600;margin:0 0 6px}
+.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;margin:0 6px 6px 0;background:var(--card2);color:var(--mut)}
+.pill.cat{background:#1f2a44;color:#9cc2ff}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);margin:14px 0 4px}
+.ans{background:var(--card2);border-radius:8px;padding:12px 14px;border-left:3px solid var(--acc)}
+.exp{background:#14241a;border-left:3px solid var(--green);border-radius:8px;padding:12px 14px}
+.cite{font-size:13px;color:var(--mut)}
+.cite b{color:var(--ink)}
+/* steps */
+.steps{margin:10px 0 0;padding:0;list-style:none;counter-reset:s}
+.step{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:0}
+.snum{flex:0 0 30px;height:30px;border-radius:8px;background:var(--card2);display:flex;align-items:center;
+  justify-content:center;font-weight:700;color:var(--acc);font-size:13px}
+.stool{font-family:"SF Mono",monospace;font-weight:600;color:#9cc2ff}
+.sinput{color:var(--mut);font-family:"SF Mono",monospace;font-size:12.5px}
+.sout{color:#7d8290;font-size:12px;margin-top:4px;font-family:"SF Mono",monospace;
+  background:#0c0e14;border-radius:6px;padding:7px 9px;white-space:pre-wrap;word-break:break-word}
+/* verdict grid */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.vbox{background:var(--card2);border-radius:8px;padding:10px 12px}
+.vbox .k{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut)}
+.vbox .v{font-size:16px;font-weight:700;margin-top:2px}
+.v.ok{color:var(--green)} .v.bad{color:var(--red)} .v.warn{color:var(--amber)} .v.neu{color:var(--ink)}
+.just{margin:10px 0 0}
+.just .j{padding:8px 0;border-bottom:1px dashed var(--line)}
+.just .j:last-child{border-bottom:0}
+.just .jk{font-weight:600;color:#9cc2ff;font-size:13px}
+.claims{margin:8px 0 0;padding:10px 12px;background:#241a1a;border-radius:8px;border-left:3px solid var(--amber)}
+.claims ul{margin:6px 0 0;padding-left:18px}
+.claims li{font-size:13px;color:#d8c9a0;margin:2px 0}
+.meta{font-size:12px;color:var(--mut);margin-top:10px}
+.adj-yes{color:var(--amber);font-weight:700}
+.adj-no{color:var(--green);font-weight:600}
+.note{font-size:13px;color:var(--mut);background:var(--card2);border-radius:8px;padding:10px 14px;margin:8px 0}
+</style>
+</head>
+<body><div class="wrap">
+
+
+<h1>Evaluación downstream KG-RAG — ejemplos</h1>
+<p class="sub mono">FASE 2.3 · agente respondedor: claude-haiku-4-5 · juez: arquitectura de 2 pasos calibrada 12/12 vs. humano</p>
+<p class="lead">El agente responde <i>competency questions</i> regulatorias usando el Knowledge Graph como herramienta
+(tools <code>buscar_nodos</code>, <code>ver_nodo</code>, <code>ver_vecinos</code>). Un LLM-juez evalúa cada
+respuesta contra ground truth verificado contra los PDFs del BCRA. Abajo: <b>una traza completa</b> del agente
+navegando el grafo, y <b>cuatro veredictos del juez</b> que muestran el rango de casos.</p>
+
+<h2>1 · Traza del agente — cómo razona sobre el grafo</h2>
+<p class="lead">Pregunta <code>CQ-001</code> sobre Run&nbsp;1. El agente encadena 13 llamadas a tools (búsqueda → inspección de nodos → vecinos) antes de responder.</p>
+<div class="card">
+<p class="q">¿Dentro de qué plazo puede un usuario de servicios financieros revocar la aceptación de un producto o servicio contratado?</p>
+<div class="label">Cadena de razonamiento (tool calls)</div>
+<ul class="steps">
+<li class="step"><div class="snum">1</div><div style="flex:1"><span class="stool">buscar_nodos</span> <span class="sinput">{&quot;consulta&quot;: &quot;revocación aceptación producto servicio plazo&quot;, &quot;limite&quot;: 10}</span><div class="sout">{&quot;consulta&quot;: &quot;revocación aceptación producto servicio plazo&quot;, &quot;total_con_match&quot;: 131, &quot;resultados&quot;: [{&quot;id&quot;: &quot;ope_revocacion_de_aceptacion_de_producto_o_servicio&quot;, &quot;type&quot;: &quot;OPERATION&quot;, &quot;label&quot;: &quot;Revocación de aceptación de producto o servicio&quot;, &quot;tokens_matcheados&quot;: 4, &quot;resumen_propiedades&quot;: &quot;Operación que permite al usuario retractarse de la aceptación del producto o servicio contratado mediante botón de arrepentimien…</div></div></li>
+<li class="step"><div class="snum">2</div><div style="flex:1"><span class="stool">buscar_nodos</span> <span class="sinput">{&quot;consulta&quot;: &quot;derecho de revocación usuario servicios financieros&quot;, &quot;limite&quot;: 10}</span></div></li>
+<li class="step"><div class="snum">3</div><div style="flex:1"><span class="stool">ver_nodo</span> <span class="sinput">{&quot;id&quot;: &quot;ope_revocacion_de_aceptacion_de_producto_o_servicio&quot;}</span><div class="sout">{&quot;id&quot;: &quot;ope_revocacion_de_aceptacion_de_producto_o_servicio&quot;, &quot;type&quot;: &quot;OPERATION&quot;, &quot;label&quot;: &quot;Revocación de aceptación de producto o servicio&quot;, &quot;properties&quot;: {&quot;version&quot;: &quot;A 8433&quot;, &quot;description&quot;: &quot;Operación que permite al usuario retractarse de la aceptación del producto o servicio contratado mediante botón de arrepentimiento.&quot;, &quot;aliases&quot;: [&quot;revocación de aceptación&quot;], &quot;source_to&quot;: &quot;proteccion_usuarios&quot;, &quot;mention_count…</div></div></li>
+<li class="step"><div class="snum">4</div><div style="flex:1"><span class="stool">ver_vecinos</span> <span class="sinput">{&quot;id&quot;: &quot;ope_revocacion_de_aceptacion_de_producto_o_servicio&quot;, &quot;direccion&quot;: &quot;ambas&quot;}</span></div></li>
+<li class="step"><div class="snum">5</div><div style="flex:1"><span class="stool">ver_nodo</span> <span class="sinput">{&quot;id&quot;: &quot;req_acapite_v_del_punto_2_3_1_1&quot;}</span></div></li>
+<li class="step"><div class="snum">6</div><div style="flex:1"><span class="stool">ver_vecinos</span> <span class="sinput">{&quot;id&quot;: &quot;req_acapite_v_del_punto_2_3_1_1&quot;, &quot;direccion&quot;: &quot;ambas&quot;}</span></div></li>
+<li class="step"><div class="snum">7</div><div style="flex:1"><span class="stool">buscar_nodos</span> <span class="sinput">{&quot;consulta&quot;: &quot;plazo revocación arrepentimiento días&quot;, &quot;limite&quot;: 10}</span></div></li>
+<li class="step"><div class="snum">8</div><div style="flex:1"><span class="stool">buscar_nodos</span> <span class="sinput">{&quot;consulta&quot;: &quot;botón arrepentimiento plazo&quot;, &quot;limite&quot;: 10}</span></div></li>
+<li class="step"><div class="snum">9</div><div style="flex:1"><span class="stool">ver_nodo</span> <span class="sinput">{&quot;id&quot;: &quot;ins_boton_de_arrepentimiento&quot;}</span></div></li>
+<li class="step"><div class="snum">10</div><div style="flex:1"><span class="stool">ver_vecinos</span> <span class="sinput">{&quot;id&quot;: &quot;ins_boton_de_arrepentimiento&quot;, &quot;direccion&quot;: &quot;ambas&quot;}</span></div></li>
+<li class="step"><div class="snum">11</div><div style="flex:1"><span class="stool">buscar_nodos</span> <span class="sinput">{&quot;consulta&quot;: &quot;14 días revocación aceptación&quot;, &quot;limite&quot;: 10}</span></div></li>
+<li class="step"><div class="snum">12</div><div style="flex:1"><span class="stool">ver_nodo</span> <span class="sinput">{&quot;id&quot;: &quot;req_clausula_de_revocacion_dentro_de_diez_dias_habiles&quot;}</span></div></li>
+<li class="step"><div class="snum">13</div><div style="flex:1"><span class="stool">ver_vecinos</span> <span class="sinput">{&quot;id&quot;: &quot;req_clausula_de_revocacion_dentro_de_diez_dias_habiles&quot;, &quot;direccion&quot;: &quot;ambas&quot;}</span></div></li>
+</ul>
+<div class="label">Respuesta final del agente</div>
+<div class="ans">Un usuario de servicios financieros puede revocar la aceptación de un producto o servicio contratado dentro de diez días hábiles. Esta revocación debe estar contemplada en una cláusula del contrato de productos y servicios financieros, y el usuario tiene derecho a ejercerla sin costo si no ha utilizado el producto o servicio.</div>
+<div class="cite" style="margin-top:8px">📄 <b>TO_proteccion_usuarios_servicios_financieros_actual.pdf</b> p. 8</div>
+<div class="meta">13 tool calls · $0.0911 · 31.5s</div>
+</div>
+<h2>2 · Outputs del juez — cuatro casos</h2>
+<p class="lead">El juez emite veredicto estructurado por dimensiones (correctitud, completitud, precisión de cita), lista afirmaciones no soportadas separando <b>centrales</b> (núcleo de la respuesta) de <b>secundarias</b> (color), y marca cuándo escalar a <b>adjudicación humana</b>.</p>
+<div class="card">
+<div style="font-weight:700;font-size:13px;color:var(--mut);margin-bottom:8px">Caso ✅ — respuesta correcta y completa · <span class="mono">CQ-002 / run_1</span></div>
+<p class="q">¿Cuál es el tamaño mínimo de tipografía que deben tener los contratos financieros con los usuarios?</p>
+<span class="pill cat">factual_directa</span>
+<span class="pill">dificultad 1</span>
+<div class="label">Respuesta esperada (ground truth)</div>
+<div class="exp">Una altura mínima de 1,8 milímetros.</div>
+<div class="label">Respuesta del agente</div>
+<div class="ans">El tamaño mínimo de tipografía que deben tener los contratos financieros con los usuarios es de 1,8 milímetros. Este requisito está establecido para asegurar la legibilidad de los contratos.</div>
+<div class="cite" style="margin-top:8px">📄 <b>TO_proteccion_usuarios_servicios_financieros_actual.pdf</b> p. 7</div>
+<div class="label">Veredicto del juez</div>
+<div class="vgrid">
+<div class="vbox"><div class="k">Correctitud</div><div class="v ok">correcta</div></div>
+<div class="vbox"><div class="k">Completitud</div><div class="v ok">completa</div></div>
+<div class="vbox"><div class="k">Abstención</div><div class="v neu">—</div></div>
+<div class="vbox"><div class="k">Precisión cita</div><div class="v neu">pagina</div></div>
+</div>
+<div class="claims">
+<div style="color:var(--amber);font-weight:600;font-size:13px;margin-top:6px">1 secundaria(s) no soportada(s):</div><ul>
+<li>Este requisito está establecido para asegurar la legibilidad de los contratos.</li>
+</ul>
+</div>
+<div class="just">
+<div class="j"><span class="jk">correctitud:</span> Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.</div>
+<div class="j"><span class="jk">completitud:</span> Todas las patas cubiertas.</div>
+<div class="j"><span class="jk">citas:</span> La cita apunta al documento correcto (TO de protección de usuarios) pero solo a nivel de página, sin identificar el punto 2.3.1.1.</div>
+</div>
+<div class="meta"><span class="adj-no">✓ veredicto automático</span> · harness $0.0113 · juez $0.0134</div>
+</div>
+<div class="card">
+<div style="font-weight:700;font-size:13px;color:var(--mut);margin-bottom:8px">Caso ❌ — afirmación central falsa detectada · <span class="mono">CQ-031 / run_1</span></div>
+<p class="q">¿Qué deudores no deben ser objeto de clasificación y respecto de qué deudores no corresponde evaluar la capacidad de repago?</p>
+<span class="pill cat">cadena_restriccion_excepcion</span>
+<span class="pill">dificultad 2</span>
+<div class="label">Respuesta esperada (ground truth)</div>
+<div class="exp">No deben clasificarse los deudores cuyas financiaciones estén cubiertas totalmente con garantías preferidas &#x27;A&#x27; (4.5); y respecto de las financiaciones respaldadas con garantías preferidas &#x27;A&#x27; no corresponde evaluar la capacidad de repago (4.4).</div>
+<div class="label">Respuesta del agente</div>
+<div class="ans">Según la regulación del BCRA, los deudores por préstamos de monto reducido están eximidos de la evaluación obligatoria de capacidad de pago por ingresos. Respecto a qué deudores no deben ser objeto de clasificación, la información disponible en el grafo es limitada. Se encontró que operaciones como Créditos frente al Banco Central de la República Argentina, Compras a término por pases pasivos, Anticipos por pago de jubilaciones y pensiones, Anticipos y préstamos al Fondo de Garantía de los Depósitos, Obligaciones negociables y otras operaciones específicas están comprendidas en la clasificación de deudores. Sin embargo, el grafo no proporciona explícitamente una lista de deudores que NO deben ser objeto de clasificación.</div>
+<div class="cite" style="margin-top:8px">📄 <b>TO_clasificacion_deudores_actual.pdf</b> p. 34 · <b>TO_clasificacion_deudores_actual.pdf</b> p. 7</div>
+<div class="label">Veredicto del juez</div>
+<div class="vgrid">
+<div class="vbox"><div class="k">Correctitud</div><div class="v bad">incorrecta</div></div>
+<div class="vbox"><div class="k">Completitud</div><div class="v warn">parcial</div></div>
+<div class="vbox"><div class="k">Abstención</div><div class="v neu">—</div></div>
+<div class="vbox"><div class="k">Precisión cita</div><div class="v neu">pagina</div></div>
+</div>
+<div class="claims">
+<div style="color:var(--amber);font-weight:600;font-size:13px;margin-top:6px">5 secundaria(s) no soportada(s):</div><ul>
+<li>Las operaciones de Créditos frente al Banco Central de la República Argentina están comprendidas en la clasificación de deudores.</li>
+<li>Las Compras a término por pases pasivos están comprendidas en la clasificación de deudores.</li>
+<li>Los Anticipos por pago de jubilaciones y pensiones están comprendidos en la clasificación de deudores.</li>
+<li>Los Anticipos y préstamos al Fondo de Garantía de los Depósitos están comprendidos en la clasificación de deudores.</li>
+<li>Las Obligaciones negociables están comprendidas en la clasificación de deudores.</li>
+</ul>
+</div>
+<div class="just">
+<div class="j"><span class="jk">correctitud:</span> Afirmación central falsa: Los deudores por préstamos de monto reducido están eximidos de la evaluación obligatoria de capacidad de pago por ingresos según la regulación del BCRA.</div>
+<div class="j"><span class="jk">completitud:</span> Patas no cubiertas: Qué deudores no deben ser objeto de clasificación; Respecto de qué deudores no corresponde evaluar la capacidad de repago</div>
+<div class="j"><span class="jk">citas:</span> El agente cita el documento correcto (TO_clasificacion_deudores_actual.pdf) pero solo a nivel de página, sin precisión de punto/sección.</div>
+</div>
+<div class="meta"><span class="adj-no">✓ veredicto automático</span> · harness $0.0386 · juez $0.0264</div>
+</div>
+<div class="card">
+<div style="font-weight:700;font-size:13px;color:var(--mut);margin-bottom:8px">Caso ⚖️ — requiere adjudicación humana · <span class="mono">CQ-018 / run_1</span></div>
+<p class="q">Los proveedores no financieros de crédito y las empresas no financieras emisoras de tarjetas, ¿deben cumplir con Protección al Usuario y, además, clasificar a sus deudores? ¿Bajo qué criterio clasifican?</p>
+<span class="pill cat">multi_norma</span>
+<span class="pill">dificultad 2</span>
+<div class="label">Respuesta esperada (ground truth)</div>
+<div class="exp">Sí: son sujetos obligados de Protección al Usuario (1.1.2.4 y 1.1.2.5) y deben clasificar a sus deudores en función de la mora, según los criterios de la cartera de consumo o vivienda y la recategorización obligatoria del punto 7.3 (Clasificación 10.1).</div>
+<div class="label">Respuesta del agente</div>
+<div class="ans">Sí, tanto los proveedores no financieros de crédito como las empresas no financieras emisoras de tarjetas de crédito y/o compra deben cumplir con Protección al Usuario. Ambos sujetos están obligados a designar un Directivo Responsable de Protección de los Usuarios de Servicios Financieros.
+
+Respecto a la clasificación de deudores: Las entidades no financieras emisoras de tarjetas de crédito en modalidad de sistema cerrado reportan clasificaciones de deudores. Sin embargo, la información disponible en el grafo no especifica explícitamente si los proveedores no financieros de crédito también están obligados a clasificar deudores.
+
+Los criterios de clasificación de deudores se basan en la mora y situación crediticia del cliente:
+- Situación normal: Cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos.
+- Riesgo bajo: Cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas.
+- Riesgo medio: Incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días.
+- Riesgo alto: Atrasos de más de 180 días hasta un año.
+- Irrecuperable: Clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.</div>
+<div class="cite" style="margin-top:8px">📄 <b>TO_proteccion_usuarios_servicios_financieros_actual.pdf</b> p. 27 · <b>TO_clasificacion_deudores_actual.pdf</b> p. 39 · <b>TO_clasificacion_deudores_actual.pdf</b> p. 20 · <b>TO_clasificacion_deudores_actual.pdf</b> p. 35 · <b>TO_clasificacion_deudores_actual.pdf</b> p. 36</div>
+<div class="label">Veredicto del juez</div>
+<div class="vgrid">
+<div class="vbox"><div class="k">Correctitud</div><div class="v ok">correcta</div></div>
+<div class="vbox"><div class="k">Completitud</div><div class="v warn">parcial</div></div>
+<div class="vbox"><div class="k">Abstención</div><div class="v neu">—</div></div>
+<div class="vbox"><div class="k">Precisión cita</div><div class="v neu">pagina</div></div>
+</div>
+<div class="claims">
+<div style="color:var(--red);font-weight:600;font-size:13px">⚠ 6 afirmación(es) CENTRAL(es) no soportada(s):</div><ul>
+<li>Las entidades no financieras emisoras de tarjetas de crédito en modalidad de sistema cerrado reportan clasificaciones de deudores.</li>
+<li>La clasificación &#x27;Situación normal&#x27; corresponde a clientes que demuestran capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos.</li>
+<li>La clasificación &#x27;Riesgo bajo&#x27; corresponde a cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas.</li>
+<li>La clasificación &#x27;Riesgo medio&#x27; corresponde a incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días.</li>
+<li>La clasificación &#x27;Riesgo alto&#x27; corresponde a atrasos de más de 180 días hasta un año.</li>
+<li>La clasificación &#x27;Irrecuperable&#x27; corresponde a clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.</li>
+</ul>
+<div style="color:var(--amber);font-weight:600;font-size:13px;margin-top:6px">2 secundaria(s) no soportada(s):</div><ul>
+<li>Los proveedores no financieros de crédito están obligados a designar un Directivo Responsable de Protección de los Usuarios de Servicios Financieros.</li>
+<li>Las empresas no financieras emisoras de tarjetas de crédito y/o compra están obligadas a designar un Directivo Responsable de Protección de los Usuarios de Servicios Financieros.</li>
+</ul>
+</div>
+<div class="just">
+<div class="j"><span class="jk">correctitud:</span> Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.</div>
+<div class="j"><span class="jk">completitud:</span> Patas no cubiertas: ¿Deben clasificar a sus deudores?; ¿Bajo qué criterio clasifican a sus deudores?</div>
+<div class="j"><span class="jk">citas:</span> El agente cita ambos TOs correctos (Protección y Clasificación) a nivel de página, pero no llega al nivel de punto/sección requerido (1.1.2.4, 1.1.2.5, 10.1).</div>
+</div>
+<div class="meta"><span class="adj-yes">⚖️ requiere adjudicación humana</span> · harness $0.0298 · juez $0.0388</div>
+</div>
+<div class="card">
+<div style="font-weight:700;font-size:13px;color:var(--mut);margin-bottom:8px">Caso 🚫 — pregunta no respondible (abstención) · <span class="mono">CQ-038 / run_1</span></div>
+<p class="q">¿Qué requisitos (niveles de ventas, cantidad de empleados, sector) debe cumplir una empresa para ser considerada Micro, Pequeña o Mediana Empresa (MiPyME) a los fines de estas normas?</p>
+<span class="pill cat">unanswerable</span>
+<span class="pill">dificultad 2</span>
+<div class="label">Respuesta esperada (ground truth)</div>
+<div class="exp">No respondible con estos 5 TOs. El sistema debería indicar que los criterios de determinación de MiPyME no figuran en el corpus.</div>
+<div class="label">Respuesta del agente</div>
+<div class="ans">La información sobre los requisitos específicos (niveles de ventas, cantidad de empleados, sector) para clasificar una empresa como Micro, Pequeña o Mediana Empresa (MiPyME) se encuentra regulada en la Ley 24.467 y en los criterios del punto 2.8.3 de las normas del BCRA. Sin embargo, los detalles concretos de estos umbrales y criterios no están disponibles en los nodos consultados del Knowledge Graph.</div>
+<div class="cite" style="margin-top:8px">📄 <b>TO_clasificacion_deudores_actual.pdf</b> p. 14 · <b>TO_capitales_minimos_actual.pdf</b> p. 16</div>
+<div class="label">Veredicto del juez</div>
+<div class="vgrid">
+<div class="vbox"><div class="k">Correctitud</div><div class="v neu">—</div></div>
+<div class="vbox"><div class="k">Completitud</div><div class="v neu">—</div></div>
+<div class="vbox"><div class="k">Abstención</div><div class="v ok">correcta</div></div>
+<div class="vbox"><div class="k">Precisión cita</div><div class="v neu">pagina</div></div>
+</div>
+<div class="claims">
+<div style="color:var(--amber);font-weight:600;font-size:13px;margin-top:6px">2 secundaria(s) no soportada(s):</div><ul>
+<li>La clasificación de MiPyME está regulada en la Ley 24.467</li>
+<li>Los criterios de clasificación de MiPyME se encuentran en el punto 2.8.3 de las normas del BCRA</li>
+</ul>
+</div>
+<div class="just">
+<div class="j"><span class="jk">citas:</span> Las citas apuntan a documentos (TO_clasificacion_deudores y TO_capitales_minimos) que no forman parte del ground truth, el cual no contiene secciones de referencia.</div>
+<div class="j"><span class="jk">abstencion:</span> El agente no inventa valores ni umbrales concretos y reconoce que los detalles no están disponibles, pero especula sobre la ubicación del dato (Ley 24.467 y punto 2.8.3) sin respaldo en el referente.</div>
+</div>
+<div class="meta"><span class="adj-no">✓ veredicto automático</span> · harness $0.0284 · juez $0.0194</div>
+</div>
+</div></body></html>

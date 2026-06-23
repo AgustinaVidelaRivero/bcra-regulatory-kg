@@ -72,3 +72,32 @@ Cada chunk se cachea individualmente al completarse exitosamente. Cualquier kill
 - NO commits — los maneja la autora manualmente.
 - Modelo de extracción: Claude Haiku (protocolo).
 - NO evaluar el propio KG — la evaluación es comparativa y se hace en la FASE 2.3.
+
+---
+
+## Fase 2.3 — Evaluación downstream (KG-RAG)
+
+La FASE 2.2 dejó los 5 `kg.json` construidos. La FASE 2.3 los compara: se construye un **harness KG-RAG** (un agente que usa el KG como tool) y se corre un set de *competency questions* sobre los 5 grafos para **seleccionar la mejor estrategia de schema**. Proceso incremental: primero exploración manual con pocas queries, después pipeline automatizado con LLM judge.
+
+### Objetivo
+
+Harness KG-RAG **uniforme** sobre los 5 grafos (mismas tools, misma interfaz) para que la comparación entre estrategias sea justa: la única variable es el grafo, no el código que lo consume.
+
+### Decisiones de diseño (tomadas sobre `data/experiment/evaluacion/00_inventario.md`)
+
+1. **Los 5 `kg.json` quedan congelados.** No se editan. Toda normalización de schema ocurre **en memoria**, vía un adaptador (`evaluacion/loader.py`). Las desviaciones de schema están documentadas en `00_inventario.md` §2.2.
+2. **Duplicados de Run 5:** los nodos con `id` idéntico (145 ids, 163 instancias extra) se **mergean en uno**, con **unión de `properties` y de `provenances`**. Cada merge se loguea a `evaluacion/logs/run5_merges.json` (en conflicto de `type`/`label`/valor de property se conserva el de la primera instancia y se registran las variantes).
+3. **API Anthropic directa** (SDK oficial, no Bedrock), con un `.env` propio en `evaluacion/.env` (`ANTHROPIC_API_KEY=...`).
+4. **Provenance uniforme:** las tools del harness devuelven metadata de provenance **`source_doc` + `location`** únicamente, sin resolución al texto del chunk (se descarta `chunk_id` al normalizar).
+
+### Config de modelos
+
+- **Agente respondedor:** `claude-haiku-4-5-20251001` **fijo** para los 5 grafos (misma capacidad de razonamiento para todos → comparación justa).
+- **Juez (fase posterior, LLM-as-judge):** modelo mayor, **a definir**.
+
+### Reglas operativas de la fase
+
+- Los `kg.json` son **READ-ONLY** (congelados, decisión 1). El subset de PDFs sigue read-only.
+- **Todo el trabajo nuevo vive en `data/experiment/evaluacion/`** (loader, validadores, harness, reportes, logs, `.env`). No se escribe en las carpetas de los runs.
+- **Reportes verificables:** rutas exactas y números exactos provenientes de parseo real, nunca estimaciones.
+- NO commits — los maneja la autora.
