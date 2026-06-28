@@ -367,27 +367,37 @@ def verify_replay(run_key, thinking, db_path, label):
     y el 2do pase debe cachearlos idénticos — exactamente lo que el selftest OFFLINE
     NO pudo probar (su Message falso no traía signatures reales). Corré este modo en
     AMBOS estados: una vez sin --thinking (control) y otra con --thinking (firma real)."""
+    import tempfile
     real = _real_client()
     kg = load_graph(run_key)
-    agent_client, _, agent_cache, judge_cache = build_clients(
-        real, kg, thinking=thinking, db_path=db_path, run_label=label + "_replay")
-    agent = GraphAgent(kg, client=agent_client, cache_conversation=True)
     q = _load_questions(EVAL_SET)[0]
     print(f"== VERIFY-REPLAY {run_key} thinking={'ON' if thinking else 'OFF'} :: {q['id']} ==")
 
-    a0 = _max_access_rowid(agent_cache)
-    agent.ask(q["id"], q["pregunta"])                       # PASE 1 (misses)
-    h1, n1, _ = _turns_since(agent_cache, a0, "agent")
-    a1 = _max_access_rowid(agent_cache)
-    agent.ask(q["id"], q["pregunta"])                       # PASE 2 (debe ser todo hits)
-    h2, n2, _ = _turns_since(agent_cache, a1, "agent")
+    # Caché TEMPORAL AISLADA: este modo necesita arrancar de caché VACÍA para que el
+    # assert "pase 1 = 0 hits" sea válido. Usar la calls.db de producción rompe el
+    # test si esa pregunta ya fue cacheada (p. ej. por un --preflight previo) y además
+    # ensucia producción. El tempdir se borra al salir; producción no se toca.
+    # (Ignora deliberadamente db_path; el namespace/serialización son los mismos.)
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_db = Path(tmp) / "replay_cache.db"
+        agent_client, _, agent_cache, judge_cache = build_clients(
+            real, kg, thinking=thinking, db_path=tmp_db, run_label=label + "_replay")
+        agent = GraphAgent(kg, client=agent_client, cache_conversation=True)
+
+        a0 = _max_access_rowid(agent_cache)
+        agent.ask(q["id"], q["pregunta"])                   # PASE 1 (misses, paga real)
+        h1, n1, _ = _turns_since(agent_cache, a0, "agent")
+        a1 = _max_access_rowid(agent_cache)
+        agent.ask(q["id"], q["pregunta"])                   # PASE 2 (debe ser todo hits)
+        h2, n2, _ = _turns_since(agent_cache, a1, "agent")
+        agent_cache.close(); judge_cache.close()
 
     print(f"  pase 1: {n1} turnos, {h1} hits (esperado 0 hits)")
     print(f"  pase 2: {n2} turnos, {h2} hits (esperado {n2} = 100%)")
     ok = (n1 == n2 and n2 > 0 and h2 == n2 and h1 == 0)
     print(f"\n[{'PASS' if ok else 'FAIL'}] replay multi-turno: 2do pase 100% hits en "
-          f"todos los turnos (serialización de ContentBlocks estable turno a turno)")
-    agent_cache.close(); judge_cache.close()
+          f"todos los turnos (serialización de ContentBlocks estable turno a turno"
+          + (", incl. thinking blocks con signature real" if thinking else "") + ")")
     return ok
 
 
