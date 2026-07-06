@@ -101,3 +101,66 @@ Harness KG-RAG **uniforme** sobre los 5 grafos (mismas tools, misma interfaz) pa
 - **Todo el trabajo nuevo vive en `data/experiment/evaluacion/`** (loader, validadores, harness, reportes, logs, `.env`). No se escribe en las carpetas de los runs.
 - **Reportes verificables:** rutas exactas y números exactos provenientes de parseo real, nunca estimaciones.
 - NO commits — los maneja la autora.
+
+---
+
+## Fase 2.5 — Refinamiento del grafo (pipeline como Skill)
+
+> **Numeración canónica (según los informes de la autora):** 2.3 = evaluación congelada; 2.3+ = instrumentación post-hoc (`llm_cache.py`, `run_posthoc.py`); **2.4 = verificador** (`verificador.py`, `pdf_locate.py`); **2.5 = refinamiento**. Versiones previas de este documento llamaban "2.4" al refinamiento — eso era incorrecto.
+
+La FASE 2.3 cerró con un ganador. La FASE 2.5 toma ese grafo y lo **refina iterativamente**: detectar dónde falla el sistema, atribuir la causa, proponer cambios, aplicarlos y demostrar mejora medible. El pipeline se empaqueta como una **Skill de Claude** para que el ciclo sea repetible, barato y confiable (workflow congelado, no loop agéntico que redescubre el camino cada vez).
+
+### Resultado heredado de la Fase 2.3
+
+- **Grafo ganador: Run 3 (PPF Core).** Seleccionado por consistencia multidimensional (correctitud, cadenas de excepción, estabilidad, abstención, precisión de citas) sobre `eval_set_v1` (23 preguntas), con N=3 repeticiones y veredicto modal. Juez v2.1.1 (dos pasos). Esta selección está **congelada** — no se reabre en 2.5.
+- Archivos congelados de 2.3 en `data/experiment/evaluacion/`: `loader.py`, `harness.py`, `judge.py`, `run_frozen.py`.
+
+### Infraestructura construida (semana del 16-24 jun, en `data/experiment/evaluacion/`)
+
+- **`llm_cache.py`** — caché + captura del crudo. Envuelve el cliente Anthropic, guarda el objeto completo de la API (`resp.model_dump()`: tokens, razonamiento, stop_reason) en SQLite. Key = hash determinístico (prompt+modelo+temp+tools+thinking). Namespace versionado (code_version + graph_fingerprint + flag `think=0/1`). Write-through (resumible ante kill). Tests: `test_llm_cache.py`.
+- **`run_posthoc.py`** — runner instrumentado. `ParamOverrideClient` por encima de la caché inyecta thinking/temp sin tocar el harness congelado. En thinking-OFF el override es identidad → request byte-idéntico al frozen. Flags `--thinking`/`--reps`/`--run all`, modos `--preflight`/`--verify-replay`.
+- **`verifier_pilot.py`** — verificador de calidad del KG. Para cada claim fallido: recupera el nodo de la traza, localiza el pasaje en el PDF, compara (¿nodo fiel al PDF? ¿agente fiel al nodo?), clasifica con árbol auditable. Taxonomía: contenido_kg, completitud_kg, estructural_kg (defectos del KG) / desvio_agente, falla_abstencion (defectos del agente) / provenance_imprecisa. Haiku para mapeo claim→nodo, Opus para clasificación. Calibrado contra juicio manual (piloto de 10), escalado a 382 claims.
+
+### Resultados de la evaluación cualitativa (frozen, no se re-corre sin decisión de mentores)
+
+> Aclaración de alcance: lo "frozen" es la **evaluación comparativa de los 5 grafos** (la que seleccionó al ganador). El pipeline de refinamiento de 2.5 (Paso 2) SÍ corre el agente RAG, pero **solo sobre la copia de trabajo de run_3**, para generar trazas de diagnóstico — no re-corre ni reabre la comparación de los 5.
+
+
+- Re-corrida post-hoc: 5 grafos × 23 preguntas × 2 condiciones (thinking OFF/ON) = **230 trazas** en `posthoc_run/traces/{off,on}/run_X/`. **N=1** (con caché, N=3 colapsa en copias) → sirve para análisis cualitativo, NO reconfirma el ganador con el rigor del frozen. **Pregunta abierta para Lucho: ¿reconfirmación N=3 sin caché, o alcanza el análisis cualitativo?**
+- Mapa de defectos (382 claims fallidos): ~38% defecto del KG, ~49% del agente, ~12% falso positivo del juez.
+- **Provenance depurada:** la dimensión `provenance_imprecisa` salió 60 nodos en bruto, ~42% eran artefactos de localización (el localizador agarraba el índice del PDF en vez del cuerpo). Depurada calibrando contra juicio manual (11/12). Reales: 34 (techo). Mapa depurado en `posthoc_run/pilot_verificador/mapa_depurado.json`.
+- **Ranking por grafo tras depurar (nodos defectuosos):** run_4=15, run_3=16 (empate en la punta), run_1=22, run_5=30, run_2=33. **Hallazgo abierto:** el mapa NO contradice a run_3; empata con run_4 en fidelidad de contenido, run_3 gana por las otras dimensiones del frozen. La ventaja de run_3 está en cómo el agente navega el grafo, no en el contenido. (A discutir con mentores.)
+- Hallazgo meta: el juez es inestable (mismo claim+nodo → veredicto distinto OFF/ON en CQ-020, CQ-014) → parte del "efecto thinking" es ruido de medición.
+
+### Dataset de evaluación (estado actual)
+
+- **`eval_set_v1.json`** (23 preguntas) — el original, intacto. Generado a ciegas.
+- **`eval_set_v2.json`** (31 preguntas) — v1 + 8 nuevas (CQ-040 a CQ-047), generadas a ciegas contra los PDFs (instancia separada que NO vio los grafos), verificadas contra el cuerpo de los PDFs. Distribución: factual_directa 10, multi_norma 9, cadena_restriccion_excepcion 8, unanswerable 4. **Las 8 nuevas son de tipo difícil (multi_norma + cadena)** porque el sistema acierta las factuales y falla en razonamiento multi-salto.
+- **Hallazgo del corpus:** el subset de 5 TOs tiene techo de dificultad multi-norma — la mayoría de las referencias cruzadas apuntan FUERA del subset. CQ-025 (v1) apunta a un TO fuera del corpus; marcada como caso de expansión de corpus, a decidir con Lucho.
+- **Diagnóstico de las fallas de run_3 sobre v1:** acierta 83% efectivo; falla en 5 preguntas (CQ-017, 020, 025, 031, +034 secundaria), y las 5 son **grafo-atribuibles** (ninguna es límite de razonamiento del agente). Esto es ideal: el pipeline de refinamiento del grafo puede moverlas.
+
+### CAMBIO DE REGLAS respecto de 2.3 (importante)
+
+- En 2.3 los `kg.json` eran **READ-ONLY congelados**. En 2.5 esa congelación se levanta **SOLO para el grafo ganador (run_3)**, y SOLO bajo el flujo controlado del pipeline de refinamiento (paso 5: aplicar cambios y demostrar mejora). Los otros 4 grafos siguen congelados.
+- El refinamiento NO es edición libre: cada cambio al grafo debe (a) derivar de un defecto detectado y atribuido en el paso 3, (b) aplicarse de forma trazable, (c) demostrarse con re-corrida del MISMO dataset (side-by-side antes/después).
+- **El refinamiento trabaja SIEMPRE sobre una copia de run_3** (ej. `run_3_refinamiento/`), nunca sobre el `run_3` original. El `run_3` ganador del frozen queda intacto como baseline inmutable, para que el side-by-side del Paso 5 compare contra él. (Si más adelante un refinamiento demuestra mejora y se decide "promoverlo", esa es una decisión explícita y registrada, no una edición silenciosa del original.)
+
+### El pipeline de refinamiento (5 pasos — diseño en curso)
+
+1. **Dataset** — partir de un set de queries difícil. NO generado por el agente que refina (sesgo). Usar `eval_set_v2`.
+2. **Generar trazas** — ejecutar las queries con el agente RAG sobre el grafo (runner + caché ya construidos).
+3. **Analizar trazas (agéntico)** — el agente investiga dónde y por qué se rompe, y atribuye (grafo vs agente). DEBE arrancar desde "¿por qué falló?", NO desde "mirá el nodo" (evitar sesgo de atribución hacia el KG — preocupación explícita de Lucho). Calibrar contra las 5 fallas ya diagnosticadas a mano antes de soltar libertad.
+4. **Sugerir cambios** — tres palancas: grafo/esquema, prompt del agente RAG, o expansión de corpus. El agente elige según el defecto.
+5. **Aplicar y demostrar** — aplicar el cambio, re-correr el MISMO dataset, mostrar mejora side-by-side. Usar caché para no re-pagar lo no cambiado.
+
+### Skill de refinamiento
+
+- Se empaqueta como Skill de Claude (`skill-creator` de Anthropic instalado en `~/.claude/skills/` como referencia y herramienta).
+- Heurística de diseño (del skill-creator): fijar duro SOLO lo que rompe el pipeline si el agente lo hace distinto (ej. usar el mismo dataset para demostrar); todo lo demás, default razonado + criterio del agente. El acceso del verificador al grafo NO se fija como "mirá el grafo" (eso sesga); se da como herramienta que el agente decide usar.
+
+### Reglas operativas de la fase
+
+- NO commits — los maneja la autora.
+- Reportes verificables: rutas y números exactos de parseo real, nunca estimaciones.
+- Validar un paso antes de avanzar (calibrar contra juicio manual antes de escalar). Patrón consistente del proyecto.
+- Trabajo nuevo de 2.5 vive en `data/experiment/evaluacion/` (o subcarpeta dedicada del refinamiento, a definir).
