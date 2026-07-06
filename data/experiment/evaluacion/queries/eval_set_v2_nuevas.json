@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "archivo": "eval_set_v2_nuevas.json",
+    "uso": "evaluacion - preguntas NUEVAS (solo las nuevas, aun sin mezclar con eval_set_v1) para ampliar el set de competency questions de QA (KG-RAG) sobre los 5 Textos Ordenados del BCRA.",
+    "descripcion": "Ampliacion del eval_set_v1 con 8 preguntas dificiles de razonamiento multi-salto (multi_norma) y de cadenas de restriccion/excepcion (cadena_restriccion_excepcion). Disenadas de forma ciega a los grafos: derivadas exclusivamente del texto fuente en data/experiment/subset/. Motivacion: el sistema acierta las factuales directas del v1 pero falla en razonamiento multi-salto.",
+    "fecha_diseno": "2026-06-28",
+    "origen": "Generadas tras una evaluacion de capacidad del corpus (Paso 1): se priorizaron vetas con fundamento textual verificado y sin solapamiento con el v1.",
+    "corpus": {
+      "proteccion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf (Proteccion de los Usuarios de Servicios Financieros, T.O. al 06/05/26, Com. A 8433)",
+      "clasificacion": "TO_clasificacion_deudores_actual.pdf (Clasificacion de Deudores, T.O. al 19/12/25, Com. A 8378)",
+      "capitales": "TO_capitales_minimos_actual.pdf (Capitales Minimos de las Entidades Financieras, T.O. al 09/04/26, Com. A 8418)",
+      "exterior": "TO_exterior_cambios_actual.pdf (Exterior y Cambios, T.O. al 25/08/25, Com. A 8307)",
+      "regimen": "TO_regimen_informativo_contable_mensual_actual.pdf (Regimen Informativo Contable Mensual - R.I. Capitales Minimos R.I.-C.M.)"
+    },
+    "categorias": {
+      "multi_norma": "Requiere combinar 2+ secciones, idealmente cruzando TOs distintos.",
+      "cadena_restriccion_excepcion": "Que aplica, que lo exceptua y bajo que condicion."
+    },
+    "total": 8,
+    "distribucion": {
+      "multi_norma": 4,
+      "cadena_restriccion_excepcion": 4
+    },
+    "campos": "id, pregunta, categoria, tos_fuente, ground_truth_secciones, cita_textual, respuesta_esperada, dificultad (1-3)",
+    "rango_ids": "CQ-040 a CQ-047 (sin colision con eval_set_v1, que llega hasta CQ-039)",
+    "nota_scope": "El TO de Regimen Informativo del subset comprende unicamente la parte R.I.-C.M. (Capitales Minimos). Todas las citas fueron verificadas contra los PDFs fuente; ninguna seccion ni cita fue inventada."
+  },
+  "preguntas": [
+    {
+      "id": "CQ-040",
+      "pregunta": "Si una financiacion esta cubierta totalmente con garantias preferidas 'A', ¿debe la entidad evaluar la capacidad de repago del deudor y clasificarlo? ¿Y que tratamiento recibe la prevision por incobrabilidad constituida sobre esa financiacion a los efectos de la responsabilidad patrimonial computable?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "clasificacion",
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Clasificacion, Punto 4.4 (Financiaciones cubiertas con garantias preferidas 'A')",
+        "Clasificacion, Punto 4.5 (Deudores que no deben ser objeto de clasificacion)",
+        "Capitales, Punto 8.2.3.3 (Patrimonio neto complementario)"
+      ],
+      "cita_textual": "[Clasificacion 4.4] No correspondera la evaluacion de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantias. | [Clasificacion 4.5] Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantias preferidas 'A' no seran objeto de clasificacion, sin perjuicio de su informacion segun las normas que se establezcan en los regimenes respectivos. | [Capitales 8.2.3.3] Previsiones por riesgo de incobrabilidad sobre la cartera correspondiente a deudores clasificados 'en situacion normal' [...] y sobre las financiaciones que se encuentran cubiertas con garantias preferidas 'A', sin superar el 1,25 % de los activos ponderados por riesgo de credito.",
+      "respuesta_esperada": "No. Sobre las financiaciones respaldadas con garantias preferidas 'A' no corresponde evaluar la capacidad de repago (Clasificacion 4.4), y los deudores cuyas financiaciones esten cubiertas totalmente con esas garantias no son objeto de clasificacion (Clasificacion 4.5). En paralelo, a efectos de capital, la prevision por incobrabilidad constituida sobre esas financiaciones integra el patrimonio neto complementario (capital de nivel dos) de la RPC, junto con la de los deudores 'en situacion normal', hasta un tope del 1,25 % de los activos ponderados por riesgo de credito (Capitales 8.2.3.3).",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-041",
+      "pregunta": "En la formula de exigencia de capital por riesgo de credito, ¿que representa el termino INC, que tipos de excesos a limites regulatorios comprende, y como se vincula con el Regimen Informativo de Capitales Minimos?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "capitales",
+        "regimen"
+      ],
+      "ground_truth_secciones": [
+        "Capitales, Punto 2.1 (Exigencia - definicion de INC)",
+        "Regimen Informativo, Seccion 9, Punto 9.1.1 (Incrementos de exigencia)"
+      ],
+      "cita_textual": "[Capitales 2.1] INC: incremento por los siguientes excesos: - en la relacion de activos inmovilizados y otros conceptos [...]; - a los limites establecidos en el TO sobre Financiamiento al Sector Publico no Financiero [...]; - a los limites establecidos en el TO sobre Grandes Exposiciones al Riesgo de Credito [...]; - a los limites de graduacion del credito [...]. INC(inversiones significativas en empresas): participacion en el capital de cada empresa: 15%; total de participaciones en el capital de empresas: 60% [...] sobre la responsabilidad patrimonial computable (RPC). | [Regimen 9.1.1] Se informaran los incrementos a la exigencia segun riesgo de credito generados por excesos verificados en: La relacion de activos inmovilizados y otros conceptos [...]; Los limites establecidos en las normas sobre 'Grandes Exposiciones al Riesgo de Credito' [...]; Los limites establecidos en las normas sobre 'Graduacion del credito' [...]; Los limites establecidos en las normas sobre 'Financiamiento al Sector Publico no Financiero' [...]; Los limites establecidos en las normas sobre 'Posiciones de Derivados no Cubiertos'.",
+      "respuesta_esperada": "INC es el termino de incremento que se suma en la formula de exigencia por riesgo de credito (CRC = k x 0,08 x APRc + INC). Recoge los excesos a limites regulatorios: la relacion de activos inmovilizados y otros conceptos, los limites de financiamiento al sector publico no financiero, los de grandes exposiciones al riesgo de credito, los de graduacion del credito, y las inversiones significativas en empresas (limites del 15 % por empresa y 60 % del total de participaciones, calculados sobre la RPC). El TO de Capitales Minimos lo define (punto 2.1) y el Regimen Informativo lo captura en su Seccion 9 (punto 9.1.1), donde se informan esos incrementos por excesos verificados, identificados por codigos.",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-042",
+      "pregunta": "¿Bajo que condiciones una financiacion de naturaleza comercial puede recibir el tratamiento de la cartera para consumo o vivienda, que es el 'importe de referencia' que delimita ese umbral, y en que caso ocurre el encuadramiento inverso (un credito de consumo o vivienda que pasa a la cartera comercial)?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Clasificacion, Punto 3.7 (Importe de referencia)",
+        "Clasificacion, Punto 5.1.1.1 y 5.1.1.2 (agrupamiento de carteras)",
+        "Clasificacion, Punto 5.1.2.4 (Cartera para consumo o vivienda)"
+      ],
+      "cita_textual": "[Clasificacion 3.7] El importe a considerar sera el nivel maximo del valor de ventas totales anuales para la categoria 'Micro' correspondiente al sector 'Comercio' que determine la autoridad de aplicacion de la Ley 24.467 (y sus modificatorias). | [Clasificacion 5.1.1.2] A opcion de la entidad, las financiaciones de naturaleza comercial de hasta el equivalente a dos veces el importe de referencia establecido en el punto 3.7., cuenten o no con garantias preferidas, podran agruparse junto con los creditos para consumo o vivienda, en cuyo caso recibiran el tratamiento previsto para estos ultimos. Cuando el cliente mantenga financiaciones por ambos conceptos, los creditos para consumo o vivienda se sumaran a los de la cartera comercial para determinar su encuadramiento en una o en otra cartera en funcion del importe indicado, a cuyo fin los creditos con garantias preferidas se ponderaran al 50 %. [...] esta opcion debera aplicarse con caracter general a toda la cartera [...] y solo podra cambiarse con un preaviso de 6 meses a la [SEFyC]. | [Clasificacion 5.1.1.1] Los creditos para consumo o vivienda que superen el equivalente a dos veces el importe de referencia [...] y cuyo repago no se encuentre vinculado a ingresos fijos o periodicos del cliente sino a la evolucion de su actividad productiva o comercial se incluiran dentro de la cartera comercial.",
+      "respuesta_esperada": "Una financiacion de naturaleza comercial puede recibir el tratamiento de la cartera para consumo o vivienda cuando su importe no supera el equivalente a dos veces el 'importe de referencia' y la entidad ejerce esa opcion (puntos 5.1.1.2 y 5.1.2.4). El importe de referencia (punto 3.7) es el nivel maximo de ventas totales anuales de la categoria 'Micro' del sector 'Comercio' segun la autoridad de aplicacion de la Ley 24.467. La opcion debe aplicarse con caracter general a toda la cartera, constar en el Manual de procedimientos y solo puede cambiarse con un preaviso de 6 meses a la SEFyC; ademas, al sumar conceptos para el encuadramiento, los creditos con garantias preferidas se ponderan al 50 %. A la inversa, un credito de consumo o vivienda que supere ese doble del importe de referencia y cuyo repago dependa de la actividad productiva o comercial del cliente se incluye en la cartera comercial (punto 5.1.1.1).",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-043",
+      "pregunta": "¿Como se calcula la exigencia de capital por riesgo operacional para una entidad del Grupo 1 y con que frecuencia y bajo que expresion se reporta esa exigencia al BCRA?",
+      "categoria": "multi_norma",
+      "tos_fuente": [
+        "capitales",
+        "regimen"
+      ],
+      "ground_truth_secciones": [
+        "Capitales, Punto 7.1 (Exigencia por riesgo operacional - grupo 1)",
+        "Regimen Informativo, Seccion 5, Punto 5.1.1 (Exigencia por riesgo operacional - Grupo 1)"
+      ],
+      "cita_textual": "[Capitales 7.1] Exigencia de capital por riesgo operacional para entidades del grupo 1. CRO = BIC x ILM. CRO: exigencia de capital por riesgo operacional. BIC: componente del indicador de negocio, que es el producto del indicador de negocio (BI) [...]. | [Regimen 5.1.1] Se determinara mensualmente por la siguiente expresion: CRO = BIC x ILM [...] ILM: multiplicador de perdida interna igual a 1. BIC: componente del indicador de negocio = suma de BIi x ai, donde ai: coeficiente marginal, determinado en funcion del tramo del BI [Categoria 1 (<=1): 12 %; Categoria 2 (1<BI<=30): 15 %; Categoria 3 (>30): 18 %].",
+      "respuesta_esperada": "Para las entidades del Grupo 1 la exigencia por riesgo operacional se calcula como CRO = BIC x ILM, donde BIC es el componente del indicador de negocio (la suma de los tramos del indicador de negocio BI multiplicados por coeficientes marginales del 12 %, 15 % y 18 % segun el tramo) e ILM es el multiplicador de perdida interna, igual a 1. La exigencia se define en el TO de Capitales Minimos (punto 7.1) y se reporta con identica expresion y la misma tabla de coeficientes marginales en el Regimen Informativo de Capitales Minimos (Seccion 5, punto 5.1.1), con frecuencia de reporte mensual.",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-044",
+      "pregunta": "El factor 'k' que pondera la exigencia de capital por riesgo de credito segun la calificacion de la entidad: ¿que valor toma para una entidad calificada 2, a partir de cuando rige una nueva calificacion notificada, y que valor se aplica mientras la entidad no haya sido calificada?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "capitales"
+      ],
+      "ground_truth_secciones": [
+        "Capitales, Punto 2.1 (Exigencia - factor 'k')"
+      ],
+      "cita_textual": "k: factor vinculado a la calificacion asignada a la entidad segun la evaluacion efectuada por la SEFYC, teniendo en cuenta la siguiente escala: Calificacion 1 -> 1; 2 -> 1,03; 3 -> 1,08; 4 -> 1,13; 5 -> 1,19. A este efecto, se considerara la ultima calificacion informada para el calculo de la exigencia que corresponda integrar al tercer mes siguiente a aquel en que tenga lugar la notificacion. En tanto no se comunique, el valor de 'k' sera igual a 1,03.",
+      "respuesta_esperada": "El factor 'k' depende de la calificacion que la SEFyC asigna a la entidad, segun la escala: calificacion 1 -> k = 1; 2 -> 1,03; 3 -> 1,08; 4 -> 1,13; 5 -> 1,19. Una entidad calificada 2 usa k = 1,03. Una nueva calificacion notificada se aplica recien para el calculo de la exigencia a integrar en el tercer mes siguiente al de la notificacion. Y mientras la entidad no haya sido calificada (no se comunique calificacion), 'k' se toma igual a 1,03.",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-045",
+      "pregunta": "Cuando un sujeto obligado cobro o adeudo de forma indebida importes a un usuario (por ejemplo, comisiones o cargos sin cumplir los requisitos, o por encima de los maximos fijados por el BCRA), ¿en que plazo debe reintegrarlos? ¿De que depende que el plazo sea uno u otro?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Proteccion, Punto 2.3.5 (Reintegro de importes) - 2.3.5.1"
+      ],
+      "cita_textual": "Todo importe cobrado o adeudado de cualquier forma al usuario de servicios financieros por los siguientes conceptos: i) tasas de interes, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.; [...] iii) comisiones en exceso de las maximas fijadas por el BCRA que sean de aplicacion; [...] debera serle reintegrado dentro de: - los diez (10) dias habiles siguientes al momento de la presentacion del reclamo ante el sujeto obligado, de conformidad con las previsiones del punto 3.1.6.; o - los cinco (5) dias habiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalizacion que realice la SEFYC.",
+      "respuesta_esperada": "Todo importe cobrado o adeudado indebidamente al usuario (entre otros: tasas, comisiones o cargos aplicados sin cumplir los puntos 2.3.2 a 2.3.4, cargos en exceso de los costos de terceros, comisiones por encima de las maximas fijadas por el BCRA, o beneficios mal liquidados) debe reintegrarse en uno de dos plazos alternativos segun el disparador: 10 dias habiles desde la presentacion del reclamo del usuario ante el sujeto obligado (conforme al punto 3.1.6), o 5 dias habiles desde que la circunstancia es constatada por el propio sujeto obligado o por la fiscalizacion de la SEFyC. Todo ello sin perjuicio de las sanciones que pudieran corresponder.",
+      "dificultad": 2
+    },
+    {
+      "id": "CQ-046",
+      "pregunta": "¿Con que antelacion debe notificarse al usuario una modificacion en los valores de comisiones y/o cargos? ¿Que tipo de modificacion no requiere notificacion anticipada, y que regla especial rige para el consentimiento de cambios en los contratos de tarjeta de credito?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "proteccion"
+      ],
+      "ground_truth_secciones": [
+        "Proteccion, Punto 2.3.4 (Cambios de condiciones pactadas) - acapites iii y iv"
+      ],
+      "cita_textual": "En los contratos de tarjeta de credito el consentimiento a modificaciones en las condiciones pactadas (nuevas comisiones y/o cargos) solo puede ser dado por el titular de la cuenta. [...] El usuario de servicios financieros debe ser notificado de las modificaciones que aplicara el sujeto obligado con una antelacion minima de sesenta (60) dias corridos a su entrada en vigencia. Las modificaciones que resulten economicamente mas beneficiosas para el usuario -por una reduccion de los valores pactados- no requieren notificacion anticipada. [...] 'Usted podra optar por rescindir el contrato en cualquier momento antes de la entrada en vigencia del cambio y sin cargo alguno [...]'.",
+      "respuesta_esperada": "El sujeto obligado debe notificar al usuario las modificaciones de comisiones y/o cargos con una antelacion minima de 60 dias corridos a su entrada en vigencia (el consentimiento puede quedar conformado por la falta de objecion dentro del plazo). Excepcion: las modificaciones economicamente mas beneficiosas para el usuario -una reduccion de los valores pactados- no requieren notificacion anticipada. Regla especial: en los contratos de tarjeta de credito, el consentimiento a nuevas comisiones y/o cargos solo puede darlo el titular de la cuenta. Ademas, el usuario puede rescindir el contrato sin cargo en cualquier momento antes de la entrada en vigencia del cambio (punto 2.3.4).",
+      "dificultad": 3
+    },
+    {
+      "id": "CQ-047",
+      "pregunta": "¿En que casos esta una entidad obligada a recategorizar a un deudor para alinearse con las clasificaciones de otras entidades segun la Central de deudores, a que categoria debe llevarlo, y como cambia la consecuencia segun la proporcion de las acreencias que lo clasifican peor? ¿Que ocurre si por esta regla el deudor debiera quedar en categoria 2?",
+      "categoria": "cadena_restriccion_excepcion",
+      "tos_fuente": [
+        "clasificacion"
+      ],
+      "ground_truth_secciones": [
+        "Clasificacion, Punto 6.6 (Recategorizacion obligatoria)",
+        "Clasificacion, Punto 6.4.4 (discrepancia - reconsideracion obligatoria)"
+      ],
+      "cita_textual": "[6.6] Se debera recategorizar al deudor cuando exista una discrepancia de mas de un nivel entre la clasificacion dada por la entidad financiera y las otorgadas por al menos otras dos entidades o fideicomisos financieros en categorias inferiores a la asignada por aquella, cuyas acreencias -en conjunto- representen el 40 % o mas del total informado por todos los acreedores [...]. La recategorizacion del deudor se efectuara a partir del mes siguiente al de puesta a disposicion de la pertinente informacion [...] al menos en la categoria inmediata superior a aquella en la que registre mayor nivel de endeudamiento [...]. [...] las categorias 1 a 5, excepto cuando deba recategorizarse al deudor en la categoria 2, en cuyo caso sera considerado 'en observacion' (punto 6.5.2.1.). | [6.4.4] Cuando exista una discrepancia de mas de un nivel [...] en categorias inferiores a la asignada por aquella, cuyas acreencias en conjunto representen por lo menos el 20 % y sean inferiores al 40 % del total [...]. La reevaluacion debera ser inmediata cuando se trate de clientes cuyas financiaciones comprendidas igualen o superen el 1 % de la responsabilidad patrimonial computable [...] y dentro de los tres meses respecto de los demas clientes.",
+      "respuesta_esperada": "Una entidad debe recategorizar obligatoriamente a un deudor cuando existe una discrepancia de mas de un nivel entre su clasificacion y la otorgada por al menos otras dos entidades o fideicomisos que lo clasifican en categorias inferiores, segun la ultima informacion de la Central de deudores. La proporcion de esas acreencias define la consecuencia: si representan el 40 % o mas del total informado, corresponde la recategorizacion obligatoria (punto 6.6), llevando al deudor al menos a la categoria inmediata superior a aquella en la que registre su mayor nivel de endeudamiento, a partir del mes siguiente a la puesta a disposicion de la informacion. Si en cambio representan al menos el 20 % y menos del 40 %, no hay recategorizacion automatica sino reconsideracion obligatoria de la clasificacion -con reevaluacion inmediata si las financiaciones igualan o superan el 1 % de la RPC, o dentro de tres meses para los demas clientes- (punto 6.4.4). Caso especial: si por esta regla el deudor debiera quedar en categoria 2, se lo considera 'en observacion' (punto 6.5.2.1).",
+      "dificultad": 3
+    }
+  ]
+}
