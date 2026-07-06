@@ -77,7 +77,7 @@ Esto cuesta más (no se reusa trabajo entre fallas) y es un trade-off deliberado
 
 ## PASO 3 — Analizar trazas y atribuir la causa (el corazón del método)
 
-**Qué hace:** identifica dónde falló el sistema y atribuye cada falla a su causa (grafo / navegación del agente / generación del agente), **recolectando evidencia ANTES de concluir**, dentro de una taxonomía cerrada. Antes de analizar todo el dataset, **se calibra** contra casos-control con atribución humana conocida; solo escala si la calibración pasa.
+**Qué hace:** identifica dónde falló el sistema y atribuye cada falla a su causa (grafo / navegación del agente / generación del agente / sin_defecto / abstención `frontera_no_determinada`), **recolectando evidencia ANTES de concluir**, dentro de una taxonomía cerrada. Antes de analizar todo el dataset, **se calibra** contra casos-control con atribución humana conocida; solo escala si la calibración pasa.
 
 > Leé `references/taxonomia.md` para la taxonomía cerrada de causas y las herramientas del verificador.
 > Leé `references/casos_control.md` para las preguntas-control y su atribución humana (sub-fase A).
@@ -93,12 +93,14 @@ Para cada pregunta fallida, flujo **evidencia → conclusión**:
 1. Parte del síntoma ("esta respuesta falló"), **sin asumir dónde está el problema**.
 2. Recolecta evidencia con las herramientas que decidas: qué afirmó el agente, qué nodos consultó, qué dice el PDF, qué nodos relevantes existían que no usó.
 3. Con la evidencia junta, concluye: ¿el dato estaba en el grafo? ¿el agente lo encontró? ¿el nodo era fiel al PDF?
-4. Atribuye dentro de la taxonomía cerrada, citando la evidencia. Una falla puede tener **una o más causas**: si es mixta, marcá la primaria (la que mueve el veredicto) y la(s) secundaria(s), cada una con sus tres piezas de evidencia (ver `references/taxonomia.md`).
+4. Atribuye dentro de la taxonomía cerrada, citando la evidencia con **anclaje textual** (cada pieza es `{quote verbatim, ubicacion}`). Una falla puede tener **una o más causas**: si es mixta, marcá la primaria (la que mueve el veredicto) y la(s) secundaria(s), cada una con sus tres piezas de evidencia. Si tras investigar a fondo la evidencia no alcanza para decidir entre dos categorías, la salida correcta es la abstención `frontera_no_determinada` — con constancia de búsqueda (campo `busquedas`) y qué evidencia faltante decidiría el caso (ver `references/taxonomia.md`).
+
+El verificador trabaja en fases (v4): EXTRACCIÓN de la traza (su output va al campo `extraccion_traza` del contrato, que consume el reporte HTML) → INVESTIGACIÓN por pata → ATRIBUCIÓN anclada. Detalle en `references/taxonomia.md`.
 
 **Fijo (y por qué):**
 - **Arranca desde la pregunta fallida, NO desde el nodo.** Evita el sesgo de atribución hacia el grafo (preocupación explícita de Lucho: "cómo sabe que es el grafo si no lo quería"). Empezar mirando el nodo predispone a culpar al grafo.
 - **Recolecta evidencia ANTES de concluir; no forma hipótesis de entrada.** Evita el sesgo de confirmación: si arranca con "es el grafo", busca solo lo que lo confirma.
-- **Toda atribución va con sus tres piezas de evidencia citadas** (afirmación / nodo / fuente). La atribución es verificable, no una opinión del agente.
+- **Toda atribución va con sus tres piezas de evidencia citadas** (afirmación / nodo / fuente), cada una **anclada textualmente** (`{quote verbatim, ubicacion}`): si no se puede citar el lugar exacto donde se rompe el circuito, no hay evidencia suficiente para esa etiqueta. La atribución es verificable, no una opinión del agente.
 - **Taxonomía CERRADA.** Para poder agregar y comparar resultados entre corridas. No inventes categorías nuevas; si algo no entra, eso mismo es un hallazgo a reportar.
 - **La calibración es obligatoria y BLOQUEA el escalado si falla.** Nunca se confía en atribución no validada, ni en corridas futuras que nadie supervisa de cerca. La skill se auto-valida en cada corrida.
 - **Verificador aislado por falla** (ver "Aislamiento por subagentes" arriba). El aislamiento entre fallas es lo que hace cada atribución independiente; no lo desactives.
