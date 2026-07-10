@@ -1,46 +1,85 @@
-# Taxonomía de causas (cerrada) + herramientas del verificador
+# Taxonomía v2 (dos capas, alineada RAGAS) + herramientas del verificador
 
-Referencia del **Paso 3**. Toda atribución de falla cae en **exactamente una** de las categorías de abajo. La taxonomía es **cerrada**: no inventes categorías nuevas. La razón es poder agregar y comparar resultados entre corridas — si cada corrida usa su propio vocabulario, los mapas de defectos no se pueden comparar. Si una falla no entra en ninguna categoría, eso mismo es un hallazgo: reportalo explícitamente en lugar de forzarla.
+Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clasifica el **síntoma** de cada claim fallido con los nombres estándar de RAGAS (en inglés); la **capa 2** atribuye la **causa raíz** (en castellano). Toda atribución emite **el par `{sintoma_capa1, causa_capa2}`**. Ambas capas son **cerradas**: no inventes categorías nuevas. La razón es poder agregar y comparar resultados entre corridas — si cada corrida usa su propio vocabulario, los mapas de defectos no se pueden comparar. Si una falla no entra en ninguna categoría, eso mismo es un hallazgo: reportalo explícitamente en lugar de forzarla.
+
+> **Changelog v1 → v2:** la v1 era de una sola capa. La etiqueta **generación-de-más** se eliminó como categoría y se partió: su síntoma es `faithfulness` (capa 1) y su causa lado-agente pasa a llamarse `alucinacion_agente` (capa 2). Se agregó `alcanzabilidad_kg` (lado grafo, sin equivalente v1). Las corridas viejas (calibraciones v1–v4 del verificador, mapa de defectos de la Fase 2.3) se leen con el vocabulario v1: ver la tabla de correspondencia en `mapeo_taxonomia_v1_v2.md`.
 
 ---
 
-## Defectos del grafo
+## Capa 1 — Síntoma (por claim fallido, nombres RAGAS)
+
+**Regla de precedencia:** los síntomas se evalúan **POR PATA** y **EN ORDEN** — un claim mal aplicado (soportado por un nodo NO pertinente a la pata) calificaría a la vez como `noise_sensitivity` y `context_recall`, y las dos ramas llevan a causas distintas. Gana el primero que aplica:
+
+1. **context_recall** — ¿apareció en la trayectoria el dato PERTINENTE a la pata (el que la responde)? Si nunca apareció → `context_recall`, aunque el agente haya rellenado la pata con otro nodo no pertinente.
+2. **faithfulness** — el dato pertinente apareció; ¿el claim tiene soporte en lo consultado? Sin soporte → `faithfulness`.
+3. **noise_sensitivity** — tiene soporte; ¿es correcto contra el PDF/GT? Incorrecto → `noise_sensitivity`.
+
+> **"Pertinente"** = el nodo que porta el dato que la pata pregunta; un nodo de otro tema usado para rellenar no cuenta como contexto de la pata.
+
+Exactamente estas tres:
+
+| Síntoma | Qué significa |
+|---|---|
+| **faithfulness** | Claim **no soportado** por los nodos que el agente consultó. Ojo: un claim puede ser fácticamente CIERTO y aun así fallar faithfulness — lo que se juzga es el soporte, no la verdad. |
+| **noise_sensitivity** | Claim **soportado por un nodo consultado**, pero **incorrecto** contra el PDF/ground truth. |
+| **context_recall** | Una **pata de la pregunta quedó sin dato** — el contexto necesario nunca apareció en la trayectoria. |
+
+## Capa 2 — Causa raíz (cerrada)
+
+### Defectos del grafo
 
 El dato falla por algo del KG, no por cómo lo usó el agente.
 
 | Categoría | Qué significa | Evidencia que la confirma |
 |---|---|---|
 | **contenido_kg** | Un nodo **contradice** el PDF (dice algo que el PDF no dice, o lo dice mal). | El nodo afirma X; el pasaje del PDF dice no-X o algo incompatible. |
-| **completitud_kg** | Falta información que el PDF **sí tiene** (nodo stub/vacío, extracción incompleta). | El PDF contiene el dato; en el grafo el nodo está vacío, truncado o ausente el campo. |
+| **completitud_kg** | Falta información que el PDF **sí tiene** (nodo stub/vacío, extracción incompleta, dato ausente). | El PDF contiene el dato; en el grafo el nodo está vacío, truncado o ausente el campo. Exige constancia de búsqueda (campo `busquedas`). |
 | **estructural_kg** | Falta un **nodo o una arista** que la pregunta necesita para conectar la información. | Los datos existen sueltos pero no hay relación que los una (ej. cruce entre dos TOs). |
 | **provenance_imprecisa** | El nodo **cita un punto que no funda su contenido** (la cita apunta a otro lado: índice, sección equivocada). | La `location`/`source_doc` del nodo no contiene el contenido que dice fundamentar. |
+| **alcanzabilidad_kg** (nueva en v2) | El **nodo portador existe con el contenido correcto**, pero es **inalcanzable por la búsqueda léxica**: `buscar_nodos` indexa label/id, no description, y ninguna búsqueda razonable desde los términos de la pregunta lo devuelve. | Exhibir el nodo (quote de su contenido) + constancia de búsqueda (campo `busquedas`) mostrando que los términos plausibles de la pregunta NO lo alcanzan y que solo se alcanza con palabras del propio nodo. |
 
-## Defectos del agente
+### Defectos del agente
 
 La información estaba bien en el grafo; el problema es cómo el agente la usó.
 
 | Categoría | Qué significa | Evidencia que la confirma |
 |---|---|---|
-| **navegación** | El agente **no encontró** info que SÍ estaba en el grafo. | Existe un nodo relevante y fiel — la carga de la prueba es **exhibirlo**, con quote de su CONTENIDO (no su label); la trayectoria muestra que el agente no lo consultó o lo descartó. |
-| **generación-de-más** | El agente **agregó glosas o afirmaciones no soportadas** por los nodos que consultó. | La respuesta contiene afirmaciones que no están en ningún nodo de la trayectoria. Ojo: un claim puede ser fácticamente CIERTO y aun así ser generación-de-más — lo que se juzga es el soporte, no la verdad. |
+| **navegación** | El agente **no encontró** info que SÍ estaba en el grafo y era alcanzable. | Existe un nodo relevante, fiel y alcanzable con búsquedas razonables — la carga de la prueba es **exhibirlo**, con quote de su CONTENIDO (no su label); la trayectoria muestra que el agente no lo consultó o lo descartó. |
+| **alucinacion_agente** | El agente **agregó glosas o afirmaciones no soportadas** por los nodos que consultó. Dos modos: **(a)** el grafo TENÍA el dato y el agente afirmó sin soporte de su trayectoria; **(b)** **glosa de cosecha propia**: ni el grafo ni el PDF tienen el dato. | La respuesta contiene afirmaciones que no están en ningún nodo de la trayectoria. Modo (a): exhibir el nodo portador (quote de su contenido). Modo (b): constancia de búsqueda (campo `busquedas`) + verificación negativa contra el PDF (`leer_pasaje_pdf`) — acá NO hay nodo que exhibir. |
 
-## Sin defecto y abstención (v4)
+### Sin defecto y abstención
 
 | Categoría | Lado | Qué significa |
 |---|---|---|
 | **sin_defecto** | ninguno | La respuesta en realidad no estaba mal: posible falso positivo del juez. Atribución de **último recurso**: exige descartar activamente cada defecto de la taxonomía, uno por uno, documentando el descarte. |
-| **frontera_no_determinada** | indeterminado | Tras investigar a fondo, la evidencia no alcanza para decidir entre DOS categorías (típicamente navegación vs completitud_kg). **Abstención honesta de primera clase**: una etiqueta equivocada es PEOR que una abstención honesta; adivinar no es atribuir. Exige (a) documentar qué se buscó y qué se encontró (campo `busquedas`), (b) nombrar las DOS categorías en disputa (campo `entre`), (c) declarar qué evidencia faltante decidiría el caso (campo `evidencia_faltante`). |
-
-**La bifurcación clave (navegación / completitud / frontera):** la diferencia se decide con la búsqueda PROPIA del verificador del nodo que respondería, y tiene TRES salidas, no dos:
-- Encontraste el nodo que responde → `navegación` (exhibiéndolo, quote de su contenido).
-- NO lo encontraste Y la búsqueda fue exhaustiva (términos plausibles cubiertos, documentados) → `completitud_kg`, con la constancia de búsqueda como evidencia.
-- NO lo encontraste pero NO podés garantizar exhaustividad → `frontera_no_determinada`.
-
-La constancia de búsqueda es lo único que distingue "falta" (completitud) de "está mal" (contenido) de "no lo encontré yo" (frontera).
+| **frontera_no_determinada** | indeterminado | Tras investigar a fondo, la evidencia no alcanza para decidir entre DOS categorías. **Abstención honesta de primera clase**: una etiqueta equivocada es PEOR que una abstención honesta; adivinar no es atribuir. Exige (a) documentar qué se buscó y qué se encontró (campo `busquedas`), (b) nombrar las DOS categorías en disputa (campo `entre`), (c) declarar qué evidencia faltante decidiría el caso (campo `evidencia_faltante`). |
 
 ---
 
-## Las tres piezas de evidencia (obligatorias por atribución) — con anclaje textual (v4)
+## Árbol de decisión capa 1 → capa 2
+
+El síntoma (capa 1) determina qué preguntas hacer para llegar a la causa (capa 2):
+
+- **faithfulness** → ¿el grafo tenía el dato?
+  - Encontrado (exhibirlo, quote de su contenido) → `alucinacion_agente`.
+  - No encontrado + búsqueda exhaustiva documentada (términos plausibles cubiertos, campo `busquedas`) → ¿el PDF tiene el dato? (`leer_pasaje_pdf`):
+    - Sí → `completitud_kg` (el hueco del grafo empujó la glosa).
+    - No → `alucinacion_agente` (glosa de cosecha propia; acá NO hay nodo que exhibir — la evidencia es la constancia de búsqueda + la verificación negativa contra el PDF).
+  - No encontrado sin garantía de exhaustividad → `frontera_no_determinada`.
+- **noise_sensitivity** → ¿el nodo consultado es fiel al PDF?
+  - Contradice el PDF → `contenido_kg`.
+  - La cita apunta a otro lado (índice, sección equivocada) → `provenance_imprecisa`.
+  - Es fiel → `sin_defecto` (falso positivo del juez).
+- **context_recall** → ¿existe nodo portador del dato faltante?
+  - Existe y las búsquedas razonables del agente lo alcanzaban → `navegación`.
+  - Existe pero solo se alcanza con palabras del propio nodo (no de la pregunta) → `alcanzabilidad_kg`.
+  - No existe → `completitud_kg` (falta el dato) o `estructural_kg` (falta la conexión).
+
+La constancia de búsqueda es lo único que distingue "falta" (`completitud_kg`) de "está pero no se llega" (`alcanzabilidad_kg`) de "no lo encontré yo" (`frontera_no_determinada`).
+
+---
+
+## Las tres piezas de evidencia (obligatorias por atribución) — con anclaje textual
 
 Toda atribución se cierra citando estas tres piezas. Sin las tres, la conclusión es opinión, no evidencia:
 
@@ -48,18 +87,18 @@ Toda atribución se cierra citando estas tres piezas. Sin las tres, la conclusi�
 2. **Nodo** — qué nodo(s) consultó / qué decía (de la trayectoria + el grafo).
 3. **Fuente** — qué dice el PDF en el punto relevante.
 
-**Anclaje textual (v4):** cada pieza es un objeto `{quote, ubicacion}` — `quote` es cita VERBATIM (no paráfrasis) y `ubicacion` dice dónde vive (id de nodo / source_doc+location del PDF / paso N de la trayectoria / respuesta final). Regla: si no se puede citar textualmente el lugar exacto donde se rompe el circuito, no hay evidencia suficiente para esa etiqueta. Además, el contrato incluye el campo **`busquedas`** (lista `{consulta, resultado}`), obligatorio para `completitud_kg` y `frontera_no_determinada`.
+**Anclaje textual:** cada pieza es un objeto `{quote, ubicacion}` — `quote` es cita VERBATIM (no paráfrasis) y `ubicacion` dice dónde vive (id de nodo / source_doc+location del PDF / paso N de la trayectoria / respuesta final). Regla: si no se puede citar textualmente el lugar exacto donde se rompe el circuito, no hay evidencia suficiente para esa etiqueta. Además, el contrato incluye el campo **`busquedas`** (lista `{consulta, resultado}`), obligatorio para `completitud_kg`, `alcanzabilidad_kg` y `frontera_no_determinada`.
 
-El cruce de las tres es lo que decide la categoría:
-- ¿El dato estaba en el grafo? (Nodo vs Fuente) → distingue defecto-de-grafo de defecto-de-agente.
-- ¿El agente lo encontró/usó bien? (Afirmación vs Nodo) → distingue navegación de generación-de-más.
-- ¿El nodo era fiel al PDF? (Nodo vs Fuente) → distingue contenido_kg / completitud_kg / provenance_imprecisa.
+El cruce de las tres es lo que decide el par:
+- ¿El claim está soportado por lo consultado? (Afirmación vs Nodo) → decide el síntoma de capa 1 (`faithfulness` vs `noise_sensitivity`); una pata sin dato en toda la trayectoria → `context_recall`.
+- ¿El dato estaba en el grafo? (Nodo vs Fuente + búsqueda propia) → distingue defecto-de-grafo de defecto-de-agente en capa 2.
+- ¿El nodo era fiel al PDF? (Nodo vs Fuente) → distingue `contenido_kg` / `completitud_kg` / `provenance_imprecisa`.
 
 ---
 
 ## Atribución múltiple: una falla puede tener más de una causa
 
-Una falla mapea a **una o más** categorías de la taxonomía. La taxonomía sigue siendo **cerrada** — las categorías no cambian; lo que se permite es que una misma falla se atribuya a varias de ellas a la vez.
+Una falla mapea a **uno o más** pares `{sintoma_capa1, causa_capa2}`. La taxonomía sigue siendo **cerrada** — las categorías no cambian; lo que se permite es que una misma falla se atribuya a varias a la vez.
 
 Cuando hay más de una, se distinguen:
 
@@ -74,23 +113,23 @@ Distinguir primaria de secundaria no es una jerarquía cosmética: es lo que con
 
 ---
 
-## Procedimiento en fases (v4)
+## Procedimiento en fases
 
 El verificador no usa las tools "en el orden que decida": sigue tres fases, y cada una alimenta a la siguiente.
 
 - **FASE A — EXTRACCIÓN** (sin tools, solo con el contexto): lista los tool calls del agente con argumentos, qué devolvió cada uno y si era pertinente, en qué paso está la decisión que llevó al error (con cita textual; si el agente actuó bien sobre lo que tenía, se declara explícitamente — eso es evidencia de lado grafo, no un campo vacío), el fragmento de thinking de esa decisión si existe, y las patas según el step1 del juez. El resultado va al campo `extraccion_traza` del JSON final (lo consume el reporte HTML).
-- **FASE B — INVESTIGACIÓN**: por cada pata fallida, el cruce de las tres fuentes usando las tools. Acá entra el ESQUEMA DEL GRAFO (inyectado en el contexto): razonar qué nodo/arista DEBERÍA existir para responder y chequear si existe.
-- **FASE C — ATRIBUCIÓN**: recién acá se etiqueta (o se abstiene con `frontera_no_determinada`), con los anclajes textuales.
+- **FASE B — INVESTIGACIÓN**: por cada pata fallida, el cruce de las tres fuentes usando las tools. Acá entra el ESQUEMA DEL GRAFO (inyectado en el contexto): razonar qué nodo/arista DEBERÍA existir para responder y chequear si existe. Para el síntoma `context_recall`, la FASE B incluye probar si el nodo portador se alcanza desde los términos de la pregunta (decide `navegación` vs `alcanzabilidad_kg`).
+- **FASE C — ATRIBUCIÓN**: recién acá se etiqueta (o se abstiene con `frontera_no_determinada`), con los anclajes textuales. La FASE C emite **SIEMPRE el par `{sintoma_capa1, causa_capa2}` por atribución** — nunca una capa sola.
 
 ## Herramientas del verificador
 
 Dentro de la FASE B, el verificador decide **cuáles usar y cuántas veces** — eso es criterio del agente. Las disponibles (las 3 de grafo del harness + 1 de PDF):
 
-- **buscar_nodos / ver_nodo / ver_vecinos** — cualquier nodo del grafo, no solo los que el agente usó. Sirven para responder "¿existía un nodo relevante que el agente no consultó?".
+- **buscar_nodos / ver_nodo / ver_vecinos** — cualquier nodo del grafo, no solo los que el agente usó. Sirven para responder "¿existía un nodo relevante que el agente no consultó?" y, con búsquedas desde los términos de la pregunta, "¿era alcanzable?".
 - **leer_pasaje_pdf** en un punto/página específico. Sirve para responder "¿qué dice realmente la fuente?". Si la ubicación no ancla, devuelve `localizacion_pdf="fallida"` como señal explícita.
 
 La **trayectoria del agente** (tool calls + resultados + thinking por turno si existe) no es una tool: viene en el contexto inicial de la falla, junto con la descomposición del juez (step1), los claims que el juez aprobó (para no re-litigar) y el contenido íntegro de los nodos vistos.
 
-**Ejemplos resueltos:** el system prompt del verificador (`verificador.py`) incluye una sección de EJEMPLOS RESUELTOS con 3 casos reales de run_1/run_5 (nunca de run_3 — los casos-control siguen ciegos) que enseñan el método y el formato de anclaje. Viven en el prompt, no acá.
+**Ejemplos resueltos:** el system prompt del verificador (`verificador.py`) incluye una sección de EJEMPLOS RESUELTOS con 3 casos reales de run_1/run_5 (nunca de run_3 — los casos-control siguen ciegos) que enseñan el método y el formato de anclaje. Viven en el prompt, no acá. (Ojo: al 2026-07-09 esos ejemplos están redactados con vocabulario v1 — se migran con la actualización del prompt, no desde este archivo.)
 
 **Recordatorio de método (Paso 3):** arrancá desde el síntoma ("esta respuesta falló"), recolectá evidencia con estas herramientas y *recién después* concluí. No empieces mirando el nodo ni asumiendo que la causa es el grafo. La pregunta guía es "¿por qué el juez marcó mal esta respuesta?", nunca "¿es verdadera la afirmación del agente?".
