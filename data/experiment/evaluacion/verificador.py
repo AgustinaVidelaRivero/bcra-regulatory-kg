@@ -941,21 +941,26 @@ class VerificadorAgente:
 # --------------------------------------------------------------------------- #
 # Cliente cacheado (Opus) — mismo patrón que run_posthoc.build_clients         #
 # --------------------------------------------------------------------------- #
-def build_verificador_client(real_client, kg, *, db_path: Path = DB_PATH, run_label: str = "verificador"):
+def build_verificador_client(real_client, kg, *, db_path: Path = DB_PATH, run_label: str = "verificador",
+                             code_ver: str | None = None):
     """CachingClient para el verificador. El namespace incluye el graph_fingerprint del run
-    (el verificador SÍ consume el grafo) + code_ver, think=0 (no thinking)."""
+    (el verificador SÍ consume el grafo) + code_ver, think=0 (no thinking). `code_ver` permite
+    sufijos por repetición (modo --n K: cv=verificador-vX.Y-rep{i}) para que la caché no
+    colapse repeticiones independientes en copias."""
     kg_path = getattr(kg, "path", None)
     if not kg_path or not Path(kg_path).exists():
         raise RuntimeError("KnowledgeGraph sin .path válido: el graph_fingerprint se degradaría. Abortando.")
     gfp = lc.graph_fingerprint(kg)
     return lc.CachingClient(
         real_client, domain="verificador", db_path=db_path,
-        namespace=lc.make_namespace("verificador", code_ver=CODE_VER, graph_fp=gfp, thinking=False),
+        namespace=lc.make_namespace("verificador", code_ver=code_ver or CODE_VER, graph_fp=gfp,
+                                    thinking=False),
         thinking_enabled=False, run_label=run_label)
 
 
 def investigar_falla(real_client, label: str, run: str, qid: str, *,
-                     db_path: Path = DB_PATH, _kg_cache: dict | None = None) -> dict:
+                     db_path: Path = DB_PATH, _kg_cache: dict | None = None,
+                     code_ver: str | None = None) -> dict:
     """Orquesta UNA falla aislada: carga el grafo del run, arma el contexto, y corre un
     VerificadorAgente con historial nuevo. Aislamiento: cada llamada parte de cero."""
     _kg_cache = _kg_cache if _kg_cache is not None else {}
@@ -963,11 +968,53 @@ def investigar_falla(real_client, label: str, run: str, qid: str, *,
         _kg_cache[run] = load_graph(run)   # carga de disco (read-only); NO es contexto conversacional
     kg = _kg_cache[run]
     ctx = build_falla_context(label, run, qid)
-    client = build_verificador_client(real_client, kg, db_path=db_path)
+    client = build_verificador_client(real_client, kg, db_path=db_path, code_ver=code_ver)
     agente = VerificadorAgente(kg, client, agente_steps=ctx["steps"])
     rec = agente.investigar(id_falla=f"{run}/{qid}", run=run, contexto=ctx["contexto"])
     rec["_meta"]["contexto_stats"] = {k: ctx[k] for k in ("n_seen", "n_claims_fallidos", "categoria")}
     return rec
+
+
+# --------------------------------------------------------------------------- #
+# Repeticiones + voto de mayoría (modo --n K)                                  #
+# --------------------------------------------------------------------------- #
+def clave_voto(rec: dict) -> tuple:
+    """Identidad del voto de una repetición: el MULTICONJUNTO de pares con jerarquía primaria
+    (tupla ordenada de pares {sintoma_capa1, causa_capa2}; los duplicados cuentan)."""
+    pares = sorted((a.get("sintoma_capa1"), a.get("causa_capa2"))
+                   for a in (rec.get("atribuciones") or []) if a.get("jerarquia") == "primaria")
+    return tuple(pares)
+
+
+def agregar_voto(recs: list) -> dict:
+    """Agrega K repeticiones por voto de mayoría ESTRICTA (> K/2) sobre clave_voto.
+    Sin mayoría estricta → resultado agregado = frontera_no_determinada + flag_voto_dividido.
+    Conserva las K salidas íntegras + el desglose. Agregación programática, sin LLM."""
+    from collections import Counter
+    if not recs:
+        raise ValueError("agregar_voto: lista de repeticiones vacía")
+    claves = [clave_voto(r) for r in recs]
+    conteo = Counter(claves)
+    clave_top, n_top = conteo.most_common(1)[0]
+    mayoria = n_top > len(recs) / 2
+    return {
+        "id_falla": recs[0].get("id_falla"),
+        "run": recs[0].get("run"),
+        "n_reps": len(recs),
+        "voto": {
+            "resultado": "mayoria" if mayoria else "frontera_no_determinada",
+            "flag_voto_dividido": not mayoria,
+            "pares_primarios_ganadores": [list(p) for p in clave_top] if mayoria else None,
+            "votos_ganadores": n_top if mayoria else None,
+            "conteo": [{"pares_primarios": [list(p) for p in k], "votos": v}
+                       for k, v in conteo.most_common()],
+            "desglose": [{"rep": i + 1,
+                          "pares_primarios": [list(p) for p in claves[i]],
+                          "formato_invalido": recs[i].get("formato_invalido")}
+                         for i in range(len(recs))],
+        },
+        "repeticiones": recs,
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -1004,6 +1051,9 @@ def main():
                     help="RUNNER: archivo con un caso label/run/CQ por línea ('#' comenta).")
     ap.add_argument("--out", default=str(EVAL_DIR / "posthoc_run" / "dev_set" / "salidas_v5"),
                     help="Directorio de salida del runner (un JSON por caso).")
+    ap.add_argument("--n", type=int, default=1,
+                    help="Repeticiones independientes por caso (namespace cv=CODE_VER-rep{i}) + "
+                         "voto de mayoría sobre los pares primarios. Def. 1 (sin voto).")
     ap.add_argument("--context", action="store_true",
                     help="OFFLINE: arma e imprime el contexto de la falla + el tool set, SIN llamar a la API.")
     ap.add_argument("--prompt", action="store_true",
@@ -1040,10 +1090,29 @@ def main():
         outdir.mkdir(parents=True, exist_ok=True)
         kg_cache: dict = {}
         for label, run, qid in casos:
+            dest = outdir / f"{label}_{run}_{qid}.json"
+            if args.n > 1:
+                # Modo repeticiones+voto: K corridas independientes (namespace por rep) + agregación.
+                recs = []
+                for i in range(1, args.n + 1):
+                    print(f"[runner] investigando {label}/{run}/{qid} · rep {i}/{args.n} "
+                          f"(cv={CODE_VER}-rep{i}) …", flush=True)
+                    r = investigar_falla(real, label, run, qid, _kg_cache=kg_cache,
+                                         code_ver=f"{CODE_VER}-rep{i}")
+                    r["_meta"]["label"] = label
+                    r["_meta"]["rep"] = i
+                    recs.append(r)
+                agg = agregar_voto(recs)
+                dest.write_text(json.dumps(agg, ensure_ascii=False, indent=1), encoding="utf-8")
+                v = agg["voto"]
+                print(f"[runner]   → {dest.name} · voto={v['resultado']} · "
+                      f"dividido={v['flag_voto_dividido']} · "
+                      f"ganadores={v['pares_primarios_ganadores']} · "
+                      f"conteo={[c['votos'] for c in v['conteo']]}", flush=True)
+                continue
             print(f"[runner] investigando {label}/{run}/{qid} …", flush=True)
             rec = investigar_falla(real, label, run, qid, _kg_cache=kg_cache)
             rec["_meta"]["label"] = label
-            dest = outdir / f"{label}_{run}_{qid}.json"
             dest.write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")
             det = rec["detectores"]
             print(f"[runner]   → {dest.name} · atribuciones={len(rec['atribuciones'])} · "
