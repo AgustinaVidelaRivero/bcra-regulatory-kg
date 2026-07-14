@@ -59,7 +59,7 @@ TRUNC = 1200                        # truncado de outputs de tool EN LA TRAZA de
 TRUNC_THINK = 1500                  # v4 (CAMBIO 5c): truncado del thinking del agente POR TURNO en el contexto
 
 DB_PATH = EVAL_DIR / "cache" / "verificador.db"   # separada de calls.db y verifier_pilot.db
-CODE_VER = "verificador-v5"   # v5: taxonomía v2 por referencia + FASE C partida (C1 síntoma / C2 causa) + validación programática + detectores. v1..v4 intactos bajo sus namespaces.
+CODE_VER = "verificador-v5.1"   # v5.1: prueba de alcanzabilidad ex ante (taxonomia.md v2.1) + tool ver_paso_completo. v1..v5 intactos bajo sus namespaces.
 
 # Taxonomía v2 CERRADA (los NOMBRES, para validación programática; el CONTENIDO — tablas,
 # precedencia, árbol — viene POR REFERENCIA de references/taxonomia.md, ver taxonomia_section()).
