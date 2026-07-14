@@ -3,6 +3,7 @@
 Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clasifica el **síntoma** de cada claim fallido con los nombres estándar de RAGAS (en inglés); la **capa 2** atribuye la **causa raíz** (en castellano). Toda atribución emite **el par `{sintoma_capa1, causa_capa2}`**. Ambas capas son **cerradas**: no inventes categorías nuevas. La razón es poder agregar y comparar resultados entre corridas — si cada corrida usa su propio vocabulario, los mapas de defectos no se pueden comparar. Si una falla no entra en ninguna categoría, eso mismo es un hallazgo: reportalo explícitamente en lugar de forzarla.
 
 > **Changelog v1 → v2:** la v1 era de una sola capa. La etiqueta **generación-de-más** se eliminó como categoría y se partió: su síntoma es `faithfulness` (capa 1) y su causa lado-agente pasa a llamarse `alucinacion_agente` (capa 2). Se agregó `alcanzabilidad_kg` (lado grafo, sin equivalente v1). Las corridas viejas (calibraciones v1–v4 del verificador, mapa de defectos de la Fase 2.3) se leen con el vocabulario v1: ver la tabla de correspondencia en `mapeo_taxonomia_v1_v2.md`.
+> **v2.1 (2026-07-14):** se precisa la prueba de alcanzabilidad (rama `context_recall` del árbol y fila `alcanzabilidad_kg`): "búsquedas razonables" y "términos de la pregunta" = vocabulario disponible **ex ante** para el agente (la pregunta + lo que los outputs COMPLETOS de su propia trayectoria le expusieron); el vocabulario aprendido del PDF o del ground truth durante la verificación NO cuenta.
 
 ---
 
@@ -36,7 +37,7 @@ El dato falla por algo del KG, no por cómo lo usó el agente.
 | **completitud_kg** | Falta información que el PDF **sí tiene** (nodo stub/vacío, extracción incompleta, dato ausente). | El PDF contiene el dato; en el grafo el nodo está vacío, truncado o ausente el campo. Exige constancia de búsqueda (campo `busquedas`). |
 | **estructural_kg** | Falta un **nodo o una arista** que la pregunta necesita para conectar la información. | Los datos existen sueltos pero no hay relación que los una (ej. cruce entre dos TOs). |
 | **provenance_imprecisa** | El nodo **cita un punto que no funda su contenido** (la cita apunta a otro lado: índice, sección equivocada). | La `location`/`source_doc` del nodo no contiene el contenido que dice fundamentar. |
-| **alcanzabilidad_kg** (nueva en v2) | El **nodo portador existe con el contenido correcto**, pero es **inalcanzable por la búsqueda léxica**: `buscar_nodos` indexa label/id, no description, y ninguna búsqueda razonable desde los términos de la pregunta lo devuelve. | Exhibir el nodo (quote de su contenido) + constancia de búsqueda (campo `busquedas`) mostrando que los términos plausibles de la pregunta NO lo alcanzan y que solo se alcanza con palabras del propio nodo. |
+| **alcanzabilidad_kg** (nueva en v2) | El **nodo portador existe con el contenido correcto**, pero es **inalcanzable por la búsqueda léxica**: `buscar_nodos` indexa label/id, no description, y ninguna búsqueda razonable desde los términos de la pregunta lo devuelve. "Términos de la pregunta" = vocabulario **ex ante** del agente (pregunta + outputs COMPLETOS de su propia trayectoria); lo aprendido del PDF/GT durante la verificación NO cuenta (v2.1). | Exhibir el nodo (quote de su contenido) + constancia de búsqueda (campo `busquedas`) mostrando que los términos plausibles del vocabulario ex ante NO lo alcanzan y que solo se alcanza con palabras del propio nodo. |
 
 ### Defectos del agente
 
@@ -74,6 +75,7 @@ El síntoma (capa 1) determina qué preguntas hacer para llegar a la causa (capa
   - Existe y las búsquedas razonables del agente lo alcanzaban → `navegación`.
   - Existe pero solo se alcanza con palabras del propio nodo (no de la pregunta) → `alcanzabilidad_kg`.
   - No existe → `completitud_kg` (falta el dato) o `estructural_kg` (falta la conexión).
+  - **Prueba de alcanzabilidad (v2.1):** "búsquedas razonables" y "términos de la pregunta" = vocabulario disponible EX ANTE para el agente — los términos de la pregunta más los que los outputs COMPLETOS de su propia trayectoria le expusieron. El vocabulario aprendido del PDF o del ground truth durante la verificación NO cuenta para esta prueba.
 
 La constancia de búsqueda es lo único que distingue "falta" (`completitud_kg`) de "está pero no se llega" (`alcanzabilidad_kg`) de "no lo encontré yo" (`frontera_no_determinada`).
 

@@ -98,8 +98,22 @@ LEER_PASAJE_PDF_TOOL = {
     },
 }
 
-# Tool set del verificador: las 3 de grafo (read-only de harness) + la de PDF.
-VERIF_TOOLS = list(TOOLS) + [LEER_PASAJE_PDF_TOOL]
+VER_PASO_COMPLETO_TOOL = {
+    "name": "ver_paso_completo",
+    "description": (
+        "Re-ejecuta determinísticamente el tool call del paso N de la trayectoria del agente "
+        "(mismo input, mismo grafo congelado) y devuelve el output ÍNTEGRO. El contexto muestra "
+        "outputs truncados: esta tool responde qué vio REALMENTE el agente en ese paso."),
+    "input_schema": {
+        "type": "object",
+        "properties": {"paso": {"type": "integer",
+                                "description": "n del paso en la trayectoria del agente"}},
+        "required": ["paso"],
+    },
+}
+
+# Tool set del verificador: las 3 de grafo (read-only de harness) + PDF + re-ejecución de pasos.
+VERIF_TOOLS = list(TOOLS) + [LEER_PASAJE_PDF_TOOL, VER_PASO_COMPLETO_TOOL]
 
 
 def _leer_pasaje_pdf(args: dict) -> dict:
@@ -227,6 +241,8 @@ TOOLS (para la FASE B; cuáles y cuántas veces es tu criterio):
 CUALQUIER nodo, no solo los que el agente vio. OJO: buscar_nodos indexa SOLO label e id (no las \
 descriptions).
 - leer_pasaje_pdf(source_doc, location): qué dice realmente el PDF fuente.
+- ver_paso_completo(paso): el contexto muestra outputs truncados; si necesitás saber qué vio \
+REALMENTE el agente en un paso, usá esta tool (re-ejecuta ese tool call y devuelve el output íntegro).
 
 REGLA OPERATIVA DE ANCLAJE: si el quote que necesitás de la trayectoria quedó cortado por el \
 truncado (…), NO completes de memoria: re-abrí la fuente con las tools y citá desde ahí. EXCEPCIÓN — el thinking NO se puede re-abrir: \
@@ -599,7 +615,7 @@ CUALQUIER nodo del grafo {run} (no solo los de arriba) y leer el PDF fuente con 
 Cuando tengas evidencia suficiente, devolvé el JSON del contrato."""
 
     return {"pregunta": pregunta, "categoria": categoria, "contexto": contexto,
-            "n_seen": len(seen), "n_claims_fallidos": len(fallidos)}
+            "n_seen": len(seen), "n_claims_fallidos": len(fallidos), "steps": steps}
 
 
 # --------------------------------------------------------------------------- #
@@ -710,10 +726,13 @@ class VerificadorAgente:
     construye su propio historial de mensajes en cada llamada → aislamiento conversacional.
     El índice (read-only) y el cliente (caché) se comparten; el DIÁLOGO no."""
 
-    def __init__(self, kg, client):
+    def __init__(self, kg, client, agente_steps=None):
         self.kg = kg
         self.index = GraphIndex(kg)
         self.client = client
+        # Trayectoria del agente investigado (steps de la traza post-hoc): la usa
+        # ver_paso_completo para re-ejecutar determinísticamente un paso y devolverlo íntegro.
+        self.agente_steps = agente_steps or []
 
     def _run_tool(self, name: str, args: dict):
         if name == "buscar_nodos":
@@ -724,7 +743,32 @@ class VerificadorAgente:
             return self.index.ver_vecinos(args.get("id", ""), args.get("direccion", "ambas"))
         if name == "leer_pasaje_pdf":
             return _leer_pasaje_pdf(args)
+        if name == "ver_paso_completo":
+            return self._ver_paso_completo(args)
         return {"error": f"tool desconocida: {name}"}
+
+    def _ver_paso_completo(self, args: dict):
+        """Re-ejecuta determinísticamente el tool call del paso N de la trayectoria del agente
+        (mismo input, mismo grafo congelado) y devuelve el output ÍNTEGRO. Determinístico porque
+        el grafo está congelado y las 3 tools de grafo son funciones puras del índice."""
+        try:
+            paso = int(args.get("paso"))
+        except (TypeError, ValueError):
+            return {"error": "'paso' debe ser un entero (el n del paso en la trayectoria del agente)"}
+        s = next((x for x in self.agente_steps if x.get("n") == paso), None)
+        if s is None:
+            return {"error": f"paso {paso} inexistente en la trayectoria del agente "
+                             f"(la trayectoria tiene {len(self.agente_steps)} pasos)"}
+        tool, inp = s.get("tool"), s.get("input") or {}
+        if tool == "buscar_nodos":
+            out = self.index.buscar_nodos(inp.get("consulta", ""), inp.get("limite", 10))
+        elif tool == "ver_nodo":
+            out = self.index.ver_nodo(inp.get("id", ""))
+        elif tool == "ver_vecinos":
+            out = self.index.ver_vecinos(inp.get("id", ""), inp.get("direccion", "ambas"))
+        else:
+            return {"error": f"el paso {paso} usó la tool {tool!r}, que no es re-ejecutable"}
+        return {"paso": paso, "tool": tool, "input": inp, "output_completo": out}
 
     def investigar(self, id_falla: str, run: str, contexto: str) -> dict:
         """Investiga una falla aislada y devuelve el contrato de salida. id_falla/run se fijan
@@ -849,7 +893,7 @@ def investigar_falla(real_client, label: str, run: str, qid: str, *,
     kg = _kg_cache[run]
     ctx = build_falla_context(label, run, qid)
     client = build_verificador_client(real_client, kg, db_path=db_path)
-    agente = VerificadorAgente(kg, client)
+    agente = VerificadorAgente(kg, client, agente_steps=ctx["steps"])
     rec = agente.investigar(id_falla=f"{run}/{qid}", run=run, contexto=ctx["contexto"])
     rec["_meta"]["contexto_stats"] = {k: ctx[k] for k in ("n_seen", "n_claims_fallidos", "categoria")}
     return rec
