@@ -6,6 +6,7 @@ Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clas
 > **v2.1 (2026-07-14):** se precisa la prueba de alcanzabilidad (rama `context_recall` del árbol y fila `alcanzabilidad_kg`): "búsquedas razonables" y "términos de la pregunta" = vocabulario disponible **ex ante** para el agente (la pregunta + lo que los outputs COMPLETOS de su propia trayectoria le expusieron); el vocabulario aprendido del PDF o del ground truth durante la verificación NO cuenta.
 > **v2.2 (2026-07-14):** se precisa "pertinente" en la regla de precedencia: el nodo que porta LA RESPUESTA a la pata, no información sobre su tema (test del nodo único).
 > **v2.3 (2026-07-14):** se precisa "soporte": "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
+> **v2.4 (2026-07-14):** el soporte de un claim se evalúa contra TODO el contenido expuesto (pertinente o no); la pertinencia gobierna solo C1a (context_recall por pata), nunca el test de soporte por claim (C1b); faithfulness exige verificación previa con ver_paso_completo de los pasos truncados que pudieron exponer el contenido.
 
 ---
 
@@ -27,7 +28,7 @@ Exactamente estas tres:
 | **noise_sensitivity** | Claim **soportado por un nodo consultado**, pero **incorrecto** contra el PDF/ground truth. |
 | **context_recall** | Una **pata de la pregunta quedó sin dato** — el contexto necesario nunca apareció en la trayectoria. |
 
-> **Soporte (v2.3):** "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de los resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
+> **Soporte (v2.3, precisado en v2.4):** "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de los resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.) El soporte de un claim se evalúa contra TODO el contenido expuesto, sea o no pertinente a la pata — la pertinencia gobierna ÚNICAMENTE la pregunta de context_recall a nivel pata (C1a), nunca el test de soporte de un claim (C1b). Un claim que reproduce el resumen de un nodo no pertinente expuesto en la trayectoria está SOPORTADO (síntoma `noise_sensitivity` si es incorrecto), no es `faithfulness`. Antes de declarar `faithfulness` sobre un claim, es OBLIGATORIO verificar con `ver_paso_completo` los pasos truncados cuyos resultados pudieron exponer el contenido del claim.
 
 ## Capa 2 — Causa raíz (cerrada)
 

@@ -59,7 +59,7 @@ TRUNC = 1200                        # truncado de outputs de tool EN LA TRAZA de
 TRUNC_THINK = 1500                  # v4 (CAMBIO 5c): truncado del thinking del agente POR TURNO en el contexto
 
 DB_PATH = EVAL_DIR / "cache" / "verificador.db"   # separada de calls.db y verifier_pilot.db
-CODE_VER = "verificador-v5.3"   # v5.3: validación de camino síntoma→causa según el árbol + "pertinente" precisado (taxonomia.md v2.2). v1..v5.2 intactos bajo sus namespaces.
+CODE_VER = "verificador-v5.5"   # v5.5: soporte por claim vs pertinencia por pata + faithfulness exige ver_paso_completo previo (taxonomia.md v2.4). v1..v5.4 intactos bajo sus namespaces.
 
 # Taxonomía v2 CERRADA (los NOMBRES, para validación programática; el CONTENIDO — tablas,
 # precedencia, árbol — viene POR REFERENCIA de references/taxonomia.md, ver taxonomia_section()).
