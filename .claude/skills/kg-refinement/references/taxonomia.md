@@ -4,6 +4,8 @@ Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clas
 
 > **Changelog v1 → v2:** la v1 era de una sola capa. La etiqueta **generación-de-más** se eliminó como categoría y se partió: su síntoma es `faithfulness` (capa 1) y su causa lado-agente pasa a llamarse `alucinacion_agente` (capa 2). Se agregó `alcanzabilidad_kg` (lado grafo, sin equivalente v1). Las corridas viejas (calibraciones v1–v4 del verificador, mapa de defectos de la Fase 2.3) se leen con el vocabulario v1: ver la tabla de correspondencia en `mapeo_taxonomia_v1_v2.md`.
 > **v2.1 (2026-07-14):** se precisa la prueba de alcanzabilidad (rama `context_recall` del árbol y fila `alcanzabilidad_kg`): "búsquedas razonables" y "términos de la pregunta" = vocabulario disponible **ex ante** para el agente (la pregunta + lo que los outputs COMPLETOS de su propia trayectoria le expusieron); el vocabulario aprendido del PDF o del ground truth durante la verificación NO cuenta.
+> **v2.2 (2026-07-14):** se precisa "pertinente" en la regla de precedencia: el nodo que porta LA RESPUESTA a la pata, no información sobre su tema (test del nodo único).
+> **v2.3 (2026-07-14):** se precisa "soporte": "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
 
 ---
 
@@ -15,7 +17,7 @@ Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clas
 2. **faithfulness** — el dato pertinente apareció; ¿el claim tiene soporte en lo consultado? Sin soporte → `faithfulness`.
 3. **noise_sensitivity** — tiene soporte; ¿es correcto contra el PDF/GT? Incorrecto → `noise_sensitivity`.
 
-> **"Pertinente"** = el nodo que porta el dato que la pata pregunta; un nodo de otro tema usado para rellenar no cuenta como contexto de la pata.
+> **"Pertinente" (v2.2)** = el nodo que porta LA RESPUESTA a la pata (el dato que la contesta), NO información sobre el TEMA de la pata. Test: si el agente hubiera usado solo ese nodo, ¿la pata quedaba respondida correctamente? Un nodo sobre el sujeto de la pregunta que no contiene la respuesta NO es pertinente.
 
 Exactamente estas tres:
 
@@ -24,6 +26,8 @@ Exactamente estas tres:
 | **faithfulness** | Claim **no soportado** por los nodos que el agente consultó. Ojo: un claim puede ser fácticamente CIERTO y aun así fallar faithfulness — lo que se juzga es el soporte, no la verdad. |
 | **noise_sensitivity** | Claim **soportado por un nodo consultado**, pero **incorrecto** contra el PDF/ground truth. |
 | **context_recall** | Una **pata de la pregunta quedó sin dato** — el contexto necesario nunca apareció en la trayectoria. |
+
+> **Soporte (v2.3):** "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de los resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
 
 ## Capa 2 — Causa raíz (cerrada)
 

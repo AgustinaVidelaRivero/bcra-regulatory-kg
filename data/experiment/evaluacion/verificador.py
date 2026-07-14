@@ -59,7 +59,7 @@ TRUNC = 1200                        # truncado de outputs de tool EN LA TRAZA de
 TRUNC_THINK = 1500                  # v4 (CAMBIO 5c): truncado del thinking del agente POR TURNO en el contexto
 
 DB_PATH = EVAL_DIR / "cache" / "verificador.db"   # separada de calls.db y verifier_pilot.db
-CODE_VER = "verificador-v5.1"   # v5.1: prueba de alcanzabilidad ex ante (taxonomia.md v2.1) + tool ver_paso_completo. v1..v5 intactos bajo sus namespaces.
+CODE_VER = "verificador-v5.3"   # v5.3: validación de camino síntoma→causa según el árbol + "pertinente" precisado (taxonomia.md v2.2). v1..v5.2 intactos bajo sus namespaces.
 
 # Taxonomía v2 CERRADA (los NOMBRES, para validación programática; el CONTENIDO — tablas,
 # precedencia, árbol — viene POR REFERENCIA de references/taxonomia.md, ver taxonomia_section()).
@@ -74,6 +74,46 @@ LADO_POR_CAUSA = {**{c: "grafo" for c in CATEGORIAS_GRAFO},
                   **{c: "ninguno" for c in CATEGORIAS_NINGUNO},
                   **{c: "indeterminado" for c in CATEGORIAS_INDETERMINADO}}
 BUSQUEDAS_OBLIGATORIAS = {"completitud_kg", "alcanzabilidad_kg", "frontera_no_determinada"}
+
+# Caminos válidos síntoma→causa según el ÁRBOL DE DECISIÓN de references/taxonomia.md.
+# Se intenta PARSEAR el árbol del archivo (fuente de verdad); si la estructura no parsea
+# con robustez, se usa este fallback hardcodeado — mantenerlo espejo del árbol de taxonomia.md.
+_CAMINOS_FALLBACK = {
+    "faithfulness": {"alucinacion_agente", "completitud_kg", "frontera_no_determinada"},
+    "noise_sensitivity": {"contenido_kg", "provenance_imprecisa", "sin_defecto"},
+    "context_recall": {"navegación", "alcanzabilidad_kg", "completitud_kg", "estructural_kg",
+                       "frontera_no_determinada"},
+}
+_CAMINOS_CACHE: dict | None = None
+
+
+def caminos_arbol() -> dict:
+    """Mapa síntoma→{causas válidas}, parseado del árbol de taxonomia.md; fallback hardcodeado."""
+    global _CAMINOS_CACHE
+    if _CAMINOS_CACHE is not None:
+        return _CAMINOS_CACHE
+    try:
+        sec = taxonomia_section()
+        arbol = sec[sec.index("## Árbol de decisión"):]
+        ramas: dict = {}
+        actual = None
+        for line in arbol.splitlines():
+            m = re.match(r"- \*\*(\w+)\*\*", line.strip())
+            if m and m.group(1) in SINTOMAS_CAPA1:
+                actual = m.group(1)
+                ramas[actual] = set()
+                continue
+            if actual:
+                for c in re.findall(r"`([a-záéíóúñ_]+)`", line):
+                    if c in LADO_POR_CAUSA:
+                        ramas[actual].add(c)
+        if set(ramas) == set(SINTOMAS_CAPA1) and all(ramas.values()):
+            _CAMINOS_CACHE = ramas
+            return _CAMINOS_CACHE
+    except Exception:
+        pass
+    _CAMINOS_CACHE = _CAMINOS_FALLBACK
+    return _CAMINOS_CACHE
 
 # --------------------------------------------------------------------------- #
 # Tool PDF: leer_pasaje_pdf(source_doc, location)                             #
@@ -231,8 +271,16 @@ usalo para razonar qué nodo/arista DEBERÍA existir para responder, y chequeá 
 sin su dato (context_recall), probá VOS si el nodo portador se alcanza buscando con los términos \
 de la PREGUNTA — esa prueba decide navegación vs alcanzabilidad_kg (árbol).
 FASE C — ATRIBUCIÓN, en DOS sub-fases (recién acá etiquetás):
-  C1 — SÍNTOMA: por cada pata/claim fallido, clasificá el síntoma (capa 1) aplicando la REGLA DE \
-PRECEDENCIA POR PATA de la sección TAXONOMÍA, en su orden.
+  C1 — SÍNTOMA, en DOS pasos y en este orden:
+    C1a — PRIMERO POR PATA: para CADA pata de la pregunta, respondé ¿apareció en la trayectoria \
+del agente el dato PERTINENTE (el que la responde)? Usá los outputs COMPLETOS (ver_paso_completo \
+si el almacenado está truncado). El campo cobertura_patas del juez NO reemplaza esta prueba: una \
+pata rellenada con un nodo no pertinente cuenta como NO-aparecido aunque el juez la marque \
+'cubierta'. Si nunca apareció → esa pata es context_recall y va DIRECTO a su pregunta del árbol; \
+los claims de relleno de esa pata no se clasifican por separado salvo que agreguen un defecto \
+distinto.
+    C1b — DESPUÉS POR CLAIM: para los claims fallidos de patas cuyo dato pertinente SÍ apareció, \
+aplicá el resto de la precedencia (faithfulness → noise_sensitivity).
   C2 — CAUSA: por cada síntoma clasificado, respondé SU pregunta decisoria del ÁRBOL DE DECISIÓN \
 (capa 2) y emití el par {sintoma_capa1, causa_capa2}. Una causa sin síntoma clasificado NO valida.
 
@@ -651,6 +699,11 @@ def validar_contrato(fj) -> list[str]:
         elif a.get("lado") != LADO_POR_CAUSA[c]:
             errs.append(f"{pre}.lado {a.get('lado')!r} no corresponde a '{c}' "
                         f"(esperado {LADO_POR_CAUSA[c]!r})")
+        if s in SINTOMAS_CAPA1 and c in LADO_POR_CAUSA and c not in caminos_arbol()[s]:
+            errs.append(f"{pre}: camino inválido {s} → {c} — el ÁRBOL DE DECISIÓN no conecta ese "
+                        f"síntoma con esa causa (desde {s} el árbol permite: "
+                        f"{sorted(caminos_arbol()[s])}). Reclasificá el síntoma o la causa "
+                        "siguiendo el árbol.")
         if a.get("jerarquia") not in ("primaria", "secundaria"):
             errs.append(f"{pre}.jerarquia inválida: {a.get('jerarquia')!r} (primaria|secundaria)")
         ev = a.get("evidencia")
