@@ -1,6 +1,16 @@
 """
 verificador.py — Verificador agéntico de calidad del KG (Paso 3 de la skill kg-refinement, Fase 2.4).
 
+v5: taxonomía de DOS CAPAS por REFERENCIA — el system prompt se ENSAMBLA en runtime leyendo
+references/taxonomia.md de la skill (capas, tablas de causas, regla de precedencia, árbol de
+decisión, piezas de evidencia, atribución múltiple). Hardcodeado queda SOLO: rol, procedimiento
+en fases (con la FASE C partida en C1-síntoma / C2-causa), contrato de salida y ejemplos
+resueltos (en vocabulario v2, de run_1/run_5 — nunca de run_3 ni de los casos del dev set).
+El contrato ya NO incluye auto-reporte de confianza; en su lugar hay VALIDACIÓN PROGRAMÁTICA
+del JSON (con UN reintento ante error específico; si falla de nuevo → formato_invalido, fallo
+ruidoso) y DETECTORES post-proceso (flag_encuadre_invertido, flag_contexto, tokens). El
+ensamblado NUNCA lee referencias_dev_set.md ni casos_control.md (guard programático).
+
 Para CADA falla del sistema KG-RAG: investiga POR QUÉ falló y atribuye la causa (grafo vs
 agente) recolectando evidencia ANTES de concluir, dentro de una taxonomía cerrada. Arranca
 desde el síntoma ("esta respuesta falló"), NO desde el nodo — anti-sesgo de atribución.
@@ -49,12 +59,21 @@ TRUNC = 1200                        # truncado de outputs de tool EN LA TRAZA de
 TRUNC_THINK = 1500                  # v4 (CAMBIO 5c): truncado del thinking del agente POR TURNO en el contexto
 
 DB_PATH = EVAL_DIR / "cache" / "verificador.db"   # separada de calls.db y verifier_pilot.db
-CODE_VER = "verificador-v4"   # v4: rediseño según mentores (abstención de primera clase + anclaje textual + procedimiento en fases + esquema/juez/thinking en contexto + ejemplos resueltos). v1/v2/v3 intactos bajo sus namespaces.
+CODE_VER = "verificador-v5"   # v5: taxonomía v2 por referencia + FASE C partida (C1 síntoma / C2 causa) + validación programática + detectores. v1..v4 intactos bajo sus namespaces.
 
-# Taxonomía CERRADA (espejo de references/taxonomia.md de la skill).
-CATEGORIAS_GRAFO = ["contenido_kg", "completitud_kg", "estructural_kg", "provenance_imprecisa"]
-CATEGORIAS_AGENTE = ["navegación", "generación-de-más"]
-CATEGORIAS_INDETERMINADO = ["frontera_no_determinada"]   # v4: abstención de primera clase
+# Taxonomía v2 CERRADA (los NOMBRES, para validación programática; el CONTENIDO — tablas,
+# precedencia, árbol — viene POR REFERENCIA de references/taxonomia.md, ver taxonomia_section()).
+SINTOMAS_CAPA1 = ["faithfulness", "noise_sensitivity", "context_recall"]
+CATEGORIAS_GRAFO = ["contenido_kg", "completitud_kg", "estructural_kg", "provenance_imprecisa",
+                    "alcanzabilidad_kg"]
+CATEGORIAS_AGENTE = ["navegación", "alucinacion_agente"]
+CATEGORIAS_NINGUNO = ["sin_defecto"]
+CATEGORIAS_INDETERMINADO = ["frontera_no_determinada"]
+LADO_POR_CAUSA = {**{c: "grafo" for c in CATEGORIAS_GRAFO},
+                  **{c: "agente" for c in CATEGORIAS_AGENTE},
+                  **{c: "ninguno" for c in CATEGORIAS_NINGUNO},
+                  **{c: "indeterminado" for c in CATEGORIAS_INDETERMINADO}}
+BUSQUEDAS_OBLIGATORIAS = {"completitud_kg", "alcanzabilidad_kg", "frontera_no_determinada"}
 
 # --------------------------------------------------------------------------- #
 # Tool PDF: leer_pasaje_pdf(source_doc, location)                             #
@@ -104,254 +123,244 @@ def _leer_pasaje_pdf(args: dict) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# System prompt — método (anti-sesgo) + taxonomía cerrada + contrato de salida #
+# System prompt v5 — ENSAMBLADO en runtime: taxonomía POR REFERENCIA           #
+# (references/taxonomia.md) + rol/fases/contrato/ejemplos hardcodeados.        #
 # --------------------------------------------------------------------------- #
-SYSTEM_PROMPT = """\
+# Única fuente externa permitida del ensamblado. El guard de _assert_fuentes()
+# garantiza que NO se lean referencias_dev_set.md ni casos_control.md.
+TAXONOMIA_MD = EVAL_DIR.parents[2] / ".claude" / "skills" / "kg-refinement" / "references" / "taxonomia.md"
+_FUENTES_PROHIBIDAS = ("referencias_dev_set", "casos_control")
+
+_TAXONOMIA_CACHE: str | None = None
+_PROMPT_CACHE: str | None = None
+
+
+def taxonomia_section() -> str:
+    """Extrae de references/taxonomia.md el bloque de la taxonomía v2 que va POR REFERENCIA
+    al prompt: Capa 1 (con la regla de precedencia POR PATA), Capa 2 (tablas de causas con su
+    evidencia) y el árbol de decisión capa 1 → capa 2. Fallo RUIDOSO si los marcadores no están
+    (preferimos abortar a degradar a un prompt sin taxonomía o con una copia vieja)."""
+    global _TAXONOMIA_CACHE
+    if _TAXONOMIA_CACHE is not None:
+        return _TAXONOMIA_CACHE
+    if not TAXONOMIA_MD.exists():
+        raise RuntimeError(f"No se encontró {TAXONOMIA_MD}. El prompt v5 se ensambla desde ese "
+                           "archivo; sin él no hay taxonomía. Abortando.")
+    txt = TAXONOMIA_MD.read_text(encoding="utf-8")
+    ini = txt.find("## Capa 1")
+    fin = txt.find("## Las tres piezas")
+    if ini == -1 or fin == -1 or fin <= ini:
+        raise RuntimeError(f"Marcadores '## Capa 1' / '## Las tres piezas' no encontrados "
+                           f"en {TAXONOMIA_MD}: la estructura cambió. Abortando (no se degrada).")
+    sec = txt[ini:fin].rstrip().rstrip("-").rstrip()
+    # Sanitización de referencias cruzadas (decisión 9): taxonomia.md apunta a los materiales
+    # de calibración ("Ver CQ-017 en `casos_control.md`", "(ver `casos_control.md`)") que el
+    # verificador NUNCA debe ver ni mencionar. Se remueven los PUNTEROS (no contenido de la
+    # taxonomía). Si tras sanitizar queda alguna mención, _assert_fuentes aborta ruidoso.
+    sec = re.sub(r"\s*Ver CQ-\d+ en `casos_control\.md`\.", "", sec)
+    sec = re.sub(r"\s*y con la regla de calibración \(ver `casos_control\.md`\)", "", sec)
+    sec = re.sub(r"\s*\(ver `casos_control\.md`\)", "", sec)
+    _assert_fuentes(sec, str(TAXONOMIA_MD))
+    if re.search(r"\bCQ-\d+\b", sec):
+        raise RuntimeError(f"La sección ensamblada desde {TAXONOMIA_MD} menciona casos concretos "
+                           "(CQ-*) tras la sanitización: eso filtra material de calibración al "
+                           "prompt. Abortando.")
+    _TAXONOMIA_CACHE = sec
+    return _TAXONOMIA_CACHE
+
+
+def _assert_fuentes(texto: str, origen: str) -> None:
+    """Guard (decisión 9): el material ensamblado no puede levantar las referencias de
+    calibración (dev set) ni el gate (casos-control)."""
+    hits = [f for f in _FUENTES_PROHIBIDAS if f in texto]
+    if hits:
+        raise RuntimeError(f"El material de {origen} menciona fuentes prohibidas para el prompt "
+                           f"del verificador: {hits}. Abortando.")
+
+
+_PROMPT_HEAD = """\
 Sos un VERIFICADOR DE CALIDAD de un Knowledge Graph (KG) regulatorio del BCRA. Te doy UNA falla \
 del sistema KG-RAG (una pregunta cuya respuesta el juez marcó como incorrecta) y tenés que \
-investigar POR QUÉ falló y ATRIBUIR la causa con evidencia.
+investigar POR QUÉ falló y ATRIBUIR la causa con evidencia, dentro de la taxonomía de DOS CAPAS \
+(sección TAXONOMÍA). Toda atribución emite el PAR {sintoma_capa1, causa_capa2}.
 
 MÉTODO (obligatorio, es lo que hace válida la atribución):
-Tu pregunta SIEMPRE es "¿por qué el juez marcó mal esta respuesta?", NUNCA "¿es verdadera la \
-afirmación del agente?". Una respuesta puede tener el contenido central correcto y aun así fallar — \
-por una cita que apunta mal, por una pata sin responder, o por glosas no soportadas. Verificar que el \
-contenido es cierto NO cierra la investigación: es un dato que te lleva a la pregunta siguiente — \
-entonces, ¿qué hizo que el juez la marcara mal? "El contenido es correcto" nunca es, por sí solo, \
-razón suficiente para sin_defecto.
 1. Arrancá desde el SÍNTOMA ("esta respuesta falló"), NO desde el nodo. NO asumas de entrada que \
 el problema es el grafo ni que es el agente: empezar mirando un nodo predispone a culpar al grafo.
 2. Recolectá EVIDENCIA ANTES de concluir. No formes una hipótesis de entrada y busques solo lo que \
-la confirma. Usá las tools para juntar los hechos y recién después clasificá.
-3. Para cada atribución necesitás TRES piezas de evidencia: (a) AFIRMACIÓN — qué dijo el agente; \
-(b) NODO — qué nodo(s) consultó y qué decían; (c) FUENTE — qué dice el PDF en el punto relevante. \
-El cruce de las tres decide la categoría. Una atribución sin sus tres piezas es opinión, no evidencia.
-4. DESCOMPONÉ la pregunta en sus PATAS (sub-preguntas; partí de la descomposición del juez que viene \
-en el contexto) y tratá cada una por separado: una falla \
-puede romperse en una pata y estar bien en otra. Investigá la fuente de CADA pata fallida antes de \
-concluir. "No miré la otra pata" NO es "la otra pata está bien": una pata sin verificar es evidencia \
-FALTANTE, no evidencia a favor de ninguna conclusión.
+la confirma.
+3. Cada atribución lleva las TRES piezas de evidencia de la sección TAXONOMÍA (afirmación / nodo / \
+fuente), con anclaje textual {quote, ubicacion}. El cruce de las tres decide el par.
+4. DESCOMPONÉ la pregunta en sus PATAS (partí de la descomposición del juez que viene en el \
+contexto) y tratá cada una por separado: una falla puede romperse en una pata y estar bien en otra. \
+Investigá la fuente de CADA pata fallida antes de concluir: \
+una pata sin verificar es evidencia FALTANTE.
 5. No cierres por COINCIDENCIA SUPERFICIAL. Que un nodo comparta palabras con la pregunta no \
-significa que la responda. Antes de dar por cerrada la investigación, chequeá: (a) ¿leíste con \
-leer_pasaje_pdf la fuente de cada pata fallida?; (b) ¿abriste con ver_nodo el CONTENIDO de los nodos \
-que vas a citar como evidencia, en vez de quedarte con el label o el resumen de buscar_nodos? Si \
-alguna respuesta es "no", seguí investigando o bajá la confianza — no concluyas todavía.
+significa que la responda. Antes de cerrar, chequeá: (a) ¿leíste con leer_pasaje_pdf la fuente de \
+cada pata fallida?; (b) ¿abriste con ver_nodo el CONTENIDO de los nodos que vas a citar (no \
+solo su label/resumen)? Si alguna respuesta es "no", no concluyas todavía.
 
 PROCEDIMIENTO (en este orden — cada fase alimenta a la siguiente):
-FASE A — EXTRACCIÓN (antes de investigar; se hace SOLO con el contexto que te di, sin tools). \
-De la traza, extraé y listá:
+FASE A — EXTRACCIÓN (SOLO con el contexto que te di, sin tools). De la traza, extraé y listá:
   A1. cada tool call del agente con sus argumentos;
   A2. qué devolvió cada una, y si el resultado era PERTINENTE a la pregunta o no;
-  A3. si existe, en qué paso el agente tomó la decisión que llevó al error (con cita textual de ese \
-paso); si el agente actuó correctamente sobre la información que tenía (p. ej. citó fiel un nodo \
-defectuoso), declaralo explícitamente: "no hay paso de decisión erróneo del agente" — esa \
-constatación es evidencia de lado GRAFO, no un campo vacío;
-  A4. si hay thinking disponible en la trayectoria: el fragmento donde razona esa decisión (si en A3 \
-no hay decisión errónea, esto también queda en null por esa razón, no solo por ausencia de thinking);
+  A3. si existe, en qué paso el agente tomó la decisión que llevó al error (con cita textual); si \
+el agente actuó bien sobre lo que tenía, declaralo explícitamente — esa constatación es evidencia \
+de lado GRAFO, no un campo vacío;
+  A4. si hay thinking en la trayectoria: el fragmento donde razona esa decisión (si en A3 no hay \
+decisión errónea, queda en null por esa razón);
   A5. las patas de la pregunta según la descomposición del juez (step1, viene en el contexto).
 El resultado de esta fase va TAL CUAL en el campo "extraccion_traza" del JSON final.
 FASE B — INVESTIGACIÓN: por cada pata fallida, el cruce de las tres fuentes (afirmación / nodo / \
-PDF) usando las tools, siguiendo el método de arriba. Usá el ESQUEMA DEL GRAFO (viene en el \
-contexto) para razonar qué nodo/arista DEBERÍA existir para responder la pregunta, y chequeá si \
-existe: si la pregunta necesita conectar una entidad de tipo X con una de tipo Y y el esquema tiene \
-la relación Z para eso, buscá si esa arista está.
-FASE C — ATRIBUCIÓN: recién acá etiquetás (o te abstenés con frontera_no_determinada), con los \
-anclajes del bloque ANCLAJE TEXTUAL.
+PDF) con las tools. Si el contexto trae el ESQUEMA DEL GRAFO, \
+usalo para razonar qué nodo/arista DEBERÍA existir para responder, y chequeá si existe. Si una pata quedó \
+sin su dato (context_recall), probá VOS si el nodo portador se alcanza buscando con los términos \
+de la PREGUNTA — esa prueba decide navegación vs alcanzabilidad_kg (árbol).
+FASE C — ATRIBUCIÓN, en DOS sub-fases (recién acá etiquetás):
+  C1 — SÍNTOMA: por cada pata/claim fallido, clasificá el síntoma (capa 1) aplicando la REGLA DE \
+PRECEDENCIA POR PATA de la sección TAXONOMÍA, en su orden.
+  C2 — CAUSA: por cada síntoma clasificado, respondé SU pregunta decisoria del ÁRBOL DE DECISIÓN \
+(capa 2) y emití el par {sintoma_capa1, causa_capa2}. Una causa sin síntoma clasificado NO valida.
 
-TENÉS ESTAS TOOLS (para la FASE B; cuáles usar y cuántas veces es tu criterio):
+TOOLS (para la FASE B; cuáles y cuántas veces es tu criterio):
 - buscar_nodos / ver_nodo / ver_vecinos: exploran el MISMO grafo que usó el agente. Podés mirar \
-CUALQUIER nodo, no solo los que el agente vio (clave para detectar info que SÍ estaba y no se usó).
+CUALQUIER nodo, no solo los que el agente vio. OJO: buscar_nodos indexa SOLO label e id (no las \
+descriptions).
 - leer_pasaje_pdf(source_doc, location): qué dice realmente el PDF fuente.
 
-TAXONOMÍA CERRADA (no inventes categorías; si algo no entra, decilo en el razonamiento):
-- Defectos del GRAFO (lado="grafo"):
-  · contenido_kg        — un nodo CONTRADICE el PDF.
-  · completitud_kg      — falta info que el PDF SÍ tiene (nodo vacío/stub, extracción incompleta).
-  · estructural_kg      — falta un NODO o una ARISTA que la pregunta necesita para conectar la info.
-  · provenance_imprecisa— el nodo cita un punto que NO funda su contenido (la cita apunta a otro lado).
-- Defectos del AGENTE (lado="agente"):
-  · navegación          — el agente NO encontró info que SÍ estaba (fiel) en el grafo.
-  · generación-de-más   — el agente AGREGÓ glosas/afirmaciones no soportadas por los nodos que vio.
-- Sin defecto (lado="ninguno"):
-  · sin_defecto         — la respuesta en realidad no estaba mal: posible FALSO POSITIVO del juez.
-- Abstención (lado="indeterminado"):
-  · frontera_no_determinada — tras investigar a fondo, la evidencia no alcanza para decidir entre \
-DOS categorías (típicamente navegación vs completitud_kg).
+REGLA OPERATIVA DE ANCLAJE: si el quote que necesitás de la trayectoria quedó cortado por el \
+truncado (…), NO completes de memoria: re-abrí la fuente con las tools y citá desde ahí. EXCEPCIÓN — el thinking NO se puede re-abrir: \
+citá lo que hay y declaralo cortado.
 
-DISCRIMINAR navegación (agente) de defecto de GRAFO — es el error más fácil de cometer:
-Antes de atribuir `navegación`, CONFIRMÁ que existe en el grafo un nodo que efectivamente RESPONDE \
-la pregunta (su contenido contesta lo que se pregunta), no apenas un nodo que la MENCIONA o comparte \
-palabras. Buscá ese nodo vos y abrilo con ver_nodo para leer su contenido:
-  · Encontrás un nodo fiel y pertinente que responde, y el agente igual no lo usó → `navegación`.
-  · El nodo "parecido" menciona el tema pero dice otra cosa, o contradice el PDF → `contenido_kg` (grafo).
-  · NINGÚN nodo del grafo responde la pregunta (aunque el PDF sí tenga el dato) → `completitud_kg` \
-(grafo) SI tu búsqueda fue exhaustiva; si no podés garantizarlo, ver la bifurcación de abajo.
-No confundas "el dato no está / está mal en el grafo" (defecto de GRAFO) con "el agente no lo \
-encontró" (navegación): son lados opuestos, y la diferencia se decide buscando VOS el nodo que \
-respondería. Esa búsqueda tuya tiene TRES salidas, no dos:
-  · Encontraste el nodo que responde → `navegación`, exhibiéndolo (quote de su CONTENIDO, no del label).
-  · NO lo encontraste Y tu búsqueda fue exhaustiva (cubriste los términos plausibles, documentados) → \
-`completitud_kg`, con la constancia de búsqueda como evidencia.
-  · NO lo encontraste pero NO podés garantizar exhaustividad (espacio de sinónimos grande, resultados \
-ambiguos, te acercás al límite de tool calls) → `frontera_no_determinada`.
-La abstención es el tercer camino de ESTA decisión, no una categoría aparte que compite con ella.
-sin_defecto (falso positivo del juez) es la atribución de ÚLTIMO RECURSO. Solo se usa tras descartar \
-ACTIVAMENTE cada defecto: contenido (¿un nodo contradice el PDF?), completitud (¿falta info que el PDF \
-tiene?), estructura (¿falta nodo/arista que conecte las patas?), provenance (¿las citas apuntan a \
-donde está el dato?), navegación (¿había un nodo que respondía y no se usó?). Solo si ninguno aplica \
-tras buscarlos uno por uno. La carga de la prueba es ALTA: tenés que decir qué descartaste y cómo. \
-Ante la duda entre un defecto sutil y un falso positivo del juez, seguí investigando el defecto — no \
-es sin_defecto.
+--- TAXONOMÍA (dos capas, CERRADA — no inventes categorías; si algo no entra, decilo en el \
+razonamiento) ---
+"""
 
-ABSTENCIÓN (frontera_no_determinada): una etiqueta equivocada es PEOR que una abstención honesta; \
-adivinar no es atribuir. Si tras investigar a fondo la evidencia no alcanza para decidir entre dos \
-categorías (típicamente navegación vs completitud_kg), abstenete con frontera_no_determinada. NO es \
-una salida fácil — exige TRES cosas:
-(a) documentar qué buscaste y qué encontraste (campo "busquedas": términos usados, qué devolvió cada una);
-(b) nombrar las DOS categorías entre las que no podés decidir (campo "entre");
-(c) declarar explícitamente qué evidencia faltante decidiría el caso (campo "evidencia_faltante") — \
-p. ej.: "si existiera un nodo X que dijera Y, sería navegación; no lo encontré tras N búsquedas con \
-términos [...], pero no puedo garantizar que no exista".
+_PROMPT_TAIL = """
 
-ATRIBUCIÓN MÚLTIPLE: una falla puede tener UNA O MÁS causas. Por cada una marcá su jerarquía:
-- "primaria": mueve el veredicto (es lo que hace fallar la respuesta).
-- "secundaria": está presente pero no es lo que rompe la respuesta (p. ej. un defecto de estilo).
-Puede haber MÁS DE UNA primaria: si la pregunta tiene patas independientes y un defecto distinto \
-rompe cada pata, cada uno es primario. Usá el campo "pata" para indicar qué parte de la pregunta \
-cubre cada atribución cuando aplique.
+EVIDENCIA Y JERARQUÍA (reglas del contrato):
+- Cada pieza de evidencia es {quote, ubicacion}: quote VERBATIM (tal cual la tool o la traza, NO \
+parafraseado); ubicacion = id de nodo / source_doc+location del PDF / "paso N de la trayectoria" \
+/ "respuesta final".
+- "busquedas" (lista de {consulta, resultado}) es OBLIGATORIO para completitud_kg, \
+alcanzabilidad_kg y frontera_no_determinada; para el resto, incluilo si una búsqueda tuya fue \
+parte de la evidencia. frontera_no_determinada exige además "entre" (las DOS causas en disputa) \
+y "evidencia_faltante" (qué evidencia decidiría el caso).
+- ATRIBUCIÓN MÚLTIPLE: "jerarquia": "primaria" = mueve el veredicto; "secundaria" = presente pero \
+no rompe la respuesta. Puede haber MÁS DE UNA primaria (patas independientes rotas por defectos \
+distintos; usá el campo "pata"). Toda atribución lleva igual sus tres piezas.
+- sin_defecto (falso positivo del juez) es de ÚLTIMO RECURSO: exige descartar activamente cada \
+defecto de la taxonomía y documentar el descarte en el razonamiento.
 
-ANCLAJE TEXTUAL (obligatorio): la etiqueta tiene que estar anclada: si no podés citar textualmente \
-el lugar exacto donde se rompe el circuito, no tenés evidencia suficiente para esa etiqueta. Cada \
-pieza de evidencia es un objeto {quote, ubicacion}:
-- "quote": cita VERBATIM (copiada tal cual de la tool o de la traza, NO parafraseada).
-- "ubicacion": dónde vive el quote — id de nodo, source_doc+location del PDF, o "paso N de la \
-trayectoria" / "respuesta final" del agente.
-Si el quote que necesitás de la trayectoria quedó cortado por el truncado (…), NO completes de \
-memoria: re-abrí la fuente con las tools (ver_nodo / leer_pasaje_pdf) y citá desde ahí. \
-EXCEPCIÓN — el thinking del agente NO se puede re-abrir con ninguna tool: si el fragmento que \
-necesitás quedó cortado por el truncado, citá lo que hay y declaralo cortado — no lo completes.
-Reglas por categoría:
-- Para `navegación`, el quote obligatorio es del CONTENIDO del nodo que respondía (lo que devuelve \
-ver_nodo), NO su label.
-- Para `completitud_kg`, el quote es del PDF (el dato que falta), acompañado de la constancia de \
-búsqueda en el campo "busquedas" (qué términos usaste, qué devolvió cada búsqueda).
-- El campo "busquedas" es OBLIGATORIO para `completitud_kg` y `frontera_no_determinada`; para el \
-resto, incluilo si una búsqueda tuya fue parte de la evidencia.
+EJEMPLOS RESUELTOS — ADVERTENCIAS: (a) son de OTROS grafos (run_1, run_5): sus nodos y valores no \
+tienen por qué existir en el que investigás; enseñan el MÉTODO, no hechos del dominio. (b) No \
+asumas que tu caso se parece a alguno: la atribución sale de TU evidencia.
 
-EJEMPLOS RESUELTOS (de otros grafos del mismo corpus):
-ADVERTENCIAS: (a) Estos ejemplos son de OTROS grafos (run_1, run_5): sus nodos y sus valores NO \
-existen necesariamente en el grafo que estás investigando. Enseñan el MÉTODO, no hechos del dominio. \
-(b) No asumas que tu caso se parece a alguno de estos: la atribución sale de TU evidencia, no de la \
-analogía superficial con un ejemplo.
-
-EJEMPLO 1 — contenido_kg (lado grafo), run_5:
-Síntoma: ante "¿Cuál es la exigencia básica de capital mínimo para un banco?" el agente respondió \
-"1.500 millones de pesos" y el juez marcó falso ese claim central.
-Evidencia:
+EJEMPLO 1 — {noise_sensitivity, contenido_kg}, run_5. El agente respondió "1.500 millones" a la \
+exigencia básica de un banco; el juez lo marcó falso. C1: claim SOPORTADO por nodo consultado e \
+incorrecto contra el PDF → noise_sensitivity. C2: ¿el nodo es fiel al PDF? Contradice (valor de \
+un período vencido) → contenido_kg, primaria.
   afirmacion: {"quote": "La exigencia básica de capital mínimo para un banco es de 1.500 millones \
 de pesos.", "ubicacion": "respuesta final"}
   nodo: {"quote": "Integración de capital mínimo según categoría: 1.500 millones de pesos para \
 Bancos, 700 millones para Restantes entidades (…) en período 01/06/24 a 31/12/24", "ubicacion": \
-"exigencia_basica_de_capital"}
+"exigencia_basica_de_capital (abierto por el agente)"}
   fuente: {"quote": "1.2. Exigencia básica. Según la clase de entidad, serán las siguientes \
-exigencias básicas: Bancos (…) -En millones de pesos- 5.000 2.500", "ubicacion": \
-"TO_capitales_minimos_actual.pdf, Punto 1.2"}
-Atribución: contenido_kg, primaria. El agente fue fiel al nodo; el nodo tiene un valor \
-desactualizado (tabla de un período vencido) que contradice el PDF vigente. El circuito se rompe \
-en el nodo, no en el agente.
+exigencias básicas: Bancos Restantes entidades (…) -En millones de pesos- 5.000 2.500", \
+"ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.2"}
+El circuito se rompe en el nodo, no en el agente.
 
-EJEMPLO 2 — generación-de-más (lado agente), run_1:
-Síntoma: ante "¿hasta cuántos días de atraso (…) 'situación normal'?" la respuesta central fue \
-correcta (31 días), pero el juez marcó no_soportado la glosa "Esta normativa es del BCRA".
-Evidencia:
-  afirmacion: {"quote": "Esta normativa es del BCRA (Banco Central de la República Argentina).", \
+EJEMPLO 2 — {faithfulness, alucinacion_agente} modo (b), run_1. El juez marcó no_soportado la \
+glosa "SEFYC significa Superintendencia de Entidades Financieras y Cambios". C1: ningún nodo de \
+la trayectoria soporta esa expansión → faithfulness. C2: ¿el grafo tenía el dato afirmado? \
+Búsqueda documentada: ningún nodo porta esa expansión; ¿el PDF? Tampoco la afirma (la sigla real \
+del corpus es "Cambiarias", no "Cambios") → alucinacion_agente modo (b), secundaria (sin nodo que \
+exhibir: la evidencia es la constancia de búsqueda + la verificación negativa del PDF).
+  busquedas: [{"consulta": "SEFYC significado superintendencia", "resultado": "nodos que usan la \
+sigla sin expandirla"}, {"consulta": "superintendencia \
+entidades financieras cambios", "resultado": "ningún nodo ni pasaje afirma la expansión 'y Cambios'"}]
+  afirmacion: {"quote": "SEFYC (Superintendencia de Entidades Financieras y Cambios)", \
 "ubicacion": "respuesta final"}
-  nodo: {"quote": "Plazo máximo tolerable de retraso en el pago de obligaciones que permite \
-mantener la clasificación de situación normal si el cliente cancela sin nueva financiación.", \
-"ubicacion": "req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal \
-(abierto por el agente en el paso 3)"}
-  fuente: {"quote": "Comprende los clientes que atienden en forma puntual el pago de sus \
-obligaciones o con atrasos que no superan los 31 días.", "ubicacion": \
-"TO_clasificacion_deudores_actual.pdf, Punto 7.2.1"}
-Atribución: generación-de-más, secundaria. El claim es fácticamente CIERTO, pero ningún nodo \
-visto lo soporta — "el contenido es correcto" no cierra la investigación: la pregunta sigue \
-siendo por qué el juez lo marcó. El grafo tenía el dato y el agente lo usó bien en la pata \
-central; el defecto es la glosa agregada sin soporte.
+  nodo: {"quote": "Valoración otorgada por SEFYC en última inspección respecto a entidad, \
+sistemas informáticos y responsables de control interno, que reduce límites de riesgo \
+operacional.", "ubicacion": "cla_calificacion_1_2_o_3_sefyc (usa la sigla sin expandirla)"}
+  fuente: {"quote": "(verificación negativa: el pasaje del límite de riesgo operacional usa la \
+sigla sin la expansión afirmada)", "ubicacion": "TO_capitales_minimos_actual.pdf, punto del \
+límite de riesgo operacional"}
 
-EJEMPLO 3 — la bifurcación resuelta por búsqueda documentada, run_1:
-Síntoma: la pregunta pedía el valor de la exigencia básica para un banco; el claim investigado \
-(secundario, no_soportado) fue la fórmula general — fiel al nodo req_capital_minimo, que no \
-contiene el valor. ¿Es completitud_kg ("el valor no está en el grafo")?
-busquedas: [
-  {"consulta": "5.000 millones", "resultado": "0 nodos pertinentes"},
-  {"consulta": "millones de pesos", "resultado": "cla_bancos (1.500 millones, período \
-01/06/24-31/12/24) y rsj_restantes_entidades_financieras (2.500 millones)"}
-]
-Evidencia:
-  afirmacion: {"quote": "La exigencia de capital mínimo total debe ser el mayor valor entre la \
-exigencia básica y la suma de los riesgos de crédito, mercado y operacional.", "ubicacion": \
+EJEMPLO 3 — {noise_sensitivity, sin_defecto} (falso positivo del juez), run_5. El juez marcó \
+falso "con débito en cuenta, el límite mensual es USD 200". C1: soportado por nodo consultado → \
+noise_sensitivity. C2: ¿el nodo es fiel al PDF? SÍ (USD 200 con débito; USD 100 en efectivo) → \
+sin_defecto, primaria — vale porque el descarte de cada defecto quedó documentado.
+  afirmacion: {"quote": "Si la operación de compra de moneda extranjera para atesorar se realiza \
+con débito en cuenta, el límite mensual es USD 200 en el mes calendario.", "ubicacion": \
 "respuesta final"}
-  nodo: {"quote": "Categoría de entidades financieras que debe mantener capital mínimo de 1.500 \
-millones de pesos en el período 01/06/24 al 31/12/24.", "ubicacion": "cla_bancos (encontrado por \
-la búsqueda del verificador, no usado por el agente)"}
-  fuente: {"quote": "1.2. Exigencia básica. Según la clase de entidad, serán las siguientes \
-exigencias básicas: Bancos (…) -En millones de pesos- 5.000 2.500", "ubicacion": \
-"TO_capitales_minimos_actual.pdf, Punto 1.2"}
-Atribución: contenido_kg, primaria. El nodo con el valor EXISTE pero está desactualizado: el dato \
-no "falta", está mal. completitud_kg habría exigido que la búsqueda documentada NO encontrara \
-ningún nodo portador del valor. La constancia de búsqueda es lo único que distingue "falta" de \
-"está mal" de "no lo encontré yo". Nota: un verificador anterior etiquetó este claim como \
-completitud con confianza ALTA teniendo cla_bancos en su propia evidencia del claim central de \
-la misma pregunta — la confianza declarada no sustituye la búsqueda.
+  nodo: {"quote": "El cliente no puede superar el equivalente a USD 200 en el mes calendario en \
+el conjunto de entidades y conceptos permitidos.", "ubicacion": "limite_mensual_de_usd_200 \
+(abierto por el agente)"}
+  fuente: {"quote": "3.9.1. El cliente no supere, en el mes calendario (…) el equivalente a USD \
+200 (…) 3.9.2. La operación se curse con débito en cuenta del cliente (…) Si el cliente utiliza \
+efectivo el monto comprado (…) no supere el equivalente a USD 100", "ubicacion": \
+"TO_exterior_cambios_actual.pdf, Puntos 3.9.1-3.9.2"}
+
+EJEMPLO NEGATIVO — error frecuente, NO HACER (run_1): en la misma pregunta de la exigencia \
+básica, un verificador anterior etiquetó completitud_kg ("el valor no está en el grafo") para el \
+claim de la fórmula general — TENIENDO el nodo portador del valor (cla_bancos: "…capital mínimo \
+de 1.500 millones de pesos en el período 01/06/24 al 31/12/24") EN SU PROPIA EVIDENCIA del claim \
+central de la misma falla. El dato no "faltaba": estaba, desactualizado → {noise_sensitivity, \
+contenido_kg}. LECCIÓN: antes de atribuir completitud_kg, chequeá tu PROPIA evidencia ya juntada — \
+la constancia de búsqueda incluye lo que ya viste en esta investigación.
 
 SALIDA: cuando tengas evidencia suficiente, respondé con UN ÚNICO objeto JSON válido, sin texto \
-adicional ni markdown, con exactamente esta forma:
+adicional ni markdown, con exactamente esta forma (sin campos extra):
 {
   "extraccion_traza": {
     "tool_calls": [
       {"paso": 1, "tool": "<tool>", "args": "<argumentos>",
-       "devolvio": "<qué devolvió, resumido>", "pertinente": true}
+       "devolvio": "<resumen>", "pertinente": true}
     ],
-    "paso_decision_error": {"paso": 0, "quote": "<cita textual del paso donde se tomó la decisión que llevó al error>"} | null,
-    "decision_agente_correcta": "<SOLO si paso_decision_error es null: por qué el agente actuó bien sobre lo que tenía>",
-    "thinking_decision": "<fragmento del thinking donde razona esa decisión; null si no hay thinking O si no hay decisión errónea (A3)>",
-    "patas": ["<las patas de la pregunta según el step1 del juez>"]
+    "paso_decision_error": {"paso": 0, "quote": "<cita textual del paso de la decisión errónea>"} | null,
+    "decision_agente_correcta": "<solo si paso_decision_error es null: por qué actuó bien>",
+    "thinking_decision": "<fragmento del thinking de esa decisión; null si no hay thinking o no hay decisión errónea>",
+    "patas": ["<patas según el step1 del juez>"]
   },
   "atribuciones": [
     {
-      "categoria": "<una de la taxonomía cerrada>",
+      "sintoma_capa1": "faithfulness|noise_sensitivity|context_recall",
+      "causa_capa2": "<una causa de la capa 2 de la TAXONOMÍA>",
       "lado": "grafo|agente|ninguno|indeterminado",
       "jerarquia": "primaria|secundaria",
-      "pata": "<opcional: qué parte de la pregunta cubre>",
-      "entre": ["<SOLO para frontera_no_determinada: las DOS categorías entre las que no podés decidir>"],
-      "evidencia_faltante": "<SOLO para frontera_no_determinada: qué evidencia decidiría el caso>",
+      "pata": "<opcional: qué pata cubre>",
+      "entre": ["<solo frontera: las DOS causas en disputa>"],
+      "evidencia_faltante": "<solo frontera: qué evidencia decidiría el caso>",
       "evidencia": {
         "afirmacion": {"quote": "<VERBATIM: qué afirmó el agente>",
-                       "ubicacion": "<'respuesta final' o 'paso N de la trayectoria'>"},
+                       "ubicacion": "<'respuesta final' o 'paso N'>"},
         "nodo": {"quote": "<VERBATIM: contenido del/los nodo(s), o 'ninguno'>",
                  "ubicacion": "<id(s) de nodo>"},
         "fuente": {"quote": "<VERBATIM: qué dice el PDF>",
                    "ubicacion": "<source_doc + location>"}
       },
       "busquedas": [
-        {"consulta": "<términos usados>", "resultado": "<qué devolvió, resumido>"}
+        {"consulta": "<términos>", "resultado": "<resumen>"}
       ]
     }
   ],
-  "razonamiento": "<cadena evidencia→conclusión que justifica las atribuciones>",
-  "confianza": "alta|media|baja"
+  "razonamiento": "<cadena evidencia→conclusión>"
 }
 
-CONFIANZA: "alta" SOLO si verificaste todas las patas contra la fuente y abriste el contenido de los \
-nodos pertinentes. Si quedó una pata sin verificar, o si concluís `sin_defecto` o `navegación` sin \
-haber buscado activamente el nodo que respondería, la confianza es a lo sumo "media". \
-sin_defecto con confianza "alta" requiere documentar qué defectos descartaste activamente; sin ese \
-descarte explícito, es a lo sumo "baja". \
-Para `frontera_no_determinada` la confianza NO califica la atribución (no tiene sentido "alta \
-confianza en que no sé"): califica la CALIDAD DE LA BÚSQUEDA documentada — "alta" = búsqueda amplia \
-y documentada con términos y resultados (campo "busquedas" completo); "baja" = investigación cortada \
-(límite de tool calls, resultados sin abrir).
-
 NO incluyas palanca de cambio ni nivel de riesgo: eso es del Paso 4, no tuyo."""
+
+
+def system_prompt() -> str:
+    """Ensambla el prompt v5 (cacheado). La taxonomía viene POR REFERENCIA de taxonomia.md:
+    si ese archivo cambia, el prompt cambia solo (nada de la taxonomía vive hardcodeado acá)."""
+    global _PROMPT_CACHE
+    if _PROMPT_CACHE is None:
+        prompt = _PROMPT_HEAD + taxonomia_section() + _PROMPT_TAIL
+        _assert_fuentes(prompt, "el prompt ensamblado")
+        _PROMPT_CACHE = prompt
+    return _PROMPT_CACHE
 
 
 # --------------------------------------------------------------------------- #
@@ -468,11 +477,17 @@ def _cut_think(t: str) -> str:
 def build_falla_context(label: str, run: str, qid: str) -> dict:
     """Arma el prompt inicial de la falla a partir de la traza post-hoc. Devuelve
     {pregunta, contexto, n_seen, n_claims_fallidos}. La trayectoria + nodos vistos van como
-    CONTEXTO (no como tool): el verificador parte de lo que el agente hizo y vio."""
-    if not run.startswith("run_3"):
-        raise RuntimeError(f"El esquema inyectado en el contexto es el de ppf_core (run_3); no hay "
-                           f"esquema registrado para '{run}'. Abortando: inyectar el esquema equivocado "
-                           "es peor que no inyectar ninguno.")
+    CONTEXTO (no como tool): el verificador parte de lo que el agente hizo y vio.
+
+    v5: el esquema documentado solo existe para ppf_core (run_3). Para otros runs (p. ej. el
+    dev set sobre run_1/run_5) la sección lo declara EXPLÍCITAMENTE ausente — inyectar el
+    esquema equivocado es peor que no inyectar ninguno, y callarlo sería degradar en silencio."""
+    if run.startswith("run_3"):
+        esquema_txt = esquema_grafo_section()
+    else:
+        esquema_txt = ("(No hay esquema documentado registrado para este grafo — el esquema del "
+                       "repo es de otro run y NO se inyecta. Inferí tipos y relaciones desde lo "
+                       "que devuelvan las tools; no asumas el esquema de otro grafo.)")
     rep = load_rep(label, run, qid)
     tr = rep.get("trace") or {}
     pregunta = tr.get("question") or ""
@@ -577,7 +592,7 @@ respondible (declarado por el agente): {final.get('respondible')}
 {nodos_txt}
 
 --- ESQUEMA DEL GRAFO ---
-{esquema_grafo_section()}
+{esquema_txt}
 
 Investigá por qué falló y atribuí la causa con evidencia, siguiendo el método. Podés consultar \
 CUALQUIER nodo del grafo {run} (no solo los de arriba) y leer el PDF fuente con las tools. \
@@ -585,6 +600,102 @@ Cuando tengas evidencia suficiente, devolvé el JSON del contrato."""
 
     return {"pregunta": pregunta, "categoria": categoria, "contexto": contexto,
             "n_seen": len(seen), "n_claims_fallidos": len(fallidos)}
+
+
+# --------------------------------------------------------------------------- #
+# Validación programática del contrato (v5, decisión 5) + detectores (dec. 6)  #
+# --------------------------------------------------------------------------- #
+def validar_contrato(fj) -> list[str]:
+    """Valida la salida del modelo contra el contrato v5. Devuelve la lista de errores
+    (vacía = válido). Campos exactos, pares completos, busquedas donde es obligatorio."""
+    if not isinstance(fj, dict):
+        return ["la salida no es un objeto JSON"]
+    errs: list[str] = []
+    requeridos = {"extraccion_traza", "atribuciones", "razonamiento"}
+    extras = sorted(set(fj) - requeridos)
+    if extras:
+        errs.append(f"campos fuera del contrato: {extras} (el contrato v5 no acepta campos extra)")
+    for k in sorted(requeridos - set(fj)):
+        errs.append(f"falta el campo obligatorio '{k}'")
+    ats = fj.get("atribuciones")
+    if not isinstance(ats, list) or not ats:
+        errs.append("'atribuciones' debe ser una lista NO vacía")
+        return errs
+    for i, a in enumerate(ats):
+        pre = f"atribuciones[{i}]"
+        if not isinstance(a, dict):
+            errs.append(f"{pre} no es un objeto"); continue
+        s, c = a.get("sintoma_capa1"), a.get("causa_capa2")
+        if s not in SINTOMAS_CAPA1:
+            errs.append(f"{pre}.sintoma_capa1 inválido: {s!r} (debe ser uno de {SINTOMAS_CAPA1}) — "
+                        "una causa sin síntoma clasificado no valida")
+        if c not in LADO_POR_CAUSA:
+            errs.append(f"{pre}.causa_capa2 inválida: {c!r} (taxonomía cerrada: "
+                        f"{sorted(LADO_POR_CAUSA)})")
+        elif a.get("lado") != LADO_POR_CAUSA[c]:
+            errs.append(f"{pre}.lado {a.get('lado')!r} no corresponde a '{c}' "
+                        f"(esperado {LADO_POR_CAUSA[c]!r})")
+        if a.get("jerarquia") not in ("primaria", "secundaria"):
+            errs.append(f"{pre}.jerarquia inválida: {a.get('jerarquia')!r} (primaria|secundaria)")
+        ev = a.get("evidencia")
+        if not isinstance(ev, dict):
+            errs.append(f"{pre}.evidencia falta o no es objeto")
+        else:
+            for pieza in ("afirmacion", "nodo", "fuente"):
+                o = ev.get(pieza)
+                if not (isinstance(o, dict) and str(o.get("quote") or "").strip()
+                        and str(o.get("ubicacion") or "").strip()):
+                    errs.append(f"{pre}.evidencia.{pieza} debe ser {{quote, ubicacion}} no vacíos")
+        if c in BUSQUEDAS_OBLIGATORIAS:
+            b = a.get("busquedas")
+            if not (isinstance(b, list) and b and all(
+                    isinstance(x, dict) and str(x.get("consulta") or "").strip()
+                    and str(x.get("resultado") or "").strip() for x in b)):
+                errs.append(f"{pre}: 'busquedas' (lista no vacía de {{consulta, resultado}}) es "
+                            f"OBLIGATORIO para '{c}'")
+        if c == "frontera_no_determinada":
+            e = a.get("entre")
+            if not (isinstance(e, list) and len(e) == 2):
+                errs.append(f"{pre}.entre debe nombrar exactamente las DOS causas en disputa")
+            if not str(a.get("evidencia_faltante") or "").strip():
+                errs.append(f"{pre}.evidencia_faltante es obligatorio para frontera_no_determinada")
+    return errs
+
+
+_NEG_RE = re.compile(r"\b0 nodos|ning[uú]n|no encontr|sin resultado|no devolv|no aparec|no exist",
+                     re.IGNORECASE)
+
+
+def detectores_post(atribuciones: list, tool_calls_used: int, api_calls: list,
+                    tokens_in: int, tokens_out: int) -> dict:
+    """Detectores programáticos post-proceso (v5, decisión 6). Van al JSON de salida del caso,
+    NUNCA al prompt. flag_encuadre_invertido: atribución lado agente cuyas busquedas documentadas
+    no hallaron el nodo (todas negativas, o evidencia.nodo vacía/'ninguno') — el patrón del
+    encuadre invertido que motivó el árbol."""
+    flag_encuadre = False
+    for a in atribuciones or []:
+        if not isinstance(a, dict) or a.get("lado") != "agente":
+            continue
+        busq = a.get("busquedas") or []
+        if not busq:
+            continue
+        nodo_q = str(((a.get("evidencia") or {}).get("nodo") or {}).get("quote") or "").strip()
+        sin_nodo = nodo_q.lower() in ("", "ninguno", "(ninguno)", "null", "n/a")
+        todas_negativas = all(_NEG_RE.search(str(x.get("resultado") or "")) for x in busq
+                              if isinstance(x, dict))
+        if sin_nodo or todas_negativas:
+            flag_encuadre = True
+            break
+    flag_contexto = (tool_calls_used >= MAX_TOOL_CALLS
+                     or any(c.get("stop_reason") == "max_tokens" for c in api_calls or []))
+    return {
+        "flag_encuadre_invertido": flag_encuadre,
+        "flag_contexto": flag_contexto,
+        "tool_calls_usadas": tool_calls_used,
+        "max_tool_calls": MAX_TOOL_CALLS,
+        "tokens_in": tokens_in,
+        "tokens_out": tokens_out,
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -622,12 +733,14 @@ class VerificadorAgente:
         steps, api_calls = [], []
         tokens_in = tokens_out = tool_calls_used = 0
         final_raw, final_json, error = None, None, None
+        errores_formato: list[str] = []
+        format_retries = 0
         force_final = False
         t0 = time.monotonic()
         try:
             while True:
                 kwargs = dict(model=MODEL_VERIF, max_tokens=MAX_TOKENS,
-                              system=SYSTEM_PROMPT, messages=messages, tools=VERIF_TOOLS)
+                              system=system_prompt(), messages=messages, tools=VERIF_TOOLS)
                 # OJO: Opus 4.8 rechaza `temperature` → NO se pasa.
                 if force_final:
                     kwargs["tool_choice"] = {"type": "none"}
@@ -662,25 +775,43 @@ class VerificadorAgente:
                                                      "evidencia ya recolectada.")})
                     continue
 
-                # respuesta final
+                # respuesta final → VALIDACIÓN PROGRAMÁTICA (v5): un único reintento con el
+                # error específico; si vuelve a fallar, formato_invalido (ruidoso, no silencioso).
                 final_raw = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text")
                 final_json = _extract_json(final_raw)
+                errores_formato = validar_contrato(final_json)
+                if errores_formato and format_retries == 0:
+                    format_retries = 1
+                    messages.append({"role": "assistant", "content": resp.content})
+                    messages.append({"role": "user", "content": (
+                        "Tu JSON NO valida contra el contrato:\n- "
+                        + "\n- ".join(errores_formato)
+                        + "\nDevolvé el JSON COMPLETO corregido — un único objeto, sin texto "
+                          "adicional ni campos extra.")})
+                    force_final = True
+                    continue
                 break
         except Exception as e:  # loguear cualquier fallo de API/parse sin tumbar la corrida
             error = f"{type(e).__name__}: {e}"
 
         # Contrato autoritativo: id_falla/run los fija el orquestador, no el modelo.
-        atribuciones = (final_json or {}).get("atribuciones") if isinstance(final_json, dict) else None
+        fj = final_json if isinstance(final_json, dict) else {}
+        atribuciones = fj.get("atribuciones") or []
         return {
             "id_falla": id_falla,
             "run": run,
-            "extraccion_traza": (final_json or {}).get("extraccion_traza") if isinstance(final_json, dict) else None,
-            "atribuciones": atribuciones or [],
-            "razonamiento": (final_json or {}).get("razonamiento") if isinstance(final_json, dict) else None,
-            "confianza": (final_json or {}).get("confianza") if isinstance(final_json, dict) else None,
+            "extraccion_traza": fj.get("extraccion_traza"),
+            "atribuciones": atribuciones,
+            "razonamiento": fj.get("razonamiento"),
+            "formato_invalido": bool(errores_formato) or error is not None,
+            "errores_formato": errores_formato,
+            # detectores programáticos (v5, decisión 6) — post-proceso, nunca en el prompt:
+            "detectores": detectores_post(atribuciones, tool_calls_used, api_calls,
+                                          tokens_in, tokens_out),
             # auditoría (no es parte del contrato, ayuda a calibrar):
             "_meta": {
-                "parse_ok": isinstance(final_json, dict) and "atribuciones" in (final_json or {}),
+                "parse_ok": isinstance(final_json, dict) and "atribuciones" in fj,
+                "format_retries": format_retries,
                 "tool_calls_used": tool_calls_used,
                 "tokens_in": tokens_in, "tokens_out": tokens_out,
                 "latency_s": round(time.monotonic() - t0, 3),
@@ -727,14 +858,48 @@ def investigar_falla(real_client, label: str, run: str, qid: str, *,
 # --------------------------------------------------------------------------- #
 # CLI                                                                          #
 # --------------------------------------------------------------------------- #
+def _parse_casos(spec: str | None, archivo: str | None) -> list[tuple[str, str, str]]:
+    """Parsea --casos "off/run_5/CQ-017,on/run_1/CQ-019" o --casos-file (un caso por línea,
+    mismo formato; '#' comenta). Devuelve [(label, run, qid), ...]. Fallo ruidoso ante formato roto."""
+    raw: list[str] = []
+    if spec:
+        raw += [c.strip() for c in spec.split(",") if c.strip()]
+    if archivo:
+        for line in Path(archivo).read_text(encoding="utf-8").splitlines():
+            line = line.split("#", 1)[0].strip()
+            if line:
+                raw.append(line)
+    casos = []
+    for c in raw:
+        partes = c.split("/")
+        if len(partes) != 3 or partes[0] not in ("off", "on"):
+            raise SystemExit(f"Caso mal formado: {c!r} (esperado label/run/CQ, p. ej. off/run_5/CQ-017)")
+        casos.append((partes[0], partes[1], partes[2]))
+    return casos
+
+
 def main():
-    ap = argparse.ArgumentParser(description="Verificador agéntico de atribución (Paso 3).")
+    ap = argparse.ArgumentParser(description="Verificador agéntico de atribución (Paso 3, v5).")
     ap.add_argument("--label", default="off", help="off|on (subcarpeta de posthoc_run/traces)")
     ap.add_argument("--run", default="run_3", help="run_1..run_5 (def. run_3)")
     ap.add_argument("--qid", default="CQ-017", help="id de la pregunta a investigar")
+    ap.add_argument("--casos", default=None,
+                    help='RUNNER (dev set u otra lista): casos "label/run/CQ" separados por coma.')
+    ap.add_argument("--casos-file", default=None,
+                    help="RUNNER: archivo con un caso label/run/CQ por línea ('#' comenta).")
+    ap.add_argument("--out", default=str(EVAL_DIR / "posthoc_run" / "dev_set" / "salidas_v5"),
+                    help="Directorio de salida del runner (un JSON por caso).")
     ap.add_argument("--context", action="store_true",
                     help="OFFLINE: arma e imprime el contexto de la falla + el tool set, SIN llamar a la API.")
+    ap.add_argument("--prompt", action="store_true",
+                    help="OFFLINE: ensambla e imprime el system prompt v5 (taxonomía por referencia), SIN API.")
     args = ap.parse_args()
+
+    if args.prompt:
+        p = system_prompt()
+        print(p)
+        print(f"\n== {len(p)} caracteres (ensamblado desde {TAXONOMIA_MD}) ==", file=sys.stderr)
+        return 0
 
     if args.context:
         # Modo de revisión del cableado: no requiere API ni gasta.
@@ -745,13 +910,34 @@ def main():
         print("\n" + ctx["contexto"])
         return 0
 
-    # Modo real (requiere API). NO se ejecuta como parte de la construcción; lo dispara la calibración.
+    # Modo real (requiere API). NO se ejecuta como parte de la construcción; lo dispara la iteración.
     from dotenv import load_dotenv
     import os, anthropic
     load_dotenv(EVAL_DIR / ".env")
     if not os.environ.get("ANTHROPIC_API_KEY", "").strip():
         raise SystemExit("ANTHROPIC_API_KEY no seteada en evaluacion/.env")
     real = anthropic.Anthropic(max_retries=3)
+
+    casos = _parse_casos(args.casos, args.casos_file)
+    if casos:
+        # RUNNER (decisión 8): lista arbitraria de fallas, un JSON por caso, kg cacheado por run.
+        outdir = Path(args.out)
+        outdir.mkdir(parents=True, exist_ok=True)
+        kg_cache: dict = {}
+        for label, run, qid in casos:
+            print(f"[runner] investigando {label}/{run}/{qid} …", flush=True)
+            rec = investigar_falla(real, label, run, qid, _kg_cache=kg_cache)
+            rec["_meta"]["label"] = label
+            dest = outdir / f"{label}_{run}_{qid}.json"
+            dest.write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")
+            det = rec["detectores"]
+            print(f"[runner]   → {dest.name} · atribuciones={len(rec['atribuciones'])} · "
+                  f"formato_invalido={rec['formato_invalido']} · "
+                  f"tools={det['tool_calls_usadas']}/{det['max_tool_calls']} · "
+                  f"flags: encuadre={det['flag_encuadre_invertido']} contexto={det['flag_contexto']}",
+                  flush=True)
+        return 0
+
     rec = investigar_falla(real, args.label, args.run, args.qid)
     print(json.dumps(rec, ensure_ascii=False, indent=2))
     return 0
