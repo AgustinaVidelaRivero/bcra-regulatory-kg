@@ -1,16 +1,18 @@
 # Referencias de calibración del DEV SET — iteración del verificador v5
 
-**Qué es.** Las adjudicaciones humanas de referencia del **dev set** para iterar el prompt del verificador v5 (el *loop chico*): 5 fallas de `run_1`/`run_5` con GT en taxonomía v2 (pares `{sintoma_capa1, causa_capa2}`), contra las cuales se compara el output del verificador en cada iteración del prompt.
+**Qué es.** Las adjudicaciones humanas de referencia del **dev set** para iterar el prompt del verificador v5 (el *loop chico*): **8 casos** de `run_1`/`run_5` con GT en taxonomía v2 (pares `{sintoma_capa1, causa_capa2}`) — **5 originales** (adjudicados 2026-07-13/14) **+ 3 de la expansión post-gate #1** (off/run_1/CQ-016, on/run_5/CQ-019, off/run_1/CQ-018; adjudicados 2026-07-15) — contra los cuales se compara el output del verificador en cada iteración del prompt.
+
+**Disclosure de la expansión (2026-07-15).** La expansión se motivó en las familias no ejercitadas que el gate #1 expuso (`provenance_imprecisa`, `estructural_kg`, y la nueva `aplicacion_erronea`); la adjudicación ciega **DISOLVIÓ las tres hipótesis** (provenance quedó como secundaria; estructural refutada por portador textual expuesto; aplicación errónea resultó des-scoping del grafo = `contenido_kg`) — **el hueco de cobertura persiste y queda documentado**.
 
 **Relación con `casos_control.md`.** Los 5 casos-control de `run_3` son el **GATE FINAL pre-registrado**: se corren una sola vez, al final, para validar la versión candidata. Este dev set de `run_1`/`run_5` es el **banco de iteración**: acá se prueba, se falla y se ajusta cuantas veces haga falta. Esa separación resuelve la tensión loop-chico vs anti-overfitting: iterar contra el dev set no contamina el gate, y el gate no se gasta iterando.
 
-**Fecha y procedencia.** Adjudicación de la autora, **2026-07-13, asistida por revisión**, sobre la evidencia cruda de `posthoc_run/dev_set/hoja_adjudicacion.md` — dossieres **ciegos a las etiquetas del pilot** (pregunta + patas del juez + claims negativos + trayectoria + nodos íntegros + pasajes GT del PDF). Las verificaciones de PDF citadas provienen de la sesión de revisión (barridos programáticos sobre todos los campos de los kg.json congelados + re-ejecución determinística de las búsquedas del agente con `harness.GraphIndex` + `pdf_locate` sobre el subset).
+**Fecha y procedencia.** Los 5 casos originales: adjudicación de la autora, **2026-07-13, asistida por revisión**, sobre la evidencia cruda de `posthoc_run/dev_set/hoja_adjudicacion.md` — dossieres **ciegos a las etiquetas del pilot** (pregunta + patas del juez + claims negativos + trayectoria + nodos íntegros + pasajes GT del PDF). Los 3 casos de la expansión: adjudicación de la autora, **2026-07-15, asistida por revisión**, sobre `posthoc_run/dev_set/hoja_adjudicacion_v2.md` — dossieres ciegos con **outputs COMPLETOS re-ejecutados determinísticamente** (sección 3 y 4 nunca desde la traza almacenada) y sección 5b de provenances verbatim. Las verificaciones de PDF citadas provienen de la sesión de revisión (barridos programáticos sobre todos los campos de los kg.json congelados + re-ejecución determinística de las búsquedas del agente con `harness.GraphIndex` + `pdf_locate` sobre el subset).
 
 ---
 
 ## Reglas de uso (explícitas)
 
-1. **Los ejemplos resueltos del prompt del verificador NUNCA salen de estos 5 casos** (fuga dev→prompt). Si un caso de acá aparece en el prompt, el dev set deja de medir.
+1. **Los ejemplos resueltos del prompt del verificador NUNCA salen de estos 8 casos** (fuga dev→prompt). Si un caso de acá aparece en el prompt, el dev set deja de medir.
 2. **El verificador nunca ve estas referencias.** Se compara su output contra ellas **externamente** (el comparador es quien lee este archivo, no el agente verificador).
 3. **Criterio de acierto: igual que `casos_control.md`** — todas las **primarias** correctas como par `{sintoma, causa}`; las secundarias y los falsos positivos del juez **suman pero no son obligatorios**, y se registran como señal secundaria.
 4. **Los 5 casos-control de run_3 NO se corren durante la iteración.** Solo al final, como gate.
@@ -99,10 +101,56 @@ Material del caso: dossier completo en `posthoc_run/dev_set/hoja_adjudicacion.md
 
 ---
 
+## Caso off/run_1/CQ-016 (expansión post-gate #1)
+
+**Pregunta:** ¿En qué unidad y con qué nivel de decimales deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos?
+
+Adjudicación de la autora, 2026-07-15, asistida por revisión:
+
+**CASO SIN DEFECTO DEL SISTEMA (exoneración integral).**
+
+- **Claim secundario** «Esta disposición proviene del Régimen Informativo Contable Mensual» (único claim negativo del caso) — **FALSO POSITIVO DEL JUEZ, sin par.** Evidencia: soportado (resumen de `req_exigencia_de_integracion_de_capitales_minimos` expuesto en paso 1: "Sección 4 del Régimen Informativo Contable Mensual") y correcto contra el PDF (el R.I. de Exigencia e Integración es el apartado 4 del RICM — encabezado verbatim del propio pasaje GT). La dimensión `cita_documento_correcto=false` es artefacto de metadatos (el `ground_truth_secciones` no nombra documento; el juez defaulteó a false sobre una cita al documento correcto) y NO participa del criterio de falla (`verifier_pilot.scale_specs`: solo claims falso/no_soportado).
+- **Cita del agente** (granularidad de página, `cita_precision="pagina"`) — **`{noise_sensitivity, provenance_imprecisa}` SECUNDARIA — lado grafo, no decisiva.** Evidencia: la provenance de `req_miles_de_pesos` es "pp. 2-3" (página sin punto; el contenido vive en el Punto 1.2, pág. 3), lo que limita la cita del agente a granularidad de página. Real, documentada, sin efecto en el veredicto.
+- **Patrón de calibración: "exoneración integral + secundaria"** — acierto = declarar el caso sin defecto del sistema (ninguna primaria).
+
+Material del caso: dossier completo en `posthoc_run/dev_set/hoja_adjudicacion_v2.md` (scratch, no versionado).
+
+---
+
+## Caso on/run_5/CQ-019 (expansión post-gate #1)
+
+**Pregunta:** Al computar los activos para la exigencia de capital por riesgo de crédito, ¿qué previsión por incobrabilidad no se deduce, y cómo se vincula esa regla con la clasificación de deudores?
+
+Adjudicación de la autora, 2026-07-15, asistida por revisión:
+
+- **Claims centrales** «situación normal ≤31 días» y «se computa como patrimonio neto complementario» — **FALSOS POSITIVOS DEL JUEZ, sin par.** Evidencia: ambos EXPUESTOS en el paso 16 (resúmenes de `situacion_normal` y `prevision_por_cartera_en_situacion_normal`, re-ejecución determinística 2026-07-15) y correctos contra el PDF (Clasificación 7.2.1 verbatim; Capitales 8.2.3.3/8.4.1.1). Mecanismo del FP: el juez verifica contra `ground_truth_secciones` (2.3.1/6.5.1/7.2.1) y el PNc cae fuera de ese marco aunque sea corpus verdadero — mismo patrón que la fórmula 70100000 en run_3/CQ-020.
+- **La racionalización** «responde a que esos deudores presentan menor riesgo de incumplimiento» — **`{faithfulness, alucinacion_agente}` (modo b) SECUNDARIA.** Evidencia: ni los nodos expuestos ni el PDF dan esa justificación (barrido 2026-07-15; el 2.3.1 establece la regla sin fundamentarla).
+- **SIN PRIMARIA.** Nota: la hipótesis estructural del inventario (familia B) queda refutada para este caso — el dato-puente (la referencia cruzada a 6.5.1/7.2.1) existe como portador textual (`to_sobre_clasificacion_de_deudores`) y estuvo expuesto en la trayectoria; los extremos sin arista no impidieron el vínculo.
+- **Patrón de calibración: "exoneración de centrales + secundaria lado agente"** — acierto = ninguna primaria emitida.
+
+Material del caso: dossier completo en `posthoc_run/dev_set/hoja_adjudicacion_v2.md` (scratch, no versionado).
+
+---
+
+## Caso off/run_1/CQ-018 (expansión post-gate #1)
+
+**Pregunta:** Los proveedores no financieros de crédito y las empresas no financieras emisoras de tarjetas, ¿deben cumplir con Protección al Usuario y, además, clasificar a sus deudores? ¿Bajo qué criterio clasifican?
+
+Adjudicación de la autora, 2026-07-15, asistida por revisión:
+
+- **Claims de "Situación normal" y "Riesgo bajo"** — **`{noise_sensitivity, contenido_kg}` PRIMARIA.** Evidencia: ambos ecos verbatim de nodos defectuosos. `cla_situacion_normal_clasificacion_de_deudores` porta la definición COMERCIAL (6.5.1, "flujo de fondos") sin marca de alcance bajo label genérico — la definición pertinente al criterio de los PNFC es la de consumo (7.2.1, "puntual ≤31 días"); nodo des-scopeado (precedente: CQ-024 dev). `cla_riesgo_bajo_...` define riesgo bajo como "puntual o ≤31 días en refinanciaciones periódicas", que contradice el 7.2.2 ("atrasos de más de 31 hasta 90 días") — definición errónea.
+- **Riesgo medio / riesgo alto / irrecuperable + los dos claims del Directivo Responsable** — **FALSOS POSITIVOS DEL JUEZ, sin par (×5).** Evidencia: los 3 de categorías son ecos de nodos expuestos, correctos contra 7.2.3/7.2.4/7.2.5 verbatim; los 2 del Directivo Responsable están soportados por `rsj_directivo_...` expuesto y los edges `debe_designar` de los pasos 7-8, correctos contra Protección 3.2.1.1 ("las empresas no financieras emisoras... y los otros proveedores no financieros de crédito... deberán designar"). Mecanismo de los 3 de categorías: contenido verdadero del corpus fuera de `ground_truth_secciones` — tercer caso del patrón (con run_3/CQ-020 y on/run_5/CQ-019).
+- **Observación sin par:** `cla_riesgo_alto` y `cla_irrecuperable` tienen provenances VACÍAS (`[]`) — imperfección real del grafo, sin efecto en este veredicto (las citas de la respuesta salieron de otros nodos).
+- **Patrón de calibración: "primaria única + FPs masivos"** — acierto = la primaria `{noise_sensitivity, contenido_kg}`.
+
+Material del caso: dossier completo en `posthoc_run/dev_set/hoja_adjudicacion_v2.md` (scratch, no versionado).
+
+---
+
 ## Cobertura y límites
 
-- **Todas las primarias son lado grafo (re-confirmado 2026-07-14):** `alcanzabilidad_kg` ×2 casos (CQ-031 —patas 1 y 2—; CQ-017 pata 2-a) y `contenido_kg` ×4 casos (CQ-017 pata 2-b, CQ-020, CQ-019, CQ-024). Patrones de acierto: CQ-017 pata 2 es **sobredeterminada con DOS primarias** (acierto exige AMBAS, patrón "varias primarias"); CQ-031 pata 1 es primaria + secundaria (acierto = la primaria).
-- **Causas lado agente presentes solo como 1 secundaria (actualizado 2026-07-14):** CQ-031 (`navegación`, ítem 4.6). No mueve el acierto. La ex-secundaria modo (b) de CQ-017 se re-adjudicó como primaria `{noise_sensitivity, contenido_kg}` (eco del nodo defectuoso `operador_de_cambios__otra`); las ex-modo (a) —las 4 glosas de CQ-017 y el claim de situación normal de CQ-019— son falsos positivos del juez por la auditoría de truncamiento.
-- **Falsos positivos del juez documentados dentro del set: 16 claims** (CQ-017: 4 —las 4 glosas— · CQ-020: 7 · CQ-019: 2 · CQ-024: 1 · CQ-031: 2). Útiles para calibrar la disciplina de "sin par / no es defecto del sistema".
-- **Sin primaria lado agente — límite conocido:** el dev set no ejercita el caso donde lo que rompe la respuesta es del agente (lado agente presente solo en la secundaria de CQ-031). Consistente con el gate (`casos_control.md`, cuya cobertura de lados declara lo mismo) y **consignado para la reunión de mentores** (queda abierta la incorporación futura de un caso con primaria lado agente).
+- **Primarias (actualizado 2026-07-15):** `alcanzabilidad_kg` ×2 casos (CQ-031 —patas 1 y 2—; CQ-017 pata 2-a) · `contenido_kg` ×5 casos (CQ-017 pata 2-b, CQ-020, CQ-019-run1, CQ-024, CQ-018) · **DOS CASOS DE EXONERACIÓN sin primaria** (CQ-016: exoneración integral + secundaria provenance; CQ-019-run5: exoneración de centrales + secundaria modo b) — patrón nuevo que ejercita el modo de falla de sobre-diagnóstico del gate #1 (CQ-020). Patrones de acierto: CQ-017 pata 2 es **sobredeterminada con DOS primarias** (acierto exige AMBAS, patrón "varias primarias"); CQ-031 pata 1 es primaria + secundaria (acierto = la primaria).
+- **Lado agente: solo 2 secundarias** (CQ-031 `navegación`, ítem 4.6; CQ-019-run5 `alucinacion_agente` modo b). Sin instancias vigentes de: `alucinacion_agente` modo (a), `aplicacion_erronea`, `provenance_imprecisa` como primaria, `estructural_kg` — familias cubiertas solo por árbol y criterios, no por casos; **rareza consignada para la reunión de mentores**.
+- **Falsos positivos del juez: 24 en los dev sets** (16 v1: CQ-017 4 · CQ-020 7 · CQ-019-run1 2 · CQ-024 1 · CQ-031 2 — más 8 v2: CQ-016 1 · CQ-019-run5 2 · CQ-018 5) **+ 2 en el gate = 26 documentados.** **MECANISMO identificado (tres confirmaciones):** el juez verifica contra `ground_truth_secciones` y marca `no_soportado` contenido verdadero del corpus fuera de ese marco (fórmula 70100000 / PNc 8.2.3.3 / definiciones 7.2.x). Útiles para calibrar la disciplina de "sin par / no es defecto del sistema".
 - **Nota metodológica (2026-07-14):** cinco correcciones de referencia de esta semana son trazables al **truncamiento de trazas** — la traza almacena outputs truncados pero el agente recibió los completos (`harness.py`). Regla operativa: toda afirmación "X no apareció en la trayectoria" exige **re-ejecución determinística de los outputs completos**, nunca lectura de la traza almacenada sola. La **exposición en runtime** incluye los `resumen_propiedades` de los resultados de `buscar_nodos` (no solo lo abierto con `ver_nodo`): un claim puede estar soportado por un resumen de búsqueda que el agente nunca abrió.
+- **Nota metodológica (2026-07-15) — criterio des-scoping vs aplicación:** si el alcance está EN el nodo y el agente lo ignora → `aplicacion_erronea`; si el nodo omite el alcance → `contenido_kg` (precedentes: CQ-024, CQ-018).
