@@ -7,6 +7,7 @@ Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clas
 > **v2.2 (2026-07-14):** se precisa "pertinente" en la regla de precedencia: el nodo que porta LA RESPUESTA a la pata, no información sobre su tema (test del nodo único).
 > **v2.3 (2026-07-14):** se precisa "soporte": "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
 > **v2.4 (2026-07-14):** el soporte de un claim se evalúa contra TODO el contenido expuesto (pertinente o no); la pertinencia gobierna solo C1a (context_recall por pata), nunca el test de soporte por claim (C1b); faithfulness exige verificación previa con ver_paso_completo de los pasos truncados que pudieron exponer el contenido.
+> **v2.5 (2026-07-14) — expuesto por el gate #1, caso run_3/CQ-025: el árbol no tenía salida para "nodo fiel mal aplicado":** nueva causa de capa 2, lado agente, `aplicacion_erronea`; la rama `noise_sensitivity`/"nodo fiel" ahora bifurca por pertinencia (test v2.2) en vez de salir directo a `sin_defecto`. La taxonomía sigue CERRADA (con esta categoría incluida).
 
 ---
 
@@ -52,6 +53,7 @@ La información estaba bien en el grafo; el problema es cómo el agente la usó.
 |---|---|---|
 | **navegación** | El agente **no encontró** info que SÍ estaba en el grafo y era alcanzable. | Existe un nodo relevante, fiel y alcanzable con búsquedas razonables — la carga de la prueba es **exhibirlo**, con quote de su CONTENIDO (no su label); la trayectoria muestra que el agente no lo consultó o lo descartó. |
 | **alucinacion_agente** | El agente **agregó glosas o afirmaciones no soportadas** por los nodos que consultó. Dos modos: **(a)** el grafo TENÍA el dato y el agente afirmó sin soporte de su trayectoria; **(b)** **glosa de cosecha propia**: ni el grafo ni el PDF tienen el dato. | La respuesta contiene afirmaciones que no están en ningún nodo de la trayectoria. Modo (a): exhibir el nodo portador (quote de su contenido). Modo (b): constancia de búsqueda (campo `busquedas`) + verificación negativa contra el PDF (`leer_pasaje_pdf`) — acá NO hay nodo que exhibir. |
+| **aplicacion_erronea** (nueva en v2.5) | El agente **usó contenido fiel de un nodo consultado fuera de su alcance** (otra cartera, otro régimen, otra sección u otro concepto que el que la pata pregunta). El contenido es correcto en su contexto de origen; la aplicación a esta pata es incorrecta. (Palanca del Paso 4: prompt del agente RAG.) | El nodo con su quote y provenance + el pasaje del PDF que muestra el **alcance real** del contenido + la identificación del **alcance que la pata requería**. |
 
 ### Sin defecto y abstención
 
@@ -75,7 +77,10 @@ El síntoma (capa 1) determina qué preguntas hacer para llegar a la causa (capa
 - **noise_sensitivity** → ¿el nodo consultado es fiel al PDF?
   - Contradice el PDF → `contenido_kg`.
   - La cita apunta a otro lado (índice, sección equivocada) → `provenance_imprecisa`.
-  - Es fiel → `sin_defecto` (falso positivo del juez).
+  - Es fiel → ¿el nodo es PERTINENTE a la pata (test v2.2)?
+    - Sí → `sin_defecto` (falso positivo del juez).
+    - No, y el dato pertinente SÍ estaba disponible/expuesto en la trayectoria → `aplicacion_erronea`.
+    - No, y el dato pertinente NO estaba disponible → esto debió resolverse como `context_recall` a nivel pata (C1a); revisá la clasificación del síntoma antes de emitir.
 - **context_recall** → ¿existe nodo portador del dato faltante?
   - Existe y las búsquedas razonables del agente lo alcanzaban → `navegación`.
   - Existe pero solo se alcanza con palabras del propio nodo (no de la pregunta) → `alcanzabilidad_kg`.

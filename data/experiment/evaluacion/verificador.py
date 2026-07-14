@@ -66,7 +66,7 @@ CODE_VER = "verificador-v5.5"   # v5.5: soporte por claim vs pertinencia por pat
 SINTOMAS_CAPA1 = ["faithfulness", "noise_sensitivity", "context_recall"]
 CATEGORIAS_GRAFO = ["contenido_kg", "completitud_kg", "estructural_kg", "provenance_imprecisa",
                     "alcanzabilidad_kg"]
-CATEGORIAS_AGENTE = ["navegación", "alucinacion_agente"]
+CATEGORIAS_AGENTE = ["navegación", "alucinacion_agente", "aplicacion_erronea"]
 CATEGORIAS_NINGUNO = ["sin_defecto"]
 CATEGORIAS_INDETERMINADO = ["frontera_no_determinada"]
 LADO_POR_CAUSA = {**{c: "grafo" for c in CATEGORIAS_GRAFO},
@@ -80,7 +80,7 @@ BUSQUEDAS_OBLIGATORIAS = {"completitud_kg", "alcanzabilidad_kg", "frontera_no_de
 # con robustez, se usa este fallback hardcodeado — mantenerlo espejo del árbol de taxonomia.md.
 _CAMINOS_FALLBACK = {
     "faithfulness": {"alucinacion_agente", "completitud_kg", "frontera_no_determinada"},
-    "noise_sensitivity": {"contenido_kg", "provenance_imprecisa", "sin_defecto"},
+    "noise_sensitivity": {"contenido_kg", "provenance_imprecisa", "sin_defecto", "aplicacion_erronea"},
     "context_recall": {"navegación", "alcanzabilidad_kg", "completitud_kg", "estructural_kg",
                        "frontera_no_determinada"},
 }
@@ -884,7 +884,10 @@ class VerificadorAgente:
                         "Tu JSON NO valida contra el contrato:\n- "
                         + "\n- ".join(errores_formato)
                         + "\nDevolvé el JSON COMPLETO corregido — un único objeto, sin texto "
-                          "adicional ni campos extra.")})
+                          "adicional ni campos extra. Si el árbol te lleva a una contradicción "
+                          "que no podés resolver, emití frontera_no_determinada con las causas "
+                          "en disputa y tu razonamiento; un JSON válido con abstención SIEMPRE "
+                          "es mejor que una salida sin formato.")})
                     force_final = True
                     continue
                 break
