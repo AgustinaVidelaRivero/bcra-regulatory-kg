@@ -8,6 +8,7 @@ Referencia del **Paso 3**. La taxonomía tiene **DOS CAPAS**: la **capa 1** clas
 > **v2.3 (2026-07-14):** se precisa "soporte": "soportado por lo consultado" = el contenido EXPUESTO al agente en los outputs COMPLETOS de su trayectoria — incluye los `resumen_propiedades` de resultados de `buscar_nodos`, no solo lo abierto con `ver_nodo`. (Coherente con la noción ex ante de v2.1.)
 > **v2.4 (2026-07-14):** el soporte de un claim se evalúa contra TODO el contenido expuesto (pertinente o no); la pertinencia gobierna solo C1a (context_recall por pata), nunca el test de soporte por claim (C1b); faithfulness exige verificación previa con ver_paso_completo de los pasos truncados que pudieron exponer el contenido.
 > **v2.5 (2026-07-14) — expuesto por el gate #1, caso run_3/CQ-025: el árbol no tenía salida para "nodo fiel mal aplicado":** nueva causa de capa 2, lado agente, `aplicacion_erronea`; la rama `noise_sensitivity`/"nodo fiel" ahora bifurca por pertinencia (test v2.2) en vez de salir directo a `sin_defecto`. La taxonomía sigue CERRADA (con esta categoría incluida).
+> **v2.6 (2026-07-15) — la desambiguación de `aplicacion_erronea` faltaba en ESTE archivo; estaba solo en la vara, que el verificador no lee:** criterio des-scoping vs aplicación en la definición y en la rama `noise_sensitivity` (SOLO es `aplicacion_erronea` si el alcance está declarado EN el nodo; si el nodo lo omite → `contenido_kg`); regla de jerarquía nueva en atribución múltiple (si TODOS los claims centrales fallidos son falsos positivos del juez, el caso NO tiene primaria).
 
 ---
 
@@ -53,7 +54,7 @@ La información estaba bien en el grafo; el problema es cómo el agente la usó.
 |---|---|---|
 | **navegación** | El agente **no encontró** info que SÍ estaba en el grafo y era alcanzable. | Existe un nodo relevante, fiel y alcanzable con búsquedas razonables — la carga de la prueba es **exhibirlo**, con quote de su CONTENIDO (no su label); la trayectoria muestra que el agente no lo consultó o lo descartó. |
 | **alucinacion_agente** | El agente **agregó glosas o afirmaciones no soportadas** por los nodos que consultó. Dos modos: **(a)** el grafo TENÍA el dato y el agente afirmó sin soporte de su trayectoria; **(b)** **glosa de cosecha propia**: ni el grafo ni el PDF tienen el dato. | La respuesta contiene afirmaciones que no están en ningún nodo de la trayectoria. Modo (a): exhibir el nodo portador (quote de su contenido). Modo (b): constancia de búsqueda (campo `busquedas`) + verificación negativa contra el PDF (`leer_pasaje_pdf`) — acá NO hay nodo que exhibir. |
-| **aplicacion_erronea** (nueva en v2.5) | El agente **usó contenido fiel de un nodo consultado fuera de su alcance** (otra cartera, otro régimen, otra sección u otro concepto que el que la pata pregunta). El contenido es correcto en su contexto de origen; la aplicación a esta pata es incorrecta. (Palanca del Paso 4: prompt del agente RAG.) | El nodo con su quote y provenance + el pasaje del PDF que muestra el **alcance real** del contenido + la identificación del **alcance que la pata requería**. |
+| **aplicacion_erronea** (nueva en v2.5) | El agente **usó contenido fiel de un nodo consultado fuera de su alcance** (otra cartera, otro régimen, otra sección u otro concepto que el que la pata pregunta). El contenido es correcto en su contexto de origen; la aplicación a esta pata es incorrecta. (Palanca del Paso 4: prompt del agente RAG.) **Criterio (v2.6): SOLO aplica si el ALCANCE está declarado EN el contenido del nodo (cartera, régimen, sección) y el agente lo ignoró. Si el nodo OMITE su alcance (label genérico, definición sin marca de cartera/régimen), el defecto es del grafo → `contenido_kg` por des-scoping. Test: ¿el nodo, leído solo, le avisa a un lector que su contenido es de otro alcance? Sí → `aplicacion_erronea`. No → `contenido_kg`.** | El nodo con su quote y provenance + el pasaje del PDF que muestra el **alcance real** del contenido + la identificación del **alcance que la pata requería**. |
 
 ### Sin defecto y abstención
 
@@ -79,7 +80,7 @@ El síntoma (capa 1) determina qué preguntas hacer para llegar a la causa (capa
   - La cita apunta a otro lado (índice, sección equivocada) → `provenance_imprecisa`.
   - Es fiel → ¿el nodo es PERTINENTE a la pata (test v2.2)?
     - Sí → `sin_defecto` (falso positivo del juez).
-    - No, y el dato pertinente SÍ estaba disponible/expuesto en la trayectoria → `aplicacion_erronea`.
+    - No, y el dato pertinente SÍ estaba disponible/expuesto en la trayectoria → `aplicacion_erronea` — **SOLO si el ALCANCE está declarado EN el contenido del nodo** (cartera, régimen, sección) y el agente lo ignoró. Si el nodo OMITE su alcance (label genérico, definición sin marca de cartera/régimen), el defecto es del grafo → `contenido_kg` por des-scoping. Test: ¿el nodo, leído solo, le avisa a un lector que su contenido es de otro alcance? Sí → `aplicacion_erronea`. No → `contenido_kg`.
     - No, y el dato pertinente NO estaba disponible → esto debió resolverse como `context_recall` a nivel pata (C1a); revisá la clasificación del síntoma antes de emitir.
 - **context_recall** → ¿existe nodo portador del dato faltante?
   - Existe y las búsquedas razonables del agente lo alcanzaban → `navegación`.
@@ -116,6 +117,8 @@ Cuando hay más de una, se distinguen:
 
 - **Causa primaria:** la que **mueve el veredicto** — la que hace fallar la respuesta. Puede haber **más de una primaria**: cuando la pregunta tiene patas independientes y un defecto distinto rompe cada pata, cada uno es primario (ninguno es prescindible para que la respuesta deje de estar mal). Ver CQ-017 en `casos_control.md`.
 - **Causa(s) secundaria(s):** otras causas realmente presentes en la falla, pero que **no son lo que rompe** la respuesta (p. ej. un defecto de estilo que estaría igual aunque la pregunta acertara).
+
+**Regla de jerarquía (v2.6):** si TODOS los claims centrales fallidos resultan falsos positivos del juez, el caso NO tiene primaria: los defectos reales restantes (glosas secundarias, imperfecciones sin efecto) se emiten como SECUNDARIAS. Primaria = lo que explica por qué el juez reprobó; un FP del juez no se explica con un defecto del sistema.
 
 **Cada atribución —primaria o secundaria— lleva igual sus tres piezas de evidencia** (afirmación / nodo / fuente). Una secundaria no documentada con evidencia no es una secundaria: es una conjetura, y no se registra.
 

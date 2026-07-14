@@ -59,7 +59,7 @@ TRUNC = 1200                        # truncado de outputs de tool EN LA TRAZA de
 TRUNC_THINK = 1500                  # v4 (CAMBIO 5c): truncado del thinking del agente POR TURNO en el contexto
 
 DB_PATH = EVAL_DIR / "cache" / "verificador.db"   # separada de calls.db y verifier_pilot.db
-CODE_VER = "verificador-v5.5"   # v5.5: soporte por claim vs pertinencia por pata + faithfulness exige ver_paso_completo previo (taxonomia.md v2.4). v1..v5.4 intactos bajo sus namespaces.
+CODE_VER = "verificador-v5.7"   # v5.7: taxonomia.md v2.6 (criterio des-scoping vs aplicación + regla de jerarquía FP-centrales) + jerarquia sin_par para sin_defecto. v1..v5.6 intactos bajo sus namespaces.
 
 # Taxonomía v2 CERRADA (los NOMBRES, para validación programática; el CONTENIDO — tablas,
 # precedencia, árbol — viene POR REFERENCIA de references/taxonomia.md, ver taxonomia_section()).
@@ -311,8 +311,14 @@ alcanzabilidad_kg y frontera_no_determinada; para el resto, incluilo si una bús
 parte de la evidencia. frontera_no_determinada exige además "entre" (las DOS causas en disputa) \
 y "evidencia_faltante" (qué evidencia decidiría el caso).
 - ATRIBUCIÓN MÚLTIPLE: "jerarquia": "primaria" = mueve el veredicto; "secundaria" = presente pero \
-no rompe la respuesta. Puede haber MÁS DE UNA primaria (patas independientes rotas por defectos \
-distintos; usá el campo "pata"). Toda atribución lleva igual sus tres piezas.
+no rompe la respuesta; "sin_par" = EXCLUSIVO para causa sin_defecto (un falso positivo del juez \
+no es defecto del sistema: no lleva primaria ni secundaria). Puede haber MÁS DE UNA primaria \
+(patas independientes rotas por defectos distintos; usá el campo "pata"). Toda atribución lleva \
+igual sus tres piezas.
+- REGLA DE JERARQUÍA: si TODOS los claims centrales fallidos resultan falsos positivos del juez, \
+el caso NO tiene primaria — los defectos reales restantes (glosas secundarias, imperfecciones \
+sin efecto) se emiten como SECUNDARIAS. Primaria = lo que explica por qué el juez reprobó; un \
+FP del juez no se explica con un defecto del sistema.
 - sin_defecto (falso positivo del juez) es de ÚLTIMO RECURSO: exige descartar activamente cada \
 defecto de la taxonomía y documentar el descarte en el razonamiento.
 
@@ -355,7 +361,7 @@ límite de riesgo operacional"}
 EJEMPLO 3 — {noise_sensitivity, sin_defecto} (falso positivo del juez), run_5. El juez marcó \
 falso "con débito en cuenta, el límite mensual es USD 200". C1: soportado por nodo consultado → \
 noise_sensitivity. C2: ¿el nodo es fiel al PDF? SÍ (USD 200 con débito; USD 100 en efectivo) → \
-sin_defecto, primaria — vale porque el descarte de cada defecto quedó documentado.
+sin_defecto, jerarquia "sin_par" — vale porque el descarte de cada defecto quedó documentado.
   afirmacion: {"quote": "Si la operación de compra de moneda extranjera para atesorar se realiza \
 con débito en cuenta, el límite mensual es USD 200 en el mes calendario.", "ubicacion": \
 "respuesta final"}
@@ -393,7 +399,7 @@ adicional ni markdown, con exactamente esta forma (sin campos extra):
       "sintoma_capa1": "faithfulness|noise_sensitivity|context_recall",
       "causa_capa2": "<una causa de la capa 2 de la TAXONOMÍA>",
       "lado": "grafo|agente|ninguno|indeterminado",
-      "jerarquia": "primaria|secundaria",
+      "jerarquia": "primaria|secundaria|sin_par ('sin_par' EXCLUSIVO para causa sin_defecto)",
       "pata": "<opcional: qué pata cubre>",
       "entre": ["<solo frontera: las DOS causas en disputa>"],
       "evidencia_faltante": "<solo frontera: qué evidencia decidiría el caso>",
@@ -704,8 +710,15 @@ def validar_contrato(fj) -> list[str]:
                         f"síntoma con esa causa (desde {s} el árbol permite: "
                         f"{sorted(caminos_arbol()[s])}). Reclasificá el síntoma o la causa "
                         "siguiendo el árbol.")
-        if a.get("jerarquia") not in ("primaria", "secundaria"):
-            errs.append(f"{pre}.jerarquia inválida: {a.get('jerarquia')!r} (primaria|secundaria)")
+        j = a.get("jerarquia")
+        if j not in ("primaria", "secundaria", "sin_par"):
+            errs.append(f"{pre}.jerarquia inválida: {j!r} (primaria|secundaria|sin_par)")
+        elif c == "sin_defecto" and j != "sin_par":
+            errs.append(f"{pre}: causa 'sin_defecto' exige jerarquia 'sin_par' (un falso positivo "
+                        f"del juez no es defecto del sistema; no lleva primaria/secundaria)")
+        elif j == "sin_par" and c != "sin_defecto":
+            errs.append(f"{pre}: jerarquia 'sin_par' es EXCLUSIVA de la causa 'sin_defecto' "
+                        f"(para '{c}' usá primaria o secundaria)")
         ev = a.get("evidencia")
         if not isinstance(ev, dict):
             errs.append(f"{pre}.evidencia falta o no es objeto")
@@ -884,7 +897,9 @@ class VerificadorAgente:
                         "Tu JSON NO valida contra el contrato:\n- "
                         + "\n- ".join(errores_formato)
                         + "\nDevolvé el JSON COMPLETO corregido — un único objeto, sin texto "
-                          "adicional ni campos extra. Si el árbol te lleva a una contradicción "
+                          "adicional ni campos extra. Recordá: la causa sin_defecto lleva jerarquia "
+                          "'sin_par' (exclusiva de ella); primaria/secundaria son solo para defectos "
+                          "reales. Si el árbol te lleva a una contradicción "
                           "que no podés resolver, emití frontera_no_determinada con las causas "
                           "en disputa y tu razonamiento; un JSON válido con abstención SIEMPRE "
                           "es mejor que una salida sin formato.")})
