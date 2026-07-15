@@ -119,7 +119,7 @@ donde la decisión es reproducible y auditable. Ese trabajo ya está implementad
 determinística sobre la salida del verificador (módulos D1-D5, versión `v6.0-D(2026-07)`:
 decisor de la frontera navegación/alcanzabilidad, validador de quotes de `aplicacion_erronea`,
 diligencia de causas de ausencia y política de triage); su especificación se documenta por
-separado (`docs/especificacion_capa_deterministica.md`, **en preparación**).
+separado (`docs/especificacion_capa_deterministica.md`).
 
 ## 6. Disclosure
 
