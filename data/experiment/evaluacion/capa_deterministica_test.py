@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from harness import GraphIndex
 from test_alcanzabilidad_test import _kg_sintetico, PREGUNTA
-from capa_deterministica import aplicar_d2
+from capa_deterministica import aplicar_d2, aplicar_d3, aplicar_d4, aplicar_capa, VERSION_CAPA
 
 
 def _index():
@@ -158,3 +158,161 @@ def test_insumos_faltantes():
     import pytest
     with pytest.raises(ValueError):
         aplicar_d2(_caso([[]]), _index())
+
+
+# --------------------------------------------------------------------------- #
+# D3 — validador de quotes de aplicacion_erronea                               #
+# --------------------------------------------------------------------------- #
+def _atrib_ae(quote, ubicacion, jerarquia="secundaria"):
+    a = _atrib("noise_sensitivity", "aplicacion_erronea", ubicacion, jerarquia)
+    a["evidencia"]["nodo"]["quote"] = quote
+    return a
+
+
+def test_d3_quote_verificable():
+    # quote verbatim (módulo mayúsculas/acentos/espacios) de la descripcion de restriccion_r7
+    caso = _caso([[_atrib_ae("los deudores CUBIERTOS con garantias   preferidas A",
+                             "restriccion_r7 (paso 2)")]])
+    out = aplicar_d3(caso, _index())
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_d"] == {"modulo": "D3", "portador_id": "restriccion_r7",
+                           "quote_verificado": True}
+    assert a["causa_capa2"] == "aplicacion_erronea"  # D3 nunca cambia la causa
+
+
+def test_d3_quote_no_verificable():
+    caso = _caso([[_atrib_ae("este texto no vive en el nodo", "restriccion_r7")]])
+    out = aplicar_d3(caso, _index())
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_d"]["quote_verificado"] is False
+    assert a["capa_d"]["accion"] == "quote_no_verificable"
+    assert a["capa_d"]["triage"] is True
+    assert a["causa_capa2"] == "aplicacion_erronea"
+
+
+def test_d3_sin_portador():
+    caso = _caso([[_atrib_ae("da igual", "un nodo sin id reconocible")]])
+    out = aplicar_d3(caso, _index())
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_d"] == {"modulo": "D3", "accion": "sin_portador_extraible", "triage": True}
+
+
+def test_d3_ignora_otras_causas():
+    caso = _caso([[_atrib("context_recall", "navegación", "restriccion_r7")]])
+    out = aplicar_d3(caso, _index())
+    assert "capa_d" not in out["repeticiones"][0]["atribuciones"][0]
+
+
+# --------------------------------------------------------------------------- #
+# D4 — reglas de triage (cada una disparando sola)                             #
+# --------------------------------------------------------------------------- #
+def _voto(ganadores, dividido=False, votos=2):
+    return {"resultado": "frontera_no_determinada" if dividido else "mayoria",
+            "flag_voto_dividido": dividido,
+            "pares_primarios_ganadores": None if dividido else ganadores,
+            "votos_ganadores": None if dividido else votos, "conteo": []}
+
+
+def _caso_d4(atribs, voto):
+    caso = _caso([atribs])
+    caso["voto_capa_d"] = voto
+    return caso
+
+
+def test_d4_r1_exoneracion_total():
+    out = aplicar_d4(_caso_d4([], _voto([])))
+    assert out["triage_capa_d"]["triage"] is True
+    assert out["triage_capa_d"]["motivos"] == ["exoneracion_total"]
+
+
+def test_d4_r2_aplicacion_erronea_presente():
+    out = aplicar_d4(_caso_d4([_atrib_ae("q", "restriccion_r7")],
+                              _voto([["noise_sensitivity", "aplicacion_erronea"]])))
+    assert out["triage_capa_d"]["motivos"] == ["aplicacion_erronea_bajo_revision"]
+
+
+def test_d4_r3_propagacion():
+    atrib = _atrib("context_recall", "navegación", "sin id")
+    atrib["capa_d"] = {"modulo": "D2", "accion": "sin_portador_extraible", "triage": True}
+    out = aplicar_d4(_caso_d4([atrib], _voto([["context_recall", "navegación"]])))
+    assert out["triage_capa_d"]["motivos"] == ["modulo_deterministico_sin_decision"]
+
+
+def test_d4_r4_voto_dividido():
+    out = aplicar_d4(_caso_d4([_atrib("context_recall", "completitud_kg", "x")],
+                              _voto(None, dividido=True)))
+    assert out["triage_capa_d"]["motivos"] == ["voto_dividido"]
+
+
+def test_d4_sin_disparo():
+    out = aplicar_d4(_caso_d4([_atrib("context_recall", "completitud_kg", "x")],
+                              _voto([["context_recall", "completitud_kg"]])))
+    assert out["triage_capa_d"] == {"triage": False, "motivos": [], "flags": []}
+
+
+def test_d4_requiere_voto_capa_d():
+    import pytest
+    with pytest.raises(ValueError):
+        aplicar_d4(_caso([[]]))
+
+
+def test_d4_rep_invalida_no_dispara():
+    caso = _caso_d4([], _voto([["context_recall", "completitud_kg"]]))
+    caso["repeticiones"].append(
+        {"formato_invalido": True, "errores_formato": ["roto"],
+         "atribuciones": [_atrib_ae("q", "restriccion_r7")]})
+    out = aplicar_d4(caso)
+    assert out["triage_capa_d"]["triage"] is False
+
+
+# --------------------------------------------------------------------------- #
+# Pipeline completo: aplicar_capa (D2 → D3 → D4)                               #
+# --------------------------------------------------------------------------- #
+def _caso_pipeline():
+    # rep1: frontera navegación con portador INALCANZABLE (D2 corrige) + aplicacion_erronea
+    #       con quote verificable (D3 ok, dispara R2)
+    # rep2: frontera navegación ídem + aplicacion_erronea con quote NO verificable
+    #       (D3 triage → R3)
+    return _caso([
+        [_atrib("context_recall", "navegación", "restriccion_r7"),
+         _atrib_ae("Los deudores cubiertos con garantías preferidas A", "restriccion_r7")],
+        [_atrib("context_recall", "navegación", "restriccion_r7"),
+         _atrib_ae("texto inexistente en el nodo", "restriccion_r7")],
+    ])
+
+
+def _capa(caso):
+    return aplicar_capa(caso, _index(), pregunta=PREGUNTA, consultas_agente=[],
+                        tokens_expuestos=set())
+
+
+def test_pipeline_completo_d2_d3_d4():
+    out = _capa(_caso_pipeline())
+    assert out["version_capa"] == VERSION_CAPA
+    # D2 corrigió las dos primarias de frontera
+    for rep in out["repeticiones"]:
+        frontera = rep["atribuciones"][0]
+        assert frontera["causa_capa2"] == "alcanzabilidad_kg"
+        assert frontera["capa_d"]["modulo"] == "D2" and frontera["capa_d"]["discrepancia"]
+    # D3 anotó las dos aplicacion_erronea sin cambiar la causa
+    assert out["repeticiones"][0]["atribuciones"][1]["capa_d"]["quote_verificado"] is True
+    ae2 = out["repeticiones"][1]["atribuciones"][1]
+    assert ae2["capa_d"]["quote_verificado"] is False and ae2["capa_d"]["triage"] is True
+    assert ae2["causa_capa2"] == "aplicacion_erronea"
+    # voto recomputado sobre primarias corregidas
+    v = out["voto_capa_d"]
+    assert v["pares_primarios_ganadores"] == [["context_recall", "alcanzabilidad_kg"]]
+    assert v["votos_ganadores"] == 2
+    # D4: R2 (aplicacion_erronea presente) + R3 (triage de D3); ni R1 ni R4
+    assert out["triage_capa_d"]["triage"] is True
+    assert out["triage_capa_d"]["motivos"] == [
+        "aplicacion_erronea_bajo_revision", "modulo_deterministico_sin_decision"]
+    assert out["resumen_capa_d"]["atribuciones_corregidas"] == 2
+    # el voto original sintético quedó intacto
+    assert out["voto"] == {"resultado": "mayoria", "marca": "ORIGINAL"}
+
+
+def test_pipeline_determinismo():
+    out1 = _capa(_caso_pipeline())
+    out2 = _capa(_caso_pipeline())
+    assert out1 == out2

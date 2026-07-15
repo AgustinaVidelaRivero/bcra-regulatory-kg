@@ -1,12 +1,13 @@
-"""capa_deterministica.py — módulo D2: decisor determinístico de la frontera
-navegación / alcanzabilidad_kg.
+"""capa_deterministica.py — capa determinística del verificador: D2 (decisor de la frontera
+navegación / alcanzabilidad_kg), D3 (validador de quotes de aplicacion_erronea) y D4
+(política de triage a nivel caso). Punto de entrada compuesto: aplicar_capa (D2 → D3 → D4).
 
-Módulo NUEVO; no modifica congelados (verificador.py, harness.py, taxonomia.md,
+Módulo que no modifica congelados (verificador.py, harness.py, taxonomia.md,
 casos_control.md, test_alcanzabilidad.py). Consume la salida del verificador (JSON de caso
 con repeticiones) y el módulo D1 (test_alcanzabilidad).
 
-SEMÁNTICA PRE-REGISTRADA (verbatim del pedido de implementación)
-----------------------------------------------------------------
+SEMÁNTICA PRE-REGISTRADA DE D2 (verbatim del pedido de implementación)
+----------------------------------------------------------------------
 - Recorre las repeticiones válidas (formato_invalido=false). Para cada atribución cuyo par
   (sintoma_capa1, causa_capa2) sea exactamente (context_recall, navegación) o
   (context_recall, alcanzabilidad_kg):
@@ -47,6 +48,49 @@ Notas de implementación (no alteran la semántica de arriba):
 - El recomputo del voto usa como clave de cada rep válida el MULTICONJUNTO ordenado de sus
   pares primarios corregidos (misma noción de clave que el voto programático del
   verificador); las reps inválidas no votan.
+
+SEMÁNTICA PRE-REGISTRADA DE D3 (verbatim del pedido de implementación)
+----------------------------------------------------------------------
+- Para cada atribución de cada rep válida con causa_capa2 == "aplicacion_erronea":
+  a. Extrae portador con el MISMO extractor de D2 (_extraer_portador). Sin portador único →
+     capa_d = {modulo: "D3", accion: "sin_portador_extraible", triage: true}.
+  b. Con portador: verifica que evidencia.nodo.quote esté contenido VERBATIM-NORMALIZADO
+     (lowercase, sin acentos vía la normalización de harness, espacios colapsados) en el
+     contenido del nodo (label + valores de properties, mismo blob normalizado). Verifica →
+     capa_d = {modulo: "D3", quote_verificado: true}. No verifica → capa_d = {modulo: "D3",
+     quote_verificado: false, accion: "quote_no_verificable", triage: true}.
+- D3 NUNCA cambia causa_capa2.
+
+LIMITACIÓN DE D3 (documentada): D3 verifica la condición COMPUTABLE necesaria — que el quote
+exista en el contenido del nodo —, no la suficiente: que el quote sea una DECLARACIÓN DE
+ALCANCE (cartera, régimen, sección; test v2.6 de la taxonomía). Esa lectura es semántica y
+queda para el humano del triage. Un quote verificado NO valida la atribución; un quote no
+verificable sí la manda a triage.
+
+SEMÁNTICA PRE-REGISTRADA DE D4 (verbatim del pedido de implementación)
+----------------------------------------------------------------------
+- Reglas de triage a nivel caso, sobre el JSON ya pasado por D2 y D3. Emite bloque
+  triage_capa_d = {triage: bool, motivos: [...], flags: [...]}:
+  - R1 exoneracion_total: la clave ganadora de voto_capa_d es vacía (sin pares primarios) →
+    triage, motivo "exoneracion_total".
+  - R2 aplicacion_erronea_presente: cualquier atribución (post-D3) con causa
+    aplicacion_erronea → triage, motivo "aplicacion_erronea_bajo_revision" (medida TEMPORAL
+    documentada: sesgo medido sin mitigar; revisable con evidencia fresca).
+  - R3 propagacion: cualquier capa_d con triage:true (de D2 o D3) → triage, motivo
+    "modulo_deterministico_sin_decision".
+  - R4 voto_dividido: voto_capa_d.flag_voto_dividido == true → triage, motivo
+    "voto_dividido".
+  - Los motivos se acumulan (lista, sin duplicados); triage = lista no vacía.
+
+Notas de implementación de D3/D4 (no alteran la semántica de arriba):
+- El capa_d de D3 incluye además `portador_id` (mismo criterio informativo que D2).
+- D4 recorre las atribuciones de las reps VÁLIDAS (las inválidas no votan ni disparan
+  reglas); exige `voto_capa_d` presente (el bloque lo produce D2) — sin él, ValueError.
+- `flags` de triage_capa_d: detalle de procedencia de cada disparo (regla + rep + pata),
+  determinístico, sin duplicados.
+- aplicar_capa(caso_json, run, trace_path) corre D2 → D3 → D4 en ese orden y agrega
+  version_capa: "v6.0-D(2026-07)". Acepta la misma inyección de insumos de D1 que aplicar_d2
+  (tests sin disco).
 """
 
 import argparse
@@ -200,10 +244,124 @@ def aplicar_d2(caso_json, run, trace_path=None, *,
 
 
 # --------------------------------------------------------------------------- #
+# D3 — validador de quotes de aplicacion_erronea                               #
+# --------------------------------------------------------------------------- #
+def _norm_texto(s):
+    """lowercase + sin acentos (normalización de harness) + espacios colapsados."""
+    from harness import _strip_accents
+    return " ".join(_strip_accents(str(s or "").lower()).split())
+
+
+def _blob_nodo(nodo):
+    """Contenido del nodo para la verificación de quote: label + valores de properties."""
+    partes = [nodo.label or ""]
+    partes += [str(v) for v in (nodo.properties or {}).values()]
+    return _norm_texto(" ".join(partes))
+
+
+def aplicar_d3(caso_json, run):
+    """Aplica el validador D3 según la semántica pre-registrada del docstring del módulo.
+    D3 NUNCA cambia causa_capa2: solo anota capa_d (verificación computable del quote;
+    la lectura de alcance es semántica y queda para el humano del triage)."""
+    index = _index_de(run)
+    ids_kg = list(index.by_id.keys())
+    salida = copy.deepcopy(caso_json)
+
+    for rep in salida.get("repeticiones") or []:
+        if rep.get("formato_invalido"):
+            continue
+        for atrib in rep.get("atribuciones") or []:
+            if atrib.get("causa_capa2") != "aplicacion_erronea":
+                continue
+            portador, _ = _extraer_portador(atrib, ids_kg)
+            if portador is None:
+                atrib["capa_d"] = {"modulo": "D3", "accion": "sin_portador_extraible",
+                                   "triage": True}
+                continue
+            quote = ((atrib.get("evidencia") or {}).get("nodo") or {}).get("quote") or ""
+            verificado = _norm_texto(quote) in _blob_nodo(index.by_id[portador])
+            if verificado:
+                atrib["capa_d"] = {"modulo": "D3", "portador_id": portador,
+                                   "quote_verificado": True}
+            else:
+                atrib["capa_d"] = {"modulo": "D3", "portador_id": portador,
+                                   "quote_verificado": False,
+                                   "accion": "quote_no_verificable", "triage": True}
+    return salida
+
+
+# --------------------------------------------------------------------------- #
+# D4 — política de triage a nivel caso                                         #
+# --------------------------------------------------------------------------- #
+def aplicar_d4(caso_json):
+    """Aplica las reglas R1-R4 de triage según la semántica pre-registrada del docstring.
+    Opera sobre el JSON ya pasado por D2 y D3 (exige voto_capa_d presente)."""
+    salida = copy.deepcopy(caso_json)
+    voto = salida.get("voto_capa_d")
+    if voto is None:
+        raise ValueError("aplicar_d4 requiere un JSON ya pasado por D2 (falta voto_capa_d)")
+
+    motivos, flags = [], []
+
+    def _sumar(motivo, flag):
+        if motivo not in motivos:
+            motivos.append(motivo)
+        if flag not in flags:
+            flags.append(flag)
+
+    # R1 exoneracion_total — clave ganadora vacía (sin pares primarios)
+    if voto.get("pares_primarios_ganadores") == []:
+        _sumar("exoneracion_total",
+               f"R1: voto_capa_d con mayoria de clave vacia ({voto.get('votos_ganadores')} votos sin primarias)")
+
+    reps_validas = [(i + 1, r) for i, r in enumerate(salida.get("repeticiones") or [])
+                    if not r.get("formato_invalido")]
+    for n, rep in reps_validas:
+        for j, atrib in enumerate(rep.get("atribuciones") or [], 1):
+            # R2 aplicacion_erronea_presente (medida TEMPORAL: sesgo medido sin mitigar;
+            # revisable con evidencia fresca)
+            if atrib.get("causa_capa2") == "aplicacion_erronea":
+                _sumar("aplicacion_erronea_bajo_revision",
+                       f"R2: rep {n} atrib {j} ({atrib.get('jerarquia')}) causa aplicacion_erronea")
+            # R3 propagacion — capa_d con triage:true (de D2 o D3)
+            capa_d = atrib.get("capa_d") or {}
+            if capa_d.get("triage") is True:
+                _sumar("modulo_deterministico_sin_decision",
+                       f"R3: rep {n} atrib {j} — {capa_d.get('modulo')}/{capa_d.get('accion')}")
+
+    # R4 voto_dividido
+    if voto.get("flag_voto_dividido") is True:
+        _sumar("voto_dividido", "R4: voto_capa_d.flag_voto_dividido = true")
+
+    salida["triage_capa_d"] = {"triage": bool(motivos), "motivos": motivos, "flags": flags}
+    return salida
+
+
+# --------------------------------------------------------------------------- #
+# Punto de entrada compuesto                                                   #
+# --------------------------------------------------------------------------- #
+VERSION_CAPA = "v6.0-D(2026-07)"
+
+
+def aplicar_capa(caso_json, run, trace_path=None, *,
+                 pregunta=None, consultas_agente=None, tokens_expuestos=None):
+    """Compuesto D2 → D3 → D4, en ese orden. Agrega version_capa. Misma inyección de
+    insumos de D1 que aplicar_d2 (para tests sin disco)."""
+    index = _index_de(run)
+    salida = aplicar_d2(caso_json, index, trace_path=trace_path, pregunta=pregunta,
+                        consultas_agente=consultas_agente, tokens_expuestos=tokens_expuestos)
+    salida = aplicar_d3(salida, index)
+    salida = aplicar_d4(salida)
+    salida["version_capa"] = VERSION_CAPA
+    return salida
+
+
+# --------------------------------------------------------------------------- #
 # CLI                                                                          #
 # --------------------------------------------------------------------------- #
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="D2 — decisor de frontera navegación/alcanzabilidad")
+    ap = argparse.ArgumentParser(
+        description="Capa determinística del verificador — aplicar_capa (D2 → D3 → D4)")
     ap.add_argument("--caso", required=True, help="path al JSON del caso del gate")
     ap.add_argument("--run", required=True, help="clave del run (p. ej. run_3)")
     ap.add_argument("--trace", required=True, help="path a la traza post-hoc del caso")
@@ -211,11 +369,13 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     caso = json.load(open(args.caso))
-    salida = aplicar_d2(caso, args.run, trace_path=args.trace)
+    salida = aplicar_capa(caso, args.run, trace_path=args.trace)
     with open(args.out, "w") as f:
         json.dump(salida, f, ensure_ascii=False, indent=1)
     print(json.dumps({"out": args.out,
+                      "version_capa": salida["version_capa"],
                       "resumen_capa_d": salida["resumen_capa_d"],
+                      "triage_capa_d": salida["triage_capa_d"],
                       "voto_capa_d": salida["voto_capa_d"]},
                      ensure_ascii=False, indent=1))
 
