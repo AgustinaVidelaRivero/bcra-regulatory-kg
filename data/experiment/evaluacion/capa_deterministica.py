@@ -82,13 +82,70 @@ SEMÁNTICA PRE-REGISTRADA DE D4 (verbatim del pedido de implementación)
     "voto_dividido".
   - Los motivos se acumulan (lista, sin duplicados); triage = lista no vacía.
 
-Notas de implementación de D3/D4 (no alteran la semántica de arriba):
+SEMÁNTICA PRE-REGISTRADA DE D5 (verbatim del pedido de implementación)
+----------------------------------------------------------------------
+- Gatillo: toda atribución de rep válida cuya causa_capa2 (YA corregida por D2) sea
+  "completitud_kg" o "alucinacion_agente".
+- Extracción de literales, SOLO de evidencia.afirmacion.quote y del campo pata, por regex
+  cerrada (documentada como constante):
+  (a) montos: USD/US$ seguido de número (con puntos de miles opcionales);
+  (b) códigos numéricos de 5+ dígitos;
+  (c) referencias a puntos de AL MENOS dos niveles: \\d+\\.\\d+(\\.\\d+)* (descartá las de
+      un solo nivel tipo "1.1" solas: demasiado genéricas — limitación documentada).
+  Sin literales extraíbles → capa_d = {modulo: "D5", accion: "sin_literales", banderas: []}
+  y sigue (sin triage).
+- Barrido: cada literal, normalizado (lowercase, sin acentos, espacios colapsados), por
+  substring contra el blob normalizado de id + label + properties de cada nodo del kg — SIN
+  provenances (pre-registrado: las provenances citan puntos por diseño y meterían ruido de
+  metadatos).
+- Filtro de exposición: para cada nodo candidato, verificá si su id aparece como substring
+  en ALGÚN output COMPLETO re-ejecutado de la traza (helper
+  test_alcanzabilidad.outputs_completos_de_trace). Candidato EXPUESTO → descartado (el
+  agente lo tuvo a la vista; si lo descartó mal, ese punto ciego queda documentado como
+  limitación).
+- Para cada candidato NO expuesto: corré D1 (evaluar_alcanzabilidad, con los mismos insumos
+  que D2 usa) y emití bandera: {literal, candidato_id, alcanzable: <bool>, mejor_rank,
+  expuesto: false}.
+- Anotación por atribución gatillada: capa_d = {modulo: "D5", literales: [...],
+  candidatos_evaluados: <n>, banderas: [...], triage: <true si banderas no vacía>}. D5 NUNCA
+  cambia causa_capa2 ni jerarquías.
+- Nota: si la atribución ya tiene capa_d de otro módulo, guardá la de D5 bajo la clave
+  capa_d5 (los módulos no se pisan).
+
+Notas de implementación de D3/D4/D5 (no alteran la semántica de arriba):
 - El capa_d de D3 incluye además `portador_id` (mismo criterio informativo que D2).
 - D4 recorre las atribuciones de las reps VÁLIDAS (las inválidas no votan ni disparan
   reglas); exige `voto_capa_d` presente (el bloque lo produce D2) — sin él, ValueError.
 - `flags` de triage_capa_d: detalle de procedencia de cada disparo (regla + rep + pata),
   determinístico, sin duplicados.
-- aplicar_capa(caso_json, run, trace_path) corre D2 → D3 → D4 en ese orden y agrega
+- Reglas de D4 con D5 integrado: R5 = cualquier bandera de D5 → triage, motivo
+  "posible_portador_no_considerado". R3 sigue cubriendo los triage de módulos SIN DECISIÓN
+  (acciones sin_portador_extraible / quote_no_verificable de D2/D3); el triage de D5 por
+  banderas dispara R5, no R3 (D5 con banderas SÍ decidió: encontró candidatos).
+- Regla de "un solo nivel" de la extracción (c): la regex base \\d+\\.\\d+(\\.\\d+)* con el
+  descarte de un nivel equivale a exigir al menos dos puntos ("1.1.2" sí; "1.1"/"3.9" no) —
+  limitación documentada: referencias de dos componentes no disparan barrido.
+- Los literales se barren tal como se extraen (sin canonicalizar variantes USD/US$/u$s entre
+  sí); el blob del nodo incluye claves y valores de properties.
+- Patrón (d) "coeficiente_decimal" (extensión 2026-07-15): \\d+,\\d+ — decimales con COMA,
+  la notación normativa argentina de coeficientes y alícuotas — con guarda de límites (no
+  precedido ni seguido por dígito, para no capturar dentro de números mayores). MOTIVACIÓN
+  POR MECANISMO (no por un caso del gate): el error documentado de barrido léxico en la
+  construcción de la vara — las variantes "0.08"/"0,08" y "APRc"/"APR_c" dieron
+  presente/ausente según la grafía (docs/evidencia_vara_v3/verificaciones_vara_v3.md §3b) —
+  es exactamente la clase de omisión que D5 existe para atajar. LIMITACIÓN SIMÉTRICA
+  documentada: los decimales con PUNTO ("0.08") NO se extraen — colisionan con las
+  referencias a puntos normativos de un nivel ("3.9"), que la extracción (c) descarta por
+  genéricas. Comportamiento fijado para números con punto de miles ("1.100,50"): la guarda
+  es por dígito adyacente, y el punto de miles no es dígito, así que se extrae el tramo
+  decimal posterior al último punto ("100,50") — fijado en test.
+- `candidatos_evaluados` = candidatos únicos hallados por el barrido (los EXPUESTOS se
+  descartan y se cuentan aparte en `candidatos_expuestos_descartados`; los NO expuestos
+  pasan por D1 y emiten bandera).
+- aplicar_d5 acepta las mismas dos vías de insumos que aplicar_d2, más `outputs_completos`
+  inyectable (lista de str) para tests sin disco; con `trace_path` sale de
+  outputs_completos_de_trace.
+- aplicar_capa(caso_json, run, trace_path) corre D2 → D3 → D5 → D4 en ese orden y agrega
   version_capa: "v6.0-D(2026-07)". Acepta la misma inyección de insumos de D1 que aplicar_d2
   (tests sin disco).
 """
@@ -101,10 +158,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import re
+
 from harness import GraphIndex                      # congelado — solo import
 from test_alcanzabilidad import (                   # D1 — solo import
     evaluar_alcanzabilidad,
     tokens_expuestos_de_trace,
+    outputs_completos_de_trace,
     _index_de,
 )
 
@@ -291,6 +351,121 @@ def aplicar_d3(caso_json, run):
 
 
 # --------------------------------------------------------------------------- #
+# D5 — diligencia determinística de causas de ausencia                         #
+# --------------------------------------------------------------------------- #
+CAUSAS_GATILLO_D5 = ("completitud_kg", "alucinacion_agente")
+
+# Regex CERRADA de extracción de literales (ver semántica D5 en el docstring):
+RE_LITERALES_D5 = {
+    "monto_usd": re.compile(r"(?i)(?:usd|us\$|u\$s)\s*\d+(?:\.\d{3})*"),
+    "codigo_numerico": re.compile(r"\d{5,}"),
+    # "al menos dos niveles": la base \d+\.\d+(\.\d+)* con descarte de un solo nivel
+    # equivale a exigir al menos dos puntos ("1.1.2" sí; "1.1"/"3.9" no).
+    "punto_normativo": re.compile(r"\d+\.\d+(?:\.\d+)+"),
+    # decimales con COMA (coeficientes/alícuotas); guarda de límites por dígito adyacente.
+    # Ver la nota "coeficiente_decimal" del docstring (motivación por mecanismo y limitación
+    # simétrica: decimales con punto NO se extraen).
+    "coeficiente_decimal": re.compile(r"(?<!\d)\d+,\d+(?!\d)"),
+}
+
+
+def _extraer_literales_d5(atrib):
+    """Literales de evidencia.afirmacion.quote y del campo pata, en orden determinístico,
+    deduplicados (por su forma normalizada)."""
+    quote = ((atrib.get("evidencia") or {}).get("afirmacion") or {}).get("quote") or ""
+    pata = atrib.get("pata") or ""
+    literales, vistos = [], set()
+    for texto in (quote, pata):
+        for nombre in ("monto_usd", "codigo_numerico", "punto_normativo",
+                       "coeficiente_decimal"):
+            for m in RE_LITERALES_D5[nombre].finditer(texto):
+                lit = m.group(0)
+                clave = _norm_texto(lit)
+                if clave not in vistos:
+                    vistos.add(clave)
+                    literales.append(lit)
+    return literales
+
+
+def _blob_nodo_d5(nodo):
+    """Blob normalizado de id + label + properties (claves y valores), SIN provenances."""
+    props = nodo.properties or {}
+    partes = [nodo.id or "", nodo.label or ""]
+    partes += [f"{k} {v}" for k, v in props.items()]
+    return _norm_texto(" ".join(partes))
+
+
+def _mejor_rank(d1):
+    ranks = [c["rank"] for c in d1["consultas"] if c["rank"] is not None]
+    return min(ranks) if ranks else None
+
+
+def aplicar_d5(caso_json, run, trace_path=None, *,
+               pregunta=None, consultas_agente=None, tokens_expuestos=None,
+               outputs_completos=None):
+    """Aplica la diligencia D5 según la semántica pre-registrada del docstring del módulo.
+    D5 NUNCA cambia causa_capa2 ni jerarquías; solo anota (capa_d, o capa_d5 si ya hay
+    capa_d de otro módulo)."""
+    index = _index_de(run)
+
+    if trace_path is not None:
+        elem = json.load(open(trace_path))[0]
+        pregunta = elem["trace"]["question"]
+        consultas_agente = [s["input"]["consulta"] for s in elem["trace"]["steps"]
+                            if s.get("tool") == "buscar_nodos"]
+        tokens_expuestos = tokens_expuestos_de_trace(trace_path, index=index)
+        outputs_completos = outputs_completos_de_trace(trace_path, index=index)
+    elif (pregunta is None or consultas_agente is None or tokens_expuestos is None
+          or outputs_completos is None):
+        raise ValueError("falta trace_path, o la cuaterna pregunta/consultas_agente/"
+                         "tokens_expuestos/outputs_completos")
+
+    blobs = {n.id: _blob_nodo_d5(n) for n in index.kg.nodes}
+    expuesto = {nid: any(nid in out for out in outputs_completos) for nid in blobs}
+    cache_d1 = {}
+    salida = copy.deepcopy(caso_json)
+
+    for rep in salida.get("repeticiones") or []:
+        if rep.get("formato_invalido"):
+            continue
+        for atrib in rep.get("atribuciones") or []:
+            if atrib.get("causa_capa2") not in CAUSAS_GATILLO_D5:
+                continue
+            literales = _extraer_literales_d5(atrib)
+            if not literales:
+                anotacion = {"modulo": "D5", "accion": "sin_literales", "banderas": []}
+            else:
+                candidatos, descartados, banderas = [], 0, []
+                vistos = set()
+                for lit in literales:
+                    lit_n = _norm_texto(lit)
+                    for nid, blob in blobs.items():
+                        if lit_n in blob and (lit, nid) not in vistos:
+                            vistos.add((lit, nid))
+                            candidatos.append((lit, nid))
+                for lit, nid in candidatos:
+                    if expuesto[nid]:
+                        descartados += 1
+                        continue
+                    if nid not in cache_d1:
+                        cache_d1[nid] = evaluar_alcanzabilidad(
+                            nid, pregunta, consultas_agente, tokens_expuestos, index)
+                    d1 = cache_d1[nid]
+                    banderas.append({"literal": lit, "candidato_id": nid,
+                                     "alcanzable": d1["alcanzable"],
+                                     "mejor_rank": _mejor_rank(d1), "expuesto": False})
+                anotacion = {"modulo": "D5", "literales": literales,
+                             "candidatos_evaluados": len(candidatos),
+                             "candidatos_expuestos_descartados": descartados,
+                             "banderas": banderas, "triage": bool(banderas)}
+            if "capa_d" in atrib:
+                atrib["capa_d5"] = anotacion   # los módulos no se pisan
+            else:
+                atrib["capa_d"] = anotacion
+    return salida
+
+
+# --------------------------------------------------------------------------- #
 # D4 — política de triage a nivel caso                                         #
 # --------------------------------------------------------------------------- #
 def aplicar_d4(caso_json):
@@ -323,11 +498,18 @@ def aplicar_d4(caso_json):
             if atrib.get("causa_capa2") == "aplicacion_erronea":
                 _sumar("aplicacion_erronea_bajo_revision",
                        f"R2: rep {n} atrib {j} ({atrib.get('jerarquia')}) causa aplicacion_erronea")
-            # R3 propagacion — capa_d con triage:true (de D2 o D3)
-            capa_d = atrib.get("capa_d") or {}
-            if capa_d.get("triage") is True:
-                _sumar("modulo_deterministico_sin_decision",
-                       f"R3: rep {n} atrib {j} — {capa_d.get('modulo')}/{capa_d.get('accion')}")
+            for anot in (atrib.get("capa_d") or {}, atrib.get("capa_d5") or {}):
+                if not anot:
+                    continue
+                if anot.get("modulo") == "D5":
+                    # R5 — banderas de D5 (candidatos no considerados): D5 SÍ decidió
+                    if anot.get("banderas"):
+                        _sumar("posible_portador_no_considerado",
+                               f"R5: rep {n} atrib {j} — {len(anot['banderas'])} bandera(s) D5")
+                elif anot.get("triage") is True:
+                    # R3 propagacion — módulos SIN decisión (D2/D3)
+                    _sumar("modulo_deterministico_sin_decision",
+                           f"R3: rep {n} atrib {j} — {anot.get('modulo')}/{anot.get('accion')}")
 
     # R4 voto_dividido
     if voto.get("flag_voto_dividido") is True:
@@ -344,13 +526,17 @@ VERSION_CAPA = "v6.0-D(2026-07)"
 
 
 def aplicar_capa(caso_json, run, trace_path=None, *,
-                 pregunta=None, consultas_agente=None, tokens_expuestos=None):
-    """Compuesto D2 → D3 → D4, en ese orden. Agrega version_capa. Misma inyección de
-    insumos de D1 que aplicar_d2 (para tests sin disco)."""
+                 pregunta=None, consultas_agente=None, tokens_expuestos=None,
+                 outputs_completos=None):
+    """Compuesto D2 → D3 → D5 → D4, en ese orden. Agrega version_capa. Misma inyección de
+    insumos de D1 que aplicar_d2 (para tests sin disco; D5 suma outputs_completos)."""
     index = _index_de(run)
     salida = aplicar_d2(caso_json, index, trace_path=trace_path, pregunta=pregunta,
                         consultas_agente=consultas_agente, tokens_expuestos=tokens_expuestos)
     salida = aplicar_d3(salida, index)
+    salida = aplicar_d5(salida, index, trace_path=trace_path, pregunta=pregunta,
+                        consultas_agente=consultas_agente, tokens_expuestos=tokens_expuestos,
+                        outputs_completos=outputs_completos)
     salida = aplicar_d4(salida)
     salida["version_capa"] = VERSION_CAPA
     return salida

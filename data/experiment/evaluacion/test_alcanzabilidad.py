@@ -148,11 +148,12 @@ def evaluar_alcanzabilidad(portador_id, pregunta, consultas_agente, tokens_expue
 # --------------------------------------------------------------------------- #
 # Helper: tokens expuestos desde una traza (re-ejecución determinística)       #
 # --------------------------------------------------------------------------- #
-def tokens_expuestos_de_trace(trace_path, hasta_paso=None, index=None):
+def outputs_completos_de_trace(trace_path, hasta_paso=None, index=None):
     """Re-ejecuta determinísticamente los pasos de la traza (mismo mecanismo que
     verificador.py::_ver_paso_completo: mismo grafo congelado del run de la traza,
-    mismo GraphIndex, mismos inputs) y devuelve el set de tokens (harness._tokens)
-    de los outputs COMPLETOS de los pasos con n <= hasta_paso (todos si es None).
+    mismo GraphIndex, mismos inputs) y devuelve la LISTA de outputs COMPLETOS por paso,
+    cada uno serializado como JSON (str), de los pasos con n <= hasta_paso (todos si es
+    None). Los pasos con tools no re-ejecutables se omiten.
 
     El run se lee de la propia traza (elemento [0], clave 'run'). `index` opcional
     para reutilizar un GraphIndex ya construido del mismo run."""
@@ -160,7 +161,7 @@ def tokens_expuestos_de_trace(trace_path, hasta_paso=None, index=None):
     steps = elem["trace"]["steps"]
     if index is None:
         index = _index_de(elem["run"])
-    tokens = set()
+    outputs = []
     for s in steps:
         if hasta_paso is not None and s.get("n", 0) > hasta_paso:
             continue
@@ -172,8 +173,18 @@ def tokens_expuestos_de_trace(trace_path, hasta_paso=None, index=None):
         elif tool == "ver_vecinos":
             out = index.ver_vecinos(inp.get("id", ""), inp.get("direccion", "ambas"))
         else:
-            continue  # tool no re-ejecutable: no aporta tokens
-        tokens |= set(_tokens(json.dumps(out, ensure_ascii=False)))
+            continue  # tool no re-ejecutable
+        outputs.append(json.dumps(out, ensure_ascii=False))
+    return outputs
+
+
+def tokens_expuestos_de_trace(trace_path, hasta_paso=None, index=None):
+    """Tokens (harness._tokens) de los outputs COMPLETOS re-ejecutados de la traza,
+    hasta el paso indicado. Reescrita sobre outputs_completos_de_trace (misma semántica
+    y firma que antes)."""
+    tokens = set()
+    for blob in outputs_completos_de_trace(trace_path, hasta_paso=hasta_paso, index=index):
+        tokens |= set(_tokens(blob))
     return tokens
 
 
