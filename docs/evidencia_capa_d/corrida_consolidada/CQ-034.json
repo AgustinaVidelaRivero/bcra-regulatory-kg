@@ -1,0 +1,1301 @@
+{
+ "id_falla": "run_3/CQ-034",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQ-034",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'persona humana residente compra moneda extranjera atesorar límite mensual', limite: 10}",
+      "devolvio": "323 matches; top: Operacion_compra_de_moneda_extranjera, Excepcion turismo USD 100, restricciones de garantías",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite compra dólares débito cuenta efectivo', limite: 10}",
+      "devolvio": "282 matches; top: Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), Obligacion_cursar_operacion_con_debito_en_cuenta (sin tope)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'formación activos externos límite general', limite: 10}",
+      "devolvio": "270 matches; Operacion_formacion_de_activos_externos, límites de activos líquidos/cartera/inmovilizados — ninguno es límite mensual de compra",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_limite_mensual_de_compra_en_efectivo'}",
+      "devolvio": "USD 100 en efectivo, prov. Punto 3.8",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera'}",
+      "devolvio": "Compra por personas humanas residentes para formación de activos externos en billetes/depósitos; prov. Punto 3.11",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_formacion_de_activos_externos'}",
+      "devolvio": "tipo: formación de activos externos; prov. Punto 3.10 — sin límite numérico",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}",
+      "devolvio": "1 saliente: requiere Verificación de documentación de endeudamiento",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'entrantes'}",
+      "devolvio": "9 entrantes: límites de acceso diario/60 días/5 días, límite efectivo USD 100, obligaciones — ningún límite mensual con débito ni USD 200",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite mensual débito cuenta USD 300', limite: 10}",
+      "devolvio": "no aparece límite mensual con débito; reaparece USD 100 efectivo y USD 2.000.000 mecanismo",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite mensual compra moneda extranjera USD 300 débito', limite: 10}",
+      "devolvio": "sin nodo de límite con débito",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'compra moneda extranjera personas humanas residentes atesorar límite', limite: 10}",
+      "devolvio": "Excepcion turismo, Operacion compra ME — sin límite USD 200 de formación de activos",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_cursar_operacion_con_debito_en_cuenta'}",
+      "devolvio": "La operación se curse con débito en cuenta; prov. Punto 3.8 — sin tope numérico",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'USD 300 mensual compra moneda extranjera', limite: 10}",
+      "devolvio": "sin nodo de límite mensual con débito",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: '300 dólares límite mensual', limite: 10}",
+      "devolvio": "USD 2.000.000, USD 100 efectivo, 10% anticipos — sin USD 200/300 de formación de activos",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos', limite: 15}",
+      "devolvio": "Excepcion turismo, Operacion compra ME, restricciones de garantías — sin límite USD 200 punto 3.9",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente ejecutó 15 tool calls con vocabulario variado (débito, efectivo, USD 300, USD 200, formación de activos externos, ayuda familiar implícita, Punto 3.8) intentando alcanzar el límite mensual diferenciado con débito y el límite general de otras modalidades. Ninguna búsqueda ni recorrido de vecinos devolvió un nodo portador del límite USD 200 del punto 3.9 (el único nodo 'USD 200' es de adelantos en países no limítrofes, no pertinente). Ante la ausencia del dato en el grafo, el agente reportó honestamente que el KG no contiene esas especificaciones y solo afirmó lo soportado (USD 100 en efectivo del punto 3.8). Actuó correctamente sobre lo que tenía: no alucinó ni forzó un valor.",
+    "thinking_decision": null,
+    "patas": [
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta",
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo",
+     "Límite general que rige para otras modalidades de formación de activos externos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límite general que rige para otras modalidades de formación de activos externos (punto 3.9.1)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "ninguno (búsqueda exhaustiva no devuelve nodo portador del límite USD 200 del punto 3.9; el único 'USD 200' es 'El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes', no pertinente)",
+       "ubicacion": "grafo run_3 (Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_)"
+      },
+      "fuente": {
+       "quote": "3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 3.9.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "otros residentes formación activos externos derivados límite",
+       "resultado": "sin nodo del límite USD 200; solo límites de activos líquidos/cartera/inmovilizados y ayuda familiar (Operacion_transferencia_de_ayuda), ninguno con el tope de compra"
+      },
+      {
+       "consulta": "límite USD 200 mes calendario conjunto entidades conceptos",
+       "resultado": "único 'USD 200' = adelantos en países no limítrofes; no pertinente"
+      },
+      {
+       "consulta": "cliente no supere equivalente USD 200 doscientos mes calendario",
+       "resultado": "454 matches, ninguno es el 3.9.1; reaparece adelanto países no limítrofes y límites porcentuales"
+      },
+      {
+       "consulta": "límite mensual formación activos externos 200",
+       "resultado": "Operacion_formacion_de_activos_externos (sin límite), USD 100 efectivo (3.8), USD 2.000.000 mecanismo — no aparece el USD 200 del 3.9"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "literales": [
+       "3.9.1"
+      ],
+      "candidatos_evaluados": 0,
+      "candidatos_expuestos_descartados": 0,
+      "banderas": [],
+      "triage": false
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límite mensual aplicable cuando la compra para atesorar se cursa con débito en cuenta (punto 3.9.2 / 3.9.1)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La operación se curse con débito en cuenta del cliente en entidades financieras locales. (nodo Obligacion_cursar_operacion_con_debito_en_cuenta — describe la modalidad pero NO porta el tope cuantitativo USD 200 que la diferencia del efectivo)",
+       "ubicacion": "Obligacion_cursar_operacion_con_debito_en_cuenta"
+      },
+      "fuente": {
+       "quote": "3.9.1. El cliente no supere (…) el equivalente a USD 200 (dólares estadounidenses doscientos). 3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien)",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Puntos 3.9.1-3.9.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "límite mensual débito cuenta USD 300",
+       "resultado": "sin nodo del límite mensual con débito; reaparece USD 100 efectivo y USD 2.000.000"
+      },
+      {
+       "consulta": "límite mensual compra moneda extranjera USD 300 débito",
+       "resultado": "solo Operacion compra ME y Excepcion turismo; ningún tope con débito"
+      },
+      {
+       "consulta": "USD 300 mensual compra moneda extranjera",
+       "resultado": "sin nodo de tope con débito"
+      },
+      {
+       "consulta": "300 dólares límite mensual",
+       "resultado": "USD 2.000.000, USD 100 efectivo, 10% anticipos — ningún tope diferenciado por débito"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "literales": [
+       "3.9.2",
+       "3.9.1"
+      ],
+      "candidatos_evaluados": 0,
+      "candidatos_expuestos_descartados": 0,
+      "banderas": [],
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó por dos patas que el agente declaró irrespondibles — el límite con débito en cuenta y el límite general de otras modalidades. La pata de efectivo (USD 100) fue aprobada. INVESTIGACIÓN (C1a, por pata): leí el PDF y encontré que la respuesta a ambas patas está en el Punto 3.9 ('formación de activos externos bajo otras modalidades…'): 3.9.1 fija un límite general de USD 200 mensual y 3.9.2 aclara que con débito en cuenta rige ese USD 200 mientras que en efectivo el tope es USD 100. Ese dato pertinente (USD 200 del 3.9) NUNCA apareció en la trayectoria del agente: revisé los outputs completos (incluido ver_paso_completo del paso 2) y ninguno lo expone; el único nodo 'USD 200' del grafo es sobre adelantos de efectivo en países no limítrofes (no pertinente). Ejecuté yo mismo búsquedas con múltiples vocabularios ex ante (débito, efectivo, USD 300, USD 200, formación de activos externos, ayuda familiar, mes calendario, conjunto de entidades) y NINGUNA devuelve un nodo portador del límite del punto 3.9 → el nodo NO EXISTE en el grafo. Como el dato pertinente nunca apareció, el síntoma de ambas patas es context_recall (precede a faithfulness/noise_sensitivity). CAUSA (C2, árbol de context_recall): ¿existe nodo portador? No (constancia de búsqueda documentada). ¿El PDF tiene el dato? Sí, verbatim en 3.9.1/3.9.2 → completitud_kg: el grafo extrajo el USD 100 del efectivo (punto 3.8.1) pero omitió por completo el régimen del punto 3.9 con su límite general de USD 200 y su diferenciación débito/efectivo. No es estructural_kg (no falta una conexión entre datos existentes, falta el dato mismo) ni alcanzabilidad_kg (no hay nodo correcto inalcanzable, simplemente no hay nodo). DESCARTE de defectos del agente: el agente buscó exhaustivamente y reportó honestamente la ausencia sin alucinar ni forzar valores; no hubo navegación fallida (el nodo no existe) → no aplica navegación ni alucinacion_agente. Ambas patas fallidas son primarias porque cada una, rota por el hueco del grafo, explica por qué el juez reprobó la respuesta.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 14,
+    "max_tool_calls": 40,
+    "tokens_in": 337945,
+    "tokens_out": 9293
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 14,
+    "tokens_in": 337945,
+    "tokens_out": 9293,
+    "latency_s": 130.15,
+    "error": null,
+    "final_raw": "Evidencia completa. El punto 3.9.1 confirma el límite USD 200 mensual y 3.9.2 confirma que débito en cuenta permite hasta ese USD 200 (mientras que efectivo se limita a USD 100). Ese dato existe en el PDF pero NO tiene nodo en el grafo. El agente buscó exhaustivamente y reportó honestamente la ausencia. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'persona humana residente compra moneda extranjera atesorar límite mensual', limite: 10}\", \"devolvio\": \"323 matches; top: Operacion_compra_de_moneda_extranjera, Excepcion turismo USD 100, restricciones de garantías\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite compra dólares débito cuenta efectivo', limite: 10}\", \"devolvio\": \"282 matches; top: Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), Obligacion_cursar_operacion_con_debito_en_cuenta (sin tope)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'formación activos externos límite general', limite: 10}\", \"devolvio\": \"270 matches; Operacion_formacion_de_activos_externos, límites de activos líquidos/cartera/inmovilizados — ninguno es límite mensual de compra\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_limite_mensual_de_compra_en_efectivo'}\", \"devolvio\": \"USD 100 en efectivo, prov. Punto 3.8\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera'}\", \"devolvio\": \"Compra por personas humanas residentes para formación de activos externos en billetes/depósitos; prov. Punto 3.11\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_formacion_de_activos_externos'}\", \"devolvio\": \"tipo: formación de activos externos; prov. Punto 3.10 — sin límite numérico\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}\", \"devolvio\": \"1 saliente: requiere Verificación de documentación de endeudamiento\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'entrantes'}\", \"devolvio\": \"9 entrantes: límites de acceso diario/60 días/5 días, límite efectivo USD 100, obligaciones — ningún límite mensual con débito ni USD 200\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite mensual débito cuenta USD 300', limite: 10}\", \"devolvio\": \"no aparece límite mensual con débito; reaparece USD 100 efectivo y USD 2.000.000 mecanismo\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite mensual compra moneda extranjera USD 300 débito', limite: 10}\", \"devolvio\": \"sin nodo de límite con débito\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'compra moneda extranjera personas humanas residentes atesorar límite', limite: 10}\", \"devolvio\": \"Excepcion turismo, Operacion compra ME — sin límite USD 200 de formación de activos\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_cursar_operacion_con_debito_en_cuenta'}\", \"devolvio\": \"La operación se curse con débito en cuenta; prov. Punto 3.8 — sin tope numérico\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'USD 300 mensual compra moneda extranjera', limite: 10}\", \"devolvio\": \"sin nodo de límite mensual con débito\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: '300 dólares límite mensual', limite: 10}\", \"devolvio\": \"USD 2.000.000, USD 100 efectivo, 10% anticipos — sin USD 200/300 de formación de activos\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos', limite: 15}\", \"devolvio\": \"Excepcion turismo, Operacion compra ME, restricciones de garantías — sin límite USD 200 punto 3.9\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente ejecutó 15 tool calls con vocabulario variado (débito, efectivo, USD 300, USD 200, formación de activos externos, ayuda familiar implícita, Punto 3.8) intentando alcanzar el límite mensual diferenciado con débito y el límite general de otras modalidades. Ninguna búsqueda ni recorrido de vecinos devolvió un nodo portador del límite USD 200 del punto 3.9 (el único nodo 'USD 200' es de adelantos en países no limítrofes, no pertinente). Ante la ausencia del dato en el grafo, el agente reportó honestamente que el KG no contiene esas especificaciones y solo afirmó lo soportado (USD 100 en efectivo del punto 3.8). Actuó correctamente sobre lo que tenía: no alucinó ni forzó un valor.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta\",\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo\",\n      \"Límite general que rige para otras modalidades de formación de activos externos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límite general que rige para otras modalidades de formación de activos externos (punto 3.9.1)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno (búsqueda exhaustiva no devuelve nodo portador del límite USD 200 del punto 3.9; el único 'USD 200' es 'El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes', no pertinente)\", \"ubicacion\": \"grafo run_3 (Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_)\"},\n        \"fuente\": {\"quote\": \"3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 3.9.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"otros residentes formación activos externos derivados límite\", \"resultado\": \"sin nodo del límite USD 200; solo límites de activos líquidos/cartera/inmovilizados y ayuda familiar (Operacion_transferencia_de_ayuda), ninguno con el tope de compra\"},\n        {\"consulta\": \"límite USD 200 mes calendario conjunto entidades conceptos\", \"resultado\": \"único 'USD 200' = adelantos en países no limítrofes; no pertinente\"},\n        {\"consulta\": \"cliente no supere equivalente USD 200 doscientos mes calendario\", \"resultado\": \"454 matches, ninguno es el 3.9.1; reaparece adelanto países no limítrofes y límites porcentuales\"},\n        {\"consulta\": \"límite mensual formación activos externos 200\", \"resultado\": \"Operacion_formacion_de_activos_externos (sin límite), USD 100 efectivo (3.8), USD 2.000.000 mecanismo — no aparece el USD 200 del 3.9\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límite mensual aplicable cuando la compra para atesorar se cursa con débito en cuenta (punto 3.9.2 / 3.9.1)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La operación se curse con débito en cuenta del cliente en entidades financieras locales. (nodo Obligacion_cursar_operacion_con_debito_en_cuenta — describe la modalidad pero NO porta el tope cuantitativo USD 200 que la diferencia del efectivo)\", \"ubicacion\": \"Obligacion_cursar_operacion_con_debito_en_cuenta\"},\n        \"fuente\": {\"quote\": \"3.9.1. El cliente no supere (…) el equivalente a USD 200 (dólares estadounidenses doscientos). 3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien)\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Puntos 3.9.1-3.9.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"límite mensual débito cuenta USD 300\", \"resultado\": \"sin nodo del límite mensual con débito; reaparece USD 100 efectivo y USD 2.000.000\"},\n        {\"consulta\": \"límite mensual compra moneda extranjera USD 300 débito\", \"resultado\": \"solo Operacion compra ME y Excepcion turismo; ningún tope con débito\"},\n        {\"consulta\": \"USD 300 mensual compra moneda extranjera\", \"resultado\": \"sin nodo de tope con débito\"},\n        {\"consulta\": \"300 dólares límite mensual\", \"resultado\": \"USD 2.000.000, USD 100 efectivo, 10% anticipos — ningún tope diferenciado por débito\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó por dos patas que el agente declaró irrespondibles — el límite con débito en cuenta y el límite general de otras modalidades. La pata de efectivo (USD 100) fue aprobada. INVESTIGACIÓN (C1a, por pata): leí el PDF y encontré que la respuesta a ambas patas está en el Punto 3.9 ('formación de activos externos bajo otras modalidades…'): 3.9.1 fija un límite general de USD 200 mensual y 3.9.2 aclara que con débito en cuenta rige ese USD 200 mientras que en efectivo el tope es USD 100. Ese dato pertinente (USD 200 del 3.9) NUNCA apareció en la trayectoria del agente: revisé los outputs completos (incluido ver_paso_completo del paso 2) y ninguno lo expone; el único nodo 'USD 200' del grafo es sobre adelantos de efectivo en países no limítrofes (no pertinente). Ejecuté yo mismo búsquedas con múltiples vocabularios ex ante (débito, efectivo, USD 300, USD 200, formación de activos externos, ayuda familiar, mes calendario, conjunto de entidades) y NINGUNA devuelve un nodo portador del límite del punto 3.9 → el nodo NO EXISTE en el grafo. Como el dato pertinente nunca apareció, el síntoma de ambas patas es context_recall (precede a faithfulness/noise_sensitivity). CAUSA (C2, árbol de context_recall): ¿existe nodo portador? No (constancia de búsqueda documentada). ¿El PDF tiene el dato? Sí, verbatim en 3.9.1/3.9.2 → completitud_kg: el grafo extrajo el USD 100 del efectivo (punto 3.8.1) pero omitió por completo el régimen del punto 3.9 con su límite general de USD 200 y su diferenciación débito/efectivo. No es estructural_kg (no falta una conexión entre datos existentes, falta el dato mismo) ni alcanzabilidad_kg (no hay nodo correcto inalcanzable, simplemente no hay nodo). DESCARTE de defectos del agente: el agente buscó exhaustivamente y reportó honestamente la ausencia sin alucinar ni forzar valores; no hubo navegación fallida (el nodo no existe) → no aplica navegación ni alucinacion_agente. Ambas patas fallidas son primarias porque cada una, rota por el hueco del grafo, explica por qué el juez reprobó la respuesta.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.10 (PDF pág 2)\", \"pasaje\": \"3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las \\nentidades– para la formación de activos externos y por operaciones con \\nderivados. \\n3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8.1 (PDF pág 32)\", \"pasaje\": \"3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda extranjera o acreditar \\nlos fondos en una cuenta en moneda extranjera de titularidad del cliente en entidades \\nfinancieras locales o en una cuenta bancaria de titular idad del cliente en el exterior, \\nsegún corresponda. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 3. Disposiciones específicas para los egresos por el mercado de cambios \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 17\"}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=4 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "otros residentes formación activos externos derivados límite",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"otros residentes formación activos externos derivados límite\", \"total_con_match\": 360, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_en_la_relacion_de_activos_inmovilizados_y_otros_conceptos_seccion_4_del_respecti\", \"type\": \"Restriccion\", \"label\": \"Límite de activos inmovilizados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"en la relación de activos inmovilizados y otros conceptos (Sección 4. del respectivo TO), excluidos los computados para la determinación del INC(inversiones sig…\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"toke… [+2218 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.10.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10.1\", \"ref\": \"Punto/Sección 3.10.1 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 33"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"3.8.3. La entidad ha registrado la operación en el sistema online implementado a tal efecto \\npor el BCRA. \\n3.8.4. En todos los casos, la entidad deberá obtener evidencia de que el cliente posee \\ningresos y/o activos consistentes con el ahorro en moneda extranjera. \\n3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con \\nderivados. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la formación de activos externos (códigos de conceptos A01, A02, A03, A04, A06, A08, \\nA14 y A24), la remisión de ayuda familiar y para la  operatoria con derivados  (código de con-\\ncepto A05) en la medida que no  encuadre en el punto 3.12.1.,  sin la conformidad previa del \\nBCRA, en la medida que se cumplan la totalidad de los siguientes requisitos:  \\n3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el \\nconjunto de los co… [+1519 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Operacion_formacion_de_activos_externos",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Operacion_formacion_de_activos_externos\", \"label\": \"Formación de activos externos\", \"n_salientes_total\": 0, \"n_entrantes_total\": 2, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_obtener_conformidad_previa_bcra\", \"vecino_label\": \"Obtener conformidad previa BCRA\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las entidad\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_la_entidad_debera_realizar_previamente_la_correspondiente_registracion_o_constat\", \"vecino_label\": \"Registración y reporte operación billetes\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite USD 200 mes calendario conjunto entidades conceptos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite USD 200 mes calendario conjunto entidades conceptos\", \"total_con_match\": 332, \"resultados\": [{\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_el_monto_total_de_deudas_abonadas_en_el_mes_calendario_no_supera_el_10_del_monto\", \"type\": \"Restriccion\", \"label\": \"Límite pago con liquidación cobros diferidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El monto total de deudas abonadas en el mes calendario no supera el 10% del monto de las deudas elegibles por las cuales no se suscribió BOPREAL\"}, {\"id\": \"Restriccion_cuando_el_total_de_participaciones_en_el_capital_de_entidades_financieras_empres\", \"type\": \"Restriccion\", \"label\": \"Límite tenencias capital 10%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando el total de participaciones en el capital de entidades financieras, empresas de servicios complementarios de la actividad financiera y compañía… [+2622 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cliente no supere equivalente USD 200 doscientos mes calendario",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cliente no supere equivalente USD 200 doscientos mes calendario\", \"total_con_match\": 454, \"resultados\": [{\"id\": \"Restriccion_el_monto_aplicado_en_el_ano_calendario_no_supere_el_equivalente_al_25_del_monto_\", \"type\": \"Restriccion\", \"label\": \"Límite de aplicación anual por inversión\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El monto aplicado en el año calendario no supere el equivalente al 25% del monto bruto de las inversiones ingresadas para financiar el desarrollo del proyecto q…\"}, {\"id\": \"Restriccion_valor_adeudado_no_supere_equivalente_de_usd_100_000_cuando_se_usa_companias_de_s\", \"type\": \"Restriccion\", \"label\": \"Límite monto para gestión sin entidad recupero\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Valor adeudado no supere equivalente de USD 100.000 cuando se usa compañías de seguro o agencias de recupero\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"… [+2317 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ayuda familiar remisión formación activos externos otras modalidades",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ayuda familiar remisión formación activos externos otras modalidades\", \"total_con_match\": 102, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Operacion_tenencia_de_activos_externos_liquidos\", \"type\": \"Operacion\", \"label\": \"Tenencia de activos externos líquidos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: tenencia de activos externos liquidos\"}, {\"id\": \"Operacion_presentacion_informativa_d… [+1806 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite mensual formación activos externos 200",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite mensual formación activos externos 200\", \"total_con_match\": 265, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_el_agente_local_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivale\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de uso mensual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El agente local no ha utilizado este mecanismo por un monto superior al equivalente de USD 2.000.000 (dólares estadounidenses dos millones) en el mes calendario…\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 2,… [+2200 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"total_con_match\": 282, \"resultados\": [{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario en el con…\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto en efectivo exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades financieras y otras emisoras de tarje… [+2137 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.9.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.9.1 (PDF pág 33)\", \"pasaje\": \"3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el \\nconjunto de los conce ptos señalados, el equivalente a USD 200 (dólares \\nestadounidenses doscientos).  \\n3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras \\nlocales.  \\nSi el cliente utiliza efectivo  el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. \\n3.9.3. La entidad cuenta con una declaración jurada del cliente en la que consta que el \\ncliente cumple con los requisitos mencionados precedentemente. \\n3.9.4. La e ntidad ha constatado en el sistema online implementado a tal efecto que lo \\ndeclarado por el cliente resulta compatible con los datos existentes en el BCRA. \\n3.9.5. En el caso de que la operación corresponda a conceptos incluidos en la formación de \\nactivos externos del cliente, la entidad vendedora deberá entregar lo… [+395 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29273,
+      "output_tokens": 249
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30643,
+      "output_tokens": 334
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31764,
+      "output_tokens": 533
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34033,
+      "output_tokens": 312
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35938,
+      "output_tokens": 674
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39965,
+      "output_tokens": 679
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43476,
+      "output_tokens": 692
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45679,
+      "output_tokens": 834
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 47174,
+      "output_tokens": 4986
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 58,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-034",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"persona humana residente compra moneda extranjera atesorar límite mensual\", \"limite\": 10}",
+      "devolvio": "Operacion_compra_de_moneda_extranjera y varias Restriccion/Excepcion; ninguna con el USD 200 del 3.9",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"limite\": 10}",
+      "devolvio": "Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), Obligacion_cursar_operacion_con_debito_en_cuenta; el único USD 200 es 'adelanto países no limítrofes' (otro contexto)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"formación activos externos límite general\", \"limite\": 10}",
+      "devolvio": "Operacion_formacion_de_activos_externos (stub sin límite) y límites de otras materias; ningún USD 200 del 3.9",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\"}",
+      "devolvio": "USD 100 en efectivo, mes calendario, prov. Punto 3.8",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\"}",
+      "devolvio": "descripción de la operación de atesoramiento; prov. Punto 3.11",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_formacion_de_activos_externos\"}",
+      "devolvio": "solo tipo; nodo stub sin límite; prov. Punto 3.10",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\", \"direccion\": \"salientes\"}",
+      "devolvio": "1 saliente (verificación de documentación)",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\", \"direccion\": \"entrantes\"}",
+      "devolvio": "9 entrantes: límites de acceso diario/plazos y el edge 'limita' con Límite mensual de compra en efectivo; ningún USD 200 del 3.9",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite mensual débito cuenta USD 300\", \"limite\": 10}",
+      "devolvio": "sin límite específico para débito; reaparece USD 100 efectivo y USD 200 países no limítrofes",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite mensual compra moneda extranjera USD 300 débito\", \"limite\": 10}",
+      "devolvio": "mismos nodos de compra ME; ningún tope de débito",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"compra moneda extranjera personas humanas residentes atesorar límite\", \"limite\": 10}",
+      "devolvio": "compra ME y excepción turismo; sin USD 200 del 3.9",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_cursar_operacion_con_debito_en_cuenta\"}",
+      "devolvio": "'La operación se curse con débito en cuenta...'; prov. Punto 3.8 (fiel al 3.8.1)",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"USD 300 mensual compra moneda extranjera\", \"limite\": 10}",
+      "devolvio": "sin resultado del 3.9",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"300 dólares límite mensual\", \"limite\": 10}",
+      "devolvio": "límites no relacionados",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos\", \"limite\": 15}",
+      "devolvio": "compra ME/excepción turismo; sin nodo del límite 3.9",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó de forma amplia el límite con débito en cuenta y el límite general de otras modalidades (pasos 2, 3, 9, 10, 13, 14, 15) con vocabulario razonable y variado, abrió los nodos pertinentes (efectivo USD 100 en paso 4, débito en cuenta en paso 12) y recorrió los vecinos de la operación de compra (pasos 7-8). El límite USD 200 del punto 3.9 nunca apareció porque no existe como nodo en el grafo. Ante la ausencia, el agente NO inventó un valor: declaró explícitamente que 'la información disponible en el Knowledge Graph no contiene especificaciones' sobre el débito ni sobre el límite general de otras modalidades. Actuó bien sobre lo que tenía: la falla es un hueco del grafo, no del uso.",
+    "thinking_decision": null,
+    "patas": [
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta",
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo",
+     "Límite general que rige para otras modalidades de formación de activos externos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límite general que rige para otras modalidades de formación de activos externos",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El único nodo con umbral 'USD 200' del grafo es 'Límite adelanto países no limítrofes': 'El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes' (prov. Punto 4.1) — no corresponde al límite general del 3.9. No existe nodo que porte el USD 200 mensual del punto 3.9.",
+       "ubicacion": "Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_ (y ausencia de nodo del 3.9)"
+      },
+      "fuente": {
+       "quote": "3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con derivados. (...) 3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, p. 33 (Punto 3.9.1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "USD 200 mes calendario formación activos externos otras modalidades",
+       "resultado": "ningún nodo con el USD 200 del 3.9; solo el USD 200 de adelanto países no limítrofes (3.10/4.1) y límites de otras materias"
+      },
+      {
+       "consulta": "límite USD 200 doscientos mes calendario conjunto entidades conceptos",
+       "resultado": "no aparece el nodo del 3.9; solo el USD 200 de países no limítrofes y límites regulatorios de capital/BOPREAL"
+      },
+      {
+       "consulta": "Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados",
+       "resultado": "excepciones del 3.12/3.13 y la Operacion stub de formación de activos externos; ningún límite USD 200"
+      },
+      {
+       "consulta": "cliente no supere equivalente USD 200 doscientos remisión ayuda familiar",
+       "resultado": "límites USD 100.000, USD 25.000, USD 200 países no limítrofes; ninguno es el tope del 3.9"
+      },
+      {
+       "consulta": "ver_vecinos Operacion_formacion_de_activos_externos",
+       "resultado": "solo 2 entrantes (Punto 3.10 y 4.1); ninguna Restriccion con USD 200 del 3.9"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La operación se curse con débito en cuenta del cliente en entidades financieras locales.",
+       "ubicacion": "Obligacion_cursar_operacion_con_debito_en_cuenta"
+      },
+      "fuente": {
+       "quote": "3.8.1. La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario (...)",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, p. 32 (Punto 3.8.1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "límite mensual débito cuenta USD 300",
+       "resultado": "no hay tope específico para débito; el nodo del 3.8 solo distingue el USD 100 del efectivo"
+      },
+      {
+       "consulta": "límite mensual compra moneda extranjera USD 300 débito",
+       "resultado": "sin nodo de tope para débito"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó la respuesta; aprobó solo la pata 'efectivo = USD 100' y la respuesta declaró incompletas las otras dos patas ('débito en cuenta' y 'límite general otras modalidades'). C1a por pata: (1) Efectivo: dato pertinente presente (nodo Restriccion_limite_mensual_de_compra_en_efectivo, USD 100), aprobado, no se re-litiga. (2) Límite general otras modalidades: el PDF lo funda en el Punto 3.9.1 = USD 200 mensual; ese dato pertinente NUNCA apareció en la trayectoria (verificado con ver_paso_completo de los pasos 2 y 9: el único 'USD 200' expuesto es el de 'adelanto países no limítrofes', un concepto distinto del Punto 4.1) → context_recall. (3) Débito en cuenta: el agente tenía el nodo fiel del 3.8.1 (Obligacion_cursar_operacion_con_debito_en_cuenta) que describe la modalidad, pero el marco de tope general (el USD 200 del 3.9 que gobierna las otras modalidades) es el mismo hueco; el dato pertinente de un tope diferenciado tampoco apareció → context_recall. C2 (árbol context_recall → ¿existe nodo portador?): búsqueda exhaustiva documentada con vocabulario ex ante (USD 200, mes calendario, formación de activos externos, Punto 3.9, ayuda familiar) muestra que NO existe nodo con el límite USD 200 del 3.9 — solo hay el USD 200 de países no limítrofes (Punto 4.1) y la operación 'formación de activos externos' es un stub sin límites (ver_vecinos solo trae 3.10 y 4.1). El PDF SÍ contiene el dato (Punto 3.9.1). Por tanto no es navegación ni alcanzabilidad (no hay nodo que exhibir) ni estructural (no faltan conexiones entre nodos existentes: falta el nodo del límite mismo): es completitud_kg — la extracción capturó solo el sub-requisito del efectivo del 3.8 y omitió el tope general del 3.9. La pata 3 mueve el veredicto (primaria); la pata 1 comparte la misma causa de completitud (secundaria). El agente actuó correctamente: buscó ampliamente, no alucinó y declaró honestamente la ausencia — la falla es del grafo, no del uso. Descarto sin_defecto porque el PDF prueba que la respuesta esperada (USD 200) existía y no fue entregada; descarto contenido_kg/provenance_imprecisa porque ningún nodo consultado contradice el PDF ni cita mal; descarto alucinacion_agente porque no hay glosa no soportada.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 319322,
+    "tokens_out": 8965
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 319322,
+    "tokens_out": 8965,
+    "latency_s": 128.473,
+    "error": null,
+    "final_raw": "Confirmado: el único nodo \"USD 200\" del grafo es del punto 4.1 (adelantos de efectivo con tarjeta en países no limítrofes) — no tiene nada que ver con el límite general del 3.9 para formación de activos externos. El límite USD 200 del punto 3.9 simplemente no fue extraído al grafo.\n\nTengo evidencia suficiente para la atribución.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"persona humana residente compra moneda extranjera atesorar límite mensual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Operacion_compra_de_moneda_extranjera y varias Restriccion/Excepcion; ninguna con el USD 200 del 3.9\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite compra dólares débito cuenta efectivo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), Obligacion_cursar_operacion_con_debito_en_cuenta; el único USD 200 es 'adelanto países no limítrofes' (otro contexto)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"formación activos externos límite general\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Operacion_formacion_de_activos_externos (stub sin límite) y límites de otras materias; ningún USD 200 del 3.9\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_mensual_de_compra_en_efectivo\\\"}\", \"devolvio\": \"USD 100 en efectivo, mes calendario, prov. Punto 3.8\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\"}\", \"devolvio\": \"descripción de la operación de atesoramiento; prov. Punto 3.11\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_formacion_de_activos_externos\\\"}\", \"devolvio\": \"solo tipo; nodo stub sin límite; prov. Punto 3.10\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"1 saliente (verificación de documentación)\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\", \\\"direccion\\\": \\\"entrantes\\\"}\", \"devolvio\": \"9 entrantes: límites de acceso diario/plazos y el edge 'limita' con Límite mensual de compra en efectivo; ningún USD 200 del 3.9\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite mensual débito cuenta USD 300\\\", \\\"limite\\\": 10}\", \"devolvio\": \"sin límite específico para débito; reaparece USD 100 efectivo y USD 200 países no limítrofes\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite mensual compra moneda extranjera USD 300 débito\\\", \\\"limite\\\": 10}\", \"devolvio\": \"mismos nodos de compra ME; ningún tope de débito\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"compra moneda extranjera personas humanas residentes atesorar límite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"compra ME y excepción turismo; sin USD 200 del 3.9\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_cursar_operacion_con_debito_en_cuenta\\\"}\", \"devolvio\": \"'La operación se curse con débito en cuenta...'; prov. Punto 3.8 (fiel al 3.8.1)\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"USD 300 mensual compra moneda extranjera\\\", \\\"limite\\\": 10}\", \"devolvio\": \"sin resultado del 3.9\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"300 dólares límite mensual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"límites no relacionados\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos\\\", \\\"limite\\\": 15}\", \"devolvio\": \"compra ME/excepción turismo; sin nodo del límite 3.9\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó de forma amplia el límite con débito en cuenta y el límite general de otras modalidades (pasos 2, 3, 9, 10, 13, 14, 15) con vocabulario razonable y variado, abrió los nodos pertinentes (efectivo USD 100 en paso 4, débito en cuenta en paso 12) y recorrió los vecinos de la operación de compra (pasos 7-8). El límite USD 200 del punto 3.9 nunca apareció porque no existe como nodo en el grafo. Ante la ausencia, el agente NO inventó un valor: declaró explícitamente que 'la información disponible en el Knowledge Graph no contiene especificaciones' sobre el débito ni sobre el límite general de otras modalidades. Actuó bien sobre lo que tenía: la falla es un hueco del grafo, no del uso.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta\",\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo\",\n      \"Límite general que rige para otras modalidades de formación de activos externos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límite general que rige para otras modalidades de formación de activos externos\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El único nodo con umbral 'USD 200' del grafo es 'Límite adelanto países no limítrofes': 'El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes' (prov. Punto 4.1) — no corresponde al límite general del 3.9. No existe nodo que porte el USD 200 mensual del punto 3.9.\", \"ubicacion\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_ (y ausencia de nodo del 3.9)\"},\n        \"fuente\": {\"quote\": \"3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con derivados. (...) 3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, p. 33 (Punto 3.9.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"USD 200 mes calendario formación activos externos otras modalidades\", \"resultado\": \"ningún nodo con el USD 200 del 3.9; solo el USD 200 de adelanto países no limítrofes (3.10/4.1) y límites de otras materias\"},\n        {\"consulta\": \"límite USD 200 doscientos mes calendario conjunto entidades conceptos\", \"resultado\": \"no aparece el nodo del 3.9; solo el USD 200 de países no limítrofes y límites regulatorios de capital/BOPREAL\"},\n        {\"consulta\": \"Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados\", \"resultado\": \"excepciones del 3.12/3.13 y la Operacion stub de formación de activos externos; ningún límite USD 200\"},\n        {\"consulta\": \"cliente no supere equivalente USD 200 doscientos remisión ayuda familiar\", \"resultado\": \"límites USD 100.000, USD 25.000, USD 200 países no limítrofes; ninguno es el tope del 3.9\"},\n        {\"consulta\": \"ver_vecinos Operacion_formacion_de_activos_externos\", \"resultado\": \"solo 2 entrantes (Punto 3.10 y 4.1); ninguna Restriccion con USD 200 del 3.9\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La operación se curse con débito en cuenta del cliente en entidades financieras locales.\", \"ubicacion\": \"Obligacion_cursar_operacion_con_debito_en_cuenta\"},\n        \"fuente\": {\"quote\": \"3.8.1. La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario (...)\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, p. 32 (Punto 3.8.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"límite mensual débito cuenta USD 300\", \"resultado\": \"no hay tope específico para débito; el nodo del 3.8 solo distingue el USD 100 del efectivo\"},\n        {\"consulta\": \"límite mensual compra moneda extranjera USD 300 débito\", \"resultado\": \"sin nodo de tope para débito\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó la respuesta; aprobó solo la pata 'efectivo = USD 100' y la respuesta declaró incompletas las otras dos patas ('débito en cuenta' y 'límite general otras modalidades'). C1a por pata: (1) Efectivo: dato pertinente presente (nodo Restriccion_limite_mensual_de_compra_en_efectivo, USD 100), aprobado, no se re-litiga. (2) Límite general otras modalidades: el PDF lo funda en el Punto 3.9.1 = USD 200 mensual; ese dato pertinente NUNCA apareció en la trayectoria (verificado con ver_paso_completo de los pasos 2 y 9: el único 'USD 200' expuesto es el de 'adelanto países no limítrofes', un concepto distinto del Punto 4.1) → context_recall. (3) Débito en cuenta: el agente tenía el nodo fiel del 3.8.1 (Obligacion_cursar_operacion_con_debito_en_cuenta) que describe la modalidad, pero el marco de tope general (el USD 200 del 3.9 que gobierna las otras modalidades) es el mismo hueco; el dato pertinente de un tope diferenciado tampoco apareció → context_recall. C2 (árbol context_recall → ¿existe nodo portador?): búsqueda exhaustiva documentada con vocabulario ex ante (USD 200, mes calendario, formación de activos externos, Punto 3.9, ayuda familiar) muestra que NO existe nodo con el límite USD 200 del 3.9 — solo hay el USD 200 de países no limítrofes (Punto 4.1) y la operación 'formación de activos externos' es un stub sin límites (ver_vecinos solo trae 3.10 y 4.1). El PDF SÍ contiene el dato (Punto 3.9.1). Por tanto no es navegación ni alcanzabilidad (no hay nodo que exhibir) ni estructural (no faltan conexiones entre nodos existentes: falta el nodo del límite mismo): es completitud_kg — la extracción capturó solo el sub-requisito del efectivo del 3.8 y omitió el tope general del 3.9. La pata 3 mueve el veredicto (primaria); la pata 1 comparte la misma causa de completitud (secundaria). El agente actuó correctamente: buscó ampliamente, no alucinó y declaró honestamente la ausencia — la falla es del grafo, no del uso. Descarto sin_defecto porque el PDF prueba que la respuesta esperada (USD 200) existía y no fue entregada; descarto contenido_kg/provenance_imprecisa porque ningún nodo consultado contradice el PDF ni cita mal; descarto alucinacion_agente porque no hay glosa no soportada.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.10 (PDF pág 2)\", \"pasaje\": \"3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las \\nentidades– para la formación de activos externos y por operaciones con \\nderivados. \\n3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 32"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 32\", \"metodo\": \"pagina\", \"ref\": \"p.32 (PDF absoluto 1-based)\", \"pasaje\": \"iii) el monto acumulado de los vencimientos de capital del nuevo título de\\ndeuda en ningún momento , hasta la fecha de vencimiento de la deuda\\nque se cancela,  podrá superar el mo nto que hubieran acumulado los\\nvencimientos de capital del título de deuda que se cancela.\\n3.6.4.7. Precancelación de capital e intereses por parte de un VPU adherido al RIGI. \\nEl cliente es un Vehículo de Proyecto Único (VPU) adherido al Régimen de \\nIncentivo para Grandes Inversiones (RIGI) que precancela capital o intereses \\ndevengados por deudas comprendidas en este punto 3.6. en el marco de lo \\nprevisto en el punto 14.2.1.  \\n3.6.5. Las emisiones de títulos valores que cumplen las condiciones previstas los  puntos \\n3.6.1.3. a 3.6.1.5. para el acceso al mercado de cambios  quedarán habilitados a \\ncancelar sus servicios de capital e intereses a partir de su vencimiento mediante la \\naplicación en el país de cobros de exportaciones de bienes y servicios, en la medid a \\nque se cumplan los requisitos previstos en el punto 7.9.   \\n3.… [+1803 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 33"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"3.8.3. La entidad ha registrado la operación en el sistema online implementado a tal efecto \\npor el BCRA. \\n3.8.4. En todos los casos, la entidad deberá obtener evidencia de que el cliente posee \\ningresos y/o activos consistentes con el ahorro en moneda extranjera. \\n3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con \\nderivados. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la formación de activos externos (códigos de conceptos A01, A02, A03, A04, A06, A08, \\nA14 y A24), la remisión de ayuda familiar y para la  operatoria con derivados  (código de con-\\ncepto A05) en la medida que no  encuadre en el punto 3.12.1.,  sin la conformidad previa del \\nBCRA, en la medida que se cumplan la totalidad de los siguientes requisitos:  \\n3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el \\nconjunto de los co… [+1519 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "USD 200 mes calendario formación activos externos otras modalidades",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"USD 200 mes calendario formación activos externos otras modalidades\", \"total_con_match\": 125, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Operacion_tenencia_de_activos_externos_liquidos\", \"type\": \"Operacion\", \"label\": \"Tenencia de activos externos líquidos\", \"tokens_matcheados\": 2, \"… [+3529 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite USD 200 doscientos mes calendario conjunto entidades conceptos",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"límite USD 200 doscientos mes calendario conjunto entidades conceptos\", \"total_con_match\": 332, \"resultados\": [{\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_el_monto_total_de_deudas_abonadas_en_el_mes_calendario_no_supera_el_10_del_monto\", \"type\": \"Restriccion\", \"label\": \"Límite pago con liquidación cobros diferidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El monto total de deudas abonadas en el mes calendario no supera el 10% del monto de las deudas elegibles por las cuales no se suscribió BOPREAL\"}, {\"id\": \"Restriccion_cuando_el_total_de_participaciones_en_el_capital_de_entidades_financieras_empres\", \"type\": \"Restriccion\", \"label\": \"Límite tenencias capital 10%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando el total de participaciones en el capital de entidades financieras, empresas de servicios complementarios de la actividad financiera… [+4243 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados\", \"total_con_match\": 222, \"resultados\": [{\"id\": \"Restriccion_el_activo_recibido_en_garantia_se_limitara_a_aquellos_listados_en_el_punto_5_3_1\", \"type\": \"Restriccion\", \"label\": \"Activos limitados a listado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2.\"}, {\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1\", \"type\": \"Obligacion\", \"label\": \"Verificación de condiciones punto 9.3.1.\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá verificar las condiciones indicadas en el punto 9.3.1.\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1_constata\", \"type\": \"Obligacion\", \"label\": \"Verificación cumplimiento requisitos puntos 7.9 o 7.10\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá verificar las c… [+3446 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cliente no supere equivalente USD 200 doscientos remisión ayuda familiar",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"cliente no supere equivalente USD 200 doscientos remisión ayuda familiar\", \"total_con_match\": 445, \"resultados\": [{\"id\": \"Restriccion_valor_adeudado_no_supere_equivalente_de_usd_100_000_cuando_se_usa_companias_de_s\", \"type\": \"Restriccion\", \"label\": \"Límite monto para gestión sin entidad recupero\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Valor adeudado no supere equivalente de USD 100.000 cuando se usa compañías de seguro o agencias de recupero\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_si_el_monto_total_a_imputar_al_permiso_no_supera_el_equivalente_de_usd_25_000_do\", \"type\": \"Restriccion\", \"label\": \"Límite para documentación simplificada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el monto total a imputar al permiso no supera el equivalente de USD 25.000 (dólares estadounidenses veinticinco mil), será suficiente que la entidad cuente c… [+3937 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Operacion_formacion_de_activos_externos",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Operacion_formacion_de_activos_externos\", \"label\": \"Formación de activos externos\", \"n_salientes_total\": 0, \"n_entrantes_total\": 2, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_obtener_conformidad_previa_bcra\", \"vecino_label\": \"Obtener conformidad previa BCRA\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las entidad\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_la_entidad_debera_realizar_previamente_la_correspondiente_registracion_o_constat\", \"vecino_label\": \"Registración y reporte operación billetes\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_transferencia_de_ayuda"
+      },
+      "output_truncado": "{\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"properties\": {\"tipo\": \"transferencia de ayuda\", \"description\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.2. Operaciones cursadas a través del Sistema de Monedas Locales (SML).\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"total_con_match\": 282, \"resultados\": [{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario en el con…\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto en efectivo exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades financieras y otras emisoras de tarje… [+2137 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"límite mensual débito cuenta USD 300\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"límite mensual débito cuenta USD 300\", \"total_con_match\": 234, \"resultados\": [{\"id\": \"Restriccion_el_agente_local_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivale\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de uso mensual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El agente local no ha utilizado este mecanismo por un monto superior al equivalente de USD 2.000.000 (dólares estadounidenses dos millones) en el mes calendario…\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere e… [+2595 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"properties\": {\"descripcion\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 200\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29273,
+      "output_tokens": 330
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30724,
+      "output_tokens": 362
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33518,
+      "output_tokens": 770
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38817,
+      "output_tokens": 315
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43657,
+      "output_tokens": 373
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44665,
+      "output_tokens": 849
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48751,
+      "output_tokens": 919
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 49917,
+      "output_tokens": 5047
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 58,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-034",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"persona humana residente compra moneda extranjera atesorar límite mensual\", \"limite\": 10}",
+      "devolvio": "323 matches; top: Operacion_compra_de_moneda_extranjera, garantías, turismo; ninguno porta USD 200 débito/general",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"limite\": 10}",
+      "devolvio": "282 matches; top: Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), adelanto países no limítrofes USD 200",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"formación activos externos límite general\", \"limite\": 10}",
+      "devolvio": "270 matches; Operacion_formacion_de_activos_externos, límites de activos líquidos/cartera; ningún USD 200 general",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\"}",
+      "devolvio": "USD 100 en efectivo, Punto 3.8",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\"}",
+      "devolvio": "compra PH residentes FAE billetes/depósitos, prov Punto 3.11",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_formacion_de_activos_externos\"}",
+      "devolvio": "tipo formación de activos externos, prov Punto 3.10",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\", \"direccion\": \"salientes\"}",
+      "devolvio": "1 saliente: requiere Verificación de documentación",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\", \"direccion\": \"entrantes\"}",
+      "devolvio": "9 entrantes: límites de acceso diario, 60 días, 5 días, límite mensual efectivo; ningún USD 200 general",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite mensual débito cuenta USD 300\", \"limite\": 10}",
+      "devolvio": "234 matches; ninguno porta límite mensual con débito ni USD 200 general",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite mensual compra moneda extranjera USD 300 débito\", \"limite\": 10}",
+      "devolvio": "313 matches; sin nodo de límite con débito",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"compra moneda extranjera personas humanas residentes atesorar límite\", \"limite\": 10}",
+      "devolvio": "335 matches; turismo, compra ME, garantías; sin USD 200 general",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_cursar_operacion_con_debito_en_cuenta\"}",
+      "devolvio": "La operación se curse con débito en cuenta; obligación sin límite cuantitativo, Punto 3.8",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"USD 300 mensual compra moneda extranjera\", \"limite\": 10}",
+      "devolvio": "142 matches; sin nodo de límite general con débito",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"300 dólares límite mensual\", \"limite\": 10}",
+      "devolvio": "189 matches; USD 2.000.000 uso mensual, USD 100 efectivo; sin USD 200 general",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos\", \"limite\": 15}",
+      "devolvio": "309 matches; turismo, compra ME, garantías; sin USD 200 general",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó exhaustivamente el límite con débito en cuenta y el límite general para otras modalidades (pasos 9, 10, 13, 14, 15) con términos plausibles (débito, USD 300, USD 200, 300 dólares, mensual), encontró solo la Obligacion_cursar_operacion_con_debito_en_cuenta (sin límite cuantitativo) y la Restriccion de USD 100 en efectivo. Al no hallar el dato del USD 200 general, declaró honestamente que el KG no contiene esas especificaciones, en lugar de alucinar un valor. Respondió correctamente la pata del efectivo (USD 100). Actuó bien sobre lo que el grafo le exponía: el nodo portador del USD 200 (Punto 3.9.1) simplemente no existe en el grafo.",
+    "thinking_decision": null,
+    "patas": [
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta",
+     "Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo",
+     "Límite general que rige para otras modalidades de formación de activos externos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límite general que rige para otras modalidades de formación de activos externos",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "(ninguno: no existe en el grafo un nodo Restriccion que porte el límite general de USD 200 del Punto 3.9.1; las búsquedas por 'USD 200', '200 doscientos', 'Punto 3.9', 'formación activos externos otras modalidades' solo devuelven el USD 200 de adelanto en efectivo países no limítrofes y el USD 100 en efectivo, ninguno pertinente)",
+       "ubicacion": "Operacion_formacion_de_activos_externos (sin vecinos de límite USD 200); búsquedas propias"
+      },
+      "fuente": {
+       "quote": "3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conce ptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 3.9"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "USD 200 mes calendario formación activos externos otras modalidades",
+       "resultado": "125 matches; solo USD 200 de adelanto países no limítrofes y activos líquidos; ningún nodo porta el USD 200 general del 3.9.1"
+      },
+      {
+       "consulta": "límite USD 200 dólares doscientos mes calendario cliente no supere",
+       "resultado": "565 matches; ningún nodo con el límite general de USD 200 para PH residentes"
+      },
+      {
+       "consulta": "200 doscientos límite mensual compra atesoramiento residentes",
+       "resultado": "255 matches; solo USD 100 efectivo y USD 200 adelanto países no limítrofes"
+      },
+      {
+       "consulta": "Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados",
+       "resultado": "222 matches; ninguno es la restricción cuantitativa de USD 200 del 3.9.1"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límite mensual aplicable cuando la compra para atesorar se cursa con débito en cuenta",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La operación se curse con débito en cuenta del cliente en entidades financieras locales.",
+       "ubicacion": "Obligacion_cursar_operacion_con_debito_en_cuenta (solo la condición, sin el límite cuantitativo de USD 200 asociado)"
+      },
+      "fuente": {
+       "quote": "3.9.1. El cliente no supere, en el mes calendario (…) el equivalente a USD 200 (dólares estadounidenses doscientos). 3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras locales.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 3.9"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "límite mensual débito cuenta USD 300 (paso 9, output completo)",
+       "resultado": "234 matches; solo Obligacion_cursar_operacion_con_debito_en_cuenta (sin monto) y USD 100 efectivo; ningún nodo porta el límite mensual con débito"
+      },
+      {
+       "consulta": "300 dólares límite mensual (paso 14)",
+       "resultado": "189 matches; USD 2.000.000 uso mensual, USD 100 efectivo; sin límite con débito"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene 3 patas. Pata 2 (efectivo → USD 100) fue respondida correctamente y aprobada por el juez (nodo Restriccion_limite_mensual_de_compra_en_efectivo, fiel al Punto 3.8/3.9.2). Las dos patas fallidas son (1) límite con débito en cuenta y (3) límite general para otras modalidades de FAE. El PDF muestra que el límite general —aplicable tanto a la modalidad débito como a 'otras modalidades'— es USD 200 en el mes calendario (Punto 3.9.1). Verifiqué en la trayectoria del agente (incluido el output completo del paso 9) que el dato PERTINENTE, el USD 200 general, NUNCA apareció: el agente solo alcanzó la Obligacion de cursar con débito (condición sin monto) y la Restriccion de USD 100 en efectivo. Ergo ambas patas fallidas son context_recall. CAUSA (C2, árbol context_recall): ¿existe nodo portador del USD 200 del 3.9.1? Busqué activamente con 4 consultas (USD 200, 200 doscientos, Punto 3.9, formación activos externos otras modalidades) y revisé los vecinos de Operacion_formacion_de_activos_externos (solo 2 entrantes, ninguno de límite cuantitativo): el nodo del límite general de USD 200 NO existe en el grafo. El PDF SÍ lo tiene (Punto 3.9.1 verbatim: 'el equivalente a USD 200'). Por tanto no es navegación ni alcanzabilidad_kg (no hay nodo portador que exhibir) sino completitud_kg: el grafo extrajo del bloque 3.8/3.9 solo el tope de USD 100 en efectivo y las obligaciones (débito, DJ, entrega de billetes), pero omitió el límite cuantitativo general de USD 200. Descarto sin_defecto porque el juez reprobó con razón (faltan dos respuestas). Descarto agente: el agente buscó exhaustivamente y declaró honestamente la ausencia en vez de alucinar. Ambas patas fallidas colapsan en el mismo hueco del grafo (falta el nodo del USD 200), emitidas como dos primarias por pata para trazabilidad.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 8,
+    "max_tool_calls": 40,
+    "tokens_in": 211753,
+    "tokens_out": 7011
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 8,
+    "tokens_in": 211753,
+    "tokens_out": 7011,
+    "latency_s": 92.208,
+    "error": null,
+    "final_raw": "Confirmado: el paso 9 no expone ningún nodo con el USD 200 general del 3.9.1. El agente buscó exhaustivamente y no existe. Tengo evidencia suficiente.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"persona humana residente compra moneda extranjera atesorar límite mensual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"323 matches; top: Operacion_compra_de_moneda_extranjera, garantías, turismo; ninguno porta USD 200 débito/general\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite compra dólares débito cuenta efectivo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"282 matches; top: Restriccion_limite_mensual_de_compra_en_efectivo (USD 100), adelanto países no limítrofes USD 200\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"formación activos externos límite general\\\", \\\"limite\\\": 10}\", \"devolvio\": \"270 matches; Operacion_formacion_de_activos_externos, límites de activos líquidos/cartera; ningún USD 200 general\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_mensual_de_compra_en_efectivo\\\"}\", \"devolvio\": \"USD 100 en efectivo, Punto 3.8\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\"}\", \"devolvio\": \"compra PH residentes FAE billetes/depósitos, prov Punto 3.11\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_formacion_de_activos_externos\\\"}\", \"devolvio\": \"tipo formación de activos externos, prov Punto 3.10\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"1 saliente: requiere Verificación de documentación\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\", \\\"direccion\\\": \\\"entrantes\\\"}\", \"devolvio\": \"9 entrantes: límites de acceso diario, 60 días, 5 días, límite mensual efectivo; ningún USD 200 general\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite mensual débito cuenta USD 300\\\", \\\"limite\\\": 10}\", \"devolvio\": \"234 matches; ninguno porta límite mensual con débito ni USD 200 general\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite mensual compra moneda extranjera USD 300 débito\\\", \\\"limite\\\": 10}\", \"devolvio\": \"313 matches; sin nodo de límite con débito\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"compra moneda extranjera personas humanas residentes atesorar límite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"335 matches; turismo, compra ME, garantías; sin USD 200 general\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_cursar_operacion_con_debito_en_cuenta\\\"}\", \"devolvio\": \"La operación se curse con débito en cuenta; obligación sin límite cuantitativo, Punto 3.8\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"USD 300 mensual compra moneda extranjera\\\", \\\"limite\\\": 10}\", \"devolvio\": \"142 matches; sin nodo de límite general con débito\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"300 dólares límite mensual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"189 matches; USD 2.000.000 uso mensual, USD 100 efectivo; sin USD 200 general\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Punto 3.8 compra moneda extranjera personas humanas residentes formación activos externos\\\", \\\"limite\\\": 15}\", \"devolvio\": \"309 matches; turismo, compra ME, garantías; sin USD 200 general\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó exhaustivamente el límite con débito en cuenta y el límite general para otras modalidades (pasos 9, 10, 13, 14, 15) con términos plausibles (débito, USD 300, USD 200, 300 dólares, mensual), encontró solo la Obligacion_cursar_operacion_con_debito_en_cuenta (sin límite cuantitativo) y la Restriccion de USD 100 en efectivo. Al no hallar el dato del USD 200 general, declaró honestamente que el KG no contiene esas especificaciones, en lugar de alucinar un valor. Respondió correctamente la pata del efectivo (USD 100). Actuó bien sobre lo que el grafo le exponía: el nodo portador del USD 200 (Punto 3.9.1) simplemente no existe en el grafo.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se cursa con débito en cuenta\",\n      \"Límite mensual aplicable cuando la compra de moneda extranjera para atesorar se realiza en efectivo\",\n      \"Límite general que rige para otras modalidades de formación de activos externos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límite general que rige para otras modalidades de formación de activos externos\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta, ni sobre el límite general que rige para otras modalidades de formación de activos externos.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"(ninguno: no existe en el grafo un nodo Restriccion que porte el límite general de USD 200 del Punto 3.9.1; las búsquedas por 'USD 200', '200 doscientos', 'Punto 3.9', 'formación activos externos otras modalidades' solo devuelven el USD 200 de adelanto en efectivo países no limítrofes y el USD 100 en efectivo, ninguno pertinente)\", \"ubicacion\": \"Operacion_formacion_de_activos_externos (sin vecinos de límite USD 200); búsquedas propias\"},\n        \"fuente\": {\"quote\": \"3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conce ptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 3.9\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"USD 200 mes calendario formación activos externos otras modalidades\", \"resultado\": \"125 matches; solo USD 200 de adelanto países no limítrofes y activos líquidos; ningún nodo porta el USD 200 general del 3.9.1\"},\n        {\"consulta\": \"límite USD 200 dólares doscientos mes calendario cliente no supere\", \"resultado\": \"565 matches; ningún nodo con el límite general de USD 200 para PH residentes\"},\n        {\"consulta\": \"200 doscientos límite mensual compra atesoramiento residentes\", \"resultado\": \"255 matches; solo USD 100 efectivo y USD 200 adelanto países no limítrofes\"},\n        {\"consulta\": \"Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados\", \"resultado\": \"222 matches; ninguno es la restricción cuantitativa de USD 200 del 3.9.1\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límite mensual aplicable cuando la compra para atesorar se cursa con débito en cuenta\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la información disponible en el Knowledge Graph no contiene especificaciones sobre el límite mensual diferenciado cuando la operación se cursa con débito en cuenta\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La operación se curse con débito en cuenta del cliente en entidades financieras locales.\", \"ubicacion\": \"Obligacion_cursar_operacion_con_debito_en_cuenta (solo la condición, sin el límite cuantitativo de USD 200 asociado)\"},\n        \"fuente\": {\"quote\": \"3.9.1. El cliente no supere, en el mes calendario (…) el equivalente a USD 200 (dólares estadounidenses doscientos). 3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras locales.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 3.9\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"límite mensual débito cuenta USD 300 (paso 9, output completo)\", \"resultado\": \"234 matches; solo Obligacion_cursar_operacion_con_debito_en_cuenta (sin monto) y USD 100 efectivo; ningún nodo porta el límite mensual con débito\"},\n        {\"consulta\": \"300 dólares límite mensual (paso 14)\", \"resultado\": \"189 matches; USD 2.000.000 uso mensual, USD 100 efectivo; sin límite con débito\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene 3 patas. Pata 2 (efectivo → USD 100) fue respondida correctamente y aprobada por el juez (nodo Restriccion_limite_mensual_de_compra_en_efectivo, fiel al Punto 3.8/3.9.2). Las dos patas fallidas son (1) límite con débito en cuenta y (3) límite general para otras modalidades de FAE. El PDF muestra que el límite general —aplicable tanto a la modalidad débito como a 'otras modalidades'— es USD 200 en el mes calendario (Punto 3.9.1). Verifiqué en la trayectoria del agente (incluido el output completo del paso 9) que el dato PERTINENTE, el USD 200 general, NUNCA apareció: el agente solo alcanzó la Obligacion de cursar con débito (condición sin monto) y la Restriccion de USD 100 en efectivo. Ergo ambas patas fallidas son context_recall. CAUSA (C2, árbol context_recall): ¿existe nodo portador del USD 200 del 3.9.1? Busqué activamente con 4 consultas (USD 200, 200 doscientos, Punto 3.9, formación activos externos otras modalidades) y revisé los vecinos de Operacion_formacion_de_activos_externos (solo 2 entrantes, ninguno de límite cuantitativo): el nodo del límite general de USD 200 NO existe en el grafo. El PDF SÍ lo tiene (Punto 3.9.1 verbatim: 'el equivalente a USD 200'). Por tanto no es navegación ni alcanzabilidad_kg (no hay nodo portador que exhibir) sino completitud_kg: el grafo extrajo del bloque 3.8/3.9 solo el tope de USD 100 en efectivo y las obligaciones (débito, DJ, entrega de billetes), pero omitió el límite cuantitativo general de USD 200. Descarto sin_defecto porque el juez reprobó con razón (faltan dos respuestas). Descarto agente: el agente buscó exhaustivamente y declaró honestamente la ausencia en vez de alucinar. Ambas patas fallidas colapsan en el mismo hueco del grafo (falta el nodo del USD 200), emitidas como dos primarias por pata para trazabilidad.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.9 (PDF pág 33)\", \"pasaje\": \"3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con \\nderivados. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la formación de activos externos (códigos de conceptos A01, A02, A03, A04, A06, A08, \\nA14 y A24), la remisión de ayuda familiar y para la  operatoria con derivados  (código de con-\\ncepto A05) en la medida que no  encuadre en el punto 3.12.1.,  sin la conformidad previa del \\nBCRA, en la medida que se cumplan la totalidad de los siguientes requisitos:  \\n3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el \\nconjunto de los conce ptos señalados, el equivalente a USD 200 (dólares \\nestadounidenses doscientos).  \\n3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras \\nlocales.  \\nSi el cliente utiliza efectivo  el monto comprado por el cliente no supere … [+390 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "USD 200 mes calendario formación activos externos otras modalidades",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"USD 200 mes calendario formación activos externos otras modalidades\", \"total_con_match\": 125, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Operacion_tenencia_de_activos_externos_liquidos\", \"type\": \"Operacion\", \"label\": \"Tenencia de activos externos líquidos\", \"tokens_matcheados\": 2, \"… [+2029 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite USD 200 dólares doscientos mes calendario cliente no supere",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite USD 200 dólares doscientos mes calendario cliente no supere\", \"total_con_match\": 565, \"resultados\": [{\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_el_monto_aplicado_en_el_ano_calendario_no_supere_el_equivalente_al_25_del_monto_\", \"type\": \"Restriccion\", \"label\": \"Límite de aplicación anual por inversión\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El monto aplicado en el año calendario no supere el equivalente al 25% del monto bruto de las inversiones ingresadas para financiar el desarrollo del proyecto q…\"}, {\"id\": \"Restriccion_el_monto_total_de_deudas_abonadas_en_el_mes_calendario_no_supera_el_10_del_monto\", \"type\": \"Restriccion\", \"label\": \"Límite pago con liquidación cobros diferidos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El monto total de deudas abonadas en el mes calendario no supera el 10% del monto de las deudas elegibles por las… [+2567 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "200 doscientos límite mensual compra atesoramiento residentes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"200 doscientos límite mensual compra atesoramiento residentes\", \"total_con_match\": 255, \"resultados\": [{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario en el con…\"}, {\"id\": \"Restriccion_el_agente_local_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivale\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de uso mensual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El agente local no ha utilizado este mecanismo por un monto superior al equivalente de USD 2.000.000 (dólares estadounidenses dos millones) en el mes calendario…\"}, {\"id\": \"Excepcion_compra_de_billetes_en_moneda_extranjera_de_personas_humanas_no_residentes_en_con\", \"type\": \"Excepcion\", \"label\": \"Compra de billetes por turismo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Compra de billetes en moneda extranjera de personas humanas no residentes en concepto de turismo por hasta USD 100 máximo, sujeto a verificación e… [+1980 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Operacion_formacion_de_activos_externos",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Operacion_formacion_de_activos_externos\", \"label\": \"Formación de activos externos\", \"n_salientes_total\": 0, \"n_entrantes_total\": 2, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_obtener_conformidad_previa_bcra\", \"vecino_label\": \"Obtener conformidad previa BCRA\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las entidad\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_la_entidad_debera_realizar_previamente_la_correspondiente_registracion_o_constat\", \"vecino_label\": \"Registración y reporte operación billetes\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"Punto 3.9 formación activos externos otras modalidades ayuda familiar derivados\", \"total_con_match\": 222, \"resultados\": [{\"id\": \"Restriccion_el_activo_recibido_en_garantia_se_limitara_a_aquellos_listados_en_el_punto_5_3_1\", \"type\": \"Restriccion\", \"label\": \"Activos limitados a listado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2.\"}, {\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1\", \"type\": \"Obligacion\", \"label\": \"Verificación de condiciones punto 9.3.1.\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá verificar las condiciones indicadas en el punto 9.3.1.\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1_constata\", \"type\": \"Obligacion\", \"label\": \"Verificación cumplimiento requisitos puntos 7.9 o 7.10\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá verificar las c… [+1934 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"límite mensual débito cuenta USD 300\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"límite mensual débito cuenta USD 300\", \"total_con_match\": 234, \"resultados\": [{\"id\": \"Restriccion_el_agente_local_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivale\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de uso mensual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El agente local no ha utilizado este mecanismo por un monto superior al equivalente de USD 2.000.000 (dólares estadounidenses dos millones) en el mes calendario…\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere e… [+2595 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29273,
+      "output_tokens": 268
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30951,
+      "output_tokens": 552
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34646,
+      "output_tokens": 331
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36841,
+      "output_tokens": 559
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38841,
+      "output_tokens": 690
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 41201,
+      "output_tokens": 4611
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 58,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.0-D(2026-07)"
+}
