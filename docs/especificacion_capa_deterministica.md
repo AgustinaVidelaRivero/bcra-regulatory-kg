@@ -1,12 +1,12 @@
-# Especificación del instrumento compuesto v6.0-D — verificador v5.7 + capa determinística
+# Especificación del instrumento compuesto v6.1-D — verificador v5.7 + capa determinística
 
-**Fecha:** 2026-07-15. **Versión de la capa:** `v6.0-D(2026-07)` (constante `VERSION_CAPA` en
+**Fecha:** 2026-07-15 (v6.0-D) · actualizada 2026-07-16 (v6.1-D). **Versión vigente de la capa:** `v6.1-D(2026-07)` (constante `VERSION_CAPA` en
 `capa_deterministica.py`). **Evidencia:** `docs/evidencia_capa_d/` (reportes de construcción
 D1-D5b y corrida consolidada) y `docs/evidencia_vara_v3/` (verificaciones programáticas).
 
 ## 1. Qué es
 
-El instrumento compuesto v6.0-D es la suma de dos piezas:
+El instrumento compuesto v6.1-D es la suma de dos piezas:
 
 1. **El verificador v5.7, congelado.** Su historia, su gate final y la doble lectura del gate
    están en `docs/especificacion_verificador_v57.md` y `docs/lectura_gate2_AB.md`. No se
@@ -18,7 +18,7 @@ El instrumento compuesto v6.0-D es la suma de dos piezas:
 
 **Los módulos de la capa NO tienen score de gate NI lo tendrán.** Su corrección se establece
 **por construcción**: cada módulo lleva su semántica pre-registrada verbatim en el docstring
-(fuente normativa) y una batería de **41 tests** unitarios y de pipeline (sin API, sin disco,
+(fuente normativa) y una batería de **50 tests** unitarios y de pipeline (sin API, sin disco,
 con grafo sintético) que fijan cada comportamiento, incluidos los casos borde. La validación
 **de sistema** del compuesto será **prospectiva**, sobre casos frescos (§7) — nunca sobre los
 5 casos del gate, que motivaron los módulos y quedaron quemados como medida.
@@ -92,10 +92,10 @@ computa cada módulo, POR QUÉ ese mecanismo, y QUÉ NO HACE.
   modo de falla del verificador en esa frontera es semántico, no de fabricación de evidencia.
   Por eso **la contención de `aplicacion_erronea` es R2 (triage), no D3**.
 
-### D4 — política de triage a nivel caso (`aplicar_d4`, reglas R1-R5)
+### D4 — política de triage a nivel caso (`aplicar_d4`, reglas R1-R6)
 
 - **Qué computa:** el bloque `triage_capa_d = {triage, motivos, flags}` sobre el JSON ya
-  pasado por D2/D3/D5:
+  pasado por D2/D3/D5/D6:
   - **R1 `exoneracion_total`** — mayoría con clave ganadora vacía (sin primarias).
   - **R2 `aplicacion_erronea_bajo_revision`** — cualquier atribución con esa causa. Medida
     TEMPORAL documentada: sesgo medido sin mitigar; revisable con evidencia fresca.
@@ -103,13 +103,15 @@ computa cada módulo, POR QUÉ ese mecanismo, y QUÉ NO HACE.
     quote no verificable).
   - **R4 `voto_dividido`** — `flag_voto_dividido=true`.
   - **R5 `posible_portador_no_considerado`** — cualquier bandera de D5.
+  - **R6a `atribucion_sin_sintoma`** / **R6b `atribucion_no_verificable`** — anotaciones de
+    D6 (consistencia síntoma↔atribución; sección D6, v6.1-D).
 - **Por qué por mecanismo — la asimetría de costos:** un defecto de grafo mal etiquetado o
   exonerado **se escapa del pipeline de refinamiento en silencio** (nadie vuelve a mirar un
   caso "resuelto"); una derivación a revisión humana cuesta minutos. El gate #2 mostró los
   dos modos de escape (sobre-exoneración en CQ-017; etiqueta de frontera en CQ-025/031) —
   las reglas convierten cada modo conocido de escape silencioso en una derivación explícita.
 - **Qué NO hace:** no decide el caso — deriva. Los motivos son acumulativos y el humano del
-  triage recibe el caso con las anotaciones de D2/D3/D5 como insumo.
+  triage recibe el caso con las anotaciones de D2/D3/D5/D6 como insumo.
 
 ### D5 — diligencia determinística de causas de ausencia (`aplicar_d5`)
 
@@ -130,6 +132,50 @@ computa cada módulo, POR QUÉ ese mecanismo, y QUÉ NO HACE.
   (colisión con puntos normativos de un nivel); (iii) **referencias de un solo nivel** tipo
   "1.1"/"3.9" **no disparan** barrido (demasiado genéricas). Las tres limitaciones están en
   el docstring y con casos fijados en tests.
+
+### D6 — consistencia síntoma↔atribución (`aplicar_d6`, v6.1-D)
+
+- **Qué computa (fuente normativa: su docstring en `capa_deterministica.py`):** extrae el
+  síntoma del caso desde la traza post-hoc con el MISMO filtro que el input del verificador
+  (`_sintoma_de_trace`: F = claims reprobados con centralidad; P = patas no cubiertas) y
+  aplica dos reglas: **R6a** — si F y P están vacíos, toda atribución con causa distinta de
+  `sin_defecto` se anota "atribución sin síntoma" y el caso va a triage, SIN reescribir
+  causas ni jerarquías (el síntoma vacío es información para el humano, no licencia para
+  inventar el veredicto correcto); **R6b** — una atribución PRIMARIA de síntoma
+  noise_sensitivity/faithfulness se mapea por substring normalizado (bidireccional) contra
+  los enunciados de F: si mapea SOLO a claims secundarios se degrada a secundaria; si mapea
+  a un central queda intacta; **si no mapea a ninguno, rige el fallback conservador** —
+  triage por `atribucion_no_verificable`, sin degradar (sin mapeo no hay hecho que autorice
+  reescritura). Tras D6 el voto se recomputa (el previo queda como `voto_pre_d6`; el del
+  verificador, intacto). Orden del pipeline v6.1-D: D2 → D3 → D5 → D6 → recomputo → D4.
+- **Por qué por mecanismo:** la severidad de la atribución no puede exceder la severidad del
+  síntoma declarado — F y P son **hechos del INPUT** del instrumento, computables por código.
+  La regla está motivada por los hallazgos b (sobre-atribución ante síntoma vacío) y c
+  (jerarquía indefinida en casos de solo-secundarios) de `docs/lectura_piloto_v6.md`, y la
+  **regla de frenado está respetada**: D6 se implementó por estructura — semántica
+  pre-registrada en el docstring y 9 tests con casos sintéticos — y **jamás se ajustó contra
+  los 5 casos quemados del piloto**, que solo ilustran.
+- **Hallazgo medido del dry-run (`docs/evidencia_capa_d/reporte_d6.md`):** los quotes de
+  afirmación del verificador son **paráfrasis** de los enunciados del juez, no citas —
+  **0/16 mapeos por substring** en los casos del piloto. El camino de degradación diseñado
+  (R6b con mapeo) **no se ejercita en datos reales**: rige el fallback conservador (triage
+  por `atribucion_no_verificable`, sin reescrituras).
+- **Trade-off documentado:** bajo v6.1-D la ilustración del piloto queda **sin errores
+  silenciosos** al costo de **más canal derivado**. La TASA real de triage por este motivo es
+  desconocida y es **métrica pre-registrada de la validación sobre run_2/run_4** (grafos
+  vírgenes de todas las etapas): si el motivo domina el canal, el mapeo se rediseña **por
+  mecanismo** — nunca contra casos quemados.
+- **Ilustración con asterisco — dry-run de D6 sobre los 5 JSONs congelados del piloto**
+  (D6 fue motivado por estos casos; no es scoring ni re-validación; detalle completo en
+  `docs/evidencia_capa_d/reporte_d6.md`):
+
+| Caso | Acción de D6 | Voto final | Triage final |
+|---|---|---|---|
+| CQ-016 | R6a ×2 (atribuciones con síntoma vacío) | sin cambio (dividido) | + `atribucion_sin_sintoma` |
+| CQ-024 | R6a ×4 | sin cambio | + `atribucion_sin_sintoma` |
+| CQ-018 | R6b fallback ×4 (`claim_no_mapeado`) | sin cambio | + `atribucion_no_verificable` |
+| CQ-033 | R6b fallback ×2 (`claim_no_mapeado`) | sin cambio | + `atribucion_no_verificable` |
+| CQ-019 | ninguna | sin cambio | igual (R1) |
 
 ## 3. Nota de sensibilidad del umbral (top-10)
 
@@ -192,7 +238,9 @@ entre corridas y entre grafos:
 | **Discrepancias D2** (`capa_d.discrepancia=true`) | Tasa de error del LLM en la frontera navegación/alcanzabilidad | 5 (CQ-031 ×3, CQ-025 ×1, CQ-017 ×1 secundaria) |
 | **Quotes no verificados D3** | Evidencia de `aplicacion_erronea` no auténtica | 0 (5/5 verificados) |
 | **Banderas D5** | Posibles portadores no considerados en causas de ausencia | 3 emisiones / 1 candidato único (CQ-020) |
-| **Triage por motivo** (R1..R5) | Dónde se concentra la derivación humana | R1: 1 caso · R2: 2 · R4: 1 · R5: 1 · R3: 0 |
+| **Triage por motivo** (R1..R6) | Dónde se concentra la derivación humana | R1: 1 caso · R2: 2 · R4: 1 · R5: 1 · R3: 0 (corrida pre-D6: R6 no existía) |
+| **Anotaciones R6a** (atribución sin síntoma) | Sobre-atribución ante síntoma vacío | no aplica (D6 es posterior a esa corrida; en el dry-run del piloto: 6 — CQ-016 ×2, CQ-024 ×4) |
+| **Fallbacks R6b** (`claim_no_mapeado`/`context_recall_sin_pata`) | Atribuciones no verificables contra el síntoma — su tasa es la métrica que decide si el mapeo se rediseña | no aplica (ídem; en el dry-run del piloto: 6 — CQ-018 ×4, CQ-033 ×2) |
 
 Un instrumento sano a escala se ve así: discrepancias D2 estables o bajando entre versiones
 del grafo, quotes no verificados en cero, banderas D5 raras y triage concentrado en pocos
@@ -209,7 +257,7 @@ del gate participa.
 
 ## 8. Cómo correr
 
-**Compuesto completo (D2 → D3 → D5 → D4) sobre un caso del verificador:**
+**Compuesto completo (D2 → D3 → D5 → D6 → recomputo → D4) sobre un caso del verificador:**
 
 ```bash
 cd data/experiment/evaluacion
@@ -218,7 +266,7 @@ python capa_deterministica.py \
   --run run_3 \
   --trace <ruta_a_la_traza_posthoc_del_caso>.json \
   --out <salida_compuesto>.json
-# stdout: version_capa + resumen_capa_d + triage_capa_d + voto_capa_d; el JSON completo va a --out
+# stdout: version_capa + resumen_capa_d + triage_capa_d + voto_capa_d; el JSON completo (con voto_pre_d6) va a --out
 ```
 
 **D1 suelto (prueba de alcanzabilidad de un portador):**
