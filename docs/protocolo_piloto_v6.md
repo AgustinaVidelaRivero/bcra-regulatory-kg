@@ -142,3 +142,73 @@ compuesto, huecos de la taxonomía) van al **documento de lectura del piloto**, 
 con este protocolo citado. Si un hallazgo motiva un cambio del instrumento, ese cambio se
 valida sobre casos que este piloto no tocó — estos 5 quedan quemados en el momento en que el
 compuesto los corre, igual que los del gate.
+
+---
+
+## Enmienda v1.1 (pre-ejecución) — 2026-07-16
+
+El texto anterior de este protocolo (v1.0) queda intacto y legible tal como se commiteó; esta
+enmienda se agrega al final, ANTES de la adjudicación y ANTES de cualquier corrida. Nada ha
+corrido; ningún veredicto del compuesto existe.
+
+### E1. Qué motiva la enmienda (por mecanismo)
+
+La verificación estructural (`docs/evidencia_capa_d/verificacion_estructura_piloto.md`)
+demostró, con el código de `build_falla_context` (verificador.py:547), que **el instrumento
+diagnostica el marco POST-HOC**: el veredicto del juez que se le presenta es el de la traza
+post-hoc (step1 completo + `step2.verificaciones` filtradas a falso/no_soportado como
+síntoma), y la respuesta y la trayectoria que investiga son las post-hoc. El universo del
+§2 de este protocolo, en cambio, se seleccionó por los **síntomas del FROZEN** (3 reps de
+otra corrida). Ambos marcos **divergen en 4 de los 5 casos** del universo (tablas por caso
+en la verificación estructural): el instrumento no puede ser evaluado contra síntomas que
+no recibe.
+
+### E2. Hallazgo documentado — punto ciego arquitectural del pipeline
+
+Una falla del frozen que **no se reproduce** en la re-ejecución post-hoc (varianza del agente
+o del juez) es **invisible para el verificador**: diagnostica la manifestación re-ejecutada,
+no la falla original. Ejemplos de este mismo universo: **CQ-016** (frozen: completitud
+parcial 3/3; post-hoc: el MISMO hedging en la respuesta — "no se encontró ... como entidad
+diferenciada" — y el juez lo aprueba: inestabilidad del juez en la frontera del hedging) y
+**CQ-024** (sin falla alguna en el marco post-hoc). Implicación para el uso a escala: **la
+cobertura del pipeline de refinamiento depende de la reproducibilidad de la falla** — lo que
+no se re-manifiesta no llega al verificador. Lo dejo documentado como límite arquitectural,
+medible en corridas futuras (tasa de reproducción frozen→post-hoc).
+
+### E3. Re-definición del marco de adjudicación
+
+Los GTs de `casos_piloto.md` se adjudican **sobre el marco POST-HOC**: los claims que el juez
+post-hoc reprobó y lo que la respuesta post-hoc afirma — exactamente el input que el
+instrumento recibe. El criterio frozen del §2 queda como **criterio de SELECCIÓN del
+universo** (así se eligieron los 5 casos, y así queda registrado); esta enmienda corrige el
+**marco de adjudicación**, no la selección.
+
+### E4. Roles de los casos bajo v1.1
+
+| Caso | Rol v1.1 | Síntoma post-hoc |
+|---|---|---|
+| CQ-018 | caso con **síntoma central** | 4 no_soportados, 1 central |
+| CQ-019 | caso con síntoma **secundario** (severidad consignada) | 1 no_soportado secundario |
+| CQ-033 | caso con síntoma **secundario** (severidad consignada) | 1 no_soportado secundario |
+| CQ-016 | **CONTROL NEGATIVO** | vacío (correcta/completa; cero reprobados) |
+| CQ-024 | **CONTROL NEGATIVO** | vacío (correcta/completa; cero reprobados) |
+
+**Regla de lectura pre-registrada para los controles negativos:** acierto = **exoneración**
+(`sin_defecto`; ninguna primaria). El **triage por R1** del compuesto sobre una exoneración
+correcta es **enrutamiento esperado de la política conservadora, no error de veredicto** —
+el piloto mide su costo (revisiones humanas gatilladas por exoneraciones correctas) como
+**métrica nueva del tablero**.
+
+### E5. Sin cambios
+
+Corrida única, guarda previa (commit de `casos_piloto.md` en HEAD), presupuesto (~6M input),
+scoring (reglas del gate sobre `voto_capa_d`, con el voto v5.7 al lado), regla de frenado y
+disclosure de homólogos: todo queda exactamente como en v1.0.
+
+### E6. Nota sobre defectos de grafo en controles negativos
+
+Los defectos de grafo que la adjudicación detecte en casos que resulten controles negativos
+(p. ej. el hecho identitario ausente que motiva el hedging de CQ-016 — que el "Régimen
+Informativo de Exigencia e Integración de Capitales Mínimos" ES el apartado del R.I.C.M.) se
+**documentan y van al backlog de refinamiento por fuera del scoring del piloto**: son
+hallazgos sobre el grafo, no sobre el instrumento que este piloto mide.
