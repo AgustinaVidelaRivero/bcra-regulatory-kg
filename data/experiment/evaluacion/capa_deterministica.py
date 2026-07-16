@@ -145,9 +145,47 @@ Notas de implementación de D3/D4/D5 (no alteran la semántica de arriba):
 - aplicar_d5 acepta las mismas dos vías de insumos que aplicar_d2, más `outputs_completos`
   inyectable (lista de str) para tests sin disco; con `trace_path` sale de
   outputs_completos_de_trace.
-- aplicar_capa(caso_json, run, trace_path) corre D2 → D3 → D5 → D4 en ese orden y agrega
-  version_capa: "v6.0-D(2026-07)". Acepta la misma inyección de insumos de D1 que aplicar_d2
-  (tests sin disco).
+SEMÁNTICA PRE-REGISTRADA DE D6 (verbatim del pedido de implementación — v6.1-D)
+-------------------------------------------------------------------------------
+- El síntoma del caso se extrae de la traza post-hoc con el MISMO filtro que
+  build_falla_context (verificador.py:547; el filtro de claims reprobados vive en las líneas
+  583-591: verdict ∈ {falso, no_soportado} sobre judge.step2.verificaciones):
+  F = claims reprobados del juez post-hoc (enunciado + centralidad); P = patas con
+  cobertura "no_cubierta" (judge.step2.cobertura_patas).
+- R6a — atribución sin síntoma: si F y P están VACÍOS y alguna rep válida contiene una
+  atribución con causa_capa2 ∉ {sin_defecto}: anotá en cada una
+  capa_d6={regla:"R6a", accion:"atribucion_sin_sintoma"} y marcá el caso para triage. NO
+  reescribas causas ni jerarquías (el síntoma vacío es información para el humano, no
+  licencia para inventar el veredicto correcto).
+- R6b — jerarquía acotada por centralidad: para cada atribución PRIMARIA de rep válida con
+  sintoma_capa1 ∈ {noise_sensitivity, faithfulness}: mapeá su evidencia.afirmacion.quote
+  contra los enunciados de F por substring normalizado (lowercase, sin acentos, espacios
+  colapsados; en ambas direcciones — quote⊆enunciado o enunciado⊆quote). Si mapea SOLO a
+  claims secundarios → degradá jerarquia a "secundaria" y anotá capa_d6={regla:"R6b",
+  emision_llm:"primaria", decision_codigo:"secundaria", claim_mapeado:<enunciado>}. Si mapea
+  a algún central → intacta. Si no mapea a NINGÚN claim de F → capa_d6={regla:"R6b",
+  accion:"claim_no_mapeado"} + triage (sin degradar: sin mapeo no hay hecho que autorice
+  reescritura). Las primarias de context_recall no se degradan por R6b (su síntoma son
+  patas, no claims); si P está vacío y F no, una primaria context_recall queda cubierta por
+  la lógica de R6a solo si TODO el síntoma está vacío — si F no está vacío, anotala como
+  capa_d6={regla:"R6b", accion:"context_recall_sin_pata"} + triage.
+- Justificación (por mecanismo): la severidad de la atribución no puede exceder la severidad
+  del síntoma declarado — F y P son hechos del INPUT del instrumento, computables por código.
+
+Notas de implementación de D6 (no alteran la semántica de arriba):
+- Cuando F y P están AMBOS vacíos rige R6a sola (R6b no corre por separado: todo el síntoma
+  está vacío y la anotación por atribución ya la hace R6a).
+- La anotación de D6 vive bajo la clave `capa_d6` (los módulos no se pisan).
+- Orden del pipeline v6.1-D: D2 → D3 → D5 → D6 → RECOMPUTO FINAL del voto (`voto_capa_d`
+  sobre jerarquías post-D6; el `voto` original queda intacto y el voto previo a D6 se
+  preserva como `voto_pre_d6`, informativo) → D4, que suma dos motivos: R6a →
+  "atribucion_sin_sintoma"; R6b claim_no_mapeado / context_recall_sin_pata →
+  "atribucion_no_verificable". version_capa := "v6.1-D(2026-07)". El CLI no cambia de firma.
+- Insumos de D6: con trace_path salen de _sintoma_de_trace; para tests sin disco se inyectan
+  sintoma_F/sintoma_P (listas, pueden ser vacías; None = no provisto → error).
+
+- aplicar_capa(caso_json, run, trace_path) corre el pipeline completo en el orden de arriba.
+  Acepta la misma inyección de insumos de D1 que aplicar_d2 (tests sin disco).
 """
 
 import argparse
@@ -466,6 +504,83 @@ def aplicar_d5(caso_json, run, trace_path=None, *,
 
 
 # --------------------------------------------------------------------------- #
+# D6 — consistencia síntoma↔atribución (v6.1-D)                                #
+# --------------------------------------------------------------------------- #
+def _sintoma_de_trace(trace_path):
+    """Extrae el síntoma del caso desde la traza post-hoc con el MISMO filtro que
+    build_falla_context (verificador.py:547; filtro de reprobados en las líneas 583-591:
+    `fallidos = [v for v in verifs if v.get("verdict") in ("falso", "no_soportado")]`
+    sobre judge.step2.verificaciones). Devuelve (F, P):
+      F = [{"enunciado", "central", "verdict"}] — claims reprobados del juez post-hoc;
+      P = [pata, ...] — patas con cobertura "no_cubierta" (judge.step2.cobertura_patas).
+    Solo lectura; no modifica nada del verificador."""
+    elem = json.load(open(trace_path))[0]
+    step2 = ((elem.get("judge") or {}).get("step2")) or {}
+    verifs = step2.get("verificaciones") or []
+    F = [{"enunciado": v.get("enunciado"), "central": bool(v.get("central")),
+          "verdict": v.get("verdict")}
+         for v in verifs if v.get("verdict") in ("falso", "no_soportado")]
+    P = [c.get("pata") for c in (step2.get("cobertura_patas") or [])
+         if c.get("cobertura") == "no_cubierta"]
+    return F, P
+
+
+def _mapear_claim(quote, F):
+    """Mapa quote↔enunciados de F por substring normalizado, en ambas direcciones.
+    Devuelve la lista de claims de F que mapean (en el orden de F)."""
+    q = _norm_texto(quote)
+    out = []
+    for c in F:
+        e = _norm_texto(c.get("enunciado"))
+        if not q or not e:
+            continue
+        if q in e or e in q:
+            out.append(c)
+    return out
+
+
+def aplicar_d6(caso_json, F, P):
+    """Aplica la consistencia síntoma↔atribución (R6a/R6b) según la semántica pre-registrada
+    del docstring del módulo. Degrada jerarquías SOLO en el caso autorizado (R6b mapeo
+    solo-a-secundarios); nunca reescribe causas."""
+    if F is None or P is None:
+        raise ValueError("aplicar_d6 requiere F y P (listas, pueden ser vacías)")
+    salida = copy.deepcopy(caso_json)
+    sintoma_vacio = not F and not P
+
+    for rep in salida.get("repeticiones") or []:
+        if rep.get("formato_invalido"):
+            continue
+        for atrib in rep.get("atribuciones") or []:
+            if sintoma_vacio:
+                # R6a — rige sola cuando TODO el síntoma está vacío.
+                if atrib.get("causa_capa2") not in ("sin_defecto",):
+                    atrib["capa_d6"] = {"regla": "R6a", "accion": "atribucion_sin_sintoma"}
+                continue
+            if atrib.get("jerarquia") != "primaria":
+                continue
+            sintoma = atrib.get("sintoma_capa1")
+            if sintoma == "context_recall":
+                if not P and F:
+                    atrib["capa_d6"] = {"regla": "R6b", "accion": "context_recall_sin_pata"}
+                continue
+            if sintoma not in ("noise_sensitivity", "faithfulness"):
+                continue
+            quote = ((atrib.get("evidencia") or {}).get("afirmacion") or {}).get("quote") or ""
+            mapeados = _mapear_claim(quote, F)
+            if not mapeados:
+                atrib["capa_d6"] = {"regla": "R6b", "accion": "claim_no_mapeado"}
+                continue
+            if any(c.get("central") for c in mapeados):
+                continue  # mapea a un central reprobado: jerarquía intacta
+            atrib["jerarquia"] = "secundaria"
+            atrib["capa_d6"] = {"regla": "R6b", "emision_llm": "primaria",
+                                "decision_codigo": "secundaria",
+                                "claim_mapeado": mapeados[0].get("enunciado")}
+    return salida
+
+
+# --------------------------------------------------------------------------- #
 # D4 — política de triage a nivel caso                                         #
 # --------------------------------------------------------------------------- #
 def aplicar_d4(caso_json):
@@ -510,6 +625,14 @@ def aplicar_d4(caso_json):
                     # R3 propagacion — módulos SIN decisión (D2/D3)
                     _sumar("modulo_deterministico_sin_decision",
                            f"R3: rep {n} atrib {j} — {anot.get('modulo')}/{anot.get('accion')}")
+            # R6 — consistencia síntoma↔atribución (D6, v6.1-D)
+            d6 = atrib.get("capa_d6") or {}
+            if d6.get("accion") == "atribucion_sin_sintoma":
+                _sumar("atribucion_sin_sintoma",
+                       f"R6a: rep {n} atrib {j} — atribución con síntoma vacío")
+            elif d6.get("accion") in ("claim_no_mapeado", "context_recall_sin_pata"):
+                _sumar("atribucion_no_verificable",
+                       f"R6b: rep {n} atrib {j} — {d6.get('accion')}")
 
     # R4 voto_dividido
     if voto.get("flag_voto_dividido") is True:
@@ -522,21 +645,31 @@ def aplicar_d4(caso_json):
 # --------------------------------------------------------------------------- #
 # Punto de entrada compuesto                                                   #
 # --------------------------------------------------------------------------- #
-VERSION_CAPA = "v6.0-D(2026-07)"
+VERSION_CAPA = "v6.1-D(2026-07)"
 
 
 def aplicar_capa(caso_json, run, trace_path=None, *,
                  pregunta=None, consultas_agente=None, tokens_expuestos=None,
-                 outputs_completos=None):
-    """Compuesto D2 → D3 → D5 → D4, en ese orden. Agrega version_capa. Misma inyección de
-    insumos de D1 que aplicar_d2 (para tests sin disco; D5 suma outputs_completos)."""
+                 outputs_completos=None, sintoma_F=None, sintoma_P=None):
+    """Compuesto v6.1-D: D2 → D3 → D5 → D6 → recomputo final del voto → D4. Agrega
+    version_capa. Misma inyección de insumos de D1 que aplicar_d2 (tests sin disco; D5 suma
+    outputs_completos; D6 suma sintoma_F/sintoma_P — con trace_path salen de
+    _sintoma_de_trace). El voto previo a D6 queda como voto_pre_d6 (informativo); el voto
+    original del verificador queda intacto."""
     index = _index_de(run)
+    if trace_path is not None:
+        sintoma_F, sintoma_P = _sintoma_de_trace(trace_path)
+    elif sintoma_F is None or sintoma_P is None:
+        raise ValueError("falta trace_path, o la dupla sintoma_F/sintoma_P (listas)")
     salida = aplicar_d2(caso_json, index, trace_path=trace_path, pregunta=pregunta,
                         consultas_agente=consultas_agente, tokens_expuestos=tokens_expuestos)
     salida = aplicar_d3(salida, index)
     salida = aplicar_d5(salida, index, trace_path=trace_path, pregunta=pregunta,
                         consultas_agente=consultas_agente, tokens_expuestos=tokens_expuestos,
                         outputs_completos=outputs_completos)
+    salida = aplicar_d6(salida, sintoma_F, sintoma_P)
+    salida["voto_pre_d6"] = salida["voto_capa_d"]
+    salida["voto_capa_d"] = _recomputar_voto(salida.get("repeticiones") or [])
     salida = aplicar_d4(salida)
     salida["version_capa"] = VERSION_CAPA
     return salida
