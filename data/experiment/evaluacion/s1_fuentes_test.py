@@ -360,14 +360,23 @@ class _MockClient:
         return _R(texto)
 
 
-def _salida_s1(coinciden="no", causa="sin_defecto"):
+def _salida_s1(coinciden="no", causa="sin_defecto", sintoma="noise_sensitivity"):
     return json.dumps({
         "alcance_declarado_en_fuente": "Para aquellas entidades financieras que sean "
                                        "reclasificadas desde el 01/01/2026",
         "alcance_en_el_nodo": "Límite exigencia capital operacional grupo B",
         "coinciden": coinciden,
+        "sintoma_del_par": sintoma,
         "causa_confirmada_o_corregida": causa,
         "justificacion_breve": "juicio de prueba",
+    }, ensure_ascii=False)
+
+
+def _salida_s1_exon(presente="no", causa="completitud_kg", quote="quote de la fuente"):
+    return json.dumps({
+        "respuesta_en_fuente": quote,
+        "presente_en_grafo": presente,
+        "causa_confirmada_o_corregida": causa,
     }, ensure_ascii=False)
 
 
@@ -527,3 +536,203 @@ def test_usage_persistido_en_capa_s1_y_resumen():
     assert a["capa_s1"]["usage_s1"] == [{"input_tokens": 1000, "output_tokens": 200}]
     assert out["resumen_s1"]["tokens_in_s1"] == 1000
     assert out["resumen_s1"]["tokens_out_s1"] == 200
+
+
+# --------------------------------------------------------------------------- #
+# 7. B4.3 — síntoma en el input, sintoma_del_par, rama de exoneración          #
+# --------------------------------------------------------------------------- #
+def test_input_incluye_sintoma():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    paquete = _fetch(caso)
+    client = _MockClient([_salida_s1("no", "contenido_kg")])
+    F = [{"enunciado": "el criterio es el que ocurra primero", "central": True,
+          "verdict": "falso"}]
+    P = ["pata no cubierta de prueba"]
+    aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client, sintoma_F=F, sintoma_P=P)
+    prompt = client.llamadas[0]["messages"][0]["content"]
+    assert "el criterio es el que ocurra primero" in prompt
+    assert "pata no cubierta de prueba" in prompt
+    assert "CENTRAL, verdict=falso" in prompt
+    assert "sintoma_del_par" in prompt          # el esquema nuevo viaja en el prompt
+
+
+def test_par_completo_corrige_sintoma_y_causa():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1",
+                          sintoma="noise_sensitivity")]])
+    paquete = _fetch(caso)
+    client = _MockClient([_salida_s1("no", "completitud_kg", sintoma="context_recall")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=[], sintoma_P=["p"])
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["par_post_s1"] == ["context_recall", "completitud_kg"]
+    assert a["capa_s1"]["corrigio"] is True
+    assert a["sintoma_capa1"] == "context_recall" and a["causa_capa2"] == "completitud_kg"
+    assert a["capa_s1"]["emision_v61d"]["sintoma_capa1"] == "noise_sensitivity"
+
+
+def test_sintoma_fuera_de_dominio_no_vota_con_anotacion():
+    # B4.5: síntoma fuera de dominio → anotación fuera_de_dominio (verbatim), no vota
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    client = _MockClient([_salida_s1("no", "contenido_kg", sintoma="banana")])
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso), n=1, client=client)
+    a = out["repeticiones"][0]["atribuciones"][0]
+    fd = a["capa_s1"]["salidas_s1"][0]["fuera_de_dominio"]
+    assert fd == [{"campo": "sintoma_del_par", "valor_verbatim": "banana"}]
+    assert a["capa_s1"]["accion"] == "no_determinable"
+
+
+def test_rama_exoneracion_usa_esquema_alternativo():
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    paquete = _fetch(caso, F=[], P=["pata sin cubrir"])
+    assert paquete["gatillo_caso"]["exoneracion_con_sintoma"] is True
+    client = _MockClient([_salida_s1_exon("no", "completitud_kg")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=[], sintoma_P=["pata sin cubrir"],
+                     respuesta_agente="respuesta del agente de prueba")
+    prompt = client.llamadas[0]["messages"][0]["content"]
+    assert "pata sin cubrir" in prompt
+    assert "respuesta del agente de prueba" in prompt
+    assert "presente_en_grafo" in prompt         # esquema alternativo
+    assert "alcance_declarado_en_fuente" not in prompt
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["esquema"] == "exoneracion"
+    assert a["capa_s1"]["corrigio"] is True
+    assert a["causa_capa2"] == "completitud_kg"
+    assert a["sintoma_capa1"] == "context_recall"   # la rama se define por la pata
+    assert a["capa_s1"]["salidas_s1"][0]["respuesta_en_fuente"] == "quote de la fuente"
+
+
+def test_rama_exoneracion_confirma_sin_defecto():
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    paquete = _fetch(caso, F=[], P=["pata x"])
+    client = _MockClient([_salida_s1_exon("si", "sin_defecto", quote=None)])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=[], sintoma_P=["pata x"], respuesta_agente="r")
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["corrigio"] is False
+    assert a["causa_capa2"] == "sin_defecto"
+
+
+def test_esquema_causa_sigue_para_gatillo_de_causas():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    client = _MockClient([_salida_s1("no", "contenido_kg")])
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso), n=1, client=client)
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["esquema"] == "causa"
+    assert a["capa_s1"]["voto_s1_atrib"]["esquema"] == "causa"
+
+
+# --------------------------------------------------------------------------- #
+# 8. B4.3 r2 — regla mecánica de jerarquía para exoneraciones corregidas       #
+# --------------------------------------------------------------------------- #
+def test_exon_corregida_una_pata_promueve_a_primaria():
+    # 2 reps con exoneración corregida → 2 primarias → el voto_s1 las CUENTA (mayoría 2)
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")],
+                  [_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    paquete = _fetch(caso, F=[], P=["la única pata"])
+    client = _MockClient([_salida_s1_exon("no", "completitud_kg"),
+                          _salida_s1_exon("no", "completitud_kg")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=[], sintoma_P=["la única pata"], respuesta_agente="r")
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["jerarquia"] == "primaria" and a["pata"] == "la única pata"
+    assert a["capa_s1"]["jerarquia_original"] == "sin_par"
+    assert a["capa_s1"]["jerarquia_post_s1"] == "primaria"
+    assert "nota" not in a["capa_s1"]
+    # el voto_s1 ahora CUENTA estas primarias (mayoría 2/2)
+    assert out["voto_s1"]["pares_primarios_ganadores"] == [["context_recall",
+                                                            "completitud_kg"]]
+    assert out["voto_s1"]["votos_ganadores"] == 2
+
+
+def test_exon_corregida_dos_patas_conjunto_con_nota():
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    P = ["pata uno", "pata dos"]
+    paquete = _fetch(caso, F=[], P=P)
+    client = _MockClient([_salida_s1_exon("no", "completitud_kg")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=[], sintoma_P=P, respuesta_agente="r")
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["jerarquia"] == "primaria" and a["pata"] == P
+    assert a["capa_s1"]["nota"] == "mecanica_sin_mapeo"
+
+
+def test_exon_corregida_sobre_claims_jerarquia_por_centralidad():
+    F_c = [{"enunciado": "afirmación x", "central": True, "verdict": "falso"}]
+    # el quote de la atribución sintética ("afirmación x") mapea al claim CENTRAL → primaria
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    paquete = _fetch(caso, F=F_c, P=[])
+    client = _MockClient([_salida_s1_exon("no", "contenido_kg")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client,
+                     sintoma_F=F_c, sintoma_P=[], respuesta_agente="r")
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["jerarquia"] == "primaria"
+    assert a["capa_s1"]["mapeo_claims"] == ["afirmación x"]
+    # solo secundarios (o sin mapeo) → secundaria
+    F_s = [{"enunciado": "otra cosa sin relación", "central": False, "verdict": "falso"}]
+    caso2 = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                  ganadores=[])
+    client2 = _MockClient([_salida_s1_exon("no", "contenido_kg")])
+    out2 = aplicar_s1(caso2, _kg_s1(), _fetch(caso2, F=F_s, P=[]), n=1, client=client2,
+                      sintoma_F=F_s, sintoma_P=[], respuesta_agente="r")
+    a2 = out2["repeticiones"][0]["atribuciones"][0]
+    assert a2["jerarquia"] == "secundaria"
+
+
+def test_correccion_de_causas_no_cambia_jerarquia():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1", jerarquia="primaria")]])
+    client = _MockClient([_salida_s1("no", "completitud_kg", sintoma="context_recall")])
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso), n=1, client=client,
+                     sintoma_F=[], sintoma_P=["p"])
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["corrigio"] is True
+    assert a["jerarquia"] == "primaria"                 # intacta
+    assert "jerarquia_original" not in a["capa_s1"]     # la regla no aplicó
+
+
+# --------------------------------------------------------------------------- #
+# 9. B4.5 — guardas determinísticas de dominio                                 #
+# --------------------------------------------------------------------------- #
+def test_causa_fuera_de_dominio_no_vota_con_anotacion():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    client = _MockClient([_salida_s1("no", "context_recall")])   # un SÍNTOMA como causa
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso), n=1, client=client)
+    a = out["repeticiones"][0]["atribuciones"][0]
+    sal = a["capa_s1"]["salidas_s1"][0]
+    assert sal["fuera_de_dominio"] == [{"campo": "causa_confirmada_o_corregida",
+                                        "valor_verbatim": "context_recall"}]
+    assert sal["causa_confirmada_o_corregida"] == "context_recall"  # verbatim preservado
+    assert a["capa_s1"]["accion"] == "no_determinable"
+    assert a["causa_capa2"] == "contenido_kg"                       # sin reescritura
+
+
+def test_causa_fuera_de_dominio_en_rama_exoneracion():
+    caso = _caso([[_atrib("sin_defecto", "restriccion_2_3_1", jerarquia="sin_par")]],
+                 ganadores=[])
+    client = _MockClient([_salida_s1_exon("no", "falta_grave")])
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso, F=[], P=["p"]), n=1, client=client,
+                     sintoma_F=[], sintoma_P=["p"], respuesta_agente="r")
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["salidas_s1"][0]["fuera_de_dominio"][0]["valor_verbatim"] == "falta_grave"
+    assert a["capa_s1"]["accion"] == "no_determinable"
+    assert a["causa_capa2"] == "sin_defecto" and a["jerarquia"] == "sin_par"
+
+
+def test_valores_validos_intactos():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    client = _MockClient([_salida_s1("no", "completitud_kg", sintoma="context_recall")])
+    out = aplicar_s1(caso, _kg_s1(), _fetch(caso), n=1, client=client)
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert "fuera_de_dominio" not in a["capa_s1"]["salidas_s1"][0]
+    assert a["capa_s1"]["corrigio"] is True
+    assert a["causa_capa2"] == "completitud_kg"
+
+
+def test_navegacion_ambas_grafias_validas():
+    from s1_fuentes import CAUSAS_VALIDAS
+    assert "navegación" in CAUSAS_VALIDAS and "navegacion" in CAUSAS_VALIDAS

@@ -84,6 +84,30 @@ estrictamente separados:
    - INSTRUMENTACIÓN (CORRECCIÓN B4.2): el usage REAL de la API (input/output tokens por
      llamada) se persiste en capa_s1 (usage_s1, paralelo a salidas_s1) y agregado en
      resumen_s1 (tokens_in_s1 / tokens_out_s1).
+   - ITERACIÓN B4.3 (s1-v0.2-dev — legítima por diseño §4, SOLO contra el dev): (a) el
+     input de cada llamada incluye el SÍNTOMA del caso (claims reprobados con veredicto y
+     centralidad + patas no cubiertas, de _sintoma_de_trace); (b) el esquema del gatillo
+     por causas suma sintoma_del_par (derivado de las marcas del juez, no de la emisión)
+     y el voto/las correcciones pasan a ser por PAR (síntoma, causa); (c) el gatillo de
+     exoneración usa la RAMA DE COMPLETITUD (S1_PROMPT_EXONERACION: pata + respuesta del
+     agente + portador + pasajes — el GT del eval set está PROHIBIDO como input; esquema
+     respuesta_en_fuente / presente_en_grafo / causa_confirmada_o_corregida).
+   - ITERACIÓN B4.3 r2 (s1-v0.3-dev) — REGLA MECÁNICA DE JERARQUÍA PARA EXONERACIONES
+     CORREGIDAS (justificación estructural: la severidad de la atribución queda acotada
+     por la severidad del síntoma declarado — el espejo de R6b, que degrada primarias
+     ligadas solo a secundarios; acá, promueve una corrección ligada a una pata no
+     cubierta): cuando S1 corrige una atribución del gatillo de exoneración
+     (sin_defecto → causa de defecto),
+       * si el síntoma del caso tiene patas no cubiertas → jerarquia="primaria" y
+         pata=<la pata no cubierta> (una sola pata → esa; varias sin mapeo posible → el
+         CONJUNTO con nota "mecanica_sin_mapeo" — el mapeo no se inventa);
+       * si NO hay patas (corrección sobre síntoma de claims) → jerarquía acotada por la
+         centralidad del claim mapeado (la lógica de R6b, con _mapear_claim de
+         capa_deterministica): mapea a un central reprobado → primaria; solo secundarios
+         o sin mapeo → secundaria.
+     jerarquia_original queda anotada en capa_s1; el voto_s1 se recomputa contando estas
+     primarias. Las correcciones del gatillo de CAUSAS no cambian de jerarquía por esta
+     regla.
 
 Módulo que NO modifica congelados (verificador.py, harness.py, capa_deterministica.py,
 test_alcanzabilidad.py, taxonomia.md, las varas): solo los importa. S1 no re-investiga
@@ -100,6 +124,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from capa_deterministica import (          # reutilización pre-registrada — solo import
+    _mapear_claim,
     _norm_texto,
     _recomputar_voto,
     _sintoma_de_trace,
@@ -109,15 +134,29 @@ from pdf_locate import parse_point, localize
 from verificador import MODEL_VERIF        # el modelo del verificador (import read-only)
 from verifier_pilot import _extract_json   # parser JSON ya probado del pipeline
 
-S1_VERSION = "s1-v0.1-dev"
-S1_MAX_TOKENS = 2048
+S1_VERSION = "s1-v0.3.1-dev"
+# B4.5: tope preventivo = 2× el máximo de output observado en el dev (1.184 tok en
+# v0.2 + N=3; el tope viejo era 2048). Un JSON cortado sigue siendo formato_invalido.
+S1_MAX_TOKENS = 2368
+
+# B4.5 — vocabulario CERRADO de causas de capa 2, copiado verbatim de taxonomia.md
+# (defectos del grafo: líneas 44-48; defectos del agente: líneas 55-58; sin defecto y
+# abstención: líneas 62-65). "navegación" se acepta también sin acento (robustez de
+# grafía, el mismo criterio de capa_deterministica.FRONTERA_NAV).
+CAUSAS_VALIDAS = frozenset({
+    "contenido_kg", "completitud_kg", "estructural_kg", "provenance_imprecisa",
+    "alcanzabilidad_kg", "navegación", "navegacion", "alucinacion_agente",
+    "aplicacion_erronea", "sin_defecto", "frontera_no_determinada"})
 
 CAUSAS_GATILLO_S1 = frozenset(
     {"contenido_kg", "aplicacion_erronea", "estructural_kg", "completitud_kg"})
 
 COINCIDEN_VALORES = ("si", "no", "no_determinable")
+SINTOMAS_VALORES = ("context_recall", "noise_sensitivity", "faithfulness")
 CAMPOS_S1 = ("alcance_declarado_en_fuente", "alcance_en_el_nodo", "coinciden",
-             "causa_confirmada_o_corregida", "justificacion_breve")
+             "sintoma_del_par", "causa_confirmada_o_corregida", "justificacion_breve")
+CAMPOS_S1_EXON = ("respuesta_en_fuente", "presente_en_grafo",
+                  "causa_confirmada_o_corregida")
 
 S1_PROMPT = """Sos S1, la segunda pasada con fuentes forzadas de un instrumento de atribución de fallas \
 sobre un sistema KG-RAG regulatorio (BCRA). NO re-investigás la falla: tu única tarea es juzgar UNA \
@@ -127,6 +166,9 @@ Una atribución dice que un nodo del grafo (el "portador") tiene un defecto de c
 típico que S1 existe para atajar: tratar como general un contenido que la fuente declara SCOPEADO \
 (limitado a una cartera, un grupo, un régimen o un período), o al revés. Por eso el juicio es una \
 comparación de alcances, y estás OBLIGADO a transcribirlos antes de decidir.
+
+=== SÍNTOMA DEL CASO (las marcas del juez sobre la respuesta — el input real del instrumento) ===
+{sintoma}
 
 === ATRIBUCIÓN EMITIDA (v6.1-D) ===
 {atribucion}
@@ -143,6 +185,7 @@ Respondé ÚNICAMENTE un JSON estricto (sin texto antes ni después) con EXACTAM
 (copiado carácter a carácter, NO parafraseado)>",
  "alcance_en_el_nodo": "<quote VERBATIM del contenido del nodo que muestra con qué alcance lo trata>",
  "coinciden": "si | no | no_determinable",
+ "sintoma_del_par": "context_recall | noise_sensitivity | faithfulness",
  "causa_confirmada_o_corregida": "<la causa emitida si el juicio la confirma, o la causa corregida de la \
 taxonomía v2.6.1 (contenido_kg, completitud_kg, estructural_kg, alcanzabilidad_kg, navegación, \
 alucinacion_agente, aplicacion_erronea, sin_defecto) si no>",
@@ -155,7 +198,47 @@ Reglas duras:
 material entregado, no inventes — poné coinciden="no_determinable" y explicá qué falta.
 - "coinciden" se refiere a si el alcance con que el nodo/la atribución tratan el contenido COINCIDE con \
 el alcance declarado en la fuente.
-- Juzgá SOLO con el material entregado (atribución + nodo + pasajes). Nada de conocimiento externo.
+- "sintoma_del_par" se DERIVA de las marcas del juez presentadas arriba, NO de la emisión original: \
+pata no cubierta → context_recall; claim reprobado "falso" → noise_sensitivity; claim reprobado \
+"no_soportado" → faithfulness. Elegí el síntoma de la marca que la atribución está explicando.
+- Juzgá SOLO con el material entregado (síntoma + atribución + nodo + pasajes). Nada de conocimiento externo.
+"""
+
+S1_PROMPT_EXONERACION = """Sos S1, la segunda pasada con fuentes forzadas de un instrumento de atribución \
+de fallas sobre un sistema KG-RAG regulatorio (BCRA). Este caso fue EXONERADO (el instrumento no atribuyó \
+defecto) pero el juez marcó síntoma: hay al menos una PATA de la pregunta que la respuesta no cubrió. Tu \
+única tarea: decidir si los pasajes fuente contienen la información que responde esa pata y si esa \
+información está o no en el contenido del grafo presentado. NO re-investigás; juzgás con lo entregado.
+
+=== PATA(S) NO CUBIERTA(S) (marca del juez) ===
+{patas}
+
+=== RESPUESTA DEL AGENTE (la que el juez marcó) ===
+{respuesta}
+
+=== ATRIBUCIÓN DE EXONERACIÓN EMITIDA (v6.1-D) ===
+{atribucion}
+
+=== CONTENIDO DEL GRAFO PRESENTADO — NODO PORTADOR CITADO ({portador_id}) ===
+{nodo}
+
+=== PASAJES FUENTE (verbatim del PDF, recuperados por código desde la provenance del portador) ===
+{pasajes}
+
+Respondé ÚNICAMENTE un JSON estricto (sin texto antes ni después) con EXACTAMENTE estas claves:
+{{
+ "respuesta_en_fuente": "<quote VERBATIM del pasaje fuente que responde la pata no cubierta, o null si \
+los pasajes entregados NO la responden>",
+ "presente_en_grafo": "si | no | no_determinable",
+ "causa_confirmada_o_corregida": "<sin_defecto si la exoneración se sostiene; o la causa corregida de la \
+taxonomía v2.6.1 (típicamente completitud_kg si la fuente responde la pata y el grafo no la contiene)>"
+}}
+
+Reglas duras:
+- "respuesta_en_fuente" es VERBATIM o null — no parafrasees, no inventes.
+- "presente_en_grafo" responde: ¿la información que responde la pata está en el CONTENIDO DEL GRAFO \
+presentado (el nodo portador)? — si los pasajes no responden la pata, poné "no_determinable".
+- Juzgá SOLO con el material entregado. Nada de conocimiento externo.
 """
 
 
@@ -465,20 +548,48 @@ def _pasajes_para_prompt(entrada):
     return "\n\n".join(partes)
 
 
-def _prompt_s1(atrib, nodo, entrada):
+def _sintoma_para_prompt(sintoma_F, sintoma_P):
+    """Síntoma del caso para el input de S1 (B4.3): claims reprobados con veredicto y
+    centralidad + patas no cubiertas — lo que el verificador vio y S1 hasta v0.1 no."""
+    partes = []
+    for c in sintoma_F or []:
+        rot = "CENTRAL" if c.get("central") else "secundario"
+        partes.append(f"- claim reprobado ({rot}, verdict={c.get('verdict')}): "
+                      f"\"{c.get('enunciado')}\"")
+    for p in sintoma_P or []:
+        partes.append(f"- pata NO CUBIERTA: \"{p}\"")
+    return "\n".join(partes) if partes else "(síntoma vacío)"
+
+
+def _prompt_s1(atrib, nodo, entrada, sintoma_F=None, sintoma_P=None):
     vista = {k: atrib.get(k) for k in
              ("sintoma_capa1", "causa_capa2", "lado", "jerarquia", "pata", "evidencia")}
     return S1_PROMPT.format(
+        sintoma=_sintoma_para_prompt(sintoma_F, sintoma_P),
         atribucion=json.dumps(vista, ensure_ascii=False, indent=1),
         portador_id=entrada["portador_id"],
         nodo=_nodo_para_prompt(nodo),
         pasajes=_pasajes_para_prompt(entrada))
 
 
-def _llamada_s1(client, prompt, model):
+def _prompt_s1_exoneracion(atrib, nodo, entrada, sintoma_P, respuesta_agente):
+    vista = {k: atrib.get(k) for k in
+             ("sintoma_capa1", "causa_capa2", "lado", "jerarquia", "pata", "evidencia")}
+    patas = "\n".join(f"- \"{p}\"" for p in (sintoma_P or [])) or "(sin patas registradas)"
+    return S1_PROMPT_EXONERACION.format(
+        patas=patas,
+        respuesta=respuesta_agente or "(no provista)",
+        atribucion=json.dumps(vista, ensure_ascii=False, indent=1),
+        portador_id=entrada["portador_id"],
+        nodo=_nodo_para_prompt(nodo),
+        pasajes=_pasajes_para_prompt(entrada))
+
+
+def _llamada_s1(client, prompt, model, esquema="causa"):
     """UNA llamada al modelo del verificador; parsea el JSON estricto y valida el esquema
-    del diseño §2. Salida inválida → {"error": ...} (cuenta como no decidida).
-    Devuelve (salida, usage) — usage REAL de la API (B4.2), None-safe para mocks."""
+    correspondiente (B4.3: "causa" = comparación de alcances con sintoma_del_par;
+    "exoneracion" = rama de completitud). Salida inválida → {"error": ...} (cuenta como no
+    decidida). Devuelve (salida, usage) — usage REAL de la API (B4.2)."""
     resp = client.messages.create(model=model, max_tokens=S1_MAX_TOKENS,
                                   messages=[{"role": "user", "content": prompt}])
     u = getattr(resp, "usage", None)
@@ -488,40 +599,71 @@ def _llamada_s1(client, prompt, model):
     out = _extract_json(texto)
     if not isinstance(out, dict):
         return {"error": "json_no_parseable", "texto_crudo": texto[:2000]}, usage
-    faltantes = [k for k in CAMPOS_S1 if k not in out]
+    campos = CAMPOS_S1 if esquema == "causa" else CAMPOS_S1_EXON
+    faltantes = [k for k in campos if k not in out]
     if faltantes:
         return {"error": f"campos_faltantes:{','.join(faltantes)}", "salida_cruda": out}, usage
-    if out.get("coinciden") not in COINCIDEN_VALORES:
-        return {"error": f"coinciden_invalido:{out.get('coinciden')!r}", "salida_cruda": out}, usage
+    campo_dec = "coinciden" if esquema == "causa" else "presente_en_grafo"
+    if out.get(campo_dec) not in COINCIDEN_VALORES:
+        return {"error": f"{campo_dec}_invalido:{out.get(campo_dec)!r}", "salida_cruda": out}, usage
+    # B4.5 — validación de DOMINIO: valor fuera del vocabulario cerrado → la muestra se
+    # trata como no_determinable (no vota) con anotación fuera_de_dominio, valor verbatim
+    # preservado. La salida NO se reescribe.
+    fuera = []
+    if esquema == "causa" and out.get("sintoma_del_par") not in SINTOMAS_VALORES:
+        fuera.append({"campo": "sintoma_del_par",
+                      "valor_verbatim": out.get("sintoma_del_par")})
+    if out.get("causa_confirmada_o_corregida") not in CAUSAS_VALIDAS:
+        fuera.append({"campo": "causa_confirmada_o_corregida",
+                      "valor_verbatim": out.get("causa_confirmada_o_corregida")})
+    if fuera:
+        out = {**out, "fuera_de_dominio": fuera}
     return out, usage
 
 
-def _voto_s1_atrib(salidas, n):
-    """Voto propio de S1 por atribución: mayoría estricta ≥ n//2+1 sobre la causa de las
-    salidas DECIDIDAS (coinciden ∈ {si, no}); errores y no_determinable no deciden."""
+def _voto_s1_atrib(salidas, n, esquema="causa"):
+    """Voto propio de S1 por atribución: mayoría estricta ≥ n//2+1 sobre las salidas
+    DECIDIDAS (campo de decisión ∈ {si, no}); errores y no_determinable no deciden.
+    B4.3: en el esquema "causa" la clave del voto es el PAR (sintoma_del_par, causa); en
+    "exoneracion" (campo de decisión presente_en_grafo) la clave es la causa sola."""
     umbral = n // 2 + 1
+    campo_dec = "coinciden" if esquema == "causa" else "presente_en_grafo"
     decididas = [s for s in salidas
-                 if "error" not in s and s.get("coinciden") in ("si", "no")]
+                 if "error" not in s and "fuera_de_dominio" not in s
+                 and s.get(campo_dec) in ("si", "no")]
     conteo = {}
     for s in decididas:
-        conteo.setdefault(s["causa_confirmada_o_corregida"], []).append(s)
-    orden = sorted(conteo.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+        clave = ((s.get("sintoma_del_par"), s["causa_confirmada_o_corregida"])
+                 if esquema == "causa" else (None, s["causa_confirmada_o_corregida"]))
+        conteo.setdefault(clave, []).append(s)
+    orden = sorted(conteo.items(), key=lambda kv: (-len(kv[1]), str(kv[0])))
     ganadora = orden[0] if orden and len(orden[0][1]) >= umbral else None
     return {
-        "n": n, "umbral": umbral,
+        "n": n, "umbral": umbral, "esquema": esquema,
         "decididas": len(decididas),
         "no_decididas": len(salidas) - len(decididas),
         "resultado": "mayoria" if ganadora else "no_determinable",
-        "causa_ganadora": ganadora[0] if ganadora else None,
+        "sintoma_ganador": ganadora[0][0] if ganadora else None,
+        "causa_ganadora": ganadora[0][1] if ganadora else None,
         "votos_ganadores": len(ganadora[1]) if ganadora else None,
     }
 
 
-def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
+def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF,
+               sintoma_F=None, sintoma_P=None, respuesta_agente=None):
     """Aplica el juicio S1 según la semántica pre-registrada del docstring del módulo.
     Juzga SOLO las atribuciones con paquete "completo"; el resto va a triage_s1 con motivo
     fuente_no_verificable. NUNCA borra la emisión de v6.1-D: anota capa_s1, recomputa
     voto_s1 y preserva voto / voto_capa_d / voto_pre_d6 intactos.
+
+    B4.3 (s1-v0.2-dev): el input incluye el SÍNTOMA del caso (sintoma_F/sintoma_P — las
+    marcas del juez que el verificador vio); el esquema del gatillo por causas exige
+    sintoma_del_par y el voto/las correcciones son por PAR (síntoma, causa) — la corrección
+    reescribe sintoma_capa1 Y causa_capa2, con la emisión preservada en capa_s1. El gatillo
+    de exoneración usa la RAMA DE COMPLETITUD (S1_PROMPT_EXONERACION): pata no cubierta +
+    respuesta del agente + portador + pasajes (JAMÁS el GT del eval set); campo de decisión
+    presente_en_grafo; una corrección de exoneración fija sintoma_capa1=context_recall (la
+    rama se define por la pata no cubierta).
 
     `client` se inyecta (en producción, el cliente del verificador; en tests, un mock).
     Sin atribuciones a juzgar no se hace ninguna llamada (client puede ser None)."""
@@ -554,17 +696,25 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
         if client is None:
             raise ValueError("aplicar_s1 requiere client para juzgar paquetes completos")
         nodo = index.by_id[entrada["portador_id"]]
-        prompt = _prompt_s1(atrib, nodo, entrada)
-        llamadas = [_llamada_s1(client, prompt, model) for _ in range(n)]
+        if entrada["tipo_gatillo"] == "exoneracion_con_sintoma":
+            esquema = "exoneracion"
+            prompt = _prompt_s1_exoneracion(atrib, nodo, entrada, sintoma_P,
+                                            respuesta_agente)
+        else:
+            esquema = "causa"
+            prompt = _prompt_s1(atrib, nodo, entrada, sintoma_F, sintoma_P)
+        llamadas = [_llamada_s1(client, prompt, model, esquema=esquema)
+                    for _ in range(n)]
         salidas = [s for s, _ in llamadas]
         usages = [u for _, u in llamadas]
         tokens_in_s1 += sum(u.get("input_tokens") or 0 for u in usages)
         tokens_out_s1 += sum(u.get("output_tokens") or 0 for u in usages)
-        voto_atrib = _voto_s1_atrib(salidas, n)
+        voto_atrib = _voto_s1_atrib(salidas, n, esquema=esquema)
         juzgadas += 1
 
         if voto_atrib["resultado"] != "mayoria":
-            atrib["capa_s1"] = {**base, "salidas_s1": salidas, "usage_s1": usages,
+            atrib["capa_s1"] = {**base, "esquema": esquema,
+                                "salidas_s1": salidas, "usage_s1": usages,
                                 "voto_s1_atrib": voto_atrib,
                                 "accion": "no_determinable", "corrigio": False,
                                 "triage": True}
@@ -576,14 +726,46 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
             continue
 
         causa_final = voto_atrib["causa_ganadora"]
-        corrigio = causa_final != atrib.get("causa_capa2")
-        atrib["capa_s1"] = {**base, "salidas_s1": salidas, "usage_s1": usages,
-                            "voto_s1_atrib": voto_atrib,
-                            "corrigio": corrigio, "causa_post_s1": causa_final,
-                            "triage": False}
+        if esquema == "causa":
+            sintoma_final = voto_atrib["sintoma_ganador"]
+        else:
+            # la rama de exoneración se define por la pata no cubierta: una corrección
+            # lleva síntoma context_recall; una confirmación no toca el síntoma
+            sintoma_final = ("context_recall" if causa_final != "sin_defecto"
+                            else atrib.get("sintoma_capa1"))
+        corrigio = (causa_final != atrib.get("causa_capa2")
+                    or sintoma_final != atrib.get("sintoma_capa1"))
+        anot = {**base, "esquema": esquema,
+                "salidas_s1": salidas, "usage_s1": usages,
+                "voto_s1_atrib": voto_atrib,
+                "corrigio": corrigio,
+                "par_post_s1": [sintoma_final, causa_final],
+                "causa_post_s1": causa_final,
+                "triage": False}
         if corrigio:
+            atrib["sintoma_capa1"] = sintoma_final
             atrib["causa_capa2"] = causa_final
             corregidas += 1
+            # regla mecánica de jerarquía (B4.3 r2) — SOLO exoneraciones corregidas
+            if esquema == "exoneracion" and causa_final != "sin_defecto":
+                anot["jerarquia_original"] = atrib.get("jerarquia")
+                if sintoma_P:
+                    if len(sintoma_P) == 1:
+                        atrib["pata"] = sintoma_P[0]
+                    else:
+                        atrib["pata"] = list(sintoma_P)
+                        anot["nota"] = "mecanica_sin_mapeo"
+                    atrib["jerarquia"] = "primaria"
+                else:
+                    quote = ((atrib.get("evidencia") or {}).get("afirmacion")
+                             or {}).get("quote") or ""
+                    mapeados = _mapear_claim(quote, sintoma_F or [])
+                    atrib["jerarquia"] = ("primaria"
+                                          if any(c.get("central") for c in mapeados)
+                                          else "secundaria")
+                    anot["mapeo_claims"] = [c.get("enunciado") for c in mapeados]
+                anot["jerarquia_post_s1"] = atrib["jerarquia"]
+        atrib["capa_s1"] = anot
 
     salida["voto_s1"] = _recomputar_voto(reps)
     salida["triage_s1"] = {"triage": bool(motivos), "motivos": motivos, "flags": flags}
@@ -645,7 +827,13 @@ def main(argv=None):
     # Modo completo (juicio con LLM). La caché / política de N se decide en B4.
     import anthropic
     client = anthropic.Anthropic(max_retries=3)
-    salida = aplicar_s1(caso, args.run, paquete, n=args.n, client=client)
+    sintoma_F, sintoma_P = _sintoma_de_trace(trace)
+    elem = json.load(open(trace))[0]
+    respuesta_agente = json.dumps(elem["trace"].get("final_json"), ensure_ascii=False,
+                                  indent=1)
+    salida = aplicar_s1(caso, args.run, paquete, n=args.n, client=client,
+                        sintoma_F=sintoma_F, sintoma_P=sintoma_P,
+                        respuesta_agente=respuesta_agente)
     with open(args.out, "w") as f:
         json.dump(salida, f, ensure_ascii=False, indent=1)
     print(json.dumps({"out": args.out, "version_capa_s1": salida["version_capa_s1"],
