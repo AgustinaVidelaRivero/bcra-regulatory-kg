@@ -2,22 +2,26 @@
 
 U1: descubrimiento de grafos al iniciar (glob de data/experiment/*/kg.json)
 y endpoint GET /runs. U2: POST /chat envolviendo al GraphAgent del harness.
-Toda carga de grafos pasa por load_graph_from_path() del loader de la Fase
-2.3; acá no se parsea ningún kg.json a mano.
+U3: registro append-only de turnos y feedback en app/sessions/<fecha>.jsonl
+(POST /feedback). Toda carga de grafos pasa por load_graph_from_path() del
+loader de la Fase 2.3; acá no se parsea ningún kg.json a mano.
 
 Arranque, desde la raíz del repo (requiere ANTHROPIC_API_KEY en el entorno
 para /chat; la app no lee ningún .env):
     uvicorn app.main:app --port 8000
 """
 
+import json
 import os
 import sys
 import threading
 import uuid
+from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -99,11 +103,41 @@ AGENTS = {}  # run_id -> _ChatAgent, creado perezosamente en el primer /chat
 # tool_log es estado compartido por agente: serializamos /chat para no mezclarlo.
 _CHAT_LOCK = threading.Lock()
 
+# --- Registro de sesiones (U3): jsonl append-only estricto en app/sessions/ ---
+SESSIONS_DIR = Path(__file__).resolve().parent / "sessions"
+_TURNOS = {}  # session_id -> último turno emitido (1-based), contado en memoria
+# Serializa contador de turnos + append al jsonl (una línea por write, con flush).
+_LOG_LOCK = threading.Lock()
+
+
+def _now_iso() -> str:
+    """Timestamp ISO 8601 con zona horaria local del server."""
+    return datetime.now().astimezone().isoformat()
+
+
+def _append_line(record: dict) -> Path:
+    """Apenda `record` como UNA línea al jsonl del día y devuelve su ruta.
+    Nunca reescribe: solo open en modo append + write de línea completa + flush."""
+    SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
+    path = SESSIONS_DIR / f"{datetime.now().strftime('%Y-%m-%d')}.jsonl"
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        f.flush()
+    return path
+
 
 class ChatRequest(BaseModel):
     run_id: str
     pregunta: str
     session_id: Optional[str] = None
+
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+
+@app.get("/")
+def index() -> FileResponse:
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/runs")
@@ -156,6 +190,25 @@ def post_chat(req: ChatRequest) -> dict:
     else:
         respuesta = {"respuesta_cruda": tr.final_raw, "parse_error": tr.parse_error}
 
+    with _LOG_LOCK:
+        _TURNOS[session_id] = _TURNOS.get(session_id, 0) + 1
+        turno = _TURNOS[session_id]
+        _append_line({
+            "tipo": "turno",
+            "ts": _now_iso(),
+            "session_id": session_id,
+            "turno": turno,
+            "run_id": req.run_id,
+            "pregunta": req.pregunta,
+            "respuesta": respuesta,
+            # En el registro va el resultado COMPLETO de cada tool, sin truncar.
+            "tools_llamadas": [
+                {"tool": name, "argumentos": args, "resultado": result}
+                for name, args, result in tool_log
+            ],
+            "feedback": None,
+        })
+
     return {
         "respuesta": respuesta,
         "tools_llamadas": [
@@ -163,4 +216,26 @@ def post_chat(req: ChatRequest) -> dict:
             for name, args, result in tool_log
         ],
         "session_id": session_id,
+        "turno": turno,
     }
+
+
+class FeedbackRequest(BaseModel):
+    session_id: str
+    turno: int
+    voto: Literal["up", "down"]
+    comentario: Optional[str] = None
+
+
+@app.post("/feedback")
+def post_feedback(req: FeedbackRequest) -> dict:
+    with _LOG_LOCK:
+        path = _append_line({
+            "tipo": "feedback",
+            "ts": _now_iso(),
+            "session_id": req.session_id,
+            "turno": req.turno,
+            "voto": req.voto,
+            "comentario": req.comentario,
+        })
+    return {"ok": True, "archivo": str(path.relative_to(REPO_ROOT))}
