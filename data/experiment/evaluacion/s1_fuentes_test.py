@@ -14,7 +14,8 @@ from loader import Node, KnowledgeGraph
 from pdf_locate import localize
 from s1_fuentes import (S1_VERSION, CAUSAS_GATILLO_S1, DOCS_CORPUS,
                         construir_paquete_fuentes, aplicar_s1, _comparativos_de_punto,
-                        _referencias_de_pasaje, _comparativo_de_referencia)
+                        _referencias_de_pasaje, _comparativo_de_referencia,
+                        _extraer_portador_s1)
 
 
 # --------------------------------------------------------------------------- #
@@ -50,6 +51,21 @@ def _kg_s1():
         Node(id="nodo_portador_fallido", type="Restriccion",
              label="Portador ilocalizable",
              properties={}, provenances=[{"source_doc": DOC_CAP, "location": "Punto 3.9.1."}]),
+        # anidación de ids (B4.2): "comision" ⊂ "comision_por_precancelacion"
+        Node(id="comision", type="Concepto", label="Comisión",
+             properties={}, provenances=[{"source_doc": DOC_CAP, "location": "Punto 2.3.1."}]),
+        Node(id="comision_por_precancelacion", type="Restriccion",
+             label="Comisión por precancelación",
+             properties={"criterio": "cuarta parte del plazo o 180 días"},
+             provenances=[{"source_doc": DOC_CAP, "location": "Punto 2.3.1."}]),
+        # cascada de provenances (B4.2): la 1ª parsea pero NO localiza; la 2ª localiza
+        Node(id="nodo_cascada", type="Restriccion", label="Cascada",
+             properties={}, provenances=[{"source_doc": DOC_CAP, "location": "Punto 3.9.1."},
+                                         {"source_doc": DOC_CAP, "location": "Punto 2.3.1."}]),
+        # cascada donde NINGUNA provenance localiza
+        Node(id="nodo_cascada_fallida", type="Restriccion", label="Cascada fallida",
+             properties={}, provenances=[{"source_doc": DOC_CAP, "location": "Punto 3.9.1."},
+                                         {"source_doc": DOC_CAP, "location": "Punto 3.9.2."}]),
         # portador con provenance NO parseable
         Node(id="nodo_encabezado", type="Concepto", label="Encabezado general",
              properties={}, provenances=[{"source_doc": DOC_CAP, "location": "Encabezado"}]),
@@ -336,8 +352,11 @@ class _MockClient:
         texto = self._resp.pop(0)
         class _B:  # bloque de texto mínimo
             def __init__(self, t): self.text = t; self.type = "text"
+        class _U:  # usage real de la API (B4.2)
+            input_tokens = 1000
+            output_tokens = 200
         class _R:
-            def __init__(self, t): self.content = [_B(t)]
+            def __init__(self, t): self.content = [_B(t)]; self.usage = _U()
         return _R(texto)
 
 
@@ -453,3 +472,58 @@ def test_fetch_deterministico():
     p2 = _fetch(caso, F=[{"enunciado": "e", "central": False, "verdict": "falso"}])
     assert json.dumps(p1, ensure_ascii=False, sort_keys=True) == \
            json.dumps(p2, ensure_ascii=False, sort_keys=True)
+
+
+# --------------------------------------------------------------------------- #
+# 6. B4.2 — maximal, cascada de provenances, usage persistido                  #
+# --------------------------------------------------------------------------- #
+def test_maximal_unico_resuelve_anidacion():
+    ids = ["comision", "comision_por_precancelacion", "restriccion_12_3"]
+    a = _atrib("contenido_kg", "comision_por_precancelacion (abierto en paso 3)")
+    assert _extraer_portador_s1(a, ids) == ("comision_por_precancelacion", 2)
+    # a nivel paquete: gatilla y llega a portador (no sin_portador_extraible)
+    caso = _caso([[_atrib("contenido_kg", "comision_por_precancelacion (paso 3)")]])
+    e = _fetch(caso)["atribuciones"][0]
+    assert e["portador_id"] == "comision_por_precancelacion"
+    assert e["n_ids_detectados"] == 2
+    assert e["estado"] == "completo"
+
+
+def test_matches_distintos_siguen_sin_desempate():
+    ids = ["restriccion_12_3", "restriccion_3_9_1", "comision"]
+    a = _atrib("contenido_kg", "restriccion_12_3 y restriccion_3_9_1 (ambos)")
+    assert _extraer_portador_s1(a, ids) == (None, 2)
+    caso = _caso([[_atrib("contenido_kg", "restriccion_12_3 y restriccion_3_9_1")]])
+    e = _fetch(caso)["atribuciones"][0]
+    assert e["estado"] == "sin_portador_extraible" and e["n_ids_detectados"] == 2
+
+
+def test_cascada_primera_falla_segunda_localiza():
+    caso = _caso([[_atrib("contenido_kg", "nodo_cascada")]])
+    e = _fetch(caso)["atribuciones"][0]
+    assert e["estado"] == "completo"
+    assert e["provenance_usada_idx"] == 1
+    assert e["punto_parseado"] == "2.3.1"
+    ints = e["provenances_intentadas"]
+    assert [i["idx"] for i in ints] == [0, 1]
+    assert ints[0]["localizacion_pdf"] == "fallida" and ints[1]["localizacion_pdf"] == "ok"
+
+
+def test_cascada_ninguna_localiza_fallido():
+    caso = _caso([[_atrib("contenido_kg", "nodo_cascada_fallida")]])
+    e = _fetch(caso)["atribuciones"][0]
+    assert e["estado"] == "localizacion_fallida"
+    assert len(e["provenances_intentadas"]) == 2
+    assert all(i["localizacion_pdf"] == "fallida" for i in e["provenances_intentadas"])
+    assert "pasaje_portador" not in e
+
+
+def test_usage_persistido_en_capa_s1_y_resumen():
+    caso = _caso([[_atrib("contenido_kg", "restriccion_2_3_1")]])
+    paquete = _fetch(caso)
+    client = _MockClient([_salida_s1("no", "sin_defecto")])
+    out = aplicar_s1(caso, _kg_s1(), paquete, n=1, client=client)
+    a = out["repeticiones"][0]["atribuciones"][0]
+    assert a["capa_s1"]["usage_s1"] == [{"input_tokens": 1000, "output_tokens": 200}]
+    assert out["resumen_s1"]["tokens_in_s1"] == 1000
+    assert out["resumen_s1"]["tokens_out_s1"] == 200

@@ -9,10 +9,22 @@ estrictamente separados:
      caso (voto_capa_d) es de clave vacía CON síntoma no vacío (F/P de _sintoma_de_trace,
      el MISMO filtro que build_falla_context), las atribuciones sin_defecto del caso
      (tipo_gatillo "exoneracion_con_sintoma").
-   - Por atribución gatillada: portador vía _extraer_portador (el extractor de D2, sin
-     heurísticas nuevas); provenance del portador desde el kg del run — se usa la PRIMERA
-     provenance parseable por pdf_locate.parse_point (orden del kg; se registran el índice
-     usado y el total); pdf_locate.localize recupera (a) el pasaje del portador CON su
+   - Por atribución gatillada: portador vía el extractor PROPIO de S1
+     (_extraer_portador_s1 — CORRECCIÓN B4.2, por mecanismo, sin tocar
+     capa_deterministica): matchea ids del kg por substring en
+     evidencia.nodo.ubicacion (fallback: quote) y, ante múltiples matches, aplica la
+     REGLA DEL MAXIMAL ÚNICO — si existe UN id que contiene a todos los demás matcheados
+     como substrings, ese es el portador; si no (matches genuinamente distintos) →
+     sin_portador_extraible, como la regla pre-registrada de D2. Motivo medido: la
+     anidación de ids es propiedad del VOCABULARIO de los grafos (ej. run_4: "comision" ⊂
+     "comision_por_precancelacion"); la regla resuelve anidación, NO ambigüedad real.
+   - Provenance del portador desde el kg del run — EN CASCADA (CORRECCIÓN B4.2, por
+     mecanismo: provenances de preámbulo/carátula que parsean pero no localizan): se
+     recorren las provenances parseables por pdf_locate.parse_point EN ORDEN y se usa la
+     PRIMERA que LOCALIZA; el paquete registra cada intento (provenances_intentadas: idx,
+     location, ref, resultado). Solo si NINGUNA parseable localiza → localizacion_fallida
+     (si ninguna parsea → provenance_no_parseable). pdf_locate.localize recupera (a) el
+     pasaje del portador CON su
      encabezado y (b) los comparativos:
        * "seccion_madre": el encabezado de la sección madre = PRIMER nivel del punto del
          portador (existe si el punto tiene ≥2 niveles). CORRECCIÓN B3b (por mecanismo,
@@ -69,6 +81,9 @@ estrictamente separados:
    - --n habilita repetición + voto propio de S1 por atribución (mayoría estricta
      ≥ n//2+1 sobre la causa de las salidas decididas); la POLÍTICA de N se decide en la
      calibración del dev (B4) — acá queda implementada, no decidida.
+   - INSTRUMENTACIÓN (CORRECCIÓN B4.2): el usage REAL de la API (input/output tokens por
+     llamada) se persiste en capa_s1 (usage_s1, paralelo a salidas_s1) y agregado en
+     resumen_s1 (tokens_in_s1 / tokens_out_s1).
 
 Módulo que NO modifica congelados (verificador.py, harness.py, capa_deterministica.py,
 test_alcanzabilidad.py, taxonomia.md, las varas): solo los importa. S1 no re-investiga
@@ -85,7 +100,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from capa_deterministica import (          # reutilización pre-registrada — solo import
-    _extraer_portador,
     _norm_texto,
     _recomputar_voto,
     _sintoma_de_trace,
@@ -253,6 +267,29 @@ def _comparativo_de_referencia(ref, doc_portador):
     return out
 
 
+def _extraer_portador_s1(atrib, ids_kg):
+    """Extractor de portador PROPIO de S1 (B4.2). Matchea ids del kg por substring en
+    evidencia.nodo.ubicacion (fallback: quote). Con múltiples matches aplica la REGLA DEL
+    MAXIMAL ÚNICO: si UN id contiene a todos los demás matcheados como substrings → ese es
+    el portador (la anidación de ids es propiedad del vocabulario de los grafos — ej.
+    run_4: "comision" ⊂ "comision_por_precancelacion" — no ambigüedad de cita); si no
+    (matches genuinamente distintos) → (None, n) como la regla pre-registrada de D2.
+    Devuelve (portador_id | None, n_distintos)."""
+    ev = (atrib.get("evidencia") or {}).get("nodo") or {}
+    for campo in ("ubicacion", "quote"):
+        texto = ev.get(campo) or ""
+        matches = sorted({nid for nid in ids_kg if nid in texto})
+        if not matches:
+            continue
+        if len(matches) == 1:
+            return (matches[0], 1)
+        maximales = [m for m in matches if all(otro in m for otro in matches)]
+        if len(maximales) == 1:
+            return (maximales[0], len(matches))
+        return (None, len(matches))
+    return (None, 0)
+
+
 def _comparativos_de_punto(punto):
     """Regla determinística del diseño §2 (mecánica, sin juicio). Devuelve
     (lista de {tipo, punto, regla}, notas)."""
@@ -326,37 +363,44 @@ def construir_paquete_fuentes(caso_json, run, trace_path=None, *,
                 "causa_capa2": causa,
                 "jerarquia": atrib.get("jerarquia"),
             }
-            portador, n_ids = _extraer_portador(atrib, ids_kg)
+            portador, n_ids = _extraer_portador_s1(atrib, ids_kg)
             if portador is None:
                 entrada.update({"portador_id": None, "n_ids_detectados": n_ids,
                                 "estado": "sin_portador_extraible"})
                 entradas.append(entrada)
                 continue
             entrada["portador_id"] = portador
+            entrada["n_ids_detectados"] = n_ids
 
+            # cascada de provenances (B4.2): la PRIMERA parseable QUE LOCALIZA
             provs = index.by_id[portador].provenances or []
-            prov_usada, prov_idx, punto = None, None, None
+            entrada["provenances_total"] = len(provs)
+            intentos, elegida = [], None
             for i, p in enumerate(provs):
                 pt = parse_point(p.get("location"))
-                if pt:
-                    prov_usada, prov_idx, punto = p, i, pt
+                if not pt:
+                    continue
+                r = _pasaje_de(p["source_doc"], p["location"])
+                intentos.append({"idx": i, "location": p["location"], "ref": r["ref"],
+                                 "localizacion_pdf": r["localizacion_pdf"]})
+                if r["localizacion_pdf"] == "ok":
+                    elegida = (i, p, pt, r)
                     break
-            entrada["provenances_total"] = len(provs)
-            if prov_usada is None:
+            if not intentos:
                 entrada.update({"estado": "provenance_no_parseable",
                                 "provenances_verbatim": provs})
                 entradas.append(entrada)
                 continue
-            entrada.update({"provenance": {"source_doc": prov_usada["source_doc"],
-                                           "location": prov_usada["location"]},
-                            "provenance_usada_idx": prov_idx, "punto_parseado": punto})
-
-            pasaje = _pasaje_de(prov_usada["source_doc"], prov_usada["location"])
-            entrada["pasaje_portador"] = pasaje
-            if pasaje["localizacion_pdf"] != "ok":
+            entrada["provenances_intentadas"] = intentos
+            if elegida is None:
                 entrada["estado"] = "localizacion_fallida"
                 entradas.append(entrada)
                 continue
+            prov_idx, prov_usada, punto, pasaje = elegida
+            entrada.update({"provenance": {"source_doc": prov_usada["source_doc"],
+                                           "location": prov_usada["location"]},
+                            "provenance_usada_idx": prov_idx, "punto_parseado": punto,
+                            "pasaje_portador": pasaje})
 
             comps, notas = _comparativos_de_punto(punto)
             comparativos = []
@@ -433,19 +477,23 @@ def _prompt_s1(atrib, nodo, entrada):
 
 def _llamada_s1(client, prompt, model):
     """UNA llamada al modelo del verificador; parsea el JSON estricto y valida el esquema
-    del diseño §2. Salida inválida → {"error": ...} (cuenta como no decidida)."""
+    del diseño §2. Salida inválida → {"error": ...} (cuenta como no decidida).
+    Devuelve (salida, usage) — usage REAL de la API (B4.2), None-safe para mocks."""
     resp = client.messages.create(model=model, max_tokens=S1_MAX_TOKENS,
                                   messages=[{"role": "user", "content": prompt}])
+    u = getattr(resp, "usage", None)
+    usage = {"input_tokens": getattr(u, "input_tokens", None),
+             "output_tokens": getattr(u, "output_tokens", None)}
     texto = "".join(getattr(b, "text", "") for b in resp.content)
     out = _extract_json(texto)
     if not isinstance(out, dict):
-        return {"error": "json_no_parseable", "texto_crudo": texto[:2000]}
+        return {"error": "json_no_parseable", "texto_crudo": texto[:2000]}, usage
     faltantes = [k for k in CAMPOS_S1 if k not in out]
     if faltantes:
-        return {"error": f"campos_faltantes:{','.join(faltantes)}", "salida_cruda": out}
+        return {"error": f"campos_faltantes:{','.join(faltantes)}", "salida_cruda": out}, usage
     if out.get("coinciden") not in COINCIDEN_VALORES:
-        return {"error": f"coinciden_invalido:{out.get('coinciden')!r}", "salida_cruda": out}
-    return out
+        return {"error": f"coinciden_invalido:{out.get('coinciden')!r}", "salida_cruda": out}, usage
+    return out, usage
 
 
 def _voto_s1_atrib(salidas, n):
@@ -483,6 +531,7 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
 
     motivos, flags = [], []
     juzgadas = corregidas = no_det = fallidas_fetch = 0
+    tokens_in_s1 = tokens_out_s1 = 0
 
     for entrada in paquete.get("atribuciones") or []:
         atrib = reps[entrada["rep"] - 1]["atribuciones"][entrada["atrib_idx"] - 1]
@@ -506,12 +555,17 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
             raise ValueError("aplicar_s1 requiere client para juzgar paquetes completos")
         nodo = index.by_id[entrada["portador_id"]]
         prompt = _prompt_s1(atrib, nodo, entrada)
-        salidas = [_llamada_s1(client, prompt, model) for _ in range(n)]
+        llamadas = [_llamada_s1(client, prompt, model) for _ in range(n)]
+        salidas = [s for s, _ in llamadas]
+        usages = [u for _, u in llamadas]
+        tokens_in_s1 += sum(u.get("input_tokens") or 0 for u in usages)
+        tokens_out_s1 += sum(u.get("output_tokens") or 0 for u in usages)
         voto_atrib = _voto_s1_atrib(salidas, n)
         juzgadas += 1
 
         if voto_atrib["resultado"] != "mayoria":
-            atrib["capa_s1"] = {**base, "salidas_s1": salidas, "voto_s1_atrib": voto_atrib,
+            atrib["capa_s1"] = {**base, "salidas_s1": salidas, "usage_s1": usages,
+                                "voto_s1_atrib": voto_atrib,
                                 "accion": "no_determinable", "corrigio": False,
                                 "triage": True}
             no_det += 1
@@ -523,7 +577,8 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
 
         causa_final = voto_atrib["causa_ganadora"]
         corrigio = causa_final != atrib.get("causa_capa2")
-        atrib["capa_s1"] = {**base, "salidas_s1": salidas, "voto_s1_atrib": voto_atrib,
+        atrib["capa_s1"] = {**base, "salidas_s1": salidas, "usage_s1": usages,
+                            "voto_s1_atrib": voto_atrib,
                             "corrigio": corrigio, "causa_post_s1": causa_final,
                             "triage": False}
         if corrigio:
@@ -538,6 +593,8 @@ def aplicar_s1(caso_json, run, paquete, n=1, *, client=None, model=MODEL_VERIF):
         "corregidas": corregidas,
         "no_determinable": no_det,
         "fetch_fallido": fallidas_fetch,
+        "tokens_in_s1": tokens_in_s1,
+        "tokens_out_s1": tokens_out_s1,
         "exoneracion_con_sintoma": paquete.get("gatillo_caso", {}).get(
             "exoneracion_con_sintoma", False),
     }
