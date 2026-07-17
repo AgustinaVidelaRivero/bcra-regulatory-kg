@@ -322,6 +322,64 @@ def dump_merge_log(kg: KnowledgeGraph, out_path: Optional[Path] = None) -> Path:
     return out_path
 
 
+def load_graph_from_path(path, adapter_key=None) -> KnowledgeGraph:
+    """Carga un kg.json por ruta arbitraria (uso: app/); adapter_key declara el schema de provenance si se conoce (None = adaptador nulo)."""
+    if adapter_key is None:
+        adapter = {"node_extra": None, "edge_extra": None}
+    elif adapter_key in ADAPTERS:
+        adapter = ADAPTERS[adapter_key]
+    else:
+        raise KeyError(
+            f"adapter_key desconocido: {adapter_key!r}. "
+            f"Válidos: {sorted(ADAPTERS)} o None (adaptador nulo)."
+        )
+
+    path = Path(path)
+    if not path.is_file():
+        raise FileNotFoundError(f"No existe el archivo kg.json: {path}")
+    try:
+        with path.open(encoding="utf-8") as f:
+            data = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"JSON inválido en {path}: {e}") from e
+
+    raw_nodes_json = data.get("nodes", [])
+    raw_edges_json = data.get("edges", [])
+
+    raw_nodes = [
+        Node(
+            id=n.get("id"),
+            type=n.get("type"),
+            label=n.get("label"),
+            properties=_clean_properties(n, adapter["node_extra"]),
+            provenances=_collect_provenances(n, adapter["node_extra"]),
+        )
+        for n in raw_nodes_json
+    ]
+    nodes, merges = _merge_nodes(raw_nodes)
+
+    edges = [
+        Edge(
+            source=e.get("source"),
+            target=e.get("target"),
+            relation=e.get("relation"),
+            properties=_clean_properties(e, adapter["edge_extra"]),
+            provenances=_collect_provenances(e, adapter["edge_extra"]),
+        )
+        for e in raw_edges_json
+    ]
+
+    return KnowledgeGraph(
+        run_key=path.resolve().parent.name,
+        path=path,
+        nodes=nodes,
+        edges=edges,
+        raw_node_count=len(raw_nodes_json),
+        raw_edge_count=len(raw_edges_json),
+        merges=merges,
+    )
+
+
 if __name__ == "__main__":
     for rk in RUN_KEYS:
         g = load_graph(rk)
