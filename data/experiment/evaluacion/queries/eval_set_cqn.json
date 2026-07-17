@@ -1,0 +1,334 @@
+{
+ "_meta": {
+  "archivo": "eval_set_cqn.json",
+  "fecha": "2026-07-17",
+  "generacion_ciega": {
+   "protocolo": "muestreo mecánico de 4 secciones por TO con random.Random(20260718) sobre el inventario ordenado; instancia SIN acceso al repo (solo los 5 TOs); ver queries/candidatas_v2/reporte_generacion.md",
+   "semilla": 20260718,
+   "corpus": "los 5 PDFs usados por el generador son byte-idénticos al corpus canónico data/experiment/subset/ (SHA-256 por documento, 5/5)"
+  },
+  "custodia": {
+   "citas": "15/15 verbatim_ok contra el corpus canónico extraído con pdfplumber 0.11.10 (sin necesidad de des-hifenado; fragmentos '[…]' verificados por separado)",
+   "gt": "23/23 entradas de ground_truth_secciones parseables (pdf_locate.parse_point) y presentes en el inventario; localize ok 22/23 (la excepción: Protección Sección 5, carátula de primer nivel)",
+   "fuente_verbatim": "queries/candidatas_v2/ (copias con SHA-256 idéntico al origen)"
+  },
+  "adjudicacion_externa": {
+   "estratos": {
+    "primaria": 11,
+    "solapada": 3,
+    "ilustrativa_no_puntuable": 1
+   },
+   "ajustes": [
+    "CQN-001: redacción de la pregunta ajustada (original preservada en pregunta_original; cita_textual INTACTA); respuesta esperada USD 200 mensuales, sub-tope de efectivo no exigido",
+    "CQN-013/014/015: categoria normalizada cadena_normativa → cadena_restriccion_excepcion (original en categoria_generacion)"
+   ]
+  },
+  "historia": "nombre original previsto eval_set_v2_nuevas.json descartado por colisión con la ampliación CQ-040–047 (commit 7cfe143)"
+ },
+ "preguntas": [
+  {
+   "id": "CQN-001",
+   "categoria": "factual_directa",
+   "pregunta": "¿Qué monto mensual máximo puede comprar una persona humana residente, sin conformidad previa del BCRA, para la formación de activos externos, la remisión de ayuda familiar y la operatoria con derivados?",
+   "tos_fuente": [
+    "TO_exterior_cambios_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_exterior_cambios_actual.pdf Punto 3.9"
+   ],
+   "cita_textual": "para la formación de activos externos (códigos de conceptos A01, A02, A03, A04, A06, A08, A14 y A24), la remisión de ayuda familiar y para la operatoria con derivados (código de con- cepto A05) en la medida que no encuadre en el punto 3.12.1., sin la conformidad previa del BCRA, en la medida que se cumplan la totalidad de los siguientes requisitos: 3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos).",
+   "respuesta_breve": "El límite es el equivalente a USD 200 por mes calendario, computado en el conjunto de las entidades y por el conjunto de los conceptos señalados. Si la operación se hace con efectivo, el monto no puede superar el equivalente a USD 100 mensuales.",
+   "seccion_sorteada_origen": [
+    "TO_exterior_cambios_actual.pdf Sección 3"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "solapada",
+   "disclosure": "GT compartido con CQ-034 (gate) — estrato solapado. Redacción ajustada (la original queda en pregunta_original); la cita queda intacta. Respuesta esperada: USD 200 mensuales — el sub-tope de efectivo (USD 100) NO se exige.",
+   "pregunta_original": "¿Qué monto mensual máximo puede comprar una persona humana residente, sin conformidad previa del BCRA, para la formación de activos externos bajo modalidades distintas de billetes y depósitos, la remisión de ayuda familiar o la operatoria con derivados?",
+   "redaccion_ajustada": true
+  },
+  {
+   "id": "CQN-002",
+   "categoria": "factual_directa",
+   "pregunta": "¿Con cuánta anticipación debe una entidad financiera preavisar a la Superintendencia si desea cambiar el método que emplea para la técnica de activos admitidos como garantía en la cobertura del riesgo de crédito?",
+   "tos_fuente": [
+    "TO_capitales_minimos_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_capitales_minimos_actual.pdf Punto 5.1"
+   ],
+   "cita_textual": "Las entidades deberán optar por un único método para la aplicación de la técnica de ac- tivos admitidos como garantía de las operaciones registradas en la cartera de inversión y para el cálculo de la exposición a las SFT, y sólo podrán cambiar el método empleado con un preaviso de 6 meses a la SEFYC.",
+   "respuesta_breve": "Debe preavisar a la SEFyC con 6 meses de anticipación. Las entidades deben optar por un único método (simple o integral) para esa técnica y sólo pueden cambiarlo con ese preaviso.",
+   "seccion_sorteada_origen": [
+    "TO_capitales_minimos_actual.pdf Sección 5"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  },
+  {
+   "id": "CQN-003",
+   "categoria": "factual_directa",
+   "pregunta": "¿En qué categoría debe clasificarse a los firmantes de instrumentos cedidos a una entidad financiera sin responsabilidad para el cedente cuando no se efectúa su evaluación como sujetos de crédito?",
+   "tos_fuente": [
+    "TO_clasificacion_deudores_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_clasificacion_deudores_actual.pdf Punto 1.2"
+   ],
+   "cita_textual": "Los créditos cedidos a favor de la entidad sin responsabilidad para el cedente -unidad económica receptora de los fondos- se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos consecuentemente en principa- les y directos pagadores, realizando respecto de ellos su evaluación como sujetos de crédito con la pertinente apertura del legajo. En caso de no efectuarse la evaluación, cualquiera sea el motivo, estos clientes se clasificarán en categoría “irrecuperable”.",
+   "respuesta_breve": "Deben clasificarse en la categoría “irrecuperable”. Los créditos cedidos sin responsabilidad para el cedente se imputan al firmante, librador, deudor, codeudor o aceptante, y si no se realiza su evaluación como sujetos de crédito —cualquiera sea el motivo— corresponde esa categoría.",
+   "seccion_sorteada_origen": [
+    "TO_clasificacion_deudores_actual.pdf Sección 1"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  },
+  {
+   "id": "CQN-004",
+   "categoria": "factual_directa",
+   "pregunta": "¿Cuántos escenarios de variación del tipo de cambio deben contemplarse, como mínimo, al analizar la capacidad de pago de un cliente de la cartera comercial con financiaciones en moneda extranjera?",
+   "tos_fuente": [
+    "TO_clasificacion_deudores_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_clasificacion_deudores_actual.pdf Punto 6.2"
+   ],
+   "cita_textual": "Respecto de clientes por financiaciones en moneda extranjera, cualquiera sea la fuente de re- cursos que se aplique, deberá ponerse énfasis en analizar si el cliente cuenta con una capaci- dad de pago suficiente que permita cubrir los vencimientos aún ante variaciones significativas en el tipo de cambio. A tal fin, deberán tenerse en cuenta al menos dos escenarios en los que se contemplen variaciones significativas en el tipo de cambio de diferentes magnitudes en el término de hasta un año.",
+   "respuesta_breve": "Deben tenerse en cuenta al menos dos escenarios que contemplen variaciones significativas del tipo de cambio de diferentes magnitudes, en el término de hasta un año, para verificar que la capacidad de pago cubra los vencimientos aun ante esas variaciones.",
+   "seccion_sorteada_origen": [
+    "TO_clasificacion_deudores_actual.pdf Sección 6"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  },
+  {
+   "id": "CQN-005",
+   "categoria": "factual_directa",
+   "pregunta": "¿A partir de qué monto adeudado se exige una certificación de auditor externo, además de la declaración jurada del exportador, para emitir certificaciones de aplicación de divisas por anticipos y prefinanciaciones del exterior pendientes al 31/08/19 que fueron liquidados en el mercado de cambios?",
+   "tos_fuente": [
+    "TO_exterior_cambios_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_exterior_cambios_actual.pdf Punto 9.3"
+   ],
+   "cita_textual": "la entidad cuente con una declaración jurada del exportador detallando el monto pendiente de la deuda al 31/08/19 y las cancelaciones realizadas. En el caso de que el monto adeudado fuera superior a USD 25.000 (dólares estadounidenses veinticinco mil), la entidad deberá contar adicionalmente con una certificación de auditor externo en la cual se deje constancia que lo declarado por el exportador resulta consistente con la información que surge de la revisión de los registros contables, extracontables y toda otra documentación adicional aportada.",
+   "respuesta_breve": "Cuando el monto adeudado supera USD 25.000, la entidad debe contar además con una certificación de auditor externo que deje constancia de que lo declarado por el exportador es consistente con los registros contables, extracontables y demás documentación aportada.",
+   "seccion_sorteada_origen": [
+    "TO_exterior_cambios_actual.pdf Sección 9"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  },
+  {
+   "id": "CQN-006",
+   "categoria": "factual_directa",
+   "pregunta": "¿En qué plazo debe un sujeto obligado reintegrar al usuario de servicios financieros los importes que le cobró indebidamente?",
+   "tos_fuente": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Punto 2.3"
+   ],
+   "cita_textual": "deberá serle reintegrado dentro de: - los diez (10) días hábiles siguientes al momento de la presentación del re- clamo ante el sujeto obligado, de conformidad con las previsiones del punto 3.1.6.; o - los cinco (5) días hábiles siguientes al momento de constatarse tal circuns- tancia por el sujeto obligado o por la fiscalización que realice la SEFYC.",
+   "respuesta_breve": "El reintegro debe hacerse dentro de los diez (10) días hábiles siguientes a la presentación del reclamo ante el sujeto obligado, o dentro de los cinco (5) días hábiles siguientes al momento en que la circunstancia sea constatada por el propio sujeto obligado o por la fiscalización de la SEFyC.",
+   "seccion_sorteada_origen": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Sección 2"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "respuesta de dos ramas (10 días tras reclamo / 5 tras constatación) — la vara exigirá ambas"
+  },
+  {
+   "id": "CQN-007",
+   "categoria": "factual_directa",
+   "pregunta": "¿En qué circunstancia se identifica a una entidad financiera como “entidad atípica” en relación con el riesgo de tasa de interés en la cartera de inversión?",
+   "tos_fuente": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Punto 8.1"
+   ],
+   "cita_textual": "Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una “entidad atípica” y la SEFyC podrá exigirle la adopción de medidas específicas",
+   "respuesta_breve": "Cuando la medida de riesgo EVE estandarizada (la máxima pérdida registrada entre los escenarios) supera el 15 % del nivel de capital 1, la entidad se identifica como “entidad atípica” y la SEFyC puede exigirle la adopción de medidas específicas.",
+   "seccion_sorteada_origen": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Sección 8"
+   ],
+   "categoria_generacion": "factual_directa",
+   "estrato": "primaria",
+   "disclosure": "la cita usa 'esta medida' (EVE): se acepta la respuesta con o sin nombrar EVE, exigiendo umbral y base"
+  },
+  {
+   "id": "CQN-008",
+   "categoria": "multi_norma",
+   "pregunta": "¿Las empresas no financieras emisoras de tarjetas de crédito están alcanzadas por las normas de protección de los usuarios de servicios financieros y, a la vez, con qué criterio deben clasificar a sus deudores según las normas sobre clasificación de deudores?",
+   "tos_fuente": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+    "TO_clasificacion_deudores_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Punto 1.1",
+    "TO_clasificacion_deudores_actual.pdf Punto 10.1"
+   ],
+   "cita_textual": "1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. […] 1.1.2.4. Empresas no financieras emisoras de tarjetas de crédito y/o compra. […] Las empresas no financieras emisoras de tarjetas de crédito y/o compra y los otros proveedo- res no financieros de crédito alcanzados por las normas sobre “Proveedores no financieros de crédito”, deberán clasificar a los respectivos deudores en función de su mora, según los crite- rios aplicables para la cartera de “consumo o vivienda” y por aplicación de las disposiciones previstas en el punto 7.3. (recategorización obligatoria).",
+   "respuesta_breve": "Sí: son sujetos obligados de las normas de protección de usuarios de servicios financieros. Además, según las normas de clasificación de deudores deben clasificar a sus deudores en función de su mora, con los criterios aplicables a la cartera de consumo o vivienda y la recategorización obligatoria correspondiente.",
+   "seccion_sorteada_origen": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Sección 1",
+    "TO_clasificacion_deudores_actual.pdf Sección 10"
+   ],
+   "categoria_generacion": "multi_norma",
+   "estrato": "ilustrativa_no_puntuable",
+   "disclosure": "reformulación del territorio de CQ-017/CQ-018 (quemado en 3 grafos) — se corre y reporta aparte, no integra métricas"
+  },
+  {
+   "id": "CQN-009",
+   "categoria": "multi_norma",
+   "pregunta": "¿Qué importe debe consignar un banco —que no sea caja de crédito cooperativa— en el total de control correspondiente al capital mínimo básico del régimen informativo sobre exigencia e integración de capitales mínimos?",
+   "tos_fuente": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf",
+    "TO_capitales_minimos_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Punto 8.1",
+    "TO_capitales_minimos_actual.pdf Punto 1.2"
+   ],
+   "cita_textual": "8.1.3. Código 70700000. Capital Mínimo Básico –punto 1.2. de las normas sobre “Capitales mínimos de las entidades financieras”–. […] Según la clase de entidad, serán las siguientes exigencias básicas: Restantes entidades Bancos (salvo Cajas de Crédito Cooperativas) -En millones de pesos- 5.000 2.500",
+   "respuesta_breve": "Debe consignar $ 5.000 millones. El total de control del capital mínimo básico remite a la exigencia básica de las normas sobre capitales mínimos, que para los bancos es de $ 5.000 millones (y de $ 2.500 millones para las restantes entidades, salvo cajas de crédito cooperativas).",
+   "seccion_sorteada_origen": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Sección 8",
+    "TO_capitales_minimos_actual.pdf Sección 1"
+   ],
+   "categoria_generacion": "multi_norma",
+   "estrato": "primaria",
+   "disclosure": "GT compartido con CQ-010 (nunca fue caso de falla) — disclosure leve"
+  },
+  {
+   "id": "CQN-010",
+   "categoria": "multi_norma",
+   "pregunta": "Cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación, ¿qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar esa imputación y qué entidad es la única habilitada para emitirlo?",
+   "tos_fuente": [
+    "TO_exterior_cambios_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_exterior_cambios_actual.pdf Punto 8.4",
+    "TO_exterior_cambios_actual.pdf Punto 9.2"
+   ],
+   "cita_textual": "8.4.3.2. Aplicación de las divisas provenientes del cobro de la exportación de bienes admitidos por esta normativa. La entidad deberá contar con una certificación de aplicación emitida por la encargada del seguimiento de la operación a cuya cancelación se aplicaron las divisas. […] Esta entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes.",
+   "respuesta_breve": "Necesita una certificación de aplicación. La única habilitada para emitirla es la entidad nominada por el exportador para el seguimiento de la operación de financiación a cuya cancelación se aplicaron las divisas.",
+   "seccion_sorteada_origen": [
+    "TO_exterior_cambios_actual.pdf Sección 8",
+    "TO_exterior_cambios_actual.pdf Sección 9"
+   ],
+   "categoria_generacion": "multi_norma",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  },
+  {
+   "id": "CQN-011",
+   "categoria": "multi_norma",
+   "pregunta": "¿Con qué frecuencia se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión y a qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada?",
+   "tos_fuente": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Punto 11.1",
+    "TO_regimen_informativo_contable_mensual_actual.pdf Sección 2"
+   ],
+   "cita_textual": "Los datos se informarán con frecuencia trimestral y se integrarán con los datos correspon- dientes al último mes de cada trimestre (marzo, junio, septiembre y diciembre), sobre base individual y consolidada mensual. Serán aplicables los siguientes códigos de consolidación definidos en la Sección 2.: Base individual (código de consolidación 0 o 1); Base consolidada (código de consolidación 2). […] Consolidado mensual (entidad financiera con filiales y subsidiarias significativas en el país y en el exterior) – (con el alcance definido en el punto 6.2. de las normas sobre “Su- 2 pervisión consolidada”)",
+   "respuesta_breve": "Se informa con frecuencia trimestral, con los datos del último mes de cada trimestre (marzo, junio, septiembre y diciembre). La base consolidada usa el código de consolidación 2, que corresponde al consolidado mensual de una entidad financiera con filiales y subsidiarias significativas en el país y en el exterior.",
+   "seccion_sorteada_origen": [
+    "TO_regimen_informativo_contable_mensual_actual.pdf Sección 11",
+    "TO_regimen_informativo_contable_mensual_actual.pdf Sección 2"
+   ],
+   "categoria_generacion": "multi_norma",
+   "estrato": "primaria",
+   "disclosure": "familia de prefijo con territorio adjudicado, sin GT compartido"
+  },
+  {
+   "id": "CQN-012",
+   "categoria": "multi_norma",
+   "pregunta": "¿Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera y cómo se calcula, en su primer mes de funcionamiento, el componente de esa exigencia correspondiente al riesgo operacional?",
+   "tos_fuente": [
+    "TO_capitales_minimos_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_capitales_minimos_actual.pdf Punto 1.1",
+    "TO_capitales_minimos_actual.pdf Punto 7.4"
+   ],
+   "cita_textual": "La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional. […] La exigencia mensual de capital mínimo por riesgo operacional de las entidades financieras de los grupos 1 y 2 correspondiente al primer mes será equivalente al 10% de la sumatoria de las exigencias determinadas por los riesgos de crédito y de mercado –en este caso, para las posi- ciones del último día– de ese mes.",
+   "respuesta_breve": "La exigencia es el mayor valor entre la exigencia básica y la suma de las exigencias por riesgos de crédito, de mercado y operacional. Para una entidad nueva, la exigencia por riesgo operacional del primer mes equivale al 10 % de la sumatoria de las exigencias por riesgos de crédito y de mercado —para las posiciones del último día— de ese mes.",
+   "seccion_sorteada_origen": [
+    "TO_capitales_minimos_actual.pdf Sección 1",
+    "TO_capitales_minimos_actual.pdf Sección 7"
+   ],
+   "categoria_generacion": "multi_norma",
+   "estrato": "solapada",
+   "disclosure": "GT 1.1 compartido con CQ-020 (quemado ×2); pata 7.4 virgen"
+  },
+  {
+   "id": "CQN-013",
+   "categoria": "cadena_restriccion_excepcion",
+   "pregunta": "¿Qué consecuencias sancionatorias enfrenta un sujeto obligado que incumple las normas sobre protección de los usuarios de servicios financieros?",
+   "tos_fuente": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Punto 1.2",
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Sección 5"
+   ],
+   "cita_textual": "El Banco Central de la República Argentina (BCRA) supervisará la actuación de los sujetos obligados, a quienes les resultarán de aplicación las disposiciones de la Sección 5. en caso de incumplimiento de estas normas. […] El sujeto obligado y quienes resulten responsables serán pasibles de la aplicación de las sanciones previstas en las normas sobre “Régimen disciplinario a cargo del Banco Central de la República Argentina (Leyes 21.526 y 25.065) y tramitación de sumarios cambiarios (Ley 19.359)”, por los in- cumplimientos que se constaten respecto de estas normas",
+   "respuesta_breve": "El criterio general remite, en caso de incumplimiento, a la sección de sanciones: el sujeto obligado y los responsables son pasibles de las sanciones previstas en las normas sobre “Régimen disciplinario a cargo del BCRA (Leyes 21.526 y 25.065) y tramitación de sumarios cambiarios (Ley 19.359)”, incluso por incumplimientos de los manuales de procedimiento interno.",
+   "seccion_sorteada_origen": [
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Sección 1",
+    "TO_proteccion_usuarios_servicios_financieros_actual.pdf Sección 5"
+   ],
+   "categoria_generacion": "cadena_normativa",
+   "estrato": "primaria",
+   "disclosure": "familia de prefijo con territorio adjudicado, sin GT compartido"
+  },
+  {
+   "id": "CQN-014",
+   "categoria": "cadena_restriccion_excepcion",
+   "pregunta": "Si una entidad financiera del grupo 2 no registró ingreso bruto positivo en ninguno de los períodos de 12 meses de los últimos 36 meses, ¿qué exigencia de capital por riesgo operacional debe observar?",
+   "tos_fuente": [
+    "TO_capitales_minimos_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_capitales_minimos_actual.pdf Punto 7.2",
+    "TO_capitales_minimos_actual.pdf Punto 7.3"
+   ],
+   "cita_textual": "Cuando n sea igual a cero (n=0), deberá observarse una exigencia equivalente al límite previsto en el punto 7.3. […] La exigencia determinada a través de la aplicación de la expresión descripta en el punto 7.2. no podrá superar: 7.3.1. El 20% en el caso de entidades del grupo A del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exigencia de capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex- presada en moneda homogénea del mes anterior al que se efectúa el cálculo. 7.3.2. El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses",
+   "respuesta_breve": "Con n=0 debe observar una exigencia equivalente al límite fijado para el grupo 2: el 20 % (entidades del grupo A) o el 17 % (entidades del grupo B) del promedio de los últimos 36 meses de la exigencia de capital mínimo por riesgo de crédito, expresada en moneda homogénea del mes anterior al cálculo.",
+   "seccion_sorteada_origen": [
+    "TO_capitales_minimos_actual.pdf Sección 7"
+   ],
+   "categoria_generacion": "cadena_normativa",
+   "estrato": "solapada",
+   "disclosure": "GT 7.3 compartido con CQ-033; en run_3 sus nodos de destino portan defectos adjudicados (familia 12.3)"
+  },
+  {
+   "id": "CQN-015",
+   "categoria": "cadena_restriccion_excepcion",
+   "pregunta": "¿Cómo se determina, día por día, la integración a considerar para verificar el cumplimiento de la exigencia de capital mínimo por riesgo de mercado?",
+   "tos_fuente": [
+    "TO_capitales_minimos_actual.pdf"
+   ],
+   "ground_truth_secciones": [
+    "TO_capitales_minimos_actual.pdf Punto 1.3",
+    "TO_capitales_minimos_actual.pdf Punto 6.7"
+   ],
+   "cita_textual": "En el caso de la exigencia de capital mínimo por riesgo de mercado, la integración se determi- nará en forma diaria de acuerdo con lo establecido en el punto 6.7.1. […] 6.7.1. Integración de capital. A los fines del cumplimiento de lo establecido en el punto 1.1., la integración se deter- minará en forma diaria considerando: 6.7.1.1. la RPC del último día del mes anterior; y 6.7.1.2. el cambio de valor diario que se produzca en el portafolio de activos incluidos en los cálculos de la exigencia por riesgo de mercado como consecuencia de cambios en sus precios de mercado, desde la última cotización registrada al cierre del mes inmediato anterior.",
+   "respuesta_breve": "La integración por riesgo de mercado se determina en forma diaria considerando la responsabilidad patrimonial computable del último día del mes anterior más el cambio de valor diario del portafolio de activos incluidos en el cálculo de la exigencia, por variaciones de precios de mercado desde la última cotización del cierre del mes anterior.",
+   "seccion_sorteada_origen": [
+    "TO_capitales_minimos_actual.pdf Sección 1",
+    "TO_capitales_minimos_actual.pdf Sección 6"
+   ],
+   "categoria_generacion": "cadena_normativa",
+   "estrato": "primaria",
+   "disclosure": "limpia"
+  }
+ ]
+}
