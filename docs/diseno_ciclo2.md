@@ -189,6 +189,15 @@ conserva el flip de D7.
 triages — precisión sobre rescate, coherente con la filosofía del umbral del §4. El
 árbitro es CQN2.
 
+**Nota de medición (post-unidad 2b):** la premisa fáctica del "hecho que la motiva" quedó
+corregida por la medición de la unidad 2b — el pasaje de rep3_atrib2 SÍ funda (span 245;
+la description de ese nodo es el texto del listado del 1.1, provenance no desplazada); el
+mecanismo real de la regresión de u2 era MIXTO: 4 atribuciones con pasajes que no fundan
+(bloqueadas por esta regla) más una fundante con juicio en la frontera (varianza,
+contenida por N y triage — residuo pre-registrado en el reporte u2b §5). La regla se
+sostiene por las atribuciones no-fundantes reales (5 en el material quemado: 4 en
+CQN-011, 1 en CQN-012). Ver `posthoc_run/dev_set/dev_ciclo2_u2b_fundamento.md`.
+
 ## 5. Criterios de éxito sobre el material quemado (pre-registrados; se evalúan en DEV — el veredicto real es el gate CQN2)
 
 - **(a) CQN-007:** v6.2-D emite **navegación** — el voto original del LLM (3-0) sobrevive
