@@ -158,6 +158,37 @@ informativo en vez de silencio.
   RESPONDE lo juzgado → **decidible** (esperado: `presente_en_grafo=si` → sin_defecto
   sostenida con evidencia, en vez de tres abstenciones).
 
+### §4bis — Requisito de fundamento del pasaje (enmienda post-unidad 2)
+
+**Hecho que la motiva** (reporte de la unidad 2 §6d y los verbatim de la verificación
+dirigida): en CQN-011, el fetch por numeral pasó la guarda de dominio LEGÍTIMAMENTE
+(portador del RI, territorio RI) pero el pasaje provino de la **provenance desplazada**
+del nodo (el título genérico del 1.1); el juicio leyó un pasaje que NO funda el contenido
+del nodo, concluyó "el grafo no define el código 3" y re-atribuyó
+`aplicacion_erronea → contenido_kg` (rep3_atrib2), convirtiendo un voto dividido — un
+triage honesto — en mayoría 2-1: **una regresión real contra el material quemado**. Es el
+mecanismo de CQN-013 en versión INTRA-dominio: la guarda de dominio no lo ve porque el
+documento es correcto.
+
+**La regla.** Para habilitar re-atribución o exoneración, el pasaje fetcheado por numeral
+debe **FUNDAR el contenido del nodo portador**, verificado con la MISMA maquinaria del
+portador por contenido (ancla + extensión + umbral `UMBRAL_CONTENIDO`, ya calibrada en la
+unidad 2): el contenido del nodo debe localizar DENTRO del pasaje (o de su página) con
+span ≥ umbral. Si no funda → estado **`fuente_no_funda`**, triage con ese motivo, **sin
+llamada LLM** (la misma filosofía de la guarda de dominio: a nivel fetch, cero tokens,
+cero oportunidad de flip). El pasaje extra `portador_por_contenido` de un fetch completo
+satisface el requisito POR CONSTRUCCIÓN (localizó por contenido).
+
+**Criterio de éxito nuevo (e), pre-registrado:** CQN-011 vuelve a **DIVIDIDO/triage** (la
+corrección de rep3_atrib2 no ocurre: su pasaje no funda); y **sin regresiones nuevas**:
+CQN-006 sigue decidible (sus pasajes fundan — se verifica, no se asume), CQN-009/014
+conservan sus confirmaciones, CQN-012/013 conservan sus bloqueos cross-doc, CQN-007
+conserva el flip de D7.
+
+**Riesgo documentado:** endurecer el fundamento puede convertir decisiones legítimas en
+triages — precisión sobre rescate, coherente con la filosofía del umbral del §4. El
+árbitro es CQN2.
+
 ## 5. Criterios de éxito sobre el material quemado (pre-registrados; se evalúan en DEV — el veredicto real es el gate CQN2)
 
 - **(a) CQN-007:** v6.2-D emite **navegación** — el voto original del LLM (3-0) sobrevive
