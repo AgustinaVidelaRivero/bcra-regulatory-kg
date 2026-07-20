@@ -36,7 +36,7 @@ refinamiento.
 │   ├── ppf/                      PPF_Prel_VidelaRivero_Agustina.pdf, main.tex (LaTeX del PPF)
 │   ├── schema/                   experiment_protocol.md, experiment_instance_template.md,
 │   │                             corpus_analysis_for_schema.md, legacy/ (v0.1 del schema)
-│   └── hallazgos_tesis.md        Hallazgos H1–H13 para Resultados/Discusión y consulta a Juan
+│   └── hallazgos_tesis.md        Hallazgos H1–H13 para Resultados/Discusión y ronda de feedback
 ├── notebooks/                    01_turtle_basics.ipynb (intro rdflib, etapa temprana; nada lo usa)
 ├── scripts/                      Descarga del corpus: download_bcra.py (subcomandos B1..B9),
 │   │                             report_b4_b5.py, retry_persistent_fails.py
@@ -75,7 +75,7 @@ data/experiment/
 | `evaluacion/adjudicacion_FIRMADO.json` | [CONGELADO] | Adjudicación humana firmada de la Fase 2.3. |
 | `evaluacion/` (raíz: verificador.py, pdf_locate.py, verifier_pilot.py, run_posthoc.py, llm_cache.py, reporte_verificador_html.py) | [ACTIVO] | Instrumentación 2.3+ y verificador 2.4. Acá se trabaja ahora. |
 | `evaluacion/queries/eval_set_v2*.json` | [ACTIVO] | v1 + 8 CQs nuevas (CQ-040–047); dataset del refinamiento 2.5. |
-| `evaluacion/posthoc_run/revision_prompt_v4/` | [ACTIVO] | Paquete de revisión del prompt v4 para Juan — lo ÚNICO tracked de `posthoc_run/`. |
+| `evaluacion/posthoc_run/revision_prompt_v4/` | [ACTIVO] | Paquete de revisión del prompt v4 armado para la ronda de feedback — lo ÚNICO tracked de `posthoc_run/`. |
 | `.claude/skills/` | [ACTIVO] | Las 4 skills operativas del pipeline. |
 | `docs/` (hallazgos, defensa, ppf) | [ACTIVO] | Documentación de tesis en curso. |
 | `evaluacion/cache/` | [SCRATCH] | Gitignoreado por `.gitignore:56` (`data/experiment/evaluacion/cache/`). Crudos completos de la API: calls.db, verificador.db, verifier_pilot.db, calls.db.verif_backup. |
@@ -158,7 +158,7 @@ Documentos `.md` numerados en la misma carpeta (reportes de cada etapa 2.3/2.3+)
 - Auditoría de ground truth: `posthoc_run/auditoria_gt/` (CQ-017/020/025/031/034.md + _barrido.py) [SCRATCH].
 - Reportes HTML: `posthoc_run/reportes_html/` (index.html + un dir por corrida con reporte.html
   y meta.json) [SCRATCH].
-- Paquete para Juan: `posthoc_run/revision_prompt_v4/` (prompt_v4.md, caso_CQ-020.md,
+- Paquete de revisión del prompt v4: `posthoc_run/revision_prompt_v4/` (prompt_v4.md, caso_CQ-020.md,
   caso_CQ-034.md, tabla_v1_v4.md) — **tracked** (excepción en .gitignore).
 - Hallazgos: `docs/hallazgos_tesis.md` (H1–H13).
 - Datos para slides: `posthoc_run/esquema_slides/datos.md` [SCRATCH].
@@ -190,10 +190,10 @@ obligatorio), `kg-refinement/` (pipeline 2.5).
 3. **Los 5 PDFs de `data/experiment/subset/` están gitignoreados** (`.gitignore:34`):
    un clone fresco no tiene el corpus del experimento. Coherente con la política de no
    versionar PDFs, pero conviene saberlo antes de clonar en otra máquina.
-4. **Historia del "paquete de Juan":** un traspaso previo citaba `paquete_juan/`, carpeta que
-   nunca existió; la real era `posthoc_run/paquete_problemas/`, renombrada el 2026-07-09 a
-   `revision_prompt_v4/` (nombre actual, tracked). Si algún apunte externo menciona
-   `paquete_juan` o `paquete_problemas`, refiere a esta carpeta.
+4. **Historia del paquete de entrega:** el paquete de entrega original vivió fuera del
+   repo y no se conserva; su contenido quedó absorbido por los documentos de `docs/`
+   listados en `INDICE.md`. (La carpeta de revisión que sí quedó en el repo es
+   `posthoc_run/revision_prompt_v4/`, tracked.)
 5. **`scripts/adhoc/b5_minirun_ext.py`** dice en su docstring "Uso: python /tmp/b5_minirun_ext.py"
    — no coincide con su ubicación real en el repo.
 6. **Placeholders vacíos:** `src/extraction`, `src/kg`, `src/scraper` contienen solo
