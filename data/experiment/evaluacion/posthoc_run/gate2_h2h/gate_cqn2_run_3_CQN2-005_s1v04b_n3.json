@@ -1,0 +1,1243 @@
+{
+ "id_falla": "run_3/CQN2-005",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-005",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"SEPAIMPO seguimiento pagos importaciones\", \"limite\": 10}",
+      "devolvio": "142 matches; nodos generales de SEPAIMPO (seguimiento de pagos, informar CUIT).",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"SEPAIMPO nominación entidad responsable oficialización\", \"limite\": 10}",
+      "devolvio": "Devuelve Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1).",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\"}",
+      "devolvio": "Contenido de la nominación inicial; provenance Punto 11.1. No menciona ARCA ni condición de cambio.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_nominar_entidad_responsable\"}",
+      "devolvio": "Misma frase de nominación; provenance Punto 11.1.",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\", \"direccion\": \"ambas\"}",
+      "devolvio": "0 vecinos (nodo aislado).",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"limite\": 10}",
+      "devolvio": "Nodos de cambio de exportación/opt-out, notificar cambio, registrar en BCRA. NO aparece el nodo de la condición de cambio de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cambiar entidad seguimiento oficialización importación\", \"limite\": 10}",
+      "devolvio": "Nominación (importación) + nodos de exportación. NO aparece la condición de cambio de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\"}",
+      "devolvio": "Condición de cambio pero del EXPORTADOR (Punto 8.2), no del importador.",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"importador cambio entidad nominada oficialización importación condición\", \"limite\": 10}",
+      "devolvio": "Boleto de cambio, opt-out exportador, notificar cambio. NO aparece el nodo de la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"modificar entidad nominada importación SEPAIMPO\", \"limite\": 10}",
+      "devolvio": "Notificar cambio, opt-out. NO aparece la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\"}",
+      "devolvio": "Notificación de cambio (régimen de certificación 3.17), no la condición de cambio del SEPAIMPO importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"limite\": 15}",
+      "devolvio": "Nominación importación + nodos exportación/BCRA. NO aparece el nodo de la condición de cambio de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion\"}",
+      "devolvio": "Cambio de entidad del EXPORTADOR (Punto 8.2), no del importador.",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"punto 11.1 seguimiento oficializaciones importación\", \"limite\": 10}",
+      "devolvio": "Seguimiento de oficializaciones (definición, Punto 10.2). No la condición de cambio.",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_seguimiento_de_tramites_de_comercio_exterior\"}",
+      "devolvio": "Definición de seguimiento; provenance Punto 10.2. No aporta la condición.",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_seguimiento_de_tramites_de_comercio_exterior\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 vecino (verificar cumplimiento de condiciones). No la condición de cambio.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente hizo búsquedas razonables y exhaustivas sobre la pata 2 (pasos 6, 7, 9, 10, 12 con términos como 'cambio entidad nominada importación condición', 'modificar entidad nominada importación', 'importador cambio entidad nominada oficialización condición'). El nodo portador de la condición (Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes) nunca emergió en ninguno de esos resultados por el ranking léxico. El agente, ante la ausencia del dato, declaró honestamente 'no se especifican las condiciones' en vez de alucinar. Sobre lo que tenía expuesto, actuó correctamente: la falla es de recuperación, no de uso.",
+    "thinking_decision": null,
+    "patas": [
+     "Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO",
+     "Bajo qué condición puede el importador cambiar luego esa entidad por otra"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué condición puede el importador cambiar luego esa entidad por otra",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "fuente": {
+       "quote": "La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 11.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "cambio entidad nominada SEPAIMPO importación (paso 6 del agente, límite 10)",
+       "resultado": "El nodo Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NO aparece en el top-10; salen opt-out de exportador, notificar cambio, registrar en BCRA."
+      },
+      {
+       "consulta": "importador cambio entidad nominada oficialización importación condición (paso 9 del agente, límite 10)",
+       "resultado": "El nodo NO aparece; salen boleto de cambio, opt-out exportador, notificar cambio."
+      },
+      {
+       "consulta": "importador nomina entidad seguimiento oficialización importación cambio (paso 12 del agente, límite 15)",
+       "resultado": "El nodo NO aparece en el top-15."
+      },
+      {
+       "consulta": "importador podrá modificar entidad nominada (mía, límite 15)",
+       "resultado": "El nodo NO aparece en el top-15 pese a usar vocabulario ex ante muy plausible."
+      },
+      {
+       "consulta": "prohibición cambio entidad importador (mía, límite 15)",
+       "resultado": "El nodo NO aparece en el top-15 pese a coincidir con su label 'Prohibición de cambio...'."
+      },
+      {
+       "consulta": "certificaciones pendientes de uso cambio entidad (mía, límite 10)",
+       "resultado": "El nodo aparece 2º — pero solo usando 'certificaciones pendientes de uso', vocabulario del PROPIO nodo aprendido del PDF, no disponible ex ante para el agente."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes",
+      "emision_llm": "alcanzabilidad_kg",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 44,
+       "consultas_en_top10": [],
+       "mejor_rank": 304
+      }
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas. Pata 1 (ante quién nomina) fue aprobada por el juez y no se re-litiga: el agente la respondió con Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (aunque omitió 'ante la ARCA', el juez la dio por OK). La falla se concentra en la pata 2 (condición de cambio), que el agente declaró no respondible. C1a — POR PATA: el dato pertinente a la pata 2 (la condición 'no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso') NUNCA apareció en la trayectoria del agente; verifiqué los outputs completos de los pasos 6, 9 y 12 con ver_paso_completo y el nodo portador no está en ninguno. Síntoma = context_recall. C2 — CAUSA: el nodo portador SÍ existe (Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes), con contenido idéntico al PDF y misma provenance (Punto 11.1) — es fiel, no es completitud_kg ni contenido_kg. Descarto navegación: el agente hizo búsquedas razonables y exhaustivas con el vocabulario ex ante de la pregunta ('cambio entidad nominada importación condición', 'modificar entidad nominada importación', etc.) y el nodo no emergió en ninguna por el ranking por tokens_matcheados, que lo hunde bajo decenas de nodos genéricos de 'cambio/entidad/importador'. Mis propias búsquedas ex ante ('importador podrá modificar entidad nominada', 'prohibición cambio entidad importador') tampoco lo alcanzan en top-15. Solo lo alcancé con 'certificaciones pendientes de uso' — vocabulario del propio nodo, aprendido del PDF, NO disponible ex ante (regla v2.1). Esto es exactamente alcanzabilidad_kg: nodo correcto y fiel, inalcanzable por búsqueda léxica desde los términos de la pregunta. Primaria, lado grafo. El agente actuó correctamente: ante la no-recuperación, declaró honestamente la ausencia en vez de alucinar (por eso paso_decision_error = null).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 245036,
+    "tokens_out": 7853
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 245036,
+    "tokens_out": 7853,
+    "latency_s": 107.003,
+    "error": null,
+    "final_raw": "Confirmado en el paso 12 también: el nodo portador de la condición de cambio NO aparece. El agente hizo búsquedas exhaustivas y razonables (pasos 6, 7, 9, 10, 12) sobre exactamente el tema de la pata 2, y el nodo nunca emergió por el ranking léxico. El agente actuó correctamente sobre lo que tenía disponible y declaró honestamente que no encontró la condición.\n\nTengo evidencia suficiente. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"SEPAIMPO seguimiento pagos importaciones\\\", \\\"limite\\\": 10}\", \"devolvio\": \"142 matches; nodos generales de SEPAIMPO (seguimiento de pagos, informar CUIT).\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"SEPAIMPO nominación entidad responsable oficialización\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1).\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\\\"}\", \"devolvio\": \"Contenido de la nominación inicial; provenance Punto 11.1. No menciona ARCA ni condición de cambio.\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_nominar_entidad_responsable\\\"}\", \"devolvio\": \"Misma frase de nominación; provenance Punto 11.1.\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"0 vecinos (nodo aislado).\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cambio entidad nominada SEPAIMPO importación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de cambio de exportación/opt-out, notificar cambio, registrar en BCRA. NO aparece el nodo de la condición de cambio de importación.\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cambiar entidad seguimiento oficialización importación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nominación (importación) + nodos de exportación. NO aparece la condición de cambio de importación.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\\\"}\", \"devolvio\": \"Condición de cambio pero del EXPORTADOR (Punto 8.2), no del importador.\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"importador cambio entidad nominada oficialización importación condición\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Boleto de cambio, opt-out exportador, notificar cambio. NO aparece el nodo de la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"modificar entidad nominada importación SEPAIMPO\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Notificar cambio, opt-out. NO aparece la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\\\"}\", \"devolvio\": \"Notificación de cambio (régimen de certificación 3.17), no la condición de cambio del SEPAIMPO importación.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"importador nomina entidad seguimiento oficialización importación cambio\\\", \\\"limite\\\": 15}\", \"devolvio\": \"Nominación importación + nodos exportación/BCRA. NO aparece el nodo de la condición de cambio de importación.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion\\\"}\", \"devolvio\": \"Cambio de entidad del EXPORTADOR (Punto 8.2), no del importador.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"punto 11.1 seguimiento oficializaciones importación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Seguimiento de oficializaciones (definición, Punto 10.2). No la condición de cambio.\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_seguimiento_de_tramites_de_comercio_exterior\\\"}\", \"devolvio\": \"Definición de seguimiento; provenance Punto 10.2. No aporta la condición.\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_seguimiento_de_tramites_de_comercio_exterior\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 vecino (verificar cumplimiento de condiciones). No la condición de cambio.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente hizo búsquedas razonables y exhaustivas sobre la pata 2 (pasos 6, 7, 9, 10, 12 con términos como 'cambio entidad nominada importación condición', 'modificar entidad nominada importación', 'importador cambio entidad nominada oficialización condición'). El nodo portador de la condición (Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes) nunca emergió en ninguno de esos resultados por el ranking léxico. El agente, ante la ausencia del dato, declaró honestamente 'no se especifican las condiciones' en vez de alucinar. Sobre lo que tenía expuesto, actuó correctamente: la falla es de recuperación, no de uso.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO\",\n      \"Bajo qué condición puede el importador cambiar luego esa entidad por otra\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué condición puede el importador cambiar luego esa entidad por otra\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\"},\n        \"fuente\": {\"quote\": \"La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 11.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"cambio entidad nominada SEPAIMPO importación (paso 6 del agente, límite 10)\", \"resultado\": \"El nodo Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NO aparece en el top-10; salen opt-out de exportador, notificar cambio, registrar en BCRA.\"},\n        {\"consulta\": \"importador cambio entidad nominada oficialización importación condición (paso 9 del agente, límite 10)\", \"resultado\": \"El nodo NO aparece; salen boleto de cambio, opt-out exportador, notificar cambio.\"},\n        {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio (paso 12 del agente, límite 15)\", \"resultado\": \"El nodo NO aparece en el top-15.\"},\n        {\"consulta\": \"importador podrá modificar entidad nominada (mía, límite 15)\", \"resultado\": \"El nodo NO aparece en el top-15 pese a usar vocabulario ex ante muy plausible.\"},\n        {\"consulta\": \"prohibición cambio entidad importador (mía, límite 15)\", \"resultado\": \"El nodo NO aparece en el top-15 pese a coincidir con su label 'Prohibición de cambio...'.\"},\n        {\"consulta\": \"certificaciones pendientes de uso cambio entidad (mía, límite 10)\", \"resultado\": \"El nodo aparece 2º — pero solo usando 'certificaciones pendientes de uso', vocabulario del PROPIO nodo aprendido del PDF, no disponible ex ante para el agente.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas. Pata 1 (ante quién nomina) fue aprobada por el juez y no se re-litiga: el agente la respondió con Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (aunque omitió 'ante la ARCA', el juez la dio por OK). La falla se concentra en la pata 2 (condición de cambio), que el agente declaró no respondible. C1a — POR PATA: el dato pertinente a la pata 2 (la condición 'no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso') NUNCA apareció en la trayectoria del agente; verifiqué los outputs completos de los pasos 6, 9 y 12 con ver_paso_completo y el nodo portador no está en ninguno. Síntoma = context_recall. C2 — CAUSA: el nodo portador SÍ existe (Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes), con contenido idéntico al PDF y misma provenance (Punto 11.1) — es fiel, no es completitud_kg ni contenido_kg. Descarto navegación: el agente hizo búsquedas razonables y exhaustivas con el vocabulario ex ante de la pregunta ('cambio entidad nominada importación condición', 'modificar entidad nominada importación', etc.) y el nodo no emergió en ninguna por el ranking por tokens_matcheados, que lo hunde bajo decenas de nodos genéricos de 'cambio/entidad/importador'. Mis propias búsquedas ex ante ('importador podrá modificar entidad nominada', 'prohibición cambio entidad importador') tampoco lo alcanzan en top-15. Solo lo alcancé con 'certificaciones pendientes de uso' — vocabulario del propio nodo, aprendido del PDF, NO disponible ex ante (regla v2.1). Esto es exactamente alcanzabilidad_kg: nodo correcto y fiel, inalcanzable por búsqueda léxica desde los términos de la pregunta. Primaria, lado grafo. El agente actuó correctamente: ante la no-recuperación, declaró honestamente la ausencia en vez de alucinar (por eso paso_decision_error = null).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 11.1 (PDF pág 160)\", \"pasaje\": \"11.1. Seguimiento de oficializaciones de importación. \\nQuedarán comprendidas todas las oficializaciones de importación ocurridas a partir del \\n01/11/19 y aquellas que sean anteriores por las cuales se solicite realizar pagos a través del \\nmercado de cambios a partir de la mencionada fecha. \\nPor cada oficialización del despacho de importación, el importador deberá nominar una \\nentidad para que s e haga responsable del seguimiento de la oficialización. Esta entidad será \\nla responsable de verificar el cumplimiento de las condiciones  estipuladas en la presente \\nnormativa que habilitarán el acceso al mercado de cambios y/o la afectación de una \\noficialización a la regularización de un pago con registro aduanero pendiente. \\nLa entidad será originalmente nominada por el importador ante la ARCA, pudiendo el \\nimportador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio \\nde entidad, no existan certificaciones emitidas … [+452 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 11.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 11.1 (PDF pág 160)\", \"pasaje\": \"11.1. Seguimiento de oficializaciones de importación. \\nQuedarán comprendidas todas las oficializaciones de importación ocurridas a partir del \\n01/11/19 y aquellas que sean anteriores por las cuales se solicite realizar pagos a través del \\nmercado de cambios a partir de la mencionada fecha. \\nPor cada oficialización del despacho de importación, el importador deberá nominar una \\nentidad para que s e haga responsable del seguimiento de la oficialización. Esta entidad será \\nla responsable de verificar el cumplimiento de las condiciones  estipuladas en la presente \\nnormativa que habilitarán el acceso al mercado de cambios y/o la afectación de una \\noficialización a la regularización de un pago con registro aduanero pendiente. \\nLa entidad será originalmente nominada por el importador ante la ARCA, pudiendo el \\nimportador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio \\nde entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén \\npendientes de u… [+393 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ARCA nominación entidad importador",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ARCA nominación entidad importador\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"type\": \"Obligacion\", \"label\": \"Requerir declaración jurada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad interviniente deberá requerir al importador una declaración jurada en la que identifique la entidad por la cual realizó el pago con registro aduanero…\"}, {\"id\": \"Obligacion_el_importador_haya_nominado_una_entidad_financiera_local_para_realizar_el_seguim\", \"type\": \"Obligacion\", \"label\": \"Nominar entidad financiera local\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importador haya nominado una entidad financiera local para realizar el seguimiento de la operación en el marco del Seguimiento de anticipo… [+2460 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "certificaciones pendientes de uso cambio entidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"certificaciones pendientes de uso cambio entidad\", \"total_con_match\": 2493, \"resultados\": [{\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones e…\"}, {\"id\": \"Obligacion_el_cambio_de_entidad_debe_quedar_registrado_en_el_bcra\", \"type\": \"Obligacion\", \"label\": \"Registrar cambio en BCRA\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cambio de entidad debe quedar registrado en el BCRA\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_compra_y_o_venta_de_cambio_conforme_a_lo\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La enti… [+2194 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"properties\": {\"tipo\": \"prohibicion\", \"description\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones"
+      },
+      "output_truncado": "{\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"properties\": {\"tipo\": \"cambio de entidad nominada para emisión de certificaciones\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.18. Acceso con “Certificación de aumento de las exportaciones de bienes”. (parte 2)\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"total_con_match\": 318, \"resultados\": [{\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento de… [+2051 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importador cambio entidad nominada oficialización importación condición\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"importador cambio entidad nominada oficialización importación condición\", \"total_con_match\": 326, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"toke… [+2098 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "importador podrá modificar entidad nominada",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"importador podrá modificar entidad nominada\", \"total_con_match\": 264, \"resultados\": [{\"id\": \"Obligacion_la_entidad_nominada_podra_emitir_una_certificacion_cuando_se_verifiquen_la_total\", \"type\": \"Obligacion\", \"label\": \"Verificar requisitos para emisión\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad nominada podrá emitir una Certificación cuando se verifiquen la totalidad de los siguientes requisitos\"}, {\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento deberá notificarle la voluntad del beneficiario a la nueva entida…\"}, {\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_… [+4114 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "prohibición cambio entidad importador",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"prohibición cambio entidad importador\", \"total_con_match\": 372, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_el_cambio_de_entidad_debe_quedar_registrado_en_el_bcra\", \"type\": \"Obligacion\", \"label\": \"Registrar cambio en BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cambio de entidad debe quedar registrado en el BCRA\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_compra_y_o_venta_de_cambio_conforme_a_lo\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de compra y/o venta de cambio, conforme a lo estipulado en el punto 5.3\"}, {\"id\": \"Operacion_registro_del_cambio_de_entidad_en_el_bcra\", \"type\": \"Operacion\", \"label\": \"Registro de cambio en BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": … [+3902 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"total_con_match\": 352, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad de seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad encargada del seguimiento en ciertos casos específicos.\"}, {\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\", \"type\": \"Operacion\", \"label\": \"Nominación de entidad para seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Por cada oficializaci… [+3922 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27058,
+      "output_tokens": 352
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28748,
+      "output_tokens": 453
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32297,
+      "output_tokens": 324
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33108,
+      "output_tokens": 593
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36714,
+      "output_tokens": 668
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41936,
+      "output_tokens": 999
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45175,
+      "output_tokens": 4464
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 48,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-005",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'SEPAIMPO seguimiento pagos importaciones', 'limite': 10}",
+      "devolvio": "142 matches; nodos generales de SEPAIMPO (Operacion_seguimiento_informativo, monitoreo, obligaciones de informar CUIT)",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'SEPAIMPO nominación entidad responsable oficialización', 'limite': 10}",
+      "devolvio": "249 matches; top-1 = Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion'}",
+      "devolvio": "description: 'Por cada oficialización... el importador deberá nominar una entidad...' prov Punto 11.1",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_nominar_entidad_responsable'}",
+      "devolvio": "misma description de nominación; prov Punto 11.1",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_nominacion...oficializacion', 'direccion': 'ambas'}",
+      "devolvio": "0 salientes, 0 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'cambio entidad nominada SEPAIMPO importación', 'limite': 10}",
+      "devolvio": "318 matches; NO trae Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes; trae nodos de exportación y de registro de cambio en BCRA",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'cambiar entidad seguimiento oficialización importación', 'limite': 10}",
+      "devolvio": "291 matches; NO trae el nodo de la condición de cambio del importador",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci'}",
+      "devolvio": "condición de cambio del EXPORTADOR (opt-out), prov Punto 8.2; no es la del importador",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'importador cambio entidad nominada oficialización importación condición', 'limite': 10}",
+      "devolvio": "326 matches; NO trae el nodo portador de la condición",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'modificar entidad nominada importación SEPAIMPO', 'limite': 10}",
+      "devolvio": "268 matches; NO trae el nodo portador",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de'}",
+      "devolvio": "notificación a nueva entidad, prov Punto 3.17; no es la condición del importador en 11.1",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'importador nomina entidad seguimiento oficialización importación cambio', 'limite': 15}",
+      "devolvio": "352 matches; con límite 15 tampoco aparece Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion'}",
+      "devolvio": "cambio de entidad del EXPORTADOR, prov Punto 8.2; no pertinente al importador",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'punto 11.1 seguimiento oficializaciones importación', 'limite': 10}",
+      "devolvio": "167 matches; trae Operacion_seguimiento_de_tramites_de_comercio_exterior (definición)",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_seguimiento_de_tramites_de_comercio_exterior'}",
+      "devolvio": "definición genérica de seguimiento SEPAIMPO, prov Punto 10.2",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_seguimiento_de_tramites_de_comercio_exterior', 'direccion': 'ambas'}",
+      "devolvio": "1 entrante: regula Verificar cumplimiento de condiciones; sin la condición de cambio",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente hizo un barrido diligente y razonable de la pata de 'cambio de entidad': cinco búsquedas léxicas distintas (pasos 6, 7, 9, 10, 12) con todos los términos plausibles ex-ante (cambio, modificar, entidad nominada, importador, oficialización, condición, SEPAIMPO), incluso subiendo el límite a 15. Ninguna devolvió el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, que queda enterrado en el ranking léxico. Ante la ausencia del dato, el agente actuó correctamente declarando explícitamente que el KG no especifica la condición (no alucinó). El fallo no está en cómo usó lo que tenía, sino en que el grafo no le entregó el nodo pese a existir.",
+    "thinking_decision": null,
+    "patas": [
+     "Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO",
+     "Bajo qué condición puede el importador cambiar luego esa entidad por otra"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué condición puede el importador cambiar luego esa entidad por otra",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "fuente": {
+       "quote": "La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 11.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "importador podrá cambiar entidad otra entidad oficialización",
+       "resultado": "270 matches; el nodo Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NO aparece en top-10"
+      },
+      {
+       "consulta": "importador modificar entidad nominada condición",
+       "resultado": "244 matches; el nodo NO aparece en top-10"
+      },
+      {
+       "consulta": "prohibición cambio entidad nominada",
+       "resultado": "361 matches; pese a usar el propio término 'prohibición' del label, el nodo NO aparece en top-10 (rankean nodos de exportación y registro en BCRA)"
+      },
+      {
+       "consulta": "importador posteriormente modificar entidad nominada oficialización",
+       "resultado": "238 matches; el nodo NO aparece en top-10"
+      },
+      {
+       "consulta": "certificaciones pendientes de uso cambio de entidad importador",
+       "resultado": "2495 matches; ÚNICA búsqueda que trae el nodo (top-3) — usando 'certificaciones pendientes de uso', vocabulario del propio contenido del nodo, ausente en la pregunta y en la trayectoria ex-ante del agente"
+      },
+      {
+       "consulta": "cambio entidad nominada SEPAIMPO importación (paso 6 del agente, límite 10)",
+       "resultado": "318 matches; nodo NO presente"
+      },
+      {
+       "consulta": "importador nomina entidad seguimiento oficialización importación cambio (paso 12 del agente, límite 15)",
+       "resultado": "352 matches; nodo NO presente ni con límite 15"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes",
+      "emision_llm": "alcanzabilidad_kg",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 44,
+       "consultas_en_top10": [],
+       "mejor_rank": 304
+      }
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene dos patas. La pata 1 (nominación inicial) fue aprobada por el juez y su dato pertinente SÍ apareció (pasos 2-4, nodo Operacion_nominacion...oficializacion). La pata 2 (condición para cambiar la entidad) es la fallida: el dato pertinente —la condición 'en la medida que no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso'— NUNCA apareció en la trayectoria del agente (verificado en outputs completos de los pasos 6 y 12). Por precedencia, pata sin dato pertinente = context_recall, y va directo a su pregunta del árbol. Los reportes de alcance del agente ('el KG no especifica') no clasifican como faithfulness/noise_sensitivity porque no hay claim de contenido: es una declaración honesta de irrespondibilidad. CAUSA (C2, árbol context_recall): ¿existe nodo portador del dato faltante? SÍ: Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, con contenido literal fiel al PDF (Punto 11.1) y provenance correcta. Descarto completitud_kg y estructural_kg: el dato NO falta (constancia en mis búsquedas: mi propia evidencia exhibe el nodo). Queda decidir navegación vs alcanzabilidad_kg mediante la prueba de vocabulario ex-ante. Probé cinco búsquedas con términos plausibles de la pregunta y de la trayectoria del agente (cambio, modificar, entidad nominada, importador, oficialización, condición, e incluso 'prohibición' que es palabra del propio label): NINGUNA trae el nodo en top-10/15. El agente mismo lo intentó cinco veces (pasos 6,7,9,10,12) sin éxito. El nodo SOLO se alcanza con 'certificaciones pendientes de uso' —vocabulario del contenido del nodo, ausente del vocabulario ex-ante del agente (en su trayectoria 'certificaciones' aparece siempre en contexto de exportación). El label 'Prohibición de cambio sin certificaciones pendientes' comparte con las búsquedas del agente solo tokens saturados ('cambio', 'entidad') presentes en cientos de nodos, por lo que el ranking léxico lo entierra sistemáticamente. Esto es exactamente alcanzabilidad_kg: nodo portador existe con contenido correcto, pero inalcanzable por búsqueda léxica desde el vocabulario razonable de la pregunta. Lado grafo, jerarquía primaria: es lo que impidió responder la pata que hizo reprobar la respuesta. La navegación del agente fue diligente y no hay alucinación (declaró explícitamente la ausencia), por lo que se descarta defecto del agente.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 252323,
+    "tokens_out": 7946
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 252323,
+    "tokens_out": 7946,
+    "latency_s": 107.972,
+    "error": null,
+    "final_raw": "Confirmado incluso con límite 15 (paso 12): el nodo `Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes` NO aparece entre los 15 primeros resultados. El agente hizo búsquedas razonables y exhaustivas (5 búsquedas distintas relativas al cambio de entidad) y el nodo nunca emergió. La navegación del agente fue diligente; el fallo es de alcanzabilidad del grafo.\n\nTengo evidencia suficiente para emitir el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'SEPAIMPO seguimiento pagos importaciones', 'limite': 10}\", \"devolvio\": \"142 matches; nodos generales de SEPAIMPO (Operacion_seguimiento_informativo, monitoreo, obligaciones de informar CUIT)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'SEPAIMPO nominación entidad responsable oficialización', 'limite': 10}\", \"devolvio\": \"249 matches; top-1 = Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion'}\", \"devolvio\": \"description: 'Por cada oficialización... el importador deberá nominar una entidad...' prov Punto 11.1\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_nominar_entidad_responsable'}\", \"devolvio\": \"misma description de nominación; prov Punto 11.1\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_nominacion...oficializacion', 'direccion': 'ambas'}\", \"devolvio\": \"0 salientes, 0 entrantes\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'cambio entidad nominada SEPAIMPO importación', 'limite': 10}\", \"devolvio\": \"318 matches; NO trae Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes; trae nodos de exportación y de registro de cambio en BCRA\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'cambiar entidad seguimiento oficialización importación', 'limite': 10}\", \"devolvio\": \"291 matches; NO trae el nodo de la condición de cambio del importador\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci'}\", \"devolvio\": \"condición de cambio del EXPORTADOR (opt-out), prov Punto 8.2; no es la del importador\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'importador cambio entidad nominada oficialización importación condición', 'limite': 10}\", \"devolvio\": \"326 matches; NO trae el nodo portador de la condición\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'modificar entidad nominada importación SEPAIMPO', 'limite': 10}\", \"devolvio\": \"268 matches; NO trae el nodo portador\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de'}\", \"devolvio\": \"notificación a nueva entidad, prov Punto 3.17; no es la condición del importador en 11.1\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'importador nomina entidad seguimiento oficialización importación cambio', 'limite': 15}\", \"devolvio\": \"352 matches; con límite 15 tampoco aparece Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion'}\", \"devolvio\": \"cambio de entidad del EXPORTADOR, prov Punto 8.2; no pertinente al importador\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'punto 11.1 seguimiento oficializaciones importación', 'limite': 10}\", \"devolvio\": \"167 matches; trae Operacion_seguimiento_de_tramites_de_comercio_exterior (definición)\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_seguimiento_de_tramites_de_comercio_exterior'}\", \"devolvio\": \"definición genérica de seguimiento SEPAIMPO, prov Punto 10.2\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_seguimiento_de_tramites_de_comercio_exterior', 'direccion': 'ambas'}\", \"devolvio\": \"1 entrante: regula Verificar cumplimiento de condiciones; sin la condición de cambio\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente hizo un barrido diligente y razonable de la pata de 'cambio de entidad': cinco búsquedas léxicas distintas (pasos 6, 7, 9, 10, 12) con todos los términos plausibles ex-ante (cambio, modificar, entidad nominada, importador, oficialización, condición, SEPAIMPO), incluso subiendo el límite a 15. Ninguna devolvió el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, que queda enterrado en el ranking léxico. Ante la ausencia del dato, el agente actuó correctamente declarando explícitamente que el KG no especifica la condición (no alucinó). El fallo no está en cómo usó lo que tenía, sino en que el grafo no le entregó el nodo pese a existir.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO\",\n      \"Bajo qué condición puede el importador cambiar luego esa entidad por otra\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué condición puede el importador cambiar luego esa entidad por otra\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\"},\n        \"fuente\": {\"quote\": \"La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 11.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"importador podrá cambiar entidad otra entidad oficialización\", \"resultado\": \"270 matches; el nodo Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NO aparece en top-10\"},\n        {\"consulta\": \"importador modificar entidad nominada condición\", \"resultado\": \"244 matches; el nodo NO aparece en top-10\"},\n        {\"consulta\": \"prohibición cambio entidad nominada\", \"resultado\": \"361 matches; pese a usar el propio término 'prohibición' del label, el nodo NO aparece en top-10 (rankean nodos de exportación y registro en BCRA)\"},\n        {\"consulta\": \"importador posteriormente modificar entidad nominada oficialización\", \"resultado\": \"238 matches; el nodo NO aparece en top-10\"},\n        {\"consulta\": \"certificaciones pendientes de uso cambio de entidad importador\", \"resultado\": \"2495 matches; ÚNICA búsqueda que trae el nodo (top-3) — usando 'certificaciones pendientes de uso', vocabulario del propio contenido del nodo, ausente en la pregunta y en la trayectoria ex-ante del agente\"},\n        {\"consulta\": \"cambio entidad nominada SEPAIMPO importación (paso 6 del agente, límite 10)\", \"resultado\": \"318 matches; nodo NO presente\"},\n        {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio (paso 12 del agente, límite 15)\", \"resultado\": \"352 matches; nodo NO presente ni con límite 15\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene dos patas. La pata 1 (nominación inicial) fue aprobada por el juez y su dato pertinente SÍ apareció (pasos 2-4, nodo Operacion_nominacion...oficializacion). La pata 2 (condición para cambiar la entidad) es la fallida: el dato pertinente —la condición 'en la medida que no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso'— NUNCA apareció en la trayectoria del agente (verificado en outputs completos de los pasos 6 y 12). Por precedencia, pata sin dato pertinente = context_recall, y va directo a su pregunta del árbol. Los reportes de alcance del agente ('el KG no especifica') no clasifican como faithfulness/noise_sensitivity porque no hay claim de contenido: es una declaración honesta de irrespondibilidad. CAUSA (C2, árbol context_recall): ¿existe nodo portador del dato faltante? SÍ: Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, con contenido literal fiel al PDF (Punto 11.1) y provenance correcta. Descarto completitud_kg y estructural_kg: el dato NO falta (constancia en mis búsquedas: mi propia evidencia exhibe el nodo). Queda decidir navegación vs alcanzabilidad_kg mediante la prueba de vocabulario ex-ante. Probé cinco búsquedas con términos plausibles de la pregunta y de la trayectoria del agente (cambio, modificar, entidad nominada, importador, oficialización, condición, e incluso 'prohibición' que es palabra del propio label): NINGUNA trae el nodo en top-10/15. El agente mismo lo intentó cinco veces (pasos 6,7,9,10,12) sin éxito. El nodo SOLO se alcanza con 'certificaciones pendientes de uso' —vocabulario del contenido del nodo, ausente del vocabulario ex-ante del agente (en su trayectoria 'certificaciones' aparece siempre en contexto de exportación). El label 'Prohibición de cambio sin certificaciones pendientes' comparte con las búsquedas del agente solo tokens saturados ('cambio', 'entidad') presentes en cientos de nodos, por lo que el ranking léxico lo entierra sistemáticamente. Esto es exactamente alcanzabilidad_kg: nodo portador existe con contenido correcto, pero inalcanzable por búsqueda léxica desde el vocabulario razonable de la pregunta. Lado grafo, jerarquía primaria: es lo que impidió responder la pata que hizo reprobar la respuesta. La navegación del agente fue diligente y no hay alucinación (declaró explícitamente la ausencia), por lo que se descarta defecto del agente.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 11.1 (PDF pág 160)\", \"pasaje\": \"11.1. Seguimiento de oficializaciones de importación. \\nQuedarán comprendidas todas las oficializaciones de importación ocurridas a partir del \\n01/11/19 y aquellas que sean anteriores por las cuales se solicite realizar pagos a través del \\nmercado de cambios a partir de la mencionada fecha. \\nPor cada oficialización del despacho de importación, el importador deberá nominar una \\nentidad para que s e haga responsable del seguimiento de la oficialización. Esta entidad será \\nla responsable de verificar el cumplimiento de las condiciones  estipuladas en la presente \\nnormativa que habilitarán el acceso al mercado de cambios y/o la afectación de una \\noficialización a la regularización de un pago con registro aduanero pendiente. \\nLa entidad será originalmente nominada por el importador ante la ARCA, pudiendo el \\nimportador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio \\nde entidad, no existan certificaciones emitidas … [+452 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "importador podrá cambiar entidad otra entidad oficialización",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"importador podrá cambiar entidad otra entidad oficialización\", \"total_con_match\": 270, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"type\": \"Obligacion\", \"label\": \"Requerir declaración jurada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad interviniente deberá requerir al importador una declaración jurada en la que identifique la entidad por la cual realizó el pago con registro aduanero…\"}, {\"id\": \"Obligacion_la_entidad_encargada_del_seguimiento_del_permiso_podra_conceder_extensiones_en_e\", \"type\": \"Obligacion\", \"label\": \"Conceder extensiones del plazo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad encargada del seguimiento del permiso podrá conceder extensiones en el plazo de ingreso y liquidación en l… [+2665 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ARCA nominación importador entidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ARCA nominación importador entidad\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"type\": \"Obligacion\", \"label\": \"Requerir declaración jurada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad interviniente deberá requerir al importador una declaración jurada en la que identifique la entidad por la cual realizó el pago con registro aduanero…\"}, {\"id\": \"Obligacion_el_importador_haya_nominado_una_entidad_financiera_local_para_realizar_el_seguim\", \"type\": \"Obligacion\", \"label\": \"Nominar entidad financiera local\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importador haya nominado una entidad financiera local para realizar el seguimiento de la operación en el marco del Seguimiento de anticipo… [+2460 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "certificaciones pendientes de uso cambio de entidad importador",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"certificaciones pendientes de uso cambio de entidad importador\", \"total_con_match\": 2495, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones e…\"}, {\"id\": \"Obligacion_el_cambio_de_entidad_debe_quedar_registrado_en_el_… [+2203 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"properties\": {\"tipo\": \"prohibicion\", \"description\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"total_con_match\": 318, \"resultados\": [{\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento de… [+2051 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "importador modificar entidad nominada condición",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"importador modificar entidad nominada condición\", \"total_con_match\": 244, \"resultados\": [{\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento deberá notificarle la voluntad del beneficiario a la nueva entida…\"}, {\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"type\": \"Obligacion\", \"l… [+2222 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "prohibición cambio entidad nominada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"prohibición cambio entidad nominada\", \"total_con_match\": 361, \"resultados\": [{\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento deberá notificarle la voluntad del beneficiario a la nueva entida…\"}, {\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\"… [+1800 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cambio de entidad importador certificaciones acceso mercado de cambios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cambio de entidad importador certificaciones acceso mercado de cambios\", \"total_con_match\": 2510, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_al_momento_de_dar_acceso_al_mercado_de_cambios_contar_con_la_c\", \"type\": \"Obligacion\", \"label\": \"Convalidación en sistema online\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La entidad deberá, al momento de dar acceso al mercado de cambios, contar con la convalidación de la situación de la operación en el sistema online implementado…\"}, {\"id\": \"Operacion_endeudamiento_financiero_para_acceso_al_mercado_de_cambios\", \"type\": \"Operacion\", \"label\": \"Endeudamiento financiero\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: endeudamiento financiero para acceso al mercado de cambios\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_acceso_a_mercado_de_cambios\", \"type\": \"Operaci… [+1786 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "importador posteriormente modificar entidad nominada oficialización",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"importador posteriormente modificar entidad nominada oficialización\", \"total_con_match\": 238, \"resultados\": [{\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento deberá notificarle la voluntad del beneficiario a la nueva entida…\"}, {\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"typ… [+2242 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"total_con_match\": 352, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad de seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad encargada del seguimiento en ciertos casos específicos.\"}, {\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\", \"type\": \"Operacion\", \"label\": \"Nominación de entidad para seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Por cada oficializaci… [+3922 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27058,
+      "output_tokens": 333
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29735,
+      "output_tokens": 370
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33197,
+      "output_tokens": 444
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35451,
+      "output_tokens": 529
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38849,
+      "output_tokens": 764
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 42464,
+      "output_tokens": 865
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45569,
+      "output_tokens": 4641
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 48,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-005",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'SEPAIMPO seguimiento pagos importaciones', limite: 10}",
+      "devolvio": "Nodos de SEPAIMPO (seguimiento informativo, sistema, informar CUIT). Contextual.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'SEPAIMPO nominación entidad responsable oficialización', limite: 10}",
+      "devolvio": "Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1) al tope.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion'}",
+      "devolvio": "Description: 'Por cada oficialización... el importador deberá nominar una entidad...'. Provenance Punto 11.1. Responde pata 1 salvo 'ante ARCA'.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_nominar_entidad_responsable'}",
+      "devolvio": "Mismo contenido de nominación, provenance Punto 11.1.",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_nominacion...oficializacion', direccion: 'ambas'}",
+      "devolvio": "0 salientes, 0 entrantes. Nodo aislado.",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'cambio entidad nominada SEPAIMPO importación', limite: 10}",
+      "devolvio": "Cambio por opt-out (exportador), notificar cambio, registrar en BCRA. NO trae el nodo portador de la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'cambiar entidad seguimiento oficialización importación', limite: 10}",
+      "devolvio": "Nominación, notificar a nueva entidad (exportador), informar asunción. No trae la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci'}",
+      "devolvio": "Condición de cambio para EXPORTADOR (opt-out), Punto 8.2. Ámbito equivocado (exportación).",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'importador cambio entidad nominada oficialización importación condición', limite: 10}",
+      "devolvio": "Boleto de venta, cambio opt-out exportador, notificar cambio. NO trae el nodo de la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'modificar entidad nominada importación SEPAIMPO', limite: 10}",
+      "devolvio": "Notificar cambio, cambio opt-out exportador. NO trae el nodo portador.",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de'}",
+      "devolvio": "Notificación de cambio (beneficiario), Punto 3.17. Otro régimen.",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'importador nomina entidad seguimiento oficialización importación cambio', limite: 15}",
+      "devolvio": "15 resultados: nominación, cambio exportador, boletos. NO trae el nodo de la condición de importación.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion'}",
+      "devolvio": "Cambio de entidad de EXPORTADOR, Punto 8.2. Ámbito equivocado.",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 11.1 seguimiento oficializaciones importación', limite: 10}",
+      "devolvio": "Seguimiento de trámites comercio exterior, ponderadores. No trae la condición.",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_seguimiento_de_tramites_de_comercio_exterior'}",
+      "devolvio": "Definición genérica de seguimiento, Punto 10.2.",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_seguimiento_de_tramites_de_comercio_exterior', direccion: 'ambas'}",
+      "devolvio": "1 entrante: verificar cumplimiento de condiciones. No es la condición de cambio.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente hizo búsquedas razonables y variadas para la pata 2 (pasos 6,7,9,10,12: 'cambio entidad nominada SEPAIMPO importación', 'importador cambio entidad nominada oficialización importación condición', 'modificar entidad nominada importación SEPAIMPO', etc.), usando el vocabulario de la pregunta. En NINGUNA apareció el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes. Ante la ausencia del dato, declaró honestamente 'no se especifican las condiciones', en lugar de alucinar. Actuó bien sobre lo que tenía; el dato de la pata 2 nunca le fue expuesto por la búsqueda léxica.",
+    "thinking_decision": null,
+    "patas": [
+     "Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO (respuesta GT: ante la ARCA)",
+     "Bajo qué condición puede el importador cambiar luego esa entidad por otra (respuesta GT: mientras no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso)"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué condición puede el importador cambiar luego la entidad nominada por otra",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "fuente": {
+       "quote": "La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "cambio entidad nominada SEPAIMPO importación (paso 6 del agente, output completo)",
+       "resultado": "Top-10 no contiene Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes; trae la variante de exportador (opt-out) y notificaciones."
+      },
+      {
+       "consulta": "importador cambio entidad nominada oficialización importación condición (paso 9, output completo)",
+       "resultado": "Top-10 no contiene el nodo portador."
+      },
+      {
+       "consulta": "modificar entidad nominada importación SEPAIMPO (paso 10, output completo)",
+       "resultado": "Top-10 no contiene el nodo portador."
+      },
+      {
+       "consulta": "importador nomina entidad seguimiento oficialización importación cambio (paso 12, limite 15, output completo)",
+       "resultado": "15 resultados; no contiene el nodo portador."
+      },
+      {
+       "consulta": "certificaciones pendientes de uso cambio entidad importador (mía)",
+       "resultado": "SÍ trae el nodo al tope (4 tokens matcheados) — pero requiere la palabra 'certificaciones', propia del nodo, ausente del vocabulario ex-ante del agente."
+      },
+      {
+       "consulta": "prohibicion cambio certificaciones pendientes (mía)",
+       "resultado": "SÍ trae el nodo al tope — se alcanza solo replicando las palabras de su propio label."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes",
+      "emision_llm": "alcanzabilidad_kg",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 44,
+       "consultas_en_top10": [],
+       "mejor_rank": 304
+      }
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): La pregunta tiene dos patas. Pata 1 (nomina ante ARCA): el juez aprobó la afirmación central de nominación; el agente la respondió (aunque omitió 'ante ARCA', que ningún nodo de nominación porta) — no litigo esa pata aprobada. Pata 2 (condición de cambio): el dato PERTINENTE es 'mientras no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso'. Revisando los outputs COMPLETOS de todas las búsquedas del agente orientadas al cambio (pasos 6, 9, 10, 12, verificados con ver_paso_completo), el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NUNCA apareció en la trayectoria. Los nodos que sí aparecieron sobre 'cambio de entidad' eran de EXPORTADOR (opt-out, Punto 8.2) u otros regímenes (Punto 3.17), no la condición de importación. Por tanto la pata 2 quedó sin su dato pertinente → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? SÍ, Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, con contenido literalmente fiel al PDF (Punto 11.1) y provenance correcta — descarta completitud_kg y contenido_kg. ¿Las búsquedas razonables del agente lo alcanzaban? NO: las cuatro búsquedas del agente usaron el vocabulario de la pregunta (SEPAIMPO, importación, oficialización, nominada, modificar, importador, condición) y ninguna lo trajo al top-10/15. El nodo SOLO se alcanza al tope con las palabras de su propio label/id ('prohibicion', 'cambio', 'certificaciones', 'pendientes'); el término discriminante 'certificaciones' pertenece al contenido del nodo/PDF, no al vocabulario ex-ante del agente (pregunta + outputs de su trayectoria). buscar_nodos indexa label/id, no description, y el label 'Prohibición de cambio sin certificaciones pendientes' no comparte los términos de la pregunta salvo 'cambio' (insuficiente para rankear). Esto descarta navegación (el nodo NO era alcanzable con búsquedas razonables ex-ante) y descarta frontera_no_determinada (la constancia de búsqueda es exhaustiva y concluyente). → alcanzabilidad_kg, primaria (es lo que mueve el veredicto: el juez reprueba porque la pata 2 quedó sin responder). El agente no cometió defecto: buscó razonablemente y, ante la ausencia, se abstuvo honestamente en lugar de alucinar (paso_decision_error = null).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 238752,
+    "tokens_out": 7283
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 238752,
+    "tokens_out": 7283,
+    "latency_s": 98.367,
+    "error": null,
+    "final_raw": "Confirmado: el nodo solo se alcanza al tope con las palabras de su propio label (\"prohibicion\", \"cambio\", \"certificaciones\", \"pendientes\"). El término discriminante es \"certificaciones\", que NO estaba en el vocabulario ex-ante del agente (solo lo tendría de leer el PDF). Las búsquedas razonables del agente usaron el vocabulario de la pregunta (SEPAIMPO, importación, oficialización, nominada, modificar, importador, condición) y ninguna trajo el nodo al top.\n\nEsto es **context_recall** (la pata 2 nunca apareció en la trayectoria) → **alcanzabilidad_kg** (el nodo existe, es fiel, pero solo se alcanza con palabras del propio nodo, no del vocabulario ex-ante).\n\nTengo evidencia suficiente.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'SEPAIMPO seguimiento pagos importaciones', limite: 10}\", \"devolvio\": \"Nodos de SEPAIMPO (seguimiento informativo, sistema, informar CUIT). Contextual.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'SEPAIMPO nominación entidad responsable oficialización', limite: 10}\", \"devolvio\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion (pata 1) al tope.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion'}\", \"devolvio\": \"Description: 'Por cada oficialización... el importador deberá nominar una entidad...'. Provenance Punto 11.1. Responde pata 1 salvo 'ante ARCA'.\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_nominar_entidad_responsable'}\", \"devolvio\": \"Mismo contenido de nominación, provenance Punto 11.1.\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_nominacion...oficializacion', direccion: 'ambas'}\", \"devolvio\": \"0 salientes, 0 entrantes. Nodo aislado.\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'cambio entidad nominada SEPAIMPO importación', limite: 10}\", \"devolvio\": \"Cambio por opt-out (exportador), notificar cambio, registrar en BCRA. NO trae el nodo portador de la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'cambiar entidad seguimiento oficialización importación', limite: 10}\", \"devolvio\": \"Nominación, notificar a nueva entidad (exportador), informar asunción. No trae la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci'}\", \"devolvio\": \"Condición de cambio para EXPORTADOR (opt-out), Punto 8.2. Ámbito equivocado (exportación).\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'importador cambio entidad nominada oficialización importación condición', limite: 10}\", \"devolvio\": \"Boleto de venta, cambio opt-out exportador, notificar cambio. NO trae el nodo de la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'modificar entidad nominada importación SEPAIMPO', limite: 10}\", \"devolvio\": \"Notificar cambio, cambio opt-out exportador. NO trae el nodo portador.\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de'}\", \"devolvio\": \"Notificación de cambio (beneficiario), Punto 3.17. Otro régimen.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'importador nomina entidad seguimiento oficialización importación cambio', limite: 15}\", \"devolvio\": \"15 resultados: nominación, cambio exportador, boletos. NO trae el nodo de la condición de importación.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion'}\", \"devolvio\": \"Cambio de entidad de EXPORTADOR, Punto 8.2. Ámbito equivocado.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 11.1 seguimiento oficializaciones importación', limite: 10}\", \"devolvio\": \"Seguimiento de trámites comercio exterior, ponderadores. No trae la condición.\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_seguimiento_de_tramites_de_comercio_exterior'}\", \"devolvio\": \"Definición genérica de seguimiento, Punto 10.2.\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_seguimiento_de_tramites_de_comercio_exterior', direccion: 'ambas'}\", \"devolvio\": \"1 entrante: verificar cumplimiento de condiciones. No es la condición de cambio.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente hizo búsquedas razonables y variadas para la pata 2 (pasos 6,7,9,10,12: 'cambio entidad nominada SEPAIMPO importación', 'importador cambio entidad nominada oficialización importación condición', 'modificar entidad nominada importación SEPAIMPO', etc.), usando el vocabulario de la pregunta. En NINGUNA apareció el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes. Ante la ausencia del dato, declaró honestamente 'no se especifican las condiciones', en lugar de alucinar. Actuó bien sobre lo que tenía; el dato de la pata 2 nunca le fue expuesto por la búsqueda léxica.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Ante quién nomina originalmente el importador a la entidad responsable del seguimiento de la oficialización en SEPAIMPO (respuesta GT: ante la ARCA)\",\n      \"Bajo qué condición puede el importador cambiar luego esa entidad por otra (respuesta GT: mientras no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso)\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué condición puede el importador cambiar luego la entidad nominada por otra\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"en la información disponible en el Knowledge Graph no se especifican las condiciones bajo las cuales el importador puede cambiar posteriormente esa entidad nominada. La documentación consultada establece la obligación de nominación inicial, pero no detalla los supuestos o requisitos para modificarla.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\"},\n        \"fuente\": {\"quote\": \"La entidad será originalmente nominada por el importador ante la ARCA, pudiendo el importador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"cambio entidad nominada SEPAIMPO importación (paso 6 del agente, output completo)\", \"resultado\": \"Top-10 no contiene Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes; trae la variante de exportador (opt-out) y notificaciones.\"},\n        {\"consulta\": \"importador cambio entidad nominada oficialización importación condición (paso 9, output completo)\", \"resultado\": \"Top-10 no contiene el nodo portador.\"},\n        {\"consulta\": \"modificar entidad nominada importación SEPAIMPO (paso 10, output completo)\", \"resultado\": \"Top-10 no contiene el nodo portador.\"},\n        {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio (paso 12, limite 15, output completo)\", \"resultado\": \"15 resultados; no contiene el nodo portador.\"},\n        {\"consulta\": \"certificaciones pendientes de uso cambio entidad importador (mía)\", \"resultado\": \"SÍ trae el nodo al tope (4 tokens matcheados) — pero requiere la palabra 'certificaciones', propia del nodo, ausente del vocabulario ex-ante del agente.\"},\n        {\"consulta\": \"prohibicion cambio certificaciones pendientes (mía)\", \"resultado\": \"SÍ trae el nodo al tope — se alcanza solo replicando las palabras de su propio label.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): La pregunta tiene dos patas. Pata 1 (nomina ante ARCA): el juez aprobó la afirmación central de nominación; el agente la respondió (aunque omitió 'ante ARCA', que ningún nodo de nominación porta) — no litigo esa pata aprobada. Pata 2 (condición de cambio): el dato PERTINENTE es 'mientras no existan certificaciones emitidas de acceso al mercado de cambios pendientes de uso'. Revisando los outputs COMPLETOS de todas las búsquedas del agente orientadas al cambio (pasos 6, 9, 10, 12, verificados con ver_paso_completo), el nodo portador Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes NUNCA apareció en la trayectoria. Los nodos que sí aparecieron sobre 'cambio de entidad' eran de EXPORTADOR (opt-out, Punto 8.2) u otros regímenes (Punto 3.17), no la condición de importación. Por tanto la pata 2 quedó sin su dato pertinente → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? SÍ, Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes, con contenido literalmente fiel al PDF (Punto 11.1) y provenance correcta — descarta completitud_kg y contenido_kg. ¿Las búsquedas razonables del agente lo alcanzaban? NO: las cuatro búsquedas del agente usaron el vocabulario de la pregunta (SEPAIMPO, importación, oficialización, nominada, modificar, importador, condición) y ninguna lo trajo al top-10/15. El nodo SOLO se alcanza al tope con las palabras de su propio label/id ('prohibicion', 'cambio', 'certificaciones', 'pendientes'); el término discriminante 'certificaciones' pertenece al contenido del nodo/PDF, no al vocabulario ex-ante del agente (pregunta + outputs de su trayectoria). buscar_nodos indexa label/id, no description, y el label 'Prohibición de cambio sin certificaciones pendientes' no comparte los términos de la pregunta salvo 'cambio' (insuficiente para rankear). Esto descarta navegación (el nodo NO era alcanzable con búsquedas razonables ex-ante) y descarta frontera_no_determinada (la constancia de búsqueda es exhaustiva y concluyente). → alcanzabilidad_kg, primaria (es lo que mueve el veredicto: el juez reprueba porque la pata 2 quedó sin responder). El agente no cometió defecto: buscó razonablemente y, ante la ausencia, se abstuvo honestamente en lugar de alucinar (paso_decision_error = null).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 11.1 (PDF pág 160)\", \"pasaje\": \"11.1. Seguimiento de oficializaciones de importación. \\nQuedarán comprendidas todas las oficializaciones de importación ocurridas a partir del \\n01/11/19 y aquellas que sean anteriores por las cuales se solicite realizar pagos a través del \\nmercado de cambios a partir de la mencionada fecha. \\nPor cada oficialización del despacho de importación, el importador deberá nominar una \\nentidad para que s e haga responsable del seguimiento de la oficialización. Esta entidad será \\nla responsable de verificar el cumplimiento de las condiciones  estipuladas en la presente \\nnormativa que habilitarán el acceso al mercado de cambios y/o la afectación de una \\noficialización a la regularización de un pago con registro aduanero pendiente. \\nLa entidad será originalmente nominada por el importador ante la ARCA, pudiendo el \\nimportador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio \\nde entidad, no existan certificaciones emitidas … [+452 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 11.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 11.1 (PDF pág 160)\", \"pasaje\": \"11.1. Seguimiento de oficializaciones de importación. \\nQuedarán comprendidas todas las oficializaciones de importación ocurridas a partir del \\n01/11/19 y aquellas que sean anteriores por las cuales se solicite realizar pagos a través del \\nmercado de cambios a partir de la mencionada fecha. \\nPor cada oficialización del despacho de importación, el importador deberá nominar una \\nentidad para que s e haga responsable del seguimiento de la oficialización. Esta entidad será \\nla responsable de verificar el cumplimiento de las condiciones  estipuladas en la presente \\nnormativa que habilitarán el acceso al mercado de cambios y/o la afectación de una \\noficialización a la regularización de un pago con registro aduanero pendiente. \\nLa entidad será originalmente nominada por el importador ante la ARCA, pudiendo el \\nimportador posteriormente modificarla en la medida que, a la fecha de la solicitud de cambio \\nde entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén \\npendientes de u… [+393 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ARCA nominación entidad importador oficialización",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ARCA nominación entidad importador oficialización\", \"total_con_match\": 239, \"resultados\": [{\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\", \"type\": \"Operacion\", \"label\": \"Nominación de entidad para seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Por cada oficialización del despacho de importación, el importador deberá nominar una entidad para que se haga responsable del seguimiento de la oficialización.\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Obligacion_la_entidad_interviniente_debera_requerir_al_importador_una_declaracion_jurada_en\", \"type\": \"Obligacion\", \"label\": \"Requerir declaración jurada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad interviniente deberá requerir al importador una declaración jurada en la que identifique la entidad por la cual realizó el pa… [+2499 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "certificaciones pendientes de uso cambio entidad importador",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"certificaciones pendientes de uso cambio entidad importador\", \"total_con_match\": 2495, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones e…\"}, {\"id\": \"Obligacion_el_cambio_de_entidad_debe_quedar_registrado_en_el_bcr… [+2200 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"properties\": {\"tipo\": \"prohibicion\", \"description\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones emitidas de acceso al mercado de cambios que estén pendientes de uso.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 11.1. Seguimiento de oficializaciones de importación. (parte 1)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"cambio entidad nominada SEPAIMPO importación\", \"total_con_match\": 318, \"resultados\": [{\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento de… [+2051 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importador cambio entidad nominada oficialización importación condición\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"importador cambio entidad nominada oficialización importación condición\", \"total_con_match\": 326, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Restriccion_procedimiento_de_cambio_cuando_la_entidad_nominada_opto_por_no_operar_en_comerci\", \"type\": \"Restriccion\", \"label\": \"Cambio por opt-out de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad cuando la entidad nominada haya optado por no operar en comercio exterior y su última operación de ese tipo sea previa …\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"toke… [+2098 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 10
+      },
+      "output_truncado": "{\"paso\": 10, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"modificar entidad nominada importación SEPAIMPO\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"modificar entidad nominada importación SEPAIMPO\", \"total_con_match\": 268, \"resultados\": [{\"id\": \"Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de\", \"type\": \"Obligacion\", \"label\": \"Notificar cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el beneficiario desee modificar la entidad nominada, la entidad a cargo del seguimiento deberá notificarle la voluntad del beneficiario a la nueva entida…\"}, {\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"Obligacion_por_los_pagos_que_se_realicen_la_entidad_debera_informar_en_el_sepaimpo_dentro_d\", \"type\": \"Obligacion\", \"label\": \"Informar CUIT en SEPAIMPO\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Por los pagos que se realicen, la entidad deberá informar en el SEPAIMPO dentro de los 5 (cinco) días hábiles, la CUIT del importador por el cual s… [+2217 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"importador nomina entidad seguimiento oficialización importación cambio\", \"total_con_match\": 352, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_\", \"type\": \"Obligacion\", \"label\": \"Boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33. Registro de importaciones de servicios por adjudi…\"}, {\"id\": \"Operacion_cambio_de_entidad_responsable_del_seguimiento_de_exportacion\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad de seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El exportador podrá modificar la entidad encargada del seguimiento en ciertos casos específicos.\"}, {\"id\": \"Operacion_nominacion_de_entidad_responsable_del_seguimiento_de_oficializacion\", \"type\": \"Operacion\", \"label\": \"Nominación de entidad para seguimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Por cada oficializaci… [+3922 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "prohibicion cambio certificaciones pendientes",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"prohibicion cambio certificaciones pendientes\", \"total_con_match\": 179, \"resultados\": [{\"id\": \"Restriccion_prohibicion_de_cambio_sin_certificaciones_pendientes\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cambio sin certificaciones pendientes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El importador podrá posteriormente modificar la entidad nominada en la medida que, a la fecha de la solicitud de cambio de entidad, no existan certificaciones e…\"}, {\"id\": \"Operacion_cambio_de_entidad_nominada_para_emision_de_certificaciones\", \"type\": \"Operacion\", \"label\": \"Modificación de entidad nominada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cambio de entidad nominada para emisión de certificaciones\"}, {\"id\": \"Restriccion_si_la_asistencia_se_otorga_en_moneda_distinta_de_la_de_los_recursos_del_exterior\", \"type\": \"Restriccion\", \"label\": \"Prohibición de asumir riesgo de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si la asistencia se otorga en moneda distinta de la de los recursos del exterior, la entidad local no podrá asumir el riesgo de cambio entre pesos o dólares est…\"}, {\"id\": \"Restriccion_no_ha_entregado_fondos_en_moneda_local_ni_otros_acti… [+488 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27058,
+      "output_tokens": 312
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28708,
+      "output_tokens": 425
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32232,
+      "output_tokens": 235
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32720,
+      "output_tokens": 295
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36028,
+      "output_tokens": 264
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40129,
+      "output_tokens": 1006
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 41877,
+      "output_tokens": 4746
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 48,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [
+   1,
+   2,
+   3
+  ],
+  "atribuciones_corregidas": 3,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 1,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "resumen_s1": {
+  "gatilladas": 0,
+  "juzgadas_llm": 0,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 0,
+  "fuente_no_funda": 0,
+  "tokens_in_s1": 0,
+  "tokens_out_s1": 0,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4b-dev"
+}

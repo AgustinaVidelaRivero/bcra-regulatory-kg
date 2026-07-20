@@ -1,0 +1,1093 @@
+{
+ "id_falla": "run_3/CQN2-006",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'régimen informativo capitales mínimos riesgo operacional', 'limite': 10}",
+      "devolvio": "Encuentra el nodo Obligacion_...cro_m (Informar CRO mensualmente) con la expresión CRO=BIC×ILM Grupo 1",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'Grupo 1 exigencia capital riesgo operacional', 'limite': 10}",
+      "devolvio": "Restricciones de grupos B/C y nuevamente el nodo CRO mensual Grupo 1",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'multiplicador pérdida interna', 'limite': 10}",
+      "devolvio": "Multiplicador EPF, factor 1,5 contraparte; ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_...cro_m'}",
+      "devolvio": "descripcion: CRO=BIC×ILM Grupo 1; plazo mensual; provenance Punto 5.1 régimen informativo. NO trae valor del ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM multiplicador pérdida', 'limite': 10}",
+      "devolvio": "Multiplicador EPF, factor 1,5; ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'BIC ILM CRO', 'limite': 10}",
+      "devolvio": "Nodos de BIC y CRO; ninguno con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM valor 1.5', 'limite': 10}",
+      "devolvio": "Ruido (garantías, factor 1,5); ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'Internal Loss Multiplier', 'limite': 10}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Obligacion_...cro_m', 'direccion': 'ambas'}",
+      "devolvio": "aristas a TO régimen informativo, Entidades grupo 1, cálculo capital mínimo, cálculo mensual exigencia operacional. Ninguna a un nodo con valor del ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_mensual_de_exigencia_operacional'}",
+      "devolvio": "Solo tipo: cálculo mensual de exigencia operacional; sin valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'régimen informativo contable mensual punto 5.1', 'limite': 10}",
+      "devolvio": "TO régimen informativo y ruido; ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM 1.5 riesgo operacional', 'limite': 10}",
+      "devolvio": "Factor 1,5 y nodo CRO; ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'multiplicador pérdida interna 1.5', 'limite': 10}",
+      "devolvio": "Factor 1,5, multiplicador EPF; ningún nodo con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM', 'limite': 15}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'TextoOrdenado_to_capitales_minimos_actual_pdf'}",
+      "devolvio": "Nodo TO Capitales Mínimos; metadatos, sin valor del ILM",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente encontró y usó el nodo pertinente para las dos patas aprobadas (frecuencia mensual y expresión CRO=BIC×ILM). Para la pata del valor del ILM realizó ~10 búsquedas con vocabulario variado (multiplicador pérdida interna, ILM, ILM valor 1.5, Internal Loss Multiplier, ILM 1.5 riesgo operacional) y exploró vecinos del nodo CRO, sin hallar ningún nodo que portara el valor. Ante la ausencia, declaró honestamente 'no se especifica el valor numérico que toma el ILM' en vez de inventarlo. Actuó bien sobre lo que el grafo le ofrecía.",
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se determina la exigencia de capital por riesgo operacional de las entidades del Grupo 1",
+     "Expresión mediante la cual se determina dicha exigencia",
+     "Valor que toma el multiplicador de pérdida interna (ILM)"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Valor que toma el multiplicador de pérdida interna (ILM)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1",
+       "ubicacion": "Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (contenido íntegro por ver_nodo paso 4: descripcion, tipo presentacion_informativa, plazo mensual — no incluye el valor del ILM)"
+      },
+      "fuente": {
+       "quote": "Se determinará mensualmente por la siguiente expresión: CRO = BIC x ILM donde: CRO: exigencia de capital por riesgo operacional. ILM:   multiplicador de pérdida interna igual a 1.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1. Normas de procedimiento (parte 1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "multiplicador de pérdida interna igual a uno riesgo operacional",
+       "resultado": "3187 con match pero solo devuelve el nodo CRO=BIC×ILM (sin valor), promedio ERC, ponderadores; ninguno porta 'ILM=1'"
+      },
+      {
+       "consulta": "ILM igual a 1",
+       "resultado": "1191 con match, todo ruido (garantías, ponderadores, debida diligencia); ningún nodo con el valor del ILM"
+      },
+      {
+       "consulta": "ILM multiplicador valor uno se determinará mensualmente",
+       "resultado": "devuelve nodos de CRO Grupo 1/Grupo 2 y expresiones alternativas, ninguno con el valor del ILM"
+      },
+      {
+       "consulta": "pérdida interna componente",
+       "resultado": "13 con match: componentes ILDC/SC/FC del BIC, auditoría; ningún nodo con el valor del ILM"
+      },
+      {
+       "consulta": "CRO BIC ILM riesgo operacional Grupo 1 expresión",
+       "resultado": "el nodo CRO=BIC×ILM y variantes de otros grupos; ninguno trae el valor del ILM"
+      },
+      {
+       "consulta": "ver_vecinos del nodo CRO (paso 9 del agente)",
+       "resultado": "4 aristas salientes (TO régimen informativo, Entidades grupo 1, cálculo capital mínimo, cálculo mensual exigencia operacional); ninguna conecta a un nodo con el valor del ILM"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "El juez aprobó las dos afirmaciones centrales (frecuencia mensual y expresión CRO=BIC×ILM), ambas soportadas por el nodo Obligacion_...cro_m y fieles al PDF (Punto 5.1.1). La respuesta fue reprobada porque la tercera pata —el valor del ILM— quedó sin responder: el agente declaró explícitamente que el KG no lo especifica. FASE C1a por pata: para la pata del ILM, ¿apareció en la trayectoria el dato pertinente (ILM=1)? NO. En 15 pasos, incluyendo ~10 búsquedas con vocabulario variado (multiplicador pérdida interna, ILM, ILM valor 1.5, Internal Loss Multiplier, ILM 1.5 riesgo operacional) y la exploración de vecinos del nodo CRO, ningún output expuso el valor. → síntoma context_recall. FASE C2 (árbol context_recall): ¿existe nodo portador del dato faltante? Repliqué las búsquedas con vocabulario ex ante y también con términos aprendidos del PDF (ILM igual a 1, multiplicador de pérdida interna igual a uno); ninguna devuelve un nodo que porte el valor del ILM. El nodo CRO abierto por el agente (verificado íntegro con ver_paso_completo 4) reproduce la expresión pero omite el valor, pese a que su provenance apunta al mismo Punto 5.1 donde el PDF dice literalmente 'ILM: multiplicador de pérdida interna igual a 1'. Por tanto NO es alcanzabilidad_kg (no hay nodo portador oculto tras un label), ni navegación (no hay nodo que exhibir). Verifiqué contra el PDF que el dato SÍ existe en la fuente (Punto 5.1.1 del régimen informativo). Conclusión: el dato que el PDF tiene fue extraído de forma incompleta —el nodo capturó la fórmula pero descartó el valor del ILM del mismo párrafo—, dejando la pata sin nodo. Esto es completitud_kg, lado grafo, primaria: es lo que explica por qué el juez reprobó. Descarté contenido_kg (ningún nodo contradice el PDF), aplicacion_erronea (el agente no aplicó contenido de otro alcance) y alucinacion_agente (el agente no inventó; abstuvo honestamente).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 239011,
+    "tokens_out": 6073
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 239011,
+    "tokens_out": 6073,
+    "latency_s": 79.075,
+    "error": null,
+    "final_raw": "Confirmado el contenido íntegro del nodo portador: describe la expresión pero omite el valor del ILM. La provenance apunta al Punto 5.1, que en el PDF sí trae \"ILM: multiplicador de pérdida interna igual a 1\" — o sea, extracción incompleta desde la misma fuente citada. Tengo todo lo necesario.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'régimen informativo capitales mínimos riesgo operacional', 'limite': 10}\", \"devolvio\": \"Encuentra el nodo Obligacion_...cro_m (Informar CRO mensualmente) con la expresión CRO=BIC×ILM Grupo 1\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'Grupo 1 exigencia capital riesgo operacional', 'limite': 10}\", \"devolvio\": \"Restricciones de grupos B/C y nuevamente el nodo CRO mensual Grupo 1\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'multiplicador pérdida interna', 'limite': 10}\", \"devolvio\": \"Multiplicador EPF, factor 1,5 contraparte; ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_...cro_m'}\", \"devolvio\": \"descripcion: CRO=BIC×ILM Grupo 1; plazo mensual; provenance Punto 5.1 régimen informativo. NO trae valor del ILM\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM multiplicador pérdida', 'limite': 10}\", \"devolvio\": \"Multiplicador EPF, factor 1,5; ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'BIC ILM CRO', 'limite': 10}\", \"devolvio\": \"Nodos de BIC y CRO; ninguno con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM valor 1.5', 'limite': 10}\", \"devolvio\": \"Ruido (garantías, factor 1,5); ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'Internal Loss Multiplier', 'limite': 10}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Obligacion_...cro_m', 'direccion': 'ambas'}\", \"devolvio\": \"aristas a TO régimen informativo, Entidades grupo 1, cálculo capital mínimo, cálculo mensual exigencia operacional. Ninguna a un nodo con valor del ILM\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_mensual_de_exigencia_operacional'}\", \"devolvio\": \"Solo tipo: cálculo mensual de exigencia operacional; sin valor del ILM\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'régimen informativo contable mensual punto 5.1', 'limite': 10}\", \"devolvio\": \"TO régimen informativo y ruido; ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM 1.5 riesgo operacional', 'limite': 10}\", \"devolvio\": \"Factor 1,5 y nodo CRO; ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'multiplicador pérdida interna 1.5', 'limite': 10}\", \"devolvio\": \"Factor 1,5, multiplicador EPF; ningún nodo con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM', 'limite': 15}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'TextoOrdenado_to_capitales_minimos_actual_pdf'}\", \"devolvio\": \"Nodo TO Capitales Mínimos; metadatos, sin valor del ILM\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente encontró y usó el nodo pertinente para las dos patas aprobadas (frecuencia mensual y expresión CRO=BIC×ILM). Para la pata del valor del ILM realizó ~10 búsquedas con vocabulario variado (multiplicador pérdida interna, ILM, ILM valor 1.5, Internal Loss Multiplier, ILM 1.5 riesgo operacional) y exploró vecinos del nodo CRO, sin hallar ningún nodo que portara el valor. Ante la ausencia, declaró honestamente 'no se especifica el valor numérico que toma el ILM' en vez de inventarlo. Actuó bien sobre lo que el grafo le ofrecía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se determina la exigencia de capital por riesgo operacional de las entidades del Grupo 1\",\n      \"Expresión mediante la cual se determina dicha exigencia\",\n      \"Valor que toma el multiplicador de pérdida interna (ILM)\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Valor que toma el multiplicador de pérdida interna (ILM)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\", \"ubicacion\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (contenido íntegro por ver_nodo paso 4: descripcion, tipo presentacion_informativa, plazo mensual — no incluye el valor del ILM)\"},\n        \"fuente\": {\"quote\": \"Se determinará mensualmente por la siguiente expresión: CRO = BIC x ILM donde: CRO: exigencia de capital por riesgo operacional. ILM:   multiplicador de pérdida interna igual a 1.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1. Normas de procedimiento (parte 1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"multiplicador de pérdida interna igual a uno riesgo operacional\", \"resultado\": \"3187 con match pero solo devuelve el nodo CRO=BIC×ILM (sin valor), promedio ERC, ponderadores; ninguno porta 'ILM=1'\"},\n        {\"consulta\": \"ILM igual a 1\", \"resultado\": \"1191 con match, todo ruido (garantías, ponderadores, debida diligencia); ningún nodo con el valor del ILM\"},\n        {\"consulta\": \"ILM multiplicador valor uno se determinará mensualmente\", \"resultado\": \"devuelve nodos de CRO Grupo 1/Grupo 2 y expresiones alternativas, ninguno con el valor del ILM\"},\n        {\"consulta\": \"pérdida interna componente\", \"resultado\": \"13 con match: componentes ILDC/SC/FC del BIC, auditoría; ningún nodo con el valor del ILM\"},\n        {\"consulta\": \"CRO BIC ILM riesgo operacional Grupo 1 expresión\", \"resultado\": \"el nodo CRO=BIC×ILM y variantes de otros grupos; ninguno trae el valor del ILM\"},\n        {\"consulta\": \"ver_vecinos del nodo CRO (paso 9 del agente)\", \"resultado\": \"4 aristas salientes (TO régimen informativo, Entidades grupo 1, cálculo capital mínimo, cálculo mensual exigencia operacional); ninguna conecta a un nodo con el valor del ILM\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez aprobó las dos afirmaciones centrales (frecuencia mensual y expresión CRO=BIC×ILM), ambas soportadas por el nodo Obligacion_...cro_m y fieles al PDF (Punto 5.1.1). La respuesta fue reprobada porque la tercera pata —el valor del ILM— quedó sin responder: el agente declaró explícitamente que el KG no lo especifica. FASE C1a por pata: para la pata del ILM, ¿apareció en la trayectoria el dato pertinente (ILM=1)? NO. En 15 pasos, incluyendo ~10 búsquedas con vocabulario variado (multiplicador pérdida interna, ILM, ILM valor 1.5, Internal Loss Multiplier, ILM 1.5 riesgo operacional) y la exploración de vecinos del nodo CRO, ningún output expuso el valor. → síntoma context_recall. FASE C2 (árbol context_recall): ¿existe nodo portador del dato faltante? Repliqué las búsquedas con vocabulario ex ante y también con términos aprendidos del PDF (ILM igual a 1, multiplicador de pérdida interna igual a uno); ninguna devuelve un nodo que porte el valor del ILM. El nodo CRO abierto por el agente (verificado íntegro con ver_paso_completo 4) reproduce la expresión pero omite el valor, pese a que su provenance apunta al mismo Punto 5.1 donde el PDF dice literalmente 'ILM: multiplicador de pérdida interna igual a 1'. Por tanto NO es alcanzabilidad_kg (no hay nodo portador oculto tras un label), ni navegación (no hay nodo que exhibir). Verifiqué contra el PDF que el dato SÍ existe en la fuente (Punto 5.1.1 del régimen informativo). Conclusión: el dato que el PDF tiene fue extraído de forma incompleta —el nodo capturó la fórmula pero descartó el valor del ILM del mismo párrafo—, dejando la pata sin nodo. Esto es completitud_kg, lado grafo, primaria: es lo que explica por qué el juez reprobó. Descarté contenido_kg (ningún nodo contradice el PDF), aplicacion_erronea (el agente no aplicó contenido de otro alcance) y alucinacion_agente (el agente no inventó; abstuvo honestamente).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 5.1. Normas de procedimiento (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 21)\", \"pasaje\": \"5.1. Normas de procedimiento \\n \\n5.1.1. Exigencia por riesgo operacional para entidades del Grupo 1 \\n \\nSe determinará mensualmente por la siguiente expresión: \\n \\nCRO = BIC x ILM \\ndonde: \\n \\nCRO: exigencia de capital por riesgo operacional.  \\n \\nILM:   multiplicador de pérdida interna igual a 1. \\n \\nBIC:   componente del indicador de negocio =  ∑ BIi x αi   \\n \\ndonde; αi: coeficiente marginal, determinado en función del tramo del BI: \\n \\nCategoría  Tramo de BI (en miles de \\nmillones de euros*)  \\nCoeficientes marginales \\nde BI (αi)  \\n1  ≤ 1  12 %  \\n2  1 < BI ≤ 30  15 %  \\n3  > 30  18 %  \\n(*) Se calculará el importe equivalente en pesos al T.C. vendedor del BNA al cie-\\nrre de las operaciones del último día hábil del mes anterior del que se trate. \\n                   \\nEs decir, para un BI = 35.000 m EUR, el BIC = (1 x 12%) + (30-1) x 15% + (35-30) x 18% = 5.370 m EUR. \\n   \\nBI: VA (ILDCProm + SCProm + FCProm + RMProm).  \\n \\nLa partida corresp… [+467 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "indicador de negocios BIC coeficiente marginal",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"indicador de negocios BIC coeficiente marginal\", \"total_con_match\": 2407, \"resultados\": [{\"id\": \"Operacion_calculo_de_indicador_financiero\", \"type\": \"Operacion\", \"label\": \"Cálculo de Indicador de Negocio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cálculo del BIC (Business Indicator Component) y sus componentes: ILDC (intereses, arrendamientos, dividendos), SC (servicios), FC (financiero) y RM (resultado …\"}, {\"id\": \"Restriccion_demas_activos_y_partidas_fuera_de_balance\", \"type\": \"Restriccion\", \"label\": \"Coeficiente de riesgo 100 puntos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Demás activos y partidas fuera de balance\"}, {\"id\": \"Restriccion_pertenezca_a_un_sector_de_la_actividad_economica_o_ramo_de_negocios_cuya_tendenc\", \"type\": \"Restriccion\", \"label\": \"Pertenencia a sector con riesgos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pertenezca a un sector de la actividad económica o ramo de negocios cuya tendencia futura presente aspectos cuestionables, posibilidad de baja en los ingresos, …\"}, {\"id\": \"Restriccion_el_cliente_pertenezca_a_un_sector_de_la_actividad_economica_o_ramo_de_negocios_c\", \"type\": \"Restriccion\", \"label\": \"Sector con pobre tende… [+2092 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "pérdida interna componente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"pérdida interna componente\", \"total_con_match\": 13, \"resultados\": [{\"id\": \"Obligacion_calcular_componente_ildc\", \"type\": \"Obligacion\", \"label\": \"Calcular componente ILDC\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Componente de intereses, arrendamientos y dividendos. Se determinará por: Mín. [VA (ingresos por intereses – egresos por intereses); 5% x activos que devengan i…\"}, {\"id\": \"Operacion_auditoria_interna\", \"type\": \"Operacion\", \"label\": \"Revisión de esquema de medición\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Revisión exhaustiva del esquema que adopte la entidad para la medición de la exigencia por riesgo de mercado\"}, {\"id\": \"Obligacion_calcular_componente_servicios_sc\", \"type\": \"Obligacion\", \"label\": \"Calcular componente servicios (SC)\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Componente de servicios. Se determinará por: Máx. [otros ingresos por operaciones; otros egresos por operaciones] + Máx. [ingresos por honorarios y comisiones; …\"}, {\"id\": \"Obligacion_calcular_componente_financiero_fc\", \"type\": \"Obligacion\", \"label\": \"Calcular componente financiero (FC)\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Componente financiero. Se det… [+2423 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_calculo_de_indicador_financiero"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_de_indicador_financiero\", \"type\": \"Operacion\", \"label\": \"Cálculo de Indicador de Negocio\", \"properties\": {\"tipo\": \"cálculo de indicador financiero\", \"description\": \"Cálculo del BIC (Business Indicator Component) y sus componentes: ILDC (intereses, arrendamientos, dividendos), SC (servicios), FC (financiero) y RM (resultado monetario)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.2. Modelo de información\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM igual a 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM igual a 1\", \"total_con_match\": 1191, \"resultados\": [{\"id\": \"Restriccion_el_activo_recibido_en_garantia_se_limitara_a_aquellos_listados_en_el_punto_5_3_1\", \"type\": \"Restriccion\", \"label\": \"Activos limitados a listado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2.\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_el_ponderador_a_aplicar_sera_1_2_veces_el_ponderador_que_corresponderia_aplicar_\", \"type\": \"Restriccion\", \"label\": \"Límite en factor de ponderación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador a aplicar será 1,2 veces el ponderador que correspondería aplicar si se tratara de una exposición directa, cuando la entidad financiera se base en…\"}, {\"id\": \"Restriccion_los_garantes_admisibles_se_limitan_a_los_estipul… [+2414 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "multiplicador de pérdida interna igual a uno riesgo operacional",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"multiplicador de pérdida interna igual a uno riesgo operacional\", \"total_con_match\": 3187, \"resultados\": [{\"id\": \"Restriccion_las_exigencias_a_ser_incluidas_dentro_del_calculo_del_promedio_de_erc_se_extiend\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia riesgo operacional\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las exigencias a ser incluidas dentro del cálculo del promedio de ERC se extienden únicamente hasta la que correspondió ser integrada en febrero 2013 (promedios…\"}, {\"id\": \"Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional\", \"type\": \"Operacion\", \"label\": \"Cálculo promedio ERC\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de promedio de exigencias de riesgo operacional\"}, {\"id\": \"Restriccion_se_aplicara_el_ponderador_de_riesgo_del_85_para_las_exposiciones_a_mipyme\", \"type\": \"Restriccion\", \"label\": \"Ponderador riesgo MIPYME\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se aplicará el ponderador de riesgo del 85% para las exposiciones a Mipyme\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"token… [+2169 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_cuantitativo_de_coeficientes_bic"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_cuantitativo_de_coeficientes_bic\", \"type\": \"Restriccion\", \"label\": \"Límite cuantitativo de coeficientes BIC\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"description\": \"Los coeficientes marginales (α) para el cálculo del BIC varían según tramos: Categoría 1 (BI ≤ €1.000 millones): 12%; Categoría 2 (1 < BI ≤ 30 mil millones euros): 15%; Categoría 3 (BI > 30 mil millones euros): 18%\", \"umbral\": \"12%-18% según tramo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 2)\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "CRO BIC ILM riesgo operacional Grupo 1 expresión",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"CRO BIC ILM riesgo operacional Grupo 1 expresión\", \"total_con_match\": 260, \"resultados\": [{\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_por_la_expresion_cro_a_ib_n_donde_a_es_15_n_es_numer\", \"type\": \"Obligacion\", \"label\": \"Determinar CRO mensualmente Grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente por la expresión: CRO = (a*IB) / n, donde a es 15%, n es número de períodos de 12 meses consecutivos con IB positivo, máximo 3\"}, {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión … [+3696 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 2)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 3)\", \"pasaje\": \"7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. \\n7.2. Exigencia de capital por riesgo operacional para entidades del grupo 2. \\n7.3. Límite para las entidades del grupo 2.\\n7.4. Nuevas entidades.\\nSección 8.   Responsabilidad patrimonial computable.\\n8.1. Determinación.\\n8.2. Conceptos computables.\\n8.3. Criterios relacionados con los conceptos computables. \\n8.4. Conceptos deducibles.\\n8.5. Límites.\\n8.6. Aportes de capital.\\n8.7. Procedimiento.\\nSección 9.   Bases de observancia de las normas.\\n9.1. Base individual. \\n9.2. Base consolidada.\\nSección 10. Agentes de calificación externa (ECAI).\\nSección 11. Otras disposiciones.\\nSección 12. Disposiciones transitorias.\\nTabla de correlaciones.\\nB.C.R.A. TEXTO ORDENADO SOBRE\\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nVersión: 26a. COMUNICACIÓN  “A”  8329 Vigencia:\\n18/09/2025 Página 2\"}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM multiplicador valor uno se determinará mensualmente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM multiplicador valor uno se determinará mensualmente\", \"total_con_match\": 395, \"resultados\": [{\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_por_la_expresion_cro_a_ib_n_donde_a_es_15_n_es_numer\", \"type\": \"Obligacion\", \"label\": \"Determinar CRO mensualmente Grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente por la expresión: CRO = (a*IB) / n, donde a es 15%, n es número de períodos de 12 meses consecutivos con IB positivo, máximo 3\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_aplicando_la_siguiente_expresion_c_ro_max_ib_t_12_50\", \"type\": \"Obligacion\", \"label\": \"Determinar mensualmente exigencia capital operacional\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente aplicando la siguiente expresión: C_RO = máx(IB_t/12.500, K_0) donde C_RO es exigencia… [+2601 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\"}, \"output_completo\": {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"properties\": {\"descripcion\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31087,
+      "output_tokens": 411
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35419,
+      "output_tokens": 388
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39349,
+      "output_tokens": 330
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 42275,
+      "output_tokens": 391
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45033,
+      "output_tokens": 480
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45848,
+      "output_tokens": 4073
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'régimen informativo capitales mínimos riesgo operacional', 'limite': 10}",
+      "devolvio": "Encuentra el nodo 'Informar CRO mensualmente' con la expresión CRO=BIC x ILM para Grupo 1",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'Grupo 1 exigencia capital riesgo operacional', 'limite': 10}",
+      "devolvio": "Restricciones de grupo B/C y nuevamente el nodo CRO mensual Grupo 1",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'multiplicador pérdida interna', 'limite': 10}",
+      "devolvio": "Nodos sobre multiplicadores de garantía/EPF/factor 1,5, ninguno sobre ILM del riesgo operacional",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_se_determinara_mensualmente...cro_m'}",
+      "devolvio": "descripcion: 'CRO = BIC x ILM para entidades del Grupo 1'; plazo: mensual; provenance Punto 5.1. NO contiene valor de ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM multiplicador pérdida', 'limite': 10}",
+      "devolvio": "Mismos nodos de multiplicadores de garantía/EPF, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'BIC ILM CRO', 'limite': 10}",
+      "devolvio": "Nodos de BIC y CRO mensual, ninguno con valor de ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM valor 1.5', 'limite': 10}",
+      "devolvio": "Factor 1,5 de riesgo de contraparte y otros no relacionados",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'Internal Loss Multiplier', 'limite': 10}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{'id': '...cro_m', 'direccion': 'ambas'}",
+      "devolvio": "4 salientes: establecida_en TO, aplica_a Grupo 1, regula 2 operaciones; ninguna aporta valor de ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_mensual_de_exigencia_operacional'}",
+      "devolvio": "tipo: 'cálculo mensual de exigencia operacional', sin valor de ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'régimen informativo contable mensual punto 5.1', 'limite': 10}",
+      "devolvio": "TO régimen informativo y restricciones varias, sin valor ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM 1.5 riesgo operacional', 'limite': 10}",
+      "devolvio": "Factor 1,5 contraparte y CRO mensual, sin valor ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'multiplicador pérdida interna 1.5', 'limite': 10}",
+      "devolvio": "Factor 1,5 y multiplicador EPF, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ILM', 'limite': 15}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'TextoOrdenado_to_capitales_minimos_actual_pdf'}",
+      "devolvio": "Nodo TO Capitales Mínimos, metadatos, sin valor de ILM",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente encontró y usó correctamente el nodo pertinente para las dos patas que sí estaban en el grafo (frecuencia mensual y expresión CRO=BIC x ILM, ambas aprobadas por el juez). Para la pata del valor del ILM realizó una búsqueda exhaustiva con múltiples variantes (pasos 3, 5, 6, 7, 8, 12, 13, 14, incluyendo 'ILM', 'Internal Loss Multiplier', 'multiplicador pérdida interna', 'ILM 1.5') y, al no hallar el dato en el grafo, reportó honestamente su ausencia en lugar de inventar un valor. Actuó bien sobre lo que tenía disponible; el hueco es del grafo.",
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se determina la exigencia de capital por riesgo operacional del Grupo 1 (mensual) — APROBADA",
+     "Expresión mediante la cual se determina (CRO = BIC x ILM) — APROBADA",
+     "Valor que toma el multiplicador de pérdida interna (ILM) — FALLIDA"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Valor que toma el multiplicador de pérdida interna (ILM)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1",
+       "ubicacion": "Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (abierto por el agente en paso 4; provenance Punto 5.1 — omite el valor de ILM)"
+      },
+      "fuente": {
+       "quote": "Se determinará mensualmente por la siguiente expresión: CRO = BIC x ILM donde: CRO: exigencia de capital por riesgo operacional. ILM: multiplicador de pérdida interna igual a 1. BIC: componente del indicador de negocio = ∑ BIi x αi",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1.1 (pág 21)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "multiplicador de pérdida interna igual a 1",
+       "resultado": "3173 matches pero ningún nodo porta el valor 'ILM = 1'; resultados sobre debida diligencia, ponderadores, factor 1,2/1,5, ninguno del riesgo operacional Grupo 1"
+      },
+      {
+       "consulta": "ILM igual a 1 CRO BIC",
+       "resultado": "1196 matches; aparece el nodo hermano 'Determinar CRO mensualmente Grupo 2' con valores (a=15%) pero NINGÚN nodo con el valor de ILM del Grupo 1"
+      },
+      {
+       "consulta": "ILM riesgo operacional grupo 1 valor",
+       "resultado": "El único nodo del riesgo operacional Grupo 1 es el que omite el valor de ILM; sus vecinos no aportan el valor"
+      },
+      {
+       "consulta": "ver_vecinos del nodo CRO Grupo 1",
+       "resultado": "4 salientes (establecida_en, aplica_a, regula x2); ningún vecino contiene el valor de ILM; el vecino 'Determinación mensual CRO' solo tiene tipo genérico sin valor"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene tres patas; el juez aprobó las dos primeras (frecuencia mensual y expresión CRO=BIC x ILM) y solo falló la tercera (valor del ILM). C1a (síntoma por pata): el dato pertinente a la pata del ILM —el valor '1'— nunca apareció en ningún output de la trayectoria del agente. El único nodo del riesgo operacional Grupo 1 (visto íntegro en paso 4) describe la expresión pero OMITE el valor de ILM, y ninguna de las múltiples búsquedas del agente (ILM, Internal Loss Multiplier, multiplicador pérdida interna, ILM 1.5) devolvió el dato. Por tanto el síntoma es context_recall. C2 (causa): ¿existe nodo portador del valor faltante? Mis propias búsquedas con vocabulario del PDF ('multiplicador de pérdida interna igual a 1', 'ILM igual a 1') y la exploración de vecinos del nodo CRO Grupo 1 confirman que NINGÚN nodo del grafo contiene 'ILM = 1'. No es alcanzabilidad_kg (no hay nodo oculto que exista) ni navegación (no hay nodo que exhibir). ¿El PDF tiene el dato? Sí, explícitamente: 'ILM: multiplicador de pérdida interna igual a 1', en el Punto 5.1.1, exactamente el mismo punto que el nodo cita como provenance. Es decir, la extracción del nodo capturó la expresión pero recortó el valor que el PDF sí trae en el mismo pasaje → completitud_kg. El agente actuó correctamente: buscó exhaustivamente y reportó honestamente la ausencia en vez de alucinar; no hay defecto del agente. Atribución primaria {context_recall, completitud_kg}, lado grafo.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 182917,
+    "tokens_out": 5512
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 182917,
+    "tokens_out": 5512,
+    "latency_s": 71.493,
+    "error": null,
+    "final_raw": "Confirmado definitivamente. Los vecinos del nodo CRO Grupo 1 no contienen ningún nodo con el valor de ILM. El nodo \"Determinación mensual CRO\" solo tiene tipo genérico (visto en paso 10: \"tipo: cálculo mensual de exigencia operacional\", sin valor). El valor \"ILM = 1\" está en el PDF (punto 5.1.1, mismo punto citado por el nodo) pero no fue extraído a ningún nodo del grafo.\n\nTengo evidencia suficiente. El agente actuó correctamente: buscó exhaustivamente el valor del ILM (pasos 3, 5, 7, 8, 12, 13, 14 con múltiples variantes) y honestamente reportó que no estaba disponible. La falla es del grafo: el dato existe en el PDF pero falta en el KG.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'régimen informativo capitales mínimos riesgo operacional', 'limite': 10}\", \"devolvio\": \"Encuentra el nodo 'Informar CRO mensualmente' con la expresión CRO=BIC x ILM para Grupo 1\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'Grupo 1 exigencia capital riesgo operacional', 'limite': 10}\", \"devolvio\": \"Restricciones de grupo B/C y nuevamente el nodo CRO mensual Grupo 1\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'multiplicador pérdida interna', 'limite': 10}\", \"devolvio\": \"Nodos sobre multiplicadores de garantía/EPF/factor 1,5, ninguno sobre ILM del riesgo operacional\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_se_determinara_mensualmente...cro_m'}\", \"devolvio\": \"descripcion: 'CRO = BIC x ILM para entidades del Grupo 1'; plazo: mensual; provenance Punto 5.1. NO contiene valor de ILM\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM multiplicador pérdida', 'limite': 10}\", \"devolvio\": \"Mismos nodos de multiplicadores de garantía/EPF, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'BIC ILM CRO', 'limite': 10}\", \"devolvio\": \"Nodos de BIC y CRO mensual, ninguno con valor de ILM\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM valor 1.5', 'limite': 10}\", \"devolvio\": \"Factor 1,5 de riesgo de contraparte y otros no relacionados\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'Internal Loss Multiplier', 'limite': 10}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{'id': '...cro_m', 'direccion': 'ambas'}\", \"devolvio\": \"4 salientes: establecida_en TO, aplica_a Grupo 1, regula 2 operaciones; ninguna aporta valor de ILM\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_mensual_de_exigencia_operacional'}\", \"devolvio\": \"tipo: 'cálculo mensual de exigencia operacional', sin valor de ILM\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'régimen informativo contable mensual punto 5.1', 'limite': 10}\", \"devolvio\": \"TO régimen informativo y restricciones varias, sin valor ILM\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM 1.5 riesgo operacional', 'limite': 10}\", \"devolvio\": \"Factor 1,5 contraparte y CRO mensual, sin valor ILM\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'multiplicador pérdida interna 1.5', 'limite': 10}\", \"devolvio\": \"Factor 1,5 y multiplicador EPF, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ILM', 'limite': 15}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'TextoOrdenado_to_capitales_minimos_actual_pdf'}\", \"devolvio\": \"Nodo TO Capitales Mínimos, metadatos, sin valor de ILM\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente encontró y usó correctamente el nodo pertinente para las dos patas que sí estaban en el grafo (frecuencia mensual y expresión CRO=BIC x ILM, ambas aprobadas por el juez). Para la pata del valor del ILM realizó una búsqueda exhaustiva con múltiples variantes (pasos 3, 5, 6, 7, 8, 12, 13, 14, incluyendo 'ILM', 'Internal Loss Multiplier', 'multiplicador pérdida interna', 'ILM 1.5') y, al no hallar el dato en el grafo, reportó honestamente su ausencia en lugar de inventar un valor. Actuó bien sobre lo que tenía disponible; el hueco es del grafo.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se determina la exigencia de capital por riesgo operacional del Grupo 1 (mensual) — APROBADA\",\n      \"Expresión mediante la cual se determina (CRO = BIC x ILM) — APROBADA\",\n      \"Valor que toma el multiplicador de pérdida interna (ILM) — FALLIDA\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Valor que toma el multiplicador de pérdida interna (ILM)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\", \"ubicacion\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (abierto por el agente en paso 4; provenance Punto 5.1 — omite el valor de ILM)\"},\n        \"fuente\": {\"quote\": \"Se determinará mensualmente por la siguiente expresión: CRO = BIC x ILM donde: CRO: exigencia de capital por riesgo operacional. ILM: multiplicador de pérdida interna igual a 1. BIC: componente del indicador de negocio = ∑ BIi x αi\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1.1 (pág 21)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"multiplicador de pérdida interna igual a 1\", \"resultado\": \"3173 matches pero ningún nodo porta el valor 'ILM = 1'; resultados sobre debida diligencia, ponderadores, factor 1,2/1,5, ninguno del riesgo operacional Grupo 1\"},\n        {\"consulta\": \"ILM igual a 1 CRO BIC\", \"resultado\": \"1196 matches; aparece el nodo hermano 'Determinar CRO mensualmente Grupo 2' con valores (a=15%) pero NINGÚN nodo con el valor de ILM del Grupo 1\"},\n        {\"consulta\": \"ILM riesgo operacional grupo 1 valor\", \"resultado\": \"El único nodo del riesgo operacional Grupo 1 es el que omite el valor de ILM; sus vecinos no aportan el valor\"},\n        {\"consulta\": \"ver_vecinos del nodo CRO Grupo 1\", \"resultado\": \"4 salientes (establecida_en, aplica_a, regula x2); ningún vecino contiene el valor de ILM; el vecino 'Determinación mensual CRO' solo tiene tipo genérico sin valor\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene tres patas; el juez aprobó las dos primeras (frecuencia mensual y expresión CRO=BIC x ILM) y solo falló la tercera (valor del ILM). C1a (síntoma por pata): el dato pertinente a la pata del ILM —el valor '1'— nunca apareció en ningún output de la trayectoria del agente. El único nodo del riesgo operacional Grupo 1 (visto íntegro en paso 4) describe la expresión pero OMITE el valor de ILM, y ninguna de las múltiples búsquedas del agente (ILM, Internal Loss Multiplier, multiplicador pérdida interna, ILM 1.5) devolvió el dato. Por tanto el síntoma es context_recall. C2 (causa): ¿existe nodo portador del valor faltante? Mis propias búsquedas con vocabulario del PDF ('multiplicador de pérdida interna igual a 1', 'ILM igual a 1') y la exploración de vecinos del nodo CRO Grupo 1 confirman que NINGÚN nodo del grafo contiene 'ILM = 1'. No es alcanzabilidad_kg (no hay nodo oculto que exista) ni navegación (no hay nodo que exhibir). ¿El PDF tiene el dato? Sí, explícitamente: 'ILM: multiplicador de pérdida interna igual a 1', en el Punto 5.1.1, exactamente el mismo punto que el nodo cita como provenance. Es decir, la extracción del nodo capturó la expresión pero recortó el valor que el PDF sí trae en el mismo pasaje → completitud_kg. El agente actuó correctamente: buscó exhaustivamente y reportó honestamente la ausencia en vez de alucinar; no hay defecto del agente. Atribución primaria {context_recall, completitud_kg}, lado grafo.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 5.1. Normas de procedimiento (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 21)\", \"pasaje\": \"5.1. Normas de procedimiento \\n \\n5.1.1. Exigencia por riesgo operacional para entidades del Grupo 1 \\n \\nSe determinará mensualmente por la siguiente expresión: \\n \\nCRO = BIC x ILM \\ndonde: \\n \\nCRO: exigencia de capital por riesgo operacional.  \\n \\nILM:   multiplicador de pérdida interna igual a 1. \\n \\nBIC:   componente del indicador de negocio =  ∑ BIi x αi   \\n \\ndonde; αi: coeficiente marginal, determinado en función del tramo del BI: \\n \\nCategoría  Tramo de BI (en miles de \\nmillones de euros*)  \\nCoeficientes marginales \\nde BI (αi)  \\n1  ≤ 1  12 %  \\n2  1 < BI ≤ 30  15 %  \\n3  > 30  18 %  \\n(*) Se calculará el importe equivalente en pesos al T.C. vendedor del BNA al cie-\\nrre de las operaciones del último día hábil del mes anterior del que se trate. \\n                   \\nEs decir, para un BI = 35.000 m EUR, el BIC = (1 x 12%) + (30-1) x 15% + (35-30) x 18% = 5.370 m EUR. \\n   \\nBI: VA (ILDCProm + SCProm + FCProm + RMProm).  \\n \\nLa partida corresp… [+467 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"multiplicador pérdida interna\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"multiplicador pérdida interna\", \"total_con_match\": 15, \"resultados\": [{\"id\": \"Restriccion_el_multiplicador_que_reduce_la_garantia_en_exceso_esta_sujeto_a_un_minimo_del_5_\", \"type\": \"Restriccion\", \"label\": \"Multiplicador mínimo EPF\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El multiplicador que reduce la garantía en exceso está sujeto a un mínimo del 5% de la EPF\"}, {\"id\": \"Obligacion_la_epf_resultara_del_producto_entre_la_suma_de_adicionales_por_clase_de_activos_\", \"type\": \"Obligacion\", \"label\": \"Calcular EPF multiplicador\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La EPF resultará del producto entre la suma de adicionales por clase de activos y un multiplicador que reconoce garantía en exceso o valor de mercado negativo\"}, {\"id\": \"Operacion_auditoria_interna\", \"type\": \"Operacion\", \"label\": \"Revisión de esquema de medición\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Revisión exhaustiva del esquema que adopte la entidad para la medición de la exigencia por riesgo de mercado\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_… [+2547 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "multiplicador de pérdida interna igual a 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"multiplicador de pérdida interna igual a 1\", \"total_con_match\": 3173, \"resultados\": [{\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_el_ponderador_a_aplicar_sera_1_2_veces_el_ponderador_que_corresponderia_aplicar_\", \"type\": \"Restriccion\", \"label\": \"Límite en factor de ponderación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El ponderador a aplicar será 1,2 veces el ponderador que correspondería aplicar si se tratara de una exposición directa, cuando la entidad financiera se base en…\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multiplicación de exposición al riesgo de contraparte por factor 1,5\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_sub… [+2444 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM igual a 1 CRO BIC",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM igual a 1 CRO BIC\", \"total_con_match\": 1196, \"resultados\": [{\"id\": \"Restriccion_el_activo_recibido_en_garantia_se_limitara_a_aquellos_listados_en_el_punto_5_3_1\", \"type\": \"Restriccion\", \"label\": \"Activos limitados a listado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2.\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_el_ponderador_a_aplicar_sera_1_2_veces_el_ponderador_que_corresponderia_aplicar_\", \"type\": \"Restriccion\", \"label\": \"Límite en factor de ponderación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador a aplicar será 1,2 veces el ponderador que correspondería aplicar si se tratara de una exposición directa, cuando la entidad financiera se base en…\"}, {\"id\": \"Restriccion_los_garantes_admisibles_se_limitan_a_los… [+2412 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM riesgo operacional grupo 1 valor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM riesgo operacional grupo 1 valor\", \"total_con_match\": 305, \"resultados\": [{\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta…\"}, {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_c_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo C\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo C determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta…\"}, {\"id\": \"Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional\", \"type\": \"Operacion\", \"label\": \"Cálculo promedio ERC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo de promedio de exigencias de riesgo operacional\"}, {\"id\": \"EntidadFinanciera_entidad_del_grupo_1\", \"type\": \"EntidadFinancier… [+2075 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m",
+       "direccion": "salientes"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"label\": \"Informar CRO mensualmente\", \"n_salientes_total\": 4, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_entidad_del_grupo_1\", \"vecino_label\": \"Entidades del grupo 1\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_calculo_de_capital_minimo\", \"vecino_label\": \"Cálculo de exigencia por riesgo de crédito\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_calculo_mensual_de_exigencia_operacional\", \"vecino_label\": \"Determinación mensual … [+183 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31087,
+      "output_tokens": 282
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33864,
+      "output_tokens": 359
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37612,
+      "output_tokens": 590
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39682,
+      "output_tokens": 331
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40672,
+      "output_tokens": 3950
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'régimen informativo capitales mínimos riesgo operacional','limite':10}",
+      "devolvio": "211 matches; incluye el nodo CRO (Obligacion_...cro_m) con la expresión CRO=BIC x ILM para Grupo 1",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'Grupo 1 exigencia capital riesgo operacional','limite':10}",
+      "devolvio": "436 matches; nuevamente el nodo CRO y restricciones de grupos B/C",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'multiplicador pérdida interna','limite':10}",
+      "devolvio": "15 matches, ninguno porta el valor del ILM (multiplicadores de EPF, factores 1,5, etc.)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id':'Obligacion_...cro_m'}",
+      "devolvio": "descripcion: 'Se determinará mensualmente la exigencia... CRO = BIC x ILM para entidades del Grupo 1'; plazo: mensual; provenance punto 5.1. No contiene valor del ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'ILM multiplicador pérdida','limite':10}",
+      "devolvio": "8 matches, ninguno con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'BIC ILM CRO','limite':10}",
+      "devolvio": "6 matches (BIC, CRO), ninguno con valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'ILM valor 1.5','limite':10}",
+      "devolvio": "139 matches irrelevantes (factor 1,5 de contraparte)",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'Internal Loss Multiplier','limite':10}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{'id':'Obligacion_...cro_m','direccion':'ambas'}",
+      "devolvio": "4 salientes: establecida_en TO régimen informativo, aplica_a Entidades grupo 1, regula cálculo riesgo crédito, regula Determinación mensual CRO. Ningún vecino con valor del ILM",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id':'Operacion_calculo_mensual_de_exigencia_operacional'}",
+      "devolvio": "solo tipo 'cálculo mensual de exigencia operacional', sin valor del ILM",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'régimen informativo contable mensual punto 5.1','limite':10}",
+      "devolvio": "145 matches; el TextoOrdenado del régimen y restricciones diversas",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'ILM 1.5 riesgo operacional','limite':10}",
+      "devolvio": "258 matches irrelevantes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'multiplicador pérdida interna 1.5','limite':10}",
+      "devolvio": "96 matches irrelevantes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'ILM','limite':15}",
+      "devolvio": "0 resultados",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id':'TextoOrdenado_to_capitales_minimos_actual_pdf'}",
+      "devolvio": "nodo TO Capitales Mínimos, solo metadata (materia/archivo/version)",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó el valor del ILM con abundantes términos plausibles ex ante (pasos 3,5,6,7,8,12,13,14: 'multiplicador pérdida interna', 'ILM multiplicador pérdida', 'ILM valor 1.5', 'Internal Loss Multiplier', 'ILM' solo, etc.), abrió el nodo portador del tema (CRO, paso 4) y exploró sus vecinos (paso 9). Ningún nodo del grafo porta el valor del ILM. El agente respondió correctamente las dos patas para las que había dato (frecuencia mensual y expresión CRO=BIC x ILM) y declaró honestamente que el valor del ILM no está en el KG. Actuó bien sobre lo disponible: la falla es del grafo, no de su navegación.",
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se determina la exigencia de capital por riesgo operacional de las entidades del Grupo 1",
+     "Expresión mediante la cual se determina dicha exigencia",
+     "Valor que toma el multiplicador de pérdida interna (ILM)"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Valor que toma el multiplicador de pérdida interna (ILM)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1",
+       "ubicacion": "Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (único nodo del tema; capta la expresión pero OMITE el valor del ILM)"
+      },
+      "fuente": {
+       "quote": "5.1.1. Exigencia por riesgo operacional para entidades del Grupo 1 \n \nSe determinará mensualmente por la siguiente expresión: \n \nCRO = BIC x ILM \ndonde: \n \nCRO: exigencia de capital por riesgo operacional.  \n \nILM:   multiplicador de pérdida interna igual a 1.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1. Normas de procedimiento (parte 1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ILM igual a 1",
+       "resultado": "1191 matches, ninguno porta el valor del ILM (activos en garantía, debida diligencia, ponderadores, etc.)"
+      },
+      {
+       "consulta": "multiplicador de pérdida interna igual a 1",
+       "resultado": "3173 matches, ninguno con el valor del ILM"
+      },
+      {
+       "consulta": "ILM riesgo operacional grupo 1 valor uno",
+       "resultado": "316 matches; el nodo CRO aparece pero solo con la expresión, sin el valor del ILM"
+      },
+      {
+       "consulta": "pérdida interna multiplicador exigencia operacional definición",
+       "resultado": "132 matches; el nodo CRO y otros de riesgo operacional, ninguno con el valor del ILM"
+      },
+      {
+       "consulta": "ILM (paso 14 del agente, re-ejecutado)",
+       "resultado": "0 resultados: ningún nodo tiene 'ILM' en label/id (el nodo CRO lo lleva solo dentro de la descripción, sin valor)"
+      },
+      {
+       "consulta": "BIC componente indicador de negocio",
+       "resultado": "nodos de BIC/BI/coeficientes marginales existen (Operacion_calculo_de_indicador_financiero, Obligacion_determinar_indicador_negocio_bi), pero ninguno define el valor del ILM"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): de las tres patas, el juez APROBÓ frecuencia (mensual) y expresión (CRO=BIC x ILM) — ambas soportadas por el nodo CRO consultado en el paso 4. La pata fallida es el valor del ILM. El dato pertinente (ILM=1) NUNCA apareció en la trayectoria: el único nodo del tema (Obligacion_...cro_m) contiene la expresión pero no el valor del multiplicador, y el resto de los resultados fueron irrelevantes. Por tanto esta pata es context_recall y va directo a su rama del árbol. CAUSA (C2): ¿existe nodo portador del valor faltante? Búsqueda exhaustiva documentada con vocabulario ex ante y adicional ('ILM', 'multiplicador pérdida interna', 'ILM igual a 1', 'multiplicador de pérdida interna igual a 1', 'Internal Loss Multiplier', etc.): ningún nodo porta 'ILM = 1'; la búsqueda directa 'ILM' devuelve 0. Descarto alcanzabilidad_kg (no hay nodo oculto que se alcance solo con palabras propias) y navegación (no existe nodo relevante que exhibir con su contenido). ¿El PDF tiene el dato? SÍ, taxativamente: 'ILM: multiplicador de pérdida interna igual a 1.' (TO régimen informativo, punto 5.1.1). Dato presente en la fuente y ausente en el grafo (nodo CRO extraído de forma incompleta, capturó la fórmula y omitió la definición del ILM) → completitud_kg, primaria, lado grafo. El agente actuó correctamente: buscó con términos razonables, exploró el nodo portador y sus vecinos, y declaró honestamente el faltante; no hay defecto de agente. No aplica sin_defecto porque la respuesta sí quedó incompleta frente a lo que la fuente permitía responder.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 283426,
+    "tokens_out": 6267
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 283426,
+    "tokens_out": 6267,
+    "latency_s": 82.91,
+    "error": null,
+    "final_raw": "Confirmado: la búsqueda directa \"ILM\" devuelve 0 resultados — no hay ningún nodo cuyo label/id contenga \"ILM\" (excepto el nodo CRO, que lo tiene solo dentro de la expresión). El agente hizo su trabajo correctamente. El dato falta en el grafo pero existe en el PDF → completitud_kg.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'régimen informativo capitales mínimos riesgo operacional','limite':10}\", \"devolvio\": \"211 matches; incluye el nodo CRO (Obligacion_...cro_m) con la expresión CRO=BIC x ILM para Grupo 1\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'Grupo 1 exigencia capital riesgo operacional','limite':10}\", \"devolvio\": \"436 matches; nuevamente el nodo CRO y restricciones de grupos B/C\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'multiplicador pérdida interna','limite':10}\", \"devolvio\": \"15 matches, ninguno porta el valor del ILM (multiplicadores de EPF, factores 1,5, etc.)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Obligacion_...cro_m'}\", \"devolvio\": \"descripcion: 'Se determinará mensualmente la exigencia... CRO = BIC x ILM para entidades del Grupo 1'; plazo: mensual; provenance punto 5.1. No contiene valor del ILM\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'ILM multiplicador pérdida','limite':10}\", \"devolvio\": \"8 matches, ninguno con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'BIC ILM CRO','limite':10}\", \"devolvio\": \"6 matches (BIC, CRO), ninguno con valor del ILM\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'ILM valor 1.5','limite':10}\", \"devolvio\": \"139 matches irrelevantes (factor 1,5 de contraparte)\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'Internal Loss Multiplier','limite':10}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'Obligacion_...cro_m','direccion':'ambas'}\", \"devolvio\": \"4 salientes: establecida_en TO régimen informativo, aplica_a Entidades grupo 1, regula cálculo riesgo crédito, regula Determinación mensual CRO. Ningún vecino con valor del ILM\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Operacion_calculo_mensual_de_exigencia_operacional'}\", \"devolvio\": \"solo tipo 'cálculo mensual de exigencia operacional', sin valor del ILM\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'régimen informativo contable mensual punto 5.1','limite':10}\", \"devolvio\": \"145 matches; el TextoOrdenado del régimen y restricciones diversas\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'ILM 1.5 riesgo operacional','limite':10}\", \"devolvio\": \"258 matches irrelevantes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'multiplicador pérdida interna 1.5','limite':10}\", \"devolvio\": \"96 matches irrelevantes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'ILM','limite':15}\", \"devolvio\": \"0 resultados\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id':'TextoOrdenado_to_capitales_minimos_actual_pdf'}\", \"devolvio\": \"nodo TO Capitales Mínimos, solo metadata (materia/archivo/version)\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó el valor del ILM con abundantes términos plausibles ex ante (pasos 3,5,6,7,8,12,13,14: 'multiplicador pérdida interna', 'ILM multiplicador pérdida', 'ILM valor 1.5', 'Internal Loss Multiplier', 'ILM' solo, etc.), abrió el nodo portador del tema (CRO, paso 4) y exploró sus vecinos (paso 9). Ningún nodo del grafo porta el valor del ILM. El agente respondió correctamente las dos patas para las que había dato (frecuencia mensual y expresión CRO=BIC x ILM) y declaró honestamente que el valor del ILM no está en el KG. Actuó bien sobre lo disponible: la falla es del grafo, no de su navegación.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se determina la exigencia de capital por riesgo operacional de las entidades del Grupo 1\",\n      \"Expresión mediante la cual se determina dicha exigencia\",\n      \"Valor que toma el multiplicador de pérdida interna (ILM)\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Valor que toma el multiplicador de pérdida interna (ILM)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, en la información disponible en el Knowledge Graph no se especifica el valor numérico que toma el multiplicador de pérdida interna (ILM).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\", \"ubicacion\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m (único nodo del tema; capta la expresión pero OMITE el valor del ILM)\"},\n        \"fuente\": {\"quote\": \"5.1.1. Exigencia por riesgo operacional para entidades del Grupo 1 \\n \\nSe determinará mensualmente por la siguiente expresión: \\n \\nCRO = BIC x ILM \\ndonde: \\n \\nCRO: exigencia de capital por riesgo operacional.  \\n \\nILM:   multiplicador de pérdida interna igual a 1.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 5.1. Normas de procedimiento (parte 1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ILM igual a 1\", \"resultado\": \"1191 matches, ninguno porta el valor del ILM (activos en garantía, debida diligencia, ponderadores, etc.)\"},\n        {\"consulta\": \"multiplicador de pérdida interna igual a 1\", \"resultado\": \"3173 matches, ninguno con el valor del ILM\"},\n        {\"consulta\": \"ILM riesgo operacional grupo 1 valor uno\", \"resultado\": \"316 matches; el nodo CRO aparece pero solo con la expresión, sin el valor del ILM\"},\n        {\"consulta\": \"pérdida interna multiplicador exigencia operacional definición\", \"resultado\": \"132 matches; el nodo CRO y otros de riesgo operacional, ninguno con el valor del ILM\"},\n        {\"consulta\": \"ILM (paso 14 del agente, re-ejecutado)\", \"resultado\": \"0 resultados: ningún nodo tiene 'ILM' en label/id (el nodo CRO lo lleva solo dentro de la descripción, sin valor)\"},\n        {\"consulta\": \"BIC componente indicador de negocio\", \"resultado\": \"nodos de BIC/BI/coeficientes marginales existen (Operacion_calculo_de_indicador_financiero, Obligacion_determinar_indicador_negocio_bi), pero ninguno define el valor del ILM\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): de las tres patas, el juez APROBÓ frecuencia (mensual) y expresión (CRO=BIC x ILM) — ambas soportadas por el nodo CRO consultado en el paso 4. La pata fallida es el valor del ILM. El dato pertinente (ILM=1) NUNCA apareció en la trayectoria: el único nodo del tema (Obligacion_...cro_m) contiene la expresión pero no el valor del multiplicador, y el resto de los resultados fueron irrelevantes. Por tanto esta pata es context_recall y va directo a su rama del árbol. CAUSA (C2): ¿existe nodo portador del valor faltante? Búsqueda exhaustiva documentada con vocabulario ex ante y adicional ('ILM', 'multiplicador pérdida interna', 'ILM igual a 1', 'multiplicador de pérdida interna igual a 1', 'Internal Loss Multiplier', etc.): ningún nodo porta 'ILM = 1'; la búsqueda directa 'ILM' devuelve 0. Descarto alcanzabilidad_kg (no hay nodo oculto que se alcance solo con palabras propias) y navegación (no existe nodo relevante que exhibir con su contenido). ¿El PDF tiene el dato? SÍ, taxativamente: 'ILM: multiplicador de pérdida interna igual a 1.' (TO régimen informativo, punto 5.1.1). Dato presente en la fuente y ausente en el grafo (nodo CRO extraído de forma incompleta, capturó la fórmula y omitió la definición del ILM) → completitud_kg, primaria, lado grafo. El agente actuó correctamente: buscó con términos razonables, exploró el nodo portador y sus vecinos, y declaró honestamente el faltante; no hay defecto de agente. No aplica sin_defecto porque la respuesta sí quedó incompleta frente a lo que la fuente permitía responder.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 5.1. Normas de procedimiento (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.1. Normas de procedimiento (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 21)\", \"pasaje\": \"5.1. Normas de procedimiento \\n \\n5.1.1. Exigencia por riesgo operacional para entidades del Grupo 1 \\n \\nSe determinará mensualmente por la siguiente expresión: \\n \\nCRO = BIC x ILM \\ndonde: \\n \\nCRO: exigencia de capital por riesgo operacional.  \\n \\nILM:   multiplicador de pérdida interna igual a 1. \\n \\nBIC:   componente del indicador de negocio =  ∑ BIi x αi   \\n \\ndonde; αi: coeficiente marginal, determinado en función del tramo del BI: \\n \\nCategoría  Tramo de BI (en miles de \\nmillones de euros*)  \\nCoeficientes marginales \\nde BI (αi)  \\n1  ≤ 1  12 %  \\n2  1 < BI ≤ 30  15 %  \\n3  > 30  18 %  \\n(*) Se calculará el importe equivalente en pesos al T.C. vendedor del BNA al cie-\\nrre de las operaciones del último día hábil del mes anterior del que se trate. \\n                   \\nEs decir, para un BI = 35.000 m EUR, el BIC = (1 x 12%) + (30-1) x 15% + (35-30) x 18% = 5.370 m EUR. \\n   \\nBI: VA (ILDCProm + SCProm + FCProm + RMProm).  \\n \\nLa partida corresp… [+467 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"multiplicador pérdida interna\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"multiplicador pérdida interna\", \"total_con_match\": 15, \"resultados\": [{\"id\": \"Restriccion_el_multiplicador_que_reduce_la_garantia_en_exceso_esta_sujeto_a_un_minimo_del_5_\", \"type\": \"Restriccion\", \"label\": \"Multiplicador mínimo EPF\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El multiplicador que reduce la garantía en exceso está sujeto a un mínimo del 5% de la EPF\"}, {\"id\": \"Obligacion_la_epf_resultara_del_producto_entre_la_suma_de_adicionales_por_clase_de_activos_\", \"type\": \"Obligacion\", \"label\": \"Calcular EPF multiplicador\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La EPF resultará del producto entre la suma de adicionales por clase de activos y un multiplicador que reconoce garantía en exceso o valor de mercado negativo\"}, {\"id\": \"Operacion_auditoria_interna\", \"type\": \"Operacion\", \"label\": \"Revisión de esquema de medición\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Revisión exhaustiva del esquema que adopte la entidad para la medición de la exigencia por riesgo de mercado\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_… [+2547 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM igual a 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM igual a 1\", \"total_con_match\": 1191, \"resultados\": [{\"id\": \"Restriccion_el_activo_recibido_en_garantia_se_limitara_a_aquellos_listados_en_el_punto_5_3_1\", \"type\": \"Restriccion\", \"label\": \"Activos limitados a listado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2.\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_el_ponderador_a_aplicar_sera_1_2_veces_el_ponderador_que_corresponderia_aplicar_\", \"type\": \"Restriccion\", \"label\": \"Límite en factor de ponderación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador a aplicar será 1,2 veces el ponderador que correspondería aplicar si se tratara de una exposición directa, cuando la entidad financiera se base en…\"}, {\"id\": \"Restriccion_los_garantes_admisibles_se_limitan_a_los_estipul… [+2414 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "multiplicador de pérdida interna igual a 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"multiplicador de pérdida interna igual a 1\", \"total_con_match\": 3173, \"resultados\": [{\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_el_ponderador_a_aplicar_sera_1_2_veces_el_ponderador_que_corresponderia_aplicar_\", \"type\": \"Restriccion\", \"label\": \"Límite en factor de ponderación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El ponderador a aplicar será 1,2 veces el ponderador que correspondería aplicar si se tratara de una exposición directa, cuando la entidad financiera se base en…\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multiplicación de exposición al riesgo de contraparte por factor 1,5\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_sub… [+2444 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "BIC componente indicador de negocio",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"BIC componente indicador de negocio\", \"total_con_match\": 2410, \"resultados\": [{\"id\": \"Operacion_calculo_de_indicador_financiero\", \"type\": \"Operacion\", \"label\": \"Cálculo de Indicador de Negocio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del BIC (Business Indicator Component) y sus componentes: ILDC (intereses, arrendamientos, dividendos), SC (servicios), FC (financiero) y RM (resultado …\"}, {\"id\": \"Obligacion_determinar_indicador_negocio_bi\", \"type\": \"Obligacion\", \"label\": \"Determinar indicador negocio (BI)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El BI es una aproximación al riesgo operacional a partir de la información de los estados financieros. Se determinará por la siguiente expresión: BI = VA (ILDC …\"}, {\"id\": \"Restriccion_limite_cuantitativo_de_coeficientes_bic\", \"type\": \"Restriccion\", \"label\": \"Límite cuantitativo de coeficientes BIC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los coeficientes marginales (α) para el cálculo del BIC varían según tramos: Categoría 1 (BI ≤ €1.000 millones): 12%; Categoría 2 (1 < BI ≤ 30 mil millones euro…\"}, {\"id\": \"Operacion_creditos_provenientes_de_ventas_factoring\", \"type\": \"Operacion\", \"label\": \"F… [+1702 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_calculo_de_indicador_financiero"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_de_indicador_financiero\", \"type\": \"Operacion\", \"label\": \"Cálculo de Indicador de Negocio\", \"properties\": {\"tipo\": \"cálculo de indicador financiero\", \"description\": \"Cálculo del BIC (Business Indicator Component) y sus componentes: ILDC (intereses, arrendamientos, dividendos), SC (servicios), FC (financiero) y RM (resultado monetario)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 5.2. Modelo de información\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_determinar_indicador_negocio_bi"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_determinar_indicador_negocio_bi\", \"type\": \"Obligacion\", \"label\": \"Determinar indicador negocio (BI)\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"El BI es una aproximación al riesgo operacional a partir de la información de los estados financieros. Se determinará por la siguiente expresión: BI = VA (ILDC + SC + FC + RM), donde cada componente debe calcularse como el promedio de los valores de los 3 últimos períodos consecutivos de 12 meses anteriores al mes en que se efectúa el cálculo\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 1)\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia riesgo operacional Grupo 1 CRO expresión determinará mensualmente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia riesgo operacional Grupo 1 CRO expresión determinará mensualmente\", \"total_con_match\": 308, \"resultados\": [{\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_por_la_expresion_cro_a_ib_n_donde_a_es_15_n_es_numer\", \"type\": \"Obligacion\", \"label\": \"Determinar CRO mensualmente Grupo 2\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Se determinará mensualmente por la expresión: CRO = (a*IB) / n, donde a es 15%, n es número de períodos de 12 meses consecutivos con IB positivo, máximo 3\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_aplicando_la_siguiente_expresion_c_ro_max_ib_t_12_50\", \"type\": \"Obligacion\", \"label\": \"Determinar mensualmente exigencia capital operacional\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Se determinará mensualmente aplicando la siguiente expresión: C_RO = máx(IB_t/12.500, K_0) don… [+2566 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 3)\", \"pasaje\": \"7.1. Exigencia de capital por riesgo operacional para entidades del grupo 1. \\n7.2. Exigencia de capital por riesgo operacional para entidades del grupo 2. \\n7.3. Límite para las entidades del grupo 2.\\n7.4. Nuevas entidades.\\nSección 8.   Responsabilidad patrimonial computable.\\n8.1. Determinación.\\n8.2. Conceptos computables.\\n8.3. Criterios relacionados con los conceptos computables. \\n8.4. Conceptos deducibles.\\n8.5. Límites.\\n8.6. Aportes de capital.\\n8.7. Procedimiento.\\nSección 9.   Bases de observancia de las normas.\\n9.1. Base individual. \\n9.2. Base consolidada.\\nSección 10. Agentes de calificación externa (ECAI).\\nSección 11. Otras disposiciones.\\nSección 12. Disposiciones transitorias.\\nTabla de correlaciones.\\nB.C.R.A. TEXTO ORDENADO SOBRE\\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nVersión: 26a. COMUNICACIÓN  “A”  8329 Vigencia:\\n18/09/2025 Página 2\"}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ILM riesgo operacional grupo 1 valor uno",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ILM riesgo operacional grupo 1 valor uno\", \"total_con_match\": 316, \"resultados\": [{\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta…\"}, {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_c_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo C\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo C determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta…\"}, {\"id\": \"Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional\", \"type\": \"Operacion\", \"label\": \"Cálculo promedio ERC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo de promedio de exigencias de riesgo operacional\"}, {\"id\": \"EntidadFinanciera_entidad_del_grupo_1\", \"type\": \"EntidadFinan… [+2079 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "pérdida interna multiplicador exigencia operacional definición",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"pérdida interna multiplicador exigencia operacional definición\", \"total_con_match\": 132, \"resultados\": [{\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Operacion_calculo_mensual_de_exigencia_operacional\", \"type\": \"Operacion\", \"label\": \"Determinación mensual CRO\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo mensual de exigencia operacional\"}, {\"id\": \"Restriccion_las_exigencias_a_ser_incluidas_dentro_del_calculo_del_promedio_de_erc_se_extiend\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia riesgo operacional\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las exigencias a ser incluidas dentro del cálculo del promedio de ERC se extienden únicamente hasta la que correspondió ser integrada en febrero 2013 (promedios…\"}, {\"id\": \"Operacion_calculo\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital riesgo operacional\", \"tokens_matc… [+2412 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 14
+      },
+      "output_truncado": "{\"paso\": 14, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"ILM\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"ILM\", \"total_con_match\": 0, \"resultados\": []}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31087,
+      "output_tokens": 327
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33909,
+      "output_tokens": 417
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39063,
+      "output_tokens": 405
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41736,
+      "output_tokens": 437
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44295,
+      "output_tokens": 629
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46521,
+      "output_tokens": 211
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 46815,
+      "output_tokens": 3841
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

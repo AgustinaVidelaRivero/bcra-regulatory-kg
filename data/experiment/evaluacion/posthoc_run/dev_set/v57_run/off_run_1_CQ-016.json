@@ -1,0 +1,246 @@
+{
+ "id_falla": "run_1/CQ-016",
+ "run": "run_1",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"limite\": 10}",
+    "devolvio": "181 matches; incluye prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos y req_exigencia_de_integracion_de_capitales_minimos ('Sección 4 del Régimen Informativo Contable Mensual...')",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"importes unidad decimales registro\", \"limite\": 10}",
+    "devolvio": "Resultados de registro no pertinentes (RRI, SEPAIMPO, aduanero)",
+    "pertinente": false
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos\"}",
+    "devolvio": "Sistema de reporte con instrucciones para códigos 70810000/70820000; provenance p.57",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos\", \"direccion\": \"ambas\"}",
+    "devolvio": "Salientes hacia Código 70810000 y 70820000",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"capitales mínimos unidad pesos decimales\", \"limite\": 10}",
+    "devolvio": "Nodos de capitales mínimos, sin unidad/decimales",
+    "pertinente": false
+   },
+   {
+    "paso": 6,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"importes miles pesos decimales\", \"limite\": 10}",
+    "devolvio": "req_miles_de_pesos ('Unidad de registro de importes, sin decimales')",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"req_miles_de_pesos\"}",
+    "devolvio": "Unidad de registro de importes, sin decimales; source_to regimen_informativo_cm; provenance pp.2-3",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"req_miles_de_pesos\", \"direccion\": \"ambas\"}",
+    "devolvio": "Sin vecinos",
+    "pertinente": false
+   },
+   {
+    "paso": 9,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"instrucciones registro capitales mínimos 70810000 70820000\", \"limite\": 10}",
+    "devolvio": "Nodos de capitales mínimos",
+    "pertinente": false
+   },
+   {
+    "paso": 10,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"rep_codigo_70810000\"}",
+    "devolvio": "Partida riesgo mercado hasta 29.02.16; p.57",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"rep_codigo_70820000\"}",
+    "devolvio": "Partida riesgo mercado Anexo A 5867; p.57",
+    "pertinente": false
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"instrucciones generales registro importes unidad\", \"limite\": 10}",
+    "devolvio": "Resultados no pertinentes",
+    "pertinente": false
+   },
+   {
+    "paso": 13,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"régimen informativo contable mensual instrucciones generales\", \"limite\": 10}",
+    "devolvio": "ins_regimen_informativo_contable_mensual y rep_regimen_informativo_contable_mensual_sobre_capitales_minimos",
+    "pertinente": true
+   },
+   {
+    "paso": 14,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"ins_regimen_informativo_contable_mensual\"}",
+    "devolvio": "Proceso de información periódica mensual obligatoria; provenances RICM pp.4/25/31/39/43",
+    "pertinente": true
+   },
+   {
+    "paso": 15,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"ins_regimen_informativo_contable_mensual\", \"direccion\": \"salientes\"}",
+    "devolvio": "establece_exigencias_de -> incremento de exigencia de capitales mínimos",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": null,
+  "decision_agente_correcta": "El agente localizó correctamente el nodo req_miles_de_pesos (paso 6-7), que responde ambas patas centrales (miles de pesos, sin decimales), coincidente con el punto 1.2 del PDF. La afirmación no central impugnada ('proviene del Régimen Informativo Contable Mensual') está soportada por su trayectoria: el resumen de req_exigencia_de_integracion_de_capitales_minimos expuesto en el paso 1 dice 'Sección 4 del Régimen Informativo Contable Mensual', y la provenance de req_miles_de_pesos apunta al TO del RICM. La afirmación es además correcta contra el PDF. El agente actuó bien.",
+  "thinking_decision": null,
+  "patas": [
+   "Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos",
+   "Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "sin_par",
+   "pata": "Afirmación no central sobre la procedencia normativa de la disposición",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Esta disposición proviene del Régimen Informativo Contable Mensual.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Sección 4 del Régimen Informativo Contable Mensual que establece la obligación de mantener capital computable según componentes definidos.",
+     "ubicacion": "req_exigencia_de_integracion_de_capitales_minimos (expuesto en el resumen del paso 1) / req_miles_de_pesos: source_to 'regimen_informativo_cm', provenance TO_regimen_informativo_contable_mensual_actual.pdf pp.2-3"
+    },
+    "fuente": {
+     "quote": "REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) (…) 1.2. Los importes se registrarán en miles de pesos, sin decimales.",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, pp. 2-3 (Punto 1.2, Sección 4)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf pp.2-3 (fuente del punto 1.2)",
+     "resultado": "El encabezado y el punto 1.2 confirman que la disposición de miles de pesos sin decimales pertenece a la Sección 4 'Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)' del Régimen Informativo Contable Mensual"
+    },
+    {
+     "consulta": "leer_pasaje_pdf p.31 (provenance de req_exigencia_de_integracion_de_capitales_minimos)",
+     "resultado": "Confirma 'REGIMEN INFORMATIVO CONTABLE MENSUAL / 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — el RICM es efectivamente la norma de la que proviene la disposición"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "El único síntoma marcado es la afirmación NO central 'Esta disposición proviene del Régimen Informativo Contable Mensual', catalogada no_soportada por el juez (las dos patas centrales —miles de pesos y sin decimales— fueron aprobadas). C1a (por pata): el dato pertinente a esta afirmación (que la disposición pertenece al RICM) SÍ apareció en la trayectoria: el resumen del nodo req_exigencia_de_integracion_de_capitales_minimos, expuesto en el paso 1, dice literalmente 'Sección 4 del Régimen Informativo Contable Mensual', y el nodo portador de las patas centrales (req_miles_de_pesos) tiene source_to 'regimen_informativo_cm' y provenance al TO del RICM. No es context_recall. C1b (por claim): ¿tiene soporte en lo consultado? Sí (resúmenes de trayectoria + provenance). No es faithfulness. ¿Es correcto contra el PDF? El PDF fuente es literalmente el TO del Régimen Informativo Contable Mensual y su punto 1.2 ('Los importes se registrarán en miles de pesos, sin decimales') está encabezado por 'REGIMEN INFORMATIVO CONTABLE MENSUAL 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'. La afirmación es fácticamente correcta y soportada. C2: descarto activamente cada defecto: contenido_kg (el nodo coincide con el PDF, no contradice); completitud_kg (el dato está tanto en PDF como en el grafo); estructural_kg (el vínculo RICM↔capitales mínimos está en los resúmenes y provenances vistos por el agente); provenance_imprecisa (la provenance pp.2-3 de req_miles_de_pesos SÍ funda su contenido); alucinacion_agente (no es glosa de cosecha propia, está soportada por trayectoria y confirmada por el PDF); navegación/aplicacion_erronea (no aplican). Conclusión: falso positivo del juez → sin_defecto, jerarquía sin_par. Al no haber ningún claim central fallido ni defecto real del sistema, el caso no tiene primaria.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 5,
+  "max_tool_calls": 40,
+  "tokens_in": 112057,
+  "tokens_out": 6091
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 5,
+  "tokens_in": 112057,
+  "tokens_out": 6091,
+  "latency_s": 75.238,
+  "error": null,
+  "final_raw": "Confirmado: la Sección 4 del RICM es \"Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)\". La afirmación del agente de que la disposición \"proviene del Régimen Informativo Contable Mensual\" es completamente correcta y estaba soportada por su trayectoria. Es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Régimen Informativo Exigencia Integración Capitales Mínimos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"181 matches; incluye prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos y req_exigencia_de_integracion_de_capitales_minimos ('Sección 4 del Régimen Informativo Contable Mensual...')\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"importes unidad decimales registro\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Resultados de registro no pertinentes (RRI, SEPAIMPO, aduanero)\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos\\\"}\", \"devolvio\": \"Sistema de reporte con instrucciones para códigos 70810000/70820000; provenance p.57\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Salientes hacia Código 70810000 y 70820000\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capitales mínimos unidad pesos decimales\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capitales mínimos, sin unidad/decimales\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"importes miles pesos decimales\\\", \\\"limite\\\": 10}\", \"devolvio\": \"req_miles_de_pesos ('Unidad de registro de importes, sin decimales')\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"req_miles_de_pesos\\\"}\", \"devolvio\": \"Unidad de registro de importes, sin decimales; source_to regimen_informativo_cm; provenance pp.2-3\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"req_miles_de_pesos\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Sin vecinos\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"instrucciones registro capitales mínimos 70810000 70820000\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capitales mínimos\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"rep_codigo_70810000\\\"}\", \"devolvio\": \"Partida riesgo mercado hasta 29.02.16; p.57\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"rep_codigo_70820000\\\"}\", \"devolvio\": \"Partida riesgo mercado Anexo A 5867; p.57\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"instrucciones generales registro importes unidad\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Resultados no pertinentes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"régimen informativo contable mensual instrucciones generales\\\", \\\"limite\\\": 10}\", \"devolvio\": \"ins_regimen_informativo_contable_mensual y rep_regimen_informativo_contable_mensual_sobre_capitales_minimos\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"ins_regimen_informativo_contable_mensual\\\"}\", \"devolvio\": \"Proceso de información periódica mensual obligatoria; provenances RICM pp.4/25/31/39/43\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"ins_regimen_informativo_contable_mensual\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"establece_exigencias_de -> incremento de exigencia de capitales mínimos\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó correctamente el nodo req_miles_de_pesos (paso 6-7), que responde ambas patas centrales (miles de pesos, sin decimales), coincidente con el punto 1.2 del PDF. La afirmación no central impugnada ('proviene del Régimen Informativo Contable Mensual') está soportada por su trayectoria: el resumen de req_exigencia_de_integracion_de_capitales_minimos expuesto en el paso 1 dice 'Sección 4 del Régimen Informativo Contable Mensual', y la provenance de req_miles_de_pesos apunta al TO del RICM. La afirmación es además correcta contra el PDF. El agente actuó bien.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\",\n      \"Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Afirmación no central sobre la procedencia normativa de la disposición\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Esta disposición proviene del Régimen Informativo Contable Mensual.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Sección 4 del Régimen Informativo Contable Mensual que establece la obligación de mantener capital computable según componentes definidos.\", \"ubicacion\": \"req_exigencia_de_integracion_de_capitales_minimos (expuesto en el resumen del paso 1) / req_miles_de_pesos: source_to 'regimen_informativo_cm', provenance TO_regimen_informativo_contable_mensual_actual.pdf pp.2-3\"},\n        \"fuente\": {\"quote\": \"REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) (…) 1.2. Los importes se registrarán en miles de pesos, sin decimales.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, pp. 2-3 (Punto 1.2, Sección 4)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf pp.2-3 (fuente del punto 1.2)\", \"resultado\": \"El encabezado y el punto 1.2 confirman que la disposición de miles de pesos sin decimales pertenece a la Sección 4 'Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)' del Régimen Informativo Contable Mensual\"},\n        {\"consulta\": \"leer_pasaje_pdf p.31 (provenance de req_exigencia_de_integracion_de_capitales_minimos)\", \"resultado\": \"Confirma 'REGIMEN INFORMATIVO CONTABLE MENSUAL / 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — el RICM es efectivamente la norma de la que proviene la disposición\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único síntoma marcado es la afirmación NO central 'Esta disposición proviene del Régimen Informativo Contable Mensual', catalogada no_soportada por el juez (las dos patas centrales —miles de pesos y sin decimales— fueron aprobadas). C1a (por pata): el dato pertinente a esta afirmación (que la disposición pertenece al RICM) SÍ apareció en la trayectoria: el resumen del nodo req_exigencia_de_integracion_de_capitales_minimos, expuesto en el paso 1, dice literalmente 'Sección 4 del Régimen Informativo Contable Mensual', y el nodo portador de las patas centrales (req_miles_de_pesos) tiene source_to 'regimen_informativo_cm' y provenance al TO del RICM. No es context_recall. C1b (por claim): ¿tiene soporte en lo consultado? Sí (resúmenes de trayectoria + provenance). No es faithfulness. ¿Es correcto contra el PDF? El PDF fuente es literalmente el TO del Régimen Informativo Contable Mensual y su punto 1.2 ('Los importes se registrarán en miles de pesos, sin decimales') está encabezado por 'REGIMEN INFORMATIVO CONTABLE MENSUAL 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'. La afirmación es fácticamente correcta y soportada. C2: descarto activamente cada defecto: contenido_kg (el nodo coincide con el PDF, no contradice); completitud_kg (el dato está tanto en PDF como en el grafo); estructural_kg (el vínculo RICM↔capitales mínimos está en los resúmenes y provenances vistos por el agente); provenance_imprecisa (la provenance pp.2-3 de req_miles_de_pesos SÍ funda su contenido); alucinacion_agente (no es glosa de cosecha propia, está soportada por trayectoria y confirmada por el PDF); navegación/aplicacion_erronea (no aplican). Conclusión: falso positivo del juez → sin_defecto, jerarquía sin_par. Al no haber ningún claim central fallido ni defecto real del sistema, el caso no tiene primaria.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "pp. 2-3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"pp. 2-3\", \"metodo\": \"pagina\", \"ref\": \"p.2-3 (PDF absoluto 1-based)\", \"pasaje\": \"Sección 10. Coeficiente de apalancamiento. \\n10.1. Normas de procedimiento. \\n10.2. Modelo de información. \\nSección 11. Información complementaria vinculada al cálculo del riesgo de tasa de interés en \\ncartera de inversión. \\n11.1. Normas de procedimiento. \\n11.2. Modelos de información. \\nSección 12. Disposiciones transitorias. \\nVersión: 6a.\\n COMUNICACIÓN  “A”  6561 Vigencia: \\n1/7/2018 Página 2 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\n1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (… [+1282 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "req_miles_de_pesos"
+    },
+    "output_truncado": "{\"id\": \"req_miles_de_pesos\", \"type\": \"REQUIREMENT\", \"label\": \"Miles de pesos\", \"properties\": {\"version\": \"A 6561\", \"description\": \"Unidad de registro de importes, sin decimales.\", \"aliases\": [\"Miles de pesos\"], \"source_to\": \"regimen_informativo_cm\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"pp. 2-3\"}]}"
+   },
+   {
+    "n": 3,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 1
+    },
+    "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"total_con_match\": 181, \"resultados\": [{\"id\": \"prc_regimen_informativo_exigencia_e_integracion_de_capitales_minimos\", \"type\": \"PROCESS\", \"label\": \"Régimen informativo Exigencia e integración de capitales mínimos\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Sistema de reporte que contiene nómina de partidas e instrucciones para determinación de exigencias registradas en códigos 70810000 y 70820000.\"}, {\"id\": \"con_exigencia_e_integracion_de_capitales_minimos\", \"type\": \"CONCEPT\", \"label\": \"Exigencia e integración de capitales mínimos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Exigencia regulatoria del BCRA relativa al cálculo, composición y cumplimiento de capitales mínimos requeridos a las entidades.\"}, {\"id\": \"req_exigencia_de_integracion_de_capitales_minimos\", \"type\": \"REQUIREMENT\", \"label\": \"Exigencia de Integración de Capitales Mínimos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Sección 4 del Régimen Informativo Contable Mensual que es… [+2400 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "req_exigencia_de_integracion_de_capitales_minimos"
+    },
+    "output_truncado": "{\"id\": \"req_exigencia_de_integracion_de_capitales_minimos\", \"type\": \"REQUIREMENT\", \"label\": \"Exigencia de Integración de Capitales Mínimos\", \"properties\": {\"version\": \"A 6561\", \"description\": \"Sección 4 del Régimen Informativo Contable Mensual que establece la obligación de mantener capital computable según componentes definidos.\", \"aliases\": [\"Exigencia de Integración de Capitales Mínimos: Sección 4 del Régimen Informativo Contable Mensual que establece la obligación de mantener capital computable según componentes definidos.\", \"Exigencia de Integración de Capitales Mínimos\"], \"source_to\": \"regimen_informativo_cm\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 31\"}]}"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 31"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 31\", \"metodo\": \"pagina\", \"ref\": \"p.31 (PDF absoluto 1-based)\", \"pasaje\": \"6.2. Modelo de Información \\n \\n \\n \\nB.C.R.A. \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\n4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 6. Responsabilidad Patrimonial Computable \\nCódigo Concepto \\n70210000   Capital Ordinario de Nivel 1 (Con1) \\n20110000 Patrimonio Neto contable \\n20300000 100% de los resultados del último balance trimestral correspondientes al último ejercicio ce-\\nrrado sin dictamen del auditor. \\n20400000 100% de los resultados del ejercicio en curso, registrados al cierre del balance trimestral con \\ninforme del auditor. \\n20500000 50% de los resultados positivos y la totalidad de las pérdidas registradas en cada mes desde \\nel último balance trimestral o anual que cuente con informe o dictamen del auditor. \\n20600000 100% de los quebrantos no contabilizados   \\n28100000 \\nOtros Resultados Integrales provenientes de revaluación de propiedad,  planta y equipo e i n-\\ntangibles y de ganancias o pérdidas por instrumentos financieros a valor razonable con ca m-… [+1358 chars]"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 24866,
+    "output_tokens": 283
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 26572,
+    "output_tokens": 530
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29020,
+    "output_tokens": 1426
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 31599,
+    "output_tokens": 3852
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 48,
+   "n_claims_fallidos": 1,
+   "categoria": "factual_directa"
+  },
+  "label": "off"
+ }
+}

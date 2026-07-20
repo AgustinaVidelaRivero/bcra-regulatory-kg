@@ -1,0 +1,1445 @@
+{
+ "id_falla": "run_3/CQN2-013",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-013",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito', 'limite': 10}",
+      "devolvio": "Devuelve Operacion_calculo_de_capital_minimo con la fórmula C_RC = (k x 0,08 x APR_c) + INC en el resumen",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'residente servicio asesoramiento contraparte vinculada mercado cambios plazo'}",
+      "devolvio": "Nodos de ingreso/liquidación 30/60/180 días para exportaciones; ninguno del punto 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo'}",
+      "devolvio": "Fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo — responde pata (a)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicio asesoramiento contraparte vinculada 14 abril 2025'}",
+      "devolvio": "Nodos de contraparte vinculada varios; NO el portador del 13.2.7; sí Restriccion_requisito_servicios_personales_de_contraparte_vinculada (S24 hasta 13/04/25)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento plazo acceso mercado cambios'}",
+      "devolvio": "Nodos de plazos de ingreso/liquidación; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_requisito_servicios_personales_de_contraparte_vinculada'}",
+      "devolvio": "Concepto S24 hasta 13/04/25, 90 días — no es el caso de la pregunta (asesoramiento a partir del 14/04/25)",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento 14 abril 2025 contraparte vinculada plazo'}",
+      "devolvio": "Mismos nodos de contraparte vinculada; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios asesoramiento a partir 14 abril'}",
+      "devolvio": "Servicios a partir 13/12/23, excepciones 14/04/25 para cartas de crédito; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento concepto S tratamiento especial plazo'}",
+      "devolvio": "Concepto S30 fletes, tratamientos especiales varios; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios no comprendidos tratamiento especial plazo 180 días'}",
+      "devolvio": "Nodos de 180 días (atrasos, resto de bienes); no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido'}",
+      "devolvio": "Servicio no comprendido 13.2.1-13.2.5 por contraparte NO vinculada (punto 13.2.6) — no es el caso vinculada de la pregunta",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada'}",
+      "devolvio": "Top-10 incluye el nodo del 13.2.6 (NO vinculada) pero NO Restriccion_requisito_plazo_contrapartes_vinculadas (portador correcto)",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento contraparte vinculada 14 abril 2025 180 días'}",
+      "devolvio": "Nodos de 180 días no relacionados; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios prestados a partir 14 abril 2025 contraparte vinculada'}",
+      "devolvio": "Servicios a partir 13/12/23, excepciones; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento 180 días corridos prestación devengamiento'}",
+      "devolvio": "Nodos de 180 días de ingreso/liquidación; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'concepto S asesoramiento plazo acceso cambios'}",
+      "devolvio": "Nodos de acceso/plazo genéricos; no el portador",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 12,
+     "quote": "buscar_nodos({\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"limite\": 10})"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos",
+     "Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo para servicio de asesoramiento (no comprendido) por contraparte vinculada prestado a partir del 14/04/25 para acceder al mercado de cambios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para un servicio de asesoramiento prestado a partir del 14/04/25 por una contraparte vinculada del exterior, el plazo requerido desde la prestación o devengamiento para acceder al mercado de cambios es de 180 días corridos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25",
+       "ubicacion": "Restriccion_requisito_plazo_contrapartes_vinculadas"
+      },
+      "fuente": {
+       "quote": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 13.2.6/13.2.7 (p.170)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada (misma del agente, paso 12, re-ejecutada)",
+       "resultado": "top-10 NO contiene Restriccion_requisito_plazo_contrapartes_vinculadas; sí el nodo hermano del 13.2.6 (contraparte NO vinculada)"
+      },
+      {
+       "consulta": "servicio no comprendido contraparte vinculada plazo días corridos prestación (vocabulario ex ante puro)",
+       "resultado": "top-10 NO contiene el portador; gana Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6, NO vinculada)"
+      },
+      {
+       "consulta": "plazo 90 días contraparte vinculada prestación devengamiento",
+       "resultado": "top-10 NO contiene el portador"
+      },
+      {
+       "consulta": "requisito plazo servicio vinculada 13.2.7",
+       "resultado": "SÍ aparece Restriccion_requisito_plazo_contrapartes_vinculadas — pero solo al incluir el token '13.2.7' del propio nodo, no disponible ex ante para el agente"
+      },
+      {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25",
+       "resultado": "top-10 NO contiene el portador"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Restriccion_requisito_plazo_contrapartes_vinculadas",
+      "emision_llm": "alcanzabilidad_kg",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 93,
+       "consultas_en_top10": [],
+       "mejor_rank": 83
+      }
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó falsa la afirmación central de la pata (b): '180 días corridos' para un servicio de asesoramiento (no comprendido) por contraparte vinculada prestado a partir del 14/04/25. El PDF (punto 13.2.7.1) establece inequívocamente 90 días corridos para ese caso; los 180 días aplican solo si la prestación es previa al 14/04/25 (13.2.7.2). El GT es 90 días. C1a (por pata): reviso si el dato PERTINENTE (el plazo del 13.2.7 para vinculada a partir del 14/04/25) apareció en la trayectoria. Revisé los outputs completos de los pasos 4 y 12: en ninguna de las ~9 búsquedas del agente sobre esta pata apareció el nodo portador. El agente vio en cambio el nodo del punto 13.2.6 (Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido, contraparte NO vinculada) y el nodo S24 hasta 13/04/25, ninguno pertinente, y de ahí dedujo por analogía errónea los 180 días. Como el dato pertinente NUNCA apareció → context_recall a nivel pata; las afirmaciones 'no_soportado' de relleno (90 días para no vinculadas / servicios no incluidos en 13.2.1-13.2.5) son parte de esa deducción y no agregan defecto distinto. C2 (causa): ¿existe nodo portador? SÍ — Restriccion_requisito_plazo_contrapartes_vinculadas, con contenido correcto y fiel al PDF (90 días a partir del 14/04/25, 180 días si previa). ¿Es alcanzable por búsquedas razonables ex ante del agente? Constancia de búsqueda: re-ejecuté la propia consulta del agente del paso 12 ('servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada') y el portador NO aparece en el top-10; probé además vocabulario ex ante puro ('servicio no comprendido contraparte vinculada plazo días corridos prestación') y tampoco aparece — en ambos casos gana el nodo hermano del 13.2.6 (NO vinculada), cuyo label 'Requisito: plazo 90 días para servicio no comprendido' matchea más tokens y desplaza al portador. El portador solo emerge en el top cuando incluyo el token '13.2.7' —que es del propio contenido del nodo y NO estaba en el vocabulario ex ante del agente (nunca vio ese subpunto)— o con un fraseo que privilegia su label corto 'plazo contrapartes vinculadas'. Es decir: el nodo existe y es correcto, pero es inalcanzable por la búsqueda léxica desde los términos plausibles de la pregunta porque un nodo hermano casi homónimo (13.2.6) domina el ranking. Descarto navegación: el agente hizo búsquedas exhaustivas y razonables (pasos 4,5,7,8,9,10,12,13,14,15,16) y ninguna lo alcanzó; la carga de exhibir el nodo alcanzable con búsqueda razonable no se cumple porque yo mismo, con vocabulario ex ante, no lo alcanzo. Descarto completitud_kg: el dato NO falta, está en el grafo (mi propia evidencia lo exhibe). Descarto contenido_kg: el nodo es fiel al PDF. → {context_recall, alcanzabilidad_kg}, primaria, lado grafo. La pata (a) fue aprobada por el juez y no se re-litiga (el nodo Operacion_calculo_de_capital_minimo porta la fórmula correcta).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 16,
+    "max_tool_calls": 40,
+    "tokens_in": 405257,
+    "tokens_out": 8977
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 16,
+    "tokens_in": 405257,
+    "tokens_out": 8977,
+    "latency_s": 123.247,
+    "error": null,
+    "final_raw": "Confirmado el patrón. Tengo toda la evidencia necesaria para atribuir.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito', 'limite': 10}\", \"devolvio\": \"Devuelve Operacion_calculo_de_capital_minimo con la fórmula C_RC = (k x 0,08 x APR_c) + INC en el resumen\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'residente servicio asesoramiento contraparte vinculada mercado cambios plazo'}\", \"devolvio\": \"Nodos de ingreso/liquidación 30/60/180 días para exportaciones; ninguno del punto 13.2.7\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo'}\", \"devolvio\": \"Fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo — responde pata (a)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicio asesoramiento contraparte vinculada 14 abril 2025'}\", \"devolvio\": \"Nodos de contraparte vinculada varios; NO el portador del 13.2.7; sí Restriccion_requisito_servicios_personales_de_contraparte_vinculada (S24 hasta 13/04/25)\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento plazo acceso mercado cambios'}\", \"devolvio\": \"Nodos de plazos de ingreso/liquidación; no el portador\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_requisito_servicios_personales_de_contraparte_vinculada'}\", \"devolvio\": \"Concepto S24 hasta 13/04/25, 90 días — no es el caso de la pregunta (asesoramiento a partir del 14/04/25)\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento 14 abril 2025 contraparte vinculada plazo'}\", \"devolvio\": \"Mismos nodos de contraparte vinculada; no el portador\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios asesoramiento a partir 14 abril'}\", \"devolvio\": \"Servicios a partir 13/12/23, excepciones 14/04/25 para cartas de crédito; no el portador\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento concepto S tratamiento especial plazo'}\", \"devolvio\": \"Concepto S30 fletes, tratamientos especiales varios; no el portador\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios no comprendidos tratamiento especial plazo 180 días'}\", \"devolvio\": \"Nodos de 180 días (atrasos, resto de bienes); no el portador\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido'}\", \"devolvio\": \"Servicio no comprendido 13.2.1-13.2.5 por contraparte NO vinculada (punto 13.2.6) — no es el caso vinculada de la pregunta\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada'}\", \"devolvio\": \"Top-10 incluye el nodo del 13.2.6 (NO vinculada) pero NO Restriccion_requisito_plazo_contrapartes_vinculadas (portador correcto)\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento contraparte vinculada 14 abril 2025 180 días'}\", \"devolvio\": \"Nodos de 180 días no relacionados; no el portador\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios prestados a partir 14 abril 2025 contraparte vinculada'}\", \"devolvio\": \"Servicios a partir 13/12/23, excepciones; no el portador\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento 180 días corridos prestación devengamiento'}\", \"devolvio\": \"Nodos de 180 días de ingreso/liquidación; no el portador\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'concepto S asesoramiento plazo acceso cambios'}\", \"devolvio\": \"Nodos de acceso/plazo genéricos; no el portador\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 12, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\\\", \\\"limite\\\": 10})\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos\",\n      \"Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo para servicio de asesoramiento (no comprendido) por contraparte vinculada prestado a partir del 14/04/25 para acceder al mercado de cambios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para un servicio de asesoramiento prestado a partir del 14/04/25 por una contraparte vinculada del exterior, el plazo requerido desde la prestación o devengamiento para acceder al mercado de cambios es de 180 días corridos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25\", \"ubicacion\": \"Restriccion_requisito_plazo_contrapartes_vinculadas\"},\n        \"fuente\": {\"quote\": \"13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 13.2.6/13.2.7 (p.170)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada (misma del agente, paso 12, re-ejecutada)\", \"resultado\": \"top-10 NO contiene Restriccion_requisito_plazo_contrapartes_vinculadas; sí el nodo hermano del 13.2.6 (contraparte NO vinculada)\"},\n        {\"consulta\": \"servicio no comprendido contraparte vinculada plazo días corridos prestación (vocabulario ex ante puro)\", \"resultado\": \"top-10 NO contiene el portador; gana Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6, NO vinculada)\"},\n        {\"consulta\": \"plazo 90 días contraparte vinculada prestación devengamiento\", \"resultado\": \"top-10 NO contiene el portador\"},\n        {\"consulta\": \"requisito plazo servicio vinculada 13.2.7\", \"resultado\": \"SÍ aparece Restriccion_requisito_plazo_contrapartes_vinculadas — pero solo al incluir el token '13.2.7' del propio nodo, no disponible ex ante para el agente\"},\n        {\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25\", \"resultado\": \"top-10 NO contiene el portador\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó falsa la afirmación central de la pata (b): '180 días corridos' para un servicio de asesoramiento (no comprendido) por contraparte vinculada prestado a partir del 14/04/25. El PDF (punto 13.2.7.1) establece inequívocamente 90 días corridos para ese caso; los 180 días aplican solo si la prestación es previa al 14/04/25 (13.2.7.2). El GT es 90 días. C1a (por pata): reviso si el dato PERTINENTE (el plazo del 13.2.7 para vinculada a partir del 14/04/25) apareció en la trayectoria. Revisé los outputs completos de los pasos 4 y 12: en ninguna de las ~9 búsquedas del agente sobre esta pata apareció el nodo portador. El agente vio en cambio el nodo del punto 13.2.6 (Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido, contraparte NO vinculada) y el nodo S24 hasta 13/04/25, ninguno pertinente, y de ahí dedujo por analogía errónea los 180 días. Como el dato pertinente NUNCA apareció → context_recall a nivel pata; las afirmaciones 'no_soportado' de relleno (90 días para no vinculadas / servicios no incluidos en 13.2.1-13.2.5) son parte de esa deducción y no agregan defecto distinto. C2 (causa): ¿existe nodo portador? SÍ — Restriccion_requisito_plazo_contrapartes_vinculadas, con contenido correcto y fiel al PDF (90 días a partir del 14/04/25, 180 días si previa). ¿Es alcanzable por búsquedas razonables ex ante del agente? Constancia de búsqueda: re-ejecuté la propia consulta del agente del paso 12 ('servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada') y el portador NO aparece en el top-10; probé además vocabulario ex ante puro ('servicio no comprendido contraparte vinculada plazo días corridos prestación') y tampoco aparece — en ambos casos gana el nodo hermano del 13.2.6 (NO vinculada), cuyo label 'Requisito: plazo 90 días para servicio no comprendido' matchea más tokens y desplaza al portador. El portador solo emerge en el top cuando incluyo el token '13.2.7' —que es del propio contenido del nodo y NO estaba en el vocabulario ex ante del agente (nunca vio ese subpunto)— o con un fraseo que privilegia su label corto 'plazo contrapartes vinculadas'. Es decir: el nodo existe y es correcto, pero es inalcanzable por la búsqueda léxica desde los términos plausibles de la pregunta porque un nodo hermano casi homónimo (13.2.6) domina el ranking. Descarto navegación: el agente hizo búsquedas exhaustivas y razonables (pasos 4,5,7,8,9,10,12,13,14,15,16) y ninguna lo alcanzó; la carga de exhibir el nodo alcanzable con búsqueda razonable no se cumple porque yo mismo, con vocabulario ex ante, no lo alcanzo. Descarto completitud_kg: el dato NO falta, está en el grafo (mi propia evidencia lo exhibe). Descarto contenido_kg: el nodo es fiel al PDF. → {context_recall, alcanzabilidad_kg}, primaria, lado grafo. La pata (a) fue aprobada por el juez y no se re-litiga (el nodo Operacion_calculo_de_capital_minimo porta la fórmula correcta).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 13.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 13.2 (PDF pág 169)\", \"pasaje\": \"13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/23. \\nLas entidades podrán dar acceso al mercado de cambios par a cursar pagos de servicios de \\nno residentes que fueron o serán prestados a partir del 13/12/23 cuando, adicionalmente a \\nlos restantes requisitos normativos aplicables, la o peración queda comprendida en algunas \\nde las situaciones que se detallan a continuación: \\n13.2.1. el pago corresponde a una operación que encuadra en los siguientes códigos de \\nconcepto: \\nS03. Servicios de transporte de pasajeros. \\nS06. Viajes (excluidas las operaciones asociadas a retiros y/o consumos con \\ntarjetas de residentes con provee dores no residentes o de no residentes \\ncon proveedores argentinos). \\nS23. Servicios audiovisuales y conexos. \\nS25. Servicios del gobierno. \\nS26. Servicios de salud por empresas de asistencia al viajero. \\nS27. Otros servicios de salud. \\nS34 Operaciones asociadas a consumos con tarjetas o débito en cuenta, de \\nresidentes con proveedores no … [+398 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_servicios_personales_de_contraparte_vinculada"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_servicios_personales_de_contraparte_vinculada\", \"type\": \"Restriccion\", \"label\": \"Requisito: servicios personales de contraparte vinculada\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Concepto S24 - Otros servicios personales, culturales y recreativos prestado por contraparte vinculada al residente hasta 13/04/25, se concreta una vez transcurrido plazo de 90 días corridos desde fecha de prestación o devengamiento\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 13.2.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 13.2.6 (PDF pág 170)\", \"pasaje\": \"13.2.6. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte no vinculada al residente y el pago se concreta a partir \\nde la fecha de prestación o devengamiento del servicio. \\nEste plazo también será aplicable para las operaciones que correspondan a las \\ntransferencias al exterior de agentes locales por sus recaudaciones en el país de \\nfondos correspondientes a servicios prestados por no residentes a residentes. \\n13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte vinculada al residente y el pago se concreta: \\n13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la \\nfecha de prestación o devengamiento del servicio si esa fecha tuvo lugar \\na partir del 14/04/25. \\n13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde \\nla fecha de prestación o devengamiento del servicio si esa fecha es previa \\nal 14/04/25. \\nLas operaciones or… [+399 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 170"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 170\", \"metodo\": \"pagina\", \"ref\": \"p.170 (PDF absoluto 1-based)\", \"pasaje\": \"13.2.6. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte no vinculada al residente y el pago se concreta a partir \\nde la fecha de prestación o devengamiento del servicio. \\nEste plazo también será aplicable para las operaciones que correspondan a las \\ntransferencias al exterior de agentes locales por sus recaudaciones en el país de \\nfondos correspondientes a servicios prestados por no residentes a residentes. \\n13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte vinculada al residente y el pago se concreta: \\n13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la \\nfecha de prestación o devengamiento del servicio si esa fecha tuvo lugar \\na partir del 14/04/25. \\n13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde \\nla fecha de prestación o devengamiento del servicio si esa fecha es previa \\nal 14/04/25. \\nLas operaciones originadas en… [+1809 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25\", \"total_con_match\": 470, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {… [+2306 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo 90 días contraparte vinculada prestación devengamiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo 90 días contraparte vinculada prestación devengamiento\", \"total_con_match\": 176, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_30_dias_corridos_para_exportacion\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 30 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 30 días corridos para exportaciones de bienes de posiciones arancelarias 1001.19.00, 1001.99.00, 1005.90.10, 1201…\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_60_dias_corridos_para_operaciones\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 60 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 60 días corridos para operaciones con contrapartes vinculadas y exportaciones… [+2444 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido 13.2.1 13.2.5 provisto contraparte vinculada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido 13.2.1 13.2.5 provisto contraparte vinculada\", \"total_con_match\": 509, \"resultados\": [{\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multiplicación de exposición al riesgo de contraparte por factor 1,5\"}, {\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Excepcion_emisiones_de_valores_comprendidos_en_puntos_3_6_1_3_a_3_6_1_5_que_no_generaron_d\", \"type\": \"Excepcion\", \"label\": \"Reestructuraciones deuda sin desembolsos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Emisiones de valores comprendidos en puntos 3.6.1.3 a 3.6.1.5 que no generaron desembolsos por ser reestructuraciones de deudas, en medida que refinanciaciones …\"}, {\"id\": \"Excepcion_exportaciones_de_bienes_de_proyecto_no_exportacion_estrategica_embarcadas_de… [+1982 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "180 días servicio vinculada previa 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"180 días servicio vinculada previa 14/04/25\", \"total_con_match\": 138, \"resultados\": [{\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {\"id\": \"Excepcion_para_aquellas_otorgadas_a_partir_del_14_04_25_tambien_se_admitira_que_el_vencimi\", \"type\": \"Excepcion\", \"label\": \"Excepción para operaciones a partir del 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para aquellas otorgadas a partir del 14/04/25, también se admitirá que el vencimiento sea compatible con la fecha estimada de embarque cuando corresponde a porc…\"}, {\"id\": \"Restriccion_incurra_en_atrasos_de_hasta_180_dias_con_exclusion_de_los_deudores_comprendidos_\", \"type\": \"Restriccion\", \"label\": \"Atrasos hasta 180 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Incurra en atrasos de hasta 180 días, con exclusión de los deudores comprendidos en el punto 6.5.2.2.\"}… [+2382 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "requisito plazo servicio vinculada 13.2.7",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"requisito plazo servicio vinculada 13.2.7\", \"total_con_match\": 220, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Obligacion_cumplan_las_condiciones_previstas_en_el_punto_7_9_2\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento condiciones proyecto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"cumplan las condiciones previstas en el punto 7.9.2.\"}, {\"id\": \"Restriccion_para_financiaciones_otorgadas_a_partir_del_13_12_23_debe_cumplirse_con_requisito\", \"type\": \"Restriccion\", \"label\": \"Restricción de cumplimiento por fecha\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para financiaciones otorgadas a partir del 13/12/23, debe cumplirse con requisitos específicos de registro aduanero y plazos\"}, {\"id\": \"Obligacion_cumplimiento_a_los_restantes_requisitos_establecidos_en_los_puntos_2_2_2_2_o_7_8\", \"type\": \"Obligacion\", \"labe… [+2171 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_plazo_contrapartes_vinculadas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_plazo_contrapartes_vinculadas\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo contrapartes vinculadas\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"total_con_match\": 515, \"resultados\": [{\"id\": \"Excepcion_emisiones_de_valores_comprendidos_en_puntos_3_6_1_3_a_3_6_1_5_que_no_generaron_d\", \"type\": \"Excepcion\", \"label\": \"Reestructuraciones deuda sin desembolsos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Emisiones de valores comprendidos en puntos 3.6.1.3 a 3.6.1.5 que no generaron desembolsos por ser reestructuraciones de deudas, en medida que refinanciaciones …\"}, {\"id\": \"Excepcion_el_pago_corresponde_a_servicios_comprendidos_en_los_puntos_13_2_1_o_13_2_2\", \"type\": \"Excepcion\", \"label\": \"Pago servicios comprendidos en puntos 13.2.1 o 13.2.2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El pago corresponde a servicios comprendidos en los puntos 13.2.1. o 13.2.2.\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multip… [+2509 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"total_con_match\": 65, \"resultados\": [{\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Operacion_operacion_con_contraparte_vinculada\", \"type\": \"Operacion\", \"label\": \"Operaciones con contrapartes vinculadas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones en las que participan un residente y una contraparte que mantienen entre ellos los tipos de relaciones descriptos en el punto 1.2.2. de las normas '…\"}, {\"id\": \"Obligacion_conformidad_previa_contraparte_vinculada\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa contraparte vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA cuando el acreedor sea una contraparte vinculada al… [+2557 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo contrapartes vinculadas servicio asesoramiento acceso mercado cambios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo contrapartes vinculadas servicio asesoramiento acceso mercado cambios\", \"total_con_match\": 276, \"resultados\": [{\"id\": \"Restriccion_plazo_para_acceso_al_mercado_de_cambios\", \"type\": \"Restriccion\", \"label\": \"Plazo para acceso al mercado de cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El acceso al mercado de cambios se concrete dentro de los 10 (diez) días hábiles siguientes a la disponibilidad de los fondos por parte del no residente\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_30_dias_corridos_para_exportacion\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 30 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 30 días corridos para exportaciones de bienes de posiciones arancelarias 1001.19.00, 1001.99.00, 1005.90.10, 1201…\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_60_dias_corridos_para_operaciones\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 60 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 60 días corridos para operaciones con contrapartes vinculadas y exportaciones de capítulos 26 y 71… [+1960 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido contraparte vinculada plazo días corridos prestación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido contraparte vinculada plazo días corridos prestación\", \"total_con_match\": 512, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Restriccion_extension_de_plazos_no_superior_a_545_dias_corridos_para_pagos_anticipados_de_bi\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo ampliación causales ajenas\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Extensión de plazos no superior a 545 días corridos para pagos anticipados de bienes de capital o 365 días corridos para restantes pagos\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_30_dias_corridos_para_exportacion\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 30 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 30 días corridos para exportaciones de bienes de posiciones arancelar… [+2433 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "asesoramiento servicio 180 resto bienes servicios acceso cambios",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"asesoramiento servicio 180 resto bienes servicios acceso cambios\", \"total_con_match\": 308, \"resultados\": [{\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_180_dias_corridos_para_el_resto_d\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 180 días corridos para el resto de los bienes\"}, {\"id\": \"Operacion_acceso_al_mercado_de_cambios_para_pago_de_servicios_con_antelacion_a_plazos_prev\", \"type\": \"Operacion\", \"label\": \"Pago de servicios con anticipación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: acceso al mercado de cambios para pago de servicios con antelación a plazos previstos\"}, {\"id\": \"Obligacion_por_todo_acceso_al_mercado_de_cambios_por_pagos_de_importaciones_de_bienes_argen\", \"type\": \"Obligacion\", \"label\": \"Generar número clave de identificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Por todo acceso al mercado de cambios por pagos de importaciones de bienes argentinas con registro de ingreso aduanero pendiente, incluyendo las cancelaciones d…\"}, {\"id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_ac… [+589 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33713,
+      "output_tokens": 343
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35335,
+      "output_tokens": 280
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37621,
+      "output_tokens": 461
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41385,
+      "output_tokens": 548
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46716,
+      "output_tokens": 242
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47217,
+      "output_tokens": 472
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 51121,
+      "output_tokens": 803
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 55098,
+      "output_tokens": 1153
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 57051,
+      "output_tokens": 4675
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 3,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-013",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital riesgo crédito\", \"limite\": 10}",
+      "devolvio": "Operacion_calculo_de_capital_minimo con fórmula C_RC = (k x 0,08 x APR_c) + INC entre otros",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"residente servicio asesoramiento contraparte vinculada mercado cambios plazo\", \"limite\": 10}",
+      "devolvio": "nodos de ingreso/liquidación 30/60/180 días para exportaciones; no el plazo de servicios de asesoramiento vinculadas",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_capital_minimo\"}",
+      "devolvio": "fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"limite\": 10}",
+      "devolvio": "nodos de contraparte vinculada genéricos + S24 (hasta 13/04/25); NO el nodo portador 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"asesoramiento plazo acceso mercado cambios\", \"limite\": 10}",
+      "devolvio": "plazos de acceso genéricos; no el dato pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_requisito_servicios_personales_de_contraparte_vinculada\"}",
+      "devolvio": "Concepto S24, contraparte vinculada hasta 13/04/25, 90 días — caso distinto al preguntado",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"asesoramiento 14 abril 2025 contraparte vinculada plazo\", \"limite\": 10}",
+      "devolvio": "mismos nodos genéricos de contraparte vinculada; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios asesoramiento a partir 14 abril\", \"limite\": 10}",
+      "devolvio": "nodos de servicios 13/12/23 y excepciones cartas de crédito 14/04/25; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"asesoramiento concepto S tratamiento especial plazo\", \"limite\": 10}",
+      "devolvio": "conceptos S30 fletes, tratamientos especiales; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios no comprendidos tratamiento especial plazo 180 días\", \"limite\": 10}",
+      "devolvio": "nodos de atrasos 180 días e ingreso 180 días 'resto de bienes'; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\"}",
+      "devolvio": "13.2.6: servicio no comprendido de contraparte NO vinculada — caso distinto (no vinculada)",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"limite\": 10}",
+      "devolvio": "aparece el nodo de 13.2.6 (no vinculada) pero NO el nodo portador Restriccion_requisito_plazo_contrapartes_vinculadas",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"asesoramiento contraparte vinculada 14 abril 2025 180 días\", \"limite\": 10}",
+      "devolvio": "nodos de 180 días de otros contextos (atrasos, refinanciaciones, resto de bienes)",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios prestados a partir 14 abril 2025 contraparte vinculada\", \"limite\": 10}",
+      "devolvio": "servicios 13/12/23 y excepciones 14/04/25; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"asesoramiento 180 días corridos prestación devengamiento\", \"limite\": 10}",
+      "devolvio": "nodos de 180 días de otros contextos; no el portador",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"concepto S asesoramiento plazo acceso cambios\", \"limite\": 10}",
+      "devolvio": "plazos de acceso genéricos; no el portador",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 16,
+     "quote": "Un residente que debe pagar un servicio de asesoramiento (no comprendido en los conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior debe esperar 180 días corridos desde la prestación o devengamiento del servicio para poder acceder al mercado de cambios."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos",
+     "Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo para servicio de asesoramiento (no comprendido en tratamiento especial) prestado a partir del 14/04/25 por contraparte vinculada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para un servicio de asesoramiento prestado a partir del 14/04/25 por una contraparte vinculada del exterior, el plazo requerido desde la prestación o devengamiento para acceder al mercado de cambios es de 180 días corridos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25",
+       "ubicacion": "Restriccion_requisito_plazo_contrapartes_vinculadas"
+      },
+      "fuente": {
+       "quote": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, p. 170 (Punto 13.2.7)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25 prestación devengamiento",
+       "resultado": "top-10 devuelve Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6, NO vinculada); el nodo portador Restriccion_requisito_plazo_contrapartes_vinculadas NO aparece"
+      },
+      {
+       "consulta": "plazo 90 días contraparte vinculada servicio prestación posterior 14/04/25",
+       "resultado": "no devuelve el nodo portador; solo nodos de 90 días de otros contextos"
+      },
+      {
+       "consulta": "servicio no comprendido 13.2.1 13.2.5 contraparte vinculada",
+       "resultado": "no devuelve el nodo portador; devuelve el de contraparte NO vinculada"
+      },
+      {
+       "consulta": "transcurrido 90 días corridos fecha prestación devengamiento servicio vinculada",
+       "resultado": "no devuelve el nodo portador"
+      },
+      {
+       "consulta": "180 días corridos servicio previa 14/04/25 contraparte vinculada",
+       "resultado": "no devuelve el nodo portador"
+      },
+      {
+       "consulta": "operaciones prestación servicios contrapartes vinculadas continuarán alcanzadas requisito",
+       "resultado": "SÍ devuelve Restriccion_requisito_plazo_contrapartes_vinculadas — pero con vocabulario tomado del texto del PDF (13.2.7 último párrafo), no del vocabulario ex ante del agente"
+      },
+      {
+       "consulta": "ver_paso_completo(12) — 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada' (búsqueda real del agente)",
+       "resultado": "el nodo portador NO aparece en el top-10 pese a que la consulta contiene el vocabulario clave; su label 'Requisito: plazo contrapartes vinculadas' no matchea 'servicio/no comprendido/13.2.1' y buscar_nodos no indexa la description"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Restriccion_requisito_plazo_contrapartes_vinculadas",
+      "emision_llm": "alcanzabilidad_kg",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 93,
+       "consultas_en_top10": [],
+       "mejor_rank": 83
+      }
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     }
+    }
+   ],
+   "razonamiento": "PATA (a) — fórmula de riesgo de crédito: aprobada por el juez, no se re-litiga; el nodo Operacion_calculo_de_capital_minimo portaba C_RC = (k x 0,08 x APR_c) + INC y el agente lo usó bien. PATA (b) — plazo para servicio de asesoramiento de contraparte vinculada prestado a partir del 14/04/25: el PDF (13.2.7.1) establece 90 días corridos (los 180 días son para prestación PREVIA al 14/04/25, 13.2.7.2). El agente respondió 180 días → incorrecto. C1a (por pata): el dato PERTINENTE (90 días para vinculada a partir del 14/04/25) NUNCA apareció en la trayectoria: en sus 16 pasos el agente solo alcanzó (i) el nodo 13.2.6 de contraparte NO vinculada y (ii) el nodo S24 de contraparte vinculada hasta 13/04/25 — ninguno responde el caso. Por tanto la pata es context_recall, y los claims de relleno (180 días, y las glosas 'no soportadas' sobre 90 días para no vinculadas y sobre 13.2.1–13.2.5) son consecuencia del dato faltante, no defectos separados. C2 (árbol de context_recall): ¿existe nodo portador del dato? SÍ — Restriccion_requisito_plazo_contrapartes_vinculadas contiene exactamente '90 días corridos si prestación a partir del 14/04/25' con provenance al Punto 13.2, fiel al PDF. ¿Búsquedas razonables del agente lo alcanzaban? NO: verifiqué con ver_paso_completo(12) que la búsqueda real del agente 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada' —vocabulario ex ante prácticamente idéntico al necesario— dejó fuera del top-10 al nodo portador y en cambio devolvió el nodo casi homónimo de 13.2.6 (no vinculada). La causa es que buscar_nodos indexa solo label/id, y el label del portador ('Requisito: plazo contrapartes vinculadas') carece de 'servicio', 'no comprendido', '13.2.1', '90 días', '14/04/25' — todo el contenido discriminante vive en la description, no indexada. Yo solo lo alcancé con una consulta construida con palabras del propio texto normativo ('continuarán alcanzadas requisito'), no del vocabulario ex ante del agente. Esto es exactamente alcanzabilidad_kg: nodo portador correcto pero inalcanzable por búsqueda léxica desde los términos de la pregunta. Descarto completitud_kg (el nodo existe con el dato correcto, exhibido), navegación (búsquedas razonables con el vocabulario correcto NO lo alcanzan, probado ex ante) y aplicacion_erronea (el error no viene de mal-aplicar un nodo fiel, sino de que el dato correcto nunca estuvo disponible). Par: {context_recall, alcanzabilidad_kg}, primaria, lado grafo.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 363321,
+    "tokens_out": 8656
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 363321,
+    "tokens_out": 8656,
+    "latency_s": 115.442,
+    "error": null,
+    "final_raw": "Confirmado: en el paso 12, con la búsqueda \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\" — que es prácticamente idéntica en vocabulario al label del nodo portador — el nodo `Restriccion_requisito_plazo_contrapartes_vinculadas` NO apareció entre los 10 resultados, mientras que sí apareció el nodo casi homónimo `Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido` (contraparte NO vinculada, 13.2.6).\n\nEl nodo portador tiene label \"Requisito: plazo contrapartes vinculadas\" — el ranking léxico lo ubica por debajo del top-10 porque su label carece de \"servicio\", \"no comprendido\", \"13.2.1\", \"13.2.5\", \"asesoramiento\", \"90 días\" y \"14/04/25\". Todo el contenido pertinente vive en la description, que `buscar_nodos` NO indexa. Yo solo lo alcancé con una consulta armada con palabras del propio nodo (\"continuarán alcanzadas requisito\", que viene del texto del PDF, no del vocabulario ex ante del agente).\n\nAnalicemos ahora la clasificación de síntoma por pata:\n\n**Pata (b)** — plazo para servicio de asesoramiento de contraparte vinculada a partir del 14/04/25. El dato PERTINENTE (90 días) nunca apareció en la trayectoria del agente. El nodo portador existe con contenido correcto pero es inalcanzable por búsqueda léxica → **context_recall** → **alcanzabilidad_kg**.\n\nEl claim central falso (180 días) es consecuencia de que el dato pertinente nunca apareció; el agente rellenó por inferencia con nodos genéricos (180 días \"resto de bienes\"). Los dos claims \"no soportados\" son glosas de relleno de esa misma pata sin dato.\n\nTengo evidencia suficiente. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital riesgo crédito\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Operacion_calculo_de_capital_minimo con fórmula C_RC = (k x 0,08 x APR_c) + INC entre otros\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"residente servicio asesoramiento contraparte vinculada mercado cambios plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de ingreso/liquidación 30/60/180 días para exportaciones; no el plazo de servicios de asesoramiento vinculadas\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_capital_minimo\\\"}\", \"devolvio\": \"fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicio asesoramiento contraparte vinculada 14 abril 2025\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de contraparte vinculada genéricos + S24 (hasta 13/04/25); NO el nodo portador 13.2.7\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asesoramiento plazo acceso mercado cambios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"plazos de acceso genéricos; no el dato pertinente\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_requisito_servicios_personales_de_contraparte_vinculada\\\"}\", \"devolvio\": \"Concepto S24, contraparte vinculada hasta 13/04/25, 90 días — caso distinto al preguntado\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asesoramiento 14 abril 2025 contraparte vinculada plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"mismos nodos genéricos de contraparte vinculada; no el portador\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios asesoramiento a partir 14 abril\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de servicios 13/12/23 y excepciones cartas de crédito 14/04/25; no el portador\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asesoramiento concepto S tratamiento especial plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"conceptos S30 fletes, tratamientos especiales; no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios no comprendidos tratamiento especial plazo 180 días\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de atrasos 180 días e ingreso 180 días 'resto de bienes'; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\\\"}\", \"devolvio\": \"13.2.6: servicio no comprendido de contraparte NO vinculada — caso distinto (no vinculada)\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\\\", \\\"limite\\\": 10}\", \"devolvio\": \"aparece el nodo de 13.2.6 (no vinculada) pero NO el nodo portador Restriccion_requisito_plazo_contrapartes_vinculadas\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asesoramiento contraparte vinculada 14 abril 2025 180 días\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de 180 días de otros contextos (atrasos, refinanciaciones, resto de bienes)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios prestados a partir 14 abril 2025 contraparte vinculada\\\", \\\"limite\\\": 10}\", \"devolvio\": \"servicios 13/12/23 y excepciones 14/04/25; no el portador\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asesoramiento 180 días corridos prestación devengamiento\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos de 180 días de otros contextos; no el portador\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"concepto S asesoramiento plazo acceso cambios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"plazos de acceso genéricos; no el portador\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 16, \"quote\": \"Un residente que debe pagar un servicio de asesoramiento (no comprendido en los conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior debe esperar 180 días corridos desde la prestación o devengamiento del servicio para poder acceder al mercado de cambios.\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos\",\n      \"Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo para servicio de asesoramiento (no comprendido en tratamiento especial) prestado a partir del 14/04/25 por contraparte vinculada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para un servicio de asesoramiento prestado a partir del 14/04/25 por una contraparte vinculada del exterior, el plazo requerido desde la prestación o devengamiento para acceder al mercado de cambios es de 180 días corridos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25\", \"ubicacion\": \"Restriccion_requisito_plazo_contrapartes_vinculadas\"},\n        \"fuente\": {\"quote\": \"13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, p. 170 (Punto 13.2.7)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25 prestación devengamiento\", \"resultado\": \"top-10 devuelve Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6, NO vinculada); el nodo portador Restriccion_requisito_plazo_contrapartes_vinculadas NO aparece\"},\n        {\"consulta\": \"plazo 90 días contraparte vinculada servicio prestación posterior 14/04/25\", \"resultado\": \"no devuelve el nodo portador; solo nodos de 90 días de otros contextos\"},\n        {\"consulta\": \"servicio no comprendido 13.2.1 13.2.5 contraparte vinculada\", \"resultado\": \"no devuelve el nodo portador; devuelve el de contraparte NO vinculada\"},\n        {\"consulta\": \"transcurrido 90 días corridos fecha prestación devengamiento servicio vinculada\", \"resultado\": \"no devuelve el nodo portador\"},\n        {\"consulta\": \"180 días corridos servicio previa 14/04/25 contraparte vinculada\", \"resultado\": \"no devuelve el nodo portador\"},\n        {\"consulta\": \"operaciones prestación servicios contrapartes vinculadas continuarán alcanzadas requisito\", \"resultado\": \"SÍ devuelve Restriccion_requisito_plazo_contrapartes_vinculadas — pero con vocabulario tomado del texto del PDF (13.2.7 último párrafo), no del vocabulario ex ante del agente\"},\n        {\"consulta\": \"ver_paso_completo(12) — 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada' (búsqueda real del agente)\", \"resultado\": \"el nodo portador NO aparece en el top-10 pese a que la consulta contiene el vocabulario clave; su label 'Requisito: plazo contrapartes vinculadas' no matchea 'servicio/no comprendido/13.2.1' y buscar_nodos no indexa la description\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"PATA (a) — fórmula de riesgo de crédito: aprobada por el juez, no se re-litiga; el nodo Operacion_calculo_de_capital_minimo portaba C_RC = (k x 0,08 x APR_c) + INC y el agente lo usó bien. PATA (b) — plazo para servicio de asesoramiento de contraparte vinculada prestado a partir del 14/04/25: el PDF (13.2.7.1) establece 90 días corridos (los 180 días son para prestación PREVIA al 14/04/25, 13.2.7.2). El agente respondió 180 días → incorrecto. C1a (por pata): el dato PERTINENTE (90 días para vinculada a partir del 14/04/25) NUNCA apareció en la trayectoria: en sus 16 pasos el agente solo alcanzó (i) el nodo 13.2.6 de contraparte NO vinculada y (ii) el nodo S24 de contraparte vinculada hasta 13/04/25 — ninguno responde el caso. Por tanto la pata es context_recall, y los claims de relleno (180 días, y las glosas 'no soportadas' sobre 90 días para no vinculadas y sobre 13.2.1–13.2.5) son consecuencia del dato faltante, no defectos separados. C2 (árbol de context_recall): ¿existe nodo portador del dato? SÍ — Restriccion_requisito_plazo_contrapartes_vinculadas contiene exactamente '90 días corridos si prestación a partir del 14/04/25' con provenance al Punto 13.2, fiel al PDF. ¿Búsquedas razonables del agente lo alcanzaban? NO: verifiqué con ver_paso_completo(12) que la búsqueda real del agente 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada' —vocabulario ex ante prácticamente idéntico al necesario— dejó fuera del top-10 al nodo portador y en cambio devolvió el nodo casi homónimo de 13.2.6 (no vinculada). La causa es que buscar_nodos indexa solo label/id, y el label del portador ('Requisito: plazo contrapartes vinculadas') carece de 'servicio', 'no comprendido', '13.2.1', '90 días', '14/04/25' — todo el contenido discriminante vive en la description, no indexada. Yo solo lo alcancé con una consulta construida con palabras del propio texto normativo ('continuarán alcanzadas requisito'), no del vocabulario ex ante del agente. Esto es exactamente alcanzabilidad_kg: nodo portador correcto pero inalcanzable por búsqueda léxica desde los términos de la pregunta. Descarto completitud_kg (el nodo existe con el dato correcto, exhibido), navegación (búsquedas razonables con el vocabulario correcto NO lo alcanzan, probado ex ante) y aplicacion_erronea (el error no viene de mal-aplicar un nodo fiel, sino de que el dato correcto nunca estuvo disponible). Par: {context_recall, alcanzabilidad_kg}, primaria, lado grafo.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 13.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 13.2 (PDF pág 169)\", \"pasaje\": \"13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/23. \\nLas entidades podrán dar acceso al mercado de cambios par a cursar pagos de servicios de \\nno residentes que fueron o serán prestados a partir del 13/12/23 cuando, adicionalmente a \\nlos restantes requisitos normativos aplicables, la o peración queda comprendida en algunas \\nde las situaciones que se detallan a continuación: \\n13.2.1. el pago corresponde a una operación que encuadra en los siguientes códigos de \\nconcepto: \\nS03. Servicios de transporte de pasajeros. \\nS06. Viajes (excluidas las operaciones asociadas a retiros y/o consumos con \\ntarjetas de residentes con provee dores no residentes o de no residentes \\ncon proveedores argentinos). \\nS23. Servicios audiovisuales y conexos. \\nS25. Servicios del gobierno. \\nS26. Servicios de salud por empresas de asistencia al viajero. \\nS27. Otros servicios de salud. \\nS34 Operaciones asociadas a consumos con tarjetas o débito en cuenta, de \\nresidentes con proveedores no … [+398 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio contraparte vinculada 180 días a partir 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio contraparte vinculada 180 días a partir 14/04/25\", \"total_con_match\": 1249, \"resultados\": [{\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {\"id\": \"Excepcion_para_aquellas_otorgadas_a_partir_del_14_04_25_tambien_se_admitira_que_el_vencimi\", \"type\": \"Excepcion\", \"label\": \"Excepción para operaciones a partir del 14/04/25\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Para aquellas otorgadas a partir del 14/04/25, también se admitirá que el vencimiento sea compatible con la fecha estimada de embarque cuando corresponde a porc…\"}, {\"id\": \"Restriccion_el_cliente_se_encuentre_permanentemente_atrasado_en_el_pago_con_incumplimientos_\", \"type\": \"Restriccion\", \"label\": \"Atraso permanente superior a 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cliente se encuentre permanentemente atrasado en el pago, con incumpli… [+2465 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 170"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 170\", \"metodo\": \"pagina\", \"ref\": \"p.170 (PDF absoluto 1-based)\", \"pasaje\": \"13.2.6. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte no vinculada al residente y el pago se concreta a partir \\nde la fecha de prestación o devengamiento del servicio. \\nEste plazo también será aplicable para las operaciones que correspondan a las \\ntransferencias al exterior de agentes locales por sus recaudaciones en el país de \\nfondos correspondientes a servicios prestados por no residentes a residentes. \\n13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte vinculada al residente y el pago se concreta: \\n13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la \\nfecha de prestación o devengamiento del servicio si esa fecha tuvo lugar \\na partir del 14/04/25. \\n13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde \\nla fecha de prestación o devengamiento del servicio si esa fecha es previa \\nal 14/04/25. \\nLas operaciones originadas en… [+1809 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 171"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 171\", \"metodo\": \"pagina\", \"ref\": \"p.171 (PDF absoluto 1-based)\", \"pasaje\": \"Si el otorgamiento de la financiación es posterior a la fecha de prestación o \\ndevengamiento del servicio, los plazos previstos en el punto 13.2. se \\ncomputarán desde esta última fecha. \\n13.3.2. El cliente accede al mercado de cambios en forma simultánea con la \\nliquidación de fondos en concepto de anticipos o prefinanciaciones de \\nexportaciones del exterior o prefinanciaciones de exportaciones o torgadas \\npor entidades financieras locales con fondeo en líneas de crédito del \\nexterior, en la medida que se cumplan lo estipulado en el punto 13.3.1. en \\nmateria de fechas de vencimiento y los montos de capital a pagar de la \\nfinanciación. \\nLa entidad adici onalmente deberá contar con una declaración jurada del \\nimportador en la cual deja constancia de que será necesaria la conformidad \\nprevia del BCRA para la aplicación de divisas de cobros de exportaciones \\ncon anterioridad a la fecha de vencimiento que surge de las condiciones de \\nplazo estipuladas para situaciones asociadas a un financiamiento. \\n13.3.3. … [+1812 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25 prestación devengamiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25 prestación devengamiento\", \"total_con_match\": 474, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir d… [+2430 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo 90 días contraparte vinculada servicio prestación posterior 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo 90 días contraparte vinculada servicio prestación posterior 14/04/25\", \"total_con_match\": 219, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {\"id\": \"Excepcion_para_aquellas_otorgadas_a_partir_del_14_04_25_tambien_se_admitira_que_el_vencimi\", \"type\": \"Excepcion\", \"label\": \"Excepción para operaciones a partir del 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para aquellas otorgadas a partir del 14/04/25, también se admitirá qu… [+2474 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido 13.2.1 13.2.5 contraparte vinculada",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido 13.2.1 13.2.5 contraparte vinculada\", \"total_con_match\": 509, \"resultados\": [{\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multiplicación de exposición al riesgo de contraparte por factor 1,5\"}, {\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Excepcion_emisiones_de_valores_comprendidos_en_puntos_3_6_1_3_a_3_6_1_5_que_no_generaron_d\", \"type\": \"Excepcion\", \"label\": \"Reestructuraciones deuda sin desembolsos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Emisiones de valores comprendidos en puntos 3.6.1.3 a 3.6.1.5 que no generaron desembolsos por ser reestructuraciones de deudas, en medida que refinanciaciones …\"}, {\"id\": \"Excepcion_exportaciones_de_bienes_de_proyecto_no_exportacion_estrategica_embarcadas_dentro\", \"t… [+3705 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "transcurrido 90 días corridos fecha prestación devengamiento servicio vinculada",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"transcurrido 90 días corridos fecha prestación devengamiento servicio vinculada\", \"total_con_match\": 127, \"resultados\": [{\"id\": \"Restriccion_se_concreta_dentro_de_los_60_sesenta_dias_corridos_previos_a_la_fecha_de_vencimi\", \"type\": \"Restriccion\", \"label\": \"Límite acceso 60 días previos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se concreta dentro de los 60 (sesenta) días corridos previos a la fecha de vencimiento por un monto diario que no supere el 10% (diez por ciento) del monto que …\"}, {\"id\": \"Restriccion_que_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_los_90_dias_corridos_ant\", \"type\": \"Restriccion\", \"label\": \"Prohibición de entrega a vinculadas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"que en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores no ha entregado fondos en moneda local ni otros activos locales a person…\"}, {\"id\": \"Restriccion_el_compromiso_se_extiende_por_los_90_dias_corridos_subsiguientes_desde_que_requi\", \"type\": \"Restriccion\", \"label\": \"Límite temporal: 90 días subsiguientes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"el compromiso se extiende por los 90 días corridos subsiguientes desde q… [+4309 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "180 días corridos servicio previa 14/04/25 contraparte vinculada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"180 días corridos servicio previa 14/04/25 contraparte vinculada\", \"total_con_match\": 164, \"resultados\": [{\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_180_dias_corridos_para_el_resto_d\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 180 días corridos para el resto de los bienes\"}, {\"id\": \"Restriccion_hasta_cinco_prorrogas_sucesivas_de_hasta_180_dias_corridos\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo gestión de cobro\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Hasta cinco prórrogas sucesivas de hasta 180 días corridos\"}, {\"id\": \"Obligacion_conformidad_previa_contraparte_vinculada\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa contraparte vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA cuando el acreedor sea una contraparte vinculada al deudor y el vencimiento de los intereses a pagar haya tenido lug…\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde… [+2375 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "operaciones prestación servicios contrapartes vinculadas continuarán alcanzadas requisito",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"operaciones prestación servicios contrapartes vinculadas continuarán alcanzadas requisito\", \"total_con_match\": 319, \"resultados\": [{\"id\": \"Operacion_exportacion_a_contrapartes_vinculadas\", \"type\": \"Operacion\", \"label\": \"Operaciones con contrapartes vinculadas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: exportación a contrapartes vinculadas\"}, {\"id\": \"Operacion_operacion_con_contraparte_vinculada\", \"type\": \"Operacion\", \"label\": \"Operaciones con contrapartes vinculadas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operaciones en las que participan un residente y una contraparte que mantienen entre ellos los tipos de relaciones descriptos en el punto 1.2.2. de las normas '…\"}, {\"id\": \"Restriccion_requisito_plazo_contrapartes_vinculadas\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo contrapartes vinculadas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos …\"}, {\"id\": \"Excepcion_este_requisito_no_resultara_a_aplicacion_para_aquellas_operaciones_de_egresos_qu\", \"type\": \"Excepcion\", \"label\": \"Exce… [+2183 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_plazo_contrapartes_vinculadas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_plazo_contrapartes_vinculadas\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo contrapartes vinculadas\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada: 90 días corridos si prestación a partir del 14/04/25, o 180 días corridos si prestación previa al 14/04/25\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"total_con_match\": 65, \"resultados\": [{\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Operacion_operacion_con_contraparte_vinculada\", \"type\": \"Operacion\", \"label\": \"Operaciones con contrapartes vinculadas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones en las que participan un residente y una contraparte que mantienen entre ellos los tipos de relaciones descriptos en el punto 1.2.2. de las normas '…\"}, {\"id\": \"Obligacion_conformidad_previa_contraparte_vinculada\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa contraparte vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA cuando el acreedor sea una contraparte vinculada al… [+2557 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"total_con_match\": 515, \"resultados\": [{\"id\": \"Excepcion_emisiones_de_valores_comprendidos_en_puntos_3_6_1_3_a_3_6_1_5_que_no_generaron_d\", \"type\": \"Excepcion\", \"label\": \"Reestructuraciones deuda sin desembolsos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Emisiones de valores comprendidos en puntos 3.6.1.3 a 3.6.1.5 que no generaron desembolsos por ser reestructuraciones de deudas, en medida que refinanciaciones …\"}, {\"id\": \"Excepcion_el_pago_corresponde_a_servicios_comprendidos_en_los_puntos_13_2_1_o_13_2_2\", \"type\": \"Excepcion\", \"label\": \"Pago servicios comprendidos en puntos 13.2.1 o 13.2.2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El pago corresponde a servicios comprendidos en los puntos 13.2.1. o 13.2.2.\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multip… [+2509 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33713,
+      "output_tokens": 278
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36395,
+      "output_tokens": 257
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39218,
+      "output_tokens": 526
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43122,
+      "output_tokens": 629
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48605,
+      "output_tokens": 563
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 52375,
+      "output_tokens": 293
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 52927,
+      "output_tokens": 607
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 56966,
+      "output_tokens": 5503
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 3,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-013",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito', 'limite': 10}",
+      "devolvio": "Nodos de cálculo de exigencia de capital por riesgo de crédito, incluido Operacion_calculo_de_capital_minimo con la fórmula C_RC = (k x 0,08 x APR_c) + INC",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'residente servicio asesoramiento contraparte vinculada mercado cambios plazo', 'limite': 10}",
+      "devolvio": "Obligaciones de ingreso/liquidación en 30/60/180 días (exportaciones), no pertinentes a pago de servicios importados",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo'}",
+      "devolvio": "Fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicio asesoramiento contraparte vinculada 14 abril 2025', 'limite': 10}",
+      "devolvio": "Nodos de contraparte vinculada genéricos (conformidad previa, operaciones vinculadas, S24), ninguno con la regla 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento plazo acceso mercado cambios', 'limite': 10}",
+      "devolvio": "Plazos genéricos de acceso e ingreso/liquidación, no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_requisito_servicios_personales_de_contraparte_vinculada'}",
+      "devolvio": "Concepto S24, vinculada hasta 13/04/25, 90 días — NO es el caso (asesoramiento, a partir del 14/04/25)",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento 14 abril 2025 contraparte vinculada plazo', 'limite': 10}",
+      "devolvio": "Mismos nodos genéricos de contraparte vinculada, sin 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios asesoramiento a partir 14 abril', 'limite': 10}",
+      "devolvio": "Servicios a partir 13/12/23, excepciones cartas de crédito 14/04/25 — no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento concepto S tratamiento especial plazo', 'limite': 10}",
+      "devolvio": "Concepto S30 fletes, tratamientos especiales de otras materias, no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios no comprendidos tratamiento especial plazo 180 días', 'limite': 10}",
+      "devolvio": "Nodos de 180 días de otras materias (atrasos, ingreso resto de bienes), no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido'}",
+      "devolvio": "13.2.6: servicio no comprendido en 13.2.1-13.2.5 provisto por contraparte NO vinculada — no es el caso (vinculada)",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada', 'limite': 10}",
+      "devolvio": "Excepciones y restricciones genéricas, y de nuevo 13.2.6 (no vinculada), sin 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento contraparte vinculada 14 abril 2025 180 días', 'limite': 10}",
+      "devolvio": "Nodos de 180 días de otras materias, ninguno de 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'servicios prestados a partir 14 abril 2025 contraparte vinculada', 'limite': 10}",
+      "devolvio": "Servicios a partir 13/12/23, excepciones 14/04/25 — no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'asesoramiento 180 días corridos prestación devengamiento', 'limite': 10}",
+      "devolvio": "180 días de otras materias, no 13.2.7",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'concepto S asesoramiento plazo acceso cambios', 'limite': 10}",
+      "devolvio": "Plazos genéricos de acceso, no 13.2.7",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó de forma exhaustiva y con vocabulario razonable el dato de la pata (b): probó 'contraparte vinculada', 'asesoramiento 14 abril 2025', 'servicio no comprendido 13.2.1 13.2.5', '90 días', '180 días', etc. (pasos 2,4,5,7,8,9,10,12,13,14,15,16). El nodo portador de la regla del punto 13.2.7 (contraparte vinculada: 90 días si prestado a partir del 14/04/25, 180 días si previo) NO existe en el grafo, por lo que ninguna búsqueda podía devolverlo. Ante la ausencia del dato, el agente construyó por inferencia (declaró respondible=false y explicitó que el plazo de 180 días 'se deduce por inferencia'). Actuó bien sobre lo disponible; el defecto es del grafo.",
+    "thinking_decision": null,
+    "patas": [
+     "Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos",
+     "Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo para servicio de asesoramiento de contraparte vinculada prestado a partir del 14/04/25",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Un residente que debe pagar un servicio de asesoramiento (no comprendido en los conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior debe esperar 180 días corridos desde la prestación o devengamiento del servicio para poder acceder al mercado de cambios.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio",
+       "ubicacion": "Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6 - contraparte NO vinculada; el nodo del 13.2.7 para vinculada no existe en el grafo)"
+      },
+      "fuente": {
+       "quote": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, p. 170 (Punto 13.2.7)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25",
+       "resultado": "Solo devuelve 13.2.6 (contraparte NO vinculada) y nodos genéricos; ningún nodo con la regla 13.2.7"
+      },
+      {
+       "consulta": "contraparte vinculada 180 días previa 14/04/25 servicio prestacion",
+       "resultado": "180 días de otras materias (atrasos, ingreso resto de bienes, permanencia en categoría); ningún nodo del 13.2.7"
+      },
+      {
+       "consulta": "servicio vinculada 13.2.7 plazo desde prestacion devengamiento",
+       "resultado": "Nodos de cómputo de plazos por financiación (13.3.1) y 13.2.6; ningún nodo con el contenido de 13.2.7.1/13.2.7.2"
+      },
+      {
+       "consulta": "requisito plazo servicio contraparte vinculada fecha 14/04/25",
+       "resultado": "Solo S24 hasta 13/04/25 y 13.2.6 (no vinculada); ningún nodo del 13.2.7 para vinculada a partir del 14/04/25"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25.",
+        "alcance_en_el_nodo": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio",
+        "coinciden": "no",
+        "sintoma_del_par": "context_recall",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente declara en 13.2.7 un régimen para contraparte VINCULADA con plazo de 90 días si la prestación fue a partir del 14/04/25 (y 180 días si es previa); el único nodo del grafo cubre el 13.2.6 con alcance de contraparte NO vinculada. El nodo del 13.2.7 (vinculada) no existe, por lo que la pata sobre servicio de contraparte vinculada no está cubierta: falta de completitud del KG, confirmando la causa emitida."
+       },
+       {
+        "alcance_declarado_en_fuente": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25.",
+        "alcance_en_el_nodo": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio",
+        "coinciden": "no",
+        "sintoma_del_par": "context_recall",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente declara el alcance 13.2.7 (contraparte VINCULADA, prestado a partir del 14/04/25 → 90 días) que es el requerido por el claim central, pero el único nodo del grafo cubre el alcance 13.2.6 (contraparte NO vinculada). El nodo trata un alcance distinto (no vinculada) y no existe nodo para el caso vinculado, por lo que la pata queda sin cubrir: context_recall por completitud_kg queda confirmada."
+       },
+       {
+        "alcance_declarado_en_fuente": "13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un",
+        "alcance_en_el_nodo": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio",
+        "coinciden": "no",
+        "sintoma_del_par": "context_recall",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente declara en 13.2.7 un régimen SCOPEADO a contraparte VINCULADA con plazos que dependen de la fecha (90 días si es a partir del 14/04/25; 180 días si es previa). El único nodo del grafo cubre el alcance de contraparte NO vinculada (13.2.6), y no existe nodo para el caso vinculado (13.2.7); por eso la pata central sobre contraparte vinculada a partir del 14/04/25 queda sin cobertura. La causa emitida completitud_kg se confirma: falta el nodo del 13.2.7 en el grafo."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 3894,
+        "output_tokens": 500
+       },
+       {
+        "input_tokens": 3894,
+        "output_tokens": 493
+       },
+       {
+        "input_tokens": 3894,
+        "output_tokens": 549
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "sintoma_ganador": "context_recall",
+       "causa_ganadora": "completitud_kg",
+       "votos_ganadores": 3
+      },
+      "corrigio": false,
+      "par_post_s1": [
+       "context_recall",
+       "completitud_kg"
+      ],
+      "causa_post_s1": "completitud_kg",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "La pata (a) (fórmula de exigencia de capital por riesgo de crédito) fue aprobada por el juez y está soportada por Operacion_calculo_de_capital_minimo (C_RC = (k x 0,08 x APR_c) + INC), consultado en el paso 3 — no se re-litiga. La falla está en la pata (b). C1a (síntoma por pata): el dato pertinente que responde la pata es la regla del punto 13.2.7 del TO_exterior_cambios (contraparte vinculada, servicio no comprendido en 13.2.1-13.2.5: 90 días corridos si prestado a partir del 14/04/25 — 13.2.7.1; 180 días si previo — 13.2.7.2). Verificado en el PDF (p. 170): la respuesta correcta para el caso planteado (a partir del 14/04/25) es 90 días, no 180. Revisé los outputs COMPLETOS de la trayectoria (16 pasos, incluidos los truncados 4 y 12 con ver_paso_completo) y en NINGUNO apareció un nodo con el contenido de 13.2.7: los únicos nodos del 13.2 disponibles son (i) Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido, que cubre 13.2.6 — contraparte NO vinculada, y (ii) Restriccion_requisito_servicios_personales_de_contraparte_vinculada, que cubre solo el concepto S24 hasta el 13/04/25. Ninguno es pertinente al caso (asesoramiento genérico, vinculada, a partir del 14/04/25). Por tanto el dato pertinente nunca apareció → síntoma context_recall a nivel pata. C2 (causa): ¿existe el nodo portador del dato faltante? Hice búsqueda exhaustiva con vocabulario ex ante de la pregunta ('contraparte vinculada 90 días 14/04/25', '180 días previa 14/04/25', '13.2.7', 'requisito plazo vinculada 14/04/25') y el nodo del 13.2.7 NO existe en el grafo. El PDF sí tiene el dato (13.2.7.1/13.2.7.2). Nodo no existe + PDF lo tiene → completitud_kg. El agente actuó correctamente sobre lo disponible: buscó de forma amplia (12 de 16 búsquedas apuntadas a esta pata), no halló el dato, declaró la respuesta como no respondible (respondible=false) y explicitó que el plazo de 180 días 'se deduce por inferencia'. Los claims no-soportados de relleno ('90 días para no vinculadas', 'asesoramiento no incluido en 13.2.1-13.2.5') son consecuencia del mismo hueco y, por C1a, quedan bajo la pata context_recall sin agregar un defecto distinto. Descarté alcanzabilidad_kg (el nodo no existe, no es que exista y sea inalcanzable) y navegación (no hay nodo pertinente que el agente haya omitido). El defecto que explica la reprobación del juez es la ausencia del nodo del 13.2.7 en el grafo: completitud_kg, primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 292880,
+    "tokens_out": 7553
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 292880,
+    "tokens_out": 7553,
+    "latency_s": 97.41,
+    "error": null,
+    "final_raw": "Tengo evidencia suficiente. El nodo de 13.2.6 (contraparte no vinculada) tiene un label (\"plazo 90 días\") pero su contenido NO menciona explícitamente los 90 días — es sobre contraparte NO vinculada, distinto de la pata (que pide contraparte vinculada). El dato pertinente (13.2.7.1: 90 días para vinculada a partir del 14/04/25) no existe en el grafo. Emito la atribución.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito', 'limite': 10}\", \"devolvio\": \"Nodos de cálculo de exigencia de capital por riesgo de crédito, incluido Operacion_calculo_de_capital_minimo con la fórmula C_RC = (k x 0,08 x APR_c) + INC\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'residente servicio asesoramiento contraparte vinculada mercado cambios plazo', 'limite': 10}\", \"devolvio\": \"Obligaciones de ingreso/liquidación en 30/60/180 días (exportaciones), no pertinentes a pago de servicios importados\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo'}\", \"devolvio\": \"Fórmula C_RC = (k x 0,08 x APR_c) + INC, provenance régimen informativo\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicio asesoramiento contraparte vinculada 14 abril 2025', 'limite': 10}\", \"devolvio\": \"Nodos de contraparte vinculada genéricos (conformidad previa, operaciones vinculadas, S24), ninguno con la regla 13.2.7\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento plazo acceso mercado cambios', 'limite': 10}\", \"devolvio\": \"Plazos genéricos de acceso e ingreso/liquidación, no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_requisito_servicios_personales_de_contraparte_vinculada'}\", \"devolvio\": \"Concepto S24, vinculada hasta 13/04/25, 90 días — NO es el caso (asesoramiento, a partir del 14/04/25)\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento 14 abril 2025 contraparte vinculada plazo', 'limite': 10}\", \"devolvio\": \"Mismos nodos genéricos de contraparte vinculada, sin 13.2.7\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios asesoramiento a partir 14 abril', 'limite': 10}\", \"devolvio\": \"Servicios a partir 13/12/23, excepciones cartas de crédito 14/04/25 — no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento concepto S tratamiento especial plazo', 'limite': 10}\", \"devolvio\": \"Concepto S30 fletes, tratamientos especiales de otras materias, no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios no comprendidos tratamiento especial plazo 180 días', 'limite': 10}\", \"devolvio\": \"Nodos de 180 días de otras materias (atrasos, ingreso resto de bienes), no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido'}\", \"devolvio\": \"13.2.6: servicio no comprendido en 13.2.1-13.2.5 provisto por contraparte NO vinculada — no es el caso (vinculada)\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada', 'limite': 10}\", \"devolvio\": \"Excepciones y restricciones genéricas, y de nuevo 13.2.6 (no vinculada), sin 13.2.7\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento contraparte vinculada 14 abril 2025 180 días', 'limite': 10}\", \"devolvio\": \"Nodos de 180 días de otras materias, ninguno de 13.2.7\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'servicios prestados a partir 14 abril 2025 contraparte vinculada', 'limite': 10}\", \"devolvio\": \"Servicios a partir 13/12/23, excepciones 14/04/25 — no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'asesoramiento 180 días corridos prestación devengamiento', 'limite': 10}\", \"devolvio\": \"180 días de otras materias, no 13.2.7\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'concepto S asesoramiento plazo acceso cambios', 'limite': 10}\", \"devolvio\": \"Plazos genéricos de acceso, no 13.2.7\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó de forma exhaustiva y con vocabulario razonable el dato de la pata (b): probó 'contraparte vinculada', 'asesoramiento 14 abril 2025', 'servicio no comprendido 13.2.1 13.2.5', '90 días', '180 días', etc. (pasos 2,4,5,7,8,9,10,12,13,14,15,16). El nodo portador de la regla del punto 13.2.7 (contraparte vinculada: 90 días si prestado a partir del 14/04/25, 180 días si previo) NO existe en el grafo, por lo que ninguna búsqueda podía devolverlo. Ante la ausencia del dato, el agente construyó por inferencia (declaró respondible=false y explicitó que el plazo de 180 días 'se deduce por inferencia'). Actuó bien sobre lo disponible; el defecto es del grafo.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Expresión mediante la cual se calcula la exigencia de capital por riesgo de crédito en el régimen informativo sobre exigencia e integración de capitales mínimos\",\n      \"Plazo que debe transcurrir desde la prestación o devengamiento de un servicio de asesoramiento (no comprendido en conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior para que un residente pueda acceder al mercado de cambios\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo para servicio de asesoramiento de contraparte vinculada prestado a partir del 14/04/25\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Un residente que debe pagar un servicio de asesoramiento (no comprendido en los conceptos con tratamiento especial) prestado a partir del 14/04/25 por una contraparte vinculada del exterior debe esperar 180 días corridos desde la prestación o devengamiento del servicio para poder acceder al mercado de cambios.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio\", \"ubicacion\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido (13.2.6 - contraparte NO vinculada; el nodo del 13.2.7 para vinculada no existe en el grafo)\"},\n        \"fuente\": {\"quote\": \"13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue provisto por una contraparte vinculada al residente y el pago se concreta: 13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha tuvo lugar a partir del 14/04/25. 13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, p. 170 (Punto 13.2.7)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25\", \"resultado\": \"Solo devuelve 13.2.6 (contraparte NO vinculada) y nodos genéricos; ningún nodo con la regla 13.2.7\"},\n        {\"consulta\": \"contraparte vinculada 180 días previa 14/04/25 servicio prestacion\", \"resultado\": \"180 días de otras materias (atrasos, ingreso resto de bienes, permanencia en categoría); ningún nodo del 13.2.7\"},\n        {\"consulta\": \"servicio vinculada 13.2.7 plazo desde prestacion devengamiento\", \"resultado\": \"Nodos de cómputo de plazos por financiación (13.3.1) y 13.2.6; ningún nodo con el contenido de 13.2.7.1/13.2.7.2\"},\n        {\"consulta\": \"requisito plazo servicio contraparte vinculada fecha 14/04/25\", \"resultado\": \"Solo S24 hasta 13/04/25 y 13.2.6 (no vinculada); ningún nodo del 13.2.7 para vinculada a partir del 14/04/25\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pata (a) (fórmula de exigencia de capital por riesgo de crédito) fue aprobada por el juez y está soportada por Operacion_calculo_de_capital_minimo (C_RC = (k x 0,08 x APR_c) + INC), consultado en el paso 3 — no se re-litiga. La falla está en la pata (b). C1a (síntoma por pata): el dato pertinente que responde la pata es la regla del punto 13.2.7 del TO_exterior_cambios (contraparte vinculada, servicio no comprendido en 13.2.1-13.2.5: 90 días corridos si prestado a partir del 14/04/25 — 13.2.7.1; 180 días si previo — 13.2.7.2). Verificado en el PDF (p. 170): la respuesta correcta para el caso planteado (a partir del 14/04/25) es 90 días, no 180. Revisé los outputs COMPLETOS de la trayectoria (16 pasos, incluidos los truncados 4 y 12 con ver_paso_completo) y en NINGUNO apareció un nodo con el contenido de 13.2.7: los únicos nodos del 13.2 disponibles son (i) Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido, que cubre 13.2.6 — contraparte NO vinculada, y (ii) Restriccion_requisito_servicios_personales_de_contraparte_vinculada, que cubre solo el concepto S24 hasta el 13/04/25. Ninguno es pertinente al caso (asesoramiento genérico, vinculada, a partir del 14/04/25). Por tanto el dato pertinente nunca apareció → síntoma context_recall a nivel pata. C2 (causa): ¿existe el nodo portador del dato faltante? Hice búsqueda exhaustiva con vocabulario ex ante de la pregunta ('contraparte vinculada 90 días 14/04/25', '180 días previa 14/04/25', '13.2.7', 'requisito plazo vinculada 14/04/25') y el nodo del 13.2.7 NO existe en el grafo. El PDF sí tiene el dato (13.2.7.1/13.2.7.2). Nodo no existe + PDF lo tiene → completitud_kg. El agente actuó correctamente sobre lo disponible: buscó de forma amplia (12 de 16 búsquedas apuntadas a esta pata), no halló el dato, declaró la respuesta como no respondible (respondible=false) y explicitó que el plazo de 180 días 'se deduce por inferencia'. Los claims no-soportados de relleno ('90 días para no vinculadas', 'asesoramiento no incluido en 13.2.1-13.2.5') son consecuencia del mismo hueco y, por C1a, quedan bajo la pata context_recall sin agregar un defecto distinto. Descarté alcanzabilidad_kg (el nodo no existe, no es que exista y sea inalcanzable) y navegación (no hay nodo pertinente que el agente haya omitido). El defecto que explica la reprobación del juez es la ausencia del nodo del 13.2.7 en el grafo: completitud_kg, primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 13.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 13.2 (PDF pág 169)\", \"pasaje\": \"13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/23. \\nLas entidades podrán dar acceso al mercado de cambios par a cursar pagos de servicios de \\nno residentes que fueron o serán prestados a partir del 13/12/23 cuando, adicionalmente a \\nlos restantes requisitos normativos aplicables, la o peración queda comprendida en algunas \\nde las situaciones que se detallan a continuación: \\n13.2.1. el pago corresponde a una operación que encuadra en los siguientes códigos de \\nconcepto: \\nS03. Servicios de transporte de pasajeros. \\nS06. Viajes (excluidas las operaciones asociadas a retiros y/o consumos con \\ntarjetas de residentes con provee dores no residentes o de no residentes \\ncon proveedores argentinos). \\nS23. Servicios audiovisuales y conexos. \\nS25. Servicios del gobierno. \\nS26. Servicios de salud por empresas de asistencia al viajero. \\nS27. Otros servicios de salud. \\nS34 Operaciones asociadas a consumos con tarjetas o débito en cuenta, de \\nresidentes con proveedores no … [+398 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_servicios_personales_de_contraparte_vinculada"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_servicios_personales_de_contraparte_vinculada\", \"type\": \"Restriccion\", \"label\": \"Requisito: servicios personales de contraparte vinculada\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Concepto S24 - Otros servicios personales, culturales y recreativos prestado por contraparte vinculada al residente hasta 13/04/25, se concreta una vez transcurrido plazo de 90 días corridos desde fecha de prestación o devengamiento\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 170"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 170\", \"metodo\": \"pagina\", \"ref\": \"p.170 (PDF absoluto 1-based)\", \"pasaje\": \"13.2.6. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte no vinculada al residente y el pago se concreta a partir \\nde la fecha de prestación o devengamiento del servicio. \\nEste plazo también será aplicable para las operaciones que correspondan a las \\ntransferencias al exterior de agentes locales por sus recaudaciones en el país de \\nfondos correspondientes a servicios prestados por no residentes a residentes. \\n13.2.7. se trata de un servicio no comprendido en los puntos 13.2.1. a 13.2.5. que fue \\nprovisto por una contraparte vinculada al residente y el pago se concreta: \\n13.2.7.1. una vez transcurrido un plazo de 90 (noventa) días corridos desde la \\nfecha de prestación o devengamiento del servicio si esa fecha tuvo lugar \\na partir del 14/04/25. \\n13.2.7.2. una vez transcurrido un plazo de 180 (ciento ochenta) días corridos desde \\nla fecha de prestación o devengamiento del servicio si esa fecha es previa \\nal 14/04/25. \\nLas operaciones originadas en… [+1809 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 171"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 171\", \"metodo\": \"pagina\", \"ref\": \"p.171 (PDF absoluto 1-based)\", \"pasaje\": \"Si el otorgamiento de la financiación es posterior a la fecha de prestación o \\ndevengamiento del servicio, los plazos previstos en el punto 13.2. se \\ncomputarán desde esta última fecha. \\n13.3.2. El cliente accede al mercado de cambios en forma simultánea con la \\nliquidación de fondos en concepto de anticipos o prefinanciaciones de \\nexportaciones del exterior o prefinanciaciones de exportaciones o torgadas \\npor entidades financieras locales con fondeo en líneas de crédito del \\nexterior, en la medida que se cumplan lo estipulado en el punto 13.3.1. en \\nmateria de fechas de vencimiento y los montos de capital a pagar de la \\nfinanciación. \\nLa entidad adici onalmente deberá contar con una declaración jurada del \\nimportador en la cual deja constancia de que será necesaria la conformidad \\nprevia del BCRA para la aplicación de divisas de cobros de exportaciones \\ncon anterioridad a la fecha de vencimiento que surge de las condiciones de \\nplazo estipuladas para situaciones asociadas a un financiamiento. \\n13.3.3. … [+1812 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio no comprendido contraparte vinculada 90 días 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio no comprendido contraparte vinculada 90 días 14/04/25\", \"total_con_match\": 470, \"resultados\": [{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…\"}, {\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {… [+2306 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "contraparte vinculada 180 días previa 14/04/25 servicio prestacion",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"contraparte vinculada 180 días previa 14/04/25 servicio prestacion\", \"total_con_match\": 170, \"resultados\": [{\"id\": \"Obligacion_conformidad_previa_contraparte_vinculada\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa contraparte vinculada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA cuando el acreedor sea una contraparte vinculada al deudor y el vencimiento de los intereses a pagar haya tenido lug…\"}, {\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {\"id\": \"Excepcion_pagos_a_contraparte_vinculada_sin_la_conformidad_previa_requerida_en_el_punto_3_\", \"type\": \"Excepcion\", \"label\": \"Excepción de conformidad previa para vinculadas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Pagos a contraparte vinculada sin la conformidad previa requerida en el punto 3.3.3\"}, {\"id\": \"Excepcion_… [+2328 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicio vinculada 13.2.7 plazo desde prestacion devengamiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicio vinculada 13.2.7 plazo desde prestacion devengamiento\", \"total_con_match\": 209, \"resultados\": [{\"id\": \"Obligacion_si_el_otorgamiento_de_la_financiacion_es_posterior_a_la_fecha_de_prestacion_o_de\", \"type\": \"Obligacion\", \"label\": \"Computar plazos desde fecha devengamiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el otorgamiento de la financiación es posterior a la fecha de prestación o devengamiento del servicio, los plazos previstos en el punto 13.2. se computarán d…\"}, {\"id\": \"Obligacion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_entidad_debe_contar_con_d\", \"type\": \"Obligacion\", \"label\": \"Documentar fecha de prestación o devengamiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para financiaciones otorgadas a partir del 13/12/23, la entidad debe contar con documentación que demuestre que la operación financiada correspondía a una impor…\"}, {\"id\": \"Obligacion_cumplan_las_condiciones_previstas_en_el_punto_7_9_2\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento condiciones proyecto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"cumplan las condiciones previstas en el punto 7.9.2.\"}, {\"id\": \"Operacion_prestacion_de_servicio_internaci… [+2478 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "requisito plazo servicio contraparte vinculada fecha 14/04/25",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"requisito plazo servicio contraparte vinculada fecha 14/04/25\", \"total_con_match\": 237, \"resultados\": [{\"id\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04\", \"type\": \"Excepcion\", \"label\": \"Excepción por pagos a la vista desde 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada…\"}, {\"id\": \"Excepcion_para_aquellas_otorgadas_a_partir_del_14_04_25_tambien_se_admitira_que_el_vencimi\", \"type\": \"Excepcion\", \"label\": \"Excepción para operaciones a partir del 14/04/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para aquellas otorgadas a partir del 14/04/25, también se admitirá que el vencimiento sea compatible con la fecha estimada de embarque cuando corresponde a porc…\"}, {\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinc… [+2530 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio asesoramiento contraparte vinculada 14 abril 2025\", \"total_con_match\": 65, \"resultados\": [{\"id\": \"Restriccion_contraparte_no_residente_no_vinculada\", \"type\": \"Restriccion\", \"label\": \"Contraparte no residente no vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La contraparte del mencionado contrato es un no residente no vinculado con el residente que exportará los bienes y/o servicios\"}, {\"id\": \"Operacion_operacion_con_contraparte_vinculada\", \"type\": \"Operacion\", \"label\": \"Operaciones con contrapartes vinculadas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones en las que participan un residente y una contraparte que mantienen entre ellos los tipos de relaciones descriptos en el punto 1.2.2. de las normas '…\"}, {\"id\": \"Obligacion_conformidad_previa_contraparte_vinculada\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa contraparte vinculada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA cuando el acreedor sea una contraparte vinculada al… [+2557 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"servicio no comprendido puntos 13.2.1 13.2.5 contraparte vinculada\", \"total_con_match\": 515, \"resultados\": [{\"id\": \"Excepcion_emisiones_de_valores_comprendidos_en_puntos_3_6_1_3_a_3_6_1_5_que_no_generaron_d\", \"type\": \"Excepcion\", \"label\": \"Reestructuraciones deuda sin desembolsos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Emisiones de valores comprendidos en puntos 3.6.1.3 a 3.6.1.5 que no generaron desembolsos por ser reestructuraciones de deudas, en medida que refinanciaciones …\"}, {\"id\": \"Excepcion_el_pago_corresponde_a_servicios_comprendidos_en_los_puntos_13_2_1_o_13_2_2\", \"type\": \"Excepcion\", \"label\": \"Pago servicios comprendidos en puntos 13.2.1 o 13.2.2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El pago corresponde a servicios comprendidos en los puntos 13.2.1. o 13.2.2.\"}, {\"id\": \"Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5\", \"type\": \"Operacion\", \"label\": \"Aplicación de factor multiplicador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: multip… [+2509 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido\", \"type\": \"Restriccion\", \"label\": \"Requisito: plazo 90 días para servicio no comprendido\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o devengamiento del servicio\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.2. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33713,
+      "output_tokens": 267
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34979,
+      "output_tokens": 269
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37814,
+      "output_tokens": 472
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41529,
+      "output_tokens": 432
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45335,
+      "output_tokens": 520
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49287,
+      "output_tokens": 679
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 50223,
+      "output_tokens": 4914
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 73,
+     "n_claims_fallidos": 3,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [
+   1,
+   2
+  ],
+  "atribuciones_corregidas": 2,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 0,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "atribucion_no_verificable"
+  ],
+  "flags": [
+   "R6b: rep 1 atrib 1 — context_recall_sin_pata",
+   "R6b: rep 2 atrib 1 — context_recall_sin_pata",
+   "R6b: rep 3 atrib 1 — context_recall_sin_pata"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "alcanzabilidad_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "resumen_s1": {
+  "gatilladas": 1,
+  "juzgadas_llm": 1,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 0,
+  "fuente_no_funda": 0,
+  "tokens_in_s1": 11682,
+  "tokens_out_s1": 1542,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4b-dev"
+}

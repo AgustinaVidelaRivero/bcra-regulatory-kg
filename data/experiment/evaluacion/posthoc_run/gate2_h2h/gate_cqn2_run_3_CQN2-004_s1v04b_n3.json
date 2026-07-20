@@ -1,0 +1,1586 @@
+{
+ "id_falla": "run_3/CQN2-004",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-004",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capital mínimo riesgo de mercado', limite: 10}",
+      "devolvio": "Lista de nodos de cálculo de exigencia; el primero Operacion_medicion_de_capital_minimo (medición conforme punto 6.10) y varios de riesgo de crédito/operacional",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'exigencia capital riesgo mercado método cálculo', limite: 10}",
+      "devolvio": "Devuelve Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_medicion_de_capital_minimo'}",
+      "devolvio": "Medición de exigencia por riesgo de mercado conforme punto 6.10; provenance Punto 6.12 Auditoría interna",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_determinacion_de_exigencia_por_riesgo_de_mercado'}",
+      "devolvio": "Determinación del importe partida 70800000 computando el mayor valor entre 70810000 y 70820000; provenance régimen informativo Punto 12.2",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_riesgo_de_mercado'}",
+      "devolvio": "Datos complementarios vinculados al cálculo por riesgo de mercado (puntos 4.3-4.5)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método plazos residuales riesgo mercado', limite: 10}",
+      "devolvio": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales como primer resultado",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método valor en riesgo VaR riesgo mercado', limite: 10}",
+      "devolvio": "Nodos sobre límites de opciones y derivados; nada sobre VaR",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales'}",
+      "devolvio": "La exigencia se obtendrá como suma de: valor absoluto de posición ponderada neta, desestimación vertical, desestimación horizontal y cambio neto en opciones; provenance Punto 6.2 (parte 2)",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales', direccion: 'salientes'}",
+      "devolvio": "1 saliente establecida_en al TO Capitales Mínimos",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método estándar riesgo mercado opciones', limite: 10}",
+      "devolvio": "Nodos de método simplificado y de informar riesgo en opciones (Gamma/Vega)",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 6 riesgo mercado exigencia capital', limite: 10}",
+      "devolvio": "Nodos varios de exigencia por riesgo general/operacional",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Método Medición Estándar punto 6.1.4', limite: 10}",
+      "devolvio": "Obligacion_emplear_metodo_medicion_estandar (Método Medición Estándar previsto en punto 6.1.4)",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_medicion_de_capital_minimo', direccion: 'salientes'}",
+      "devolvio": "0 salientes / 0 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_emplear_metodo_medicion_estandar'}",
+      "devolvio": "Para su determinación las entidades deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4; provenance Punto 6.1 Exigencia",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Obligacion_emplear_metodo_medicion_estandar', direccion: 'salientes'}",
+      "devolvio": "3 salientes: establecida_en, aplica_a Sujetos obligados, regula Operacion_calculo",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 8,
+     "quote": "La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera",
+     "Qué método debe emplearse para su cálculo"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Qué método debe emplearse para su cálculo",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "label: 'Cálculo capital por riesgo general de mercado' | description: 'La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones'",
+       "ubicacion": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (abierto por el agente, paso 8)"
+      },
+      "fuente": {
+       "quote": "6.2. Exigencia de capital por riesgo de tasa de interés. (...) La exigencia se obtendrá como la suma de dos exigencias calculadas por separado: una por el riesgo específico de cada instrumento (...) y otra por el riesgo general de mercado –vinculado al efecto de cambios en la tasa de interés sobre la cartera–",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 6.2 (parte 2)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "plazos residuales riesgo general tasa interés desestimación vertical horizontal",
+       "resultado": "el nodo Operacion_calculo_de_capital_por_metodo_de_plazos_residuales aparece bajo el label genérico 'Cálculo capital por riesgo general de mercado', sin marcar que el método de plazos residuales es una alternativa específica del riesgo general de TASA DE INTERÉS"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_no_funda",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_funda",
+      "fundamento": {
+       "span_maximo": 0,
+       "umbral": 60
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000",
+       "ubicacion": "Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (abierto por el agente, paso 4)"
+      },
+      "fuente": {
+       "quote": "12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” 5867 (marzo 2016 - agosto 2016). A efectos de determinar el importe a consignar en la partida 70800000 (...) se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [ Código 70810000; Código 70820000 ]",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "capital mínimo riesgo de mercado / exigencia capital riesgo mercado método cálculo",
+       "resultado": "el nodo se devuelve con description que omite el alcance temporal '(marzo 2016 - agosto 2016)' que el PDF declara; leído solo no avisa que es una metodología de un período histórico según Comunicación A 5867"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep1_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Qué método debe emplearse para su cálculo",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 | Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega",
+       "ubicacion": "Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa ; Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me"
+      },
+      "fuente": {
+       "quote": "6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...) 6.6.3. Método delta-plus. (...) exigencias adicionales para la cobertura de los riesgos gamma (...) y vega",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Puntos 6.6.2 y 6.6.3"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "método estándar riesgo mercado opciones",
+       "resultado": "ambos nodos consultados por el agente (paso 10) reproducen fielmente el método simplificado (6.6.2) y Gamma/Vega; el PDF confirma ambos → los claims marcados no_soportado por el juez son correctos y soportados: falso positivo del juez"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "FASE A: el agente hizo una búsqueda razonable (pasos 1-12) y encontró tanto el Método de Medición Estándar (Obligacion_emplear_metodo_medicion_estandar, punto 6.1.4, aprobado por el juez) como los nodos de plazos residuales, código 70810000/70820000 y opciones. Reprodujo fielmente el contenido de cada nodo consultado. FASE B/C — por pata y por claim: (1) Pata 'método a emplear', claims 1-2 (plazos residuales): el dato apareció y está SOPORTADO por el nodo abierto en el paso 8 → no es faithfulness → noise_sensitivity. El PDF (punto 6.2) muestra que el método de plazos residuales es UNA alternativa específica del riesgo general de TASA DE INTERÉS (una de las exigencias que componen RM = RT+RA+RTC+RPB+ROP), no 'el método' de riesgo general de mercado en general; la fórmula con 'cambio neto en opciones' aplica en ese sub-régimen. El nodo tiene label genérico 'Cálculo capital por riesgo general de mercado' y una description que NO declara su alcance (tasa de interés / alternativa a plazos por vencimientos): leído solo, no avisa al lector que su contenido pertenece a un sub-cálculo específico. Test v2.6: el nodo OMITE su alcance → defecto del grafo por des-scoping → contenido_kg, primaria. (2) Pata 'cómo se determina', claim 3 (mayor valor 70810000/70820000): SOPORTADO por el nodo del paso 4 → noise_sensitivity. El PDF (punto 12.2) confirma la fórmula PERO con encabezado explícito '(marzo 2016 - agosto 2016)' y 'según punto 5. de la Comunicación A 5867' — es una metodología de un período histórico, no la determinación general vigente. El nodo omite ese alcance temporal en su description ('Determinación del importe a consignar... computando el mayor valor...'), por lo que leído solo induce a presentarlo como determinación general vigente → contenido_kg por des-scoping, primaria. (3) Claims 4-5 (opciones, no centrales): SOPORTADOS por nodos consultados (paso 10) y fieles al PDF (6.6.2 método simplificado; 6.6.3 delta-plus con gamma/vega) → son correctos; el juez los marcó no_soportado erróneamente → sin_defecto (falso positivo del juez), sin_par, tras descartar contenido_kg (nodos fieles), completitud/estructural (datos presentes), navegación/alucinación (agente los usó bien). Descarté faithfulness en los tres claims centrales porque el contenido estaba EXPUESTO en los outputs completos de la trayectoria (pasos 4 y 8 verificados con ver_paso_completo). Las dos primarias explican por qué el juez reprobó: el agente mezcló un método sub-específico y una fórmula de un período vencido, ambos presentados sin scope porque los nodos no lo portan.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 14,
+    "max_tool_calls": 40,
+    "tokens_in": 273344,
+    "tokens_out": 8759
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 14,
+    "tokens_in": 273344,
+    "tokens_out": 8759,
+    "latency_s": 119.009,
+    "error": null,
+    "final_raw": "{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capital mínimo riesgo de mercado', limite: 10}\", \"devolvio\": \"Lista de nodos de cálculo de exigencia; el primero Operacion_medicion_de_capital_minimo (medición conforme punto 6.10) y varios de riesgo de crédito/operacional\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'exigencia capital riesgo mercado método cálculo', limite: 10}\", \"devolvio\": \"Devuelve Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_medicion_de_capital_minimo'}\", \"devolvio\": \"Medición de exigencia por riesgo de mercado conforme punto 6.10; provenance Punto 6.12 Auditoría interna\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_determinacion_de_exigencia_por_riesgo_de_mercado'}\", \"devolvio\": \"Determinación del importe partida 70800000 computando el mayor valor entre 70810000 y 70820000; provenance régimen informativo Punto 12.2\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_riesgo_de_mercado'}\", \"devolvio\": \"Datos complementarios vinculados al cálculo por riesgo de mercado (puntos 4.3-4.5)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método plazos residuales riesgo mercado', limite: 10}\", \"devolvio\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales como primer resultado\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método valor en riesgo VaR riesgo mercado', limite: 10}\", \"devolvio\": \"Nodos sobre límites de opciones y derivados; nada sobre VaR\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales'}\", \"devolvio\": \"La exigencia se obtendrá como suma de: valor absoluto de posición ponderada neta, desestimación vertical, desestimación horizontal y cambio neto en opciones; provenance Punto 6.2 (parte 2)\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales', direccion: 'salientes'}\", \"devolvio\": \"1 saliente establecida_en al TO Capitales Mínimos\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método estándar riesgo mercado opciones', limite: 10}\", \"devolvio\": \"Nodos de método simplificado y de informar riesgo en opciones (Gamma/Vega)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 6 riesgo mercado exigencia capital', limite: 10}\", \"devolvio\": \"Nodos varios de exigencia por riesgo general/operacional\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Método Medición Estándar punto 6.1.4', limite: 10}\", \"devolvio\": \"Obligacion_emplear_metodo_medicion_estandar (Método Medición Estándar previsto en punto 6.1.4)\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_medicion_de_capital_minimo', direccion: 'salientes'}\", \"devolvio\": \"0 salientes / 0 entrantes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_emplear_metodo_medicion_estandar'}\", \"devolvio\": \"Para su determinación las entidades deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4; provenance Punto 6.1 Exigencia\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Obligacion_emplear_metodo_medicion_estandar', direccion: 'salientes'}\", \"devolvio\": \"3 salientes: establecida_en, aplica_a Sujetos obligados, regula Operacion_calculo\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 8, \"quote\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera\", \"Qué método debe emplearse para su cálculo\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Qué método debe emplearse para su cálculo\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"label: 'Cálculo capital por riesgo general de mercado' | description: 'La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones'\", \"ubicacion\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (abierto por el agente, paso 8)\"},\n        \"fuente\": {\"quote\": \"6.2. Exigencia de capital por riesgo de tasa de interés. (...) La exigencia se obtendrá como la suma de dos exigencias calculadas por separado: una por el riesgo específico de cada instrumento (...) y otra por el riesgo general de mercado –vinculado al efecto de cambios en la tasa de interés sobre la cartera–\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 6.2 (parte 2)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"plazos residuales riesgo general tasa interés desestimación vertical horizontal\", \"resultado\": \"el nodo Operacion_calculo_de_capital_por_metodo_de_plazos_residuales aparece bajo el label genérico 'Cálculo capital por riesgo general de mercado', sin marcar que el método de plazos residuales es una alternativa específica del riesgo general de TASA DE INTERÉS\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\", \"ubicacion\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (abierto por el agente, paso 4)\"},\n        \"fuente\": {\"quote\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” 5867 (marzo 2016 - agosto 2016). A efectos de determinar el importe a consignar en la partida 70800000 (...) se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [ Código 70810000; Código 70820000 ]\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"capital mínimo riesgo de mercado / exigencia capital riesgo mercado método cálculo\", \"resultado\": \"el nodo se devuelve con description que omite el alcance temporal '(marzo 2016 - agosto 2016)' que el PDF declara; leído solo no avisa que es una metodología de un período histórico según Comunicación A 5867\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Qué método debe emplearse para su cálculo\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 | Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"ubicacion\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa ; Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\"},\n        \"fuente\": {\"quote\": \"6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...) 6.6.3. Método delta-plus. (...) exigencias adicionales para la cobertura de los riesgos gamma (...) y vega\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Puntos 6.6.2 y 6.6.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"método estándar riesgo mercado opciones\", \"resultado\": \"ambos nodos consultados por el agente (paso 10) reproducen fielmente el método simplificado (6.6.2) y Gamma/Vega; el PDF confirma ambos → los claims marcados no_soportado por el juez son correctos y soportados: falso positivo del juez\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"FASE A: el agente hizo una búsqueda razonable (pasos 1-12) y encontró tanto el Método de Medición Estándar (Obligacion_emplear_metodo_medicion_estandar, punto 6.1.4, aprobado por el juez) como los nodos de plazos residuales, código 70810000/70820000 y opciones. Reprodujo fielmente el contenido de cada nodo consultado. FASE B/C — por pata y por claim: (1) Pata 'método a emplear', claims 1-2 (plazos residuales): el dato apareció y está SOPORTADO por el nodo abierto en el paso 8 → no es faithfulness → noise_sensitivity. El PDF (punto 6.2) muestra que el método de plazos residuales es UNA alternativa específica del riesgo general de TASA DE INTERÉS (una de las exigencias que componen RM = RT+RA+RTC+RPB+ROP), no 'el método' de riesgo general de mercado en general; la fórmula con 'cambio neto en opciones' aplica en ese sub-régimen. El nodo tiene label genérico 'Cálculo capital por riesgo general de mercado' y una description que NO declara su alcance (tasa de interés / alternativa a plazos por vencimientos): leído solo, no avisa al lector que su contenido pertenece a un sub-cálculo específico. Test v2.6: el nodo OMITE su alcance → defecto del grafo por des-scoping → contenido_kg, primaria. (2) Pata 'cómo se determina', claim 3 (mayor valor 70810000/70820000): SOPORTADO por el nodo del paso 4 → noise_sensitivity. El PDF (punto 12.2) confirma la fórmula PERO con encabezado explícito '(marzo 2016 - agosto 2016)' y 'según punto 5. de la Comunicación A 5867' — es una metodología de un período histórico, no la determinación general vigente. El nodo omite ese alcance temporal en su description ('Determinación del importe a consignar... computando el mayor valor...'), por lo que leído solo induce a presentarlo como determinación general vigente → contenido_kg por des-scoping, primaria. (3) Claims 4-5 (opciones, no centrales): SOPORTADOS por nodos consultados (paso 10) y fieles al PDF (6.6.2 método simplificado; 6.6.3 delta-plus con gamma/vega) → son correctos; el juez los marcó no_soportado erróneamente → sin_defecto (falso positivo del juez), sin_par, tras descartar contenido_kg (nodos fieles), completitud/estructural (datos presentes), navegación/alucinación (agente los usó bien). Descarté faithfulness en los tres claims centrales porque el contenido estaba EXPUESTO en los outputs completos de la trayectoria (pasos 4 y 8 verificados con ver_paso_completo). Las dos primarias explican por qué el juez reprobó: el agente mezcló un método sub-específico y una fórmula de un período vencido, ambos presentados sin scope porque los nodos no lo portan.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.1. Exigencia."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.1. Exigencia.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.1 (PDF pág 116)\", \"pasaje\": \"6.1. Exigencia. \\nEl riesgo de mercado se define como la posibilidad de sufrir pérdidas en posiciones registra-\\ndas dentro y fuera de balance a raíz de las fluctuaciones adversas en los precios de mercado.  \\nLa exigencia de capital por riesgo de mercado (RM) será la suma aritmética de la exigencia de \\ncapital por los riesgos por tasa de interés (RT), acciones (RA), tipo de cambio (RTC), produc-\\ntos básicos (RPB) y opciones (ROP). \\nRM = RT + RA + RTC + RPB + ROP \\nPara su determinación, las entidades deberán emplear el Método de Medición Estándar pre-\\nvisto en el punto 6.1.4. \\n6.1.1. Consideraciones generales. \\n6.1.1.1.  Los riesgos sujetos a esta exigencia de capital son los riesgos de las posicio-\\nnes en: \\ni) instrumentos –títulos valores y derivados– imputados a la cartera de nego-\\nciación –definida en el punto 6.1.2.–; y\\nii) monedas extranjeras y “commodities”, cualquiera sea la cartera a la que se\\nimputen.\\n6.1.1.2. La exigencia de capital por riesgo de tipo de cambio y “commodities”… [+409 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2 (PDF pág 118)\", \"pasaje\": \"6.2. Exigencia de capital por riesgo de tasa de interés. \\nLa exigencia de capital por el riesgo de tasa de interés se deberá calcular respecto de los títu-\\nlos de deuda y otros instrumentos imputados a la cartera de negociación, incluidas las ac cio-\\nnes preferidas no convertibles.  \\nUn título valor vendido y recomprado a término en una operación de pase pasivo o en otro tipo \\nde operación de financiación con títulos valores se tratará como si todavía fuese propiedad de \\nla entidad cedente; es decir, recibirá el mismo tratamiento que un título en cartera.  \\nLas acciones preferidas convertibles a un precio predeterminado en acciones ordinarias de la \\nemisora se tratarán según cómo se negocien, como títulos de deuda o como acciones.  \\nLa exigencia se obtendrá como la suma de dos exigencias c alculadas por separado: una por \\nel riesgo específico de cada instrumento, ya sea que se trate de una posición vendida o com-\\nprada, y otra por el riesg… [+455 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.2 (PDF pág 57)\", \"pasaje\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” \\n5867 (marzo 2016 - agosto 2016). \\n \\nA efectos de determinar el importe a consignar en la partida 70800000 (exigencia por ries-\\ngo de mercado) se computará el mayor valor que surja del siguiente cálculo: \\n \\nCódigo 70800000 = Máx [ Código 70810000; Código 70820000 ] \\n \\nDonde: \\n \\n- Código 70800000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo de información (n); \\n \\n- Código 70810000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo (n) calculada conforme a la metodología aplicable hasta el 29.02.16 por las nor-\\nmas sobre “Capitales mínimos de las entidades financieras”)\\n;  \\n \\n- Código 70820000 (n): exigencia por riesgo de mercado calculada conforme a la metodo-\\nlogía aplicable según Anexo a la Comunicación “A” 5867)\\n. \\n \\nLa nómina de p… [+503 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazos residuales riesgo general tasa interés desestimación vertical horizontal",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazos residuales riesgo general tasa interés desestimación vertical horizontal\", \"total_con_match\": 230, \"resultados\": [{\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo general de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del pun…\"}, {\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Operacion_calculo_de_exigencia_capital_por_riesgo_general\", \"type\": \"Operacion\", \"label\": \"Determinación de exigencia riesgo general tasa interés\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cálculo de exigencia capital por riesgo general\"}, {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de… [+2263 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2 (PDF pág 135)\", \"pasaje\": \"6.2.2. Opción de compra u opción de venta compradas. \\nLa \\nexigencia de capital será el menor entre el valor de mercado del subyacente \\nmultiplicado por la suma de las exigencias por riesgo específico y riesgo gene-\\nral de mercado aplicables al subyacente y el valor de mercado de la opción.  \\nS\\ne podrá usar el valor contable en el caso de las opciones sobre monedas no \\nincluidas en la cartera de negociación. \\n6.\\n6.3. Método delta-plus. \\nE\\nl método delta-plus utiliza los parámetros de sensibilidad o “letras griegas” asociadas \\na las opciones para determinar el equivalente delta de cada posición.  \\nA\\nl equivalente delta de la posición, se le aplicará la metodología estándar de los pun-\\ntos 6.2. a 6.4., al efecto de calcular la exigencia de capital por riesgo general de mer-\\ncado para las opciones, al que se agregan exigencias adicionales para la cobertura de \\nlos riesgos gamma –que mide la tasa de cambio del coeficiente delta ante variaciones \\nen el precio del subyacente–  y vega –que mide la … [+404 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo general de mercado\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"8%\", \"description\": \"La exigencia de capital por riesgo general de mercado es la diferencia entre el total de posiciones compradas y el total de posiciones vendidas en cada mercado nacional, con una exigencia del 8%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.3. Exigencia de capital por riesgo de posiciones en acciones.\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.1 (PDF pág 119)\", \"pasaje\": \"6.2.1. Exigencia de capital por riesgo específico. \\n \\nLa exigencia de capital por riesgo específico tiene por objeto proteger a la entidad ante \\nmovimientos adversos en el precio de un título causados por factores relacionados con \\nsu emisor. Para su cálculo, sólo se pe rmitirá netear las posiciones opuestas respecto de \\nuna misma especie, incluidas las posiciones en derivados.  \\n \\n6.2.1.1. Las exigencias de capital por riesgo específico en concepto de riesgo de em isor \\nserán las siguientes: \\n \\nEmisor Exigencia de capital \\npor riesgo específico \\nBCRA, Gobierno Nacional, gobiernos \\nprovinciales, municipales y de la CABA \\nen pesos, cua ndo su fuente de fondos \\nsea en esa moneda.   \\nBanco de Pagos Internacionales, Fondo \\nMonetario Internacional, Banco Central \\nEuropeo y Comunidad Europea y Bancos \\nmultilaterales de desarrollo del punto \\n2.12.3.1. \\n0,25% Plazo residual \\n≤ 6 meses \\n1% \\nPlazo residual \\n> 6 meses y ≤ \\n24 meses \\n1,6% Plazo residual \\n> 24 meses \\nBCRA y sector público no … [+410 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2 Exigencia de capital por riesgo general de mercado"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2 Exigencia de capital por riesgo general de mercado\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2 (PDF pág 135)\", \"pasaje\": \"6.2.2. Opción de compra u opción de venta compradas. \\nLa \\nexigencia de capital será el menor entre el valor de mercado del subyacente \\nmultiplicado por la suma de las exigencias por riesgo específico y riesgo gene-\\nral de mercado aplicables al subyacente y el valor de mercado de la opción.  \\nS\\ne podrá usar el valor contable en el caso de las opciones sobre monedas no \\nincluidas en la cartera de negociación. \\n6.\\n6.3. Método delta-plus. \\nE\\nl método delta-plus utiliza los parámetros de sensibilidad o “letras griegas” asociadas \\na las opciones para determinar el equivalente delta de cada posición.  \\nA\\nl equivalente delta de la posición, se le aplicará la metodología estándar de los pun-\\ntos 6.2. a 6.4., al efecto de calcular la exigencia de capital por riesgo general de mer-\\ncado para las opciones, al que se agregan exigencias adicionales para la cobertura de \\nlos riesgos gamma –que mide la tasa de cambio del coeficiente delta ante variaciones \\… [+455 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"properties\": {\"descripcion\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo en opciones\", \"properties\": {\"descripcion\": \"Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.6.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.6.2 (PDF pág 134)\", \"pasaje\": \"6.6.2. Método simplificado. \\nLas opciones y sus subyacentes, al contado o a término, es tarán sujetas a una exigen-\\ncia de capital que incorpora tanto el riesgo de mercado general como el riesgo específi-\\nco en los siguientes términos: \\n6.6.2.1. Exigencia de capital para una posición c omprada en el subyacente y comprada \\nen la opción de venta (“put”), o para una pos ición vendida en el subyacente y \\ncomprada en la opción de compra (“call”). \\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS B.C.R.A. Sección 6. Capital mínimo por riesgo de mercado. \\nVersión: 2a. COMUNICACIÓN  “A”  6690 Vigencia:\\n01/04/2019 Página 19\"}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"método plazos residuales riesgo mercado\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"método plazos residuales riesgo mercado\", \"total_con_match\": 319, \"resultados\": [{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado\", \"type\": \"Obligacion\", \"label\": \"Cálculo riesgo general mercado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …\"}, {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Determinación del importe a consignar en la … [+2614 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\"}, \"output_completo\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"properties\": {\"tipo\": \"determinación de exigencia por riesgo de mercado\", \"description\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}}"
+     },
+     {
+      "n": 14,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\"}, \"output_completo\": {\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"properties\": {\"tipo\": \"cálculo de capital por método de plazos residuales\", \"description\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26719,
+      "output_tokens": 425
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29447,
+      "output_tokens": 469
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32155,
+      "output_tokens": 328
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33548,
+      "output_tokens": 353
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35162,
+      "output_tokens": 289
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37606,
+      "output_tokens": 926
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38848,
+      "output_tokens": 684
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39859,
+      "output_tokens": 5285
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 5,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-004",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capital mínimo riesgo de mercado'}",
+      "devolvio": "2481 matches; Operacion_medicion_de_capital_minimo, cálculos por riesgo de crédito/operacional",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'exigencia capital riesgo mercado método cálculo'}",
+      "devolvio": "532 matches; aparece Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: Operacion_medicion_de_capital_minimo}",
+      "devolvio": "Medición conforme punto 6.10; provenance punto 6.12 auditoría interna",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: Operacion_determinacion_de_exigencia_por_riesgo_de_mercado}",
+      "devolvio": "importe partida 70800000 = mayor entre 70810000 y 70820000; provenance RI Punto 12.2",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: Operacion_calculo_de_riesgo_de_mercado}",
+      "devolvio": "datos complementarios cálculo exigencia riesgo mercado",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método plazos residuales riesgo mercado'}",
+      "devolvio": "319 matches; Operacion_calculo_de_capital_por_metodo_de_plazos_residuales primero",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método valor en riesgo VaR riesgo mercado'}",
+      "devolvio": "1068 matches; límites opciones, derivados OTC",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: Operacion_calculo_de_capital_por_metodo_de_plazos_residuales}",
+      "devolvio": "exigencia = suma de valor absoluto posición ponderada neta + desestimación vertical + desestimación horizontal + cambio neto opciones; provenance 6.2 parte 2",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: Operacion_calculo_de_capital_por_metodo_de_plazos_residuales, salientes}",
+      "devolvio": "establecida_en TO capitales mínimos punto 6.2",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método estándar riesgo mercado opciones'}",
+      "devolvio": "319 matches; método simplificado (6.6.2), informar Gamma/Vega, emplear Método Medición Estándar (6.1.4)",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 6 riesgo mercado exigencia capital'}",
+      "devolvio": "525 matches; riesgo general mercado, exigencia riesgo general de mercado",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Método Medición Estándar punto 6.1.4'}",
+      "devolvio": "Obligacion_emplear_metodo_medicion_estandar aparece",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{id: Operacion_medicion_de_capital_minimo, salientes}",
+      "devolvio": "0 salientes 0 entrantes (nodo huérfano)",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: Obligacion_emplear_metodo_medicion_estandar}",
+      "devolvio": "deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4; provenance 6.1",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: Obligacion_emplear_metodo_medicion_estandar, salientes}",
+      "devolvio": "establecida_en TO 6.1, aplica_a sujetos obligados, regula Operacion_calculo",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera",
+     "Qué método debe emplearse para su cálculo"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo por riesgo de mercado",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000",
+       "ubicacion": "Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (visto por el agente en paso 4)"
+      },
+      "fuente": {
+       "quote": "12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” 5867 (marzo 2016 - agosto 2016). (...) - Código 70810000 (n): exigencia por riesgo de mercado (...) calculada conforme a la metodología aplicable hasta el 29.02.16 (...); - Código 70820000 (n): exigencia por riesgo de mercado calculada conforme a la metodología aplicable según Anexo a la Comunicación “A” 5867)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "metodología transitoria 2016 exigencia riesgo mercado histórica",
+       "resultado": "no hay nodo que declare la temporalidad; el único nodo portador (Operacion_determinacion_de_exigencia_por_riesgo_de_mercado) tiene description genérica sin marca de alcance temporal"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Qué método debe emplearse para su cálculo (riesgo general)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones",
+       "ubicacion": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (abierto por el agente en paso 8)"
+      },
+      "fuente": {
+       "quote": "6.2.2.2. Las exigencias de capital se calcularán por separado para las posiciones en pesos y en cada moneda extranjera (...) imputar las posiciones netas, compradas o vendidas, a las bandas de una escala única (...) posición bruta",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 6.2.2.2 (riesgo general de mercado por tasa de interés — método de bandas de plazos residuales)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "plazos residuales método riesgo tasa interés general",
+       "resultado": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales es el primer resultado; el PDF confirma que el cálculo por bandas de plazos residuales es el método del riesgo general de mercado dentro de la sección 6.2"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Qué método debe emplearse para su cálculo (opciones)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 / Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega",
+       "ubicacion": "Obligacion_las_entidades_que_solo_compren_opciones... y Obligacion_las_entidades_deberan_informar_exigencia... (expuestos al agente en paso 10)"
+      },
+      "fuente": {
+       "quote": "6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...)",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 6.6.2 (y 6.1.4.2 que ofrece enfoque simplificado o método delta-plus)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "método estándar riesgo mercado opciones",
+       "resultado": "nodos de método simplificado y Gamma/Vega expuestos y fieles al PDF (6.6.2 / 6.6.3)"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "Descompuse la pregunta en dos patas. La pata 1 (cómo se determina) y el método estándar del punto 6.1.4 fueron aprobados por el juez y están soportados por Obligacion_emplear_metodo_medicion_estandar (paso 14). Investigué cada claim central marcado incorrecto. (1) Códigos 70810000/70820000: el agente lo tomó del nodo Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (visto en paso 4), por lo que el claim ESTÁ soportado por lo consultado → síntoma noise_sensitivity (no faithfulness). Contra el PDF (RI Punto 12.2) ese cómputo es una metodología TRANSITORIA de marzo-agosto 2016 (código 70810000 = metodología aplicable hasta 29.02.16; 70820000 = Comunicación A 5867), no el método vigente de determinación de la exigencia por riesgo de mercado. El agente lo presentó como el método actual ('Adicionalmente... se determina computando el mayor valor...'), lo que es incorrecto. Aplicando el test v2.6: el nodo, leído solo, NO avisa que su contenido es de otro alcance temporal — su description es genérica ('Determinación del importe a consignar en la partida 70800000... computando el mayor valor entre el código 70810000 y 70820000') y su label 'Cálculo exigencia riesgo mercado' es genérico, sin marca de temporalidad. La provenance apunta al Punto 12.2 pero el título completo del punto (que sí menciona 'según punto 5 de la Comunic... marzo 2016 - agosto 2016') quedó cortado en el nodo. Como el nodo OMITE su alcance temporal, el defecto es del grafo por des-scoping → contenido_kg, primaria: es lo que hace que la respuesta arrastre información transitoria como si fuera vigente. (2) Método de plazos residuales: el dato pertinente apareció (nodo abierto en paso 8), el claim reproduce fielmente su contenido, y contra el PDF (6.2/6.2.2.2) el cálculo por bandas de plazos residuales ES efectivamente el método del riesgo general de mercado por tasa de interés — la afirmación es sustancialmente correcta y soportada; descarté contenido_kg (nodo fiel al PDF), aplicacion_erronea (el uso es dentro de su alcance), faithfulness (está soportado) → sin_defecto (falso positivo del juez). (3) Claims de opciones (no centrales): soportados por nodos expuestos en paso 10 y fieles al PDF (6.6.2 método simplificado; 6.6.3/Gamma-Vega delta-plus) → sin_defecto. Como NO todos los claims centrales fallidos son FP (el de los códigos es un defecto real de contenido del grafo), la primaria existe y recae en contenido_kg; los FP se emiten como sin_par según la regla de jerarquía. Descarté completitud_kg y alcanzabilidad_kg: el dato del código estaba presente y alcanzable; el problema no es ausencia sino des-scoping temporal.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 17,
+    "max_tool_calls": 40,
+    "tokens_in": 360874,
+    "tokens_out": 9176
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 17,
+    "tokens_in": 360874,
+    "tokens_out": 9176,
+    "latency_s": 123.239,
+    "error": null,
+    "final_raw": "Confirmo que no hay un nodo separado que declare la temporalidad transitoria del cómputo 70810000/70820000. El único nodo portador es el genérico. Tengo evidencia suficiente.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capital mínimo riesgo de mercado'}\", \"devolvio\": \"2481 matches; Operacion_medicion_de_capital_minimo, cálculos por riesgo de crédito/operacional\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'exigencia capital riesgo mercado método cálculo'}\", \"devolvio\": \"532 matches; aparece Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: Operacion_medicion_de_capital_minimo}\", \"devolvio\": \"Medición conforme punto 6.10; provenance punto 6.12 auditoría interna\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: Operacion_determinacion_de_exigencia_por_riesgo_de_mercado}\", \"devolvio\": \"importe partida 70800000 = mayor entre 70810000 y 70820000; provenance RI Punto 12.2\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: Operacion_calculo_de_riesgo_de_mercado}\", \"devolvio\": \"datos complementarios cálculo exigencia riesgo mercado\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método plazos residuales riesgo mercado'}\", \"devolvio\": \"319 matches; Operacion_calculo_de_capital_por_metodo_de_plazos_residuales primero\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método valor en riesgo VaR riesgo mercado'}\", \"devolvio\": \"1068 matches; límites opciones, derivados OTC\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: Operacion_calculo_de_capital_por_metodo_de_plazos_residuales}\", \"devolvio\": \"exigencia = suma de valor absoluto posición ponderada neta + desestimación vertical + desestimación horizontal + cambio neto opciones; provenance 6.2 parte 2\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: Operacion_calculo_de_capital_por_metodo_de_plazos_residuales, salientes}\", \"devolvio\": \"establecida_en TO capitales mínimos punto 6.2\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método estándar riesgo mercado opciones'}\", \"devolvio\": \"319 matches; método simplificado (6.6.2), informar Gamma/Vega, emplear Método Medición Estándar (6.1.4)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 6 riesgo mercado exigencia capital'}\", \"devolvio\": \"525 matches; riesgo general mercado, exigencia riesgo general de mercado\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Método Medición Estándar punto 6.1.4'}\", \"devolvio\": \"Obligacion_emplear_metodo_medicion_estandar aparece\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{id: Operacion_medicion_de_capital_minimo, salientes}\", \"devolvio\": \"0 salientes 0 entrantes (nodo huérfano)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: Obligacion_emplear_metodo_medicion_estandar}\", \"devolvio\": \"deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4; provenance 6.1\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: Obligacion_emplear_metodo_medicion_estandar, salientes}\", \"devolvio\": \"establecida_en TO 6.1, aplica_a sujetos obligados, regula Operacion_calculo\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera\",\n      \"Qué método debe emplearse para su cálculo\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo por riesgo de mercado\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\", \"ubicacion\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (visto por el agente en paso 4)\"},\n        \"fuente\": {\"quote\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación \\u201cA\\u201d 5867 (marzo 2016 - agosto 2016). (...) - Código 70810000 (n): exigencia por riesgo de mercado (...) calculada conforme a la metodología aplicable hasta el 29.02.16 (...); - Código 70820000 (n): exigencia por riesgo de mercado calculada conforme a la metodología aplicable según Anexo a la Comunicación \\u201cA\\u201d 5867)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"metodología transitoria 2016 exigencia riesgo mercado histórica\", \"resultado\": \"no hay nodo que declare la temporalidad; el único nodo portador (Operacion_determinacion_de_exigencia_por_riesgo_de_mercado) tiene description genérica sin marca de alcance temporal\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Qué método debe emplearse para su cálculo (riesgo general)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones\", \"ubicacion\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (abierto por el agente en paso 8)\"},\n        \"fuente\": {\"quote\": \"6.2.2.2. Las exigencias de capital se calcularán por separado para las posiciones en pesos y en cada moneda extranjera (...) imputar las posiciones netas, compradas o vendidas, a las bandas de una escala única (...) posición bruta\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 6.2.2.2 (riesgo general de mercado por tasa de interés — método de bandas de plazos residuales)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"plazos residuales método riesgo tasa interés general\", \"resultado\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales es el primer resultado; el PDF confirma que el cálculo por bandas de plazos residuales es el método del riesgo general de mercado dentro de la sección 6.2\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Qué método debe emplearse para su cálculo (opciones)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 / Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"ubicacion\": \"Obligacion_las_entidades_que_solo_compren_opciones... y Obligacion_las_entidades_deberan_informar_exigencia... (expuestos al agente en paso 10)\"},\n        \"fuente\": {\"quote\": \"6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...)\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 6.6.2 (y 6.1.4.2 que ofrece enfoque simplificado o método delta-plus)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"método estándar riesgo mercado opciones\", \"resultado\": \"nodos de método simplificado y Gamma/Vega expuestos y fieles al PDF (6.6.2 / 6.6.3)\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Descompuse la pregunta en dos patas. La pata 1 (cómo se determina) y el método estándar del punto 6.1.4 fueron aprobados por el juez y están soportados por Obligacion_emplear_metodo_medicion_estandar (paso 14). Investigué cada claim central marcado incorrecto. (1) Códigos 70810000/70820000: el agente lo tomó del nodo Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (visto en paso 4), por lo que el claim ESTÁ soportado por lo consultado → síntoma noise_sensitivity (no faithfulness). Contra el PDF (RI Punto 12.2) ese cómputo es una metodología TRANSITORIA de marzo-agosto 2016 (código 70810000 = metodología aplicable hasta 29.02.16; 70820000 = Comunicación A 5867), no el método vigente de determinación de la exigencia por riesgo de mercado. El agente lo presentó como el método actual ('Adicionalmente... se determina computando el mayor valor...'), lo que es incorrecto. Aplicando el test v2.6: el nodo, leído solo, NO avisa que su contenido es de otro alcance temporal — su description es genérica ('Determinación del importe a consignar en la partida 70800000... computando el mayor valor entre el código 70810000 y 70820000') y su label 'Cálculo exigencia riesgo mercado' es genérico, sin marca de temporalidad. La provenance apunta al Punto 12.2 pero el título completo del punto (que sí menciona 'según punto 5 de la Comunic... marzo 2016 - agosto 2016') quedó cortado en el nodo. Como el nodo OMITE su alcance temporal, el defecto es del grafo por des-scoping → contenido_kg, primaria: es lo que hace que la respuesta arrastre información transitoria como si fuera vigente. (2) Método de plazos residuales: el dato pertinente apareció (nodo abierto en paso 8), el claim reproduce fielmente su contenido, y contra el PDF (6.2/6.2.2.2) el cálculo por bandas de plazos residuales ES efectivamente el método del riesgo general de mercado por tasa de interés — la afirmación es sustancialmente correcta y soportada; descarté contenido_kg (nodo fiel al PDF), aplicacion_erronea (el uso es dentro de su alcance), faithfulness (está soportado) → sin_defecto (falso positivo del juez). (3) Claims de opciones (no centrales): soportados por nodos expuestos en paso 10 y fieles al PDF (6.6.2 método simplificado; 6.6.3/Gamma-Vega delta-plus) → sin_defecto. Como NO todos los claims centrales fallidos son FP (el de los códigos es un defecto real de contenido del grafo), la primaria existe y recae en contenido_kg; los FP se emiten como sin_par según la regla de jerarquía. Descarté completitud_kg y alcanzabilidad_kg: el dato del código estaba presente y alcanzable; el problema no es ausencia sino des-scoping temporal.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2. Exigencia de capital por riesgo de tasa de interés."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2 (PDF pág 118)\", \"pasaje\": \"6.2. Exigencia de capital por riesgo de tasa de interés. \\nLa exigencia de capital por el riesgo de tasa de interés se deberá calcular respecto de los títu-\\nlos de deuda y otros instrumentos imputados a la cartera de negociación, incluidas las ac cio-\\nnes preferidas no convertibles.  \\nUn título valor vendido y recomprado a término en una operación de pase pasivo o en otro tipo \\nde operación de financiación con títulos valores se tratará como si todavía fuese propiedad de \\nla entidad cedente; es decir, recibirá el mismo tratamiento que un título en cartera.  \\nLas acciones preferidas convertibles a un precio predeterminado en acciones ordinarias de la \\nemisora se tratarán según cómo se negocien, como títulos de deuda o como acciones.  \\nLa exigencia se obtendrá como la suma de dos exigencias c alculadas por separado: una por \\nel riesgo específico de cada instrumento, ya sea que se trate de una posición vendida o com-\\nprada, y otra por el riesgo general … [+445 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.1. Exigencia."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.1. Exigencia.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.1 (PDF pág 116)\", \"pasaje\": \"6.1. Exigencia. \\nEl riesgo de mercado se define como la posibilidad de sufrir pérdidas en posiciones registra-\\ndas dentro y fuera de balance a raíz de las fluctuaciones adversas en los precios de mercado.  \\nLa exigencia de capital por riesgo de mercado (RM) será la suma aritmética de la exigencia de \\ncapital por los riesgos por tasa de interés (RT), acciones (RA), tipo de cambio (RTC), produc-\\ntos básicos (RPB) y opciones (ROP). \\nRM = RT + RA + RTC + RPB + ROP \\nPara su determinación, las entidades deberán emplear el Método de Medición Estándar pre-\\nvisto en el punto 6.1.4. \\n6.1.1. Consideraciones generales. \\n6.1.1.1.  Los riesgos sujetos a esta exigencia de capital son los riesgos de las posicio-\\nnes en: \\ni) instrumentos –títulos valores y derivados– imputados a la cartera de nego-\\nciación –definida en el punto 6.1.2.–; y\\nii) monedas extranjeras y “commodities”, cualquiera sea la cartera a la que se\\nimputen.\\n6.1.1.2. La exigencia de capital por riesgo de tipo de cambio y “commodities”… [+409 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.2 (PDF pág 57)\", \"pasaje\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” \\n5867 (marzo 2016 - agosto 2016). \\n \\nA efectos de determinar el importe a consignar en la partida 70800000 (exigencia por ries-\\ngo de mercado) se computará el mayor valor que surja del siguiente cálculo: \\n \\nCódigo 70800000 = Máx [ Código 70810000; Código 70820000 ] \\n \\nDonde: \\n \\n- Código 70800000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo de información (n); \\n \\n- Código 70810000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo (n) calculada conforme a la metodología aplicable hasta el 29.02.16 por las nor-\\nmas sobre “Capitales mínimos de las entidades financieras”)\\n;  \\n \\n- Código 70820000 (n): exigencia por riesgo de mercado calculada conforme a la metodo-\\nlogía aplicable según Anexo a la Comunicación “A” 5867)\\n. \\n \\nLa nómina de p… [+503 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.1.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.1.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.1.4 (PDF pág 118)\", \"pasaje\": \"6.1.4. Medición de los riesgos de mercado. \\n6.1.4.1. El Método de Medición Estándar se basa en una suma de c omponentes que \\ncapturan por separado el riesgo específico y el riesgo general de mercado de \\nlas posiciones en títulos valores. \\n6.1.4.2. Para calcular la exigencia de capital por el riesgo de precio de opciones las en-\\ntidades podrán usar el enfoque simplificado (previsto en el punto 6.6.2.) o el \\nmétodo delta-plus (establecido en el punto 6.6.3.), según corresponda. \\n6.1.4.3. Para el cálculo de la exigencia de capital por riesgo de mercado, las operacio-\\nnes se computarán a partir de la fecha de su concertación, incluidas las com-\\npras y ventas a término. Las entidades deberán satisfacer las exigencias al cie-\\nrre de cada día hábil.  \\nLa SEFyC verificará que no se distorsionen los saldos al cierre de cada período \\ninformativo para declarar menores pos\\niciones a riesgo y la calidad de los siste-\\nmas para la gestión del riesgo de las exposiciones intradiarias. \\n6.2. Exigencia de capita… [+399 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazos residuales método riesgo tasa interés general",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazos residuales método riesgo tasa interés general\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo general de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del pun…\"}, {\"id\": \"Operacion_calculo_de_exigencia_capital_por_riesgo_general\", \"type\": \"Operacion\", \"label\": \"Determinación de exigencia riesgo general tasa interés\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cálculo de exigencia capital por riesgo general\"}, {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operaci… [+2372 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado\", \"type\": \"Obligacion\", \"label\": \"Cálculo riesgo general mercado\", \"properties\": {\"tipo\": \"calculo\", \"descripcion\": \"Aplicar exigencia capital por riesgo general mercado a todas posiciones derivados e instrumentos al contado, excepto compensadas con instrumentos idénticos\", \"description\": \"La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las posiciones al contado-, con la sola excepción de las posiciones que estén compensadas con instrumentos idénticos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 4)\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2 (PDF pág 135)\", \"pasaje\": \"6.2.2. Opción de compra u opción de venta compradas. \\nLa \\nexigencia de capital será el menor entre el valor de mercado del subyacente \\nmultiplicado por la suma de las exigencias por riesgo específico y riesgo gene-\\nral de mercado aplicables al subyacente y el valor de mercado de la opción.  \\nS\\ne podrá usar el valor contable en el caso de las opciones sobre monedas no \\nincluidas en la cartera de negociación. \\n6.\\n6.3. Método delta-plus. \\nE\\nl método delta-plus utiliza los parámetros de sensibilidad o “letras griegas” asociadas \\na las opciones para determinar el equivalente delta de cada posición.  \\nA\\nl equivalente delta de la posición, se le aplicará la metodología estándar de los pun-\\ntos 6.2. a 6.4., al efecto de calcular la exigencia de capital por riesgo general de mer-\\ncado para las opciones, al que se agregan exigencias adicionales para la cobertura de \\nlos riesgos gamma –que mide la tasa de cambio del coeficiente delta ante variaciones \\nen el precio del subyacente–  y vega –que mide la … [+404 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_calculo_de_exigencia_capital_por_riesgo_general"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_de_exigencia_capital_por_riesgo_general\", \"type\": \"Operacion\", \"label\": \"Determinación de exigencia riesgo general tasa interés\", \"properties\": {\"tipo\": \"cálculo de exigencia capital por riesgo general\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.1. Normas de procedimiento\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"properties\": {\"descripcion\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo en opciones\", \"properties\": {\"descripcion\": \"Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.1 (PDF pág 119)\", \"pasaje\": \"6.2.1. Exigencia de capital por riesgo específico. \\n \\nLa exigencia de capital por riesgo específico tiene por objeto proteger a la entidad ante \\nmovimientos adversos en el precio de un título causados por factores relacionados con \\nsu emisor. Para su cálculo, sólo se pe rmitirá netear las posiciones opuestas respecto de \\nuna misma especie, incluidas las posiciones en derivados.  \\n \\n6.2.1.1. Las exigencias de capital por riesgo específico en concepto de riesgo de em isor \\nserán las siguientes: \\n \\nEmisor Exigencia de capital \\npor riesgo específico \\nBCRA, Gobierno Nacional, gobiernos \\nprovinciales, municipales y de la CABA \\nen pesos, cua ndo su fuente de fondos \\nsea en esa moneda.   \\nBanco de Pagos Internacionales, Fondo \\nMonetario Internacional, Banco Central \\nEuropeo y Comunidad Europea y Bancos \\nmultilaterales de desarrollo del punto \\n2.12.3.1. \\n0,25% Plazo residual \\n≤ 6 meses \\n1% \\nPlazo residual \\n> 6 meses y ≤ \\n24 meses \\n1,6% Plazo residual \\n> 24 meses \\nBCRA y sector público no … [+410 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 10
+      },
+      "output_truncado": "{\"paso\": 10, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"método estándar riesgo mercado opciones\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"método estándar riesgo mercado opciones\", \"total_con_match\": 319, \"resultados\": [{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2\"}, {\"id\": \"Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo en opciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán informar exigencia por riesg… [+2509 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.3 (PDF pág 126)\", \"pasaje\": \"6.2.3. Tratamiento de los derivados de tasas de interés.  \\n \\n6.2.3.1. El sistema de medición deberá abarcar a todos los derivados de tasas de inte-\\nrés e instrumentos fuera de balance de la cartera de negociación sensibles a \\nlos cambios en las tasas –tales como los FRAs, futuros sobre bonos, “swaps” \\nde tasas de interés y de monedas “cross-currency swaps”– y las posiciones de \\ndivisas a término.  \\n \\n Las opciones se tratarán conforme a lo previsto en el punto 6.6. \\n \\n6.2.3.2. Cálculo de las posiciones. \\n \\nLos derivados se deberán convertir a posiciones en el correspondiente subya-\\ncente y se les aplicarán las exigencias de capital por riesgo específico y riesgo \\ngeneral de mercado descriptos anteriormente. Para determinar el valor de mer-\\ncado del nocional subyacente se seguirán las disposiciones establecidas en el \\npunto 6.10. para una valuación prudente.  \\n \\n6.2.3.3. Futuros y contratos a término, incluidos los FRAs. \\n \\nEstos instrumentos se considerarán como una combinación de una pos… [+394 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2.2 (PDF pág 123)\", \"pasaje\": \"6.2.2.2. Las exigencias de capital se calcularán por separado para las posiciones en \\npesos y en cada moneda extranjera. Cuando el total de las operaciones en una \\nmoneda extranjera no sea significativo –monedas extranjeras residuales–, la \\nentidad podrá imputar las posiciones netas, compradas o vendidas, a las ban-\\ndas de una escala única. En tal caso, deberá sumar las posiciones individuales \\nnetas dentro de cada banda, con independencia de que sean compradas o \\nvendidas, a fin de determinar el monto de la posición bruta en estas monedas \\nextranjeras residuales. \\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS \\nB.C.R.A. Sección 6. Capital mínimo por riesgo de mercado. \\nVersión: 8a. COMUNICACIÓN  “A”  6690 Vigencia: \\n01/04/2019 Página 8\"}"
+     },
+     {
+      "n": 15,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\"}, \"output_completo\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"properties\": {\"tipo\": \"determinación de exigencia por riesgo de mercado\", \"description\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}}"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.6.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.6.2 (PDF pág 134)\", \"pasaje\": \"6.6.2. Método simplificado. \\nLas opciones y sus subyacentes, al contado o a término, es tarán sujetas a una exigen-\\ncia de capital que incorpora tanto el riesgo de mercado general como el riesgo específi-\\nco en los siguientes términos: \\n6.6.2.1. Exigencia de capital para una posición c omprada en el subyacente y comprada \\nen la opción de venta (“put”), o para una pos ición vendida en el subyacente y \\ncomprada en la opción de compra (“call”). \\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS B.C.R.A. Sección 6. Capital mínimo por riesgo de mercado. \\nVersión: 2a. COMUNICACIÓN  “A”  6690 Vigencia:\\n01/04/2019 Página 19\"}"
+     },
+     {
+      "n": 17,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "metodología transitoria 2016 exigencia riesgo mercado histórica",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"metodología transitoria 2016 exigencia riesgo mercado histórica\", \"total_con_match\": 355, \"resultados\": [{\"id\": \"Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado\", \"type\": \"Obligacion\", \"label\": \"Cálculo riesgo general mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …\"}, {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"}, {\"id\": \"Operacion_calculo_de_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado m…\"}, {\"id\": \"Operacion_medicion_… [+630 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26719,
+      "output_tokens": 408
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29424,
+      "output_tokens": 536
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32627,
+      "output_tokens": 512
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34570,
+      "output_tokens": 274
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37306,
+      "output_tokens": 196
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38190,
+      "output_tokens": 172
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38811,
+      "output_tokens": 634
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39761,
+      "output_tokens": 960
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41122,
+      "output_tokens": 423
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 42344,
+      "output_tokens": 5061
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 5,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-004",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capital mínimo riesgo de mercado', limite: 10}",
+      "devolvio": "2481 matches; resultados sobre cálculo de exigencia por distintos riesgos (crédito, operacional, mercado)",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'exigencia capital riesgo mercado método cálculo', limite: 10}",
+      "devolvio": "532 matches; aparece Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_medicion_de_capital_minimo'}",
+      "devolvio": "medición conforme punto 6.10; provenance 6.12 auditoría",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_determinacion_de_exigencia_por_riesgo_de_mercado'}",
+      "devolvio": "description: 'computando el mayor valor entre el código 70810000 y 70820000'; provenance 12.2",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_riesgo_de_mercado'}",
+      "devolvio": "datos complementarios régimen informativo",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método plazos residuales riesgo mercado', limite: 10}",
+      "devolvio": "319 matches; primer resultado Operacion_calculo_de_capital_por_metodo_de_plazos_residuales",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método valor en riesgo VaR riesgo mercado', limite: 10}",
+      "devolvio": "1068 matches; resultados sobre opciones/valor de mercado",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales'}",
+      "devolvio": "description: suma del valor absoluto de posición ponderada neta, desestimación vertical, desestimación horizontal y cambio neto en opciones; provenance 6.2 (parte 2)",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales', direccion: 'salientes'}",
+      "devolvio": "establecida_en TO capitales mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'método estándar riesgo mercado opciones', limite: 10}",
+      "devolvio": "nodos de método simplificado (6.6.2) y de informar riesgo en opciones (simplificado / Gamma y Vega)",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 6 riesgo mercado exigencia capital', limite: 10}",
+      "devolvio": "matches varios sobre riesgo general de mercado",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Método Medición Estándar punto 6.1.4', limite: 10}",
+      "devolvio": "Obligacion_emplear_metodo_medicion_estandar",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_medicion_de_capital_minimo', direccion: 'salientes'}",
+      "devolvio": "sin vecinos",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_emplear_metodo_medicion_estandar'}",
+      "devolvio": "description: 'las entidades deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4.'; provenance 6.1",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Obligacion_emplear_metodo_medicion_estandar', direccion: 'salientes'}",
+      "devolvio": "establecida_en TO capitales, aplica_a sujetos obligados, regula Operacion_calculo",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "description: 'Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera",
+     "Qué método debe emplearse para su cálculo"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo por riesgo de mercado",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000",
+       "ubicacion": "Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (paso 4)"
+      },
+      "fuente": {
+       "quote": "12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” 5867 (marzo 2016 - agosto 2016). A efectos de determinar el importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [ Código 70810000; Código 70820000 ]",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "lectura del pasaje PDF Punto 12.2",
+       "resultado": "el PDF acota expresamente ese cálculo a 'según punto 5. de la Comunicación A 5867 (marzo 2016 - agosto 2016)', una metodología histórica vencida"
+      },
+      {
+       "consulta": "ver_paso_completo paso 4",
+       "resultado": "la description del nodo NO contiene ninguna marca temporal ('marzo 2016 - agosto 2016' ni 'Comunicación A 5867'); presenta el cálculo como la determinación general de la exigencia por riesgo de mercado"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Qué método debe emplearse para su cálculo (riesgo general - plazos residuales)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones",
+       "ubicacion": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (paso 8; tipo='cálculo de capital por método de plazos residuales')"
+      },
+      "fuente": {
+       "quote": "6.2.2.1. La exigencia de capital se obtendrá como la suma de los siguientes cuatro componentes: i) El valor absoluto de la posición ponderada neta, comprada o vendida, en toda la cartera de negociación. ii) Un porcentaje de las posiciones compensadas dentro de cada banda temporal –la desestimación vertical– (...) iii) Porcentajes de las posiciones compensadas a través de diferentes bandas temporales –la desestimación horizontal– (...) iv) De corresponder, el cambio neto en las posiciones en opciones",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 6.2.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "lectura del pasaje PDF Punto 6.2.2.1",
+       "resultado": "coincidencia textual exacta con el contenido del nodo consultado: los cuatro componentes del cálculo del riesgo general (posición ponderada neta, desestimación vertical, horizontal, cambio neto en opciones)"
+      },
+      {
+       "consulta": "plazos residuales método riesgo general tasa interés",
+       "resultado": "el nodo se identifica por tipo como 'método de plazos residuales'; el contenido es fiel al método estándar del punto 6.2.2 (maturity method)"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Qué método debe emplearse (posiciones en opciones)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 | Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega",
+       "ubicacion": "Obligacion_las_entidades_que_solo_compren_opciones... y Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones... (paso 10)"
+      },
+      "fuente": {
+       "quote": "6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...). 6.6.3. Método delta-plus. El método delta-plus utiliza los parámetros de sensibilidad o 'letras griegas' asociadas a las opciones (...) exigencias adicionales para la cobertura de los riesgos gamma (...) y vega",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Puntos 6.6.2 y 6.6.3"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "lectura del pasaje PDF Punto 6.6.2",
+       "resultado": "confirma el método simplificado para entidades que sólo compren opciones y cumplan límites; el delta-plus (6.6.3) usa gamma y vega — ambos nodos son fieles al PDF"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "Descompuse la falla por afirmación y crucé cada nodo consultado con el PDF. (1) Las afirmaciones sobre el método de plazos residuales (riesgo general) y sus cuatro componentes están SOPORTADAS por el nodo Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (paso 8) y son TEXTUALMENTE fieles al PDF punto 6.2.2.1 (coincidencia palabra por palabra de los cuatro componentes). El agente incluso identificó correctamente el nombre 'método de plazos residuales' (es el tipo del nodo). El juez las marcó 'no_soportado', pero tienen soporte explícito y son correctas → falso positivo del juez (sin_defecto). (2) Las afirmaciones sobre opciones (método simplificado / Gamma y Vega) están soportadas por los nodos del paso 10 y son fieles a los puntos 6.6.2 y 6.6.3 del PDF → también falso positivo. (3) La única afirmación genuinamente defectuosa es la de los códigos 70810000/70820000: está soportada por el nodo del paso 4 y ese nodo es literalmente fiel a su provenance (punto 12.2), pero el punto 12.2 acota expresamente ese cálculo a una metodología HISTÓRICA vencida ('según punto 5. de la Comunicación A 5867 - marzo 2016 a agosto 2016'). El síntoma es noise_sensitivity (soportado por nodo consultado, pero incorrecto como respuesta a la determinación VIGENTE del riesgo de mercado). Aplicando el test v2.6: verifiqué con ver_paso_completo(4) que la description del nodo OMITE por completo la marca temporal — leído solo, presenta el cálculo como la determinación general de la exigencia por riesgo de mercado, sin avisar que es de un período pasado. Como el alcance NO está declarado en el contenido del nodo, no corresponde aplicacion_erronea sino un des-scoping del grafo → contenido_kg (el nodo presenta como vigente/general algo que el PDF restringe a un período histórico). Esta es la causa primaria que mueve el veredicto; las otras dos atribuciones son falsos positivos del juez y por regla van como sin_par. Nota: las patas centrales aprobadas por el juez (Método de Medición Estándar / punto 6.1.4) están correctamente soportadas por Obligacion_emplear_metodo_medicion_estandar (pasos 12/14, fiel al punto 6.1), lo que confirma que el agente navegó bien el grafo.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 236601,
+    "tokens_out": 9075
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 236601,
+    "tokens_out": 9075,
+    "latency_s": 119.531,
+    "error": null,
+    "final_raw": "Confirmado: el nodo del paso 4 no declara en su `description` el alcance temporal (marzo-agosto 2016). Tengo toda la evidencia. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capital mínimo riesgo de mercado', limite: 10}\", \"devolvio\": \"2481 matches; resultados sobre cálculo de exigencia por distintos riesgos (crédito, operacional, mercado)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'exigencia capital riesgo mercado método cálculo', limite: 10}\", \"devolvio\": \"532 matches; aparece Operacion_calculo_de_capital_por_metodo_de_plazos_residuales y Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_medicion_de_capital_minimo'}\", \"devolvio\": \"medición conforme punto 6.10; provenance 6.12 auditoría\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_determinacion_de_exigencia_por_riesgo_de_mercado'}\", \"devolvio\": \"description: 'computando el mayor valor entre el código 70810000 y 70820000'; provenance 12.2\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_riesgo_de_mercado'}\", \"devolvio\": \"datos complementarios régimen informativo\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método plazos residuales riesgo mercado', limite: 10}\", \"devolvio\": \"319 matches; primer resultado Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método valor en riesgo VaR riesgo mercado', limite: 10}\", \"devolvio\": \"1068 matches; resultados sobre opciones/valor de mercado\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales'}\", \"devolvio\": \"description: suma del valor absoluto de posición ponderada neta, desestimación vertical, desestimación horizontal y cambio neto en opciones; provenance 6.2 (parte 2)\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_calculo_de_capital_por_metodo_de_plazos_residuales', direccion: 'salientes'}\", \"devolvio\": \"establecida_en TO capitales mínimos\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'método estándar riesgo mercado opciones', limite: 10}\", \"devolvio\": \"nodos de método simplificado (6.6.2) y de informar riesgo en opciones (simplificado / Gamma y Vega)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 6 riesgo mercado exigencia capital', limite: 10}\", \"devolvio\": \"matches varios sobre riesgo general de mercado\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Método Medición Estándar punto 6.1.4', limite: 10}\", \"devolvio\": \"Obligacion_emplear_metodo_medicion_estandar\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_medicion_de_capital_minimo', direccion: 'salientes'}\", \"devolvio\": \"sin vecinos\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_emplear_metodo_medicion_estandar'}\", \"devolvio\": \"description: 'las entidades deberán emplear el Método de Medición Estándar previsto en el punto 6.1.4.'; provenance 6.1\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Obligacion_emplear_metodo_medicion_estandar', direccion: 'salientes'}\", \"devolvio\": \"establecida_en TO capitales, aplica_a sujetos obligados, regula Operacion_calculo\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"description: 'Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Cómo se determina la exigencia de capital mínimo por riesgo de mercado de una entidad financiera\",\n      \"Qué método debe emplearse para su cálculo\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo por riesgo de mercado\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Adicionalmente, la exigencia por riesgo de mercado se determina computando el mayor valor entre dos códigos de cálculo específicos (70810000 y 70820000).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\", \"ubicacion\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado (paso 4)\"},\n        \"fuente\": {\"quote\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” 5867 (marzo 2016 - agosto 2016). A efectos de determinar el importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [ Código 70810000; Código 70820000 ]\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 12.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"lectura del pasaje PDF Punto 12.2\", \"resultado\": \"el PDF acota expresamente ese cálculo a 'según punto 5. de la Comunicación A 5867 (marzo 2016 - agosto 2016)', una metodología histórica vencida\"},\n        {\"consulta\": \"ver_paso_completo paso 4\", \"resultado\": \"la description del nodo NO contiene ninguna marca temporal ('marzo 2016 - agosto 2016' ni 'Comunicación A 5867'); presenta el cálculo como la determinación general de la exigencia por riesgo de mercado\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Qué método debe emplearse para su cálculo (riesgo general - plazos residuales)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para el cálculo de la exigencia de capital por riesgo general de mercado, se utiliza el método de plazos residuales, que obtiene la exigencia como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones\", \"ubicacion\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (paso 8; tipo='cálculo de capital por método de plazos residuales')\"},\n        \"fuente\": {\"quote\": \"6.2.2.1. La exigencia de capital se obtendrá como la suma de los siguientes cuatro componentes: i) El valor absoluto de la posición ponderada neta, comprada o vendida, en toda la cartera de negociación. ii) Un porcentaje de las posiciones compensadas dentro de cada banda temporal –la desestimación vertical– (...) iii) Porcentajes de las posiciones compensadas a través de diferentes bandas temporales –la desestimación horizontal– (...) iv) De corresponder, el cambio neto en las posiciones en opciones\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 6.2.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"lectura del pasaje PDF Punto 6.2.2.1\", \"resultado\": \"coincidencia textual exacta con el contenido del nodo consultado: los cuatro componentes del cálculo del riesgo general (posición ponderada neta, desestimación vertical, horizontal, cambio neto en opciones)\"},\n        {\"consulta\": \"plazos residuales método riesgo general tasa interés\", \"resultado\": \"el nodo se identifica por tipo como 'método de plazos residuales'; el contenido es fiel al método estándar del punto 6.2.2 (maturity method)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Qué método debe emplearse (posiciones en opciones)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para posiciones en opciones, las entidades pueden utilizar un método simplificado si cumplen ciertos límites, o alternativamente pueden informar la exigencia mediante cálculos de Gamma y Vega.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2 | Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"ubicacion\": \"Obligacion_las_entidades_que_solo_compren_opciones... y Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones... (paso 10)\"},\n        \"fuente\": {\"quote\": \"6.6.2. Método simplificado. Las opciones y sus subyacentes, al contado o a término, estarán sujetas a una exigencia de capital que incorpora tanto el riesgo de mercado general como el riesgo específico (...). 6.6.3. Método delta-plus. El método delta-plus utiliza los parámetros de sensibilidad o 'letras griegas' asociadas a las opciones (...) exigencias adicionales para la cobertura de los riesgos gamma (...) y vega\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Puntos 6.6.2 y 6.6.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"lectura del pasaje PDF Punto 6.6.2\", \"resultado\": \"confirma el método simplificado para entidades que sólo compren opciones y cumplan límites; el delta-plus (6.6.3) usa gamma y vega — ambos nodos son fieles al PDF\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Descompuse la falla por afirmación y crucé cada nodo consultado con el PDF. (1) Las afirmaciones sobre el método de plazos residuales (riesgo general) y sus cuatro componentes están SOPORTADAS por el nodo Operacion_calculo_de_capital_por_metodo_de_plazos_residuales (paso 8) y son TEXTUALMENTE fieles al PDF punto 6.2.2.1 (coincidencia palabra por palabra de los cuatro componentes). El agente incluso identificó correctamente el nombre 'método de plazos residuales' (es el tipo del nodo). El juez las marcó 'no_soportado', pero tienen soporte explícito y son correctas → falso positivo del juez (sin_defecto). (2) Las afirmaciones sobre opciones (método simplificado / Gamma y Vega) están soportadas por los nodos del paso 10 y son fieles a los puntos 6.6.2 y 6.6.3 del PDF → también falso positivo. (3) La única afirmación genuinamente defectuosa es la de los códigos 70810000/70820000: está soportada por el nodo del paso 4 y ese nodo es literalmente fiel a su provenance (punto 12.2), pero el punto 12.2 acota expresamente ese cálculo a una metodología HISTÓRICA vencida ('según punto 5. de la Comunicación A 5867 - marzo 2016 a agosto 2016'). El síntoma es noise_sensitivity (soportado por nodo consultado, pero incorrecto como respuesta a la determinación VIGENTE del riesgo de mercado). Aplicando el test v2.6: verifiqué con ver_paso_completo(4) que la description del nodo OMITE por completo la marca temporal — leído solo, presenta el cálculo como la determinación general de la exigencia por riesgo de mercado, sin avisar que es de un período pasado. Como el alcance NO está declarado en el contenido del nodo, no corresponde aplicacion_erronea sino un des-scoping del grafo → contenido_kg (el nodo presenta como vigente/general algo que el PDF restringe a un período histórico). Esta es la causa primaria que mueve el veredicto; las otras dos atribuciones son falsos positivos del juez y por regla van como sin_par. Nota: las patas centrales aprobadas por el juez (Método de Medición Estándar / punto 6.1.4) están correctamente soportadas por Obligacion_emplear_metodo_medicion_estandar (pasos 12/14, fiel al punto 6.1), lo que confirma que el agente navegó bien el grafo.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.1. Exigencia."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.1. Exigencia.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.1 (PDF pág 116)\", \"pasaje\": \"6.1. Exigencia. \\nEl riesgo de mercado se define como la posibilidad de sufrir pérdidas en posiciones registra-\\ndas dentro y fuera de balance a raíz de las fluctuaciones adversas en los precios de mercado.  \\nLa exigencia de capital por riesgo de mercado (RM) será la suma aritmética de la exigencia de \\ncapital por los riesgos por tasa de interés (RT), acciones (RA), tipo de cambio (RTC), produc-\\ntos básicos (RPB) y opciones (ROP). \\nRM = RT + RA + RTC + RPB + ROP \\nPara su determinación, las entidades deberán emplear el Método de Medición Estándar pre-\\nvisto en el punto 6.1.4. \\n6.1.1. Consideraciones generales. \\n6.1.1.1.  Los riesgos sujetos a esta exigencia de capital son los riesgos de las posicio-\\nnes en: \\ni) instrumentos –títulos valores y derivados– imputados a la cartera de nego-\\nciación –definida en el punto 6.1.2.–; y\\nii) monedas extranjeras y “commodities”, cualquiera sea la cartera a la que se\\nimputen.\\n6.1.1.2. La exigencia de capital por riesgo de tipo de cambio y “commodities”… [+409 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2 (PDF pág 118)\", \"pasaje\": \"6.2. Exigencia de capital por riesgo de tasa de interés. \\nLa exigencia de capital por el riesgo de tasa de interés se deberá calcular respecto de los títu-\\nlos de deuda y otros instrumentos imputados a la cartera de negociación, incluidas las ac cio-\\nnes preferidas no convertibles.  \\nUn título valor vendido y recomprado a término en una operación de pase pasivo o en otro tipo \\nde operación de financiación con títulos valores se tratará como si todavía fuese propiedad de \\nla entidad cedente; es decir, recibirá el mismo tratamiento que un título en cartera.  \\nLas acciones preferidas convertibles a un precio predeterminado en acciones ordinarias de la \\nemisora se tratarán según cómo se negocien, como títulos de deuda o como acciones.  \\nLa exigencia se obtendrá como la suma de dos exigencias c alculadas por separado: una por \\nel riesgo específico de cada instrumento, ya sea que se trate de una posición vendida o com-\\nprada, y otra por el riesg… [+455 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.2 (PDF pág 57)\", \"pasaje\": \"12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunicación “A” \\n5867 (marzo 2016 - agosto 2016). \\n \\nA efectos de determinar el importe a consignar en la partida 70800000 (exigencia por ries-\\ngo de mercado) se computará el mayor valor que surja del siguiente cálculo: \\n \\nCódigo 70800000 = Máx [ Código 70810000; Código 70820000 ] \\n \\nDonde: \\n \\n- Código 70800000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo de información (n); \\n \\n- Código 70810000 (n): exigencia por riesgo de mercado correspondiente al último día del \\nperíodo (n) calculada conforme a la metodología aplicable hasta el 29.02.16 por las nor-\\nmas sobre “Capitales mínimos de las entidades financieras”)\\n;  \\n \\n- Código 70820000 (n): exigencia por riesgo de mercado calculada conforme a la metodo-\\nlogía aplicable según Anexo a la Comunicación “A” 5867)\\n. \\n \\nLa nómina de p… [+503 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2 (PDF pág 135)\", \"pasaje\": \"6.2.2. Opción de compra u opción de venta compradas. \\nLa \\nexigencia de capital será el menor entre el valor de mercado del subyacente \\nmultiplicado por la suma de las exigencias por riesgo específico y riesgo gene-\\nral de mercado aplicables al subyacente y el valor de mercado de la opción.  \\nS\\ne podrá usar el valor contable en el caso de las opciones sobre monedas no \\nincluidas en la cartera de negociación. \\n6.\\n6.3. Método delta-plus. \\nE\\nl método delta-plus utiliza los parámetros de sensibilidad o “letras griegas” asociadas \\na las opciones para determinar el equivalente delta de cada posición.  \\nA\\nl equivalente delta de la posición, se le aplicará la metodología estándar de los pun-\\ntos 6.2. a 6.4., al efecto de calcular la exigencia de capital por riesgo general de mer-\\ncado para las opciones, al que se agregan exigencias adicionales para la cobertura de \\nlos riesgos gamma –que mide la tasa de cambio del coeficiente delta ante variaciones \\nen el precio del subyacente–  y vega –que mide la … [+404 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazos residuales método riesgo general tasa interés",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazos residuales método riesgo general tasa interés\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo general de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del pun…\"}, {\"id\": \"Operacion_calculo_de_exigencia_capital_por_riesgo_general\", \"type\": \"Operacion\", \"label\": \"Determinación de exigencia riesgo general tasa interés\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cálculo de exigencia capital por riesgo general\"}, {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operaci… [+2372 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.1 (PDF pág 119)\", \"pasaje\": \"6.2.1. Exigencia de capital por riesgo específico. \\n \\nLa exigencia de capital por riesgo específico tiene por objeto proteger a la entidad ante \\nmovimientos adversos en el precio de un título causados por factores relacionados con \\nsu emisor. Para su cálculo, sólo se pe rmitirá netear las posiciones opuestas respecto de \\nuna misma especie, incluidas las posiciones en derivados.  \\n \\n6.2.1.1. Las exigencias de capital por riesgo específico en concepto de riesgo de em isor \\nserán las siguientes: \\n \\nEmisor Exigencia de capital \\npor riesgo específico \\nBCRA, Gobierno Nacional, gobiernos \\nprovinciales, municipales y de la CABA \\nen pesos, cua ndo su fuente de fondos \\nsea en esa moneda.   \\nBanco de Pagos Internacionales, Fondo \\nMonetario Internacional, Banco Central \\nEuropeo y Comunidad Europea y Bancos \\nmultilaterales de desarrollo del punto \\n2.12.3.1. \\n0,25% Plazo residual \\n≤ 6 meses \\n1% \\nPlazo residual \\n> 6 meses y ≤ \\n24 meses \\n1,6% Plazo residual \\n> 24 meses \\nBCRA y sector público no … [+410 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo general de mercado\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"8%\", \"description\": \"La exigencia de capital por riesgo general de mercado es la diferencia entre el total de posiciones compradas y el total de posiciones vendidas en cada mercado nacional, con una exigencia del 8%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.3. Exigencia de capital por riesgo de posiciones en acciones.\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.2.2.1 (PDF pág 123)\", \"pasaje\": \"6.2.2.1. La exigencia de capital se obtendrá como la suma de los siguientes cuatro \\ncomponentes: \\ni) El valor absoluto de la posición ponderada neta, comprada o vendida, en\\ntoda la cartera de negociación.\\nii) Un porcentaje de las posiciones compensadas dentro de cada banda tem-\\nporal –la desestimación vertical–, conforme a lo previsto en el punto\\n6.2.2.5.\\niii) Porcentajes de las posiciones compensadas a través de diferentes bandas\\ntemporales –la desestimación horizontal–, conforme a lo previsto en el pun-\\nto 6.2.2.6.\\niv) De corresponder, el cambio neto en las posiciones en opciones conforme a\\nlo previsto en el punto 6.6.\\n6.2.2.2. Las exigencias de capital se calcularán por separado para las posiciones en \\npesos y en cada moneda extranjera. Cuando el total de las operaciones en una \\nmoneda extranjera no sea significativo –monedas extranjeras residuales–, la \\nentidad podrá imputar las posiciones netas, compradas o vendidas, a las ban-\\ndas de una escala única. En tal caso, deberá sumar las p… [+381 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"método plazos residuales riesgo mercado\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"método plazos residuales riesgo mercado\", \"total_con_match\": 319, \"resultados\": [{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado\", \"type\": \"Obligacion\", \"label\": \"Cálculo riesgo general mercado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …\"}, {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Determinación del importe a consignar en la … [+2614 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_que_cumplan_con_los_limites_podran_usa\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"properties\": {\"descripcion\": \"Las entidades que sólo compren opciones y que cumplan con los límites podrán usar el método simplificado previsto en el punto 6.6.2\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo en opciones\", \"properties\": {\"descripcion\": \"Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 6.6.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.6.2 (PDF pág 134)\", \"pasaje\": \"6.6.2. Método simplificado. \\nLas opciones y sus subyacentes, al contado o a término, es tarán sujetas a una exigen-\\ncia de capital que incorpora tanto el riesgo de mercado general como el riesgo específi-\\nco en los siguientes términos: \\n6.6.2.1. Exigencia de capital para una posición c omprada en el subyacente y comprada \\nen la opción de venta (“put”), o para una pos ición vendida en el subyacente y \\ncomprada en la opción de compra (“call”). \\nCAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS B.C.R.A. Sección 6. Capital mínimo por riesgo de mercado. \\nVersión: 2a. COMUNICACIÓN  “A”  6690 Vigencia:\\n01/04/2019 Página 19\"}"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\"}, \"output_completo\": {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"properties\": {\"tipo\": \"determinación de exigencia por riesgo de mercado\", \"description\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26719,
+      "output_tokens": 424
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29446,
+      "output_tokens": 488
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32230,
+      "output_tokens": 368
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33663,
+      "output_tokens": 291
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36438,
+      "output_tokens": 725
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38127,
+      "output_tokens": 1535
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39978,
+      "output_tokens": 5244
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 5,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     2,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 3,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     2,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "atribucion_no_verificable"
+  ],
+  "flags": [
+   "R6b: rep 1 atrib 1 — claim_no_mapeado",
+   "R6b: rep 1 atrib 2 — claim_no_mapeado",
+   "R6b: rep 2 atrib 1 — claim_no_mapeado",
+   "R6b: rep 3 atrib 1 — claim_no_mapeado"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     2,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": true,
+  "motivos": [
+   "fuente_no_funda",
+   "fuente_cross_doc"
+  ],
+  "flags": [
+   "S1: rep1_atrib1 — fuente_no_funda (span máx 0)",
+   "S1: rep1_atrib2 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)",
+   "S1: rep2_atrib1 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)",
+   "S1: rep3_atrib1 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)"
+  ]
+ },
+ "resumen_s1": {
+  "gatilladas": 4,
+  "juzgadas_llm": 0,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 3,
+  "fuente_no_funda": 1,
+  "tokens_in_s1": 0,
+  "tokens_out_s1": 0,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4b-dev"
+}

@@ -1,0 +1,1415 @@
+{
+ "id_falla": "run_3/CQN-001",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "aplicacion_erronea"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-001",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'monto máximo persona humana residente compra activos externos', limite: 10}",
+      "devolvio": "242 matches; nodos genéricos (apoderado, personas humanas, límite repatriación, 30% FOB, formación de activos externos como Operacion sin monto)",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'remisión ayuda familiar monto máximo', limite: 10}",
+      "devolvio": "98 matches; Operacion_transferencia_de_ayuda y límites de otros conceptos (30% FOB, USD 2.000.000 mensual, BOPREAL)",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'derivados operatoria monto máximo persona residente', limite: 10}",
+      "devolvio": "187 matches; límites de repatriación, 30% FOB, USD 2.000.000; nada de monto para derivados persona humana",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'USD 300 persona humana residente mensual', limite: 10}",
+      "devolvio": "45 matches; nodos de residencia/apoderado, ningún monto mensual único",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'conformidad previa BCRA compra moneda extranjera', limite: 10}",
+      "devolvio": "216 matches; nodos de conformidad previa BCRA (Obligacion_obtener_conformidad_previa_bcra incluido: 'requerirá la conformidad previa del BCRA para la formación de activos externos y para la operatoria con derivados')",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera'}",
+      "devolvio": "Operacion de compra ME para FAE en billetes/depósitos; provenance Punto 3.11; sin monto",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}",
+      "devolvio": "1 saliente: requiere Verificación documentación endeudamiento; sin límite cuantitativo",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite mensual persona humana residente sin conformidad', limite: 10}",
+      "devolvio": "298 matches; nodos genéricos, sin monto mensual único",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'formación activos externos persona humana límite', limite: 10}",
+      "devolvio": "264 matches; Operacion_formacion_de_activos_externos + límite activos líquidos USD 100.000 (otro concepto)",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_formacion_de_activos_externos'}",
+      "devolvio": "Operacion tipo 'formación de activos externos'; provenance Punto 3.10; sin monto",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_formacion_de_activos_externos', direccion: 'salientes'}",
+      "devolvio": "0 salientes; 2 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'USD 1000 mensual persona humana', limite: 10}",
+      "devolvio": "32 matches; nodos de residencia/apoderado, ningún monto mensual",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'remisión ayuda familiar USD límite', limite: 10}",
+      "devolvio": "182 matches; entre ellos Restriccion_limite_anual_usd_36_000_para_personas_humanas con su resumen ('USD 36.000 en el año calendario')",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_transferencia_de_ayuda'}",
+      "devolvio": "Operacion ayuda familiar; provenance Punto 4.2 SML; sin monto",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_transferencia_de_ayuda', direccion: 'salientes'}",
+      "devolvio": "0 salientes; 1 entrante",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 13,
+     "quote": "Restriccion_limite_anual_usd_36_000_para_personas_humanas ... 'El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados",
+     "Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Glosa transversal: 'límite anual de USD 36.000 para personas humanas en algunos mecanismos' aplicada a las tres operaciones preguntadas",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "un límite anual de USD 36.000 para personas humanas en algunos mecanismos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+       "ubicacion": "Restriccion_limite_anual_usd_36_000_para_personas_humanas (expuesto en paso 13; provenance 'Punto 2.2. Cobros de exportaciones de servicios' y arista limita→Operacion_cobro_de_exportacion_de_servicios)"
+      },
+      "fuente": {
+       "quote": "2.2. Cobros de exportaciones de servicios. ... 2.2.2. Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de servicios ... 2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas humanas",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2 y 2.2.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas",
+       "resultado": "provenance = Punto 2.2 Cobros de exportaciones de servicios; umbral USD 36.000 anuales"
+      },
+      {
+       "consulta": "ver_vecinos del nodo USD 36.000 (salientes)",
+       "resultado": "1 arista: limita→Operacion_cobro_de_exportacion_de_servicios — el alcance real es cobros de exportaciones de servicios, no FAE/ayuda familiar/derivados"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.2 y 2.2.2.1",
+       "resultado": "el USD 36.000 es el tope anual bajo el cual se exceptúa la obligación de liquidación de cobros de exportaciones de servicios de personas humanas (Sección 2, ingresos) — concepto distinto de las tres operaciones de egreso preguntadas"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D3",
+      "accion": "sin_portador_extraible",
+      "triage": true
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "emision_llm": "primaria",
+      "decision_codigo": "secundaria",
+      "claim_mapeado": "Existe un límite anual de USD 36.000 para personas humanas en algunos mecanismos"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo_por_contenido",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "aplicacion_erronea",
+       "jerarquia": "secundaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "lado": "agente",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 a 'este mecanismo' de cobros de exportaciones de servicios prestados por personas humanas (Sección 2, ingresos), acotado 'en el conjunto de las entidades y por el conjunto de los conceptos comprendidos' dentro de ese régimen. El nodo/atribución lo trata como glosa transversal aplicable a formación de activos externos, ayuda familiar y derivados —operaciones ajenas al mecanismo declarado—, extendiendo un alcance limitado a uno general no soportado por la fuente. La causa aplicacion_erronea queda confirmada: el agente aplicó un contenido scopeado fuera de su ámbito."
+       },
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "lado": "agente",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 exclusivamente a 'este mecanismo' de cobros de exportaciones de servicios (Sección 2.2), 'en el conjunto de los conceptos comprendidos' dentro de ese mecanismo; el nodo conserva ese alcance limitado. La atribución confirma que el agente tomó una restricción scopeada a la exoneración de liquidación de exportaciones de servicios y la aplicó transversalmente a formación de activos externos, ayuda familiar y derivados —operaciones ajenas al mecanismo—, generando un claim no soportado por la fuente: aplicacion_erronea del lado agente queda confirmada."
+       },
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "lado": "agente",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 a 'este mecanismo' — el régimen de cobros de exportaciones de servicios (Sección 2.2), un conjunto acotado de conceptos e entidades. El nodo conserva el mismo scope ('este mecanismo', 'conjunto de los conceptos comprendidos'), pero la atribución muestra que el agente lo aplicó como glosa transversal a las tres operaciones preguntadas (activos externos, ayuda familiar, derivados), que no son ese mecanismo; se trata como general un contenido que la fuente declara scopeado, confirmando aplicacion_erronea del lado agente."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 3013,
+        "output_tokens": 549
+       },
+       {
+        "input_tokens": 3013,
+        "output_tokens": 540
+       },
+       {
+        "input_tokens": 3013,
+        "output_tokens": 531
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "sintoma_ganador": "faithfulness",
+       "causa_ganadora": "aplicacion_erronea",
+       "votos_ganadores": 3
+      },
+      "corrigio": true,
+      "par_post_s1": [
+       "faithfulness",
+       "aplicacion_erronea"
+      ],
+      "causa_post_s1": "aplicacion_erronea",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "La única afirmación que el juez marcó incorrecta es la glosa 'límite anual de USD 36.000 para personas humanas en algunos mecanismos'. C1a (patas centrales): el agente declaró no respondibles las tres patas de monto mensual y la de monto único; el juez no marcó esas como afirmaciones incorrectas centrales, sólo aprobó el USD 100 en efectivo y reprobó el USD 36.000. C1b (claim): verifiqué con ver_paso_completo(13) que el nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas SÍ estaba EXPUESTO en la trayectoria del agente, con su resumen íntegro. Por tanto el claim está SOPORTADO por lo consultado → descarto faithfulness; corresponde noise_sensitivity. C2 (causa): ver_nodo confirma que el nodo es FIEL al PDF — su provenance apunta a 'Punto 2.2. Cobros de exportaciones de servicios' y leer_pasaje_pdf(2.2 / 2.2.2.1) confirma que el USD 36.000 es el tope anual de exención de liquidación de cobros de exportaciones de servicios de personas humanas (Sección 2, INGRESOS). No contradice el PDF → descarto contenido_kg. Su arista saliente es limita→Operacion_cobro_de_exportacion_de_servicios: el alcance real es un concepto totalmente distinto de las tres operaciones de EGRESO preguntadas (formación de activos externos, ayuda familiar, derivados). El nodo NO es pertinente a ninguna pata. Test v2.6 de alcance declarado EN el nodo: aunque el label ('Límite anual USD 36.000 para personas humanas') es genérico y la description dice 'este mecanismo' sin nombrarlo, la provenance del nodo ('Punto 2.2. Cobros de exportaciones de servicios') y su arista limita→Operacion_cobro_de_exportacion_de_servicios declaran inequívocamente el alcance; un lector del nodo completo SÍ es avisado de que el contenido pertenece a cobros de exportaciones de servicios. El agente ignoró ese alcance y trasladó el dato como límite genérico 'para personas humanas en algunos mecanismos' relevante a la pregunta sobre FAE/ayuda familiar/derivados → aplicacion_erronea (lado agente). Es la única afirmación reprobada, por lo que sobre este claim la atribución es primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 309896,
+    "tokens_out": 6948
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 309896,
+    "tokens_out": 6948,
+    "latency_s": 102.808,
+    "error": null,
+    "final_raw": "Tengo evidencia suficiente para la atribución.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'monto máximo persona humana residente compra activos externos', limite: 10}\", \"devolvio\": \"242 matches; nodos genéricos (apoderado, personas humanas, límite repatriación, 30% FOB, formación de activos externos como Operacion sin monto)\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'remisión ayuda familiar monto máximo', limite: 10}\", \"devolvio\": \"98 matches; Operacion_transferencia_de_ayuda y límites de otros conceptos (30% FOB, USD 2.000.000 mensual, BOPREAL)\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'derivados operatoria monto máximo persona residente', limite: 10}\", \"devolvio\": \"187 matches; límites de repatriación, 30% FOB, USD 2.000.000; nada de monto para derivados persona humana\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'USD 300 persona humana residente mensual', limite: 10}\", \"devolvio\": \"45 matches; nodos de residencia/apoderado, ningún monto mensual único\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'conformidad previa BCRA compra moneda extranjera', limite: 10}\", \"devolvio\": \"216 matches; nodos de conformidad previa BCRA (Obligacion_obtener_conformidad_previa_bcra incluido: 'requerirá la conformidad previa del BCRA para la formación de activos externos y para la operatoria con derivados')\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera'}\", \"devolvio\": \"Operacion de compra ME para FAE en billetes/depósitos; provenance Punto 3.11; sin monto\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}\", \"devolvio\": \"1 saliente: requiere Verificación documentación endeudamiento; sin límite cuantitativo\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite mensual persona humana residente sin conformidad', limite: 10}\", \"devolvio\": \"298 matches; nodos genéricos, sin monto mensual único\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'formación activos externos persona humana límite', limite: 10}\", \"devolvio\": \"264 matches; Operacion_formacion_de_activos_externos + límite activos líquidos USD 100.000 (otro concepto)\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_formacion_de_activos_externos'}\", \"devolvio\": \"Operacion tipo 'formación de activos externos'; provenance Punto 3.10; sin monto\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_formacion_de_activos_externos', direccion: 'salientes'}\", \"devolvio\": \"0 salientes; 2 entrantes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'USD 1000 mensual persona humana', limite: 10}\", \"devolvio\": \"32 matches; nodos de residencia/apoderado, ningún monto mensual\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'remisión ayuda familiar USD límite', limite: 10}\", \"devolvio\": \"182 matches; entre ellos Restriccion_limite_anual_usd_36_000_para_personas_humanas con su resumen ('USD 36.000 en el año calendario')\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_transferencia_de_ayuda'}\", \"devolvio\": \"Operacion ayuda familiar; provenance Punto 4.2 SML; sin monto\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_transferencia_de_ayuda', direccion: 'salientes'}\", \"devolvio\": \"0 salientes; 1 entrante\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 13, \"quote\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas ... 'El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos\",\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar\",\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados\",\n      \"Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Glosa transversal: 'límite anual de USD 36.000 para personas humanas en algunos mecanismos' aplicada a las tres operaciones preguntadas\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"un límite anual de USD 36.000 para personas humanas en algunos mecanismos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\", \"ubicacion\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas (expuesto en paso 13; provenance 'Punto 2.2. Cobros de exportaciones de servicios' y arista limita→Operacion_cobro_de_exportacion_de_servicios)\"},\n        \"fuente\": {\"quote\": \"2.2. Cobros de exportaciones de servicios. ... 2.2.2. Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de servicios ... 2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas humanas\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2 y 2.2.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"resultado\": \"provenance = Punto 2.2 Cobros de exportaciones de servicios; umbral USD 36.000 anuales\"},\n        {\"consulta\": \"ver_vecinos del nodo USD 36.000 (salientes)\", \"resultado\": \"1 arista: limita→Operacion_cobro_de_exportacion_de_servicios — el alcance real es cobros de exportaciones de servicios, no FAE/ayuda familiar/derivados\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.2 y 2.2.2.1\", \"resultado\": \"el USD 36.000 es el tope anual bajo el cual se exceptúa la obligación de liquidación de cobros de exportaciones de servicios de personas humanas (Sección 2, ingresos) — concepto distinto de las tres operaciones de egreso preguntadas\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La única afirmación que el juez marcó incorrecta es la glosa 'límite anual de USD 36.000 para personas humanas en algunos mecanismos'. C1a (patas centrales): el agente declaró no respondibles las tres patas de monto mensual y la de monto único; el juez no marcó esas como afirmaciones incorrectas centrales, sólo aprobó el USD 100 en efectivo y reprobó el USD 36.000. C1b (claim): verifiqué con ver_paso_completo(13) que el nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas SÍ estaba EXPUESTO en la trayectoria del agente, con su resumen íntegro. Por tanto el claim está SOPORTADO por lo consultado → descarto faithfulness; corresponde noise_sensitivity. C2 (causa): ver_nodo confirma que el nodo es FIEL al PDF — su provenance apunta a 'Punto 2.2. Cobros de exportaciones de servicios' y leer_pasaje_pdf(2.2 / 2.2.2.1) confirma que el USD 36.000 es el tope anual de exención de liquidación de cobros de exportaciones de servicios de personas humanas (Sección 2, INGRESOS). No contradice el PDF → descarto contenido_kg. Su arista saliente es limita→Operacion_cobro_de_exportacion_de_servicios: el alcance real es un concepto totalmente distinto de las tres operaciones de EGRESO preguntadas (formación de activos externos, ayuda familiar, derivados). El nodo NO es pertinente a ninguna pata. Test v2.6 de alcance declarado EN el nodo: aunque el label ('Límite anual USD 36.000 para personas humanas') es genérico y la description dice 'este mecanismo' sin nombrarlo, la provenance del nodo ('Punto 2.2. Cobros de exportaciones de servicios') y su arista limita→Operacion_cobro_de_exportacion_de_servicios declaran inequívocamente el alcance; un lector del nodo completo SÍ es avisado de que el contenido pertenece a cobros de exportaciones de servicios. El agente ignoró ese alcance y trasladó el dato como límite genérico 'para personas humanas en algunos mecanismos' relevante a la pregunta sobre FAE/ayuda familiar/derivados → aplicacion_erronea (lado agente). Es la única afirmación reprobada, por lo que sobre este claim la atribución es primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 13
+      },
+      "output_truncado": "{\"paso\": 13, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"total_con_match\": 182, \"resultados\": [{\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_si_el_monto_total_a_imputar_al_permiso_no_supera_el_equivalente_de_usd_25_000_do\", \"type\": \"Restriccion\", \"label\": \"Límite para documentación simplificada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el monto total a imputar al permiso no supera el equivalente de USD 25.000 (dólares estadounidenses veinticinco mil), será suficiente que la entidad cuente c…\"}, {\"id\": \"Restriccion_… [+2382 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"monto máximo persona humana residente compra activos externos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"monto máximo persona humana residente compra activos externos\", \"total_con_match\": 242, \"resultados\": [{\"id\": \"Excepcion_excepcion_apoderado_persona_humana_residente\", \"type\": \"Excepcion\", \"label\": \"Excepción: apoderado persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"CUIT o CUIL de la persona humana residente que actúe en carácter de apoderado de un no residente. En el registro debe consignarse el nombre y apellido completos…\"}, {\"id\": \"EntidadFinanciera_persona_humana\", \"type\": \"EntidadFinanciera\", \"label\": \"Personas humanas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: personas humanas\"}, {\"id\": \"Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_sea_menor_o\", \"type\": \"Restriccion\", \"label\": \"Límite repatriación capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto acumulado de las repatriaciones de capital del no residente sea menor o igual a la suma de los aportes de inversión directa ingresados por mercado de c…\"}, {\"id\": \"Re… [+2180 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"type\": \"Restriccion\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 36.000 anuales\", \"description\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2 (PDF pág 8)\", \"pasaje\": \"2.2. Cobros de exportaciones de servicios. \\n2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de l… [+391 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas",
+       "direccion": "salientes"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"limita\", \"vecino_id\": \"Operacion_cobro_de_exportacion_de_servicios\", \"vecino_label\": \"Cobro de exportaciones de servicios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}], \"salientes_truncado\": false}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "conformidad previa formación activos externos operatoria derivados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"conformidad previa formación activos externos operatoria derivados\", \"total_con_match\": 197, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_los_casos_que_no_encuadren_en_lo_expuesto_precedentemente_quedan_sujetos_a_la_co\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los casos que no encuadren en lo expuesto precedentemente quedan sujetos a la conformidad previa del BCRA, debiendo los pedidos ser canalizados por una entidad …\"}, {\"id\": \"Excepcion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedaran_sujetos_a_la_confor\", \"type\": \"Excepcion\", \"label\": \"Conformidad previa del BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los casos que no cumplan las condiciones requeridas quedarán sujetos a la conformidad previa del BCRA\"}, {\"id\": \"Operacion_consulta_de_conformidad_previa_en_mercado_de_cambios\", \"type\": \"Operacion\", \"label\": \"Consulta de conformidad previa\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tip… [+2170 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_mensual_de_compra_en_efectivo"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de compra en efectivo\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 100\", \"description\": \"Si el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente a USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las entidades y por el conjunto de los conceptos señalados.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8. Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas \\nhumanas y se cumplen la totalidad de las siguientes condiciones: \\ni) Las operaciones correspondan a los siguientes códigos de concepto:\\nS01 Mantenimiento y reparaciones. \\nS07 Servicios de construcción. \\nS12 Servicios de telecomunicaciones. \\nS13 Servicios de informática. \\nS14 Servicios de información. \\nS15 Cargos por el uso de la propiedad intelectual. \\nS16 Servicios de investigación y desarrollo. \\nS17 Servicios jurídicos, contables y gerenciales. \\nS18 Servicios de publicidad, investigación de mercado y encuestas \\nde opinión pública. \\nS19 Servicios arquitectónicos, de ingeniería y otros servicios \\ntécnicos. \\nS21 Servicios relacionados con el comercio. \\nS22 Otros servicios empresariales. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 2. Disposiciones específicas para los ingresos por el mercado de cambios. \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.2.1 ii"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.2.1 ii\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas \\nhumanas y se cumplen la totalidad de las siguientes condiciones: \\ni) Las operaciones correspondan a los siguientes códigos de concepto:\\nS01 Mantenimiento y reparaciones. \\nS07 Servicios de construcción. \\nS12 Servicios de telecomunicaciones. \\nS13 Servicios de informática. \\nS14 Servicios de información. \\nS15 Cargos por el uso de la propiedad intelectual. \\nS16 Servicios de investigación y desarrollo. \\nS17 Servicios jurídicos, contables y gerenciales. \\nS18 Servicios de publicidad, investigación de mercado y encuestas \\nde opinión pública. \\nS19 Servicios arquitectónicos, de ingeniería y otros servicios \\ntécnicos. \\nS21 Servicios relacionados con el comercio. \\nS22 Otros servicios empresariales. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 2. Disposiciones específicas para los ingresos por el mercado de cambios. \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"remisión ayuda familiar monto máximo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"remisión ayuda familiar monto máximo\", \"total_con_match\": 98, \"resultados\": [{\"id\": \"Restriccion_el_monto_maximo_sera_el_menor_entre_el_aumento_total_y_el_equivalente_al_30_del_\", \"type\": \"Restriccion\", \"label\": \"Límite de 30% del valor FOB\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto máximo será el menor entre el aumento total y el equivalente al 30% del valor FOB de las exportaciones computables para el año t-1\"}, {\"id\": \"Restriccion_el_agente_local_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivale\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de uso mensual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El agente local no ha utilizado este mecanismo por un monto superior al equivalente de USD 2.000.000 (dólares estadounidenses dos millones) en el mes calendario…\"}, {\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Restr… [+2384 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27554,
+      "output_tokens": 183
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30849,
+      "output_tokens": 176
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31301,
+      "output_tokens": 318
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32596,
+      "output_tokens": 418
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35251,
+      "output_tokens": 528
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36042,
+      "output_tokens": 1058
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37656,
+      "output_tokens": 222
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38437,
+      "output_tokens": 183
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40210,
+      "output_tokens": 3862
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 56,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-001",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"monto máximo persona humana residente compra activos externos\", \"limite\": 10}",
+      "devolvio": "Nodos de excepción/apoderado, personas humanas, restricciones de repatriación y 30% FOB; ninguno con el monto mensual buscado",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"remisión ayuda familiar monto máximo\", \"limite\": 10}",
+      "devolvio": "Restricciones varias (30% FOB, USD 2.000.000 mensual agente local) y Operacion_transferencia_de_ayuda; sin monto mensual de ayuda familiar",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"derivados operatoria monto máximo persona residente\", \"limite\": 10}",
+      "devolvio": "Restricciones de repatriación, 30% FOB, USD 2.000.000; sin límite de derivados para persona humana",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"USD 300 persona humana residente mensual\", \"limite\": 10}",
+      "devolvio": "Nodos de apoderado, personas humanas, clasificación residencia; nada pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"conformidad previa BCRA compra moneda extranjera\", \"limite\": 10}",
+      "devolvio": "Nodos sobre conformidad previa BCRA y autorización previa",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\"}",
+      "devolvio": "Compra de ME por personas humanas residentes para formación de activos externos; sin monto",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_compra_de_moneda_extranjera\", \"direccion\": \"salientes\"}",
+      "devolvio": "1 saliente: requiere Verificación de documentación de endeudamiento",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite mensual persona humana residente sin conformidad\", \"limite\": 10}",
+      "devolvio": "Incluye Restriccion_limite_mensual_de_compra_en_efectivo (USD 100 efectivo)",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"formación activos externos persona humana límite\", \"limite\": 10}",
+      "devolvio": "Operacion_formacion_de_activos_externos y restricciones de activos líquidos USD 100.000; sin monto mensual de compra",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_formacion_de_activos_externos\"}",
+      "devolvio": "Nodo solo con tipo, sin monto; provenance Punto 3.10",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_formacion_de_activos_externos\", \"direccion\": \"salientes\"}",
+      "devolvio": "0 salientes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"USD 1000 mensual persona humana\", \"limite\": 10}",
+      "devolvio": "Personas humanas, residencia, apoderado, MiPyMe; nada pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"remisión ayuda familiar USD límite\", \"limite\": 10}",
+      "devolvio": "Incluye Restriccion_limite_anual_usd_36_000_para_personas_humanas (resumen con USD 36.000 anual, 'este mecanismo')",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_transferencia_de_ayuda\"}",
+      "devolvio": "Ingreso y remisión de transferencias de ayuda familiar; provenance Punto 4.2 SML; sin monto",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_transferencia_de_ayuda\", \"direccion\": \"salientes\"}",
+      "devolvio": "0 salientes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 13,
+     "quote": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", ... \"resumen_propiedades\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …\"}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados",
+     "Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Claim no central sobre límite anual USD 36.000; introducido como respuesta parcial a las patas de monto de las tres operaciones",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "un límite anual de USD 36.000 para personas humanas en algunos mecanismos, pero no se pudo confirmar un monto mensual máximo único que aplique a las tres operaciones solicitadas",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "\"label\": \"Límite anual USD 36.000 para personas humanas\" ... \"description\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\" ... \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]",
+       "ubicacion": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+      },
+      "fuente": {
+       "quote": "2.2. Cobros de exportaciones de servicios. 2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles...",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "límite USD 36000 exportaciones servicios cobros",
+       "resultado": "El USD 36.000 está asociado a cobros de exportaciones de servicios (Operacion_cobro_de_servicios, Operacion_aplicacion_de_cobros_de_exportaciones_de_bienes_y_servicios), no a formación de activos externos/ayuda familiar/derivados"
+      },
+      {
+       "consulta": "ver_paso_completo paso 13",
+       "resultado": "El agente vio en el resumen: 'El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000... en el año calendario' — sin marca de alcance a exportaciones de servicios"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "contenido_kg",
+        "justificacion_breve": "La fuente scopa el límite de USD 36.000 exclusivamente al mecanismo de excepción de liquidación de cobros de exportaciones de servicios prestados por personas humanas (Punto 2.2.2.1), condición iii); nada en el pasaje lo vincula a formación de activos externos, ayuda familiar ni derivados. El nodo despoja ese scope ('este mecanismo') y lo presenta como 'límite anual USD 36.000 para personas humanas' genérico, que fue arrastrado a la respuesta como parcial sobre las tres operaciones; el contenido del nodo está mal generalizado respecto de su fuente, confirmando contenido_kg."
+       },
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "contenido_kg",
+        "justificacion_breve": "La fuente declara que el límite de USD 36.000 anuales está scopeado a un mecanismo específico: la excepción de liquidación de cobros de exportaciones de servicios prestados por personas humanas (punto 2.2.2.1, condición iii), aplicable a los códigos de concepto S01, S19, S21, S22, etc. El nodo despoja ese alcance y lo trata como un 'Límite anual USD 36.000 para personas humanas' genérico ('este mecanismo' sin anclar cuál), lo que permitió introducirlo como respuesta parcial a patas sobre montos mensuales de formación de activos externos, ayuda familiar y derivados —operaciones ajenas a este mecanismo—. El contenido del nodo está mal alcanzado en el grafo, por lo que la causa contenido_kg queda confirmada."
+       },
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "contenido_kg",
+        "justificacion_breve": "La fuente declara que el límite de USD 36.000 anuales está scopeado a un mecanismo específico: la excepción de liquidación de cobros de exportaciones de servicios prestados por personas humanas bajo códigos de concepto determinados (punto 2.2.2.1). El nodo reproduce el umbral pero omite el alcance ('este mecanismo'), tratándolo como un límite anual genérico para personas humanas, lo que introdujo ruido no soportado en la respuesta (mezclado con las patas de montos mensuales de FAE, ayuda familiar y derivados, que son otro régimen). La causa contenido_kg queda confirmada: el defecto es del contenido del nodo, que descontextualiza el alcance de la fuente."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 4316,
+        "output_tokens": 525
+       },
+       {
+        "input_tokens": 4316,
+        "output_tokens": 580
+       },
+       {
+        "input_tokens": 4316,
+        "output_tokens": 547
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "sintoma_ganador": "faithfulness",
+       "causa_ganadora": "contenido_kg",
+       "votos_ganadores": 3
+      },
+      "corrigio": true,
+      "par_post_s1": [
+       "faithfulness",
+       "contenido_kg"
+      ],
+      "causa_post_s1": "contenido_kg",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "El único claim que el juez marcó incorrecto es 'límite anual de USD 36.000 para personas humanas en algunos mecanismos'. C1a (por pata): las patas de monto mensual de las 3 operaciones no obtuvieron dato pertinente y el agente lo declaró; pero el juez no las marcó fallidas (aprobó el USD 100 y solo reprobó el USD 36.000). C1b (por claim): el dato USD 36.000 SÍ apareció en la trayectoria — en el paso 13 (verificado con ver_paso_completo) el resumen del nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas quedó expuesto al agente con su contenido íntegro. Por lo tanto el claim está SOPORTADO por lo consultado (v2.3/v2.4): no es faithfulness. Precedencia → noise_sensitivity: el claim es incorrecto contra la pregunta porque el USD 36.000 pertenece a 'Cobros de exportaciones de servicios' (Punto 2.2 del PDF, confirmado con leer_pasaje_pdf), un concepto que NO es ninguna de las tres operaciones preguntadas (formación de activos externos, ayuda familiar, derivados); el agente lo presentó como respuesta parcial. C2 (árbol noise_sensitivity): ¿el nodo es fiel al PDF? Sí, el USD 36.000 existe en Punto 2.2. ¿Es pertinente a la pata? No. Test v2.6 de scoping: el nodo, leído solo (label='Límite anual USD 36.000 para personas humanas' + resumen 'este mecanismo... conceptos comprendidos'), NO le avisa al lector que su alcance es cobros de exportaciones de servicios — el label es genérico ('para personas humanas', sugiriendo aplicación general) y el resumen usa 'este mecanismo' sin nombrarlo; la provenance de exportaciones de servicios no está en el label/resumen que el agente vio. Como el nodo OMITE su alcance real, el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, que exigiría que el alcance estuviese declarado en el contenido del nodo). Descarto aplicacion_erronea por el criterio v2.6; descarto faithfulness porque el dato estaba expuesto; descarto sin_defecto porque el claim efectivamente induce a error al lector. Jerarquía primaria: es el único claim que el juez reprobó y explica su veredicto.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 7,
+    "max_tool_calls": 40,
+    "tokens_in": 162627,
+    "tokens_out": 7086
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 7,
+    "tokens_in": 162627,
+    "tokens_out": 7086,
+    "latency_s": 87.676,
+    "error": null,
+    "final_raw": "Confirmado el contexto. El nodo USD 36.000 tiene provenance en Punto 2.2 (cobros de exportaciones de servicios), un concepto distinto de las 3 operaciones preguntadas. El label del nodo (\"Límite anual USD 36.000 para personas humanas\") es genérico y no declara su alcance de exportaciones de servicios.\n\nTengo evidencia suficiente para atribuir.\n\n**Resumen del análisis:**\n- El claim USD 36.000 apareció en la trayectoria (paso 13, resumen expuesto) → soportado → no faithfulness.\n- El nodo es fiel al PDF (USD 36.000 existe en Punto 2.2).\n- El nodo NO es pertinente a las patas de la pregunta (es de cobros de exportaciones de servicios, no de las 3 operaciones).\n- Test v2.6: el label \"Límite anual USD 36.000 para personas humanas\" y el resumen \"este mecanismo... conceptos comprendidos\" NO declaran el alcance (exportaciones de servicios). Un lector del nodo no puede saber que es de otro alcance → des-scoping del grafo → `contenido_kg`, NO `aplicacion_erronea`.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"monto máximo persona humana residente compra activos externos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de excepción/apoderado, personas humanas, restricciones de repatriación y 30% FOB; ninguno con el monto mensual buscado\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"remisión ayuda familiar monto máximo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restricciones varias (30% FOB, USD 2.000.000 mensual agente local) y Operacion_transferencia_de_ayuda; sin monto mensual de ayuda familiar\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"derivados operatoria monto máximo persona residente\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restricciones de repatriación, 30% FOB, USD 2.000.000; sin límite de derivados para persona humana\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"USD 300 persona humana residente mensual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de apoderado, personas humanas, clasificación residencia; nada pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"conformidad previa BCRA compra moneda extranjera\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos sobre conformidad previa BCRA y autorización previa\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\"}\", \"devolvio\": \"Compra de ME por personas humanas residentes para formación de activos externos; sin monto\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_compra_de_moneda_extranjera\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"1 saliente: requiere Verificación de documentación de endeudamiento\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite mensual persona humana residente sin conformidad\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Incluye Restriccion_limite_mensual_de_compra_en_efectivo (USD 100 efectivo)\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"formación activos externos persona humana límite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Operacion_formacion_de_activos_externos y restricciones de activos líquidos USD 100.000; sin monto mensual de compra\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_formacion_de_activos_externos\\\"}\", \"devolvio\": \"Nodo solo con tipo, sin monto; provenance Punto 3.10\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_formacion_de_activos_externos\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"0 salientes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"USD 1000 mensual persona humana\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Personas humanas, residencia, apoderado, MiPyMe; nada pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"remisión ayuda familiar USD límite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Incluye Restriccion_limite_anual_usd_36_000_para_personas_humanas (resumen con USD 36.000 anual, 'este mecanismo')\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_transferencia_de_ayuda\\\"}\", \"devolvio\": \"Ingreso y remisión de transferencias de ayuda familiar; provenance Punto 4.2 SML; sin monto\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_transferencia_de_ayuda\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"0 salientes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 13, \"quote\": \"{\\\"id\\\": \\\"Restriccion_limite_anual_usd_36_000_para_personas_humanas\\\", ... \\\"resumen_propiedades\\\": \\\"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …\\\"}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos\", \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar\", \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados\", \"Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Claim no central sobre límite anual USD 36.000; introducido como respuesta parcial a las patas de monto de las tres operaciones\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"un límite anual de USD 36.000 para personas humanas en algunos mecanismos, pero no se pudo confirmar un monto mensual máximo único que aplique a las tres operaciones solicitadas\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"\\\"label\\\": \\\"Límite anual USD 36.000 para personas humanas\\\" ... \\\"description\\\": \\\"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\\\" ... \\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_exterior_cambios_actual.pdf\\\", \\\"location\\\": \\\"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\\\"}]\", \"ubicacion\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\"},\n        \"fuente\": {\"quote\": \"2.2. Cobros de exportaciones de servicios. 2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles...\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"límite USD 36000 exportaciones servicios cobros\", \"resultado\": \"El USD 36.000 está asociado a cobros de exportaciones de servicios (Operacion_cobro_de_servicios, Operacion_aplicacion_de_cobros_de_exportaciones_de_bienes_y_servicios), no a formación de activos externos/ayuda familiar/derivados\"},\n        {\"consulta\": \"ver_paso_completo paso 13\", \"resultado\": \"El agente vio en el resumen: 'El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000... en el año calendario' — sin marca de alcance a exportaciones de servicios\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único claim que el juez marcó incorrecto es 'límite anual de USD 36.000 para personas humanas en algunos mecanismos'. C1a (por pata): las patas de monto mensual de las 3 operaciones no obtuvieron dato pertinente y el agente lo declaró; pero el juez no las marcó fallidas (aprobó el USD 100 y solo reprobó el USD 36.000). C1b (por claim): el dato USD 36.000 SÍ apareció en la trayectoria — en el paso 13 (verificado con ver_paso_completo) el resumen del nodo Restriccion_limite_anual_usd_36_000_para_personas_humanas quedó expuesto al agente con su contenido íntegro. Por lo tanto el claim está SOPORTADO por lo consultado (v2.3/v2.4): no es faithfulness. Precedencia → noise_sensitivity: el claim es incorrecto contra la pregunta porque el USD 36.000 pertenece a 'Cobros de exportaciones de servicios' (Punto 2.2 del PDF, confirmado con leer_pasaje_pdf), un concepto que NO es ninguna de las tres operaciones preguntadas (formación de activos externos, ayuda familiar, derivados); el agente lo presentó como respuesta parcial. C2 (árbol noise_sensitivity): ¿el nodo es fiel al PDF? Sí, el USD 36.000 existe en Punto 2.2. ¿Es pertinente a la pata? No. Test v2.6 de scoping: el nodo, leído solo (label='Límite anual USD 36.000 para personas humanas' + resumen 'este mecanismo... conceptos comprendidos'), NO le avisa al lector que su alcance es cobros de exportaciones de servicios — el label es genérico ('para personas humanas', sugiriendo aplicación general) y el resumen usa 'este mecanismo' sin nombrarlo; la provenance de exportaciones de servicios no está en el label/resumen que el agente vio. Como el nodo OMITE su alcance real, el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, que exigiría que el alcance estuviese declarado en el contenido del nodo). Descarto aplicacion_erronea por el criterio v2.6; descarto faithfulness porque el dato estaba expuesto; descarto sin_defecto porque el claim efectivamente induce a error al lector. Jerarquía primaria: es el único claim que el juez reprobó y explica su veredicto.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"type\": \"Restriccion\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 36.000 anuales\", \"description\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"formación activos externos persona humana límite\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"formación activos externos persona humana límite\", \"total_con_match\": 264, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"EntidadFinanciera_persona_humana\", \"type\": \"EntidadFinanciera\", \"label\": \"Personas humanas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: personas humanas\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Aquéllas que en cualquiera d… [+2036 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 13
+      },
+      "output_truncado": "{\"paso\": 13, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"total_con_match\": 182, \"resultados\": [{\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_si_el_monto_total_a_imputar_al_permiso_no_supera_el_equivalente_de_usd_25_000_do\", \"type\": \"Restriccion\", \"label\": \"Límite para documentación simplificada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el monto total a imputar al permiso no supera el equivalente de USD 25.000 (dólares estadounidenses veinticinco mil), será suficiente que la entidad cuente c…\"}, {\"id\": \"Restriccion_… [+2382 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"límite mensual persona humana residente sin conformidad\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"límite mensual persona humana residente sin conformidad\", \"total_con_match\": 298, \"resultados\": [{\"id\": \"Excepcion_excepcion_apoderado_persona_humana_residente\", \"type\": \"Excepcion\", \"label\": \"Excepción: apoderado persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"CUIT o CUIL de la persona humana residente que actúe en carácter de apoderado de un no residente. En el registro debe consignarse el nombre y apellido completos…\"}, {\"id\": \"EntidadFinanciera_persona_humana\", \"type\": \"EntidadFinanciera\", \"label\": \"Personas humanas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: personas humanas\"}, {\"id\": \"Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_sea_menor_o\", \"type\": \"Restriccion\", \"label\": \"Límite repatriación capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto acumulado de las repatriaciones de capital del no residente sea menor o igual a la suma de los aportes de inversión directa ingresados por mercado de c…\"}, {\"id\": \"Restriccion_el… [+2499 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2 (PDF pág 8)\", \"pasaje\": \"2.2. Cobros de exportaciones de servicios. \\n2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de l… [+391 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite USD 36000 exportaciones servicios cobros",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"límite USD 36000 exportaciones servicios cobros\", \"total_con_match\": 346, \"resultados\": [{\"id\": \"Operacion_aplicacion_de_cobros_de_exportaciones_de_bienes_y_servicios\", \"type\": \"Operacion\", \"label\": \"Cobro exportaciones bienes servicios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: aplicación de cobros de exportaciones de bienes y servicios\"}, {\"id\": \"Obligacion_obligacion_de_liquidacion_de_los_cobros_de_exportaciones_de_bienes_y_servicios\", \"type\": \"Obligacion\", \"label\": \"Liquidación de cobros de exportaciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Obligación de liquidación de los cobros de exportaciones de bienes y servicios\"}, {\"id\": \"Restriccion_exportaciones_de_bienes_enviados_al_exterior_con_fines_promocionales_amparadas_p\", \"type\": \"Restriccion\", \"label\": \"Límite de USD 5000 en exportación promocional\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exportaciones de bienes enviados al exterior con fines promocionales amparadas por la Resolución 772/92 de Administración Nacional de Aduanas, hasta un tope de …\"}, {\"id\": \"Restriccion_el_monto_total_de_sus_deudas_por_importaciones_de_bienes_y_servicios_previas_al_\", \"type\": \"Restriccion\", \"lab… [+584 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27554,
+      "output_tokens": 284
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29522,
+      "output_tokens": 257
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33042,
+      "output_tokens": 507
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34977,
+      "output_tokens": 1761
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 37532,
+      "output_tokens": 4277
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 56,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-001",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'monto máximo persona humana residente compra activos externos', limite: 10}",
+      "devolvio": "242 matches; nodos de apoderado, personas humanas, límites de repatriación/FOB — ninguno con el monto pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'remisión ayuda familiar monto máximo', limite: 10}",
+      "devolvio": "98 matches; nodo Operacion transferencia de ayuda y varios límites no aplicables",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'derivados operatoria monto máximo persona residente', limite: 10}",
+      "devolvio": "187 matches; límites de repatriación/FOB/uso mensual — ninguno del monto pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'USD 300 persona humana residente mensual', limite: 10}",
+      "devolvio": "45 matches; nodos de apoderado, personas humanas, residencia — nada pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'conformidad previa BCRA compra moneda extranjera', limite: 10}",
+      "devolvio": "216 matches; nodos de conformidad previa BCRA",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera'}",
+      "devolvio": "Operación de compra de ME para formación de activos externos; provenance Punto 3.11",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}",
+      "devolvio": "1 saliente: requiere Verificación de documentación de endeudamiento",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite mensual persona humana residente sin conformidad', limite: 10}",
+      "devolvio": "298 matches; ninguno con el monto mensual pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'formación activos externos persona humana límite', limite: 10}",
+      "devolvio": "264 matches; Operacion formación de activos externos y límite de activos líquidos USD 100.000 — no el monto mensual pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_formacion_de_activos_externos'}",
+      "devolvio": "Operación stub (solo tipo); provenance Punto 3.10",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_formacion_de_activos_externos', direccion: 'salientes'}",
+      "devolvio": "0 salientes, 2 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'USD 1000 mensual persona humana', limite: 10}",
+      "devolvio": "32 matches; nada pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'remisión ayuda familiar USD límite', limite: 10}",
+      "devolvio": "182 matches; incluye 'Límite anual USD 36.000 para personas humanas' (resumen: 'El cliente no ha utilizado este mecanismo por un monto superior... USD 36.000... en el año calendario')",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_transferencia_de_ayuda'}",
+      "devolvio": "Ingreso y remisión de transferencias en concepto de ayuda familiar; provenance Punto 4.2 SML",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_transferencia_de_ayuda', direccion: 'salientes'}",
+      "devolvio": "0 salientes, 1 entrante",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 13,
+     "quote": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", ... \"label\": \"Límite anual USD 36.000 para personas humanas\", ... \"resumen_propiedades\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …\"}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar",
+     "Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados",
+     "Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Claim de relleno sobre límite anual USD 36.000 (afirmación marcada incorrecta por el juez)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Se encontró que existe un límite mensual de USD 100 para compra en efectivo en ciertos casos, y un límite anual de USD 36.000 para personas humanas en algunos mecanismos, pero no se pudo confirmar un monto mensual máximo único que aplique a las tres operaciones solicitadas sin conformidad previa del BCRA.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+       "ubicacion": "Restriccion_limite_anual_usd_36_000_para_personas_humanas (visto en resumen paso 13; arista saliente: limita → Operacion_cobro_de_exportacion_de_servicios)"
+      },
+      "fuente": {
+       "quote": "2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas humanas y se cumplen la totalidad de las siguientes condiciones: i) Las operaciones correspondan a los siguientes códigos de concepto: S01 Mantenimiento y reparaciones. ...",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "límite anual 36000 formación activos externos derivados",
+       "resultado": "323 matches; ningún nodo liga un límite anual USD 36.000 a formación de activos externos, ayuda familiar o derivados — el único nodo USD 36.000 pertenece a cobros de exportaciones de servicios"
+      },
+      {
+       "consulta": "USD 36000 año calendario cobros exportaciones servicios",
+       "resultado": "197 matches sobre cobros de exportaciones de servicios/bienes, confirmando el régimen real del USD 36.000"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D3",
+      "accion": "sin_portador_extraible",
+      "triage": true
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo_por_contenido",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "aplicacion_erronea",
+       "jerarquia": "primaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 a un mecanismo específico: cobros de exportaciones de servicios prestados por personas humanas bajo ciertos códigos de concepto (S01, S19, S21, etc.), acreditados en cuentas propias y con neutralidad fiscal. El nodo conserva la frase 'este mecanismo... en el conjunto de los conceptos comprendidos', pero el agente lo aplicó a 'algunos mecanismos' de forma vaga y desconectada de las tres operaciones consultadas (FAE, ayuda familiar, derivados), donde este límite no aplica. Se confirma aplicacion_erronea: el agente tomó un límite scopeado a exportación de servicios y lo trajo como relleno a un contexto donde no soporta la afirmación (marca no_soportado → faithfulness)."
+       },
+       {
+        "alcance_declarado_en_fuente": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "lado": "agente",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 a 'este mecanismo' — cobros de exportaciones de servicios de personas humanas (punto 2.2.2.1, códigos S01, S19, S21...) — y a 'el conjunto de los conceptos comprendidos' dentro de ese régimen. El agente lo generalizó en la respuesta como 'límite anual de USD 36.000 para personas humanas en algunos mecanismos', desprendiéndolo de su régimen específico (exportación de servicios) y presentándolo como dato relevante a las operaciones consultadas (activos externos, ayuda familiar, derivados), que no son ese mecanismo. El nodo conserva el alcance correcto ('este mecanismo', 'conceptos comprendidos'), por lo que el defecto no está en el KG sino en el uso que el agente hace del contenido: aplicacion_erronea del lado agente. El claim fue reprobado como no_soportado → faithfulness."
+       },
+       {
+        "alcance_declarado_en_fuente": "iii) El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las ent idades y por el conjunto de los conceptos comprendidos.",
+        "alcance_en_el_nodo": "El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos",
+        "coinciden": "no",
+        "sintoma_del_par": "faithfulness",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "lado": "agente",
+        "justificacion_breve": "La fuente scopea el límite de USD 36.000 exclusivamente al mecanismo de cobros de exportaciones de servicios prestados por personas humanas (punto 2.2.2.1, condición iii, 'este mecanismo'), no a 'algunos mecanismos' genéricos. La respuesta lo generalizó ('un límite anual de USD 36.000 para personas humanas en algunos mecanismos'), extendiendo el alcance más allá del único mecanismo declarado en la fuente; el claim quedó no_soportado (faithfulness) porque el agente aplicó erróneamente un contenido correctamente scopeado en el KG, confirmando aplicacion_erronea del lado agente."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 3058,
+        "output_tokens": 587
+       },
+       {
+        "input_tokens": 3058,
+        "output_tokens": 635
+       },
+       {
+        "input_tokens": 3058,
+        "output_tokens": 545
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "sintoma_ganador": "faithfulness",
+       "causa_ganadora": "aplicacion_erronea",
+       "votos_ganadores": 3
+      },
+      "corrigio": true,
+      "par_post_s1": [
+       "faithfulness",
+       "aplicacion_erronea"
+      ],
+      "causa_post_s1": "aplicacion_erronea",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "El juez marcó incorrecta una sola afirmación (no central): 'Existe un límite anual de USD 36.000 para personas humanas en algunos mecanismos'. FASE C1a — patas: las tres patas de límites específicos y la del monto único quedaron sin dato pertinente (el agente reportó honestamente no respondible y el juez NO reprobó esas afirmaciones de alcance); no hay claim central fallido en ellas. El único claim reprobado es el del USD 36.000. FASE C1b — soporte del claim: el dato del USD 36.000 SÍ apareció en la trayectoria: en el paso 13 (verificado con ver_paso_completo) el resumen del nodo 'Límite anual USD 36.000 para personas humanas' quedó expuesto al agente. Por tanto el claim está SOPORTADO por contenido de la trayectoria → NO es faithfulness. Es incorrecto en el contexto de la pregunta → noise_sensitivity. FASE C2 — árbol de noise_sensitivity: ¿el nodo es fiel al PDF? Sí — el Punto 2.2.2.1 confirma un umbral de USD 36.000 anuales para eximir de liquidación a cobros de exportaciones de servicios de personas humanas; el nodo lo reproduce fielmente. ¿Es pertinente a la pregunta? No: el USD 36.000 pertenece al régimen de INGRESOS (cobros de exportaciones de servicios), totalmente ajeno a las tres operaciones de EGRESO/compra de la pregunta (formación de activos externos, ayuda familiar, derivados). El agente tomó un límite de otro régimen y lo trajo como dato relevante a la respuesta, generando una afirmación engañosa. ¿El alcance estaba declarado/disponible? Sí: el nodo tiene arista saliente 'limita → Operacion_cobro_de_exportacion_de_servicios' con provenance Punto 2.2, y su búsqueda por operaciones de la pregunta no lo devuelve como aplicable — el alcance real era recuperable. El agente usó contenido fiel de un nodo fuera de su alcance sin verificar a qué operación aplicaba (nunca abrió el nodo ni sus vecinos, solo tomó el resumen léxico). Esto es aplicacion_erronea, lado agente. Descarto contenido_kg: el nodo NO contradice el PDF y su alcance real SÍ está declarado en la estructura del grafo (arista limita a cobros de exportaciones), por lo que no es un des-scoping del grafo. Descarto completitud_kg: el dato del PDF está presente y correcto en el grafo. Emito {noise_sensitivity, aplicacion_erronea} como primaria: es lo que explica por qué el juez reprobó la afirmación.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 274717,
+    "tokens_out": 6973
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 274717,
+    "tokens_out": 6973,
+    "latency_s": 96.148,
+    "error": null,
+    "final_raw": "No existe ningún nodo que ligue un límite anual de USD 36.000 a las operaciones de la pregunta. Confirma que el USD 36.000 pertenece exclusivamente al régimen de cobros de exportaciones de servicios. Tengo toda la evidencia necesaria.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'monto máximo persona humana residente compra activos externos', limite: 10}\", \"devolvio\": \"242 matches; nodos de apoderado, personas humanas, límites de repatriación/FOB — ninguno con el monto pedido\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'remisión ayuda familiar monto máximo', limite: 10}\", \"devolvio\": \"98 matches; nodo Operacion transferencia de ayuda y varios límites no aplicables\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'derivados operatoria monto máximo persona residente', limite: 10}\", \"devolvio\": \"187 matches; límites de repatriación/FOB/uso mensual — ninguno del monto pedido\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'USD 300 persona humana residente mensual', limite: 10}\", \"devolvio\": \"45 matches; nodos de apoderado, personas humanas, residencia — nada pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'conformidad previa BCRA compra moneda extranjera', limite: 10}\", \"devolvio\": \"216 matches; nodos de conformidad previa BCRA\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera'}\", \"devolvio\": \"Operación de compra de ME para formación de activos externos; provenance Punto 3.11\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_compra_de_moneda_extranjera', direccion: 'salientes'}\", \"devolvio\": \"1 saliente: requiere Verificación de documentación de endeudamiento\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite mensual persona humana residente sin conformidad', limite: 10}\", \"devolvio\": \"298 matches; ninguno con el monto mensual pedido\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'formación activos externos persona humana límite', limite: 10}\", \"devolvio\": \"264 matches; Operacion formación de activos externos y límite de activos líquidos USD 100.000 — no el monto mensual pedido\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_formacion_de_activos_externos'}\", \"devolvio\": \"Operación stub (solo tipo); provenance Punto 3.10\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_formacion_de_activos_externos', direccion: 'salientes'}\", \"devolvio\": \"0 salientes, 2 entrantes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'USD 1000 mensual persona humana', limite: 10}\", \"devolvio\": \"32 matches; nada pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'remisión ayuda familiar USD límite', limite: 10}\", \"devolvio\": \"182 matches; incluye 'Límite anual USD 36.000 para personas humanas' (resumen: 'El cliente no ha utilizado este mecanismo por un monto superior... USD 36.000... en el año calendario')\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_transferencia_de_ayuda'}\", \"devolvio\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar; provenance Punto 4.2 SML\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_transferencia_de_ayuda', direccion: 'salientes'}\", \"devolvio\": \"0 salientes, 1 entrante\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 13, \"quote\": \"{\\\"id\\\": \\\"Restriccion_limite_anual_usd_36_000_para_personas_humanas\\\", ... \\\"label\\\": \\\"Límite anual USD 36.000 para personas humanas\\\", ... \\\"resumen_propiedades\\\": \\\"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …\\\"}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para formación de activos externos\",\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para remisión de ayuda familiar\",\n      \"Monto mensual máximo persona humana residente sin conformidad previa BCRA para operatoria con derivados\",\n      \"Si existe un monto mensual máximo único que aplique conjuntamente a las tres operaciones\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Claim de relleno sobre límite anual USD 36.000 (afirmación marcada incorrecta por el juez)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Se encontró que existe un límite mensual de USD 100 para compra en efectivo en ciertos casos, y un límite anual de USD 36.000 para personas humanas en algunos mecanismos, pero no se pudo confirmar un monto mensual máximo único que aplique a las tres operaciones solicitadas sin conformidad previa del BCRA.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\", \"ubicacion\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas (visto en resumen paso 13; arista saliente: limita → Operacion_cobro_de_exportacion_de_servicios)\"},\n        \"fuente\": {\"quote\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas humanas y se cumplen la totalidad de las siguientes condiciones: i) Las operaciones correspondan a los siguientes códigos de concepto: S01 Mantenimiento y reparaciones. ...\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"límite anual 36000 formación activos externos derivados\", \"resultado\": \"323 matches; ningún nodo liga un límite anual USD 36.000 a formación de activos externos, ayuda familiar o derivados — el único nodo USD 36.000 pertenece a cobros de exportaciones de servicios\"},\n        {\"consulta\": \"USD 36000 año calendario cobros exportaciones servicios\", \"resultado\": \"197 matches sobre cobros de exportaciones de servicios/bienes, confirmando el régimen real del USD 36.000\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez marcó incorrecta una sola afirmación (no central): 'Existe un límite anual de USD 36.000 para personas humanas en algunos mecanismos'. FASE C1a — patas: las tres patas de límites específicos y la del monto único quedaron sin dato pertinente (el agente reportó honestamente no respondible y el juez NO reprobó esas afirmaciones de alcance); no hay claim central fallido en ellas. El único claim reprobado es el del USD 36.000. FASE C1b — soporte del claim: el dato del USD 36.000 SÍ apareció en la trayectoria: en el paso 13 (verificado con ver_paso_completo) el resumen del nodo 'Límite anual USD 36.000 para personas humanas' quedó expuesto al agente. Por tanto el claim está SOPORTADO por contenido de la trayectoria → NO es faithfulness. Es incorrecto en el contexto de la pregunta → noise_sensitivity. FASE C2 — árbol de noise_sensitivity: ¿el nodo es fiel al PDF? Sí — el Punto 2.2.2.1 confirma un umbral de USD 36.000 anuales para eximir de liquidación a cobros de exportaciones de servicios de personas humanas; el nodo lo reproduce fielmente. ¿Es pertinente a la pregunta? No: el USD 36.000 pertenece al régimen de INGRESOS (cobros de exportaciones de servicios), totalmente ajeno a las tres operaciones de EGRESO/compra de la pregunta (formación de activos externos, ayuda familiar, derivados). El agente tomó un límite de otro régimen y lo trajo como dato relevante a la respuesta, generando una afirmación engañosa. ¿El alcance estaba declarado/disponible? Sí: el nodo tiene arista saliente 'limita → Operacion_cobro_de_exportacion_de_servicios' con provenance Punto 2.2, y su búsqueda por operaciones de la pregunta no lo devuelve como aplicable — el alcance real era recuperable. El agente usó contenido fiel de un nodo fuera de su alcance sin verificar a qué operación aplicaba (nunca abrió el nodo ni sus vecinos, solo tomó el resumen léxico). Esto es aplicacion_erronea, lado agente. Descarto contenido_kg: el nodo NO contradice el PDF y su alcance real SÍ está declarado en la estructura del grafo (arista limita a cobros de exportaciones), por lo que no es un des-scoping del grafo. Descarto completitud_kg: el dato del PDF está presente y correcto en el grafo. Emito {noise_sensitivity, aplicacion_erronea} como primaria: es lo que explica por qué el juez reprobó la afirmación.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"type\": \"Restriccion\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 36.000 anuales\", \"description\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"formación activos externos persona humana límite\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"formación activos externos persona humana límite\", \"total_con_match\": 264, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"EntidadFinanciera_persona_humana\", \"type\": \"EntidadFinanciera\", \"label\": \"Personas humanas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: personas humanas\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Aquéllas que en cualquiera d… [+2036 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 13
+      },
+      "output_truncado": "{\"paso\": 13, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"remisión ayuda familiar USD límite\", \"total_con_match\": 182, \"resultados\": [{\"id\": \"Operacion_transferencia_de_ayuda\", \"type\": \"Operacion\", \"label\": \"Transferencias de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_si_el_monto_total_a_imputar_al_permiso_no_supera_el_equivalente_de_usd_25_000_do\", \"type\": \"Restriccion\", \"label\": \"Límite para documentación simplificada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el monto total a imputar al permiso no supera el equivalente de USD 25.000 (dólares estadounidenses veinticinco mil), será suficiente que la entidad cuente c…\"}, {\"id\": \"Restriccion_… [+2382 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2 (PDF pág 8)\", \"pasaje\": \"2.2. Cobros de exportaciones de servicios. \\n2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de l… [+391 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas \\nhumanas y se cumplen la totalidad de las siguientes condiciones: \\ni) Las operaciones correspondan a los siguientes códigos de concepto:\\nS01 Mantenimiento y reparaciones. \\nS07 Servicios de construcción. \\nS12 Servicios de telecomunicaciones. \\nS13 Servicios de informática. \\nS14 Servicios de información. \\nS15 Cargos por el uso de la propiedad intelectual. \\nS16 Servicios de investigación y desarrollo. \\nS17 Servicios jurídicos, contables y gerenciales. \\nS18 Servicios de publicidad, investigación de mercado y encuestas \\nde opinión pública. \\nS19 Servicios arquitectónicos, de ingeniería y otros servicios \\ntécnicos. \\nS21 Servicios relacionados con el comercio. \\nS22 Otros servicios empresariales. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 2. Disposiciones específicas para los ingresos por el mercado de cambios. \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.2.1 (parte 2)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.2.1 (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas \\nhumanas y se cumplen la totalidad de las siguientes condiciones: \\ni) Las operaciones correspondan a los siguientes códigos de concepto:\\nS01 Mantenimiento y reparaciones. \\nS07 Servicios de construcción. \\nS12 Servicios de telecomunicaciones. \\nS13 Servicios de informática. \\nS14 Servicios de información. \\nS15 Cargos por el uso de la propiedad intelectual. \\nS16 Servicios de investigación y desarrollo. \\nS17 Servicios jurídicos, contables y gerenciales. \\nS18 Servicios de publicidad, investigación de mercado y encuestas \\nde opinión pública. \\nS19 Servicios arquitectónicos, de ingeniería y otros servicios \\ntécnicos. \\nS21 Servicios relacionados con el comercio. \\nS22 Otros servicios empresariales. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 2. Disposiciones específicas para los ingresos por el mercado de cambios. \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "USD 36000 año calendario cobros exportaciones servicios"
+      },
+      "output_truncado": "{\"consulta\": \"USD 36000 año calendario cobros exportaciones servicios\", \"total_con_match\": 197, \"resultados\": [{\"id\": \"Operacion_aplicacion_de_cobros_de_exportaciones_de_bienes_y_servicios\", \"type\": \"Operacion\", \"label\": \"Cobro exportaciones bienes servicios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: aplicación de cobros de exportaciones de bienes y servicios\"}, {\"id\": \"Obligacion_obligacion_de_liquidacion_de_los_cobros_de_exportaciones_de_bienes_y_servicios\", \"type\": \"Obligacion\", \"label\": \"Liquidación de cobros de exportaciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Obligación de liquidación de los cobros de exportaciones de bienes y servicios\"}, {\"id\": \"Operacion_cobro_de_servicios\", \"type\": \"Operacion\", \"label\": \"Cobros de servicios no conexos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cobros de servicios no conexos al comercio exterior de bienes, excepto servicios financieros, por residentes argentinos a residentes paraguayos y uruguayos\"}, {\"id\": \"Operacion_cobros_de_exportaciones_en_divisas\", \"type\": \"Operacion\", \"label\": \"Aplicación de cobros en divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cobros de exportaciones en divisas\"… [+1894 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"limita\", \"vecino_id\": \"Operacion_cobro_de_exportacion_de_servicios\", \"vecino_label\": \"Cobro de exportaciones de servicios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.2.1 iv"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.2.1 iv\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.2.1. Se trata de cobros de exportaciones de servicios prestados por personas \\nhumanas y se cumplen la totalidad de las siguientes condiciones: \\ni) Las operaciones correspondan a los siguientes códigos de concepto:\\nS01 Mantenimiento y reparaciones. \\nS07 Servicios de construcción. \\nS12 Servicios de telecomunicaciones. \\nS13 Servicios de informática. \\nS14 Servicios de información. \\nS15 Cargos por el uso de la propiedad intelectual. \\nS16 Servicios de investigación y desarrollo. \\nS17 Servicios jurídicos, contables y gerenciales. \\nS18 Servicios de publicidad, investigación de mercado y encuestas \\nde opinión pública. \\nS19 Servicios arquitectónicos, de ingeniería y otros servicios \\ntécnicos. \\nS21 Servicios relacionados con el comercio. \\nS22 Otros servicios empresariales. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 2. Disposiciones específicas para los ingresos por el mercado de cambios. \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite anual 36000 formación activos externos derivados"
+      },
+      "output_truncado": "{\"consulta\": \"límite anual 36000 formación activos externos derivados\", \"total_con_match\": 323, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Aquéllas que en cualquiera de los días de un mes registren activos (suma de las posiciones compradas y vendidas de los activos comprendidos) que en conjunto sup…\"}, {\"id\": \"Restriccion_en_la_relacion_de_activos_inmovilizados_y_otros_conceptos_seccion_4_del_respecti\", \"type\": \"Restriccion\", \"label\": \"Límite de activos inmovilizados\", \"tokens_ma… [+2293 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27554,
+      "output_tokens": 206
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29444,
+      "output_tokens": 253
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32051,
+      "output_tokens": 329
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33680,
+      "output_tokens": 324
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36018,
+      "output_tokens": 850
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37123,
+      "output_tokens": 830
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38512,
+      "output_tokens": 321
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40335,
+      "output_tokens": 3860
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 56,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 1,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "aplicacion_erronea"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "aplicacion_erronea_bajo_revision",
+   "modulo_deterministico_sin_decision",
+   "atribucion_no_verificable",
+   "voto_dividido"
+  ],
+  "flags": [
+   "R2: rep 1 atrib 1 (secundaria) causa aplicacion_erronea",
+   "R3: rep 1 atrib 1 — D3/sin_portador_extraible",
+   "R6b: rep 2 atrib 1 — claim_no_mapeado",
+   "R2: rep 3 atrib 1 (primaria) causa aplicacion_erronea",
+   "R3: rep 3 atrib 1 — D3/sin_portador_extraible",
+   "R6b: rep 3 atrib 1 — claim_no_mapeado",
+   "R4: voto_capa_d.flag_voto_dividido = true"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "resumen_s1": {
+  "gatilladas": 3,
+  "juzgadas_llm": 3,
+  "corregidas": 3,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 0,
+  "fuente_no_funda": 0,
+  "tokens_in_s1": 31161,
+  "tokens_out_s1": 5039,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4b-dev"
+}

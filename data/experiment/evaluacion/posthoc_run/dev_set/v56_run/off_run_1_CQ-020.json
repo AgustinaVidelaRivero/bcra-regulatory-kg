@@ -1,0 +1,324 @@
+{
+ "id_falla": "run_1/CQ-020",
+ "run": "run_1",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"exigencia capital riesgo crédito CRC cálculo\", \"limite\": 10}",
+    "devolvio": "Devuelve req_exigencia_de_capital_por_riesgo_de_credito_crc (fórmula CRC=(k×0,08×APRC)+INC) y el nodo INC (Incremento por excesos en participaciones en capital de empresas)",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"capital riesgo crédito reporte BCRA frecuencia\", \"limite\": 10}",
+    "devolvio": "Nodos de capital por riesgo de crédito (variantes)",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"req_exigencia_de_capital_por_riesgo_de_credito_crc\"}",
+    "devolvio": "Fórmula CRC=(k×0,08×APRC)+INC; provenance pp.6-7",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"req_exigencia_de_capital_por_riesgo_de_credito_crc\", \"direccion\": \"ambas\"}",
+    "devolvio": "utiliza→Factor k; utiliza→APRC; debe_cumplir←entidad financiera",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"reporte mensual capital riesgo crédito BCRA frecuencia\", \"limite\": 10}",
+    "devolvio": "Nodos de capital por riesgo de crédito",
+    "pertinente": true
+   },
+   {
+    "paso": 6,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"régimen informativo capital mínimo riesgo crédito\", \"limite\": 10}",
+    "devolvio": "Nodos de capital mínimo por riesgo de crédito y report items del RI",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"rep_disminucion_de_la_exigencia_de_capital_minimo_por_riesgo_de_credito\"}",
+    "devolvio": "Código 60100000, régimen informativo mensual",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"régimen informativo mensual BCRA\", \"limite\": 5}",
+    "devolvio": "ins_regimen_informativo_contable_mensual (proceso mensual obligatorio) y rep_regimen_informativo_contable_mensual_sobre_capitales_minimos",
+    "pertinente": true
+   },
+   {
+    "paso": 9,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"ins_regimen_informativo_contable_mensual\"}",
+    "devolvio": "Proceso de información periódica mensual obligatoria; provenance p.4",
+    "pertinente": true
+   },
+   {
+    "paso": 10,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"rep_regimen_informativo_contable_mensual_sobre_capitales_minimos\"}",
+    "devolvio": "Esquema R.I.-C.M. que regula datos sobre exigencia e integración de capitales mínimos; provenance p.194",
+    "pertinente": true
+   },
+   {
+    "paso": 11,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"req_factor_k\"}",
+    "devolvio": "Ponderador vinculado a calificación, escala 1 a 1,19, asignado por SEFyC",
+    "pertinente": true
+   },
+   {
+    "paso": 12,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"con_activos_ponderados_por_riesgo_de_credito_aprc\"}",
+    "devolvio": "Activos determinados mediante suma de valores aplicando expresión específica con ponderadores de crédito",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": null,
+  "decision_agente_correcta": "El agente localizó los nodos portadores de cada pata (CRC, Factor k, APRC, INC, R.I.-C.M.), los abrió con ver_nodo y reprodujo su contenido fielmente. Cada afirmación de la respuesta final corresponde verbatim al contenido de un nodo consultado, y cada nodo es fiel al PDF fuente. No hubo decisión errónea del agente.",
+  "thinking_decision": null,
+  "patas": [
+   "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)",
+   "Con qué frecuencia se reporta la CRC al BCRA"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "primaria",
+   "pata": "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC) — Factor k",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "El Factor k toma valores en una escala entre 1 y 1,19 (...) asignado por SEFyC",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Ponderador vinculado a calificación de entidad según escala (valores 1 a 1,19), asignado por SEFyC.",
+     "ubicacion": "req_factor_k (abierto por el agente, paso 11)"
+    },
+    "fuente": {
+     "quote": "k: factor vinculado a la calificación asignada a la entidad según la evaluación efectuada por la SEFYC, teniendo en cuenta la siguiente escala: Calificación asignada Valor de \"k\" 1 1 2 1,03 3 1,08 4 1,13 5 1,19",
+     "ubicacion": "TO_capitales_minimos_actual.pdf, pp. 6-7"
+    }
+   }
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "primaria",
+   "pata": "Cómo se calcula la CRC — APRC",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Los APRC se determinan mediante la suma de valores aplicando una expresión específica con ponderadores de crédito",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Activos determinados mediante suma de valores aplicando expresión específica con ponderadores de crédito.",
+     "ubicacion": "con_activos_ponderados_por_riesgo_de_credito_aprc (abierto por el agente, paso 12)"
+    },
+    "fuente": {
+     "quote": "APRC: activos ponderados por riesgo de crédito, determinados mediante la suma de los valores obtenidos luego de aplicar la siguiente expresión: A x p + PFB x CCF x p + no DvP + (DVP + RCD + INC(inversiones significativas en empresas)) x 12,5",
+     "ubicacion": "TO_capitales_minimos_actual.pdf, pp. 6-7"
+    }
+   }
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "primaria",
+   "pata": "Cómo se calcula la CRC — INC",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "INC es el Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "label: Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas (INC); description: Exigencia de capital adicional por inversiones significativas en empresas que exceden límites regulados.",
+     "ubicacion": "req_incremento_de_exigencia_por_riesgo_de_credito_por_excesos_en_participaciones_en_capital_de_empresas_inc (expuesto en output completo del paso 1)"
+    },
+    "fuente": {
+     "quote": "86300000 Incremento de la exigencia por riesgo de crédito por excesos en las participaciones en el capital de empresas (INC (Inversiones significativas en empresas))",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, p. 41"
+    }
+   }
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "primaria",
+   "pata": "Con qué frecuencia se reporta la CRC al BCRA — R.I.-C.M.",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "El reporte se realiza a través del Régimen Informativo Contable Mensual (R.I.-C.M.), que es un proceso de información periódica mensual obligatoria mediante el cual las entidades financieras reportan indicadores de negocio y componentes al BCRA, incluyendo datos sobre exigencia e integración de capitales mínimos",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Proceso de información periódica mensual obligatoria mediante el cual las entidades financieras reportan indicadores de negocio y componentes al BCRA. // Esquema informativo (R.I.-C.M.) que regula la presentación de datos sobre exigencia e integración de capitales mínimos.",
+     "ubicacion": "ins_regimen_informativo_contable_mensual (paso 9) + rep_regimen_informativo_contable_mensual_sobre_capitales_minimos (paso 10)"
+    },
+    "fuente": {
+     "quote": "REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) (...) Sección 3. Exigencia por riesgo de crédito.",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, p. 1"
+    }
+   }
+  }
+ ],
+ "razonamiento": "SÍNTOMA: el juez marcó 8 claims 'no_soportado', pero todos corresponden a la pata de cálculo (Factor k, APRC, INC) y a la pata de frecuencia/reporte (R.I.-C.M.). C1a POR PATA: ambas patas tienen su dato PERTINENTE presente en la trayectoria — Factor k (paso 11), APRC (paso 12), INC (expuesto en output completo del paso 1, verificado con ver_paso_completo), fórmula CRC (paso 3), y el R.I.-C.M. como régimen mensual (pasos 8-10). Ninguna pata es context_recall. C1b POR CLAIM: todos los claims fallidos están SOPORTADOS por contenido expuesto en la trayectoria (contenido íntegro de nodos abiertos + resúmenes de buscar_nodos), por lo tanto no es faithfulness; procede noise_sensitivity → ¿son correctos contra el PDF? C2: verifiqué contra el PDF cada uno: (1) Factor k escala 1 a 1,19 asignado por SEFYC → CONFIRMADO verbatim en TO_capitales_minimos pp.6-7 ('k: factor vinculado a la calificación asignada... según la evaluación efectuada por la SEFYC... escala 1=1, 5=1,19'); (2) APRC suma de valores con expresión específica → CONFIRMADO verbatim pp.6-7; (3) INC por excesos en participaciones en capital de empresas → CONFIRMADO en TO_regimen_informativo p.41 (código 86300000) y label del nodo; (4) R.I.-C.M. proceso mensual que reporta la exigencia por riesgo de crédito → CONFIRMADO: el TO_regimen_informativo se titula 'RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' y su Sección 3 es 'Exigencia por riesgo de crédito' (p.1), siendo de frecuencia mensual. Todos los nodos son fieles al PDF y PERTINENTES a sus patas (test v2.2: usando solo esos nodos, cada pata queda correctamente respondida). DESCARTE de defectos: contenido_kg (ningún nodo contradice el PDF — descartado); provenance_imprecisa (aunque la provenance p.194 del nodo rep_...capitales_minimos apunta a un índice de comunicaciones, el contenido del claim está soportado además por ins_regimen_informativo_contable_mensual con provenance p.4 correcta y por el propio TO_regimen_informativo; el claim no depende de esa cita imprecisa — descartado como causa de la falla); completitud_kg/estructural_kg (todos los datos existen y están conectados vía edges utiliza→Factor k y →APRC — descartado); navegación/alcanzabilidad_kg (el agente alcanzó todos los nodos con búsquedas razonables — descartado); alucinacion_agente y aplicacion_erronea (cada claim reproduce fielmente un nodo pertinente y correcto — descartado). Habiendo descartado activamente cada defecto, la conclusión es sin_defecto: los 8 claims marcados 'no_soportado' por el juez SÍ están soportados por la trayectoria y son fieles al PDF. Es un falso positivo del juez.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 9,
+  "max_tool_calls": 40,
+  "tokens_in": 179442,
+  "tokens_out": 7126
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 9,
+  "tokens_in": 179442,
+  "tokens_out": 7126,
+  "latency_s": 87.569,
+  "error": null,
+  "final_raw": "Confirmado plenamente: el R.I.-C.M. tiene una \"Sección 3. Exigencia por riesgo de crédito\" — es exactamente el régimen mensual que reporta la CRC al BCRA. Todas las afirmaciones del agente son correctas y soportadas. El juez marcó incorrectamente 8 claims como \"no_soportado\" que sí están soportados por nodos consultados y son fieles al PDF.\n\nEmito el veredicto: falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital riesgo crédito CRC cálculo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve req_exigencia_de_capital_por_riesgo_de_credito_crc (fórmula CRC=(k×0,08×APRC)+INC) y el nodo INC (Incremento por excesos en participaciones en capital de empresas)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capital riesgo crédito reporte BCRA frecuencia\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capital por riesgo de crédito (variantes)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"req_exigencia_de_capital_por_riesgo_de_credito_crc\\\"}\", \"devolvio\": \"Fórmula CRC=(k×0,08×APRC)+INC; provenance pp.6-7\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"req_exigencia_de_capital_por_riesgo_de_credito_crc\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"utiliza→Factor k; utiliza→APRC; debe_cumplir←entidad financiera\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"reporte mensual capital riesgo crédito BCRA frecuencia\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capital por riesgo de crédito\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"régimen informativo capital mínimo riesgo crédito\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capital mínimo por riesgo de crédito y report items del RI\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"rep_disminucion_de_la_exigencia_de_capital_minimo_por_riesgo_de_credito\\\"}\", \"devolvio\": \"Código 60100000, régimen informativo mensual\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"régimen informativo mensual BCRA\\\", \\\"limite\\\": 5}\", \"devolvio\": \"ins_regimen_informativo_contable_mensual (proceso mensual obligatorio) y rep_regimen_informativo_contable_mensual_sobre_capitales_minimos\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"ins_regimen_informativo_contable_mensual\\\"}\", \"devolvio\": \"Proceso de información periódica mensual obligatoria; provenance p.4\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"rep_regimen_informativo_contable_mensual_sobre_capitales_minimos\\\"}\", \"devolvio\": \"Esquema R.I.-C.M. que regula datos sobre exigencia e integración de capitales mínimos; provenance p.194\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"req_factor_k\\\"}\", \"devolvio\": \"Ponderador vinculado a calificación, escala 1 a 1,19, asignado por SEFyC\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"con_activos_ponderados_por_riesgo_de_credito_aprc\\\"}\", \"devolvio\": \"Activos determinados mediante suma de valores aplicando expresión específica con ponderadores de crédito\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó los nodos portadores de cada pata (CRC, Factor k, APRC, INC, R.I.-C.M.), los abrió con ver_nodo y reprodujo su contenido fielmente. Cada afirmación de la respuesta final corresponde verbatim al contenido de un nodo consultado, y cada nodo es fiel al PDF fuente. No hubo decisión errónea del agente.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)\", \"Con qué frecuencia se reporta la CRC al BCRA\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC) — Factor k\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El Factor k toma valores en una escala entre 1 y 1,19 (...) asignado por SEFyC\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Ponderador vinculado a calificación de entidad según escala (valores 1 a 1,19), asignado por SEFyC.\", \"ubicacion\": \"req_factor_k (abierto por el agente, paso 11)\"},\n        \"fuente\": {\"quote\": \"k: factor vinculado a la calificación asignada a la entidad según la evaluación efectuada por la SEFYC, teniendo en cuenta la siguiente escala: Calificación asignada Valor de \\\"k\\\" 1 1 2 1,03 3 1,08 4 1,13 5 1,19\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, pp. 6-7\"}\n      }\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se calcula la CRC — APRC\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los APRC se determinan mediante la suma de valores aplicando una expresión específica con ponderadores de crédito\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Activos determinados mediante suma de valores aplicando expresión específica con ponderadores de crédito.\", \"ubicacion\": \"con_activos_ponderados_por_riesgo_de_credito_aprc (abierto por el agente, paso 12)\"},\n        \"fuente\": {\"quote\": \"APRC: activos ponderados por riesgo de crédito, determinados mediante la suma de los valores obtenidos luego de aplicar la siguiente expresión: A x p + PFB x CCF x p + no DvP + (DVP + RCD + INC(inversiones significativas en empresas)) x 12,5\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, pp. 6-7\"}\n      }\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se calcula la CRC — INC\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"INC es el Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"label: Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas (INC); description: Exigencia de capital adicional por inversiones significativas en empresas que exceden límites regulados.\", \"ubicacion\": \"req_incremento_de_exigencia_por_riesgo_de_credito_por_excesos_en_participaciones_en_capital_de_empresas_inc (expuesto en output completo del paso 1)\"},\n        \"fuente\": {\"quote\": \"86300000 Incremento de la exigencia por riesgo de crédito por excesos en las participaciones en el capital de empresas (INC (Inversiones significativas en empresas))\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, p. 41\"}\n      }\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Con qué frecuencia se reporta la CRC al BCRA — R.I.-C.M.\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El reporte se realiza a través del Régimen Informativo Contable Mensual (R.I.-C.M.), que es un proceso de información periódica mensual obligatoria mediante el cual las entidades financieras reportan indicadores de negocio y componentes al BCRA, incluyendo datos sobre exigencia e integración de capitales mínimos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Proceso de información periódica mensual obligatoria mediante el cual las entidades financieras reportan indicadores de negocio y componentes al BCRA. // Esquema informativo (R.I.-C.M.) que regula la presentación de datos sobre exigencia e integración de capitales mínimos.\", \"ubicacion\": \"ins_regimen_informativo_contable_mensual (paso 9) + rep_regimen_informativo_contable_mensual_sobre_capitales_minimos (paso 10)\"},\n        \"fuente\": {\"quote\": \"REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) (...) Sección 3. Exigencia por riesgo de crédito.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, p. 1\"}\n      }\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó 8 claims 'no_soportado', pero todos corresponden a la pata de cálculo (Factor k, APRC, INC) y a la pata de frecuencia/reporte (R.I.-C.M.). C1a POR PATA: ambas patas tienen su dato PERTINENTE presente en la trayectoria — Factor k (paso 11), APRC (paso 12), INC (expuesto en output completo del paso 1, verificado con ver_paso_completo), fórmula CRC (paso 3), y el R.I.-C.M. como régimen mensual (pasos 8-10). Ninguna pata es context_recall. C1b POR CLAIM: todos los claims fallidos están SOPORTADOS por contenido expuesto en la trayectoria (contenido íntegro de nodos abiertos + resúmenes de buscar_nodos), por lo tanto no es faithfulness; procede noise_sensitivity → ¿son correctos contra el PDF? C2: verifiqué contra el PDF cada uno: (1) Factor k escala 1 a 1,19 asignado por SEFYC → CONFIRMADO verbatim en TO_capitales_minimos pp.6-7 ('k: factor vinculado a la calificación asignada... según la evaluación efectuada por la SEFYC... escala 1=1, 5=1,19'); (2) APRC suma de valores con expresión específica → CONFIRMADO verbatim pp.6-7; (3) INC por excesos en participaciones en capital de empresas → CONFIRMADO en TO_regimen_informativo p.41 (código 86300000) y label del nodo; (4) R.I.-C.M. proceso mensual que reporta la exigencia por riesgo de crédito → CONFIRMADO: el TO_regimen_informativo se titula 'RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' y su Sección 3 es 'Exigencia por riesgo de crédito' (p.1), siendo de frecuencia mensual. Todos los nodos son fieles al PDF y PERTINENTES a sus patas (test v2.2: usando solo esos nodos, cada pata queda correctamente respondida). DESCARTE de defectos: contenido_kg (ningún nodo contradice el PDF — descartado); provenance_imprecisa (aunque la provenance p.194 del nodo rep_...capitales_minimos apunta a un índice de comunicaciones, el contenido del claim está soportado además por ins_regimen_informativo_contable_mensual con provenance p.4 correcta y por el propio TO_regimen_informativo; el claim no depende de esa cita imprecisa — descartado como causa de la falla); completitud_kg/estructural_kg (todos los datos existen y están conectados vía edges utiliza→Factor k y →APRC — descartado); navegación/alcanzabilidad_kg (el agente alcanzó todos los nodos con búsquedas razonables — descartado); alucinacion_agente y aplicacion_erronea (cada claim reproduce fielmente un nodo pertinente y correcto — descartado). Habiendo descartado activamente cada defecto, la conclusión es sin_defecto: los 8 claims marcados 'no_soportado' por el juez SÍ están soportados por la trayectoria y son fieles al PDF. Es un falso positivo del juez.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "pp. 6-7"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"pp. 6-7\", \"metodo\": \"pagina\", \"ref\": \"p.6-7 (PDF absoluto 1-based)\", \"pasaje\": \"b)\\nSi el descargo formulado es desestimado –total o parcialment e– por la\\nSEFyC, \\nla entidad se ajustará al procedimiento establecido en el punto\\n1.4.2.1., \\nen el caso de que persistan incumplimientos. Los plaz os se\\ncomputarán desde el mes en que se efectúe la notificación de la  deci-\\nsión adoptada.\\nVersión: 4a.\\n COMUNICACIÓN  “A”  6260 Vigencia: \\n24/6/2017 Página 3 \\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS \\nSección 1. Capital mínimo. \\nA los efectos de la aplicación de las disposiciones de la presente sección, las entidades financieras\\nse clasificarán en:\\ni) Grupo 1: entidades calificadas por el BCRA como de importancia sistémica a nivel local\\n(D-SIB) y sucursales o su bsidiarias de bancos del exterior calificados como de impor-\\ntancia sistémica global (G-SIB).\\nii) Grupo 2: entidade s financieras no comprendidas en el acápite i).\\nEn aquellos casos en que no se establezcan disposiciones específicas para cada uno de los citados \\ngrupos de entidades financieras, deberá aplicarse el … [+1342 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "p. 194"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p. 194\", \"metodo\": \"pagina\", \"ref\": \"p.194 (PDF absoluto 1-based)\", \"pasaje\": \"“A” 4032: Efectivo mínimo. Modificación de las exigencias. Derogación de las normas sobre \\n“Aplicación mínima de recursos provenientes de obligaciones a l a vista y a plazo \\nen pesos”. Aumento del plazo mínimo de captación. \\n“A” 4141: “Capitales mínimos de las entidades financieras” y “Garantías”. Actualización. \\n“A” 4168: Capacidad de préstamo en moneda extranjera. Capitales mínimos de las entidades \\nfinancieras. Modificaciones. \\n“A” 4172: “Bonos del Gobierno Nacional en pesos a tasa variable  2013”. Tratamiento en ma-\\nteria de capitales mínimos. \\n“A” 4180: Capitales mínimos de las entidades financieras. Valuación de activos del sector \\npúblico. Eliminación de la actualización por “CVS”. \\n“A” 4238: Capitales mínimos de las entidades financieras. Modificaciones. \\n“A” 4270: Activos del sector público. Tratamiento contable de los “Bonos con descuento” y \\n“Valores negociables vinculados al PBI” a ser recibidos en canje de títulos públi-\\ncos (Dec. 1735/04). \\n“A” 4296: Impuesto a la Ganancia Mínima Presunta.… [+1828 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 4"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 4\", \"metodo\": \"pagina\", \"ref\": \"p.4 (PDF absoluto 1-based)\", \"pasaje\": \"CONSOLIDACIÓN \\nCOD CASOS \\n0 \\n1 \\n \\n2 \\n \\n9 \\n \\n3 \\nEntidad que no consolida, con filiales en el país y en el exterior.  \\nEntidad que consolida, con filiales en el país y en el exterior. \\nConsolidado mensual (entidad financiera con filiales y subsidiarias significativas en el país \\ny en el exterior) – (con el alcance definido en el punto 6.2. de las normas sobre “Su-\\npervisión consolidada”) \\nConsolidado mensual (entidad financiera con filiales y subsidiarias significativas en el país y \\nen el exterior -que no consolida con otras entidades financieras -) - (con el alcance defini-\\ndo en el punto 6.2. de las normas sobre “Supervisión consolidada”) \\nConsolidado trimestral (entidad financiera con filiales, subsidiarias significativas y otros \\nentes en el país y en el exterior) – (código de consolidación suspendido desde \\nabril/24 según punto 6.1. de las normas sobre “Supervisión consolidada”, excepto \\npara Ratio de apalancamiento, -Sección 10. - que continuará presentado código 3 \\ncon el al… [+1835 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 1
+    },
+    "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"exigencia capital riesgo crédito CRC cálculo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"exigencia capital riesgo crédito CRC cálculo\", \"total_con_match\": 544, \"resultados\": [{\"id\": \"req_exigencia_de_capital_por_riesgo_de_credito_crc\", \"type\": \"REQUIREMENT\", \"label\": \"Exigencia de capital por riesgo de crédito (CRC)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Fórmula de cálculo: CRC = (k × 0,08 × APRC) + INC, determinada según calificación de la entidad.\"}, {\"id\": \"req_exigencia_de_capital_por_riesgo_de_credito\", \"type\": \"REQUIREMENT\", \"label\": \"Exigencia de capital por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Requisito cuantitativo de capital que las entidades financieras deben mantener para cubrir riesgos de crédito en sus operaciones.\"}, {\"id\": \"req_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"REQUIREMENT\", \"label\": \"Exigencia de capital mínimo por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Requerimiento regulatorio que debe ser determinado mediante aplicación de Sección 2, con multiplicadores especiales para ciertos clientes agrícolas.\"}, {\"… [+2346 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "req_incremento_de_exigencia_por_riesgo_de_credito_por_excesos_en_participaciones_en_capital_de_empresas_inc"
+    },
+    "output_truncado": "{\"id\": \"req_incremento_de_exigencia_por_riesgo_de_credito_por_excesos_en_participaciones_en_capital_de_empresas_inc\", \"type\": \"REQUIREMENT\", \"label\": \"Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas (INC)\", \"properties\": {\"version\": \"A 6561\", \"description\": \"Exigencia de capital adicional por inversiones significativas en empresas que exceden límites regulados.\", \"aliases\": [\"Incremento de exigencia por riesgo de crédito por excesos en participaciones en capital de empresas (INC)\"], \"source_to\": \"regimen_informativo_cm\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 41\"}]}"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 41"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 41\", \"metodo\": \"pagina\", \"ref\": \"p.41 (PDF absoluto 1-based)\", \"pasaje\": \"9.2. Modelo de Información  \\n  \\n9.2.1. Incrementos de exigencia \\n \\nCódigo  Concepto Importe  \\n83100000  Incremento de la exigencia por riesgo de crédito por exceso en la relación \\nde activos inmovilizados. Información en término  \\n  \\n83200000  Incremento de la exigencia por riesgo de crédito por exceso en la relación \\nde activos inmovilizados. Información fuera de término \\n  \\n83300000  Incremento de la exigencia por riesgo de crédito por exceso en la relación \\nde activos inmovilizados. Incumplimientos reiterados  \\n  \\n83400000  Incremento de la exigencia por riesgo de crédito por exceso en la relación \\nde activos inmovilizados. Determinado por la SEFyC \\n  \\n83500000  Incremento de la exigencia por riesgo de crédito por exceso en Grandes \\nExposiciones al Riesgo de Crédito. Información en término \\n  \\n83600000  Incremento de la exigencia por riesgo de crédito por exceso en Grandes \\nExposiciones al Riesgo de Crédito. Información fuera de término \\n  \\n83700000  Incremento de la exigenc… [+1684 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "p. 195"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p. 195\", \"metodo\": \"pagina\", \"ref\": \"p.195 (PDF absoluto 1-based)\", \"pasaje\": \"“A” 4615: Capitales mínimos por riesgo de tasa de interés. Tratamiento de Instrumentos emi-\\ntidos por el Banco Central de la República Arg. \\n \\n“A” 4631: Normas para el desempeño de las funciones de custodio  y de agente de registro. \\nCapitales mínimos de las entidades financieras. Responsabilidad  patrimonial \\ncomputable de las casas y agencias de cambio y garantías a constituir. Modifica-\\nciones. \\n \\n“A” 4652: \\\"Capitales mínimos de las entidades financieras\\\". Aportes de capital. Modificación. \\n \\n“A” 4665: Capitales mínimos de las entidades financieras. Polít ica de crédito. Clasificación \\nde deudores. Actualización. \\n \\n“A” 4686: Depósitos judiciales. “Dolarización”. Capitales mínimos de las entidades financie-\\nras. Distribución de resultados. Programa de encuadramiento en materia de posi-\\nción global neta de moneda extranjera. \\n \\n“A” 4702: Títulos públicos nacionales e instrumentos de deuda d el Banco Central de la Re-\\npública Argentina. Tenencias en “Disponibles para la venta”. Ca pitales mínimos… [+1825 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 8
+    },
+    "output_truncado": "{\"paso\": 8, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"régimen informativo mensual BCRA\", \"limite\": 5}, \"output_completo\": {\"consulta\": \"régimen informativo mensual BCRA\", \"total_con_match\": 112, \"resultados\": [{\"id\": \"ins_regimen_informativo_contable_mensual\", \"type\": \"INSTRUMENT\", \"label\": \"Régimen Informativo Contable Mensual\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Proceso de información periódica mensual obligatoria mediante el cual las entidades financieras reportan indicadores de negocio y componentes al BCRA.\"}, {\"id\": \"rep_regimen_informativo_contable_mensual_sobre_capitales_minimos\", \"type\": \"REPORT_ITEM\", \"label\": \"Régimen Informativo Contable Mensual sobre Capitales Mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Esquema informativo (R.I.-C.M.) que regula la presentación de datos sobre exigencia e integración de capitales mínimos.\"}, {\"id\": \"req_informacion_de_comisiones_y_cargos_al_bcra_y_a_usuarios_mediante_regimen_informativo\", \"type\": \"REQUIREMENT\", \"label\": \"información de comisiones y cargos al BCRA y a usuarios mediante régimen informativo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Obligación de informar al BCRA y a usuarios de servi… [+823 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 1"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 1\", \"metodo\": \"pagina\", \"ref\": \"p.1 (PDF absoluto 1-based)\", \"pasaje\": \"-\\nÍndice-\\nSección 1. Instrucciones generales \\nSección 2. Entidades comprendidas \\nSección 3. Exigencia por riesgo de crédito. \\n3.1. Normas de procedimiento \\n3.2. Modelo de información \\nSección 4. Exigencia e integración por riesgo de mercado \\n4.1. Normas de procedimiento \\n4.2. Modelo de información \\nSección 5. Exigencia por riesgo operacional \\n5.1. Normas de procedimiento \\n5.2. Modelo de información \\nSección 6. Responsabilidad patrimonial computable \\n6.1. Normas de procedimiento \\n6.2. Modelos de información \\nSección 7. Facilidades otorgadas por el B.C.R.A. \\n7.1. Normas de procedimiento \\n7.2. Modelo de información \\nSección 8. Totales de control \\n8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “… [+43 chars]"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 22490,
+    "output_tokens": 440
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 26856,
+    "output_tokens": 392
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29187,
+    "output_tokens": 549
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32412,
+    "output_tokens": 544
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 33833,
+    "output_tokens": 191
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 34664,
+    "output_tokens": 5010
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 28,
+   "n_claims_fallidos": 8,
+   "categoria": "multi_norma"
+  },
+  "label": "off"
+ }
+}

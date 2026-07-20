@@ -1,0 +1,833 @@
+{
+ "id_falla": "run_3/CQN-006",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"limite\": 10}",
+      "devolvio": "Primer resultado el nodo 'Reintegro de importes cobrados indebidamente' con resumen que expone verbatim 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…'; resto son plazos cambiarios no pertinentes",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"sujeto obligado reintegro usuario servicios financieros\", \"limite\": 10}",
+      "devolvio": "Nodos de constancia de reclamo, notificaciones, atención al usuario; ninguno del reintegro específico pero refuerza contexto",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"}",
+      "devolvio": "Contenido íntegro: reintegro dentro de 10 días hábiles tras presentación del reclamo, o 5 días hábiles tras constatación por el sujeto obligado o la fiscalización de la SEFYC; conceptos: tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó, encontró y abrió el nodo portador exacto de la respuesta (paso 3), y construyó su respuesta parafraseando fielmente su contenido. Tanto los tres claims de plazo (aprobados por el juez) como el claim [no central] sobre los conceptos provienen verbatim del mismo nodo/pasaje. El agente actuó correctamente sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Plazo de reintegro de importes cobrados indebidamente (claim [no central] sobre los conceptos alcanzados)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC",
+       "ubicacion": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (abierto por el agente en paso 3; resumen ya expuesto en paso 1)"
+      },
+      "fuente": {
+       "quote": "En ningún caso podrán aplicarse comisiones y/o cargos al usuario por servicios financieros que no hayan sido solicitados, pactados y/o autorizados por él y, aun cuando habiendo sido solicitados, pactados y/o autorizados por éste e informados por el sujeto obligado al usuario, no se hayan prestado de manera efectiva.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "reintegro importe cobrado indebidamente tasas interes comisiones cargos",
+       "resultado": "el nodo 'Reintegro de importes cobrados indebidamente' aparece como resultado dedicado, con el texto de conceptos (tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto) — coincide con la afirmación"
+      },
+      {
+       "consulta": "reintegrado diez días hábiles presentación reclamo fiscalización SEFYC",
+       "resultado": "aparecen nodos de plazos de reclamo y descargo ante SEFyC, coherentes con la temática; el nodo del reintegro es el portador del contenido exacto"
+      },
+      {
+       "consulta": "ver_paso_completo(1)",
+       "resultado": "el resumen del primer resultado ya expone verbatim la frase 'por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto' — el claim estaba soportado desde el primer paso"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene una sola pata (el plazo de reintegro). El dato pertinente apareció y fue usado: el agente buscó (paso 1), obtuvo como primer resultado el nodo portador exacto ('Reintegro de importes cobrados indebidamente') y lo abrió íntegro (paso 3). El juez aprobó los tres claims centrales de plazo (10 días hábiles tras el reclamo; 5 días hábiles tras constatación por el sujeto obligado o por la fiscalización de la SEFYC), todos tomados verbatim de ese nodo. El ÚNICO claim marcado 'no_soportado' es el [no central]: 'La obligación de reintegro aplica a importes cobrados o adeudados por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.' Ese claim es una paráfrasis LITERAL del contenido del nodo consultado — de hecho el resumen del paso 1 ya lo exponía verbatim ('Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…'). Por precedencia (C1b): el dato pertinente apareció → no es context_recall; el claim está soportado por un nodo consultado (contenido íntegro en paso 3 y resumen en pasos 1 y 3) → no es faithfulness; queda noise_sensitivity (¿es correcto contra el PDF?). En el PDF (Punto 2.3.2.2 'No admitidos', principio general) el TO efectivamente regula el cobro de comisiones/cargos sin cumplimiento de las condiciones y prohíbe cobrarlos; el mismo texto normativo que sustenta los plazos que el juez aprobó proviene de esta materia de la Sección 2. El claim es fiel al nodo y coherente con el PDF, y además el nodo ES pertinente a la pata (describe la obligación de reintegro por la que se pregunta). Aplicando el test v2.2: si el agente hubiera usado solo ese nodo, la pata quedaba correctamente respondida (de hecho así fue, y los claims centrales fueron aprobados). Por tanto el claim marcado incorrecto es en realidad correcto y soportado: falso positivo del juez. Descarté activamente cada defecto: contenido_kg (el nodo no contradice el PDF; los plazos del mismo nodo fueron validados por el GT), completitud_kg (el dato está en el nodo, no falta), estructural_kg/alcanzabilidad_kg (el nodo fue alcanzado en la primera búsqueda con términos de la pregunta), provenance_imprecisa (aunque el ancla literal 'Punto 2.3 parte 4' no resolvió al pasaje exacto del reintegro, esto no afectó este claim: el contenido fiel estaba en el nodo y fue usado; no es lo que rompe la respuesta), navegación/alucinacion_agente/aplicacion_erronea (el agente encontró y usó el nodo correcto y el claim es paráfrasis fiel, sin glosa ni des-scoping). Veredicto: {noise_sensitivity, sin_defecto}, jerarquía sin_par — falso positivo del juez; el sistema KG-RAG no presenta defecto que explique la reprobación.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 15,
+    "max_tool_calls": 40,
+    "tokens_in": 297605,
+    "tokens_out": 7118
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 15,
+    "tokens_in": 297605,
+    "tokens_out": 7118,
+    "latency_s": 107.531,
+    "error": null,
+    "final_raw": "El resumen del paso 1 ya exponía verbatim el texto del claim marcado incorrecto: *\"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…\"*. Está plenamente soportado y es fiel al PDF. Confirmo el veredicto de falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"reintegrar importes cobrados indebidamente plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Primer resultado el nodo 'Reintegro de importes cobrados indebidamente' con resumen que expone verbatim 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…'; resto son plazos cambiarios no pertinentes\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"sujeto obligado reintegro usuario servicios financieros\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de constancia de reclamo, notificaciones, atención al usuario; ninguno del reintegro específico pero refuerza contexto\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\\\"}\", \"devolvio\": \"Contenido íntegro: reintegro dentro de 10 días hábiles tras presentación del reclamo, o 5 días hábiles tras constatación por el sujeto obligado o la fiscalización de la SEFYC; conceptos: tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó, encontró y abrió el nodo portador exacto de la respuesta (paso 3), y construyó su respuesta parafraseando fielmente su contenido. Tanto los tres claims de plazo (aprobados por el juez) como el claim [no central] sobre los conceptos provienen verbatim del mismo nodo/pasaje. El agente actuó correctamente sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Plazo de reintegro de importes cobrados indebidamente (claim [no central] sobre los conceptos alcanzados)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"ubicacion\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (abierto por el agente en paso 3; resumen ya expuesto en paso 1)\"},\n        \"fuente\": {\"quote\": \"En ningún caso podrán aplicarse comisiones y/o cargos al usuario por servicios financieros que no hayan sido solicitados, pactados y/o autorizados por él y, aun cuando habiendo sido solicitados, pactados y/o autorizados por éste e informados por el sujeto obligado al usuario, no se hayan prestado de manera efectiva.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"reintegro importe cobrado indebidamente tasas interes comisiones cargos\", \"resultado\": \"el nodo 'Reintegro de importes cobrados indebidamente' aparece como resultado dedicado, con el texto de conceptos (tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto) — coincide con la afirmación\"},\n        {\"consulta\": \"reintegrado diez días hábiles presentación reclamo fiscalización SEFYC\", \"resultado\": \"aparecen nodos de plazos de reclamo y descargo ante SEFyC, coherentes con la temática; el nodo del reintegro es el portador del contenido exacto\"},\n        {\"consulta\": \"ver_paso_completo(1)\", \"resultado\": \"el resumen del primer resultado ya expone verbatim la frase 'por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto' — el claim estaba soportado desde el primer paso\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene una sola pata (el plazo de reintegro). El dato pertinente apareció y fue usado: el agente buscó (paso 1), obtuvo como primer resultado el nodo portador exacto ('Reintegro de importes cobrados indebidamente') y lo abrió íntegro (paso 3). El juez aprobó los tres claims centrales de plazo (10 días hábiles tras el reclamo; 5 días hábiles tras constatación por el sujeto obligado o por la fiscalización de la SEFYC), todos tomados verbatim de ese nodo. El ÚNICO claim marcado 'no_soportado' es el [no central]: 'La obligación de reintegro aplica a importes cobrados o adeudados por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.' Ese claim es una paráfrasis LITERAL del contenido del nodo consultado — de hecho el resumen del paso 1 ya lo exponía verbatim ('Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…'). Por precedencia (C1b): el dato pertinente apareció → no es context_recall; el claim está soportado por un nodo consultado (contenido íntegro en paso 3 y resumen en pasos 1 y 3) → no es faithfulness; queda noise_sensitivity (¿es correcto contra el PDF?). En el PDF (Punto 2.3.2.2 'No admitidos', principio general) el TO efectivamente regula el cobro de comisiones/cargos sin cumplimiento de las condiciones y prohíbe cobrarlos; el mismo texto normativo que sustenta los plazos que el juez aprobó proviene de esta materia de la Sección 2. El claim es fiel al nodo y coherente con el PDF, y además el nodo ES pertinente a la pata (describe la obligación de reintegro por la que se pregunta). Aplicando el test v2.2: si el agente hubiera usado solo ese nodo, la pata quedaba correctamente respondida (de hecho así fue, y los claims centrales fueron aprobados). Por tanto el claim marcado incorrecto es en realidad correcto y soportado: falso positivo del juez. Descarté activamente cada defecto: contenido_kg (el nodo no contradice el PDF; los plazos del mismo nodo fueron validados por el GT), completitud_kg (el dato está en el nodo, no falta), estructural_kg/alcanzabilidad_kg (el nodo fue alcanzado en la primera búsqueda con términos de la pregunta), provenance_imprecisa (aunque el ancla literal 'Punto 2.3 parte 4' no resolvió al pasaje exacto del reintegro, esto no afectó este claim: el contenido fiel estaba en el nodo y fue usado; no es lo que rompe la respuesta), navegación/alucinacion_agente/aplicacion_erronea (el agente encontró y usó el nodo correcto y el claim es paráfrasis fiel, sin glosa ni des-scoping). Veredicto: {noise_sensitivity, sin_defecto}, jerarquía sin_par — falso positivo del juez; el sistema KG-RAG no presenta defecto que explique la reprobación.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"properties\": {\"descripcion\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"tipo\": \"otra\", \"plazo\": \"10 días hábiles o 5 días hábiles según corresponda\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 29)\", \"pasaje\": \"2.3. Del Banco Central de la República Argentina. \\nE\\nn la sede en la cual desempeñe sus funciones el responsable de atención al usuario \\nde servicios financieros (titular o suplente a cargo) deberán encontrarse a disposición \\ndel BCRA: \\n3.\\n2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos así como la doc u-\\nmentación respaldatoria de los trámites a que dieron lugar. \\n3.\\n2.3.2. El manual de procedimiento respectivo. \\n3.\\n2.3.3. Los reportes integrales escritos anuales de la auditoría interna del sujeto obl i-\\ngado. \\n3.\\n2.3.4. Los reportes elaborados por el responsable de atención al usuario de servicios \\nfinancieros de conformidad con el punto 3.1.1.8., con la respectiva evaluación \\ndel Directorio –o autoridad equivalente–, o del Directivo Responsable de Pr o-\\ntección de los Usuarios de Servicios Financieros o del Comité de Protección de \\nlos Usuarios de Servicios Financieros, según corresponda, del sujeto … [+420 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "reintegro importe cobrado indebidamente tasas interes comisiones cargos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"reintegro importe cobrado indebidamente tasas interes comisiones cargos\", \"total_con_match\": 93, \"resultados\": [{\"id\": \"Obligacion_los_incrementos_en_las_tasas_de_interes_comisiones_y_o_cargos_deben_ser_justific\", \"type\": \"Obligacion\", \"label\": \"Justificar incrementos de tasas e intereses\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los incrementos en las tasas de interés, comisiones y/o cargos deben ser justificados desde el punto de vista técnico y económico.\"}, {\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…\"}, {\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de l… [+1791 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.4 (PDF pág 13)\", \"pasaje\": \"2.3.4. Cambios de condiciones pactadas.\\nA fin de modificar las condiciones pactadas debe darse la totalidad de las siguie ntes\\ncondiciones:\\ni) En el contrato deberán encontrarse taxativamente especificadas las condiciones\\nque pueden ser objeto de modificación, así como los parámetros o criterios objeti-\\nvos para su concreción, ajustándose a lo señalado en el punto 2.3.2.\\nLos incrementos en las tasas de interés, comisiones y/o cargos, además, deben ser\\njustificados desde el punto de vista técnico y económico, en el marco de lo dispues-\\nto en el punto 2.3.2.1.\\nii) La modificación no debe alterar el objeto del contrato ni importar un des medro res-\\npecto de los productos o servicios contratados.\\niii) Consentimiento.\\nEn el caso de que el sujeto obligado pretenda incorporar nuevos conceptos en cali-\\ndad de comisiones y/o cargos que no hubiesen sido previstos en el contrato o re-\\nducir prestaciones co ntempladas en él, deberá previamente obtener el consenti-\\nmiento expreso del… [+239 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2 (PDF pág 11)\", \"pasaje\": \"2.3.2. Comisiones y cargos.\\n2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrio… [+424 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"properties\": {\"descripcion\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.3 (PDF pág 13)\", \"pasaje\": \"2.3.3. Exposición de las tasas de interés y del costo financiero total (CFT) en los documentos.\\nPara las operaciones de financiación debe aplicarse lo dispuesto en el punto 3.2. de l\\nTO sobre Tasas de Interés en las Operaciones de Crédito.\\nLa falta de inclusión en los documentos de la tasa de interés y/o del costo financiero to-\\ntal determinará que el sujeto obligado podrá aplicar al usuario, como máximo CFT, la\\ntasa promedio que surja de la encuesta de tasas de interés de depósitos a plazo fijo de\\n30 a 59 días –de pesos o dólares estadounidenses, según la moneda de la operación –\\ninformada por el BCRA a la fecha de celebración del contrato –o, en caso de que no es-\\ntuviera disponible, la últi ma informada– sobre la base de la información provista por la\\ntotalidad de bancos públicos y privados.\\nPara el cálculo del costo financiero total se tomará en cuenta la tasa de interés, las co-\\nmisiones y cargos vigentes al momento de la contratación, indic ando expresamente si\\nesos c… [+421 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.1 (PDF pág 11)\", \"pasaje\": \"2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrios no podrá ser superior a… [+411 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p. 12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"En las operaciones de crédito, los sujetos obl igados podrán aplicar comisiones\\nsobre los importes no utilizados de los acuerdos de asignación de fondos, dado\\nque su puesta a disposición a los usuarios configura la prestación del servicio.\\nLa precancelación total o parcial de financiaciones podrá dar lugar a la aplica-\\nción de comisiones. En el caso de precancelación total, no se admitirá la apli-\\ncación de comisiones cuando al momento de efectuarla haya transcurrido al\\nmenos la cuarta parte del plazo original de la financiación o 180 días corridos\\ndesde su otorgamiento, de ambos el mayor.\\nAdemás, será de aplicación lo previsto en el punto 1.7. de l TO sobre Tasas de\\nInterés en las Operaciones de Crédito.\\n2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en … [+1764 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p. 13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"d) Generación de resúmenes de cuenta y envío de resúmenes de cuenta\\nvirtual (esos servicios deben estar incluidos en la comisión por manteni-\\nmiento de cuenta).\\ne) Evaluación, otorgamiento y/o administración de financiaciones.\\nf) Gastos de tasación, notariales o de escribanía que se originen en ocasión\\ndel otorgamiento o cancelación de financiaciones –tales como de\\nconstitución de prenda o hipoteca–.\\n2.3.3. Exposición de las tasas de interés y del costo financiero total (CFT) en los documentos.\\nPara las operaciones de financiación debe aplicarse lo dispuesto en el punto 3.2. de l\\nTO sobre Tasas de Interés en las Operaciones de Crédito.\\nLa falta de inclusión en los documentos de la tasa de interés y/o del costo financiero to-\\ntal determinará que el sujeto obligado podrá aplicar al usuario, como máximo CFT, la\\ntasa promedio que surja de la encuesta de tasas de interés de depósitos a plazo fijo de\\n30 a 59 días –de pesos o dólares estadounidenses, según la moneda de la operación –\\ninfo… [+1748 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.2 (PDF pág 12)\", \"pasaje\": \"2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en otros conceptos cobrados por el sujeto obligado.\\nEn ningún caso podrán aplic arse comisiones y/o cargos al usuario por servi-\\ncios financieros que no hayan sido solicitados, pactados y/o autorizados por\\nél y, aun cuando habiendo sido solicitados, pactados y/o autorizados por éste\\ne informados por el sujeto obligado al usuario, no se hayan prestado de ma-\\nnera efectiva.\\nii) Casos particulares.\\nNo podrán aplicarse comisiones ni cargos por los siguientes conceptos:\\na) Operaciones efectuadas por ventanilla por los usuarios de servicios fi-\\nnancieros que sean personas humanas.\\nEsta limitación también alcanza, en las casas operativas distintas a aque-\\nlla en la cual esté abierta la cuenta, a los m… [+428 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "reintegrado diez días hábiles presentación reclamo fiscalización SEFYC",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"reintegrado diez días hábiles presentación reclamo fiscalización SEFYC\", \"total_con_match\": 104, \"resultados\": [{\"id\": \"Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo de respuesta a reclamo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta …\"}, {\"id\": \"Obligacion_la_entidad_dispondra_de_30_dias_corridos_contados_desde_la_notificacion_para_for\", \"type\": \"Obligacion\", \"label\": \"Formular descargo ante SEFyC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad dispondrá de 30 días corridos contados desde la notificación para formular su descargo ante la SEFyC\"}, {\"id\": \"Obligacion_los_cobros_de_exportaciones_deberan_ser_ingresados_y_liquidados_en_el_mercado_de\", \"type\": \"Obligacion\", \"label\": \"Ingreso dentro de 20 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los cobros de exportaciones deberán ser ingresados y liquidados en el mercado de cambios dentro de los 20 días hábiles de la fecha de cobro, … [+784 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.2 iii"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.2 iii\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.2 (PDF pág 12)\", \"pasaje\": \"2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en otros conceptos cobrados por el sujeto obligado.\\nEn ningún caso podrán aplic arse comisiones y/o cargos al usuario por servi-\\ncios financieros que no hayan sido solicitados, pactados y/o autorizados por\\nél y, aun cuando habiendo sido solicitados, pactados y/o autorizados por éste\\ne informados por el sujeto obligado al usuario, no se hayan prestado de ma-\\nnera efectiva.\\nii) Casos particulares.\\nNo podrán aplicarse comisiones ni cargos por los siguientes conceptos:\\na) Operaciones efectuadas por ventanilla por los usuarios de servicios fi-\\nnancieros que sean personas humanas.\\nEsta limitación también alcanza, en las casas operativas distintas a aque-\\nlla en la cual esté abierta la cuenta, a l… [+432 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2 (PDF pág 5)\", \"pasaje\": \"2. Personas con dificultades visuales.\\nLos caj\\neros automáticos destinados a los usuarios de s ervicios financieros con dificu l-\\ntades visuales deberán co ntar con “software” reproductor de tex to-a-voz, auriculares\\ncon su respectivo conector estándar, teclado con sistema Braille o estándar con relieve\\nresaltado y mecanismo audible y perceptible destinado a alertar el olvido de la tarjeta\\ny/o del dinero dispensado por el equipo.\\nLos suj\\netos obligados enumerados en el punto 1.1.2., en la medida en que correspon-\\nda, deberán alcanzar la cobertura del servicio con esos cajeros automáticos en al me-\\nnos el 10 % del total de los equipos instalados, comenzando con aquellos emplazados\\nen las localidades de mayor población, sin perjuicio de las mayores obligaciones a fa-\\nvor de tales personas que pueda imponer la normativa local.\\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS\\nSección 2. Derechos básicos de los usuarios de servicios financieros.\\nVersión: 5a. COMUNICACIÓN… [+44 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"total_con_match\": 109, \"resultados\": [{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…\"}, {\"id\": \"Operacion_registro_contable\", \"type\": \"Operacion\", \"label\": \"Registro de importes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Restriccion_el_importe_de_esta_rpc_que_sera_admisible_como_pnc_excluye_los_importes_reconoci\", \"type\": \"Restriccion\", \"label\": \"Exclusión de RPC en PNc\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El importe de esta RPC que será admisible como PNc excluye los importes reconocidos en el CO conforme a lo establecido en el punto 8.3.5.1. y lo… [+2445 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 18681,
+      "output_tokens": 319
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20211,
+      "output_tokens": 341
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22651,
+      "output_tokens": 375
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24084,
+      "output_tokens": 205
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24977,
+      "output_tokens": 331
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27408,
+      "output_tokens": 153
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28830,
+      "output_tokens": 310
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29862,
+      "output_tokens": 468
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32029,
+      "output_tokens": 597
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33194,
+      "output_tokens": 809
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 35678,
+      "output_tokens": 3210
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 20,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"limite\": 10}",
+      "devolvio": "Devuelve como primer resultado el nodo portador 'Obligacion_todo_importe_cobrado_o_adeudado...' con resumen que ya incluye 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto...'",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"sujeto obligado reintegro usuario servicios financieros\", \"limite\": 10}",
+      "devolvio": "Nodos de atención al usuario, constancias, notificaciones; no aporta el dato del plazo pero es exploración razonable",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"}",
+      "devolvio": "Descripción íntegra: reintegro dentro de 10 días hábiles desde presentación del reclamo, o 5 días hábiles desde constatarse por el sujeto obligado o por la fiscalización de la SEFYC; aplica a tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto. Provenance: Punto 2.3. (parte 4)",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó, encontró en el paso 1 el nodo portador correcto, lo abrió en el paso 3 y reprodujo fielmente su contenido en la respuesta final, incluyendo tanto los plazos (que el juez aprobó) como el alcance por conceptos (que el juez reprobó). La afirmación reprobada reproduce literalmente la descripción del nodo y coincide con el PDF (Punto 2.3.5.1.i). No hubo decisión errónea del agente.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Plazo/alcance del reintegro de importes cobrados indebidamente",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC",
+       "ubicacion": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (paso 3, abierto por el agente)"
+      },
+      "fuente": {
+       "quote": "2.3.5. Reintegro de importes. 2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios financieros por los siguientes conceptos: i) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.; (…) deberá serle reintegrado dentro de: - los diez (10) días hábiles sig",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.5"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "tasas de interes comisiones cargos sin cumplimiento reintegrado",
+       "resultado": "Confirma la existencia del nodo portador y de la Restriccion vinculada; el resumen coincide con el texto del PDF"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3.5",
+       "resultado": "El PDF confirma verbatim que el reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.' — la afirmación reprobada es fácticamente correcta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Plazo/alcance del reintegro de importes cobrados indebidamente",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "TO_proteccion_usuarios_servicios_financieros_actual.pdf :: Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)",
+       "ubicacion": "respuesta final (citas)"
+      },
+      "nodo": {
+       "quote": "\"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]",
+       "ubicacion": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (paso 3)"
+      },
+      "fuente": {
+       "quote": "2.3. Del Banco Central de la República Argentina. En la sede en la cual desempeñe sus funciones el responsable de atención al usuario de servicios financieros (…) deberán encontrarse a disposición del BCRA: 2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos (…)",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3 (parte 4)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3. (parte 4)",
+       "resultado": "El pasaje citado por la provenance del nodo trata de documentación a disposición del BCRA, NO del reintegro de importes"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3.5",
+       "resultado": "El contenido real del reintegro está en el Punto 2.3.5 (pág 15), no en la ubicación citada por el nodo"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El síntoma reprobado por el juez es una única afirmación 'no central' sobre el ALCANCE del reintegro (a qué conceptos aplica). C1a — pata: el dato pertinente (nodo de reintegro) apareció en la trayectoria (paso 1 en el resumen, paso 3 abierto íntegro), por lo que no es context_recall. C1b — el claim está SOPORTADO por el nodo consultado (su descripción dice literalmente 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto'), por lo que no es faithfulness; el síntoma es noise_sensitivity (soportado por nodo consultado, cuestión de si es correcto). C2 — ¿el nodo es fiel al PDF? El Punto 2.3.5.1.i del PDF confirma verbatim que el reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.'. La afirmación del agente es por tanto fáctica correcta y fielmente soportada, y el nodo es pertinente a la pata (test v2.2: usándolo solo, la pata queda respondida). Descarté activamente cada defecto: context_recall (dato apareció), faithfulness (soporte literal en nodo), contenido_kg (nodo fiel al PDF), alucinacion_agente ('por conceptos como' reproduce el nodo, sin glosa). Conclusión: falso positivo del juez → sin_defecto (sin_par), sin primaria. Como defecto real pero sin efecto sobre la reprobación, detecté una provenance imprecisa: el nodo (y por ende la cita del agente) apunta al 'Punto 2.3. (parte 4)', que en el PDF trata de documentación a disposición del BCRA, cuando el contenido de reintegro está en el Punto 2.3.5. Se emite como provenance_imprecisa secundaria (no rompe la respuesta, que resultó correcta en las tres patas de plazo aprobadas y en el alcance reprobado).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 8,
+    "max_tool_calls": 40,
+    "tokens_in": 137004,
+    "tokens_out": 5740
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 8,
+    "tokens_in": 137004,
+    "tokens_out": 5740,
+    "latency_s": 71.846,
+    "error": null,
+    "final_raw": "Tengo toda la evidencia. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"reintegrar importes cobrados indebidamente plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve como primer resultado el nodo portador 'Obligacion_todo_importe_cobrado_o_adeudado...' con resumen que ya incluye 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto...'\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"sujeto obligado reintegro usuario servicios financieros\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de atención al usuario, constancias, notificaciones; no aporta el dato del plazo pero es exploración razonable\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\\\"}\", \"devolvio\": \"Descripción íntegra: reintegro dentro de 10 días hábiles desde presentación del reclamo, o 5 días hábiles desde constatarse por el sujeto obligado o por la fiscalización de la SEFYC; aplica a tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto. Provenance: Punto 2.3. (parte 4)\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó, encontró en el paso 1 el nodo portador correcto, lo abrió en el paso 3 y reprodujo fielmente su contenido en la respuesta final, incluyendo tanto los plazos (que el juez aprobó) como el alcance por conceptos (que el juez reprobó). La afirmación reprobada reproduce literalmente la descripción del nodo y coincide con el PDF (Punto 2.3.5.1.i). No hubo decisión errónea del agente.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Plazo/alcance del reintegro de importes cobrados indebidamente\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"ubicacion\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (paso 3, abierto por el agente)\"},\n        \"fuente\": {\"quote\": \"2.3.5. Reintegro de importes. 2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios financieros por los siguientes conceptos: i) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.; (…) deberá serle reintegrado dentro de: - los diez (10) días hábiles sig\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.5\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"tasas de interes comisiones cargos sin cumplimiento reintegrado\", \"resultado\": \"Confirma la existencia del nodo portador y de la Restriccion vinculada; el resumen coincide con el texto del PDF\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3.5\", \"resultado\": \"El PDF confirma verbatim que el reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.' — la afirmación reprobada es fácticamente correcta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Plazo/alcance del reintegro de importes cobrados indebidamente\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf :: Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\", \"ubicacion\": \"respuesta final (citas)\"},\n        \"nodo\": {\"quote\": \"\\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_proteccion_usuarios_servicios_financieros_actual.pdf\\\", \\\"location\\\": \\\"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\\\"}]\", \"ubicacion\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (paso 3)\"},\n        \"fuente\": {\"quote\": \"2.3. Del Banco Central de la República Argentina. En la sede en la cual desempeñe sus funciones el responsable de atención al usuario de servicios financieros (…) deberán encontrarse a disposición del BCRA: 2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos (…)\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3 (parte 4)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3. (parte 4)\", \"resultado\": \"El pasaje citado por la provenance del nodo trata de documentación a disposición del BCRA, NO del reintegro de importes\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3.5\", \"resultado\": \"El contenido real del reintegro está en el Punto 2.3.5 (pág 15), no en la ubicación citada por el nodo\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma reprobado por el juez es una única afirmación 'no central' sobre el ALCANCE del reintegro (a qué conceptos aplica). C1a — pata: el dato pertinente (nodo de reintegro) apareció en la trayectoria (paso 1 en el resumen, paso 3 abierto íntegro), por lo que no es context_recall. C1b — el claim está SOPORTADO por el nodo consultado (su descripción dice literalmente 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto'), por lo que no es faithfulness; el síntoma es noise_sensitivity (soportado por nodo consultado, cuestión de si es correcto). C2 — ¿el nodo es fiel al PDF? El Punto 2.3.5.1.i del PDF confirma verbatim que el reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.'. La afirmación del agente es por tanto fáctica correcta y fielmente soportada, y el nodo es pertinente a la pata (test v2.2: usándolo solo, la pata queda respondida). Descarté activamente cada defecto: context_recall (dato apareció), faithfulness (soporte literal en nodo), contenido_kg (nodo fiel al PDF), alucinacion_agente ('por conceptos como' reproduce el nodo, sin glosa). Conclusión: falso positivo del juez → sin_defecto (sin_par), sin primaria. Como defecto real pero sin efecto sobre la reprobación, detecté una provenance imprecisa: el nodo (y por ende la cita del agente) apunta al 'Punto 2.3. (parte 4)', que en el PDF trata de documentación a disposición del BCRA, cuando el contenido de reintegro está en el Punto 2.3.5. Se emite como provenance_imprecisa secundaria (no rompe la respuesta, que resultó correcta en las tres patas de plazo aprobadas y en el alcance reprobado).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"properties\": {\"descripcion\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"tipo\": \"otra\", \"plazo\": \"10 días hábiles o 5 días hábiles según corresponda\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 29)\", \"pasaje\": \"2.3. Del Banco Central de la República Argentina. \\nE\\nn la sede en la cual desempeñe sus funciones el responsable de atención al usuario \\nde servicios financieros (titular o suplente a cargo) deberán encontrarse a disposición \\ndel BCRA: \\n3.\\n2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos así como la doc u-\\nmentación respaldatoria de los trámites a que dieron lugar. \\n3.\\n2.3.2. El manual de procedimiento respectivo. \\n3.\\n2.3.3. Los reportes integrales escritos anuales de la auditoría interna del sujeto obl i-\\ngado. \\n3.\\n2.3.4. Los reportes elaborados por el responsable de atención al usuario de servicios \\nfinancieros de conformidad con el punto 3.1.1.8., con la respectiva evaluación \\ndel Directorio –o autoridad equivalente–, o del Directivo Responsable de Pr o-\\ntección de los Usuarios de Servicios Financieros o del Comité de Protección de \\nlos Usuarios de Servicios Financieros, según corresponda, del sujeto … [+420 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.4 (PDF pág 13)\", \"pasaje\": \"2.3.4. Cambios de condiciones pactadas.\\nA fin de modificar las condiciones pactadas debe darse la totalidad de las siguie ntes\\ncondiciones:\\ni) En el contrato deberán encontrarse taxativamente especificadas las condiciones\\nque pueden ser objeto de modificación, así como los parámetros o criterios objeti-\\nvos para su concreción, ajustándose a lo señalado en el punto 2.3.2.\\nLos incrementos en las tasas de interés, comisiones y/o cargos, además, deben ser\\njustificados desde el punto de vista técnico y económico, en el marco de lo dispues-\\nto en el punto 2.3.2.1.\\nii) La modificación no debe alterar el objeto del contrato ni importar un des medro res-\\npecto de los productos o servicios contratados.\\niii) Consentimiento.\\nEn el caso de que el sujeto obligado pretenda incorporar nuevos conceptos en cali-\\ndad de comisiones y/o cargos que no hubiesen sido previstos en el contrato o re-\\nducir prestaciones co ntempladas en él, deberá previamente obtener el consenti-\\nmiento expreso del… [+239 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tasas de interes comisiones cargos sin cumplimiento reintegrado",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"tasas de interes comisiones cargos sin cumplimiento reintegrado\", \"total_con_match\": 2441, \"resultados\": [{\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"tokens_matcheados\": 7, \"resumen_propiedades\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.\"}, {\"id\": \"Obligacion_los_incrementos_en_las_tasas_de_interes_comisiones_y_o_cargos_deben_ser_justific\", \"type\": \"Obligacion\", \"label\": \"Justificar incrementos de tasas e intereses\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Los incrementos en las tasas de interés, comisiones y/o cargos deben ser justificados desde el punto de vista técnico y económico.\"}, {\"id\": \"Operacion_cobro_de_tasas_de_interes\", \"type\": \"Operacion\", \"label\": \"Cobro de tasas de interés\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cobro de tasas de interés\"}, {\"id\": \"Operacion_cobro_de_comisiones_y_cargos\", \"type\": \"Operacion\", \"label\": \"Cobro de comisiones y cargos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cob… [+248 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"properties\": {\"descripcion\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.5 (PDF pág 15)\", \"pasaje\": \"2.3.5. Reintegro de importes.\\n2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios fi-\\nnancieros por los siguientes conceptos:\\ni) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto\\nen los puntos 2.3.2. a 2.3.4.;\\nii) cargos en exceso de los costos de los servicios que terceros les cobraron a\\nlos sujetos obligados en relación con servicios prestados a los usuarios y/o\\nde los precios que el tercero prestador perciba de particulares en general;\\niii) comisiones en exceso de las máximas fijadas por el BCRA que sean de\\naplicación;\\niv) en incumplimiento al nivel de la tasa de interés máxima aplicable a finan-\\nciaciones vinculadas a tarjetas de crédito previstas en el texto ordenado\\nsobre Tasas de Interés en las Operaciones de Crédito;\\nv) en exceso de lo oportunamente pactado entre el usuario y el sujeto obliga-\\ndo;\\nvi) otros generados en forma impropia por su naturaleza, tales como intereses\\ncompensatorios por saldos deudor… [+425 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"total_con_match\": 109, \"resultados\": [{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá…\"}, {\"id\": \"Operacion_registro_contable\", \"type\": \"Operacion\", \"label\": \"Registro de importes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Restriccion_el_importe_de_esta_rpc_que_sera_admisible_como_pnc_excluye_los_importes_reconoci\", \"type\": \"Restriccion\", \"label\": \"Exclusión de RPC en PNc\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El importe de esta RPC que será admisible como PNc excluye los importes reconocidos en el CO conforme a lo establecido en el punto 8.3.5.1. y lo… [+2445 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"}, \"output_completo\": {\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"properties\": {\"descripcion\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"tipo\": \"otra\", \"plazo\": \"10 días hábiles o 5 días hábiles según corresponda\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 18681,
+      "output_tokens": 310
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20202,
+      "output_tokens": 309
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21920,
+      "output_tokens": 370
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23339,
+      "output_tokens": 916
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25930,
+      "output_tokens": 519
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 26932,
+      "output_tokens": 3316
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 20,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-006",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"reintegrar importes cobrados indebidamente plazo\", \"limite\": 10}",
+      "devolvio": "109 matches; primer resultado el nodo Obligacion 'Reintegro de importes cobrados indebidamente' con resumen del contenido de reintegro; resto ruido (registro contable, RPC, plazos cambiarios).",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"sujeto obligado reintegro usuario servicios financieros\", \"limite\": 10}",
+      "devolvio": "177 matches; nodos sobre constancia de reclamo, notificación de cambios, atención al usuario; no aporta el nodo de plazo directamente.",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"}",
+      "devolvio": "Contenido íntegro: 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles... o los cinco (5) días hábiles... por el sujeto obligado o por la fiscalización de la SEFYC'. Provenance: Punto 2.3 (parte 4).",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente localizó en el paso 1 el nodo portador de la respuesta y en el paso 3 lo abrió íntegro, reproduciendo su contenido fielmente en la respuesta final. Las tres patas centrales del plazo (10 días hábiles desde el reclamo; 5 días hábiles desde constatación por el sujeto obligado o por la SEFYC) fueron aprobadas por el juez y coinciden con el nodo y con el PDF (Punto 2.3.5.1). La afirmación no central marcada 'no_soportado' es una reproducción casi literal del nodo consultado y es fiel al PDF (concepto i de la lista de 2.3.5.1). El agente actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Plazo/alcance del reintegro (afirmación no central sobre conceptos)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC",
+       "ubicacion": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "2.3.5. Reintegro de importes. 2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios financieros por los siguientes conceptos: i) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.; ii) ... deberá serle reintegrado dentro de: - los diez (10) días hábiles sig",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.5"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "tasas de interés comisiones cargos sin cumplimiento reintegro",
+       "resultado": "Devuelve la Restriccion 'No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.' y el propio nodo de reintegro; confirma que el concepto (i) del PDF es exactamente lo que reproduce la afirmación."
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3.5",
+       "resultado": "El PDF confirma que la obligación de reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto' (concepto i) entre otros; la afirmación del agente, con 'como', es ejemplificación correcta y fiel."
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Plazo/alcance del reintegro",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "TO_proteccion_usuarios_servicios_financieros_actual.pdf :: Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)",
+       "ubicacion": "respuesta final (citas)"
+      },
+      "nodo": {
+       "quote": "\"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]",
+       "ubicacion": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como"
+      },
+      "fuente": {
+       "quote": "2.3. Del Banco Central de la República Argentina. En la sede en la cual desempeñe sus funciones el responsable de atención al usuario de servicios financieros ... deberán encontrarse a disposición del BCRA: 2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos ...",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3 parte 4 (pág 29)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3 parte 4",
+       "resultado": "El pasaje citado por el nodo (Punto 2.3 parte 4) trata sobre documentación a disposición del BCRA, NO sobre reintegro de importes; el contenido real del reintegro está en el Punto 2.3.5.1. La location del nodo no funda su contenido."
+      }
+     ]
+    }
+   ],
+   "razonamiento": "Partí del síntoma: el juez marcó 'no_soportado' la única afirmación no central sobre los conceptos a los que aplica el reintegro. C1a — la pata (plazo) SÍ apareció el dato pertinente: el agente encontró (paso 1) y abrió (paso 3) el nodo portador con el plazo completo, y el juez aprobó las tres afirmaciones centrales del plazo. C1b — sobre la afirmación marcada: está SOPORTADA por el nodo consultado en el paso 3 (reproducción casi literal de su descripción), por lo que NO es faithfulness; pasa a noise_sensitivity (soportada, evaluar contra PDF). Verifiqué el PDF: el Punto 2.3.5.1 lista siete conceptos, siendo el (i) exactamente 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.'. La afirmación del agente ('por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto') es una ejemplificación fiel del concepto (i) — no afirma nada falso ni contradice el PDF; el 'como' señala que es enunciativa. Descarté cada defecto: (contenido_kg) el nodo no contradice el PDF, sólo resume; (alucinacion_agente) no hay glosa, es reproducción del nodo; (completitud/estructural/alcanzabilidad/navegación) no aplican porque el dato apareció y se usó. Concluyo que la afirmación es correcta y soportada → falso positivo del juez, sin_defecto (sin_par). Como defecto real presente pero que NO rompió la respuesta (las patas centrales del plazo fueron aprobadas), documento como SECUNDARIA la provenance_imprecisa: la location del nodo ('Punto 2.3 parte 4') apunta a un pasaje sobre documentación a disposición del BCRA, mientras que el contenido real del reintegro está en el Punto 2.3.5.1 — la cita no funda el contenido del nodo. Esta imperfección no explica la reprobación del juez, por eso es secundaria y el caso no tiene primaria (FP del juez).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 7,
+    "max_tool_calls": 40,
+    "tokens_in": 135283,
+    "tokens_out": 6328
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 7,
+    "tokens_in": 135283,
+    "tokens_out": 6328,
+    "latency_s": 83.1,
+    "error": null,
+    "final_raw": "{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"reintegrar importes cobrados indebidamente plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"109 matches; primer resultado el nodo Obligacion 'Reintegro de importes cobrados indebidamente' con resumen del contenido de reintegro; resto ruido (registro contable, RPC, plazos cambiarios).\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"sujeto obligado reintegro usuario servicios financieros\\\", \\\"limite\\\": 10}\", \"devolvio\": \"177 matches; nodos sobre constancia de reclamo, notificación de cambios, atención al usuario; no aporta el nodo de plazo directamente.\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\\\"}\", \"devolvio\": \"Contenido íntegro: 'Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles... o los cinco (5) días hábiles... por el sujeto obligado o por la fiscalización de la SEFYC'. Provenance: Punto 2.3 (parte 4).\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó en el paso 1 el nodo portador de la respuesta y en el paso 3 lo abrió íntegro, reproduciendo su contenido fielmente en la respuesta final. Las tres patas centrales del plazo (10 días hábiles desde el reclamo; 5 días hábiles desde constatación por el sujeto obligado o por la SEFYC) fueron aprobadas por el juez y coinciden con el nodo y con el PDF (Punto 2.3.5.1). La afirmación no central marcada 'no_soportado' es una reproducción casi literal del nodo consultado y es fiel al PDF (concepto i de la lista de 2.3.5.1). El agente actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que el sujeto obligado debe reintegrar al usuario de servicios financieros los importes cobrados indebidamente\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Plazo/alcance del reintegro (afirmación no central sobre conceptos)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Esta obligación aplica a importes cobrados o adeudados de cualquier forma por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"ubicacion\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"2.3.5. Reintegro de importes. 2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios financieros por los siguientes conceptos: i) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.; ii) ... deberá serle reintegrado dentro de: - los diez (10) días hábiles sig\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.5\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"tasas de interés comisiones cargos sin cumplimiento reintegro\", \"resultado\": \"Devuelve la Restriccion 'No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.' y el propio nodo de reintegro; confirma que el concepto (i) del PDF es exactamente lo que reproduce la afirmación.\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3.5\", \"resultado\": \"El PDF confirma que la obligación de reintegro aplica a 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto' (concepto i) entre otros; la afirmación del agente, con 'como', es ejemplificación correcta y fiel.\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Plazo/alcance del reintegro\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf :: Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\", \"ubicacion\": \"respuesta final (citas)\"},\n        \"nodo\": {\"quote\": \"\\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_proteccion_usuarios_servicios_financieros_actual.pdf\\\", \\\"location\\\": \\\"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\\\"}]\", \"ubicacion\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"},\n        \"fuente\": {\"quote\": \"2.3. Del Banco Central de la República Argentina. En la sede en la cual desempeñe sus funciones el responsable de atención al usuario de servicios financieros ... deberán encontrarse a disposición del BCRA: 2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos ...\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3 parte 4 (pág 29)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3 parte 4\", \"resultado\": \"El pasaje citado por el nodo (Punto 2.3 parte 4) trata sobre documentación a disposición del BCRA, NO sobre reintegro de importes; el contenido real del reintegro está en el Punto 2.3.5.1. La location del nodo no funda su contenido.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Partí del síntoma: el juez marcó 'no_soportado' la única afirmación no central sobre los conceptos a los que aplica el reintegro. C1a — la pata (plazo) SÍ apareció el dato pertinente: el agente encontró (paso 1) y abrió (paso 3) el nodo portador con el plazo completo, y el juez aprobó las tres afirmaciones centrales del plazo. C1b — sobre la afirmación marcada: está SOPORTADA por el nodo consultado en el paso 3 (reproducción casi literal de su descripción), por lo que NO es faithfulness; pasa a noise_sensitivity (soportada, evaluar contra PDF). Verifiqué el PDF: el Punto 2.3.5.1 lista siete conceptos, siendo el (i) exactamente 'tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.'. La afirmación del agente ('por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto') es una ejemplificación fiel del concepto (i) — no afirma nada falso ni contradice el PDF; el 'como' señala que es enunciativa. Descarté cada defecto: (contenido_kg) el nodo no contradice el PDF, sólo resume; (alucinacion_agente) no hay glosa, es reproducción del nodo; (completitud/estructural/alcanzabilidad/navegación) no aplican porque el dato apareció y se usó. Concluyo que la afirmación es correcta y soportada → falso positivo del juez, sin_defecto (sin_par). Como defecto real presente pero que NO rompió la respuesta (las patas centrales del plazo fueron aprobadas), documento como SECUNDARIA la provenance_imprecisa: la location del nodo ('Punto 2.3 parte 4') apunta a un pasaje sobre documentación a disposición del BCRA, mientras que el contenido real del reintegro está en el Punto 2.3.5.1 — la cita no funda el contenido del nodo. Esta imperfección no explica la reprobación del juez, por eso es secundaria y el caso no tiene primaria (FP del juez).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 29)\", \"pasaje\": \"2.3. Del Banco Central de la República Argentina. \\nE\\nn la sede en la cual desempeñe sus funciones el responsable de atención al usuario \\nde servicios financieros (titular o suplente a cargo) deberán encontrarse a disposición \\ndel BCRA: \\n3.\\n2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos así como la doc u-\\nmentación respaldatoria de los trámites a que dieron lugar. \\n3.\\n2.3.2. El manual de procedimiento respectivo. \\n3.\\n2.3.3. Los reportes integrales escritos anuales de la auditoría interna del sujeto obl i-\\ngado. \\n3.\\n2.3.4. Los reportes elaborados por el responsable de atención al usuario de servicios \\nfinancieros de conformidad con el punto 3.1.1.8., con la respectiva evaluación \\ndel Directorio –o autoridad equivalente–, o del Directivo Responsable de Pr o-\\ntección de los Usuarios de Servicios Financieros o del Comité de Protección de \\nlos Usuarios de Servicios Financieros, según corresponda, del sujeto … [+420 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.1 (PDF pág 7)\", \"pasaje\": \"2.3.1. Al momento de la contratación del producto o servicio.\\nLas entidades financieras, ante requerimientos de apertura de cuent as a la vista por\\nparte de los usuarios de servicios financieros, deberán ofrecer la “Caja de ahorros” en\\npesos con las prestaciones previstas en el punto 1.8. de las normas sobre “Depósitos\\nde ahorro, cuenta sueldo y especiales” y conservar constancia del ofrecimiento expreso.\\n2.3.1.1. Requisitos mínimos de los contratos financieros.\\nLos contratos deben ser de clara redacción y con tamaño de tipografía mínimo\\nde 1,8 milímetros de altura.\\nLos ejemplares del contrato deben suscribirse a un solo efecto y e n el acto de\\nla contratació n debe entregarse uno al usuario de servicios financieros debi-\\ndamente suscripto por el sujeto obligado.\\nCuando se trate de solicitudes de productos o servicios que serán sometidas a\\nla aprobación posterior del sujeto obligado, d eberá entregarse al usuario d e\\nservicios financieros un ejemplar de la totalidad de los … [+419 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tasas de interés comisiones cargos sin cumplimiento reintegro",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"tasas de interés comisiones cargos sin cumplimiento reintegro\", \"total_con_match\": 2443, \"resultados\": [{\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"tokens_matcheados\": 7, \"resumen_propiedades\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.\"}, {\"id\": \"Obligacion_los_incrementos_en_las_tasas_de_interes_comisiones_y_o_cargos_deben_ser_justific\", \"type\": \"Obligacion\", \"label\": \"Justificar incrementos de tasas e intereses\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Los incrementos en las tasas de interés, comisiones y/o cargos deben ser justificados desde el punto de vista técnico y económico.\"}, {\"id\": \"Operacion_cobro_de_tasas_de_interes\", \"type\": \"Operacion\", \"label\": \"Cobro de tasas de interés\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cobro de tasas de interés\"}, {\"id\": \"Operacion_cobro_de_comisiones_y_cargos\", \"type\": \"Operacion\", \"label\": \"Cobro de comisiones y cargos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cobro… [+1653 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.5 (PDF pág 15)\", \"pasaje\": \"2.3.5. Reintegro de importes.\\n2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios fi-\\nnancieros por los siguientes conceptos:\\ni) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto\\nen los puntos 2.3.2. a 2.3.4.;\\nii) cargos en exceso de los costos de los servicios que terceros les cobraron a\\nlos sujetos obligados en relación con servicios prestados a los usuarios y/o\\nde los precios que el tercero prestador perciba de particulares en general;\\niii) comisiones en exceso de las máximas fijadas por el BCRA que sean de\\naplicación;\\niv) en incumplimiento al nivel de la tasa de interés máxima aplicable a finan-\\nciaciones vinculadas a tarjetas de crédito previstas en el texto ordenado\\nsobre Tasas de Interés en las Operaciones de Crédito;\\nv) en exceso de lo oportunamente pactado entre el usuario y el sujeto obliga-\\ndo;\\nvi) otros generados en forma impropia por su naturaleza, tales como intereses\\ncompensatorios por saldos deudor… [+425 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de\", \"type\": \"Restriccion\", \"label\": \"Prohibición cobro sin cumplimiento de requisitos\", \"properties\": {\"descripcion\": \"No se puede cobrar tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto en los puntos 2.3.2. a 2.3.4.\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\"}, \"output_completo\": {\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"properties\": {\"descripcion\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"tipo\": \"otra\", \"plazo\": \"10 días hábiles o 5 días hábiles según corresponda\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_todo_importe_cobrado_o_adeudado_de_cualquier_forma_al_usuario_por_conceptos_como\", \"type\": \"Obligacion\", \"label\": \"Reintegro de importes cobrados indebidamente\", \"properties\": {\"descripcion\": \"Todo importe cobrado o adeudado de cualquier forma al usuario por conceptos como tasas de interés, comisiones y/o cargos sin cumplimiento de lo previsto, deberá serle reintegrado dentro de los diez (10) días hábiles siguientes al momento de la presentación del reclamo ante el sujeto obligado, o los cinco (5) días hábiles siguientes al momento de constatarse tal circunstancia por el sujeto obligado o por la fiscalización de la SEFYC\", \"tipo\": \"otra\", \"plazo\": \"10 días hábiles o 5 días hábiles según corresponda\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 4)\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 18681,
+      "output_tokens": 219
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 19657,
+      "output_tokens": 329
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22058,
+      "output_tokens": 373
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23480,
+      "output_tokens": 1107
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25070,
+      "output_tokens": 870
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 26337,
+      "output_tokens": 3430
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 20,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "exoneracion_total"
+  ],
+  "flags": [
+   "R1: voto_capa_d con mayoria de clave vacia (3 votos sin primarias)"
+  ]
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

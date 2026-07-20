@@ -1,0 +1,1788 @@
+{
+ "id_falla": "run_3/CQN2-011",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'integración exigencia básica capital plan','limite':10}",
+      "devolvio": "nodos de exigencia básica (5000/2500 mill), observancia; no el nodo del programa de encuadramiento",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'importación aeronave NCM 8802 pago a la vista','limite':10}",
+      "devolvio": "nodos de pago a la vista de importaciones; no la excepción de aeronavegación",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'MiPyMe importación aeronave excepción','limite':10}",
+      "devolvio": "excepción pago MiPyMe, fletes, MiPyMe deudas; no la excepción de aeronavegación",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id':'Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig'}",
+      "devolvio": "restricción de observar exigencia básica desde 01/01/25 (no dice qué presentar si no cumple)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id':'Restriccion_posiciones_arancelarias_ncm_8802...'}",
+      "devolvio": "posiciones NCM 8802 sujetas a arancel (omite la observación de excepción por aeronavegación)",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id':'Excepcion_pago_por_mipyme_con_condiciones_especificas'}",
+      "devolvio": "excepción genérica de pago MiPyMe (no la excepción subjetiva por aeronaves)",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id':'Restriccion_...exig','direccion':'salientes'}",
+      "devolvio": "establecida_en/aplica_a/limita; ninguna arista al programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id':'Excepcion_pago_por_mipyme_...','direccion':'salientes'}",
+      "devolvio": "exceptua Conformidad previa BCRA; no ligado a aeronaves 8802",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'plan integración capital no alcanzar plazo duración','limite':10}",
+      "devolvio": "Plan Gas, integración de capital, límites varios; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'plan integración capital BCRA presentar plazo máximo duración','limite':10}",
+      "devolvio": "plazos de reclamo/liquidación; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente','limite':10}",
+      "devolvio": "registro ingreso aduanero, denuncia incumplimiento, 90 días; no la excepción de aeronavegación",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'plan integración capital no alcanzar exigencia básica presentar','limite':10}",
+      "devolvio": "exigencias básicas y de capital varias; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'pago a la vista sin registro ingreso aduanero 14/04/25','limite':10}",
+      "devolvio": "Excepción pagos a la vista desde 14/04/25 (cartas de crédito/letras avaladas)",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{'id':'Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04'}",
+      "devolvio": "excepción de embarque+15 días para cartas de crédito/letras avaladas (no aeronaves ni MiPyMe)",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'punto 12 plan integración capital BCRA presentar','limite':10}",
+      "devolvio": "entre los resultados aparece 'Presentar plan regularización saneamiento' (30 días, punto 1.4); NO aparece 'Presentar programa de encuadramiento'",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 15,
+     "quote": "Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital",
+     "(a) Ante quién debe presentarlo",
+     "(a) En qué plazo debe presentarlo",
+     "(a) Cuál es la duración máxima del instrumento a presentar",
+     "(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25",
+     "(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(a) qué presentar / ante quién / plazo / duración máxima",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Una entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital debe presentar un plan de regularización y saneamiento. [...] El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento",
+       "ubicacion": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (existente y alcanzable; el agente no lo consultó). Complemento: 'El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica' (Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli)"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital [...] según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "programa de encuadramiento SEFYC exigencia básica capital 20 días",
+       "resultado": "devuelve 'El programa de encuadramiento no deberá superar los 6 meses de plazo...' y otros nodos de exigencia — alcanzable"
+      },
+      {
+       "consulta": "presentar programa de encuadramiento 20 días proyección incumplimiento",
+       "resultado": "1er resultado: 'Presentar programa de encuadramiento' — 'deberán presentar a la SEFYC un programa...' — plenamente alcanzable con vocabulario de la pregunta"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "accion": "sin_portador_extraible",
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(b) qué excepción subjetiva existe para aeronaves NCM 8802",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación",
+       "ubicacion": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici (label 'Excepción para aeronavegación'), conectado por arista exceptua-->Restriccion_posiciones_arancelarias_ncm_8802... (el nodo del arancel que el agente SÍ abrió en el paso 5)"
+      },
+      "fuente": {
+       "quote": "8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. [...] (repetido para 8802.20.21 ... 8802.40.10)",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "empresas servicios de aeronavegación exceptuadas importaciones",
+       "resultado": "1er resultado: 'Excepción para aeronavegación' con el texto exacto — plenamente alcanzable con vocabulario de la pregunta (aeronave→aeronavegación)"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici",
+      "emision_llm": "navegación",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": true,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 105,
+       "consultas_en_top10": [],
+       "mejor_rank": 25
+      }
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "(b) si la posición arancelaria NCM 8802 permite / está sujeta a arancel",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La posición arancelaria NCM 8802 (incluyendo sus subpartidas 8802.11.00, [...] 8802.40.90) está sujeta a arancel.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel",
+       "ubicacion": "Restriccion_posiciones_arancelarias_ncm_8802... (abierto por el agente en el paso 5)"
+      },
+      "fuente": {
+       "quote": "8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. [...] (la tabla del Punto 12.1 califica cada subpartida con la observación de excepción, no un simple 'sujetas a arancel')",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "empresas servicios de aeronavegación exceptuadas importaciones",
+       "resultado": "la excepción existe como nodo separado, pero el nodo del arancel omite en su contenido la observación de la tabla — leído solo, no avisa que hay excepciones subjetivas"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó falsos los 4 claims centrales (plan de regularización/30 días en (a); NCM 8802 sujeta a arancel y excepción embarque+15 días en (b)). FASE B: En la pata (a) el PDF (Punto 12.1 de Capitales Mínimos) establece que la entidad que proyecta no cumplir debe presentar a la SEFYC un PROGRAMA DE ENCUADRAMIENTO en 20 días corridos, con máximo 6 meses. El dato pertinente NUNCA apareció en la trayectoria del agente: en el paso 15 el output completo devuelve 'Presentar plan regularización saneamiento' (30 días, Punto 1.4 — supuesto de incumplimiento YA registrado/informado) pero NO 'Presentar programa de encuadramiento'. El agente rellenó la pata con ese nodo no pertinente. Verifiqué que el nodo portador correcto EXISTE y es alcanzable: 'presentar programa de encuadramiento 20 días proyección incumplimiento' lo devuelve como 1er resultado ('deberán presentar a la SEFYC un programa...'), y 'programa de encuadramiento SEFYC...6 meses' devuelve el nodo de la duración máxima. Vocabulario ex ante suficiente. → context_recall + navegación (defecto del agente), primaria. Los claims de relleno ('plan de regularización y saneamiento','30 días') no se clasifican por separado (C1a). En la pata (b), la excepción subjetiva real es 'Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación' (Punto 12.1 exterior). Ese nodo EXISTE ('Excepción para aeronavegación'), es alcanzable ('empresas servicios de aeronavegación exceptuadas importaciones' → 1er resultado) y está conectado por arista exceptua--> al mismo nodo del arancel que el agente abrió en el paso 5 — bastaba pedir ver_vecinos de ese nodo. El agente ni buscó con el término 'aeronavegación' ni miró los vecinos del nodo del arancel, y concluyó 'no se encontró excepción subjetiva'. → context_recall + navegación (defecto del agente), primaria. Adicionalmente, el claim 'NCM 8802 está sujeta a arancel' reproduce fielmente el nodo consultado en el paso 5, pero ese nodo OMITE la observación de la tabla del PDF (excepción por aeronavegación repetida en cada subpartida), por lo que resulta incorrecto/incompleto contra el PDF: síntoma noise_sensitivity; el nodo del arancel, leído solo, no avisa de la excepción → defecto del grafo por des-scoping = contenido_kg, secundaria (la ruptura principal ya la explican las patas de navegación). Descarto sin_defecto: los claims son fácticamente incorrectos contra el PDF. Descarto completitud_kg/estructural_kg/alcanzabilidad_kg: los nodos portadores existen, tienen el contenido correcto y son alcanzables por búsqueda léxica y por aristas — el hueco fue de uso, no del grafo.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 14,
+    "max_tool_calls": 40,
+    "tokens_in": 333735,
+    "tokens_out": 9126
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 14,
+    "tokens_in": 333735,
+    "tokens_out": 9126,
+    "latency_s": 116.779,
+    "error": null,
+    "final_raw": "Confirmación definitiva: existe la arista `Excepcion_...aeronavegación --exceptua--> Restriccion_posiciones_arancelarias_ncm_8802...`. El agente incluso abrió el nodo del arancel (paso 5) pero NO consultó sus vecinos (ver_vecinos), donde estaba directamente conectada la excepción de aeronavegación. La información estaba en el grafo, alcanzable tanto léxicamente como por navegación de aristas. El defecto es del agente: **navegación**.\n\nTengo evidencia suficiente. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'integración exigencia básica capital plan','limite':10}\", \"devolvio\": \"nodos de exigencia básica (5000/2500 mill), observancia; no el nodo del programa de encuadramiento\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'importación aeronave NCM 8802 pago a la vista','limite':10}\", \"devolvio\": \"nodos de pago a la vista de importaciones; no la excepción de aeronavegación\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'MiPyMe importación aeronave excepción','limite':10}\", \"devolvio\": \"excepción pago MiPyMe, fletes, MiPyMe deudas; no la excepción de aeronavegación\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig'}\", \"devolvio\": \"restricción de observar exigencia básica desde 01/01/25 (no dice qué presentar si no cumple)\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Restriccion_posiciones_arancelarias_ncm_8802...'}\", \"devolvio\": \"posiciones NCM 8802 sujetas a arancel (omite la observación de excepción por aeronavegación)\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Excepcion_pago_por_mipyme_con_condiciones_especificas'}\", \"devolvio\": \"excepción genérica de pago MiPyMe (no la excepción subjetiva por aeronaves)\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'Restriccion_...exig','direccion':'salientes'}\", \"devolvio\": \"establecida_en/aplica_a/limita; ninguna arista al programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'Excepcion_pago_por_mipyme_...','direccion':'salientes'}\", \"devolvio\": \"exceptua Conformidad previa BCRA; no ligado a aeronaves 8802\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'plan integración capital no alcanzar plazo duración','limite':10}\", \"devolvio\": \"Plan Gas, integración de capital, límites varios; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'plan integración capital BCRA presentar plazo máximo duración','limite':10}\", \"devolvio\": \"plazos de reclamo/liquidación; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente','limite':10}\", \"devolvio\": \"registro ingreso aduanero, denuncia incumplimiento, 90 días; no la excepción de aeronavegación\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'plan integración capital no alcanzar exigencia básica presentar','limite':10}\", \"devolvio\": \"exigencias básicas y de capital varias; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'pago a la vista sin registro ingreso aduanero 14/04/25','limite':10}\", \"devolvio\": \"Excepción pagos a la vista desde 14/04/25 (cartas de crédito/letras avaladas)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04'}\", \"devolvio\": \"excepción de embarque+15 días para cartas de crédito/letras avaladas (no aeronaves ni MiPyMe)\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'punto 12 plan integración capital BCRA presentar','limite':10}\", \"devolvio\": \"entre los resultados aparece 'Presentar plan regularización saneamiento' (30 días, punto 1.4); NO aparece 'Presentar programa de encuadramiento'\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 15, \"quote\": \"Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital\",\n      \"(a) Ante quién debe presentarlo\",\n      \"(a) En qué plazo debe presentarlo\",\n      \"(a) Cuál es la duración máxima del instrumento a presentar\",\n      \"(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25\",\n      \"(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(a) qué presentar / ante quién / plazo / duración máxima\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Una entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital debe presentar un plan de regularización y saneamiento. [...] El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"ubicacion\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (existente y alcanzable; el agente no lo consultó). Complemento: 'El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica' (Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli)\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital [...] según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"programa de encuadramiento SEFYC exigencia básica capital 20 días\", \"resultado\": \"devuelve 'El programa de encuadramiento no deberá superar los 6 meses de plazo...' y otros nodos de exigencia — alcanzable\"},\n        {\"consulta\": \"presentar programa de encuadramiento 20 días proyección incumplimiento\", \"resultado\": \"1er resultado: 'Presentar programa de encuadramiento' — 'deberán presentar a la SEFYC un programa...' — plenamente alcanzable con vocabulario de la pregunta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) qué excepción subjetiva existe para aeronaves NCM 8802\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\", \"ubicacion\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici (label 'Excepción para aeronavegación'), conectado por arista exceptua-->Restriccion_posiciones_arancelarias_ncm_8802... (el nodo del arancel que el agente SÍ abrió en el paso 5)\"},\n        \"fuente\": {\"quote\": \"8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. [...] (repetido para 8802.20.21 ... 8802.40.10)\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"empresas servicios de aeronavegación exceptuadas importaciones\", \"resultado\": \"1er resultado: 'Excepción para aeronavegación' con el texto exacto — plenamente alcanzable con vocabulario de la pregunta (aeronave→aeronavegación)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"(b) si la posición arancelaria NCM 8802 permite / está sujeta a arancel\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La posición arancelaria NCM 8802 (incluyendo sus subpartidas 8802.11.00, [...] 8802.40.90) está sujeta a arancel.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel\", \"ubicacion\": \"Restriccion_posiciones_arancelarias_ncm_8802... (abierto por el agente en el paso 5)\"},\n        \"fuente\": {\"quote\": \"8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. [...] (la tabla del Punto 12.1 califica cada subpartida con la observación de excepción, no un simple 'sujetas a arancel')\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"empresas servicios de aeronavegación exceptuadas importaciones\", \"resultado\": \"la excepción existe como nodo separado, pero el nodo del arancel omite en su contenido la observación de la tabla — leído solo, no avisa que hay excepciones subjetivas\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó falsos los 4 claims centrales (plan de regularización/30 días en (a); NCM 8802 sujeta a arancel y excepción embarque+15 días en (b)). FASE B: En la pata (a) el PDF (Punto 12.1 de Capitales Mínimos) establece que la entidad que proyecta no cumplir debe presentar a la SEFYC un PROGRAMA DE ENCUADRAMIENTO en 20 días corridos, con máximo 6 meses. El dato pertinente NUNCA apareció en la trayectoria del agente: en el paso 15 el output completo devuelve 'Presentar plan regularización saneamiento' (30 días, Punto 1.4 — supuesto de incumplimiento YA registrado/informado) pero NO 'Presentar programa de encuadramiento'. El agente rellenó la pata con ese nodo no pertinente. Verifiqué que el nodo portador correcto EXISTE y es alcanzable: 'presentar programa de encuadramiento 20 días proyección incumplimiento' lo devuelve como 1er resultado ('deberán presentar a la SEFYC un programa...'), y 'programa de encuadramiento SEFYC...6 meses' devuelve el nodo de la duración máxima. Vocabulario ex ante suficiente. → context_recall + navegación (defecto del agente), primaria. Los claims de relleno ('plan de regularización y saneamiento','30 días') no se clasifican por separado (C1a). En la pata (b), la excepción subjetiva real es 'Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación' (Punto 12.1 exterior). Ese nodo EXISTE ('Excepción para aeronavegación'), es alcanzable ('empresas servicios de aeronavegación exceptuadas importaciones' → 1er resultado) y está conectado por arista exceptua--> al mismo nodo del arancel que el agente abrió en el paso 5 — bastaba pedir ver_vecinos de ese nodo. El agente ni buscó con el término 'aeronavegación' ni miró los vecinos del nodo del arancel, y concluyó 'no se encontró excepción subjetiva'. → context_recall + navegación (defecto del agente), primaria. Adicionalmente, el claim 'NCM 8802 está sujeta a arancel' reproduce fielmente el nodo consultado en el paso 5, pero ese nodo OMITE la observación de la tabla del PDF (excepción por aeronavegación repetida en cada subpartida), por lo que resulta incorrecto/incompleto contra el PDF: síntoma noise_sensitivity; el nodo del arancel, leído solo, no avisa de la excepción → defecto del grafo por des-scoping = contenido_kg, secundaria (la ruptura principal ya la explican las patas de navegación). Descarto sin_defecto: los claims son fácticamente incorrectos contra el PDF. Descarto completitud_kg/estructural_kg/alcanzabilidad_kg: los nodos portadores existen, tienen el contenido correcto y son alcanzables por búsqueda léxica y por aristas — el hueco fue de uso, no del grafo.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 9
+      },
+      "output_truncado": "{\"paso\": 9, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"plan integración capital no alcanzar plazo duración\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"plan integración capital no alcanzar plazo duración\", \"total_con_match\": 612, \"resultados\": [{\"id\": \"Excepcion_no_resultara_aplicable_cuando_se_cumpla_la_totalidad_de_las_siguientes_condicion\", \"type\": \"Excepcion\", \"label\": \"Excepción por Plan Gas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No resultará aplicable cuando se cumpla la totalidad de las siguientes condiciones: (1) el destino de los fondos haya sido la financiación de proyectos enmarcad…\"}, {\"id\": \"Operacion_integracion_de_capital\", \"type\": \"Operacion\", \"label\": \"Integración de capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La integración se determinará en forma diaria considerando la RPC del último día del mes anterior y el cambio de valor diario del portafolio de activos\"}, {\"id\": \"Restriccion_operaciones_comerciales_con_brasil_no_podran_tener_plazo_de_pago_que_exceda_360_\", \"type\": \"Restriccion\", \"label\": \"Límite plazo pago Brasil\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones comerciales con Brasil no podrán tener plazo de pag… [+2146 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"plan integración capital no alcanzar exigencia básica presentar\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"plan integración capital no alcanzar exigencia básica presentar\", \"total_con_match\": 620, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24… [+2361 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 15
+      },
+      "output_truncado": "{\"paso\": 15, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"punto 12 plan integración capital BCRA presentar\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"punto 12 plan integración capital BCRA presentar\", \"total_con_match\": 376, \"resultados\": [{\"id\": \"Operacion_integracion_de_capital\", \"type\": \"Operacion\", \"label\": \"Integración de capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La integración se determinará en forma diaria considerando la RPC del último día del mes anterior y el cambio de valor diario del portafolio de activos\"}, {\"id\": \"Excepcion_no_aplicable_punto_3_12_1\", \"type\": \"Excepcion\", \"label\": \"No aplicable punto 3.12.1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En la medida que no encuadre en el punto 3.12.1\"}, {\"id\": \"Operacion_integracion_de_capital_minimo\", \"type\": \"Operacion\", \"label\": \"Integración de capital mínimo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: integración de capital mínimo\"}, {\"id\": \"Operacion_suscripcion_e_integracion_de_instrumentos_capital\", \"type\": \"Operacion\", \"label\": \"Suscripción de instrumentos capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: suscripción e integración de instrumentos capital\"},… [+1954 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos\", \"type\": \"Obligacion\", \"label\": \"Presentar plan regularización saneamiento\", \"properties\": {\"descripcion\": \"Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"30 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4. Incumplimientos.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 177)\", \"pasaje\": \"12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica\\nde capital prevista en la tabla del punto 1.2. –según la categoría que corresponda– a partir del\\n01/01/25. Desde el 01/06/24 y hasta el 31/12/24 corresponderá que tales entidades en funcio-\\nnamiento apliquen las exigencias que surgen de la siguiente tabla:\\nPeríodo Bancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n01/06/24 al 31/12/24 1.500 700\\nLas entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración\\nde la exigencia básica de capital conforme a lo previsto en el párra fo precedente y/o la exi-\\ngencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e in-\\nforme de autoevaluación del capital deberán presentar a la SEFYC  un programa de encua-\\ndramiento dentro de los 20 días corridos siguient es a la re gistración o proyección de incum-\\nplimiento, respectivamente, el cual no deberá superar los 6 meses de pl… [+395 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.4 (PDF pág 4)\", \"pasaje\": \"1.4. Incumplimientos.\\nLos incumplimientos al capital mínimo exigido darán lugar a las siguientes consecuencias:\\n1.4.1. Nuevas entidades.\\nRevocación de la autorización para func ionar si no se integra el capital mínimo exigido\\ndentro de los 60 días corridos de su otorgamiento.\\n1.4.2. Entidades en funcionamiento.\\n1.4.2.1. Incumplimientos informados por las entidades.\\nLa entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes\\nsiguiente a aquel en que se registre el incumplimiento, o presentar un plan de re-\\ngularización y saneamiento dentro de los 30 días corridos siguientes al último día\\ndel mes al que corresponda el incumplimiento.\\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nSección 1. Capital mínimo.\\nVersión: 13a. COMUNICACIÓN  “A”  8028 Vigencia:\\n01/06/2024 Página 1\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 167)\", \"pasaje\": \"12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. \\nPosición \\nNCM \\nObservaciones \\n8802.11.00 \\n8802.12.10 \\n8802.12.90 \\n8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.21 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.22 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.90 Quedan exceptuadas las  importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.21 Quedan exceptuadas las importaciones realizadas po r empresas que presten \\nservicios de aeronavegación. \\n8802.30.29 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.31 Quedan exceptuadas las importaciones reali… [+404 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "programa de encuadramiento SEFYC exigencia básica capital 20 días",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"programa de encuadramiento SEFYC exigencia básica capital 20 días\", \"total_con_match\": 2482, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_la_exigencia_determinada_a_traves_de_la_aplicacion_de_la_expresion_descripta_en_\", \"type\": \"Restriccion\", \"label\": \"Límite 20% grupo A capital mínimo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La exigencia determinada a través de la aplicación de la expresión descripta en el punto 7.2. no podrá superar el 20% en el caso de entidades del grupo A del pr…\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Obligacion_el_programa_de_encuadramiento_no_d… [+2171 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "empresas servicios de aeronavegación exceptuadas importaciones",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"empresas servicios de aeronavegación exceptuadas importaciones\", \"total_con_match\": 2419, \"resultados\": [{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, {\"id\": \"EntidadFinanciera_empresa_de_aeronavegacion\", \"type\": \"EntidadFinanciera\", \"label\": \"Empresas de aeronavegación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: empresa que presta servicios de aeronavegación\"}, {\"id\": \"Operacion_financiacion_en_moneda_extranjera_por_importaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"Financiación en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: financiación en moneda extranjera por importaciones de servicios\"}, {\"id\": \"EntidadFinanciera_empresa_de_servicio_complementario\", \"type\": \"EntidadFinanciera\", \"label\": \"Empresas de servicios complementarios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: empresa de servicio complementario\"}, {\"id\": \"Restriccion_p… [+1901 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento de exigencia en plazo máximo\", \"properties\": {\"descripcion\": \"El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica\", \"tipo\": \"otra\", \"plazo\": \"6 meses máximo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici"
+      },
+      "output_truncado": "{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"properties\": {\"descripcion\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "presentar programa de encuadramiento 20 días proyección incumplimiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"presentar programa de encuadramiento 20 días proyección incumplimiento\", \"total_con_match\": 2443, \"resultados\": [{\"id\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in\", \"type\": \"Obligacion\", \"label\": \"Presentar programa de encuadramiento\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un prog…\"}, {\"id\": \"Obligacion_los_cobros_de_exportaciones_deberan_ser_ingresados_y_liquidados_en_el_mercado_de\", \"type\": \"Obligacion\", \"label\": \"Ingreso dentro de 20 días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los cobros de exportaciones deberán ser ingresados y liquidados en el mercado de cambios dentro de los 20 días hábiles de la fecha de cobro, supeditado al cumpl…\"}, {\"id\": \"Restriccion_incurra_en_atrasos_recurrentes_incumplimiento_de_hasta_180_dias_respecto_de_cond\", \"type\": \"Restriccion\", \"label\": \"Atrasos recurrentes incumplimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Incurra en atrasos recurrentes, incumplimiento de hasta 180 días respecto de condic… [+2311 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in\", \"type\": \"Obligacion\", \"label\": \"Presentar programa de encuadramiento\", \"properties\": {\"descripcion\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"20 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 14,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"label\": \"Excepción para aeronavegación\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\", \"vecino_label\": \"Arancel a importaciones de aeronaves\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}, {\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32531,
+      "output_tokens": 201
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37192,
+      "output_tokens": 259
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38463,
+      "output_tokens": 424
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40153,
+      "output_tokens": 605
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43659,
+      "output_tokens": 616
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46378,
+      "output_tokens": 226
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46910,
+      "output_tokens": 1076
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 48449,
+      "output_tokens": 5719
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 66,
+     "n_claims_fallidos": 5,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "integración exigencia básica capital plan",
+      "devolvio": "Restricciones de exigencia básica (5.000/2.500/1.500 millones) y nodo 'Exigencia básica capital desde 01/01/25'; NO el nodo del programa de encuadramiento ni el plan",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "importación aeronave NCM 8802 pago a la vista",
+      "devolvio": "Operaciones de pago a la vista genéricas; no la excepción de aeronavegación",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "MiPyMe importación aeronave excepción",
+      "devolvio": "Excepción pago MiPyMe genérica, fletes, VPU RIGI; NO la 'Excepción para aeronavegación'",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "Restriccion_las_entidades_financieras...deberan_observar_la_exig",
+      "devolvio": "Regla de observancia de exigencia desde 01/01/25; no dice qué presentar en caso de proyección de incumplimiento",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "Restriccion_posiciones_arancelarias_ncm_8802...",
+      "devolvio": "Listado subpartidas 8802 'sujetas a arancel'",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "Excepcion_pago_por_mipyme_con_condiciones_especificas",
+      "devolvio": "Definición genérica de pago por MiPyMe; no la excepción subjetiva de aeronavegación",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "Restriccion...exig salientes",
+      "devolvio": "establecida_en TO capitales, aplica_a sujetos obligados, limita cumplimiento capital",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "Excepcion_pago_por_mipyme salientes",
+      "devolvio": "exceptua conformidad previa BCRA",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "plan integración capital no alcanzar plazo duración",
+      "devolvio": "Plan Gas, integración de capital, límite Brasil; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "plan integración capital BCRA presentar plazo máximo duración",
+      "devolvio": "Plazos de reclamos y liquidación; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente",
+      "devolvio": "Obligaciones de registro aduanero, 90 días; no la excepción de aeronavegación",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "plan integración capital no alcanzar exigencia básica presentar",
+      "devolvio": "Exigencias básicas; no el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "pago a la vista sin registro ingreso aduanero 14/04/25",
+      "devolvio": "Excepción por cartas de crédito/letras avaladas desde 14/04/25; límite 80%",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "Excepcion_para_cartas_de_credito_o_letras_avaladas...14_04",
+      "devolvio": "Excepción de embarque + 15 días para cartas de crédito o letras avaladas emitidas desde 14/04/25",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "punto 12 plan integración capital BCRA presentar",
+      "devolvio": "Operaciones de integración de capital; no el programa de encuadramiento",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 9,
+     "quote": "buscar_nodos({\"consulta\": \"plan integración capital no alcanzar plazo duración\", \"limite\": 10})"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital",
+     "(a) Ante quién debe presentarlo",
+     "(a) En qué plazo debe presentarlo",
+     "(a) Cuál es la duración máxima del instrumento a presentar",
+     "(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25",
+     "(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(a) qué presentar / ante quién / plazo / duración máxima",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Una entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital debe presentar un plan de regularización y saneamiento. El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento",
+       "ubicacion": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (label 'Presentar programa de encuadramiento'; plazo 20 días)"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital conforme a lo previsto en el párrafo precedente y/o la exigencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "programa de encuadramiento SEFYC 20 días proyección incumplimiento",
+       "resultado": "Devuelve el nodo 'Presentar programa de encuadramiento' (SEFYC, 20 días, proyección) y 'Cumplimiento de exigencia en plazo máximo' (programa no supera 6 meses) — nodos portadores de la respuesta correcta, alcanzables léxicamente y NO consultados por el agente"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in",
+      "emision_llm": "navegación",
+      "decision_codigo": "navegación",
+      "discrepancia": false,
+      "alcanzable": true,
+      "evidencia_d1": {
+       "alcanzable": true,
+       "n_consultas_simuladas": 105,
+       "consultas_en_top10": [
+        {
+         "consulta": "(a) Una entidad financiera en funcionamiento al 01/06/24 proyecta no alcanzar la integración de la exigencia básica de capital: ¿qué debe presentar, ante quién, en qué plazo y con qué duración máxima? (b) Una MiPyMe consulta si puede pagar a la vista, con registro de ingreso aduanero pendiente, la importación de una aeronave de la partida 8802 de la NCM embarcada en origen después del 14/04/25: ¿la posición arancelaria lo permite, y qué excepción subjetiva existe para ese tipo de bienes?",
+         "origen": "pregunta_entera",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 3751,
+         "rank": 1,
+         "score": 12,
+         "tokens_matcheados": [
+          "01",
+          "06",
+          "24",
+          "al",
+          "con",
+          "de",
+          "en",
+          "funcionamiento",
+          "la",
+          "no",
+          "presentar",
+          "que"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "funcionamiento 01",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 18,
+         "rank": 1,
+         "score": 2,
+         "tokens_matcheados": [
+          "01",
+          "funcionamiento"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "01 06",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 15,
+         "rank": 2,
+         "score": 2,
+         "tokens_matcheados": [
+          "01",
+          "06"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "06 24",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 10,
+         "rank": 1,
+         "score": 2,
+         "tokens_matcheados": [
+          "06",
+          "24"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "24 proyecta",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 9,
+         "rank": 1,
+         "score": 1,
+         "tokens_matcheados": [
+          "24"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "presentar quien",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 33,
+         "rank": 5,
+         "score": 1,
+         "tokens_matcheados": [
+          "presentar"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "financiera funcionamiento 01",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 83,
+         "rank": 1,
+         "score": 2,
+         "tokens_matcheados": [
+          "01",
+          "funcionamiento"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "funcionamiento 01 06",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 18,
+         "rank": 1,
+         "score": 3,
+         "tokens_matcheados": [
+          "01",
+          "06",
+          "funcionamiento"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "01 06 24",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 18,
+         "rank": 1,
+         "score": 3,
+         "tokens_matcheados": [
+          "01",
+          "06",
+          "24"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "06 24 proyecta",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 10,
+         "rank": 1,
+         "score": 2,
+         "tokens_matcheados": [
+          "06",
+          "24"
+         ],
+         "en_top10": true
+        },
+        {
+         "consulta": "24 proyecta no",
+         "origen": "ngrama_pregunta",
+         "tokens_fuera_vocabulario": [],
+         "total_con_match": 357,
+         "rank": 1,
+         "score": 2,
+         "tokens_matcheados": [
+          "24",
+          "no"
+         ],
+         "en_top10": true
+        }
+       ],
+       "mejor_rank": 1
+      }
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(b) excepción subjetiva para aeronaves NCM 8802",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación",
+       "ubicacion": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici (label 'Excepción para aeronavegación')"
+      },
+      "fuente": {
+       "quote": "8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "servicios de aeronavegación importaciones exceptuadas aeronaves",
+       "resultado": "Devuelve el nodo 'Excepción para aeronavegación' — nodo portador de la excepción subjetiva correcta, alcanzable léxicamente y NO consultado por el agente (su búsqueda del paso 3 'MiPyMe importación aeronave excepción' no lo trajo)"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici",
+      "emision_llm": "navegación",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": true,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 105,
+       "consultas_en_top10": [],
+       "mejor_rank": 25
+      }
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "(b) si la NCM 8802 permite el pago a la vista / está sujeta a arancel",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La posición arancelaria NCM 8802 (incluyendo sus subpartidas 8802.11.00 ...) está sujeta a arancel.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Posiciones arancelarias NCM 8802.11.00, 8802.12.10, ... , 8802.40.90 sujetas a arancel",
+       "ubicacion": "Restriccion_posiciones_arancelarias_ncm_8802_11_00... (label 'Arancel a importaciones de aeronaves')"
+      },
+      "fuente": {
+       "quote": "12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. Posición NCM Observaciones 8802.11.00 8802.12.10 8802.12.90 8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "Punto 10.10.2 exterior — alcance real del punto 12.1",
+       "resultado": "El punto 10.10.2.1 exige que 'las posiciones arancelarias de los bienes no correspondan a aquellas comprendidas en el punto 12.1'. El punto 12.1 NO establece un 'arancel': lista posiciones EXCLUIDAS del régimen de pago a la vista MiPyMe. El nodo interpreta erróneamente 'sujetas a arancel' un texto que el PDF nunca dice; el efecto en la pata es incorrecto (la 8802 no está 'sujeta a arancel', está excluida del beneficio de pago a la vista)."
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(b) si la NCM 8802 permite el pago a la vista para embarques posteriores al 14/04/25",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Para operaciones embarcadas después del 14/04/25, existe una excepción que permite que el pago a la vista se concrete a partir de la fecha estimada de embarque más 15 días corridos cuando corresponde a porción de operación con pagos a la vista.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada de embarque más 15 días corridos cuando correspondía a porción de operación con pagos a la vista",
+       "ubicacion": "Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04 (label 'Excepción por pagos a la vista desde 14/04/25')"
+      },
+      "fuente": {
+       "quote": "10.10.2.1. Pagos a la vista de importaciones de bienes cursados por personas humanas o personas jurídicas que clasifiquen como MiPyMe ... en la medida que se trate de bienes que hayan sido embarcados en origen a partir del 14/04/25 y las posiciones arancelarias de los bienes no correspondan a aquellas comprendidas en el punto 12.1.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 10.10.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_nodo paso 14 — alcance declarado del nodo",
+       "resultado": "El nodo declara EN su contenido su alcance: 'Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25'. El agente lo aplicó a la pregunta sobre pago a la vista MiPyMe con registro aduanero pendiente (régimen 10.10.2.1), otro alcance. El nodo, leído solo, avisa que su contenido es de cartas de crédito/letras avaladas → aplicacion_erronea."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D3",
+      "portador_id": "Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04",
+      "quote_verificado": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó 5 afirmaciones repartidas en las patas (a) y (b). Investigué cada pata cruzando afirmación/nodo/PDF. PATA (a) qué-presentar/ante-quién/plazo/duración: el PDF (Punto 12.1 de capitales) dice que la entidad que PROYECTA no alcanzar la exigencia debe presentar a la SEFYC un PROGRAMA DE ENCUADRAMIENTO dentro de 20 días corridos, que no supere 6 meses. El agente respondió 'plan de regularización y saneamiento' en '30 días' (contenido del Punto 1.4.2.1, otro régimen: incumplimientos ya registrados/informados). El dato PERTINENTE (programa de encuadramiento, SEFYC, 20 días, 6 meses) NUNCA apareció en la trayectoria → context_recall por pata (C1a). El nodo portador 'Presentar programa de encuadramiento' EXISTE, es fiel al PDF y es ALCANZABLE léxicamente (mi búsqueda 'programa de encuadramiento...' lo devuelve), pero el agente hizo 6 búsquedas (pasos 1,9,10,12,15) sin dar con él → causa navegación. PATA (b) excepción subjetiva: el PDF Punto 12.1 exterior establece la excepción subjetiva 'empresas que presten servicios de aeronavegación'; el nodo 'Excepción para aeronavegación' existe, es fiel y alcanzable ('servicios de aeronavegación'), pero el agente declaró 'no se encontró' → context_recall → navegación. PATA (b) 'sujeta a arancel': claim SOPORTADO por el nodo consultado en paso 5, pero INCORRECTO contra el PDF: el Punto 12.1 no fija arancel alguno; lista posiciones EXCLUIDAS del régimen de pago a la vista MiPyMe (10.10.2.1 exige que 'las posiciones no correspondan a las del punto 12.1'). El error 'sujetas a arancel' está EN el propio nodo (contenido erróneo respecto del PDF), no en su aplicación → noise_sensitivity → contenido_kg. PATA (b) excepción 14/04/25: claim SOPORTADO por el nodo del paso 14, pero ese nodo declara EN su contenido su alcance ('cartas de crédito o letras avaladas'), distinto del régimen que la pregunta plantea (pago a la vista MiPyMe con registro aduanero pendiente, 10.10.2.1); el agente ignoró ese alcance declarado → noise_sensitivity → aplicacion_erronea. El listado de subpartidas 8802 que el juez marcó 'no_soportado' en realidad SÍ estaba soportado por el nodo del paso 5 y es fiel al PDF, por lo que su falla real se explica por el encuadre erróneo 'sujeta a arancel' (mismo par contenido_kg), no por falta de soporte.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 273949,
+    "tokens_out": 10315
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 273949,
+    "tokens_out": 10315,
+    "latency_s": 133.976,
+    "error": null,
+    "final_raw": "Confirmado: la búsqueda del agente en el paso 3 (\"MiPyMe importación aeronave excepción\") NO devolvió la \"Excepción para aeronavegación\". Mi búsqueda con términos más específicos (\"servicios de aeronavegación\") sí la alcanza. La cuestión de alcanzabilidad: ¿es alcanzable con vocabulario ex ante? La pregunta menciona \"aeronave partida 8802\" y \"excepción subjetiva para ese tipo de bienes\". El label del nodo es \"Excepción para aeronavegación\" — el término \"aeronavegación\" no está en la pregunta, pero es derivable de \"aeronave\". Y de hecho la respuesta correcta (empresas de aeronavegación) el agente podría haberla buscado. Ya lo alcancé con \"aeronavegación\". Considero que es alcanzable → navegación.\n\nTengo evidencia suficiente para todas las patas fallidas.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"integración exigencia básica capital plan\", \"devolvio\": \"Restricciones de exigencia básica (5.000/2.500/1.500 millones) y nodo 'Exigencia básica capital desde 01/01/25'; NO el nodo del programa de encuadramiento ni el plan\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"importación aeronave NCM 8802 pago a la vista\", \"devolvio\": \"Operaciones de pago a la vista genéricas; no la excepción de aeronavegación\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"MiPyMe importación aeronave excepción\", \"devolvio\": \"Excepción pago MiPyMe genérica, fletes, VPU RIGI; NO la 'Excepción para aeronavegación'\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"Restriccion_las_entidades_financieras...deberan_observar_la_exig\", \"devolvio\": \"Regla de observancia de exigencia desde 01/01/25; no dice qué presentar en caso de proyección de incumplimiento\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"Restriccion_posiciones_arancelarias_ncm_8802...\", \"devolvio\": \"Listado subpartidas 8802 'sujetas a arancel'\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"Excepcion_pago_por_mipyme_con_condiciones_especificas\", \"devolvio\": \"Definición genérica de pago por MiPyMe; no la excepción subjetiva de aeronavegación\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"Restriccion...exig salientes\", \"devolvio\": \"establecida_en TO capitales, aplica_a sujetos obligados, limita cumplimiento capital\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"Excepcion_pago_por_mipyme salientes\", \"devolvio\": \"exceptua conformidad previa BCRA\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"plan integración capital no alcanzar plazo duración\", \"devolvio\": \"Plan Gas, integración de capital, límite Brasil; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"plan integración capital BCRA presentar plazo máximo duración\", \"devolvio\": \"Plazos de reclamos y liquidación; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente\", \"devolvio\": \"Obligaciones de registro aduanero, 90 días; no la excepción de aeronavegación\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"plan integración capital no alcanzar exigencia básica presentar\", \"devolvio\": \"Exigencias básicas; no el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"pago a la vista sin registro ingreso aduanero 14/04/25\", \"devolvio\": \"Excepción por cartas de crédito/letras avaladas desde 14/04/25; límite 80%\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas...14_04\", \"devolvio\": \"Excepción de embarque + 15 días para cartas de crédito o letras avaladas emitidas desde 14/04/25\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"punto 12 plan integración capital BCRA presentar\", \"devolvio\": \"Operaciones de integración de capital; no el programa de encuadramiento\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 9, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"plan integración capital no alcanzar plazo duración\\\", \\\"limite\\\": 10})\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital\",\n      \"(a) Ante quién debe presentarlo\",\n      \"(a) En qué plazo debe presentarlo\",\n      \"(a) Cuál es la duración máxima del instrumento a presentar\",\n      \"(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25\",\n      \"(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(a) qué presentar / ante quién / plazo / duración máxima\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Una entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital debe presentar un plan de regularización y saneamiento. El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"ubicacion\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (label 'Presentar programa de encuadramiento'; plazo 20 días)\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital conforme a lo previsto en el párrafo precedente y/o la exigencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"programa de encuadramiento SEFYC 20 días proyección incumplimiento\", \"resultado\": \"Devuelve el nodo 'Presentar programa de encuadramiento' (SEFYC, 20 días, proyección) y 'Cumplimiento de exigencia en plazo máximo' (programa no supera 6 meses) — nodos portadores de la respuesta correcta, alcanzables léxicamente y NO consultados por el agente\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) excepción subjetiva para aeronaves NCM 8802\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\", \"ubicacion\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici (label 'Excepción para aeronavegación')\"},\n        \"fuente\": {\"quote\": \"8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"servicios de aeronavegación importaciones exceptuadas aeronaves\", \"resultado\": \"Devuelve el nodo 'Excepción para aeronavegación' — nodo portador de la excepción subjetiva correcta, alcanzable léxicamente y NO consultado por el agente (su búsqueda del paso 3 'MiPyMe importación aeronave excepción' no lo trajo)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) si la NCM 8802 permite el pago a la vista / está sujeta a arancel\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La posición arancelaria NCM 8802 (incluyendo sus subpartidas 8802.11.00 ...) está sujeta a arancel.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Posiciones arancelarias NCM 8802.11.00, 8802.12.10, ... , 8802.40.90 sujetas a arancel\", \"ubicacion\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00... (label 'Arancel a importaciones de aeronaves')\"},\n        \"fuente\": {\"quote\": \"12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. Posición NCM Observaciones 8802.11.00 8802.12.10 8802.12.90 8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"Punto 10.10.2 exterior — alcance real del punto 12.1\", \"resultado\": \"El punto 10.10.2.1 exige que 'las posiciones arancelarias de los bienes no correspondan a aquellas comprendidas en el punto 12.1'. El punto 12.1 NO establece un 'arancel': lista posiciones EXCLUIDAS del régimen de pago a la vista MiPyMe. El nodo interpreta erróneamente 'sujetas a arancel' un texto que el PDF nunca dice; el efecto en la pata es incorrecto (la 8802 no está 'sujeta a arancel', está excluida del beneficio de pago a la vista).\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) si la NCM 8802 permite el pago a la vista para embarques posteriores al 14/04/25\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para operaciones embarcadas después del 14/04/25, existe una excepción que permite que el pago a la vista se concrete a partir de la fecha estimada de embarque más 15 días corridos cuando corresponde a porción de operación con pagos a la vista.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25, también se admitirá que el pago se concretara a partir de la fecha estimada de embarque más 15 días corridos cuando correspondía a porción de operación con pagos a la vista\", \"ubicacion\": \"Excepcion_para_cartas_de_credito_o_letras_avaladas_emitidas_u_otorgadas_a_partir_del_14_04 (label 'Excepción por pagos a la vista desde 14/04/25')\"},\n        \"fuente\": {\"quote\": \"10.10.2.1. Pagos a la vista de importaciones de bienes cursados por personas humanas o personas jurídicas que clasifiquen como MiPyMe ... en la medida que se trate de bienes que hayan sido embarcados en origen a partir del 14/04/25 y las posiciones arancelarias de los bienes no correspondan a aquellas comprendidas en el punto 12.1.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 10.10.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_nodo paso 14 — alcance declarado del nodo\", \"resultado\": \"El nodo declara EN su contenido su alcance: 'Para cartas de crédito o letras avaladas emitidas u otorgadas a partir del 14/04/25'. El agente lo aplicó a la pregunta sobre pago a la vista MiPyMe con registro aduanero pendiente (régimen 10.10.2.1), otro alcance. El nodo, leído solo, avisa que su contenido es de cartas de crédito/letras avaladas → aplicacion_erronea.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó 5 afirmaciones repartidas en las patas (a) y (b). Investigué cada pata cruzando afirmación/nodo/PDF. PATA (a) qué-presentar/ante-quién/plazo/duración: el PDF (Punto 12.1 de capitales) dice que la entidad que PROYECTA no alcanzar la exigencia debe presentar a la SEFYC un PROGRAMA DE ENCUADRAMIENTO dentro de 20 días corridos, que no supere 6 meses. El agente respondió 'plan de regularización y saneamiento' en '30 días' (contenido del Punto 1.4.2.1, otro régimen: incumplimientos ya registrados/informados). El dato PERTINENTE (programa de encuadramiento, SEFYC, 20 días, 6 meses) NUNCA apareció en la trayectoria → context_recall por pata (C1a). El nodo portador 'Presentar programa de encuadramiento' EXISTE, es fiel al PDF y es ALCANZABLE léxicamente (mi búsqueda 'programa de encuadramiento...' lo devuelve), pero el agente hizo 6 búsquedas (pasos 1,9,10,12,15) sin dar con él → causa navegación. PATA (b) excepción subjetiva: el PDF Punto 12.1 exterior establece la excepción subjetiva 'empresas que presten servicios de aeronavegación'; el nodo 'Excepción para aeronavegación' existe, es fiel y alcanzable ('servicios de aeronavegación'), pero el agente declaró 'no se encontró' → context_recall → navegación. PATA (b) 'sujeta a arancel': claim SOPORTADO por el nodo consultado en paso 5, pero INCORRECTO contra el PDF: el Punto 12.1 no fija arancel alguno; lista posiciones EXCLUIDAS del régimen de pago a la vista MiPyMe (10.10.2.1 exige que 'las posiciones no correspondan a las del punto 12.1'). El error 'sujetas a arancel' está EN el propio nodo (contenido erróneo respecto del PDF), no en su aplicación → noise_sensitivity → contenido_kg. PATA (b) excepción 14/04/25: claim SOPORTADO por el nodo del paso 14, pero ese nodo declara EN su contenido su alcance ('cartas de crédito o letras avaladas'), distinto del régimen que la pregunta plantea (pago a la vista MiPyMe con registro aduanero pendiente, 10.10.2.1); el agente ignoró ese alcance declarado → noise_sensitivity → aplicacion_erronea. El listado de subpartidas 8802 que el juez marcó 'no_soportado' en realidad SÍ estaba soportado por el nodo del paso 5 y es fiel al PDF, por lo que su falla real se explica por el encuadre erróneo 'sujeta a arancel' (mismo par contenido_kg), no por falta de soporte.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos\", \"type\": \"Obligacion\", \"label\": \"Presentar plan regularización saneamiento\", \"properties\": {\"descripcion\": \"Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"30 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4. Incumplimientos.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 177)\", \"pasaje\": \"12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica\\nde capital prevista en la tabla del punto 1.2. –según la categoría que corresponda– a partir del\\n01/01/25. Desde el 01/06/24 y hasta el 31/12/24 corresponderá que tales entidades en funcio-\\nnamiento apliquen las exigencias que surgen de la siguiente tabla:\\nPeríodo Bancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n01/06/24 al 31/12/24 1.500 700\\nLas entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración\\nde la exigencia básica de capital conforme a lo previsto en el párra fo precedente y/o la exi-\\ngencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e in-\\nforme de autoevaluación del capital deberán presentar a la SEFYC  un programa de encua-\\ndramiento dentro de los 20 días corridos siguient es a la re gistración o proyección de incum-\\nplimiento, respectivamente, el cual no deberá superar los 6 meses de pl… [+395 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 167)\", \"pasaje\": \"12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. \\nPosición \\nNCM \\nObservaciones \\n8802.11.00 \\n8802.12.10 \\n8802.12.90 \\n8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.21 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.22 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.90 Quedan exceptuadas las  importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.21 Quedan exceptuadas las importaciones realizadas po r empresas que presten \\nservicios de aeronavegación. \\n8802.30.29 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.31 Quedan exceptuadas las importaciones reali… [+404 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.4 (PDF pág 4)\", \"pasaje\": \"1.4. Incumplimientos.\\nLos incumplimientos al capital mínimo exigido darán lugar a las siguientes consecuencias:\\n1.4.1. Nuevas entidades.\\nRevocación de la autorización para func ionar si no se integra el capital mínimo exigido\\ndentro de los 60 días corridos de su otorgamiento.\\n1.4.2. Entidades en funcionamiento.\\n1.4.2.1. Incumplimientos informados por las entidades.\\nLa entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes\\nsiguiente a aquel en que se registre el incumplimiento, o presentar un plan de re-\\ngularización y saneamiento dentro de los 30 días corridos siguientes al último día\\ndel mes al que corresponda el incumplimiento.\\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nSección 1. Capital mínimo.\\nVersión: 13a. COMUNICACIÓN  “A”  8028 Vigencia:\\n01/06/2024 Página 1\"}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 10.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.3 (PDF pág 5)\", \"pasaje\": \"10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso \\naduanero. \\n10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\n10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero \\npendiente. \\n10.6. Otras disposiciones. \\n10.7. Líneas de crédito de entidades financieras aplicadas a la financiación de \\nimportaciones. \\n10.8. Cancelación al exterior de deudas originadas en la importación argentina de \\nbienes que no encuadran como deudas comerciales. \\n10.9. Otras compras de bienes al exterior. \\n10.10. Disposiciones complementarias para importaciones de bienes que tuvieron o \\ntendrán registro de ingreso aduanero a partir del 13/12/23. \\n10.11. Disposiciones complementarias para importaciones de bienes con registro de \\ningreso aduanero hasta el 12/12/23. \\nSección 11. Sistema de seguimiento de pagos de importaciones (SEPAIMPO). \\n11.1. Seguimiento de oficializaciones de importación. \\n11.2. Seguimiento de pagos de importaciones realizados c… [+394 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "programa de encuadramiento SEFYC 20 días proyección incumplimiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"programa de encuadramiento SEFYC 20 días proyección incumplimiento\", \"total_con_match\": 2442, \"resultados\": [{\"id\": \"Obligacion_la_entidad_dispondra_de_30_dias_corridos_contados_desde_la_notificacion_para_for\", \"type\": \"Obligacion\", \"label\": \"Formular descargo ante SEFyC\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad dispondrá de 30 días corridos contados desde la notificación para formular su descargo ante la SEFyC\"}, {\"id\": \"Obligacion_los_cobros_de_exportaciones_deberan_ser_ingresados_y_liquidados_en_el_mercado_de\", \"type\": \"Obligacion\", \"label\": \"Ingreso dentro de 20 días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los cobros de exportaciones deberán ser ingresados y liquidados en el mercado de cambios dentro de los 20 días hábiles de la fecha de cobro, supeditado al cumpl…\"}, {\"id\": \"Restriccion_incurra_en_atrasos_recurrentes_incumplimiento_de_hasta_180_dias_respecto_de_cond\", \"type\": \"Restriccion\", \"label\": \"Atrasos recurrentes incumplimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Incurra en atrasos recurrentes, incumplimiento de hasta 180 días respecto de condiciones contractuales o nulo movimiento en las cuentas.\"}, {\"id\"… [+2255 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "servicios de aeronavegación importaciones exceptuadas aeronaves",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"servicios de aeronavegación importaciones exceptuadas aeronaves\", \"total_con_match\": 2413, \"resultados\": [{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, {\"id\": \"Operacion_financiacion_en_moneda_extranjera_por_importaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"Financiación en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: financiación en moneda extranjera por importaciones de servicios\"}, {\"id\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\", \"type\": \"Restriccion\", \"label\": \"Arancel a importaciones de aeronaves\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, …\"}, {\"id\": \"Restriccion_pago_de_deudas_comerciales_por_importaciones_de_servicios_prestados_o_devengados\",… [+2224 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in\", \"type\": \"Obligacion\", \"label\": \"Presentar programa de encuadramiento\", \"properties\": {\"descripcion\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"20 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici"
+      },
+      "output_truncado": "{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"properties\": {\"descripcion\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 10.10.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.10.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.10.2 (PDF pág 154)\", \"pasaje\": \"10.10.2. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\nLas entidades podrán dar acceso al mercado de cambios para cursar pagos con \\nregistro de ingreso aduanero pendiente  por operaciones no comprendidas en el  \\npunto 10.6.6. cuando, en adición a los restantes requisitos aplicables, se verifique \\nalguna de las siguientes situaciones:  \\n10.10.2.1. Pagos a la vista de importaciones de bienes cursados por personas \\nhumanas o personas jurídicas que clasifiquen como MiPyMe según lo \\ndispuesto en las normas de \\\"Determinación de la condición de micro, \\npequeña y mediana empresa\\\", en la medida que se trate de bienes \\nque hayan sido embarcados en origen a partir del 14/04/25 y las \\nposiciones arancelarias de los bienes no corre spondan a aquellas \\ncomprendidas en el punto 12.1.  \\n10.10.2.2. Pagos de importaciones de bienes de capital con registro de ingreso \\naduanero pendiente en la medida que:  \\ni) la suma de los pagos anticipados cursados en el marco de este\\npunto… [+406 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 5
+      },
+      "output_truncado": "{\"paso\": 5, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\"}, \"output_completo\": {\"id\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\", \"type\": \"Restriccion\", \"label\": \"Arancel a importaciones de aeronaves\", \"properties\": {\"descripcion\": \"Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel\", \"tipo\": \"limite_cualitativo\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"MiPyMe importación aeronave excepción\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"MiPyMe importación aeronave excepción\", \"total_con_match\": 299, \"resultados\": [{\"id\": \"Excepcion_pago_por_mipyme_con_condiciones_especificas\", \"type\": \"Excepcion\", \"label\": \"Pago por MiPyMe con condiciones específicas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El pago es concretado por una persona humana o una persona jurídica que clasifique como MiPyMe según lo dispuesto en las normas de 'Determinación de la condició…\"}, {\"id\": \"Excepcion_excepcion_fletes_de_importacion_desde_embarque\", \"type\": \"Excepcion\", \"label\": \"Excepción: fletes de importación desde embarque\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para fletes de operación de importación encuadrada en punto 10.10.2.1., el pago podrá realizarse a partir del embarque de los bienes en origen\"}, {\"id\": \"Excepcion_el_pago_es_concretado_a_partir_del_10_02_24_por_una_persona_humana_o_una_persona\", \"type\": \"Excepcion\", \"label\": \"Pago MiPyMe deudas importaciones anterior 13/12/23\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El pago es concretado a partir del 10/02/24 p… [+2260 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32531,
+      "output_tokens": 332
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34616,
+      "output_tokens": 383
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36298,
+      "output_tokens": 585
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40027,
+      "output_tokens": 441
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41040,
+      "output_tokens": 1059
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43305,
+      "output_tokens": 1232
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 46132,
+      "output_tokens": 6283
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 66,
+     "n_claims_fallidos": 5,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'integración exigencia básica capital plan'}",
+      "devolvio": "Nodos de exigencia básica (5.000M, 2.500M, 12.1, período transición); NO el nodo de programa de encuadramiento ni el de plan de regularización",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'importación aeronave NCM 8802 pago a la vista'}",
+      "devolvio": "Nodos de pago a la vista genéricos, no específicos de 8802",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'MiPyMe importación aeronave excepción'}",
+      "devolvio": "Excepción pago MiPyMe con condiciones, fletes, MiPyMe deudas anteriores; NO la excepción de aeronavegación",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: Restriccion_...deberan_observar_la_exig}",
+      "devolvio": "Nodo 12.1: entidades deben observar exigencia básica desde 01/01/25 (no dice qué presentar en caso de proyección de incumplimiento)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: Restriccion_posiciones_arancelarias_ncm_8802...}",
+      "devolvio": "Nodo 'sujetas a arancel' con listado de subpartidas 8802",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: Excepcion_pago_por_mipyme_con_condiciones_especificas}",
+      "devolvio": "Excepción de pago por MiPyMe con condiciones (no específica de aeronaves)",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: Restriccion_...deberan_observar_la_exig, salientes}",
+      "devolvio": "Vecinos: establecida_en TO, aplica_a sujetos obligados, limita cumplimiento capital; ninguno es el programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{id: Excepcion_pago_por_mipyme..., salientes}",
+      "devolvio": "exceptua conformidad previa BCRA",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'plan integración capital no alcanzar plazo duración'}",
+      "devolvio": "Plan Gas, integración de capital, límite Brasil; no el nodo correcto",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'plan integración capital BCRA presentar plazo máximo duración'}",
+      "devolvio": "Plazo respuesta reclamo, integración, plazo liquidación; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente'}",
+      "devolvio": "Nodos de registro de ingreso aduanero genéricos",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'plan integración capital no alcanzar exigencia básica presentar'}",
+      "devolvio": "Solo nodos de exigencia básica y exigencias de capital sectoriales; NO el nodo de programa de encuadramiento",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'pago a la vista sin registro ingreso aduanero 14/04/25'}",
+      "devolvio": "Excepción pagos a la vista desde 14/04/25, límite 80%",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_nodo",
+      "args": "{id: Excepcion_para_cartas_de_credito...14_04}",
+      "devolvio": "Excepción 14/04/25: cartas de crédito/letras avaladas, pago a fecha estimada embarque +15 días",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 12 plan integración capital BCRA presentar'}",
+      "devolvio": "Integración de capital, no aplicable 3.12.1, suscripción instrumentos; no pertinente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 9,
+     "quote": "buscar_nodos({\"consulta\": \"plan integración capital no alcanzar exigencia básica presentar\"})"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital",
+     "(a) Ante quién debe presentarlo",
+     "(a) En qué plazo debe presentarlo",
+     "(a) Cuál es la duración máxima del instrumento a presentar",
+     "(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25",
+     "(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(a) Qué presentar / ante quién / plazo / duración máxima (escenario del punto 12.1: proyección de incumplimiento)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Se identificó una obligación de presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento, pero no se cuenta con detalles completos sobre la duración máxima de ese plan ni la autoridad específica ante la cual presentarlo.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento",
+       "ubicacion": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (y Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli: 'El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica')"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital conforme a lo previsto en el párrafo precedente y/o la exigencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "programa de encuadramiento SEFYC 20 días",
+       "resultado": "Trae el nodo 'Presentar programa de encuadramiento' (respuesta correcta) en top 3"
+      },
+      {
+       "consulta": "programa encuadramiento 6 meses exigencia básica capital",
+       "resultado": "Trae en top 1 'El programa de encuadramiento no deberá superar los 6 meses...' y el nodo de exigencia básica desde el vocabulario ex ante 'exigencia básica capital'"
+      },
+      {
+       "consulta": "(paso 12 del agente) plan integración capital no alcanzar exigencia básica presentar",
+       "resultado": "NO trajo el nodo de programa de encuadramiento en top 10; el agente nunca lo alcanzó"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "accion": "sin_portador_extraible",
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "(b) Si la posición arancelaria NCM 8802 permite/está sujeta a arancel",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La posición arancelaria NCM 8802 (incluyendo sus subpartidas ...) está sujeta a arancel.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel",
+       "ubicacion": "Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_"
+      },
+      "fuente": {
+       "quote": "12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. Posición NCM Observaciones 8802.11.00 8802.12.10 8802.12.90 8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. (...)",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "empresas servicios aeronavegación exceptuadas importaciones 8802",
+       "resultado": "El PDF (Punto 12.1) titula 'Posiciones arancelarias con tratamiento específico en normas de importaciones'; no dice 'sujetas a arancel' sino que las lista con excepciones para aeronavegación. El nodo tergiversa la fuente."
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "alcanzabilidad_kg",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "(b) Qué excepción subjetiva existe para aeronaves NCM 8802",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación",
+       "ubicacion": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici"
+      },
+      "fuente": {
+       "quote": "8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. (...) [aplicado a todas las subpartidas 8802]",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 12.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "empresas servicios aeronavegación exceptuadas importaciones 8802",
+       "resultado": "Trae en top 1 el nodo 'Excepción para aeronavegación' (excepción subjetiva pertinente); es alcanzable con vocabulario razonable derivado de la pregunta (aeronave/8802/excepción)"
+      },
+      {
+       "consulta": "MiPyMe importación aeronave excepción (paso 3 del agente)",
+       "resultado": "El agente no obtuvo la excepción de aeronavegación porque enfocó 'MiPyMe' en lugar del sujeto 'empresas de aeronavegación'; el nodo existía y era alcanzable"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D2",
+      "portador_id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici",
+      "emision_llm": "navegación",
+      "decision_codigo": "alcanzabilidad_kg",
+      "discrepancia": true,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 105,
+       "consultas_en_top10": [],
+       "mejor_rank": 25
+      }
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "(a) claim 'plan de regularización y saneamiento en 30 días'",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento",
+       "ubicacion": "Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos (provenance: 'Punto 1.4. Incumplimientos.')"
+      },
+      "fuente": {
+       "quote": "1.4.2.1. Incumplimientos informados por las entidades. La entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes siguiente a aquel en que se registre el incumplimiento, o presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.4.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 1.4",
+       "resultado": "Confirma que el 'plan de regularización y saneamiento / 30 días' es el régimen GENERAL de incumplimientos ya registrados (1.4.2.1), NO el escenario de PROYECCIÓN de incumplimiento del punto 12.1 que pide la pregunta. El nodo declara su alcance en su provenance ('Punto 1.4. Incumplimientos'); el agente aplicó contenido fiel de otro régimen a la pata."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D3",
+      "portador_id": "Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos",
+      "quote_verificado": true
+     }
+    }
+   ],
+   "razonamiento": "La pregunta (a) describe EXPLÍCITAMENTE el escenario del Punto 12.1 de Capitales Mínimos: entidad en funcionamiento al 01/06/24 que PROYECTA no alcanzar la integración de la exigencia básica. El PDF (12.1) y dos nodos del grafo ('Presentar programa de encuadramiento' y 'Cumplimiento de exigencia en plazo máximo') dan la respuesta correcta: programa de encuadramiento, ante la SEFYC, en 20 días corridos, máximo 6 meses. C1a por pata: el dato PERTINENTE (programa/SEFYC/20d/6m) NUNCA apareció en la trayectoria del agente (verificado en outputs completos de pasos 1 y 12) → context_recall. C2: los nodos portadores EXISTEN y son alcanzables con búsqueda razonable desde vocabulario ex ante ('exigencia básica capital' + 'presentar/programa') — yo los recuperé en top 1-3 → navegación (defecto del agente, primaria). Como imperfección secundaria de la misma pata, el agente rellenó con un nodo fiel pero de OTRO régimen (Punto 1.4.2.1, 'plan de regularización y saneamiento/30 días'): ese nodo declara su alcance en su provenance ('Punto 1.4. Incumplimientos') y aplica al incumplimiento YA registrado, no a la proyección; su uso es aplicacion_erronea (secundaria). Pata (b) arancel: el agente afirmó 'NCM 8802 está sujeta a arancel', soportado por el nodo consultado (paso 5), pero el PDF (12.1) NO dice eso: titula 'posiciones con tratamiento específico' y las lista con la excepción para empresas de aeronavegación — el nodo tergiversa la fuente → noise_sensitivity/contenido_kg (primaria). Pata (b) excepción subjetiva: el agente declaró 'no se encontró excepción subjetiva', pero existe el nodo 'Excepción para aeronavegación' (exceptúa a empresas de aeronavegación), alcanzable en top 1 con términos derivados de la pregunta → context_recall/navegación (primaria). El claim [no central] del listado de subpartidas SÍ estaba soportado por el nodo del paso 5 (no es falso material), pero el marco de 'sujetas a arancel' que lo enmarca es incorrecto; el defecto del listado se subsume en la falla de contenido_kg del nodo de arancel.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 14,
+    "max_tool_calls": 40,
+    "tokens_in": 333914,
+    "tokens_out": 10454
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 14,
+    "tokens_in": 333914,
+    "tokens_out": 10454,
+    "latency_s": 137.449,
+    "error": null,
+    "final_raw": "Confirmado: el nodo del programa de encuadramiento NO apareció en ninguna búsqueda del agente, pero SÍ es alcanzable con búsquedas razonables desde el vocabulario ex ante (la pregunta contiene \"exigencia básica de capital\"; yo lo alcancé con \"programa encuadramiento 6 meses exigencia básica capital\"). El término \"programa de encuadramiento\" no estaba disponible ex ante, pero el nodo tiene label \"Presentar programa de encuadramiento\" y contiene \"exigencia básica de capital\", y con la consulta que combina \"exigencia básica capital\" + \"presentar\" apareció el nodo de exigencia pero no el de programa. Sin embargo mi búsqueda \"programa de encuadramiento SEFYC 20 días\" y \"programa encuadramiento 6 meses exigencia básica capital\" sí lo trajeron. La cuestión de alcanzabilidad: ¿lo trae una búsqueda con SOLO términos ex ante? Probé con la búsqueda del propio agente (paso 12) que combina términos de la pregunta y no lo trajo (top 10). El nodo requiere el término \"programa/encuadramiento\" del propio nodo para rankear alto → esto inclina hacia navegación vs alcanzabilidad. Pero como la búsqueda por tema aparece con muchos matches y el nodo correcto no rankea con vocabulario ex ante, es una frontera. Sin embargo el agente sí podía navegar por vecinos desde el nodo 12.1 (que abrió en paso 4 y cuyos vecinos vio en paso 7) — pero esos vecinos no incluyen el nodo de programa. \n\nDado que el nodo se alcanza con \"exigencia básica capital\" (término ex ante) combinado con palabras genéricas, y aparece en mi búsqueda, lo clasifico como navegación (alcanzable con búsqueda razonable). Tengo evidencia suficiente.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'integración exigencia básica capital plan'}\", \"devolvio\": \"Nodos de exigencia básica (5.000M, 2.500M, 12.1, período transición); NO el nodo de programa de encuadramiento ni el de plan de regularización\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'importación aeronave NCM 8802 pago a la vista'}\", \"devolvio\": \"Nodos de pago a la vista genéricos, no específicos de 8802\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'MiPyMe importación aeronave excepción'}\", \"devolvio\": \"Excepción pago MiPyMe con condiciones, fletes, MiPyMe deudas anteriores; NO la excepción de aeronavegación\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: Restriccion_...deberan_observar_la_exig}\", \"devolvio\": \"Nodo 12.1: entidades deben observar exigencia básica desde 01/01/25 (no dice qué presentar en caso de proyección de incumplimiento)\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: Restriccion_posiciones_arancelarias_ncm_8802...}\", \"devolvio\": \"Nodo 'sujetas a arancel' con listado de subpartidas 8802\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: Excepcion_pago_por_mipyme_con_condiciones_especificas}\", \"devolvio\": \"Excepción de pago por MiPyMe con condiciones (no específica de aeronaves)\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: Restriccion_...deberan_observar_la_exig, salientes}\", \"devolvio\": \"Vecinos: establecida_en TO, aplica_a sujetos obligados, limita cumplimiento capital; ninguno es el programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{id: Excepcion_pago_por_mipyme..., salientes}\", \"devolvio\": \"exceptua conformidad previa BCRA\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'plan integración capital no alcanzar plazo duración'}\", \"devolvio\": \"Plan Gas, integración de capital, límite Brasil; no el nodo correcto\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'plan integración capital BCRA presentar plazo máximo duración'}\", \"devolvio\": \"Plazo respuesta reclamo, integración, plazo liquidación; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'aeronave NCM 8802 pago a la vista registro ingreso aduanero pendiente'}\", \"devolvio\": \"Nodos de registro de ingreso aduanero genéricos\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'plan integración capital no alcanzar exigencia básica presentar'}\", \"devolvio\": \"Solo nodos de exigencia básica y exigencias de capital sectoriales; NO el nodo de programa de encuadramiento\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'pago a la vista sin registro ingreso aduanero 14/04/25'}\", \"devolvio\": \"Excepción pagos a la vista desde 14/04/25, límite 80%\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: Excepcion_para_cartas_de_credito...14_04}\", \"devolvio\": \"Excepción 14/04/25: cartas de crédito/letras avaladas, pago a fecha estimada embarque +15 días\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 12 plan integración capital BCRA presentar'}\", \"devolvio\": \"Integración de capital, no aplicable 3.12.1, suscripción instrumentos; no pertinente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 9, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"plan integración capital no alcanzar exigencia básica presentar\\\"})\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"(a) Qué debe presentar la entidad financiera que proyecta no alcanzar la integración de la exigencia básica de capital\",\n      \"(a) Ante quién debe presentarlo\",\n      \"(a) En qué plazo debe presentarlo\",\n      \"(a) Cuál es la duración máxima del instrumento a presentar\",\n      \"(b) Si la posición arancelaria NCM 8802 permite el pago a la vista con registro de ingreso aduanero pendiente para importaciones embarcadas después del 14/04/25\",\n      \"(b) Qué excepción subjetiva existe para ese tipo de bienes (aeronaves NCM 8802) en relación con MiPyMe\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(a) Qué presentar / ante quién / plazo / duración máxima (escenario del punto 12.1: proyección de incumplimiento)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Se identificó una obligación de presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento, pero no se cuenta con detalles completos sobre la duración máxima de ese plan ni la autoridad específica ante la cual presentarlo.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"ubicacion\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in (y Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli: 'El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica')\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital conforme a lo previsto en el párrafo precedente y/o la exigencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e informe de autoevaluación del capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento, respectivamente, el cual no deberá superar los 6 meses de plazo para cumplir con la exigencia básica.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"programa de encuadramiento SEFYC 20 días\", \"resultado\": \"Trae el nodo 'Presentar programa de encuadramiento' (respuesta correcta) en top 3\"},\n        {\"consulta\": \"programa encuadramiento 6 meses exigencia básica capital\", \"resultado\": \"Trae en top 1 'El programa de encuadramiento no deberá superar los 6 meses...' y el nodo de exigencia básica desde el vocabulario ex ante 'exigencia básica capital'\"},\n        {\"consulta\": \"(paso 12 del agente) plan integración capital no alcanzar exigencia básica presentar\", \"resultado\": \"NO trajo el nodo de programa de encuadramiento en top 10; el agente nunca lo alcanzó\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) Si la posición arancelaria NCM 8802 permite/está sujeta a arancel\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La posición arancelaria NCM 8802 (incluyendo sus subpartidas ...) está sujeta a arancel.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Posiciones arancelarias NCM 8802.11.00, 8802.12.10, 8802.12.90, 8802.20.10, 8802.20.21, 8802.20.22, 8802.20.90, 8802.30.10, 8802.30.21, 8802.30.29, 8802.30.31, 8802.30.39, 8802.30.90, 8802.40.10, 8802.40.90 sujetas a arancel\", \"ubicacion\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\"},\n        \"fuente\": {\"quote\": \"12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. Posición NCM Observaciones 8802.11.00 8802.12.10 8802.12.90 8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. (...)\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"empresas servicios aeronavegación exceptuadas importaciones 8802\", \"resultado\": \"El PDF (Punto 12.1) titula 'Posiciones arancelarias con tratamiento específico en normas de importaciones'; no dice 'sujetas a arancel' sino que las lista con excepciones para aeronavegación. El nodo tergiversa la fuente.\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"(b) Qué excepción subjetiva existe para aeronaves NCM 8802\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se encontró en el grafo información específica sobre si esta excepción aplica a MiPyMe ni sobre la posibilidad de pagar a la vista con registro de ingreso aduanero pendiente para este tipo de bienes.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\", \"ubicacion\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\"},\n        \"fuente\": {\"quote\": \"8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación. (...) [aplicado a todas las subpartidas 8802]\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 12.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"empresas servicios aeronavegación exceptuadas importaciones 8802\", \"resultado\": \"Trae en top 1 el nodo 'Excepción para aeronavegación' (excepción subjetiva pertinente); es alcanzable con vocabulario razonable derivado de la pregunta (aeronave/8802/excepción)\"},\n        {\"consulta\": \"MiPyMe importación aeronave excepción (paso 3 del agente)\", \"resultado\": \"El agente no obtuvo la excepción de aeronavegación porque enfocó 'MiPyMe' en lugar del sujeto 'empresas de aeronavegación'; el nodo existía y era alcanzable\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"(a) claim 'plan de regularización y saneamiento en 30 días'\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El plazo para presentar el plan de regularización y saneamiento es dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento\", \"ubicacion\": \"Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos (provenance: 'Punto 1.4. Incumplimientos.')\"},\n        \"fuente\": {\"quote\": \"1.4.2.1. Incumplimientos informados por las entidades. La entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes siguiente a aquel en que se registre el incumplimiento, o presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.4.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 1.4\", \"resultado\": \"Confirma que el 'plan de regularización y saneamiento / 30 días' es el régimen GENERAL de incumplimientos ya registrados (1.4.2.1), NO el escenario de PROYECCIÓN de incumplimiento del punto 12.1 que pide la pregunta. El nodo declara su alcance en su provenance ('Punto 1.4. Incumplimientos'); el agente aplicó contenido fiel de otro régimen a la pata.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta (a) describe EXPLÍCITAMENTE el escenario del Punto 12.1 de Capitales Mínimos: entidad en funcionamiento al 01/06/24 que PROYECTA no alcanzar la integración de la exigencia básica. El PDF (12.1) y dos nodos del grafo ('Presentar programa de encuadramiento' y 'Cumplimiento de exigencia en plazo máximo') dan la respuesta correcta: programa de encuadramiento, ante la SEFYC, en 20 días corridos, máximo 6 meses. C1a por pata: el dato PERTINENTE (programa/SEFYC/20d/6m) NUNCA apareció en la trayectoria del agente (verificado en outputs completos de pasos 1 y 12) → context_recall. C2: los nodos portadores EXISTEN y son alcanzables con búsqueda razonable desde vocabulario ex ante ('exigencia básica capital' + 'presentar/programa') — yo los recuperé en top 1-3 → navegación (defecto del agente, primaria). Como imperfección secundaria de la misma pata, el agente rellenó con un nodo fiel pero de OTRO régimen (Punto 1.4.2.1, 'plan de regularización y saneamiento/30 días'): ese nodo declara su alcance en su provenance ('Punto 1.4. Incumplimientos') y aplica al incumplimiento YA registrado, no a la proyección; su uso es aplicacion_erronea (secundaria). Pata (b) arancel: el agente afirmó 'NCM 8802 está sujeta a arancel', soportado por el nodo consultado (paso 5), pero el PDF (12.1) NO dice eso: titula 'posiciones con tratamiento específico' y las lista con la excepción para empresas de aeronavegación — el nodo tergiversa la fuente → noise_sensitivity/contenido_kg (primaria). Pata (b) excepción subjetiva: el agente declaró 'no se encontró excepción subjetiva', pero existe el nodo 'Excepción para aeronavegación' (exceptúa a empresas de aeronavegación), alcanzable en top 1 con términos derivados de la pregunta → context_recall/navegación (primaria). El claim [no central] del listado de subpartidas SÍ estaba soportado por el nodo del paso 5 (no es falso material), pero el marco de 'sujetas a arancel' que lo enmarca es incorrecto; el defecto del listado se subsume en la falla de contenido_kg del nodo de arancel.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 177)\", \"pasaje\": \"12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica\\nde capital prevista en la tabla del punto 1.2. –según la categoría que corresponda– a partir del\\n01/01/25. Desde el 01/06/24 y hasta el 31/12/24 corresponderá que tales entidades en funcio-\\nnamiento apliquen las exigencias que surgen de la siguiente tabla:\\nPeríodo Bancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n01/06/24 al 31/12/24 1.500 700\\nLas entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración\\nde la exigencia básica de capital conforme a lo previsto en el párra fo precedente y/o la exi-\\ngencia básica de capital desde el 01/01/25 según su Plan de negocios y proyecciones e in-\\nforme de autoevaluación del capital deberán presentar a la SEFYC  un programa de encua-\\ndramiento dentro de los 20 días corridos siguient es a la re gistración o proyección de incum-\\nplimiento, respectivamente, el cual no deberá superar los 6 meses de pl… [+395 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 12.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.1 (PDF pág 167)\", \"pasaje\": \"12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2. \\nPosición \\nNCM \\nObservaciones \\n8802.11.00 \\n8802.12.10 \\n8802.12.90 \\n8802.20.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.21 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.22 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.20.90 Quedan exceptuadas las  importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.10 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.21 Quedan exceptuadas las importaciones realizadas po r empresas que presten \\nservicios de aeronavegación. \\n8802.30.29 Quedan exceptuadas las importaciones realizadas por empresas que presten \\nservicios de aeronavegación. \\n8802.30.31 Quedan exceptuadas las importaciones reali… [+404 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 10.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.3 (PDF pág 5)\", \"pasaje\": \"10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso \\naduanero. \\n10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\n10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero \\npendiente. \\n10.6. Otras disposiciones. \\n10.7. Líneas de crédito de entidades financieras aplicadas a la financiación de \\nimportaciones. \\n10.8. Cancelación al exterior de deudas originadas en la importación argentina de \\nbienes que no encuadran como deudas comerciales. \\n10.9. Otras compras de bienes al exterior. \\n10.10. Disposiciones complementarias para importaciones de bienes que tuvieron o \\ntendrán registro de ingreso aduanero a partir del 13/12/23. \\n10.11. Disposiciones complementarias para importaciones de bienes con registro de \\ningreso aduanero hasta el 12/12/23. \\nSección 11. Sistema de seguimiento de pagos de importaciones (SEPAIMPO). \\n11.1. Seguimiento de oficializaciones de importación. \\n11.2. Seguimiento de pagos de importaciones realizados c… [+394 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_presentar_un_plan_de_regularizacion_y_saneamiento_dentro_de_los_30_dias_corridos\", \"type\": \"Obligacion\", \"label\": \"Presentar plan regularización saneamiento\", \"properties\": {\"descripcion\": \"Presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"30 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4. Incumplimientos.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "programa de encuadramiento SEFYC 20 días",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"programa de encuadramiento SEFYC 20 días\", \"total_con_match\": 2436, \"resultados\": [{\"id\": \"Obligacion_la_entidad_dispondra_de_30_dias_corridos_contados_desde_la_notificacion_para_for\", \"type\": \"Obligacion\", \"label\": \"Formular descargo ante SEFyC\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad dispondrá de 30 días corridos contados desde la notificación para formular su descargo ante la SEFyC\"}, {\"id\": \"Obligacion_los_cobros_de_exportaciones_deberan_ser_ingresados_y_liquidados_en_el_mercado_de\", \"type\": \"Obligacion\", \"label\": \"Ingreso dentro de 20 días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los cobros de exportaciones deberán ser ingresados y liquidados en el mercado de cambios dentro de los 20 días hábiles de la fecha de cobro, supeditado al cumpl…\"}, {\"id\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in\", \"type\": \"Obligacion\", \"label\": \"Presentar programa de encuadramiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un prog…\"}, {\"id\":… [+2363 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "programa encuadramiento 6 meses exigencia básica capital",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"programa encuadramiento 6 meses exigencia básica capital\", \"total_con_match\": 283, \"resultados\": [{\"id\": \"Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento de exigencia en plazo máximo\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica\"}, {\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"R… [+2245 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_entidades_financieras_en_funcionamiento_al_01_06_24_que_no_cumplan_con_la_in\", \"type\": \"Obligacion\", \"label\": \"Presentar programa de encuadramiento\", \"properties\": {\"descripcion\": \"Las entidades financieras en funcionamiento al 01/06/24 que no cumplan con la integración de la exigencia básica de capital deberán presentar a la SEFYC un programa de encuadramiento dentro de los 20 días corridos siguientes a la registración o proyección de incumplimiento\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"20 días corridos\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento de exigencia en plazo máximo\", \"properties\": {\"descripcion\": \"El programa de encuadramiento no deberá superar los 6 meses de plazo para cumplir con la exigencia básica\", \"tipo\": \"otra\", \"plazo\": \"6 meses máximo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.4 (PDF pág 4)\", \"pasaje\": \"1.4. Incumplimientos.\\nLos incumplimientos al capital mínimo exigido darán lugar a las siguientes consecuencias:\\n1.4.1. Nuevas entidades.\\nRevocación de la autorización para func ionar si no se integra el capital mínimo exigido\\ndentro de los 60 días corridos de su otorgamiento.\\n1.4.2. Entidades en funcionamiento.\\n1.4.2.1. Incumplimientos informados por las entidades.\\nLa entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes\\nsiguiente a aquel en que se registre el incumplimiento, o presentar un plan de re-\\ngularización y saneamiento dentro de los 30 días corridos siguientes al último día\\ndel mes al que corresponda el incumplimiento.\\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nSección 1. Capital mínimo.\\nVersión: 13a. COMUNICACIÓN  “A”  8028 Vigencia:\\n01/06/2024 Página 1\"}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "empresas servicios aeronavegación exceptuadas importaciones 8802",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"empresas servicios aeronavegación exceptuadas importaciones 8802\", \"total_con_match\": 148, \"resultados\": [{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, {\"id\": \"EntidadFinanciera_empresa_de_aeronavegacion\", \"type\": \"EntidadFinanciera\", \"label\": \"Empresas de aeronavegación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: empresa que presta servicios de aeronavegación\"}, {\"id\": \"Operacion_financiacion_en_moneda_extranjera_por_importaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"Financiación en moneda extranjera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: financiación en moneda extranjera por importaciones de servicios\"}, {\"id\": \"Restriccion_posiciones_arancelarias_ncm_8802_11_00_8802_12_10_8802_12_90_8802_20_10_8802_20_\", \"type\": \"Restriccion\", \"label\": \"Arancel a importaciones de aeronaves\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Posiciones arancelarias NCM 8802.11.… [+1887 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "10.10.2 conformidad previa importación bienes registro ingreso aduanero",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"10.10.2 conformidad previa importación bienes registro ingreso aduanero\", \"total_con_match\": 307, \"resultados\": [{\"id\": \"Obligacion_la_operacion_financiada_correspondia_a_una_importacion_de_bienes_con_registro_de\", \"type\": \"Obligacion\", \"label\": \"Demostrar registro de ingreso aduanero\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"la operación financiada correspondía a una importación de bienes con registro de ingreso aduanero a partir del 13/12/23\"}, {\"id\": \"Obligacion_el_vpu_haya_demostrado_el_registro_de_ingreso_aduanero_de_los_bienes_por_un_valo\", \"type\": \"Obligacion\", \"label\": \"Demostrar registro aduanero de bienes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El VPU haya demostrado el registro de ingreso aduanero de los bienes por un valor igual o mayor al monto total de la financiación que será computada como ingres…\"}, {\"id\": \"Obligacion_el_vpu_haya_demostrado_el_registro_de_ingreso_aduanero_del_bien_de_capital_por_u\", \"type\": \"Obligacion\", \"label\": \"Demostrar ingreso aduanero de bienes en especie\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El VPU haya demostrado el registro de ingreso aduanero del bien de capital por un valor consistente con el m… [+2288 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici"
+      },
+      "output_truncado": "{\"id\": \"Excepcion_quedan_exceptuadas_las_importaciones_realizadas_por_empresas_que_presten_servici\", \"type\": \"Excepcion\", \"label\": \"Excepción para aeronavegación\", \"properties\": {\"descripcion\": \"Quedan exceptuadas las importaciones realizadas por empresas que presten servicios de aeronavegación\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 12.1. Posiciones arancelarias referidas en los puntos 10.10.2.1. y 10.10.2.2.\"}]}"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"integración exigencia básica capital plan\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"integración exigencia básica capital plan\", \"total_con_match\": 263, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica de capi… [+2260 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"plan integración capital no alcanzar exigencia básica presentar\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"plan integración capital no alcanzar exigencia básica presentar\", \"total_con_match\": 620, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24… [+2361 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32531,
+      "output_tokens": 338
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35136,
+      "output_tokens": 574
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39212,
+      "output_tokens": 540
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40877,
+      "output_tokens": 639
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44475,
+      "output_tokens": 282
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44971,
+      "output_tokens": 897
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47371,
+      "output_tokens": 410
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 49341,
+      "output_tokens": 6774
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 66,
+     "n_claims_fallidos": 5,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [
+   1,
+   2,
+   3
+  ],
+  "atribuciones_corregidas": 4,
+  "discrepancias": 3,
+  "triage": 2
+ },
+ "voto_pre_d6": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "alcanzabilidad_kg"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "modulo_deterministico_sin_decision",
+   "atribucion_no_verificable",
+   "aplicacion_erronea_bajo_revision",
+   "voto_dividido"
+  ],
+  "flags": [
+   "R3: rep 1 atrib 1 — D2/sin_portador_extraible",
+   "R6b: rep 2 atrib 3 — claim_no_mapeado",
+   "R2: rep 2 atrib 4 (primaria) causa aplicacion_erronea",
+   "R3: rep 3 atrib 1 — D2/sin_portador_extraible",
+   "R6b: rep 3 atrib 2 — claim_no_mapeado",
+   "R2: rep 3 atrib 4 (secundaria) causa aplicacion_erronea",
+   "R4: voto_capa_d.flag_voto_dividido = true"
+  ]
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

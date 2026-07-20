@@ -1,0 +1,1217 @@
+{
+ "id_falla": "run_3/CQN2-010",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fideicomiso financiero fiduciario acreedor usuarios', 'limite': 10}",
+      "devolvio": "categorías vacías: fiduciarios de fideicomisos financieros, usuarios de servicios financieros (solo label/categoria, sin contenido definitorio)",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'protección usuarios servicios financieros sujeto obligado', 'limite': 10}",
+      "devolvio": "TextoOrdenado protección usuarios + obligaciones operativas (constancias, aseguradoras), ninguna con la definición 1.1.1 ni la lista 1.1.2",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación créditos cartera comercial periodicidad revisión', 'limite': 10}",
+      "devolvio": "Operacion revisión de cartera, revisión de clasificación de deudores (pata b)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}",
+      "devolvio": "TextoOrdenado con provenance genérica 'Punto 1.1. Partes.', sin contenido de la definición de usuario",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}",
+      "devolvio": "categoria: fiduciario de fideicomiso financiero; provenance TO_clasificacion_deudores Punto 10.2 (no del TO de protección de usuarios)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_revision_de_clasificacion_de_deudores'}",
+      "devolvio": "En el curso de cada trimestre calendario... 5% o más de la RPC o del activo del fideicomiso financiero (pata b, correcto)",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero', 'direccion': 'salientes'}",
+      "devolvio": "0 salientes; el nodo fiduciario no conecta con la normativa de protección de usuarios",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fiduciario sujeto obligado protección usuarios', 'limite': 10}",
+      "devolvio": "Restricciones/obligaciones de cargos y reintegros, ninguna que declare al fiduciario sujeto obligado",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor cedido usuario notificación cesión', 'limite': 10}",
+      "devolvio": "Deudores, cesión de créditos, usuarios del RIGI; ninguno declara deudor cedido = usuario",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fiduciario fideicomiso financiero sujeto obligado', 'limite': 10}",
+      "devolvio": "categorías fiduciario/fideicomiso/sujeto obligado (vacías)",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor usuario cartera cedida fideicomiso', 'limite': 10}",
+      "devolvio": "categorías deudor cartera comercial, fideicomiso; sin contenido pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_revision_de_clasificacion_de_deudores', 'direccion': 'entrantes'}",
+      "devolvio": "Restricción límite mínimo 5% RPC/activo revisión trimestral (pata b, correcto)",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'EntidadFinanciera_sujeto_obligado', 'direccion': 'entrantes'}",
+      "devolvio": "991 entrantes, casi todos de capitales mínimos; nada que defina quién es sujeto obligado en protección de usuarios",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor cedido usuario aunque no notificado', 'limite': 10}",
+      "devolvio": "Notificar cambios de condiciones, cargos por seguro; ninguno con la regla del 1.1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'sujetos obligados protección usuarios punto 1.1 partes', 'limite': 10}",
+      "devolvio": "obligaciones que citan punto 1.1.2 pero no lo enumeran",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor usuario cartera cedida aunque no notificado', 'limite': 10}",
+      "devolvio": "deudores cartera comercial, notificar cambios; sin la regla pertinente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó exhaustivamente las patas (a) con múltiples formulaciones (pasos 1,2,8,9,10,11,14,15,16) cubriendo el vocabulario razonable de la pregunta (fiduciario, sujeto obligado, deudor cedido, notificación, cesión, punto 1.1). Al no hallar un nodo con la definición del punto 1.1.1 ni la enumeración del 1.1.2, declaró honestamente que 'no se encontró información explícita' en lugar de alucinar. Para la pata (b) sí halló el nodo correcto y respondió bien (aprobado por el juez).",
+    "thinking_decision": null,
+    "patas": [
+     "Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros",
+     "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "Periodicidad mínima con la que debe revisarse la clasificación de un cliente que registra financiaciones equivalentes al 5% o más del activo del fideicomiso"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme (…) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos obligados o en su nombre, ambos serán responsables por el cumplimiento de las presentes normas.",
+       "ubicacion": "Obligacion_cuando_un_tercero_desarrolle_tareas_relativas_a_servicios_ofrecidos_por_los_suje (único nodo con provenance 'Punto 1.1. Partes.' — NO porta la definición de usuario del 1.1.1)"
+      },
+      "fuente": {
+       "quote": "Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "deudores de créditos cedidos usuarios notificados transferencia",
+       "resultado": "2432 matches; ningún nodo porta la regla del 1.1.1 — devuelve obligaciones de clasificación de deudores y el TextoOrdenado"
+      },
+      {
+       "consulta": "forman parte categoría usuarios deudores créditos cedidos",
+       "resultado": "117 matches; ninguno con el contenido definitorio de usuario del 1.1.1"
+      },
+      {
+       "consulta": "usuario servicios financieros deudores créditos cedidos independientemente notificados",
+       "resultado": "216 matches; solo categoría vacía 'usuario de servicio financiero' y obligaciones operativas, sin la definición"
+      },
+      {
+       "consulta": "ver_vecinos del TextoOrdenado protección usuarios (entrantes)",
+       "resultado": "los nodos con provenance 'Punto 1.1. Partes.' son solo 'Responsabilidad de terceros'; la definición de usuario 1.1.1 no se extrajo como nodo"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si el fiduciario de un fideicomiso financiero es sujeto obligado en materia de protección de usuarios de servicios financieros",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "categoria: entidades financieras",
+       "ubicacion": "EntidadFinanciera_sujeto_obligado (categoría vacía) / EntidadFinanciera_fiduciario_de_fideicomiso_financiero: 'categoria: fiduciario de fideicomiso financiero', provenance TO_clasificacion_deudores Punto 10.2 — ningún nodo enumera los sujetos obligados del régimen de protección de usuarios (1.1.2)"
+      },
+      "fuente": {
+       "quote": "1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio, po",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1 (final del pasaje 1.1.1-1.1.2)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "sujetos obligados entidades financieras operadores de cambio protección usuarios",
+       "resultado": "2462 matches; devuelve obligaciones operativas y la categoría 'operador de cambio', pero ningún nodo con la enumeración del punto 1.1.2"
+      },
+      {
+       "consulta": "fiduciario fideicomiso financiero sujeto obligado protección usuario responsable atención",
+       "resultado": "153 matches; el fiduciario aparece solo como categoría vacía, sin arista ni contenido que lo declare sujeto obligado de protección de usuarios"
+      },
+      {
+       "consulta": "ver_vecinos EntidadFinanciera_fiduciario_de_fideicomiso_financiero salientes",
+       "resultado": "0 salientes: el nodo no conecta con ninguna obligación/restricción del régimen de protección de usuarios"
+      },
+      {
+       "consulta": "personas humanas jurídicas destinatarios finales servicios sujetos obligados",
+       "resultado": "139 matches; ninguno reproduce la definición/enumeración del 1.1.1-1.1.2"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: la respuesta del agente reprobó porque no contestó las dos patas de (a) — declaró 'no encontrado' para ambas. Descomponiendo por pata (C1a): (i) 'deudores cedidos son usuarios aunque no notificados' y (ii) 'fiduciario es sujeto obligado' — para ninguna apareció en la trayectoria el nodo PERTINENTE que las responde. Verifiqué los outputs completos (paso 2 íntegro) y los 16 buscar_nodos: los resultados son categorías vacías (usuario de servicio financiero, fiduciario, sujeto obligado) y obligaciones operativas de las secciones 2-3 del TO, ninguna con el contenido definitorio del punto 1.1.1-1.1.2. Ambas patas → context_recall. CAUSA (árbol context_recall → ¿existe nodo portador?): el único nodo con provenance 'Punto 1.1. Partes.' es 'Responsabilidad de terceros', que NO porta la definición de usuario ni la lista de sujetos obligados. Mis búsquedas con el vocabulario de la pregunta (deudores cedidos, notificación, transferencia, fiduciario, sujeto obligado, personas humanas destinatarios finales) NO alcanzan ningún nodo con ese contenido — no es problema de alcanzabilidad léxica ni de navegación: el nodo con el contenido simplemente no se extrajo. El PDF SÍ tiene el dato: leí el Punto 1.1.1, que dice textualmente que los deudores de créditos cedidos forman parte de la categoría de usuarios 'independientemente de que hayan o no sido notificados fehacientemente', y el 1.1.2 enumera a las entidades financieras como sujetos obligados. Por tanto: dato en el PDF, ausente como nodo en el grafo → completitud_kg, primaria (dos patas independientes, ambas primarias). El agente actuó correctamente: buscó exhaustivamente y, ante la ausencia, declaró honestamente 'no encontrado' sin alucinar (descarto alucinacion_agente y navegación). La pata (b) fue respondida correctamente con el nodo Operacion_revision_de_clasificacion_de_deudores y aprobada por el juez — no se re-litiga. Descarto sin_defecto porque las patas (a) sí eran respondibles con el PDF y su ausencia en el grafo es un defecto real de extracción.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 313329,
+    "tokens_out": 7804
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 313329,
+    "tokens_out": 7804,
+    "latency_s": 100.933,
+    "error": null,
+    "final_raw": "El paso 2 confirma: ninguno de los nodos devueltos porta la definición de usuario (1.1.1) ni la enumeración de sujetos obligados (1.1.2). El agente actuó bien buscando extensamente (16 pasos, múltiples formulaciones) pero el dato pertinente no existe como nodo con contenido. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fideicomiso financiero fiduciario acreedor usuarios', 'limite': 10}\", \"devolvio\": \"categorías vacías: fiduciarios de fideicomisos financieros, usuarios de servicios financieros (solo label/categoria, sin contenido definitorio)\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'protección usuarios servicios financieros sujeto obligado', 'limite': 10}\", \"devolvio\": \"TextoOrdenado protección usuarios + obligaciones operativas (constancias, aseguradoras), ninguna con la definición 1.1.1 ni la lista 1.1.2\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación créditos cartera comercial periodicidad revisión', 'limite': 10}\", \"devolvio\": \"Operacion revisión de cartera, revisión de clasificación de deudores (pata b)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}\", \"devolvio\": \"TextoOrdenado con provenance genérica 'Punto 1.1. Partes.', sin contenido de la definición de usuario\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}\", \"devolvio\": \"categoria: fiduciario de fideicomiso financiero; provenance TO_clasificacion_deudores Punto 10.2 (no del TO de protección de usuarios)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_revision_de_clasificacion_de_deudores'}\", \"devolvio\": \"En el curso de cada trimestre calendario... 5% o más de la RPC o del activo del fideicomiso financiero (pata b, correcto)\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero', 'direccion': 'salientes'}\", \"devolvio\": \"0 salientes; el nodo fiduciario no conecta con la normativa de protección de usuarios\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fiduciario sujeto obligado protección usuarios', 'limite': 10}\", \"devolvio\": \"Restricciones/obligaciones de cargos y reintegros, ninguna que declare al fiduciario sujeto obligado\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor cedido usuario notificación cesión', 'limite': 10}\", \"devolvio\": \"Deudores, cesión de créditos, usuarios del RIGI; ninguno declara deudor cedido = usuario\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fiduciario fideicomiso financiero sujeto obligado', 'limite': 10}\", \"devolvio\": \"categorías fiduciario/fideicomiso/sujeto obligado (vacías)\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor usuario cartera cedida fideicomiso', 'limite': 10}\", \"devolvio\": \"categorías deudor cartera comercial, fideicomiso; sin contenido pertinente\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_revision_de_clasificacion_de_deudores', 'direccion': 'entrantes'}\", \"devolvio\": \"Restricción límite mínimo 5% RPC/activo revisión trimestral (pata b, correcto)\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'EntidadFinanciera_sujeto_obligado', 'direccion': 'entrantes'}\", \"devolvio\": \"991 entrantes, casi todos de capitales mínimos; nada que defina quién es sujeto obligado en protección de usuarios\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor cedido usuario aunque no notificado', 'limite': 10}\", \"devolvio\": \"Notificar cambios de condiciones, cargos por seguro; ninguno con la regla del 1.1.1\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'sujetos obligados protección usuarios punto 1.1 partes', 'limite': 10}\", \"devolvio\": \"obligaciones que citan punto 1.1.2 pero no lo enumeran\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor usuario cartera cedida aunque no notificado', 'limite': 10}\", \"devolvio\": \"deudores cartera comercial, notificar cambios; sin la regla pertinente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó exhaustivamente las patas (a) con múltiples formulaciones (pasos 1,2,8,9,10,11,14,15,16) cubriendo el vocabulario razonable de la pregunta (fiduciario, sujeto obligado, deudor cedido, notificación, cesión, punto 1.1). Al no hallar un nodo con la definición del punto 1.1.1 ni la enumeración del 1.1.2, declaró honestamente que 'no se encontró información explícita' en lugar de alucinar. Para la pata (b) sí halló el nodo correcto y respondió bien (aprobado por el juez).\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros\",\n      \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"Periodicidad mínima con la que debe revisarse la clasificación de un cliente que registra financiaciones equivalentes al 5% o más del activo del fideicomiso\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme (…) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos obligados o en su nombre, ambos serán responsables por el cumplimiento de las presentes normas.\", \"ubicacion\": \"Obligacion_cuando_un_tercero_desarrolle_tareas_relativas_a_servicios_ofrecidos_por_los_suje (único nodo con provenance 'Punto 1.1. Partes.' — NO porta la definición de usuario del 1.1.1)\"},\n        \"fuente\": {\"quote\": \"Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"deudores de créditos cedidos usuarios notificados transferencia\", \"resultado\": \"2432 matches; ningún nodo porta la regla del 1.1.1 — devuelve obligaciones de clasificación de deudores y el TextoOrdenado\"},\n        {\"consulta\": \"forman parte categoría usuarios deudores créditos cedidos\", \"resultado\": \"117 matches; ninguno con el contenido definitorio de usuario del 1.1.1\"},\n        {\"consulta\": \"usuario servicios financieros deudores créditos cedidos independientemente notificados\", \"resultado\": \"216 matches; solo categoría vacía 'usuario de servicio financiero' y obligaciones operativas, sin la definición\"},\n        {\"consulta\": \"ver_vecinos del TextoOrdenado protección usuarios (entrantes)\", \"resultado\": \"los nodos con provenance 'Punto 1.1. Partes.' son solo 'Responsabilidad de terceros'; la definición de usuario 1.1.1 no se extrajo como nodo\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si el fiduciario de un fideicomiso financiero es sujeto obligado en materia de protección de usuarios de servicios financieros\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"categoria: entidades financieras\", \"ubicacion\": \"EntidadFinanciera_sujeto_obligado (categoría vacía) / EntidadFinanciera_fiduciario_de_fideicomiso_financiero: 'categoria: fiduciario de fideicomiso financiero', provenance TO_clasificacion_deudores Punto 10.2 — ningún nodo enumera los sujetos obligados del régimen de protección de usuarios (1.1.2)\"},\n        \"fuente\": {\"quote\": \"1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio, po\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1 (final del pasaje 1.1.1-1.1.2)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"sujetos obligados entidades financieras operadores de cambio protección usuarios\", \"resultado\": \"2462 matches; devuelve obligaciones operativas y la categoría 'operador de cambio', pero ningún nodo con la enumeración del punto 1.1.2\"},\n        {\"consulta\": \"fiduciario fideicomiso financiero sujeto obligado protección usuario responsable atención\", \"resultado\": \"153 matches; el fiduciario aparece solo como categoría vacía, sin arista ni contenido que lo declare sujeto obligado de protección de usuarios\"},\n        {\"consulta\": \"ver_vecinos EntidadFinanciera_fiduciario_de_fideicomiso_financiero salientes\", \"resultado\": \"0 salientes: el nodo no conecta con ninguna obligación/restricción del régimen de protección de usuarios\"},\n        {\"consulta\": \"personas humanas jurídicas destinatarios finales servicios sujetos obligados\", \"resultado\": \"139 matches; ninguno reproduce la definición/enumeración del 1.1.1-1.1.2\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: la respuesta del agente reprobó porque no contestó las dos patas de (a) — declaró 'no encontrado' para ambas. Descomponiendo por pata (C1a): (i) 'deudores cedidos son usuarios aunque no notificados' y (ii) 'fiduciario es sujeto obligado' — para ninguna apareció en la trayectoria el nodo PERTINENTE que las responde. Verifiqué los outputs completos (paso 2 íntegro) y los 16 buscar_nodos: los resultados son categorías vacías (usuario de servicio financiero, fiduciario, sujeto obligado) y obligaciones operativas de las secciones 2-3 del TO, ninguna con el contenido definitorio del punto 1.1.1-1.1.2. Ambas patas → context_recall. CAUSA (árbol context_recall → ¿existe nodo portador?): el único nodo con provenance 'Punto 1.1. Partes.' es 'Responsabilidad de terceros', que NO porta la definición de usuario ni la lista de sujetos obligados. Mis búsquedas con el vocabulario de la pregunta (deudores cedidos, notificación, transferencia, fiduciario, sujeto obligado, personas humanas destinatarios finales) NO alcanzan ningún nodo con ese contenido — no es problema de alcanzabilidad léxica ni de navegación: el nodo con el contenido simplemente no se extrajo. El PDF SÍ tiene el dato: leí el Punto 1.1.1, que dice textualmente que los deudores de créditos cedidos forman parte de la categoría de usuarios 'independientemente de que hayan o no sido notificados fehacientemente', y el 1.1.2 enumera a las entidades financieras como sujetos obligados. Por tanto: dato en el PDF, ausente como nodo en el grafo → completitud_kg, primaria (dos patas independientes, ambas primarias). El agente actuó correctamente: buscó exhaustivamente y, ante la ausencia, declaró honestamente 'no encontrado' sin alucinar (descarto alucinacion_agente y navegación). La pata (b) fue respondida correctamente con el nodo Operacion_revision_de_clasificacion_de_deudores y aprobada por el juez — no se re-litiga. Descarto sin_defecto porque las patas (a) sí eran respondibles con el PDF y su ausencia en el grafo es un defecto real de extracción.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta … [+416 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.3 (PDF pág 17)\", \"pasaje\": \"6.3. Periodicidad mínima de clasificación. \\nLa revisión deberá efectuarse como mínimo con la periodicidad que se indica seguidamente, \\ndejando constancia de ello en el legajo del cliente analizado: \\nB.C.R.A. CLASIFICACIÓN DE DEUDORES \\nSección 6. Clasificación de los deudores de la cartera comercial. \\nVersión: 10a. COMUNICACIÓN  “A”  6639 Vigencia: \\n01/01/2019 Página 1\"}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2 (PDF pág 23)\", \"pasaje\": \"1.1.2. deberá nombrar a un  funcionario como responsable de atención al usuario de \\nservicios financieros en carácter de titular y, por lo menos, otro como suplente, quienes \\ndeberán asegurar la adecuada atención de los usuarios de servicios financieros, de \\nconformidad con lo establecido en el punto 3.1.2.  \\nDeberá obrar en poder del sujeto obligado la documentación respaldatoria de las desig-\\nnaciones, junto con los datos personales de los funcionarios nombrados como respon-\\nsables (titular y suplente/s). Además, deberán mantenerse actual izados e informarse \\npor medio del régimen informativo establecido al efecto los números de teléfonos, fax y \\ndirección/es postales y de correo electrónico destinadas a la canalización de las com u-\\nnicaciones vinculadas con el servicio de atención al usuario de servicios financieros. \\nSus funciones y responsabilidades serán: \\n3.1.1.1. Recibir y dar curso a las presentaciones –concernientes al sujeto obligado que \\nrepresentan– que inicie… [+420 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores de créditos cedidos usuarios notificados transferencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores de créditos cedidos usuarios notificados transferencia\", \"total_con_match\": 2432, \"resultados\": [{\"id\": \"Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_se_imputaran_al_f\", \"type\": \"Obligacion\", \"label\": \"Imputación al firmante o pagador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los créditos cedidos a favor de la entidad sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos\"}, {\"id\": \"Restriccion_en_caso_de_no_efectuarse_la_evaluacion_de_creditos_cedidos_sin_responsabilidad_c\", \"type\": \"Restriccion\", \"label\": \"Clasificación irrecuperable sin evaluación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En caso de no efectuarse la evaluación de créditos cedidos sin responsabilidad, cualquiera sea el motivo, estos clientes se clasificarán en categoría irrecupera…\"}, {\"id\": \"Obligacion_clasificar_deudores_de_creditos_fideicomitidos\", \"type\": \"Obligacion\", \"label\": \"Clasificar deudores de créditos fideicomitidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deberán clasificar a los deudores de los créditos fideicomitidos de acuerdo con la periodicidad y demás condi… [+1771 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "forman parte categoría usuarios deudores créditos cedidos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"forman parte categoría usuarios deudores créditos cedidos\", \"total_con_match\": 117, \"resultados\": [{\"id\": \"Obligacion_correspondera_clasificar_en_esta_categoria_a_los_clientes_que_cualquiera_sea_el_\", \"type\": \"Obligacion\", \"label\": \"Evaluación periódica deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Corresponderá clasificar en esta categoría a los clientes que, cualquiera sea el motivo (entre ellos por no contar con legajo o por no haber proporcionado infor…\"}, {\"id\": \"Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_se_imputaran_al_f\", \"type\": \"Obligacion\", \"label\": \"Imputación al firmante o pagador\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los créditos cedidos a favor de la entidad sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos\"}, {\"id\": \"Restriccion_los_creditos_otorgados_a_deudores_en_concurso_preventivo_con_posterioridad_al_pe\", \"type\": \"Restriccion\", \"label\": \"Imputación condicional en concurso\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los créditos otorgados a deudores en concurso preventivo con posterioridad al pedido de concurso sólo podrá… [+2105 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\", \"label\": \"Protección de Usuarios\", \"n_salientes_total\": 29, \"n_entrantes_total\": 218, \"salientes\": [{\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_7744\", \"vecino_label\": \"Com. A 7744\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1. Partes.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_7593\", \"vecino_label\": \"Com. A 7593\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.3. “A” 7593 2.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_5388\", \"vecino_label\": \"Com. A 5388\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.3. “A” 7593 2.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_5460\", \"vecino_label\": \"Com. A 5460\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.3. “A” 7593 2.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_7199\", \"vecino_label\": \"Com. A 7199\", \"provenances\": [{\"source_doc\":… [+19890 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "personas humanas jurídicas destinatarios finales servicios sujetos obligados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"personas humanas jurídicas destinatarios finales servicios sujetos obligados\", \"total_con_match\": 139, \"resultados\": [{\"id\": \"Obligacion_los_sujetos_obligados_deberan_ofrecer_a_los_usuarios_de_servicios_financieros_po\", \"type\": \"Obligacion\", \"label\": \"Ofrecer mínimo tres compañías aseguradoras\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los sujetos obligados deberán ofrecer a los usuarios de servicios financieros por lo menos tres compañías aseguradoras no vinculadas entre sí entre las que debe…\"}, {\"id\": \"Excepcion_excepcion_para_servicios_de_personas_humanas\", \"type\": \"Excepcion\", \"label\": \"Excepción para servicios de personas humanas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de servicios prestados por personas humanas que ingresen en los plazos normativ…\"}, {\"id\": \"EntidadFinanciera_persona_humana\", \"type\": \"EntidadFinanciera\", \"label\": \"Personas humanas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: personas humanas\"}, {\"id\": \"EntidadFinanciera_sujeto_obligado\", \"type\": \"EntidadFinanciera\", \"label\": \"Sujetos obligados\", \"tokens_matcheados\": 2, \"resumen_prop… [+1797 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "sujetos obligados entidades financieras operadores de cambio protección usuarios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"sujetos obligados entidades financieras operadores de cambio protección usuarios\", \"total_con_match\": 2462, \"resultados\": [{\"id\": \"Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de\", \"type\": \"Obligacion\", \"label\": \"Garantizar derechos de usuarios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los sujetos obligados deberán adoptar las acciones necesarias para garantizar derechos de protección de seguridad e intereses económicos, información clara y ve…\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_ofrecer_a_los_usuarios_de_servicios_financieros_po\", \"type\": \"Obligacion\", \"label\": \"Ofrecer mínimo tres compañías aseguradoras\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los sujetos obligados deberán ofrecer a los usuarios de servicios financieros por lo menos tres compañías aseguradoras no vinculadas entre sí entre las que debe…\"}, {\"id\": \"Restriccion_los_sujetos_obligados_no_podran_percibir_de_los_usuarios_ningun_tipo_de_comision\", \"type\": \"Restriccion\", \"label\": \"Prohibición de comisiones por seguros vida\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los sujetos obligados no podrán percibir de los usuarios ning… [+2357 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_cuando_un_tercero_desarrolle_tareas_relativas_a_servicios_ofrecidos_por_los_suje"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_cuando_un_tercero_desarrolle_tareas_relativas_a_servicios_ofrecidos_por_los_suje\", \"type\": \"Obligacion\", \"label\": \"Responsabilidad de terceros\", \"properties\": {\"descripcion\": \"Cuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos obligados o en su nombre, ambos serán responsables por el cumplimiento de las presentes normas. Lo anterior deberá establecerse en los instrumentos que acuerden la realización de dichas tareas.\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1. Partes.\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "usuario servicios financieros deudores créditos cedidos independientemente notificados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"usuario servicios financieros deudores créditos cedidos independientemente notificados\", \"total_con_match\": 216, \"resultados\": [{\"id\": \"Obligacion_el_usuario_de_servicios_financieros_debe_ser_notificado_de_las_modificaciones_qu\", \"type\": \"Obligacion\", \"label\": \"Notificar cambios de condiciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días cor…\"}, {\"id\": \"Operacion_atencion_al_usuario_de_servicios_financieros\", \"type\": \"Operacion\", \"label\": \"Atención de consultas y reclamos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: atención al usuario de servicios financieros\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: usuario de servicio financiero\"}, {\"id\": \"Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cláusulas abusivas\", \"tokens_matcheados\": 3, \"resumen_propiedades… [+2517 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "fiduciario fideicomiso financiero sujeto obligado protección usuario responsable atención",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"fiduciario fideicomiso financiero sujeto obligado protección usuario responsable atención\", \"total_con_match\": 153, \"resultados\": [{\"id\": \"Obligacion_aplicar_estas_disposiciones_asi_como_las_que_el_sujeto_obligado_establezca_en_ma\", \"type\": \"Obligacion\", \"label\": \"Aplicar disposiciones de atención al usuario\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Aplicar estas disposiciones así como las que el sujeto obligado establezca en materia de servicio de atención al usuario de servicios financieros en su manual d…\"}, {\"id\": \"Obligacion_en_el_caso_de_que_el_sujeto_obligado_pretenda_incorporar_nuevos_conceptos_en_cal\", \"type\": \"Obligacion\", \"label\": \"Obtener consentimiento del usuario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En el caso de que el sujeto obligado pretenda incorporar nuevos conceptos en calidad de comisiones y/o cargos que no hubiesen sido previstos en el contrato o re…\"}, {\"id\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Fiduciarios fideicomisos financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: fiduciario fideicomiso financiero\"}, {\"id\": \"Obligacion_a_los_fines_de_la_comp… [+2454 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"protección usuarios servicios financieros sujeto obligado\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"protección usuarios servicios financieros sujeto obligado\", \"total_con_match\": 189, \"resultados\": [{\"id\": \"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Protección de Usuarios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"materia: Protección de los usuarios de servicios financieros; archivo: TO_proteccion_usuarios_servicios_financieros_actual.pdf; version: 8a\"}, {\"id\": \"Obligacion_el_sujeto_obligado_debera_ante_la_solicitud_del_usuario_de_servicios_financieros\", \"type\": \"Obligacion\", \"label\": \"Extender constancia de consulta o reclamo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El sujeto obligado deberá, ante la solicitud del usuario de servicios financieros, extender una constancia con la identificación de su consulta o reclamo y el e…\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: usuario de servicio… [+2762 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39818,
+      "output_tokens": 304
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41140,
+      "output_tokens": 509
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45227,
+      "output_tokens": 566
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 58867,
+      "output_tokens": 583
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 62999,
+      "output_tokens": 563
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 65278,
+      "output_tokens": 5279
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 109,
+     "n_claims_fallidos": 0,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'fideicomiso financiero fiduciario acreedor usuarios'}",
+      "devolvio": "Entidades fiduciario/fideicomiso financiero y usuario de servicio financiero (nodos categoría, sin contenido de sujeto obligado)",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'protección usuarios servicios financieros sujeto obligado'}",
+      "devolvio": "TextoOrdenado protección usuarios + obligaciones sobre sujeto obligado; ninguna enumera fiduciarios ni deudores cedidos",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'clasificación créditos cartera comercial periodicidad revisión'}",
+      "devolvio": "Revisión de cartera comercial, clasificación de deudores (pata b)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id':'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}",
+      "devolvio": "Nodo documento TO, provenance Punto 1.1 Partes; sin contenido detallado",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id':'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}",
+      "devolvio": "categoria fiduciario; provenance TO_clasificacion_deudores Punto 10.2 (no protección usuarios)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id':'Operacion_revision_de_clasificacion_de_deudores'}",
+      "devolvio": "Trimestre calendario, financiaciones 5% o más de RPC/activo del fideicomiso (pata b)",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id':'EntidadFinanciera_fiduciario_de_fideicomiso_financiero','direccion':'salientes'}",
+      "devolvio": "0 salientes; 2 entrantes",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'fiduciario sujeto obligado protección usuarios'}",
+      "devolvio": "sujeto_obligado (categoría entidades financieras) + obligaciones; ninguno enumera fiduciario como sujeto obligado",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'deudor cedido usuario notificación cesión'}",
+      "devolvio": "Deudores, cesión de créditos; ninguno dice que deudores cedidos sean usuarios aunque no notificados",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'fiduciario fideicomiso financiero sujeto obligado'}",
+      "devolvio": "entidades fiduciario/fideicomiso + sujeto_obligado (categoría genérica)",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'deudor usuario cartera cedida fideicomiso'}",
+      "devolvio": "Deudores cartera comercial, fideicomiso; nada sobre carácter de usuario del deudor cedido",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_vecinos",
+      "args": "{'id':'Operacion_revision_de_clasificacion_de_deudores','direccion':'entrantes'}",
+      "devolvio": "Restricciones/obligaciones periodicidad (pata b)",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{'id':'EntidadFinanciera_sujeto_obligado','direccion':'entrantes'}",
+      "devolvio": "991 entrantes, mayormente capitales mínimos; ninguno vincula fiduciario a protección usuarios",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'deudor cedido usuario aunque no notificado'}",
+      "devolvio": "Notificar cambios condiciones; nada sobre deudor cedido = usuario",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'sujetos obligados protección usuarios punto 1.1 partes'}",
+      "devolvio": "Obligaciones que citan punto 1.1.2; ninguna enumera a los sujetos obligados",
+      "pertinente": true
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{'consulta':'deudor usuario cartera cedida aunque no notificado'}",
+      "devolvio": "Deudores cartera comercial, notificar cambios; nada pertinente",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó las patas (a) con múltiples consultas usando exactamente los términos de la pregunta (fiduciario/sujeto obligado/protección usuarios en pasos 2,8,10,15; deudor cedido/usuario/no notificado en pasos 9,11,14,16), abrió los nodos candidatos (sujeto_obligado, fiduciario, usuario) y revisó sus vecinos. Ninguno portaba el contenido de las patas (a). Ante la ausencia real de datos en el grafo, declaró honestamente 'No se encontró en el Knowledge Graph información explícita...'. Sobre lo que tenía disponible, actuó bien: no alucinó ni forzó una respuesta. La pata (b), respondida con el nodo Operacion_revision_de_clasificacion_de_deudores, fue aprobada por el juez.",
+    "thinking_decision": null,
+    "patas": [
+     "Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros",
+     "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "Periodicidad mínima con la que debe revisarse la clasificación de un cliente con financiaciones equivalentes al 5% o más del activo del fideicomiso"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si el fiduciario de un fideicomiso financiero acreedor de créditos cedidos por un banco es sujeto obligado en materia de protección de usuarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "id=EntidadFinanciera_sujeto_obligado ... 'categoria': 'entidades financieras' (no enumera a los fiduciarios de fideicomisos); id=EntidadFinanciera_fiduciario_fideicomiso_financiero, categoria: fiduciario fideicomiso financiero, sin arista alguna hacia 'sujeto obligado' ni hacia protección de usuarios (único saliente: 'ejecuta' Emisión valores deuda fiduciaria, TO_exterior_cambios)",
+       "ubicacion": "EntidadFinanciera_sujeto_obligado ; EntidadFinanciera_fiduciario_fideicomiso_financiero (vecinos)"
+      },
+      "fuente": {
+       "quote": "1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio (...). 1.1.2.3. Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.2 (p.3)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "sujetos obligados operadores cambio fiduciarios fideicomisos",
+       "resultado": "sujeto_obligado (categoría 'entidades financieras') y fiduciario_fideicomiso_financiero, pero ningún nodo enumera al fiduciario como sujeto obligado en protección de usuarios"
+      },
+      {
+       "consulta": "fiduciarios fideicomisos acreedores créditos cedidos sujetos obligados",
+       "resultado": "mismos nodos genéricos; ninguno porta el contenido del punto 1.1.2.3"
+      },
+      {
+       "consulta": "fiduciario sujeto obligado protección usuarios (paso 8, output completo)",
+       "resultado": "sujeto_obligado con categoría genérica + obligaciones varias; ningún nodo dice que el fiduciario sea sujeto obligado"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme (...) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "id=EntidadFinanciera_usuario_de_servicio_financiero, categoria: usuario de servicio financiero; único entrante 'aplica_a' Restriccion comisiones por servicios no solicitados. No existe nodo ni arista que exprese que los deudores de créditos cedidos revisten carácter de usuarios independientemente de la notificación.",
+       "ubicacion": "EntidadFinanciera_usuario_de_servicio_financiero (vecinos)"
+      },
+      "fuente": {
+       "quote": "Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.1 (p.3)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "deudores de créditos cedidos entidades financieras usuarios",
+       "resultado": "sin nodo portador del texto del punto 1.1.1; resultados sobre cesión de créditos e imputación, no sobre carácter de usuario"
+      },
+      {
+       "consulta": "independientemente notificados fehacientemente transferencia obligación usuarios",
+       "resultado": "obligaciones/derechos de usuarios genéricos; ningún nodo porta el contenido del 1.1.1"
+      },
+      {
+       "consulta": "usuario servicios financieros deudores créditos cedidos carácter",
+       "resultado": "definiciones/obligaciones de usuario, ninguna incluye a los deudores cedidos como usuarios"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó la respuesta; su descomposición marca 3 patas, aprobó explícitamente la pata (b) (periodicidad trimestral, soportada por Operacion_revision_de_clasificacion_de_deudores, fiel al PDF Punto 6.3). El fallo se concentra en las dos patas (a), donde el agente declaró no-respondibilidad. C1a (por pata): revisando los outputs completos de la trayectoria, el dato PERTINENTE a cada pata (a) NUNCA apareció: (i) que el fiduciario de fideicomiso acreedor sea sujeto obligado, (ii) que el deudor cedido sea usuario aunque no notificado. Los únicos nodos afines son categorías vacías (sujeto_obligado='entidades financieras', fiduciario, usuario) sin el contenido de los puntos 1.1.1/1.1.2.3. Por lo tanto ambas patas son context_recall. C2 (causa por pata): ¿existe nodo portador del dato faltante? Búsqueda exhaustiva propia con los términos de la pregunta (paso 8 verificado con ver_paso_completo, más 6 búsquedas adicionales mías) — no existe nodo ni arista que exprese estos contenidos, y el nodo fiduciario ni siquiera se conecta a 'sujeto obligado' o a protección de usuarios. ¿El PDF tiene el dato? SÍ, verbatim: Punto 1.1.2.3 enumera 'Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras' entre los sujetos obligados, y Punto 1.1.1 dice que los deudores de créditos cedidos son usuarios 'independientemente de que hayan o no sido notificados fehacientemente'. Como el dato está en el PDF pero ausente del grafo (no extraído a nodo/arista) → completitud_kg, no navegación ni alcanzabilidad (no hay nodo que exhibir) ni estructural (no es que falte solo la conexión: falta el contenido mismo). El agente actuó correctamente: buscó con vocabulario plausible y declaró honestamente la ausencia; no alucinó. Ambas patas (a) son primarias porque son las que explican por qué el juez reprobó (la pregunta pedía respuesta afirmativa fundada y el agente no pudo darla por el hueco del grafo). Descarto sin_defecto: la respuesta efectivamente quedó incompleta contra el ground truth del PDF.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 385859,
+    "tokens_out": 8202
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 385859,
+    "tokens_out": 8202,
+    "latency_s": 108.663,
+    "error": null,
+    "final_raw": "Confirmado: en el paso 8 (búsqueda con los términos exactos de la pregunta \"fiduciario sujeto obligado protección usuarios\"), el nodo `EntidadFinanciera_sujeto_obligado` aparece pero solo con categoría \"entidades financieras\" — no enumera fiduciarios. No hay ningún nodo que responda que el fiduciario es sujeto obligado. La búsqueda del agente fue razonable y exhaustiva.\n\nTengo evidencia suficiente. Ambas patas (a) son context_recall → completitud_kg (el PDF tiene el dato, el grafo no lo extrajo). El agente actuó correctamente declarando la no-respondibilidad.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'fideicomiso financiero fiduciario acreedor usuarios'}\", \"devolvio\": \"Entidades fiduciario/fideicomiso financiero y usuario de servicio financiero (nodos categoría, sin contenido de sujeto obligado)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'protección usuarios servicios financieros sujeto obligado'}\", \"devolvio\": \"TextoOrdenado protección usuarios + obligaciones sobre sujeto obligado; ninguna enumera fiduciarios ni deudores cedidos\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'clasificación créditos cartera comercial periodicidad revisión'}\", \"devolvio\": \"Revisión de cartera comercial, clasificación de deudores (pata b)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id':'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}\", \"devolvio\": \"Nodo documento TO, provenance Punto 1.1 Partes; sin contenido detallado\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id':'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}\", \"devolvio\": \"categoria fiduciario; provenance TO_clasificacion_deudores Punto 10.2 (no protección usuarios)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Operacion_revision_de_clasificacion_de_deudores'}\", \"devolvio\": \"Trimestre calendario, financiaciones 5% o más de RPC/activo del fideicomiso (pata b)\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'EntidadFinanciera_fiduciario_de_fideicomiso_financiero','direccion':'salientes'}\", \"devolvio\": \"0 salientes; 2 entrantes\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'fiduciario sujeto obligado protección usuarios'}\", \"devolvio\": \"sujeto_obligado (categoría entidades financieras) + obligaciones; ninguno enumera fiduciario como sujeto obligado\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'deudor cedido usuario notificación cesión'}\", \"devolvio\": \"Deudores, cesión de créditos; ninguno dice que deudores cedidos sean usuarios aunque no notificados\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'fiduciario fideicomiso financiero sujeto obligado'}\", \"devolvio\": \"entidades fiduciario/fideicomiso + sujeto_obligado (categoría genérica)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'deudor usuario cartera cedida fideicomiso'}\", \"devolvio\": \"Deudores cartera comercial, fideicomiso; nada sobre carácter de usuario del deudor cedido\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'Operacion_revision_de_clasificacion_de_deudores','direccion':'entrantes'}\", \"devolvio\": \"Restricciones/obligaciones periodicidad (pata b)\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'EntidadFinanciera_sujeto_obligado','direccion':'entrantes'}\", \"devolvio\": \"991 entrantes, mayormente capitales mínimos; ninguno vincula fiduciario a protección usuarios\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'deudor cedido usuario aunque no notificado'}\", \"devolvio\": \"Notificar cambios condiciones; nada sobre deudor cedido = usuario\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'sujetos obligados protección usuarios punto 1.1 partes'}\", \"devolvio\": \"Obligaciones que citan punto 1.1.2; ninguna enumera a los sujetos obligados\", \"pertinente\": true},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'deudor usuario cartera cedida aunque no notificado'}\", \"devolvio\": \"Deudores cartera comercial, notificar cambios; nada pertinente\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó las patas (a) con múltiples consultas usando exactamente los términos de la pregunta (fiduciario/sujeto obligado/protección usuarios en pasos 2,8,10,15; deudor cedido/usuario/no notificado en pasos 9,11,14,16), abrió los nodos candidatos (sujeto_obligado, fiduciario, usuario) y revisó sus vecinos. Ninguno portaba el contenido de las patas (a). Ante la ausencia real de datos en el grafo, declaró honestamente 'No se encontró en el Knowledge Graph información explícita...'. Sobre lo que tenía disponible, actuó bien: no alucinó ni forzó una respuesta. La pata (b), respondida con el nodo Operacion_revision_de_clasificacion_de_deudores, fue aprobada por el juez.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros\",\n      \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"Periodicidad mínima con la que debe revisarse la clasificación de un cliente con financiaciones equivalentes al 5% o más del activo del fideicomiso\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si el fiduciario de un fideicomiso financiero acreedor de créditos cedidos por un banco es sujeto obligado en materia de protección de usuarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"id=EntidadFinanciera_sujeto_obligado ... 'categoria': 'entidades financieras' (no enumera a los fiduciarios de fideicomisos); id=EntidadFinanciera_fiduciario_fideicomiso_financiero, categoria: fiduciario fideicomiso financiero, sin arista alguna hacia 'sujeto obligado' ni hacia protección de usuarios (único saliente: 'ejecuta' Emisión valores deuda fiduciaria, TO_exterior_cambios)\", \"ubicacion\": \"EntidadFinanciera_sujeto_obligado ; EntidadFinanciera_fiduciario_fideicomiso_financiero (vecinos)\"},\n        \"fuente\": {\"quote\": \"1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio (...). 1.1.2.3. Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.2 (p.3)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"sujetos obligados operadores cambio fiduciarios fideicomisos\", \"resultado\": \"sujeto_obligado (categoría 'entidades financieras') y fiduciario_fideicomiso_financiero, pero ningún nodo enumera al fiduciario como sujeto obligado en protección de usuarios\"},\n        {\"consulta\": \"fiduciarios fideicomisos acreedores créditos cedidos sujetos obligados\", \"resultado\": \"mismos nodos genéricos; ninguno porta el contenido del punto 1.1.2.3\"},\n        {\"consulta\": \"fiduciario sujeto obligado protección usuarios (paso 8, output completo)\", \"resultado\": \"sujeto_obligado con categoría genérica + obligaciones varias; ningún nodo dice que el fiduciario sea sujeto obligado\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme (...) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"id=EntidadFinanciera_usuario_de_servicio_financiero, categoria: usuario de servicio financiero; único entrante 'aplica_a' Restriccion comisiones por servicios no solicitados. No existe nodo ni arista que exprese que los deudores de créditos cedidos revisten carácter de usuarios independientemente de la notificación.\", \"ubicacion\": \"EntidadFinanciera_usuario_de_servicio_financiero (vecinos)\"},\n        \"fuente\": {\"quote\": \"Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.1 (p.3)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"deudores de créditos cedidos entidades financieras usuarios\", \"resultado\": \"sin nodo portador del texto del punto 1.1.1; resultados sobre cesión de créditos e imputación, no sobre carácter de usuario\"},\n        {\"consulta\": \"independientemente notificados fehacientemente transferencia obligación usuarios\", \"resultado\": \"obligaciones/derechos de usuarios genéricos; ningún nodo porta el contenido del 1.1.1\"},\n        {\"consulta\": \"usuario servicios financieros deudores créditos cedidos carácter\", \"resultado\": \"definiciones/obligaciones de usuario, ninguna incluye a los deudores cedidos como usuarios\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó la respuesta; su descomposición marca 3 patas, aprobó explícitamente la pata (b) (periodicidad trimestral, soportada por Operacion_revision_de_clasificacion_de_deudores, fiel al PDF Punto 6.3). El fallo se concentra en las dos patas (a), donde el agente declaró no-respondibilidad. C1a (por pata): revisando los outputs completos de la trayectoria, el dato PERTINENTE a cada pata (a) NUNCA apareció: (i) que el fiduciario de fideicomiso acreedor sea sujeto obligado, (ii) que el deudor cedido sea usuario aunque no notificado. Los únicos nodos afines son categorías vacías (sujeto_obligado='entidades financieras', fiduciario, usuario) sin el contenido de los puntos 1.1.1/1.1.2.3. Por lo tanto ambas patas son context_recall. C2 (causa por pata): ¿existe nodo portador del dato faltante? Búsqueda exhaustiva propia con los términos de la pregunta (paso 8 verificado con ver_paso_completo, más 6 búsquedas adicionales mías) — no existe nodo ni arista que exprese estos contenidos, y el nodo fiduciario ni siquiera se conecta a 'sujeto obligado' o a protección de usuarios. ¿El PDF tiene el dato? SÍ, verbatim: Punto 1.1.2.3 enumera 'Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras' entre los sujetos obligados, y Punto 1.1.1 dice que los deudores de créditos cedidos son usuarios 'independientemente de que hayan o no sido notificados fehacientemente'. Como el dato está en el PDF pero ausente del grafo (no extraído a nodo/arista) → completitud_kg, no navegación ni alcanzabilidad (no hay nodo que exhibir) ni estructural (no es que falte solo la conexión: falta el contenido mismo). El agente actuó correctamente: buscó con vocabulario plausible y declaró honestamente la ausencia; no alucinó. Ambas patas (a) son primarias porque son las que explican por qué el juez reprobó (la pregunta pedía respuesta afirmativa fundada y el agente no pudo darla por el hueco del grafo). Descarto sin_defecto: la respuesta efectivamente quedó incompleta contra el ground truth del PDF.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta … [+416 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_sujeto_obligado"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_sujeto_obligado\", \"type\": \"EntidadFinanciera\", \"label\": \"Sujetos obligados\", \"properties\": {\"categoria\": \"entidades financieras\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.2. Exigencia básica.\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 2)\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 9.7. Operaciones cursadas por el Sistema de Monedas Locales (SML).\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2 (PDF pág 23)\", \"pasaje\": \"1.1.2. deberá nombrar a un  funcionario como responsable de atención al usuario de \\nservicios financieros en carácter de titular y, por lo menos, otro como suplente, quienes \\ndeberán asegurar la adecuada atención de los usuarios de servicios financieros, de \\nconformidad con lo establecido en el punto 3.1.2.  \\nDeberá obrar en poder del sujeto obligado la documentación respaldatoria de las desig-\\nnaciones, junto con los datos personales de los funcionarios nombrados como respon-\\nsables (titular y suplente/s). Además, deberán mantenerse actual izados e informarse \\npor medio del régimen informativo establecido al efecto los números de teléfonos, fax y \\ndirección/es postales y de correo electrónico destinadas a la canalización de las com u-\\nnicaciones vinculadas con el servicio de atención al usuario de servicios financieros. \\nSus funciones y responsabilidades serán: \\n3.1.1.1. Recibir y dar curso a las presentaciones –concernientes al sujeto obligado que \\nrepresentan– que inicie… [+420 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores de créditos cedidos entidades financieras usuarios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores de créditos cedidos entidades financieras usuarios\", \"total_con_match\": 2466, \"resultados\": [{\"id\": \"Operacion_transformacion_de_entidades_financieras\", \"type\": \"Operacion\", \"label\": \"Transformación de entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: transformación de entidades financieras\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_cuando_el_total_de_participaciones_en_el_capital_de_entidades_financieras_empres\", \"type\": \"Restriccion\", \"label\": \"Límite tenencias capital 10%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el total de participaciones en el capital de entidades financieras, empresas de servicios complementarios de la actividad financiera y compañías de segur…\"}, {\"id\": \"Restriccion_impedimento_para_transformacion_de_entidades_financieras_cuando_exista_obligacio\", \"type… [+2457 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores fideicomisos financieros no notificados transferencia fiduciaria",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores fideicomisos financieros no notificados transferencia fiduciaria\", \"total_con_match\": 465, \"resultados\": [{\"id\": \"Operacion_emision_de_valores_de_deuda_fiduciaria_por_fideicomisos_financieros\", \"type\": \"Operacion\", \"label\": \"Emisión valores deuda fiduciaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: emisión de valores de deuda fiduciaria por fideicomisos financieros\"}, {\"id\": \"Excepcion_valores_de_deuda_fiduciaria_emitidos_por_fiduciarios_de_fideicomisos_financieros\", \"type\": \"Excepcion\", \"label\": \"Valores deuda fiduciaria fideicomisos financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Valores de deuda fiduciaria emitidos por fiduciarios de fideicomisos financieros con oferta pública denominados y suscritos en moneda extranjera cuyos servicios…\"}, {\"id\": \"EntidadFinanciera_fideicomiso_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Fideicomisos financieros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: fideicomiso financiero\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 2,… [+1641 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "sujetos obligados operadores cambio fiduciarios fideicomisos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"sujetos obligados operadores cambio fiduciarios fideicomisos\", \"total_con_match\": 96, \"resultados\": [{\"id\": \"EntidadFinanciera_sujeto_obligado\", \"type\": \"EntidadFinanciera\", \"label\": \"Sujetos obligados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidades financieras\"}, {\"id\": \"EntidadFinanciera_operador_de_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operadores de cambio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: operador de cambio\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de\", \"type\": \"Obligacion\", \"label\": \"Garantizar derechos de usuarios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los sujetos obligados deberán adoptar las acciones necesarias para garantizar derechos de protección de seguridad e intereses económicos, información clara y ve…\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_explicitar_en_un_manual_de_procedimiento_los_pasos\", \"type\": \"Obligacion\", \"label\": \"Elaborar manual de procedimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los sujetos obligados deberán explicitar en un manual de procedimiento los pasos y los recaudos que observarán… [+2196 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p. 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 3\", \"metodo\": \"pagina\", \"ref\": \"p.3 (PDF absoluto 1-based)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta categor… [+1564 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "usuario servicios financieros deudores créditos cedidos carácter",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"usuario servicios financieros deudores créditos cedidos carácter\", \"total_con_match\": 225, \"resultados\": [{\"id\": \"Obligacion_el_usuario_de_servicios_financieros_debe_ser_notificado_de_las_modificaciones_qu\", \"type\": \"Obligacion\", \"label\": \"Notificar cambios de condiciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días cor…\"}, {\"id\": \"Operacion_atencion_al_usuario_de_servicios_financieros\", \"type\": \"Operacion\", \"label\": \"Atención de consultas y reclamos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: atención al usuario de servicios financieros\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: usuario de servicio financiero\"}, {\"id\": \"Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cláusulas abusivas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En los contratos c… [+2495 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "EntidadFinanciera_usuario_de_servicio_financiero",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"label\": \"Usuarios de servicios financieros\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Restriccion_en_ningun_caso_podran_aplicarse_comisiones_y_o_cargos_al_usuario_por_servicios_f\", \"vecino_label\": \"Prohibición de comisiones por servicios no solicitados\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 3)\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "EntidadFinanciera_fiduciario_fideicomiso_financiero",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero\", \"label\": \"Fiduciarios fideicomisos financieros\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"ejecuta\", \"vecino_id\": \"Operacion_emision_de_valores_de_deuda_fiduciaria_por_fideicomisos_financieros\", \"vecino_label\": \"Emisión valores deuda fiduciaria\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "fiduciarios fideicomisos acreedores créditos cedidos sujetos obligados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"fiduciarios fideicomisos acreedores créditos cedidos sujetos obligados\", \"total_con_match\": 65, \"resultados\": [{\"id\": \"EntidadFinanciera_sujeto_obligado\", \"type\": \"EntidadFinanciera\", \"label\": \"Sujetos obligados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: entidades financieras\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de\", \"type\": \"Obligacion\", \"label\": \"Garantizar derechos de usuarios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los sujetos obligados deberán adoptar las acciones necesarias para garantizar derechos de protección de seguridad e intereses económicos, información clara y ve…\"}, {\"id\": \"Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_se_imputaran_al_f\", \"type\": \"Obligacion\", \"label\": \"Imputación al firmante o pagador\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los créditos cedidos a favor de la entidad sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_explicitar_en_un_manual_de_procedimiento_los_pasos\", \"type\": \"Obligacion\", \"la… [+2396 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "independientemente notificados fehacientemente transferencia obligación usuarios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"independientemente notificados fehacientemente transferencia obligación usuarios\", \"total_con_match\": 1305, \"resultados\": [{\"id\": \"Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de\", \"type\": \"Obligacion\", \"label\": \"Garantizar derechos de usuarios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los sujetos obligados deberán adoptar las acciones necesarias para garantizar derechos de protección de seguridad e intereses económicos, información clara y ve…\"}, {\"id\": \"Obligacion_los_usuarios_tienen_derecho_a_la_libertad_de_eleccion_en_toda_relacion_de_consum\", \"type\": \"Obligacion\", \"label\": \"Garantizar libertad de elección\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los usuarios tienen derecho a la libertad de elección en toda relación de consumo\"}, {\"id\": \"Obligacion_se_debera_dar_a_estos_usuarios_la_opcion_de_obtener_en_sistema_braille_la_docume\", \"type\": \"Obligacion\", \"label\": \"Documentación en sistema Braille\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se deberá dar a estos usuarios la opción de obtener en sistema Braille la documentación asociada a los productos que contratan (condiciones pactadas en los cont…\"},… [+2463 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"fiduciario sujeto obligado protección usuarios\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"fiduciario sujeto obligado protección usuarios\", \"total_con_match\": 87, \"resultados\": [{\"id\": \"Restriccion_el_importe_de_los_cargos_que_el_sujeto_obligado_transfiera_a_los_usuarios_no_pod\", \"type\": \"Restriccion\", \"label\": \"Cargos no superiores a costo de terceros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El importe de los cargos que el sujeto obligado transfiera a los usuarios no podrá ser superior al que el tercero prestador perciba de particulares, sin interme…\"}, {\"id\": \"Obligacion_el_sujeto_obligado_debera_verificar_si_situaciones_que_generan_la_obligacion_de_\", \"type\": \"Obligacion\", \"label\": \"Verificar situaciones de reintegro en usuarios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El sujeto obligado deberá verificar si situaciones que generan la obligación de reintegros ha ocurrido respecto de los usuarios que se encuentren en la misma si…\"}, {\"id\": \"Obligacion_recibir_y_dar_curso_a_las_presentaciones_concernientes_al_sujeto_obligado_que_re\", \"type\": \"Obligacion\", \"label\": \"Recibir y dar curso a presentacione… [+2411 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39818,
+      "output_tokens": 252
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41235,
+      "output_tokens": 301
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43818,
+      "output_tokens": 316
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46967,
+      "output_tokens": 364
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50189,
+      "output_tokens": 504
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 51328,
+      "output_tokens": 525
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 55091,
+      "output_tokens": 700
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 57413,
+      "output_tokens": 5240
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 109,
+     "n_claims_fallidos": 0,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fideicomiso financiero fiduciario acreedor usuarios'}",
+      "devolvio": "Nodos stub de fiduciario/fideicomiso/usuario (solo categoría), sin definición normativa",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'protección usuarios servicios financieros sujeto obligado'}",
+      "devolvio": "TO de protección de usuarios y obligaciones varias, ninguna define quién es sujeto obligado o usuario",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación créditos cartera comercial periodicidad revisión'}",
+      "devolvio": "Nodos de revisión de cartera/clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}",
+      "devolvio": "Nodo TO con provenance Punto 1.1 Partes, sin contenido de la definición",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}",
+      "devolvio": "Stub: categoria fiduciario, provenance de TO_clasificacion_deudores punto 10.2",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_revision_de_clasificacion_de_deudores'}",
+      "devolvio": "Contenido de revisión trimestral 5% del activo del fideicomiso — responde pata (b)",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero', 'direccion': 'salientes'}",
+      "devolvio": "0 salientes, 2 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fiduciario sujeto obligado protección usuarios'}",
+      "devolvio": "Restricciones/obligaciones sobre sujetos obligados, ninguna caracteriza al fiduciario como sujeto obligado",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor cedido usuario notificación cesión'}",
+      "devolvio": "Nodos deudor/cesión de créditos, ninguno con la definición de usuario",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'fiduciario fideicomiso financiero sujeto obligado'}",
+      "devolvio": "Stubs de fiduciario y nodo Sujetos obligados (categoría entidades financieras)",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor usuario cartera cedida fideicomiso'}",
+      "devolvio": "Nodos deudor/fideicomiso stub",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_revision_de_clasificacion_de_deudores', 'direccion': 'entrantes'}",
+      "devolvio": "Edges a restricciones/obligaciones de periodicidad (trimestral/semestral/anual) — confirma pata (b)",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'EntidadFinanciera_sujeto_obligado', 'direccion': 'entrantes'}",
+      "devolvio": "991 entrantes, casi todo de capitales mínimos; nodo 'sujeto obligado' es de capitales, no de protección de usuarios",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor cedido usuario aunque no notificado'}",
+      "devolvio": "Obligaciones de notificación de cambios, ninguna con la definición de usuario del punto 1.1.1",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'sujetos obligados protección usuarios punto 1.1 partes'}",
+      "devolvio": "Obligaciones que mencionan punto 1.1.2, ninguna enumera los sujetos obligados",
+      "pertinente": true
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor usuario cartera cedida aunque no notificado'}",
+      "devolvio": "Nodos deudor cartera comercial / notificación, ninguno pertinente a la definición",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó de forma exhaustiva y razonable las dos patas de (a) con múltiples variantes de términos (fiduciario sujeto obligado, deudor cedido usuario notificación, aunque no notificado, etc.). Ninguna búsqueda devolvió el nodo portador porque el contenido de los puntos 1.1.1 (definición de usuario que incluye deudores cedidos independientemente de notificación) y 1.1.2.3 (fiduciarios de fideicomisos acreedores de créditos cedidos como sujetos obligados) NO existe como nodo en el grafo. El agente declaró honestamente 'No se encontró en el KG información explícita', que es el comportamiento correcto ante un hueco del grafo. Resolvió correctamente la pata (b) con el nodo Operacion_revision_de_clasificacion_de_deudores.",
+    "thinking_decision": null,
+    "patas": [
+     "Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros",
+     "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "Periodicidad mínima con la que debe revisarse la clasificación de un cliente que registra financiaciones equivalentes al 5% o más del activo del fideicomiso"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "categoria: fiduciario fideicomiso financiero — provenances: TO_exterior_cambios_actual.pdf, Punto 3.6 Pagos de títulos de deuda; categoria: fiduciario de fideicomiso financiero — provenances: TO_clasificacion_deudores_actual.pdf, Punto 10.2. Los dos nodos de fiduciario son stubs de OTROS TOs; ningún nodo porta la caracterización de sujeto obligado de protección de usuarios (punto 1.1.2.3).",
+       "ubicacion": "EntidadFinanciera_fiduciario_fideicomiso_financiero / EntidadFinanciera_fiduciario_de_fideicomiso_financiero"
+      },
+      "fuente": {
+       "quote": "1.1.2.3. Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "fiduciario fideicomiso financiero acreedor créditos cedidos protección usuario sujeto obligado",
+       "resultado": "Solo stubs de fiduciario (categoría) y obligaciones genéricas sobre 'sujeto obligado'; ningún nodo dice que el fiduciario es sujeto obligado"
+      },
+      {
+       "consulta": "sujetos obligados entidades financieras operadores de cambio fiduciarios",
+       "resultado": "Operadores de cambio y obligaciones varias; ningún nodo enumera la lista del punto 1.1.2 ni incluye al fiduciario como sujeto obligado"
+      },
+      {
+       "consulta": "sujeto obligado protección usuarios (paso 8 del agente)",
+       "resultado": "Restricciones/obligaciones sobre sujetos obligados, ninguna caracteriza al fiduciario"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información explícita que confirme (…) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "categoria: usuario de servicio financiero — provenances: TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3. El nodo es un stub de categoría; su único vecino es una restricción de comisiones. No contiene la definición del punto 1.1.1 (deudores de créditos cedidos independientemente de notificación).",
+       "ubicacion": "EntidadFinanciera_usuario_de_servicio_financiero"
+      },
+      "fuente": {
+       "quote": "Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "deudores de créditos cedidos usuarios servicios financieros",
+       "resultado": "Nodo stub 'usuario de servicio financiero' y obligaciones periféricas; ninguno porta la definición del punto 1.1.1"
+      },
+      {
+       "consulta": "partes usuario servicios financieros deudores créditos cedidos independientemente notificados",
+       "resultado": "Obligaciones de notificación/atención; ningún nodo con la caracterización de deudores cedidos como usuarios sin notificación"
+      },
+      {
+       "consulta": "deudores fideicomisos financieros no notificados fehacientemente transferencia",
+       "resultado": "Nodos de exclusión de clasificación y fideicomiso stub; ningún nodo con la definición de usuario"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La respuesta del agente falla en las dos sub-preguntas de la parte (a); la parte (b) fue aprobada por el juez y no se re-litiga. C1a (por pata): para ambas patas de (a), el dato pertinente (que el fiduciario ES sujeto obligado — punto 1.1.2.3 — y que los deudores cedidos SON usuarios independientemente de notificación — punto 1.1.1) NUNCA apareció en la trayectoria del agente. Las 16 tool calls solo devolvieron stubs de categoría y normas periféricas. Por tanto ambas patas son context_recall. C2 (árbol de context_recall): ¿existe nodo portador del dato faltante? Verifiqué con ver_nodo y ver_vecinos que los nodos de fiduciario (EntidadFinanciera_fiduciario_fideicomiso_financiero, _de_fideicomiso_financiero) son stubs de OTROS TOs (exterior/cambios y clasificación de deudores), y que EntidadFinanciera_usuario_de_servicio_financiero es un stub de categoría cuyo único vecino es una restricción de comisiones — ninguno porta el contenido normativo. Constancia de búsqueda: probé múltiples variantes con vocabulario de la pregunta (fiduciario sujeto obligado, deudores cedidos usuarios, no notificados, partes) y ningún nodo con ese contenido aparece → descarto navegación y alcanzabilidad_kg (no existe el nodo portador, no es que no se llegue). Descarto estructural_kg porque no es un problema de conexión entre datos existentes: los datos NO existen como nodos. ¿El PDF tiene el dato? SÍ: leer_pasaje_pdf confirma verbatim el punto 1.1.1 (deudores de créditos cedidos son usuarios independientemente de notificación) y el punto 1.1.2.3 (fiduciarios de fideicomisos acreedores de créditos cedidos son sujetos obligados). Por tanto la causa es completitud_kg: el PDF contiene el dato pero la extracción a nodos fue incompleta (no se crearon nodos para los puntos 1.1.1 y 1.1.2.3). Ambas patas son primarias e independientes: cada una explica una porción de por qué el juez reprobó la respuesta de (a). El agente actuó correctamente sobre lo que tenía (declaró honestamente el hueco), por lo que no hay defecto del agente.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 321597,
+    "tokens_out": 7459
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 321597,
+    "tokens_out": 7459,
+    "latency_s": 95.912,
+    "error": null,
+    "final_raw": "Ninguna búsqueda devuelve un nodo que porte el contenido del punto 1.1.1 (definición de usuario que incluye deudores cedidos independientemente de notificación) ni del punto 1.1.2.3 (fiduciarios como sujetos obligados). Los nodos existentes son stubs de categoría o normas periféricas. El contenido del PDF existe pero NO fue extraído a nodos con ese contenido normativo. Esto es completitud_kg: el dato está en el PDF pero ausente en el grafo.\n\nTengo evidencia suficiente. Las dos patas de (a) son context_recall (el dato pertinente nunca apareció), causa completitud_kg (el PDF lo tiene, el grafo no). La pata (b) fue aprobada por el juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fideicomiso financiero fiduciario acreedor usuarios'}\", \"devolvio\": \"Nodos stub de fiduciario/fideicomiso/usuario (solo categoría), sin definición normativa\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'protección usuarios servicios financieros sujeto obligado'}\", \"devolvio\": \"TO de protección de usuarios y obligaciones varias, ninguna define quién es sujeto obligado o usuario\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación créditos cartera comercial periodicidad revisión'}\", \"devolvio\": \"Nodos de revisión de cartera/clasificación\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf'}\", \"devolvio\": \"Nodo TO con provenance Punto 1.1 Partes, sin contenido de la definición\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero'}\", \"devolvio\": \"Stub: categoria fiduciario, provenance de TO_clasificacion_deudores punto 10.2\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_revision_de_clasificacion_de_deudores'}\", \"devolvio\": \"Contenido de revisión trimestral 5% del activo del fideicomiso — responde pata (b)\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'EntidadFinanciera_fiduciario_de_fideicomiso_financiero', 'direccion': 'salientes'}\", \"devolvio\": \"0 salientes, 2 entrantes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fiduciario sujeto obligado protección usuarios'}\", \"devolvio\": \"Restricciones/obligaciones sobre sujetos obligados, ninguna caracteriza al fiduciario como sujeto obligado\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor cedido usuario notificación cesión'}\", \"devolvio\": \"Nodos deudor/cesión de créditos, ninguno con la definición de usuario\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'fiduciario fideicomiso financiero sujeto obligado'}\", \"devolvio\": \"Stubs de fiduciario y nodo Sujetos obligados (categoría entidades financieras)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor usuario cartera cedida fideicomiso'}\", \"devolvio\": \"Nodos deudor/fideicomiso stub\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_revision_de_clasificacion_de_deudores', 'direccion': 'entrantes'}\", \"devolvio\": \"Edges a restricciones/obligaciones de periodicidad (trimestral/semestral/anual) — confirma pata (b)\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'EntidadFinanciera_sujeto_obligado', 'direccion': 'entrantes'}\", \"devolvio\": \"991 entrantes, casi todo de capitales mínimos; nodo 'sujeto obligado' es de capitales, no de protección de usuarios\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor cedido usuario aunque no notificado'}\", \"devolvio\": \"Obligaciones de notificación de cambios, ninguna con la definición de usuario del punto 1.1.1\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'sujetos obligados protección usuarios punto 1.1 partes'}\", \"devolvio\": \"Obligaciones que mencionan punto 1.1.2, ninguna enumera los sujetos obligados\", \"pertinente\": true},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor usuario cartera cedida aunque no notificado'}\", \"devolvio\": \"Nodos deudor cartera comercial / notificación, ninguno pertinente a la definición\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó de forma exhaustiva y razonable las dos patas de (a) con múltiples variantes de términos (fiduciario sujeto obligado, deudor cedido usuario notificación, aunque no notificado, etc.). Ninguna búsqueda devolvió el nodo portador porque el contenido de los puntos 1.1.1 (definición de usuario que incluye deudores cedidos independientemente de notificación) y 1.1.2.3 (fiduciarios de fideicomisos acreedores de créditos cedidos como sujetos obligados) NO existe como nodo en el grafo. El agente declaró honestamente 'No se encontró en el KG información explícita', que es el comportamiento correcto ante un hueco del grafo. Resolvió correctamente la pata (b) con el nodo Operacion_revision_de_clasificacion_de_deudores.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios de servicios financieros\",\n      \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"Periodicidad mínima con la que debe revisarse la clasificación de un cliente que registra financiaciones equivalentes al 5% o más del activo del fideicomiso\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si el fiduciario de un fideicomiso financiero acreedor de créditos de cartera comercial cedidos por un banco es sujeto obligado en materia de protección de usuarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme si el fiduciario de un fideicomiso financiero es sujeto obligado bajo la normativa de protección de usuarios de servicios financieros\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"categoria: fiduciario fideicomiso financiero — provenances: TO_exterior_cambios_actual.pdf, Punto 3.6 Pagos de títulos de deuda; categoria: fiduciario de fideicomiso financiero — provenances: TO_clasificacion_deudores_actual.pdf, Punto 10.2. Los dos nodos de fiduciario son stubs de OTROS TOs; ningún nodo porta la caracterización de sujeto obligado de protección de usuarios (punto 1.1.2.3).\", \"ubicacion\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero / EntidadFinanciera_fiduciario_de_fideicomiso_financiero\"},\n        \"fuente\": {\"quote\": \"1.1.2.3. Fiduciarios de fideicomisos acreedores de créditos cedidos por entidades financieras.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"fiduciario fideicomiso financiero acreedor créditos cedidos protección usuario sujeto obligado\", \"resultado\": \"Solo stubs de fiduciario (categoría) y obligaciones genéricas sobre 'sujeto obligado'; ningún nodo dice que el fiduciario es sujeto obligado\"},\n        {\"consulta\": \"sujetos obligados entidades financieras operadores de cambio fiduciarios\", \"resultado\": \"Operadores de cambio y obligaciones varias; ningún nodo enumera la lista del punto 1.1.2 ni incluye al fiduciario como sujeto obligado\"},\n        {\"consulta\": \"sujeto obligado protección usuarios (paso 8 del agente)\", \"resultado\": \"Restricciones/obligaciones sobre sujetos obligados, ninguna caracteriza al fiduciario\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información explícita que confirme (…) si los deudores cedidos revisten carácter de usuarios aunque no hayan sido notificados de la cesión\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"categoria: usuario de servicio financiero — provenances: TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3. El nodo es un stub de categoría; su único vecino es una restricción de comisiones. No contiene la definición del punto 1.1.1 (deudores de créditos cedidos independientemente de notificación).\", \"ubicacion\": \"EntidadFinanciera_usuario_de_servicio_financiero\"},\n        \"fuente\": {\"quote\": \"Forman también parte de esta categoría los deudores de créditos cedidos por las entidades financieras comprendidas en la Ley de Entidades Financieras, independientemente de que hayan o no sido notificados fehacientemente de la transferencia de su obligación, así como los deudores de créditos adquiridos por entidades financieras por cesión.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"deudores de créditos cedidos usuarios servicios financieros\", \"resultado\": \"Nodo stub 'usuario de servicio financiero' y obligaciones periféricas; ninguno porta la definición del punto 1.1.1\"},\n        {\"consulta\": \"partes usuario servicios financieros deudores créditos cedidos independientemente notificados\", \"resultado\": \"Obligaciones de notificación/atención; ningún nodo con la caracterización de deudores cedidos como usuarios sin notificación\"},\n        {\"consulta\": \"deudores fideicomisos financieros no notificados fehacientemente transferencia\", \"resultado\": \"Nodos de exclusión de clasificación y fideicomiso stub; ningún nodo con la definición de usuario\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La respuesta del agente falla en las dos sub-preguntas de la parte (a); la parte (b) fue aprobada por el juez y no se re-litiga. C1a (por pata): para ambas patas de (a), el dato pertinente (que el fiduciario ES sujeto obligado — punto 1.1.2.3 — y que los deudores cedidos SON usuarios independientemente de notificación — punto 1.1.1) NUNCA apareció en la trayectoria del agente. Las 16 tool calls solo devolvieron stubs de categoría y normas periféricas. Por tanto ambas patas son context_recall. C2 (árbol de context_recall): ¿existe nodo portador del dato faltante? Verifiqué con ver_nodo y ver_vecinos que los nodos de fiduciario (EntidadFinanciera_fiduciario_fideicomiso_financiero, _de_fideicomiso_financiero) son stubs de OTROS TOs (exterior/cambios y clasificación de deudores), y que EntidadFinanciera_usuario_de_servicio_financiero es un stub de categoría cuyo único vecino es una restricción de comisiones — ninguno porta el contenido normativo. Constancia de búsqueda: probé múltiples variantes con vocabulario de la pregunta (fiduciario sujeto obligado, deudores cedidos usuarios, no notificados, partes) y ningún nodo con ese contenido aparece → descarto navegación y alcanzabilidad_kg (no existe el nodo portador, no es que no se llegue). Descarto estructural_kg porque no es un problema de conexión entre datos existentes: los datos NO existen como nodos. ¿El PDF tiene el dato? SÍ: leer_pasaje_pdf confirma verbatim el punto 1.1.1 (deudores de créditos cedidos son usuarios independientemente de notificación) y el punto 1.1.2.3 (fiduciarios de fideicomisos acreedores de créditos cedidos son sujetos obligados). Por tanto la causa es completitud_kg: el PDF contiene el dato pero la extracción a nodos fue incompleta (no se crearon nodos para los puntos 1.1.1 y 1.1.2.3). Ambas patas son primarias e independientes: cada una explica una porción de por qué el juez reprobó la respuesta de (a). El agente actuó correctamente sobre lo que tenía (declaró honestamente el hueco), por lo que no hay defecto del agente.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta … [+416 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_usuario_de_servicio_financiero"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"properties\": {\"categoria\": \"usuario de servicio financiero\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 3)\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2 (PDF pág 23)\", \"pasaje\": \"1.1.2. deberá nombrar a un  funcionario como responsable de atención al usuario de \\nservicios financieros en carácter de titular y, por lo menos, otro como suplente, quienes \\ndeberán asegurar la adecuada atención de los usuarios de servicios financieros, de \\nconformidad con lo establecido en el punto 3.1.2.  \\nDeberá obrar en poder del sujeto obligado la documentación respaldatoria de las desig-\\nnaciones, junto con los datos personales de los funcionarios nombrados como respon-\\nsables (titular y suplente/s). Además, deberán mantenerse actual izados e informarse \\npor medio del régimen informativo establecido al efecto los números de teléfonos, fax y \\ndirección/es postales y de correo electrónico destinadas a la canalización de las com u-\\nnicaciones vinculadas con el servicio de atención al usuario de servicios financieros. \\nSus funciones y responsabilidades serán: \\n3.1.1.1. Recibir y dar curso a las presentaciones –concernientes al sujeto obligado que \\nrepresentan– que inicie… [+420 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores de créditos cedidos usuarios servicios financieros",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores de créditos cedidos usuarios servicios financieros\", \"total_con_match\": 2438, \"resultados\": [{\"id\": \"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Protección de Usuarios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"materia: Protección de los usuarios de servicios financieros; archivo: TO_proteccion_usuarios_servicios_financieros_actual.pdf; version: 8a\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"categoria: usuario de servicio financiero\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_ofrecer_a_los_usuarios_de_servicios_financieros_po\", \"type\": \"Obligacion\", \"label\": \"Ofrecer mínimo tres compañías aseguradoras\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los sujetos obligados deberán ofrecer a los usuarios de servicios financieros por lo menos tres compañías aseguradoras no vinculadas entre sí entre las que debe…\"}, {\"id\": \"Obligacion_las_presentaciones_de_los_usuarios_de_servicios_financieros_deberan_poder_realiz\", \"type\": \"Obligacion\", \"label\": \"… [+2616 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "EntidadFinanciera_usuario_de_servicio_financiero",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"label\": \"Usuarios de servicios financieros\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Restriccion_en_ningun_caso_podran_aplicarse_comisiones_y_o_cargos_al_usuario_por_servicios_f\", \"vecino_label\": \"Prohibición de comisiones por servicios no solicitados\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 3)\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "sujetos obligados entidades financieras operadores de cambio fiduciarios",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"sujetos obligados entidades financieras operadores de cambio fiduciarios\", \"total_con_match\": 2459, \"resultados\": [{\"id\": \"EntidadFinanciera_operador_de_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operadores de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: operador de cambio\"}, {\"id\": \"Operacion_transformacion_de_entidades_financieras\", \"type\": \"Operacion\", \"label\": \"Transformación de entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: transformación de entidades financieras\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuencia mínima anu…\"}, {\"id\": \"Restriccion_cuando_el_total_de_participaciones_en_el_capital_de_entidades_financieras_empres\", \"type\": \"Restriccion\", \"label\": \"Límite tenencias capital 10%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando el total de participaciones en el capital de entidades financie… [+2348 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "fiduciario fideicomiso financiero acreedor créditos cedidos protección usuario sujeto obligado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"fiduciario fideicomiso financiero acreedor créditos cedidos protección usuario sujeto obligado\", \"total_con_match\": 166, \"resultados\": [{\"id\": \"Obligacion_en_el_caso_de_que_el_sujeto_obligado_pretenda_incorporar_nuevos_conceptos_en_cal\", \"type\": \"Obligacion\", \"label\": \"Obtener consentimiento del usuario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En el caso de que el sujeto obligado pretenda incorporar nuevos conceptos en calidad de comisiones y/o cargos que no hubiesen sido previstos en el contrato o re…\"}, {\"id\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Fiduciarios fideicomisos financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: fiduciario fideicomiso financiero\"}, {\"id\": \"Obligacion_a_los_fines_de_la_comparacion_el_sujeto_obligado_debera_informarle_al_usuario_la\", \"type\": \"Obligacion\", \"label\": \"Informar cobertura mínima del seguro\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines de la comparación, el sujeto obligado deberá informarle al usuario la cobertura mínima que debe prever el seguro en cuestión\"}, {\"id\": \"Restriccion_el_cargo_que_el_sujeto_obligado_aplique_al_usuari… [+2254 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2.1 (PDF pág 3)\", \"pasaje\": \"1.1.2.1. Entidades financieras.\\n1.1.2.2. Operadores de cambio, por las operaciones comprendidas en las normas sobre\\n“Exterior y cambios”.\\n1.1.2.3. Fiduciari os de fideicomisos acreedor es de créditos cedidos por entidades fina n-\\ncieras.\\n1.1.2.4. Empresas no financieras emisoras de tarjetas de crédito y/o compra.\\n1.1.2.5. Otros proveedores no financieros de crédito alcanzados por las normas sobre\\n“Proveedores no  financieros de crédito”, e xcepto que se trate de asociaciones\\nmutuales o cooperativas, por las financiaciones que otorguen.\\n1.\\n1.2.6. Proveedores de servicios de pago que ofrecen cuentas de pago (PSPCP).\\n1.\\n1.2.7. Proveedores de servicios de pago que cumplen la función de iniciaci ón (PSI) y\\nprestan el servicio de billetera digital.\\nC\\nuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos oblig a-\\ndos o en su nombre, ambos serán responsables por el cumplimiento de las presentes\\nnormas. Lo anterior deberá est ablecerse en los ins… [+226 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_fiduciario_fideicomiso_financiero"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Fiduciarios fideicomisos financieros\", \"properties\": {\"categoria\": \"fiduciario fideicomiso financiero\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y (parte 1)\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "EntidadFinanciera_fiduciario_fideicomiso_financiero",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_fiduciario_fideicomiso_financiero\", \"label\": \"Fiduciarios fideicomisos financieros\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"ejecuta\", \"vecino_id\": \"Operacion_emision_de_valores_de_deuda_fiduciaria_por_fideicomisos_financieros\", \"vecino_label\": \"Emisión valores deuda fiduciaria\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores fideicomisos financieros no notificados fehacientemente transferencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores fideicomisos financieros no notificados fehacientemente transferencia\", \"total_con_match\": 464, \"resultados\": [{\"id\": \"EntidadFinanciera_fideicomiso_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Fideicomisos financieros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: fideicomiso financiero\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"EntidadFinanciera_cliente_privado_no_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Clientes privados no financieros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"categoria: cliente del sector privado no financiero\"}, {\"id\": \"Operacion_emision_de_valores_de_deuda_fiduciaria_por_fideicomisos_financieros\", \"type\": \"Operacion\", \"label\": \"Emisión valores deuda fiduciaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: emisión de valores de deuda fiduciaria por fideicomisos financieros\"}, {\"id\": \"O… [+1503 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "partes usuario servicios financieros deudores créditos cedidos independientemente notificados",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"partes usuario servicios financieros deudores créditos cedidos independientemente notificados\", \"total_con_match\": 218, \"resultados\": [{\"id\": \"Obligacion_el_usuario_de_servicios_financieros_debe_ser_notificado_de_las_modificaciones_qu\", \"type\": \"Obligacion\", \"label\": \"Notificar cambios de condiciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días cor…\"}, {\"id\": \"Operacion_atencion_al_usuario_de_servicios_financieros\", \"type\": \"Operacion\", \"label\": \"Atención de consultas y reclamos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: atención al usuario de servicios financieros\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: usuario de servicio financiero\"}, {\"id\": \"Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje\", \"type\": \"Restriccion\", \"label\": \"Prohibición de cláusulas abusivas\", \"tokens_matcheados\": 3, \"resumen_prop… [+2524 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39818,
+      "output_tokens": 240
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40956,
+      "output_tokens": 367
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43701,
+      "output_tokens": 388
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45946,
+      "output_tokens": 451
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48700,
+      "output_tokens": 400
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49621,
+      "output_tokens": 407
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 52855,
+      "output_tokens": 5206
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 109,
+     "n_claims_fallidos": 0,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ]
+}

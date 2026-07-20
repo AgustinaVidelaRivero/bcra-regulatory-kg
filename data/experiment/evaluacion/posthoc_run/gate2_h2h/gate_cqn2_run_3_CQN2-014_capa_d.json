@@ -1,0 +1,984 @@
+{
+ "id_falla": "run_3/CQN2-014",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN2-014",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}",
+      "devolvio": "141 matches; nodos de operación/clasificación y el TO de clasificación de deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}",
+      "devolvio": "30 matches; las 2 Excepciones de Ley Emergencia Agropecuaria y la Obligación de considerar mora al vencimiento",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_como_refinanciacion...'}",
+      "devolvio": "descripción de la excepción que termina en 'concluya la vigencia de la emergencia declarada' (sin la frase de límites del PDF)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto...'}",
+      "devolvio": "versión corta de la excepción, provenance Punto 6.5",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Excepcion_...producto', direccion: 'ambas'}",
+      "devolvio": "exceptua→ Restriccion prohibición refinanciación; establecida_en→ TO",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}",
+      "devolvio": "la Obligación de considerar mora y restricciones de atraso",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_a_los_fines_de_la_clasificacion...'}",
+      "devolvio": "descripción: considerar mora al concluir la vigencia de la emergencia agropecuaria",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_no_se_podra_recurrir...'}",
+      "devolvio": "prohibición general de nuevas financiaciones/refinanciaciones para cancelar preexistentes",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Obligacion_a_los_fines...', direccion: 'ambas'}",
+      "devolvio": "solo establecida_en→ TO",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó con términos plausibles ('Ley Emergencia Agropecuaria refinanciación productores', 'mora atraso obligaciones emergencia agropecuaria vigencia'), abrió los tres nodos pertinentes al régimen (las dos Excepciones y la Obligación de la mora), leyó sus vecinos y encontró la excepción y su relación con la prohibición general. Con los nodos disponibles construyó una respuesta fiel a lo que el grafo le expuso. El dato de la pata 'límites' (no mejorar clasificación respecto de la situación preexistente ni extender el tratamiento más allá de la vigencia de la emergencia) simplemente no existe en ningún nodo del grafo: el nodo Excepcion truncó su extracción justo antes de esa frase. La omisión es del grafo, no del uso que hizo el agente.",
+    "thinking_decision": null,
+    "patas": [
+     "Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria",
+     "Límites que tiene ese tratamiento excepcional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límites que tiene ese tratamiento excepcional",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria. Esto significa que aunque durante la vigencia de la emergencia estas refinanciaciones no se consideren como tales para efectos de clasificación, una vez que la emergencia concluya, se evaluará la mora existente en ese momento para determinar la clasificación del deudor.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.",
+       "ubicacion": "Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto (nodo termina aquí; omite la frase de límites del PDF)"
+      },
+      "fuente": {
+       "quote": "A esos efectos, no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.1 (p.33)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia",
+       "resultado": "453 matches; ningún nodo porta la frase de límites del régimen agropecuario (devuelve restricciones de look-through, situación financiera, etc.)"
+      },
+      {
+       "consulta": "no extenderse más allá vigencia emergencia tratamiento",
+       "resultado": "381 matches; solo aparecen las dos Excepciones de emergencia agropecuaria ya conocidas, ninguna con la frase de límites"
+      },
+      {
+       "consulta": "mejoramiento clasificación asignada cliente situación individual preexistente",
+       "resultado": "144 matches; ningún nodo con el contenido de los límites del tratamiento de emergencia"
+      },
+      {
+       "consulta": "límite tratamiento emergencia agropecuaria mejora clasificación",
+       "resultado": "255 matches; aparece Restriccion 'no mejoras si atraso mayor a 31 días' (límite general de refinanciaciones, no del régimen agropecuario) y las Excepciones ya vistas; ninguno con la frase de límites"
+      },
+      {
+       "consulta": "tratamiento marco emergencia no podrá implicar aplicación vigencia fijada",
+       "resultado": "456 matches; ningún nodo porta el contenido de la pata de límites"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas: (1) la excepción del régimen de Ley de Emergencia Agropecuaria y (2) los LÍMITES de ese tratamiento. El juez aprobó las afirmaciones de la pata (1) y la parte de la mora al vencimiento, pero marcó la respuesta como incorrecta. Investigando el PDF (Punto 7.1, p.33) el texto establece DOS límites específicos del tratamiento excepcional que la respuesta NO incluyó: 'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.' La respuesta del agente cubrió la pata de límites solo parcialmente (consideración de la mora al concluir la vigencia), omitiendo estos dos límites centrales que son el núcleo de la segunda pata. Aplicando C1a por pata: ¿apareció en la trayectoria el dato pertinente a la pata de límites (los dos límites del tratamiento)? Verifiqué los outputs completos (paso 2 íntegro) y el contenido de los tres nodos del régimen (Excepcion...producto, Excepcion...concepto, Obligacion...mora): NINGUNO porta la frase de límites. El nodo Excepcion_...producto extrajo el texto del PDF pero se cortó exactamente antes de la frase de los límites. Por tanto el dato pertinente NUNCA apareció en la trayectoria → context_recall a nivel pata. C2 (árbol context_recall): ¿existe nodo portador del dato faltante? Cinco búsquedas con vocabulario ex ante razonable (mejoramiento clasificación, no extenderse más allá vigencia, situación individual preexistente, límite tratamiento emergencia) no devuelven ningún nodo con ese contenido → el nodo no existe. ¿El PDF tiene el dato? SÍ, explícitamente en el Punto 7.1. Dato presente en la fuente y ausente del grafo (extracción incompleta del nodo Excepcion) → completitud_kg, lado grafo, primaria: es lo que explica por qué el juez reprobó (pata de límites incompleta). El agente actuó correctamente sobre lo que el grafo le expuso (paso_decision_error null): buscó y abrió todos los nodos pertinentes disponibles; el hueco es del KG, no del uso.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 251276,
+    "tokens_out": 7153
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 251276,
+    "tokens_out": 7153,
+    "latency_s": 98.664,
+    "error": null,
+    "final_raw": "Confirmado. En el paso 2, el agente vio los 3 nodos relacionados con la emergencia agropecuaria, y ninguno porta la frase de límites. El agente exploró bien lo disponible; el dato simplemente no está en el grafo. Tengo evidencia suficiente para atribuir.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}\", \"devolvio\": \"141 matches; nodos de operación/clasificación y el TO de clasificación de deudores\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}\", \"devolvio\": \"30 matches; las 2 Excepciones de Ley Emergencia Agropecuaria y la Obligación de considerar mora al vencimiento\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_como_refinanciacion...'}\", \"devolvio\": \"descripción de la excepción que termina en 'concluya la vigencia de la emergencia declarada' (sin la frase de límites del PDF)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto...'}\", \"devolvio\": \"versión corta de la excepción, provenance Punto 6.5\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Excepcion_...producto', direccion: 'ambas'}\", \"devolvio\": \"exceptua→ Restriccion prohibición refinanciación; establecida_en→ TO\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}\", \"devolvio\": \"la Obligación de considerar mora y restricciones de atraso\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_a_los_fines_de_la_clasificacion...'}\", \"devolvio\": \"descripción: considerar mora al concluir la vigencia de la emergencia agropecuaria\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_no_se_podra_recurrir...'}\", \"devolvio\": \"prohibición general de nuevas financiaciones/refinanciaciones para cancelar preexistentes\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Obligacion_a_los_fines...', direccion: 'ambas'}\", \"devolvio\": \"solo establecida_en→ TO\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó con términos plausibles ('Ley Emergencia Agropecuaria refinanciación productores', 'mora atraso obligaciones emergencia agropecuaria vigencia'), abrió los tres nodos pertinentes al régimen (las dos Excepciones y la Obligación de la mora), leyó sus vecinos y encontró la excepción y su relación con la prohibición general. Con los nodos disponibles construyó una respuesta fiel a lo que el grafo le expuso. El dato de la pata 'límites' (no mejorar clasificación respecto de la situación preexistente ni extender el tratamiento más allá de la vigencia de la emergencia) simplemente no existe en ningún nodo del grafo: el nodo Excepcion truncó su extracción justo antes de esa frase. La omisión es del grafo, no del uso que hizo el agente.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria\",\n      \"Límites que tiene ese tratamiento excepcional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límites que tiene ese tratamiento excepcional\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria. Esto significa que aunque durante la vigencia de la emergencia estas refinanciaciones no se consideren como tales para efectos de clasificación, una vez que la emergencia concluya, se evaluará la mora existente en ese momento para determinar la clasificación del deudor.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.\", \"ubicacion\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto (nodo termina aquí; omite la frase de límites del PDF)\"},\n        \"fuente\": {\"quote\": \"A esos efectos, no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.1 (p.33)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia\", \"resultado\": \"453 matches; ningún nodo porta la frase de límites del régimen agropecuario (devuelve restricciones de look-through, situación financiera, etc.)\"},\n        {\"consulta\": \"no extenderse más allá vigencia emergencia tratamiento\", \"resultado\": \"381 matches; solo aparecen las dos Excepciones de emergencia agropecuaria ya conocidas, ninguna con la frase de límites\"},\n        {\"consulta\": \"mejoramiento clasificación asignada cliente situación individual preexistente\", \"resultado\": \"144 matches; ningún nodo con el contenido de los límites del tratamiento de emergencia\"},\n        {\"consulta\": \"límite tratamiento emergencia agropecuaria mejora clasificación\", \"resultado\": \"255 matches; aparece Restriccion 'no mejoras si atraso mayor a 31 días' (límite general de refinanciaciones, no del régimen agropecuario) y las Excepciones ya vistas; ninguno con la frase de límites\"},\n        {\"consulta\": \"tratamiento marco emergencia no podrá implicar aplicación vigencia fijada\", \"resultado\": \"456 matches; ningún nodo porta el contenido de la pata de límites\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas: (1) la excepción del régimen de Ley de Emergencia Agropecuaria y (2) los LÍMITES de ese tratamiento. El juez aprobó las afirmaciones de la pata (1) y la parte de la mora al vencimiento, pero marcó la respuesta como incorrecta. Investigando el PDF (Punto 7.1, p.33) el texto establece DOS límites específicos del tratamiento excepcional que la respuesta NO incluyó: 'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.' La respuesta del agente cubrió la pata de límites solo parcialmente (consideración de la mora al concluir la vigencia), omitiendo estos dos límites centrales que son el núcleo de la segunda pata. Aplicando C1a por pata: ¿apareció en la trayectoria el dato pertinente a la pata de límites (los dos límites del tratamiento)? Verifiqué los outputs completos (paso 2 íntegro) y el contenido de los tres nodos del régimen (Excepcion...producto, Excepcion...concepto, Obligacion...mora): NINGUNO porta la frase de límites. El nodo Excepcion_...producto extrajo el texto del PDF pero se cortó exactamente antes de la frase de los límites. Por tanto el dato pertinente NUNCA apareció en la trayectoria → context_recall a nivel pata. C2 (árbol context_recall): ¿existe nodo portador del dato faltante? Cinco búsquedas con vocabulario ex ante razonable (mejoramiento clasificación, no extenderse más allá vigencia, situación individual preexistente, límite tratamiento emergencia) no devuelven ningún nodo con ese contenido → el nodo no existe. ¿El PDF tiene el dato? SÍ, explícitamente en el Punto 7.1. Dato presente en la fuente y ausente del grafo (extracción incompleta del nodo Excepcion) → completitud_kg, lado grafo, primaria: es lo que explica por qué el juez reprobó (pata de límites incompleta). El agente actuó correctamente sobre lo que el grafo le expuso (paso_decision_error null): buscó y abrió todos los nodos pertinentes disponibles; el hueco es del KG, no del uso.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.1. Criterio de clasificación."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 33)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimient… [+422 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5. Niveles de clasificación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 33"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimiento de las obligaciones a que se ref… [+1803 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 34"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 34\", \"metodo\": \"pagina\", \"ref\": \"p.34 (PDF absoluto 1-based)\", \"pasaje\": \"A ta\\nl fin, no se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos re-\\ngistran un atraso mayor a 31 días en el pago de sus obligaciones refinanciadas.  \\nLos cobros no aplicados y las quitas concedidas en forma previa a la refinanciación reducen el \\nimporte de la obligación sujeta a refinanciación, con lo cual no son computables para la mejora \\nde la clasificación en función de los parámetros establecidos para cada modalidad de pago de \\nla refinanciación. Por lo tanto, la forma en que se imputen tales conceptos a la cancelación de \\nla deuda objeto de refinanciación dependerá del criterio que opte por emplear cada entidad, sin \\nperjuicio de la observancia de las demás disposiciones de carácter general que sean aplicables \\nen la materia. \\nLos pagos por adelantado y/o anticipos que sean efectuados en oportunidad de la refinancia-\\nción para acceder a ella o con posterioridad a su estructuración, serán computados, en término \\nde las cuotas o porcentaje de amortización de capital,… [+1808 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia\", \"total_con_match\": 453, \"resultados\": [{\"id\": \"Restriccion_no_se_podra_aplicar_el_tratamiento_de_transparencia_look_through_si_se_trata_de_\", \"type\": \"Restriccion\", \"label\": \"Prohibición de retitulización para look-through\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se podrá aplicar el tratamiento de transparencia (look-through) si se trata de una retitulización\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Restriccion_presente_una_situacion_financiera_iliquida_y_un_nivel_de_flujo_de_fondos_que_no_\", \"type\": \"Restriccion\", \"label\": \"Situación financiera ilíquida\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Presente una situación financiera ilíquida y un nivel de flujo de fondos que no le permita atender el pago de la totalidad del capital y de los intereses de las…\"}, {\"id\": \"Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_p… [+2410 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "no extenderse más allá vigencia emergencia tratamiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"no extenderse más allá vigencia emergencia tratamiento\", \"total_con_match\": 381, \"resultados\": [{\"id\": \"Obligacion_las_participaciones_en_fondos_se_deberan_tratar_de_acuerdo_con_uno_o_mas_de_los_\", \"type\": \"Obligacion\", \"label\": \"Tratamiento según enfoques\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las participaciones en fondos se deberán tratar de acuerdo con uno o más de los siguientes enfoques: de transparencia (LTA), reglamentario (MBA) y residual (FBA…\"}, {\"id\": \"Restriccion_clientes_del_sector_privado_no_financiero_cuya_deuda_por_todo_concepto_mas_el_im\", \"type\": \"Restriccion\", \"label\": \"Límite de deuda otorgamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clientes del sector privado no financiero, cuya deuda (por todo concepto) más el importe de la financiación solicitada, al momento del otorgamiento de ésta, exc…\"}, {\"id\": \"Restriccion_el_periodo_de_vigencia_del_derivado_de_credito_no_podra_ser_inferior_a_cualquier\", \"type\": \"Restriccion\", \"label\": \"Período mínimo de vigencia derivados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El período de vigencia del derivado de crédito no podrá ser inferior a cualquier período de gracia necesario pa… [+2328 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "mejoramiento clasificación asignada cliente situación individual preexistente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"mejoramiento clasificación asignada cliente situación individual preexistente\", \"total_con_match\": 144, \"resultados\": [{\"id\": \"Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr\", \"type\": \"Restriccion\", \"label\": \"Situación financiera mala\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Restriccion_el_cliente_debe_presentar_una_situacion_financiera_iliquida_y_muy_alto_nivel_de_\", \"type\": \"Restriccion\", \"label\": \"Situación financiera ilíquida\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente debe presentar una situación financiera ilíquida y muy alto nivel de endeudamiento, con resultados negativos en la explotación y obligación de vender…\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": … [+2293 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite tratamiento emergencia agropecuaria mejora clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite tratamiento emergencia agropecuaria mejora clasificación\", \"total_con_match\": 255, \"resultados\": [{\"id\": \"Restriccion_no_se_podran_efectuar_mejoras_en_las_clasificaciones_de_los_clientes_si_los_mism\", \"type\": \"Restriccion\", \"label\": \"Límite atraso para mejora de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos registran un atraso mayor a 31 días en el pago de sus obligaciones refinanci…\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …\"}, {\"id\": \"Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p\", \"type\": \"Excepcion\", \"label\": \"Excepción Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No se considerarán dentro de ese concepto las refinanciaciones … [+2557 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_no_se_podran_efectuar_mejoras_en_las_clasificaciones_de_los_clientes_si_los_mism"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_no_se_podran_efectuar_mejoras_en_las_clasificaciones_de_los_clientes_si_los_mism\", \"type\": \"Restriccion\", \"label\": \"Límite atraso para mejora de clasificación\", \"properties\": {\"descripcion\": \"No se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos registran un atraso mayor a 31 días en el pago de sus obligaciones refinanciadas.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"31 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tratamiento marco emergencia no podrá implicar aplicación vigencia fijada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"tratamiento marco emergencia no podrá implicar aplicación vigencia fijada\", \"total_con_match\": 456, \"resultados\": [{\"id\": \"Restriccion_el_periodo_de_vigencia_del_derivado_de_credito_no_podra_ser_inferior_a_cualquier\", \"type\": \"Restriccion\", \"label\": \"Período mínimo de vigencia derivados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El período de vigencia del derivado de crédito no podrá ser inferior a cualquier período de gracia necesario para poder determinar que efectivamente se ha produ…\"}, {\"id\": \"Restriccion_no_se_podra_aplicar_el_tratamiento_de_transparencia_look_through_si_se_trata_de_\", \"type\": \"Restriccion\", \"label\": \"Prohibición de retitulización para look-through\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se podrá aplicar el tratamiento de transparencia (look-through) si se trata de una retitulización\"}, {\"id\": \"Excepcion_el_tratamiento_otorgado_a_la_exposicion_al_sector_publico_no_financiero_no_sera_\", \"type\": \"Excepcion\", \"label\": \"No aplicación para contrapartes con tratamiento sector privado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El tratamiento otorgado a la exposición al sector público no financiero no será de aplicación en las… [+2582 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"total_con_match\": 30, \"resultados\": [{\"id\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\", \"type\": \"Excepcion\", \"label\": \"Excepción refinanciación por Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de…\"}, {\"id\": \"Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p\", \"type\": \"Excepcion\", \"label\": \"Excepción Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se considerarán dentro de ese concepto las refinanciaciones otorgadas a los productores agropecuarios cuando ello resulte de la aplicación de disposiciones v…\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al… [+2146 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22291,
+      "output_tokens": 367
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24091,
+      "output_tokens": 283
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26865,
+      "output_tokens": 692
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30730,
+      "output_tokens": 473
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34479,
+      "output_tokens": 789
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35522,
+      "output_tokens": 669
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37813,
+      "output_tokens": 146
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39485,
+      "output_tokens": 3734
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "gate_cqn2",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-014",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}",
+      "devolvio": "141 matches; nodos de operaciones de clasificación/refinanciación y el TextoOrdenado de clasificación de deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}",
+      "devolvio": "30 matches; dos nodos Excepcion (7.1 y 6.5) y la Obligacion de considerar mora al concluir la emergencia",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto'}",
+      "devolvio": "Descripción de la excepción del Punto 7.1 que TERMINA en 'concluya la vigencia de la emergencia declarada' — omite los límites posteriores",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p'}",
+      "devolvio": "Excepción análoga del Punto 6.5 (cartera comercial), sin el añadido de la mora",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Excepcion_no_se_consideraran_como_refinanciacion...', direccion: 'ambas'}",
+      "devolvio": "2 salientes: establecida_en TextoOrdenado y exceptua la Prohibición de refinanciación",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}",
+      "devolvio": "46 matches; la Obligacion de considerar mora al concluir la emergencia entre los primeros",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de'}",
+      "devolvio": "Descripción: considerar la mora al momento en que concluya la vigencia de la emergencia",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can'}",
+      "devolvio": "Descripción de la regla general (prohibición de refinanciar para cancelar obligaciones preexistentes)",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Obligacion_a_los_fines...mora...', direccion: 'ambas'}",
+      "devolvio": "1 saliente: establecida_en TextoOrdenado",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente navegó correctamente: buscó por los términos de la pregunta, encontró el nodo Excepcion pertinente del Punto 7.1, lo abrió íntegro, siguió sus vecinos (la excepción -exceptua-> la prohibición general) y abrió el nodo de la mora. Respondió exactamente lo que los nodos consultados contenían. La pata 2 (límites del tratamiento) quedó incompleta no porque el agente omitiera consultar algo alcanzable, sino porque el nodo Excepcion está truncado y omite los límites; ningún otro nodo del grafo los porta (búsquedas documentadas). El agente actuó bien sobre lo que el grafo le exponía.",
+    "thinking_decision": null,
+    "patas": [
+     "Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria",
+     "Límites que tiene ese tratamiento excepcional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límites que tiene ese tratamiento excepcional",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.",
+       "ubicacion": "Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto"
+      },
+      "fuente": {
+       "quote": "A esos efectos, no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.1 (pág. 33)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación preexistente emergencia",
+       "resultado": "437 matches, ninguno porta el límite; devuelve restricciones no relacionadas y el nodo Excepcion truncado"
+      },
+      {
+       "consulta": "mejoramiento clasificación situación individual preexistente emergencia agropecuaria vigencia",
+       "resultado": "77 matches; los únicos nodos de emergencia agropecuaria son los ya vistos (Excepcion truncada + Obligacion de la mora), ninguno con el límite del PDF"
+      },
+      {
+       "consulta": "no podrá extenderse más allá vigencia fijada emergencia",
+       "resultado": "390 matches; ningún nodo porta la frase; solo restricciones ajenas y el nodo Excepcion truncado"
+      },
+      {
+       "consulta": "límite tratamiento excepción emergencia agropecuaria clasificación deudor",
+       "resultado": "523 matches; los mismos dos nodos de emergencia agropecuaria y otras excepciones ajenas; ninguno con 'no podrá implicar mejoramiento ... ni extenderse más allá de la vigencia'"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "El juez aprobó las 5 afirmaciones desagregadas pero reprobó la respuesta global; eso apunta a una pata SIN cubrir. Descompuse en dos patas: (1) la excepción que rige y (2) los límites del tratamiento. La pata 1 quedó bien cubierta (nodos y edges confirman: la Excepcion 'no se considerarán como refinanciación' -exceptua-> la Prohibición general). La pata 2 (límites) es donde la respuesta falla: el PDF (Punto 7.1, pág. 33) establece DOS límites explícitos del tratamiento —'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella'—. El agente respondió como único 'límite' la regla de considerar la mora al concluir la emergencia, que en rigor no es el límite del tratamiento sino la pauta de evaluación de mora. C1a (por pata): el dato pertinente de la pata 2 (los dos límites verdaderos) NUNCA apareció en la trayectoria; verifiqué con ver_paso_completo(2) que el output completo del buscar_nodos no expone ningún nodo con esos límites → context_recall. C2 (causa): ¿existe nodo portador? Cuatro búsquedas documentadas con vocabulario ex ante no devuelven ningún nodo con la frase del límite; el único nodo Excepcion pertinente TRUNCA su descripción justo antes del límite (termina en 'concluya la vigencia de la emergencia declarada'). ¿El PDF tiene el dato? Sí, en el mismo Punto 7.1 que funda el nodo, la oración siguiente. Por tanto el dato existe en la fuente pero el nodo lo omite por extracción incompleta → completitud_kg (no alcanzabilidad_kg, porque no hay nodo portador oculto: el nodo existe pero está truncado; no es navegación, porque no hay nodo alcanzable que el agente haya dejado de consultar). El agente actuó correctamente sobre lo que el grafo le exponía; el defecto es del grafo. Par: {context_recall, completitud_kg}, primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 9,
+    "max_tool_calls": 40,
+    "tokens_in": 174877,
+    "tokens_out": 6232
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 9,
+    "tokens_in": 174877,
+    "tokens_out": 6232,
+    "latency_s": 87.345,
+    "error": null,
+    "final_raw": "Confirmado: en el paso 2, el output completo NO contiene ningún nodo con el límite \"no podrá implicar mejoramiento... ni extenderse más allá de la vigencia\". El vocabulario ex ante del agente (pregunta + outputs) no exponía este dato en ningún lado.\n\nTengo evidencia suficiente. El caso es claro: la pata 2 (límites) quedó sin su dato pertinente porque el nodo Excepcion está truncado (extracción incompleta), y el PDF sí lo tiene → context_recall / completitud_kg.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}\", \"devolvio\": \"141 matches; nodos de operaciones de clasificación/refinanciación y el TextoOrdenado de clasificación de deudores\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}\", \"devolvio\": \"30 matches; dos nodos Excepcion (7.1 y 6.5) y la Obligacion de considerar mora al concluir la emergencia\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto'}\", \"devolvio\": \"Descripción de la excepción del Punto 7.1 que TERMINA en 'concluya la vigencia de la emergencia declarada' — omite los límites posteriores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p'}\", \"devolvio\": \"Excepción análoga del Punto 6.5 (cartera comercial), sin el añadido de la mora\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Excepcion_no_se_consideraran_como_refinanciacion...', direccion: 'ambas'}\", \"devolvio\": \"2 salientes: establecida_en TextoOrdenado y exceptua la Prohibición de refinanciación\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}\", \"devolvio\": \"46 matches; la Obligacion de considerar mora al concluir la emergencia entre los primeros\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de'}\", \"devolvio\": \"Descripción: considerar la mora al momento en que concluya la vigencia de la emergencia\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can'}\", \"devolvio\": \"Descripción de la regla general (prohibición de refinanciar para cancelar obligaciones preexistentes)\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Obligacion_a_los_fines...mora...', direccion: 'ambas'}\", \"devolvio\": \"1 saliente: establecida_en TextoOrdenado\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente navegó correctamente: buscó por los términos de la pregunta, encontró el nodo Excepcion pertinente del Punto 7.1, lo abrió íntegro, siguió sus vecinos (la excepción -exceptua-> la prohibición general) y abrió el nodo de la mora. Respondió exactamente lo que los nodos consultados contenían. La pata 2 (límites del tratamiento) quedó incompleta no porque el agente omitiera consultar algo alcanzable, sino porque el nodo Excepcion está truncado y omite los límites; ningún otro nodo del grafo los porta (búsquedas documentadas). El agente actuó bien sobre lo que el grafo le exponía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria\",\n      \"Límites que tiene ese tratamiento excepcional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límites que tiene ese tratamiento excepcional\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.\", \"ubicacion\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\"},\n        \"fuente\": {\"quote\": \"A esos efectos, no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.1 (pág. 33)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación preexistente emergencia\", \"resultado\": \"437 matches, ninguno porta el límite; devuelve restricciones no relacionadas y el nodo Excepcion truncado\"},\n        {\"consulta\": \"mejoramiento clasificación situación individual preexistente emergencia agropecuaria vigencia\", \"resultado\": \"77 matches; los únicos nodos de emergencia agropecuaria son los ya vistos (Excepcion truncada + Obligacion de la mora), ninguno con el límite del PDF\"},\n        {\"consulta\": \"no podrá extenderse más allá vigencia fijada emergencia\", \"resultado\": \"390 matches; ningún nodo porta la frase; solo restricciones ajenas y el nodo Excepcion truncado\"},\n        {\"consulta\": \"límite tratamiento excepción emergencia agropecuaria clasificación deudor\", \"resultado\": \"523 matches; los mismos dos nodos de emergencia agropecuaria y otras excepciones ajenas; ninguno con 'no podrá implicar mejoramiento ... ni extenderse más allá de la vigencia'\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez aprobó las 5 afirmaciones desagregadas pero reprobó la respuesta global; eso apunta a una pata SIN cubrir. Descompuse en dos patas: (1) la excepción que rige y (2) los límites del tratamiento. La pata 1 quedó bien cubierta (nodos y edges confirman: la Excepcion 'no se considerarán como refinanciación' -exceptua-> la Prohibición general). La pata 2 (límites) es donde la respuesta falla: el PDF (Punto 7.1, pág. 33) establece DOS límites explícitos del tratamiento —'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella'—. El agente respondió como único 'límite' la regla de considerar la mora al concluir la emergencia, que en rigor no es el límite del tratamiento sino la pauta de evaluación de mora. C1a (por pata): el dato pertinente de la pata 2 (los dos límites verdaderos) NUNCA apareció en la trayectoria; verifiqué con ver_paso_completo(2) que el output completo del buscar_nodos no expone ningún nodo con esos límites → context_recall. C2 (causa): ¿existe nodo portador? Cuatro búsquedas documentadas con vocabulario ex ante no devuelven ningún nodo con la frase del límite; el único nodo Excepcion pertinente TRUNCA su descripción justo antes del límite (termina en 'concluya la vigencia de la emergencia declarada'). ¿El PDF tiene el dato? Sí, en el mismo Punto 7.1 que funda el nodo, la oración siguiente. Por tanto el dato existe en la fuente pero el nodo lo omite por extracción incompleta → completitud_kg (no alcanzabilidad_kg, porque no hay nodo portador oculto: el nodo existe pero está truncado; no es navegación, porque no hay nodo alcanzable que el agente haya dejado de consultar). El agente actuó correctamente sobre lo que el grafo le exponía; el defecto es del grafo. Par: {context_recall, completitud_kg}, primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.1. Criterio de clasificación."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 33)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimient… [+422 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5. Niveles de clasificación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 34"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 34\", \"metodo\": \"pagina\", \"ref\": \"p.34 (PDF absoluto 1-based)\", \"pasaje\": \"A ta\\nl fin, no se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos re-\\ngistran un atraso mayor a 31 días en el pago de sus obligaciones refinanciadas.  \\nLos cobros no aplicados y las quitas concedidas en forma previa a la refinanciación reducen el \\nimporte de la obligación sujeta a refinanciación, con lo cual no son computables para la mejora \\nde la clasificación en función de los parámetros establecidos para cada modalidad de pago de \\nla refinanciación. Por lo tanto, la forma en que se imputen tales conceptos a la cancelación de \\nla deuda objeto de refinanciación dependerá del criterio que opte por emplear cada entidad, sin \\nperjuicio de la observancia de las demás disposiciones de carácter general que sean aplicables \\nen la materia. \\nLos pagos por adelantado y/o anticipos que sean efectuados en oportunidad de la refinancia-\\nción para acceder a ella o con posterioridad a su estructuración, serán computados, en término \\nde las cuotas o porcentaje de amortización de capital,… [+1808 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 33"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimiento de las obligaciones a que se ref… [+1803 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación preexistente emergencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación preexistente emergencia\", \"total_con_match\": 437, \"resultados\": [{\"id\": \"Restriccion_no_se_podra_aplicar_el_tratamiento_de_transparencia_look_through_si_se_trata_de_\", \"type\": \"Restriccion\", \"label\": \"Prohibición de retitulización para look-through\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se podrá aplicar el tratamiento de transparencia (look-through) si se trata de una retitulización\"}, {\"id\": \"Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_podra_superar_\", \"type\": \"Restriccion\", \"label\": \"Límite valor opciones compradas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El valor de mercado de la totalidad de las opciones en cartera no podrá superar el 5% de su RPC del mes anterior\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"Excepcion_la_clasificacion_se_verifica_a_pa… [+2477 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "mejoramiento clasificación situación individual preexistente emergencia agropecuaria vigencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"mejoramiento clasificación situación individual preexistente emergencia agropecuaria vigencia\", \"total_con_match\": 77, \"resultados\": [{\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación en observación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromi…\"}, {\"id\": \"Excepcion_no_se_co… [+2080 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "no podrá extenderse más allá vigencia fijada emergencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"no podrá extenderse más allá vigencia fijada emergencia\", \"total_con_match\": 390, \"resultados\": [{\"id\": \"Restriccion_el_periodo_de_vigencia_del_derivado_de_credito_no_podra_ser_inferior_a_cualquier\", \"type\": \"Restriccion\", \"label\": \"Período mínimo de vigencia derivados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El período de vigencia del derivado de crédito no podrá ser inferior a cualquier período de gracia necesario para poder determinar que efectivamente se ha produ…\"}, {\"id\": \"Restriccion_clientes_del_sector_privado_no_financiero_cuya_deuda_por_todo_concepto_mas_el_im\", \"type\": \"Restriccion\", \"label\": \"Límite de deuda otorgamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clientes del sector privado no financiero, cuya deuda (por todo concepto) más el importe de la financiación solicitada, al momento del otorgamiento de ésta, exc…\"}, {\"id\": \"Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_podra_superar_\", \"type\": \"Restriccion\", \"label\": \"Límite valor opciones compradas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El valor de mercado de la totalidad de las opciones en cartera no podrá superar el 5% de su RPC del mes… [+2604 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite tratamiento excepción emergencia agropecuaria clasificación deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite tratamiento excepción emergencia agropecuaria clasificación deudor\", \"total_con_match\": 523, \"resultados\": [{\"id\": \"Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p\", \"type\": \"Excepcion\", \"label\": \"Excepción Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se considerarán dentro de ese concepto las refinanciaciones otorgadas a los productores agropecuarios cuando ello resulte de la aplicación de disposiciones v…\"}, {\"id\": \"Excepcion_cuando_se_hayan_asignado_al_deudor_margenes_de_credito_por_lineas_de_prestamo_es\", \"type\": \"Excepcion\", \"label\": \"Excepción exceso margen crédito dentro límite máximo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando se hayan asignado al deudor márgenes de crédito por líneas de préstamo específicas y éstos se excedan, tales situaciones no serán consideradas refinancia…\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse… [+2340 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"total_con_match\": 30, \"resultados\": [{\"id\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\", \"type\": \"Excepcion\", \"label\": \"Excepción refinanciación por Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de…\"}, {\"id\": \"Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p\", \"type\": \"Excepcion\", \"label\": \"Excepción Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se considerarán dentro de ese concepto las refinanciaciones otorgadas a los productores agropecuarios cuando ello resulte de la aplicación de disposiciones v…\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al… [+2146 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22291,
+      "output_tokens": 340
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24064,
+      "output_tokens": 291
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26846,
+      "output_tokens": 726
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30659,
+      "output_tokens": 410
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34375,
+      "output_tokens": 741
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 36642,
+      "output_tokens": 3724
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "gate_cqn2",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN2-014",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}",
+      "devolvio": "141 matches; nodos de operaciones de clasificación/refinanciación y el TextoOrdenado del TO",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}",
+      "devolvio": "30 matches; los dos nodos Excepcion agropecuaria y la Obligacion de considerar mora al concluir la emergencia",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto'}",
+      "devolvio": "descripcion termina en '...concluya la vigencia de la emergencia declarada.' (omite el segundo límite del PDF)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p'}",
+      "devolvio": "variante en punto 6.5 sin ningún límite adicional",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: excepcion agropecuaria 7.1, direccion: ambas}",
+      "devolvio": "exceptua->Restriccion prohibición refinanciación; establecida_en->TO",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}",
+      "devolvio": "46 matches; la Obligacion de considerar mora al concluir la emergencia",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de'}",
+      "devolvio": "un límite: considerar mora al concluir la vigencia; nada sobre no mejoramiento de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can'}",
+      "devolvio": "regla general de la prohibición de refinanciación",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: Obligacion mora, direccion: ambas}",
+      "devolvio": "solo establecida_en->TO",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente encontró y abrió todos los nodos pertinentes a la excepción agropecuaria (los dos nodos Excepcion y la Obligacion de considerar la mora), leyó su contenido íntegro y respondió exactamente con lo que el grafo le exponía. El único límite que los nodos contienen es el de la mora al concluir la vigencia, y el agente lo reportó. El segundo límite del PDF ('no podrá implicar mejoramiento de la clasificación... ni su aplicación extenderse más allá de la vigencia fijada') no está en ningún nodo del grafo, por lo que el agente no pudo reportarlo: actuó bien sobre lo disponible.",
+    "thinking_decision": null,
+    "patas": [
+     "Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria",
+     "Límites que tiene ese tratamiento excepcional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Límites que tiene ese tratamiento excepcional",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria. Esto significa que aunque durante la vigencia de la emergencia estas refinanciaciones no se consideren como tales para efectos de clasificación, una vez que la emergencia concluya, se evaluará la mora existente en ese momento para determinar la clasificación del deudor.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.",
+       "ubicacion": "Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto"
+      },
+      "fuente": {
+       "quote": "no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.1 (p.33)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia",
+       "resultado": "453 matches, ninguno porta el límite; solo nodos genéricos de restricciones/clasificación no relacionados"
+      },
+      {
+       "consulta": "mejoramiento clasificación preexistente emergencia vigencia fijada",
+       "resultado": "57 matches; el más cercano es la Obligacion de considerar mora (que solo tiene el primer límite), ningún nodo con la frase de no mejoramiento"
+      },
+      {
+       "consulta": "no podrá implicar mejoramiento clasificación asignada cliente situación individual",
+       "resultado": "498 matches, ninguno pertinente al límite agropecuario"
+      },
+      {
+       "consulta": "aplicación no extenderse más allá vigencia fijada emergencia",
+       "resultado": "421 matches; devuelve la variante Excepcion 6.5 sin ningún límite, ningún nodo con la restricción del no mejoramiento/no extensión"
+      },
+      {
+       "consulta": "(ver_paso_completo 2) Ley Emergencia Agropecuaria refinanciación productores",
+       "resultado": "30 matches íntegros: solo los tres nodos que el agente vio; ninguno contiene el segundo límite"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas: (1) la excepción que rige y (2) los límites del tratamiento. La pata 1 fue aprobada por el juez. La reprobación se explica por la pata 2: el PDF (punto 7.1, p.33) establece DOS límites al tratamiento excepcional — (a) considerar la mora al concluir la vigencia de la emergencia, y (b) 'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella'. El agente reportó SOLO el límite (a) y omitió el (b), que es el límite operativo más restrictivo. Investigando la causa: el nodo Excepcion que el agente usó tiene su descripcion TRUNCADA respecto del PDF — termina en '...concluya la vigencia de la emergencia declarada.' y no contiene la oración siguiente con el límite (b). El nodo Obligacion asociado tampoco lo porta. Constancia de búsqueda: cinco búsquedas con vocabulario del PDF (incluida la re-ejecución íntegra del paso 2) no devuelven NINGÚN nodo que contenga el segundo límite; los únicos nodos sobre la excepción agropecuaria son los tres que el agente vio, y ninguno lo incluye. Ver_vecinos de la restricción y de la excepción confirma que no hay nodo ni arista adicional que aporte ese dato. Por tanto, el dato pertinente a la pata 2(b) NUNCA apareció en la trayectoria porque NO existe en el grafo → síntoma context_recall a nivel pata. El árbol para context_recall pregunta si existe nodo portador: no existe, pero el PDF sí tiene el dato → completitud_kg (extracción incompleta: el nodo Excepcion recorta el párrafo del punto 7.1 y omite la oración final que contiene el límite). El agente actuó correctamente sobre lo que el grafo le expuso, por lo que la falla es del lado grafo. Primaria porque esa omisión es exactamente lo que rompe la respuesta y explica la reprobación del juez.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 212680,
+    "tokens_out": 6745
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 212680,
+    "tokens_out": 6745,
+    "latency_s": 91.283,
+    "error": null,
+    "final_raw": "No hay ningún nodo adicional que porte el segundo límite. Los vecinos de la restricción confirman que las excepciones vinculadas no incluyen el límite del \"no mejoramiento de clasificación... ni extensión más allá de la vigencia\". El dato está en el PDF pero no fue extraído a ningún nodo del grafo.\n\nTengo evidencia suficiente para atribuir.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores cartera consumo vivienda refinanciación', limite: 10}\", \"devolvio\": \"141 matches; nodos de operaciones de clasificación/refinanciación y el TextoOrdenado del TO\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Ley Emergencia Agropecuaria refinanciación productores', limite: 10}\", \"devolvio\": \"30 matches; los dos nodos Excepcion agropecuaria y la Obligacion de considerar mora al concluir la emergencia\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto'}\", \"devolvio\": \"descripcion termina en '...concluya la vigencia de la emergencia declarada.' (omite el segundo límite del PDF)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p'}\", \"devolvio\": \"variante en punto 6.5 sin ningún límite adicional\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: excepcion agropecuaria 7.1, direccion: ambas}\", \"devolvio\": \"exceptua->Restriccion prohibición refinanciación; establecida_en->TO\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'mora atraso obligaciones emergencia agropecuaria vigencia', limite: 5}\", \"devolvio\": \"46 matches; la Obligacion de considerar mora al concluir la emergencia\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de'}\", \"devolvio\": \"un límite: considerar mora al concluir la vigencia; nada sobre no mejoramiento de clasificación\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can'}\", \"devolvio\": \"regla general de la prohibición de refinanciación\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: Obligacion mora, direccion: ambas}\", \"devolvio\": \"solo establecida_en->TO\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente encontró y abrió todos los nodos pertinentes a la excepción agropecuaria (los dos nodos Excepcion y la Obligacion de considerar la mora), leyó su contenido íntegro y respondió exactamente con lo que el grafo le exponía. El único límite que los nodos contienen es el de la mora al concluir la vigencia, y el agente lo reportó. El segundo límite del PDF ('no podrá implicar mejoramiento de la clasificación... ni su aplicación extenderse más allá de la vigencia fijada') no está en ningún nodo del grafo, por lo que el agente no pudo reportarlo: actuó bien sobre lo disponible.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Excepción que rige para las refinanciaciones otorgadas a productores en el marco de la Ley de Emergencia Agropecuaria\",\n      \"Límites que tiene ese tratamiento excepcional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Límites que tiene ese tratamiento excepcional\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sin embargo, esta excepción tiene un límite importante: a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada en materia de Ley de Emergencia Agropecuaria. Esto significa que aunque durante la vigencia de la emergencia estas refinanciaciones no se consideren como tales para efectos de clasificación, una vez que la emergencia concluya, se evaluará la mora existente en ese momento para determinar la clasificación del deudor.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada.\", \"ubicacion\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\"},\n        \"fuente\": {\"quote\": \"no se considerarán dentro de ese concepto las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.1 (p.33)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia\", \"resultado\": \"453 matches, ninguno porta el límite; solo nodos genéricos de restricciones/clasificación no relacionados\"},\n        {\"consulta\": \"mejoramiento clasificación preexistente emergencia vigencia fijada\", \"resultado\": \"57 matches; el más cercano es la Obligacion de considerar mora (que solo tiene el primer límite), ningún nodo con la frase de no mejoramiento\"},\n        {\"consulta\": \"no podrá implicar mejoramiento clasificación asignada cliente situación individual\", \"resultado\": \"498 matches, ninguno pertinente al límite agropecuario\"},\n        {\"consulta\": \"aplicación no extenderse más allá vigencia fijada emergencia\", \"resultado\": \"421 matches; devuelve la variante Excepcion 6.5 sin ningún límite, ningún nodo con la restricción del no mejoramiento/no extensión\"},\n        {\"consulta\": \"(ver_paso_completo 2) Ley Emergencia Agropecuaria refinanciación productores\", \"resultado\": \"30 matches íntegros: solo los tres nodos que el agente vio; ninguno contiene el segundo límite\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas: (1) la excepción que rige y (2) los límites del tratamiento. La pata 1 fue aprobada por el juez. La reprobación se explica por la pata 2: el PDF (punto 7.1, p.33) establece DOS límites al tratamiento excepcional — (a) considerar la mora al concluir la vigencia de la emergencia, y (b) 'El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella'. El agente reportó SOLO el límite (a) y omitió el (b), que es el límite operativo más restrictivo. Investigando la causa: el nodo Excepcion que el agente usó tiene su descripcion TRUNCADA respecto del PDF — termina en '...concluya la vigencia de la emergencia declarada.' y no contiene la oración siguiente con el límite (b). El nodo Obligacion asociado tampoco lo porta. Constancia de búsqueda: cinco búsquedas con vocabulario del PDF (incluida la re-ejecución íntegra del paso 2) no devuelven NINGÚN nodo que contenga el segundo límite; los únicos nodos sobre la excepción agropecuaria son los tres que el agente vio, y ninguno lo incluye. Ver_vecinos de la restricción y de la excepción confirma que no hay nodo ni arista adicional que aporte ese dato. Por tanto, el dato pertinente a la pata 2(b) NUNCA apareció en la trayectoria porque NO existe en el grafo → síntoma context_recall a nivel pata. El árbol para context_recall pregunta si existe nodo portador: no existe, pero el PDF sí tiene el dato → completitud_kg (extracción incompleta: el nodo Excepcion recorta el párrafo del punto 7.1 y omite la oración final que contiene el límite). El agente actuó correctamente sobre lo que el grafo le expuso, por lo que la falla es del lado grafo. Primaria porque esa omisión es exactamente lo que rompe la respuesta y explica la reprobación del juez.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.1. Criterio de clasificación."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 33)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimient… [+422 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5. Niveles de clasificación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 33"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimiento de las obligaciones a que se ref… [+1803 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 34"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 34\", \"metodo\": \"pagina\", \"ref\": \"p.34 (PDF absoluto 1-based)\", \"pasaje\": \"A ta\\nl fin, no se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos re-\\ngistran un atraso mayor a 31 días en el pago de sus obligaciones refinanciadas.  \\nLos cobros no aplicados y las quitas concedidas en forma previa a la refinanciación reducen el \\nimporte de la obligación sujeta a refinanciación, con lo cual no son computables para la mejora \\nde la clasificación en función de los parámetros establecidos para cada modalidad de pago de \\nla refinanciación. Por lo tanto, la forma en que se imputen tales conceptos a la cancelación de \\nla deuda objeto de refinanciación dependerá del criterio que opte por emplear cada entidad, sin \\nperjuicio de la observancia de las demás disposiciones de carácter general que sean aplicables \\nen la materia. \\nLos pagos por adelantado y/o anticipos que sean efectuados en oportunidad de la refinancia-\\nción para acceder a ella o con posterioridad a su estructuración, serán computados, en término \\nde las cuotas o porcentaje de amortización de capital,… [+1808 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"tratamiento no podrá implicar mejoramiento clasificación situación individual preexistente emergencia\", \"total_con_match\": 453, \"resultados\": [{\"id\": \"Restriccion_no_se_podra_aplicar_el_tratamiento_de_transparencia_look_through_si_se_trata_de_\", \"type\": \"Restriccion\", \"label\": \"Prohibición de retitulización para look-through\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se podrá aplicar el tratamiento de transparencia (look-through) si se trata de una retitulización\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Restriccion_presente_una_situacion_financiera_iliquida_y_un_nivel_de_flujo_de_fondos_que_no_\", \"type\": \"Restriccion\", \"label\": \"Situación financiera ilíquida\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Presente una situación financiera ilíquida y un nivel de flujo de fondos que no le permita atender el pago de la totalidad del capital y de los intereses de las…\"}, {\"id\": \"Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_p… [+2410 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "mejoramiento clasificación preexistente emergencia vigencia fijada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"mejoramiento clasificación preexistente emergencia vigencia fijada\", \"total_con_match\": 57, \"resultados\": [{\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …\"}, {\"id\": \"Operacion_clasificacion_de_cartera\", \"type\": \"Operacion\", \"label\": \"Agrupación de cartera\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: clasificación de cartera\"}, {\"id\": \"Operacion_clasificacion_de_deudor_en_categoria\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: clasificación de deudor en categoría\"}, {\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: clasificación de deudor según mora\"}, {\"id\": \"Operacion_clasificacion_de_partidas_fuera_de_balance\", \"type\": \"Operacion… [+1773 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "no podrá implicar mejoramiento clasificación asignada cliente situación individual",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"no podrá implicar mejoramiento clasificación asignada cliente situación individual\", \"total_con_match\": 498, \"resultados\": [{\"id\": \"Excepcion_no_aplica_si_el_cliente_es_un_vehiculo_de_proyecto_unico_vpu_adherido_al_rigi_qu\", \"type\": \"Excepcion\", \"label\": \"Excepción VPU RIGI\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No aplica si el cliente es un Vehículo de Proyecto Único (VPU) adherido al RIGI que concreta el pago conforme punto 14.2.1\"}, {\"id\": \"Excepcion_no_resultara_aplicable_cuando_el_cliente_es_un_vehiculo_de_proyecto_unico_vpu_ad\", \"type\": \"Excepcion\", \"label\": \"Excepción VPU RIGI\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No resultará aplicable cuando el cliente es un Vehículo de Proyecto Único (VPU) adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que cancela cap…\"}, {\"id\": \"Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr\", \"type\": \"Restriccion\", \"label\": \"Situación financiera mala\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.\"}, {\"id\": \"Operacion_clasificacio… [+2408 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "aplicación no extenderse más allá vigencia fijada emergencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"aplicación no extenderse más allá vigencia fijada emergencia\", \"total_con_match\": 421, \"resultados\": [{\"id\": \"Restriccion_clientes_del_sector_privado_no_financiero_cuya_deuda_por_todo_concepto_mas_el_im\", \"type\": \"Restriccion\", \"label\": \"Límite de deuda otorgamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clientes del sector privado no financiero, cuya deuda (por todo concepto) más el importe de la financiación solicitada, al momento del otorgamiento de ésta, exc…\"}, {\"id\": \"Excepcion_este_requisito_no_sera_de_aplicacion_para_el_sector_publico_las_organizaciones_e\", \"type\": \"Excepcion\", \"label\": \"Excepción para sector público\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Este requisito no será de aplicación para el sector público, las organizaciones empresariales donde el Estado Nacional tenga participación mayoritaria, y los fi…\"}, {\"id\": \"Excepcion_este_requisito_no_resultara_a_aplicacion_para_aquellas_operaciones_de_egresos_qu\", \"type\": \"Excepcion\", \"label\": \"Excepción operaciones específicas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Este requisito no resultará a aplicación para aquellas operaciones de egresos que correspondan a: operaciones d… [+2599 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Ley Emergencia Agropecuaria refinanciación productores\", \"total_con_match\": 30, \"resultados\": [{\"id\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\", \"type\": \"Excepcion\", \"label\": \"Excepción refinanciación por Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se considerarán como refinanciación las refinanciaciones otorgadas a productores cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de…\"}, {\"id\": \"Excepcion_no_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a_los_p\", \"type\": \"Excepcion\", \"label\": \"Excepción Ley Emergencia Agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se considerarán dentro de ese concepto las refinanciaciones otorgadas a los productores agropecuarios cuando ello resulte de la aplicación de disposiciones v…\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al… [+2146 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_no_se_podra_recurrir_a_nuevas_financiaciones_o_refinanciaciones_destinadas_a_can\", \"label\": \"Prohibición refinanciación para cancelar obligaciones\", \"n_salientes_total\": 3, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\"}]}, {\"relation\": \"prohibe\", \"vecino_id\": \"Operacion_refinanciacion\", \"vecino_label\": \"Refinanciación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1. Criterio de clasificación.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_no_se_consideraran_como_refinanciacion_las_refinanciaciones_otorgadas_a_producto\", \"vecino_label\": \"Excepción refinanciación por Ley Emergenc… [+500 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22291,
+      "output_tokens": 337
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24061,
+      "output_tokens": 286
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26838,
+      "output_tokens": 913
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30676,
+      "output_tokens": 317
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34322,
+      "output_tokens": 742
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36590,
+      "output_tokens": 504
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 37902,
+      "output_tokens": 3646
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 0,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "gate_cqn2",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

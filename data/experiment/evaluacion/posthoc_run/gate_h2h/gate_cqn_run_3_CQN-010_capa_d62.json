@@ -1,0 +1,952 @@
+{
+ "id_falla": "run_3/CQN-010",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'divisas cobro exportación prefinanciación', limite: 10}",
+      "devolvio": "168 matches: operaciones de cobro/prefinanciación, obligación de ingreso y liquidación",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'permiso embarque seguimiento imputación', limite: 10}",
+      "devolvio": "101 matches: seguimiento de permiso de embarque, prórroga, límite de imputación",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'cancelar prefinanciación divisas', limite: 10}",
+      "devolvio": "82 matches: venta/ingreso/liquidación de divisas",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_imputacion_de_ingresos_de_divisas'}",
+      "devolvio": "Nodo 'Imputación al cumplimiento de seguimiento', provenance Punto 8.5",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'certificado BCRA imputación divisas prefinanciación', limite: 10}",
+      "devolvio": "186 matches: imputaciones de ingresos de divisas, límites",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'certificado divisas cobro exportación imputación', limite: 10}",
+      "devolvio": "186 matches: imputaciones varias",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'documento imputación seguimiento embarque divisas', limite: 10}",
+      "devolvio": "166 matches: imputación, seguimiento de permiso de embarque",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Certificado DECRETO 929/13', limite: 10}",
+      "devolvio": "24 matches; incluye Operacion_emision_de_certificado (certificados de aplicación)",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_seguimiento_de_permiso_de_embarque', direccion: 'ambas'}",
+      "devolvio": "1 entrante: condiciona Consideración cumplimiento seguimiento",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_emision_de_certificado'}",
+      "devolvio": "Descripción: 'La entidad será la única responsable de emitir los certificados de aplicación...'; provenance Punto 7.10 TO_exterior_cambios",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_emision_de_certificado', direccion: 'ambas'}",
+      "devolvio": "saliente establecida_en → TextoOrdenado Exterior y Cambios; entrante regula ← Obligacion emitir certificados",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu'}",
+      "devolvio": "Misma descripción del certificado de aplicación; provenance Punto 7.10",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'certificado aplicación cobro exportación prefinanciación', limite: 10}",
+      "devolvio": "175 matches: cobros y prefinanciación de exportación",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'boleto venta divisas prefinanciación imputación', limite: 10}",
+      "devolvio": "152 matches: boletos de venta/compra de cambio",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad encargada seguimiento permiso embarque registrar imputación', limite: 10}",
+      "devolvio": "324 matches: entidad encargada del seguimiento, registrar ante BCRA",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 0,
+     "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación, la entidad encargada del seguimiento del permiso de embarque necesita un certificado de aplicación para registrar esa imputación."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación",
+     "Qué entidad es la única habilitada para emitir ese documento"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Glosa de encuadre transversal a ambas patas (afirmación no central)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes",
+       "ubicacion": "Operacion_emision_de_certificado / Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu (ninguno de los dos, ni EntidadFinanciera_bcra='categoria: banco central', afirma que ESTA regulación proviene del BCRA)"
+      },
+      "fuente": {
+       "quote": "Esta entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes. (...) B.C.R.A. EXTERIOR Y CAMBIOS Sección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. Versión: 4a. COMUNICACIÓN \"A\"",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 7.10 / p.123"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "certificado aplicación BCRA regulación emitida",
+       "resultado": "Devuelve Operacion_emision_de_certificado (contenido sin mención al BCRA), EntidadFinanciera_bcra ('categoria: banco central') y Obligacion_supervision_del_bcra (de otro TO, sobre supervisión) — ninguno vincula la norma de certificados de aplicación con el BCRA como su emisor"
+      },
+      {
+       "consulta": "ver_nodo Obligacion_supervision_del_bcra",
+       "resultado": "Proviene de TO_proteccion_usuarios_servicios_financieros_actual.pdf, habla de supervisión de sujetos obligados; no soporta el claim sobre origen de esta regulación"
+      },
+      {
+       "consulta": "ver_nodo TextoOrdenado_to_exterior_cambios_actual_pdf",
+       "resultado": "properties = materia/archivo/version; no menciona al BCRA en su contenido"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La única afirmación marcada incorrecta es la NO central 'Esta regulación proviene del BCRA' [no_soportado]; las tres afirmaciones centrales (certificado de aplicación como documento; entidad encargada del seguimiento como única habilitada; función del certificado) fueron APROBADAS por el juez y no se re-litigan. C1a (por pata): el dato pertinente de ambas patas SÍ apareció en la trayectoria (pasos 10-12: Operacion_emision_de_certificado y Obligacion_...emitir_certificados portan el contenido que responde documento + entidad emisora). C1b (por claim): el claim fallido es la glosa de encuadre 'Según la regulación del BCRA / Esta regulación proviene del BCRA'. Verifiqué con ver_paso_completo (pasos 8, 10, 11) y ver_nodo que ningún nodo consultado por el agente afirma que ESTA regulación de certificados de aplicación proviene del BCRA: el contenido de Operacion_emision_de_certificado y de la Obligacion homónima no menciona al BCRA; EntidadFinanciera_bcra solo dice 'categoria: banco central'; Obligacion_supervision_del_bcra es de otro TO y trata de supervisión; el nodo TextoOrdenado 'Exterior y Cambios' tampoco lo menciona en su contenido. Por tanto el claim no tiene soporte en el contenido de los nodos consultados → faithfulness. C2 (árbol faithfulness): ¿el grafo/PDF tenían el dato? El PDF (Punto 7.10 / p.123) confirma que el TO es del BCRA ('B.C.R.A. EXTERIOR Y CAMBIOS', 'COMUNICACIÓN \"A\"'), es decir el dato es fácticamente cierto y existe en la fuente; el agente lo dedujo de la provenance visible y de nodos que nombran al BCRA, pero lo afirmó como glosa de encuadre sin soporte directo de nodo → alucinacion_agente modo (a) (el dato existía pero se afirmó sin soporte de la trayectoria). Jerarquía secundaria: es una afirmación NO central y las tres centrales fueron aprobadas, por lo que esta glosa no explica el reprobado de las patas centrales — el caso no tiene primaria porque las patas sustantivas están correctas; la única falla real es esta imperfección de encuadre, emitida como secundaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 9,
+    "max_tool_calls": 40,
+    "tokens_in": 239717,
+    "tokens_out": 6851
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 9,
+    "tokens_in": 239717,
+    "tokens_out": 6851,
+    "latency_s": 92.411,
+    "error": null,
+    "final_raw": "Confirmado. El PDF muestra que el TO es del BCRA (\"B.C.R.A. EXTERIOR Y CAMBIOS\", \"COMUNICACIÓN 'A'\"). La afirmación es fácticamente cierta pero es una glosa de encuadre del agente no soportada por el contenido de los nodos consultados. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'divisas cobro exportación prefinanciación', limite: 10}\", \"devolvio\": \"168 matches: operaciones de cobro/prefinanciación, obligación de ingreso y liquidación\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'permiso embarque seguimiento imputación', limite: 10}\", \"devolvio\": \"101 matches: seguimiento de permiso de embarque, prórroga, límite de imputación\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'cancelar prefinanciación divisas', limite: 10}\", \"devolvio\": \"82 matches: venta/ingreso/liquidación de divisas\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_imputacion_de_ingresos_de_divisas'}\", \"devolvio\": \"Nodo 'Imputación al cumplimiento de seguimiento', provenance Punto 8.5\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'certificado BCRA imputación divisas prefinanciación', limite: 10}\", \"devolvio\": \"186 matches: imputaciones de ingresos de divisas, límites\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'certificado divisas cobro exportación imputación', limite: 10}\", \"devolvio\": \"186 matches: imputaciones varias\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'documento imputación seguimiento embarque divisas', limite: 10}\", \"devolvio\": \"166 matches: imputación, seguimiento de permiso de embarque\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Certificado DECRETO 929/13', limite: 10}\", \"devolvio\": \"24 matches; incluye Operacion_emision_de_certificado (certificados de aplicación)\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_seguimiento_de_permiso_de_embarque', direccion: 'ambas'}\", \"devolvio\": \"1 entrante: condiciona Consideración cumplimiento seguimiento\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_emision_de_certificado'}\", \"devolvio\": \"Descripción: 'La entidad será la única responsable de emitir los certificados de aplicación...'; provenance Punto 7.10 TO_exterior_cambios\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_emision_de_certificado', direccion: 'ambas'}\", \"devolvio\": \"saliente establecida_en → TextoOrdenado Exterior y Cambios; entrante regula ← Obligacion emitir certificados\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu'}\", \"devolvio\": \"Misma descripción del certificado de aplicación; provenance Punto 7.10\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'certificado aplicación cobro exportación prefinanciación', limite: 10}\", \"devolvio\": \"175 matches: cobros y prefinanciación de exportación\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'boleto venta divisas prefinanciación imputación', limite: 10}\", \"devolvio\": \"152 matches: boletos de venta/compra de cambio\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad encargada seguimiento permiso embarque registrar imputación', limite: 10}\", \"devolvio\": \"324 matches: entidad encargada del seguimiento, registrar ante BCRA\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 0, \"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación, la entidad encargada del seguimiento del permiso de embarque necesita un certificado de aplicación para registrar esa imputación.\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación\",\n      \"Qué entidad es la única habilitada para emitir ese documento\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Glosa de encuadre transversal a ambas patas (afirmación no central)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\", \"ubicacion\": \"Operacion_emision_de_certificado / Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu (ninguno de los dos, ni EntidadFinanciera_bcra='categoria: banco central', afirma que ESTA regulación proviene del BCRA)\"},\n        \"fuente\": {\"quote\": \"Esta entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes. (...) B.C.R.A. EXTERIOR Y CAMBIOS Sección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. Versión: 4a. COMUNICACIÓN \\\"A\\\"\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 7.10 / p.123\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"certificado aplicación BCRA regulación emitida\", \"resultado\": \"Devuelve Operacion_emision_de_certificado (contenido sin mención al BCRA), EntidadFinanciera_bcra ('categoria: banco central') y Obligacion_supervision_del_bcra (de otro TO, sobre supervisión) — ninguno vincula la norma de certificados de aplicación con el BCRA como su emisor\"},\n        {\"consulta\": \"ver_nodo Obligacion_supervision_del_bcra\", \"resultado\": \"Proviene de TO_proteccion_usuarios_servicios_financieros_actual.pdf, habla de supervisión de sujetos obligados; no soporta el claim sobre origen de esta regulación\"},\n        {\"consulta\": \"ver_nodo TextoOrdenado_to_exterior_cambios_actual_pdf\", \"resultado\": \"properties = materia/archivo/version; no menciona al BCRA en su contenido\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La única afirmación marcada incorrecta es la NO central 'Esta regulación proviene del BCRA' [no_soportado]; las tres afirmaciones centrales (certificado de aplicación como documento; entidad encargada del seguimiento como única habilitada; función del certificado) fueron APROBADAS por el juez y no se re-litigan. C1a (por pata): el dato pertinente de ambas patas SÍ apareció en la trayectoria (pasos 10-12: Operacion_emision_de_certificado y Obligacion_...emitir_certificados portan el contenido que responde documento + entidad emisora). C1b (por claim): el claim fallido es la glosa de encuadre 'Según la regulación del BCRA / Esta regulación proviene del BCRA'. Verifiqué con ver_paso_completo (pasos 8, 10, 11) y ver_nodo que ningún nodo consultado por el agente afirma que ESTA regulación de certificados de aplicación proviene del BCRA: el contenido de Operacion_emision_de_certificado y de la Obligacion homónima no menciona al BCRA; EntidadFinanciera_bcra solo dice 'categoria: banco central'; Obligacion_supervision_del_bcra es de otro TO y trata de supervisión; el nodo TextoOrdenado 'Exterior y Cambios' tampoco lo menciona en su contenido. Por tanto el claim no tiene soporte en el contenido de los nodos consultados → faithfulness. C2 (árbol faithfulness): ¿el grafo/PDF tenían el dato? El PDF (Punto 7.10 / p.123) confirma que el TO es del BCRA ('B.C.R.A. EXTERIOR Y CAMBIOS', 'COMUNICACIÓN \\\"A\\\"'), es decir el dato es fácticamente cierto y existe en la fuente; el agente lo dedujo de la provenance visible y de nodos que nombran al BCRA, pero lo afirmó como glosa de encuadre sin soporte directo de nodo → alucinacion_agente modo (a) (el dato existía pero se afirmó sin soporte de la trayectoria). Jerarquía secundaria: es una afirmación NO central y las tres centrales fueron aprobadas, por lo que esta glosa no explica el reprobado de las patas centrales — el caso no tiene primaria porque las patas sustantivas están correctas; la única falla real es esta imperfección de encuadre, emitida como secundaria.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 10
+      },
+      "output_truncado": "{\"paso\": 10, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_emision_de_certificado\"}, \"output_completo\": {\"id\": \"Operacion_emision_de_certificado\", \"type\": \"Operacion\", \"label\": \"Emisión de certificados de aplicación\", \"properties\": {\"tipo\": \"emisión de certificado\", \"description\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_bcra"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_bcra\", \"type\": \"EntidadFinanciera\", \"label\": \"BCRA\", \"properties\": {\"categoria\": \"banco central\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero pendiente (parte 1)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 5.3. Operaciones cubiertas con activos admitidos como garantía. (parte 2)\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Certificado DECRETO 929/13\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Certificado DECRETO 929/13\", \"total_con_match\": 24, \"resultados\": [{\"id\": \"Operacion_exportacion_alcanzada_por_beneficios_cambiarios_del_decreto_929_13\", \"type\": \"Operacion\", \"label\": \"Exportación en régimen de hidrocarburos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: exportación alcanzada por beneficios cambiarios del Decreto 929/13\"}, {\"id\": \"Comunicacion_decreto_91_19\", \"type\": \"Comunicacion\", \"label\": \"Com. Decreto 91/19\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"codigo: Decreto-91/19; tipo: Decreto; numero: 91\"}, {\"id\": \"Excepcion_excepcion_por_punto_3_13\", \"type\": \"Excepcion\", \"label\": \"Excepción por punto 3.13\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las entidades podrán también en el marco del punto 3.13., sin conformidad previa del BCRA si el requisito estuviese vigente\"}, {\"id\": \"Restriccion_si_se_trata_de_servicios_que_fueron_o_seran_prestados_o_devengados_a_partir_del_\", \"type\": \"Restriccion\", \"label\": \"Servicios a partir de 13/12/23\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Si se trata de servicios q… [+2331 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 7.10."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.10 (PDF pág 123)\", \"pasaje\": \"7.10. \\n9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.10. \\n9.1.8. Financiaciones asociadas a importaciones de bienes habilit adas para la aplicación de \\ncobros de exportaciones de bienes contempladas en el punto 7.11. \\n9.2. Entidad nominada por el exportador. \\nPor cada operación comprendida el exportador deberá seleccionar una entidad como \\nresponsable de su seguimiento. \\nEsta entidad será la única responsable de emitir los certificados de aplicación que habilitan \\nque los cobros de exportaciones puedan ser imputados a los permisos correspondientes. \\nEn el caso de financiaciones ot orgadas por entidades financieras locales, el segui miento \\nestará a cargo de la entidad que otorgó la financiación hasta su cancelación total. \\nPara las operaciones comprendidas en los puntos 9.1.6. y 9.1.7. el seguimiento quedará a \\ncargo de la entidad nominada en cumplimiento a lo establecido en los puntos 7.9. o 7.10. \\nEn el caso de las operaciones comprendidas en el punto 9.1.8. el … [+396 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "TextoOrdenado_to_exterior_cambios_actual_pdf"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Exterior y Cambios\", \"properties\": {\"materia\": \"Operaciones de exterior y cambios\", \"archivo\": \"TO_exterior_cambios_actual.pdf\", \"version\": \"actual\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "certificado aplicación BCRA regulación emitida",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"certificado aplicación BCRA regulación emitida\", \"total_con_match\": 160, \"resultados\": [{\"id\": \"Operacion_emision_de_certificado\", \"type\": \"Operacion\", \"label\": \"Emisión de certificados de aplicación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos …\"}, {\"id\": \"EntidadFinanciera_bcra\", \"type\": \"EntidadFinanciera\", \"label\": \"BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: banco central\"}, {\"id\": \"Restriccion_las_entidades_deberan_optar_por_un_unico_metodo_para_la_aplicacion_de_la_tecnica\", \"type\": \"Restriccion\", \"label\": \"Unicidad de método\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las entidades deberán optar por un único método para la aplicación de la técnica de activos admitidos como garantía de las operaciones registradas en la cartera…\"}, {\"id\": \"Obligacion_supervision_del_bcra\", \"type\": \"Obligacion\", \"label\": \"Supervisión del BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El Banco Central de la República Argentina (BCRA) supervisará la actuación de los sujetos obligados\"}… [+323 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 11
+      },
+      "output_truncado": "{\"paso\": 11, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Operacion_emision_de_certificado\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Operacion_emision_de_certificado\", \"label\": \"Emisión de certificados de aplicación\", \"n_salientes_total\": 1, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu\", \"vecino_label\": \"Emitir certificados de aplicación\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}], \"entrantes_truncado\": false}}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_supervision_del_bcra"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_supervision_del_bcra\", \"type\": \"Obligacion\", \"label\": \"Supervisión del BCRA\", \"properties\": {\"tipo\": \"otra\", \"description\": \"El Banco Central de la República Argentina (BCRA) supervisará la actuación de los sujetos obligados\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.2. Criterio general y supervisión.\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p. 123"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p. 123\", \"metodo\": \"pagina\", \"ref\": \"p.123 (PDF absoluto 1-based)\", \"pasaje\": \"9.1. Operaciones comprendidas. \\n9.1.1. Todas las liquidaciones de divisas en el mercado de cambios a partir del 02/09/19 \\nque correspondan a cobros de anticipos, prefinanciaciones u otras financiaciones \\npara las cuales se admita la aplicación de divisas de cobros de exportaciones. \\n9.1.2. Prefinanciaciones y financiaciones de exportaciones pendientes al 31/08/19 que \\nfueron otorgadas o garantizadas por entidades financieras locales. \\n9.1.3. Anticipos y prefinanciaciones de exportaciones del exterio r pendientes al 31/08/19 \\nque fueron liquidados en e l mercado de cambios y para los cuales el exportador \\nsolicite su aplicación a permisos de embarque oficializados a partir del 02/09/19. \\n9.1.4. Anticipos y prefinanciaciones de exportaciones del exterior pendientes al 31/08/19 \\nque no fueron liquidados en e l mercado de cambios para los cuales el exportador \\nsolicite su aplicación a permisos de embarque oficializados a partir del 02/09/19. \\n9.1.5. Préstamos financieros con contratos vigentes al 31/08/19 cuya… [+1805 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29920,
+      "output_tokens": 239
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30702,
+      "output_tokens": 286
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33334,
+      "output_tokens": 372
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33899,
+      "output_tokens": 865
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35960,
+      "output_tokens": 1004
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37140,
+      "output_tokens": 338
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 38762,
+      "output_tokens": 3747
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 67,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"divisas cobro exportación prefinanciación\", \"limite\": 10}",
+      "devolvio": "168 matches: cobro local, prefinanciación, ingreso/liquidación",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"permiso embarque seguimiento imputación\", \"limite\": 10}",
+      "devolvio": "101 matches: seguimiento permiso embarque, prórroga, límite imputación",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cancelar prefinanciación divisas\", \"limite\": 10}",
+      "devolvio": "82 matches: venta/ingreso/liquidación de divisas",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_imputacion_de_ingresos_de_divisas\"}",
+      "devolvio": "Imputación al cumplimiento de seguimiento, Punto 8.5",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado BCRA imputación divisas prefinanciación\", \"limite\": 10}",
+      "devolvio": "186 matches; incluye EntidadFinanciera_bcra y Obligacion_supervision_del_bcra",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado divisas cobro exportación imputación\", \"limite\": 10}",
+      "devolvio": "186 matches: imputaciones varias",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"documento imputación seguimiento embarque divisas\", \"limite\": 10}",
+      "devolvio": "166 matches",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Certificado DECRETO 929/13\", \"limite\": 10}",
+      "devolvio": "24 matches",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_seguimiento_de_permiso_de_embarque\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante: condiciona Consideración cumplimiento seguimiento",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_emision_de_certificado\"}",
+      "devolvio": "Emisión de certificados de aplicación: 'La entidad será la única responsable de emitir los certificados de aplicación...'",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_emision_de_certificado\", \"direccion\": \"ambas\"}",
+      "devolvio": "establecida_en TO exterior; regula Obligacion emitir certificados",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu\"}",
+      "devolvio": "misma descripción, Punto 7.10",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado aplicación cobro exportación prefinanciación\", \"limite\": 10}",
+      "devolvio": "175 matches",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"boleto venta divisas prefinanciación imputación\", \"limite\": 10}",
+      "devolvio": "152 matches: boletos de venta/compra",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"limite\": 10}",
+      "devolvio": "324 matches: entidad encargada del seguimiento",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 0,
+     "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación..."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación (aprobada: certificado de aplicación)",
+     "Qué entidad es la única habilitada para emitir ese documento (aprobada: la entidad financiera encargada del seguimiento)"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "afirmación de encuadre no central sobre el origen normativo",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes",
+       "ubicacion": "Operacion_emision_de_certificado (nodo portador del contenido; NO menciona al BCRA)"
+      },
+      "fuente": {
+       "quote": "B.C.R.A. EXTERIOR Y CAMBIOS \nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \nVersión: 4a. COMUNICACIÓN  \"A\"  8307",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 7.10."
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "verificación nodo portador Operacion_emision_de_certificado",
+       "resultado": "su descripción no menciona al BCRA; solo dice 'La entidad será la única responsable...'"
+      },
+      {
+       "consulta": "nodo EntidadFinanciera_bcra (visto por el agente en paso 5)",
+       "resultado": "genérico: 'categoria: banco central'; no afirma que esta regulación específica provenga del BCRA"
+      },
+      {
+       "consulta": "nodo Obligacion_supervision_del_bcra (visto por el agente en paso 5)",
+       "resultado": "proviene de TO_proteccion_usuarios; habla de supervisión, no de autoría de la regla de certificados de aplicación"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "El juez aprobó las dos patas centrales (documento = certificado de aplicación; entidad única emisora = la encargada del seguimiento), soportadas por Operacion_emision_de_certificado y Obligacion_la_entidad_sera_la_unica_responsable... (Punto 7.10, verificado en el PDF). La ÚNICA afirmación marcada incorrecta es la no-central 'Esta regulación proviene del BCRA'. C1 (síntoma): el juez la marcó no_soportado. Reviso soporte: el agente vio en su trayectoria (paso 5, output completo) el nodo EntidadFinanciera_bcra ('categoria: banco central') y Obligacion_supervision_del_bcra ('El BCRA supervisará la actuación de los sujetos obligados'), y todos los nodos citados tienen provenance TO_exterior_cambios_actual.pdf. Pero ninguno afirma que ESTA regulación (certificados de aplicación) provenga del BCRA: el nodo BCRA es genérico, el nodo de supervisión es de OTRO TO (protección de usuarios) y trata de supervisión, no de autoría. El nodo portador del contenido (emision_de_certificado) no menciona al BCRA. Por tanto la afirmación de encuadre no está soportada por un claim de nodo → faithfulness. C2 (causa): árbol de faithfulness — ¿el grafo tenía el dato? El hecho es fácticamente CIERTO (el PDF es 'B.C.R.A. EXTERIOR Y CAMBIOS, COMUNICACIÓN A 8307') y hay nodos/provenances del BCRA visibles, pero el agente lo afirmó como glosa introductoria sin que un nodo lo sostenga sobre esta regla específica → alucinacion_agente modo (a): el agente agregó una afirmación de encuadre no soportada por su trayectoria. Jerarquía SECUNDARIA: es una afirmación no central, verdadera, que no rompe el veredicto; las patas centrales fueron aprobadas. No hay primaria porque el núcleo de la respuesta es correcto — es esencialmente un defecto menor de glosa sobre un fondo correcto.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 7,
+    "max_tool_calls": 40,
+    "tokens_in": 164266,
+    "tokens_out": 5458
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 7,
+    "tokens_in": 164266,
+    "tokens_out": 5458,
+    "latency_s": 72.566,
+    "error": null,
+    "final_raw": "Confirmado: el nodo `supervision_del_bcra` proviene de OTRO TO (protección de usuarios) y habla de supervisión, no de la autoría de la regulación de certificados de aplicación. No soporta el claim.\n\nTengo evidencia suficiente. El claim fallido es una glosa de encuadre (\"Esta regulación proviene del BCRA\") — fácticamente verdadera (el PDF es del BCRA), pero no soportada por ningún nodo de la trayectoria que lo afirme sobre esta regulación específica. El grafo tenía elementos relacionados (nodo BCRA, provenances al TO del BCRA), lo que la convierte en alucinacion_agente modo (a), secundaria (no rompe el veredicto, las patas centrales fueron aprobadas).\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"divisas cobro exportación prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"168 matches: cobro local, prefinanciación, ingreso/liquidación\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"permiso embarque seguimiento imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"101 matches: seguimiento permiso embarque, prórroga, límite imputación\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cancelar prefinanciación divisas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"82 matches: venta/ingreso/liquidación de divisas\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_imputacion_de_ingresos_de_divisas\\\"}\", \"devolvio\": \"Imputación al cumplimiento de seguimiento, Punto 8.5\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado BCRA imputación divisas prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"186 matches; incluye EntidadFinanciera_bcra y Obligacion_supervision_del_bcra\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado divisas cobro exportación imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"186 matches: imputaciones varias\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"documento imputación seguimiento embarque divisas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"166 matches\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Certificado DECRETO 929/13\\\", \\\"limite\\\": 10}\", \"devolvio\": \"24 matches\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_seguimiento_de_permiso_de_embarque\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante: condiciona Consideración cumplimiento seguimiento\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_emision_de_certificado\\\"}\", \"devolvio\": \"Emisión de certificados de aplicación: 'La entidad será la única responsable de emitir los certificados de aplicación...'\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_emision_de_certificado\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"establecida_en TO exterior; regula Obligacion emitir certificados\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu\\\"}\", \"devolvio\": \"misma descripción, Punto 7.10\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado aplicación cobro exportación prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"175 matches\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"boleto venta divisas prefinanciación imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"152 matches: boletos de venta/compra\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"entidad encargada seguimiento permiso embarque registrar imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"324 matches: entidad encargada del seguimiento\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 0, \"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación (aprobada: certificado de aplicación)\",\n      \"Qué entidad es la única habilitada para emitir ese documento (aprobada: la entidad financiera encargada del seguimiento)\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"afirmación de encuadre no central sobre el origen normativo\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\", \"ubicacion\": \"Operacion_emision_de_certificado (nodo portador del contenido; NO menciona al BCRA)\"},\n        \"fuente\": {\"quote\": \"B.C.R.A. EXTERIOR Y CAMBIOS \\nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \\nVersión: 4a. COMUNICACIÓN  \\\"A\\\"  8307\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 7.10.\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"verificación nodo portador Operacion_emision_de_certificado\", \"resultado\": \"su descripción no menciona al BCRA; solo dice 'La entidad será la única responsable...'\"},\n        {\"consulta\": \"nodo EntidadFinanciera_bcra (visto por el agente en paso 5)\", \"resultado\": \"genérico: 'categoria: banco central'; no afirma que esta regulación específica provenga del BCRA\"},\n        {\"consulta\": \"nodo Obligacion_supervision_del_bcra (visto por el agente en paso 5)\", \"resultado\": \"proviene de TO_proteccion_usuarios; habla de supervisión, no de autoría de la regla de certificados de aplicación\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez aprobó las dos patas centrales (documento = certificado de aplicación; entidad única emisora = la encargada del seguimiento), soportadas por Operacion_emision_de_certificado y Obligacion_la_entidad_sera_la_unica_responsable... (Punto 7.10, verificado en el PDF). La ÚNICA afirmación marcada incorrecta es la no-central 'Esta regulación proviene del BCRA'. C1 (síntoma): el juez la marcó no_soportado. Reviso soporte: el agente vio en su trayectoria (paso 5, output completo) el nodo EntidadFinanciera_bcra ('categoria: banco central') y Obligacion_supervision_del_bcra ('El BCRA supervisará la actuación de los sujetos obligados'), y todos los nodos citados tienen provenance TO_exterior_cambios_actual.pdf. Pero ninguno afirma que ESTA regulación (certificados de aplicación) provenga del BCRA: el nodo BCRA es genérico, el nodo de supervisión es de OTRO TO (protección de usuarios) y trata de supervisión, no de autoría. El nodo portador del contenido (emision_de_certificado) no menciona al BCRA. Por tanto la afirmación de encuadre no está soportada por un claim de nodo → faithfulness. C2 (causa): árbol de faithfulness — ¿el grafo tenía el dato? El hecho es fácticamente CIERTO (el PDF es 'B.C.R.A. EXTERIOR Y CAMBIOS, COMUNICACIÓN A 8307') y hay nodos/provenances del BCRA visibles, pero el agente lo afirmó como glosa introductoria sin que un nodo lo sostenga sobre esta regla específica → alucinacion_agente modo (a): el agente agregó una afirmación de encuadre no soportada por su trayectoria. Jerarquía SECUNDARIA: es una afirmación no central, verdadera, que no rompe el veredicto; las patas centrales fueron aprobadas. No hay primaria porque el núcleo de la respuesta es correcto — es esencialmente un defecto menor de glosa sobre un fondo correcto.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_emision_de_certificado"
+      },
+      "output_truncado": "{\"id\": \"Operacion_emision_de_certificado\", \"type\": \"Operacion\", \"label\": \"Emisión de certificados de aplicación\", \"properties\": {\"tipo\": \"emisión de certificado\", \"description\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_bcra"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_bcra\", \"type\": \"EntidadFinanciera\", \"label\": \"BCRA\", \"properties\": {\"categoria\": \"banco central\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero pendiente (parte 1)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 5.3. Operaciones cubiertas con activos admitidos como garantía. (parte 2)\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 7.10."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.10 (PDF pág 123)\", \"pasaje\": \"7.10. \\n9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.10. \\n9.1.8. Financiaciones asociadas a importaciones de bienes habilit adas para la aplicación de \\ncobros de exportaciones de bienes contempladas en el punto 7.11. \\n9.2. Entidad nominada por el exportador. \\nPor cada operación comprendida el exportador deberá seleccionar una entidad como \\nresponsable de su seguimiento. \\nEsta entidad será la única responsable de emitir los certificados de aplicación que habilitan \\nque los cobros de exportaciones puedan ser imputados a los permisos correspondientes. \\nEn el caso de financiaciones ot orgadas por entidades financieras locales, el segui miento \\nestará a cargo de la entidad que otorgó la financiación hasta su cancelación total. \\nPara las operaciones comprendidas en los puntos 9.1.6. y 9.1.7. el seguimiento quedará a \\ncargo de la entidad nominada en cumplimiento a lo establecido en los puntos 7.9. o 7.10. \\nEn el caso de las operaciones comprendidas en el punto 9.1.8. el … [+396 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 10
+      },
+      "output_truncado": "{\"paso\": 10, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_emision_de_certificado\"}, \"output_completo\": {\"id\": \"Operacion_emision_de_certificado\", \"type\": \"Operacion\", \"label\": \"Emisión de certificados de aplicación\", \"properties\": {\"tipo\": \"emisión de certificado\", \"description\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 15
+      },
+      "output_truncado": "{\"paso\": 15, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"total_con_match\": 324, \"resultados\": [{\"id\": \"Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p\", \"type\": \"Excepcion\", \"label\": \"Prórroga de plazo de liquidación\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La entidad encargada del seguimiento del permiso de embarque podrá extender el plazo de liquidación cuando el cliente haya utilizado el mecanismo de acumulación…\"}, {\"id\": \"Obligacion_la_entidad_financiera_encargada_del_seguimiento_de_anticipos_y_otras_financiacio\", \"type\": \"Obligacion\", \"label\": \"Registrar operación ante BCRA\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad financiera encargada del Seguimiento de anticipos y otras financiaciones de exportación de bienes de las operaciones deberá concretar su registro ant…\"}, {\"id\": \"Obligacion_la_entidad_encargada_del_seguimiento_del_permiso_podra_conceder_extensiones_en_e\", \"type\": \"Obligacion\", \"label\": \"Conceder extensiones… [+2563 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 5
+      },
+      "output_truncado": "{\"paso\": 5, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"certificado BCRA imputación divisas prefinanciación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"certificado BCRA imputación divisas prefinanciación\", \"total_con_match\": 186, \"resultados\": [{\"id\": \"Operacion_imputacion_de_ingresos_de_divisas\", \"type\": \"Operacion\", \"label\": \"Imputación al cumplimiento de seguimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: imputación de ingresos de divisas\"}, {\"id\": \"Restriccion_limite_usd_25_000_para_imputacion_sin_divisas\", \"type\": \"Restriccion\", \"label\": \"Límite USD 25.000 para imputación sin divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En la medida que el monto a imputar al permiso por este mecanismo supere el equivalente a USD 25.000 (dólares estadounidenses veinticinco mil), la entidad deber…\"}, {\"id\": \"Operacion_imputacion_de_exportacion_de_bienes_sin_contravalor_en_divisas\", \"type\": \"Operacion\", \"label\": \"Imputación exportación sin contravalor divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: imputación de exportación de bienes sin contravalor en divisas\"}, {\"id\": \"Operacion_imputacion_de_exportacion_con_bienes_importados_temporalmente_s… [+1674 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_supervision_del_bcra"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_supervision_del_bcra\", \"type\": \"Obligacion\", \"label\": \"Supervisión del BCRA\", \"properties\": {\"tipo\": \"otra\", \"description\": \"El Banco Central de la República Argentina (BCRA) supervisará la actuación de los sujetos obligados\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.2. Criterio general y supervisión.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29920,
+      "output_tokens": 277
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30687,
+      "output_tokens": 220
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31949,
+      "output_tokens": 373
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35244,
+      "output_tokens": 1046
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 36466,
+      "output_tokens": 3542
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 67,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-010",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"divisas cobro exportación prefinanciación\", \"limite\": 10}",
+      "devolvio": "168 matches; operaciones de cobro/prefinanciación de exportación",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"permiso embarque seguimiento imputación\", \"limite\": 10}",
+      "devolvio": "101 matches; seguimiento de permiso de embarque, entidad encargada",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cancelar prefinanciación divisas\", \"limite\": 10}",
+      "devolvio": "82 matches; venta/ingreso/liquidación de divisas",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_imputacion_de_ingresos_de_divisas\"}",
+      "devolvio": "Imputación al cumplimiento de seguimiento; provenance Punto 8.5",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado BCRA imputación divisas prefinanciación\", \"limite\": 10}",
+      "devolvio": "186 matches; imputaciones varias",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado divisas cobro exportación imputación\", \"limite\": 10}",
+      "devolvio": "186 matches; imputaciones de gastos/exportación",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"documento imputación seguimiento embarque divisas\", \"limite\": 10}",
+      "devolvio": "166 matches; seguimiento permiso de embarque",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Certificado DECRETO 929/13\", \"limite\": 10}",
+      "devolvio": "24 matches; régimen hidrocarburos",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_seguimiento_de_permiso_de_embarque\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante: condiciona Consideración cumplimiento seguimiento",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_emision_de_certificado\"}",
+      "devolvio": "Emisión de certificados de aplicación: entidad única responsable; provenance Punto 7.10",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_emision_de_certificado\", \"direccion\": \"ambas\"}",
+      "devolvio": "establecida_en TO Exterior y Cambios; regula Obligacion emitir certificados",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu\"}",
+      "devolvio": "La entidad será la única responsable de emitir los certificados de aplicación",
+      "pertinente": true
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"certificado aplicación cobro exportación prefinanciación\", \"limite\": 10}",
+      "devolvio": "175 matches; cobros/prefinanciación",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"boleto venta divisas prefinanciación imputación\", \"limite\": 10}",
+      "devolvio": "152 matches; boletos de compra/venta",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"limite\": 10}",
+      "devolvio": "324 matches; entidad encargada del seguimiento, Registrar operación ante BCRA",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 0,
+     "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación..."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación",
+     "Qué entidad es la única habilitada para emitir ese documento"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "glosa transversal no central sobre el origen de la regulación (no corresponde a ninguna de las dos patas centrales, ambas aprobadas)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes",
+       "ubicacion": "Operacion_emision_de_certificado (abierto en paso 10) — provenance TO_exterior_cambios_actual.pdf; ningún nodo consultado atribuye ESTA regla al BCRA"
+      },
+      "fuente": {
+       "quote": "B.C.R.A. EXTERIOR Y CAMBIOS \nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \nVersión: 4a. COMUNICACIÓN  “A”  8307",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 7.10 (pág 123)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_nodo Obligacion_supervision_del_bcra",
+       "resultado": "El nodo BCRA/supervisión pertenece a OTRO TO (TO_proteccion_usuarios_servicios_financieros_actual.pdf), no soporta la atribución de la regla del certificado al BCRA"
+      },
+      {
+       "consulta": "ver_vecinos TextoOrdenado_to_exterior_cambios_actual_pdf salientes",
+       "resultado": "El TO referencia y es modificado por múltiples Comunicaciones 'A' (actos del BCRA); confirma que el TO es normativa del BCRA, pero esta cadena no fue consultada por el agente para fundar el claim"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "El síntoma es una única afirmación no central marcada no_soportada: 'Esta regulación proviene del BCRA.' Las dos patas centrales (documento = certificado de aplicación; entidad emisora = entidad de seguimiento) fueron APROBADAS por el juez y están sólidamente soportadas por Operacion_emision_de_certificado y su Obligacion asociada (pasos 10-12), fieles al PDF (Punto 7.10: 'Esta entidad será la única responsable de emitir los certificados de aplicación...'). No re-litigo esas patas. C1: la glosa 'proviene del BCRA' es transversal, no corresponde a ninguna pata; su dato pertinente (atribución de ESTA regla al BCRA) no aparece en ningún nodo consultado: los nodos del certificado solo llevan provenance a un archivo PDF, y el único nodo con texto 'BCRA supervisará' (Obligacion_supervision_del_bcra) pertenece a otro TO distinto. Por tanto el claim no está soportado por lo consultado → faithfulness. C2: árbol faithfulness → ¿el grafo tenía el dato? El origen BCRA existe en el grafo de forma difusa (el TextoOrdenado 'Exterior y Cambios' referencia decenas de Comunicaciones 'A' del BCRA, verificado en ver_vecinos) y el PDF lo confirma explícitamente ('B.C.R.A. EXTERIOR Y CAMBIOS', 'COMUNICACIÓN A 8307'). El agente hizo una glosa contextual verdadera pero sin soporte directo de un nodo consultado que ligue la regla del certificado al BCRA → alucinacion_agente modo (a): el dato del emisor está en el grafo (cadena TO→Comunicaciones A) pero el agente afirmó la atribución sin apoyarse en él. Jerarquía SECUNDARIA: la glosa es fácticamente correcta y no central; no explica una reprobación de las patas centrales (que están OK). El juez marcó no_soportada una afirmación verdadera pero sin anclaje en la trayectoria; es una imperfección menor que no rompe la respuesta.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 172475,
+    "tokens_out": 5623
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 172475,
+    "tokens_out": 5623,
+    "latency_s": 71.536,
+    "error": null,
+    "final_raw": "Ese nodo pertenece a OTRO TO (protección de usuarios), no soporta la atribución de la regla del certificado. Confirma que ningún nodo consultado atribuye directamente la regulación del certificado al BCRA.\n\nTengo evidencia suficiente para atribuir.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"divisas cobro exportación prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"168 matches; operaciones de cobro/prefinanciación de exportación\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"permiso embarque seguimiento imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"101 matches; seguimiento de permiso de embarque, entidad encargada\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cancelar prefinanciación divisas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"82 matches; venta/ingreso/liquidación de divisas\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_imputacion_de_ingresos_de_divisas\\\"}\", \"devolvio\": \"Imputación al cumplimiento de seguimiento; provenance Punto 8.5\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado BCRA imputación divisas prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"186 matches; imputaciones varias\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado divisas cobro exportación imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"186 matches; imputaciones de gastos/exportación\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"documento imputación seguimiento embarque divisas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"166 matches; seguimiento permiso de embarque\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Certificado DECRETO 929/13\\\", \\\"limite\\\": 10}\", \"devolvio\": \"24 matches; régimen hidrocarburos\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_seguimiento_de_permiso_de_embarque\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante: condiciona Consideración cumplimiento seguimiento\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_emision_de_certificado\\\"}\", \"devolvio\": \"Emisión de certificados de aplicación: entidad única responsable; provenance Punto 7.10\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_emision_de_certificado\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"establecida_en TO Exterior y Cambios; regula Obligacion emitir certificados\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_la_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_qu\\\"}\", \"devolvio\": \"La entidad será la única responsable de emitir los certificados de aplicación\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"certificado aplicación cobro exportación prefinanciación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"175 matches; cobros/prefinanciación\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"boleto venta divisas prefinanciación imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"152 matches; boletos de compra/venta\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"entidad encargada seguimiento permiso embarque registrar imputación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"324 matches; entidad encargada del seguimiento, Registrar operación ante BCRA\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 0, \"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué documento necesita la entidad encargada del seguimiento del permiso de embarque para registrar la imputación de divisas a una prefinanciación\",\n      \"Qué entidad es la única habilitada para emitir ese documento\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"glosa transversal no central sobre el origen de la regulación (no corresponde a ninguna de las dos patas centrales, ambas aprobadas)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Según la regulación del BCRA, cuando las divisas del cobro de una exportación se aplican a cancelar una prefinanciación...\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\", \"ubicacion\": \"Operacion_emision_de_certificado (abierto en paso 10) — provenance TO_exterior_cambios_actual.pdf; ningún nodo consultado atribuye ESTA regla al BCRA\"},\n        \"fuente\": {\"quote\": \"B.C.R.A. EXTERIOR Y CAMBIOS \\nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \\nVersión: 4a. COMUNICACIÓN  \\u201cA\\u201d  8307\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 7.10 (pág 123)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_nodo Obligacion_supervision_del_bcra\", \"resultado\": \"El nodo BCRA/supervisión pertenece a OTRO TO (TO_proteccion_usuarios_servicios_financieros_actual.pdf), no soporta la atribución de la regla del certificado al BCRA\"},\n        {\"consulta\": \"ver_vecinos TextoOrdenado_to_exterior_cambios_actual_pdf salientes\", \"resultado\": \"El TO referencia y es modificado por múltiples Comunicaciones 'A' (actos del BCRA); confirma que el TO es normativa del BCRA, pero esta cadena no fue consultada por el agente para fundar el claim\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma es una única afirmación no central marcada no_soportada: 'Esta regulación proviene del BCRA.' Las dos patas centrales (documento = certificado de aplicación; entidad emisora = entidad de seguimiento) fueron APROBADAS por el juez y están sólidamente soportadas por Operacion_emision_de_certificado y su Obligacion asociada (pasos 10-12), fieles al PDF (Punto 7.10: 'Esta entidad será la única responsable de emitir los certificados de aplicación...'). No re-litigo esas patas. C1: la glosa 'proviene del BCRA' es transversal, no corresponde a ninguna pata; su dato pertinente (atribución de ESTA regla al BCRA) no aparece en ningún nodo consultado: los nodos del certificado solo llevan provenance a un archivo PDF, y el único nodo con texto 'BCRA supervisará' (Obligacion_supervision_del_bcra) pertenece a otro TO distinto. Por tanto el claim no está soportado por lo consultado → faithfulness. C2: árbol faithfulness → ¿el grafo tenía el dato? El origen BCRA existe en el grafo de forma difusa (el TextoOrdenado 'Exterior y Cambios' referencia decenas de Comunicaciones 'A' del BCRA, verificado en ver_vecinos) y el PDF lo confirma explícitamente ('B.C.R.A. EXTERIOR Y CAMBIOS', 'COMUNICACIÓN A 8307'). El agente hizo una glosa contextual verdadera pero sin soporte directo de un nodo consultado que ligue la regla del certificado al BCRA → alucinacion_agente modo (a): el dato del emisor está en el grafo (cadena TO→Comunicaciones A) pero el agente afirmó la atribución sin apoyarse en él. Jerarquía SECUNDARIA: la glosa es fácticamente correcta y no central; no explica una reprobación de las patas centrales (que están OK). El juez marcó no_soportada una afirmación verdadera pero sin anclaje en la trayectoria; es una imperfección menor que no rompe la respuesta.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_emision_de_certificado"
+      },
+      "output_truncado": "{\"id\": \"Operacion_emision_de_certificado\", \"type\": \"Operacion\", \"label\": \"Emisión de certificados de aplicación\", \"properties\": {\"tipo\": \"emisión de certificado\", \"description\": \"La entidad será la única responsable de emitir los certificados de aplicación que habilitan que los cobros de exportaciones puedan ser imputados a los permisos correspondientes\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 7.10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.10 (PDF pág 123)\", \"pasaje\": \"7.10. \\n9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7.10. \\n9.1.8. Financiaciones asociadas a importaciones de bienes habilit adas para la aplicación de \\ncobros de exportaciones de bienes contempladas en el punto 7.11. \\n9.2. Entidad nominada por el exportador. \\nPor cada operación comprendida el exportador deberá seleccionar una entidad como \\nresponsable de su seguimiento. \\nEsta entidad será la única responsable de emitir los certificados de aplicación que habilitan \\nque los cobros de exportaciones puedan ser imputados a los permisos correspondientes. \\nEn el caso de financiaciones ot orgadas por entidades financieras locales, el segui miento \\nestará a cargo de la entidad que otorgó la financiación hasta su cancelación total. \\nPara las operaciones comprendidas en los puntos 9.1.6. y 9.1.7. el seguimiento quedará a \\ncargo de la entidad nominada en cumplimiento a lo establecido en los puntos 7.9. o 7.10. \\nEn el caso de las operaciones comprendidas en el punto 9.1.8. el s… [+395 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 15
+      },
+      "output_truncado": "{\"paso\": 15, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"entidad encargada seguimiento permiso embarque registrar imputación\", \"total_con_match\": 324, \"resultados\": [{\"id\": \"Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p\", \"type\": \"Excepcion\", \"label\": \"Prórroga de plazo de liquidación\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La entidad encargada del seguimiento del permiso de embarque podrá extender el plazo de liquidación cuando el cliente haya utilizado el mecanismo de acumulación…\"}, {\"id\": \"Obligacion_la_entidad_financiera_encargada_del_seguimiento_de_anticipos_y_otras_financiacio\", \"type\": \"Obligacion\", \"label\": \"Registrar operación ante BCRA\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad financiera encargada del Seguimiento de anticipos y otras financiaciones de exportación de bienes de las operaciones deberá concretar su registro ant…\"}, {\"id\": \"Obligacion_la_entidad_encargada_del_seguimiento_del_permiso_podra_conceder_extensiones_en_e\", \"type\": \"Obligacion\", \"label\": \"Conceder extensiones… [+2563 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "TextoOrdenado_to_exterior_cambios_actual_pdf"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Exterior y Cambios\", \"properties\": {\"materia\": \"Operaciones de exterior y cambios\", \"archivo\": \"TO_exterior_cambios_actual.pdf\", \"version\": \"actual\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+       "direccion": "salientes"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"label\": \"Exterior y Cambios\", \"n_salientes_total\": 218, \"n_entrantes_total\": 1006, \"salientes\": [{\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_6244\", \"vecino_label\": \"Com. A 6244\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_6436\", \"vecino_label\": \"Com. A 6436\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_6844\", \"vecino_label\": \"Com. A 6844\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_6770\", \"vecino_label\": \"Com. A 6770\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1.1. A 6244 I 1.2. Según Com. A 6436 y 6844.\"}]}, {\"relation\": \"referencia\", \"vecino_id\": \"Comunicacion_a_6401\", \"vecino_label\": \"Com. A 6401\", \"provenances\": [{\"source_doc\": \"TO_exteri… [+7626 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_supervision_del_bcra"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_supervision_del_bcra\", \"type\": \"Obligacion\", \"label\": \"Supervisión del BCRA\", \"properties\": {\"tipo\": \"otra\", \"description\": \"El Banco Central de la República Argentina (BCRA) supervisará la actuación de los sujetos obligados\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.2. Criterio general y supervisión.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29920,
+      "output_tokens": 238
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31146,
+      "output_tokens": 322
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33312,
+      "output_tokens": 634
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38463,
+      "output_tokens": 995
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39634,
+      "output_tokens": 3434
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 67,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 3,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "exoneracion_total"
+  ],
+  "flags": [
+   "R1: voto_capa_d con mayoria de clave vacia (3 votos sin primarias)"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)"
+}

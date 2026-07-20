@@ -1,0 +1,1451 @@
+{
+ "id_falla": "run_3/CQN-012",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-012",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'capital mínimo exigencia entidad financiera', 'limite': 10}",
+      "devolvio": "539 matches; nodos de exigencia básica (5000 mill), QCCP, cálculo requerimiento capital",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'riesgo operacional cálculo componente', 'limite': 10}",
+      "devolvio": "236 matches; nodos de cálculo riesgo operacional, promedio ERC",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}",
+      "devolvio": "tipo: cálculo por riesgo de crédito; prov punto 7.3",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional'}",
+      "devolvio": "tipo: cálculo capital mínimo por riesgo operacional; prov punto 7.4",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'primer mes funcionamiento riesgo operacional', 'limite': 10}",
+      "devolvio": "202 matches; incluye nodo de exigencia primer mes 10%",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f'}",
+      "devolvio": "primer mes = 10% suma riesgos crédito y mercado (posiciones último día); punto 7.4",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional', 'direccion': 'ambas'}",
+      "devolvio": "3 entrantes 'limita': primer mes, segundo-36 mes, desde 37 mes",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital total determinación cálculo', 'limite': 10}",
+      "devolvio": "341 matches; cálculos por riesgo de mercado/opciones, cálculo mensual operacional",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_exigencia'}",
+      "devolvio": "Cálculo importe mes n considerando riesgo crédito, mercado, operacional, RPC y franquicia; TO régimen informativo punto 7.1",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_exigencia', 'direccion': 'ambas'}",
+      "devolvio": "1 entrante 'regula': descripción detallada del cálculo (franquicia)",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito mercado operacional suma', 'limite': 10}",
+      "devolvio": "563 matches; CRO, riesgo general mercado, cálculo por riesgo crédito",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_descripcion_detallada_del_calculo'}",
+      "devolvio": "descripción del cálculo de la franquicia; punto 7.1 régimen informativo",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital total componentes riesgo crédito mercado operacional', 'limite': 10}",
+      "devolvio": "590 matches; mismos nodos por riesgo separado",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'determinación exigencia capital mínimo metodología', 'limite': 10}",
+      "devolvio": "332 matches; exigencia básica bancos, determinación capital mínimo (RPC), límite 20% grupo A",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital máximo mayor entre riesgo crédito mercado operacional', 'limite': 10}",
+      "devolvio": "637 matches; CRO, riesgo general mercado, cálculo por riesgo crédito — ninguno con la regla del punto 1.1",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 9,
+     "quote": "Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada",
+       "ubicacion": "Operacion_calculo_de_exigencia (único nodo con provenance sobre 'determinación de exigencia' que el agente halló; describe el esquema de posición para cálculo de FRANQUICIAS, punto 7.1 régimen informativo — no la determinación de la exigencia total)"
+      },
+      "fuente": {
+       "quote": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "exigencia capital mínimo mayor valor exigencia básica suma riesgos",
+       "resultado": "397 matches; solo exigencia básica (5000/2500), cálculos por riesgo separados; ningún nodo con la regla del 'mayor valor' del punto 1.1"
+      },
+      {
+       "consulta": "mayor valor comparación exigencia básica",
+       "resultado": "187 matches; 'Computar máximo valor exigencia' pero refiere al riesgo de mercado (Máx códigos 70810000/70820000), no al punto 1.1"
+      },
+      {
+       "consulta": "exigencia integrada equivalente mayor valor riesgo crédito mercado operacional",
+       "resultado": "504 matches; cálculos por cada riesgo y por riesgo de mercado; ninguno con la comparación básica vs. suma de riesgos"
+      },
+      {
+       "consulta": "exigencia capital mínimo integrada punto 1.1",
+       "resultado": "375 matches; exigencia básica, límite 20% grupo A, primer mes operacional; ningún nodo con el texto del punto 1.1"
+      },
+      {
+       "consulta": "entidades financieras deberán tener integrada exigencia",
+       "resultado": "328 matches; observancia exigencia básica, políticas y obligaciones diversas; ninguno con la regla de determinación total"
+      },
+      {
+       "consulta": "exigencia básica comparación suma riesgos crédito operacional total capital",
+       "resultado": "399 matches; exigencia básica y cálculos por riesgo separados; confirmado: no existe nodo portador del punto 1.1"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Cada componente de la exigencia de capital mínimo se calcula conforme a metodologías específicas establecidas en la normativa.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada",
+       "ubicacion": "Operacion_calculo_de_exigencia (punto 7.1 régimen informativo, esquema de franquicias)"
+      },
+      "fuente": {
+       "quote": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado (...) y operacional.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "determinación exigencia capital mínimo metodología",
+       "resultado": "332 matches; exigencia básica, determinación de capital mínimo (cumplimiento en función de RPC), límite 20%; ningún nodo describe la metodología de cálculo de cada componente como parte de la determinación total"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.4-dev",
+      "id_atribucion": "rep1_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "secundaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó incorrectos dos claims, ambos de la PATA 1 (cómo se determina la exigencia de capital mínimo). El claim central afirma que la exigencia 'se determina como la suma de los componentes... junto con otras exigencias regulatorias'. El PDF (punto 1.1) dice lo contrario: la exigencia es el MAYOR VALOR que resulte de la comparación entre la exigencia básica y la SUMA de los riesgos — es decir, es un máximo entre dos magnitudes, no una suma pura ni la incorporación indistinta de 'otras exigencias'. C1a (por pata): ¿apareció en la trayectoria el dato PERTINENTE que responde la pata 1? El dato pertinente es la regla del punto 1.1. Recorrí toda la trayectoria: el agente hizo 8 buscar_nodos con vocabulario amplio (determinación, total, suma, mayor entre riesgos) y abrió nodos de cálculo por riesgo separado, exigencia básica y el nodo Operacion_calculo_de_exigencia (punto 7.1 del régimen informativo). Ese último es el que usó como base para la pata 1, pero — verificado con leer_pasaje_pdf del punto 7.1 — describe un esquema de 'posición mes n' para el cálculo de FRANQUICIAS que DISMINUYEN la exigencia, listando qué datos se consideran; NO define que la exigencia sea la suma ni menciona el 'mayor valor' vs. la exigencia básica. Por tanto NO es pertinente a la pata. El dato pertinente (punto 1.1) NUNCA apareció → context_recall. C2 (árbol context_recall): ¿existe nodo portador del punto 1.1? Ejecuté 6 búsquedas ex ante razonables (mayor valor, exigencia básica vs suma, integrada, punto 1.1, determinación metodología): ninguna devuelve un nodo con la regla de determinación de la exigencia total; el único con 'máximo valor' (Obligacion_computar_maximo_valor_exigencia) es sobre riesgo de mercado (Máx códigos 70810000/70820000), no el punto 1.1. Confirmo que el nodo NO existe. ¿El PDF tiene el dato? Sí, explícito en el punto 1.1. → completitud_kg (el grafo extrajo la exigencia básica del 1.2 y los cálculos por riesgo, pero NO extrajo la regla del 1.1 que ata todo; ese hueco empujó al agente a rellenar con el nodo de franquicias del 7.1 y a glosar 'suma de componentes'). Es la causa primaria: explica por qué el juez reprobó el claim central. El segundo claim ('cada componente se calcula conforme a metodologías específicas', no_soportado) es glosa genérica de relleno de la MISMA pata 1 sin dato pertinente disponible; por C1a queda dentro del mismo context_recall/completitud_kg, jerarquía secundaria (glosa de relleno del hueco, no un defecto independiente). La PATA 2 (riesgo operacional primer mes) fue respondida correctamente por el agente con el nodo Restriccion_la_exigencia_mensual... (punto 7.4, verificado fiel) y el juez la aprobó — no se re-litiga. Descarto contenido_kg (ningún nodo consultado contradice el 1.1; el problema es ausencia, no contradicción), navegación/alcanzabilidad_kg (probé exhaustivamente que el nodo del 1.1 no existe, no que sea inalcanzable), y alucinacion_agente (la glosa no es de cosecha propia arbitraria sino inducida por el hueco del grafo, con el dato ausente presente en el PDF).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 243181,
+    "tokens_out": 8247
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 243181,
+    "tokens_out": 8247,
+    "latency_s": 109.661,
+    "error": null,
+    "final_raw": "Confirmado exhaustivamente: ningún nodo del grafo porta la regla de determinación de la exigencia total del punto 1.1 (\"mayor valor entre exigencia básica y suma de riesgos\"). El punto 1.1 sí existe en el PDF pero no está extraído como nodo — el grafo tiene la exigencia básica (1.2) y los cálculos por riesgo separados, pero falta el nodo que expresa CÓMO se determina la exigencia total (la comparación por el mayor valor).\n\nEsto es un hueco de contenido del grafo (completitud_kg) que empujó al agente a rellenar la pata 1 con el nodo de franquicias (punto 7.1) y a glosar \"suma de componentes\". Tengo evidencia suficiente.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'capital mínimo exigencia entidad financiera', 'limite': 10}\", \"devolvio\": \"539 matches; nodos de exigencia básica (5000 mill), QCCP, cálculo requerimiento capital\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'riesgo operacional cálculo componente', 'limite': 10}\", \"devolvio\": \"236 matches; nodos de cálculo riesgo operacional, promedio ERC\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}\", \"devolvio\": \"tipo: cálculo por riesgo de crédito; prov punto 7.3\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional'}\", \"devolvio\": \"tipo: cálculo capital mínimo por riesgo operacional; prov punto 7.4\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'primer mes funcionamiento riesgo operacional', 'limite': 10}\", \"devolvio\": \"202 matches; incluye nodo de exigencia primer mes 10%\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f'}\", \"devolvio\": \"primer mes = 10% suma riesgos crédito y mercado (posiciones último día); punto 7.4\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional', 'direccion': 'ambas'}\", \"devolvio\": \"3 entrantes 'limita': primer mes, segundo-36 mes, desde 37 mes\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital total determinación cálculo', 'limite': 10}\", \"devolvio\": \"341 matches; cálculos por riesgo de mercado/opciones, cálculo mensual operacional\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia'}\", \"devolvio\": \"Cálculo importe mes n considerando riesgo crédito, mercado, operacional, RPC y franquicia; TO régimen informativo punto 7.1\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia', 'direccion': 'ambas'}\", \"devolvio\": \"1 entrante 'regula': descripción detallada del cálculo (franquicia)\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito mercado operacional suma', 'limite': 10}\", \"devolvio\": \"563 matches; CRO, riesgo general mercado, cálculo por riesgo crédito\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_descripcion_detallada_del_calculo'}\", \"devolvio\": \"descripción del cálculo de la franquicia; punto 7.1 régimen informativo\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital total componentes riesgo crédito mercado operacional', 'limite': 10}\", \"devolvio\": \"590 matches; mismos nodos por riesgo separado\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'determinación exigencia capital mínimo metodología', 'limite': 10}\", \"devolvio\": \"332 matches; exigencia básica bancos, determinación capital mínimo (RPC), límite 20% grupo A\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital máximo mayor entre riesgo crédito mercado operacional', 'limite': 10}\", \"devolvio\": \"637 matches; CRO, riesgo general mercado, cálculo por riesgo crédito — ninguno con la regla del punto 1.1\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 9, \"quote\": \"Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada\", \"ubicacion\": \"Operacion_calculo_de_exigencia (único nodo con provenance sobre 'determinación de exigencia' que el agente halló; describe el esquema de posición para cálculo de FRANQUICIAS, punto 7.1 régimen informativo — no la determinación de la exigencia total)\"},\n        \"fuente\": {\"quote\": \"1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"exigencia capital mínimo mayor valor exigencia básica suma riesgos\", \"resultado\": \"397 matches; solo exigencia básica (5000/2500), cálculos por riesgo separados; ningún nodo con la regla del 'mayor valor' del punto 1.1\"},\n        {\"consulta\": \"mayor valor comparación exigencia básica\", \"resultado\": \"187 matches; 'Computar máximo valor exigencia' pero refiere al riesgo de mercado (Máx códigos 70810000/70820000), no al punto 1.1\"},\n        {\"consulta\": \"exigencia integrada equivalente mayor valor riesgo crédito mercado operacional\", \"resultado\": \"504 matches; cálculos por cada riesgo y por riesgo de mercado; ninguno con la comparación básica vs. suma de riesgos\"},\n        {\"consulta\": \"exigencia capital mínimo integrada punto 1.1\", \"resultado\": \"375 matches; exigencia básica, límite 20% grupo A, primer mes operacional; ningún nodo con el texto del punto 1.1\"},\n        {\"consulta\": \"entidades financieras deberán tener integrada exigencia\", \"resultado\": \"328 matches; observancia exigencia básica, políticas y obligaciones diversas; ninguno con la regla de determinación total\"},\n        {\"consulta\": \"exigencia básica comparación suma riesgos crédito operacional total capital\", \"resultado\": \"399 matches; exigencia básica y cálculos por riesgo separados; confirmado: no existe nodo portador del punto 1.1\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Cada componente de la exigencia de capital mínimo se calcula conforme a metodologías específicas establecidas en la normativa.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada\", \"ubicacion\": \"Operacion_calculo_de_exigencia (punto 7.1 régimen informativo, esquema de franquicias)\"},\n        \"fuente\": {\"quote\": \"1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado (...) y operacional.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"determinación exigencia capital mínimo metodología\", \"resultado\": \"332 matches; exigencia básica, determinación de capital mínimo (cumplimiento en función de RPC), límite 20%; ningún nodo describe la metodología de cálculo de cada componente como parte de la determinación total\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó incorrectos dos claims, ambos de la PATA 1 (cómo se determina la exigencia de capital mínimo). El claim central afirma que la exigencia 'se determina como la suma de los componentes... junto con otras exigencias regulatorias'. El PDF (punto 1.1) dice lo contrario: la exigencia es el MAYOR VALOR que resulte de la comparación entre la exigencia básica y la SUMA de los riesgos — es decir, es un máximo entre dos magnitudes, no una suma pura ni la incorporación indistinta de 'otras exigencias'. C1a (por pata): ¿apareció en la trayectoria el dato PERTINENTE que responde la pata 1? El dato pertinente es la regla del punto 1.1. Recorrí toda la trayectoria: el agente hizo 8 buscar_nodos con vocabulario amplio (determinación, total, suma, mayor entre riesgos) y abrió nodos de cálculo por riesgo separado, exigencia básica y el nodo Operacion_calculo_de_exigencia (punto 7.1 del régimen informativo). Ese último es el que usó como base para la pata 1, pero — verificado con leer_pasaje_pdf del punto 7.1 — describe un esquema de 'posición mes n' para el cálculo de FRANQUICIAS que DISMINUYEN la exigencia, listando qué datos se consideran; NO define que la exigencia sea la suma ni menciona el 'mayor valor' vs. la exigencia básica. Por tanto NO es pertinente a la pata. El dato pertinente (punto 1.1) NUNCA apareció → context_recall. C2 (árbol context_recall): ¿existe nodo portador del punto 1.1? Ejecuté 6 búsquedas ex ante razonables (mayor valor, exigencia básica vs suma, integrada, punto 1.1, determinación metodología): ninguna devuelve un nodo con la regla de determinación de la exigencia total; el único con 'máximo valor' (Obligacion_computar_maximo_valor_exigencia) es sobre riesgo de mercado (Máx códigos 70810000/70820000), no el punto 1.1. Confirmo que el nodo NO existe. ¿El PDF tiene el dato? Sí, explícito en el punto 1.1. → completitud_kg (el grafo extrajo la exigencia básica del 1.2 y los cálculos por riesgo, pero NO extrajo la regla del 1.1 que ata todo; ese hueco empujó al agente a rellenar con el nodo de franquicias del 7.1 y a glosar 'suma de componentes'). Es la causa primaria: explica por qué el juez reprobó el claim central. El segundo claim ('cada componente se calcula conforme a metodologías específicas', no_soportado) es glosa genérica de relleno de la MISMA pata 1 sin dato pertinente disponible; por C1a queda dentro del mismo context_recall/completitud_kg, jerarquía secundaria (glosa de relleno del hueco, no un defecto independiente). La PATA 2 (riesgo operacional primer mes) fue respondida correctamente por el agente con el nodo Restriccion_la_exigencia_mensual... (punto 7.4, verificado fiel) y el juez la aprobó — no se re-litiga. Descarto contenido_kg (ningún nodo consultado contradice el 1.1; el problema es ausencia, no contradicción), navegación/alcanzabilidad_kg (probé exhaustivamente que el nodo del 1.1 no existe, no que sea inalcanzable), y alucinacion_agente (la glosa no es de cosecha propia arbitraria sino inducida por el hueco del grafo, con el dato ausente presente en el PDF).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Exigencia.\\nLa exigencia de capital mínim o que las entidades financieras deberán tener integrada será\\nequivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de\\nlas determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de\\nlos activos comprendidos– y operacional.\\n1.2. Exigencia básica.\\nSegún la clase de entidad, serán las siguientes exigencias básicas:\\nBancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n5.000 2.500\\nLas compañías financie ras que re alicen, en forma directa, operaciones de comercio exterior\\ndeberán observar las exigencias establecidas para los bancos.\\n1.3. Integración.\\nA los fines de determinar el cumplimiento de la exigencia de capital mínimo, la integración a\\nconsiderar será la responsabilidad patrimonial computable, que se determinará en función de\\nlos saldos de las partidas admitidas registrados al último día del mes bajo informe.\\nEn el caso de la exigencia de capital mí… [+396 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 15)\", \"pasaje\": \"1. del TO sobre Financiamiento al Sector Público no Financiero–.\\nii) Demás entes con características similares que no cumplan los criterios para ser ad-\\nmitidas en otras categorías.\\nNo se incluyen las exposiciones a instrumentos previstas en el punto 2.11.\\n2.7.2. A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entida-\\ndes financieras deberán considerar las siguientes definiciones:\\n2.7.2.1. Empresas con “grado de inversión”.\\nLas empresas con “grado de inversión ” son aquellas con capacidad suficiente\\npara atender puntualmente sus compromisos financieros aun ante cambios ad-\\nversos en la coyuntura económica y en las condiciones de los negocios.\\nA tales efectos, se deberá tener en cuenta la complejidad del modelo de nego-\\ncios de la empresa, el desempeño en relación con su industria y empresas simi-\\nlares y los riesgos de su entorno operativo. La empresa con “grado de inver-\\nsión” (o su controlante) deberá haber emitido títulos valores que coticen en bol-\\nsas o mercados… [+392 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo mayor valor exigencia básica suma riesgos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo mayor valor exigencia básica suma riesgos\", \"total_con_match\": 397, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Restriccion_la_exigencia_determinada_a_traves_de_la_aplicacion_de_la_expresion_descripta_en_\", \"type\": \"Restriccion\", \"label\": \"Límite 20% grupo A capital mínimo\", \"… [+2032 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "mayor valor comparación exigencia básica",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"mayor valor comparación exigencia básica\", \"total_con_match\": 187, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Obligacion_computar_maximo_valor_exigencia\", \"type\": \"Obligacion\", \"label\": \"Computar máximo valor exigencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [Código 70810000; Código 70820000]\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Excepcion_las_cajas_de_credito_cooperativas_quedan_exceptuadas_de_la_exigencia_basica_de_5\", \"type\": \"Excepcion\", \"label\": \"Excepción Cajas de Crédito Cooperativas\", \"t… [+2366 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_computar_maximo_valor_exigencia"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_computar_maximo_valor_exigencia\", \"type\": \"Obligacion\", \"label\": \"Computar máximo valor exigencia\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [Código 70810000; Código 70820000]\", \"plazo\": \"correspondiente al último día del período de información\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_observancia_de_exigencia_de_capital"
+      },
+      "output_truncado": "{\"id\": \"Operacion_observancia_de_exigencia_de_capital\", \"type\": \"Operacion\", \"label\": \"Observancia de exigencia básica de capital\", \"properties\": {\"tipo\": \"observancia de exigencia de capital\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia integrada equivalente mayor valor riesgo crédito mercado operacional",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia integrada equivalente mayor valor riesgo crédito mercado operacional\", \"total_con_match\": 504, \"resultados\": [{\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati\", \"type\": \"Restriccion\", \"label\": \"Crédito de riesgo no negativo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exposición presente respecto de la contraparte no puede tener un valor negativo\"}, {\"id\": \"Obligacion_aplicar_exigencia_capi… [+2258 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_calculo_de_requerimiento_regulatorio"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_de_requerimiento_regulatorio\", \"type\": \"Operacion\", \"label\": \"Determinación de capital mínimo\", \"properties\": {\"tipo\": \"calculo_de_requerimiento_regulatorio\", \"description\": \"Determinación del cumplimiento de la exigencia de capital mínimo en función de la responsabilidad patrimonial computable\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo integrada punto 1.1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo integrada punto 1.1\", \"total_con_match\": 375, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Restriccion_la_exigencia_determinada_a_traves_de_la_aplicacion_de_la_expresion_descripta_en_\", \"type\": \"Restriccion\", \"label\": \"Límite 20% grupo A capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia determinada a través de la aplicación de la expresión descripta en el punto 7.2. no podrá superar el 20% en el caso de entidades del grupo A del pr…\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigenc… [+2083 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidades financieras deberán tener integrada exigencia",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"entidades financieras deberán tener integrada exigencia\", \"total_con_match\": 328, \"resultados\": [{\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica de capital prevista en la tabla del punto 1.2 según la categoría qu…\"}, {\"id\": \"Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo en opciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y … [+2603 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 7.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 7.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 35)\", \"pasaje\": \"7.1. Normas de procedimiento \\n \\nEn los códigos 60100000 a 61100000 se incluirán los importes qu e surjan como conse-\\ncuencia de la aplicación de franquicias otorgadas por el BCRA, consignándose, además, el \\nnúmero y fecha de Resolución a través de la cual se la otorgó o  el número de nota y fecha \\nmediante la cual se comunicó tal decisión. \\n \\nTambién se agregará una descripción detallada del cálculo de la  franquicia para el período \\ninformado, a partir de lo dispuesto en la Resolución o nota a q ue se hace referencia \\nen el párrafo anterior. \\n \\nEn aquellos casos en que corresponda y siempre que las facilida des impliquen una dismi-\\nnución de la exigencia (códigos 60100000, 60200000, 60300000 y 60400000), para el \\ncálculo del importe correspondient e al mes n procederá tenerse en cuenta el siguiente es-\\nquema: \\n \\n \\nPosición mes n: \\n \\nDatos exigencia riesgo de crédito del mes n (incluyendo INC) \\nExigencia por riesgo de mercado del último día del mes n \\nExigencia por riesgo o… [+439 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia básica comparación suma riesgos crédito operacional total capital",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"exigencia básica comparación suma riesgos crédito operacional total capital\", \"total_con_match\": 399, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Ex… [+1504 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26955,
+      "output_tokens": 296
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28654,
+      "output_tokens": 507
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32264,
+      "output_tokens": 391
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34710,
+      "output_tokens": 509
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38669,
+      "output_tokens": 529
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39978,
+      "output_tokens": 738
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 41951,
+      "output_tokens": 5277
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-012",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'capital mínimo exigencia entidad financiera', 'limite': 10}",
+      "devolvio": "Nodos de exigencia básica (5.000/2.500 M), límite QCCP, deducciones, límite 20% grupo A; ninguno con la regla del Punto 1.1 (mayor valor entre básica y suma de riesgos)",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'riesgo operacional cálculo componente', 'limite': 10}",
+      "devolvio": "Nodos de cálculo/promedio de exigencia por riesgo operacional; incluye el de capital mínimo operacional",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}",
+      "devolvio": "tipo: cálculo de exigencia por riesgo de crédito; prov. Punto 7.3",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional'}",
+      "devolvio": "tipo: cálculo de capital mínimo por riesgo operacional; prov. Punto 7.4 Nuevas entidades",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'primer mes funcionamiento riesgo operacional', 'limite': 10}",
+      "devolvio": "Nodos de riesgo operacional; alcanza la Restricción del primer mes (10%)",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f'}",
+      "devolvio": "10% de la suma de crédito y mercado (posiciones último día) del primer mes; Punto 7.4",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional', 'direccion': 'ambas'}",
+      "devolvio": "3 entrantes 'limita': primer mes, 2º-36º mes, desde 37º mes",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital total determinación cálculo', 'limite': 10}",
+      "devolvio": "Nodos de exigencia por riesgo de cambio/opciones/general/específico; nada sobre determinación total",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_exigencia'}",
+      "devolvio": "Cálculo del importe del mes n considerando crédito, mercado, operacional, RPC y franquicia; prov. TO régimen informativo Punto 7.1",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_exigencia', 'direccion': 'ambas'}",
+      "devolvio": "1 entrante 'regula': Descripción detallada del cálculo (franquicia)",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito mercado operacional suma', 'limite': 10}",
+      "devolvio": "Nodos CRO, riesgo general mercado, crédito; ninguno con la regla del Punto 1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_descripcion_detallada_del_calculo'}",
+      "devolvio": "Descripción del cálculo de la franquicia; régimen informativo Punto 7.1",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital total componentes riesgo crédito mercado operacional', 'limite': 10}",
+      "devolvio": "Nodos CRO, riesgo general mercado, crédito; nada sobre regla de determinación total",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'determinación exigencia capital mínimo metodología', 'limite': 10}",
+      "devolvio": "Exigencia básica bancos, determinación de capital mínimo (integración), límites; nada del Punto 1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital máximo mayor entre riesgo crédito mercado operacional', 'limite': 10}",
+      "devolvio": "Nodos CRO, riesgo general mercado, crédito; ningún nodo con la regla del mayor valor del Punto 1.1",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 9,
+     "quote": "Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada",
+       "ubicacion": "Operacion_calculo_de_exigencia (nodo no pertinente: es del régimen informativo de franquicias, Punto 7.1; no existe nodo que porte la regla del Punto 1.1)"
+      },
+      "fuente": {
+       "quote": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "exigencia mayor valor básica suma riesgos crédito mercado operacional",
+       "resultado": "Excepción Cajas de Crédito, exigencia básica bancos, cálculo RCD, computar máximo valor exigencia (riesgo de mercado, código 70800000, régimen informativo); ningún nodo con la regla de comparación del Punto 1.1"
+      },
+      {
+       "consulta": "exigencia capital mínimo integrada mayor valor comparación",
+       "resultado": "exigencia básica bancos/restantes, límite 20% grupo A, cálculo por riesgo de crédito, integración de capital mínimo; ninguno porta la regla del Punto 1.1"
+      },
+      {
+       "consulta": "exigencia capital mínimo entidades deberán tener integrada equivalente",
+       "resultado": "exigencia básica (5.000/2.500/1.500/700 M según período), exigencia primer mes operacional, límites 17%/20%; ningún nodo con 'mayor valor entre básica y suma de riesgos'"
+      },
+      {
+       "consulta": "verificación nodos candidatos: Obligacion_computar_maximo_valor_exigencia / Operacion_calculo_de_requerimiento_regulatorio",
+       "resultado": "el primero es sobre riesgo de mercado (código 70800000, Punto 12.2 régimen informativo); el segundo es sobre integración/cumplimiento (Punto 1.3); ninguno es la regla del Punto 1.1"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_cross_doc",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_cross_doc",
+      "guarda_dominio": {
+       "source_doc_portador": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "territorio": [
+        "TO_capitales_minimos_actual.pdf"
+       ]
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Cada componente de la exigencia de capital mínimo se calcula conforme a metodologías específicas establecidas en la normativa.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "ninguno",
+       "ubicacion": "ningún nodo de la trayectoria contiene esta glosa genérica; los nodos consultados describen cálculos concretos (CRO=BIC×ILM, C_RC=(k×0,08×APR_c)+INC), no una afirmación de que 'cada componente se calcula conforme a metodologías específicas'"
+      },
+      "fuente": {
+       "quote": "1.1. Exigencia. (…) será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado (…) y operacional.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1 (el PDF no formula esta glosa vaga sobre 'metodologías específicas')"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "determinación exigencia capital mínimo metodología",
+       "resultado": "exigencia básica bancos, determinación de capital mínimo (integración), límites; ningún nodo que respalde la glosa 'cada componente se calcula conforme a metodologías específicas'"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "El síntoma es que el juez reprobó dos claims centrales/no-soportados de la PATA 1 (cómo se determina la exigencia total). Aplico C1a por pata: la PATA 2 (primer mes, riesgo operacional) fue aprobada y su dato pertinente SÍ apareció (paso 6, Restricción con el 10% del Punto 7.4). La PATA 1 requiere la regla del Punto 1.1 del TO de capitales mínimos: la exigencia integrada es 'el MAYOR valor entre la exigencia básica y la SUMA de riesgos de crédito, mercado y operacional'. Ese dato pertinente NUNCA apareció en la trayectoria del agente: el agente reconstruyó la respuesta desde Operacion_calculo_de_exigencia (paso 9), que verifiqué en leer_pasaje_pdf proviene del TO de régimen informativo, Punto 7.1 — un esquema de cálculo del importe del mes n para FRANQUICIAS que disminuyen la exigencia, NO la regla de determinación de la exigencia. Por eso el agente afirmó 'suma de componentes junto con otras exigencias regulatorias', omitiendo la comparación con la exigencia básica y el 'mayor valor'. Test v2.2: ese nodo no responde la pata → no pertinente → context_recall a nivel pata. C2 (árbol context_recall): ¿existe nodo portador del dato del Punto 1.1? Busqué exhaustivamente con vocabulario ex ante y con vocabulario del propio PDF ('mayor valor', 'básica suma riesgos', 'entidades deberán tener integrada equivalente') y con verificación de nodos candidatos (computar máximo valor exigencia = riesgo de mercado régimen informativo; determinación de capital mínimo = integración Punto 1.3); NINGÚN nodo porta la regla del Punto 1.1. El PDF SÍ tiene el dato (leído en Punto 1.1). Por tanto: no existe el nodo, el PDF lo tiene → completitud_kg, primaria (es lo que rompe la respuesta del juez). Segundo claim ('cada componente se calcula conforme a metodologías específicas'): es una glosa genérica sin soporte en ningún nodo de la trayectoria (los nodos dan fórmulas concretas, no esta afirmación vaga) → faithfulness; en el árbol, el grafo no tiene ese dato afirmado y el PDF tampoco lo formula así → alucinacion_agente modo (b), glosa de cosecha propia, secundaria (relleno que no es la causa central del reprobado del juez, pero es un defecto real distinto).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": true,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 232529,
+    "tokens_out": 7559
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 232529,
+    "tokens_out": 7559,
+    "latency_s": 99.686,
+    "error": null,
+    "final_raw": "Confirmado: el nodo `Operacion_calculo_de_exigencia` que el agente usó como base proviene del régimen informativo de FRANQUICIAS (Punto 7.1), y describe un esquema de cálculo del importe para franquicias que disminuyen la exigencia — NO es la regla de determinación de la exigencia de capital mínimo. El agente lo tomó como si fuera la regla general de determinación, omitiendo el \"mayor valor vs. exigencia básica\" del Punto 1.1.\n\nEsto matiza la atribución del claim 1: el agente reprodujo \"suma de crédito, mercado, operacional... y franquicia informada\" del nodo del régimen informativo (soportado por ese nodo), pero ese nodo NO es pertinente a la pata (es sobre franquicias/importe del mes n, no sobre determinación). El dato pertinente (Punto 1.1) nunca apareció → context_recall a nivel pata. Como el dato pertinente no existe como nodo y el PDF sí lo tiene → completitud_kg.\n\nEmito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'capital mínimo exigencia entidad financiera', 'limite': 10}\", \"devolvio\": \"Nodos de exigencia básica (5.000/2.500 M), límite QCCP, deducciones, límite 20% grupo A; ninguno con la regla del Punto 1.1 (mayor valor entre básica y suma de riesgos)\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'riesgo operacional cálculo componente', 'limite': 10}\", \"devolvio\": \"Nodos de cálculo/promedio de exigencia por riesgo operacional; incluye el de capital mínimo operacional\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}\", \"devolvio\": \"tipo: cálculo de exigencia por riesgo de crédito; prov. Punto 7.3\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional'}\", \"devolvio\": \"tipo: cálculo de capital mínimo por riesgo operacional; prov. Punto 7.4 Nuevas entidades\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'primer mes funcionamiento riesgo operacional', 'limite': 10}\", \"devolvio\": \"Nodos de riesgo operacional; alcanza la Restricción del primer mes (10%)\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f'}\", \"devolvio\": \"10% de la suma de crédito y mercado (posiciones último día) del primer mes; Punto 7.4\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_capital_minimo_por_riesgo_operacional', 'direccion': 'ambas'}\", \"devolvio\": \"3 entrantes 'limita': primer mes, 2º-36º mes, desde 37º mes\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital total determinación cálculo', 'limite': 10}\", \"devolvio\": \"Nodos de exigencia por riesgo de cambio/opciones/general/específico; nada sobre determinación total\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia'}\", \"devolvio\": \"Cálculo del importe del mes n considerando crédito, mercado, operacional, RPC y franquicia; prov. TO régimen informativo Punto 7.1\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_exigencia', 'direccion': 'ambas'}\", \"devolvio\": \"1 entrante 'regula': Descripción detallada del cálculo (franquicia)\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito mercado operacional suma', 'limite': 10}\", \"devolvio\": \"Nodos CRO, riesgo general mercado, crédito; ninguno con la regla del Punto 1.1\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_descripcion_detallada_del_calculo'}\", \"devolvio\": \"Descripción del cálculo de la franquicia; régimen informativo Punto 7.1\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital total componentes riesgo crédito mercado operacional', 'limite': 10}\", \"devolvio\": \"Nodos CRO, riesgo general mercado, crédito; nada sobre regla de determinación total\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'determinación exigencia capital mínimo metodología', 'limite': 10}\", \"devolvio\": \"Exigencia básica bancos, determinación de capital mínimo (integración), límites; nada del Punto 1.1\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital máximo mayor entre riesgo crédito mercado operacional', 'limite': 10}\", \"devolvio\": \"Nodos CRO, riesgo general mercado, crédito; ningún nodo con la regla del mayor valor del Punto 1.1\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 9, \"quote\": \"Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo del importe correspondiente al mes n considerando exigencia de riesgo de crédito, riesgo de mercado, riesgo operacional, responsabilidad patrimonial computable y franquicia informada\", \"ubicacion\": \"Operacion_calculo_de_exigencia (nodo no pertinente: es del régimen informativo de franquicias, Punto 7.1; no existe nodo que porte la regla del Punto 1.1)\"},\n        \"fuente\": {\"quote\": \"1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"exigencia mayor valor básica suma riesgos crédito mercado operacional\", \"resultado\": \"Excepción Cajas de Crédito, exigencia básica bancos, cálculo RCD, computar máximo valor exigencia (riesgo de mercado, código 70800000, régimen informativo); ningún nodo con la regla de comparación del Punto 1.1\"},\n        {\"consulta\": \"exigencia capital mínimo integrada mayor valor comparación\", \"resultado\": \"exigencia básica bancos/restantes, límite 20% grupo A, cálculo por riesgo de crédito, integración de capital mínimo; ninguno porta la regla del Punto 1.1\"},\n        {\"consulta\": \"exigencia capital mínimo entidades deberán tener integrada equivalente\", \"resultado\": \"exigencia básica (5.000/2.500/1.500/700 M según período), exigencia primer mes operacional, límites 17%/20%; ningún nodo con 'mayor valor entre básica y suma de riesgos'\"},\n        {\"consulta\": \"verificación nodos candidatos: Obligacion_computar_maximo_valor_exigencia / Operacion_calculo_de_requerimiento_regulatorio\", \"resultado\": \"el primero es sobre riesgo de mercado (código 70800000, Punto 12.2 régimen informativo); el segundo es sobre integración/cumplimiento (Punto 1.3); ninguno es la regla del Punto 1.1\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Cada componente de la exigencia de capital mínimo se calcula conforme a metodologías específicas establecidas en la normativa.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"ningún nodo de la trayectoria contiene esta glosa genérica; los nodos consultados describen cálculos concretos (CRO=BIC×ILM, C_RC=(k×0,08×APR_c)+INC), no una afirmación de que 'cada componente se calcula conforme a metodologías específicas'\"},\n        \"fuente\": {\"quote\": \"1.1. Exigencia. (…) será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado (…) y operacional.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1 (el PDF no formula esta glosa vaga sobre 'metodologías específicas')\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"determinación exigencia capital mínimo metodología\", \"resultado\": \"exigencia básica bancos, determinación de capital mínimo (integración), límites; ningún nodo que respalde la glosa 'cada componente se calcula conforme a metodologías específicas'\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma es que el juez reprobó dos claims centrales/no-soportados de la PATA 1 (cómo se determina la exigencia total). Aplico C1a por pata: la PATA 2 (primer mes, riesgo operacional) fue aprobada y su dato pertinente SÍ apareció (paso 6, Restricción con el 10% del Punto 7.4). La PATA 1 requiere la regla del Punto 1.1 del TO de capitales mínimos: la exigencia integrada es 'el MAYOR valor entre la exigencia básica y la SUMA de riesgos de crédito, mercado y operacional'. Ese dato pertinente NUNCA apareció en la trayectoria del agente: el agente reconstruyó la respuesta desde Operacion_calculo_de_exigencia (paso 9), que verifiqué en leer_pasaje_pdf proviene del TO de régimen informativo, Punto 7.1 — un esquema de cálculo del importe del mes n para FRANQUICIAS que disminuyen la exigencia, NO la regla de determinación de la exigencia. Por eso el agente afirmó 'suma de componentes junto con otras exigencias regulatorias', omitiendo la comparación con la exigencia básica y el 'mayor valor'. Test v2.2: ese nodo no responde la pata → no pertinente → context_recall a nivel pata. C2 (árbol context_recall): ¿existe nodo portador del dato del Punto 1.1? Busqué exhaustivamente con vocabulario ex ante y con vocabulario del propio PDF ('mayor valor', 'básica suma riesgos', 'entidades deberán tener integrada equivalente') y con verificación de nodos candidatos (computar máximo valor exigencia = riesgo de mercado régimen informativo; determinación de capital mínimo = integración Punto 1.3); NINGÚN nodo porta la regla del Punto 1.1. El PDF SÍ tiene el dato (leído en Punto 1.1). Por tanto: no existe el nodo, el PDF lo tiene → completitud_kg, primaria (es lo que rompe la respuesta del juez). Segundo claim ('cada componente se calcula conforme a metodologías específicas'): es una glosa genérica sin soporte en ningún nodo de la trayectoria (los nodos dan fórmulas concretas, no esta afirmación vaga) → faithfulness; en el árbol, el grafo no tiene ese dato afirmado y el PDF tampoco lo formula así → alucinacion_agente modo (b), glosa de cosecha propia, secundaria (relleno que no es la causa central del reprobado del juez, pero es un defecto real distinto).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Exigencia.\\nLa exigencia de capital mínim o que las entidades financieras deberán tener integrada será\\nequivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de\\nlas determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de\\nlos activos comprendidos– y operacional.\\n1.2. Exigencia básica.\\nSegún la clase de entidad, serán las siguientes exigencias básicas:\\nBancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n5.000 2.500\\nLas compañías financie ras que re alicen, en forma directa, operaciones de comercio exterior\\ndeberán observar las exigencias establecidas para los bancos.\\n1.3. Integración.\\nA los fines de determinar el cumplimiento de la exigencia de capital mínimo, la integración a\\nconsiderar será la responsabilidad patrimonial computable, que se determinará en función de\\nlos saldos de las partidas admitidas registrados al último día del mes bajo informe.\\nEn el caso de la exigencia de capital mí… [+396 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 15)\", \"pasaje\": \"1. del TO sobre Financiamiento al Sector Público no Financiero–.\\nii) Demás entes con características similares que no cumplan los criterios para ser ad-\\nmitidas en otras categorías.\\nNo se incluyen las exposiciones a instrumentos previstas en el punto 2.11.\\n2.7.2. A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entida-\\ndes financieras deberán considerar las siguientes definiciones:\\n2.7.2.1. Empresas con “grado de inversión”.\\nLas empresas con “grado de inversión ” son aquellas con capacidad suficiente\\npara atender puntualmente sus compromisos financieros aun ante cambios ad-\\nversos en la coyuntura económica y en las condiciones de los negocios.\\nA tales efectos, se deberá tener en cuenta la complejidad del modelo de nego-\\ncios de la empresa, el desempeño en relación con su industria y empresas simi-\\nlares y los riesgos de su entorno operativo. La empresa con “grado de inver-\\nsión” (o su controlante) deberá haber emitido títulos valores que coticen en bol-\\nsas o mercados… [+392 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia mayor valor básica suma riesgos crédito mercado operacional",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia mayor valor básica suma riesgos crédito mercado operacional\", \"total_con_match\": 410, \"resultados\": [{\"id\": \"Excepcion_las_cajas_de_credito_cooperativas_quedan_exceptuadas_de_la_exigencia_basica_de_5\", \"type\": \"Excepcion\", \"label\": \"Excepción Cajas de Crédito Cooperativas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las Cajas de Crédito Cooperativas quedan exceptuadas de la exigencia básica de 5.000 millones aplicable a bancos\"}, {\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Obligacion_importe_determinado_mediante_la_suma_de_los_val… [+2126 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo integrada mayor valor comparación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo integrada mayor valor comparación\", \"total_con_match\": 386, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Restriccion_la_exigencia_determinada_a_traves_de_la_aplicacion_de_la_expresion_descripta_en_\", \"type\": \"Restriccion\", \"label\": \"Límite 20% grupo A capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia determinada a través de la aplicación de la expresión descripta en el punto 7.2. no podrá superar el 20% en el caso de entidades del grupo A del pr…\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"la… [+1968 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo entidades deberán tener integrada equivalente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo entidades deberán tener integrada equivalente\", \"total_con_match\": 534, \"resultados\": [{\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica de capital prevista en la tabla del punto 1.2 según la categoría qu…\"}, {\"id\": \"Restriccion_desde_el_01_06_24_y_has… [+2475 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_integracion_de_capital_minimo"
+      },
+      "output_truncado": "{\"id\": \"Operacion_integracion_de_capital_minimo\", \"type\": \"Operacion\", \"label\": \"Integración de capital mínimo\", \"properties\": {\"tipo\": \"integración de capital mínimo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.4. Incumplimientos.\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_computar_maximo_valor_exigencia"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_computar_maximo_valor_exigencia\", \"type\": \"Obligacion\", \"label\": \"Computar máximo valor exigencia\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [Código 70810000; Código 70820000]\", \"plazo\": \"correspondiente al último día del período de información\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_calculo_de_requerimiento_regulatorio"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_de_requerimiento_regulatorio\", \"type\": \"Operacion\", \"label\": \"Determinación de capital mínimo\", \"properties\": {\"tipo\": \"calculo_de_requerimiento_regulatorio\", \"description\": \"Determinación del cumplimiento de la exigencia de capital mínimo en función de la responsabilidad patrimonial computable\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"capital mínimo exigencia entidad financiera\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"capital mínimo exigencia entidad financiera\", \"total_con_match\": 539, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_cuando_la_suma_de_los_requisitos_de_capital_de_una_entidad_financiera_por_las_ex\", \"type\": \"Restriccion\", \"label\": \"Límite requisito capital QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la suma de los requisitos de capital de una entidad financiera por las exposiciones con una QCCP sea mayor que la exigencia resultante de la aplicación d…\"}, {\"id\": \"Obligacion_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo_\", \"type\": \"Obligacion\", \"label\": \"Calcular requerimiento capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La CCP, la entidad financiera, la autoridad de control de l… [+2592 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 7.1. Normas de procedimiento"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 7.1. Normas de procedimiento\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 35)\", \"pasaje\": \"7.1. Normas de procedimiento \\n \\nEn los códigos 60100000 a 61100000 se incluirán los importes qu e surjan como conse-\\ncuencia de la aplicación de franquicias otorgadas por el BCRA, consignándose, además, el \\nnúmero y fecha de Resolución a través de la cual se la otorgó o  el número de nota y fecha \\nmediante la cual se comunicó tal decisión. \\n \\nTambién se agregará una descripción detallada del cálculo de la  franquicia para el período \\ninformado, a partir de lo dispuesto en la Resolución o nota a q ue se hace referencia \\nen el párrafo anterior. \\n \\nEn aquellos casos en que corresponda y siempre que las facilida des impliquen una dismi-\\nnución de la exigencia (códigos 60100000, 60200000, 60300000 y 60400000), para el \\ncálculo del importe correspondient e al mes n procederá tenerse en cuenta el siguiente es-\\nquema: \\n \\n \\nPosición mes n: \\n \\nDatos exigencia riesgo de crédito del mes n (incluyendo INC) \\nExigencia por riesgo de mercado del último día del mes n… [+464 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26955,
+      "output_tokens": 287
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28645,
+      "output_tokens": 373
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31998,
+      "output_tokens": 286
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34125,
+      "output_tokens": 321
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34918,
+      "output_tokens": 620
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37234,
+      "output_tokens": 630
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 38654,
+      "output_tokens": 5042
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-012",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"capital mínimo exigencia entidad financiera\", \"limite\": 10}",
+      "devolvio": "539 matches; top: exigencia básica bancos 5.000M, límite QCCP, cálculo requerimiento capital, encuadrarse en exigencia, cálculo exig. riesgo crédito, exig. básica restantes 2.500M. Ninguno porta la regla del Punto 1.1 (mayor valor entre básica y suma de riesgos).",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"riesgo operacional cálculo componente\", \"limite\": 10}",
+      "devolvio": "236 matches; cálculo promedio ERC, límite exig. riesgo operacional, cálculo exig. capital riesgo operacional, cálculo capital mínimo por riesgo operacional.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\"}",
+      "devolvio": "Nodo tipo 'cálculo de exigencia de capital mínimo por riesgo de crédito'; sin description; prov. Punto 7.3.",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_capital_minimo_por_riesgo_operacional\"}",
+      "devolvio": "Nodo 'cálculo de capital mínimo por riesgo operacional'; sin description; prov. Punto 7.4 Nuevas entidades.",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"primer mes funcionamiento riesgo operacional\", \"limite\": 10}",
+      "devolvio": "202 matches; incluye Restriccion de la exigencia mensual del primer mes.",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f\"}",
+      "devolvio": "Descripción del 10% de la sumatoria de riesgos crédito y mercado (posiciones del último día) del primer mes; prov. Punto 7.4.",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_calculo_de_capital_minimo_por_riesgo_operacional\", \"direccion\": \"ambas\"}",
+      "devolvio": "3 entrantes 'limita': primer mes, 2º-36º mes, desde 37º mes. Todos prov. Punto 7.4.",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital total determinación cálculo\", \"limite\": 10}",
+      "devolvio": "341 matches; determinaciones de exigencia por riesgos de mercado (cambiario, opciones, general, específico), cálculo mensual operacional. Ninguno porta la regla del Punto 1.1.",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_exigencia\"}",
+      "devolvio": "'Cálculo del importe del mes n considerando riesgo crédito, mercado, operacional, RPC y franquicia'; prov. TO_regimen_informativo_contable_mensual Punto 7.1.",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Operacion_calculo_de_exigencia\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante 'regula': Descripción detallada del cálculo (franquicia).",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital riesgo crédito mercado operacional suma\", \"limite\": 10}",
+      "devolvio": "563 matches; CRO mensual, riesgo general mercado, cálculo exig. crédito. Ninguno con la regla del Punto 1.1.",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_descripcion_detallada_del_calculo\"}",
+      "devolvio": "Descripción del cálculo de la franquicia (informativo); prov. Punto 7.1.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital total componentes riesgo crédito mercado operacional\", \"limite\": 10}",
+      "devolvio": "590 matches; mismos tipos, ninguno con la regla de determinación.",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"determinación exigencia capital mínimo metodología\", \"limite\": 10}",
+      "devolvio": "332 matches; exig. básica bancos, determinación de capital mínimo (cumplimiento vs RPC), cálculo exig. crédito, límite 20% grupo A.",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital máximo mayor entre riesgo crédito mercado operacional\", \"limite\": 10}",
+      "devolvio": "637 matches; CRO mensual, riesgo general mercado, cálculo exig. crédito. Ninguno porta el 'mayor valor entre básica y suma de riesgos'.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 8,
+     "quote": "buscar_nodos({\"consulta\": \"exigencia capital total determinación cálculo\", \"limite\": 10})"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos",
+       "ubicacion": "Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill (único tipo de nodo alcanzado sobre determinación de exigencia; ninguno porta la regla del Punto 1.1)"
+      },
+      "fuente": {
+       "quote": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "exigencia capital mínimo mayor valor exigencia básica suma riesgos",
+       "resultado": "397 matches; top: exig. básica bancos/restantes, cálculo exig. crédito, límite 20% grupo A. Ningún nodo con la regla 'mayor valor entre básica y suma de riesgos'."
+      },
+      {
+       "consulta": "exigencia integrada mayor valor comparación básica",
+       "resultado": "187 matches; 'Computar máximo valor exigencia' (Máx[70810000;70820000], prov. TO régimen informativo Punto 12.2, riesgo de mercado) y exig. básicas; ninguno porta el Punto 1.1."
+      },
+      {
+       "consulta": "exigencia capital mínimo entidades financieras deberán tener integrada",
+       "resultado": "522 matches; exig. básicas, límites máximos titulización, exig. capital 8%; ninguno con la regla de determinación del Punto 1.1."
+      },
+      {
+       "consulta": "exigencia equivalente mayor valor comparación básica suma crédito mercado operacional",
+       "resultado": "420 matches; excepción cajas de crédito, cálculo RCD, exig. básica bancos; ninguno porta el Punto 1.1."
+      },
+      {
+       "consulta": "ver_vecinos Restriccion exigencia básica bancos",
+       "resultado": "salientes/entrantes anclados al Punto 1.2 (exig. básica); ningún vecino que porte la regla del Punto 1.1."
+      },
+      {
+       "consulta": "ver_paso_completo(1)",
+       "resultado": "output íntegro del agente para 'capital mínimo exigencia entidad financiera': 10 resultados, ninguno con la regla del mayor valor."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+        "alcance_en_el_nodo": "Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos",
+        "coinciden": "no",
+        "sintoma_del_par": "noise_sensitivity",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente (Punto 1.1) declara la regla general de determinación de la exigencia: el MAYOR VALOR entre la exigencia básica y la SUMA de los componentes por riesgo, no una suma simple. El nodo portador trata solo el alcance parcial de la exigencia básica de los bancos (5.000 millones), sin portar la regla del Punto 1.1; el pasaje recuperado desde su provenance es el 1.2 (básica), no el 1.1. La respuesta afirmó 'suma de componentes' porque el KG no contiene el nodo que porta la regla de determinación del Punto 1.1, confirmando completitud_kg."
+       },
+       {
+        "alcance_declarado_en_fuente": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+        "alcance_en_el_nodo": "Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos",
+        "coinciden": "no",
+        "sintoma_del_par": "noise_sensitivity",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente (Punto 1.1) declara la regla general de determinación como el MAYOR valor entre la exigencia básica y la SUMA de los componentes por riesgo; el nodo portador sólo trata el alcance acotado de un componente (la exigencia básica de 5.000 millones para bancos), sin portar la regla del Punto 1.1. El claim reprobado como 'falso' describe la exigencia como pura suma de componentes, error causado por la ausencia en el grafo del nodo que porta la regla de comparación por el mayor valor: falta de completitud del KG."
+       },
+       {
+        "alcance_declarado_en_fuente": "1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.",
+        "alcance_en_el_nodo": "Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos",
+        "coinciden": "no",
+        "sintoma_del_par": "noise_sensitivity",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente (Punto 1.1) declara que la exigencia total es el MAYOR VALOR entre la exigencia básica y la suma de los riesgos de crédito, mercado y operacional; el nodo portador solo captura la exigencia básica cuantitativa de bancos (5.000 millones), un componente scopeado y no la regla de determinación general. El claim reprobado como 'falso' describe la exigencia como 'suma de los componentes... junto con otras exigencias', omitiendo la lógica de comparación por 'mayor valor'; como ningún nodo porta la regla del Punto 1.1, la ausencia estructural de ese contenido en el grafo confirma completitud_kg."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 2939,
+        "output_tokens": 489
+       },
+       {
+        "input_tokens": 2939,
+        "output_tokens": 461
+       },
+       {
+        "input_tokens": 2939,
+        "output_tokens": 500
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "sintoma_ganador": "noise_sensitivity",
+       "causa_ganadora": "completitud_kg",
+       "votos_ganadores": 3
+      },
+      "corrigio": true,
+      "par_post_s1": [
+       "noise_sensitivity",
+       "completitud_kg"
+      ],
+      "causa_post_s1": "completitud_kg",
+      "triage": false
+     }
+    },
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Cada componente se calcula conforme a metodologías específicas establecidas en la normativa.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "ninguno",
+       "ubicacion": "ningún nodo de la trayectoria afirma esta glosa genérica"
+      },
+      "fuente": {
+       "quote": "(verificación negativa: el Punto 1.1 define la exigencia como el mayor valor entre la básica y la suma de riesgos; no contiene la afirmación genérica de 'metodologías específicas establecidas en la normativa')",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "determinación exigencia capital mínimo metodología",
+       "resultado": "332 matches; ningún nodo afirma 'cada componente se calcula conforme a metodologías específicas'; es una glosa de relleno del agente."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas; la pata 2 (riesgo operacional del primer mes) fue APROBADA por el juez y está bien soportada por el nodo Restriccion_la_exigencia_mensual_...primer_mes (10% de la sumatoria de riesgos crédito y mercado, posiciones del último día), fiel al Punto 7.4. La falla está en la pata 1: cómo se DETERMINA la exigencia de capital mínimo. El PDF (Punto 1.1) establece que la exigencia es 'el mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado y operacional'. El agente afirmó que se determina 'como la suma de los componentes... junto con otras exigencias regulatorias' — omitió el 'mayor valor' y la comparación contra la exigencia básica, lo que es incorrecto (por eso el juez lo marcó falso). C1a (por pata): reconstruí la trayectoria completa del agente (15 pasos, incluyendo el output íntegro del paso 1 con ver_paso_completo). El dato PERTINENTE — la regla de determinación del Punto 1.1 — NUNCA apareció en ningún output: las búsquedas del agente devolvieron exigencias básicas (5.000M/2.500M, Punto 1.2), componentes de riesgo sueltos, y un nodo del régimen informativo (Punto 7.1) sobre el cálculo del importe del mes n; ninguno porta el 'mayor valor entre básica y suma de riesgos'. Por tanto la pata 1 es context_recall. C2: busqué yo el nodo portador con seis consultas usando el vocabulario ex ante (términos de la pregunta y del Punto 1.1): ninguna devolvió un nodo con la regla del Punto 1.1; el vecindario de la exigencia básica se ancla al Punto 1.2, no al 1.1. El PDF SÍ tiene el dato (Punto 1.1). Como el dato existe en la fuente pero no hay nodo que lo porte en el grafo (búsqueda documentada exhaustiva), la causa es completitud_kg (falta el nodo del Punto 1.1), no alcanzabilidad (no hay nodo oculto que exhibir) ni navegación (no hay nodo alcanzable que el agente haya omitido). Primaria: es lo que rompe la respuesta. Descarté contenido_kg porque ningún nodo consultado afirma la regla incorrecta (la 'suma' es glosa del agente, no de un nodo). El segundo claim marcado no_soportado ('cada componente se calcula conforme a metodologías específicas...') es una glosa genérica de relleno que ningún nodo de la trayectoria soporta y que el PDF no afirma como tal → faithfulness → alucinacion_agente modo (b), secundaria (no rompe por sí sola el veredicto, pero es una imperfección real sin soporte).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": true,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 236305,
+    "tokens_out": 7663
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 236305,
+    "tokens_out": 7663,
+    "latency_s": 102.781,
+    "error": null,
+    "final_raw": "El paso 1 completo confirma: el resultado top para \"capital mínimo exigencia entidad financiera\" NO devuelve ningún nodo con la regla del Punto 1.1. Los nodos devueltos son la exigencia básica (5.000M, 2.500M) y componentes/límites sueltos. El agente hizo búsquedas razonables y el nodo portador de la regla de determinación simplemente no existe en el grafo.\n\nTengo evidencia suficiente para atribuir.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capital mínimo exigencia entidad financiera\\\", \\\"limite\\\": 10}\", \"devolvio\": \"539 matches; top: exigencia básica bancos 5.000M, límite QCCP, cálculo requerimiento capital, encuadrarse en exigencia, cálculo exig. riesgo crédito, exig. básica restantes 2.500M. Ninguno porta la regla del Punto 1.1 (mayor valor entre básica y suma de riesgos).\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"riesgo operacional cálculo componente\\\", \\\"limite\\\": 10}\", \"devolvio\": \"236 matches; cálculo promedio ERC, límite exig. riesgo operacional, cálculo exig. capital riesgo operacional, cálculo capital mínimo por riesgo operacional.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\\\"}\", \"devolvio\": \"Nodo tipo 'cálculo de exigencia de capital mínimo por riesgo de crédito'; sin description; prov. Punto 7.3.\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_capital_minimo_por_riesgo_operacional\\\"}\", \"devolvio\": \"Nodo 'cálculo de capital mínimo por riesgo operacional'; sin description; prov. Punto 7.4 Nuevas entidades.\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"primer mes funcionamiento riesgo operacional\\\", \\\"limite\\\": 10}\", \"devolvio\": \"202 matches; incluye Restriccion de la exigencia mensual del primer mes.\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_de_las_entidades_f\\\"}\", \"devolvio\": \"Descripción del 10% de la sumatoria de riesgos crédito y mercado (posiciones del último día) del primer mes; prov. Punto 7.4.\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_capital_minimo_por_riesgo_operacional\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"3 entrantes 'limita': primer mes, 2º-36º mes, desde 37º mes. Todos prov. Punto 7.4.\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital total determinación cálculo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"341 matches; determinaciones de exigencia por riesgos de mercado (cambiario, opciones, general, específico), cálculo mensual operacional. Ninguno porta la regla del Punto 1.1.\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_exigencia\\\"}\", \"devolvio\": \"'Cálculo del importe del mes n considerando riesgo crédito, mercado, operacional, RPC y franquicia'; prov. TO_regimen_informativo_contable_mensual Punto 7.1.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_exigencia\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante 'regula': Descripción detallada del cálculo (franquicia).\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital riesgo crédito mercado operacional suma\\\", \\\"limite\\\": 10}\", \"devolvio\": \"563 matches; CRO mensual, riesgo general mercado, cálculo exig. crédito. Ninguno con la regla del Punto 1.1.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_descripcion_detallada_del_calculo\\\"}\", \"devolvio\": \"Descripción del cálculo de la franquicia (informativo); prov. Punto 7.1.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital total componentes riesgo crédito mercado operacional\\\", \\\"limite\\\": 10}\", \"devolvio\": \"590 matches; mismos tipos, ninguno con la regla de determinación.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"determinación exigencia capital mínimo metodología\\\", \\\"limite\\\": 10}\", \"devolvio\": \"332 matches; exig. básica bancos, determinación de capital mínimo (cumplimiento vs RPC), cálculo exig. crédito, límite 20% grupo A.\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital máximo mayor entre riesgo crédito mercado operacional\\\", \\\"limite\\\": 10}\", \"devolvio\": \"637 matches; CRO mensual, riesgo general mercado, cálculo exig. crédito. Ninguno porta el 'mayor valor entre básica y suma de riesgos'.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 8, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"exigencia capital total determinación cálculo\\\", \\\"limite\\\": 10})\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"Cómo se calcula, en el primer mes de funcionamiento, el componente de la exigencia correspondiente al riesgo operacional\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La exigencia de capital mínimo que debe integrar una entidad financiera se determina como la suma de los componentes por riesgo de crédito, riesgo de mercado y riesgo operacional, junto con otras exigencias regulatorias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\", \"ubicacion\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill (único tipo de nodo alcanzado sobre determinación de exigencia; ninguno porta la regla del Punto 1.1)\"},\n        \"fuente\": {\"quote\": \"1.1. Exigencia. La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de los activos comprendidos– y operacional.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"exigencia capital mínimo mayor valor exigencia básica suma riesgos\", \"resultado\": \"397 matches; top: exig. básica bancos/restantes, cálculo exig. crédito, límite 20% grupo A. Ningún nodo con la regla 'mayor valor entre básica y suma de riesgos'.\"},\n        {\"consulta\": \"exigencia integrada mayor valor comparación básica\", \"resultado\": \"187 matches; 'Computar máximo valor exigencia' (Máx[70810000;70820000], prov. TO régimen informativo Punto 12.2, riesgo de mercado) y exig. básicas; ninguno porta el Punto 1.1.\"},\n        {\"consulta\": \"exigencia capital mínimo entidades financieras deberán tener integrada\", \"resultado\": \"522 matches; exig. básicas, límites máximos titulización, exig. capital 8%; ninguno con la regla de determinación del Punto 1.1.\"},\n        {\"consulta\": \"exigencia equivalente mayor valor comparación básica suma crédito mercado operacional\", \"resultado\": \"420 matches; excepción cajas de crédito, cálculo RCD, exig. básica bancos; ninguno porta el Punto 1.1.\"},\n        {\"consulta\": \"ver_vecinos Restriccion exigencia básica bancos\", \"resultado\": \"salientes/entrantes anclados al Punto 1.2 (exig. básica); ningún vecino que porte la regla del Punto 1.1.\"},\n        {\"consulta\": \"ver_paso_completo(1)\", \"resultado\": \"output íntegro del agente para 'capital mínimo exigencia entidad financiera': 10 resultados, ninguno con la regla del mayor valor.\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cómo se determina la exigencia de capital mínimo que debe integrar una entidad financiera\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Cada componente se calcula conforme a metodologías específicas establecidas en la normativa.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"ningún nodo de la trayectoria afirma esta glosa genérica\"},\n        \"fuente\": {\"quote\": \"(verificación negativa: el Punto 1.1 define la exigencia como el mayor valor entre la básica y la suma de riesgos; no contiene la afirmación genérica de 'metodologías específicas establecidas en la normativa')\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"determinación exigencia capital mínimo metodología\", \"resultado\": \"332 matches; ningún nodo afirma 'cada componente se calcula conforme a metodologías específicas'; es una glosa de relleno del agente.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas; la pata 2 (riesgo operacional del primer mes) fue APROBADA por el juez y está bien soportada por el nodo Restriccion_la_exigencia_mensual_...primer_mes (10% de la sumatoria de riesgos crédito y mercado, posiciones del último día), fiel al Punto 7.4. La falla está en la pata 1: cómo se DETERMINA la exigencia de capital mínimo. El PDF (Punto 1.1) establece que la exigencia es 'el mayor valor que resulte de la comparación entre la exigencia básica y la suma de las determinadas por riesgos de crédito, de mercado y operacional'. El agente afirmó que se determina 'como la suma de los componentes... junto con otras exigencias regulatorias' — omitió el 'mayor valor' y la comparación contra la exigencia básica, lo que es incorrecto (por eso el juez lo marcó falso). C1a (por pata): reconstruí la trayectoria completa del agente (15 pasos, incluyendo el output íntegro del paso 1 con ver_paso_completo). El dato PERTINENTE — la regla de determinación del Punto 1.1 — NUNCA apareció en ningún output: las búsquedas del agente devolvieron exigencias básicas (5.000M/2.500M, Punto 1.2), componentes de riesgo sueltos, y un nodo del régimen informativo (Punto 7.1) sobre el cálculo del importe del mes n; ninguno porta el 'mayor valor entre básica y suma de riesgos'. Por tanto la pata 1 es context_recall. C2: busqué yo el nodo portador con seis consultas usando el vocabulario ex ante (términos de la pregunta y del Punto 1.1): ninguna devolvió un nodo con la regla del Punto 1.1; el vecindario de la exigencia básica se ancla al Punto 1.2, no al 1.1. El PDF SÍ tiene el dato (Punto 1.1). Como el dato existe en la fuente pero no hay nodo que lo porte en el grafo (búsqueda documentada exhaustiva), la causa es completitud_kg (falta el nodo del Punto 1.1), no alcanzabilidad (no hay nodo oculto que exhibir) ni navegación (no hay nodo alcanzable que el agente haya omitido). Primaria: es lo que rompe la respuesta. Descarté contenido_kg porque ningún nodo consultado afirma la regla incorrecta (la 'suma' es glosa del agente, no de un nodo). El segundo claim marcado no_soportado ('cada componente se calcula conforme a metodologías específicas...') es una glosa genérica de relleno que ningún nodo de la trayectoria soporta y que el PDF no afirma como tal → faithfulness → alucinacion_agente modo (b), secundaria (no rompe por sí sola el veredicto, pero es una imperfección real sin soporte).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Exigencia.\\nLa exigencia de capital mínim o que las entidades financieras deberán tener integrada será\\nequivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de\\nlas determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de\\nlos activos comprendidos– y operacional.\\n1.2. Exigencia básica.\\nSegún la clase de entidad, serán las siguientes exigencias básicas:\\nBancos Restantes entidades\\n(salvo Cajas de Crédito Cooperativas)\\n-En millones de pesos-\\n5.000 2.500\\nLas compañías financie ras que re alicen, en forma directa, operaciones de comercio exterior\\ndeberán observar las exigencias establecidas para los bancos.\\n1.3. Integración.\\nA los fines de determinar el cumplimiento de la exigencia de capital mínimo, la integración a\\nconsiderar será la responsabilidad patrimonial computable, que se determinará en función de\\nlos saldos de las partidas admitidas registrados al último día del mes bajo informe.\\nEn el caso de la exigencia de capital mí… [+396 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 15)\", \"pasaje\": \"1. del TO sobre Financiamiento al Sector Público no Financiero–.\\nii) Demás entes con características similares que no cumplan los criterios para ser ad-\\nmitidas en otras categorías.\\nNo se incluyen las exposiciones a instrumentos previstas en el punto 2.11.\\n2.7.2. A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entida-\\ndes financieras deberán considerar las siguientes definiciones:\\n2.7.2.1. Empresas con “grado de inversión”.\\nLas empresas con “grado de inversión ” son aquellas con capacidad suficiente\\npara atender puntualmente sus compromisos financieros aun ante cambios ad-\\nversos en la coyuntura económica y en las condiciones de los negocios.\\nA tales efectos, se deberá tener en cuenta la complejidad del modelo de nego-\\ncios de la empresa, el desempeño en relación con su industria y empresas simi-\\nlares y los riesgos de su entorno operativo. La empresa con “grado de inver-\\nsión” (o su controlante) deberá haber emitido títulos valores que coticen en bol-\\nsas o mercados… [+392 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo mayor valor exigencia básica suma riesgos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo mayor valor exigencia básica suma riesgos\", \"total_con_match\": 397, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Restriccion_la_exigencia_determinada_a_traves_de_la_aplicacion_de_la_expresion_descripta_en_\", \"type\": \"Restriccion\", \"label\": \"Límite 20% grupo A capital mínimo\", \"… [+2032 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia integrada mayor valor comparación básica",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia integrada mayor valor comparación básica\", \"total_con_match\": 187, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Obligacion_computar_maximo_valor_exigencia\", \"type\": \"Obligacion\", \"label\": \"Computar máximo valor exigencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [Código 70810000; Código 70820000]\"}, {\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Excepcion_las_cajas_de_credito_cooperativas_quedan_exceptuadas_de_la_exigencia_basica_de_5\", \"type\": \"Excepcion\", \"label\": \"Excepción Cajas de Crédito Coopera… [+2376 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia capital mínimo entidades financieras deberán tener integrada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia capital mínimo entidades financieras deberán tener integrada\", \"total_con_match\": 522, \"resultados\": [{\"id\": \"Restriccion_las_restantes_entidades_deberan_mantener_una_exigencia_basica_de_capital_minimo_\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica restantes entidades\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las restantes entidades deberán mantener una exigencia básica de capital mínimo de 2.500 millones de pesos\"}, {\"id\": \"Restriccion_las_entidades_financieras_en_funcionamiento_al_01_06_24_deberan_observar_la_exig\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica capital desde 01/01/25\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exigencia básica de capital prevista en la tabla del punto 1.2 según la categoría qu…\"}, {\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_limite_maximo_para_la_e… [+2364 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_computar_maximo_valor_exigencia"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_computar_maximo_valor_exigencia\", \"type\": \"Obligacion\", \"label\": \"Computar máximo valor exigencia\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Se computará el mayor valor que surja del siguiente cálculo: Código 70800000 = Máx [Código 70810000; Código 70820000]\", \"plazo\": \"correspondiente al último día del período de información\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.2. Determinación de la exigencia por riesgo de mercado según punto 5. de la Comunic\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia equivalente mayor valor comparación básica suma crédito mercado operacional",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia equivalente mayor valor comparación básica suma crédito mercado operacional\", \"total_con_match\": 420, \"resultados\": [{\"id\": \"Excepcion_las_cajas_de_credito_cooperativas_quedan_exceptuadas_de_la_exigencia_basica_de_5\", \"type\": \"Excepcion\", \"label\": \"Excepción Cajas de Crédito Cooperativas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las Cajas de Crédito Cooperativas quedan exceptuadas de la exigencia básica de 5.000 millones aplicable a bancos\"}, {\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Obligacion_importe_determinado_mediante_la… [+2211 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_observancia_de_exigencia_de_capital"
+      },
+      "output_truncado": "{\"id\": \"Operacion_observancia_de_exigencia_de_capital\", \"type\": \"Operacion\", \"label\": \"Observancia de exigencia básica de capital\", \"properties\": {\"tipo\": \"observancia de exigencia de capital\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.1. Las entidades financieras en funcionamiento al 01/06/24 deberán observar la exig\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"label\": \"Exigencia básica bancos\", \"n_salientes_total\": 3, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.2. Exigencia básica.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_banco\", \"vecino_label\": \"Bancos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.2. Exigencia básica.\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_mantenimiento_de_capital_minimo\", \"vecino_label\": \"Mantenimiento de capital mínimo\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.2. Exigencia básica.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_las_cajas_de_credito_cooperativas_quedan_exceptuadas_de_la_exigencia_basica_de_5\", \"vecino_label\": \"Excepción Cajas de Crédito Cooperativas\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"locat… [+70 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"capital mínimo exigencia entidad financiera\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"capital mínimo exigencia entidad financiera\", \"total_con_match\": 539, \"resultados\": [{\"id\": \"Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill\", \"type\": \"Restriccion\", \"label\": \"Exigencia básica bancos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos\"}, {\"id\": \"Restriccion_cuando_la_suma_de_los_requisitos_de_capital_de_una_entidad_financiera_por_las_ex\", \"type\": \"Restriccion\", \"label\": \"Límite requisito capital QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la suma de los requisitos de capital de una entidad financiera por las exposiciones con una QCCP sea mayor que la exigencia resultante de la aplicación d…\"}, {\"id\": \"Obligacion_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo_\", \"type\": \"Obligacion\", \"label\": \"Calcular requerimiento capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La CCP, la entidad financiera, la autoridad de control de l… [+2592 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26955,
+      "output_tokens": 314
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28672,
+      "output_tokens": 440
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32218,
+      "output_tokens": 289
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34359,
+      "output_tokens": 326
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36431,
+      "output_tokens": 681
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37738,
+      "output_tokens": 498
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39932,
+      "output_tokens": 5115
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 40,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 4,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "atribucion_no_verificable"
+  ],
+  "flags": [
+   "R6b: rep 1 atrib 1 — context_recall_sin_pata",
+   "R6b: rep 2 atrib 1 — context_recall_sin_pata",
+   "R6b: rep 3 atrib 1 — context_recall_sin_pata"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": true,
+  "motivos": [
+   "fuente_cross_doc"
+  ],
+  "flags": [
+   "S1: rep1_atrib1 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)",
+   "S1: rep1_atrib2 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)",
+   "S1: rep2_atrib1 — fuente_cross_doc (TO_regimen_informativo_contable_mensual_actual.pdf ∉ territorio)"
+  ]
+ },
+ "resumen_s1": {
+  "gatilladas": 4,
+  "juzgadas_llm": 1,
+  "corregidas": 1,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 3,
+  "tokens_in_s1": 8817,
+  "tokens_out_s1": 1450,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4-dev"
+}

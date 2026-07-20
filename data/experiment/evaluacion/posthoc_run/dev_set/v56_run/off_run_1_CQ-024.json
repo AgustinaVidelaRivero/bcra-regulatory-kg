@@ -1,0 +1,366 @@
+{
+ "id_falla": "run_1/CQ-024",
+ "run": "run_1",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'clasificación deudor cartera comercial RPC periodicidad', 'limite': 10}",
+    "devolvio": "154 matches; con_cartera_comercial, con_clasificacion_de_deudor, prc_revision_de_cartera_comercial, req_periodicidad_de_clasificacion",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'reevaluación inmediata deudor comercial', 'limite': 10}",
+    "devolvio": "56 matches; req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones y otros",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{'id': 'req_periodicidad_minima_de_clasificacion_de_deudores'}",
+    "devolvio": "Frecuencia obligatoria de revisión y clasificación con registro en legajo; p.17",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{'id': 'req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones'}",
+    "devolvio": "Recategorizar cuando discrepancia de más de un nivel y financiaciones superan 1% RPC; p.19",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'req_periodicidad_minima_de_clasificacion_de_deudores', 'direccion': 'ambas'}",
+    "devolvio": "rige_la -> prc_revision_de_cartera_comercial",
+    "pertinente": true
+   },
+   {
+    "paso": 6,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': '5% RPC financiaciones cartera comercial', 'limite': 10}",
+    "devolvio": "155 matches; req_analisis_trimestral... entre otros",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_nodo",
+    "args": "{'id': 'req_analisis_trimestral_de_clientes_con_financiaciones_que_alcanzan_el_5_o_mas_de_la_responsabilidad_patrimonial_computable'}",
+    "devolvio": "Examinar en cada trimestre calendario clientes con financiaciones >=5% RPC; p.18",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'req_analisis_trimestral...', 'direccion': 'ambas'}",
+    "devolvio": "es_parte_de -> ope_clasificacion_de_deudores",
+    "pertinente": true
+   },
+   {
+    "paso": 9,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'req_reevaluacion_inmediata_por_discrepancia...', 'direccion': 'ambas'}",
+    "devolvio": "Sin vecinos (0 salientes, 0 entrantes)",
+    "pertinente": false
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'reevaluación inmediata casos situaciones', 'limite': 10}",
+    "devolvio": "10 matches; discrepancia + situaciones punto 13.3/13.4/8.5 (de otro TO), NO devuelve prc_reconsideracion_obligatoria",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'reevaluación inmediata atrasos incumplimiento cambio clasificación', 'limite': 10}",
+    "devolvio": "138 matches; atrasos >año irrecuperable, atrasos hasta 31 días compatibles con normal, etc.",
+    "pertinente": false
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'reevaluación inmediata deudor cartera comercial casos', 'limite': 15}",
+    "devolvio": "100 matches; análisis anual demás casos, cartera comercial, discrepancia; NO prc_reconsideracion_obligatoria",
+    "pertinente": false
+   },
+   {
+    "paso": 13,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'cambio de clasificación reclasificación inmediata deudor', 'limite': 15}",
+    "devolvio": "2500 matches; prc_reclasificacion_de_deudor, atrasos >540 días concurso, etc.",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'reevaluación inmediata atrasos 90 días 180 días', 'limite': 10}",
+    "devolvio": "101 matches; atrasos hasta 180 días, >540 días, plazos 90/180",
+    "pertinente": false
+   },
+   {
+    "paso": 15,
+    "tool": "ver_nodo",
+    "args": "{'id': 'req_atrasos_mayores_a_31_dias'}",
+    "devolvio": "Condición que genera reclasificación inmediata a nivel resultante de sumar días de atraso efectivo y atraso normativo; p.38",
+    "pertinente": false
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 15,
+   "quote": "req_atrasos_mayores_a_31_dias ... 'Condición que genera reclasificación inmediata del deudor a nivel resultante de sumar días de atraso efectivo y atraso normativo.' ... location: 'p. 38'"
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Periodicidad mínima de clasificación de un deudor de cartera comercial cuyas financiaciones alcanzan el 5% o más de la RPC",
+   "Casos en que la reevaluación debe ser inmediata"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "aplicacion_erronea",
+   "lado": "agente",
+   "jerarquia": "primaria",
+   "pata": "Casos en que la reevaluación debe ser inmediata",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "2. Atrasos mayores a 31 días: Genera reclasificación inmediata del deudor al nivel resultante de sumar días de atraso efectivo y atraso normativo.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Condición que genera reclasificación inmediata del deudor a nivel resultante de sumar días de atraso efectivo y atraso normativo.",
+     "ubicacion": "req_atrasos_mayores_a_31_dias (abierto por el agente en paso 15; provenance p.38)"
+    },
+    "fuente": {
+     "quote": "En caso de verificarse atrasos mayores a 31 días en el pago de los servicios de la deuda refinanciada contados a partir de la inclusión del deudor en esta categoría, corresponderá la reclasificación inmediata del deudor en el nivel que surja de considerar la cantidad total de días resultante de sumar los días de atraso efectivamente registrados a partir de la primera cuota impaga de la refinanciación y los de atraso mínimo establecidos normativamente",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 38"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "reconsideración obligatoria clasificación circunstancias",
+     "resultado": "primer resultado prc_reconsideracion_obligatoria_de_la_clasificacion (p.18): 'análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o se notifica ajuste de previsiones' — este es el nodo que porta los casos REALES de reevaluación obligatoria de cartera comercial"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "alcanzabilidad_kg",
+   "lado": "grafo",
+   "jerarquia": "secundaria",
+   "pata": "Casos en que la reevaluación debe ser inmediata",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Los casos en los que la reevaluación debe ser inmediata incluyen: 1. Discrepancia de más de un nivel en clasificaciones... 2. Atrasos mayores a 31 días...",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Procedimiento de análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o se notifica ajuste de previsiones por inspección.",
+     "ubicacion": "prc_reconsideracion_obligatoria_de_la_clasificacion (provenance p.18)"
+    },
+    "fuente": {
+     "quote": "6.4. Reconsideración obligatoria de la clasificación... se deberá analizar... y, de ser necesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstancias: 6.4.1. Modificación de alguno de los criterios objetivos de clasificación (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones)... 6.4.2. Modificación en forma negativa de la clasificación... en la 'Central de deudores'... 6.4.3. Notificación de la determinación final de la SEFyC del ajuste de previsiones",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 6.4 (p.18)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "reconsideración obligatoria clasificación circunstancias",
+     "resultado": "devuelve prc_reconsideracion_obligatoria_de_la_clasificacion como primer resultado — pero 'reconsideración obligatoria' NO está en la pregunta (que dice 'reevaluación') ni en la trayectoria ex ante del agente"
+    },
+    {
+     "consulta": "paso 10 del agente: 'reevaluación inmediata casos situaciones'",
+     "resultado": "NO devuelve prc_reconsideracion_obligatoria; devuelve solo la discrepancia y nodos de otros TOs (13.3/13.4/8.5)"
+    },
+    {
+     "consulta": "paso 12 del agente: 'reevaluación inmediata deudor cartera comercial casos'",
+     "resultado": "NO devuelve prc_reconsideracion_obligatoria pese a 100 matches"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Casos en que la reevaluación debe ser inmediata",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "1. Discrepancia de más de un nivel en clasificaciones: Cuando concurren condiciones de discrepancia de más de un nivel en clasificaciones y las financiaciones superan umbrales de 1% de responsabilidad patrimonial computable.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Obligación de recategorizar al cliente cuando concurren condiciones de discrepancia de más de un nivel en clasificaciones y las financiaciones superan umbrales de 1% de responsabilidad patrimonial computable.",
+     "ubicacion": "req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones (abierto en paso 4; provenance p.19)"
+    },
+    "fuente": {
+     "quote": "La reevaluación deberá ser inmediata cuando se trate de clientes cuyas financiaciones comprendidas igualen o superen el 1 % de la responsabilidad patrimonial computable de la entidad... del mes anterior al de presentación de alguna de las circunstancias mencionadas... y dentro de los tres meses respecto de los demás clientes comprendidos.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 19 (punto 6.4.4)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf p.19",
+     "resultado": "confirma que la reevaluación inmediata por discrepancia (6.4.4) aplica cuando financiaciones >=1% RPC — el claim del agente es fiel al nodo y al PDF; el matiz 'superan' vs 'igualen o superen' no altera la sustancia"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "La pata 1 (periodicidad trimestral para >=5% RPC) fue aprobada por el juez y está bien soportada por req_analisis_trimestral... (p.18) y confirmada por PDF 6.3.1. La falla se concentra en la pata 2 (casos de reevaluación inmediata). C1a por pata: el dato PERTINENTE de la pata 2 —los casos de reconsideración/reevaluación obligatoria— está estructurado en el punto 6.4 del PDF (6.4.1 criterios objetivos/morosidad/situación jurídica, 6.4.2 Central de deudores, 6.4.3 SEFyC, 6.4.4 discrepancia; inmediata si >=1% RPC, p.19). Ese dato está portado por prc_reconsideracion_obligatoria_de_la_clasificacion. El agente solo alcanzó una porción (la discrepancia, paso 4). Las afirmaciones falladas sobre 'atrasos mayores a 31 días' provienen del nodo req_atrasos_mayores_a_31_dias (paso 15): el claim REPRODUCE fielmente ese nodo (por tanto está SOPORTADO → no es faithfulness), pero es INCORRECTO para la pata porque el PDF p.38 muestra que ese régimen aplica exclusivamente a la DEUDA REFINANCIADA y dentro de la categoría de deudores refinanciados, no como caso general de reevaluación inmediata de cartera comercial → noise_sensitivity. C2: el nodo es FIEL a su contexto de origen (p.38, deuda refinanciada) — no contradice el PDF ni tiene provenance imprecisa; el defecto es que el agente usó ese contenido fiel FUERA de su alcance (aplicó régimen de refinanciados a la pregunta general de cartera comercial) → aplicacion_erronea (defecto del agente, primaria). Como causa concurrente que empujó el relleno: el nodo pertinente prc_reconsideracion_obligatoria existe con contenido correcto pero no fue alcanzado por las búsquedas del agente (pasos 10 y 12 con 'reevaluación inmediata casos' NO lo devuelven; solo se alcanza con 'reconsideración obligatoria', término del PDF ausente del vocabulario ex ante) → context_recall/alcanzabilidad_kg (secundaria). Finalmente, el claim de discrepancia + 1% RPC (marcado falso por el juez) es en realidad fiel al nodo consultado y al PDF p.19 → noise_sensitivity/sin_defecto (falso positivo del juez, secundaria): el único matiz es 'superan' vs 'igualen o superen', que no altera la sustancia regulatoria.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 10,
+  "max_tool_calls": 40,
+  "tokens_in": 246314,
+  "tokens_out": 9899
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 10,
+  "tokens_in": 246314,
+  "tokens_out": 9899,
+  "latency_s": 126.347,
+  "error": null,
+  "final_raw": "Confirmo: en el paso 10, la búsqueda \"reevaluación inmediata casos situaciones\" NO devolvió el nodo `prc_reconsideracion_obligatoria_de_la_clasificacion`. Pero mi búsqueda \"reconsideración obligatoria clasificación circunstancias\" SÍ lo devolvió como primer resultado. La pregunta usa \"reevaluación\", y el nodo se llama \"reconsideración obligatoria\" — término del PDF (6.4). El vocabulario ex ante del agente incluía \"reevaluación inmediata\" (de la pregunta) y \"reconsideración obligatoria\" NO aparece en la pregunta ni en los outputs de su trayectoria. Sin embargo, el nodo de discrepancia (que el agente sí vio) tiene provenance p.19, y p.18-19 es donde está el punto 6.4. El agente podría haber navegado a la sección. Analizo esto como noise para la atribución de la pata de atrasos.\n\nLa pata \"casos de reevaluación inmediata\" tuvo un dato pertinente parcial (discrepancia, que sí apareció). Los casos completos (6.4.1-6.4.3) están en `prc_reconsideracion_obligatoria`, no consultado. Pero el foco del síntoma son las afirmaciones sobre **atrasos 31 días**, que el agente introdujo por aplicación errónea de un nodo fuera de alcance. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudor cartera comercial RPC periodicidad', 'limite': 10}\", \"devolvio\": \"154 matches; con_cartera_comercial, con_clasificacion_de_deudor, prc_revision_de_cartera_comercial, req_periodicidad_de_clasificacion\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'reevaluación inmediata deudor comercial', 'limite': 10}\", \"devolvio\": \"56 matches; req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones y otros\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'req_periodicidad_minima_de_clasificacion_de_deudores'}\", \"devolvio\": \"Frecuencia obligatoria de revisión y clasificación con registro en legajo; p.17\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones'}\", \"devolvio\": \"Recategorizar cuando discrepancia de más de un nivel y financiaciones superan 1% RPC; p.19\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'req_periodicidad_minima_de_clasificacion_de_deudores', 'direccion': 'ambas'}\", \"devolvio\": \"rige_la -> prc_revision_de_cartera_comercial\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': '5% RPC financiaciones cartera comercial', 'limite': 10}\", \"devolvio\": \"155 matches; req_analisis_trimestral... entre otros\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'req_analisis_trimestral_de_clientes_con_financiaciones_que_alcanzan_el_5_o_mas_de_la_responsabilidad_patrimonial_computable'}\", \"devolvio\": \"Examinar en cada trimestre calendario clientes con financiaciones >=5% RPC; p.18\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'req_analisis_trimestral...', 'direccion': 'ambas'}\", \"devolvio\": \"es_parte_de -> ope_clasificacion_de_deudores\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'req_reevaluacion_inmediata_por_discrepancia...', 'direccion': 'ambas'}\", \"devolvio\": \"Sin vecinos (0 salientes, 0 entrantes)\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'reevaluación inmediata casos situaciones', 'limite': 10}\", \"devolvio\": \"10 matches; discrepancia + situaciones punto 13.3/13.4/8.5 (de otro TO), NO devuelve prc_reconsideracion_obligatoria\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'reevaluación inmediata atrasos incumplimiento cambio clasificación', 'limite': 10}\", \"devolvio\": \"138 matches; atrasos >año irrecuperable, atrasos hasta 31 días compatibles con normal, etc.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'reevaluación inmediata deudor cartera comercial casos', 'limite': 15}\", \"devolvio\": \"100 matches; análisis anual demás casos, cartera comercial, discrepancia; NO prc_reconsideracion_obligatoria\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'cambio de clasificación reclasificación inmediata deudor', 'limite': 15}\", \"devolvio\": \"2500 matches; prc_reclasificacion_de_deudor, atrasos >540 días concurso, etc.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'reevaluación inmediata atrasos 90 días 180 días', 'limite': 10}\", \"devolvio\": \"101 matches; atrasos hasta 180 días, >540 días, plazos 90/180\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'req_atrasos_mayores_a_31_dias'}\", \"devolvio\": \"Condición que genera reclasificación inmediata a nivel resultante de sumar días de atraso efectivo y atraso normativo; p.38\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 15, \"quote\": \"req_atrasos_mayores_a_31_dias ... 'Condición que genera reclasificación inmediata del deudor a nivel resultante de sumar días de atraso efectivo y atraso normativo.' ... location: 'p. 38'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Periodicidad mínima de clasificación de un deudor de cartera comercial cuyas financiaciones alcanzan el 5% o más de la RPC\",\n      \"Casos en que la reevaluación debe ser inmediata\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Casos en que la reevaluación debe ser inmediata\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"2. Atrasos mayores a 31 días: Genera reclasificación inmediata del deudor al nivel resultante de sumar días de atraso efectivo y atraso normativo.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Condición que genera reclasificación inmediata del deudor a nivel resultante de sumar días de atraso efectivo y atraso normativo.\", \"ubicacion\": \"req_atrasos_mayores_a_31_dias (abierto por el agente en paso 15; provenance p.38)\"},\n        \"fuente\": {\"quote\": \"En caso de verificarse atrasos mayores a 31 días en el pago de los servicios de la deuda refinanciada contados a partir de la inclusión del deudor en esta categoría, corresponderá la reclasificación inmediata del deudor en el nivel que surja de considerar la cantidad total de días resultante de sumar los días de atraso efectivamente registrados a partir de la primera cuota impaga de la refinanciación y los de atraso mínimo establecidos normativamente\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 38\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"reconsideración obligatoria clasificación circunstancias\", \"resultado\": \"primer resultado prc_reconsideracion_obligatoria_de_la_clasificacion (p.18): 'análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o se notifica ajuste de previsiones' — este es el nodo que porta los casos REALES de reevaluación obligatoria de cartera comercial\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"alcanzabilidad_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Casos en que la reevaluación debe ser inmediata\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los casos en los que la reevaluación debe ser inmediata incluyen: 1. Discrepancia de más de un nivel en clasificaciones... 2. Atrasos mayores a 31 días...\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Procedimiento de análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o se notifica ajuste de previsiones por inspección.\", \"ubicacion\": \"prc_reconsideracion_obligatoria_de_la_clasificacion (provenance p.18)\"},\n        \"fuente\": {\"quote\": \"6.4. Reconsideración obligatoria de la clasificación... se deberá analizar... y, de ser necesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstancias: 6.4.1. Modificación de alguno de los criterios objetivos de clasificación (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones)... 6.4.2. Modificación en forma negativa de la clasificación... en la 'Central de deudores'... 6.4.3. Notificación de la determinación final de la SEFyC del ajuste de previsiones\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 6.4 (p.18)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"reconsideración obligatoria clasificación circunstancias\", \"resultado\": \"devuelve prc_reconsideracion_obligatoria_de_la_clasificacion como primer resultado — pero 'reconsideración obligatoria' NO está en la pregunta (que dice 'reevaluación') ni en la trayectoria ex ante del agente\"},\n        {\"consulta\": \"paso 10 del agente: 'reevaluación inmediata casos situaciones'\", \"resultado\": \"NO devuelve prc_reconsideracion_obligatoria; devuelve solo la discrepancia y nodos de otros TOs (13.3/13.4/8.5)\"},\n        {\"consulta\": \"paso 12 del agente: 'reevaluación inmediata deudor cartera comercial casos'\", \"resultado\": \"NO devuelve prc_reconsideracion_obligatoria pese a 100 matches\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Casos en que la reevaluación debe ser inmediata\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"1. Discrepancia de más de un nivel en clasificaciones: Cuando concurren condiciones de discrepancia de más de un nivel en clasificaciones y las financiaciones superan umbrales de 1% de responsabilidad patrimonial computable.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Obligación de recategorizar al cliente cuando concurren condiciones de discrepancia de más de un nivel en clasificaciones y las financiaciones superan umbrales de 1% de responsabilidad patrimonial computable.\", \"ubicacion\": \"req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones (abierto en paso 4; provenance p.19)\"},\n        \"fuente\": {\"quote\": \"La reevaluación deberá ser inmediata cuando se trate de clientes cuyas financiaciones comprendidas igualen o superen el 1 % de la responsabilidad patrimonial computable de la entidad... del mes anterior al de presentación de alguna de las circunstancias mencionadas... y dentro de los tres meses respecto de los demás clientes comprendidos.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 19 (punto 6.4.4)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf p.19\", \"resultado\": \"confirma que la reevaluación inmediata por discrepancia (6.4.4) aplica cuando financiaciones >=1% RPC — el claim del agente es fiel al nodo y al PDF; el matiz 'superan' vs 'igualen o superen' no altera la sustancia\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pata 1 (periodicidad trimestral para >=5% RPC) fue aprobada por el juez y está bien soportada por req_analisis_trimestral... (p.18) y confirmada por PDF 6.3.1. La falla se concentra en la pata 2 (casos de reevaluación inmediata). C1a por pata: el dato PERTINENTE de la pata 2 —los casos de reconsideración/reevaluación obligatoria— está estructurado en el punto 6.4 del PDF (6.4.1 criterios objetivos/morosidad/situación jurídica, 6.4.2 Central de deudores, 6.4.3 SEFyC, 6.4.4 discrepancia; inmediata si >=1% RPC, p.19). Ese dato está portado por prc_reconsideracion_obligatoria_de_la_clasificacion. El agente solo alcanzó una porción (la discrepancia, paso 4). Las afirmaciones falladas sobre 'atrasos mayores a 31 días' provienen del nodo req_atrasos_mayores_a_31_dias (paso 15): el claim REPRODUCE fielmente ese nodo (por tanto está SOPORTADO → no es faithfulness), pero es INCORRECTO para la pata porque el PDF p.38 muestra que ese régimen aplica exclusivamente a la DEUDA REFINANCIADA y dentro de la categoría de deudores refinanciados, no como caso general de reevaluación inmediata de cartera comercial → noise_sensitivity. C2: el nodo es FIEL a su contexto de origen (p.38, deuda refinanciada) — no contradice el PDF ni tiene provenance imprecisa; el defecto es que el agente usó ese contenido fiel FUERA de su alcance (aplicó régimen de refinanciados a la pregunta general de cartera comercial) → aplicacion_erronea (defecto del agente, primaria). Como causa concurrente que empujó el relleno: el nodo pertinente prc_reconsideracion_obligatoria existe con contenido correcto pero no fue alcanzado por las búsquedas del agente (pasos 10 y 12 con 'reevaluación inmediata casos' NO lo devuelven; solo se alcanza con 'reconsideración obligatoria', término del PDF ausente del vocabulario ex ante) → context_recall/alcanzabilidad_kg (secundaria). Finalmente, el claim de discrepancia + 1% RPC (marcado falso por el juez) es en realidad fiel al nodo consultado y al PDF p.19 → noise_sensitivity/sin_defecto (falso positivo del juez, secundaria): el único matiz es 'superan' vs 'igualen o superen', que no altera la sustancia regulatoria.\"\n}",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 19"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 19\", \"metodo\": \"pagina\", \"ref\": \"p.19 (PDF absoluto 1-based)\", \"pasaje\": \"6.4.4. Cuando exista una discrepancia de más de un nivel entre la clasificación dada por la e n-\\ntidad financiera y las otorgadas por al menos otras dos entidades o fideicomisos financi e-\\nros en categorías inferiores a la asignada por aquella, cuyas acreencias en conjunto r e-\\npresenten por lo menos el 20 % y sean inferiores al 40 % del total informado por todos\\nlos acreedores, según la última información disponible en la “Central de deudores del sis-\\ntema financiero”.\\nLa reevaluación deberá ser inmediata cuando se trate de clientes cuyas financiaciones co m-\\nprendidas igualen o superen el 1 % de la responsabilidad patrimonial computable de la entidad\\no del activo del fideicomiso financiero, del mes anterior al de presentación de alguna de las ci r-\\ncunstancias mencionadas o el equivalente al importe de referencia establecido en el punto 3.7.,\\nde ambos el menor, y dentro de los tres meses respecto de los demás clientes comprendidos.\\n6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus fi… [+1805 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 38"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 38\", \"metodo\": \"pagina\", \"ref\": \"p.38 (PDF absoluto 1-based)\", \"pasaje\": \"L\\nos clientes cuyas deudas hayan sido refinanciadas mediante obligaciones de pago pe-\\nriódico (mensual o bimestral) podrán ser reclasificados en el nivel inmediato superior, \\ncuando hayan cumplido puntualmente o con atrasos que no superen los 31 días, con el \\npago de 3 cuotas consecutivas o, cuando se trate de financiaciones de pago único, pe-\\nriódico superior a bimestral o irregular, hayan cancelado al menos el 10 % de sus obliga-\\nciones refinanciadas (por capital), con más la cantidad de cuotas o el porcentaje acumu-\\nlado que pudiera corresponder, respectivamente, si la refinanciación se hubiera otorgado \\nde encontrarse incluido el deudor en el nivel inferior En el caso de deudores que hayan \\nsolicitado el concurso preventivo, corresponderá la reclasificación inmediata en el nivel \\nsiguiente inferior cuando se verifiquen atrasos de más de 540 días. \\nEl deudor refinanciado que haya cumplido con lo dispuesto en los párrafos precedentes, \\nsegún corresponda, podrá ser reclasificado en el nivel inmediato … [+1808 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 18"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 18\", \"metodo\": \"pagina\", \"ref\": \"p.18 (PDF absoluto 1-based)\", \"pasaje\": \"6.3.1. En el curso de cada trimestre calendario, respecto de clientes individualmente considera-\\ndos cuyas financiaciones comprendidas en algún momento sean equivalentes al 5 % o \\nmás de la RPC o del activo del fideicomiso financiero del mes anterior a la finalización de \\ndicho período según se trate de entidades o fideicomisos financieros, respectivamente. A \\nestos fines, el grupo de contrapartes conectadas se tratará como un solo cliente. \\n6.3.2. En el curso de cada semestre calendario, respecto de clientes individualmente conside-\\nrados cuyas financiaciones comprendidas sumen en algún momento entre el 1 % –o el \\nequivalente a dos veces el importe de referencia establecido en el punto 3.7., de ambos \\nel menor– y menos del 5 % de la RPC o del activo del fideicomiso financiero del mes an-\\nterior a la finalización de dicho período según se trate de entidades o fideicomisos finan-\\ncieros, respectivamente. A estos fines, el grupo de contrapartes conectadas se tratará \\ncomo un solo cliente. \\nAl cierre del … [+1807 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 12
+    },
+    "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"reevaluación inmediata deudor cartera comercial casos\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"reevaluación inmediata deudor cartera comercial casos\", \"total_con_match\": 100, \"resultados\": [{\"id\": \"req_analisis_anual_de_los_demas_casos_de_cartera_comercial\", \"type\": \"REQUIREMENT\", \"label\": \"análisis anual de los demás casos de cartera comercial\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Obligación de revisar durante el ejercicio económico los demás casos no cubiertos, alcanzando la totalidad de la cartera comercial comprendida.\"}, {\"id\": \"con_cartera_comercial\", \"type\": \"CONCEPT\", \"label\": \"Cartera comercial\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de cartera que abarca todas las financiaciones con excepción de créditos para consumo o vivienda, excepto aquellos cuyo repago se vincule a la evoluci…\"}, {\"id\": \"prc_revision_de_cartera_comercial\", \"type\": \"PROCESS\", \"label\": \"Revisión de cartera comercial\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Procedimiento de evaluación periódica de los deudores de la cartera comercial basado en información financiera actualizada y parámetros sect… [+3317 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "reconsideración obligatoria clasificación circunstancias",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"reconsideración obligatoria clasificación circunstancias\", \"total_con_match\": 56, \"resultados\": [{\"id\": \"prc_reconsideracion_obligatoria_de_la_clasificacion\", \"type\": \"PROCESS\", \"label\": \"Reconsideración obligatoria de la clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento de análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o…\"}, {\"id\": \"req_discrepancia_de_mas_de_un_nivel_de_clasificacion_entre_acreedores_dispara_recategorizacion_obligatoria\", \"type\": \"REQUIREMENT\", \"label\": \"Discrepancia de más de un nivel de clasificación entre acreedores (dispara recategorización obligatoria)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Condición que dispara la recategorización obligatoria: diferencia entre la clasificación asignada por la entidad financiera y las de al menos dos otros acreedor…\"}, {\"id\": \"prc_tarea_de_clasificacion\", \"type\": \"PROCESS\", \"label\": \"Tarea de clasificación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Proceso de clasificación de deudores que puede ser encomendado a un área independiente, al sector de créditos con revisión ind… [+1989 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "modificación criterios objetivos morosidad situación jurídica",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"modificación criterios objetivos morosidad situación jurídica\", \"total_con_match\": 47, \"resultados\": [{\"id\": \"req_criterios_objetivos_de_clasificacion_de_deudores\", \"type\": \"REQUIREMENT\", \"label\": \"criterios objetivos de clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Parámetros que incluyen término de morosidad, situación jurídica del cliente y cumplimiento de refinanciaciones.\"}, {\"id\": \"rsj_persona_juridica\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"persona jurídica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Sujeto colectivo que puede ser usuario de servicios financieros siempre que no incorpore productos o servicios financieros a su actividad comercial.\"}, {\"id\": \"rsj_persona_humana_o_juridica\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"Persona humana o jurídica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Sujeto que realiza el pago de importaciones a partir del 10/02/24, que puede clasificar como MiPyMe según la normativa aplicable.\"}, {\"id\": \"rsj_persona_juridica_residente\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"persona jurídica residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona que realiza transacciones inter… [+1920 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "prc_reconsideracion_obligatoria_de_la_clasificacion"
+    },
+    "output_truncado": "{\"id\": \"prc_reconsideracion_obligatoria_de_la_clasificacion\", \"type\": \"PROCESS\", \"label\": \"Reconsideración obligatoria de la clasificación\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Procedimiento de análisis adicional y modificación de clasificación cuando se modifican criterios objetivos, varía la clasificación en la Central de deudores, o se notifica ajuste de previsiones por inspección.\", \"aliases\": [\"Reconsideración obligatoria de la clasificación\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 18\"}]}"
+   },
+   {
+    "n": 8,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "req_discrepancia_de_mas_de_un_nivel_de_clasificacion_entre_acreedores_dispara_recategorizacion_obligatoria"
+    },
+    "output_truncado": "{\"id\": \"req_discrepancia_de_mas_de_un_nivel_de_clasificacion_entre_acreedores_dispara_recategorizacion_obligatoria\", \"type\": \"REQUIREMENT\", \"label\": \"Discrepancia de más de un nivel de clasificación entre acreedores (dispara recategorización obligatoria)\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Condición que dispara la recategorización obligatoria: diferencia entre la clasificación asignada por la entidad financiera y las de al menos dos otros acreedores.\", \"aliases\": [\"Discrepancia de más de un nivel de clasificación\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 39\"}]}"
+   },
+   {
+    "n": 9,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.4"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del ajuste de pre… [+266 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 10
+    },
+    "output_truncado": "{\"paso\": 10, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"reevaluación inmediata casos situaciones\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"reevaluación inmediata casos situaciones\", \"total_con_match\": 10, \"resultados\": [{\"id\": \"req_reevaluacion_inmediata_por_discrepancia_de_mas_de_un_nivel_en_clasificaciones\", \"type\": \"REQUIREMENT\", \"label\": \"reevaluación inmediata por discrepancia de más de un nivel en clasificaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligación de recategorizar al cliente cuando concurren condiciones de discrepancia de más de un nivel en clasificaciones y las financiaciones superan umbrales …\"}, {\"id\": \"cla_situaciones_previstas_en_punto_13_3\", \"type\": \"CLASSIFICATION\", \"label\": \"Situaciones previstas en punto 13.3\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clasificación temporal de servicios para los cuales es admisible el acceso anticipado al mercado de cambios bajo ciertas condiciones del punto 13.3.\"}, {\"id\": \"cla_situaciones_previstas_en_punto_13_4\", \"type\": \"CLASSIFICATION\", \"label\": \"Situaciones previstas en punto 13.4\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Supuestos que habilitan pagos de servicios prestados o… [+2560 chars]"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 26615,
+    "output_tokens": 258
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29410,
+    "output_tokens": 719
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 33331,
+    "output_tokens": 932
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 36973,
+    "output_tokens": 375
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37950,
+    "output_tokens": 1462
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 40057,
+    "output_tokens": 292
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 41978,
+    "output_tokens": 5861
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 64,
+   "n_claims_fallidos": 3,
+   "categoria": "multi_norma"
+  },
+  "label": "off"
+ }
+}
