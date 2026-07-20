@@ -1,0 +1,176 @@
+{
+  "id_falla": "run_3/CQ-017",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "generación-de-más",
+      "lado": "agente",
+      "jerarquia": "primaria",
+      "pata": "Pata 1: alcance como sujeto obligado en Protección de Usuarios",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que los operadores de cambio 'figuran explícitamente como sujetos obligados en el Punto 1.1 (Partes)' y que 'deben cumplir con TODAS las obligaciones establecidas en estas normas, incluyendo protección de seguridad e intereses, información clara y veraz, y otros derechos'.",
+        "nodo": "EntidadFinanciera_operador_de_cambio es un stub ('categoria: operador de cambio') con provenance 'Punto 1.1. Partes.'; no contiene la calificación de alcance. No existe edge que conecte al operador con las obligaciones de seguridad/información.",
+        "fuente": "El PDF Punto 1.1.2.2 dice: 'Operadores de cambio, POR LAS OPERACIONES COMPRENDIDAS EN LAS NORMAS SOBRE Exterior y cambios'. El alcance está LIMITADO; el agente lo presentó como sujeción plena ('todas las obligaciones'), sobregeneralizando lo que la norma acota."
+      }
+    },
+    {
+      "categoria": "generación-de-más",
+      "lado": "agente",
+      "jerarquia": "primaria",
+      "pata": "Patas 2 y 3: obligaciones específicas de seguridad/intereses e información clara y veraz",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que 'Los operadores de cambio deben cumplir con la protección de la seguridad e intereses económicos' y con 'la obligación de brindar información clara y veraz'.",
+        "nodo": "Las obligaciones existen en el grafo (Obligacion_los_usuarios_tienen_derecho..., Obligacion_los_sujetos_obligados_deberan_adoptar...) pero están atadas a 'usuarios'/'sujetos obligados' en general (Punto 2.1) y NO hay ningún edge que las vincule al nodo operador_de_cambio. El agente las atribuyó por inferencia.",
+        "fuente": "PDF Punto 2.1 establece estos derechos para los usuarios y que los sujetos obligados deben garantizarlos en general; no menciona específicamente a los operadores de cambio en relación con cada obligación."
+      }
+    },
+    {
+      "categoria": "provenance_imprecisa",
+      "lado": "grafo",
+      "jerarquia": "primaria",
+      "pata": "Pata 4: 'ejecutan operaciones de cambio en divisas conforme a la normativa'",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que 'Los operadores de cambio ejecutan operaciones de cambio en divisas conforme a lo establecido en la normativa'.",
+        "nodo": "Existe el edge EntidadFinanciera_operador_de_cambio --ejecuta--> Operacion_operacion_de_cambio con provenance 'Punto 1.1. Partes.' del TO de Protección de Usuarios. El agente repitió esta relación citando ese punto.",
+        "fuente": "El PDF Punto 1.1.2.2 NO afirma que los operadores 'ejecuten operaciones de cambio en divisas conforme a la normativa'; solo los menciona como sujetos obligados 'por las operaciones comprendidas en Exterior y cambios'. La cita del edge no funda la afirmación de ejecución; además el régimen que define qué entidad está autorizada a operar en cambios está en Exterior y cambios, no en este punto."
+      }
+    }
+  ],
+  "razonamiento": "Descompuse la pregunta en patas. PATA 1 (sujeción a Protección de Usuarios): verifiqué el PDF y el Punto 1.1.2.2 confirma que los operadores de cambio SÍ son sujetos obligados, pero SOLO 'por las operaciones comprendidas en las normas sobre Exterior y cambios'. El contenido central ('son sujetos obligados') es cierto, por lo que NO es contradicción de contenido ni falso positivo total; lo que falla es que el agente lo presentó sin la calificación de alcance y afirmó que deben cumplir 'TODAS las obligaciones', sobregeneralizando: generación-de-más. El nodo operador_de_cambio es un stub que no captura esa restricción de alcance, pero la causa que rompe la respuesta es la glosa del agente. PATAS 2 y 3 (obligaciones de seguridad/intereses e información): existen como nodos pero atados a 'usuarios/sujetos obligados' en general (Punto 2.1), sin arista al operador de cambio; el agente las atribuyó por inferencia → no_soportado → generación-de-más. PATA 4 ('ejecutan operaciones de cambio conforme a la normativa'): el agente repitió un edge cuya provenance ('Punto 1.1. Partes.') no funda esa afirmación — el punto solo los nombra como sujetos obligados por sus operaciones cambiarias, no afirma ejecución conforme a normativa, y el régimen de autorización para operar en cambios está en Exterior y cambios. Esto es provenance_imprecisa del grafo, que indujo la afirmación marcada como no_soportado/central. Busqué activamente nodos que respondieran la segunda mitad de la pregunta (autorización para intervenir en el mercado de cambios) y no encontré ninguno pertinente, lo que confirma que el agente no tenía soporte para esa pata. Descarté sin_defecto porque el juez marcó múltiples afirmaciones con defecto real (glosas de alcance y cita imprecisa).",
+  "confianza": "alta",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 10,
+    "tokens_in": 208959,
+    "tokens_out": 5608,
+    "latency_s": 84.621,
+    "error": null,
+    "final_raw": "Confirmado: el Punto 2.1 establece que los derechos (seguridad/intereses, información clara/veraz) son de los usuarios y que los sujetos obligados deben garantizarlos. Como operadores de cambio son sujetos obligados (aunque limitado al ámbito de Exterior y cambios), las afirmaciones 2 y 3 sobre obligaciones tienen base normativa indirecta, pero el juez las marcó no_soportado porque el agente no las conectó vía aristas en el grafo —las dedujo— y porque no hay edge operador_de_cambio → estas obligaciones.\n\nTengo evidencia suficiente para concluir.\n\n```json\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"generación-de-más\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Pata 1: alcance como sujeto obligado en Protección de Usuarios\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que los operadores de cambio 'figuran explícitamente como sujetos obligados en el Punto 1.1 (Partes)' y que 'deben cumplir con TODAS las obligaciones establecidas en estas normas, incluyendo protección de seguridad e intereses, información clara y veraz, y otros derechos'.\",\n        \"nodo\": \"EntidadFinanciera_operador_de_cambio es un stub ('categoria: operador de cambio') con provenance 'Punto 1.1. Partes.'; no contiene la calificación de alcance. No existe edge que conecte al operador con las obligaciones de seguridad/información.\",\n        \"fuente\": \"El PDF Punto 1.1.2.2 dice: 'Operadores de cambio, POR LAS OPERACIONES COMPRENDIDAS EN LAS NORMAS SOBRE Exterior y cambios'. El alcance está LIMITADO; el agente lo presentó como sujeción plena ('todas las obligaciones'), sobregeneralizando lo que la norma acota.\"\n      }\n    },\n    {\n      \"categoria\": \"generación-de-más\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Patas 2 y 3: obligaciones específicas de seguridad/intereses e información clara y veraz\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que 'Los operadores de cambio deben cumplir con la protección de la seguridad e intereses económicos' y con 'la obligación de brindar información clara y veraz'.\",\n        \"nodo\": \"Las obligaciones existen en el grafo (Obligacion_los_usuarios_tienen_derecho..., Obligacion_los_sujetos_obligados_deberan_adoptar...) pero están atadas a 'usuarios'/'sujetos obligados' en general (Punto 2.1) y NO hay ningún edge que las vincule al nodo operador_de_cambio. El agente las atribuyó por inferencia.\",\n        \"fuente\": \"PDF Punto 2.1 establece estos derechos para los usuarios y que los sujetos obligados deben garantizarlos en general; no menciona específicamente a los operadores de cambio en relación con cada obligación.\"\n      }\n    },\n    {\n      \"categoria\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Pata 4: 'ejecutan operaciones de cambio en divisas conforme a la normativa'\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que 'Los operadores de cambio ejecutan operaciones de cambio en divisas conforme a lo establecido en la normativa'.\",\n        \"nodo\": \"Existe el edge EntidadFinanciera_operador_de_cambio --ejecuta--> Operacion_operacion_de_cambio con provenance 'Punto 1.1. Partes.' del TO de Protección de Usuarios. El agente repitió esta relación citando ese punto.\",\n        \"fuente\": \"El PDF Punto 1.1.2.2 NO afirma que los operadores 'ejecuten operaciones de cambio en divisas conforme a la normativa'; solo los menciona como sujetos obligados 'por las operaciones comprendidas en Exterior y cambios'. La cita del edge no funda la afirmación de ejecución; además el régimen que define qué entidad está autorizada a operar en cambios está en Exterior y cambios, no en este punto.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"Descompuse la pregunta en patas. PATA 1 (sujeción a Protección de Usuarios): verifiqué el PDF y el Punto 1.1.2.2 confirma que los operadores de cambio SÍ son sujetos obligados, pero SOLO 'por las operaciones comprendidas en las normas sobre Exterior y cambios'. El contenido central ('son sujetos obligados') es cierto, por lo que NO es contradicción de contenido ni falso positivo total; lo que falla es que el agente lo presentó sin la calificación de alcance y afirmó que deben cumplir 'TODAS las obligaciones', sobregeneralizando: generación-de-más. El nodo operador_de_cambio es un stub que no captura esa restricción de alcance, pero la causa que rompe la respuesta es la glosa del agente. PATAS 2 y 3 (obligaciones de seguridad/intereses e información): existen como nodos pero atados a 'usuarios/sujetos obligados' en general (Punto 2.1), sin arista al operador de cambio; el agente las atribuyó por inferencia → no_soportado → generación-de-más. PATA 4 ('ejecutan operaciones de cambio conforme a la normativa'): el agente repitió un edge cuya provenance ('Punto 1.1. Partes.') no funda esa afirmación — el punto solo los nombra como sujetos obligados por sus operaciones cambiarias, no afirma ejecución conforme a normativa, y el régimen de autorización para operar en cambios está en Exterior y cambios. Esto es provenance_imprecisa del grafo, que indujo la afirmación marcada como no_soportado/central. Busqué activamente nodos que respondieran la segunda mitad de la pregunta (autorización para intervenir en el mercado de cambios) y no encontré ninguno pertinente, lo que confirma que el agente no tenía soporte para esa pata. Descarté sin_defecto porque el juez marcó múltiples afirmaciones con defecto real (glosas de alcance y cita imprecisa).\",\n  \"confianza\": \"alta\"\n}\n```",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "Punto 1.1. Partes."
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1. Partes.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte… [+425 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "Punto 1.1.2"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2 (PDF pág 23)\", \"pasaje\": \"1.1.2. deberá nombrar a un  funcionario como responsable de atención al usuario de \\nservicios financieros en carácter de titular y, por lo menos, otro como suplente, quienes \\ndeberán asegurar la adecuada atención de los usuarios de servicios financieros, de \\nconformidad con lo establecido en el punto 3.1.2.  \\nDeberá obrar en poder del sujeto obligado la documentación respaldatoria de las desig-\\nnaciones, junto con los datos personales de los funcionarios nombrados como respon-\\nsables (titular y suplente/s). Además, deberán mantenerse actual izados e informarse \\npor medio del régimen informativo establecido al efecto los números de teléfonos, fax y \\ndirección/es postales y de correo electrónico destinadas a la canalización de las com u-\\nnicaciones vinculadas con el servicio de atención al usuario de servicios financieros. \\nSus funciones y responsabilidades serán: \\n3.1.1.1. Recibir y dar curso a las presentaciones –concernientes al sujeto obligado que \\nrepresentan– que inicie… [+420 chars]"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "Punto 1.1.2.2"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2.2 (PDF pág 3)\", \"pasaje\": \"1.1.2.2. Operadores de cambio, por las operaciones comprendidas en las normas sobre\\n“Exterior y cambios”.\\n1.1.2.3. Fiduciari os de fideicomisos acreedor es de créditos cedidos por entidades fina n-\\ncieras.\\n1.1.2.4. Empresas no financieras emisoras de tarjetas de crédito y/o compra.\\n1.1.2.5. Otros proveedores no financieros de crédito alcanzados por las normas sobre\\n“Proveedores no  financieros de crédito”, e xcepto que se trate de asociaciones\\nmutuales o cooperativas, por las financiaciones que otorguen.\\n1.\\n1.2.6. Proveedores de servicios de pago que ofrecen cuentas de pago (PSPCP).\\n1.\\n1.2.7. Proveedores de servicios de pago que cumplen la función de iniciaci ón (PSI) y\\nprestan el servicio de billetera digital.\\nC\\nuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos oblig a-\\ndos o en su nombre, ambos serán responsables por el cumplimiento de las presentes\\nnormas. Lo anterior deberá est ablecerse en los instrumentos que acuerden la realiza… [+193 chars]"
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_los_usuarios_tienen_derecho_a_la_proteccion_de_su_seguridad_e_intereses_economic"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_los_usuarios_tienen_derecho_a_la_proteccion_de_su_seguridad_e_intereses_economic\", \"type\": \"Obligacion\", \"label\": \"Proteger seguridad e intereses económicos\", \"properties\": {\"descripcion\": \"Los usuarios tienen derecho a la protección de su seguridad e intereses económicos\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.1. Concepto.\"}]}"
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_los_sujetos_obligados_deberan_adoptar_las_acciones_necesarias_para_garantizar_de\", \"type\": \"Obligacion\", \"label\": \"Garantizar derechos de usuarios\", \"properties\": {\"descripcion\": \"Los sujetos obligados deberán adoptar las acciones necesarias para garantizar derechos de protección de seguridad e intereses económicos, información clara y veraz, libertad de elección, y trato equitativo a todos los actuales y potenciales usuarios\", \"tipo\": \"otra\", \"plazo\": \"continuo\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.1. Concepto.\"}]}"
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_operacion_de_cambio"
+        },
+        "output_truncado": "{\"id\": \"Operacion_operacion_de_cambio\", \"type\": \"Operacion\", \"label\": \"Operaciones de cambio en divisas\", \"properties\": {\"tipo\": \"operación de cambio\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 15.1. Artículos 1° y 2° del Decreto 260/02.\"}]}"
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operador de cambio entidad autorizada mercado de cambios exterior cambios",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operador de cambio entidad autorizada mercado de cambios exterior cambios\", \"total_con_match\": 2538, \"resultados\": [{\"id\": \"Operacion_acceso_al_mercado_de_cambios_para_pago_exterior\", \"type\": \"Operacion\", \"label\": \"Acceso al mercado de cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Acceso al mercado de cambios para el pago al exterior de importaciones de bienes\"}, {\"id\": \"Obligacion_la_entidad_debera_al_momento_de_dar_acceso_al_mercado_de_cambios_contar_con_la_c\", \"type\": \"Obligacion\", \"label\": \"Convalidación en sistema online\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad deberá, al momento de dar acceso al mercado de cambios, contar con la convalidación de la situación de la operación en el sistema online implementado…\"}, {\"id\": \"Obligacion_los_titulos_de_deuda_con_registro_publico_en_el_exterior_otros_endeudamientos_de\", \"type\": \"Obligacion\", \"label\": \"Ingreso de títulos en mercado de cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los títulos de deuda con registro público en el exterior, otros endeudamientos de carácter financiero con el exterior y los títulos de deuda con registro públic…\"}, {\"id\": \"Operacion_financiamiento_de_e… [+2081 chars]"
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "entidades autorizadas a operar en cambios intermediarios mercado único libre de cambios",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"entidades autorizadas a operar en cambios intermediarios mercado único libre de cambios\", \"total_con_match\": 3343, \"resultados\": [{\"id\": \"Obligacion_se_compromete_a_liquidar_en_el_mercado_de_cambios_dentro_de_los_5_cinco_dias_hab\", \"type\": \"Obligacion\", \"label\": \"Liquidación en mercado de cambios\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Se compromete a liquidar en el mercado de cambios, dentro de los 5 (cinco) días hábiles de su puesta a disposición, aquellos fondos que reciba en el exterior or…\"}, {\"id\": \"Restriccion_fondos_hayan_sido_ingresados_y_liquidados_en_el_mercado_de_cambios_a_partir_del_\", \"type\": \"Restriccion\", \"label\": \"Fondos liquidados a partir 02/10/20\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"fondos hayan sido ingresados y liquidados en el mercado de cambios a partir del 02/10/20\"}, {\"id\": \"Restriccion_las_entidades_podran_dar_acceso_al_mercado_de_cambios_para_cancelacion_a_partir_\", \"type\": \"Restriccion\", \"label\": \"Acceso mercado cambios obligaciones registradas al 30/08/19\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las entidades podrán dar acceso al mercado de cambios para cancelación a partir de su vencimiento de obligaciones… [+2592 chars]"
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operadores de cambio autorizados por el BCRA para operar regimen cambiario",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operadores de cambio autorizados por el BCRA para operar regimen cambiario\", \"total_con_match\": 2700, \"resultados\": [{\"id\": \"Obligacion_el_acceso_al_mercado_de_cambios_por_parte_de_clientes_para_la_precancelacion_de_\", \"type\": \"Obligacion\", \"label\": \"Conformidad previa del BCRA para precancelación\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"El acceso al mercado de cambios por parte de clientes para la precancelación de financiaciones de exportación otorgadas por entidades financieras locales quedar…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_de_tipo_de_cambio_para_el_ulti\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo tipo de cambio\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo de tipo de cambio para el último día del período (n) determinada conforme a las disposiciones del punto 6.4. d…\"}, {\"id\": \"Obligacion_el_cambio_de_entidad_debe_quedar_registrado_en_el_bcra\", \"type\": \"Obligacion\", \"label\": \"Registrar cambio en BCRA\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El cambio de entidad debe quedar registrado en el BCRA\"}, {\"id\": \"Obligacion_en_caso_de_trat… [+2353 chars]"
+      },
+      {
+        "n": 10,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "Punto 2.1. Concepto."
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.1. Concepto.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.1 (PDF pág 5)\", \"pasaje\": \"2.1. Concepto.\\nLos usuarios de servicios financieros tienen derecho, en toda relación de consumo, a:\\n− l\\na protección de su seguridad e intereses económicos;\\n− r\\necibir información clara, sufic iente, veraz y de fácil acceso y visibilidad acerca de los pr o-\\nductos y/o servicios que contraten –incluyendo sus términos y condiciones–, así como co-\\npia de los instrumentos que suscriban;\\n− l\\na libertad de elección; y\\n− condi\\nciones de trato equitativo y digno.\\nLos suj\\netos obligados deberán adoptar las acciones necesarias para garantizar estos der e-\\nchos a todos los actuales y potenciales usuarios de los servicios que ofrecen y prestan, de\\nmanera de asegurarles condiciones igualitarias de acceso a tales servicios.\\n2.2. Casos especiales.\\n2.2.\\n1. Personas con movilidad reducida, deficiencias motrices o dificultades de acceso a y/o\\nde permanencia en los puntos de atención al usuario (casas operativas).\\nSon \\naquellas personas que se desplazan con dificultad –requier… [+436 chars]"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 29373,
+        "output_tokens": 316
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 31082,
+        "output_tokens": 432
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 32753,
+        "output_tokens": 904
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 35335,
+        "output_tokens": 595
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 39317,
+        "output_tokens": 1083
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 41099,
+        "output_tokens": 2278
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 108,
+      "n_claims_fallidos": 4,
+      "categoria": "multi_norma"
+    }
+  }
+}

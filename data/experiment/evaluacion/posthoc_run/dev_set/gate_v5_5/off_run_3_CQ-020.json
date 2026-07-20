@@ -1,0 +1,544 @@
+{
+ "id_falla": "run_3/CQ-020",
+ "run": "run_3",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'exigencia capital riesgo crédito CRC','limite':10}",
+    "devolvio": "Nodos de cálculo CRC, incluye Operacion_calculo_de_capital_minimo con fórmula C_RC=(k x 0,08 x APR_c)+INC",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'capital riesgo crédito cálculo','limite':10}",
+    "devolvio": "Mismos nodos de cálculo CRC",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'reporte BCRA capital frecuencia','limite':10}",
+    "devolvio": "Nodos genéricos de BCRA, no la frecuencia de reporte de CRC",
+    "pertinente": false
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{'id':'Operacion_calculo_de_capital_minimo'}",
+    "devolvio": "Fórmula principal CRC=(k x 0,08 x APR_c)+INC; provenance Punto 3.1",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_nodo",
+    "args": "{'id':'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}",
+    "devolvio": "Nodo stub (solo tipo), provenance Punto 7.3 capitales_minimos",
+    "pertinente": false
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{'id':'Operacion_calculo_de_exigencia_por_riesgo'}",
+    "devolvio": "Fórmula alternativa Código 70100000(n)=k x 0,08[...]; provenance Punto 8.1",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'reporte mensual capital riesgo crédito','limite':10}",
+    "devolvio": "Nodos de cálculo y restricción de exigencia mensual por riesgo operacional; no la frecuencia de reporte de CRC",
+    "pertinente": false
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{'id':'Operacion_calculo_de_capital_minimo','direccion':'ambas'}",
+    "devolvio": "14 entrantes/1 saliente; edge 'condiciona' hacia Obligacion_informar_exigencia_de_capitales_por_riesgo",
+    "pertinente": true
+   },
+   {
+    "paso": 9,
+    "tool": "ver_nodo",
+    "args": "{'id':'Obligacion_informar_exigencia_de_capitales_por_riesgo'}",
+    "devolvio": "'Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes'; provenance Punto 4.2",
+    "pertinente": false
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'APR_c factor ponderación riesgo','limite':5}",
+    "devolvio": "Nodos de ponderadores; no definiciones de A/p/PFB/CCF de la fórmula alternativa",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'INC incremento exigencia capital','limite':5}",
+    "devolvio": "Exigencia básica bancos, CRO mensual, etc.; no definición explícita de INC",
+    "pertinente": false
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 9,
+   "quote": "Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes"
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)",
+   "Con qué frecuencia se reporta al BCRA"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "provenance_imprecisa",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Alternativamente, sin incluir el término INC, se utiliza la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]",
+     "ubicacion": "Operacion_calculo_de_exigencia_por_riesgo (abierto en paso 6); provenance Punto 8.1. Normas de procedimiento."
+    },
+    "fuente": {
+     "quote": "8.1. Normas de procedimiento \n8.2. Modelo de información \nSección 9. Incrementos de exigencia por riesgo de crédito",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.1. Normas de procedimiento."
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "fórmula alternativa 70100000 código exigencia crédito",
+     "resultado": "El nodo Operacion_calculo_de_exigencia_por_riesgo aparece con la fórmula correcta; el código 70100000 sigue el mismo patrón que el total de riesgo de mercado (Código 70800000, p.11), confirmando que existe como total de riesgo de crédito"
+    },
+    {
+     "consulta": "leer_pasaje_pdf Punto 8.1 / Sección 8 / Punto 3.1.9",
+     "resultado": "Punto 8.1 devuelve un índice/título de la Sección 8 ('Incrementos de exigencia por riesgo de crédito'), no la fórmula del total; Sección 8 y 3.1.9 no anclan. La cita del nodo apunta a un lugar que no funda su contenido"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "faithfulness",
+   "causa_capa2": "completitud_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "donde A representa activos, p los ponderadores de riesgo, PFB posiciones fuera de balance, y CCF factores de conversión de crédito.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ... ]",
+     "ubicacion": "Operacion_calculo_de_exigencia_por_riesgo (el nodo contiene la fórmula pero NO define A, p, PFB ni CCF)"
+    },
+    "fuente": {
+     "quote": "A: activos computables /exposiciones -saldos de deuda-. ... PFB: partidas fuera de balance. Sobre los citados conceptos A y PFB se aplicarán los ponderadores de riesgo de contraparte (p) por operación ... sus importes deberán multiplicarse por el factor de conversión crediticia (CCF)",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1 (p.5-6)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "APR_c factor ponderación riesgo (paso 10 del agente)",
+     "resultado": "no devuelve ningún nodo que defina A/p/PFB/CCF"
+    },
+    {
+     "consulta": "presentar información exigencia capital riesgo crédito día mes",
+     "resultado": "ningún nodo porta las definiciones de las variables de la fórmula alternativa; el PDF p.6 sí las define"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "faithfulness",
+   "causa_capa2": "alucinacion_agente",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "0,08 es el coeficiente de capital mínimo",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Determinación de la exigencia de capital por riesgo de crédito conforme a la fórmula C_RC = (k x 0,08 x APR_c) + INC",
+     "ubicacion": "Operacion_calculo_de_capital_minimo (contiene 0,08 en la fórmula, no lo denomina 'coeficiente de capital mínimo')"
+    },
+    "fuente": {
+     "quote": "CRC = (k x 0,08 x APRc) + INC \ndonde: \nCRC = exigencia de capital por riesgo de crédito. \nk = factor vinculado a la calificación asignada a la entidad ... \nAPRc = activos ponderados por riesgo de crédito",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1.2 (el PDF define k, CRC y APRc pero NO glosa 0,08 como 'coeficiente de capital mínimo')"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf Punto 3.1 / 3.1.2",
+     "resultado": "la fórmula lista y define CRC, k y APRc pero no da denominación al factor 0,08; la glosa 'coeficiente de capital mínimo' no está ni en el nodo ni en el PDF"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "completitud_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Con qué frecuencia se reporta al BCRA",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Las entidades financieras deben presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes",
+     "ubicacion": "Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9) — nodo de riesgo de MERCADO, no pertinente a la frecuencia de reporte de CRC"
+    },
+    "fuente": {
+     "quote": "3.1.1. Los datos a que se refiere la información de exigencia por riesgo de crédito se computarán por sus saldos a fin del período que se informa.",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1.1 (Sección 3, Exigencia por riesgo de crédito, del Régimen Informativo Contable MENSUAL)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "informar exigencia riesgo crédito periodicidad mensual",
+     "resultado": "no aparece un nodo que porte la frecuencia/desglose de reporte específico del riesgo de CRÉDITO; los nodos son de cálculo (Operacion) o de riesgo operacional/mercado"
+    },
+    {
+     "consulta": "presentar información exigencia capital riesgo crédito día mes",
+     "resultado": "no existe nodo-obligación de reporte de CRC con frecuencia y desglose; el único nodo de 'informar exigencia por riesgo' es el de riesgo de mercado (paso 9)"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Con qué frecuencia se reporta al BCRA",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "El reporte mensual al BCRA corresponde a exigencia de capitales mínimos por riesgo de mercado",
+     "ubicacion": "respuesta final (afirmación extraída por el juez, marcada 'falso')"
+    },
+    "nodo": {
+     "quote": "Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes",
+     "ubicacion": "Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9)"
+    },
+    "fuente": {
+     "quote": "4.2. Modelos de información \nCuadro 4.2.1. Exigencia ... 311000/xx Exigencia por riesgo de tasa ... 313000/xx Exigencia por riesgo de tipo de cambio ... Sección 4. Exigencia e integración por riesgo de mercado",
+     "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.2"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf Punto 4.2",
+     "resultado": "el Punto 4.2 pertenece a la Sección 4 'Exigencia e integración por riesgo de mercado' — el nodo del paso 9 es fiel al PDF: efectivamente describe el reporte de riesgo de MERCADO. El defecto no es del contenido del nodo (es correcto) sino de que el agente lo aplicó a la pregunta de CRC (ver context_recall/completitud_kg de esta pata)"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "La pregunta tiene dos patas: (1) cálculo del CRC y (2) frecuencia de reporte al BCRA. PATA 1: La fórmula principal C_RC=(k x 0,08 x APR_c)+INC (aprobada) está soportada por el nodo Operacion_calculo_de_capital_minimo y por el Punto 3.1.2 del PDF. Los claims fallidos de esta pata: (a) 'Existe una fórmula alternativa...Código 70100000(n)=k x 0,08[...]' — el juez la marcó no_soportado, pero SÍ está soportada por el nodo Operacion_calculo_de_exigencia_por_riesgo que el agente abrió en el paso 6 (verificado con ver_paso_completo), y la fórmula es fácticamente correcta contra el PDF (el código 70100000 es el total de riesgo de crédito, análogo al 70800000 del total de riesgo de mercado que confirmé en p.11). Por precedencia: soportada + tema correcto → noise_sensitivity; y el nodo cita 'Punto 8.1' que al leerlo resulta un índice/título de la Sección 8 ('Incrementos de exigencia por riesgo de crédito'), NO la fórmula del total — la cita no funda el contenido → provenance_imprecisa (primaria, lado grafo). (b) Definiciones de A/p/PFB/CCF: el nodo de la fórmula alternativa NO las define; ningún nodo de la trayectoria las porta (búsquedas negativas) → faithfulness; el PDF p.6 SÍ las define correctamente → completitud_kg (el hueco del grafo empujó la glosa; primaria). (c) '0,08 es el coeficiente de capital mínimo': ni el nodo ni el PDF denominan así al factor 0,08 → faithfulness; glosa de cosecha propia (el PDF muestra 0,08 pero no lo etiqueta) → alucinacion_agente modo (b) (secundaria). PATA 2 (frecuencia de reporte): El dato PERTINENTE — la obligación/frecuencia de reporte específica del riesgo de CRÉDITO — nunca apareció en la trayectoria; el agente rellenó la pata con el nodo Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9), que trata de riesgo de MERCADO (Punto 4.2, Sección 4). Búsquedas negativas confirman que no hay nodo-obligación de reporte de CRC con frecuencia/desglose → context_recall; el dato existe en el PDF (Punto 3.1.1, régimen contable mensual) pero no hay nodo que lo porte → completitud_kg (primaria). Como consecuencia, el agente produjo el claim 'corresponde a riesgo de mercado' (marcado falso por el juez): ese claim SÍ está soportado por el nodo del paso 9 y ese nodo es FIEL al PDF (Punto 4.2 es efectivamente riesgo de mercado) → noise_sensitivity/sin_defecto en cuanto al nodo (no hay defecto de contenido en el nodo), secundaria; el error de fondo es el relleno con nodo no pertinente ya capturado por el context_recall de la pata.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 23,
+  "max_tool_calls": 40,
+  "tokens_in": 503839,
+  "tokens_out": 12246
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 23,
+  "tokens_in": 503839,
+  "tokens_out": 12246,
+  "latency_s": 170.513,
+  "error": null,
+  "final_raw": "Tengo toda la evidencia. Emito el JSON final.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'exigencia capital riesgo crédito CRC','limite':10}\", \"devolvio\": \"Nodos de cálculo CRC, incluye Operacion_calculo_de_capital_minimo con fórmula C_RC=(k x 0,08 x APR_c)+INC\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'capital riesgo crédito cálculo','limite':10}\", \"devolvio\": \"Mismos nodos de cálculo CRC\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'reporte BCRA capital frecuencia','limite':10}\", \"devolvio\": \"Nodos genéricos de BCRA, no la frecuencia de reporte de CRC\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Operacion_calculo_de_capital_minimo'}\", \"devolvio\": \"Fórmula principal CRC=(k x 0,08 x APR_c)+INC; provenance Punto 3.1\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}\", \"devolvio\": \"Nodo stub (solo tipo), provenance Punto 7.3 capitales_minimos\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Operacion_calculo_de_exigencia_por_riesgo'}\", \"devolvio\": \"Fórmula alternativa Código 70100000(n)=k x 0,08[...]; provenance Punto 8.1\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'reporte mensual capital riesgo crédito','limite':10}\", \"devolvio\": \"Nodos de cálculo y restricción de exigencia mensual por riesgo operacional; no la frecuencia de reporte de CRC\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'Operacion_calculo_de_capital_minimo','direccion':'ambas'}\", \"devolvio\": \"14 entrantes/1 saliente; edge 'condiciona' hacia Obligacion_informar_exigencia_de_capitales_por_riesgo\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id':'Obligacion_informar_exigencia_de_capitales_por_riesgo'}\", \"devolvio\": \"'Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes'; provenance Punto 4.2\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'APR_c factor ponderación riesgo','limite':5}\", \"devolvio\": \"Nodos de ponderadores; no definiciones de A/p/PFB/CCF de la fórmula alternativa\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'INC incremento exigencia capital','limite':5}\", \"devolvio\": \"Exigencia básica bancos, CRO mensual, etc.; no definición explícita de INC\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 9, \"quote\": \"Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)\", \"Con qué frecuencia se reporta al BCRA\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Alternativamente, sin incluir el término INC, se utiliza la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]\", \"ubicacion\": \"Operacion_calculo_de_exigencia_por_riesgo (abierto en paso 6); provenance Punto 8.1. Normas de procedimiento.\"},\n        \"fuente\": {\"quote\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.1. Normas de procedimiento.\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"fórmula alternativa 70100000 código exigencia crédito\", \"resultado\": \"El nodo Operacion_calculo_de_exigencia_por_riesgo aparece con la fórmula correcta; el código 70100000 sigue el mismo patrón que el total de riesgo de mercado (Código 70800000, p.11), confirmando que existe como total de riesgo de crédito\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 8.1 / Sección 8 / Punto 3.1.9\", \"resultado\": \"Punto 8.1 devuelve un índice/título de la Sección 8 ('Incrementos de exigencia por riesgo de crédito'), no la fórmula del total; Sección 8 y 3.1.9 no anclan. La cita del nodo apunta a un lugar que no funda su contenido\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"donde A representa activos, p los ponderadores de riesgo, PFB posiciones fuera de balance, y CCF factores de conversión de crédito.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ... ]\", \"ubicacion\": \"Operacion_calculo_de_exigencia_por_riesgo (el nodo contiene la fórmula pero NO define A, p, PFB ni CCF)\"},\n        \"fuente\": {\"quote\": \"A: activos computables /exposiciones -saldos de deuda-. ... PFB: partidas fuera de balance. Sobre los citados conceptos A y PFB se aplicarán los ponderadores de riesgo de contraparte (p) por operación ... sus importes deberán multiplicarse por el factor de conversión crediticia (CCF)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1 (p.5-6)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"APR_c factor ponderación riesgo (paso 10 del agente)\", \"resultado\": \"no devuelve ningún nodo que defina A/p/PFB/CCF\"},\n        {\"consulta\": \"presentar información exigencia capital riesgo crédito día mes\", \"resultado\": \"ningún nodo porta las definiciones de las variables de la fórmula alternativa; el PDF p.6 sí las define\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cómo se calcula la exigencia de capital por riesgo de crédito (CRC)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"0,08 es el coeficiente de capital mínimo\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Determinación de la exigencia de capital por riesgo de crédito conforme a la fórmula C_RC = (k x 0,08 x APR_c) + INC\", \"ubicacion\": \"Operacion_calculo_de_capital_minimo (contiene 0,08 en la fórmula, no lo denomina 'coeficiente de capital mínimo')\"},\n        \"fuente\": {\"quote\": \"CRC = (k x 0,08 x APRc) + INC \\ndonde: \\nCRC = exigencia de capital por riesgo de crédito. \\nk = factor vinculado a la calificación asignada a la entidad ... \\nAPRc = activos ponderados por riesgo de crédito\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1.2 (el PDF define k, CRC y APRc pero NO glosa 0,08 como 'coeficiente de capital mínimo')\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.1 / 3.1.2\", \"resultado\": \"la fórmula lista y define CRC, k y APRc pero no da denominación al factor 0,08; la glosa 'coeficiente de capital mínimo' no está ni en el nodo ni en el PDF\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Con qué frecuencia se reporta al BCRA\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Las entidades financieras deben presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes\", \"ubicacion\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9) — nodo de riesgo de MERCADO, no pertinente a la frecuencia de reporte de CRC\"},\n        \"fuente\": {\"quote\": \"3.1.1. Los datos a que se refiere la información de exigencia por riesgo de crédito se computarán por sus saldos a fin del período que se informa.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 3.1.1 (Sección 3, Exigencia por riesgo de crédito, del Régimen Informativo Contable MENSUAL)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"informar exigencia riesgo crédito periodicidad mensual\", \"resultado\": \"no aparece un nodo que porte la frecuencia/desglose de reporte específico del riesgo de CRÉDITO; los nodos son de cálculo (Operacion) o de riesgo operacional/mercado\"},\n        {\"consulta\": \"presentar información exigencia capital riesgo crédito día mes\", \"resultado\": \"no existe nodo-obligación de reporte de CRC con frecuencia y desglose; el único nodo de 'informar exigencia por riesgo' es el de riesgo de mercado (paso 9)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Con qué frecuencia se reporta al BCRA\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El reporte mensual al BCRA corresponde a exigencia de capitales mínimos por riesgo de mercado\", \"ubicacion\": \"respuesta final (afirmación extraída por el juez, marcada 'falso')\"},\n        \"nodo\": {\"quote\": \"Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes\", \"ubicacion\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9)\"},\n        \"fuente\": {\"quote\": \"4.2. Modelos de información \\nCuadro 4.2.1. Exigencia ... 311000/xx Exigencia por riesgo de tasa ... 313000/xx Exigencia por riesgo de tipo de cambio ... Sección 4. Exigencia e integración por riesgo de mercado\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 4.2\", \"resultado\": \"el Punto 4.2 pertenece a la Sección 4 'Exigencia e integración por riesgo de mercado' — el nodo del paso 9 es fiel al PDF: efectivamente describe el reporte de riesgo de MERCADO. El defecto no es del contenido del nodo (es correcto) sino de que el agente lo aplicó a la pregunta de CRC (ver context_recall/completitud_kg de esta pata)\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas: (1) cálculo del CRC y (2) frecuencia de reporte al BCRA. PATA 1: La fórmula principal C_RC=(k x 0,08 x APR_c)+INC (aprobada) está soportada por el nodo Operacion_calculo_de_capital_minimo y por el Punto 3.1.2 del PDF. Los claims fallidos de esta pata: (a) 'Existe una fórmula alternativa...Código 70100000(n)=k x 0,08[...]' — el juez la marcó no_soportado, pero SÍ está soportada por el nodo Operacion_calculo_de_exigencia_por_riesgo que el agente abrió en el paso 6 (verificado con ver_paso_completo), y la fórmula es fácticamente correcta contra el PDF (el código 70100000 es el total de riesgo de crédito, análogo al 70800000 del total de riesgo de mercado que confirmé en p.11). Por precedencia: soportada + tema correcto → noise_sensitivity; y el nodo cita 'Punto 8.1' que al leerlo resulta un índice/título de la Sección 8 ('Incrementos de exigencia por riesgo de crédito'), NO la fórmula del total — la cita no funda el contenido → provenance_imprecisa (primaria, lado grafo). (b) Definiciones de A/p/PFB/CCF: el nodo de la fórmula alternativa NO las define; ningún nodo de la trayectoria las porta (búsquedas negativas) → faithfulness; el PDF p.6 SÍ las define correctamente → completitud_kg (el hueco del grafo empujó la glosa; primaria). (c) '0,08 es el coeficiente de capital mínimo': ni el nodo ni el PDF denominan así al factor 0,08 → faithfulness; glosa de cosecha propia (el PDF muestra 0,08 pero no lo etiqueta) → alucinacion_agente modo (b) (secundaria). PATA 2 (frecuencia de reporte): El dato PERTINENTE — la obligación/frecuencia de reporte específica del riesgo de CRÉDITO — nunca apareció en la trayectoria; el agente rellenó la pata con el nodo Obligacion_informar_exigencia_de_capitales_por_riesgo (paso 9), que trata de riesgo de MERCADO (Punto 4.2, Sección 4). Búsquedas negativas confirman que no hay nodo-obligación de reporte de CRC con frecuencia/desglose → context_recall; el dato existe en el PDF (Punto 3.1.1, régimen contable mensual) pero no hay nodo que lo porte → completitud_kg (primaria). Como consecuencia, el agente produjo el claim 'corresponde a riesgo de mercado' (marcado falso por el juez): ese claim SÍ está soportado por el nodo del paso 9 y ese nodo es FIEL al PDF (Punto 4.2 es efectivamente riesgo de mercado) → noise_sensitivity/sin_defecto en cuanto al nodo (no hay defecto de contenido en el nodo), secundaria; el error de fondo es el relleno con nodo no pertinente ya capturado por el context_recall de la pata.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 8.1. Normas de procedimiento."
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 4.2. Modelos de información"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.2. Modelos de información\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.2 (PDF pág 13)\", \"pasaje\": \"4.2. Modelos de información \\n \\nCuadro 4.2.1. Exigencia \\n \\n \\nCódigo Concepto  \\n311000/xx Exigencia por riesgo de tasa - Total  \\n311100/xx Exigencia por riesgo de tasa - Específico  \\n311200/xx Exigencia por riesgo de tasa - General  \\n312000/xx Exigencia por riesgo de acciones - Total  \\n312100/xx Exigencia por riesgo de acciones - Específico  \\n312200/xx Exigencia por riesgo de acciones - General  \\n312300/xx Exigencia por riesgo de acciones - Adicional por derivados  \\n313000/xx Exigencia por riesgo de tipo de cambio  \\n315000/xx Exigencia por riesgo de posiciones en productos básicos   \\n– commodities - \\n \\n314000/xx Exigencia por riesgo de posiciones en opciones   \\n \\nxx = día del mes a que corresponde la información \\n \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 4. Exigencia e integración por riesgo de mercado \\nVersión: 7a. COMUNICACIÓN  “A”  6692 Vigencia: \\n1/4/2019 Página 3\"}"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.1. Normas de procedimiento. (parte 1)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1 (PDF pág 5)\", \"pasaje\": \"3.1. Normas de procedimiento. \\n3.1.1. Los datos a que se refiere la información de exigencia por riesgo de crédito se \\ncomputarán por sus saldos a fin del período que se informa. \\n3.1.2. Cálculo de la exigencia. \\nSe determinará de acuerdo con la siguiente expresión: \\nCRC = (k x 0,08 x APRc) + INC \\ndonde: \\nCRC = exigencia de capital por riesgo de crédito. \\nk = factor vinculado a la calificación asignada a la entidad teniendo en cuenta la es-\\ncala prevista en el punto 2.1. de las normas sobre “Capitales  mínimos de las entida-\\ndes financieras”. \\nAPRc = activos ponderados por riesgo de crédito calculados conforme a la siguiente \\nfórmula: \\nAPRc = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC (Inv. signif. en emp.)) x 12,5 \\ndonde:  \\nA: activos computables /exposiciones -saldos de deuda-. \\nA efectos de la determinación d e los importes a computar, se tendrán en cuenta las \\ndisposiciones contenidas en las Secciones 2. a 5. y en el punto 11.5.,  d… [+451 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Sección 8"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.2\", \"ref\": \"Punto/Sección 3.2 (mejor score=2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.1. Normas de procedimiento. (parte 2)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1 (PDF pág 5)\", \"pasaje\": \"3.1. Normas de procedimiento. \\n3.1.1. Los datos a que se refiere la información de exigencia por riesgo de crédito se \\ncomputarán por sus saldos a fin del período que se informa. \\n3.1.2. Cálculo de la exigencia. \\nSe determinará de acuerdo con la siguiente expresión: \\nCRC = (k x 0,08 x APRc) + INC \\ndonde: \\nCRC = exigencia de capital por riesgo de crédito. \\nk = factor vinculado a la calificación asignada a la entidad teniendo en cuenta la es-\\ncala prevista en el punto 2.1. de las normas sobre “Capitales  mínimos de las entida-\\ndes financieras”. \\nAPRc = activos ponderados por riesgo de crédito calculados conforme a la siguiente \\nfórmula: \\nAPRc = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC (Inv. signif. en emp.)) x 12,5 \\ndonde:  \\nA: activos computables /exposiciones -saldos de deuda-. \\nA efectos de la determinación d e los importes a computar, se tendrán en cuenta las \\ndisposiciones contenidas en las Secciones 2. a 5. y en el punto 11.5.,  d… [+451 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 6"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 6\", \"metodo\": \"pagina\", \"ref\": \"p.6 (PDF absoluto 1-based)\", \"pasaje\": \"PFB: partidas fuera de balance . \\nSobre los citados conceptos A y PFB se aplicarán los ponderadores de riesgo de \\ncontraparte (p) por operación, detallados en el cuadro previsto en el punto 3.1.4.; en \\ncaso de que una operación se encuentre afectada por más de un ponderador, se \\naplicará el mayor de ellos. \\nComo paso previo a la aplicación de estos ponderadores, los conceptos registrados \\nen PFB deben convertirse en equivalentes crediticios, a cuyo efecto sus importes \\ndeberán multiplicarse  por el factor de conversión crediticia (CCF) que corresponda \\nprevistos en el punto 2.13. de las normas sobre “Capitales mínimos de las entida-\\ndes financieras”- e identificarse a través de los códi gos de partida previstos en este \\nrégimen -modelo de información del punto 3.1.4. -, aplicando la siguiente codifica-\\nción: \\nCCF = 1 = 0 % \\n2 = 20 % \\n3 = 40 % \\n4 = 50 % \\n6 = 100 % \\n7 = 5 % \\n8 = 10 % \\nno DvP: operaciones sin entrega contra pago, una vez aplicados los  ponderadores \\nde riesgo que corre… [+1611 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.1.4"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.4 (PDF pág 8)\", \"pasaje\": \"3.1.4. Modelo de información \\n \\nB.C.R.A. \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\n4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 3. Exigencia por riesgo de crédito \\nCódigo Concepto Factor de ponde-\\nración (en %) \\n  \\n0 \\n2 \\n4 \\n10 \\n20 \\n30 \\n40 \\n45 \\n50 \\n60 \\n65 \\n75 \\n85 \\n100 \\n130 \\n150 \\n200 \\n250 \\n1250 \\n11000000 Disponibilidades \\n11100000 Exposiciones a gobiernos y bancos centrales \\n11200000 Exposiciones a bancos multilaterales de desarrollo (BMD) \\n11300000 Exposición a entidades financieras del país y del exterior \\n11400000 Exposiciones a empresas del país y del exterior \\n11500000 Exposiciones minoristas normativas \\n11550000 Exposiciones minoristas no normativas \\n11600000 Exposiciones garantizadas por SGR/Fondos de Garantía \\n11700000 Exposiciones con garantía hipotecaria normativas (residenciales y comerciales) \\n11800000 Exposiciones con garantía hipotecaria no normativas \\n11900000 Exposiciones en situación de incumplimiento \\n12000000 Otros … [+438 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "fórmula alternativa 70100000 código exigencia crédito",
+     "limite": 5
+    },
+    "output_truncado": "{\"consulta\": \"fórmula alternativa 70100000 código exigencia crédito\", \"total_con_match\": 227, \"resultados\": [{\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Operacion_calculo_de_exigencia_por_riesgo\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ …\"}, {\"id\": \"Operacion_calculo_de_incrementos_de_exigencia_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo de incrementos… [+469 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 10"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 10\", \"metodo\": \"pagina\", \"ref\": \"p.10 (PDF absoluto 1-based)\", \"pasaje\": \"iii) Ponderador de riesgo (p) \\n \\nSe aplicará el ponderador que co rresponda a la con traparte, de acue rdo \\ncon lo establecido en el punto 2.12. de las normas sobre “Capitales mí-\\nnimos de las entidades financieras”. \\n \\niv)  Exigencia final (RCD) \\n \\nSurgirá de la sumatoria de las exigencias EAD informadas para cada con-\\ntraparte, de acuerdo con la siguiente expresión: \\n \\nRCD = 8% x p x EAD + K(CVA) \\n \\n3.1.7. Exigencia de capital por riesgo de crédito de contraparte en operaciones con en-\\ntidades de contraparte central \\n \\nLas exposiciones de las entidades financieras con entidades de contraparte \\ncentral con el alcance establecido en el punto 4.3. de las normas sobre “Capita-\\nles m ínimos de las entidades financieras” –determinadas conforme a di chas \\nnormas-, se consignarán en la partida 12500000 por cada ponderador que co-\\nrresponda aplicar, siguiendo el modelo de información inserto en el punto \\n3.1.4.. \\n \\n \\n3.1.8. Exigencia adicional de capital por riesgo de crédito por fin… [+1052 chars]"
+   },
+   {
+    "n": 11,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 9"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 9\", \"metodo\": \"pagina\", \"ref\": \"p.9 (PDF absoluto 1-based)\", \"pasaje\": \"3.1.5. Operaciones DvP fallidas. \\nLas operaciones con entrega contra pago tendrán un ca rgo directo de capital \\ncuando los pagos no se realicen dentro de los cinco días hábiles desde la fe-\\ncha de liquidación, según lo establecido en el punto 4.1.1. de las normas so-\\nbre “Capitales mínimos de las entidades fi nancieras”. Para determinar dicho \\ncargo se aplicará la siguiente tabla: \\nCódigo Días hábiles posteriores a la \\nfecha de liquidación acordada \\nCargo de capital \\n-en %-\\n1310000\\n0\\nEntre 5 y 15 8 \\n1320000\\n0\\nEntre 16 y 30 50 \\n1330000\\n0\\nEntre 31 y 45 75 \\n1340000\\n0\\n46 o más 100 \\nSe informarán por el importe correspondiente al cargo de capital. \\n3.1.6. Exigencia por riesgo de crédito de contraparte en operaciones con derivados \\n-OTC) o negociados en mercados regulados- y con liquidación diferida.\\nLa exigencia final (RCD) surgirá de la sumatoria de las exposiciones al ries-\\ngo de crédito de contraparte determinadas para cada conjunto de neteo (pun-\\nto 4.2. de las normas sobre “C… [+1144 chars]"
+   },
+   {
+    "n": 12,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 8"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 8\", \"metodo\": \"pagina\", \"ref\": \"p.8 (PDF absoluto 1-based)\", \"pasaje\": \"3.1.4. Modelo de información \\n \\nB.C.R.A. \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\n4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 3. Exigencia por riesgo de crédito \\nCódigo Concepto Factor de ponde-\\nración (en %) \\n  \\n0 \\n2 \\n4 \\n10 \\n20 \\n30 \\n40 \\n45 \\n50 \\n60 \\n65 \\n75 \\n85 \\n100 \\n130 \\n150 \\n200 \\n250 \\n1250 \\n11000000 Disponibilidades \\n11100000 Exposiciones a gobiernos y bancos centrales \\n11200000 Exposiciones a bancos multilaterales de desarrollo (BMD) \\n11300000 Exposición a entidades financieras del país y del exterior \\n11400000 Exposiciones a empresas del país y del exterior \\n11500000 Exposiciones minoristas normativas \\n11550000 Exposiciones minoristas no normativas \\n11600000 Exposiciones garantizadas por SGR/Fondos de Garantía \\n11700000 Exposiciones con garantía hipotecaria normativas (residenciales y comerciales) \\n11800000 Exposiciones con garantía hipotecaria no normativas \\n11900000 Exposiciones en situación de incumplimiento \\n12000000 Otros activos \\n1… [+643 chars]"
+   },
+   {
+    "n": 13,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 7"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 7\", \"metodo\": \"pagina\", \"ref\": \"p.7 (PDF absoluto 1-based)\", \"pasaje\": \"ii) Enfoque integral o de reducción de la exposición (punto 5.3.2. de las normas sobre \\n“Capitales mínimos de las entidades financieras”): en este método se determinará el \\nvalor de la exposición ajustado por la cobertura del riesgo de crédito (E*), de acuerdo \\ncon la siguiente expresión (punto 5.3.2.1.): \\n \\nE* = Máx {0, [E x (1 + He) - C x (1 - Hc - Hfx)]} \\n \\nEn tanto, para las operaciones con acuerdos marco de neteo, el valor de la exposi-\\nción ajustada se calculará según la expresión del punto 5.3.2.5.: \\n \\n \\n \\nAl importe que surja de estas expresiones se le aplicará el ponderador correspon-\\ndiente a la exposición según el modelo de información del punto 3.1.4.. \\n \\n \\nB.C.R.A. \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\n4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 3. Exigencia por riesgo de crédito \\nVersión: 6a. COMUNICACIÓN  “A”  8107 Vigencia: \\n01/10/2024 Página 3\"}"
+   },
+   {
+    "n": 14,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 11"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Normas de procedimiento \\n4.1.1. Exigencia \\n4.1.1.1. La exigencia por riesgo de mercado se determinará con los valores que se registren \\nal último día del período de información (n), y el total surgirá de la siguiente suma: \\nCódigo 70800000 (n) = Código 311000/xx + Código 312000/xx + Código 313000/xx \\n+ Código 315000/xx + Código 314000/xx\\nA estos fines, se reemplazarán las dos últimas posiciones de cada partida de \\nexigencia por el último día del período que corresponda (ejemplo, xx = 31). \\n4.1.1.2. Código 311100/xx \\nSe consignará el valor de la exigencia por riesgo específico de tasa de interés para \\nel último día del período (n) determinada conforme a las disposiciones del punto \\n6.2.1. de las normas sobre “Capitales mínimos de las entidades financieras”. \\n4.1.1.3. Código 311200/xx \\nSe consignará el valor de la exigencia por riesgo general de tasa de interés para el \\núltimo día del período (n) determinada conforme a las disposiciones del punto 6.2.2. \\nde las normas sobre “Capital… [+1356 chars]"
+   },
+   {
+    "n": 15,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "p. 12"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"Este riesgo se discriminará por mercado, entendido a estos efectos como el país \\nen que se negocien posiciones -compradas o vendidas- en acciones. \\n \\nA estos efectos, el país se identificará de acuerdo con la codificación del Country \\nCodes del SWIFT. \\n \\n4.1.1.6. Código 312300/xx \\nSe consignará el valor de la exigencia por riesgo general de acciones -adicional \\npor derivados- para el último día del período (n) que surja por aplicación de lo dis-\\npuesto en el punto 6.3.2.2. de las normas sobre “Capitales mínimos de las entida-\\ndes financieras”. \\n \\n4.1.1.7. Código 313000/xx \\nSe consignará el valor de la exigencia por riesgo de tipo de cambio para el último \\ndía del período (n) determinada conforme a las disposiciones del punto 6.4. de las \\nnormas sobre “Capitales mínimos de las entidades financieras”. \\n \\n4.1.1.8. Código 314000/xx \\nSe consignará el valor de la exigencia por riesgo de posiciones en opciones para \\nel último día del período (n) determinada conforme a las disposiciones de… [+775 chars]"
+   },
+   {
+    "n": 16,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.1.9"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1.9\", \"ref\": \"Punto/Sección 3.1.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 17,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "Operacion_calculo_de_exigencia_por_riesgo"
+    },
+    "output_truncado": "{\"id\": \"Operacion_calculo_de_exigencia_por_riesgo\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo crédito\", \"properties\": {\"tipo\": \"cálculo de exigencia por riesgo\", \"description\": \"Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}"
+   },
+   {
+    "n": 18,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Punto 3.1.10"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1.10\", \"ref\": \"Punto/Sección 3.1.10 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 19,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+     "location": "Sección 3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3 (PDF pág 47)\", \"pasaje\": \"3. UVA/UVI:  \\n \\nLos saldos correspondientes a instrumentos actualizables por CER/UVA/UVI deberán \\nidentificarse con el código respectivo, e imputarse a la banda 0 (saldos a fin de mes) \\nen su totalidad. \\n \\nMárgenes comerciales\\n: \\n \\nLas entidades pueden optar por deducir los márgenes comerciales y otros componen-\\ntes del diferencial (spread), en cuyo caso: \\n \\n· Si se incluyen los márgenes comerciales.  \\n \\nSolo se informarán los flujos y el factor de descuento continuo con margen (código \\n2) \\n \\n·  Si se deducen los márgenes. \\n \\nDeberán informar los flujos y el factor de descuento continuo sin márgenes (código \\n1) y con márgenes (código 2). \\n \\nDeberán informarse las partidas que registren importes, considerando los atributos \\ndetallados precedentemente, indicados en los modelos de información de los cuadros \\n11.2.1. a) y b) y 11.2.2. a) y b) para cada una de ellas. \\n \\nCuando la estructura del modelo requiera datos en todos los escenarios (0 a 6) para \\nun concepto determina… [+422 chars]"
+   },
+   {
+    "n": 20,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 9
+    },
+    "output_truncado": "{\"paso\": 9, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo\"}, \"output_completo\": {\"id\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo\", \"type\": \"Obligacion\", \"label\": \"Informar exigencia de capitales por riesgo\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes\", \"plazo\": \"mensual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.2. Modelos de información\"}]}}"
+   },
+   {
+    "n": 21,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "informar exigencia riesgo crédito periodicidad mensual",
+     "limite": 8
+    },
+    "output_truncado": "{\"consulta\": \"informar exigencia riesgo crédito periodicidad mensual\", \"total_con_match\": 411, \"resultados\": [{\"id\": \"Obligacion_se_informaran_los_incrementos_a_la_exigencia_segun_riesgo_de_credito_generados_p\", \"type\": \"Obligacion\", \"label\": \"Informar incrementos exigencia riesgo crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se informarán los incrementos a la exigencia según riesgo de crédito generados por excesos verificados en la relación de activos inmovilizados, límites establec…\"}, {\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM pa… [+1526 chars]"
+   },
+   {
+    "n": 22,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "presentar información exigencia capital riesgo crédito día mes",
+     "limite": 8
+    },
+    "output_truncado": "{\"consulta\": \"presentar información exigencia capital riesgo crédito día mes\", \"total_con_match\": 555, \"resultados\": [{\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia capital mínimo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital mínimo por riesgo de crédito\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_credito_de_contraparte\", \"type\": \"Operacion\", \"label\": \"Operación de cálculo de exigencia capital\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cálculo de exigencia de capital por riesgo de crédito de contraparte\"}, {\"id\": \"Operacion_calculo_de_capital_minimo\", \"type\": \"Operacion\", \"label\": \"Cálculo de exigencia por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Determinación de la exigencia de capital por riesgo de crédito conforme a la fórmula C_RC = (k x 0,08 x APR_c) + INC\"}, {\"id\": \"Obligacion_calcular_exigencia_capital_riesgo_credito_contraparte\", \"type\": \"Obligacion\", \"label\": \"Calcular exigencia capital riesgo crédito contraparte\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades deberán calc… [+1594 chars]"
+   },
+   {
+    "n": 23,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 6
+    },
+    "output_truncado": "{\"paso\": 6, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Operacion_calculo_de_exigencia_por_riesgo\"}, \"output_completo\": {\"id\": \"Operacion_calculo_de_exigencia_por_riesgo\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo crédito\", \"properties\": {\"tipo\": \"cálculo de exigencia por riesgo\", \"description\": \"Cálculo de la exigencia por riesgo de crédito sin incluir el término INC mediante la fórmula: Código 70100000 (n) = k x 0,08 [ ∑(A x p) + ∑ (PFB x CCF x p) + ∑ (12300000 x p) + (∑ 13X00000 + 14000000 + 86300000) x 12,5 + 15000000 ]\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 27346,
+    "output_tokens": 398
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29556,
+    "output_tokens": 370
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 30421,
+    "output_tokens": 323
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32834,
+    "output_tokens": 306
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 34811,
+    "output_tokens": 339
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37400,
+    "output_tokens": 250
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 39190,
+    "output_tokens": 280
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 41555,
+    "output_tokens": 409
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 42536,
+    "output_tokens": 385
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 43964,
+    "output_tokens": 833
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 45081,
+    "output_tokens": 1390
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 49035,
+    "output_tokens": 723
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 50110,
+    "output_tokens": 6240
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 50,
+   "n_claims_fallidos": 8,
+   "categoria": "multi_norma"
+  },
+  "label": "off"
+ }
+}

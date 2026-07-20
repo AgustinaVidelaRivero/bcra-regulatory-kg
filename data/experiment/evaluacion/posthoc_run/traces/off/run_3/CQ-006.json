@@ -1,0 +1,434 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-006",
+    "run": "run_3",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-006",
+      "question": "En la cartera para consumo o vivienda, ¿hasta cuántos días de atraso se considera que un deudor está en 'situación normal'?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "cartera consumo vivienda situación normal atraso días",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"cartera consumo vivienda situación normal atraso días\", \"total_con_match\": 115, \"resultados\": [{\"id\": \"Operacion_refinanciacion_de_los_deudores_de_cartera_de_consumo_o_vivienda\", \"type\": \"Operacion\", \"label\": \"Refinanciación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Refinanciación de los deudores de cartera de consumo o vivienda\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Operacion_otorgamiento_de_financiaciones_de_consumo_o_vivienda\", \"type\": \"Operacion\", \"label\": \"Financiaciones consumo vivienda\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: otorgamiento de financiaciones de consumo o vivie… [+2354 chars]",
+          "output_chars": 3554
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor situación normal atraso",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor situación normal atraso\", \"total_con_match\": 63, \"resultados\": [{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\"}, {\"id\": \"Obligacion_para_clasificacion_en_situacion_normal_el_analisis_del_flujo_de_fondos_del_clien\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación financiera normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para clasificación en situación normal: El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financ…\"}, {\"id\": \"Obligacion_evaluar_situacion_economica_del_pais_deudor\", \"type\": \"Obligacion\", \"label\": \"Evaluar situación económica del país deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se deberá considerar respecto del país de residencia del deudor y su garante la situación económica\"}, {\"id\": \"Restriccion_los_deudores_que_hayan_cancelado_la_totalidad_de_los_intereses_de… [+1978 chars]",
+          "output_chars": 3178
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"properties\": {\"descripcion\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"31 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}",
+          "output_chars": 517
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"label\": \"Límite de atraso en situación normal\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_pago_de_obligaciones\", \"vecino_label\": \"Pago capital intereses deuda\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+          "output_chars": 1070
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1472,
+          "output_tokens": 182,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.494
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 4044,
+          "output_tokens": 129,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.972
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 6,
+          "output_tokens": 151,
+          "cache_read": 0,
+          "cache_write": 4361,
+          "latency_s": 2.043
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 5,
+          "output_tokens": 169,
+          "cache_read": 4361,
+          "cache_write": 561,
+          "latency_s": 2.221
+        }
+      ],
+      "final_json": {
+        "respuesta": "En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando atiende en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+        "citas": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Tengo la información necesaria. La respuesta es clara y está respaldada por el grafo.\n\n```json\n{\n  \"respuesta\": \"En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando atiende en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 4,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5527,
+      "tokens_out": 631,
+      "cache_read": 4361,
+      "cache_write": 4922,
+      "cost_usd": 0.015271,
+      "latency_s": 7.738,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_012aWcBjxL2pusLZhSDjEfe7",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre la cartera de consumo o vivienda y la clasificación de deudores en situación normal.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01AchrM4oVdMEq2eBbbZJLhK",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "cartera consumo vivienda situación normal atraso días",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01CUhZTwtf6kY7ZzdaHQHyZW",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor situación normal atraso",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1472,
+            "output_tokens": 182,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_019awZJoEs3Y3Dte2iMKcqQr",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto, encontré un nodo muy relevante. Voy a ver los detalles del nodo \"Límite de atraso en situación normal\":",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01TFtwitrXj5MHtC76o1xaV6",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 4044,
+            "output_tokens": 129,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_013yfL3noaj3yowkqazYYz2x",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la respuesta clara. Voy a verificar si hay más contexto sobre esto en relación a cartera de consumo o vivienda específicamente:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_011zsQVNfEB2pDmdSat1AP4E",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4361
+            },
+            "cache_creation_input_tokens": 4361,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 151,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01MB8H726J9sSsFTzh1kk32b",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Tengo la información necesaria. La respuesta es clara y está respaldada por el grafo.\n\n```json\n{\n  \"respuesta\": \"En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando atiende en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 561
+            },
+            "cache_creation_input_tokens": 561,
+            "cache_read_input_tokens": 4361,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 169,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) con precisión a nivel punto (Punto 7.2), aunque el referente indica que el dato exacto está en el Punto 7.2.1."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "En la cartera para consumo o vivienda, la 'situación normal' corresponde a deudores que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Cantidad máxima de días de atraso para que un deudor en la cartera de consumo o vivienda sea considerado en 'situación normal'"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "En la cartera para consumo o vivienda, la 'situación normal' corresponde a deudores que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Cantidad máxima de días de atraso para que un deudor en la cartera de consumo o vivienda sea considerado en 'situación normal'",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) con precisión a nivel punto (Punto 7.2), aunque el referente indica que el dato exacto está en el Punto 7.2.1.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2289,
+        "out": 468
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01LCKZ73C5PvYBEQoDSV3CF9",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"En la cartera para consumo o vivienda, la 'situación normal' corresponde a deudores que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\"Cantidad máxima de días de atraso para que un deudor en la cartera de consumo o vivienda sea considerado en 'situación normal'\"]\n}",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 633,
+            "output_tokens": 152,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01T2z59Ud13Zts4RZcU3hgRM",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"En la cartera para consumo o vivienda, la 'situación normal' corresponde a deudores que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Cantidad máxima de días de atraso para que un deudor en la cartera de consumo o vivienda sea considerado en 'situación normal'\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"punto\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) con precisión a nivel punto (Punto 7.2), aunque el referente indica que el dato exacto está en el Punto 7.2.1.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1656,
+            "output_tokens": 316,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.015271,
+    "judge_cost": 0.013887
+  }
+]

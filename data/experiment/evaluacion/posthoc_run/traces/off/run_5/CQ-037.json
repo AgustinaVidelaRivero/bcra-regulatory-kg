@@ -1,0 +1,892 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-037",
+    "run": "run_5",
+    "categoria": "unanswerable",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-037",
+      "question": "¿Cuál es la tasa de interés máxima que una entidad financiera puede cobrar por las financiaciones vinculadas a tarjetas de crédito?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa interés máxima tarjeta crédito financiación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa interés máxima tarjeta crédito financiación\", \"total_con_match\": 333, \"resultados\": [{\"id\": \"tarjeta_de_credito\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Instrumento financiero que permite acceder a financiación con pago mínimo exigido en liquidaciones periódicas.\"}, {\"id\": \"swap_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Swap de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contrato de intercambio de tasas de interés. Si está en curso, la fecha de inicio es igual a cero.\"}, {\"id\": \"indice_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Índice de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Índice sobre el cual se pueden estructurar futuros.\"}, {\"id\": \"riesgo_de_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Riesgo de tasa de interés en cartera de inversión, sujeto a cálculo e información complementaria\"}, {\"id\": \"riesgo_por_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo por tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propied… [+1361 chars]",
+          "output_chars": 2561
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa máxima financiaciones tarjeta",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa máxima financiaciones tarjeta\", \"total_con_match\": 156, \"resultados\": [{\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_fija\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa fija\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Riesgo de mercado vinculado a cambios en tasas de interés.\"}, {\"id\": \"tarjeta_prepaga\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta prepaga\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Tarjeta emitida en el país con saldo en pesos o moneda extranjera.\"}, {\"id\": \"tarjeta_de_debito\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta de débito\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Medio de pago que implica débito inmediato en cuenta de entidad financiera local.\"}, {\"id\": \"tarjeta_de_credito\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta de crédito\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Instrumen… [+758 chars]",
+          "output_chars": 1958
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "tarjeta_de_credito"
+          },
+          "output_truncado": "{\"id\": \"tarjeta_de_credito\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta de crédito\", \"properties\": {\"description\": \"Instrumento financiero que permite acceder a financiación con pago mínimo exigido en liquidaciones periódicas.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}",
+          "output_chars": 357
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "tarjeta_de_credito"
+          },
+          "output_truncado": "{\"id\": \"tarjeta_de_credito\", \"label\": \"Tarjeta de crédito\", \"n_salientes_total\": 1, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"incluye\", \"vecino_id\": \"financiacion_rotativa\", \"vecino_label\": \"Financiación rotativa\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"calculo_de_atraso_en_tarjetas_de_credito\", \"vecino_label\": \"Cálculo de atraso en tarjetas de crédito\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2 — Niveles de clasificación. (parte 1/3)\"}]}, {\"relation\": \"emite\", \"vecino_id\": \"entidad_financiera_local__otra\", \"vecino_label\": \"Entidad financiera local\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 2/4)\"}]}, {\"relation\": \"emite\", \"vecino_id\": \"empresa_no_financiera_emisora_de_tarjeta__proveedor_no_financiero_credito\", \"vecino_label\": \"Empresa no financiera emisora de tarjeta\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", … [+143 chars]",
+          "output_chars": 1343
+        },
+        {
+          "n": 5,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "financiacion_rotativa"
+          },
+          "output_truncado": "{\"id\": \"financiacion_rotativa\", \"type\": \"Operacion\", \"label\": \"Financiación rotativa\", \"properties\": {\"description\": \"Financiaciones en las cuales los prestatarios están autorizados a realizar giros y cancelaciones dentro de límites convenidos en línea de crédito, incluyendo tarjetas de crédito y descubiertos.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}",
+          "output_chars": 434
+        },
+        {
+          "n": 6,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "financiacion_rotativa"
+          },
+          "output_truncado": "{\"id\": \"financiacion_rotativa\", \"label\": \"Financiación rotativa\", \"n_salientes_total\": 1, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"cumple_criterio\", \"vecino_id\": \"exposicion_minorista_normativa\", \"vecino_label\": \"Exposición minorista normativa\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"realiza\", \"vecino_id\": \"entidad_financiera__otra\", \"vecino_label\": \"Entidad financiera\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}, {\"relation\": \"incluye\", \"vecino_id\": \"tarjeta_de_credito\", \"vecino_label\": \"Tarjeta de crédito\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}, {\"relation\": \"incluye\", \"vecino_id\": \"descubierto_en_cuenta_corriente\", \"vecino_label\": \"Descubierto en cuenta corriente\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.8 — Exposiciones minoristas.\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 1137
+        },
+        {
+          "n": 7,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa máxima límite financiación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa máxima límite financiación\", \"total_con_match\": 227, \"resultados\": [{\"id\": \"limite_exposicion_maxima_por_contraparte\", \"type\": \"Restriccion\", \"label\": \"Límite exposición máxima por contraparte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exposición máxima frente a una misma contraparte individual no deberá superar importes específicos según categoría de deudor.\"}, {\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_fija\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa fija\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"financiacion\", \"type\": \"Operacion\", \"label\": \"Financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Otorgamiento de fondos o asunción de responsabilidades por entidad financiera hacia contraparte.\"}, {\"id\": \"riesgo_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Riesgo de mercado vinculado a cambios en tasas de interés.\"}, {\"id\": \"limite_minimo_pnb\", \"type\": \"Restriccion\", \"label\"… [+758 chars]",
+          "output_chars": 1958
+        },
+        {
+          "n": 8,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa máxima cobrar entidad financiera",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa máxima cobrar entidad financiera\", \"total_con_match\": 257, \"resultados\": [{\"id\": \"entidad_financiera\", \"type\": \"Concepto\", \"label\": \"Entidad financiera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Sujeto regulado que realiza operaciones de valuación de posiciones, carteras de negociación e inversión, y operaciones de mercado.\"}, {\"id\": \"entidad_financiera__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad financiera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Sujeto regulado que opera carteras de consumo o vivienda y debe informar sobre incrementos de cartera irregular.\"}, {\"id\": \"entidad_financiera_local\", \"type\": \"Concepto\", \"label\": \"Entidad financiera local\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Entidad financiera con domicilio en la República Argentina autorizada para otorgar financiaciones de exportación e importación.\"}, {\"id\": \"entidad_financiera_local__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad financiera local\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Entidad financiera local seleccionada por VPU que realiza verificación de cumplimiento y registro de operaciones cambiarias.\"}, {\"id\": \"entidad_financiera_dador… [+1261 chars]",
+          "output_chars": 2461
+        },
+        {
+          "n": 9,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa interés máxima límite",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa interés máxima límite\", \"total_con_match\": 181, \"resultados\": [{\"id\": \"swap_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Swap de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contrato de intercambio de tasas de interés. Si está en curso, la fecha de inicio es igual a cero.\"}, {\"id\": \"indice_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Índice de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Índice sobre el cual se pueden estructurar futuros.\"}, {\"id\": \"riesgo_de_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Riesgo de tasa de interés en cartera de inversión, sujeto a cálculo e información complementaria\"}, {\"id\": \"riesgo_por_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo por tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Componente RT de la exigencia de capital por riesgo de mercado.\"}, {\"id\": \"derivados_de_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Derivados de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Instrumentos derivados cuya subyacente es la tasa de i… [+1479 chars]",
+          "output_chars": 2679
+        },
+        {
+          "n": 10,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "máxima tasa anual",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"máxima tasa anual\", \"total_con_match\": 89, \"resultados\": [{\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_fija\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa fija\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Riesgo de mercado vinculado a cambios en tasas de interés.\"}, {\"id\": \"tasa_badlar_privada\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa Badlar privada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_general_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo general de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Categoría de riesgo de mercado que calcula exigencias sobre posiciones netas ponderadas en cartera de negociación.\"}, {\"id\": \"tasa_flujos_fondos_cer\", \"type\": \"Restriccion\", \"label\": \"Tasa flujos fondos CER\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Tasa a aplicar a los flujos futuros de fondos de activos … [+810 chars]",
+          "output_chars": 2010
+        },
+        {
+          "n": 11,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa máxima cobro financiación tarjeta crédito",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa máxima cobro financiación tarjeta crédito\", \"total_con_match\": 354, \"resultados\": [{\"id\": \"tarjeta_de_credito\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tarjeta de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Instrumento financiero que permite acceder a financiación con pago mínimo exigido en liquidaciones periódicas.\"}, {\"id\": \"titular_de_tarjeta_de_credito\", \"type\": \"Concepto\", \"label\": \"Titular de tarjeta de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"\"}, {\"id\": \"empresa_emisora_de_tarjeta_de_credito__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Empresa emisora de tarjeta de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Empresa no financiera emisora de tarjetas de crédito y/o compra.\"}, {\"id\": \"empresa_no_financiera_emisora_de_tarjeta__proveedor_no_financiero_credito\", \"type\": \"EntidadFinanciera\", \"label\": \"Empresa no financiera emisora de tarjeta\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Empresa no financiera que emite tarjetas de crédito, de compra, de débito o prepagas en el país.\"}, {\"id\": \"financiacion_complemento_con_carta_credito\", \"type\": \"Operacion\", \"label\": \"Financiación complemento con carta crédito… [+1680 chars]",
+          "output_chars": 2880
+        },
+        {
+          "n": 12,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "límite tasa interés regulación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"límite tasa interés regulación\", \"total_con_match\": 175, \"resultados\": [{\"id\": \"swap_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Swap de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contrato de intercambio de tasas de interés. Si está en curso, la fecha de inicio es igual a cero.\"}, {\"id\": \"indice_de_tasa_de_interes\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Índice de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Índice sobre el cual se pueden estructurar futuros.\"}, {\"id\": \"riesgo_de_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Riesgo de tasa de interés en cartera de inversión, sujeto a cálculo e información complementaria\"}, {\"id\": \"riesgo_por_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Riesgo por tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Componente RT de la exigencia de capital por riesgo de mercado.\"}, {\"id\": \"derivados_de_tasa_de_interes\", \"type\": \"Concepto\", \"label\": \"Derivados de tasa de interés\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Instrumentos derivados cuya subyacente es la tasa … [+1483 chars]",
+          "output_chars": 2683
+        },
+        {
+          "n": 13,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tasa máxima anual porcentaje",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tasa máxima anual porcentaje\", \"total_con_match\": 90, \"resultados\": [{\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_fija\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa fija\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Riesgo de mercado vinculado a cambios en tasas de interés.\"}, {\"id\": \"tasa_badlar_privada\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa Badlar privada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_general_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo general de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Categoría de riesgo de mercado que calcula exigencias sobre posiciones netas ponderadas en cartera de negociación.\"}, {\"id\": \"tasa_flujos_fondos_cer\", \"type\": \"Restriccion\", \"label\": \"Tasa flujos fondos CER\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Tasa a aplicar a los flujos futuros de fondos … [+821 chars]",
+          "output_chars": 2021
+        },
+        {
+          "n": 14,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "restricción tasa máxima",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"restricción tasa máxima\", \"total_con_match\": 98, \"resultados\": [{\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"tasa_fija\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa fija\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Riesgo de mercado vinculado a cambios en tasas de interés.\"}, {\"id\": \"tasa_badlar_privada\", \"type\": \"InstrumentoFinanciero\", \"label\": \"Tasa Badlar privada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"\"}, {\"id\": \"riesgo_general_de_tasa\", \"type\": \"Concepto\", \"label\": \"Riesgo general de tasa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Categoría de riesgo de mercado que calcula exigencias sobre posiciones netas ponderadas en cartera de negociación.\"}, {\"id\": \"tasa_flujos_fondos_cer\", \"type\": \"Restriccion\", \"label\": \"Tasa flujos fondos CER\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Tasa a aplicar a los flujos futuros de fondos de ac… [+833 chars]",
+          "output_chars": 2033
+        },
+        {
+          "n": 15,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "tasa_rp"
+          },
+          "output_truncado": "{\"id\": \"tasa_rp\", \"type\": \"Concepto\", \"label\": \"Tasa rp\", \"properties\": {}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6 — “A” 414 + Punto 9.2 + Punto 12.1 + Punto 8028 + Punto 12.3 — “A” 8364  5. (parte 2/6)\"}]}",
+          "output_chars": 256
+        },
+        {
+          "n": 16,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "tasa_rme"
+          },
+          "output_truncado": "{\"id\": \"tasa_rme\", \"type\": \"Concepto\", \"label\": \"Tasa rme\", \"properties\": {}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6 — “A” 414 + Punto 9.2 + Punto 12.1 + Punto 8028 + Punto 12.3 — “A” 8364  5. (parte 2/6)\"}]}",
+          "output_chars": 258
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1474,
+          "output_tokens": 188,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.559
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3397,
+          "output_tokens": 141,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.717
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 143,
+          "cache_read": 0,
+          "cache_write": 4211,
+          "latency_s": 2.677
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 175,
+          "cache_read": 4211,
+          "cache_write": 759,
+          "latency_s": 1.946
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 169,
+          "cache_read": 4970,
+          "cache_write": 1774,
+          "latency_s": 1.722
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 177,
+          "cache_read": 6744,
+          "cache_write": 1969,
+          "latency_s": 2.425
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 173,
+          "cache_read": 8713,
+          "cache_write": 2208,
+          "latency_s": 2.076
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 148,
+          "cache_read": 10921,
+          "cache_write": 1765,
+          "latency_s": 1.729
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 3,
+          "output_tokens": 141,
+          "cache_read": 12686,
+          "cache_write": 513,
+          "latency_s": 2.253
+        }
+      ],
+      "final_json": {
+        "respuesta": "No se encontró información en el Knowledge Graph sobre una tasa de interés máxima específica que las entidades financieras puedan cobrar por financiaciones vinculadas a tarjetas de crédito. Aunque el grafo contiene referencias a tarjetas de crédito, financiaciones rotativas y diversos conceptos de tasas de interés, no hay nodos o relaciones que especifiquen un límite máximo de tasa para este tipo de operaciones.",
+        "citas": [],
+        "respondible": false
+      },
+      "final_raw": "```json\n{\n  \"respuesta\": \"No se encontró información en el Knowledge Graph sobre una tasa de interés máxima específica que las entidades financieras puedan cobrar por financiaciones vinculadas a tarjetas de crédito. Aunque el grafo contiene referencias a tarjetas de crédito, financiaciones rotativas y diversos conceptos de tasas de interés, no hay nodos o relaciones que especifiquen un límite máximo de tasa para este tipo de operaciones.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 16,
+      "hit_tool_limit": true,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.8 — Exposiciones minoristas."
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 7.2 — Niveles de clasificación. (parte 1/3)"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 2/4)"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 8.6 — “A” 414 + Punto 9.2 + Punto 12.1 + Punto 8028 + Punto 12.3 — “A” 8364  5. (parte 2/6)"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 4916,
+      "tokens_out": 1455,
+      "cache_read": 48245,
+      "cache_write": 13199,
+      "cost_usd": 0.033514,
+      "latency_s": 19.146,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01JAgyTrAnGkUyJnX942G5b3",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre tasas de interés máximas para financiaciones con tarjetas de crédito en el Knowledge Graph.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01WARqGjEwfLUJbhc4DSiKCx",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa interés máxima tarjeta crédito financiación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LztqnxGbwsmap3fDSWsXxd",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa máxima financiaciones tarjeta",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1474,
+            "output_tokens": 188,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01F89dqURNoKPWTNEtvDH21P",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Encontré referencias a tarjeta de crédito. Voy a explorar ese nodo para ver si contiene información sobre tasas máximas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_019cTJrgBEeGg3mtSbgJZWJG",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "tarjeta_de_credito"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01PDsJdSBGqSvhxoedbmocac",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "tarjeta_de_credito"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3397,
+            "output_tokens": 141,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01SLKK9UCRyxgukRLvQA9BdX",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Veo que tarjeta de crédito incluye \"Financiación rotativa\". Voy a explorar ese nodo para buscar información sobre tasas máximas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01UyMeJxrE8v7oUjyjki1y8v",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "financiacion_rotativa"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_019s7r8VgRZDhEVQ95CAui8w",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "financiacion_rotativa"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4211
+            },
+            "cache_creation_input_tokens": 4211,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 143,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_013PF65X2ZtJqtfruFTf1fzx",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente sobre tasas máximas o límites de tasas en financiaciones.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Y98AvYVC5gh8SpoXnp2qdM",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa máxima límite financiación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01XWG3fBjtW2saooAgLtAPsS",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa máxima cobrar entidad financiera",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 759
+            },
+            "cache_creation_input_tokens": 759,
+            "cache_read_input_tokens": 4211,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 175,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01NmmeT8c5QMNfEBmDMyoZ6G",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente sobre tasas de interés máximas o límites de tasas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01JXnDz68WrgnNo3YPUVYVkL",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa interés máxima límite",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01JmktAsw2wRrZhRbeJFEpeK",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "máxima tasa anual",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1774
+            },
+            "cache_creation_input_tokens": 1774,
+            "cache_read_input_tokens": 4970,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 169,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01AVkhKfS7iiV5FdmwJrkatk",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar con términos más específicos sobre regulación de tasas o límites de tasas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01RCQ3779m4zrvjDvubb7MJA",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa máxima cobro financiación tarjeta crédito",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_014fTAhxguXBUFzgTgMEMcs7",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "límite tasa interés regulación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1969
+            },
+            "cache_creation_input_tokens": 1969,
+            "cache_read_input_tokens": 6744,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 177,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01PyDMyuYpdbTwyT3GiKhQxL",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a intentar una búsqueda más directa sobre tasas máximas o restricciones de tasas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01UWJqxRV8uygWynMZ3KszCn",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tasa máxima anual porcentaje",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01SqbFT1yMs5XAMiSdHdU5u6",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "restricción tasa máxima",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2208
+            },
+            "cache_creation_input_tokens": 2208,
+            "cache_read_input_tokens": 8713,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 173,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_0194RvtBCb4jF7ZoukKM7vvV",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a explorar los nodos \"Tasa rp\" y \"Tasa rme\" que aparecen en los resultados, ya que podrían estar relacionados con tasas máximas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01M9mBeuenRJnNX4xkiwzBa4",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "tasa_rp"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01MsEQSJtjdMxBmZucExen2y",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "tasa_rme"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1765
+            },
+            "cache_creation_input_tokens": 1765,
+            "cache_read_input_tokens": 10921,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 148,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01CixkoEjEcTR7vp51FetveZ",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"respuesta\": \"No se encontró información en el Knowledge Graph sobre una tasa de interés máxima específica que las entidades financieras puedan cobrar por financiaciones vinculadas a tarjetas de crédito. Aunque el grafo contiene referencias a tarjetas de crédito, financiaciones rotativas y diversos conceptos de tasas de interés, no hay nodos o relaciones que especifiquen un límite máximo de tasa para este tipo de operaciones.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 513
+            },
+            "cache_creation_input_tokens": 513,
+            "cache_read_input_tokens": 12686,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 141,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": null,
+        "completitud": null,
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": "correcta",
+        "especulacion_en_prosa": false,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "citas": "El agente no presenta ninguna cita.",
+          "abstencion": "El agente reconoce correctamente que el dato no está disponible en el corpus, sin inventar valores ni citas."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [],
+        "reportes_de_alcance": [
+          "No se encontró información en el Knowledge Graph sobre una tasa de interés máxima específica que las entidades financieras puedan cobrar por financiaciones vinculadas a tarjetas de crédito.",
+          "El grafo contiene referencias a tarjetas de crédito, financiaciones rotativas y diversos conceptos de tasas de interés.",
+          "No hay nodos o relaciones en el grafo que especifiquen un límite máximo de tasa para este tipo de operaciones."
+        ],
+        "patas_de_la_pregunta": [
+          "Tasa de interés máxima que una entidad financiera puede cobrar por financiaciones vinculadas a tarjetas de crédito"
+        ]
+      },
+      "step2": {
+        "verificaciones": [],
+        "cobertura_patas": [
+          {
+            "pata": "Tasa de interés máxima que una entidad financiera puede cobrar por financiaciones vinculadas a tarjetas de crédito",
+            "cobertura": "no_cubierta"
+          }
+        ],
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": "correcta",
+        "especulacion_en_prosa": false,
+        "justificacion": {
+          "citas": "El agente no presenta ninguna cita.",
+          "abstencion": "El agente reconoce correctamente que el dato no está disponible en el corpus, sin inventar valores ni citas."
+        }
+      },
+      "usage": {
+        "in": 2277,
+        "out": 409
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01YWueUPYzM3P5VG1pD2Rbjo",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [],\n  \"reportes_de_alcance\": [\n    \"No se encontró información en el Knowledge Graph sobre una tasa de interés máxima específica que las entidades financieras puedan cobrar por financiaciones vinculadas a tarjetas de crédito.\",\n    \"El grafo contiene referencias a tarjetas de crédito, financiaciones rotativas y diversos conceptos de tasas de interés.\",\n    \"No hay nodos o relaciones en el grafo que especifiquen un límite máximo de tasa para este tipo de operaciones.\"\n  ],\n  \"patas_de_la_pregunta\": [\n    \"Tasa de interés máxima que una entidad financiera puede cobrar por financiaciones vinculadas a tarjetas de crédito\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 685,
+            "output_tokens": 211,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01NrZch5Htt27YtmsiLfqFM6",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [],\n  \"cobertura_patas\": [\n    {\"pata\": \"Tasa de interés máxima que una entidad financiera puede cobrar por financiaciones vinculadas a tarjetas de crédito\", \"cobertura\": \"no_cubierta\"}\n  ],\n  \"cita_documento_correcto\": false,\n  \"cita_precision\": \"ausente\",\n  \"abstencion\": \"correcta\",\n  \"especulacion_en_prosa\": false,\n  \"justificacion\": {\n    \"citas\": \"El agente no presenta ninguna cita.\",\n    \"abstencion\": \"El agente reconoce correctamente que el dato no está disponible en el corpus, sin inventar valores ni citas.\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1592,
+            "output_tokens": 198,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.033514,
+    "judge_cost": 0.012966
+  }
+]

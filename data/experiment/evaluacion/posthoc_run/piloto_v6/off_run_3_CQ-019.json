@@ -1,0 +1,730 @@
+{
+ "id_falla": "run_3/CQ-019",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQ-019",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital riesgo crédito previsión incobrabilidad\", \"limite\": 10}",
+      "devolvio": "Nodos de cálculo de exigencia de capital por riesgo de crédito",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"previsión incobrabilidad deducción activos\", \"limite\": 10}",
+      "devolvio": "Devuelve Restriccion_limite_de_deduccion_de_prevision_normal con la regla de la pata central",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"clasificación deudores previsión\", \"limite\": 10}",
+      "devolvio": "TO Clasificación de Deudores y nodos de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_limite_de_deduccion_de_prevision_normal\"}",
+      "devolvio": "Contenido de la regla: sin deducir el 100% de la previsión de deudores 'en situación normal' (puntos 6.5.1 y 7.2.1) y garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\"}",
+      "devolvio": "Nodo tipo cálculo, poco contenido",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Restriccion_limite_de_deduccion_de_prevision_normal\", \"direccion\": \"ambas\"}",
+      "devolvio": "Vecinos: establecida_en Capitales Mínimos; limita Cómputo de conceptos",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"deudores situación normal previsión\", \"limite\": 10}",
+      "devolvio": "Expone Restriccion_comprende_los_clientes... con la definición completa de situación normal (atrasos ≤31 días) en el resumen_propiedades",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"garantías preferidas A previsión deducción\", \"limite\": 10}",
+      "devolvio": "Nodos sobre garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_computo\"}",
+      "devolvio": "Definición del cómputo de conceptos en base mensual",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente encontró y consultó los nodos pertinentes a ambas patas: la regla de no deducción (Restriccion_limite_de_deduccion_de_prevision_normal, pasos 2 y 4) y el vínculo con la clasificación de deudores. Además, en el paso 7 el output de buscar_nodos EXPUSO el nodo Restriccion_comprende_los_clientes... con su descripción completa ('atrasos que no superan los 31 días'), que es exactamente el claim marcado incorrecto. El agente reprodujo un dato soportado por su trayectoria y verificado como correcto contra el PDF (punto 7.2.1). Actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la clasificación de un deudor como 'en situación normal' (que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días)",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días",
+       "ubicacion": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (expuesto en resumen_propiedades del paso 7)"
+      },
+      "fuente": {
+       "quote": "7.2.1. Situación normal. \nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.2. Niveles de clasificación (7.2.1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "situación normal capacidad de pago comercial flujo de fondos",
+       "resultado": "Confirma que la cartera comercial (6.5.1) usa criterio de flujo de fondos/capacidad de pago; el criterio de 'atrasos ≤31 días' corresponde a la cartera de consumo (7.2.1). El nodo de deducción cita AMBOS puntos, por lo que la definición literal de 7.2.1 es válida como respuesta genérica."
+      },
+      {
+       "consulta": "TO_capitales_minimos_actual.pdf Punto 2.3 (leer_pasaje_pdf)",
+       "resultado": "El punto 2.3 cita textualmente 'puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores', confirmando que 7.2.1 es fuente válida de la definición de 'situación normal' invocada por la regla."
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El único claim marcado incorrecto por el juez ('no_soportado') es la definición: 'situación normal comprende clientes que atienden puntualmente el pago o con atrasos que no superan los 31 días'. FASE B — cruce de las tres fuentes: (1) AFIRMACIÓN: aparece en la respuesta final como glosa entre paréntesis. (2) NODO: existe Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual... cuyo contenido es verbatim la frase afirmada; este nodo fue EXPUESTO al agente en el paso 7 (verificado con ver_paso_completo: aparece en resultados con resumen_propiedades 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'). Según la regla de soporte v2.4, el contenido expuesto en el output completo de buscar_nodos cuenta como soportado → NO es faithfulness. (3) FUENTE: leí TO_clasificacion_deudores_actual.pdf punto 7.2.1 y dice textualmente la misma frase → el claim es CORRECTO contra el PDF, no contradice → NO es noise_sensitivity por contenido_kg ni provenance_imprecisa (la provenance del nodo, 7.2, es correcta). C1a POR PATA: la pata 'cómo se vincula con la clasificación de deudores' tuvo su dato pertinente disponible y expuesto → no context_recall. C1b: el claim está soportado y es correcto; síntoma nominal noise_sensitivity, pero al ser fiel Y pertinente el árbol lleva a sin_defecto. Verifiqué un matiz posible de aplicacion_erronea: la definición 'atrasos ≤31 días' es de la cartera de consumo (7.2.1), mientras que la cartera comercial (6.5.1) clasifica por flujo de fondos; sin embargo la regla de deducción del punto 2.3 cita EXPLÍCITAMENTE ambos puntos 6.5.1 y 7.2.1, el claim del agente es genérico sobre 'situación normal' y reproduce literalmente el texto del PDF 7.2.1 — no hay des-alcance que vuelva incorrecta la respuesta. Descarté además contenido_kg (coincide con PDF), completitud_kg (el dato está), estructural_kg (no aplica), alcanzabilidad_kg/navegación (el agente SÍ alcanzó el nodo en paso 7), alucinacion_agente (el dato está soportado por su trayectoria). Conclusión: el claim es fácticamente correcto, soportado y pertinente; el 'no_soportado' del juez es un FALSO POSITIVO. Atribución de último recurso sin_defecto, jerarquía sin_par (un FP del juez no es defecto del sistema). No hay primaria porque no existe defecto que explique la reprobación.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 9,
+    "max_tool_calls": 40,
+    "tokens_in": 242592,
+    "tokens_out": 6113
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 9,
+    "tokens_in": 242592,
+    "tokens_out": 6113,
+    "latency_s": 91.291,
+    "error": null,
+    "final_raw": "Tengo toda la evidencia necesaria. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital riesgo crédito previsión incobrabilidad\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de cálculo de exigencia de capital por riesgo de crédito\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"previsión incobrabilidad deducción activos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve Restriccion_limite_de_deduccion_de_prevision_normal con la regla de la pata central\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"clasificación deudores previsión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"TO Clasificación de Deudores y nodos de clasificación\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_de_deduccion_de_prevision_normal\\\"}\", \"devolvio\": \"Contenido de la regla: sin deducir el 100% de la previsión de deudores 'en situación normal' (puntos 6.5.1 y 7.2.1) y garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\\\"}\", \"devolvio\": \"Nodo tipo cálculo, poco contenido\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_de_deduccion_de_prevision_normal\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Vecinos: establecida_en Capitales Mínimos; limita Cómputo de conceptos\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores situación normal previsión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Expone Restriccion_comprende_los_clientes... con la definición completa de situación normal (atrasos ≤31 días) en el resumen_propiedades\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"garantías preferidas A previsión deducción\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos sobre garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_computo\\\"}\", \"devolvio\": \"Definición del cómputo de conceptos en base mensual\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente encontró y consultó los nodos pertinentes a ambas patas: la regla de no deducción (Restriccion_limite_de_deduccion_de_prevision_normal, pasos 2 y 4) y el vínculo con la clasificación de deudores. Además, en el paso 7 el output de buscar_nodos EXPUSO el nodo Restriccion_comprende_los_clientes... con su descripción completa ('atrasos que no superan los 31 días'), que es exactamente el claim marcado incorrecto. El agente reprodujo un dato soportado por su trayectoria y verificado como correcto contra el PDF (punto 7.2.1). Actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la clasificación de un deudor como 'en situación normal' (que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días)\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"ubicacion\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (expuesto en resumen_propiedades del paso 7)\"},\n        \"fuente\": {\"quote\": \"7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.2. Niveles de clasificación (7.2.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"situación normal capacidad de pago comercial flujo de fondos\", \"resultado\": \"Confirma que la cartera comercial (6.5.1) usa criterio de flujo de fondos/capacidad de pago; el criterio de 'atrasos ≤31 días' corresponde a la cartera de consumo (7.2.1). El nodo de deducción cita AMBOS puntos, por lo que la definición literal de 7.2.1 es válida como respuesta genérica.\"},\n        {\"consulta\": \"TO_capitales_minimos_actual.pdf Punto 2.3 (leer_pasaje_pdf)\", \"resultado\": \"El punto 2.3 cita textualmente 'puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores', confirmando que 7.2.1 es fuente válida de la definición de 'situación normal' invocada por la regla.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único claim marcado incorrecto por el juez ('no_soportado') es la definición: 'situación normal comprende clientes que atienden puntualmente el pago o con atrasos que no superan los 31 días'. FASE B — cruce de las tres fuentes: (1) AFIRMACIÓN: aparece en la respuesta final como glosa entre paréntesis. (2) NODO: existe Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual... cuyo contenido es verbatim la frase afirmada; este nodo fue EXPUESTO al agente en el paso 7 (verificado con ver_paso_completo: aparece en resultados con resumen_propiedades 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'). Según la regla de soporte v2.4, el contenido expuesto en el output completo de buscar_nodos cuenta como soportado → NO es faithfulness. (3) FUENTE: leí TO_clasificacion_deudores_actual.pdf punto 7.2.1 y dice textualmente la misma frase → el claim es CORRECTO contra el PDF, no contradice → NO es noise_sensitivity por contenido_kg ni provenance_imprecisa (la provenance del nodo, 7.2, es correcta). C1a POR PATA: la pata 'cómo se vincula con la clasificación de deudores' tuvo su dato pertinente disponible y expuesto → no context_recall. C1b: el claim está soportado y es correcto; síntoma nominal noise_sensitivity, pero al ser fiel Y pertinente el árbol lleva a sin_defecto. Verifiqué un matiz posible de aplicacion_erronea: la definición 'atrasos ≤31 días' es de la cartera de consumo (7.2.1), mientras que la cartera comercial (6.5.1) clasifica por flujo de fondos; sin embargo la regla de deducción del punto 2.3 cita EXPLÍCITAMENTE ambos puntos 6.5.1 y 7.2.1, el claim del agente es genérico sobre 'situación normal' y reproduce literalmente el texto del PDF 7.2.1 — no hay des-alcance que vuelva incorrecta la respuesta. Descarté además contenido_kg (coincide con PDF), completitud_kg (el dato está), estructural_kg (no aplica), alcanzabilidad_kg/navegación (el agente SÍ alcanzó el nodo en paso 7), alucinacion_agente (el dato está soportado por su trayectoria). Conclusión: el claim es fácticamente correcto, soportado y pertinente; el 'no_soportado' del juez es un FALSO POSITIVO. Atribución de último recurso sin_defecto, jerarquía sin_par (un FP del juez no es defecto del sistema). No hay primaria porque no existe defecto que explique la reprobación.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"properties\": {\"descripcion\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"31 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 7
+      },
+      "output_truncado": "{\"paso\": 7, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"deudores situación normal previsión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"deudores situación normal previsión\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"Restriccion_los_deudores_que_hayan_cancelado_la_totalidad_de_los_intereses_devengados_podran\", \"type\": \"Restriccion\", \"label\": \"Cancelación de intereses para situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los deudores que hayan cancelado la totalidad de los intereses devengados, podrán ser clasificados en 'situación normal' si además observan las otras condicione…\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Operacion_estado_de_situacion_de_deudores\", \"type\": \"Operacion\", \"label\": \"Estado de situación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Estado de situación de deudores referenciado en punto 6.1. y 6.2.\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\":… [+2162 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.2 (PDF pág 35)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado e… [+436 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=-76 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5. Niveles de clasificación"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumplimiento de … [+420 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5. Niveles de clasificación (parte 2)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpli… [+430 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "situación normal capacidad de pago comercial flujo de fondos",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"situación normal capacidad de pago comercial flujo de fondos\", \"total_con_match\": 2450, \"resultados\": [{\"id\": \"Obligacion_para_clasificacion_en_situacion_normal_el_analisis_del_flujo_de_fondos_del_clien\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación financiera normal\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Para clasificación en situación normal: El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financ…\"}, {\"id\": \"Operacion_analisis_de_capacidad_de_pago\", \"type\": \"Operacion\", \"label\": \"Análisis de flujo de fondos del deudor\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"tipo: análisis de capacidad de pago\"}, {\"id\": \"Restriccion_presente_una_situacion_financiera_iliquida_y_un_nivel_de_flujo_de_fondos_que_no_\", \"type\": \"Restriccion\", \"label\": \"Situación financiera ilíquida\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Presente una situación financiera ilíquida y un nivel de flujo de fondos que no le permita atender el pago de la totalidad del capital y de los intereses de las…\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"t… [+1449 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.3. Cómputo de los conceptos comprendidos."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3. Cómputo de los conceptos comprendidos.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 10)\", \"pasaje\": \"2.3. Cómputo de los conceptos comprendidos.\\n2.3.1. Bases individual y consolidada mensual.\\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\\nencuentran cubiertas con garantías preferidas A).\\n2.3.2. Base consolidada trimestral.\\nSe considerarán los saldos al cierre del… [+433 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"clasificación deudores previsión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"clasificación deudores previsión\", \"total_con_match\": 88, \"resultados\": [{\"id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Clasificación de Deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: clasificacion_deudores; archivo: TO_clasificacion_deudores_actual.pdf; version: vigente\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Obligacion_se_volcaran_en_un_manual_de_procedimientos_de_clasificacion_y_prevision_los_proc\", \"type\": \"Obligacion\", \"label\": \"Volcar procedimientos en Manual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se volcarán en un 'Manual de procedimientos de clasificación y previsión' los procedimientos implementados, los niveles que intervienen en el análisis y decisió…\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_d… [+2209 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25279,
+      "output_tokens": 262
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27285,
+      "output_tokens": 300
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28552,
+      "output_tokens": 358
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29593,
+      "output_tokens": 202
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30484,
+      "output_tokens": 593
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32250,
+      "output_tokens": 586
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33552,
+      "output_tokens": 561
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 35597,
+      "output_tokens": 3251
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 50,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-019",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exigencia capital riesgo crédito previsión incobrabilidad\", \"limite\": 10}",
+      "devolvio": "Operaciones de cálculo de exigencia; sin el nodo del límite todavía",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"previsión incobrabilidad deducción activos\", \"limite\": 10}",
+      "devolvio": "Restriccion_limite_de_deduccion_de_prevision_normal con el texto de la regla del 100%",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"clasificación deudores previsión\", \"limite\": 10}",
+      "devolvio": "TO Clasificación de Deudores y operaciones de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_limite_de_deduccion_de_prevision_normal\"}",
+      "devolvio": "Descripción íntegra del límite: no deducir 100% previsión cartera 'situación normal' (pts 6.5.1 y 7.2.1) ni garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\"}",
+      "devolvio": "Solo tipo; provenance apunta a 7.3",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Restriccion_limite_de_deduccion_de_prevision_normal\", \"direccion\": \"ambas\"}",
+      "devolvio": "establecida_en Capitales Mínimos; limita Cómputo de conceptos",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"deudores situación normal previsión\", \"limite\": 10}",
+      "devolvio": "Restriccion_comprende_los_clientes...: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' (en resumen_propiedades)",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"garantías preferidas A previsión deducción\", \"limite\": 10}",
+      "devolvio": "Restricciones sobre garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Operacion_computo\"}",
+      "devolvio": "Cómputo de conceptos comprendidos sobre saldos mensuales",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente localizó y usó los nodos pertinentes a ambas patas. Para la glosa de 'situación normal' (atrasos que no superan 31 días), el nodo portador Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones apareció en el paso 7 con su texto completo en el resumen_propiedades, exponiendo al agente el contenido exacto que afirmó. El claim reproduce fielmente ese contenido, que a su vez coincide verbatim con el Punto 7.2.1 del TO Clasificación de Deudores. El agente actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La clasificación 'en situación normal' comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días",
+       "ubicacion": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (expuesto en resumen_propiedades del paso 7; confirmado con ver_nodo)"
+      },
+      "fuente": {
+       "quote": "7.2.1. Situación normal. \nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_nodo Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones",
+       "resultado": "Nodo existe, tipo limite_cuantitativo, umbral '31 días', provenance Punto 7.2 del TO Clasificación de Deudores; contenido idéntico al claim"
+      },
+      {
+       "consulta": "ver_paso_completo paso 7",
+       "resultado": "El resumen_propiedades del nodo en la lista de resultados expone verbatim 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — el agente vio el texto completo"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 7.2.1 TO_clasificacion_deudores",
+       "resultado": "El PDF confirma la definición exacta de situación normal con atrasos que no superan 31 días"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El único claim marcado incorrecto por el juez es la glosa 'situación normal' comprende clientes con atrasos que no superan 31 días, calificada 'no_soportado'. C1a — la pata que cubre ('cómo se vincula con la clasificación de deudores') tuvo su dato pertinente presente en la trayectoria: en el paso 7 buscar_nodos devolvió Restriccion_comprende_los_clientes... cuyo resumen_propiedades exponía verbatim el texto del claim. Según v2.3/v2.4 el soporte se evalúa contra TODO el contenido expuesto en los outputs completos, incluidos los resumen_propiedades de buscar_nodos; por tanto el claim SÍ está soportado por lo consultado → no es faithfulness ni context_recall. C1b — como está soportado, aplica noise_sensitivity: ¿es correcto contra el PDF? Sí: el Punto 7.2.1 del TO Clasificación de Deudores dice literalmente 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'. C2 — el nodo que lo soporta es fiel al PDF (coincidencia verbatim), su provenance (Punto 7.2) funda su contenido (no es provenance_imprecisa), y es pertinente a la pata (define la clasificación 'situación normal' que la pata pide vincular). Descarto: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato está en el grafo y apareció en la trayectoria), estructural_kg (la vinculación 6.5.1/7.2.1 está en el nodo del límite y el nodo definitorio existe), alucinacion_agente (el dato está en grafo y PDF, no es glosa propia), navegación (el nodo fue alcanzado). Por eliminación documentada de cada defecto, el claim es correcto y soportado: se trata de un falso positivo del juez → sin_defecto, jerarquía sin_par. No hay primaria porque el defecto que 'explica' la reprobación no existe: el claim reprobado en realidad es correcto.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 142753,
+    "tokens_out": 4940
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 142753,
+    "tokens_out": 4940,
+    "latency_s": 65.214,
+    "error": null,
+    "final_raw": "Todo verificado. El punto 2.3 confirma las patas centrales aprobadas, y remite explícitamente a los puntos 6.5.1 y 7.2.1 del TO Clasificación de Deudores. El punto 7.2.1 define \"situación normal\" con los 31 días de atraso, exactamente como afirma el claim marcado no_soportado.\n\nConclusión: el único claim marcado incorrecto es un falso positivo del juez. Tiene soporte (nodo fiel expuesto en el paso 7) y es correcto contra el PDF.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exigencia capital riesgo crédito previsión incobrabilidad\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Operaciones de cálculo de exigencia; sin el nodo del límite todavía\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"previsión incobrabilidad deducción activos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restriccion_limite_de_deduccion_de_prevision_normal con el texto de la regla del 100%\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"clasificación deudores previsión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"TO Clasificación de Deudores y operaciones de clasificación\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_de_deduccion_de_prevision_normal\\\"}\", \"devolvio\": \"Descripción íntegra del límite: no deducir 100% previsión cartera 'situación normal' (pts 6.5.1 y 7.2.1) ni garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\\\"}\", \"devolvio\": \"Solo tipo; provenance apunta a 7.3\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Restriccion_limite_de_deduccion_de_prevision_normal\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"establecida_en Capitales Mínimos; limita Cómputo de conceptos\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores situación normal previsión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restriccion_comprende_los_clientes...: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' (en resumen_propiedades)\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"garantías preferidas A previsión deducción\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restricciones sobre garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Operacion_computo\\\"}\", \"devolvio\": \"Cómputo de conceptos comprendidos sobre saldos mensuales\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó y usó los nodos pertinentes a ambas patas. Para la glosa de 'situación normal' (atrasos que no superan 31 días), el nodo portador Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones apareció en el paso 7 con su texto completo en el resumen_propiedades, exponiendo al agente el contenido exacto que afirmó. El claim reproduce fielmente ese contenido, que a su vez coincide verbatim con el Punto 7.2.1 del TO Clasificación de Deudores. El agente actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La clasificación 'en situación normal' comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"ubicacion\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (expuesto en resumen_propiedades del paso 7; confirmado con ver_nodo)\"},\n        \"fuente\": {\"quote\": \"7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_nodo Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"resultado\": \"Nodo existe, tipo limite_cuantitativo, umbral '31 días', provenance Punto 7.2 del TO Clasificación de Deudores; contenido idéntico al claim\"},\n        {\"consulta\": \"ver_paso_completo paso 7\", \"resultado\": \"El resumen_propiedades del nodo en la lista de resultados expone verbatim 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — el agente vio el texto completo\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 7.2.1 TO_clasificacion_deudores\", \"resultado\": \"El PDF confirma la definición exacta de situación normal con atrasos que no superan 31 días\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único claim marcado incorrecto por el juez es la glosa 'situación normal' comprende clientes con atrasos que no superan 31 días, calificada 'no_soportado'. C1a — la pata que cubre ('cómo se vincula con la clasificación de deudores') tuvo su dato pertinente presente en la trayectoria: en el paso 7 buscar_nodos devolvió Restriccion_comprende_los_clientes... cuyo resumen_propiedades exponía verbatim el texto del claim. Según v2.3/v2.4 el soporte se evalúa contra TODO el contenido expuesto en los outputs completos, incluidos los resumen_propiedades de buscar_nodos; por tanto el claim SÍ está soportado por lo consultado → no es faithfulness ni context_recall. C1b — como está soportado, aplica noise_sensitivity: ¿es correcto contra el PDF? Sí: el Punto 7.2.1 del TO Clasificación de Deudores dice literalmente 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'. C2 — el nodo que lo soporta es fiel al PDF (coincidencia verbatim), su provenance (Punto 7.2) funda su contenido (no es provenance_imprecisa), y es pertinente a la pata (define la clasificación 'situación normal' que la pata pide vincular). Descarto: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato está en el grafo y apareció en la trayectoria), estructural_kg (la vinculación 6.5.1/7.2.1 está en el nodo del límite y el nodo definitorio existe), alucinacion_agente (el dato está en grafo y PDF, no es glosa propia), navegación (el nodo fue alcanzado). Por eliminación documentada de cada defecto, el claim es correcto y soportado: se trata de un falso positivo del juez → sin_defecto, jerarquía sin_par. No hay primaria porque el defecto que 'explica' la reprobación no existe: el claim reprobado en realidad es correcto.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"properties\": {\"descripcion\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"31 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 7
+      },
+      "output_truncado": "{\"paso\": 7, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"deudores situación normal previsión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"deudores situación normal previsión\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"Restriccion_los_deudores_que_hayan_cancelado_la_totalidad_de_los_intereses_devengados_podran\", \"type\": \"Restriccion\", \"label\": \"Cancelación de intereses para situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los deudores que hayan cancelado la totalidad de los intereses devengados, podrán ser clasificados en 'situación normal' si además observan las otras condicione…\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Operacion_estado_de_situacion_de_deudores\", \"type\": \"Operacion\", \"label\": \"Estado de situación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Estado de situación de deudores referenciado en punto 6.1. y 6.2.\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\":… [+2162 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.2 (PDF pág 35)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado e… [+436 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=-76 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.2.1 (PDF pág 35)\", \"pasaje\": \"7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado en este nivel. \\nLos deudores que hayan refinanciado sus deudas, au… [+402 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.3. Cómputo de los conceptos comprendidos."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3. Cómputo de los conceptos comprendidos.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 10)\", \"pasaje\": \"2.3. Cómputo de los conceptos comprendidos.\\n2.3.1. Bases individual y consolidada mensual.\\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\\nencuentran cubiertas con garantías preferidas A).\\n2.3.2. Base consolidada trimestral.\\nSe considerarán los saldos al cierre del… [+433 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25279,
+      "output_tokens": 417
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27440,
+      "output_tokens": 316
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28723,
+      "output_tokens": 770
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30161,
+      "output_tokens": 273
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 31150,
+      "output_tokens": 3164
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 50,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-019",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'exigencia capital riesgo crédito previsión incobrabilidad', limite: 10}",
+      "devolvio": "Operaciones de cálculo de exigencia por riesgo de crédito; sin el nodo del límite de deducción todavía",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'previsión incobrabilidad deducción activos', limite: 10}",
+      "devolvio": "Restriccion_limite_de_deduccion_de_prevision_normal (el nodo clave de las patas centrales)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'clasificación deudores previsión', limite: 10}",
+      "devolvio": "TO Clasificación de Deudores y operaciones de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_limite_de_deduccion_de_prevision_normal'}",
+      "devolvio": "Contenido íntegro: no deducir 100% previsión cartera 'situación normal' (puntos 6.5.1 y 7.2.1 TO Clasif. Deudores) ni financiaciones con garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}",
+      "devolvio": "Nodo genérico de tipo cálculo, poca info",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Restriccion_limite_de_deduccion_de_prevision_normal', direccion: 'ambas'}",
+      "devolvio": "establecida_en Capitales Mínimos; limita Operacion_computo",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'deudores situación normal previsión', limite: 10}",
+      "devolvio": "Restriccion 'Límite de atraso en situación normal' con resumen: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'garantías preferidas A previsión deducción', limite: 10}",
+      "devolvio": "Restricciones sobre garantías preferidas A",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_computo'}",
+      "devolvio": "Cómputo de conceptos sobre saldos al último día de cada mes",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente localizó el nodo portador de las patas centrales (paso 2/4) y, para la glosa sobre 'situación normal', expuso en el paso 7 el nodo 'Restriccion_comprende_los_clientes_que_atienden...' cuyo resumen dice verbatim 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'. La glosa que emitió reproduce ese contenido, que además es fiel al PDF (Punto 7.2.1). El agente actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores (glosa sobre 'situación normal')",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "la clasificación de un deudor como 'en situación normal' (que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días)",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días",
+       "ubicacion": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (label 'Límite de atraso en situación normal'; expuesto en paso 7)"
+      },
+      "fuente": {
+       "quote": "7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_paso_completo(7)",
+       "resultado": "El nodo 'Límite de atraso en situación normal' figura entre los resultados con su resumen íntegro 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — es decir, el contenido de la glosa estuvo EXPUESTO al agente en su trayectoria."
+      },
+      {
+       "consulta": "ver_nodo del nodo portador",
+       "resultado": "Confirma descripcion, tipo limite_cuantitativo, umbral '31 días', provenance TO_clasificacion_deudores_actual.pdf Punto 7.2 (Situación normal) — provenance correcta"
+      },
+      {
+       "consulta": "leer_pasaje_pdf TO_clasificacion_deudores Punto 7.2",
+       "resultado": "El PDF dice verbatim lo mismo: '7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.' — la glosa es correcta y fiel"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La única afirmación reprobada por el juez es la glosa no-central: 'La clasificación en situación normal comprende clientes que atienden puntualmente el pago o con atrasos que no superan los 31 días', marcada como no_soportado. C1a (por pata): el dato pertinente a esa glosa SÍ apareció en la trayectoria — en el paso 7 (verificado con ver_paso_completo) el resultado de buscar_nodos expuso el nodo 'Restriccion_comprende_los_clientes_que_atienden...' con su resumen íntegro coincidente verbatim con la glosa. No es context_recall. C1b (por claim): el claim está SOPORTADO por ese nodo expuesto (v2.3: el soporte se evalúa contra el contenido expuesto, incluidos los resúmenes de buscar_nodos) → el síntoma es noise_sensitivity, no faithfulness. C2: ¿el nodo es fiel al PDF? Leí el Punto 7.2 del TO Clasificación de Deudores y confirma verbatim el contenido (7.2.1 Situación normal = puntual o atrasos ≤ 31 días); la provenance del nodo (Punto 7.2, Situación normal) es correcta, no imprecisa. Descarté contenido_kg (el nodo NO contradice el PDF, lo reproduce fielmente), provenance_imprecisa (la cita funda el contenido), aplicacion_erronea (no es contenido de otro alcance: es exactamente la definición de 'situación normal' que la pata usa), y alucinacion_agente (el agente no inventó: reprodujo un nodo consultado fiel al PDF). El claim es fácticamente cierto, soportado por un nodo consultado y correcto contra el PDF/GT. Por lo tanto la marca 'no_soportado' del juez es un FALSO POSITIVO → sin_defecto, jerarquia sin_par. Como TODAS las afirmaciones fallidas resultan FP del juez y las patas centrales fueron aprobadas, el caso no tiene primaria: no hay defecto del sistema que explique la reprobación.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 5,
+    "max_tool_calls": 40,
+    "tokens_in": 110179,
+    "tokens_out": 4019
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 5,
+    "tokens_in": 110179,
+    "tokens_out": 4019,
+    "latency_s": 51.514,
+    "error": null,
+    "final_raw": "Tengo evidencia suficiente. La única afirmación reprobada es la glosa \"atrasos que no superan los 31 días\", que:\n- Apareció en la trayectoria (paso 7, resumen visible del nodo).\n- Está soportada por un nodo consultado.\n- Es correcta y fiel al PDF (Punto 7.2.1, verbatim).\n\nEs un falso positivo del juez → sin_defecto.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'exigencia capital riesgo crédito previsión incobrabilidad', limite: 10}\", \"devolvio\": \"Operaciones de cálculo de exigencia por riesgo de crédito; sin el nodo del límite de deducción todavía\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'previsión incobrabilidad deducción activos', limite: 10}\", \"devolvio\": \"Restriccion_limite_de_deduccion_de_prevision_normal (el nodo clave de las patas centrales)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores previsión', limite: 10}\", \"devolvio\": \"TO Clasificación de Deudores y operaciones de clasificación\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_limite_de_deduccion_de_prevision_normal'}\", \"devolvio\": \"Contenido íntegro: no deducir 100% previsión cartera 'situación normal' (puntos 6.5.1 y 7.2.1 TO Clasif. Deudores) ni financiaciones con garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito'}\", \"devolvio\": \"Nodo genérico de tipo cálculo, poca info\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Restriccion_limite_de_deduccion_de_prevision_normal', direccion: 'ambas'}\", \"devolvio\": \"establecida_en Capitales Mínimos; limita Operacion_computo\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'deudores situación normal previsión', limite: 10}\", \"devolvio\": \"Restriccion 'Límite de atraso en situación normal' con resumen: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'garantías preferidas A previsión deducción', limite: 10}\", \"devolvio\": \"Restricciones sobre garantías preferidas A\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_computo'}\", \"devolvio\": \"Cómputo de conceptos sobre saldos al último día de cada mes\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó el nodo portador de las patas centrales (paso 2/4) y, para la glosa sobre 'situación normal', expuso en el paso 7 el nodo 'Restriccion_comprende_los_clientes_que_atienden...' cuyo resumen dice verbatim 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días'. La glosa que emitió reproduce ese contenido, que además es fiel al PDF (Punto 7.2.1). El agente actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores (glosa sobre 'situación normal')\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la clasificación de un deudor como 'en situación normal' (que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días)\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"ubicacion\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones (label 'Límite de atraso en situación normal'; expuesto en paso 7)\"},\n        \"fuente\": {\"quote\": \"7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_paso_completo(7)\", \"resultado\": \"El nodo 'Límite de atraso en situación normal' figura entre los resultados con su resumen íntegro 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — es decir, el contenido de la glosa estuvo EXPUESTO al agente en su trayectoria.\"},\n        {\"consulta\": \"ver_nodo del nodo portador\", \"resultado\": \"Confirma descripcion, tipo limite_cuantitativo, umbral '31 días', provenance TO_clasificacion_deudores_actual.pdf Punto 7.2 (Situación normal) — provenance correcta\"},\n        {\"consulta\": \"leer_pasaje_pdf TO_clasificacion_deudores Punto 7.2\", \"resultado\": \"El PDF dice verbatim lo mismo: '7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.' — la glosa es correcta y fiel\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La única afirmación reprobada por el juez es la glosa no-central: 'La clasificación en situación normal comprende clientes que atienden puntualmente el pago o con atrasos que no superan los 31 días', marcada como no_soportado. C1a (por pata): el dato pertinente a esa glosa SÍ apareció en la trayectoria — en el paso 7 (verificado con ver_paso_completo) el resultado de buscar_nodos expuso el nodo 'Restriccion_comprende_los_clientes_que_atienden...' con su resumen íntegro coincidente verbatim con la glosa. No es context_recall. C1b (por claim): el claim está SOPORTADO por ese nodo expuesto (v2.3: el soporte se evalúa contra el contenido expuesto, incluidos los resúmenes de buscar_nodos) → el síntoma es noise_sensitivity, no faithfulness. C2: ¿el nodo es fiel al PDF? Leí el Punto 7.2 del TO Clasificación de Deudores y confirma verbatim el contenido (7.2.1 Situación normal = puntual o atrasos ≤ 31 días); la provenance del nodo (Punto 7.2, Situación normal) es correcta, no imprecisa. Descarté contenido_kg (el nodo NO contradice el PDF, lo reproduce fielmente), provenance_imprecisa (la cita funda el contenido), aplicacion_erronea (no es contenido de otro alcance: es exactamente la definición de 'situación normal' que la pata usa), y alucinacion_agente (el agente no inventó: reprodujo un nodo consultado fiel al PDF). El claim es fácticamente cierto, soportado por un nodo consultado y correcto contra el PDF/GT. Por lo tanto la marca 'no_soportado' del juez es un FALSO POSITIVO → sin_defecto, jerarquia sin_par. Como TODAS las afirmaciones fallidas resultan FP del juez y las patas centrales fueron aprobadas, el caso no tiene primaria: no hay defecto del sistema que explique la reprobación.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 7
+      },
+      "output_truncado": "{\"paso\": 7, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"deudores situación normal previsión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"deudores situación normal previsión\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"Restriccion_los_deudores_que_hayan_cancelado_la_totalidad_de_los_intereses_devengados_podran\", \"type\": \"Restriccion\", \"label\": \"Cancelación de intereses para situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los deudores que hayan cancelado la totalidad de los intereses devengados, podrán ser clasificados en 'situación normal' si además observan las otras condicione…\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Operacion_estado_de_situacion_de_deudores\", \"type\": \"Operacion\", \"label\": \"Estado de situación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Estado de situación de deudores referenciado en punto 6.1. y 6.2.\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\":… [+2162 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_comprende_los_clientes_que_atienden_en_forma_puntual_el_pago_de_sus_obligaciones\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en situación normal\", \"properties\": {\"descripcion\": \"Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"31 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.2 (PDF pág 35)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado en este nivel. \\nLos deudores que haya… [+399 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=-76 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limite_de_deduccion_de_prevision_normal"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limite_de_deduccion_de_prevision_normal\", \"type\": \"Restriccion\", \"label\": \"Límite de deducción de previsión normal\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A).\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3. Cómputo de los conceptos comprendidos.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25279,
+      "output_tokens": 225
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27248,
+      "output_tokens": 313
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28511,
+      "output_tokens": 354
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 29141,
+      "output_tokens": 3127
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 50,
+     "n_claims_fallidos": 1,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}

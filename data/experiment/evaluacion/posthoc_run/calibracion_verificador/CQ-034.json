@@ -1,0 +1,111 @@
+{
+  "id_falla": "run_3/CQ-034",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "sin_defecto",
+      "lado": "ninguno",
+      "jerarquia": "primaria",
+      "pata": "límite efectivo / débito en cuenta / otras modalidades",
+      "evidencia": {
+        "afirmacion": "El agente respondió que con efectivo el límite es USD 100/mes calendario, y declaró que el grafo no contiene un límite mensual diferenciado para débito en cuenta ni un límite general para otras modalidades de formación de activos externos (respondible=False).",
+        "nodo": "Restriccion_limite_mensual_de_compra_en_efectivo ('Si el cliente utiliza efectivo el monto comprado... no supere el equivalente a USD 100 en el mes calendario...') y Obligacion_cursar_operacion_con_debito_en_cuenta ('La operación se curse con débito en cuenta del cliente en entidades financieras locales.') — ambos provenance Punto 3.8. No existe en el grafo ningún nodo con límite mensual diferenciado para débito en cuenta ni un 'límite general para otras modalidades' ligado al atesoramiento; los USD 200 hallados son de adelantos de tarjetas (concepto ajeno).",
+        "fuente": "Punto 3.8 del TO (Com. 'A' 8307, vigencia 26/08/2025) leído íntegro: requisitos 3.8.1 'La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado... no supere el equivalente a USD 100... en el mes calendario...'. El PDF vigente NO contempla un tope cuantitativo mensual con débito en cuenta (no hay límite numérico para esa modalidad) ni un 'límite general para otras modalidades'. La premisa de la pregunta corresponde a versiones anteriores de la norma (cuando existía un tope mensual con débito), no a la vigente."
+      }
+    }
+  ],
+  "razonamiento": "Empecé por la fuente: leí el Punto 3.8 completo del PDF vigente. Establece que la operación se cursa con débito en cuenta y que SI se usa efectivo el tope es USD 100/mes; no hay un límite cuantitativo mensual diferenciado para débito en cuenta ni un 'límite general para otras modalidades de formación de activos externos'. Verifiqué que el grafo refleja fielmente esto (nodo de efectivo USD 100 + obligación de débito en cuenta, ambos con provenance Punto 3.8) y que NO existe en el grafo ningún nodo con un límite tipo USD 200/USD 300 mensual asociado al atesoramiento (los USD 200 son de adelantos de tarjetas, otro concepto). El agente reportó el USD 100 correctamente y declaró honestamente que el resto no está disponible. Como el TO vigente tampoco contiene la información que la pregunta presupone, no hay completitud_kg ni contenido_kg (el grafo coincide con el PDF), ni navegación (el agente buscó exhaustivamente débito/USD 300/USD 200), ni generación-de-más (no inventó). La pregunta CQ-034 asume una estructura normativa de una versión derogada; contra la fuente vigente la respuesta del agente es correcta y su negativa parcial está justificada. Por tanto es un falso positivo del juez.",
+  "confianza": "alta",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 6,
+    "tokens_in": 87991,
+    "tokens_out": 2996,
+    "latency_s": 51.788,
+    "error": null,
+    "final_raw": "Confirmado. No existe en el grafo ningún nodo con un límite mensual diferenciado para débito en cuenta vinculado al atesoramiento (Punto 3.8), ni un \"límite general para otras modalidades\". Los únicos USD 200 que aparecen son de adelantos en efectivo de tarjetas (concepto distinto). El TO vigente tampoco contiene esa información — el Punto 3.8 que leí íntegro solo distingue: débito en cuenta (sin tope cuantitativo mensual) vs. efectivo (USD 100/mes).\n\nConclusión: la respuesta del agente es **fiel a la fuente vigente**. Reportó correctamente el límite de USD 100 para efectivo y declaró honestamente que el grafo no contiene un límite diferenciado para débito en cuenta ni un límite general para otras modalidades — **porque esa información no existe en el TO vigente**. La pregunta CQ-034 presupone una estructura normativa que corresponde a versiones anteriores (cuando existía un límite de USD 200/USD 300 mensual con débito en cuenta), no a la vigente (Com. \"A\" 8307).\n\nEl juez marcó la respuesta como incorrecta probablemente esperando los valores de una versión derogada. Pero contra la fuente actual del grafo, la respuesta es correcta y la negativa parcial está justificada. No hay defecto del grafo (el grafo refleja fielmente el PDF vigente) ni del agente (navegó adecuadamente y no inventó nada). Es un falso positivo del juez basado en una premisa desactualizada de la pregunta.\n\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"límite efectivo / débito en cuenta / otras modalidades\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente respondió que con efectivo el límite es USD 100/mes calendario, y declaró que el grafo no contiene un límite mensual diferenciado para débito en cuenta ni un límite general para otras modalidades de formación de activos externos (respondible=False).\",\n        \"nodo\": \"Restriccion_limite_mensual_de_compra_en_efectivo ('Si el cliente utiliza efectivo el monto comprado... no supere el equivalente a USD 100 en el mes calendario...') y Obligacion_cursar_operacion_con_debito_en_cuenta ('La operación se curse con débito en cuenta del cliente en entidades financieras locales.') — ambos provenance Punto 3.8. No existe en el grafo ningún nodo con límite mensual diferenciado para débito en cuenta ni un 'límite general para otras modalidades' ligado al atesoramiento; los USD 200 hallados son de adelantos de tarjetas (concepto ajeno).\",\n        \"fuente\": \"Punto 3.8 del TO (Com. 'A' 8307, vigencia 26/08/2025) leído íntegro: requisitos 3.8.1 'La operación se curse con débito en cuenta del cliente en entidades financieras locales. Si el cliente utiliza efectivo el monto comprado... no supere el equivalente a USD 100... en el mes calendario...'. El PDF vigente NO contempla un tope cuantitativo mensual con débito en cuenta (no hay límite numérico para esa modalidad) ni un 'límite general para otras modalidades'. La premisa de la pregunta corresponde a versiones anteriores de la norma (cuando existía un tope mensual con débito), no a la vigente.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"Empecé por la fuente: leí el Punto 3.8 completo del PDF vigente. Establece que la operación se cursa con débito en cuenta y que SI se usa efectivo el tope es USD 100/mes; no hay un límite cuantitativo mensual diferenciado para débito en cuenta ni un 'límite general para otras modalidades de formación de activos externos'. Verifiqué que el grafo refleja fielmente esto (nodo de efectivo USD 100 + obligación de débito en cuenta, ambos con provenance Punto 3.8) y que NO existe en el grafo ningún nodo con un límite tipo USD 200/USD 300 mensual asociado al atesoramiento (los USD 200 son de adelantos de tarjetas, otro concepto). El agente reportó el USD 100 correctamente y declaró honestamente que el resto no está disponible. Como el TO vigente tampoco contiene la información que la pregunta presupone, no hay completitud_kg ni contenido_kg (el grafo coincide con el PDF), ni navegación (el agente buscó exhaustivamente débito/USD 300/USD 200), ni generación-de-más (no inventó). La pregunta CQ-034 asume una estructura normativa de una versión derogada; contra la fuente vigente la respuesta del agente es correcta y su negativa parcial está justificada. Por tanto es un falso positivo del juez.\",\n  \"confianza\": \"alta\"\n}",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.8"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "débito en cuenta USD 200 límite mensual atesoramiento formación activos externos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"débito en cuenta USD 200 límite mensual atesoramiento formación activos externos\", \"total_con_match\": 1035, \"resultados\": [{\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Aquéllas que en cualquiera de los días de un mes registren activos (suma de las posiciones compradas y vendidas de los activos comprendidos) que en conjunto sup…\"}, {\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_en_la_relacion_de_activos_inmovilizados_y_otros_conceptos_seccion_4_del_respecti\", \"type\": \"Restriccion\", \"label\": \"Límite de activos inmovilizados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"en la relación de activos inmovilizados y otros conceptos (Sección 4. del respectivo TO), excluidos los computados para la determinación del INC(inversiones sig…\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activo… [+2338 chars]"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.10"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.10 (PDF pág 2)\", \"pasaje\": \"3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las \\nentidades– para la formación de activos externos y por operaciones con \\nderivados. \\n3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+      },
+      {
+        "n": 4,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.11"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.11\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.11 (PDF pág 2)\", \"pasaje\": \"3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+      },
+      {
+        "n": 5,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Restriccion_limite_mensual_de_compra_en_efectivo",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_limite_mensual_de_compra_en_efectivo\", \"label\": \"Límite mensual de compra en efectivo\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8. Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8. Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_compra_de_moneda_extranjera\", \"vecino_label\": \"Compra de moneda extranjera\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8. Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "límite USD 200 débito cuenta atesoramiento general otras modalidades",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"límite USD 200 débito cuenta atesoramiento general otras modalidades\", \"total_con_match\": 252, \"resultados\": [{\"id\": \"Restriccion_el_limite_se_incrementa_a_usd_200_por_operacion_por_los_retiros_de_efectivo_que_\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El límite se incrementa a USD 200 por operación por los retiros de efectivo que se realicen en países no limítrofes\"}, {\"id\": \"Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general_11_o_7_en\", \"type\": \"Restriccion\", \"label\": \"Límite reducción exigencia Grupo B\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Límite de reducción para entidades del Grupo B: 17% en condición general, 11% o 7% en condiciones especiales según calificación\"}, {\"id\": \"Restriccion_limite_de_reduccion_para_entidades_del_grupo_c_14_en_condicion_general_8_o_5_en_\", \"type\": \"Restriccion\", \"label\": \"Límite reducción exigencia Grupo C\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Límite de reducción para entidades del Grupo C: 14% en condición general, 8% o 5% en condiciones especiales según calificación\"}, {\"id\": \"Restriccion_las_entidad… [+2527 chars]"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 18824,
+        "output_tokens": 246
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 21324,
+        "output_tokens": 469
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 22549,
+        "output_tokens": 536
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 25294,
+        "output_tokens": 1745
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 58,
+      "n_claims_fallidos": 0,
+      "categoria": "cadena_restriccion_excepcion"
+    }
+  }
+}

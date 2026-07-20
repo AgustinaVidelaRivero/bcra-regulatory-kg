@@ -1,0 +1,946 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-036",
+    "run": "run_4",
+    "categoria": "unanswerable",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-036",
+      "question": "¿Qué porcentaje de previsión mínima por riesgo de incobrabilidad debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "previsión mínima riesgo incobrabilidad irrecuperable",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"previsión mínima riesgo incobrabilidad irrecuperable\", \"total_con_match\": 151, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"riesgo_alto\",… [+1965 chars]",
+          "output_chars": 3165
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "categoría irrecuperable deudor porcentaje",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"categoría irrecuperable deudor porcentaje\", \"total_con_match\": 24, \"resultados\": [{\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus obligaciones, justificando acciones judiciales por parte del exportador.\"}, {\"id\": \"irrecuperable\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Irrecuperable\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año.\"}, {\"id\": \"categoria_1_de_bi\", \"type\": \"categoria_de_tamano\", \"label\": \"Categoría 1 de BI\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Tramo de BI igual o inferior al equivalente en pesos de €1.000 millones, con coeficiente marginal del 12%.\"}, {\"id\": \"categoria_2_de_bi\", \"type\": … [+1543 chars]",
+          "output_chars": 2743
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "irrecuperable"
+          },
+          "output_truncado": "{\"id\": \"irrecuperable\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Irrecuperable\", \"properties\": {\"description\": \"Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año.\", \"version\": \"vigente\", \"type_raw\": [\"Categoría de clasificación de deudores\"], \"type_raw_counts\": {\"Categoría de clasificación de deudores\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.36-38 / Sección 7.2.5\"}]}",
+          "output_chars": 555
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "irrecuperable",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"irrecuperable\", \"label\": \"Irrecuperable\", \"n_salientes_total\": 0, \"n_entrantes_total\": 4, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"permite_reclasificacion_a\", \"vecino_id\": \"riesgo_alto\", \"vecino_label\": \"Riesgo alto\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.36-38 / Sección 7.2.4\"}]}, {\"relation\": \"define_inclusion_en\", \"vecino_id\": \"atraso_superior_al_ano\", \"vecino_label\": \"Atraso superior al año\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.36-38 / Sección 7.2.5\"}]}, {\"relation\": \"genera_inclusion_en\", \"vecino_id\": \"insolvencia\", \"vecino_label\": \"Insolvencia\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.36-38 / Sección 7.2.5\"}]}, {\"relation\": \"genera_inclusion_en\", \"vecino_id\": \"atraso_de_mas_de_540_dias\", \"vecino_label\": \"Atraso de más de 540 días\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.36-38 / Sección 7.2.5\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 1075
+        },
+        {
+          "n": 5,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "previsión mínima 100 irrecuperable",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"previsión mínima 100 irrecuperable\", \"total_con_match\": 25, \"resultados\": [{\"id\": \"irrecuperable\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Irrecuperable\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año.\"}, {\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"}, {\"id\": \"limite_de_usd_100_000\", \"type\": \"umbral_regulatorio\", \"label\": \"Límite de USD 100.000\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Valor máximo acumulado pendiente de liquidación en año calendario para que sea válida la gestión de cobro sin llegar a gestión judicial.\"}, {\"id\": \"prevision_regulatoria\", \"type\": \"ajuste_de_capital\", \"label\": \"Previsión regulatoria\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Previsión según normas sobre Previsiones mínimas por riesgo de incobrabilidad, utilizada para comparación con previsión contable.\"}, {\"id\": \"ponderad… [+1690 chars]",
+          "output_chars": 2890
+        },
+        {
+          "n": 6,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "previsión específica irrecuperable porcentaje",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"previsión específica irrecuperable porcentaje\", \"total_con_match\": 16, \"resultados\": [{\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"}, {\"id\": \"exposicion_en_incumplimiento_con_prevision_especifica_menor_al_20\", \"type\": \"categoria_de_exposicion_crediticia\", \"label\": \"Exposición en incumplimiento con previsión específica menor al 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposición o tramo en situación de incumplimiento no cubierto por coberturas de riesgo de crédito, con previsiones específicas menores al 20% del saldo pendient…\"}, {\"id\": \"exposicion_en_incumplimiento_con_prevision_especifica_entre_20_y_50\", \"type\": \"categoria_de_exposicion_crediticia\", \"label\": \"Exposición en incumplimiento con previsión específica entre 20% y 50%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposición o tramo en situación de incumplimiento no cubierto por coberturas de riesgo de crédito, con previsiones específicas iguales o mayores al 20% y menore…\"}, {\"id\": … [+2169 chars]",
+          "output_chars": 3369
+        },
+        {
+          "n": 7,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "normas previsiones mínimas riesgo incobrabilidad categorías",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"normas previsiones mínimas riesgo incobrabilidad categorías\", \"total_con_match\": 137, \"resultados\": [{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"insuficiencia_de_previsiones_minimas\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Insuficiencia de previsiones mínimas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Insuficiencia de constitución de previsiones mínimas deducible del Capital Ordinario de Nivel 1.\"}, {\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"previsiones_por_riesgo_de_desvalorizacion\", \"type\": \"ajuste_regulatorio\", \"label\": \"Previsiones por… [+2168 chars]",
+          "output_chars": 3368
+        },
+        {
+          "n": 8,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "previsiones_por_riesgo_de_incobrabilidad"
+          },
+          "output_truncado": "{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos ponderados por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de patrimonio complementario\", \"Componente de Capital Regulatorio\", \"Componente de capital computable\", \"Concepto regulatorio\"], \"type_raw_counts\": {\"Componente de capital computable\": 1, \"Concepto regulatorio\": 1, \"Componente de patrimonio complementario\": 1, \"Componente de Capital Regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 4}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.28-30 / Punto 6.1.2, Código 26300000\"}, {\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.31-35 / Sección 6.2, código 26300000\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.164-166 / Puntos 8.4.1.12 y … [+12 chars]",
+          "output_chars": 1212
+        },
+        {
+          "n": 9,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "previsiones_por_riesgo_de_incobrabilidad",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"n_salientes_total\": 3, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"limitada_al_1_25_de\", \"vecino_id\": \"activos_ponderados_por_riesgo_de_credito\", \"vecino_label\": \"Activos ponderados por riesgo de crédito\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}]}, {\"relation\": \"aplica_a_financiaciones_cubiertas_con\", \"vecino_id\": \"garantias_preferidas_a\", \"vecino_label\": \"Garantías preferidas A\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}]}, {\"relation\": \"se_calcula_conforme_a\", \"vecino_id\": \"niif_9\", \"vecino_label\": \"NIIF 9\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.164-166 / Punto 8.4.1.12\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"incluye\", \"vecino_id\": \"conceptos_deducibles_del_capital_ordinario_de_nivel_uno\", \"vecino_label\": \"Conceptos deducibles del capital ordinario de nivel uno\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.28-30 / Punto… [+545 chars]",
+          "output_chars": 1745
+        },
+        {
+          "n": 10,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "previsión mínima 100% deudor irrecuperable",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"previsión mínima 100% deudor irrecuperable\", \"total_con_match\": 42, \"resultados\": [{\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus obligaciones, justificando acciones judiciales por parte del exportador.\"}, {\"id\": \"irrecuperable\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Irrecuperable\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comprende clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año.\"}, {\"id\": \"deudor_en_concurso\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor en concurso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor en concurso o con acuerdo preventivo extrajudicial solicitado o en gestión judicial de cobro que, por un período de hasta 540 días, no h… [+1650 chars]",
+          "output_chars": 2850
+        },
+        {
+          "n": 11,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "tabla previsiones mínimas categoría deudor porcentaje",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"tabla previsiones mínimas categoría deudor porcentaje\", \"total_con_match\": 28, \"resultados\": [{\"id\": \"insuficiencia_de_previsiones_minimas\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Insuficiencia de previsiones mínimas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Insuficiencia de constitución de previsiones mínimas deducible del Capital Ordinario de Nivel 1.\"}, {\"id\": \"insuficiencia_de_constitucion_de_previsiones_minimas\", \"type\": \"deduccion_de_capital\", \"label\": \"Insuficiencia de constitución de previsiones mínimas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Diferencias por insuficiencia de previsiones mínimas por riesgo de incobrabilidad determinadas por la Superintendencia, no contabilizadas al cierre del mes sigu…\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u… [+1700 chars]",
+          "output_chars": 2900
+        },
+        {
+          "n": 12,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "previsión mínima riesgo incobrabilidad 50 75 100",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"previsión mínima riesgo incobrabilidad 50 75 100\", \"total_con_match\": 158, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"exposicion_en_inc… [+2275 chars]",
+          "output_chars": 3475
+        },
+        {
+          "n": 13,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "prevision_por_riesgo_de_incobrabilidad"
+          },
+          "output_truncado": "{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según su asociación a posiciones de titulización o exposiciones subyacentes.\", \"version\": \"vigente\", \"type_raw\": [\"Cálculo regulatorio\", \"Proceso regulatorio\", \"Requisito de capital\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Requisito de capital\": 1, \"Cálculo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.6\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.11-13 / Punto 2.4, inciso v)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.36-38 / Punto 3.1.5.3\"}]}",
+          "output_chars": 937
+        },
+        {
+          "n": 14,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "prevision_por_riesgo_de_incobrabilidad",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"se_calcula_conforme_a\", \"vecino_id\": \"norma_internacional_de_informacion_financiera_9\", \"vecino_label\": \"Norma Internacional de Información Financiera 9\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.6\"}]}, {\"relation\": \"se_deduce_de\", \"vecino_id\": \"posicion_de_titulizacion\", \"vecino_label\": \"Posición de titulización\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.36-38 / Punto 3.1.5.3\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"debe_aprobar\", \"vecino_id\": \"directorio_o_consejo_de_administracion\", \"vecino_label\": \"Directorio o Consejo de Administración\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.6\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 986
+        },
+        {
+          "n": 15,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "clasificación deudores previsión mínima situación normal riesgo bajo medio alto irrecuperable",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"clasificación deudores previsión mínima situación normal riesgo bajo medio alto irrecuperable\", \"total_con_match\": 170, \"resultados\": [{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del…\"}, {\"id\": \"clasificacion_con_alto_riesgo_de_insolvencia\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Clasificación con alto riesgo de insolvencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de riesgo asignada a deudores cuyo análisis de flujo de fondos demuestra que es altamente improbable que puedan atender la totalidad de sus compromiso…\"}, {\"id\": \"riesgo_alto\", \"type\": \"categoria_de_clasificacion_de_deudores\", \"label\": \"Riesgo alto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Comprende clientes con atrasos de más de 180 días hasta un año, o en situaciones de concurso preventivo, acuerdo preventivo extrajudicial no homologado, o quieb…\"}, {\"id\": \"rie… [+2122 chars]",
+          "output_chars": 3322
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1482,
+          "output_tokens": 195,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 4.077
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3798,
+          "output_tokens": 154,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.735
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 181,
+          "cache_read": 0,
+          "cache_write": 4622,
+          "latency_s": 1.852
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 122,
+          "cache_read": 4622,
+          "cache_write": 2359,
+          "latency_s": 1.587
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 6,
+          "output_tokens": 173,
+          "cache_read": 6981,
+          "cache_write": 1271,
+          "latency_s": 3.107
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 191,
+          "cache_read": 8252,
+          "cache_write": 1349,
+          "latency_s": 2.466
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 112,
+          "cache_read": 9601,
+          "cache_write": 2259,
+          "latency_s": 1.621
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 6,
+          "output_tokens": 177,
+          "cache_read": 11860,
+          "cache_write": 1309,
+          "latency_s": 1.961
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 116,
+          "cache_read": 13169,
+          "cache_write": 938,
+          "latency_s": 1.771
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 3,
+          "output_tokens": 407,
+          "cache_read": 14107,
+          "cache_write": 1266,
+          "latency_s": 4.927
+        }
+      ],
+      "final_json": {
+        "respuesta": "No se encontró en el Knowledge Graph la información específica sobre el porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'. Si bien el grafo contiene referencias a normas sobre previsiones mínimas por riesgo de incobrabilidad y a la categoría 'irrecuperable' de clasificación de deudores, no se localizó el documento o nodo que establezca explícitamente el porcentaje requerido para esta categoría específica.",
+        "citas": [],
+        "respondible": false
+      },
+      "final_raw": "Basándome en la información recolectada del Knowledge Graph, no he encontrado un nodo específico que establezca explícitamente el porcentaje de previsión mínima para deudores clasificados en categoría \"irrecuperable\". \n\nAunque encontré:\n- El nodo \"Irrecuperable\" que define la categoría como comprensiva de \"clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año\"\n- Referencias a \"Previsiones por riesgo de incobrabilidad\" y \"Previsión regulatoria por riesgo de incobrabilidad\"\n- Menciones a diferentes porcentajes de previsión específica (20%, 50%) para otras categorías de exposición\n\nNo obtuve acceso a la tabla o norma específica que establezca el porcentaje exacto de previsión mínima que debe constituirse para la categoría \"irrecuperable\".\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph la información específica sobre el porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'. Si bien el grafo contiene referencias a normas sobre previsiones mínimas por riesgo de incobrabilidad y a la categoría 'irrecuperable' de clasificación de deudores, no se localizó el documento o nodo que establezca explícitamente el porcentaje requerido para esta categoría específica.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 15,
+      "hit_tool_limit": true,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.36-38 / Sección 7.2.5"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.36-38 / Sección 7.2.4"
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "p.28-30 / Punto 6.1.2, Código 26300000"
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "p.31-35 / Sección 6.2, código 26300000"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.155-157 / Punto 8.2.3.3"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.164-166 / Puntos 8.4.1.12 y 8.4.1.13"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.164-166 / Punto 8.4.1.12"
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "p.31-35 / Sección 6.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.13-16 / Punto 3.6"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.11-13 / Punto 2.4, inciso v)"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.36-38 / Punto 3.1.5.3"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5330,
+      "tokens_out": 1828,
+      "cache_read": 68592,
+      "cache_write": 15373,
+      "cost_usd": 0.040545,
+      "latency_s": 25.136,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_018u4eC5MnpSWxy4rHm5P2JR",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre las previsiones mínimas por riesgo de incobrabilidad para deudores en categoría irrecuperable.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01JkW1sJPKHyKVcKo7VHPpqR",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "previsión mínima riesgo incobrabilidad irrecuperable",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01SYaa1z6ak1dSAVsYV2tkzC",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "categoría irrecuperable deudor porcentaje",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1482,
+            "output_tokens": 195,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_018MLTV1v5411srQM3fMdWBM",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Encontré el nodo \"Irrecuperable\". Ahora voy a obtener más detalles sobre esta categoría y sus previsiones asociadas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01AvLS9Hu3tUJ8bkpAcWG6EG",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "irrecuperable"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01P9m9akjR58TnnBsCsCDMJ6",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "irrecuperable",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3798,
+            "output_tokens": 154,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_012NetZT3XW8ED6z2wjC2niH",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Ahora voy a buscar específicamente las previsiones mínimas asociadas a la categoría irrecuperable.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Y3Sw3xBY5hrSxCuUzVNN7W",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "previsión mínima 100 irrecuperable",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01AgurFB3sk8gYTzy1FQWnVp",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "previsión específica irrecuperable porcentaje",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4622
+            },
+            "cache_creation_input_tokens": 4622,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 181,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01TA6fT2NxAVbgyanmiZzR1N",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente sobre las normas de previsiones mínimas por riesgo de incobrabilidad.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Puz5CVy2LkN7sMNrC9hvcF",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "normas previsiones mínimas riesgo incobrabilidad categorías",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2359
+            },
+            "cache_creation_input_tokens": 2359,
+            "cache_read_input_tokens": 4622,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 122,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01SEeu4PgYRj2K71MLsFgt6q",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver el nodo sobre previsiones por riesgo de incobrabilidad para obtener más detalles.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01WUdpuxitfgudWGkiAF2b27",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "previsiones_por_riesgo_de_incobrabilidad"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01U2bVAzco1nB5cA3VNmCeYs",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "previsiones_por_riesgo_de_incobrabilidad",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1271
+            },
+            "cache_creation_input_tokens": 1271,
+            "cache_read_input_tokens": 6981,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 173,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01QG8DRNcTnLZbfQnGwewTnK",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Necesito buscar más específicamente sobre las previsiones mínimas por categoría de deudor, especialmente para irrecuperable.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01B83AubpSMqDUEAwaeKxC8C",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "previsión mínima 100% deudor irrecuperable",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_014QjMw2kiVzEHnFF21MYXX1",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "tabla previsiones mínimas categoría deudor porcentaje",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1349
+            },
+            "cache_creation_input_tokens": 1349,
+            "cache_read_input_tokens": 8252,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 191,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01VJAGUJ3aRLJrBvwNRUVMHC",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar directamente por documentos sobre previsiones mínimas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_016RuqsBQk1Tb6Vi9bp8KgUZ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "previsión mínima riesgo incobrabilidad 50 75 100",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2259
+            },
+            "cache_creation_input_tokens": 2259,
+            "cache_read_input_tokens": 9601,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 112,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_0145Xyh5FC7hmNdfVcmS4riD",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver el nodo sobre \"Previsión por riesgo de incobrabilidad\" que parece ser un cálculo regulatorio.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Pibbpg95Cry7DCymvXgC72",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "prevision_por_riesgo_de_incobrabilidad"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LptNe9iRR6GAM6LvrePM9g",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "prevision_por_riesgo_de_incobrabilidad",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1309
+            },
+            "cache_creation_input_tokens": 1309,
+            "cache_read_input_tokens": 11860,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 177,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01RKvB1e8gdBnY4msBTziCjB",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar específicamente en el documento de clasificación de deudores.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_015Uxd59FKx7TP6S3xi5Xb9e",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "clasificación deudores previsión mínima situación normal riesgo bajo medio alto irrecuperable",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 938
+            },
+            "cache_creation_input_tokens": 938,
+            "cache_read_input_tokens": 13169,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 116,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011aUjweysgnb3L4TaxqTKep",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Basándome en la información recolectada del Knowledge Graph, no he encontrado un nodo específico que establezca explícitamente el porcentaje de previsión mínima para deudores clasificados en categoría \"irrecuperable\". \n\nAunque encontré:\n- El nodo \"Irrecuperable\" que define la categoría como comprensiva de \"clientes insolventes o en quiebra con nula o escasa posibilidad de recuperación, o con atrasos superiores al año\"\n- Referencias a \"Previsiones por riesgo de incobrabilidad\" y \"Previsión regulatoria por riesgo de incobrabilidad\"\n- Menciones a diferentes porcentajes de previsión específica (20%, 50%) para otras categorías de exposición\n\nNo obtuve acceso a la tabla o norma específica que establezca el porcentaje exacto de previsión mínima que debe constituirse para la categoría \"irrecuperable\".\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph la información específica sobre el porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'. Si bien el grafo contiene referencias a normas sobre previsiones mínimas por riesgo de incobrabilidad y a la categoría 'irrecuperable' de clasificación de deudores, no se localizó el documento o nodo que establezca explícitamente el porcentaje requerido para esta categoría específica.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1266
+            },
+            "cache_creation_input_tokens": 1266,
+            "cache_read_input_tokens": 14107,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 407,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": null,
+        "completitud": null,
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": "correcta",
+        "especulacion_en_prosa": false,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "citas": "El agente no presenta ninguna cita.",
+          "abstencion": "El agente declara no haber encontrado el dato específico sin inventar valores ni citas, lo cual es correcto dado que la pregunta es unanswerable."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [],
+        "reportes_de_alcance": [
+          "No se encontró en el Knowledge Graph la información específica sobre el porcentaje de previsión mínima por riesgo de incobrabilidad para la categoría 'irrecuperable'.",
+          "El grafo contiene referencias a normas sobre previsiones mínimas por riesgo de incobrabilidad.",
+          "El grafo contiene referencias a la categoría 'irrecuperable' de clasificación de deudores.",
+          "No se localizó el documento o nodo que establezca explícitamente el porcentaje requerido para esta categoría específica."
+        ],
+        "patas_de_la_pregunta": [
+          "Porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'"
+        ]
+      },
+      "step2": {
+        "verificaciones": [],
+        "cobertura_patas": [
+          {
+            "pata": "Porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'",
+            "cobertura": "no_cubierta"
+          }
+        ],
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": "correcta",
+        "especulacion_en_prosa": false,
+        "justificacion": {
+          "citas": "El agente no presenta ninguna cita.",
+          "abstencion": "El agente declara no haber encontrado el dato específico sin inventar valores ni citas, lo cual es correcto dado que la pregunta es unanswerable."
+        }
+      },
+      "usage": {
+        "in": 2378,
+        "out": 465
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_015BN6HLWNZbRVuwaCwyC71h",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [],\n  \"reportes_de_alcance\": [\n    \"No se encontró en el Knowledge Graph la información específica sobre el porcentaje de previsión mínima por riesgo de incobrabilidad para la categoría 'irrecuperable'.\",\n    \"El grafo contiene referencias a normas sobre previsiones mínimas por riesgo de incobrabilidad.\",\n    \"El grafo contiene referencias a la categoría 'irrecuperable' de clasificación de deudores.\",\n    \"No se localizó el documento o nodo que establezca explícitamente el porcentaje requerido para esta categoría específica.\"\n  ],\n  \"patas_de_la_pregunta\": [\n    \"Porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 722,
+            "output_tokens": 244,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_017i71dLhScPLZAnJAHkHUnn",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [],\n  \"cobertura_patas\": [\n    {\"pata\": \"Porcentaje de previsión mínima por riesgo de incobrabilidad que debe constituir una entidad sobre un deudor clasificado en categoría 'irrecuperable'\", \"cobertura\": \"no_cubierta\"}\n  ],\n  \"cita_documento_correcto\": false,\n  \"cita_precision\": \"ausente\",\n  \"abstencion\": \"correcta\",\n  \"especulacion_en_prosa\": false,\n  \"justificacion\": {\n    \"citas\": \"El agente no presenta ninguna cita.\",\n    \"abstencion\": \"El agente declara no haber encontrado el dato específico sin inventar valores ni citas, lo cual es correcto dado que la pregunta es unanswerable.\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1656,
+            "output_tokens": 221,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.040545,
+    "judge_cost": 0.014109
+  }
+]

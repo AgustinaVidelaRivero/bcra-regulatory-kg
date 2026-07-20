@@ -1,0 +1,547 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-015",
+    "run": "run_5",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-015",
+      "question": "A los fines cambiarios, ¿cómo se define a una persona humana como 'residente' del país?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "residente fines cambiarios definición",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"residente fines cambiarios definición\", \"total_con_match\": 40, \"resultados\": [{\"id\": \"residente\", \"type\": \"Concepto\", \"label\": \"Residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad con domicilio o sede en el país que realiza operaciones de enajenación\"}, {\"id\": \"no_residente\", \"type\": \"Concepto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad sin residencia en territorio argentino que realiza operaciones de inversión y repatriación.\"}, {\"id\": \"cliente_residente\", \"type\": \"Concepto\", \"label\": \"Cliente residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica residente que recibe fondos en moneda extranjera y ejerce las operaciones reguladas.\"}, {\"id\": \"empresa_residente\", \"type\": \"Concepto\", \"label\": \"Empresa residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad constituida o domiciliada en Argentina que recibe inversiones y cuya participación puede ser repatriada.\"}, {\"id\": \"cliente_no_residente\", \"type\": \"Concepto\", \"label\": \"Cliente no residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Accionista o beneficiario no residente elegible para suscribir … [+1356 chars]",
+          "output_chars": 2556
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "persona humana residente país",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"persona humana residente país\", \"total_con_match\": 51, \"resultados\": [{\"id\": \"persona_humana_residente\", \"type\": \"Concepto\", \"label\": \"Persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana que tiene su centro de interés económico o actividad principal dentro de las fronteras de un país, o que permanece o tiene intención de permanece…\"}, {\"id\": \"persona_humana\", \"type\": \"Concepto\", \"label\": \"Persona humana\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"\"}, {\"id\": \"persona_juridica_residente\", \"type\": \"Concepto\", \"label\": \"Persona jurídica residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Persona jurídica, incluidas sociedades de hecho u otras que no reúnan requisitos de la Ley General de Sociedades, constituida en un país.\"}, {\"id\": \"cliente_persona_juridica_no_residente\", \"type\": \"Concepto\", \"label\": \"Cliente persona jurídica no residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Persona jurídica que no reside en el país y actúa como cliente en operaciones de cambio.\"}, {\"id\": \"identificacion_de_persona_residente_como_apoderada\", \"type\": \"Excepcion\", \"label\": \"Identificación de persona residente como apoderada\",… [+1225 chars]",
+          "output_chars": 2425
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "persona_humana_residente"
+          },
+          "output_truncado": "{\"id\": \"persona_humana_residente\", \"type\": \"Concepto\", \"label\": \"Persona humana residente\", \"properties\": {\"description\": \"Persona humana que tiene su centro de interés económico o actividad principal dentro de las fronteras de un país, o que permanece o tiene intención de permanecer en él por al menos un año.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9\"}]}",
+          "output_chars": 406
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "persona_humana_residente",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"persona_humana_residente\", \"label\": \"Persona humana residente\", \"n_salientes_total\": 4, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"realiza\", \"vecino_id\": \"compra_de_moneda_extranjera_para_billetes_y_depositos\", \"vecino_label\": \"Compra de moneda extranjera para billetes y depósitos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9\"}]}, {\"relation\": \"realiza\", \"vecino_id\": \"compra_de_moneda_extranjera_para_activos_externos\", \"vecino_label\": \"Compra de moneda extranjera para activos externos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9\"}]}, {\"relation\": \"determina_por\", \"vecino_id\": \"centro_de_interes_economico\", \"vecino_label\": \"Centro de interés económico\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"}]}, {\"relation\": \"cumple\", \"vecino_id\": \"permanencia_de_un_ano_para_determinar_residencia\", \"vecino_label\": \"Permanencia de un año para determinar residencia\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"}]}]… [+369 chars]",
+          "output_chars": 1569
+        },
+        {
+          "n": 5,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "centro_de_interes_economico"
+          },
+          "output_truncado": "{\"id\": \"centro_de_interes_economico\", \"type\": \"Concepto\", \"label\": \"Centro de interés económico\", \"properties\": {\"description\": \"Ubicación donde una persona humana tiene su actividad principal o interés económico.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"}]}",
+          "output_chars": 354
+        },
+        {
+          "n": 6,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "permanencia_de_un_ano_para_determinar_residencia"
+          },
+          "output_truncado": "{\"id\": \"permanencia_de_un_ano_para_determinar_residencia\", \"type\": \"Restriccion\", \"label\": \"Permanencia de un año para determinar residencia\", \"properties\": {\"description\": \"Presunción de que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"}]}",
+          "output_chars": 447
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1462,
+          "output_tokens": 169,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.742
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3304,
+          "output_tokens": 91,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.422
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3527,
+          "output_tokens": 117,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.374
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 166,
+          "cache_read": 0,
+          "cache_write": 4210,
+          "latency_s": 2.652
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 6,
+          "output_tokens": 253,
+          "cache_read": 4210,
+          "cache_write": 484,
+          "latency_s": 3.653
+        }
+      ],
+      "final_json": {
+        "respuesta": "A los fines cambiarios, una persona humana se define como 'residente' del país cuando cumple con alguno de estos criterios: (1) tiene su centro de interés económico o actividad principal dentro de las fronteras del país, o (2) permanece o tiene intención de permanecer en el país por al menos un año.",
+        "citas": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.9"
+          },
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 1 — Persona humana. + Punto 2 — Persona jurídica."
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Perfecto. Tengo toda la información necesaria para responder la pregunta. La definición de persona humana residente a los fines cambiarios está claramente documentada en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"A los fines cambiarios, una persona humana se define como 'residente' del país cuando cumple con alguno de estos criterios: (1) tiene su centro de interés económico o actividad principal dentro de las fronteras del país, o (2) permanece o tiene intención de permanecer en el país por al menos un año.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.9\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 6,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 1 — Persona humana. + Punto 2 — Persona jurídica."
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 8304,
+      "tokens_out": 796,
+      "cache_read": 4210,
+      "cache_write": 4694,
+      "cost_usd": 0.018572,
+      "latency_s": 10.854,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_018jUZ98tSatDqcm3PSkfeDC",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre la definición de residente a los fines cambiarios en el Knowledge Graph.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01MsPgH3orZkZpaL6ssasfTT",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "residente fines cambiarios definición",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_016Jf6GXbhNu4oVYseYmetNw",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "persona humana residente país",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1462,
+            "output_tokens": 169,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01EA5kJV8jUdBn4b1hSCVEUH",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto, encontré el nodo \"Persona humana residente\". Voy a obtener sus detalles completos.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01FQ2VHeDPNj4ovJFy5m6jz8",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "persona_humana_residente"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3304,
+            "output_tokens": 91,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01R3Lniw7JmD2VVzfwZd7Z1A",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información que necesito. Voy a verificar si hay más detalles relacionados explorando los vecinos de este nodo.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_019dj7N5rh1fLM2zSyBMZhvd",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "persona_humana_residente",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3527,
+            "output_tokens": 117,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01CF8zKTHp5TPvAi2gKbtdQs",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Tengo información clara. Voy a verificar los criterios específicos explorando los nodos relacionados \"Centro de interés económico\" y \"Permanencia de un año para determinar residencia\".",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0129S9XbGkumaAKb22Y3sgg6",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "centro_de_interes_economico"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01CowUnuosnYDpNvPdSXxJmh",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "permanencia_de_un_ano_para_determinar_residencia"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4210
+            },
+            "cache_creation_input_tokens": 4210,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 166,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01C2ieii7UbYWDK8DDcqrepU",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo toda la información necesaria para responder la pregunta. La definición de persona humana residente a los fines cambiarios está claramente documentada en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"A los fines cambiarios, una persona humana se define como 'residente' del país cuando cumple con alguno de estos criterios: (1) tiene su centro de interés económico o actividad principal dentro de las fronteras del país, o (2) permanece o tiene intención de permanecer en el país por al menos un año.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.9\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 1 — Persona humana. + Punto 2 — Persona jurídica.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 484
+            },
+            "cache_creation_input_tokens": 484,
+            "cache_read_input_tokens": 4210,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 253,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [
+            "La definición de residente a los fines cambiarios para personas humanas contempla dos criterios alternativos (cualquiera de los dos es suficiente)."
+          ],
+          "secundarias": [],
+          "n_centrales": 1,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": true,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "El agente cita el documento correcto (TO_exterior_cambios_actual.pdf) pero referencia los Puntos 3.9 y 1/2 en lugar del Punto 6.5.1 indicado en el ground truth, por lo que la precisión es de página y no de punto."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "A los fines cambiarios, una persona humana es residente si tiene su centro de interés económico o actividad principal dentro de las fronteras del país.",
+            "central": true
+          },
+          {
+            "enunciado": "A los fines cambiarios, una persona humana es residente si permanece o tiene intención de permanecer en el país por al menos un año.",
+            "central": true
+          },
+          {
+            "enunciado": "La definición de residente a los fines cambiarios para personas humanas contempla dos criterios alternativos (cualquiera de los dos es suficiente).",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Definición de 'residente' del país para personas humanas a los fines cambiarios"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "A los fines cambiarios, una persona humana es residente si tiene su centro de interés económico o actividad principal dentro de las fronteras del país.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "A los fines cambiarios, una persona humana es residente si permanece o tiene intención de permanecer en el país por al menos un año.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "La definición de residente a los fines cambiarios para personas humanas contempla dos criterios alternativos (cualquiera de los dos es suficiente).",
+            "central": true,
+            "verdict": "no_soportado"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Definición de 'residente' del país para personas humanas a los fines cambiarios",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "El agente cita el documento correcto (TO_exterior_cambios_actual.pdf) pero referencia los Puntos 3.9 y 1/2 en lugar del Punto 6.5.1 indicado en el ground truth, por lo que la precisión es de página y no de punto.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2433,
+        "out": 682
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Ux7GAQivKYpBP8HcHLY1LU",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\n      \"enunciado\": \"A los fines cambiarios, una persona humana es residente si tiene su centro de interés económico o actividad principal dentro de las fronteras del país.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"A los fines cambiarios, una persona humana es residente si permanece o tiene intención de permanecer en el país por al menos un año.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"La definición de residente a los fines cambiarios para personas humanas contempla dos criterios alternativos (cualquiera de los dos es suficiente).\",\n      \"central\": true\n    }\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"Definición de 'residente' del país para personas humanas a los fines cambiarios\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 644,
+            "output_tokens": 249,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01DL2UPC1JNivnVYefz3so6D",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"A los fines cambiarios, una persona humana es residente si tiene su centro de interés económico o actividad principal dentro de las fronteras del país.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"A los fines cambiarios, una persona humana es residente si permanece o tiene intención de permanecer en el país por al menos un año.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"La definición de residente a los fines cambiarios para personas humanas contempla dos criterios alternativos (cualquiera de los dos es suficiente).\",\n      \"central\": true,\n      \"verdict\": \"no_soportado\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Definición de 'residente' del país para personas humanas a los fines cambiarios\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"El agente cita el documento correcto (TO_exterior_cambios_actual.pdf) pero referencia los Puntos 3.9 y 1/2 en lugar del Punto 6.5.1 indicado en el ground truth, por lo que la precisión es de página y no de punto.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1789,
+            "output_tokens": 433,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.018572,
+    "judge_cost": 0.017529
+  }
+]

@@ -1,0 +1,461 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-008",
+    "run": "run_1",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-008",
+      "question": "Cuando un cliente lo solicita, ¿en qué plazo debe la entidad financiera comunicarle la última clasificación que le asignó?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "plazo comunicación clasificación cliente entidad financiera",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"plazo comunicación clasificación cliente entidad financiera\", \"total_con_match\": 333, \"resultados\": [{\"id\": \"rsj_cliente_de_la_entidad_financiera\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"cliente de la entidad financiera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Personas jurídicas residentes en el país o en el exterior, de sectores público, privado, financiero y no financiero, que reciben financiaciones y deben ser clas…\"}, {\"id\": \"rsj_entidad_financiera_cliente_de_miembro_compensador\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"entidad financiera cliente de miembro compensador\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Institución financiera que otorga crédito y refinanciación, y debe clasificar a sus deudores según categorías de riesgo.\"}, {\"id\": \"ope_comunicacion_de_clasificacion_crediticia_al_cliente\", \"type\": \"OPERATION\", \"label\": \"Comunicación de clasificación crediticia al cliente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de informar al cliente su última clasificación asignada junto con los fundamentos que la justifican.\"}, {\"id\": \"cla_grado_a_clasificacion_de_entidad_financiera_prestataria\", \"type\": \"CLASSIFICATION\", \"label\": \"Grado… [+2466 chars]",
+          "output_chars": 3666
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "comunicar clasificación cliente solicitud",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"comunicar clasificación cliente solicitud\", \"total_con_match\": 94, \"resultados\": [{\"id\": \"req_plazo_de_10_dias_corridos_para_comunicar_clasificacion_al_cliente\", \"type\": \"REQUIREMENT\", \"label\": \"Plazo de 10 días corridos para comunicar clasificación al cliente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo máximo dentro del cual la entidad financiera debe comunicar la clasificación solicitada por el cliente.\"}, {\"id\": \"ope_comunicacion_de_clasificacion_crediticia_al_cliente\", \"type\": \"OPERATION\", \"label\": \"Comunicación de clasificación crediticia al cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operación de informar al cliente su última clasificación asignada junto con los fundamentos que la justifican.\"}, {\"id\": \"rsj_cliente\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona jurídica que mantiene financiaciones con entidades financieras o fideicomisos financieros, sujeta a clasificación periódica según montos y criterios de …\"}, {\"id\": \"prc_legajo_del_cliente\", \"type\": \"PROCESS\", \"label\": \"legajo del cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Archivo que debe contener en el lu… [+1764 chars]",
+          "output_chars": 2964
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "req_plazo_de_10_dias_corridos_para_comunicar_clasificacion_al_cliente"
+          },
+          "output_truncado": "{\"id\": \"req_plazo_de_10_dias_corridos_para_comunicar_clasificacion_al_cliente\", \"type\": \"REQUIREMENT\", \"label\": \"Plazo de 10 días corridos para comunicar clasificación al cliente\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Plazo máximo dentro del cual la entidad financiera debe comunicar la clasificación solicitada por el cliente.\", \"aliases\": [\"plazo de 10 días corridos\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\"}]}",
+          "output_chars": 540
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "ope_comunicacion_de_clasificacion_crediticia_al_cliente"
+          },
+          "output_truncado": "{\"id\": \"ope_comunicacion_de_clasificacion_crediticia_al_cliente\", \"type\": \"OPERATION\", \"label\": \"Comunicación de clasificación crediticia al cliente\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Operación de informar al cliente su última clasificación asignada junto con los fundamentos que la justifican.\", \"aliases\": [\"comunicación de clasificación\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\"}]}",
+          "output_chars": 515
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "ope_comunicacion_de_clasificacion_crediticia_al_cliente"
+          },
+          "output_truncado": "{\"id\": \"ope_comunicacion_de_clasificacion_crediticia_al_cliente\", \"label\": \"Comunicación de clasificación crediticia al cliente\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"incluye\", \"vecino_id\": \"con_clasificacion_de_deudor\", \"vecino_label\": \"clasificación de deudor\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\"}]}, {\"relation\": \"incluye\", \"vecino_id\": \"req_importe_total_de_deudas_con_el_sistema_financiero\", \"vecino_label\": \"Importe total de deudas con el sistema financiero\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+          "output_chars": 731
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1467,
+          "output_tokens": 176,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.793
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3769,
+          "output_tokens": 167,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.73
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 103,
+          "cache_read": 0,
+          "cache_write": 4317,
+          "latency_s": 5.179
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 5,
+          "output_tokens": 142,
+          "cache_read": 4317,
+          "cache_write": 371,
+          "latency_s": 3.765
+        }
+      ],
+      "final_json": {
+        "respuesta": "Cuando un cliente lo solicita, la entidad financiera debe comunicarle la última clasificación que le asignó dentro de un plazo máximo de 10 días corridos.",
+        "citas": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "p. 41"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Tengo la información completa. Basándome en los datos del Knowledge Graph, puedo responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"Cuando un cliente lo solicita, la entidad financiera debe comunicarle la última clasificación que le asignó dentro de un plazo máximo de 10 días corridos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"p. 41\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 5,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 41"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5248,
+      "tokens_out": 588,
+      "cache_read": 4317,
+      "cache_write": 4688,
+      "cost_usd": 0.01448,
+      "latency_s": 12.481,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01FAiZVEx5kQwBTWC7Zd9RjB",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre los plazos de comunicación de clasificación de clientes por parte de entidades financieras.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01CHtMdoFaARpBNjzHipk7JN",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "plazo comunicación clasificación cliente entidad financiera",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_015AYfD6mxD4KeoiY1eX95KW",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "comunicar clasificación cliente solicitud",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1467,
+            "output_tokens": 176,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01KuVgWuieo4RrRU5P5gWvvZ",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto, encontré el nodo relevante. Voy a obtener los detalles completos del requisito sobre el plazo de comunicación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01M5yX6jK1eSRJfKchHEYdhW",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "req_plazo_de_10_dias_corridos_para_comunicar_clasificacion_al_cliente"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01Ua86avz3eoCi6XrwGDB2UL",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "ope_comunicacion_de_clasificacion_crediticia_al_cliente"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3769,
+            "output_tokens": 167,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01PkZd36vYtf5cLac5owu6nK",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Tengo la información necesaria. Voy a verificar si hay más detalles relacionados con esta operación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_019mG8GGjx2oGAvF7uTBo3Q4",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "ope_comunicacion_de_clasificacion_crediticia_al_cliente"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4317
+            },
+            "cache_creation_input_tokens": 4317,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 103,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01327NGEL8NiYcWrStiGMLvq",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Tengo la información completa. Basándome en los datos del Knowledge Graph, puedo responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"Cuando un cliente lo solicita, la entidad financiera debe comunicarle la última clasificación que le asignó dentro de un plazo máximo de 10 días corridos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"p. 41\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 371
+            },
+            "cache_creation_input_tokens": 371,
+            "cache_read_input_tokens": 4317,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 142,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento TO_clasificacion_deudores_actual.pdf con precisión de página (p. 41), que corresponde al ground truth, aunque no se especifica el punto 8.1."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "La entidad financiera debe comunicar al cliente su última clasificación dentro de un plazo máximo de 10 días corridos desde la solicitud.",
+            "central": true
+          },
+          {
+            "enunciado": "El plazo se computa en días corridos.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Plazo en que la entidad financiera debe comunicar al cliente la última clasificación asignada cuando este lo solicita"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "La entidad financiera debe comunicar al cliente su última clasificación dentro de un plazo máximo de 10 días corridos desde la solicitud.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El plazo se computa en días corridos.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Plazo en que la entidad financiera debe comunicar al cliente la última clasificación asignada cuando este lo solicita",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento TO_clasificacion_deudores_actual.pdf con precisión de página (p. 41), que corresponde al ground truth, aunque no se especifica el punto 8.1.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2267,
+        "out": 466
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_012KQHJsWkoSpv9kiiHfbUMA",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"La entidad financiera debe comunicar al cliente su última clasificación dentro de un plazo máximo de 10 días corridos desde la solicitud.\", \"central\": true},\n    {\"enunciado\": \"El plazo se computa en días corridos.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\"Plazo en que la entidad financiera debe comunicar al cliente la última clasificación asignada cuando este lo solicita\"]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 611,
+            "output_tokens": 149,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_015rukw1oZ412YSbkCfeZwvn",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"La entidad financiera debe comunicar al cliente su última clasificación dentro de un plazo máximo de 10 días corridos desde la solicitud.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El plazo se computa en días corridos.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Plazo en que la entidad financiera debe comunicar al cliente la última clasificación asignada cuando este lo solicita\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento TO_clasificacion_deudores_actual.pdf con precisión de página (p. 41), que corresponde al ground truth, aunque no se especifica el punto 8.1.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1656,
+            "output_tokens": 317,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.01448,
+    "judge_cost": 0.013791
+  }
+]

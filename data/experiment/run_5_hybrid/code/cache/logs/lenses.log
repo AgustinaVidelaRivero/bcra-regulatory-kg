@@ -1,0 +1,514 @@
+Cargado kg.json: 6095 nodos, 5764 edges
+
+========================================================================
+LENTE 1 — Consistencia core vs emergente
+========================================================================
+Total grupos de nodos con label normalizado idéntico: 179
+De esos, grupos con TYPE distinto entre miembros: 176
+
+Ejemplos (top 8 por severidad):
+  norm='supervision consolidada'
+    sample label: 'Supervisión consolidada'
+    types: {'Concepto': 1, 'Restriccion': 1, 'Operacion': 1, 'RegimenInformativo': 1}
+      [Concepto] loc: Punto 8.3 — Criterios relacionados con los conceptos computa
+      [Restriccion] loc: Punto 100.000 (parte 1/6)
+      [Operacion] loc: Punto 100.000 (parte 2/6)
+      [RegimenInformativo] loc: Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.
+
+  norm='clasificacion de deudor'
+    sample label: 'Clasificación de deudores'
+    types: {'Operacion': 1, 'Restriccion': 1, 'RegimenInformativo': 1, 'Concepto': 1}
+      [Operacion] loc: Punto 8.6 — “A” 414 + Punto 9.2 + Punto 12.1 + Punto 8028 + 
+      [Restriccion] loc: Punto 100.000 (parte 3/6)
+      [RegimenInformativo] loc: Preámbulo + Punto 1.2 — Criterios especiales de imputación. 
+      [Concepto] loc: Punto 6.6 — Recategorización obligatoria. + Punto 7.4 — Info
+
+  norm='cobertura del riesgo de credito'
+    sample label: 'Cobertura del riesgo de crédito'
+    types: {'Restriccion': 1, 'Concepto': 1, 'Operacion': 1}
+      [Restriccion] loc: Punto 4.3 — Exigencia de capital por riesgo de crédito de co
+      [Concepto] loc: Punto 2.12 — Tabla de ponderadores de riesgo. (parte 2/2)
+      [Operacion] loc: Punto 3.1 — Tratamiento de las titulizaciones. (parte 6/15)
+
+  norm='gestion crediticia'
+    sample label: 'Gestión crediticia'
+    types: {'Concepto': 1, 'Restriccion': 1, 'Operacion': 1}
+      [Concepto] loc: Punto 8.6 — “A” 414 + Punto 9.2 + Punto 12.1 + Punto 8028 + 
+      [Restriccion] loc: Punto 100.000 (parte 3/6)
+      [Operacion] loc: Punto 5593 — Actualización de textos ordenados. (parte 2/3)
+
+  norm='cajas de credito cooperativa'
+    sample label: 'Cajas de Crédito Cooperativas'
+    types: {'Restriccion': 1, 'EntidadFinanciera': 2}
+      [Restriccion] loc: Punto 100.000 (parte 1/6)
+      [EntidadFinanciera] loc: Punto 100.000 (parte 3/6)
+
+  norm='sociedades de garantia reciproca'
+    sample label: 'Sociedades de garantía recíproca'
+    types: {'Restriccion': 1, 'EntidadFinanciera': 2}
+      [Restriccion] loc: Punto 100.000 (parte 1/6)
+      [EntidadFinanciera] loc: Punto 10.3 — Sociedades de garantía recíproca y fondos de ga
+
+  norm='fondos de garantia de caracter publico'
+    sample label: 'Fondos de garantía de carácter público'
+    types: {'Restriccion': 1, 'EntidadFinanciera': 1, 'Concepto': 1}
+      [Restriccion] loc: Punto 100.000 (parte 1/6)
+      [EntidadFinanciera] loc: Punto 10.3 — Sociedades de garantía recíproca y fondos de ga
+      [Concepto] loc: Punto 5593 — Actualización de textos ordenados. (parte 1/3)
+
+  norm='conformidad previa del bcra'
+    sample label: 'Conformidad previa del BCRA'
+    types: {'Restriccion': 1, 'Concepto': 1, 'Excepcion': 1}
+      [Restriccion] loc: Punto 3.4 — Pagos de utilidades y dividendos. (parte 2/2)
+      [Concepto] loc: Punto 3.14 — Canjes y arbitrajes con clientes no asociados a
+      [Excepcion] loc: Punto 9.3 — Certificaciones de aplicación de cobros de expor
+
+========================================================================
+LENTE 2 — Cierre core↔core
+========================================================================
+Total edges core→core: 2449
+Edges core→core con predicado NO canónico: 554 (22.6%)
+Top 10 predicados ofensores:
+  requiere                  ×85   ej: Operacion→Restriccion
+  comprende                 ×71   ej: Restriccion→Restriccion
+  especifica                ×47   ej: Restriccion→Excepcion
+  condiciona                ×37   ej: Restriccion→Restriccion
+  integra                   ×33   ej: Restriccion→Restriccion
+  regula                    ×22   ej: Restriccion→Restriccion
+  modifica                  ×13   ej: Restriccion→Operacion
+  complementa               ×13   ej: Restriccion→Restriccion
+  incluye                   ×13   ej: Operacion→Restriccion
+  define                    ×9   ej: Restriccion→Restriccion
+
+Validación de dominio/rango para los 5 predicados canónicos:
+  realiza        dom=EntidadFinanciera  rng=['Operacion']
+      ok=146  invertidos=2  dominio_mal=0  rango_mal=6  total=154
+      ej_invalidos: EntidadFinanciera→Excepcion, EntidadFinanciera→Restriccion, EntidadFinanciera→Restriccion
+  aplica_a       dom=Restriccion        rng=['Operacion']
+      ok=928  invertidos=105  dominio_mal=24  rango_mal=46  total=1103
+      ej_invalidos: Operacion→Restriccion, Restriccion→Restriccion, Restriccion→Restriccion
+  recae_sobre    dom=Restriccion        rng=['EntidadFinanciera']
+      ok=264  invertidos=39  dominio_mal=2  rango_mal=1  total=306
+      ej_invalidos: EntidadFinanciera→Restriccion, EntidadFinanciera→Restriccion, EntidadFinanciera→Restriccion
+  excepciona_a   dom=Excepcion          rng=['Restriccion']
+      ok=246  invertidos=2  dominio_mal=20  rango_mal=23  total=291
+      ej_invalidos: Restriccion→Restriccion, Restriccion→Restriccion, Restriccion→Restriccion
+  exime_a        dom=Excepcion          rng=['EntidadFinanciera', 'Operacion']
+      ok=37  invertidos=0  dominio_mal=4  rango_mal=0  total=41
+      ej_invalidos: EntidadFinanciera→Restriccion, Restriccion→EntidadFinanciera, Restriccion→EntidadFinanciera
+
+========================================================================
+LENTE 3 — Familias semánticas de predicados emergentes
+========================================================================
+Predicados emergentes únicos: 506
+Top 100 emergentes cubren 2133 / 2765 edges emergentes (77.1%)
+
+Familias semánticas pobladas: 10 / 10 declaradas
+
+  [definición / inclusión] — 8 predicados, 605 edges
+    comprende                    ×316
+    integra                      ×106
+    define                       ×69
+    incluye                      ×69
+    agrupa                       ×23
+    contiene                     ×11
+    forma_parte_de               ×7
+    categoriza                   ×4
+
+  [obligación / requerimiento] — 10 predicados, 351 edges
+    requiere                     ×252
+    condiciona                   ×47
+    debe_cumplir                 ×10
+    garantiza                    ×8
+    condiciona_a                 ×7
+    exige                        ×6
+    requiere_aprobacion_de       ×6
+    presenta                     ×6
+    ... y 2 más
+
+  [regulación / normativa] — 8 predicados, 268 edges
+    regula                       ×124
+    autoriza                     ×48
+    establece                    ×31
+    determina                    ×29
+    supervisa                    ×16
+    habilita                     ×10
+    prohíbe                      ×5
+    permite                      ×5
+
+  [referencia / vínculo] — 6 predicados, 119 edges
+    referencia                   ×38
+    refiere_a                    ×35
+    emite                        ×30
+    vincula_a                    ×6
+    referencias                  ×6
+    referencia_a                 ×4
+
+  [información / reporte] — 6 predicados, 82 edges
+    informa_a                    ×31
+    registra                     ×29
+    informa                      ×6
+    registra_en                  ×6
+    publica                      ×6
+    presenta_a                   ×4
+
+  [modificación / actualización] — 3 predicados, 54 edges
+    modifica                     ×45
+    modifica_por                 ×5
+    actualiza                    ×4
+
+  [alcance / aplicabilidad] — 3 predicados, 39 edges
+    aplica                       ×19
+    afecta                       ×12
+    afecta_a                     ×8
+
+  [cálculo / cuantificación] — 4 predicados, 33 edges
+    expresa_en                   ×15
+    calcula                      ×7
+    calcula_sobre                ×6
+    diferencia_por               ×5
+
+  [atribución / propiedad] — 2 predicados, 15 edges
+    otorga                       ×11
+    mantiene                     ×4
+
+  [exclusión / excepción] — 1 predicados, 9 edges
+    excluye                      ×9
+
+Predicados del top 100 NO mapeados a ninguna familia: 49
+  especifica                   ×61
+  utiliza                      ×59
+  clasifica                    ×33
+  pertenece_a                  ×28
+  considera                    ×19
+  cumple                       ×16
+  constituye                   ×15
+  complementa                  ×15
+  beneficia_a                  ×15
+  involucra                    ×14
+  incorpora                    ×13
+  evalua                       ×13
+  limita                       ×12
+  se_ampara_en                 ×12
+  sujeta_a                     ×11
+  depende_de                   ×11
+  participa_en                 ×10
+  canaliza                     ×10
+  fundamenta                   ×9
+  acredita                     ×9
+
+Si cada familia colapsara a 1 predicado canónico:
+  51 predicados → 10 predicados
+  (reducción de 41 predicados únicos en el top 100)
+
+========================================================================
+LENTE 4 — Tipos emergentes (near-dups) y ¿Concepto es cajón de sastre?
+========================================================================
+Tipos emergentes únicos: 16
+
+Inventario completo (orden por conteo desc):
+  Concepto                     1417
+  Documento                    240
+  InstrumentoFinanciero        210
+  RegimenInformativo           82
+  Autoridad                    64
+  Plazo                        26
+  ConceptoContable             20
+  Moneda                       6
+  Sancion                      5
+  NormaSuprior                 4
+  InstrumentoLegal             3
+  RegimenNormativo             3
+  ConceptoInformativo          3
+  SistemaOperativo             1
+  NormaExterna                 1
+  CuentaBancaria               1
+
+Pares de tipos emergentes con normalización léxica cercana:
+  'Concepto' (1417) ↔ 'ConceptoInformativo' (3)
+  'Concepto' (1417) ↔ 'ConceptoContable' (20)
+
+Typos detectados manualmente: ['NormaSuprior']
+
+--- ¿Concepto es cajón de sastre? Muestra aleatoria de 20 labels ---
+  • 'FC - Componente financiero'                                  [TO_regimen_informativo_contabl, Punto 5.2 — Modelo de información]
+  • 'Nocional efectivo derivados tipo de cambio'                  [TO_capitales_minimos_actual.pd, Punto 1 — Se calculará un nocional efectivo D jk(I]
+  • 'Exposiciones de corto plazo'                                 [TO_capitales_minimos_actual.pd, Punto 2.11]
+  • 'Evaluación de emisión particular'                            [TO_capitales_minimos_actual.pd, Punto 10.3 — Consideraciones para su implementació]
+  • 'Primas de emisión COn1'                                      [TO_capitales_minimos_actual.pd, Punto 8.2 — Conceptos computables.]
+  • 'Componente ILDC (intereses, arrendamientos y dividendos)'    [TO_capitales_minimos_actual.pd, Punto 7.1 — Exigencia de capital por riesgo operac]
+  • 'Cámara de Compensación y Liquidación'                        [TO_capitales_minimos_actual.pd, Punto 4.3 — Exigencia de capital por riesgo de cré]
+  • 'Entidades'                                                   [TO_capitales_minimos_actual.pd, Punto 4.2 — Exigencia de capital por riesgo de cré]
+  • 'Activos deducibles del capital ordinario nivel 1'            [TO_regimen_informativo_contabl, Punto 11.1 — Normas de procedimiento.]
+  • 'Violador Productor Usuario'                                  [TO_exterior_cambios_actual.pdf, Punto 14.5 — Otras disposiciones. (parte 1/2)]
+  • 'Exposición riesgo crédito contraparte'                       [TO_capitales_minimos_actual.pd, Punto 4.2 — Exigencia de capital por riesgo de cré]
+  • 'Reclamo'                                                     [TO_proteccion_usuarios_servici, Punto 4 + Punto 4 + Punto 4 + Punto 2.2 — El BCRA ]
+  • 'Deudas elegibles'                                            [TO_exterior_cambios_actual.pdf, Punto 4.8 — Disposiciones complementarias asociada]
+  • 'Personas humanas'                                            [TO_capitales_minimos_actual.pd, Punto 2.10]
+  • 'Persona humana'                                              [TO_capitales_minimos_actual.pd, Punto 2.8 — Exposiciones minoristas.]
+  • 'CCP - Contraparte central'                                   [TO_capitales_minimos_actual.pd, Punto 4.2 — Exigencia de capital por riesgo de cré]
+  • 'Dealing room'                                                [TO_capitales_minimos_actual.pd, Punto 6]
+  • 'Capital por riesgo operacional'                              [TO_capitales_minimos_actual.pd, Punto 7.1 — Exigencia de capital por riesgo operac]
+  • 'Insumos y equipos para hidrocarburos offshore'               [TO_exterior_cambios_actual.pdf, Punto 10.2 — Definiciones. (parte 2/2)]
+  • 'Ajustes por aplicación de NIIF'                              [TO_regimen_informativo_contabl, Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍN]
+
+========================================================================
+LENTE 5 — Duplicados léxicos de nodos post-dedup
+========================================================================
+Nodos post-dedup: 6095
+Pares sospechosos (substring + mismo tipo, plural-canon distinto): 1391
+
+         Concepto — 802 parejas (top 15):
+    'Capitales mínimos de entidades financieras'  ↔  'Entidades financieras'
+    'Nuevas entidades'  ↔  'Entidades'
+    'Entidades financieras'  ↔  'Grupo 2 - Otras entidades financieras'
+    'Entidades financieras'  ↔  'Entidades financieras del exterior'
+    'Entidades financieras'  ↔  'Entidades financieras del grupo 1'
+    'Entidades financieras'  ↔  'Exposición a entidades financieras'
+    'Entidades financieras'  ↔  'Exposiciones a entidades financieras'
+    'Entidades financieras'  ↔  'Entidades financieras del país'
+    'Entidades financieras'  ↔  'Entidades financieras del grupo 2'
+    'Entidades financieras'  ↔  'Entidades'
+    'Entidades financieras'  ↔  'Entidades financieras miembros compensadores'
+    'Entidades financieras'  ↔  'Entidades financieras con posiciones en commodities'
+    'Entidades financieras'  ↔  'Entidades financieras en funcionamiento'
+    'Entidades financieras'  ↔  'Autoridades de Entidades Financieras'
+    'Entidades financieras'  ↔  'Capitales mínimos para las entidades financieras'
+
+  [CORE] Operacion — 250 parejas (top 15):
+    'Operaciones DvP'  ↔  'Operaciones DvP con títulos valores'
+    'Operaciones con derivados OTC y negociados'  ↔  'Operaciones con derivados'
+    'Operaciones con derivados OTC y negociados'  ↔  'Operaciones con derivados OTC'
+    'Presentación de plan de regularización y saneamiento'  ↔  'Presentación de plan de regularización'
+    'Presentación de plan de regularización y saneamiento'  ↔  'Plan de Regularización y Saneamiento'
+    'Presentación de descargo ante SEFyC'  ↔  'Presentación de descargo'
+    'Operaciones de entrega contra pago fallidas'  ↔  'Operaciones de entrega contra pago'
+    'Proceso de debida diligencia'  ↔  'Debida diligencia'
+    'Financiación'  ↔  'Financiación especializada infraestructura'
+    'Financiación'  ↔  'Financiación rotativa'
+    'Financiación'  ↔  'Operaciones financiación títulos valores'
+    'Financiación'  ↔  'Financiación con títulos valores'
+    'Financiación'  ↔  'Financiación con margen'
+    'Financiación'  ↔  'Financiaciones al Sector Público'
+    'Financiación'  ↔  'Financiaciones sin responsabilidad cedente'
+
+  [CORE] Restriccion — 204 parejas (top 15):
+    'Capital mínimo'  ↔  'Capital mínimo por riesgo de crédito'
+    'Capital mínimo'  ↔  'Capital mínimo por riesgo de mercado'
+    'Capital mínimo'  ↔  'Capital mínimo por riesgo de tipo de cambio'
+    'Capital mínimo'  ↔  'Capital mínimo por riesgo operacional'
+    'Capital mínimo'  ↔  'Exigencia de capital mínimo'
+    'Capital mínimo'  ↔  'Cumplimiento del capital mínimo exigido'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.1.1'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.1.2'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.1'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.1.1'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.1.2'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.1.3'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.2'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.3'
+    'Capital mínimo'  ↔  'Capital mínimo sección 4.2.4'
+
+         InstrumentoFinanciero — 55 parejas (top 15):
+    'Título público nacional'  ↔  'Título público'
+    'Bonos de titulización de activos (ABS)'  ↔  'Titulizaciones'
+    'Bonos de titulización hipotecaria (MBS)'  ↔  'Titulizaciones'
+    'Derivados de crédito'  ↔  'Derivados'
+    'Derivados de crédito'  ↔  'Otros derivados de crédito'
+    'Derivado de cobertura'  ↔  'Derivados'
+    'Derivados'  ↔  'Derivados de tipo de cambio'
+    'Derivados'  ↔  'Derivados OTC'
+    'Derivados'  ↔  'Derivado de crédito'
+    'Derivados'  ↔  'Otros derivados de crédito'
+    'Derivados'  ↔  'Derivado first-to-default'
+    'Derivados'  ↔  'Derivado nth-to-default'
+    'Derivados'  ↔  'Instrumentos derivados'
+    'Derivados'  ↔  'Forwards y derivados en commodities'
+    'Derivados'  ↔  'Derivados de tasa de interés'
+
+  [CORE] EntidadFinanciera — 53 parejas (top 15):
+    'Banco'  ↔  'Banco de la Nación Argentina'
+    'Banco'  ↔  'Banco comercial'
+    'Banco'  ↔  'Banco comercial calificación B'
+    'Banco'  ↔  'Banco comercial calificación C'
+    'Banco'  ↔  'Banco de inversión calificación B'
+    'Banco'  ↔  'Banco de inversión calificación C'
+    'Banco'  ↔  'Bancos comerciales custodios FGS'
+    'Entidades financieras del grupo 1'  ↔  'Entidades financieras'
+    'Entidades financieras del grupo 2'  ↔  'Entidades financieras'
+    'Entidad financiera prestamista'  ↔  'Entidad financiera'
+    'Entidad financiera'  ↔  'Entidad financiera originante'
+    'Entidad financiera'  ↔  'Entidad financiera en operaciones con derivados'
+    'Entidad financiera'  ↔  'Entidad financiera miembro compensador'
+    'Entidad financiera'  ↔  'Entidad financiera dadora'
+    'Entidad financiera'  ↔  'Entidad financiera con autorización revocada'
+
+         Autoridad — 10 parejas (top 15):
+    'Superintendencia de Entidades Financieras y Cambiarias'  ↔  'Superintendencia de Entidades Financieras y Cambiarias (SEFyC)'
+    'Superintendencia de Entidades Financieras y Cambiarias'  ↔  'Superintendencia de Entidades Financieras'
+    'Banco Central de la República Argentina'  ↔  'Banco Central de la República Argentina (BCRA)'
+    'Superintendencia de Entidades Financieras y Cambiarias (SEFyC)'  ↔  'Superintendencia de Entidades Financieras'
+    'Supervisión y Seguimiento de SEFyC'  ↔  'SEFyC'
+    'Comisión Nacional de Valores (CNV)'  ↔  'Comisión Nacional de Valores'
+    'Autoridad de aplicación Ley 24.467'  ↔  'Autoridad de Aplicación'
+    'Aduana'  ↔  'Administración Nacional de Aduanas'
+    'Aduana'  ↔  'Dirección General de Aduanas'
+    'Organismos internacionales y agencias oficiales'  ↔  'Organismos internacionales'
+
+         RegimenInformativo — 6 parejas (top 15):
+    'Clasificación de deudores'  ↔  'Régimen de clasificación de deudores'
+    'Clasificación de deudores'  ↔  'Clasificación de deudores cartera comercial'
+    'Clasificación de deudores'  ↔  'Clasificación de deudores de cartera comercial'
+    'SECOEXPO'  ↔  'Sistema SECOEXPO'
+    'Declaración jurada de cliente no residente'  ↔  'Declaración jurada'
+    'Registro de Denuncias ante Instancias Judiciales'  ↔  'Registro de Denuncias ante Instancias Judiciales y Administrativas'
+
+         Documento — 6 parejas (top 15):
+    'Manual de procedimientos de clasificación y previsión'  ↔  'Manual de procedimientos de clasificación'
+    'Manual de procedimientos de clasificación y previsión'  ↔  'Manual de procedimiento'
+    'Manual de procedimientos de clasificación'  ↔  'Manual de procedimiento'
+    'Comunicación A 7914'  ↔  'Comunicación A 7914 punto 10.3.6. Anexo'
+    'Manual de procedimiento'  ↔  'Manual de procedimiento interno'
+    'Normas sobre Capitales mínimos de entidades financieras'  ↔  'Normas sobre capitales mínimos'
+
+         Plazo — 3 parejas (top 15):
+    'Plazo de 5 días hábiles'  ↔  '5 días hábiles'
+    'Plazo de 15 días hábiles'  ↔  '5 días hábiles'
+    '90 días corridos'  ↔  'Plazo de 90 días corridos'
+
+  [CORE] Excepcion — 2 parejas (top 15):
+    'Conformidad previa del BCRA'  ↔  'Conformidad previa del BCRA para casos incumplidos'
+    'Excepción para MiPyMe con deudas por importaciones'  ↔  'Excepción para MiPyMe'
+
+========================================================================
+LENTE 6 — Fragmentación: TOs en el componente principal
+========================================================================
+Componentes no triviales: 325
+Componente principal: 3819 nodos (62.7% del grafo)
+
+Distribución por TO en el componente PRINCIPAL:
+  TO_exterior_cambios_actual.pdf                          1586
+  TO_capitales_minimos_actual.pdf                         1227
+  TO_regimen_informativo_contable_mensual_actual.pdf      353
+  TO_clasificacion_deudores_actual.pdf                    346
+  TO_proteccion_usuarios_servicios_financieros_actual.pdf 307
+
+Distribución por TO en el grafo TOTAL (para comparar):
+  TO_exterior_cambios_actual.pdf                          total= 2319  en_principal= 1586  (68.4%)
+  TO_capitales_minimos_actual.pdf                         total= 2159  en_principal= 1227  (56.8%)
+  TO_clasificacion_deudores_actual.pdf                    total=  601  en_principal=  346  (57.6%)
+  TO_regimen_informativo_contable_mensual_actual.pdf      total=  590  en_principal=  353  (59.8%)
+  TO_proteccion_usuarios_servicios_financieros_actual.pdf total=  426  en_principal=  307  (72.1%)
+
+Top 5 componentes no triviales (después del principal):
+  #2: 28 nodos
+      docs: {'TO_capitales_minimos_actual.pdf': 28}
+      types: {'Restriccion': 22, 'Excepcion': 3, 'Concepto': 2, 'Operacion': 1}
+      labels muestra: ['Historial de crédito favorable', 'Ausencia de quiebra o reestructuración en 3 años', 'Información periódica trimestral para inversores', 'Criterios de originación sólidos y prudentes', 'Activos fuera del alcance del cedente']
+  #3: 26 nodos
+      docs: {'TO_clasificacion_deudores_actual.pdf': 26}
+      types: {'Restriccion': 1, 'EntidadFinanciera': 5, 'Excepcion': 9, 'Concepto': 5, 'Operacion': 5, 'Autoridad': 1}
+      labels muestra: ['Calificación investment grade requerida', 'Banco exterior con supervisión consolidada', 'Sucursal y subsidiaria de entidad local', 'Exclusión financiación comercio exterior', 'Central registro y liquidación instrumentos deuda']
+  #4: 26 nodos
+      docs: {'TO_exterior_cambios_actual.pdf': 26}
+      types: {'Restriccion': 12, 'Operacion': 5, 'Excepcion': 1, 'Concepto': 7, 'Autoridad': 1}
+      labels muestra: ['Documentación certificadora para montos superiores', 'Exportaciones con bienes importados temporalmente', 'Imputación de cobros al embarque de reemplazo', 'Certificación de afectación de importación temporal', 'Certificación de auditor externo para montos superiores']
+  #5: 23 nodos
+      docs: {'TO_capitales_minimos_actual.pdf': 23}
+      types: {'Restriccion': 11, 'InstrumentoFinanciero': 4, 'Excepcion': 3, 'Concepto': 4, 'Operacion': 1}
+      labels muestra: ['Limitación de exigencia de capital a máxima pérdida posible', 'Obligación subyacente', 'No reconocimiento de protección en swap de retorno total', 'Swap de incumplimiento crediticio', 'Exclusión de exigencia de capital por riesgo general']
+  #6: 20 nodos
+      docs: {'TO_exterior_cambios_actual.pdf': 20}
+      types: {'Restriccion': 14, 'Documento': 1, 'Concepto': 4, 'Operacion': 1}
+      labels muestra: ['Restricciones a giros de divisas', 'Importador ente del sector público', 'Cobertura por póliza de seguro de crédito', 'Convenio de La Haya de 1961', 'Agencias de recupero']
+
+========================================================================
+LENTE 7 — Calidad de labels por tipo
+========================================================================
+tipo                             n  min  med  mean  p95  max    >8w    %>8
+  [CORE] Restriccion             2671    1    6   5.9    9   14    140    5.2%
+         Concepto                1417    1    4   3.9    7   11      8    0.6%
+  [CORE] Operacion                921    1    5   5.4    8   12     37    4.0%
+  [CORE] Excepcion                294    3    6   6.1    9   11     18    6.1%
+         Documento                240    2    3   3.6    7   10      3    1.2%
+         InstrumentoFinanciero    210    1    4   4.0    7    9      2    1.0%
+  [CORE] EntidadFinanciera        123    1    5   4.6    7    9      1    0.8%
+         RegimenInformativo        82    1    4   3.9    7    8      0    0.0%
+         Autoridad                 64    1    4   4.2    7    9      1    1.6%
+         Plazo                     26    1    5   4.4    7    9      1    3.8%
+         ConceptoContable          20    2    6   5.7    8    8      0    0.0%
+         Moneda                     6    1    2   2.0    3    3      0    0.0%
+         Sancion                    5    2    5   4.6    7    7      0    0.0%
+         NormaSuprior               4    2    2   2.0    2    2      0    0.0%
+         InstrumentoLegal           3    2    2   3.3    6    6      0    0.0%
+         RegimenNormativo           3    3    4   4.3    6    6      0    0.0%
+         ConceptoInformativo        3    2    2   2.0    2    2      0    0.0%
+         SistemaOperativo           1    1    1   1.0    1    1      0    0.0%
+         NormaExterna               1    2    2   2.0    2    2      0    0.0%
+         CuentaBancaria             1    5    5   5.0    5    5      0    0.0%
+
+Top 10 labels-frase por tipo (labels >8 palabras):
+         Concepto: 8 labels-frase
+    (11w)  'Régimen de acceso a divisas para producción incremental de gas natural'
+    (11w)  'S34 Consumos con tarjetas o débito en cuenta por servicios digitales'
+    (10w)  'Régimen de acceso a divisas para producción incremental de petróleo'
+    (10w)  'S26 Servicios de salud por empresas de asistencia al viajero'
+    (10w)  'S36 Retiros y/o consumos con tarjetas o débito en cuenta'
+    (9w)  'Cuenta especial para régimen de fomento economía del conocimiento'
+    (9w)  'Pagos en el exterior con fondos de libre disponibilidad'
+    (9w)  'Ganancias o pérdidas por instrumentos financieros a valor razonable'
+
+  [CORE] Restriccion: 140 labels-frase
+    (14w)  'Disminución de defecto de integración de capital mínimo por riesgo de crédito y operacional'
+    (13w)  'Importación de billetes de pesos sujeta a normas de compra por no residentes'
+    (12w)  'Limitación de CRC en financiación con títulos de NBFI con aforo bajo'
+    (12w)  'Cómputo de exposición en contratos a término con moneda extranjera u oro'
+    (12w)  'Disminución de defecto de integración de capital mínimo por riesgo de mercado'
+    (11w)  'Políticas y procedimientos para la gestión de la cartera de negociación'
+    (11w)  'Plazo de vigencia de factor 4 para pesos desde noviembre 2024'
+    (11w)  'Aplicación mínima de recursos de obligaciones a la vista y plazo'
+    (11w)  'Extracción con débito en pesos encuadrada en formación de activos externos'
+    (11w)  'Límite de adelanto en efectivo USD 200 en países no limítrofes'
+
+  [CORE] Operacion: 37 labels-frase
+    (12w)  'Pago de capital e intereses de títulos con registro público en exterior'
+    (12w)  'Acceso al mercado de cambios para bienes de tiendas libres de impuestos'
+    (11w)  'Acceso al mercado de cambios para cancelación de líneas de crédito'
+    (11w)  'Acceso al mercado de cambios para compraventa sin paso por país'
+    (10w)  'Pago de títulos de deuda con registro público en país'
+    (10w)  'Emisiones de títulos de deuda liquidadas en mercado de cambios'
+    (10w)  'Acceso al mercado de cambios para pago de insumos hidrocarburos'
+    (10w)  'Acceso al mercado de cambios para bienes en depósitos francos'
+    (10w)  'Acumulación de fondos en cuentas del exterior y del país'
+    (10w)  'Acceso al mercado de cambios para egresos de VPU RIGI'
+
+  [CORE] EntidadFinanciera: 1 labels-frase
+    (9w)  'Proveedor de servicios de pago con cuentas de pago'
+
+  [CORE] Excepcion: 18 labels-frase
+    (11w)  'Reducción a 11% y 8% con calificación 1, 2 o 3'
+    (10w)  'Exclusión de reservas de liquidez en cálculo A y D'
+    (10w)  'Reducción a 7% y 5% con calificación 1 o 2'
+    (10w)  'Exención de apertura de legajo para servicios públicos y tarjetas'
+    (10w)  'Extensión de plazos por causales ajenas a voluntad del importador'
+    (10w)  'Excepción de defecto si se consideran resultados al 100 %'
+    (9w)  'Exclusión de financiaciones y avales de sucursales y subsidiarias'
+    (9w)  'Exención de capital para garantías de miembro compensador protegidas'
+    (9w)  'No reconocimiento de protección en swap de retorno total'
+    (9w)  'Reducción a 11% por calificación 1, 2 o 3'
+
+         Autoridad: 1 labels-frase
+    (9w)  'Gerencia de Supervisión de Entidades Financieras de la SEFyC'
+
+         Documento: 3 labels-frase
+    (10w)  'Normas sobre gestión crediticia, clasificación de deudores y capitales mínimos'
+    (9w)  'Certificación de acceso a divisas para petróleo y gas'
+    (9w)  'TO sobre Tasas de Interés en Operaciones de Crédito'
+
+         InstrumentoFinanciero: 2 labels-frase
+    (9w)  'Seguros de riesgo de crédito con alcance comprador público'
+    (9w)  'Títulos de deuda con registro en país suscriptos exterior'
+
+         Plazo: 1 labels-frase
+    (9w)  'Plazo de 2 días hábiles para pago a beneficiarios'
+

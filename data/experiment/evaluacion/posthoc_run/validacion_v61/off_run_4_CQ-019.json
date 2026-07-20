@@ -1,0 +1,1428 @@
+{
+ "id_falla": "run_4/CQ-019",
+ "run": "run_4",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ],
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ],
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_4/CQ-019",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}",
+      "devolvio": "Nodos de exigencia de capital por riesgo de crédito (facilidad, promedio 36 meses, exigencia_por_riesgo_de_credito).",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}",
+      "devolvio": "prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos varios.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación deudores previsión', 'limite': 10}",
+      "devolvio": "clasificacion_de_deudores, manual, prevision_especifica (deducción que no se aplica a KSA), prevision_regulatoria.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_especifica'}",
+      "devolvio": "Deducción contable que no se aplica al cálculo de KSA; cálculo sobre monto bruto. Provenance: capitales_minimos Punto 3.1.11.2 (titulizaciones).",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito'}",
+      "devolvio": "Exigencia calculada por fórmula con APR de crédito e incrementos.",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'clasificacion_de_deudores'}",
+      "devolvio": "Clasificación considerando totalidad de financiaciones comprendidas.",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_especifica', 'direccion': 'ambas'}",
+      "devolvio": "Edge único: no_se_deduce_en_calculo_de → KSA.",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}",
+      "devolvio": "se_calcula_mediante → APR de crédito; utiliza factor de calificación.",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión específica clasificación deudores', 'limite': 10}",
+      "devolvio": "prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento con previsión específica.",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}",
+      "devolvio": "Diferencia positiva vs previsión contable deducible del CO n1.",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}",
+      "devolvio": "deducible_de CO n1; se_compara_con previsión contable NIIF 9.",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}",
+      "devolvio": "categoria_de_clasificacion, previsiones (titulización/regulatoria), manual, categorías de BI. Ninguno vincula categoría→previsión mínima.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'categoria_de_clasificacion'}",
+      "devolvio": "Una de las cinco categorías en que se clasifica cada cliente.",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}",
+      "devolvio": "es_criterio_objetivo_para_modificar → término de morosidad, situación jurídica, refinanciación; se_incluye_en deudor.",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'ksa'}",
+      "devolvio": "Exigencia de capital promedio de las EXPOSICIONES SUBYACENTES (marcador de titulizaciones).",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Qué previsión no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La previsión específica es la que no se deduce al computar los activos para la exigencia de capital por riesgo de crédito. Según la normativa, el cálculo debe efectuarse sobre el monto bruto de la exposición, sin aplicar esta deducción contable.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.",
+       "ubicacion": "prevision_especifica (abierto por el agente, paso 4)"
+      },
+      "fuente": {
+       "quote": "En los casos en los que la entidad haya constituido una previsión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al conjunto de activos subyacentes, el cálculo de KSA deberá efectuarse usando el monto bruto de la exposición (…) Sección 3. Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, p.42"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "ver_nodo ksa",
+       "resultado": "KSA = 'exigencia de capital promedio de las exposiciones subyacentes' — marcador explícito de titulizaciones que el agente abrió en paso 15 e ignoró"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 3.1.11.2 y p.42",
+       "resultado": "El punto pertenece a la Sección 3 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'; la regla de no deducir la previsión específica aplica al cálculo de KSA en titulizaciones, no a la exigencia general por riesgo de crédito"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores (afirmación central: previsiones mínimas se determinan en función de la categoría)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Una de las cinco categorías en que se clasifica a cada cliente y la totalidad de sus financiaciones comprendidas.",
+       "ubicacion": "categoria_de_clasificacion (paso 13) — no vincula categoría con determinación de previsiones mínimas"
+      },
+      "fuente": {
+       "quote": "6.5. Niveles de clasificación. Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías (…) el porcentaje establecido en el punto 2.2.5. de las normas sobre 'Previsiones mínimas por riesgo de incobrabilidad' correspondiente a la peor clasificación asignada",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 6.5, p.19"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "previsión mínima incobrabilidad categoría clasificación (paso 12, output completo)",
+       "resultado": "categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria, manual — NINGUNO porta la relación categoría→previsión mínima"
+      },
+      {
+       "consulta": "previsiones mínimas por riesgo de incobrabilidad",
+       "resultado": "previsiones_por_riesgo_de_incobrabilidad (cartera situación normal, límite 1,25% APR), insuficiencia_de_previsiones_minimas, prevision_regulatoria_por_riesgo_de_incobrabilidad — ninguno declara que la categoría determina el porcentaje de previsión mínima"
+      },
+      {
+       "consulta": "porcentaje previsión según situación categoría normal riesgo",
+       "resultado": "deudores_clasificados_en_situacion_normal (previsión no se deduce completamente), situacion_normal — no hay nodo que exprese la tabla/regla categoría→porcentaje de previsión mínima; el dato del PDF (norma 'Previsiones mínimas por riesgo de incobrabilidad', punto 2.2.5) no está representado como nodo alcanzable"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Qué previsión no se deduce (glosa 'no se deduce del cálculo de capital (KSA)')",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La previsión específica, aunque no se deduce en el cálculo de KSA (exigencia de capital promedio de exposiciones subyacentes) (…) aunque la previsión específica contable no se deduzca del cálculo de capital.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Exigencia de capital promedio de las exposiciones subyacentes, expresada como ratio entre la suma de exposiciones ponderadas por riesgo y la suma de exposiciones, multiplicado por 8%. Rango: 0% a 100%.",
+       "ubicacion": "ksa (paso 15)"
+      },
+      "fuente": {
+       "quote": "i) KSA. Es la exigencia de capital promedio de las exposiciones subyacentes (…) CAPITALES MÍNIMOS (…) Sección 3. Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, p.42"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "verificación KSA vs 'cálculo de capital' general",
+       "resultado": "El agente equipara KSA (variable exclusiva de titulizaciones) con 'el cálculo de capital' por riesgo de crédito en general; el nodo ksa y el PDF acotan KSA a exposiciones subyacentes de titulizaciones, no soportan la generalización"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó varias afirmaciones centrales. Descompuse en dos patas.\n\nPATA 1 (qué previsión no se deduce): El agente respondió 'previsión específica' y 'monto bruto de la exposición', citando el nodo prevision_especifica (abierto en paso 4) y su edge a KSA. El contenido del nodo es FIEL al PDF, pero el PDF (Punto 3.1.11.2, p.42) pertenece a la Sección 3 'Capital mínimo por riesgo de crédito. TITULIZACIONES e inversiones en fondos', y la regla de no deducir la previsión específica aplica al cálculo de KSA (variable de titulizaciones = 'exigencia de capital promedio de las exposiciones subyacentes'). La pregunta era sobre la exigencia GENERAL por riesgo de crédito. El agente usó contenido fiel de un nodo fuera de su alcance → C1: noise_sensitivity (soportado y fiel al PDF, pero incorrecto por aplicación fuera de contexto). C2 (test v2.6): ¿el nodo declara su alcance? El nodo dice 'no se aplica al cálculo de KSA' y el agente ADEMÁS abrió el nodo ksa (paso 15) que declara explícitamente 'exposiciones subyacentes' — marcador inequívoco de titulizaciones que estaba a la vista y fue ignorado. El alcance (KSA/titulizaciones) está declarado en el contenido consultado; el agente lo ignoró → aplicacion_erronea (agente), PRIMARIA. La 'previsión específica' del régimen general SÍ se deduce; la que NO se deduce del capital por riesgo de crédito general/comparación con previsión regulatoria tiene otro tratamiento — la respuesta central es fácticamente incorrecta.\n\nPATA 2 (vinculación con clasificación de deudores): las subpatas de descripción de la clasificación (totalidad de financiaciones — Sección 1.1/6.5; cinco categorías — 6.5; criterio objetivo para modificar — 6.4.1) están BIEN soportadas por nodos consultados y confirmadas contra el PDF; el juez las marcó 'no_soportado' pero el circuito de esas subpatas cierra bien. La afirmación CENTRAL 'las previsiones mínimas se determinan en función de la categoría de clasificación' NUNCA apareció como dato pertinente: el paso 12 (output completo verificado) no expuso ningún nodo que porte esa relación categoría→previsión mínima; mis búsquedas adicionales tampoco lo alcanzaron. El PDF SÍ lo tiene (Punto 6.5 remite a las normas 'Previsiones mínimas por riesgo de incobrabilidad' según la clasificación asignada). C1: context_recall a nivel pata. C2: ¿existe nodo portador? No lo encontré tras búsqueda documentada; el PDF tiene el dato → completitud_kg (grafo), PRIMARIA.\n\nSECUNDARIA: la glosa que equipara KSA con 'el cálculo de capital' por riesgo de crédito en general es una generalización no soportada (faithfulness); el nodo ksa y el PDF acotan KSA a titulizaciones → alucinacion_agente modo (a), secundaria (refuerza el error de la pata 1 pero el veredicto ya lo mueve aplicacion_erronea).\n\nDescarté sin_defecto: la respuesta central es fácticamente errónea (aplica regla de titulizaciones al régimen general y afirma vínculo previsión-mínima sin soporte). Ambas primarias son independientes y rompen patas distintas.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 268108,
+    "tokens_out": 8728
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 268108,
+    "tokens_out": 8728,
+    "latency_s": 116.444,
+    "error": null,
+    "final_raw": "Tengo evidencia suficiente para atribuir.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}\", \"devolvio\": \"Nodos de exigencia de capital por riesgo de crédito (facilidad, promedio 36 meses, exigencia_por_riesgo_de_credito).\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}\", \"devolvio\": \"prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos varios.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudores previsión', 'limite': 10}\", \"devolvio\": \"clasificacion_de_deudores, manual, prevision_especifica (deducción que no se aplica a KSA), prevision_regulatoria.\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_especifica'}\", \"devolvio\": \"Deducción contable que no se aplica al cálculo de KSA; cálculo sobre monto bruto. Provenance: capitales_minimos Punto 3.1.11.2 (titulizaciones).\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito'}\", \"devolvio\": \"Exigencia calculada por fórmula con APR de crédito e incrementos.\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'clasificacion_de_deudores'}\", \"devolvio\": \"Clasificación considerando totalidad de financiaciones comprendidas.\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_especifica', 'direccion': 'ambas'}\", \"devolvio\": \"Edge único: no_se_deduce_en_calculo_de → KSA.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"se_calcula_mediante → APR de crédito; utiliza factor de calificación.\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión específica clasificación deudores', 'limite': 10}\", \"devolvio\": \"prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento con previsión específica.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}\", \"devolvio\": \"Diferencia positiva vs previsión contable deducible del CO n1.\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}\", \"devolvio\": \"deducible_de CO n1; se_compara_con previsión contable NIIF 9.\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}\", \"devolvio\": \"categoria_de_clasificacion, previsiones (titulización/regulatoria), manual, categorías de BI. Ninguno vincula categoría→previsión mínima.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'categoria_de_clasificacion'}\", \"devolvio\": \"Una de las cinco categorías en que se clasifica cada cliente.\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}\", \"devolvio\": \"es_criterio_objetivo_para_modificar → término de morosidad, situación jurídica, refinanciación; se_incluye_en deudor.\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'ksa'}\", \"devolvio\": \"Exigencia de capital promedio de las EXPOSICIONES SUBYACENTES (marcador de titulizaciones).\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Qué previsión no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La previsión específica es la que no se deduce al computar los activos para la exigencia de capital por riesgo de crédito. Según la normativa, el cálculo debe efectuarse sobre el monto bruto de la exposición, sin aplicar esta deducción contable.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\", \"ubicacion\": \"prevision_especifica (abierto por el agente, paso 4)\"},\n        \"fuente\": {\"quote\": \"En los casos en los que la entidad haya constituido una previsión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al conjunto de activos subyacentes, el cálculo de KSA deberá efectuarse usando el monto bruto de la exposición (…) Sección 3. Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, p.42\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_nodo ksa\", \"resultado\": \"KSA = 'exigencia de capital promedio de las exposiciones subyacentes' — marcador explícito de titulizaciones que el agente abrió en paso 15 e ignoró\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.1.11.2 y p.42\", \"resultado\": \"El punto pertenece a la Sección 3 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'; la regla de no deducir la previsión específica aplica al cálculo de KSA en titulizaciones, no a la exigencia general por riesgo de crédito\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores (afirmación central: previsiones mínimas se determinan en función de la categoría)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Una de las cinco categorías en que se clasifica a cada cliente y la totalidad de sus financiaciones comprendidas.\", \"ubicacion\": \"categoria_de_clasificacion (paso 13) — no vincula categoría con determinación de previsiones mínimas\"},\n        \"fuente\": {\"quote\": \"6.5. Niveles de clasificación. Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías (…) el porcentaje establecido en el punto 2.2.5. de las normas sobre 'Previsiones mínimas por riesgo de incobrabilidad' correspondiente a la peor clasificación asignada\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 6.5, p.19\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"previsión mínima incobrabilidad categoría clasificación (paso 12, output completo)\", \"resultado\": \"categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria, manual — NINGUNO porta la relación categoría→previsión mínima\"},\n        {\"consulta\": \"previsiones mínimas por riesgo de incobrabilidad\", \"resultado\": \"previsiones_por_riesgo_de_incobrabilidad (cartera situación normal, límite 1,25% APR), insuficiencia_de_previsiones_minimas, prevision_regulatoria_por_riesgo_de_incobrabilidad — ninguno declara que la categoría determina el porcentaje de previsión mínima\"},\n        {\"consulta\": \"porcentaje previsión según situación categoría normal riesgo\", \"resultado\": \"deudores_clasificados_en_situacion_normal (previsión no se deduce completamente), situacion_normal — no hay nodo que exprese la tabla/regla categoría→porcentaje de previsión mínima; el dato del PDF (norma 'Previsiones mínimas por riesgo de incobrabilidad', punto 2.2.5) no está representado como nodo alcanzable\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Qué previsión no se deduce (glosa 'no se deduce del cálculo de capital (KSA)')\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La previsión específica, aunque no se deduce en el cálculo de KSA (exigencia de capital promedio de exposiciones subyacentes) (…) aunque la previsión específica contable no se deduzca del cálculo de capital.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Exigencia de capital promedio de las exposiciones subyacentes, expresada como ratio entre la suma de exposiciones ponderadas por riesgo y la suma de exposiciones, multiplicado por 8%. Rango: 0% a 100%.\", \"ubicacion\": \"ksa (paso 15)\"},\n        \"fuente\": {\"quote\": \"i) KSA. Es la exigencia de capital promedio de las exposiciones subyacentes (…) CAPITALES MÍNIMOS (…) Sección 3. Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, p.42\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"verificación KSA vs 'cálculo de capital' general\", \"resultado\": \"El agente equipara KSA (variable exclusiva de titulizaciones) con 'el cálculo de capital' por riesgo de crédito en general; el nodo ksa y el PDF acotan KSA a exposiciones subyacentes de titulizaciones, no soportan la generalización\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó varias afirmaciones centrales. Descompuse en dos patas.\\n\\nPATA 1 (qué previsión no se deduce): El agente respondió 'previsión específica' y 'monto bruto de la exposición', citando el nodo prevision_especifica (abierto en paso 4) y su edge a KSA. El contenido del nodo es FIEL al PDF, pero el PDF (Punto 3.1.11.2, p.42) pertenece a la Sección 3 'Capital mínimo por riesgo de crédito. TITULIZACIONES e inversiones en fondos', y la regla de no deducir la previsión específica aplica al cálculo de KSA (variable de titulizaciones = 'exigencia de capital promedio de las exposiciones subyacentes'). La pregunta era sobre la exigencia GENERAL por riesgo de crédito. El agente usó contenido fiel de un nodo fuera de su alcance → C1: noise_sensitivity (soportado y fiel al PDF, pero incorrecto por aplicación fuera de contexto). C2 (test v2.6): ¿el nodo declara su alcance? El nodo dice 'no se aplica al cálculo de KSA' y el agente ADEMÁS abrió el nodo ksa (paso 15) que declara explícitamente 'exposiciones subyacentes' — marcador inequívoco de titulizaciones que estaba a la vista y fue ignorado. El alcance (KSA/titulizaciones) está declarado en el contenido consultado; el agente lo ignoró → aplicacion_erronea (agente), PRIMARIA. La 'previsión específica' del régimen general SÍ se deduce; la que NO se deduce del capital por riesgo de crédito general/comparación con previsión regulatoria tiene otro tratamiento — la respuesta central es fácticamente incorrecta.\\n\\nPATA 2 (vinculación con clasificación de deudores): las subpatas de descripción de la clasificación (totalidad de financiaciones — Sección 1.1/6.5; cinco categorías — 6.5; criterio objetivo para modificar — 6.4.1) están BIEN soportadas por nodos consultados y confirmadas contra el PDF; el juez las marcó 'no_soportado' pero el circuito de esas subpatas cierra bien. La afirmación CENTRAL 'las previsiones mínimas se determinan en función de la categoría de clasificación' NUNCA apareció como dato pertinente: el paso 12 (output completo verificado) no expuso ningún nodo que porte esa relación categoría→previsión mínima; mis búsquedas adicionales tampoco lo alcanzaron. El PDF SÍ lo tiene (Punto 6.5 remite a las normas 'Previsiones mínimas por riesgo de incobrabilidad' según la clasificación asignada). C1: context_recall a nivel pata. C2: ¿existe nodo portador? No lo encontré tras búsqueda documentada; el PDF tiene el dato → completitud_kg (grafo), PRIMARIA.\\n\\nSECUNDARIA: la glosa que equipara KSA con 'el cálculo de capital' por riesgo de crédito en general es una generalización no soportada (faithfulness); el nodo ksa y el PDF acotan KSA a titulizaciones → alucinacion_agente modo (a), secundaria (refuerza el error de la pata 1 pero el veredicto ya lo mueve aplicacion_erronea).\\n\\nDescarté sin_defecto: la respuesta central es fácticamente errónea (aplica regla de titulizaciones al régimen general y afirma vínculo previsión-mínima sin soporte). Ambas primarias son independientes y rompen patas distintas.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 3.1.11.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1.11.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.11.2 (PDF pág 42)\", \"pasaje\": \"3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el conjunto de acti-\\nvos subyacentes. Esto incluye a los activos en los que ha invertido el SPE, \\nlas reservas (“reserve accounts”), las cuentas de efectivo en garantía y los \\nderechos frente a las contrapartes por “swaps” de tasa de interés o de mo-\\nneda. No obstante, a los fines … [+406 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "ksa"
+      },
+      "output_truncado": "{\"id\": \"ksa\", \"type\": \"variable_de_calculo\", \"label\": \"KSA\", \"properties\": {\"description\": \"Exigencia de capital promedio de las exposiciones subyacentes, expresada como ratio entre la suma de exposiciones ponderadas por riesgo y la suma de exposiciones, multiplicado por 8%. Rango: 0% a 100%.\", \"version\": \"vigente\", \"type_raw\": [\"Variable de cálculo\", \"Variable de cálculo de capital\", \"Parámetro de cálculo\"], \"type_raw_counts\": {\"Variable de cálculo\": 1, \"Variable de cálculo de capital\": 1, \"Parámetro de cálculo\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.39-41 / Punto 3.1.11.1.i\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.42-45 / Punto 3.1.11.2, inciso i)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.46-48 / Punto 3.1.13.2, apartado a)\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 3.1.11.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1.11.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.11.1 (PDF pág 41)\", \"pasaje\": \"3.1.11.1. Conceptos. \\n \\nLa información necesaria para calcular las siguientes variables será provista \\no estimada por cada entidad: \\n \\ni) KSA: exigencia de capital que hubiera correspondido a las exposiciones \\nsubyacentes de no haber sido titulizadas. \\n \\nii) W: ratio de exposiciones subyacentes en situación de mora respecto del \\ntotal de exposiciones subyacentes. \\n \\niii) A: punto de unión del tramo (“tranche attachment point”). Representa el \\numbral a partir del cual las pérdidas del conjunto de activos subyacente \\ncomenzarán a asignarse a la posición de titulización mantenida por la \\nentidad. Es un porcentaje, entre cero y cien, que equivale al mayor entre \\ncero y el ratio entre (a) el saldo de todos los activos subyacentes menos el \\nsaldo de todos los tramos con preferencia o de igual prelación (“pari \\npassu”) respecto del tramo al que está expuesta la entidad (incluido este \\ntramo) y (b) el saldo de todos los activos subyacentes de la titulización. \\n \\niv) D: punto de separación de… [+399 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "p.42"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.42\", \"metodo\": \"pagina\", \"ref\": \"p.42 (PDF absoluto 1-based)\", \"pasaje\": \"Las entidades deberán considerar la realidad o finalidad económica de la \\ntransacción y aplicar estas definiciones de manera prudente en función de las \\ncaracterísticas de la estructura.  \\n \\nSi la única diferencia entre dos posiciones fueran el vencimiento, A y D serán \\nidénticos.  \\n \\n3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el conjunt… [+1727 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Criterio \\ngeneral. \\nLos clientes de la entidad (tanto residentes en el país, de los sectores público y privado, finan-\\ncieros y no financieros, como residentes en el exterior), por las financiaciones comprendidas, \\ndeberán ser clasificados desde el punto de vista de la calidad de los obligados en orden al \\ncumplimiento de sus compromisos y/o las posibilidades que a este efecto se les asigne sobre la \\nbase de una evaluación de su situación particular. \\n1.2. Criterios especiales de imputación. \\n1.2.1. Créditos incorporados por cesión sin responsabilidad. \\nLos créditos cedidos a favor de la entidad sin responsabilidad para el cedente -unidad \\neconómica receptora de los fondos- se imputarán al firmante, librador, deudor, codeudor \\no\\naceptante de los respectivos instrumentos, constituidos consecuentemente en principa-\\nles y directos pagadores, realizando respecto de ellos su evaluación como sujetos de\\ncrédito \\ncon la pertinente apertura del legajo. En caso de no efectuarse la evaluación,\\ncua… [+400 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumplimiento de las obligaciones sin recur… [+394 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.4.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.4.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4.1 (PDF pág 18)\", \"pasaje\": \"6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del ajuste de previsiones, según lo \\nprevisto en la materia como consecuencia de tareas de inspección. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. S ección 6. Clasificación de los deudores de la cartera comercial. \\nVersión: 9a. C OMUNICACIÓN  “A”  7024 Vigencia: \\n20/03/2020 Página 2\"}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsiones mínimas riesgo incobrabilidad categoría deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsiones mínimas riesgo incobrabilidad categoría deudor\", \"total_con_match\": 157, \"resultados\": [{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"insuficiencia_de_previsiones_minimas\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Insuficiencia de previsiones mínimas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Insuficiencia de constitución de previsiones mínimas deducible del Capital Ordinario de Nivel 1.\"}, {\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"previsiones_por_riesgo_de_desvalorizacion\", \"type\": \"ajuste_regulatorio\", \"label\": \"Previsiones por … [+2180 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 12
+      },
+      "output_truncado": "{\"paso\": 12, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"previsión mínima incobrabilidad categoría clasificación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"previsión mínima incobrabilidad categoría clasificación\", \"total_con_match\": 29, \"resultados\": [{\"id\": \"categoria_de_clasificacion\", \"type\": \"nivel_de_riesgo\", \"label\": \"Categoría de clasificación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Una de las cinco categorías en que se clasifica a cada cliente y la totalidad de sus financiaciones comprendidas.\"}, {\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya difer… [+1991 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "previsiones_por_riesgo_de_incobrabilidad"
+      },
+      "output_truncado": "{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos ponderados por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de patrimonio complementario\", \"Componente de Capital Regulatorio\", \"Componente de capital computable\", \"Concepto regulatorio\"], \"type_raw_counts\": {\"Componente de capital computable\": 1, \"Concepto regulatorio\": 1, \"Componente de patrimonio complementario\": 1, \"Componente de Capital Regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 4}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.28-30 / Punto 6.1.2, Código 26300000\"}, {\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.31-35 / Sección 6.2, código 26300000\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.164-166 / Puntos 8.4.1.12 y … [+12 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "porcentaje previsión según situación categoría normal riesgo",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"porcentaje previsión según situación categoría normal riesgo\", \"total_con_match\": 159, \"resultados\": [{\"id\": \"situacion_normal\", \"type\": \"nivel_de_clasificacion\", \"label\": \"Situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de clasificación que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\"}, {\"id\": \"cliente_en_situacion_normal\", \"type\": \"categoria_de_clasificacion_de_deudor\", \"label\": \"Cliente en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor cuyo análisis de flujo de fondos demuestra capacidad para atender adecuadamente todos sus compromisos financieros, con situación financiera líquida, bajo…\"}, {\"id\": \"prevision_contable_segun_niif_9\", \"type\": \"ajuste_de_capital\", \"label\": \"Previsión contable según NIIF 9\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Diferencia entre la previsión contable según punto 5.5 de NIIF 9 y la previsión regulatoria, informada en código 21300000.\"}, {\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propi… [+2063 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsiones mínimas por riesgo de incobrabilidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsiones mínimas por riesgo de incobrabilidad\", \"total_con_match\": 1842, \"resultados\": [{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"previsiones_por_riesgo_de_desvalorizacion\", \"type\": \"ajuste_regulatorio\", \"label\": \"Previsiones por riesgo de desvalorización\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Provisiones que se deducen del cómputo de participaciones en empresas de arrendamiento financiero, factoring y emisión de tarjetas.\"}, {\"id\": \"previsiones_por_riesgos_de_incobrabilidad\", \"type\": \"ajuste_contable\", \"lab… [+2135 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "deudores_clasificados_en_situacion_normal"
+      },
+      "output_truncado": "{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"properties\": {\"description\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"version\": \"vigente\", \"type_raw\": [\"Clasificación de deudores\"], \"type_raw_counts\": {\"Clasificación de deudores\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.3.1. Cómputo de conceptos\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26213,
+      "output_tokens": 285
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27701,
+      "output_tokens": 308
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30028,
+      "output_tokens": 499
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31929,
+      "output_tokens": 391
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34349,
+      "output_tokens": 351
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36680,
+      "output_tokens": 427
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40023,
+      "output_tokens": 865
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 41185,
+      "output_tokens": 5602
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 7,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-019",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}",
+      "devolvio": "325 matches; nodos genéricos sobre exigencia de capital por riesgo de crédito; ninguno porta la respuesta 'situación normal'",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}",
+      "devolvio": "89 matches; prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos_computables; NO aparece deudores_clasificados_en_situacion_normal",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación deudores previsión', 'limite': 10}",
+      "devolvio": "24 matches; clasificacion_de_deudores, prevision_especifica (KSA), prevision_regulatoria",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_especifica'}",
+      "devolvio": "Deducción contable que no se aplica al cálculo de KSA; cálculo sobre monto bruto; provenance Punto 3.1.11.2 (titulizaciones)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito'}",
+      "devolvio": "Exigencia calculada mediante fórmula con APRc e incrementos",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'clasificacion_de_deudores'}",
+      "devolvio": "Clasificación considerando totalidad de financiaciones comprendidas",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_especifica', 'direccion': 'ambas'}",
+      "devolvio": "prevision_especifica no_se_deduce_en_calculo_de KSA",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}",
+      "devolvio": "se_calcula_mediante APRc; utiliza factor de calificación",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión específica clasificación deudores', 'limite': 10}",
+      "devolvio": "prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento con previsión específica",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}",
+      "devolvio": "Previsión regulatoria cuya diferencia positiva vs contable es deducible del CO n1; Punto 8.4.1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}",
+      "devolvio": "deducible_de CO n1; se_compara_con previsión NIIF 9",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}",
+      "devolvio": "categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad, prevision_regulatoria_por_riesgo_de_incobrabilidad",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'categoria_de_clasificacion'}",
+      "devolvio": "Una de las cinco categorías en que se clasifica a cada cliente y sus financiaciones",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}",
+      "devolvio": "es_criterio_objetivo_para_modificar término morosidad/situación jurídica/refinanciación; se_incluye_en deudor",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'ksa'}",
+      "devolvio": "Exigencia de capital promedio de exposiciones subyacentes (titulizaciones)",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "{\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"properties\": {\"description\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.42-45 / Punto 3.1.11.2, inciso i)\"}]}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Al computar los activos para la exigencia de capital por riesgo de crédito, la previsión específica es la que no se deduce. Según la normativa, el cálculo debe efectuarse sobre el monto bruto de la exposición, sin aplicar esta deducción contable.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.",
+       "ubicacion": "deudores_clasificados_en_situacion_normal (nodo portador de la respuesta; NUNCA apareció en la trayectoria del agente)"
+      },
+      "fuente": {
+       "quote": "netos de las previsiones por riesgos de incobrabilidad ... y demás cuentas regularizadoras, sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados “en situación normal” –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A).",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3.1 (p.7-10)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "previsión situación normal cartera deudores no se deduce",
+       "resultado": "PRIMER resultado: deudores_clasificados_en_situacion_normal (nodo portador de la respuesta correcta) — alcanzable con vocabulario ex ante de la pregunta"
+      },
+      {
+       "consulta": "cómputo conceptos comprendidos previsión incobrabilidad",
+       "resultado": "trae prevision_por_riesgo_de_incobrabilidad y prevision_regulatoria; el agente en paso 2 usó 'previsión incobrabilidad deducción activos' sin llegar a 'situación normal'"
+      },
+      {
+       "consulta": "ver_paso_completo(2)",
+       "resultado": "output íntegro del paso 2 confirma que deudores_clasificados_en_situacion_normal NO estaba entre los 10 resultados que vio el agente con su consulta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor. De esta manera, la clasificación de deudores determina qué previsiones regulatorias mínimas deben constituirse, aunque la previsión específica contable no se deduzca del cálculo de capital.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.",
+       "ubicacion": "deudores_clasificados_en_situacion_normal (la vinculación correcta es directa: la categoría 'situación normal' es la que define qué previsión no se deduce; el agente nunca alcanzó este nodo)"
+      },
+      "fuente": {
+       "quote": "sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados “en situación normal” –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3.1 (p.7-10)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "previsión situación normal cartera deudores no se deduce",
+       "resultado": "deudores_clasificados_en_situacion_normal — vincula explícitamente la no-deducción con la categoría de clasificación 'situación normal'; era alcanzable"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La previsión específica, aunque no se deduce en el cálculo de KSA (exigencia de capital promedio de exposiciones subyacentes) ... aunque la previsión específica contable no se deduzca del cálculo de capital.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.",
+       "ubicacion": "prevision_especifica (fiel al PDF pero su alcance es el régimen de titulizaciones/KSA, declarado en su propio contenido mediante 'KSA')"
+      },
+      "fuente": {
+       "quote": "En los casos en los que la entidad haya constituido una previsión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al conjunto de activos subyacentes, el cálculo de KSA deberá efectuarse usando el monto bruto de la exposición –es decir, sin deducir la previsión específica y/o el descuento no reembolsable en el precio de compra–.",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, inciso i) — Sección 3 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 3.1.11.2",
+       "resultado": "confirma que el 'no deducir previsión específica' es una regla del cálculo de KSA en titulizaciones, no del régimen general del Punto 2.3.1; el nodo prevision_especifica declara 'KSA' en su contenido, avisando su alcance"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó falsos los claims centrales sobre qué previsión no se deduce ('previsión específica' / 'monto bruto' / 'KSA'). MÉTODO por patas: (1) La pata central pregunta qué previsión NO se deduce al computar los activos (A) para la exigencia GENERAL por riesgo de crédito. El PDF (Punto 2.3.1, p.7-10) responde inequívocamente: 'sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados en situación normal'. El nodo portador de esa respuesta —deudores_clasificados_en_situacion_normal, con description exacta 'previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos... situación normal' y provenance Punto 2.3.1— NUNCA apareció en la trayectoria del agente (verificado con ver_paso_completo(2): no está entre los resultados de su búsqueda 'previsión incobrabilidad deducción activos'). Por precedencia C1a, dato pertinente no aparecido => context_recall a nivel pata. (2) La pata de vinculación se rompe por herencia: la vinculación correcta es que la categoría 'situación normal' de la clasificación de deudores es la que define qué previsión no se deduce; el agente, partiendo de la previsión equivocada, construyó una vinculación desviada. CAUSA (árbol context_recall): ¿existe nodo portador? SÍ. ¿alcanzable con búsquedas razonables del vocabulario ex ante de la pregunta? SÍ — mi búsqueda 'previsión situación normal cartera deudores no se deduce' lo devuelve como PRIMER resultado, con términos que están todos en la pregunta ('previsión', 'no se deduce', 'deudores', 'clasificación'). El nodo es fiel al PDF. Por tanto => navegación (defecto del agente): el dato estaba bien en el grafo y era alcanzable, el agente no lo consultó. Descarto alcanzabilidad_kg porque el nodo se alcanza con vocabulario de la pregunta, no solo con palabras del propio nodo. Descarto completitud_kg/estructural_kg porque el nodo y el dato existen. Ambas patas => navegación PRIMARIA (mueven el veredicto). SECUNDARIA: el agente tomó el nodo prevision_especifica (fiel al PDF, Punto 3.1.11.2) y lo aplicó fuera de su alcance: ese nodo trata del cálculo de KSA en el régimen de titulizaciones (Sección 3), NO del cómputo general de A. Como el propio contenido del nodo declara su alcance ('no se aplica al cálculo de KSA'), un lector es advertido de que es de otro alcance => aplicacion_erronea (no contenido_kg por des-scoping). Es secundaria porque el defecto que explica la reprobación es que el dato correcto nunca se recuperó (navegación); la mala aplicación de la previsión específica es el mecanismo del relleno.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 17,
+    "max_tool_calls": 40,
+    "tokens_in": 365749,
+    "tokens_out": 10631
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 17,
+    "tokens_in": 365749,
+    "tokens_out": 10631,
+    "latency_s": 150.57,
+    "error": null,
+    "final_raw": "Confirmado: en el paso 2 (búsqueda con \"previsión incobrabilidad deducción activos\"), el nodo `deudores_clasificados_en_situacion_normal` NO apareció, pero tampoco el agente usó los términos \"situación normal\" que lo habrían traído. El agente saltó directamente a `prevision_especifica` (paso 3-4), que era de otro alcance. El nodo pertinente era alcanzable con una búsqueda razonable adicional que el agente no hizo.\n\nTengo evidencia completa. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}\", \"devolvio\": \"325 matches; nodos genéricos sobre exigencia de capital por riesgo de crédito; ninguno porta la respuesta 'situación normal'\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}\", \"devolvio\": \"89 matches; prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos_computables; NO aparece deudores_clasificados_en_situacion_normal\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudores previsión', 'limite': 10}\", \"devolvio\": \"24 matches; clasificacion_de_deudores, prevision_especifica (KSA), prevision_regulatoria\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_especifica'}\", \"devolvio\": \"Deducción contable que no se aplica al cálculo de KSA; cálculo sobre monto bruto; provenance Punto 3.1.11.2 (titulizaciones)\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito'}\", \"devolvio\": \"Exigencia calculada mediante fórmula con APRc e incrementos\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'clasificacion_de_deudores'}\", \"devolvio\": \"Clasificación considerando totalidad de financiaciones comprendidas\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_especifica', 'direccion': 'ambas'}\", \"devolvio\": \"prevision_especifica no_se_deduce_en_calculo_de KSA\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"se_calcula_mediante APRc; utiliza factor de calificación\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión específica clasificación deudores', 'limite': 10}\", \"devolvio\": \"prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento con previsión específica\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}\", \"devolvio\": \"Previsión regulatoria cuya diferencia positiva vs contable es deducible del CO n1; Punto 8.4.1.1\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}\", \"devolvio\": \"deducible_de CO n1; se_compara_con previsión NIIF 9\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}\", \"devolvio\": \"categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad, prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'categoria_de_clasificacion'}\", \"devolvio\": \"Una de las cinco categorías en que se clasifica a cada cliente y sus financiaciones\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}\", \"devolvio\": \"es_criterio_objetivo_para_modificar término morosidad/situación jurídica/refinanciación; se_incluye_en deudor\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'ksa'}\", \"devolvio\": \"Exigencia de capital promedio de exposiciones subyacentes (titulizaciones)\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"{\\\"id\\\": \\\"prevision_especifica\\\", \\\"type\\\": \\\"ajuste_contable\\\", \\\"label\\\": \\\"Previsión específica\\\", \\\"properties\\\": {\\\"description\\\": \\\"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\\\"}, \\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_capitales_minimos_actual.pdf\\\", \\\"location\\\": \\\"p.42-45 / Punto 3.1.11.2, inciso i)\\\"}]}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Al computar los activos para la exigencia de capital por riesgo de crédito, la previsión específica es la que no se deduce. Según la normativa, el cálculo debe efectuarse sobre el monto bruto de la exposición, sin aplicar esta deducción contable.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"ubicacion\": \"deudores_clasificados_en_situacion_normal (nodo portador de la respuesta; NUNCA apareció en la trayectoria del agente)\"},\n        \"fuente\": {\"quote\": \"netos de las previsiones por riesgos de incobrabilidad ... y demás cuentas regularizadoras, sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados \\u201cen situación normal\\u201d \\u2013puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores\\u2013 y a las financiaciones que se encuentran cubiertas con garantías preferidas A).\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3.1 (p.7-10)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"previsión situación normal cartera deudores no se deduce\", \"resultado\": \"PRIMER resultado: deudores_clasificados_en_situacion_normal (nodo portador de la respuesta correcta) — alcanzable con vocabulario ex ante de la pregunta\"},\n        {\"consulta\": \"cómputo conceptos comprendidos previsión incobrabilidad\", \"resultado\": \"trae prevision_por_riesgo_de_incobrabilidad y prevision_regulatoria; el agente en paso 2 usó 'previsión incobrabilidad deducción activos' sin llegar a 'situación normal'\"},\n        {\"consulta\": \"ver_paso_completo(2)\", \"resultado\": \"output íntegro del paso 2 confirma que deudores_clasificados_en_situacion_normal NO estaba entre los 10 resultados que vio el agente con su consulta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor. De esta manera, la clasificación de deudores determina qué previsiones regulatorias mínimas deben constituirse, aunque la previsión específica contable no se deduzca del cálculo de capital.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"ubicacion\": \"deudores_clasificados_en_situacion_normal (la vinculación correcta es directa: la categoría 'situación normal' es la que define qué previsión no se deduce; el agente nunca alcanzó este nodo)\"},\n        \"fuente\": {\"quote\": \"sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados \\u201cen situación normal\\u201d \\u2013puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores\\u2013\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3.1 (p.7-10)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"previsión situación normal cartera deudores no se deduce\", \"resultado\": \"deudores_clasificados_en_situacion_normal — vincula explícitamente la no-deducción con la categoría de clasificación 'situación normal'; era alcanzable\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La previsión específica, aunque no se deduce en el cálculo de KSA (exigencia de capital promedio de exposiciones subyacentes) ... aunque la previsión específica contable no se deduzca del cálculo de capital.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\", \"ubicacion\": \"prevision_especifica (fiel al PDF pero su alcance es el régimen de titulizaciones/KSA, declarado en su propio contenido mediante 'KSA')\"},\n        \"fuente\": {\"quote\": \"En los casos en los que la entidad haya constituido una previsión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al conjunto de activos subyacentes, el cálculo de KSA deberá efectuarse usando el monto bruto de la exposición –es decir, sin deducir la previsión específica y/o el descuento no reembolsable en el precio de compra–.\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 3.1.11.2, inciso i) — Sección 3 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.1.11.2\", \"resultado\": \"confirma que el 'no deducir previsión específica' es una regla del cálculo de KSA en titulizaciones, no del régimen general del Punto 2.3.1; el nodo prevision_especifica declara 'KSA' en su contenido, avisando su alcance\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó falsos los claims centrales sobre qué previsión no se deduce ('previsión específica' / 'monto bruto' / 'KSA'). MÉTODO por patas: (1) La pata central pregunta qué previsión NO se deduce al computar los activos (A) para la exigencia GENERAL por riesgo de crédito. El PDF (Punto 2.3.1, p.7-10) responde inequívocamente: 'sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados en situación normal'. El nodo portador de esa respuesta —deudores_clasificados_en_situacion_normal, con description exacta 'previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos... situación normal' y provenance Punto 2.3.1— NUNCA apareció en la trayectoria del agente (verificado con ver_paso_completo(2): no está entre los resultados de su búsqueda 'previsión incobrabilidad deducción activos'). Por precedencia C1a, dato pertinente no aparecido => context_recall a nivel pata. (2) La pata de vinculación se rompe por herencia: la vinculación correcta es que la categoría 'situación normal' de la clasificación de deudores es la que define qué previsión no se deduce; el agente, partiendo de la previsión equivocada, construyó una vinculación desviada. CAUSA (árbol context_recall): ¿existe nodo portador? SÍ. ¿alcanzable con búsquedas razonables del vocabulario ex ante de la pregunta? SÍ — mi búsqueda 'previsión situación normal cartera deudores no se deduce' lo devuelve como PRIMER resultado, con términos que están todos en la pregunta ('previsión', 'no se deduce', 'deudores', 'clasificación'). El nodo es fiel al PDF. Por tanto => navegación (defecto del agente): el dato estaba bien en el grafo y era alcanzable, el agente no lo consultó. Descarto alcanzabilidad_kg porque el nodo se alcanza con vocabulario de la pregunta, no solo con palabras del propio nodo. Descarto completitud_kg/estructural_kg porque el nodo y el dato existen. Ambas patas => navegación PRIMARIA (mueven el veredicto). SECUNDARIA: el agente tomó el nodo prevision_especifica (fiel al PDF, Punto 3.1.11.2) y lo aplicó fuera de su alcance: ese nodo trata del cálculo de KSA en el régimen de titulizaciones (Sección 3), NO del cómputo general de A. Como el propio contenido del nodo declara su alcance ('no se aplica al cálculo de KSA'), un lector es advertido de que es de otro alcance => aplicacion_erronea (no contenido_kg por des-scoping). Es secundaria porque el defecto que explica la reprobación es que el dato correcto nunca se recuperó (navegación); la mala aplicación de la previsión específica es el mecanismo del relleno.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 3.1.11.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1.11.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.11.2 (PDF pág 42)\", \"pasaje\": \"3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el conjunto de acti-\\nvos subyacentes. Esto incluye a los activos en los que ha invertido el SPE, \\nlas reservas (“reserve accounts”), las cuentas de efectivo en garantía y los \\nderechos frente a las contrapartes por “swaps” de tasa de interés o de mo-\\nneda. No obstante, a los fines … [+406 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "p.42-45"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.42-45\", \"metodo\": \"pagina\", \"ref\": \"p.42-45 (PDF absoluto 1-based)\", \"pasaje\": \"Las entidades deberán considerar la realidad o finalidad económica de la \\ntransacción y aplicar estas definiciones de manera prudente en función de las \\ncaracterísticas de la estructura.  \\n \\nSi la única diferencia entre dos posiciones fueran el vencimiento, A y D serán \\nidénticos.  \\n \\n3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el c… [+1831 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "activos ponderados riesgo crédito previsión no se deduce",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"activos ponderados riesgo crédito previsión no se deduce\", \"total_con_match\": 425, \"resultados\": [{\"id\": \"activos_ponderados_por_riesgo_de_credito\", \"type\": \"componente_de_apr\", \"label\": \"Activos ponderados por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Activos computables ponderados según factores de riesgo, utilizados en la fórmula de exigencia de capital por riesgo de crédito.\"}, {\"id\": \"activos_ponderados_por_riesgo\", \"type\": \"medida_de_riesgo\", \"label\": \"Activos ponderados por riesgo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Resultado de aplicar la fórmula APR = APRc + [(RM+RO) x 12,5], donde APRc es activos ponderados por riesgo de crédito, RM es exigencia por riesgo de mercado y R…\"}, {\"id\": \"activos_ponderados_por_riesgo_operacional\", \"type\": \"componente_de_capital\", \"label\": \"Activos ponderados por riesgo operacional\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"APR para riesgo operacional, iguales a 12,5 veces el CRO.\"}, {\"id\": \"activos_ponderados_por_riesgo_del_fondo_apr_fondo\", \"type\": \"metrica_de_capital\", \"label\": \"Activos ponderados por riesgo del fondo (APR fondo)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"To… [+2036 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsión mínima incobrabilidad categoría deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsión mínima incobrabilidad categoría deudor\", \"total_con_match\": 41, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": … [+1759 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "activos_ponderados_por_riesgo_de_credito"
+      },
+      "output_truncado": "{\"id\": \"activos_ponderados_por_riesgo_de_credito\", \"type\": \"componente_de_apr\", \"label\": \"Activos ponderados por riesgo de crédito\", \"properties\": {\"description\": \"Activos computables ponderados según factores de riesgo, utilizados en la fórmula de exigencia de capital por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de cálculo regulatorio\", \"Métrica regulatoria\", \"Componente de APR\"], \"type_raw_counts\": {\"Métrica regulatoria\": 1, \"Componente de APR\": 1, \"Componente de cálculo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.1-5 / Sección 3, punto 3.1.2\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.167-170 / Punto 8.5\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "activos_computables"
+      },
+      "output_truncado": "{\"id\": \"activos_computables\", \"type\": \"componente_de_aprc\", \"label\": \"Activos computables\", \"properties\": {\"description\": \"Exposiciones que se incluyen en el cálculo de activos ponderados por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de APRC\"], \"type_raw_counts\": {\"Componente de APRC\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.1. Exigencia, definición de A\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "prevision_por_riesgo_de_incobrabilidad"
+      },
+      "output_truncado": "{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según su asociación a posiciones de titulización o exposiciones subyacentes.\", \"version\": \"vigente\", \"type_raw\": [\"Cálculo regulatorio\", \"Proceso regulatorio\", \"Requisito de capital\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Requisito de capital\": 1, \"Cálculo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.6\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.11-13 / Punto 2.4, inciso v)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.36-38 / Punto 3.1.5.3\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.1 (PDF pág 2)\", \"pasaje\": \"2.1. Exigencia.\\n2.2. Exclusiones.\\n2.3. Cómputo de los conceptos comprendidos.\\n2.4. Requisitos de debida diligencia.\\n2.5. Criterios para la determinación de los activos ponderados por riesgo.\\n2.6. Exposiciones a entidades financieras.\\n2.7. Exposiciones a empresas.\\n2.8. Exposiciones minoristas.\\n2.9. Exposiciones con garantía hipotecaria.\\n2.10. Exposiciones en situación de incumplimiento.\\n2.11. Exposiciones a instrumentos.\\n2.12. Tabla de ponderadores de riesgo.\\n2.13. Partidas fuera de balance. Factores de conversión crediticia (CCF).\\nSección 3.   Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.\\n3.1. Tratamiento de las titulizaciones.\\n3.2. Tratamiento de las posiciones en fondos.\\nSección 4.   Capital mínimo por riesgo de crédito de contraparte.\\n4.1. Exigencia de capital por riesgo de crédito de contraparte para operaciones DvP \\nfallidas y no DvP.\\n4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con de-\\nrivados –OTC o negociados en mercados r… [+399 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "p.7-10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10\", \"metodo\": \"pagina\", \"ref\": \"p.7-10 (PDF absoluto 1-based)\", \"pasaje\": \"A los efectos de la aplicación de las disposiciones de la presente sección, las entidades financieras\\nse clasificarán en:\\ni) Grupo 1: entidades calificadas por el BCRA como de importancia sistémica a nivel local\\n(D-SIB) y sucursales o su bsidiarias de bancos del exterior calificados como de impor-\\ntancia sistémica global (G-SIB).\\nii) Grupo 2: entidade s financieras no comprendidas en el acápite i).\\nEn aquellos casos en que no se establezcan disposiciones específicas para cada uno de los citados \\ngrupos de entidades financieras, deberá aplicarse el mismo tratamiento a ambos grupos.\\nLas entidades financieras que presenten  cambios en su calificación  –conforme a lo  previsto en los \\nacápites precedentes–, contarán con un plazo de 6 meses para aplicar las disposiciones específicas \\ncorrespondientes al nuevo grupo al que pertenezcan.\\n2.1. Exigencia.\\nSe determinará aplicando la siguiente expresión:\\nCRC = (k x 0,08 x APRC) + INC\\ndonde:\\nCRC: exigencia de capital por riesgo de crédito.\\nk: factor vinculado a … [+1821 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 10)\", \"pasaje\": \"2.3. Cómputo de los conceptos comprendidos.\\n2.3.1. Bases individual y consolidada mensual.\\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\\nencuentran cubiertas con garantías preferidas A).\\n2.3.2. Base consolidada trimestral.\\nSe considerarán los saldos al cierre del trimestre, aplicando en los demás aspec… [+393 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.4 (PDF pág 10)\", \"pasaje\": \"2.4. Requisitos de debida diligencia.\\nLas entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al\\nmomento del otorgamiento del crédito y con frecuencia mínima anual– a fin de que puedan con-\\ntar con una adecuada comprensión del perfil de riesgo y las características de sus contrapartes.\\nEl grado de sofisticación de las evaluaciones de debida diligencia deberá ser proporcional a la\\ndimensión e importancia económica de las entidades financieras y a la naturaleza y complejidad\\nde sus operaciones. Como resultado de esa evaluación, las entidades financieras deberán de-\\nmostrar a la SEFYC que los ponderadores de riesgo asignados son adecuados a los perfiles de\\nriesgo de sus contrapartes.\\nA tales efectos, las entidades financieras del grupo 1 deberán:\\ni) adoptar medidas adecuadas y razonables con el fin de evaluar el desempeño financiero y\\noperativo de cada contraparte a través del análisis crediticio;\\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nSección 2. Cap… [+105 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsión situación normal cartera deudores no se deduce",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsión situación normal cartera deudores no se deduce\", \"total_con_match\": 199, \"resultados\": [{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del…\"}, {\"id\": \"situacion_normal\", \"type\": \"nivel_de_clasificacion\", \"label\": \"Situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de clasificación que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\"}, {\"id\": \"cliente_en_situacion_normal\", \"type\": \"categoria_de_clasificacion_de_deudor\", \"label\": \"Cliente en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor cuyo análisis de flujo de fondos demuestra capacidad para atender adecuadamente todos sus compromisos financieros, con situación financiera líquida, bajo…\"}, {\"id\": \"estado_de_situacion_de_deudores\", \"type\": \"documento_regulatorio\", \"label\": \"Estado de situación d… [+2051 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cómputo conceptos comprendidos previsión incobrabilidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cómputo conceptos comprendidos previsión incobrabilidad\", \"total_con_match\": 27, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"}, {\"id\": \"prevision_regulatoria\", \"type\": \"ajuste_de_capital\", \"label\": \"Previsión regulatoria\", \"tokens_match… [+1879 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "deudores_clasificados_en_situacion_normal"
+      },
+      "output_truncado": "{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"properties\": {\"description\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"version\": \"vigente\", \"type_raw\": [\"Clasificación de deudores\"], \"type_raw_counts\": {\"Clasificación de deudores\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.3.1. Cómputo de conceptos\"}]}"
+     },
+     {
+      "n": 15,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "deudores_clasificados_en_situacion_normal",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"deudores_clasificados_en_situacion_normal\", \"label\": \"Deudores clasificados en situación normal\", \"n_salientes_total\": 0, \"n_entrantes_total\": 0, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=-76 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 17,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"previsión incobrabilidad deducción activos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"previsión incobrabilidad deducción activos\", \"total_con_match\": 89, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"activos_fijos\", \"type\": \"concepto_excluido\", \"label\": \"Activos fijos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Activos fijos excluidos del cálculo de información complementaria vinculada al riesgo de tasa de interés.\"}, {\"id\": … [+1865 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26213,
+      "output_tokens": 355
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28684,
+      "output_tokens": 439
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31865,
+      "output_tokens": 345
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33336,
+      "output_tokens": 372
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35886,
+      "output_tokens": 360
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37603,
+      "output_tokens": 854
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41194,
+      "output_tokens": 388
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 42041,
+      "output_tokens": 1337
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43596,
+      "output_tokens": 445
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45331,
+      "output_tokens": 5736
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 7,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-019",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}",
+      "devolvio": "Nodos sobre exigencia por riesgo de crédito y facilidades; no el nodo de la previsión de situación normal",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}",
+      "devolvio": "prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos varios; NO el nodo correcto de situación normal",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación deudores previsión', 'limite': 10}",
+      "devolvio": "clasificacion_de_deudores, prevision_especifica (KSA), categoria_de_clasificacion; NO deudores_clasificados_en_situacion_normal",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_especifica'}",
+      "devolvio": "'Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.' — nodo de titulizaciones (Punto 3.1.11.2)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito'}",
+      "devolvio": "Fórmula de exigencia por riesgo de crédito; no habla de previsiones deducibles",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'clasificacion_de_deudores'}",
+      "devolvio": "Descripción genérica de la tarea de clasificación (totalidad de financiaciones comprendidas)",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_especifica', 'direccion': 'ambas'}",
+      "devolvio": "Edge prevision_especifica -no_se_deduce_en_calculo_de-> ksa",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}",
+      "devolvio": "se_calcula_mediante APRc; utiliza factor de calificación",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión específica clasificación deudores', 'limite': 10}",
+      "devolvio": "prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento; NO el nodo de situación normal",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}",
+      "devolvio": "Previsión regulatoria deducible del CO n1 (Punto 8.4.1.1); no es la pata preguntada",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}",
+      "devolvio": "deducible_de CO n1; se_compara_con previsión contable NIIF 9",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}",
+      "devolvio": "categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad; NO el nodo de situación normal",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'categoria_de_clasificacion'}",
+      "devolvio": "Una de las cinco categorías en que se clasifica a cada cliente",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}",
+      "devolvio": "es_criterio_objetivo_para_modificar término de morosidad/situación jurídica/refinanciación; se_incluye_en deudor",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{'id': 'ksa'}",
+      "devolvio": "KSA = exigencia de capital promedio de exposiciones subyacentes (titulizaciones)",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "'description': 'Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "Cómo se vincula esa regla con la clasificación de deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La previsión específica es la que no se deduce al computar los activos para la exigencia de capital por riesgo de crédito.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.",
+       "ubicacion": "deudores_clasificados_en_situacion_normal (NO consultado por el agente; provenance: TO_capitales_minimos_actual.pdf p.7-10 / Punto 2.3.1)"
+      },
+      "fuente": {
+       "quote": "netos de las previsiones por riesgos de incobrabilidad ... sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados “en situación normal” –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A).",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "deudores clasificados previsión incobrabilidad deducir",
+       "resultado": "deudores_clasificados_en_situacion_normal aparece en 2º lugar; también previsiones_por_riesgos_de_incobrabilidad — nodos portadores de la respuesta correcta, alcanzables con vocabulario ex ante de la pregunta"
+      },
+      {
+       "consulta": "situación normal previsión",
+       "resultado": "deudores_clasificados_en_situacion_normal en 3er lugar"
+      },
+      {
+       "consulta": "previsión incobrabilidad no se deduce exigencia capital riesgo crédito clasificación deudores",
+       "resultado": "el nodo correcto NO aparece en top-15 con vocabulario literal de la pregunta (el label contiene 'situación normal', no presente literal en la pregunta), pero SÍ con los verbos 'deducir/incobrabilidad' de la propia pregunta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Cómo se vincula esa regla con la clasificación de deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Previsiones que se deducen del cálculo de conceptos comprendidos, incluyendo las contabilizadas en el pasivo, excepto el 100% de la previsión para deudores en situación normal.",
+       "ubicacion": "previsiones_por_riesgos_de_incobrabilidad (NO consultado; provenance TO_capitales_minimos_actual.pdf p.7-10 / Punto 2.3.1)"
+      },
+      "fuente": {
+       "quote": "sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados “en situación normal” –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "deudores clasificados previsión incobrabilidad deducir",
+       "resultado": "el vínculo real (la no-deducción se ancla en la clasificación 'en situación normal', puntos 6.5.1/7.2.1) está en nodos alcanzables no consultados; el agente construyó un vínculo genérico distinto (categoría → previsiones mínimas) que el PDF no funda para esta regla"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó falsas/no_soportadas las afirmaciones centrales, todas encadenadas al error de identificar 'previsión específica' como la que no se deduce. FASE B: leí el PDF. El Punto 3.1.11.2 (citado por el agente vía nodo prevision_especifica) trata del cálculo de KSA en TITULIZACIONES (Sección 3: 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'); allí, en efecto, la previsión específica no se deduce y se usa monto bruto — pero eso es el KSA de titulizaciones, NO el cómputo general de activos para la exigencia por riesgo de crédito que la pregunta pide. La regla correcta está en el Punto 2.3.1 (Cómputo de los conceptos comprendidos, Sección 2 Capital mínimo por riesgo de crédito): los conceptos se computan netos de previsiones por incobrabilidad SIN DEDUCIR el 100% de la previsión correspondiente a la cartera de deudores clasificados 'en situación normal' (puntos 6.5.1/7.2.1 del TO Clasificación de Deudores) — lo que además responde de forma integrada la segunda pata (el vínculo con la clasificación de deudores). C1a (por pata): el dato PERTINENTE a la pata 1 (la previsión de cartera en situación normal) NUNCA apareció en la trayectoria; el agente rellenó con prevision_especifica (KSA/titulizaciones), no pertinente → context_recall. Igual para la pata 2: el vínculo real (no-deducción anclada en 'situación normal') nunca apareció; el agente fabricó un vínculo genérico. C2 (causa): ¿existe nodo portador del dato faltante? SÍ: deudores_clasificados_en_situacion_normal y previsiones_por_riesgos_de_incobrabilidad, ambos con provenance exacta al Punto 2.3.1 y FIELES al PDF. ¿Alcanzables con búsquedas razonables del vocabulario ex ante? SÍ: la consulta 'deudores clasificados previsión incobrabilidad deducir' —compuesta solo con términos de la propia pregunta ('previsión por incobrabilidad no se deduce' + 'clasificación de deudores')— devuelve el nodo correcto en 2º lugar. El agente en el paso 3 buscó 'clasificación deudores previsión' (sin los verbos 'deducir/incobrabilidad') y no lo trajo, y se fijó por coincidencia superficial en prevision_especifica (comparte 'previsión'). No es alcanzabilidad_kg (el nodo no requiere palabras exclusivas de su propio contenido: se alcanza con vocabulario de la pregunta) ni completitud_kg (el nodo existe y es fiel). Por lo tanto → navegación (defecto del agente), primaria en ambas patas. Descarto sin_defecto porque las afirmaciones son fácticamente incorrectas contra el Punto 2.3.1; descarto noise_sensitivity/contenido_kg porque el nodo prevision_especifica es fiel a SU fuente (titulizaciones) — el error es de aplicación/selección del agente, no del contenido del nodo — pero como el dato pertinente nunca apareció, la precedencia fija context_recall a nivel pata.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 24,
+    "max_tool_calls": 40,
+    "tokens_in": 489462,
+    "tokens_out": 10626
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 24,
+    "tokens_in": 489462,
+    "tokens_out": 10626,
+    "latency_s": 168.075,
+    "error": null,
+    "final_raw": "Decisivo. Con la búsqueda \"deudores clasificados previsión incobrabilidad deducir\" —vocabulario 100% ex ante de la pregunta (la pregunta habla de \"previsión por incobrabilidad no se deduce\" + \"clasificación de deudores\")— el nodo correcto `deudores_clasificados_en_situacion_normal` aparece **en 2º lugar**, y también aparecen `previsiones_por_riesgos_de_incobrabilidad`. El agente en el paso 3 buscó \"clasificación deudores previsión\" (sin \"deducir/incobrabilidad\") y no lo trajo; una búsqueda razonable con los verbos de la propia pregunta (\"no se deduce\", \"incobrabilidad\") lo alcanza directamente.\n\nPor lo tanto: el nodo portador de la respuesta correcta EXISTE, es FIEL al PDF (provenance exacta al Punto 2.3.1, que verifiqué), y es ALCANZABLE con búsquedas razonables del vocabulario ex ante de la pregunta. El agente no lo encontró → **navegación** (no alcanzabilidad_kg). El síntoma es **context_recall**: el dato pertinente (la previsión de cartera en situación normal) nunca apareció en la trayectoria; el agente rellenó la pata con el nodo `prevision_especifica` (titulizaciones/KSA), no pertinente.\n\nTengo evidencia suficiente. Las patas fallidas centrales derivan todas del mismo error de navegación: el agente usó el eje \"previsión específica / KSA / titulizaciones\" en lugar del eje correcto \"previsión situación normal / cómputo conceptos comprendidos\". Emito el JSON.\n\n{\"extraccion_traza\": {\"tool_calls\": [{\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}\", \"devolvio\": \"Nodos sobre exigencia por riesgo de crédito y facilidades; no el nodo de la previsión de situación normal\", \"pertinente\": false}, {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión incobrabilidad deducción activos', 'limite': 10}\", \"devolvio\": \"prevision_por_riesgo_de_incobrabilidad (titulización), prevision_regulatoria_por_riesgo_de_incobrabilidad, activos varios; NO el nodo correcto de situación normal\", \"pertinente\": false}, {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudores previsión', 'limite': 10}\", \"devolvio\": \"clasificacion_de_deudores, prevision_especifica (KSA), categoria_de_clasificacion; NO deudores_clasificados_en_situacion_normal\", \"pertinente\": false}, {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_especifica'}\", \"devolvio\": \"'Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.' — nodo de titulizaciones (Punto 3.1.11.2)\", \"pertinente\": false}, {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito'}\", \"devolvio\": \"Fórmula de exigencia por riesgo de crédito; no habla de previsiones deducibles\", \"pertinente\": false}, {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'clasificacion_de_deudores'}\", \"devolvio\": \"Descripción genérica de la tarea de clasificación (totalidad de financiaciones comprendidas)\", \"pertinente\": true}, {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_especifica', 'direccion': 'ambas'}\", \"devolvio\": \"Edge prevision_especifica -no_se_deduce_en_calculo_de-> ksa\", \"pertinente\": false}, {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'exigencia_por_riesgo_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"se_calcula_mediante APRc; utiliza factor de calificación\", \"pertinente\": false}, {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión específica clasificación deudores', 'limite': 10}\", \"devolvio\": \"prevision_especifica, clasificacion_de_deudores, exposiciones en incumplimiento; NO el nodo de situación normal\", \"pertinente\": false}, {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad'}\", \"devolvio\": \"Previsión regulatoria deducible del CO n1 (Punto 8.4.1.1); no es la pata preguntada\", \"pertinente\": false}, {\"paso\": 11, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_regulatoria_por_riesgo_de_incobrabilidad', 'direccion': 'ambas'}\", \"devolvio\": \"deducible_de CO n1; se_compara_con previsión contable NIIF 9\", \"pertinente\": false}, {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión mínima incobrabilidad categoría clasificación', 'limite': 10}\", \"devolvio\": \"categoria_de_clasificacion, prevision_por_riesgo_de_incobrabilidad; NO el nodo de situación normal\", \"pertinente\": false}, {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'categoria_de_clasificacion'}\", \"devolvio\": \"Una de las cinco categorías en que se clasifica a cada cliente\", \"pertinente\": true}, {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'categoria_de_clasificacion', 'direccion': 'ambas'}\", \"devolvio\": \"es_criterio_objetivo_para_modificar término de morosidad/situación jurídica/refinanciación; se_incluye_en deudor\", \"pertinente\": true}, {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'ksa'}\", \"devolvio\": \"KSA = exigencia de capital promedio de exposiciones subyacentes (titulizaciones)\", \"pertinente\": false}], \"paso_decision_error\": {\"paso\": 4, \"quote\": \"'description': 'Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.'\"}, \"decision_agente_correcta\": null, \"thinking_decision\": null, \"patas\": [\"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\", \"Cómo se vincula esa regla con la clasificación de deudores\"]}, \"atribuciones\": [{\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"navegación\", \"lado\": \"agente\", \"jerarquia\": \"primaria\", \"pata\": \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\", \"evidencia\": {\"afirmacion\": {\"quote\": \"La previsión específica es la que no se deduce al computar los activos para la exigencia de capital por riesgo de crédito.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"ubicacion\": \"deudores_clasificados_en_situacion_normal (NO consultado por el agente; provenance: TO_capitales_minimos_actual.pdf p.7-10 / Punto 2.3.1)\"}, \"fuente\": {\"quote\": \"netos de las previsiones por riesgos de incobrabilidad ... sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados \\u201cen situación normal\\u201d \\u2013puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores\\u2013 y a las financiaciones que se encuentran cubiertas con garantías preferidas A).\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3.1\"}}, \"busquedas\": [{\"consulta\": \"deudores clasificados previsión incobrabilidad deducir\", \"resultado\": \"deudores_clasificados_en_situacion_normal aparece en 2º lugar; también previsiones_por_riesgos_de_incobrabilidad — nodos portadores de la respuesta correcta, alcanzables con vocabulario ex ante de la pregunta\"}, {\"consulta\": \"situación normal previsión\", \"resultado\": \"deudores_clasificados_en_situacion_normal en 3er lugar\"}, {\"consulta\": \"previsión incobrabilidad no se deduce exigencia capital riesgo crédito clasificación deudores\", \"resultado\": \"el nodo correcto NO aparece en top-15 con vocabulario literal de la pregunta (el label contiene 'situación normal', no presente literal en la pregunta), pero SÍ con los verbos 'deducir/incobrabilidad' de la propia pregunta\"}]}, {\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"navegación\", \"lado\": \"agente\", \"jerarquia\": \"primaria\", \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores\", \"evidencia\": {\"afirmacion\": {\"quote\": \"las previsiones mínimas por riesgo de incobrabilidad se determinan en función de la categoría de clasificación asignada a cada deudor\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Previsiones que se deducen del cálculo de conceptos comprendidos, incluyendo las contabilizadas en el pasivo, excepto el 100% de la previsión para deudores en situación normal.\", \"ubicacion\": \"previsiones_por_riesgos_de_incobrabilidad (NO consultado; provenance TO_capitales_minimos_actual.pdf p.7-10 / Punto 2.3.1)\"}, \"fuente\": {\"quote\": \"sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados \\u201cen situación normal\\u201d \\u2013puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores\\u2013\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3.1\"}}, \"busquedas\": [{\"consulta\": \"deudores clasificados previsión incobrabilidad deducir\", \"resultado\": \"el vínculo real (la no-deducción se ancla en la clasificación 'en situación normal', puntos 6.5.1/7.2.1) está en nodos alcanzables no consultados; el agente construyó un vínculo genérico distinto (categoría → previsiones mínimas) que el PDF no funda para esta regla\"}]}], \"razonamiento\": \"SÍNTOMA: el juez marcó falsas/no_soportadas las afirmaciones centrales, todas encadenadas al error de identificar 'previsión específica' como la que no se deduce. FASE B: leí el PDF. El Punto 3.1.11.2 (citado por el agente vía nodo prevision_especifica) trata del cálculo de KSA en TITULIZACIONES (Sección 3: 'Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos'); allí, en efecto, la previsión específica no se deduce y se usa monto bruto — pero eso es el KSA de titulizaciones, NO el cómputo general de activos para la exigencia por riesgo de crédito que la pregunta pide. La regla correcta está en el Punto 2.3.1 (Cómputo de los conceptos comprendidos, Sección 2 Capital mínimo por riesgo de crédito): los conceptos se computan netos de previsiones por incobrabilidad SIN DEDUCIR el 100% de la previsión correspondiente a la cartera de deudores clasificados 'en situación normal' (puntos 6.5.1/7.2.1 del TO Clasificación de Deudores) — lo que además responde de forma integrada la segunda pata (el vínculo con la clasificación de deudores). C1a (por pata): el dato PERTINENTE a la pata 1 (la previsión de cartera en situación normal) NUNCA apareció en la trayectoria; el agente rellenó con prevision_especifica (KSA/titulizaciones), no pertinente → context_recall. Igual para la pata 2: el vínculo real (no-deducción anclada en 'situación normal') nunca apareció; el agente fabricó un vínculo genérico. C2 (causa): ¿existe nodo portador del dato faltante? SÍ: deudores_clasificados_en_situacion_normal y previsiones_por_riesgos_de_incobrabilidad, ambos con provenance exacta al Punto 2.3.1 y FIELES al PDF. ¿Alcanzables con búsquedas razonables del vocabulario ex ante? SÍ: la consulta 'deudores clasificados previsión incobrabilidad deducir' —compuesta solo con términos de la propia pregunta ('previsión por incobrabilidad no se deduce' + 'clasificación de deudores')— devuelve el nodo correcto en 2º lugar. El agente en el paso 3 buscó 'clasificación deudores previsión' (sin los verbos 'deducir/incobrabilidad') y no lo trajo, y se fijó por coincidencia superficial en prevision_especifica (comparte 'previsión'). No es alcanzabilidad_kg (el nodo no requiere palabras exclusivas de su propio contenido: se alcanza con vocabulario de la pregunta) ni completitud_kg (el nodo existe y es fiel). Por lo tanto → navegación (defecto del agente), primaria en ambas patas. Descarto sin_defecto porque las afirmaciones son fácticamente incorrectas contra el Punto 2.3.1; descarto noise_sensitivity/contenido_kg porque el nodo prevision_especifica es fiel a SU fuente (titulizaciones) — el error es de aplicación/selección del agente, no del contenido del nodo — pero como el dato pertinente nunca apareció, la precedencia fija context_recall a nivel pata.\"}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 3.1.11.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1.11.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.11.2 (PDF pág 42)\", \"pasaje\": \"3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el conjunto de acti-\\nvos subyacentes. Esto incluye a los activos en los que ha invertido el SPE, \\nlas reservas (“reserve accounts”), las cuentas de efectivo en garantía y los \\nderechos frente a las contrapartes por “swaps” de tasa de interés o de mo-\\nneda. No obstante, a los fines … [+406 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "p.42-45"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.42-45\", \"metodo\": \"pagina\", \"ref\": \"p.42-45 (PDF absoluto 1-based)\", \"pasaje\": \"Las entidades deberán considerar la realidad o finalidad económica de la \\ntransacción y aplicar estas definiciones de manera prudente en función de las \\ncaracterísticas de la estructura.  \\n \\nSi la única diferencia entre dos posiciones fueran el vencimiento, A y D serán \\nidénticos.  \\n \\n3.1.11.2. Cálculo de las variables.  \\n \\ni) KSA. \\n \\nEs la exigencia de capital promedio de las exposiciones subyacentes; es \\ndecir, el ratio entre la suma de las exposiciones subyacentes ponderadas \\npor riesgo y la suma de las exposiciones subyacentes, todo multiplicado \\npor 8 %. El cálculo deberá reflejar los efectos de cualquier cobertura del \\nriesgo de crédito que corresponda aplicar a las exposiciones subyacentes \\n(individualmente o al conjunto). KSA es un porcentaje entre cero y cien; es \\ndecir, si el ponderador de riesgo medio ponderado fuera 100 %, KSA será \\nigual a 8 %. \\n \\nCuando la estructura involucre a un SPE, se considerará que todas las ex-\\nposiciones del SPE vinculadas a la titulización integran el c… [+1831 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "activos ponderados por riesgo de crédito previsión no se deduce",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"activos ponderados por riesgo de crédito previsión no se deduce\", \"total_con_match\": 1955, \"resultados\": [{\"id\": \"activos_ponderados_por_riesgo_de_credito\", \"type\": \"componente_de_apr\", \"label\": \"Activos ponderados por riesgo de crédito\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Activos computables ponderados según factores de riesgo, utilizados en la fórmula de exigencia de capital por riesgo de crédito.\"}, {\"id\": \"activos_ponderados_por_riesgo_de_la_inversion_apr_inversion\", \"type\": \"metrica_de_capital\", \"label\": \"Activos ponderados por riesgo de la inversión (APR inversión)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Activos ponderados por riesgo atribuibles a la inversión de la entidad en un fondo, calculados como producto del ponderador promedio, apalancamiento e inversión…\"}, {\"id\": \"activos_ponderados_por_riesgo\", \"type\": \"medida_de_riesgo\", \"label\": \"Activos ponderados por riesgo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Resultado de aplicar la fórmula APR = APRc + [(RM+RO) x 12,5], donde APRc es activos ponderados por riesgo de crédito, RM es exigencia por riesgo de mercado y R…\"}, {\"id\": \"exigencia_por_riesgo_de_credito\", \"type\": \"requis… [+2336 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsión general no deducible activo riesgo crédito",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsión general no deducible activo riesgo crédito\", \"total_con_match\": 386, \"resultados\": [{\"id\": \"riesgo_de_credito\", \"type\": \"tipo_de_riesgo\", \"label\": \"Riesgo de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Riesgo de incumplimiento de la contraparte en sus obligaciones financieras, sujeto a evaluación y ponderación.\"}, {\"id\": \"credito_no_calificado\", \"type\": \"categoria_de_exposicion\", \"label\": \"Crédito no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposición crediticia sin calificación específica de ECAI, que recibe ponderador de riesgo correspondiente a créditos sin evaluación de alta calidad.\"}, {\"id\": \"riesgo_general_de_tata\", \"type\": \"tipo_de_riesgo_de_mercado\", \"label\": \"Riesgo general de tata\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Riesgo calculado mediante posiciones ponderadas netas y desestimaciones verticales y horizontales entre zonas de vencimiento.\"}, {\"id\": \"riesgo_de_credito_propio\", \"type\": \"ajuste_regulatorio\", \"label\": \"Riesgo de crédito propio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ajustes de valuación por el riesgo de crédito de la entidad financiera, deducibles de la RPC sin compensación co… [+1905 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "monto bruto exposición previsiones",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"monto bruto exposición previsiones\", \"total_con_match\": 83, \"resultados\": [{\"id\": \"monto_bruto_de_inversiones_ingresadas\", \"type\": \"base_de_calculo\", \"label\": \"Monto bruto de inversiones ingresadas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Suma de montos acumulados por liquidaciones de endeudamientos financieros, aportes de inversión extranjera directa, y valor FOB de importaciones de bienes de ca…\"}, {\"id\": \"exposicion\", \"type\": \"instrumento_financiero\", \"label\": \"Exposición\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Todas las financiaciones otorgadas por la entidad en sus distintas modalidades, incluyendo préstamos, títulos valores, fianzas, avales y responsabilidades event…\"}, {\"id\": \"saldo_bruto\", \"type\": \"medida_de_exposicion\", \"label\": \"Saldo bruto\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Monto bruto de exposiciones minoristas sin computar coberturas del riesgo de crédito.\"}, {\"id\": \"ingreso_bruto\", \"type\": \"metrica_financiera\", \"label\": \"Ingreso bruto\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Suma de ingresos financieros menos egresos financieros, más ingresos por servicios menos egresos por servicios, más utilidades diversas men… [+1716 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "activos_ponderados_por_riesgo_de_credito"
+      },
+      "output_truncado": "{\"id\": \"activos_ponderados_por_riesgo_de_credito\", \"type\": \"componente_de_apr\", \"label\": \"Activos ponderados por riesgo de crédito\", \"properties\": {\"description\": \"Activos computables ponderados según factores de riesgo, utilizados en la fórmula de exigencia de capital por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de cálculo regulatorio\", \"Métrica regulatoria\", \"Componente de APR\"], \"type_raw_counts\": {\"Métrica regulatoria\": 1, \"Componente de APR\": 1, \"Componente de cálculo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.1-5 / Sección 3, punto 3.1.2\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.167-170 / Punto 8.5\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "prevision_por_riesgo_de_incobrabilidad"
+      },
+      "output_truncado": "{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según su asociación a posiciones de titulización o exposiciones subyacentes.\", \"version\": \"vigente\", \"type_raw\": [\"Cálculo regulatorio\", \"Proceso regulatorio\", \"Requisito de capital\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Requisito de capital\": 1, \"Cálculo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.6\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.11-13 / Punto 2.4, inciso v)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.36-38 / Punto 3.1.5.3\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "activos_computables"
+      },
+      "output_truncado": "{\"id\": \"activos_computables\", \"type\": \"componente_de_aprc\", \"label\": \"Activos computables\", \"properties\": {\"description\": \"Exposiciones que se incluyen en el cálculo de activos ponderados por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de APRC\"], \"type_raw_counts\": {\"Componente de APRC\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.1. Exigencia, definición de A\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.4 (PDF pág 10)\", \"pasaje\": \"2.4. Requisitos de debida diligencia.\\nLas entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al\\nmomento del otorgamiento del crédito y con frecuencia mínima anual– a fin de que puedan con-\\ntar con una adecuada comprensión del perfil de riesgo y las características de sus contrapartes.\\nEl grado de sofisticación de las evaluaciones de debida diligencia deberá ser proporcional a la\\ndimensión e importancia económica de las entidades financieras y a la naturaleza y complejidad\\nde sus operaciones. Como resultado de esa evaluación, las entidades financieras deberán de-\\nmostrar a la SEFYC que los ponderadores de riesgo asignados son adecuados a los perfiles de\\nriesgo de sus contrapartes.\\nA tales efectos, las entidades financieras del grupo 1 deberán:\\ni) adoptar medidas adecuadas y razonables con el fin de evaluar el desempeño financiero y\\noperativo de cada contraparte a través del análisis crediticio;\\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\\nSección 2. Cap… [+105 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 3.1.5.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1.5.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1.5.3 (PDF pág 36)\", \"pasaje\": \"3.1.5.3. No se incluirán dentro de las previsiones por riesgo de incobrabilidad computa-\\nbles del punto 8.2.3.3. las previsiones generales ni las específicas asociadas a \\nlas posiciones de titulización o a las exposiciones subyacentes que están toda-\\nvía en el activo de la entidad originante. No obstante, las entidades originantes \\npodrán deducir de las posiciones de titulización ponderadas al 1250 % tanto el \\nmonto de las previsiones específicas como los descuentos no reembolsables en \\nel precio de adquisición de los activos subyacentes a la titulización. Las previ-\\nsiones específicas asociadas a las posiciones de titulización se considerarán en \\nel cálculo del importe de la posición de acuerdo con la definición prevista en el \\npunto 3.1.5.4. Las previsiones generales de las exposiciones subyacentes no se \\ntendrán en cuenta en ningún cálculo.  \\n \\n3.1.5.4. El activo ponderado por riesgo correspondiente a una posición de titulización se \\ncalculará multiplicando el importe de la posición por el… [+393 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.1 (PDF pág 2)\", \"pasaje\": \"2.1. Exigencia.\\n2.2. Exclusiones.\\n2.3. Cómputo de los conceptos comprendidos.\\n2.4. Requisitos de debida diligencia.\\n2.5. Criterios para la determinación de los activos ponderados por riesgo.\\n2.6. Exposiciones a entidades financieras.\\n2.7. Exposiciones a empresas.\\n2.8. Exposiciones minoristas.\\n2.9. Exposiciones con garantía hipotecaria.\\n2.10. Exposiciones en situación de incumplimiento.\\n2.11. Exposiciones a instrumentos.\\n2.12. Tabla de ponderadores de riesgo.\\n2.13. Partidas fuera de balance. Factores de conversión crediticia (CCF).\\nSección 3.   Capital mínimo por riesgo de crédito. Titulizaciones e inversiones en fondos.\\n3.1. Tratamiento de las titulizaciones.\\n3.2. Tratamiento de las posiciones en fondos.\\nSección 4.   Capital mínimo por riesgo de crédito de contraparte.\\n4.1. Exigencia de capital por riesgo de crédito de contraparte para operaciones DvP \\nfallidas y no DvP.\\n4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con de-\\nrivados –OTC o negociados en mercados r… [+399 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "activos_ponderados_por_riesgo_de_credito",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"activos_ponderados_por_riesgo_de_credito\", \"label\": \"Activos ponderados por riesgo de crédito\", \"n_salientes_total\": 1, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"incluye\", \"vecino_id\": \"exposiciones_minoristas_sin_cobertura\", \"vecino_label\": \"Exposiciones minoristas sin cobertura\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.1-5 / Sección 3, punto 3.1.2\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"se_calcula_mediante\", \"vecino_id\": \"exigencia_por_riesgo_de_credito\", \"vecino_label\": \"Exigencia por riesgo de crédito\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.1-5 / Sección 3, punto 3.1.2\"}]}, {\"relation\": \"limitada_al_1_25_de\", \"vecino_id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"vecino_label\": \"Previsiones por riesgo de incobrabilidad\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}]}, {\"relation\": \"se_calcula_incluyendo\", \"vecino_id\": \"activos_ponderados_por_riesgo\", \"vecino_label\": \"Activos ponderados por riesgo\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_act… [+79 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 10)\", \"pasaje\": \"2.3. Cómputo de los conceptos comprendidos.\\n2.3.1. Bases individual y consolidada mensual.\\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\\nencuentran cubiertas con garantías preferidas A).\\n2.3.2. Base consolidada trimestral.\\nSe considerarán los saldos al cierre del trimestre, aplicando en los demás aspec… [+393 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 2.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.5 (PDF pág 11)\", \"pasaje\": \"2.5. Criterios para la determinación de los activos ponderados por riesgo.\\n2.5.1. Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. –según el grupo\\nal que pertenezca la entidad financiera, acorde a lo previsto en la presente sección–.\\nSi como resultado del proceso de debida diligencia –conforme a lo establecido en el\\npunto 2.4.– surgen ponderadores mayores a los establecidos en el punto 2.12., las  enti-\\ndades financieras del grupo 1 deberán aplicar el mayor de ambos.\\n2.5.2. Los ponderadores de riesgo se aplicarán por operación. De entenderse que una exposi-\\nción podría estar sujeta a distintos ponderadores específicos de riesgo, se aplicará el\\nmayor de ellos.\\n2.5.3. Las entidades financieras del grupo 1 deberán asignar a las exposiciones denominadas\\nen una moneda distinta a la de los ingresos de sus contrapartes –en los casos de expo-\\nsiciones minoristas sin cobertura del riesgo de crédito de la Sección 5. y de exposiciones\\ncon garantía hipotecaria sobre inmuebles residenciales –… [+391 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsión situación normal no se deduce cartera deudores",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"previsión situación normal no se deduce cartera deudores\", \"total_con_match\": 199, \"resultados\": [{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del…\"}, {\"id\": \"situacion_normal\", \"type\": \"nivel_de_clasificacion\", \"label\": \"Situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de clasificación que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\"}, {\"id\": \"cliente_en_situacion_normal\", \"type\": \"categoria_de_clasificacion_de_deudor\", \"label\": \"Cliente en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor cuyo análisis de flujo de fondos demuestra capacidad para atender adecuadamente todos sus compromisos financieros, con situación financiera líquida, bajo…\"}, {\"id\": \"estado_de_situacion_de_deudores\", \"type\": \"documento_regulatorio\", \"label\": \"Estado de situación d… [+2051 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cómputo conceptos comprendidos previsiones incobrabilidad netos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cómputo conceptos comprendidos previsiones incobrabilidad netos\", \"total_con_match\": 25, \"resultados\": [{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos pond…\"}, {\"id\": \"previsiones_por_riesgos_de_incobrabilidad\", \"type\": \"ajuste_contable\", \"label\": \"Previsiones por riesgos de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones que se deducen del cálculo de conceptos comprendidos, incluyendo las contabilizadas en el pasivo, excepto el 100% de la previsión para deudores en s…\"}, {\"id\": \"flujos_de_fondos_netos\", \"type\": \"medida_de_calculo\", \"label\": \"Flujos de Fondos Netos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Partida 50X00 que surge de la ecuación: 10X00(0) + 20X00(x) - 30X00(0) – 40X10(0) – 40X20(x), donde (0) es escenario base y (x) son escenarios 0 a 6.\"}, {\"id\": \"previsiones_del_pasivo\", \"type\": \"partida_contable\", \"label\": \"Previsiones del Pa… [+1970 chars]"
+     },
+     {
+      "n": 17,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "situación normal previsión",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"situación normal previsión\", \"total_con_match\": 24, \"resultados\": [{\"id\": \"situacion_normal\", \"type\": \"nivel_de_clasificacion\", \"label\": \"Situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de clasificación que comprende clientes que atienden puntualmente el pago de sus obligaciones o con atrasos que no superan los 31 días.\"}, {\"id\": \"cliente_en_situacion_normal\", \"type\": \"categoria_de_clasificacion_de_deudor\", \"label\": \"Cliente en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor cuyo análisis de flujo de fondos demuestra capacidad para atender adecuadamente todos sus compromisos financieros, con situación financiera líquida, bajo…\"}, {\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del…\"}, {\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"tokens_matcheados\": 1, \"resumen_propiedades\":… [+1884 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "deudores_clasificados_en_situacion_normal"
+      },
+      "output_truncado": "{\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"properties\": {\"description\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del TO sobre Clasificación de Deudores.\", \"version\": \"vigente\", \"type_raw\": [\"Clasificación de deudores\"], \"type_raw_counts\": {\"Clasificación de deudores\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.3.1. Cómputo de conceptos\"}]}"
+     },
+     {
+      "n": 19,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "previsiones_por_riesgos_de_incobrabilidad"
+      },
+      "output_truncado": "{\"id\": \"previsiones_por_riesgos_de_incobrabilidad\", \"type\": \"ajuste_contable\", \"label\": \"Previsiones por riesgos de incobrabilidad\", \"properties\": {\"description\": \"Previsiones que se deducen del cálculo de conceptos comprendidos, incluyendo las contabilizadas en el pasivo, excepto el 100% de la previsión para deudores en situación normal.\", \"version\": \"vigente\", \"type_raw\": [\"Ajuste contable\"], \"type_raw_counts\": {\"Ajuste contable\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.7-10 / Punto 2.3.1. Cómputo de conceptos\"}]}"
+     },
+     {
+      "n": 20,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "previsiones_por_riesgo_de_incobrabilidad"
+      },
+      "output_truncado": "{\"id\": \"previsiones_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_regulatorio\", \"label\": \"Previsiones por riesgo de incobrabilidad\", \"properties\": {\"description\": \"Previsiones sobre cartera de deudores clasificados en situación normal y financiaciones cubiertas con garantías preferidas A, limitadas al 1,25% de activos ponderados por riesgo de crédito.\", \"version\": \"vigente\", \"type_raw\": [\"Componente de patrimonio complementario\", \"Componente de Capital Regulatorio\", \"Componente de capital computable\", \"Concepto regulatorio\"], \"type_raw_counts\": {\"Componente de capital computable\": 1, \"Concepto regulatorio\": 1, \"Componente de patrimonio complementario\": 1, \"Componente de Capital Regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 4}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.28-30 / Punto 6.1.2, Código 26300000\"}, {\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p.31-35 / Sección 6.2, código 26300000\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.155-157 / Punto 8.2.3.3\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p.164-166 / Puntos 8.4.1.12 y … [+12 chars]"
+     },
+     {
+      "n": 21,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"previsión incobrabilidad deducción activos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"previsión incobrabilidad deducción activos\", \"total_con_match\": 89, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"activos_fijos\", \"type\": \"concepto_excluido\", \"label\": \"Activos fijos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Activos fijos excluidos del cálculo de información complementaria vinculada al riesgo de tasa de interés.\"}, {\"id\": … [+1865 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"clasificación deudores previsión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"clasificación deudores previsión\", \"total_con_match\": 24, \"resultados\": [{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"manual_de_procedimientos_de_clasificacion_y_prevision\", \"type\": \"documento_regulatorio\", \"label\": \"Manual de procedimientos de clasificación y previsión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Manual que debe contener los procedimientos implementados, los niveles que intervienen en el análisis y decisión, y debe estar a disposición permanente de la Su…\"}, {\"id\": \"prevision_especifica\", \"type\": \"ajuste_contable\", \"label\": \"Previsión específica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deducción contable que no se aplica al cálculo de KSA; el cálculo debe efectuarse sobre monto bruto de la exposición.\"}, {\"id\": \"prevision_regulatoria\", \"… [+2019 chars]"
+     },
+     {
+      "n": 23,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "previsión incobrabilidad no se deduce exigencia capital riesgo crédito clasificación deudores",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"previsión incobrabilidad no se deduce exigencia capital riesgo crédito clasificación deudores\", \"total_con_match\": 463, \"resultados\": [{\"id\": \"disminucion_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"type\": \"concepto_de_facilidad_regulatoria\", \"label\": \"Disminución de exigencia de capital mínimo por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Facilidad otorgada por el BCRA que reduce la exigencia de capital mínimo asociada al riesgo de crédito.\"}, {\"id\": \"promedio_de_36_meses_de_exigencia_de_capital_por_riesgo_de_credito\", \"type\": \"parametro_regulatorio\", \"label\": \"Promedio de 36 meses de exigencia de capital por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Promedio de los últimos 36 meses de exigencia de capital mínimo por riesgo de crédito, utilizado como base para límites máximos de exigencia operacional.\"}, {\"id\": \"exigencia_por_riesgo_de_credito\", \"type\": \"requisito_regulatorio_de_capital\", \"label\": \"Exigencia por riesgo de crédito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exigencia de capital que las entidades financieras deben mantener, calculada mediante una fórmula que considera activos pondera… [+4296 chars]"
+     },
+     {
+      "n": 24,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores clasificados previsión incobrabilidad deducir",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"deudores clasificados previsión incobrabilidad deducir\", \"total_con_match\": 21, \"resultados\": [{\"id\": \"prevision_por_riesgo_de_incobrabilidad\", \"type\": \"calculo_regulatorio\", \"label\": \"Previsión por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsiones generales y específicas que se computan para determinar la exigencia de capital en operaciones de titulización, con tratamiento diferenciado según s…\"}, {\"id\": \"deudores_clasificados_en_situacion_normal\", \"type\": \"clasificacion_de_deudores\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudores cuya previsión por riesgo de incobrabilidad no se deduce completamente en el cálculo de conceptos comprendidos, conforme a los puntos 6.5.1 y 7.2.1 del…\"}, {\"id\": \"prevision_regulatoria_por_riesgo_de_incobrabilidad\", \"type\": \"concepto_deducible_de_capital\", \"label\": \"Previsión regulatoria por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión determinada por aplicación de normas sobre previsiones mínimas por riesgo de incobrabilidad, cuya diferencia positiva respecto de la previsión contabl…\"}, {\"id\": \"previ… [+3723 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26213,
+      "output_tokens": 336
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28665,
+      "output_tokens": 535
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33414,
+      "output_tokens": 435
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34975,
+      "output_tokens": 372
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36655,
+      "output_tokens": 331
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38431,
+      "output_tokens": 305
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40213,
+      "output_tokens": 721
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45093,
+      "output_tokens": 588
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46881,
+      "output_tokens": 483
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50064,
+      "output_tokens": 619
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 53021,
+      "output_tokens": 727
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 55837,
+      "output_tokens": 5174
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 7,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,611 @@
+{
+ "id_falla": "run_4/CQ-014",
+ "run": "run_4",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_4/CQ-014",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportaciones servicios plazo ingreso liquidación mercado cambios\", \"limite\": 10}",
+      "devolvio": "329 matches; top: plazo_de_ingreso_y_liquidacion_de_divisas, liquidacion_de_fondos_en_mercado_de_cambios, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cobros exportaciones servicios plazo\", \"limite\": 10}",
+      "devolvio": "213 matches; cobros_de_exportaciones_de_bienes_y_servicios, cobros_de_exportaciones, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\"}",
+      "devolvio": "Plazo para exportadores contado desde cumplido de embarque (aplica a bienes, no da días para servicios)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobros_de_exportaciones_de_bienes_y_servicios\"}",
+      "devolvio": "Definición de fondos en cuentas del exterior; no da plazo de servicios",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante: permiso_de_embarque_provisorio",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios plazo días ingreso liquidación\", \"limite\": 10}",
+      "devolvio": "227 matches; plazos varios",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportación servicios 90 días plazo\", \"limite\": 10}",
+      "devolvio": "216 matches; exportacion_de_servicios, plazo_de_20_dias_habiles, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\"}",
+      "devolvio": "Operación que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance Punto 2.2.1",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 saliente: debe_ser_ingresado_y_liquidado_en -> mercado_de_cambios",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente navegó correctamente: en el paso 8 abrió el nodo pertinente (cobro_de_exportacion_de_servicios) que porta la respuesta exacta ('plazo no mayor a 20 días hábiles'), lo verificó con sus vecinos (paso 9) y respondió citando la provenance correcta (Punto 2.2.1). La respuesta coincide verbatim con el PDF.",
+    "thinking_decision": null,
+    "patas": [
+     "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.",
+       "ubicacion": "cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)"
+      },
+      "fuente": {
+       "quote": "2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.2.1",
+       "resultado": "El PDF confirma 'plazo no mayor a los 20 (veinte) días hábiles' — coincide verbatim con el nodo y la respuesta"
+      },
+      {
+       "consulta": "verificación del nodo cobro_de_exportacion_de_servicios",
+       "resultado": "nodo fiel, pertinente, provenance Punto 2.2.1 que efectivamente funda su contenido"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "Síntoma (C1): la única pata de la pregunta es el plazo de ingreso/liquidación de cobros de exportaciones de servicios. El dato pertinente SÍ apareció en la trayectoria (paso 8, nodo cobro_de_exportacion_de_servicios), por lo que no es context_recall. El claim está soportado por ese nodo consultado, por lo que no es faithfulness. Queda noise_sensitivity como síntoma nominal a evaluar. Causa (C2 - árbol de noise_sensitivity): ¿el nodo consultado es fiel al PDF? Leído el Punto 2.2.1, el PDF dice textualmente 'plazo no mayor a los 20 (veinte) días hábiles', idéntico al nodo y a la respuesta del agente. El nodo NO contradice el PDF; la provenance (Punto 2.2.1) SÍ funda el contenido. El nodo es fiel Y pertinente (test v2.2: usar solo ese nodo respondía la pata correctamente). Según el árbol, nodo fiel + pertinente → sin_defecto (falso positivo del juez). Refuerza esta conclusión que el propio juez APROBÓ la afirmación central ('OK/central') — no hay ninguna afirmación desagregada marcada incorrecta, y la respuesta es factualmente correcta contra el ground truth. Descarté activamente cada defecto: context_recall (dato apareció), faithfulness (soportado), contenido_kg (nodo coincide con PDF), provenance_imprecisa (cita funda el contenido), navegación/alcanzabilidad (el agente encontró el nodo), alucinacion_agente (no hay glosa; reproduce el nodo), aplicacion_erronea (alcance correcto: exportación de servicios). Por la regla de jerarquía, un FP del juez no se explica con un defecto del sistema: jerarquia sin_par, sin primaria ni secundaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 3,
+    "max_tool_calls": 40,
+    "tokens_in": 68027,
+    "tokens_out": 3809
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 3,
+    "tokens_in": 68027,
+    "tokens_out": 3809,
+    "latency_s": 52.036,
+    "error": null,
+    "final_raw": "Confirmado. El nodo es fiel al PDF, pertinente a la pata, con provenance correcta. La respuesta del agente coincide verbatim con el PDF y el juez APROBÓ la afirmación central. Este es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportaciones servicios plazo ingreso liquidación mercado cambios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"329 matches; top: plazo_de_ingreso_y_liquidacion_de_divisas, liquidacion_de_fondos_en_mercado_de_cambios, etc.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cobros exportaciones servicios plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"213 matches; cobros_de_exportaciones_de_bienes_y_servicios, cobros_de_exportaciones, etc.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\"}\", \"devolvio\": \"Plazo para exportadores contado desde cumplido de embarque (aplica a bienes, no da días para servicios)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobros_de_exportaciones_de_bienes_y_servicios\\\"}\", \"devolvio\": \"Definición de fondos en cuentas del exterior; no da plazo de servicios\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante: permiso_de_embarque_provisorio\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios plazo días ingreso liquidación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"227 matches; plazos varios\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportación servicios 90 días plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"216 matches; exportacion_de_servicios, plazo_de_20_dias_habiles, etc.\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\"}\", \"devolvio\": \"Operación que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance Punto 2.2.1\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 saliente: debe_ser_ingresado_y_liquidado_en -> mercado_de_cambios\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente navegó correctamente: en el paso 8 abrió el nodo pertinente (cobro_de_exportacion_de_servicios) que porta la respuesta exacta ('plazo no mayor a 20 días hábiles'), lo verificó con sus vecinos (paso 9) y respondió citando la provenance correcta (Punto 2.2.1). La respuesta coincide verbatim con el PDF.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)\"},\n        \"fuente\": {\"quote\": \"2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.2.1\", \"resultado\": \"El PDF confirma 'plazo no mayor a los 20 (veinte) días hábiles' — coincide verbatim con el nodo y la respuesta\"},\n        {\"consulta\": \"verificación del nodo cobro_de_exportacion_de_servicios\", \"resultado\": \"nodo fiel, pertinente, provenance Punto 2.2.1 que efectivamente funda su contenido\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Síntoma (C1): la única pata de la pregunta es el plazo de ingreso/liquidación de cobros de exportaciones de servicios. El dato pertinente SÍ apareció en la trayectoria (paso 8, nodo cobro_de_exportacion_de_servicios), por lo que no es context_recall. El claim está soportado por ese nodo consultado, por lo que no es faithfulness. Queda noise_sensitivity como síntoma nominal a evaluar. Causa (C2 - árbol de noise_sensitivity): ¿el nodo consultado es fiel al PDF? Leído el Punto 2.2.1, el PDF dice textualmente 'plazo no mayor a los 20 (veinte) días hábiles', idéntico al nodo y a la respuesta del agente. El nodo NO contradice el PDF; la provenance (Punto 2.2.1) SÍ funda el contenido. El nodo es fiel Y pertinente (test v2.2: usar solo ese nodo respondía la pata correctamente). Según el árbol, nodo fiel + pertinente → sin_defecto (falso positivo del juez). Refuerza esta conclusión que el propio juez APROBÓ la afirmación central ('OK/central') — no hay ninguna afirmación desagregada marcada incorrecta, y la respuesta es factualmente correcta contra el ground truth. Descarté activamente cada defecto: context_recall (dato apareció), faithfulness (soportado), contenido_kg (nodo coincide con PDF), provenance_imprecisa (cita funda el contenido), navegación/alcanzabilidad (el agente encontró el nodo), alucinacion_agente (no hay glosa; reproduce el nodo), aplicacion_erronea (alcance correcto: exportación de servicios). Por la regla de jerarquía, un FP del juez no se explica con un defecto del sistema: jerarquia sin_par, sin primaria ni secundaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de… [+395 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p.5-8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8\", \"metodo\": \"pagina\", \"ref\": \"p.5-8 (PDF absoluto 1-based)\", \"pasaje\": \"- Índice -\\nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \\n9.1. \\n9.2. \\n9.3. \\n9.4. \\n9.5. \\n9.6. \\n9.7. \\n9.8. \\nOperaciones comprendidas. \\nEntidad nominada por el exportador. \\nCertificaciones de aplicación de cobros de exportaciones. \\nFecha de aplicación de divisas. \\nDatos mínimos que conforman la certificación. \\nOtras circunstancias que reduzcan el monto pendiente de aplicación. \\nOperaciones cursadas por el Sistema de Monedas Locales (SML). \\nCumplimiento del régimen informativo del BCRA. \\nSección 10. Pagos de importaciones y otras compras de bienes en el exterior. \\n10.1. Disposiciones generales. \\n10.2. Definiciones. \\n10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso \\naduanero. \\n10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\n10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero \\npendiente. \\n10.6. Otras disposiciones. \\n10.7. Líneas de crédito de entidades financieras aplicadas … [+1829 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cobro_de_exportacion_de_servicios"
+      },
+      "output_truncado": "{\"id\": \"cobro_de_exportacion_de_servicios\", \"type\": \"operacion_regulada\", \"label\": \"Cobro de exportación de servicios\", \"properties\": {\"description\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"version\": \"vigente\", \"type_raw\": [\"Operación regulada\"], \"type_raw_counts\": {\"Operación regulada\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8 / Punto 2.2.1\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20732,
+      "output_tokens": 295
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23154,
+      "output_tokens": 730
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 24141,
+      "output_tokens": 2784
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 33,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-014",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportaciones servicios plazo ingreso liquidación mercado cambios\", \"limite\": 10}",
+      "devolvio": "329 matches; primeros nodos sobre plazos/liquidación genéricos",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cobros exportaciones servicios plazo\", \"limite\": 10}",
+      "devolvio": "213 matches; conceptos de cobro de exportaciones",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\"}",
+      "devolvio": "plazo genérico de exportadores contado desde cumplido de embarque (no específico de servicios)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobros_de_exportaciones_de_bienes_y_servicios\"}",
+      "devolvio": "definición de fondos en el exterior, sin plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante: permiso_de_embarque_provisorio",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios plazo días ingreso liquidación\", \"limite\": 10}",
+      "devolvio": "227 matches; plazos varios",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportación servicios 90 días plazo\", \"limite\": 10}",
+      "devolvio": "216 matches; incluye exportacion_de_servicios y plazo_de_20_dias_habiles",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\"}",
+      "devolvio": "Operación de ingreso de divisas... debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance p.5-8/Punto 2.2.1",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 saliente: debe_ser_ingresado_y_liquidado_en -> mercado_de_cambios",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente navegó correctamente hasta el nodo portador de la respuesta (cobro_de_exportacion_de_servicios, paso 8), extrajo el plazo exacto '20 días hábiles' y lo citó con la provenance correcta (Punto 2.2.1). La respuesta reproduce fielmente el nodo, que a su vez es fiel al PDF verificado. No hubo decisión errónea.",
+    "thinking_decision": null,
+    "patas": [
+     "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.",
+       "ubicacion": "cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)"
+      },
+      "fuente": {
+       "quote": "2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2.1 (PDF pág 8)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.2.1",
+       "resultado": "El PDF confirma verbatim '20 (veinte) días hábiles' para cobros por prestación de servicios de residentes a no residentes"
+      },
+      {
+       "consulta": "leer_pasaje_pdf p.5-8",
+       "resultado": "Resuelve a índice; el anclaje que funda el contenido es el Punto 2.2.1, que sí contiene el plazo"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene una única pata: el plazo de ingreso y liquidación de cobros de exportaciones de servicios. El dato pertinente SÍ apareció en la trayectoria: el nodo cobro_de_exportacion_de_servicios (paso 8) porta la respuesta exacta ('plazo no mayor a 20 días hábiles'). C1a: la pata está cubierta por un nodo pertinente → no es context_recall. C1b: la afirmación central está SOPORTADA por ese nodo consultado → el síntoma candidato es noise_sensitivity. C2: ¿el nodo es fiel al PDF? Verifiqué el Punto 2.2.1 y dice verbatim '20 (veinte) días hábiles a partir de la fecha de su percepción' — el nodo coincide exactamente. Además el juez APROBÓ esta misma afirmación central (aparece listada en 'afirmaciones que el juez aprobó') y no expuso ninguna afirmación desagregada como incorrecta. La respuesta es fácticamente correcta, soportada por nodo consultado, fiel al PDF y pertinente a la pata. Descarté activamente: contenido_kg (nodo coincide con PDF), completitud_kg (dato presente y completo), estructural_kg (existe edge debe_ser_ingresado_y_liquidado_en->mercado_de_cambios con provenance 2.2.1), provenance_imprecisa (Punto 2.2.1 funda el contenido; p.5-8 es rango de índice pero el punto citado resuelve correctamente), navegación (el agente llegó al nodo correcto), alcanzabilidad_kg (alcanzado vía 'exportación servicios 90 días plazo'), alucinacion_agente (la respuesta reproduce el nodo, sin glosas), aplicacion_erronea (el nodo es específico de exportación de servicios, no de otro alcance). Por precedencia, único síntoma noise_sensitivity resuelve a sin_defecto: es un falso positivo del juez, sin par por no ser defecto del sistema.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 4,
+    "max_tool_calls": 40,
+    "tokens_in": 92616,
+    "tokens_out": 4004
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 4,
+    "tokens_in": 92616,
+    "tokens_out": 4004,
+    "latency_s": 55.456,
+    "error": null,
+    "final_raw": "Todo confirmado. La respuesta es correcta y el juez la aprobó. Este es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportaciones servicios plazo ingreso liquidación mercado cambios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"329 matches; primeros nodos sobre plazos/liquidación genéricos\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cobros exportaciones servicios plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"213 matches; conceptos de cobro de exportaciones\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\"}\", \"devolvio\": \"plazo genérico de exportadores contado desde cumplido de embarque (no específico de servicios)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobros_de_exportaciones_de_bienes_y_servicios\\\"}\", \"devolvio\": \"definición de fondos en el exterior, sin plazo\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante: permiso_de_embarque_provisorio\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios plazo días ingreso liquidación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"227 matches; plazos varios\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportación servicios 90 días plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"216 matches; incluye exportacion_de_servicios y plazo_de_20_dias_habiles\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\"}\", \"devolvio\": \"Operación de ingreso de divisas... debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance p.5-8/Punto 2.2.1\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 saliente: debe_ser_ingresado_y_liquidado_en -> mercado_de_cambios\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente navegó correctamente hasta el nodo portador de la respuesta (cobro_de_exportacion_de_servicios, paso 8), extrajo el plazo exacto '20 días hábiles' y lo citó con la provenance correcta (Punto 2.2.1). La respuesta reproduce fielmente el nodo, que a su vez es fiel al PDF verificado. No hubo decisión errónea.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)\"},\n        \"fuente\": {\"quote\": \"2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2.1 (PDF pág 8)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.2.1\", \"resultado\": \"El PDF confirma verbatim '20 (veinte) días hábiles' para cobros por prestación de servicios de residentes a no residentes\"},\n        {\"consulta\": \"leer_pasaje_pdf p.5-8\", \"resultado\": \"Resuelve a índice; el anclaje que funda el contenido es el Punto 2.2.1, que sí contiene el plazo\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene una única pata: el plazo de ingreso y liquidación de cobros de exportaciones de servicios. El dato pertinente SÍ apareció en la trayectoria: el nodo cobro_de_exportacion_de_servicios (paso 8) porta la respuesta exacta ('plazo no mayor a 20 días hábiles'). C1a: la pata está cubierta por un nodo pertinente → no es context_recall. C1b: la afirmación central está SOPORTADA por ese nodo consultado → el síntoma candidato es noise_sensitivity. C2: ¿el nodo es fiel al PDF? Verifiqué el Punto 2.2.1 y dice verbatim '20 (veinte) días hábiles a partir de la fecha de su percepción' — el nodo coincide exactamente. Además el juez APROBÓ esta misma afirmación central (aparece listada en 'afirmaciones que el juez aprobó') y no expuso ninguna afirmación desagregada como incorrecta. La respuesta es fácticamente correcta, soportada por nodo consultado, fiel al PDF y pertinente a la pata. Descarté activamente: contenido_kg (nodo coincide con PDF), completitud_kg (dato presente y completo), estructural_kg (existe edge debe_ser_ingresado_y_liquidado_en->mercado_de_cambios con provenance 2.2.1), provenance_imprecisa (Punto 2.2.1 funda el contenido; p.5-8 es rango de índice pero el punto citado resuelve correctamente), navegación (el agente llegó al nodo correcto), alcanzabilidad_kg (alcanzado vía 'exportación servicios 90 días plazo'), alucinacion_agente (la respuesta reproduce el nodo, sin glosas), aplicacion_erronea (el nodo es específico de exportación de servicios, no de otro alcance). Por precedencia, único síntoma noise_sensitivity resuelve a sin_defecto: es un falso positivo del juez, sin par por no ser defecto del sistema.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de… [+395 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p.5-8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8\", \"metodo\": \"pagina\", \"ref\": \"p.5-8 (PDF absoluto 1-based)\", \"pasaje\": \"- Índice -\\nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \\n9.1. \\n9.2. \\n9.3. \\n9.4. \\n9.5. \\n9.6. \\n9.7. \\n9.8. \\nOperaciones comprendidas. \\nEntidad nominada por el exportador. \\nCertificaciones de aplicación de cobros de exportaciones. \\nFecha de aplicación de divisas. \\nDatos mínimos que conforman la certificación. \\nOtras circunstancias que reduzcan el monto pendiente de aplicación. \\nOperaciones cursadas por el Sistema de Monedas Locales (SML). \\nCumplimiento del régimen informativo del BCRA. \\nSección 10. Pagos de importaciones y otras compras de bienes en el exterior. \\n10.1. Disposiciones generales. \\n10.2. Definiciones. \\n10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso \\naduanero. \\n10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\n10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero \\npendiente. \\n10.6. Otras disposiciones. \\n10.7. Líneas de crédito de entidades financieras aplicadas … [+1829 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cobro_de_exportacion_de_servicios"
+      },
+      "output_truncado": "{\"id\": \"cobro_de_exportacion_de_servicios\", \"type\": \"operacion_regulada\", \"label\": \"Cobro de exportación de servicios\", \"properties\": {\"description\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"version\": \"vigente\", \"type_raw\": [\"Operación regulada\"], \"type_raw_counts\": {\"Operación regulada\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8 / Punto 2.2.1\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"cobro_de_exportacion_de_servicios\"}, \"output_completo\": {\"id\": \"cobro_de_exportacion_de_servicios\", \"type\": \"operacion_regulada\", \"label\": \"Cobro de exportación de servicios\", \"properties\": {\"description\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"version\": \"vigente\", \"type_raw\": [\"Operación regulada\"], \"type_raw_counts\": {\"Operación regulada\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8 / Punto 2.2.1\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20732,
+      "output_tokens": 323
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23182,
+      "output_tokens": 559
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23998,
+      "output_tokens": 395
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 24704,
+      "output_tokens": 2727
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 33,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-014",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportaciones servicios plazo ingreso liquidación mercado cambios\", \"limite\": 10}",
+      "devolvio": "329 matches; entre ellos plazo_de_ingreso_y_liquidacion_de_divisas, liquidacion_de_fondos_en_mercado_de_cambios, liquidacion_de_divisas_en_mercado_de_cambios",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"cobros exportaciones servicios plazo\", \"limite\": 10}",
+      "devolvio": "213 matches; cobros_de_exportaciones_de_bienes_y_servicios, cobros_de_exportaciones, cobros_de_servicios_no_conexos",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\"}",
+      "devolvio": "Plazo para exportadores contado desde cumplido de embarque (aplica a bienes, no da número); provenance Punto 7.8.2.1",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobros_de_exportaciones_de_bienes_y_servicios\"}",
+      "devolvio": "Definición de fondos depositados en cuentas del exterior; no da plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"plazo_de_ingreso_y_liquidacion_de_divisas\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 entrante: determina_el_inicio_de → permiso_de_embarque_provisorio",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"servicios plazo días ingreso liquidación\", \"limite\": 10}",
+      "devolvio": "227 matches; plazos varios (240, 90 días), plazo_de_liquidacion",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"exportación servicios 90 días plazo\", \"limite\": 10}",
+      "devolvio": "216 matches; exportacion_de_servicios, plazo_de_20_dias_habiles, plazo_de_90_dias_corridos",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\"}",
+      "devolvio": "Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance Punto 2.2.1",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"cobro_de_exportacion_de_servicios\", \"direccion\": \"ambas\"}",
+      "devolvio": "1 saliente: debe_ser_ingresado_y_liquidado_en → mercado_de_cambios; provenance Punto 2.2.1",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente identificó y abrió (paso 8) el nodo cobro_de_exportacion_de_servicios, que porta la respuesta exacta ('plazo no mayor a 20 días hábiles'), confirmó la relación con el mercado de cambios (paso 9) y citó la provenance correcta (Punto 2.2.1). La respuesta reproduce fielmente ese nodo, que a su vez es fiel al PDF (Punto 2.2.1: 'en un plazo no mayor a los 20 (veinte) días hábiles').",
+    "thinking_decision": null,
+    "patas": [
+     "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.",
+       "ubicacion": "cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)"
+      },
+      "fuente": {
+       "quote": "2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 2.2.1 (PDF pág 8)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.2.1",
+       "resultado": "El PDF dice exactamente 'plazo no mayor a los 20 (veinte) días hábiles' para cobros de servicios por residentes a no residentes: la afirmación es correcta"
+      },
+      {
+       "consulta": "ver_nodo plazo_de_20_dias_habiles",
+       "resultado": "Nodo homónimo de otro alcance (enajenación de activos no financieros no producidos, punto 2.3/7.6); el agente NO lo usó — usó el nodo correcto, sin contaminación"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene una sola pata: el plazo de ingreso y liquidación de cobros de exportaciones de servicios. C1a: el dato pertinente SÍ apareció en la trayectoria — el agente abrió en el paso 8 el nodo cobro_de_exportacion_de_servicios, que porta la respuesta ('plazo no mayor a 20 días hábiles') y confirmó la relación con el mercado de cambios (paso 9). No es context_recall. C1b: el claim central está soportado por ese nodo y hay que verificar si es correcto contra el PDF → síntoma noise_sensitivity. C2: leí el Punto 2.2.1 del PDF y dice literalmente 'deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles' — el nodo es FIEL y PERTINENTE (test v2.2: usando solo ese nodo la pata queda respondida correctamente). La cita del agente (Punto 2.2.1) es precisa. Descarto activamente cada defecto: contenido_kg (nodo coincide con PDF), completitud_kg (dato presente y usado), estructural_kg (nodo y arista existen), provenance_imprecisa (Punto 2.2.1 funda el contenido), alcanzabilidad_kg/navegación (el agente alcanzó y usó el nodo correcto), alucinacion_agente (sin glosa: la respuesta reproduce el nodo), aplicacion_erronea (el nodo homónimo plazo_de_20_dias_habiles de otro alcance NO fue usado; se usó el del alcance exacto de servicios). Además, la ÚNICA afirmación central fue explícitamente APROBADA por el juez en el contexto. Por tanto no hay claim central reprobado que explicar: la reprobación del caso es un falso positivo del juez → sin_defecto, jerarquia sin_par.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 4,
+    "max_tool_calls": 40,
+    "tokens_in": 92452,
+    "tokens_out": 4300
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 4,
+    "tokens_in": 92452,
+    "tokens_out": 4300,
+    "latency_s": 55.165,
+    "error": null,
+    "final_raw": "Ese nodo `plazo_de_20_dias_habiles` es de otro alcance (enajenación de activos no financieros no producidos, punto 2.3/7.6) — pero el agente NO lo usó, usó el nodo correcto `cobro_de_exportacion_de_servicios`. Coincidencia de valor (20 días) que no afecta.\n\nTengo evidencia suficiente. La respuesta del agente es correcta contra el PDF, la única afirmación central fue aprobada por el juez, y no hay defecto atribuible al sistema. Es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportaciones servicios plazo ingreso liquidación mercado cambios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"329 matches; entre ellos plazo_de_ingreso_y_liquidacion_de_divisas, liquidacion_de_fondos_en_mercado_de_cambios, liquidacion_de_divisas_en_mercado_de_cambios\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"cobros exportaciones servicios plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"213 matches; cobros_de_exportaciones_de_bienes_y_servicios, cobros_de_exportaciones, cobros_de_servicios_no_conexos\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\"}\", \"devolvio\": \"Plazo para exportadores contado desde cumplido de embarque (aplica a bienes, no da número); provenance Punto 7.8.2.1\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobros_de_exportaciones_de_bienes_y_servicios\\\"}\", \"devolvio\": \"Definición de fondos depositados en cuentas del exterior; no da plazo\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"plazo_de_ingreso_y_liquidacion_de_divisas\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 entrante: determina_el_inicio_de → permiso_de_embarque_provisorio\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"servicios plazo días ingreso liquidación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"227 matches; plazos varios (240, 90 días), plazo_de_liquidacion\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"exportación servicios 90 días plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"216 matches; exportacion_de_servicios, plazo_de_20_dias_habiles, plazo_de_90_dias_corridos\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\"}\", \"devolvio\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles; provenance Punto 2.2.1\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"cobro_de_exportacion_de_servicios\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"1 saliente: debe_ser_ingresado_y_liquidado_en → mercado_de_cambios; provenance Punto 2.2.1\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente identificó y abrió (paso 8) el nodo cobro_de_exportacion_de_servicios, que porta la respuesta exacta ('plazo no mayor a 20 días hábiles'), confirmó la relación con el mercado de cambios (paso 9) y citó la provenance correcta (Punto 2.2.1). La respuesta reproduce fielmente ese nodo, que a su vez es fiel al PDF (Punto 2.2.1: 'en un plazo no mayor a los 20 (veinte) días hábiles').\",\n    \"thinking_decision\": null,\n    \"patas\": [\"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios en un plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"ubicacion\": \"cobro_de_exportacion_de_servicios (abierto por el agente en paso 8)\"},\n        \"fuente\": {\"quote\": \"2.2.1. Los cobros por la prestación de servicios por parte de residentes a no residentes deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el país o de su acreditación en cuentas del exterior.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 2.2.1 (PDF pág 8)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.2.1\", \"resultado\": \"El PDF dice exactamente 'plazo no mayor a los 20 (veinte) días hábiles' para cobros de servicios por residentes a no residentes: la afirmación es correcta\"},\n        {\"consulta\": \"ver_nodo plazo_de_20_dias_habiles\", \"resultado\": \"Nodo homónimo de otro alcance (enajenación de activos no financieros no producidos, punto 2.3/7.6); el agente NO lo usó — usó el nodo correcto, sin contaminación\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene una sola pata: el plazo de ingreso y liquidación de cobros de exportaciones de servicios. C1a: el dato pertinente SÍ apareció en la trayectoria — el agente abrió en el paso 8 el nodo cobro_de_exportacion_de_servicios, que porta la respuesta ('plazo no mayor a 20 días hábiles') y confirmó la relación con el mercado de cambios (paso 9). No es context_recall. C1b: el claim central está soportado por ese nodo y hay que verificar si es correcto contra el PDF → síntoma noise_sensitivity. C2: leí el Punto 2.2.1 del PDF y dice literalmente 'deberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor a los 20 (veinte) días hábiles' — el nodo es FIEL y PERTINENTE (test v2.2: usando solo ese nodo la pata queda respondida correctamente). La cita del agente (Punto 2.2.1) es precisa. Descarto activamente cada defecto: contenido_kg (nodo coincide con PDF), completitud_kg (dato presente y usado), estructural_kg (nodo y arista existen), provenance_imprecisa (Punto 2.2.1 funda el contenido), alcanzabilidad_kg/navegación (el agente alcanzó y usó el nodo correcto), alucinacion_agente (sin glosa: la respuesta reproduce el nodo), aplicacion_erronea (el nodo homónimo plazo_de_20_dias_habiles de otro alcance NO fue usado; se usó el del alcance exacto de servicios). Además, la ÚNICA afirmación central fue explícitamente APROBADA por el juez en el contexto. Por tanto no hay claim central reprobado que explicar: la reprobación del caso es un falso positivo del juez → sin_defecto, jerarquia sin_par.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 2.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.2.1 (PDF pág 8)\", \"pasaje\": \"2.2.1. Los cobros por la prestación de servicios p or parte de residentes a no residentes \\ndeberán ser ingresados y liquidados en el mercado de cambios en un plazo no mayor \\na los 20 (veinte) días hábiles a partir de la fecha de su percepción en el exterior o en el \\npaís o de su acreditación en cuentas del exterior.  \\nEn el caso de que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al \\nRégimen de Incentivo para Grandes Inversiones (RIGI)  que haya declarado ante la \\nAutoridad de Aplicación que preveía hacer uso de los beneficios establecidos en el \\nartículo 198 de la Ley 27.742 será aplicable la excepción prevista en el punto 14.1.3.  \\nEn el caso de fondos percibidos o acreditados en el exterior, se podrá considerar \\ncumplimentado el ingreso y liquidación por el monto equivalente a los gastos \\nhabituales debitados por las entidades financieras del exterior por la transferencia de \\nfondos al país. \\n2.2.2. Quedarán exceptuados de la obligación de liquidación los cobros de exportaciones de… [+395 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "p.5-8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8\", \"metodo\": \"pagina\", \"ref\": \"p.5-8 (PDF absoluto 1-based)\", \"pasaje\": \"- Índice -\\nSección 9. Seguimiento de anticipos y otras financiaciones de exportación de bienes. \\n9.1. \\n9.2. \\n9.3. \\n9.4. \\n9.5. \\n9.6. \\n9.7. \\n9.8. \\nOperaciones comprendidas. \\nEntidad nominada por el exportador. \\nCertificaciones de aplicación de cobros de exportaciones. \\nFecha de aplicación de divisas. \\nDatos mínimos que conforman la certificación. \\nOtras circunstancias que reduzcan el monto pendiente de aplicación. \\nOperaciones cursadas por el Sistema de Monedas Locales (SML). \\nCumplimiento del régimen informativo del BCRA. \\nSección 10. Pagos de importaciones y otras compras de bienes en el exterior. \\n10.1. Disposiciones generales. \\n10.2. Definiciones. \\n10.3. Pagos de importaciones de bienes que cuentan con registro de ingreso \\naduanero. \\n10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. \\n10.5. Seguimiento de pagos de importaciones con registro de ingreso aduanero \\npendiente. \\n10.6. Otras disposiciones. \\n10.7. Líneas de crédito de entidades financieras aplicadas … [+1829 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"cobro_de_exportacion_de_servicios\"}, \"output_completo\": {\"id\": \"cobro_de_exportacion_de_servicios\", \"type\": \"operacion_regulada\", \"label\": \"Cobro de exportación de servicios\", \"properties\": {\"description\": \"Operación de ingreso de divisas por prestación de servicios por residentes a no residentes, que debe ser ingresada y liquidada en el mercado de cambios en plazo no mayor a 20 días hábiles.\", \"version\": \"vigente\", \"type_raw\": [\"Operación regulada\"], \"type_raw_counts\": {\"Operación regulada\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.5-8 / Punto 2.2.1\"}]}}"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "plazo_de_20_dias_habiles"
+      },
+      "output_truncado": "{\"id\": \"plazo_de_20_dias_habiles\", \"type\": \"plazo_regulatorio\", \"label\": \"Plazo de 20 días hábiles\", \"properties\": {\"description\": \"Plazo máximo dentro del cual debe ingresarse y liquidarse en el mercado de cambios el contravalor de enajenación de activos no financieros no producidos.\", \"version\": \"vigente\", \"type_raw\": [\"Restricción temporal\", \"Plazo regulatorio\"], \"type_raw_counts\": {\"Restricción temporal\": 1, \"Plazo regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 2}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.9-11 / punto 2.3\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.88-90 / Punto 7.6\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20732,
+      "output_tokens": 295
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23154,
+      "output_tokens": 419
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23884,
+      "output_tokens": 483
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 24682,
+      "output_tokens": 3103
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 33,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}
