@@ -128,6 +128,7 @@ Documentos `.md` numerados en la misma carpeta (reportes de cada etapa 2.3/2.3+)
 
 **Fase 2.2 — construcción de los 5 grafos**
 - `data/experiment/run_X_*/`: kg.json + schema.md + report.md + kg_visual.html + code/ por estrategia.
+- Solo run_3 conserva `kg_visual.html` commiteado; las visualizaciones de los demás runs se regeneran con `cd data/experiment/run_X_*/code && python visualize.py` (en run_1: `python 07_visualize.py`; requiere `pyvis` instalado).
 - Protocolo: `docs/schema/experiment_protocol.md`, `experiment_instance_template.md`.
 
 **Fase 2.3 — evaluación congelada**
