@@ -48,10 +48,10 @@ python run_frozen.py --mode regen --graph run_X     # run_frozen.py:833-847
 python run_frozen.py --mode report                  # run_frozen.py:849-851
 
 # Reporte etapa 2 (final), desde la adjudicación humana firmada:
-python run_etapa2.py                                # run_etapa2.py:41 → reporte_final.md
+python runners/run_etapa2.py                                # runners/run_etapa2.py:41 → reporte_final.md
 
 # Integridad de los 5 kg.json + loader (checks C1–C8, exit 0/1):
-python validate_loader.py                           # validate_loader.py:12-21
+python runners/validate_loader.py                           # runners/validate_loader.py:12-21
 ```
 
 **⚠ Los tres primeros escriben EN EL LUGAR** (`checkpoint_run_X.md`,
@@ -103,10 +103,10 @@ ILUSTRATIVA y está fuera del dataset congelado.
 
 ```bash
 cd data/experiment/evaluacion
-python validate_loader.py     # C1–C8 × 5 grafos; exit 0 y "TODOS PASAN"
+python runners/validate_loader.py     # C1–C8 × 5 grafos; exit 0 y "TODOS PASAN"
 ```
 
 Verifica que los 5 `kg.json` congelados cargan intactos con los conteos esperados
-(`data/experiment/evaluacion/validate_loader.py:179-201`). Para verificar además
+(`data/experiment/evaluacion/runners/validate_loader.py:179-201`). Para verificar además
 la reproducibilidad de la capa de reporting: regenerar un artefacto (`--mode regen
 --graph run_1`) y confirmar `git diff` vacío sobre él, como se describe arriba.

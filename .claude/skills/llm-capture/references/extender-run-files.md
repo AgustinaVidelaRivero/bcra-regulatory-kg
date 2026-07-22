@@ -71,9 +71,9 @@ separado que la comparación baseline/refinado necesita.
 `RUN_KEYS = list(RUN_FILES.keys())` (`data/experiment/evaluacion/loader.py:64`),
 así que la clave nueva entra automáticamente en todo lo que itera `RUN_KEYS`:
 
-- `validate_loader.py` la valida con los checks C1–C8 en su próxima corrida
-  (`data/experiment/evaluacion/validate_loader.py:180`) — deseable.
-- `run_posthoc.py --run all` ahora la INCLUYE (`data/experiment/evaluacion/run_posthoc.py:542`) —
+- `runners/validate_loader.py` la valida con los checks C1–C8 en su próxima corrida
+  (`data/experiment/evaluacion/runners/validate_loader.py:180`) — deseable.
+- `runners/run_posthoc.py --run all` ahora la INCLUYE (`data/experiment/evaluacion/runners/run_posthoc.py:542`) —
   ojo con corridas "all" que asumían 5 grafos.
 - `run_frozen.py` NO se ve afectado: usa `GRAPH_ORDER` hardcodeado a los 5 runs
   (`data/experiment/evaluacion/run_frozen.py:106`).
@@ -83,9 +83,9 @@ así que la clave nueva entra automáticamente en todo lo que itera `RUN_KEYS`:
 1. Crear la carpeta y copiar el `kg.json` fuente; registrar sha256 de origen y
    copia (deben coincidir) y fecha, en un log dentro de la carpeta nueva.
 2. Editar `RUN_FILES` + `ADAPTERS` en el mismo cambio (adapter del run de origen).
-3. Correr `python validate_loader.py` desde `data/experiment/evaluacion/`:
+3. Correr `python runners/validate_loader.py` desde `data/experiment/evaluacion/`:
    la clave nueva debe pasar C1–C8 (exit code 0).
-4. Smoke barato del cableado: `python run_posthoc.py --selftest` (offline; carga
+4. Smoke barato del cableado: `python runners/run_posthoc.py --selftest` (offline; carga
    run_3 pero verifica que loader+cadena siguen sanos tras la edición).
 5. Registrar en el reporte de la sesión: diff de `loader.py`, nuevo `code_version`
    (`python -c "import llm_cache as lc; print(lc.code_version())"`), y qué

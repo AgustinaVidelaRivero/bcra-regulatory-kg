@@ -1,0 +1,349 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-010",
+    "run": "run_2",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-010",
+      "question": "¿Cuál es la exigencia básica de capital mínimo para un banco?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "capital mínimo banco",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"capital mínimo banco\", \"total_con_match\": 356, \"resultados\": [{\"id\": \"obligacion:informar_capital_minimo_basico\", \"type\": \"Obligacion\", \"label\": \"informar capital mínimo básico\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligación de informar el capital mínimo básico según normativa sobre capitales mínimos de entidades financieras.\"}, {\"id\": \"obligacion:integracion_del_capital_minimo\", \"type\": \"Obligacion\", \"label\": \"integración del capital mínimo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligación general de cumplir con los límites mínimos de capital. Su incumplimiento se considera incumplimiento de integración del capital mínimo.\"}, {\"id\": \"umbral:capital_minimo_exigible_bancos\", \"type\": \"Umbral\", \"label\": \"capital mínimo exigible - bancos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exigencia básica de capital mínimo para bancos.\"}, {\"id\": \"umbral:minimo_capital_ordinario_de_nivel_1\", \"type\": \"Umbral\", \"label\": \"mínimo capital ordinario de nivel 1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Capital ordinario de nivel 1 debe ser mayor o igual al 4,5% del activo ponderado por riesgo.\"}, {\"id\": \"umbral:porcentaje_minimo_de_bienes_de_capital\"… [+1782 chars]",
+          "output_chars": 2982
+        },
+        {
+          "n": 2,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "umbral:capital_minimo_exigible_bancos"
+          },
+          "output_truncado": "{\"id\": \"umbral:capital_minimo_exigible_bancos\", \"type\": \"Umbral\", \"label\": \"capital mínimo exigible - bancos\", \"properties\": {\"description\": \"Exigencia básica de capital mínimo para bancos.\", \"valor\": \"5000\", \"unidad\": \"millones de pesos\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Encabezado\"}]}",
+          "output_chars": 364
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1454,
+          "output_tokens": 106,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.328
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 2583,
+          "output_tokens": 109,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.766
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 2834,
+          "output_tokens": 139,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.707
+        }
+      ],
+      "final_json": {
+        "respuesta": "La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.",
+        "citas": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Encabezado"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Perfecto. Tengo la información que necesito. La exigencia básica de capital mínimo para bancos está claramente especificada en el grafo.\n\n```json\n{\n  \"respuesta\": \"La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Encabezado\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 2,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Encabezado"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 6871,
+      "tokens_out": 354,
+      "cache_read": 0,
+      "cache_write": 0,
+      "cost_usd": 0.008641,
+      "latency_s": 4.835,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01TNaQKYHhVJ5Sw3Sg9iFW9i",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre los requisitos de capital mínimo para bancos en la regulación del BCRA.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01DUZP1PBr6wnLLTHHxvLvvK",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "capital mínimo banco",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1454,
+            "output_tokens": 106,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01CEMSQQXtPLHoK4aybB74MB",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Encontré un nodo específico sobre la exigencia básica de capital mínimo para bancos. Voy a obtener los detalles completos.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01EJvULjhkWHRUr3gvmzGmFx",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "umbral:capital_minimo_exigible_bancos"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 2583,
+            "output_tokens": 109,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01XvT6Xjg2UDyjukAsyXFvNW",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información que necesito. La exigencia básica de capital mínimo para bancos está claramente especificada en el grafo.\n\n```json\n{\n  \"respuesta\": \"La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Encabezado\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 2834,
+            "output_tokens": 139,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta a 'TO_capitales_minimos_actual.pdf' que corresponde al documento del ground truth, aunque la ubicación indicada ('Encabezado') no llega al nivel de punto/sección (Punto 1.2)."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "exigencia básica de capital mínimo para un banco"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "exigencia básica de capital mínimo para un banco",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta a 'TO_capitales_minimos_actual.pdf' que corresponde al documento del ground truth, aunque la ubicación indicada ('Encabezado') no llega al nivel de punto/sección (Punto 1.2).",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2182,
+        "out": 372
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01NYRGkUNwkyaGoNBBvz34oz",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\"exigencia básica de capital mínimo para un banco\"]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 583,
+            "output_tokens": 105,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_017LYiYN4Gm3L9tFD7iaGA1d",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"La exigencia básica de capital mínimo para un banco es de 5.000 millones de pesos.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"exigencia básica de capital mínimo para un banco\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta a 'TO_capitales_minimos_actual.pdf' que corresponde al documento del ground truth, aunque la ubicación indicada ('Encabezado') no llega al nivel de punto/sección (Punto 1.2).\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1599,
+            "output_tokens": 267,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.008641,
+    "judge_cost": 0.012126
+  }
+]

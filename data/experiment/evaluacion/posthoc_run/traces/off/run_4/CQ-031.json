@@ -1,0 +1,1105 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-031",
+    "run": "run_4",
+    "categoria": "cadena_restriccion_excepcion",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-031",
+      "question": "¿Qué deudores no deben ser objeto de clasificación y respecto de qué deudores no corresponde evaluar la capacidad de repago?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudores no deben ser objeto clasificación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudores no deben ser objeto clasificación\", \"total_con_match\": 156, \"resultados\": [{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y servicios.\"}, {\"id\": \"operacion_no_dvp\", \"type\": \"tipo_de_operacion_financiera\", \"label\": \"Operación no DvP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación en la que se entrega efectivo sin recibir la correspondiente contrapartida o se entregan efectos sin el correspondiente pago de efectivo, exponiendo a…\"}, {\"id\": \"ccp_que_no_califica\", \"type\": \"entidad_de_contraparte_central\", \"label\": \"CCP que no califica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad de contraparte central que no cumple con los criterios de calificación y s… [+1696 chars]",
+          "output_chars": 2896
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "capacidad de repago evaluación deudores",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"capacidad de repago evaluación deudores\", \"total_con_match\": 1749, \"resultados\": [{\"id\": \"capacidad_de_repago\", \"type\": \"criterio_de_evaluacion\", \"label\": \"Capacidad de repago\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Criterio básico de evaluación que mide la capacidad del deudor de devolver el crédito en función del flujo financiero estimado.\"}, {\"id\": \"capacidad_de_pago\", \"type\": \"criterio_de_evaluacion\", \"label\": \"Capacidad de pago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\"}, {\"id\": \"evaluacion_de_emisor\", \"type\": \"calificacion_crediticia\", \"label\": \"Evaluación de emisor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Calificación crediticia externa de un emisor que refleja toda la exposición al riesgo de crédito asumida, incluyendo principal e intereses.\"}, {\"id\": \"evaluacion_de_emision\", \"type\": \"calificacion_crediticia\", \"label\": \"Evaluación de emisión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Calificación crediticia externa de una emisión específica que refleja toda la exposición al riesgo de c… [+2035 chars]",
+          "output_chars": 3235
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "clasificacion_de_deudores"
+          },
+          "output_truncado": "{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"properties\": {\"description\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, debiendo documentarse el análisis efectuado.\", \"version\": \"vigente\", \"type_raw\": [\"Proceso regulatorio\", \"Tarea regulatoria\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Tarea regulatoria\": 1}, \"name_variants\": [], \"n_observations\": 2}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.2\"}]}",
+          "output_chars": 730
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "clasificacion_de_deudores",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"clasificacion_de_deudores\", \"label\": \"Clasificación de deudores\", \"n_salientes_total\": 0, \"n_entrantes_total\": 11, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"es_sujeto_de\", \"vecino_id\": \"cliente_de_la_entidad\", \"vecino_label\": \"Cliente de la entidad\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}]}, {\"relation\": \"es_objeto_de\", \"vecino_id\": \"financiacion\", \"vecino_label\": \"Financiación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}]}, {\"relation\": \"es_categoria_sujeta_a\", \"vecino_id\": \"cartera_comercial\", \"vecino_label\": \"Cartera comercial\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 6\"}]}, {\"relation\": \"es_categoria_sujeta_a\", \"vecino_id\": \"cartera_para_consumo_o_vivienda\", \"vecino_label\": \"Cartera para consumo o vivienda\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 7\"}]}, {\"relation\": \"esta_obligado_a_observar\", \"vecino_id\": \"proveedor_no_financiero_de_credito\", \"vecino_label\": \"Proveedor no financiero de crédi… [+1627 chars]",
+          "output_chars": 2827
+        },
+        {
+          "n": 5,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudores excluidos excepciones clasificación no aplica",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudores excluidos excepciones clasificación no aplica\", \"total_con_match\": 158, \"resultados\": [{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y servicios.\"}, {\"id\": \"operacion_no_dvp\", \"type\": \"tipo_de_operacion_financiera\", \"label\": \"Operación no DvP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación en la que se entrega efectivo sin recibir la correspondiente contrapartida o se entregan efectos sin el correspondiente pago de efectivo, exponiendo a…\"}, {\"id\": \"ccp_que_no_califica\", \"type\": \"entidad_de_contraparte_central\", \"label\": \"CCP que no califica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad de contraparte central que no cumple con los criterios de cali… [+1708 chars]",
+          "output_chars": 2908
+        },
+        {
+          "n": 6,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "no corresponde evaluar capacidad repago",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"no corresponde evaluar capacidad repago\", \"total_con_match\": 148, \"resultados\": [{\"id\": \"capacidad_de_repago\", \"type\": \"criterio_de_evaluacion\", \"label\": \"Capacidad de repago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Criterio básico de evaluación que mide la capacidad del deudor de devolver el crédito en función del flujo financiero estimado.\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y servicios.\"}, {\"id\": \"operacion_no_dvp\", \"type\": \"tipo_de_operacion_financiera\", \"label\": \"Operación no DvP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación en la que se entrega efectivo sin recibir la correspondiente contrapartida o se entregan efectos sin el correspondiente pago de efectivo, exponiendo a…\"}, {\"id\": \"capacidad_de_pago\", \"type\": \"criterio_de_evaluacion\", \"label\": \"Capacidad de pago\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fo… [+1682 chars]",
+          "output_chars": 2882
+        },
+        {
+          "n": 7,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudores menores montos pequeños no clasificar",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudores menores montos pequeños no clasificar\", \"total_con_match\": 151, \"resultados\": [{\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y servicios.\"}, {\"id\": \"operacion_no_dvp\", \"type\": \"tipo_de_operacion_financiera\", \"label\": \"Operación no DvP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación en la que se entrega efectivo sin recibir la correspondiente contrapartida o se entregan efectos sin el correspondiente pago de efectivo, exponiendo a…\"}, {\"id\": \"ccp_que_no_califica\", \"type\": \"entidad_de_contraparte_central\", \"label\": \"CCP que no califica\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad de contraparte central que no cumple con los criterios de calificación y se trata como entidad financiera.\"}, {\"id\": \"cobros_no_aplicados\", \"type\": \"concepto_de_imputacion\", \"label\": \"Cobros no aplicados\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Pagos recibidos que no han sido imputados a la cancelación de la deuda y que reducen el importe sujeto a refinanciación.\"}, {\"id\": \"… [+1686 chars]",
+          "output_chars": 2886
+        },
+        {
+          "n": 8,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "estado nacional provincia municipio clasificación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"estado nacional provincia municipio clasificación\", \"total_con_match\": 36, \"resultados\": [{\"id\": \"no_residente_con_beneficios_del_estado_nacional\", \"type\": \"sujeto_regulado\", \"label\": \"No residente con beneficios del Estado Nacional\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Personas humanas que percibieron fondos en el país asociados a beneficios otorgados por el Estado Nacional en el marco de las Leyes 24.043, 24.411 y 25.914.\"}, {\"id\": \"ecai_nacional\", \"type\": \"tipo_de_ecai\", \"label\": \"ECAI nacional\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Agente de calificación de riesgos registrado ante la Comisión Nacional de Valores (CNV) y elegible para efectuar calificaciones crediticias.\"}, {\"id\": \"moneda_nacional\", \"type\": \"parametro_regulatorio\", \"label\": \"Moneda nacional\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Moneda de curso legal en Argentina (pesos), utilizada como referencia para clasificar exposiciones.\"}, {\"id\": \"tesoro_nacional\", \"type\": \"entidad_publica\", \"label\": \"Tesoro Nacional\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyos títulos generan servicios de capital y renta que pueden ser percibidos en moneda extranjera.\"}, … [+1719 chars]",
+          "output_chars": 2919
+        },
+        {
+          "n": 9,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "excepción deudor clasificación no sujeto",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"excepción deudor clasificación no sujeto\", \"total_con_match\": 171, \"resultados\": [{\"id\": \"deudor_no_calificado\", \"type\": \"categoria_de_contraparte\", \"label\": \"Deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contraparte sin calificación de crédito otorgada por ECAI, que recibe ponderador de riesgo no menor al del país de constitución.\"}, {\"id\": \"deudor_no_evaluado_periodicamente\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor no evaluado periódicamente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cliente que, por cualquier motivo incluyendo falta de legajo o información no confiable, no haya sido evaluado con la periodicidad correspondiente.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y… [+1731 chars]",
+          "output_chars": 2931
+        },
+        {
+          "n": 10,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor soberano estado gobierno clasificación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor soberano estado gobierno clasificación\", \"total_con_match\": 36, \"resultados\": [{\"id\": \"titulo_valor_de_estado_soberano\", \"type\": \"activo_admitido_como_garantia\", \"label\": \"Título valor de estado soberano\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Títulos valores emitidos por otros estados soberanos con ponderador de riesgo de hasta el 100%, admitidos como garantía en el método simple.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus obligaciones, justificando acciones judiciales por parte del exportador.\"}, {\"id\": \"gobierno_local\", \"type\": \"sujeto_regulado\", \"label\": \"Gobierno local\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Gobierno local que puede acceder al mercado de cambios para pagos al exterior de bienes importados en el mar… [+1759 chars]",
+          "output_chars": 2959
+        },
+        {
+          "n": 11,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "deudor"
+          },
+          "output_truncado": "{\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"properties\": {\"description\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificación periódica.\", \"version\": \"vigente\", \"type_raw\": [\"Sujeto regulado\"], \"type_raw_counts\": {\"Sujeto regulado\": 7}, \"name_variants\": [], \"n_observations\": 7}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.2.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Puntos 3.1, 3.2, 3.4\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.17-19 / Sección 6, punto 6.2\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.23-25 / Múltiples referencias a lo largo del fragmento\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.26-28 / Punto 6.5.4 y siguientes\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.33-35 / Punto 7.1, 7.2\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.39-43 / Sección 7, punto 7.3 y siguientes\"}]}",
+          "output_chars": 1167
+        },
+        {
+          "n": 12,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "deudor",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"deudor\", \"label\": \"Deudor\", \"n_salientes_total\": 28, \"n_entrantes_total\": 20, \"salientes\": [{\"relation\": \"es_evaluado_segun\", \"vecino_id\": \"capacidad_de_repago\", \"vecino_label\": \"Capacidad de repago\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.17-19 / Sección 6, punto 6.2\"}]}, {\"relation\": \"puede_presentar\", \"vecino_id\": \"exposicion_en_moneda_extranjera\", \"vecino_label\": \"Exposición en moneda extranjera\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.17-19 / Sección 6, punto 6.2\"}]}, {\"relation\": \"tiene_ingresos_y_egresos_vinculados_a\", \"vecino_id\": \"coeficiente_de_estabilizacion_de_referencia\", \"vecino_label\": \"Coeficiente de Estabilización de Referencia\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.17-19 / Sección 6, punto 6.2\"}]}, {\"relation\": \"se_clasifica_segun_umbral_de\", \"vecino_id\": \"responsabilidad_patrimonial_computable_rpc\", \"vecino_label\": \"Responsabilidad patrimonial computable (RPC)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.17-19 / Sección 6, punto 6.3.1\"}]}, {\"relation\": \"es_registrado_en\", … [+10936 chars]",
+          "output_chars": 12136
+        },
+        {
+          "n": 13,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor excluido no clasificar excepto",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor excluido no clasificar excepto\", \"total_con_match\": 159, \"resultados\": [{\"id\": \"deudor_no_calificado\", \"type\": \"categoria_de_contraparte\", \"label\": \"Deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contraparte sin calificación de crédito otorgada por ECAI, que recibe ponderador de riesgo no menor al del país de constitución.\"}, {\"id\": \"deudor_no_evaluado_periodicamente\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor no evaluado periódicamente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cliente que, por cualquier motivo incluyendo falta de legajo o información no confiable, no haya sido evaluado con la periodicidad correspondiente.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y se… [+1737 chars]",
+          "output_chars": 2937
+        },
+        {
+          "n": 14,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor soberano estado nacional provincia municipio",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor soberano estado nacional provincia municipio\", \"total_con_match\": 46, \"resultados\": [{\"id\": \"titulo_valor_de_estado_soberano\", \"type\": \"activo_admitido_como_garantia\", \"label\": \"Título valor de estado soberano\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Títulos valores emitidos por otros estados soberanos con ponderador de riesgo de hasta el 100%, admitidos como garantía en el método simple.\"}, {\"id\": \"no_residente_con_beneficios_del_estado_nacional\", \"type\": \"sujeto_regulado\", \"label\": \"No residente con beneficios del Estado Nacional\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Personas humanas que percibieron fondos en el país asociados a beneficios otorgados por el Estado Nacional en el marco de las Leyes 24.043, 24.411 y 25.914.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el … [+1721 chars]",
+          "output_chars": 2921
+        },
+        {
+          "n": 15,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor no requiere evaluación capacidad repago",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor no requiere evaluación capacidad repago\", \"total_con_match\": 169, \"resultados\": [{\"id\": \"capacidad_de_repago\", \"type\": \"criterio_de_evaluacion\", \"label\": \"Capacidad de repago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Criterio básico de evaluación que mide la capacidad del deudor de devolver el crédito en función del flujo financiero estimado.\"}, {\"id\": \"deudor_no_calificado\", \"type\": \"categoria_de_contraparte\", \"label\": \"Deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contraparte sin calificación de crédito otorgada por ECAI, que recibe ponderador de riesgo no menor al del país de constitución.\"}, {\"id\": \"deudor_no_evaluado_periodicamente\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor no evaluado periódicamente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cliente que, por cualquier motivo incluyendo falta de legajo o información no confiable, no haya sido evaluado con la periodicidad correspondiente.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación … [+1753 chars]",
+          "output_chars": 2953
+        },
+        {
+          "n": 16,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor monto menor umbral no clasificar",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor monto menor umbral no clasificar\", \"total_con_match\": 176, \"resultados\": [{\"id\": \"deudor_no_calificado\", \"type\": \"categoria_de_contraparte\", \"label\": \"Deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contraparte sin calificación de crédito otorgada por ECAI, que recibe ponderador de riesgo no menor al del país de constitución.\"}, {\"id\": \"deudor_no_evaluado_periodicamente\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor no evaluado periódicamente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cliente que, por cualquier motivo incluyendo falta de legajo o información no confiable, no haya sido evaluado con la periodicidad correspondiente.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"no_residente\", \"type\": \"sujeto\", \"label\": \"No residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona o entidad que no reside en Argentina y puede ser contraparte de contratos de obras o provisión de bienes y … [+1722 chars]",
+          "output_chars": 2922
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1470,
+          "output_tokens": 176,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.635
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3663,
+          "output_tokens": 165,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.148
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 175,
+          "cache_read": 0,
+          "cache_write": 5221,
+          "latency_s": 2.032
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 174,
+          "cache_read": 5221,
+          "cache_write": 2126,
+          "latency_s": 2.453
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 172,
+          "cache_read": 7347,
+          "cache_write": 2111,
+          "latency_s": 2.364
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 148,
+          "cache_read": 9458,
+          "cache_write": 2215,
+          "latency_s": 2.569
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 174,
+          "cache_read": 11673,
+          "cache_write": 5325,
+          "latency_s": 4.919
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 185,
+          "cache_read": 16998,
+          "cache_write": 2160,
+          "latency_s": 2.131
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 3,
+          "output_tokens": 351,
+          "cache_read": 19158,
+          "cache_write": 2235,
+          "latency_s": 4.044
+        }
+      ],
+      "final_json": {
+        "respuesta": "No se encontró información en el Knowledge Graph que especifique qué deudores no deben ser objeto de clasificación o respecto de qué deudores no corresponde evaluar la capacidad de repago. La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera, así como de clasificación periódica, pero no detalla excepciones o exclusiones específicas a estas obligaciones.",
+        "citas": [],
+        "respondible": false
+      },
+      "final_raw": "Basándome en la información recolectada del Knowledge Graph, no he encontrado evidencia explícita sobre qué deudores específicamente NO deben ser objeto de clasificación o respecto de qué deudores NO corresponde evaluar la capacidad de repago.\n\nLa información disponible en el grafo indica que:\n- Los deudores (personas físicas o jurídicas que mantienen financiaciones) deben ser objeto de análisis de situación económica y financiera, así como de clasificación periódica.\n- La capacidad de repago es un criterio básico de evaluación que mide la capacidad del deudor de devolver el crédito en función del flujo financiero estimado.\n\nSin embargo, no encontré nodos o relaciones que especifiquen explícitamente excepciones, exclusiones o categorías de deudores que estén exentos de clasificación o de evaluación de capacidad de repago.\n\n```json\n{\n  \"respuesta\": \"No se encontró información en el Knowledge Graph que especifique qué deudores no deben ser objeto de clasificación o respecto de qué deudores no corresponde evaluar la capacidad de repago. La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera, así como de clasificación periódica, pero no detalla excepciones o exclusiones específicas a estas obligaciones.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 16,
+      "hit_tool_limit": true,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 1.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.9-12 / Punto 3.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 6"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 7"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 10.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 10.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 10.3"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 10.4"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.9-12 / Punto 3.4.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.1-8 / Sección 1.2.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.9-12 / Puntos 3.1, 3.2, 3.4"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.17-19 / Sección 6, punto 6.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Múltiples referencias a lo largo del fragmento"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4 y siguientes"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.33-35 / Punto 7.1, 7.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 7, punto 7.3 y siguientes"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.17-19 / Sección 6, punto 6.3.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.17-19 / Sección 6, punto 6.4.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.17-19 / Sección 6, punto 6.5"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Párrafo inicial sobre plazo de 90 o 180 días"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Múltiples puntos 6.5.3.x"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Párrafo sobre cancelación de intereses devengados"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Párrafo sobre no cancelación de intereses en 180 días"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.5"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Párrafos sobre permanencia en categoría por 180 días"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.2.3"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.3"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.4"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.8"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.23-25 / Punto 6.5.3.11"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.5"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.33-35 / Punto 7.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 7, punto 7.3"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 7, párrafo inicial"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.9-12 / Punto 3.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.9-12 / Punto 3.4.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.17-19 / Sección 6, punto 6.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4.1 y 6.5.5.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4.5 y 6.5.5.2"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4.6 y 6.5.4.7"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.26-28 / Punto 6.5.4.7"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.33-35 / Punto 7.2.2.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 10, punto 10.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 10, punto 10.2.1"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p.39-43 / Sección 10, punto 10.4"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5178,
+      "tokens_out": 1720,
+      "cache_read": 69855,
+      "cache_write": 21393,
+      "cost_usd": 0.047505,
+      "latency_s": 24.327,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_018TVqiGV1wxrfT6jzLbJEDN",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre clasificación de deudores y evaluación de capacidad de repago en el Knowledge Graph.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01PwiDftcdCcrffNU5RTy58B",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudores no deben ser objeto clasificación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01GTu7G6bGoJurtTNbBcSNoy",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "capacidad de repago evaluación deudores",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1470,
+            "output_tokens": 176,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01BSPNpPRLp6xQguBUhGWwnt",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver el nodo de \"Clasificación de deudores\" para obtener más detalles sobre qué deudores no deben ser objeto de clasificación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01XgVUACKECQJMj6kQDzHAMB",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "clasificacion_de_deudores"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01SNvDwXdJuSTEz8uPHBW9wo",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "clasificacion_de_deudores",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3663,
+            "output_tokens": 165,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01XKW6TpWUHbH5mHCE4mYX8T",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Necesito buscar más específicamente sobre excepciones o exclusiones de la clasificación de deudores.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01UVP59uqN59Hr5nPtTJKFnv",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudores excluidos excepciones clasificación no aplica",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_011ejkGqQrYFm9owPPexJ1TH",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "no corresponde evaluar capacidad repago",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 5221
+            },
+            "cache_creation_input_tokens": 5221,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 175,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01UL26fSYA1W8qAKeQXCxJjf",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar términos más específicos relacionados con excepciones o deudores que no se clasifican.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01U6PM5fxfz2Boc8vmd1bKrP",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudores menores montos pequeños no clasificar",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01HpVK42ULCJb85Lbm69MVGZ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "estado nacional provincia municipio clasificación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2126
+            },
+            "cache_creation_input_tokens": 2126,
+            "cache_read_input_tokens": 5221,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 174,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Wq5CTt4FotQtXf57Rjde2r",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre excepciones específicas en la clasificación de deudores.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_012d9b13uEnQoJ9tzGywsYfm",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "excepción deudor clasificación no sujeto",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_0132rHsEE6i3aSzi3YRqhwud",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor soberano estado gobierno clasificación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2111
+            },
+            "cache_creation_input_tokens": 2111,
+            "cache_read_input_tokens": 7347,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 172,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01454sgs5D9X9dUF4KERCMAW",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver el nodo \"Deudor\" para obtener más información sobre qué deudores están sujetos a clasificación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0133PAG5tPUbBrxctRXaXfxT",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "deudor"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01EpvUVMUqjKdz7e1HZ6vLyM",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "deudor",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2215
+            },
+            "cache_creation_input_tokens": 2215,
+            "cache_read_input_tokens": 9458,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 148,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WrimYBaQs5CMr95VY44sAK",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información más específica sobre excepciones o deudores que no se clasifican.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01NwXjdh46pKZkbWYDbymFYr",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor excluido no clasificar excepto",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01GbwQm3HZeTLUdyPDL68vKm",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor soberano estado nacional provincia municipio",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 5325
+            },
+            "cache_creation_input_tokens": 5325,
+            "cache_read_input_tokens": 11673,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 174,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_012tGYBBj7SmoQWa6mbXwAMP",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre deudores que no requieren evaluación de capacidad de repago o que están excluidos de la clasificación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Wj43tMCexDdA5kWQF8cjXH",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor no requiere evaluación capacidad repago",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01Cup46uaLkiAwjacXVdmAyo",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor monto menor umbral no clasificar",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2160
+            },
+            "cache_creation_input_tokens": 2160,
+            "cache_read_input_tokens": 16998,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 185,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01LpUZ2Du9x5BVtHUpZaDPmj",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Basándome en la información recolectada del Knowledge Graph, no he encontrado evidencia explícita sobre qué deudores específicamente NO deben ser objeto de clasificación o respecto de qué deudores NO corresponde evaluar la capacidad de repago.\n\nLa información disponible en el grafo indica que:\n- Los deudores (personas físicas o jurídicas que mantienen financiaciones) deben ser objeto de análisis de situación económica y financiera, así como de clasificación periódica.\n- La capacidad de repago es un criterio básico de evaluación que mide la capacidad del deudor de devolver el crédito en función del flujo financiero estimado.\n\nSin embargo, no encontré nodos o relaciones que especifiquen explícitamente excepciones, exclusiones o categorías de deudores que estén exentos de clasificación o de evaluación de capacidad de repago.\n\n```json\n{\n  \"respuesta\": \"No se encontró información en el Knowledge Graph que especifique qué deudores no deben ser objeto de clasificación o respecto de qué deudores no corresponde evaluar la capacidad de repago. La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera, así como de clasificación periódica, pero no detalla excepciones o exclusiones específicas a estas obligaciones.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2235
+            },
+            "cache_creation_input_tokens": 2235,
+            "cache_read_input_tokens": 19158,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 351,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "parcial",
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [
+            "La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera.",
+            "La documentación disponible establece que los deudores deben ser objeto de clasificación periódica."
+          ],
+          "n_centrales": 0,
+          "n_secundarias": 2
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Patas no cubiertas: Qué deudores no deben ser objeto de clasificación; Respecto de qué deudores no corresponde evaluar la capacidad de repago",
+          "citas": "El agente no presenta ninguna cita, por lo que no puede evaluarse si apunta a documentos del ground truth."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera.",
+            "central": false
+          },
+          {
+            "enunciado": "La documentación disponible establece que los deudores deben ser objeto de clasificación periódica.",
+            "central": false
+          }
+        ],
+        "reportes_de_alcance": [
+          "No se encontró información en el Knowledge Graph que especifique qué deudores no deben ser objeto de clasificación.",
+          "No se encontró información en el Knowledge Graph que especifique respecto de qué deudores no corresponde evaluar la capacidad de repago.",
+          "La documentación disponible no detalla excepciones o exclusiones específicas a las obligaciones de clasificación y evaluación de capacidad de repago."
+        ],
+        "patas_de_la_pregunta": [
+          "Qué deudores no deben ser objeto de clasificación",
+          "Respecto de qué deudores no corresponde evaluar la capacidad de repago"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera.",
+            "central": false,
+            "verdict": "no_soportado"
+          },
+          {
+            "enunciado": "La documentación disponible establece que los deudores deben ser objeto de clasificación periódica.",
+            "central": false,
+            "verdict": "no_soportado"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Qué deudores no deben ser objeto de clasificación",
+            "cobertura": "no_cubierta"
+          },
+          {
+            "pata": "Respecto de qué deudores no corresponde evaluar la capacidad de repago",
+            "cobertura": "no_cubierta"
+          }
+        ],
+        "cita_documento_correcto": false,
+        "cita_precision": "ausente",
+        "abstencion": "correcta",
+        "especulacion_en_prosa": false,
+        "justificacion": {
+          "citas": "El agente no presenta ninguna cita, por lo que no puede evaluarse si apunta a documentos del ground truth.",
+          "abstencion": "El agente se abstiene correctamente al no encontrar la información, sin inventar valores ni citas, aunque la pregunta era respondible según el referente."
+        }
+      },
+      "usage": {
+        "in": 2508,
+        "out": 672
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01EVcy11rFNWqzToKPyyBeSX",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\n      \"enunciado\": \"La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera.\",\n      \"central\": false\n    },\n    {\n      \"enunciado\": \"La documentación disponible establece que los deudores deben ser objeto de clasificación periódica.\",\n      \"central\": false\n    }\n  ],\n  \"reportes_de_alcance\": [\n    \"No se encontró información en el Knowledge Graph que especifique qué deudores no deben ser objeto de clasificación.\",\n    \"No se encontró información en el Knowledge Graph que especifique respecto de qué deudores no corresponde evaluar la capacidad de repago.\",\n    \"La documentación disponible no detalla excepciones o exclusiones específicas a las obligaciones de clasificación y evaluación de capacidad de repago.\"\n  ],\n  \"patas_de_la_pregunta\": [\n    \"Qué deudores no deben ser objeto de clasificación\",\n    \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 673,
+            "output_tokens": 292,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WNm88ncBpHYRxwiBGpG3ad",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"La documentación disponible establece que los deudores deben ser objeto de análisis de situación económica y financiera.\",\n      \"central\": false,\n      \"verdict\": \"no_soportado\"\n    },\n    {\n      \"enunciado\": \"La documentación disponible establece que los deudores deben ser objeto de clasificación periódica.\",\n      \"central\": false,\n      \"verdict\": \"no_soportado\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Qué deudores no deben ser objeto de clasificación\",\n      \"cobertura\": \"no_cubierta\"\n    },\n    {\n      \"pata\": \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\",\n      \"cobertura\": \"no_cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": false,\n  \"cita_precision\": \"ausente\",\n  \"abstencion\": \"correcta\",\n  \"especulacion_en_prosa\": false,\n  \"justificacion\": {\n    \"citas\": \"El agente no presenta ninguna cita, por lo que no puede evaluarse si apunta a documentos del ground truth.\",\n    \"abstencion\": \"El agente se abstiene correctamente al no encontrar la información, sin inventar valores ni citas, aunque la pregunta era respondible según el referente.\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1835,
+            "output_tokens": 380,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.047505,
+    "judge_cost": 0.017604
+  }
+]

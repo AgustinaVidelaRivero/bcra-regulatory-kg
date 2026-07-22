@@ -1,0 +1,1888 @@
+{
+ "id_falla": "run_4/CQ-008",
+ "run": "run_4",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_4/CQ-008",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'plazo comunicación clasificación cliente entidad financiera', 'limite': 10}",
+      "devolvio": "sujetos regulados (entidad_financiera, cliente_de_la_entidad, etc.); ninguno porta el plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicar clasificación cliente solicitud'}",
+      "devolvio": "cliente, legajo_del_cliente, etc.; sin plazo del pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación clasificación plazo días solicitud cliente'}",
+      "devolvio": "plazos de otros regímenes (90 días, 20 días hábiles); no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'informar clasificación cliente deudor plazo'}",
+      "devolvio": "deudor, plazos varios; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicar última clasificación deudor solicitud'}",
+      "devolvio": "solicitud_de_quiebra_del_deudor, deudor; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'derecho cliente conocer clasificación información'}",
+      "devolvio": "cliente, derecho_de_credito; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'obligación informar clasificación riesgo deudor'}",
+      "devolvio": "categorías de riesgo; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación información deudor plazo hábiles días'}",
+      "devolvio": "plazos de otros regímenes; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor derecho información clasificación'}",
+      "devolvio": "deudor, derecho_de_credito; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad debe comunicar información deudor'}",
+      "devolvio": "deudor, entidad; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación información al deudor 10 días'}",
+      "devolvio": "deudor, umbral_del_10; ningún plazo de 10 días de comunicación",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'información deudor 10 días hábiles comunicar'}",
+      "devolvio": "plazos de otros regímenes; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'deudor'}",
+      "devolvio": "definición general de deudor + provenances a TO_clasificacion_deudores_actual.pdf (secciones 1,3,6,7); no el plazo del pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': '10 días hábiles comunicación clasificación'}",
+      "devolvio": "plazos de otros regímenes; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'deudor', 'direccion': 'salientes'}",
+      "devolvio": "28 aristas sobre clasificación/reclasificación de deudor; ninguna sobre información a solicitud del cliente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente ejecutó 14 búsquedas léxicas con vocabulario variado y plausible (plazo, comunicar, informar, solicitud, cliente, deudor, 10 días, días hábiles, derecho a conocer) y verificó el nodo 'deudor' y sus vecinos. El dato pertinente (Sección 8.1: dentro de los 10 días corridos del pedido) no existe como nodo en el grafo, por lo que ninguna búsqueda razonable podía devolverlo. Ante la ausencia real, el agente abstuvo honestamente y declaró respondible=False, reportando el alcance con precisión ('no incluye la disposición regulatoria que establece este plazo particular'). Actuó bien sobre lo que el grafo le ofrecía.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo para comunicar al cliente la última clasificación asignada, a su solicitud",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita. Aunque el grafo contiene normativa sobre clasificación de deudores y obligaciones de las entidades financieras, no incluye la disposición regulatoria que establece este plazo particular.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda. (…) location: p.9-12 / Punto 3.4.2",
+       "ubicacion": "cambio_negativo_en_clasificacion (único nodo cercano; cubre el plazo de 45 días del punto 3.4.2, NO el plazo de 10 días corridos de la Sección 8.1 que la pata pregunta; no existe nodo para la Sección 8.1)"
+      },
+      "fuente": {
+       "quote": "8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la justifican según la evaluación realizada por la entidad, el importe total de deudas con el sistema financiero y las clasificaciones asignadas que surjan de la última información disponible en la 'Central de deudores del sistema financiero'.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 8.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "informaciones a clientes suministrar",
+       "resultado": "198 matches, ninguno de la Sección 8 del TO de clasificación; solo nodos de otros temas (financiaciones a clientes vinculados, grado A, etc.)"
+      },
+      {
+       "consulta": "plazo de 10 días corridos",
+       "resultado": "1773 matches por token, top resultados son plazos de otros regímenes (90, 180, 120, 240 días corridos); no existe nodo 'plazo de 10 días corridos' ni para la comunicación de la clasificación"
+      },
+      {
+       "consulta": "última clasificación asignada fundamentos central de deudores",
+       "resultado": "no devuelve nodo de la Sección 8.1; solo clasificacion_de_deudores, central_de_deudores_del_sistema_financiero, etc."
+      },
+      {
+       "consulta": "información a suministrar cliente solicitud crédito notificación",
+       "resultado": "notificaciones de otros TOs (acreditación, aprobación de solicitud a 10 días hábiles del TO de usuarios); ninguna es la Sección 8.1 de clasificación"
+      },
+      {
+       "consulta": "notificación posibilidad requerir datos fórmula independiente",
+       "resultado": "19 matches, todos de otros temas; ningún nodo del segundo párrafo de la Sección 8.1"
+      },
+      {
+       "consulta": "sección 8 informaciones clientes clasificación deudores",
+       "resultado": "23 matches; el más cercano es cambio_negativo_en_clasificacion (punto 3.4.2, 45 días), que NO es la Sección 8.1; no aparece nodo de la Sección 8"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la justifican según la evaluación realizada por la entidad, el importe total de deudas con el sistema financiero y las clasificaciones asignadas que surjan de la última información disponible en la 'Central de deudores del sistema financiero'.",
+        "alcance_en_el_nodo": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+        "coinciden": "no",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente (Sección 8.1) declara la obligación de comunicar al cliente, a su solicitud, la última clasificación asignada dentro de 10 días corridos; el único nodo cercano trata un alcance distinto (reclasificación desfavorable comunicada dentro de 45 días, punto 3.4.2). Los pasajes verbatim del portador confirman que su provenance cubre el legajo/cambios negativos (3.4.x), no la Sección 8.1, por lo que no existe nodo para el plazo de 10 días que la pata pregunta: falta de completitud confirmada."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 3598,
+        "output_tokens": 508
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 1,
+       "umbral": 1,
+       "decididas": 1,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "causa_ganadora": "completitud_kg",
+       "votos_ganadores": 1
+      },
+      "corrigio": false,
+      "causa_post_s1": "completitud_kg",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene una sola pata — el plazo para comunicar al cliente la última clasificación cuando lo solicita. El dato pertinente que la responde es la Sección 8.1 del TO de clasificación: 'A solicitud de cada cliente, dentro de los 10 días corridos del pedido…'. En los 15 pasos de la trayectoria ese dato NUNCA apareció: los 14 buscar_nodos devolvieron sujetos regulados y plazos de otros regímenes, y el ver_nodo/ver_vecinos de 'deudor' no lo contienen. Por lo tanto la pata quedó sin dato → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? Busqué exhaustivamente con vocabulario ex ante y con términos aún más dirigidos (informaciones a clientes, plazo de 10 días corridos, última clasificación asignada, sección 8): NO existe ningún nodo que porte la Sección 8.1. El nodo más cercano, cambio_negativo_en_clasificacion, cubre otra provisión (plazo de 45 días del punto 3.4.2, comunicación de cambios NEGATIVOS, no la comunicación a solicitud del cliente), por lo que no es pertinente. Como el nodo NO existe pero el PDF SÍ tiene el dato (leído verbatim en Punto 8.1: 10 días corridos), la rama es 'No existe → completitud_kg (falta el dato)'. No es alcanzabilidad_kg (no hay nodo oculto por description), no es navegación (no hay nodo relevante que exhibir), no es estructural_kg (no faltan aristas entre datos existentes: falta el dato mismo). Descarto sin_defecto: la respuesta del agente sí es incompleta frente a lo que exige la pregunta y el juez la reprobó porque el sistema no entregó el plazo que la norma establece. El defecto es del grafo (falta la extracción de la Sección 8 del TO), no del agente, que investigó exhaustivamente y abstuvo con honestidad. Par: {context_recall, completitud_kg}, primaria, lado grafo.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 31,
+    "max_tool_calls": 40,
+    "tokens_in": 1001465,
+    "tokens_out": 9516
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 31,
+    "tokens_in": 1001465,
+    "tokens_out": 9516,
+    "latency_s": 160.342,
+    "error": null,
+    "final_raw": "Not pertinent (from exterior/cambios TO). My investigation is complete.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'plazo comunicación clasificación cliente entidad financiera', 'limite': 10}\", \"devolvio\": \"sujetos regulados (entidad_financiera, cliente_de_la_entidad, etc.); ninguno porta el plazo\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicar clasificación cliente solicitud'}\", \"devolvio\": \"cliente, legajo_del_cliente, etc.; sin plazo del pedido\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación clasificación plazo días solicitud cliente'}\", \"devolvio\": \"plazos de otros regímenes (90 días, 20 días hábiles); no pertinentes\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'informar clasificación cliente deudor plazo'}\", \"devolvio\": \"deudor, plazos varios; no pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicar última clasificación deudor solicitud'}\", \"devolvio\": \"solicitud_de_quiebra_del_deudor, deudor; no pertinente\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'derecho cliente conocer clasificación información'}\", \"devolvio\": \"cliente, derecho_de_credito; no pertinente\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'obligación informar clasificación riesgo deudor'}\", \"devolvio\": \"categorías de riesgo; no pertinente\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación información deudor plazo hábiles días'}\", \"devolvio\": \"plazos de otros regímenes; no pertinente\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor derecho información clasificación'}\", \"devolvio\": \"deudor, derecho_de_credito; no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad debe comunicar información deudor'}\", \"devolvio\": \"deudor, entidad; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación información al deudor 10 días'}\", \"devolvio\": \"deudor, umbral_del_10; ningún plazo de 10 días de comunicación\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'información deudor 10 días hábiles comunicar'}\", \"devolvio\": \"plazos de otros regímenes; no pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'deudor'}\", \"devolvio\": \"definición general de deudor + provenances a TO_clasificacion_deudores_actual.pdf (secciones 1,3,6,7); no el plazo del pedido\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': '10 días hábiles comunicación clasificación'}\", \"devolvio\": \"plazos de otros regímenes; no pertinente\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'deudor', 'direccion': 'salientes'}\", \"devolvio\": \"28 aristas sobre clasificación/reclasificación de deudor; ninguna sobre información a solicitud del cliente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente ejecutó 14 búsquedas léxicas con vocabulario variado y plausible (plazo, comunicar, informar, solicitud, cliente, deudor, 10 días, días hábiles, derecho a conocer) y verificó el nodo 'deudor' y sus vecinos. El dato pertinente (Sección 8.1: dentro de los 10 días corridos del pedido) no existe como nodo en el grafo, por lo que ninguna búsqueda razonable podía devolverlo. Ante la ausencia real, el agente abstuvo honestamente y declaró respondible=False, reportando el alcance con precisión ('no incluye la disposición regulatoria que establece este plazo particular'). Actuó bien sobre lo que el grafo le ofrecía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo para comunicar al cliente la última clasificación asignada, a su solicitud\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita. Aunque el grafo contiene normativa sobre clasificación de deudores y obligaciones de las entidades financieras, no incluye la disposición regulatoria que establece este plazo particular.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda. (…) location: p.9-12 / Punto 3.4.2\", \"ubicacion\": \"cambio_negativo_en_clasificacion (único nodo cercano; cubre el plazo de 45 días del punto 3.4.2, NO el plazo de 10 días corridos de la Sección 8.1 que la pata pregunta; no existe nodo para la Sección 8.1)\"},\n        \"fuente\": {\"quote\": \"8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la justifican según la evaluación realizada por la entidad, el importe total de deudas con el sistema financiero y las clasificaciones asignadas que surjan de la última información disponible en la 'Central de deudores del sistema financiero'.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 8.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"informaciones a clientes suministrar\", \"resultado\": \"198 matches, ninguno de la Sección 8 del TO de clasificación; solo nodos de otros temas (financiaciones a clientes vinculados, grado A, etc.)\"},\n        {\"consulta\": \"plazo de 10 días corridos\", \"resultado\": \"1773 matches por token, top resultados son plazos de otros regímenes (90, 180, 120, 240 días corridos); no existe nodo 'plazo de 10 días corridos' ni para la comunicación de la clasificación\"},\n        {\"consulta\": \"última clasificación asignada fundamentos central de deudores\", \"resultado\": \"no devuelve nodo de la Sección 8.1; solo clasificacion_de_deudores, central_de_deudores_del_sistema_financiero, etc.\"},\n        {\"consulta\": \"información a suministrar cliente solicitud crédito notificación\", \"resultado\": \"notificaciones de otros TOs (acreditación, aprobación de solicitud a 10 días hábiles del TO de usuarios); ninguna es la Sección 8.1 de clasificación\"},\n        {\"consulta\": \"notificación posibilidad requerir datos fórmula independiente\", \"resultado\": \"19 matches, todos de otros temas; ningún nodo del segundo párrafo de la Sección 8.1\"},\n        {\"consulta\": \"sección 8 informaciones clientes clasificación deudores\", \"resultado\": \"23 matches; el más cercano es cambio_negativo_en_clasificacion (punto 3.4.2, 45 días), que NO es la Sección 8.1; no aparece nodo de la Sección 8\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene una sola pata — el plazo para comunicar al cliente la última clasificación cuando lo solicita. El dato pertinente que la responde es la Sección 8.1 del TO de clasificación: 'A solicitud de cada cliente, dentro de los 10 días corridos del pedido…'. En los 15 pasos de la trayectoria ese dato NUNCA apareció: los 14 buscar_nodos devolvieron sujetos regulados y plazos de otros regímenes, y el ver_nodo/ver_vecinos de 'deudor' no lo contienen. Por lo tanto la pata quedó sin dato → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? Busqué exhaustivamente con vocabulario ex ante y con términos aún más dirigidos (informaciones a clientes, plazo de 10 días corridos, última clasificación asignada, sección 8): NO existe ningún nodo que porte la Sección 8.1. El nodo más cercano, cambio_negativo_en_clasificacion, cubre otra provisión (plazo de 45 días del punto 3.4.2, comunicación de cambios NEGATIVOS, no la comunicación a solicitud del cliente), por lo que no es pertinente. Como el nodo NO existe pero el PDF SÍ tiene el dato (leído verbatim en Punto 8.1: 10 días corridos), la rama es 'No existe → completitud_kg (falta el dato)'. No es alcanzabilidad_kg (no hay nodo oculto por description), no es navegación (no hay nodo relevante que exhibir), no es estructural_kg (no faltan aristas entre datos existentes: falta el dato mismo). Descarto sin_defecto: la respuesta del agente sí es incompleta frente a lo que exige la pregunta y el juez la reprobó porque el sistema no entregó el plazo que la norma establece. El defecto es del grafo (falta la extracción de la Sección 8 del TO), no del agente, que investigó exhaustivamente y abstuvo con honestidad. Par: {context_recall, completitud_kg}, primaria, lado grafo.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "clasificación asignada notificar cliente diez días",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"clasificación asignada notificar cliente diez días\", \"total_con_match\": 66, \"resultados\": [{\"id\": \"plazo_de_revocacion_de_diez_dias_habiles\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de revocación de diez días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo durante el cual el usuario puede revocar la aceptación del producto o servicio, contado a partir de la fecha de recibido el contrato o de la disponibilida…\"}, {\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción… [+1778 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "disconformidad clasificación cliente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"disconformidad clasificación cliente\", \"total_con_match\": 37, \"resultados\": [{\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"cliente_residente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Residente que puede canalizar operaciones a través del Sistema de Monedas Locales implementado por el BCRA.\"}, {\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejand…\"}, {\"id\": \"cliente_no_residente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente no residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cliente que no es persona humana residente y debe cumplir con requisitos adicionales de declaración jurada respecto a operaciones con títulos … [+1881 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cliente_de_la_entidad"
+      },
+      "output_truncado": "{\"id\": \"cliente_de_la_entidad\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente de la entidad\", \"properties\": {\"description\": \"Personas residentes en el país o en el exterior, de sectores público y privado, financieros y no financieros, que reciben financiaciones de la entidad y deben ser clasificados según su calidad de obligados.\", \"version\": \"vigente\", \"type_raw\": [\"Sujeto regulado\"], \"type_raw_counts\": {\"Sujeto regulado\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "clasificacion_de_deudores"
+      },
+      "output_truncado": "{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"properties\": {\"description\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, debiendo documentarse el análisis efectuado.\", \"version\": \"vigente\", \"type_raw\": [\"Proceso regulatorio\", \"Tarea regulatoria\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Tarea regulatoria\": 1}, \"name_variants\": [], \"n_observations\": 2}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.2\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del ajuste de pre… [+266 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "legajo_del_cliente"
+      },
+      "output_truncado": "{\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"properties\": {\"description\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejando constancia de las revisiones efectuadas y la clasificación asignada.\", \"version\": \"vigente\", \"type_raw\": [\"Documento administrativo\", \"Documento de gestión crediticia\", \"Documento regulatorio\"], \"type_raw_counts\": {\"Documento administrativo\": 1, \"Documento de gestión crediticia\": 1, \"Documento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.2.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.4.4\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 5\", \"ref\": \"Punto/Sección 5 (mejor score=-23 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4 (PDF pág 10)\", \"pasaje\": \"3.4. Legajo del cliente.\\n3.4.1. Apertura.\\nLa entidad deberá llevar un legajo de cada deudor de su cartera, así como de cada uno\\nde sus corresponsales, de acuerdo con lo establecido en las normas sobre “Cuentas de \\ncorresponsalía”.\\nEn los casos de créditos cedidos a favor de la entidad sin responsabilidad para el cedente\\n–unidad económica receptora de los fondos –, deberá abrirse el legajo del firmante, libr a-\\ndor, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos cons e-\\ncuentemente en principales y directos pagadores, al que se hayan imputado las acree n-\\ncias.\\nNo será obligatoria la apertura del legajo en los casos de deudores por servicios públicos\\no por tarjetas de crédito considerados a los fines de la clasificación por haber sido cedidos\\nlos respectivos créditos por deudores en concurso preventivo.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 8a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 2\"}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.7 (PDF pág 14)\", \"pasaje\": \"3.7. Importe de referencia.\\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\\naplicación de la Ley 24.467 (y sus modificatorias).\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 6\"}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.8\", \"ref\": \"Punto/Sección 3.8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.5 (PDF pág 13)\", \"pasaje\": \"3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del otorgamiento de créditos y garantías.\\n3.5.2. Al sector encargado del otorgamiento de créditos y garantías.\\nDe optar por esta posibilidad, la entidad financiera deberá contar con una oficina ind e-\\npendiente que tendrá como función efectuar la revisión de las clasificaciones asignadas a\\nlos clientes por el sector de créditos.\\nDicha revisión –que podrá estar a cargo de la auditoría interna de la entidad – deberá\\ncomprender obligatoriamente a los clientes cuyo endeudamiento total en pesos y en m o-\\nneda extranjera (por las financiaciones comprendidas) supere el 1 % de la responsabil i-\\ndad patrimonial computable de la entidad del mes anterior al de la clasificación o el equ i-\\nvalente al importe de referencia establecido en el punto 3.7., de ambos el menor, y alcan-\\nzar como mínimo el 20 % de la cartera activa total, que se completará, en caso de… [+398 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.9\", \"ref\": \"Punto/Sección 3.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.15-16"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.15-16\", \"metodo\": \"pagina\", \"ref\": \"p.15-16 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Niveles de clasificación. \\nSe han previsto niveles de agrupamiento de los clientes en orden decreciente de calidad, en ra-\\nzón directa al riesgo de incobrabilidad que se deriva de las situaciones que presentan. \\n4.2. Criterio básico de clasificación. \\nEl criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el fu-\\nturo de la deuda o de los compromisos objeto de la garantía de la entidad financiera. \\n4.3. Evaluación de la capacidad de pago. \\n4.3.1. Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos \\nde fondos realizado por la entidad. \\n4.3.2. En segundo lugar, deberá considerarse la posibilidad de liquidación de activos no im-\\nprescindibles para la operatoria de la empresa. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\nNo corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que \\nse encuentren respaldadas con tales garantías. \\n4.5. Deudores que no deben ser objeto de cla… [+1819 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.11-12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.11-12\", \"metodo\": \"pagina\", \"ref\": \"p.11-12 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis… [+1825 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"Además, corresponderá mantener en la casa central de la entidad una copia del legajo\\nde cada uno de los clientes cuyo endeudamiento (financiaciones comprendidas) sea\\nequivalente o superior al 1 % de la responsabilidad patrimonial computable.\\nEstas disposiciones también resultan aplicables a los anexos al legajo del cliente.\\n3.4.5. Aspectos formales.\\nEl legajo y los anexos podrán llevarse en medios magnéticos, electrónicos u otra tecn o-\\nlogía similar. En estos dos últimos casos deberán observarse los requisitos incluidos en\\nel punto 1. de las normas sobre “Instrumentación, conservación y reproducción de doc u-\\nmentos”.\\nLa información que surja del “Legajo Único Financiero y Económico” – establecido por la\\nResolución N° 92/21 del Ministerio de Desarrollo Productivo – será considerada para el\\ncumplimiento de requerimientos contenidos en estas normas.\\n3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del… [+1694 chars]"
+     },
+     {
+      "n": 17,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"c) junto con el recibo de pago de la cuota, o\\nd) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta in-\\nformación e\\nn cualquier correspondencia pos tal de carácter general que se remita al\\ncliente o específica dirig\\nida a tal fin.\\nAdicionalmente y en igual plazo, las enti dades financieras que brinden servicios de in-\\nformación a sus clientes a través de In ternet (“home banking”), deberán poner en cono-\\ncimiento de cada cliente -por el medio señalado- , la información a la que se refiere esta \\ncomunicación. \\nPor otra parte, el saldo actualizado de la totalidad de las financiaciones otorgadas -que \\ncomprender\\ná las facilidades asignadas por todas las filiales y unidades operativas de la \\nentidad- deberá encontrarse disponible, discriminado por concepto, según el sistema de \\ninformación contable que utilice la entidad, en el lugar de radicación del legajo del cliente \\no la \\ncasa central, de corresponder llevar copia en ésta, de acuerdo con las normas perti-\\nnentes.\\… [+1816 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.14"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.14\", \"metodo\": \"pagina\", \"ref\": \"p.14 (PDF absoluto 1-based)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o autoridad… [+765 chars]"
+     },
+     {
+      "n": 19,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.9-10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-10\", \"metodo\": \"pagina\", \"ref\": \"p.9-10 (PDF absoluto 1-based)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las acr… [+1814 chars]"
+     },
+     {
+      "n": 20,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 21,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.3 (PDF pág 12)\", \"pasaje\": \"3.4.3. Anexos. \\nEn los casos de préstamos a personas humanas con garantía hipotecaria en primer gra-\\ndo \\nsobre una vivienda o con garantía prendaria en primer grado sobre automóviles o ve-\\nhículos utilitarios livianos 0 km para uso particular, comercial o alquiler, se anexarán al \\nlegajo del deudor las carpetas crediticia, legal y de administración cuando se observen \\nlas pautas previstas en los respectivos manuales de originación y administración. \\n3.4.4. Radicación. \\nEl legajo del deudor se deberá llevar en el lugar d e radicación de la cuenta. \\nSe admitirá que el legajo del cliente se encuentre en un l ugar distinto del de radicación de \\nla cuenta (por ejemplo: casa matriz o sucursal que sea asiento de gerencia regional), \\ncuando ello haya sido determinado por razones operativas -vinculadas a la evaluación, \\notorgamiento y seguimiento de los créditos- y dicha circunstancia se encuentre incluida \\nen el “Manual de procedimientos de clasificación y previsión”. \\nCLASIFICACIÓN DE DEUDORES \\nB… [+116 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.2-3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.2-3\", \"metodo\": \"pagina\", \"ref\": \"p.2-3 (PDF absoluto 1-based)\", \"pasaje\": \"-Índice-\\nSección 1. Deudores comprendidos. \\n1.1. Criterio general. \\n1.2. Criterios especiales de imputación. \\nSección 2. Financiaciones comprendidas. \\n2.1. Conceptos incluidos. \\n2.2. Exclusiones. \\nSección 3. Tarea de clasificación. \\n3.1. Procedimientos de análisis de cartera. \\n3.2. Periodicidad de clasificación. \\n3.3. Manual de procedimientos de clasificación y previsión. \\n3.4. Legajo del cliente. \\n3.5. Responsabilidad de la tarea de clasificación. \\n3.6. Aprobación de la clasificación. \\n3.7. Importe de referencia. \\nSección 4. Criterios de clasificación. \\n4.1. Niveles de clasificación. \\n4.2. Criterio básico de clasificación. \\n4.3. Evaluación de la capacidad de pago. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\n4.5. Deudores que no deben ser objeto de clasificación. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de \\ncrédito por riesgo comercial y con seguros de riesgo de crédito “con alcance de \\ncomprador público”. \\nSección 5. Categorías de … [+1520 chars]"
+     },
+     {
+      "n": 23,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 41)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 24,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "informaciones a clientes suministrar",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"informaciones a clientes suministrar\", \"total_con_match\": 198, \"resultados\": [{\"id\": \"financiaciones_a_clientes_vinculados\", \"type\": \"concepto_regulatorio\", \"label\": \"Financiaciones a clientes vinculados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiamientos otorgados a clientes vinculados, sujetos a límites y generadores de incrementos de exigencia.\"}, {\"id\": \"financiaciones_a_clientes_con_actividad_agricola\", \"type\": \"tipo_de_exposicion\", \"label\": \"Financiaciones a clientes con actividad agrícola\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones a clientes con actividad agrícola que no sean MIPyMES y tengan ratio de acopio superior al 5% de su cosecha anual, sujetas a exigencia adicional de…\"}, {\"id\": \"grado_a\", \"type\": \"clasificacion_de_riesgo\", \"label\": \"Grado A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Grado asignado a entidades financieras prestatarias que evidencian adecuada capacidad para cumplir compromisos financieros y observan requisitos regulatorios mí…\"}, {\"id\": \"grupo_a\", \"type\": \"clasificacion_de_entidades\", \"label\": \"Grupo A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clasificación de entidades financieras que deb… [+1693 chars]"
+     },
+     {
+      "n": 25,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo de 10 días corridos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo de 10 días corridos\", \"total_con_match\": 1773, \"resultados\": [{\"id\": \"plazo_de_90_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 90 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada a partir del…\"}, {\"id\": \"plazo_de_180_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada previas al 1…\"}, {\"id\": \"plazo_adicional_de_15_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo adicional de 15 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo adicional aplicable a financiaciones de servicios de fletes de importación o cuando la financiación es anterior a la prestación del servicio.\"}, {\"id\": \"plazo_de_120_dias_corridos_para_aplicacion_de_fondos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 120 días corridos para aplicación de fondos\", \"… [+2110 chars]"
+     },
+     {
+      "n": 26,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "última clasificación asignada fundamentos central de deudores",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"última clasificación asignada fundamentos central de deudores\", \"total_con_match\": 1753, \"resultados\": [{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"central_de_deudores_del_sistema_financiero\", \"type\": \"sistema_de_informacion\", \"label\": \"Central de deudores del sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Base de datos centralizada que registra información sobre clasificaciones de deudores asignadas por múltiples acreedores y es consultada para determinar recateg…\"}, {\"id\": \"tarea_de_clasificacion\", \"type\": \"funcion_regulatoria\", \"label\": \"Tarea de clasificación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Proceso de asignación de categorías de riesgo a deudores, que puede ser encomendada a un área independiente, al sector de créditos con revisión independiente, o…\"}, {\"id\": \"categoria_de_clasificacion\", \"type\": \"nivel_de_riesgo\", \"label\": \"Categoría de clasificació… [+2003 chars]"
+     },
+     {
+      "n": 27,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "información a suministrar cliente solicitud crédito notificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"información a suministrar cliente solicitud crédito notificación\", \"total_con_match\": 366, \"resultados\": [{\"id\": \"notificacion_al_cliente_de_acreditacion\", \"type\": \"obligacion_regulatoria\", \"label\": \"Notificación al cliente de acreditación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Procedimiento mediante el cual la entidad debe informar al beneficiario la recepción de fondos en cuenta de corresponsalía dentro de un plazo no mayor a un día …\"}, {\"id\": \"notificacion_de_aprobacion_de_solicitud\", \"type\": \"requisito_contractual\", \"label\": \"Notificación de aprobación de solicitud\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Notificación que debe realizarse al usuario una vez aprobada la solicitud, dentro de diez días hábiles contados a partir de la aprobación o disponibilidad efect…\"}, {\"id\": \"poliza_de_seguro_de_credito_a_la_exportacion\", \"type\": \"instrumento_de_cobertura\", \"label\": \"Póliza de seguro de crédito a la exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cobertura de seguros que protege al exportador contra el riesgo de crédito impago y permite la subrogación de derechos de cobro.\"}, {\"id\": \"financiacion_a_cliente_con_actividad_agricola\",… [+2173 chars]"
+     },
+     {
+      "n": 28,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "notificación posibilidad requerir datos fórmula independiente",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"notificación posibilidad requerir datos fórmula independiente\", \"total_con_match\": 19, \"resultados\": [{\"id\": \"datos_observables\", \"type\": \"insumo_de_valuacion\", \"label\": \"Datos observables\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Información de mercado relevante y confiable utilizada para estimar valor razonable, que debe maximizarse en técnicas de valuación.\"}, {\"id\": \"notificacion_al_bcra\", \"type\": \"procedimiento_administrativo\", \"label\": \"Notificación al BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La entidad nominada por un exportador debe notificar al BCRA mediante nota dirigida a la Gerencia Principal de Exterior y Cambios dentro de los 30 días corridos…\"}, {\"id\": \"monto_independiente_ia\", \"type\": \"parametro_de_garantia\", \"label\": \"Monto Independiente (IA)\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Parámetro definido en la documentación usual para operaciones con margen que representa un monto de garantía independiente.\"}, {\"id\": \"notificacion_de_reintegro\", \"type\": \"procedimiento_regulatorio\", \"label\": \"Notificación de reintegro\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comunicación al usuario sobre acreditación o puesta a disp… [+1253 chars]"
+     },
+     {
+      "n": 29,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "sección 8 informaciones clientes clasificación deudores",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"sección 8 informaciones clientes clasificación deudores\", \"total_con_match\": 23, \"resultados\": [{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"operaciones_de_clientes_en_puntos_3_8_3_9_3_13_3_14_1_y_3_14_2\", \"type\": \"excepcion_regulatoria\", \"label\": \"Operaciones de clientes en puntos 3.8., 3.9., 3.13., 3.14.1. y 3.14.2.\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones de egresos que correspondan a clientes realizadas en el marco de los puntos especificados, exentas del requisito de liquidación en mercado de cambio…\"}, {\"id\": \"tarea_de_clasificacion\", \"type\": \"funcion_regulatoria\", \"label\": \"Tarea de clasificación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Proceso de asignación de categorías de riesgo a deudores, que puede ser encomendada a un área independiente, al sector de créditos con revisión independiente, o…\"}, {\"id\": \"categoria_de_clasificacion\", \"type\": \"nivel_de_riesg… [+1527 chars]"
+     },
+     {
+      "n": 30,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cambio_negativo_en_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}"
+     },
+     {
+      "n": 31,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "operaciones_de_clientes_en_puntos_3_8_3_9_3_13_3_14_1_y_3_14_2"
+      },
+      "output_truncado": "{\"id\": \"operaciones_de_clientes_en_puntos_3_8_3_9_3_13_3_14_1_y_3_14_2\", \"type\": \"excepcion_regulatoria\", \"label\": \"Operaciones de clientes en puntos 3.8., 3.9., 3.13., 3.14.1. y 3.14.2.\", \"properties\": {\"description\": \"Operaciones de egresos que correspondan a clientes realizadas en el marco de los puntos especificados, exentas del requisito de liquidación en mercado de cambios.\", \"version\": \"vigente\", \"type_raw\": [\"Excepción regulatoria\"], \"type_raw_counts\": {\"Excepción regulatoria\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"p.43-46 / Punto 3.16.2.2, inciso i)\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32205,
+      "output_tokens": 232
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35017,
+      "output_tokens": 180
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35831,
+      "output_tokens": 213
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37164,
+      "output_tokens": 278
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38261,
+      "output_tokens": 298
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39136,
+      "output_tokens": 203
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40739,
+      "output_tokens": 269
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 42566,
+      "output_tokens": 172
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44004,
+      "output_tokens": 166
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45392,
+      "output_tokens": 171
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46768,
+      "output_tokens": 336
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49282,
+      "output_tokens": 361
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50323,
+      "output_tokens": 453
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 51376,
+      "output_tokens": 549
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 53229,
+      "output_tokens": 157
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 53835,
+      "output_tokens": 266
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 56868,
+      "output_tokens": 319
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 59957,
+      "output_tokens": 401
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 62562,
+      "output_tokens": 389
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 63203,
+      "output_tokens": 228
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 63747,
+      "output_tokens": 3875
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 93,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-008",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'plazo comunicación clasificación cliente entidad financiera', 'limite': 10}",
+      "devolvio": "nodos genéricos: entidad_financiera, cliente_de_la_entidad, etc. Ninguno porta plazo de comunicación de clasificación a pedido del cliente",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicar clasificación cliente solicitud', 'limite': 10}",
+      "devolvio": "cliente, legajo_del_cliente, cliente_no_residente; ninguno con el plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación clasificación plazo días solicitud cliente', 'limite': 10}",
+      "devolvio": "nodos de plazos de otros regímenes (90 días, 20 días hábiles, 30/60 días de bienes); ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'informar clasificación cliente deudor plazo', 'limite': 10}",
+      "devolvio": "deudor, cliente, deudor_moroso, plazo_de_90_dias; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicar última clasificación deudor solicitud', 'limite': 10}",
+      "devolvio": "solicitud_de_quiebra_del_deudor, deudor, deudor_en_concurso; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'derecho cliente conocer clasificación información', 'limite': 10}",
+      "devolvio": "cliente, derecho_de_credito, legajo_del_cliente; ninguno con el plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'obligación informar clasificación riesgo deudor', 'limite': 10}",
+      "devolvio": "categorías de clasificación (riesgo alto/bajo/medio); ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación información deudor plazo hábiles días', 'limite': 10}",
+      "devolvio": "plazos de otros regímenes; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'deudor derecho información clasificación', 'limite': 10}",
+      "devolvio": "deudor, derecho_de_credito, deudor_en_concurso; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad debe comunicar información deudor', 'limite': 10}",
+      "devolvio": "deudor, entidad, nueva_entidad; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'comunicación información al deudor 10 días', 'limite': 10}",
+      "devolvio": "deudor, umbral_del_10, obligado_al_pago; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'información deudor 10 días hábiles comunicar', 'limite': 10}",
+      "devolvio": "plazos varios; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{'id': 'deudor'}",
+      "devolvio": "definición genérica de deudor con provenances del TO_clasificacion_deudores; sin plazo de comunicación a pedido",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': '10 días hábiles comunicación clasificación', 'limite': 10}",
+      "devolvio": "plazos de otros regímenes; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'deudor', 'direccion': 'salientes'}",
+      "devolvio": "28 relaciones sobre clasificación/reclasificación del deudor; ninguna sobre comunicación de la clasificación a pedido del cliente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente hizo 12 búsquedas léxicas con vocabulario variado y pertinente (plazo, comunicar, informar, clasificación, cliente, deudor, solicitud, días hábiles, 10 días) y exploró el nodo 'deudor' y sus vecinos. Ninguna búsqueda devolvió un nodo portador del dato. El dato pertinente nunca estuvo expuesto en su trayectoria; el agente reportó honestamente la ausencia ('No se encontró en el Knowledge Graph información específica...'). Actuó correctamente sobre lo que tenía: no inventó un plazo. La falla es de disponibilidad del dato, no de uso.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo en que la entidad debe comunicar al cliente la última clasificación asignada, a su solicitud",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne (...) Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación",
+       "ubicacion": "legajo_del_cliente (única disposición de comunicación al cliente en el grafo; refiere a cambios negativos en 45 días, NO a la última clasificación a pedido del cliente)"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne (...) Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "notificación clasificación asignada deudor",
+       "resultado": "deudor, tarea_de_clasificacion, clasificacion_de_deudores; ninguno porta el plazo de comunicación a pedido del cliente"
+      },
+      {
+       "consulta": "plazo 10 días hábiles notificar clasificación",
+       "resultado": "solo plazos de otros regímenes (20 días hábiles cambios, revocación 10 días, bienes 30/60/180 días); ninguno pertinente"
+      },
+      {
+       "consulta": "a pedido del cliente última clasificación",
+       "resultado": "legajo_del_cliente y nodos genéricos; ninguno con el plazo específico"
+      },
+      {
+       "consulta": "comunicación al deudor clasificación asignada última",
+       "resultado": "deudor, obligado_al_pago, notificacion_al_bcra; ninguno pertinente"
+      },
+      {
+       "consulta": "información al cliente clasificación diez días entidad",
+       "resultado": "notificacion_al_cliente_de_acreditacion (recepción de fondos en corresponsalía), plazo_de_revocacion_de_diez_dias_habiles; ninguno sobre comunicar la clasificación a pedido"
+      },
+      {
+       "consulta": "gestión crediticia clasificación información cliente",
+       "resultado": "legajo_del_cliente y nodos genéricos; ninguno con el plazo"
+      },
+      {
+       "consulta": "protección usuarios servicios financieros clasificación",
+       "resultado": "órganos de protección al usuario; ninguno porta el plazo de comunicación de la última clasificación a pedido"
+      },
+      {
+       "consulta": "leer_pasaje_pdf TO_clasificacion_deudores puntos 3.4.2, 3.4.3, 3.5, 3.6, 3.7, secciones 1-8, p.10-15 y 44",
+       "resultado": "El PDF contiene solo la disposición del punto 3.4.2 (comunicar cambios negativos en 45 días); NO contiene disposición sobre comunicar la última clasificación a pedido del cliente en un plazo determinado"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "1.2. Criterios especiales de imputación. \n1.2.1. Créditos incorporados por cesión sin responsabilidad.",
+        "alcance_en_el_nodo": "Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejando constancia de las revisiones efectuadas y la clasificación asignada.",
+        "coinciden": "no_determinable",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "Los pasajes fuente entregados (Punto 1.2 y 1.2.1/1.2.2, sobre criterios especiales de imputación de deudores) NO contienen la disposición sobre comunicación al cliente ni el plazo a solicitud del cliente; el quote fuente citado en la atribución (Punto 3.4.2, sobre cambios negativos en 45 días) no aparece en el material recuperado desde la provenance del portador. La atribución afirma correctamente que el nodo sólo cubre comunicación de cambios negativos en 45 días y no la última clasificación a pedido del cliente, pero con el material entregado no puedo transcribir un pasaje fuente que declare el alcance de la 'última clasificación a solicitud', por lo que la coincidencia de alcances no es determinable; la ausencia del contenido buscado en el grafo es consistente con completitud_kg."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 3157,
+        "output_tokens": 523
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 1,
+       "umbral": 1,
+       "decididas": 0,
+       "no_decididas": 1,
+       "resultado": "no_determinable",
+       "causa_ganadora": null,
+       "votos_ganadores": null
+      },
+      "accion": "no_determinable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene una única pata —el plazo para comunicar al cliente su última clasificación a su solicitud—. Revisando los outputs completos de la trayectoria del agente (15 pasos, incluidos los truncados verificados con ver_paso_completo), NINGÚN nodo consultado ni expuesto porta ese dato pertinente: todos los resultados son definiciones genéricas de sujetos (deudor, cliente, entidad) o plazos de OTROS regímenes (20 días hábiles de cambios, 90 días de títulos, 30/60/180 días de bienes, revocación 10 días de un producto). El dato pertinente nunca apareció → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador? Mis propias búsquedas con vocabulario ex ante y ampliado (notificación/comunicación/informar clasificación, a pedido del cliente, 10 días hábiles, gestión crediticia, protección de usuarios) no devolvieron ningún nodo con la disposición. El único nodo de comunicación al cliente sobre clasificación es legajo_del_cliente, que refiere a CAMBIOS NEGATIVOS en 45 días (punto 3.4.2), no a la última clasificación a pedido del cliente —no es el dato pertinente. ¿El PDF lo tiene? Leí exhaustivamente TO_clasificacion_deudores_actual.pdf (secciones 1-8, puntos 3.4.2 al 3.7, páginas 10-15 y 44): el TO solo dispone la comunicación de cambios negativos (45 días); NO contiene disposición sobre comunicar la última clasificación a solicitud del cliente en plazo determinado. Por tanto, no hay nodo portador y el PDF de referencia del grafo tampoco trae el dato: el hueco es del grafo → completitud_kg (falta la información/el TO fuente que la contiene, p.ej. Protección de los Usuarios de Servicios Financieros). Descarto navegación y alcanzabilidad_kg porque NO existe nodo portador exhibible con el contenido correcto. Descarto alucinacion_agente y noise_sensitivity: el agente NO inventó ni afirmó plazo alguno, reportó honestamente la ausencia. Descarto sin_defecto: la ausencia del dato es un hueco real del sistema que explica por qué el juez reprobó (la respuesta no entrega el plazo pedido). El agente actuó correctamente sobre lo disponible; la falla es de completitud del grafo. Primaria: {context_recall, completitud_kg}.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 33,
+    "max_tool_calls": 40,
+    "tokens_in": 872690,
+    "tokens_out": 10607
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 33,
+    "tokens_in": 872690,
+    "tokens_out": 10607,
+    "latency_s": 181.793,
+    "error": null,
+    "final_raw": "El corpus tiene nodos sobre protección de usuarios pero ninguno porta el plazo de comunicación de la última clasificación a pedido del cliente. He confirmado que el dato no está en el grafo ni en el PDF de clasificación de deudores. \n\nTengo evidencia suficiente para concluir. La pata quedó sin dato pertinente → context_recall. No existe nodo portador y el PDF de referencia disponible no contiene la disposición → completitud_kg.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'plazo comunicación clasificación cliente entidad financiera', 'limite': 10}\", \"devolvio\": \"nodos genéricos: entidad_financiera, cliente_de_la_entidad, etc. Ninguno porta plazo de comunicación de clasificación a pedido del cliente\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicar clasificación cliente solicitud', 'limite': 10}\", \"devolvio\": \"cliente, legajo_del_cliente, cliente_no_residente; ninguno con el plazo\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación clasificación plazo días solicitud cliente', 'limite': 10}\", \"devolvio\": \"nodos de plazos de otros regímenes (90 días, 20 días hábiles, 30/60 días de bienes); ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'informar clasificación cliente deudor plazo', 'limite': 10}\", \"devolvio\": \"deudor, cliente, deudor_moroso, plazo_de_90_dias; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicar última clasificación deudor solicitud', 'limite': 10}\", \"devolvio\": \"solicitud_de_quiebra_del_deudor, deudor, deudor_en_concurso; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'derecho cliente conocer clasificación información', 'limite': 10}\", \"devolvio\": \"cliente, derecho_de_credito, legajo_del_cliente; ninguno con el plazo\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'obligación informar clasificación riesgo deudor', 'limite': 10}\", \"devolvio\": \"categorías de clasificación (riesgo alto/bajo/medio); ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación información deudor plazo hábiles días', 'limite': 10}\", \"devolvio\": \"plazos de otros regímenes; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'deudor derecho información clasificación', 'limite': 10}\", \"devolvio\": \"deudor, derecho_de_credito, deudor_en_concurso; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad debe comunicar información deudor', 'limite': 10}\", \"devolvio\": \"deudor, entidad, nueva_entidad; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'comunicación información al deudor 10 días', 'limite': 10}\", \"devolvio\": \"deudor, umbral_del_10, obligado_al_pago; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'información deudor 10 días hábiles comunicar', 'limite': 10}\", \"devolvio\": \"plazos varios; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'deudor'}\", \"devolvio\": \"definición genérica de deudor con provenances del TO_clasificacion_deudores; sin plazo de comunicación a pedido\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': '10 días hábiles comunicación clasificación', 'limite': 10}\", \"devolvio\": \"plazos de otros regímenes; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'deudor', 'direccion': 'salientes'}\", \"devolvio\": \"28 relaciones sobre clasificación/reclasificación del deudor; ninguna sobre comunicación de la clasificación a pedido del cliente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente hizo 12 búsquedas léxicas con vocabulario variado y pertinente (plazo, comunicar, informar, clasificación, cliente, deudor, solicitud, días hábiles, 10 días) y exploró el nodo 'deudor' y sus vecinos. Ninguna búsqueda devolvió un nodo portador del dato. El dato pertinente nunca estuvo expuesto en su trayectoria; el agente reportó honestamente la ausencia ('No se encontró en el Knowledge Graph información específica...'). Actuó correctamente sobre lo que tenía: no inventó un plazo. La falla es de disponibilidad del dato, no de uso.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo en que la entidad debe comunicar al cliente la última clasificación asignada, a su solicitud\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne (...) Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación\", \"ubicacion\": \"legajo_del_cliente (única disposición de comunicación al cliente en el grafo; refiere a cambios negativos en 45 días, NO a la última clasificación a pedido del cliente)\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne (...) Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"notificación clasificación asignada deudor\", \"resultado\": \"deudor, tarea_de_clasificacion, clasificacion_de_deudores; ninguno porta el plazo de comunicación a pedido del cliente\"},\n        {\"consulta\": \"plazo 10 días hábiles notificar clasificación\", \"resultado\": \"solo plazos de otros regímenes (20 días hábiles cambios, revocación 10 días, bienes 30/60/180 días); ninguno pertinente\"},\n        {\"consulta\": \"a pedido del cliente última clasificación\", \"resultado\": \"legajo_del_cliente y nodos genéricos; ninguno con el plazo específico\"},\n        {\"consulta\": \"comunicación al deudor clasificación asignada última\", \"resultado\": \"deudor, obligado_al_pago, notificacion_al_bcra; ninguno pertinente\"},\n        {\"consulta\": \"información al cliente clasificación diez días entidad\", \"resultado\": \"notificacion_al_cliente_de_acreditacion (recepción de fondos en corresponsalía), plazo_de_revocacion_de_diez_dias_habiles; ninguno sobre comunicar la clasificación a pedido\"},\n        {\"consulta\": \"gestión crediticia clasificación información cliente\", \"resultado\": \"legajo_del_cliente y nodos genéricos; ninguno con el plazo\"},\n        {\"consulta\": \"protección usuarios servicios financieros clasificación\", \"resultado\": \"órganos de protección al usuario; ninguno porta el plazo de comunicación de la última clasificación a pedido\"},\n        {\"consulta\": \"leer_pasaje_pdf TO_clasificacion_deudores puntos 3.4.2, 3.4.3, 3.5, 3.6, 3.7, secciones 1-8, p.10-15 y 44\", \"resultado\": \"El PDF contiene solo la disposición del punto 3.4.2 (comunicar cambios negativos en 45 días); NO contiene disposición sobre comunicar la última clasificación a pedido del cliente en un plazo determinado\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene una única pata —el plazo para comunicar al cliente su última clasificación a su solicitud—. Revisando los outputs completos de la trayectoria del agente (15 pasos, incluidos los truncados verificados con ver_paso_completo), NINGÚN nodo consultado ni expuesto porta ese dato pertinente: todos los resultados son definiciones genéricas de sujetos (deudor, cliente, entidad) o plazos de OTROS regímenes (20 días hábiles de cambios, 90 días de títulos, 30/60/180 días de bienes, revocación 10 días de un producto). El dato pertinente nunca apareció → context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador? Mis propias búsquedas con vocabulario ex ante y ampliado (notificación/comunicación/informar clasificación, a pedido del cliente, 10 días hábiles, gestión crediticia, protección de usuarios) no devolvieron ningún nodo con la disposición. El único nodo de comunicación al cliente sobre clasificación es legajo_del_cliente, que refiere a CAMBIOS NEGATIVOS en 45 días (punto 3.4.2), no a la última clasificación a pedido del cliente —no es el dato pertinente. ¿El PDF lo tiene? Leí exhaustivamente TO_clasificacion_deudores_actual.pdf (secciones 1-8, puntos 3.4.2 al 3.7, páginas 10-15 y 44): el TO solo dispone la comunicación de cambios negativos (45 días); NO contiene disposición sobre comunicar la última clasificación a solicitud del cliente en plazo determinado. Por tanto, no hay nodo portador y el PDF de referencia del grafo tampoco trae el dato: el hueco es del grafo → completitud_kg (falta la información/el TO fuente que la contiene, p.ej. Protección de los Usuarios de Servicios Financieros). Descarto navegación y alcanzabilidad_kg porque NO existe nodo portador exhibible con el contenido correcto. Descarto alucinacion_agente y noise_sensitivity: el agente NO inventó ni afirmó plazo alguno, reportó honestamente la ausencia. Descarto sin_defecto: la ausencia del dato es un hueco real del sistema que explica por qué el juez reprobó (la respuesta no entrega el plazo pedido). El agente actuó correctamente sobre lo disponible; la falla es de completitud del grafo. Primaria: {context_recall, completitud_kg}.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "notificación clasificación asignada deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"notificación clasificación asignada deudor\", \"total_con_match\": 32, \"resultados\": [{\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus obligaciones, justificando acciones judiciales por parte del exportador.\"}, {\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"deudor_en_concurso\", \"type\": \"categoria_de_deudor\", \"label\": \"Deudor en concurso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor en concurso o con acuerdo preventivo extrajudicial solicitado o en gestión judicial de cobro que, por un período de hasta 540 días, no haya presentado do…\"}, {\"id\": \"c… [+1744 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo 10 días hábiles notificar clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo 10 días hábiles notificar clasificación\", \"total_con_match\": 107, \"resultados\": [{\"id\": \"plazo_de_20_dias_habiles\", \"type\": \"plazo_regulatorio\", \"label\": \"Plazo de 20 días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo máximo dentro del cual debe ingresarse y liquidarse en el mercado de cambios el contravalor de enajenación de activos no financieros no producidos.\"}, {\"id\": \"plazo_de_revocacion_de_diez_dias_habiles\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de revocación de diez días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo durante el cual el usuario puede revocar la aceptación del producto o servicio, contado a partir de la fecha de recibido el contrato o de la disponibilida…\"}, {\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"bien_con_plazo_de_30_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 30 días\", \"tokens_matcheados\": 2, \"resumen_propiedad… [+2087 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "clasificacion_de_deudores"
+      },
+      "output_truncado": "{\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"properties\": {\"description\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, debiendo documentarse el análisis efectuado.\", \"version\": \"vigente\", \"type_raw\": [\"Proceso regulatorio\", \"Tarea regulatoria\"], \"type_raw_counts\": {\"Proceso regulatorio\": 1, \"Tarea regulatoria\": 1}, \"name_variants\": [], \"n_observations\": 2}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.2\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "a pedido del cliente última clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"a pedido del cliente última clasificación\", \"total_con_match\": 485, \"resultados\": [{\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejand…\"}, {\"id\": \"entidad_del_grupo_a\", \"type\": \"clasificacion_de_entidad\", \"label\": \"Entidad del grupo A\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Entidades del grupo 2 cuya exigencia de capital por riesgo operacional no podrá superar el 20% del promedio de los últimos 36 meses de la exigencia de capital m…\"}, {\"id\": \"asistencia_del_b_c_r_a\", \"type\": \"categoria_de_pasivo\", \"label\": \"Asistencia del B.C.R.A.\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligaciones derivadas de asistencia crediticia del Banco Central de la República Argentina.\"}, {\"id\": \"identificacion_del_cliente\", \"type\": \"requisito_operativo\", \"label\": \"Identificación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Mecanismo mediante el cual la entidad identifica al cliente a nombre de quien será regi… [+1852 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "legajo_del_cliente"
+      },
+      "output_truncado": "{\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"properties\": {\"description\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejando constancia de las revisiones efectuadas y la clasificación asignada.\", \"version\": \"vigente\", \"type_raw\": [\"Documento administrativo\", \"Documento de gestión crediticia\", \"Documento regulatorio\"], \"type_raw_counts\": {\"Documento administrativo\": 1, \"Documento de gestión crediticia\": 1, \"Documento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.2.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.4.4\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicación al deudor clasificación asignada última",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"comunicación al deudor clasificación asignada última\", \"total_con_match\": 95, \"resultados\": [{\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus obligaciones, justificando acciones judiciales por parte del exportador.\"}, {\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"obligado_al_pago\", \"type\": \"sujeto_regulado\", \"label\": \"Obligado al pago\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor cuya situación crediticia debe cumplir con condiciones específicas para que su obligación sea incluida en la titulización.\"}, {\"id\": \"deudor_en_concurso\", \"type\": \"c… [+1701 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4 (PDF pág 10)\", \"pasaje\": \"3.4. Legajo del cliente.\\n3.4.1. Apertura.\\nLa entidad deberá llevar un legajo de cada deudor de su cartera, así como de cada uno\\nde sus corresponsales, de acuerdo con lo establecido en las normas sobre “Cuentas de \\ncorresponsalía”.\\nEn los casos de créditos cedidos a favor de la entidad sin responsabilidad para el cedente\\n–unidad económica receptora de los fondos –, deberá abrirse el legajo del firmante, libr a-\\ndor, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos cons e-\\ncuentemente en principales y directos pagadores, al que se hayan imputado las acree n-\\ncias.\\nNo será obligatoria la apertura del legajo en los casos de deudores por servicios públicos\\no por tarjetas de crédito considerados a los fines de la clasificación por haber sido cedidos\\nlos respectivos créditos por deudores en concurso preventivo.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 8a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 2\"}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Criterio \\ngeneral. \\nLos clientes de la entidad (tanto residentes en el país, de los sectores público y privado, finan-\\ncieros y no financieros, como residentes en el exterior), por las financiaciones comprendidas, \\ndeberán ser clasificados desde el punto de vista de la calidad de los obligados en orden al \\ncumplimiento de sus compromisos y/o las posibilidades que a este efecto se les asigne sobre la \\nbase de una evaluación de su situación particular. \\n1.2. Criterios especiales de imputación. \\n1.2.1. Créditos incorporados por cesión sin responsabilidad. \\nLos créditos cedidos a favor de la entidad sin responsabilidad para el cedente -unidad \\neconómica receptora de los fondos- se imputarán al firmante, librador, deudor, codeudor \\no\\naceptante de los respectivos instrumentos, constituidos consecuentemente en principa-\\nles y directos pagadores, realizando respecto de ellos su evaluación como sujetos de\\ncrédito \\ncon la pertinente apertura del legajo. En caso de no efectuarse la evaluación,\\ncua… [+400 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6 (PDF pág 20)\", \"pasaje\": \"6.\\n5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contrap… [+404 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "información al cliente clasificación diez días entidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"información al cliente clasificación diez días entidad\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"cliente_de_la_entidad\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente de la entidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Personas residentes en el país o en el exterior, de sectores público y privado, financieros y no financieros, que reciben financiaciones de la entidad y deben s…\"}, {\"id\": \"notificacion_al_cliente_de_acreditacion\", \"type\": \"obligacion_regulatoria\", \"label\": \"Notificación al cliente de acreditación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Procedimiento mediante el cual la entidad debe informar al beneficiario la recepción de fondos en cuenta de corresponsalía dentro de un plazo no mayor a un día …\"}, {\"id\": \"plazo_de_revocacion_de_diez_dias_habiles\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de revocación de diez días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo durante el cual el usuario puede revocar la aceptación del producto o servicio, contado a partir de la fecha de recibido el contrato o de la disponibilida…\"}, {\"id\": \"operaciones_propias_de_entidad_en_caracter_de_cliente\", \"type\": \"excepcion_regul… [+1887 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 5\", \"ref\": \"Punto/Sección 5 (mejor score=-23 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 5.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 20)\", \"pasaje\": \"5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contrapar… [+405 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.2 (PDF pág 9)\", \"pasaje\": \"3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las acreencias, según las atribu-\\nciones que les hayan sido asignadas a cada uno de ellos y conforme a los requisitos es-\\ntablecidos para la aprobación de la clasificación y el previsionamiento.  \\n3.3.3. El ejercicio de la opción de agrupar las financiaciones de naturaleza comercial de hasta el \\nequivalente a dos veces el importe de re… [+395 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.5 (PDF pág 13)\", \"pasaje\": \"3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del otorgamiento de créditos y garantías.\\n3.5.2. Al sector encargado del otorgamiento de créditos y garantías.\\nDe optar por esta posibilidad, la entidad financiera deberá contar con una oficina ind e-\\npendiente que tendrá como función efectuar la revisión de las clasificaciones asignadas a\\nlos clientes por el sector de créditos.\\nDicha revisión –que podrá estar a cargo de la auditoría interna de la entidad – deberá\\ncomprender obligatoriamente a los clientes cuyo endeudamiento total en pesos y en m o-\\nneda extranjera (por las financiaciones comprendidas) supere el 1 % de la responsabil i-\\ndad patrimonial computable de la entidad del mes anterior al de la clasificación o el equ i-\\nvalente al importe de referencia establecido en el punto 3.7., de ambos el menor, y alcan-\\nzar como mínimo el 20 % de la cartera activa total, que se completará, en caso de… [+398 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 17,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.8\", \"ref\": \"Punto/Sección 3.8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 18,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.9\", \"ref\": \"Punto/Sección 3.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 19,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.7 (PDF pág 14)\", \"pasaje\": \"3.7. Importe de referencia.\\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\\naplicación de la Ley 24.467 (y sus modificatorias).\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 6\"}"
+     },
+     {
+      "n": 20,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.4 (PDF pág 12)\", \"pasaje\": \"3.4.4. Radicación. \\nEl legajo del deudor se deberá llevar en el lugar d e radicación de la cuenta. \\nSe admitirá que el legajo del cliente se encuentre en un l ugar distinto del de radicación de \\nla cuenta (por ejemplo: casa matriz o sucursal que sea asiento de gerencia regional), \\ncuando ello haya sido determinado por razones operativas -vinculadas a la evaluación, \\notorgamiento y seguimiento de los créditos- y dicha circunstancia se encuentre incluida \\nen el “Manual de procedimientos de clasificación y previsión”. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. S ección 3. Tarea de clasificación. \\nVersión: 7a. COMUNICACIÓN  “A”  5998 Vigencia: \\n25/06/2016 Página 4\"}"
+     },
+     {
+      "n": 21,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.3 (PDF pág 12)\", \"pasaje\": \"3.4.3. Anexos. \\nEn los casos de préstamos a personas humanas con garantía hipotecaria en primer gra-\\ndo \\nsobre una vivienda o con garantía prendaria en primer grado sobre automóviles o ve-\\nhículos utilitarios livianos 0 km para uso particular, comercial o alquiler, se anexarán al \\nlegajo del deudor las carpetas crediticia, legal y de administración cuando se observen \\nlas pautas previstas en los respectivos manuales de originación y administración. \\n3.4.4. Radicación. \\nEl legajo del deudor se deberá llevar en el lugar d e radicación de la cuenta. \\nSe admitirá que el legajo del cliente se encuentre en un l ugar distinto del de radicación de \\nla cuenta (por ejemplo: casa matriz o sucursal que sea asiento de gerencia regional), \\ncuando ello haya sido determinado por razones operativas -vinculadas a la evaluación, \\notorgamiento y seguimiento de los créditos- y dicha circunstancia se encuentre incluida \\nen el “Manual de procedimientos de clasificación y previsión”. \\nCLASIFICACIÓN DE DEUDORES \\nB… [+116 chars]"
+     },
+     {
+      "n": 23,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"c) junto con el recibo de pago de la cuota, o\\nd) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta in-\\nformación e\\nn cualquier correspondencia pos tal de carácter general que se remita al\\ncliente o específica dirig\\nida a tal fin.\\nAdicionalmente y en igual plazo, las enti dades financieras que brinden servicios de in-\\nformación a sus clientes a través de In ternet (“home banking”), deberán poner en cono-\\ncimiento de cada cliente -por el medio señalado- , la información a la que se refiere esta \\ncomunicación. \\nPor otra parte, el saldo actualizado de la totalidad de las financiaciones otorgadas -que \\ncomprender\\ná las facilidades asignadas por todas las filiales y unidades operativas de la \\nentidad- deberá encontrarse disponible, discriminado por concepto, según el sistema de \\ninformación contable que utilice la entidad, en el lugar de radicación del legajo del cliente \\no la \\ncasa central, de corresponder llevar copia en ésta, de acuerdo con las normas perti-\\nnentes.\\… [+1816 chars]"
+     },
+     {
+      "n": 24,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\… [+1819 chars]"
+     },
+     {
+      "n": 25,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"Además, corresponderá mantener en la casa central de la entidad una copia del legajo\\nde cada uno de los clientes cuyo endeudamiento (financiaciones comprendidas) sea\\nequivalente o superior al 1 % de la responsabilidad patrimonial computable.\\nEstas disposiciones también resultan aplicables a los anexos al legajo del cliente.\\n3.4.5. Aspectos formales.\\nEl legajo y los anexos podrán llevarse en medios magnéticos, electrónicos u otra tecn o-\\nlogía similar. En estos dos últimos casos deberán observarse los requisitos incluidos en\\nel punto 1. de las normas sobre “Instrumentación, conservación y reproducción de doc u-\\nmentos”.\\nLa información que surja del “Legajo Único Financiero y Económico” – establecido por la\\nResolución N° 92/21 del Ministerio de Desarrollo Productivo – será considerada para el\\ncumplimiento de requerimientos contenidos en estas normas.\\n3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del… [+1694 chars]"
+     },
+     {
+      "n": 26,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.10\", \"metodo\": \"pagina\", \"ref\": \"p.10 (PDF absoluto 1-based)\", \"pasaje\": \"3.3.5. La descripción del procedimiento adoptado, cuando a los fines de la actualización del l e-\\ngajo del cliente la clasificación asignada se mantenga en planillas separadas, que perm i-\\nta la identificación precisa de la clasificación asignada a cada cliente desde la planilla al\\nlegajo y viceversa.\\n3.3.6. El ejercicio de la opción de encomendar a profesionales externos la tarea de clasific a-\\nción.\\n3.3.7. En los casos de adoptarse métodos específicos de evaluación a los efectos del otorg a-\\nmiento de asistencia financiera en los términos del punto 1.1.3.3. b) de las normas sobre\\n“Gestión crediticia”, deberá observarse  lo previsto en las especificaciones contenidas en\\ndicho punto.\\n3.3.8. La política que contenga los criterios sobre cuya base el personal con atribución en m a-\\nteria crediticia de la entidad financiera podrá decidir autorizar circunstancialmente, incl u-\\nyendo los casos en los que se supere el margen de asistencia total asignado a cada\\ncliente según lo previsto en el punto 1.1.3.2. de… [+1454 chars]"
+     },
+     {
+      "n": 27,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.14"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.14\", \"metodo\": \"pagina\", \"ref\": \"p.14 (PDF absoluto 1-based)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o autoridad… [+765 chars]"
+     },
+     {
+      "n": 28,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.15"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.15\", \"metodo\": \"pagina\", \"ref\": \"p.15 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Niveles de clasificación. \\nSe han previsto niveles de agrupamiento de los clientes en orden decreciente de calidad, en ra-\\nzón directa al riesgo de incobrabilidad que se deriva de las situaciones que presentan. \\n4.2. Criterio básico de clasificación. \\nEl criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el fu-\\nturo de la deuda o de los compromisos objeto de la garantía de la entidad financiera. \\n4.3. Evaluación de la capacidad de pago. \\n4.3.1. Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos \\nde fondos realizado por la entidad. \\n4.3.2. En segundo lugar, deberá considerarse la posibilidad de liquidación de activos no im-\\nprescindibles para la operatoria de la empresa. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\nNo corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que \\nse encuentren respaldadas con tales garantías. \\n4.5. Deudores que no deben ser objeto de clasifica… [+1336 chars]"
+     },
+     {
+      "n": 29,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=-67 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 30,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.44"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.44\", \"metodo\": \"pagina\", \"ref\": \"p.44 (PDF absoluto 1-based)\", \"pasaje\": \"TEXTO ORDENADO NORMA DE ORIGEN OBSERVACIONESSecc. Punto Párr. Com. Anexo Punto Párr.\\n1.\\n1.1. “A” 2216 I 1° Incluye aclaración interpretativa.\\n1.2.1. “A” 2216 I 6. 2°\\n1.2.2. “A” 2216 I I.d. 2° y 3°\\n2.\\n2.1.1. a\\n2.1.3. y\\n2.1.5.\\n“A” 2216 I 1° Según Com. “A” 5067.\\n“A” 2216 I I.d. 1°\\n“A” 2448 Estado de situación de deudores\\n(punto 6.1.).\\n“A” 2587 Tabla de correspondencia entr e el\\nEstado de situación de deudores y\\nel Balance de saldos (modificada\\npor la Com. “A” 2514).\\n2.1.4. “A” 2736 3.\\n2.1.6. “A” 6396 2. Según Com. “A” 6428. Incluye acla-\\nración interpretativa.\\n2.2.1. “A” 2448 Estado de situación de deudores\\n(punto 6.1., modificado por la Com.\\n“A” 2421). Según Com. “A” 6396.\\n2.2.1.1.\\na\\n2.2.1.4.\\n“A” 2448 Estado de situaci ón de deudores\\n(punto 6.1., modificado por  la Com.\\n“A” 2421).\\n2.2.1.5. “A” 2448 Estado de situación de deudores\\n(punto 6.1., modific ado por las\\nCom. “A” 2421 y 3064).\\n2.2.1.6.\\ny\\n2.2.1.7.\\n“A” 2448 Estado de situación de deudores\\n(punto. 6.1., modificado por la Com.\\… [+879 chars]"
+     },
+     {
+      "n": 31,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "gestión crediticia clasificación información cliente",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"gestión crediticia clasificación información cliente\", \"total_con_match\": 85, \"resultados\": [{\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"gestion_judicial\", \"type\": \"situacion_juridica_del_deudor\", \"label\": \"Gestión judicial\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor en gestión judicial que puede verificar atrasos de hasta 540 días en Riesgo alto, o más de 540 días en Irrecuperable.\"}, {\"id\": \"cliente_residente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Residente que puede canalizar operaciones a través del Sistema de Monedas Locales implementado por el BCRA.\"}, {\"id\": \"equipo_de_gestion\", \"type\": \"recurso_humano\", \"label\": \"Equipo de gestión\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Equipo con amplia experiencia en la industria que respalda las habilidades del fiduciario o administrador.\"}, {\"id\": \"mejora_crediticia\", \"type\": \"mecanismo_de_protec… [+1073 chars]"
+     },
+     {
+      "n": 32,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"comunicación clasificación plazo días solicitud cliente\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"comunicación clasificación plazo días solicitud cliente\", \"total_con_match\": 123, \"resultados\": [{\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"plazo_de_20_dias_habiles\", \"type\": \"plazo_regulatorio\", \"label\": \"Plazo de 20 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo máximo dentro del cual debe ingresarse y liquidarse en el mercado de cambios el contravalor de enajenación de activos no financieros no producidos.\"}, {\"id\": \"bien_con_plazo_de_30_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 30 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Bien que tiene asignado un plazo de 30 días corridos conforme al punto 7.1.1.2., con coeficiente del 5% para cálculo de monto máximo.\"}, {\"id\": \"bien_con_plazo_de_60_dias\", \"type\":… [+2249 chars]"
+     },
+     {
+      "n": 33,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "protección usuarios servicios financieros clasificación",
+       "limite": 6
+      },
+      "output_truncado": "{\"consulta\": \"protección usuarios servicios financieros clasificación\", \"total_con_match\": 127, \"resultados\": [{\"id\": \"comite_de_proteccion_de_los_usuarios_de_servicios_financieros\", \"type\": \"organo_regulado\", \"label\": \"Comité de Protección de los Usuarios de Servicios Financieros\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Órgano alternativo integrado por al menos un miembro del Directorio y responsables de cumplimiento normativo, gestión de riesgo operativo y asuntos legales, con…\"}, {\"id\": \"directivo_responsable_de_proteccion_de_los_usuarios_de_servicios_financieros\", \"type\": \"cargo_regulatorio\", \"label\": \"Directivo Responsable de Protección de los Usuarios de Servicios Financieros\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Funcionario responsable de elevar reportes trimestrales al Directorio sobre acciones realizadas en protección de usuarios y evaluación de informes del Responsab…\"}, {\"id\": \"usuarios_de_servicios_financieros\", \"type\": \"sujeto_regulado\", \"label\": \"Usuarios de servicios financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Personas humanas que contratan productos y/o servicios financieros con los sujetos obligados.\"}, {\"id\": \"gerencia_princi… [+942 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32205,
+      "output_tokens": 280
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35219,
+      "output_tokens": 210
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37122,
+      "output_tokens": 273
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39079,
+      "output_tokens": 300
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40655,
+      "output_tokens": 317
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43008,
+      "output_tokens": 398
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44359,
+      "output_tokens": 345
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45647,
+      "output_tokens": 263
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47310,
+      "output_tokens": 267
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48067,
+      "output_tokens": 356
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49204,
+      "output_tokens": 281
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50827,
+      "output_tokens": 330
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 53686,
+      "output_tokens": 398
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 56516,
+      "output_tokens": 489
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 58982,
+      "output_tokens": 519
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 61075,
+      "output_tokens": 398
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 64001,
+      "output_tokens": 841
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 65728,
+      "output_tokens": 4342
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 93,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-008",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'plazo comunicación clasificación cliente entidad financiera'}",
+      "devolvio": "nodos sujeto_regulado (entidad_financiera, cliente_de_la_entidad) no pertinentes al plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicar clasificación cliente solicitud'}",
+      "devolvio": "cliente, legajo_del_cliente, etc.; ninguno con el plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación clasificación plazo días solicitud cliente'}",
+      "devolvio": "nodos de plazos ajenos (90/20/30/60 días, todos de otros TOs)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'informar clasificación cliente deudor plazo'}",
+      "devolvio": "deudor, cliente, plazo_de_90_dias; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicar última clasificación deudor solicitud'}",
+      "devolvio": "solicitud_de_quiebra_del_deudor, deudor; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'derecho cliente conocer clasificación información'}",
+      "devolvio": "cliente, derecho_de_credito; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'obligación informar clasificación riesgo deudor'}",
+      "devolvio": "categorías de clasificación; no pertinente al plazo",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación información deudor plazo hábiles días'}",
+      "devolvio": "plazos ajenos; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'deudor derecho información clasificación'}",
+      "devolvio": "deudor, deudor_en_concurso; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad debe comunicar información deudor'}",
+      "devolvio": "deudor, entidad; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación información al deudor 10 días'}",
+      "devolvio": "deudor, umbral_del_10; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'información deudor 10 días hábiles comunicar'}",
+      "devolvio": "plazo_de_20_dias_habiles, plazo_de_revocacion_de_diez_dias_habiles; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{id: 'deudor'}",
+      "devolvio": "descripción genérica del deudor; provenances p.1-8...p.39-43 (Sección 7), no cubre Sección 8",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: '10 días hábiles comunicación clasificación'}",
+      "devolvio": "plazos ajenos; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: 'deudor', direccion: 'salientes'}",
+      "devolvio": "28 relaciones de clasificación/reclasificación; ninguna sobre comunicación a solicitud del cliente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente ejecutó 15 tool calls con combinaciones de términos plausibles y exhaustivas ('comunicar clasificación cliente solicitud', 'derecho cliente conocer clasificación', '10 días', 'informar clasificación deudor plazo'), abrió el nodo deudor y sus vecinos. Ninguna devolvió el nodo portador del plazo de la Sección 8.1 porque tal nodo no existe en el grafo. Ante la ausencia real del dato, el agente declaró honestamente 'no se encontró' en lugar de alucinar un plazo. Actuó bien sobre lo que el grafo le ofrecía.",
+    "thinking_decision": null,
+    "patas": [
+     "Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Plazo para comunicar al cliente la última clasificación cuando lo solicita",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita. Aunque el grafo contiene normativa sobre clasificación de deudores y obligaciones de las entidades financieras, no incluye la disposición regulatoria que establece este plazo particular.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "ninguno",
+       "ubicacion": "ningún nodo del grafo run_4 porta el contenido de la Sección 8.1 (a solicitud del cliente, 10 días corridos); el nodo temáticamente más próximo, cambio_negativo_en_clasificacion, cubre una regla distinta: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días' (p.9-12 / Punto 3.4.2)"
+      },
+      "fuente": {
+       "quote": "8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la justifican según la evaluación realizada por la entidad, el importe total de deudas con el sistema financiero y las clasificaciones asignadas que surjan de la última información disponible en la 'Central de deudores del sistema financiero'.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 8.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "comunicación al cliente última clasificación asignada",
+       "resultado": "107 matches; ninguno porta el plazo de la Sección 8.1 (notificacion_al_cliente_de_acreditacion es de corresponsalía, legajo_del_cliente es el legajo)"
+      },
+      {
+       "consulta": "clasificación asignada cliente informar requerimiento",
+       "resultado": "39 matches; cliente, legajo_del_cliente, clasificacion_de_deudores; ninguno pertinente"
+      },
+      {
+       "consulta": "diez días hábiles solicitud clasificación",
+       "resultado": "40 matches; plazo_de_revocacion_de_diez_dias_habiles (revocación de producto) y plazos ajenos; ninguno pertinente"
+      },
+      {
+       "consulta": "plazo de 10 días corridos pedido",
+       "resultado": "1773 matches; solo plazos de otros TOs (90/180/120/240 días corridos); ninguno sobre comunicación de clasificación al cliente"
+      },
+      {
+       "consulta": "informaciones a clientes",
+       "resultado": "198 matches; financiaciones a clientes vinculados y ruido; ningún nodo 'Informaciones a clientes' de la Sección 8"
+      },
+      {
+       "consulta": "comunicar clasificación asignada",
+       "resultado": "8 matches; cambio_negativo_en_clasificacion (regla de 45 días al deudor, distinta), tarea_de_clasificacion, categoria_de_clasificacion; ninguno con la regla de 10 días a solicitud del cliente"
+      },
+      {
+       "consulta": "solicitud crédito notificar cliente requerir datos",
+       "resultado": "156 matches; cliente y variantes de crédito; ninguno pertinente"
+      },
+      {
+       "consulta": "difusión clasificación cartera cliente",
+       "resultado": "62 matches; carteras y cliente genérico; ninguno porta la Sección 8.1"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "sin_portador_extraible",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a por pata): la pregunta tiene una única pata — el plazo para comunicar al cliente la última clasificación a su solicitud. Revisando los outputs COMPLETOS de los 15 pasos del agente (incluido el paso 3 verificado con ver_paso_completo), el dato pertinente (10 días corridos, a solicitud del cliente) NUNCA apareció: todos los resultados fueron plazos de otros TOs (mercado de cambios, revocación de productos, títulos valores) o nodos genéricos de deudor/cliente/clasificación. Por tanto la pata es context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? Investigué el grafo con vocabulario pertinente ex ante (8 búsquedas propias documentadas) y no aparece ningún nodo que porte la regla de la Sección 8.1. El nodo temáticamente más cercano, cambio_negativo_en_clasificacion, cubre otra disposición (Punto 3.4.2: comunicar al deudor una reclasificación desfavorable dentro de 45 días), no la comunicación a solicitud del cliente. El nodo deudor cita provenances hasta la Sección 7 (p.39-43) pero ninguna alcanza la Sección 8. Descarto alcanzabilidad_kg porque no hay nodo portador que exhibir (no es que exista y no se llegue: no existe). Descarto navegación porque el agente cubrió los términos plausibles y no había nodo relevante que consultar. Verifiqué con leer_pasaje_pdf que el PDF SÍ tiene el dato (Punto 8.1, literal '10 días corridos'), lo que confirma que el hueco es del grafo, no de la norma → completitud_kg. La respuesta 'no encontrado' del agente es honesta y directamente causada por ese hueco: es primaria y explica por qué el juez reprobó (la pregunta tenía respuesta y el sistema no la dio).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 18,
+    "max_tool_calls": 40,
+    "tokens_in": 455426,
+    "tokens_out": 6770
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 18,
+    "tokens_in": 455426,
+    "tokens_out": 6770,
+    "latency_s": 107.145,
+    "error": null,
+    "final_raw": "Confirmed. The pertinent content never appeared in the trajectory. The agent searched exhaustively with all reasonable term combinations. The PDF (Punto 8.1) has the answer (10 días corridos), but no node in the graph carries it. This is a graph completeness defect that forced the \"no encontrado\" answer.\n\nThe single pata failed by context_recall; the answer's \"no encontrado\" is a direct consequence of the missing node → completitud_kg.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'plazo comunicación clasificación cliente entidad financiera'}\", \"devolvio\": \"nodos sujeto_regulado (entidad_financiera, cliente_de_la_entidad) no pertinentes al plazo\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicar clasificación cliente solicitud'}\", \"devolvio\": \"cliente, legajo_del_cliente, etc.; ninguno con el plazo\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación clasificación plazo días solicitud cliente'}\", \"devolvio\": \"nodos de plazos ajenos (90/20/30/60 días, todos de otros TOs)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'informar clasificación cliente deudor plazo'}\", \"devolvio\": \"deudor, cliente, plazo_de_90_dias; no pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicar última clasificación deudor solicitud'}\", \"devolvio\": \"solicitud_de_quiebra_del_deudor, deudor; no pertinente\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'derecho cliente conocer clasificación información'}\", \"devolvio\": \"cliente, derecho_de_credito; no pertinente\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'obligación informar clasificación riesgo deudor'}\", \"devolvio\": \"categorías de clasificación; no pertinente al plazo\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación información deudor plazo hábiles días'}\", \"devolvio\": \"plazos ajenos; no pertinente\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'deudor derecho información clasificación'}\", \"devolvio\": \"deudor, deudor_en_concurso; no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad debe comunicar información deudor'}\", \"devolvio\": \"deudor, entidad; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación información al deudor 10 días'}\", \"devolvio\": \"deudor, umbral_del_10; no pertinente\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'información deudor 10 días hábiles comunicar'}\", \"devolvio\": \"plazo_de_20_dias_habiles, plazo_de_revocacion_de_diez_dias_habiles; no pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: 'deudor'}\", \"devolvio\": \"descripción genérica del deudor; provenances p.1-8...p.39-43 (Sección 7), no cubre Sección 8\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: '10 días hábiles comunicación clasificación'}\", \"devolvio\": \"plazos ajenos; no pertinente\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'deudor', direccion: 'salientes'}\", \"devolvio\": \"28 relaciones de clasificación/reclasificación; ninguna sobre comunicación a solicitud del cliente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente ejecutó 15 tool calls con combinaciones de términos plausibles y exhaustivas ('comunicar clasificación cliente solicitud', 'derecho cliente conocer clasificación', '10 días', 'informar clasificación deudor plazo'), abrió el nodo deudor y sus vecinos. Ninguna devolvió el nodo portador del plazo de la Sección 8.1 porque tal nodo no existe en el grafo. Ante la ausencia real del dato, el agente declaró honestamente 'no se encontró' en lugar de alucinar un plazo. Actuó bien sobre lo que el grafo le ofrecía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Plazo en que la entidad financiera debe comunicar al cliente la última clasificación que le asignó, cuando el cliente lo solicita\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Plazo para comunicar al cliente la última clasificación cuando lo solicita\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró en el Knowledge Graph información específica sobre el plazo en el cual la entidad financiera debe comunicar la última clasificación asignada a un cliente cuando este lo solicita. Aunque el grafo contiene normativa sobre clasificación de deudores y obligaciones de las entidades financieras, no incluye la disposición regulatoria que establece este plazo particular.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"ningún nodo del grafo run_4 porta el contenido de la Sección 8.1 (a solicitud del cliente, 10 días corridos); el nodo temáticamente más próximo, cambio_negativo_en_clasificacion, cubre una regla distinta: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días' (p.9-12 / Punto 3.4.2)\"},\n        \"fuente\": {\"quote\": \"8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la justifican según la evaluación realizada por la entidad, el importe total de deudas con el sistema financiero y las clasificaciones asignadas que surjan de la última información disponible en la 'Central de deudores del sistema financiero'.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 8.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"comunicación al cliente última clasificación asignada\", \"resultado\": \"107 matches; ninguno porta el plazo de la Sección 8.1 (notificacion_al_cliente_de_acreditacion es de corresponsalía, legajo_del_cliente es el legajo)\"},\n        {\"consulta\": \"clasificación asignada cliente informar requerimiento\", \"resultado\": \"39 matches; cliente, legajo_del_cliente, clasificacion_de_deudores; ninguno pertinente\"},\n        {\"consulta\": \"diez días hábiles solicitud clasificación\", \"resultado\": \"40 matches; plazo_de_revocacion_de_diez_dias_habiles (revocación de producto) y plazos ajenos; ninguno pertinente\"},\n        {\"consulta\": \"plazo de 10 días corridos pedido\", \"resultado\": \"1773 matches; solo plazos de otros TOs (90/180/120/240 días corridos); ninguno sobre comunicación de clasificación al cliente\"},\n        {\"consulta\": \"informaciones a clientes\", \"resultado\": \"198 matches; financiaciones a clientes vinculados y ruido; ningún nodo 'Informaciones a clientes' de la Sección 8\"},\n        {\"consulta\": \"comunicar clasificación asignada\", \"resultado\": \"8 matches; cambio_negativo_en_clasificacion (regla de 45 días al deudor, distinta), tarea_de_clasificacion, categoria_de_clasificacion; ninguno con la regla de 10 días a solicitud del cliente\"},\n        {\"consulta\": \"solicitud crédito notificar cliente requerir datos\", \"resultado\": \"156 matches; cliente y variantes de crédito; ninguno pertinente\"},\n        {\"consulta\": \"difusión clasificación cartera cliente\", \"resultado\": \"62 matches; carteras y cliente genérico; ninguno porta la Sección 8.1\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a por pata): la pregunta tiene una única pata — el plazo para comunicar al cliente la última clasificación a su solicitud. Revisando los outputs COMPLETOS de los 15 pasos del agente (incluido el paso 3 verificado con ver_paso_completo), el dato pertinente (10 días corridos, a solicitud del cliente) NUNCA apareció: todos los resultados fueron plazos de otros TOs (mercado de cambios, revocación de productos, títulos valores) o nodos genéricos de deudor/cliente/clasificación. Por tanto la pata es context_recall. CAUSA (C2, árbol de context_recall): ¿existe nodo portador del dato faltante? Investigué el grafo con vocabulario pertinente ex ante (8 búsquedas propias documentadas) y no aparece ningún nodo que porte la regla de la Sección 8.1. El nodo temáticamente más cercano, cambio_negativo_en_clasificacion, cubre otra disposición (Punto 3.4.2: comunicar al deudor una reclasificación desfavorable dentro de 45 días), no la comunicación a solicitud del cliente. El nodo deudor cita provenances hasta la Sección 7 (p.39-43) pero ninguna alcanza la Sección 8. Descarto alcanzabilidad_kg porque no hay nodo portador que exhibir (no es que exista y no se llegue: no existe). Descarto navegación porque el agente cubrió los términos plausibles y no había nodo relevante que consultar. Verifiqué con leer_pasaje_pdf que el PDF SÍ tiene el dato (Punto 8.1, literal '10 días corridos'), lo que confirma que el hueco es del grafo, no de la norma → completitud_kg. La respuesta 'no encontrado' del agente es honesta y directamente causada por ese hueco: es primaria y explica por qué el juez reprobó (la pregunta tenía respuesta y el sistema no la dio).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicación al cliente última clasificación asignada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"comunicación al cliente última clasificación asignada\", \"total_con_match\": 107, \"resultados\": [{\"id\": \"notificacion_al_cliente_de_acreditacion\", \"type\": \"obligacion_regulatoria\", \"label\": \"Notificación al cliente de acreditación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Procedimiento mediante el cual la entidad debe informar al beneficiario la recepción de fondos en cuenta de corresponsalía dentro de un plazo no mayor a un día …\"}, {\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"obligado_al_pago\", \"type\": \"sujeto_regulado\", \"label\": \"Obligado al pago\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor cuya situación crediticia debe cumplir con condiciones específicas para que su obl… [+1811 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "legajo_del_cliente"
+      },
+      "output_truncado": "{\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"properties\": {\"description\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejando constancia de las revisiones efectuadas y la clasificación asignada.\", \"version\": \"vigente\", \"type_raw\": [\"Documento administrativo\", \"Documento de gestión crediticia\", \"Documento regulatorio\"], \"type_raw_counts\": {\"Documento administrativo\": 1, \"Documento de gestión crediticia\": 1, \"Documento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.1-8 / Sección 1.2.1\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.13-16 / Punto 3.4.4\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "clasificación asignada cliente informar requerimiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"clasificación asignada cliente informar requerimiento\", \"total_con_match\": 39, \"resultados\": [{\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"cliente_residente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente residente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Residente que puede canalizar operaciones a través del Sistema de Monedas Locales implementado por el BCRA.\"}, {\"id\": \"legajo_del_cliente\", \"type\": \"documento_regulatorio\", \"label\": \"Legajo del cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Legajo que debe llevar la entidad para cada deudor de su cartera, conteniendo todos los elementos de juicio para realizar evaluaciones y clasificaciones, dejand…\"}, {\"id\": \"cliente_no_r… [+1868 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.6 (PDF pág 31)\", \"pasaje\": \"6.6. Recategorización obligatoria.\\nSe deberá recategorizar al deudor cuando exista una discrepancia de más de un nivel entre la\\nclasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o\\nfideicomisos financieros en categorías inferiores a la asignada por aquella, cuyas acreencias\\n–en conjunto– representen el 40 % o más del total informado por todos los acreedores, según la\\núltima información disponible en la “Central de deudores del sistema financiero”.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 6. Clasificación de los deudores de la cartera comercial.\\nVersión: 9a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 15\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.4 (PDF pág 39)\", \"pasaje\": \"7.4. Información a la SEFyC sobre incrementos de la cartera irregular.\\nEn los casos en que la expresión que seguidamente se establece sea mayor al 5 % al último\\ndía de un trimestre calendario o al 10 % en un año, la entidad financiera deberá informar el or i-\\ngen de dicha circunstancia a la SEFyC debiendo brindar las explicaciones que les sean requ e-\\nridas y, de corresponder, las modificaciones a realizar en su política de crédito tendientes a m e-\\njorar la calidad de su cartera crediticia.\\nFICCT - FICCT-1 - Máx (FICCST - FICCST-1 ; 0)\\nSiendo:\\nFICC:    cociente, expresado en tanto por ciento, entre el importe total de las financiaciones de\\nla cartera de consumo o vivienda, de la entidad financiera, clasificadas en situación 3 a\\n5 según las normas sobre “Clasificación de deudores” y el importe total de sus fina n-\\nciaciones de la cartera de consumo o vivienda.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 7. Clasificación de los deudores de la cartera para consumo o vivienda.\\nVersión: 5a. COMUNICA… [+48 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=-67 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "diez días hábiles solicitud clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"diez días hábiles solicitud clasificación\", \"total_con_match\": 40, \"resultados\": [{\"id\": \"plazo_de_revocacion_de_diez_dias_habiles\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de revocación de diez días hábiles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo durante el cual el usuario puede revocar la aceptación del producto o servicio, contado a partir de la fecha de recibido el contrato o de la disponibilida…\"}, {\"id\": \"plazo_de_20_dias_habiles\", \"type\": \"plazo_regulatorio\", \"label\": \"Plazo de 20 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo máximo dentro del cual debe ingresarse y liquidarse en el mercado de cambios el contravalor de enajenación de activos no financieros no producidos.\"}, {\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"periodo_de_45_dias\", \"type\": \"plazo_regulatorio\", \"label\": \"Período de 45 días\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Plazo máximo … [+1824 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 41)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 5.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 5.5\", \"ref\": \"Punto/Sección 5.5 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "información a clientes fundamentos clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"información a clientes fundamentos clasificación\", \"total_con_match\": 225, \"resultados\": [{\"id\": \"financiaciones_a_clientes_vinculados\", \"type\": \"concepto_regulatorio\", \"label\": \"Financiaciones a clientes vinculados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiamientos otorgados a clientes vinculados, sujetos a límites y generadores de incrementos de exigencia.\"}, {\"id\": \"financiaciones_a_clientes_con_actividad_agricola\", \"type\": \"tipo_de_exposicion\", \"label\": \"Financiaciones a clientes con actividad agrícola\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones a clientes con actividad agrícola que no sean MIPyMES y tengan ratio de acopio superior al 5% de su cosecha anual, sujetas a exigencia adicional de…\"}, {\"id\": \"grado_a\", \"type\": \"clasificacion_de_riesgo\", \"label\": \"Grado A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Grado asignado a entidades financieras prestatarias que evidencian adecuada capacidad para cumplir compromisos financieros y observan requisitos regulatorios mí…\"}, {\"id\": \"grupo_a\", \"type\": \"clasificacion_de_entidades\", \"label\": \"Grupo A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clasificación de entidades financi… [+1705 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "plazo de 10 días corridos pedido",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"plazo de 10 días corridos pedido\", \"total_con_match\": 1773, \"resultados\": [{\"id\": \"plazo_de_90_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 90 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada a partir del…\"}, {\"id\": \"plazo_de_180_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada previas al 1…\"}, {\"id\": \"plazo_adicional_de_15_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo adicional de 15 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo adicional aplicable a financiaciones de servicios de fletes de importación o cuando la financiación es anterior a la prestación del servicio.\"}, {\"id\": \"plazo_de_120_dias_corridos_para_aplicacion_de_fondos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 120 días corridos para aplicación de fon… [+2117 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "informaciones a clientes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"informaciones a clientes\", \"total_con_match\": 198, \"resultados\": [{\"id\": \"financiaciones_a_clientes_vinculados\", \"type\": \"concepto_regulatorio\", \"label\": \"Financiaciones a clientes vinculados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiamientos otorgados a clientes vinculados, sujetos a límites y generadores de incrementos de exigencia.\"}, {\"id\": \"financiaciones_a_clientes_con_actividad_agricola\", \"type\": \"tipo_de_exposicion\", \"label\": \"Financiaciones a clientes con actividad agrícola\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones a clientes con actividad agrícola que no sean MIPyMES y tengan ratio de acopio superior al 5% de su cosecha anual, sujetas a exigencia adicional de…\"}, {\"id\": \"grado_a\", \"type\": \"clasificacion_de_riesgo\", \"label\": \"Grado A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Grado asignado a entidades financieras prestatarias que evidencian adecuada capacidad para cumplir compromisos financieros y observan requisitos regulatorios mí…\"}, {\"id\": \"grupo_a\", \"type\": \"clasificacion_de_entidades\", \"label\": \"Grupo A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clasificación de entidades financieras que deben aplicar c… [+1681 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicar clasificación asignada",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"comunicar clasificación asignada\", \"total_con_match\": 8, \"resultados\": [{\"id\": \"linea_asignada\", \"type\": \"instrumento_financiero\", \"label\": \"Línea asignada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Fondos provenientes de líneas asignadas a filiales o subsidiarias locales por intermediarios del exterior.\"}, {\"id\": \"tarea_de_clasificacion\", \"type\": \"funcion_regulatoria\", \"label\": \"Tarea de clasificación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Proceso de asignación de categorías de riesgo a deudores, que puede ser encomendada a un área independiente, al sector de créditos con revisión independiente, o…\"}, {\"id\": \"clasificacion_de_deudores\", \"type\": \"tarea_regulatoria\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clasificación que debe efectuarse con una periodicidad que atienda a la importancia del deudor, considerando la totalidad de las financiaciones comprendidas, de…\"}, {\"id\": \"categoria_de_clasificacion\", \"type\": \"nivel_de_riesgo\", \"label\": \"Categoría de clasificación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Una de las cinco categorías en que se clasifica a cada cliente y la totalidad de sus financ… [+1449 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cambio_negativo_en_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}"
+     },
+     {
+      "n": 16,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "solicitud crédito notificar cliente requerir datos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"solicitud crédito notificar cliente requerir datos\", \"total_con_match\": 156, \"resultados\": [{\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"credito\", \"type\": \"clase_de_activo\", \"label\": \"Crédito\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Clase de activo a la que se asignan derivados cuyo factor de riesgo principal es el riesgo de crédito.\"}, {\"id\": \"credito_cedido\", \"type\": \"operacion_crediticia\", \"label\": \"Crédito cedido\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Crédito cedido a favor de la entidad sin responsabilidad para el cedente, respecto del cual debe abrirse legajo del firmante, librador, deudor, codeudor o acept…\"}, {\"id\": \"credito_senior\", \"type\": \"categoria_de_exposicion\", \"label\": \"Crédito senior\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Exposición crediticia que es igual o preferente respecto de un crédito evaluado, permitiendo uso de calificación de ese crédito evaluado.\"}, {\"id\": \"credito_diverso\"… [+1615 chars]"
+     },
+     {
+      "n": 17,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "difusión clasificación cartera cliente",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"difusión clasificación cartera cliente\", \"total_con_match\": 62, \"resultados\": [{\"id\": \"cliente\", \"type\": \"sujeto_regulado\", \"label\": \"Cliente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad cuyas operaciones y activos en garantía se mantienen en subcuentas separadas del miembro compensador, con garantías protegidas de la quiebra de la CCP y…\"}, {\"id\": \"cartera_atomizada\", \"type\": \"estructura_de_cartera\", \"label\": \"Cartera atomizada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cartera con suficiente dispersión de activos que permite proporcionar información resumida a nivel de tramo de activos subyacentes en lugar de préstamo individu…\"}, {\"id\": \"cartera_comercial\", \"type\": \"categoria_de_cartera\", \"label\": \"Cartera comercial\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Categoría que abarca todas las financiaciones comprendidas excepto créditos para consumo o vivienda, con excepciones específicas para créditos que superen dos v…\"}, {\"id\": \"cartera_irregular\", \"type\": \"indicador_de_riesgo\", \"label\": \"Cartera irregular\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Conjunto de financiaciones clasificadas en situaciones 3 a 5, cuyo incremento superio… [+1720 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"comunicación clasificación plazo días solicitud cliente\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"comunicación clasificación plazo días solicitud cliente\", \"total_con_match\": 123, \"resultados\": [{\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"plazo_de_20_dias_habiles\", \"type\": \"plazo_regulatorio\", \"label\": \"Plazo de 20 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo máximo dentro del cual debe ingresarse y liquidarse en el mercado de cambios el contravalor de enajenación de activos no financieros no producidos.\"}, {\"id\": \"bien_con_plazo_de_30_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 30 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Bien que tiene asignado un plazo de 30 días corridos conforme al punto 7.1.1.2., con coeficiente del 5% para cálculo de monto máximo.\"}, {\"id\": \"bien_con_plazo_de_60_dias\", \"type\":… [+2249 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32205,
+      "output_tokens": 249
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33980,
+      "output_tokens": 184
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35900,
+      "output_tokens": 291
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37224,
+      "output_tokens": 233
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39036,
+      "output_tokens": 317
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40078,
+      "output_tokens": 319
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43169,
+      "output_tokens": 234
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45792,
+      "output_tokens": 324
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47608,
+      "output_tokens": 552
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49393,
+      "output_tokens": 131
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 51041,
+      "output_tokens": 3936
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 93,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.1-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": true,
+  "motivos": [
+   "fuente_no_verificable"
+  ],
+  "flags": [
+   "S1: rep2_atrib1 — no_determinable (0/1 decididas)",
+   "S1: rep3_atrib1 — fetch sin_portador_extraible"
+  ]
+ },
+ "resumen_s1": {
+  "gatilladas": 3,
+  "juzgadas_llm": 2,
+  "corregidas": 0,
+  "no_determinable": 1,
+  "fetch_fallido": 1,
+  "tokens_in_s1": 6755,
+  "tokens_out_s1": 1031,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.1-dev"
+}

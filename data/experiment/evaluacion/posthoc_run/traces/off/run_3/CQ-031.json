@@ -1,0 +1,941 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-031",
+    "run": "run_3",
+    "categoria": "cadena_restriccion_excepcion",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-031",
+      "question": "¿Qué deudores no deben ser objeto de clasificación y respecto de qué deudores no corresponde evaluar la capacidad de repago?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudores no deben ser objeto clasificación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudores no deben ser objeto clasificación\", \"total_con_match\": 509, \"resultados\": [{\"id\": \"Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores de clasificación\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Deudores que no deben ser objeto de clasificación\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Clasificación de Deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: clasificacion_deudores; archivo: TO_clasificacion_deudores_actual.pdf; version: vigente\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\"… [+1979 chars]",
+          "output_chars": 3179
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "capacidad de repago evaluación deudores",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"capacidad de repago evaluación deudores\", \"total_con_match\": 2417, \"resultados\": [{\"id\": \"Operacion_evaluacion_crediticia\", \"type\": \"Operacion\", \"label\": \"Evaluación de capacidad de repago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Evaluación de la capacidad de repago respecto de las financiaciones\"}, {\"id\": \"Operacion_evaluacion_de_capacidad\", \"type\": \"Operacion\", \"label\": \"Evaluación de capacidad de repago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos de fondos realizado por la entidad.\"}, {\"id\": \"Obligacion_no_se_considerara_refinanciacion_la_asistencia_que_se_otorgue_a_los_deudores_cla\", \"type\": \"Obligacion\", \"label\": \"Evaluación de capacidad de pago para ampliación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se considerará refinanciación la asistencia que se otorgue a los deudores clasificados en esta categoría siempre que implique mayor deuda por capital respect…\"}, {\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"t… [+2099 chars]",
+          "output_chars": 3299
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores de clasificación\", \"properties\": {\"descripcion\": \"Deudores que no deben ser objeto de clasificación\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.5. Deudores que no deben ser objeto de clasificación.\"}]}",
+          "output_chars": 402
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"properties\": {\"tipo\": \"prohibicion\", \"descripcion\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones respaldadas con garantías preferidas A\", \"description\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.4. Financiaciones cubiertas con garantías preferidas “A”.\"}]}",
+          "output_chars": 682
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion\", \"label\": \"Exclusión de deudores de clasificación\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.5. Deudores que no deben ser objeto de clasificación.\"}]}, {\"relation\": \"prohibe\", \"vecino_id\": \"Operacion_clasificacion_de_deudor\", \"vecino_label\": \"Evaluación grado de inversión\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.5. Deudores que no deben ser objeto de clasificación.\"}]}], \"salientes_truncado\": false}",
+          "output_chars": 782
+        },
+        {
+          "n": 6,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.4. Financiaciones cubiertas con garantías preferidas “A”.\"}]}, {\"relation\": \"prohibe\", \"vecino_id\": \"Operacion_evaluacion_crediticia\", \"vecino_label\": \"Evaluación de capacidad de repago\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.4. Financiaciones cubiertas con garantías preferidas “A”.\"}]}], \"salientes_truncado\": false}",
+          "output_chars": 835
+        },
+        {
+          "n": 7,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudores exclusión clasificación estado nacional provincia municipio",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudores exclusión clasificación estado nacional provincia municipio\", \"total_con_match\": 156, \"resultados\": [{\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deudores que no deben ser objeto de clasificación\"}, {\"id\": \"Restriccion_incurra_en_atrasos_de_hasta_180_dias_con_exclusion_de_los_deudores_comprendidos_\", \"type\": \"Restriccion\", \"label\": \"Atrasos hasta 180 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Incurra en atrasos de hasta 180 días, con exclusión de los deudores comprendidos en el punto 6.5.2.2.\"}, {\"id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Clasificación de Deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"ma… [+1837 chars]",
+          "output_chars": 3037
+        },
+        {
+          "n": 8,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "garantías preferidas A financiaciones",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"garantías preferidas A financiaciones\", \"total_con_match\": 1220, \"resultados\": [{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, {\"id\": \"Obligacion_se_incrementara_el_valor_de_los_activos_en_garantia_dados_por_la_entidad_y_se_re\", \"type\": \"Obligacion\", \"label\": \"Aplicar aforos a garantías\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se incrementará el valor de los activos en garantía dados por la entidad y se reducirá el valor de los recibidos, utilizando aforos aplicables a transacciones R…\"}, {\"id\": \"Obligacion_a_fin_de_determinar_el_importe_de_la_cancelacion_se_admitira_computar_el_50_de_l\", \"type\": \"Obligacion\", \"label\": \"Computar garantías adicionales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A fin de determinar el importe de la cancelación, se admitirá computar el 50 % de las garantías adicionales a las ofrecidas originalmente… [+2637 chars]",
+          "output_chars": 3837
+        },
+        {
+          "n": 9,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "punto 4.5 deudores no deben clasificación estado nacional",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"punto 4.5 deudores no deben clasificación estado nacional\", \"total_con_match\": 523, \"resultados\": [{\"id\": \"Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores de clasificación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Deudores que no deben ser objeto de clasificación\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"Restriccion_los_garantes_admisibles_se_limitan_a_los_estipulados_en_el_punto_5_4_1_los_spe_n\", \"type\": \"Restriccion\", \"label\": \"Restricción en garantes admisibles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los garantes admisibles se limitan a los estipulados en el punto 5.4.1. Los SPE no son garantes admisibles.\"}, {\"id\": \"Obligacion_ajustar_el_valor_de_la_cobertura_segun_lo_previsto_en_punto_5_4_5\", \"type\": \"Obligacion\", \"label\": \"Ajuste valor cobertura método integral\", \"tokens… [+1916 chars]",
+          "output_chars": 3116
+        },
+        {
+          "n": 10,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "punto 4.4 garantías preferidas A estado nacional provincia",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"punto 4.4 garantías preferidas A estado nacional provincia\", \"total_con_match\": 1220, \"resultados\": [{\"id\": \"Restriccion_los_garantes_admisibles_se_limitan_a_los_estipulados_en_el_punto_5_4_1_los_spe_n\", \"type\": \"Restriccion\", \"label\": \"Restricción en garantes admisibles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los garantes admisibles se limitan a los estipulados en el punto 5.4.1. Los SPE no son garantes admisibles.\"}, {\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, {\"id\": \"Obligacion_aplicar_disposiciones_de_punto_8_3_4_a_deuda_computable_como_ca_o_pnc\", \"type\": \"Obligacion\", \"label\": \"Aplicar disposiciones de punto 8.3.4 a deuda computable como CA o PNc\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En el caso de los instrumentos de deuda computables como CA o PNc, al admitir los aportes, se deberá tener en cuenta lo dispuesto en… [+2417 chars]",
+          "output_chars": 3617
+        },
+        {
+          "n": 11,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "estado nacional provincia municipio banco central deudores",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"estado nacional provincia municipio banco central deudores\", \"total_con_match\": 71, \"resultados\": [{\"id\": \"Operacion_estado_de_situacion_de_deudores\", \"type\": \"Operacion\", \"label\": \"Estado de situación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Estado de situación de deudores referenciado en punto 6.1. y 6.2.\"}, {\"id\": \"Excepcion_creditos_frente_al_banco_central_de_la_republica_argentina_estan_excluidos\", \"type\": \"Excepcion\", \"label\": \"Exclusión de créditos frente al BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Créditos frente al Banco Central de la República Argentina están excluidos\"}, {\"id\": \"Obligacion_el_banco_central_de_la_republica_argentina_establecera_las_condiciones_y_plazos_\", \"type\": \"Obligacion\", \"label\": \"BCRA establecerá condiciones y plazos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El BANCO CENTRAL DE LA REPÚBLICA ARGENTINA establecerá las condiciones y plazos para el ingreso de contravalor de exportación\"}, {\"id\": \"Excepcion_garantias_otorgadas_a_favor_del_banco_central_estan_excluidas\", \"type\": \"Excepcion\", \"label\": \"Exclusión de garantías a favor del BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Garantía… [+1934 chars]",
+          "output_chars": 3134
+        },
+        {
+          "n": 12,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "cesión sin responsabilidad cedente deudores",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"cesión sin responsabilidad cedente deudores\", \"total_con_match\": 126, \"resultados\": [{\"id\": \"Operacion_cesion_de_operaciones_sin_responsabilidad_para_el_cedente\", \"type\": \"Operacion\", \"label\": \"Cesión sin responsabilidad\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cesión de operaciones sin responsabilidad para el cedente\"}, {\"id\": \"Operacion_cesion_de_creditos_sin_responsabilidad\", \"type\": \"Operacion\", \"label\": \"Cesión de créditos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cesión de créditos sin responsabilidad\"}, {\"id\": \"Excepcion_financiaciones_sin_responsabilidad_para_el_cedente_amparadas_con_seguros_de_cred\", \"type\": \"Excepcion\", \"label\": \"Financiaciones con seguros de crédito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Financiaciones sin responsabilidad para el cedente amparadas con seguros de crédito por riesgo comercial y con seguros de riesgo de crédito con alcance de compr…\"}, {\"id\": \"Operacion_operaciones_de_titulizacion_y_venta_o_cesion_de_cartera_con_responsabilidad\", \"type\": \"Operacion\", \"label\": \"Titulización cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Operaciones de titulización y venta o cesión de cart… [+2085 chars]",
+          "output_chars": 3285
+        },
+        {
+          "n": 13,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"properties\": {\"descripcion\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr\"}]}",
+          "output_chars": 526
+        },
+        {
+          "n": 14,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "garantías preferidas A definición estado nacional provincia",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"garantías preferidas A definición estado nacional provincia\", \"total_con_match\": 1191, \"resultados\": [{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, {\"id\": \"Obligacion_se_incrementara_el_valor_de_los_activos_en_garantia_dados_por_la_entidad_y_se_re\", \"type\": \"Obligacion\", \"label\": \"Aplicar aforos a garantías\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se incrementará el valor de los activos en garantía dados por la entidad y se reducirá el valor de los recibidos, utilizando aforos aplicables a transacciones R…\"}, {\"id\": \"Obligacion_a_fin_de_determinar_el_importe_de_la_cancelacion_se_admitira_computar_el_50_de_l\", \"type\": \"Obligacion\", \"label\": \"Computar garantías adicionales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A fin de determinar el importe de la cancelación, se admitirá computar el 50 % de las garantías adicionales a las o… [+2532 chars]",
+          "output_chars": 3732
+        },
+        {
+          "n": 15,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "garantías preferidas A créditos estado nacional provincia municipio",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"garantías preferidas A créditos estado nacional provincia municipio\", \"total_con_match\": 1208, \"resultados\": [{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, {\"id\": \"Obligacion_se_incrementara_el_valor_de_los_activos_en_garantia_dados_por_la_entidad_y_se_re\", \"type\": \"Obligacion\", \"label\": \"Aplicar aforos a garantías\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se incrementará el valor de los activos en garantía dados por la entidad y se reducirá el valor de los recibidos, utilizando aforos aplicables a transacciones R…\"}, {\"id\": \"Obligacion_a_fin_de_determinar_el_importe_de_la_cancelacion_se_admitira_computar_el_50_de_l\", \"type\": \"Obligacion\", \"label\": \"Computar garantías adicionales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A fin de determinar el importe de la cancelación, se admitirá computar el 50 % de las garantías adicionales… [+2586 chars]",
+          "output_chars": 3786
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1470,
+          "output_tokens": 176,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.185
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3956,
+          "output_tokens": 179,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.12
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 221,
+          "cache_read": 0,
+          "cache_write": 4528,
+          "latency_s": 1.821
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 181,
+          "cache_read": 4528,
+          "cache_write": 856,
+          "latency_s": 2.147
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 183,
+          "cache_read": 5384,
+          "cache_write": 2577,
+          "latency_s": 2.653
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 174,
+          "cache_read": 7961,
+          "cache_write": 2707,
+          "latency_s": 2.86
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 203,
+          "cache_read": 13088,
+          "cache_write": 0,
+          "latency_s": 7.58
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 104,
+          "cache_read": 13088,
+          "cache_write": 1685,
+          "latency_s": 1.846
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 3,
+          "output_tokens": 497,
+          "cache_read": 14773,
+          "cache_write": 1460,
+          "latency_s": 5.614
+        }
+      ],
+      "final_json": {
+        "respuesta": "Según la regulación del BCRA:\n\n1. **Deudores que NO deben ser objeto de clasificación:**\n   - Quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6).\n\n2. **Deudores respecto de los cuales NO corresponde evaluar la capacidad de repago:**\n   - Aquellos cuyas financiaciones se encuentren respaldadas con garantías preferidas \"A\" (Punto 4.4). En estos casos, no corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías.\n\nEstas exclusiones reconocen que en ciertos casos (cesiones sin responsabilidad del cedente y financiaciones con garantías preferidas A), la evaluación tradicional de clasificación o capacidad de repago no es necesaria debido a la naturaleza de la operación o a la calidad de las garantías que respaldan la financiación.",
+        "citas": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 4.5. Deudores que no deben ser objeto de clasificación."
+          },
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr"
+          },
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 4.4. Financiaciones cubiertas con garantías preferidas \"A\"."
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Basándome en la información recolectada del Knowledge Graph, puedo responder sobre los deudores excluidos de clasificación y la evaluación de capacidad de repago:\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA:\\n\\n1. **Deudores que NO deben ser objeto de clasificación:**\\n   - Quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6).\\n\\n2. **Deudores respecto de los cuales NO corresponde evaluar la capacidad de repago:**\\n   - Aquellos cuyas financiaciones se encuentren respaldadas con garantías preferidas \\\"A\\\" (Punto 4.4). En estos casos, no corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías.\\n\\nEstas exclusiones reconocen que en ciertos casos (cesiones sin responsabilidad del cedente y financiaciones con garantías preferidas A), la evaluación tradicional de clasificación o capacidad de repago no es necesaria debido a la naturaleza de la operación o a la calidad de las garantías que respaldan la financiación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.5. Deudores que no deben ser objeto de clasificación.\"\n    },\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr\"\n    },\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.4. Financiaciones cubiertas con garantías preferidas \\\"A\\\".\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 15,
+      "hit_tool_limit": true,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.5. Deudores que no deben ser objeto de clasificación."
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.4. Financiaciones cubiertas con garantías preferidas “A”."
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr"
+        }
+      ],
+      "citations_unseen_raw": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.4. Financiaciones cubiertas con garantías preferidas \"A\"."
+        }
+      ],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5471,
+      "tokens_out": 1918,
+      "cache_read": 58822,
+      "cache_write": 13813,
+      "cost_usd": 0.038209,
+      "latency_s": 28.877,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01R2Xi9sqbVYgZaXGsoZJkXB",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre clasificación de deudores y evaluación de capacidad de repago en el Knowledge Graph.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Dog32L4rC6ABQUSdocTdo2",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudores no deben ser objeto clasificación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_011WiSi4miFDt959DnPzx7zs",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "capacidad de repago evaluación deudores",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1470,
+            "output_tokens": 176,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Rizb4Y4GHTA9H5iUfUXXc4",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Encontré dos restricciones relevantes. Voy a obtener los detalles completos de ambas.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Ji5yA2vrGJENapsEEFUfqy",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LFQ8uCmHnd8r7jzXGrKRbY",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3956,
+            "output_tokens": 179,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01JzezvuJ2Jbfv8tktg6CPEU",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Ahora voy a explorar las relaciones de estos nodos para obtener más detalles sobre qué deudores específicamente están excluidos.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01HU1qbSCotca42uT1PesBoQ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_013PKEZvECK7grposAhxtEwx",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4528
+            },
+            "cache_creation_input_tokens": 4528,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 221,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01PEbY5z6o96gNLf4p1FDCJH",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Necesito obtener más detalles sobre qué deudores específicamente están excluidos. Voy a buscar información más específica.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01MUTJfcvqVHVKiCJExr2efJ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudores exclusión clasificación estado nacional provincia municipio",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01Pcxmrdg8LogaQCHRbYUwYF",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "garantías preferidas A financiaciones",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 856
+            },
+            "cache_creation_input_tokens": 856,
+            "cache_read_input_tokens": 4528,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 181,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01FngnmeQXmzF98U4tFHCQYv",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente qué tipos de deudores están excluidos de la clasificación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01VZne3c4eiHrxjutRjxzprX",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "punto 4.5 deudores no deben clasificación estado nacional",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01FTgw5HBxmfAZZta1UsLHER",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "punto 4.4 garantías preferidas A estado nacional provincia",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2577
+            },
+            "cache_creation_input_tokens": 2577,
+            "cache_read_input_tokens": 5384,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 183,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_018ZyTc1Ac1W4x7sn9psXoKu",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente sobre qué entidades o tipos de deudores están excluidos.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01JAdXocFTk8wNKsGuW5GuZ8",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "estado nacional provincia municipio banco central deudores",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LatwAQbB7ENVp4e2PPo11V",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "cesión sin responsabilidad cedente deudores",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2707
+            },
+            "cache_creation_input_tokens": 2707,
+            "cache_read_input_tokens": 7961,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 174,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_015h93bBWuWoEfLYxG5PYtKk",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Encontré información sobre cesión sin responsabilidad. Ahora voy a ver los detalles de esa restricción y buscar más información sobre qué garantías son \"preferidas A\".",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01B5TjXfNtWz9piNTY85Z1xp",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01Skht1EFuYXk7ZUdFbmm6mG",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "garantías preferidas A definición estado nacional provincia",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 13088,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 203,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01VJEgf9jPysQKxf7hJSNHvL",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar específicamente qué son las garantías preferidas A.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0145fZ5emM9b1ze95gKjGWGd",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "garantías preferidas A créditos estado nacional provincia municipio",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1685
+            },
+            "cache_creation_input_tokens": 1685,
+            "cache_read_input_tokens": 13088,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 104,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01TCB625Gh51vzJiHuPM1DeV",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Basándome en la información recolectada del Knowledge Graph, puedo responder sobre los deudores excluidos de clasificación y la evaluación de capacidad de repago:\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA:\\n\\n1. **Deudores que NO deben ser objeto de clasificación:**\\n   - Quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6).\\n\\n2. **Deudores respecto de los cuales NO corresponde evaluar la capacidad de repago:**\\n   - Aquellos cuyas financiaciones se encuentren respaldadas con garantías preferidas \\\"A\\\" (Punto 4.4). En estos casos, no corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías.\\n\\nEstas exclusiones reconocen que en ciertos casos (cesiones sin responsabilidad del cedente y financiaciones con garantías preferidas A), la evaluación tradicional de clasificación o capacidad de repago no es necesaria debido a la naturaleza de la operación o a la calidad de las garantías que respaldan la financiación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.5. Deudores que no deben ser objeto de clasificación.\"\n    },\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr\"\n    },\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 4.4. Financiaciones cubiertas con garantías preferidas \\\"A\\\".\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1460
+            },
+            "cache_creation_input_tokens": 1460,
+            "cache_read_input_tokens": 14773,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 497,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "parcial",
+        "completitud": "parcial",
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [
+            "Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación."
+          ],
+          "secundarias": [],
+          "n_centrales": 1,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": true,
+        "justificacion": {
+          "correctitud": "Afirmación secundaria falsa/imprecisa: Esta exclusión de clasificación está regulada en el Punto 4.6 de la normativa del BCRA.",
+          "completitud": "Patas no cubiertas: Qué deudores no deben ser objeto de clasificación",
+          "citas": "El agente cita correctamente el documento TO_clasificacion_deudores_actual.pdf con precisión a nivel de punto (4.4, 4.5, 4.6)."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación.",
+            "central": true
+          },
+          {
+            "enunciado": "Esta exclusión de clasificación está regulada en el Punto 4.6 de la normativa del BCRA.",
+            "central": false
+          },
+          {
+            "enunciado": "Respecto de los deudores cuyas financiaciones se encuentren respaldadas con garantías preferidas 'A', no corresponde evaluar la capacidad de repago.",
+            "central": true
+          },
+          {
+            "enunciado": "La exclusión de evaluación de capacidad de repago aplica únicamente respecto de las financiaciones que se encuentren respaldadas con garantías preferidas 'A'.",
+            "central": true
+          },
+          {
+            "enunciado": "Esta exclusión de evaluación de capacidad de repago está regulada en el Punto 4.4 de la normativa del BCRA.",
+            "central": false
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Qué deudores no deben ser objeto de clasificación",
+          "Respecto de qué deudores no corresponde evaluar la capacidad de repago"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación.",
+            "central": true,
+            "verdict": "no_soportado"
+          },
+          {
+            "enunciado": "Esta exclusión de clasificación está regulada en el Punto 4.6 de la normativa del BCRA.",
+            "central": false,
+            "verdict": "falso"
+          },
+          {
+            "enunciado": "Respecto de los deudores cuyas financiaciones se encuentren respaldadas con garantías preferidas 'A', no corresponde evaluar la capacidad de repago.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "La exclusión de evaluación de capacidad de repago aplica únicamente respecto de las financiaciones que se encuentren respaldadas con garantías preferidas 'A'.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Esta exclusión de evaluación de capacidad de repago está regulada en el Punto 4.4 de la normativa del BCRA.",
+            "central": false,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Qué deudores no deben ser objeto de clasificación",
+            "cobertura": "no_cubierta"
+          },
+          {
+            "pata": "Respecto de qué deudores no corresponde evaluar la capacidad de repago",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "El agente cita correctamente el documento TO_clasificacion_deudores_actual.pdf con precisión a nivel de punto (4.4, 4.5, 4.6).",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 3047,
+        "out": 926
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01FVYjHUWmcquysray9DK4vK",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\n      \"enunciado\": \"Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"Esta exclusión de clasificación está regulada en el Punto 4.6 de la normativa del BCRA.\",\n      \"central\": false\n    },\n    {\n      \"enunciado\": \"Respecto de los deudores cuyas financiaciones se encuentren respaldadas con garantías preferidas 'A', no corresponde evaluar la capacidad de repago.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"La exclusión de evaluación de capacidad de repago aplica únicamente respecto de las financiaciones que se encuentren respaldadas con garantías preferidas 'A'.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"Esta exclusión de evaluación de capacidad de repago está regulada en el Punto 4.4 de la normativa del BCRA.\",\n      \"central\": false\n    }\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"Qué deudores no deben ser objeto de clasificación\",\n    \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 819,
+            "output_tokens": 363,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Stp9JPiRmg2iszFNcoL1ud",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación.\",\n      \"central\": true,\n      \"verdict\": \"no_soportado\"\n    },\n    {\n      \"enunciado\": \"Esta exclusión de clasificación está regulada en el Punto 4.6 de la normativa del BCRA.\",\n      \"central\": false,\n      \"verdict\": \"falso\"\n    },\n    {\n      \"enunciado\": \"Respecto de los deudores cuyas financiaciones se encuentren respaldadas con garantías preferidas 'A', no corresponde evaluar la capacidad de repago.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"La exclusión de evaluación de capacidad de repago aplica únicamente respecto de las financiaciones que se encuentren respaldadas con garantías preferidas 'A'.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Esta exclusión de evaluación de capacidad de repago está regulada en el Punto 4.4 de la normativa del BCRA.\",\n      \"central\": false,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Qué deudores no deben ser objeto de clasificación\",\n      \"cobertura\": \"no_cubierta\"\n    },\n    {\n      \"pata\": \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"punto\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"El agente cita correctamente el documento TO_clasificacion_deudores_actual.pdf con precisión a nivel de punto (4.4, 4.5, 4.6).\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 2228,
+            "output_tokens": 563,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.038209,
+    "judge_cost": 0.023031
+  }
+]

@@ -26,13 +26,13 @@ costó dinero real en el proyecto. El precedente a imitar es
 - Python: el venv de la raíz del repo (`.venv/bin/python`, Python 3.10).
 - API key: `ANTHROPIC_API_KEY` en `data/experiment/evaluacion/.env`
   (los scripts la cargan con `load_dotenv(EVAL_DIR / ".env")` y abortan si falta,
-  p. ej. `data/experiment/evaluacion/run_posthoc.py:283-285`).
+  p. ej. `data/experiment/evaluacion/runners/run_posthoc.py:283-285`).
 - Directorio de trabajo de todos los comandos de esta skill:
   `data/experiment/evaluacion/`.
 
 ## El patrón canónico (cadena de clientes)
 
-Referencia: `build_clients` en `data/experiment/evaluacion/run_posthoc.py:123-155`.
+Referencia: `build_clients` en `data/experiment/evaluacion/runners/run_posthoc.py:123-155`.
 
 ```
 código de negocio ─▶ ParamOverrideClient ─▶ CachingClient ─▶ cliente real (SDK, retries)
@@ -55,13 +55,13 @@ client = cache                                      # drop-in: expone .messages.
 Reglas de orden que NO se alteran:
 
 - **El override va POR ENCIMA de la caché**, nunca abajo: así la key refleja el
-  request REAL que viaja por el cable (`data/experiment/evaluacion/run_posthoc.py:16-22`).
+  request REAL que viaja por el cable (`data/experiment/evaluacion/runners/run_posthoc.py:16-22`).
 - **La caché va POR FUERA del retry**: un hit ni siquiera entra a la red
   (`data/experiment/evaluacion/llm_cache.py:230-231`).
 - **Los errores NO se cachean**: un miss que falla propaga la excepción sin
   guardar nada (`data/experiment/evaluacion/llm_cache.py:310`).
 - **NO importar `run_frozen.RetryingClient`** para esto: su import aplica un
-  monkeypatch global a `judge._call` (`data/experiment/evaluacion/run_posthoc.py:287-290`).
+  monkeypatch global a `judge._call` (`data/experiment/evaluacion/runners/run_posthoc.py:287-290`).
   Usá el retry nativo del SDK.
 
 ## Reglas de namespace (qué invalida qué)
@@ -73,7 +73,7 @@ Reglas de orden que NO se alteran:
 |---|---|---|
 | `domain` | uno por rol ("agent", "judge", "verificador", …) | `data/experiment/evaluacion/llm_cache.py:26` |
 | `cv=` (code_version) | hash automático de `harness.py`+`judge.py`+`loader.py`: **editar cualquiera de los tres invalida TODA la caché** de los dominios que lo usan | `data/experiment/evaluacion/llm_cache.py:49`, `data/experiment/evaluacion/llm_cache.py:58-68` |
-| `gfp=` (graph_fingerprint) | sha256(kg.json) + `LOADER_VERSION`; SOLO para dominios que consumen grafo (el juez no lo lleva) | `data/experiment/evaluacion/llm_cache.py:71-81`, `data/experiment/evaluacion/run_posthoc.py:142-145` |
+| `gfp=` (graph_fingerprint) | sha256(kg.json) + `LOADER_VERSION`; SOLO para dominios que consumen grafo (el juez no lo lleva) | `data/experiment/evaluacion/llm_cache.py:71-81`, `data/experiment/evaluacion/runners/run_posthoc.py:142-145` |
 | `think=0/1` | siempre presente; cachés thinking-ON y OFF nunca se cruzan | `data/experiment/evaluacion/llm_cache.py:21-22` |
 
 Implicancia operativa: **planificá las ediciones a harness/judge/loader ANTES de
@@ -103,7 +103,7 @@ Cuando aparece un rol nuevo que llama a la API:
 ## Thinking ON
 
 No se tocan los módulos congelados: se intercala `ParamOverrideClient` con
-`make_thinking_transform(budget)` (`data/experiment/evaluacion/run_posthoc.py:88-99`), que:
+`make_thinking_transform(budget)` (`data/experiment/evaluacion/runners/run_posthoc.py:88-99`), que:
 
 - agrega `thinking={"type": "enabled", "budget_tokens": budget}`,
 - **quita `temperature`** (thinking clásico en Haiku 4.5 no admite temperature custom),
@@ -112,22 +112,22 @@ No se tocan los módulos congelados: se intercala `ParamOverrideClient` con
 
 Presupuestos vigentes (tunables, se validan con `--preflight`):
 `AGENT_THINK_BUDGET = 4000`, `JUDGE_THINK_BUDGET = 6000`
-(`data/experiment/evaluacion/run_posthoc.py:67-68`).
+(`data/experiment/evaluacion/runners/run_posthoc.py:67-68`).
 
 Peculiaridades por modelo YA pagadas (no redescubrir):
 
 - **Opus 4.8 rechaza `temperature`** — no pasarla nunca (`data/experiment/evaluacion/verificador.py:43`, `data/experiment/evaluacion/verificador.py:324`).
 - **Prompt-cache de Haiku 4.5: mínimo cacheable 4096 tokens** — un prefijo menor
-  da `cache_read+cache_write = 0` legítimo, no es bug (`data/experiment/evaluacion/harness.py:401-404`, y el preflight lo reporta como INFO/WARN, `data/experiment/evaluacion/run_posthoc.py:333-336`).
+  da `cache_read+cache_write = 0` legítimo, no es bug (`data/experiment/evaluacion/harness.py:401-404`, y el preflight lo reporta como INFO/WARN, `data/experiment/evaluacion/runners/run_posthoc.py:333-336`).
 - Criterio de corrida sana con thinking: `stop_reason == "end_turn"`; si sale
   `max_tokens` el JSON final se cortó → subir budget/base y repetir preflight
-  (`data/experiment/evaluacion/run_posthoc.py:297-306`).
+  (`data/experiment/evaluacion/runners/run_posthoc.py:297-306`).
 
 ## Recuperar los crudos capturados (incl. thinking)
 
 Los thinking blocks viven en la columna `raw_json` de la tabla `cache`; el orden
 de llamadas por corrida está en `access_log`. El patrón de lectura por turno es
-`_max_access_rowid` + `_turns_since` (`data/experiment/evaluacion/run_posthoc.py:163-180`).
+`_max_access_rowid` + `_turns_since` (`data/experiment/evaluacion/runners/run_posthoc.py:163-180`).
 Detalle (esquema SQL, queries listas, filtro por `think=0/1`) en
 `references/leer-crudos.md`.
 
@@ -151,13 +151,13 @@ Detalle (esquema SQL, queries listas, filtro por `think=0/1`) en
 Desde `data/experiment/evaluacion/`, con el venv de la raíz:
 
 ```bash
-python test_llm_cache.py          # capa de caché: 32 checks (7 tests), PASS/FAIL por check
-python run_posthoc.py --selftest  # cadena completa + replay multi-turno: 14 checks, cliente falso
+python tests/test_llm_cache.py          # capa de caché: 32 checks (7 tests), PASS/FAIL por check
+python runners/run_posthoc.py --selftest  # cadena completa + replay multi-turno: 14 checks, cliente falso
 ```
 
 Ambos son offline y gratis; terminan con `RESULTADO: PASS ✅` y exit code 0
-(`data/experiment/evaluacion/test_llm_cache.py:299-325`, `data/experiment/evaluacion/run_posthoc.py:503-509`).
+(`data/experiment/evaluacion/tests/test_llm_cache.py:299-325`, `data/experiment/evaluacion/runners/run_posthoc.py:503-509`).
 Si el cableado nuevo involucra thinking real, el paso siguiente (con API, ~centavos)
-es `python run_posthoc.py --preflight --run run_3 --thinking` y
-`python run_posthoc.py --verify-replay --thinking` (usa una caché temporal aislada,
-no ensucia producción — `data/experiment/evaluacion/run_posthoc.py:376-384`).
+es `python runners/run_posthoc.py --preflight --run run_3 --thinking` y
+`python runners/run_posthoc.py --verify-replay --thinking` (usa una caché temporal aislada,
+no ensucia producción — `data/experiment/evaluacion/runners/run_posthoc.py:376-384`).

@@ -1,0 +1,738 @@
+{
+ "id_falla": "run_2/CQ-015",
+ "run": "run_2",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_2/CQ-015",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"residente fines cambiarios definición\", \"limite\": 10}",
+      "devolvio": "39 matches; nodos de residente/no residente varios (sujeto_regulado:residente, cliente_residente, etc.) sin la definición conceptual",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"persona humana residente país\", \"limite\": 10}",
+      "devolvio": "75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\"}",
+      "devolvio": "Nodo con description completa de la definición y provenance TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\", \"direccion\": \"ambas\"}",
+      "devolvio": "0 salientes, 0 entrantes (nodo aislado)",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó con términos plausibles, encontró el nodo portador pertinente (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y reprodujo su contenido fielmente en la respuesta. Las tres condiciones (centro de interés económico, actividad principal, intención de permanecer al menos un año) coinciden con el PDF (Punto 6.5.1) y el juez las aprobó todas. No hubo decisión errónea.",
+    "thinking_decision": null,
+    "patas": [
+     "Definición de 'residente' del país para una persona humana a los fines cambiarios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Definición de 'residente' del país para una persona humana a los fines cambiarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.",
+       "ubicacion": "concepto_definido:residente_persona_humana (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 6.5.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "Punto 6.5 (PDF)",
+       "resultado": "El pasaje 6.5.1 confirma las tres condiciones exactamente como las afirmó el agente"
+      },
+      {
+       "consulta": "Punto 6.4 (PDF, la provenance del nodo)",
+       "resultado": "El 6.4 es 'Operaciones a término', NO contiene la definición de residente"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Definición de 'residente' del país para una persona humana a los fines cambiarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4",
+       "ubicacion": "respuesta final (citas)"
+      },
+      "nodo": {
+       "quote": "\"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]",
+       "ubicacion": "concepto_definido:residente_persona_humana"
+      },
+      "fuente": {
+       "quote": "6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles desde la fecha de su concertación.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 6.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Sección 5 > Punto 6.4",
+       "resultado": "El punto 6.4 trata 'Operaciones a término', no la definición de residente; la definición está en 6.5.1"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 6.5",
+       "resultado": "6.5.1 Persona humana contiene la definición real de residente"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6a",
+      "accion": "atribucion_sin_sintoma"
+     }
+    }
+   ],
+   "razonamiento": "FASE A: El agente hizo dos búsquedas (la 2ª pertinente), abrió el nodo concepto_definido:residente_persona_humana y verificó vecinos. Reprodujo el contenido del nodo en la respuesta. FASE B: El nodo dice 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.' — fiel al PDF Punto 6.5.1. Las tres afirmaciones centrales coinciden verbatim con la fuente. FASE C1: La única pata quedó cubierta con el dato pertinente que apareció en la trayectoria (nodo portador correcto) → no es context_recall; el claim está soportado por el nodo consultado → no es faithfulness → noise_sensitivity. FASE C2: ¿el nodo es fiel al PDF? SÍ, contradicción nula; ¿es pertinente a la pata? SÍ (test v2.2: usando solo ese nodo la pata queda bien respondida). Además el juez APROBÓ las tres afirmaciones centrales, es decir no hay claim fallido que mueva el veredicto. Descarto activamente: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato está completo), estructural_kg (una sola pata sin cruce), alucinacion_agente (nada agregado fuera del nodo), navegación (encontró el nodo), aplicacion_erronea (no aplicó nodo de otro alcance). Conclusión primaria: sin_defecto = falso positivo del juez (jerarquia sin_par). Como secundaria: la provenance del nodo cita 'Sección 5 > Punto 6.4' que en el PDF corresponde a 'Operaciones a término'; la definición real está en el Punto 6.5.1 — provenance_imprecisa, pero no rompió la respuesta (contenido correcto), por eso secundaria y no primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 3,
+    "max_tool_calls": 40,
+    "tokens_in": 52527,
+    "tokens_out": 3535
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 3,
+    "tokens_in": 52527,
+    "tokens_out": 3535,
+    "latency_s": 49.321,
+    "error": null,
+    "final_raw": "Confirmado. La definición está en el **Punto 6.5.1** (Sección 6, no Sección 5). El nodo cita \"Sección 5 > Punto 6.4\", que corresponde a \"Operaciones a término\" — una provenance imprecisa. Pero el contenido del nodo es fiel al PDF y el juez aprobó las tres afirmaciones centrales.\n\nNo hay claim fallido. La respuesta es correcta → falso positivo del juez. La provenance imprecisa se emite como secundaria.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"residente fines cambiarios definición\\\", \\\"limite\\\": 10}\", \"devolvio\": \"39 matches; nodos de residente/no residente varios (sujeto_regulado:residente, cliente_residente, etc.) sin la definición conceptual\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"persona humana residente país\\\", \\\"limite\\\": 10}\", \"devolvio\": \"75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\"}\", \"devolvio\": \"Nodo con description completa de la definición y provenance TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"0 salientes, 0 entrantes (nodo aislado)\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó con términos plausibles, encontró el nodo portador pertinente (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y reprodujo su contenido fielmente en la respuesta. Las tres condiciones (centro de interés económico, actividad principal, intención de permanecer al menos un año) coinciden con el PDF (Punto 6.5.1) y el juez las aprobó todas. No hubo decisión errónea.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Definición de 'residente' del país para una persona humana a los fines cambiarios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Definición de 'residente' del país para una persona humana a los fines cambiarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\", \"ubicacion\": \"concepto_definido:residente_persona_humana (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 6.5.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"Punto 6.5 (PDF)\", \"resultado\": \"El pasaje 6.5.1 confirma las tres condiciones exactamente como las afirmó el agente\"},\n        {\"consulta\": \"Punto 6.4 (PDF, la provenance del nodo)\", \"resultado\": \"El 6.4 es 'Operaciones a término', NO contiene la definición de residente\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Definición de 'residente' del país para una persona humana a los fines cambiarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4\", \"ubicacion\": \"respuesta final (citas)\"},\n        \"nodo\": {\"quote\": \"\\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_exterior_cambios_actual.pdf\\\", \\\"location\\\": \\\"Sección 5 > Punto 6.4\\\"}]\", \"ubicacion\": \"concepto_definido:residente_persona_humana\"},\n        \"fuente\": {\"quote\": \"6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles desde la fecha de su concertación.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 6.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Sección 5 > Punto 6.4\", \"resultado\": \"El punto 6.4 trata 'Operaciones a término', no la definición de residente; la definición está en 6.5.1\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 6.5\", \"resultado\": \"6.5.1 Persona humana contiene la definición real de residente\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"FASE A: El agente hizo dos búsquedas (la 2ª pertinente), abrió el nodo concepto_definido:residente_persona_humana y verificó vecinos. Reprodujo el contenido del nodo en la respuesta. FASE B: El nodo dice 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.' — fiel al PDF Punto 6.5.1. Las tres afirmaciones centrales coinciden verbatim con la fuente. FASE C1: La única pata quedó cubierta con el dato pertinente que apareció en la trayectoria (nodo portador correcto) → no es context_recall; el claim está soportado por el nodo consultado → no es faithfulness → noise_sensitivity. FASE C2: ¿el nodo es fiel al PDF? SÍ, contradicción nula; ¿es pertinente a la pata? SÍ (test v2.2: usando solo ese nodo la pata queda bien respondida). Además el juez APROBÓ las tres afirmaciones centrales, es decir no hay claim fallido que mueva el veredicto. Descarto activamente: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato está completo), estructural_kg (una sola pata sin cruce), alucinacion_agente (nada agregado fuera del nodo), navegación (encontró el nodo), aplicacion_erronea (no aplicó nodo de otro alcance). Conclusión primaria: sin_defecto = falso positivo del juez (jerarquia sin_par). Como secundaria: la provenance del nodo cita 'Sección 5 > Punto 6.4' que en el PDF corresponde a 'Operaciones a término'; la definición real está en el Punto 6.5.1 — provenance_imprecisa, pero no rompió la respuesta (contenido correcto), por eso secundaria y no primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Sección 5 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 76)\", \"pasaje\": \"6.4. Operaciones a término. \\nCom\\nprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los \\n2 (dos) días hábiles desde la fecha de su concertación. \\nEn el\\n caso de que se prevea la entrega efectiva de instrumentos operados en el mer cado de \\ncambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un acceso \\nal mercado de cambios a concretarse en la fecha de su liquidación. \\nNo es\\ntán sujetas a estas normas las concertaciones y cancelaci ones de operaciones de \\nfuturos en mercados regulados, “forwards”, opciones y cualquier otro tipo de derivado en la \\nmedida que estén instrumentadas bajo ley argentina y su  liquidación se efectúe en el país por \\ncompensación en moneda doméstica, sin que pueda generar obligaciones presentes o futuras \\nde realizar pagos en moneda extranjera. \\n6.5. Residente. \\n6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés econ… [+412 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"persona humana residente país\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"persona humana residente país\", \"total_con_match\": 75, \"resultados\": [{\"id\": \"sujeto_regulado:persona_humana_residente\", \"type\": \"SujetoRegulado\", \"label\": \"persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Cliente persona física residente que realiza la compra de moneda extranjera.', 'Persona natural residente que actúa en carácter de apoderado de un no resident…\"}, {\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\"}, {\"id\": \"concepto_definido:persona_humana_no_residente\", \"type\": \"ConceptoDefinido\", \"label\": \"persona humana no residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona que no reside en el país, identificable mediante pasaporte u otro documento habilitante para ingreso al país.\"}, {\"id\": \"sujeto_regulado:cliente_no_persona_humana_residente\", … [+2314 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 6.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 76)\", \"pasaje\": \"6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés económico o actividad principal.  En tal sentido, deberá \\npresumirse que una persona humana es residente de un país si permanece o tiene \\nintención de permanecer en él por al menos un año. \\n6.5.\\n2. Persona jurídica. \\nUna per\\nsona jurídica (incluidas las sociedades de hecho u otras que no reúnan los \\nrequisitos exigidos por la Ley General de Sociedades) se considerará residente del \\npaís donde está constituida. \\nLas s\\nucursales en una economía de personas jurídicas de o tra economía se \\nconsiderarán residentes del primer país cuando están inscriptas a los fines de poder \\nrealizar actividades en el país de manera habitual. \\nB.C\\n.R.A. EXTERIOR Y CAMBIOS \\nSección 6. Definiciones. \\nVersión: 2a. COMUNICACIÓN  “A”  6844 Vigencia: \\n06/12/2019 Página 2\"}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 15590,
+      "output_tokens": 212
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 17968,
+      "output_tokens": 514
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 18969,
+      "output_tokens": 2809
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 17,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-015",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"residente fines cambiarios definición\", \"limite\": 10}",
+      "devolvio": "39 matches; nodos de SujetoRegulado sobre residentes/no residentes (residente, cliente_residente, deudor_no_residente, etc.), ninguno con la definición conceptual buscada",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"persona humana residente país\", \"limite\": 10}",
+      "devolvio": "75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\"}",
+      "devolvio": "description con la definición fiel; provenance location='Sección 5 > Punto 6.4'",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\", \"direccion\": \"ambas\"}",
+      "devolvio": "0 salientes, 0 entrantes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente encontró el nodo pertinente exacto (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y respondió reproduciendo fielmente su description. Las tres afirmaciones centrales del contenido fueron aprobadas por el juez. Además citó la provenance que el propio nodo registra ('Sección 5 > Punto 6.4'): actuó correctamente sobre lo que el grafo le entregó. El defecto está en el dato del grafo (la cita), no en el uso que hizo el agente.",
+    "thinking_decision": null,
+    "patas": [
+     "Definición de 'residente' del país para una persona humana a los fines cambiarios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Definición de 'residente' del país para una persona humana a los fines cambiarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.\ncitas: TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "\"description\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\" (...) \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]",
+       "ubicacion": "concepto_definido:residente_persona_humana (abierto por el agente, paso 3)"
+      },
+      "fuente": {
+       "quote": "6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles (...) 6.5. Residente. 6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año. (...) B.C.R.A. EXTERIOR Y CAMBIOS Sección 6. Definiciones.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 6.5 (PDF pág 76)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf location 'Sección 5 > Punto 6.4'",
+       "resultado": "El Punto 6.4 es 'Operaciones a término', ajeno a la definición de residente; la definición de persona humana residente está en el Punto 6.5.1, dentro de la Sección 6 ('Sección 6. Definiciones.')"
+      },
+      {
+       "consulta": "leer_pasaje_pdf location 'Punto 6.5'",
+       "resultado": "Confirma 6.5.1 Persona humana con la definición exacta; footer 'Sección 6. Definiciones.' — la cita del nodo (Sección 5, Punto 6.4) no corresponde"
+      },
+      {
+       "consulta": "leer_pasaje_pdf location 'Sección 5'",
+       "resultado": "localizacion_pdf=fallida — la sección citada no ancla; la definición no está en la Sección 5"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6a",
+      "accion": "atribucion_sin_sintoma"
+     }
+    }
+   ],
+   "razonamiento": "Las TRES afirmaciones centrales del contenido fueron aprobadas por el juez y son fieles al PDF (6.5.1: 'centro de interés económico o actividad principal' y presunción por permanencia/intención de permanecer al menos un año). Por tanto el contenido conceptual no rompe la respuesta. Investigando la fuente de la única pata, el defecto verificable es la cita: el nodo concepto_definido:residente_persona_humana registra provenance 'Sección 5 > Punto 6.4', y el agente la propagó a su respuesta final. Al leer el PDF, el Punto 6.4 es 'Operaciones a término' (no funda la definición) y la definición real está en la Sección 6, Punto 6.5.1. La cita apunta a otro lado. C1: el claim de la cita está soportado por el nodo consultado (el nodo trae esa location, verificado con ver_paso_completo del paso 3) pero es incorrecto contra el PDF → noise_sensitivity. C2 (árbol): ¿el nodo es fiel al PDF? La cita apunta a otro punto/sección que no funda su contenido → provenance_imprecisa, lado grafo, primaria (es el defecto que explica la reprobación del juez pese a aprobar el contenido). Descarto contenido_kg (la description NO contradice el PDF, es fiel); completitud_kg (el dato conceptual está presente y correcto); alucinacion_agente (el agente no agregó nada: copió el contenido y la cita del nodo); sin_defecto (hay un defecto real: la cita no resuelve a la fuente y engaña al verificador). El mismo defecto de cita afecta también a plazo:al_menos_un_ano ('Sección 5 > Punto 6.4'), reforzando que es un problema sistemático de provenance del grafo, no del agente.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 9,
+    "max_tool_calls": 40,
+    "tokens_in": 136867,
+    "tokens_out": 5321
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 9,
+    "tokens_in": 136867,
+    "tokens_out": 5321,
+    "latency_s": 126.148,
+    "error": null,
+    "final_raw": "Tengo toda la evidencia. Conclusión:\n\n- El agente encontró el nodo pertinente exacto (`concepto_definido:residente_persona_humana`), lo abrió y respondió con su contenido — que es **fiel** al PDF. Las tres afirmaciones centrales fueron aprobadas por el juez.\n- El único defecto verificable es la **provenance imprecisa**: el nodo cita \"Sección 5 > Punto 6.4\" (que es \"Operaciones a término\"), cuando la definición está en la **Sección 6 > Punto 6.5.1**. El agente propagó esa cita errónea a su respuesta final. Un verificador que vaya al 6.4 no encontrará la definición.\n\nEste es el defecto que explica una reprobación del juez pese a aprobar el contenido: la cita no funda su contenido.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"residente fines cambiarios definición\\\", \\\"limite\\\": 10}\", \"devolvio\": \"39 matches; nodos de SujetoRegulado sobre residentes/no residentes (residente, cliente_residente, deudor_no_residente, etc.), ninguno con la definición conceptual buscada\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"persona humana residente país\\\", \\\"limite\\\": 10}\", \"devolvio\": \"75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\"}\", \"devolvio\": \"description con la definición fiel; provenance location='Sección 5 > Punto 6.4'\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"0 salientes, 0 entrantes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente encontró el nodo pertinente exacto (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y respondió reproduciendo fielmente su description. Las tres afirmaciones centrales del contenido fueron aprobadas por el juez. Además citó la provenance que el propio nodo registra ('Sección 5 > Punto 6.4'): actuó correctamente sobre lo que el grafo le entregó. El defecto está en el dato del grafo (la cita), no en el uso que hizo el agente.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Definición de 'residente' del país para una persona humana a los fines cambiarios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Definición de 'residente' del país para una persona humana a los fines cambiarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.\\ncitas: TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"\\\"description\\\": \\\"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\\\" (...) \\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_exterior_cambios_actual.pdf\\\", \\\"location\\\": \\\"Sección 5 > Punto 6.4\\\"}]\", \"ubicacion\": \"concepto_definido:residente_persona_humana (abierto por el agente, paso 3)\"},\n        \"fuente\": {\"quote\": \"6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles (...) 6.5. Residente. 6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año. (...) B.C.R.A. EXTERIOR Y CAMBIOS Sección 6. Definiciones.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 6.5 (PDF pág 76)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf location 'Sección 5 > Punto 6.4'\", \"resultado\": \"El Punto 6.4 es 'Operaciones a término', ajeno a la definición de residente; la definición de persona humana residente está en el Punto 6.5.1, dentro de la Sección 6 ('Sección 6. Definiciones.')\"},\n        {\"consulta\": \"leer_pasaje_pdf location 'Punto 6.5'\", \"resultado\": \"Confirma 6.5.1 Persona humana con la definición exacta; footer 'Sección 6. Definiciones.' — la cita del nodo (Sección 5, Punto 6.4) no corresponde\"},\n        {\"consulta\": \"leer_pasaje_pdf location 'Sección 5'\", \"resultado\": \"localizacion_pdf=fallida — la sección citada no ancla; la definición no está en la Sección 5\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Las TRES afirmaciones centrales del contenido fueron aprobadas por el juez y son fieles al PDF (6.5.1: 'centro de interés económico o actividad principal' y presunción por permanencia/intención de permanecer al menos un año). Por tanto el contenido conceptual no rompe la respuesta. Investigando la fuente de la única pata, el defecto verificable es la cita: el nodo concepto_definido:residente_persona_humana registra provenance 'Sección 5 > Punto 6.4', y el agente la propagó a su respuesta final. Al leer el PDF, el Punto 6.4 es 'Operaciones a término' (no funda la definición) y la definición real está en la Sección 6, Punto 6.5.1. La cita apunta a otro lado. C1: el claim de la cita está soportado por el nodo consultado (el nodo trae esa location, verificado con ver_paso_completo del paso 3) pero es incorrecto contra el PDF → noise_sensitivity. C2 (árbol): ¿el nodo es fiel al PDF? La cita apunta a otro punto/sección que no funda su contenido → provenance_imprecisa, lado grafo, primaria (es el defecto que explica la reprobación del juez pese a aprobar el contenido). Descarto contenido_kg (la description NO contradice el PDF, es fiel); completitud_kg (el dato conceptual está presente y correcto); alucinacion_agente (el agente no agregó nada: copió el contenido y la cita del nodo); sin_defecto (hay un defecto real: la cita no resuelve a la fuente y engaña al verificador). El mismo defecto de cita afecta también a plazo:al_menos_un_ano ('Sección 5 > Punto 6.4'), reforzando que es un problema sistemático de provenance del grafo, no del agente.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Sección 5 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 76)\", \"pasaje\": \"6.4. Operaciones a término. \\nCom\\nprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los \\n2 (dos) días hábiles desde la fecha de su concertación. \\nEn el\\n caso de que se prevea la entrega efectiva de instrumentos operados en el mer cado de \\ncambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un acceso \\nal mercado de cambios a concretarse en la fecha de su liquidación. \\nNo es\\ntán sujetas a estas normas las concertaciones y cancelaci ones de operaciones de \\nfuturos en mercados regulados, “forwards”, opciones y cualquier otro tipo de derivado en la \\nmedida que estén instrumentadas bajo ley argentina y su  liquidación se efectúe en el país por \\ncompensación en moneda doméstica, sin que pueda generar obligaciones presentes o futuras \\nde realizar pagos en moneda extranjera. \\n6.5. Residente. \\n6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés econ… [+412 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "concepto_definido:residente_persona_humana"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"properties\": {\"description\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 6.5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "residente persona humana permanencia un año",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"residente persona humana permanencia un año\", \"total_con_match\": 98, \"resultados\": [{\"id\": \"sujeto_regulado:persona_humana_residente\", \"type\": \"SujetoRegulado\", \"label\": \"persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Cliente persona física residente que realiza la compra de moneda extranjera.', 'Persona natural residente que actúa en carácter de apoderado de un no resident…\"}, {\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\"}, {\"id\": \"concepto_definido:persona_humana_no_residente\", \"type\": \"ConceptoDefinido\", \"label\": \"persona humana no residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona que no reside en el país, identificable mediante pasaporte u otro documento habilitante para ingreso al país.\"}, {\"id\": \"sujeto_regulado:cliente_no_persona_humana_residente\", \"type\": \"SujetoRegulado\", \"label\": \"cliente no persona humana residente\", \"tokens_matcheados\": 3, \"resumen_prop… [+1547 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "plazo:al_menos_un_ano"
+      },
+      "output_truncado": "{\"id\": \"plazo:al_menos_un_ano\", \"type\": \"Plazo\", \"label\": \"al menos un año\", \"properties\": {\"description\": \"Plazo de permanencia que permite presumir residencia de una persona humana en un país.\", \"unidad\": \"años\", \"duracion\": \"1\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 6.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 76)\", \"pasaje\": \"6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés económico o actividad principal.  En tal sentido, deberá \\npresumirse que una persona humana es residente de un país si permanece o tiene \\nintención de permanecer en él por al menos un año. \\n6.5.\\n2. Persona jurídica. \\nUna per\\nsona jurídica (incluidas las sociedades de hecho u otras que no reúnan los \\nrequisitos exigidos por la Ley General de Sociedades) se considerará residente del \\npaís donde está constituida. \\nLas s\\nucursales en una economía de personas jurídicas de o tra economía se \\nconsiderarán residentes del primer país cuando están inscriptas a los fines de poder \\nrealizar actividades en el país de manera habitual. \\nB.C\\n.R.A. EXTERIOR Y CAMBIOS \\nSección 6. Definiciones. \\nVersión: 2a. COMUNICACIÓN  “A”  6844 Vigencia: \\n06/12/2019 Página 2\"}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"concepto_definido:residente_persona_humana\"}, \"output_completo\": {\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"properties\": {\"description\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]}}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Sección 5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5\", \"ref\": \"Punto/Sección 5 (mejor score=-3 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"persona humana residente país\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"persona humana residente país\", \"total_con_match\": 75, \"resultados\": [{\"id\": \"sujeto_regulado:persona_humana_residente\", \"type\": \"SujetoRegulado\", \"label\": \"persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Cliente persona física residente que realiza la compra de moneda extranjera.', 'Persona natural residente que actúa en carácter de apoderado de un no resident…\"}, {\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\"}, {\"id\": \"concepto_definido:persona_humana_no_residente\", \"type\": \"ConceptoDefinido\", \"label\": \"persona humana no residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona que no reside en el país, identificable mediante pasaporte u otro documento habilitante para ingreso al país.\"}, {\"id\": \"sujeto_regulado:cliente_no_persona_humana_residente\", … [+2314 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 15590,
+      "output_tokens": 251
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 16751,
+      "output_tokens": 607
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 18787,
+      "output_tokens": 675
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 20172,
+      "output_tokens": 633
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21031,
+      "output_tokens": 222
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21461,
+      "output_tokens": 187
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 23075,
+      "output_tokens": 2746
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 17,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-015",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"residente fines cambiarios definición\", \"limite\": 10}",
+      "devolvio": "39 matches; nodos de residente/no residente varios (sujeto_regulado:residente, cliente_residente, etc.) sin la definición de persona humana en primer plano",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"persona humana residente país\", \"limite\": 10}",
+      "devolvio": "75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\"}",
+      "devolvio": "description completa con la definición; provenance TO_exterior_cambios_actual.pdf, 'Sección 5 > Punto 6.4'",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"concepto_definido:residente_persona_humana\", \"direccion\": \"ambas\"}",
+      "devolvio": "0 vecinos salientes y entrantes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó con términos exactos de la pregunta, localizó el nodo portador de la definición (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y reprodujo su contenido de forma fiel. La respuesta final coincide con la definición del PDF (Punto 6.5.1). Las tres afirmaciones centrales fueron aprobadas por el juez.",
+    "thinking_decision": null,
+    "patas": [
+     "Definición de 'residente' del país para una persona humana a los fines cambiarios"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Definición de 'residente' del país para una persona humana a los fines cambiarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.",
+       "ubicacion": "concepto_definido:residente_persona_humana"
+      },
+      "fuente": {
+       "quote": "6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año.",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 6.5.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "residente fines cambiarios definición",
+       "resultado": "nodos de residente/no residente varios"
+      },
+      {
+       "consulta": "persona humana residente país",
+       "resultado": "devuelve concepto_definido:residente_persona_humana con la definición exacta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Definición de 'residente' del país para una persona humana a los fines cambiarios",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "citas: TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "\"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]",
+       "ubicacion": "concepto_definido:residente_persona_humana"
+      },
+      "fuente": {
+       "quote": "6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles... 6.5. Residente. 6.5.1. Persona humana. Se considerará que una persona humana es residente del país...",
+       "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 6.4 vs 6.5.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Sección 5 > Punto 6.4",
+       "resultado": "El Punto 6.4 es 'Operaciones a término'; la definición de residente persona humana está en el Punto 6.5.1, no en el 6.4 que cita el nodo"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6a",
+      "accion": "atribucion_sin_sintoma"
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene una única pata: la definición de 'residente' persona humana a fines cambiarios. C1a: el dato pertinente SÍ apareció — el agente localizó y abrió concepto_definido:residente_persona_humana, cuya description porta la respuesta. No es context_recall. C1b: las tres afirmaciones centrales están soportadas por el nodo consultado (soporte OK, no faithfulness) y son correctas contra el PDF (Punto 6.5.1), que dice exactamente 'centro de interés económico o actividad principal' e 'intención de permanecer... por al menos un año'. Por tanto ninguna afirmación central es incorrecta: noise_sensitivity resuelve a nodo fiel + nodo pertinente → sin_defecto (falso positivo del juez, que además aprobó las tres afirmaciones y no expuso ninguna incorrecta). Descarté activamente: context_recall (dato apareció), faithfulness (claims soportados), contenido_kg (nodo fiel al PDF), completitud_kg/estructural_kg/alcanzabilidad_kg (nodo existe, alcanzable con 'persona humana residente país', contenido correcto), navegación/alucinacion_agente/aplicacion_erronea (el agente usó el nodo correcto sin agregar glosas). Como los claims centrales son correctos y aprobados, el caso NO tiene primaria (un FP del juez no se explica con un defecto del sistema). Detecté una imperfección real y la emito como SECUNDARIA: la provenance del nodo cita 'Sección 5 > Punto 6.4' (que en el PDF es 'Operaciones a término'), cuando el contenido se funda en el Punto 6.5.1 'Persona humana'; la cita apunta a otra sección → provenance_imprecisa. Esta imperfección no rompió la respuesta (el contenido del nodo es correcto), por eso es secundaria, no primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 4,
+    "max_tool_calls": 40,
+    "tokens_in": 71695,
+    "tokens_out": 3765
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 4,
+    "tokens_in": 71695,
+    "tokens_out": 3765,
+    "latency_s": 53.268,
+    "error": null,
+    "final_raw": "Confirmado. Tengo evidencia suficiente.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"residente fines cambiarios definición\\\", \\\"limite\\\": 10}\", \"devolvio\": \"39 matches; nodos de residente/no residente varios (sujeto_regulado:residente, cliente_residente, etc.) sin la definición de persona humana en primer plano\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"persona humana residente país\\\", \\\"limite\\\": 10}\", \"devolvio\": \"75 matches; incluye concepto_definido:residente_persona_humana con resumen 'Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.'\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\"}\", \"devolvio\": \"description completa con la definición; provenance TO_exterior_cambios_actual.pdf, 'Sección 5 > Punto 6.4'\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"concepto_definido:residente_persona_humana\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"0 vecinos salientes y entrantes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó con términos exactos de la pregunta, localizó el nodo portador de la definición (concepto_definido:residente_persona_humana), lo abrió con ver_nodo y reprodujo su contenido de forma fiel. La respuesta final coincide con la definición del PDF (Punto 6.5.1). Las tres afirmaciones centrales fueron aprobadas por el juez.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Definición de 'residente' del país para una persona humana a los fines cambiarios\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Definición de 'residente' del país para una persona humana a los fines cambiarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"A los fines cambiarios, una persona humana se define como 'residente' del país cuando tiene su centro de interés económico o actividad principal dentro del país, o cuando tiene la intención de permanecer en el país por al menos un año.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\", \"ubicacion\": \"concepto_definido:residente_persona_humana\"},\n        \"fuente\": {\"quote\": \"6.5.1. Persona humana. Se considerará que una persona humana es residente del país dentro de cuya frontera tiene su centro de interés económico o actividad principal. En tal sentido, deberá presumirse que una persona humana es residente de un país si permanece o tiene intención de permanecer en él por al menos un año.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 6.5.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"residente fines cambiarios definición\", \"resultado\": \"nodos de residente/no residente varios\"},\n        {\"consulta\": \"persona humana residente país\", \"resultado\": \"devuelve concepto_definido:residente_persona_humana con la definición exacta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Definición de 'residente' del país para una persona humana a los fines cambiarios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"citas: TO_exterior_cambios_actual.pdf :: Sección 5 > Punto 6.4\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"\\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_exterior_cambios_actual.pdf\\\", \\\"location\\\": \\\"Sección 5 > Punto 6.4\\\"}]\", \"ubicacion\": \"concepto_definido:residente_persona_humana\"},\n        \"fuente\": {\"quote\": \"6.4. Operaciones a término. Comprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles... 6.5. Residente. 6.5.1. Persona humana. Se considerará que una persona humana es residente del país...\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 6.4 vs 6.5.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Sección 5 > Punto 6.4\", \"resultado\": \"El Punto 6.4 es 'Operaciones a término'; la definición de residente persona humana está en el Punto 6.5.1, no en el 6.4 que cita el nodo\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene una única pata: la definición de 'residente' persona humana a fines cambiarios. C1a: el dato pertinente SÍ apareció — el agente localizó y abrió concepto_definido:residente_persona_humana, cuya description porta la respuesta. No es context_recall. C1b: las tres afirmaciones centrales están soportadas por el nodo consultado (soporte OK, no faithfulness) y son correctas contra el PDF (Punto 6.5.1), que dice exactamente 'centro de interés económico o actividad principal' e 'intención de permanecer... por al menos un año'. Por tanto ninguna afirmación central es incorrecta: noise_sensitivity resuelve a nodo fiel + nodo pertinente → sin_defecto (falso positivo del juez, que además aprobó las tres afirmaciones y no expuso ninguna incorrecta). Descarté activamente: context_recall (dato apareció), faithfulness (claims soportados), contenido_kg (nodo fiel al PDF), completitud_kg/estructural_kg/alcanzabilidad_kg (nodo existe, alcanzable con 'persona humana residente país', contenido correcto), navegación/alucinacion_agente/aplicacion_erronea (el agente usó el nodo correcto sin agregar glosas). Como los claims centrales son correctos y aprobados, el caso NO tiene primaria (un FP del juez no se explica con un defecto del sistema). Detecté una imperfección real y la emito como SECUNDARIA: la provenance del nodo cita 'Sección 5 > Punto 6.4' (que en el PDF es 'Operaciones a término'), cuando el contenido se funda en el Punto 6.5.1 'Persona humana'; la cita apunta a otra sección → provenance_imprecisa. Esta imperfección no rompió la respuesta (el contenido del nodo es correcto), por eso es secundaria, no primaria.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Sección 5 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 76)\", \"pasaje\": \"6.4. Operaciones a término. \\nCom\\nprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los \\n2 (dos) días hábiles desde la fecha de su concertación. \\nEn el\\n caso de que se prevea la entrega efectiva de instrumentos operados en el mer cado de \\ncambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un acceso \\nal mercado de cambios a concretarse en la fecha de su liquidación. \\nNo es\\ntán sujetas a estas normas las concertaciones y cancelaci ones de operaciones de \\nfuturos en mercados regulados, “forwards”, opciones y cualquier otro tipo de derivado en la \\nmedida que estén instrumentadas bajo ley argentina y su  liquidación se efectúe en el país por \\ncompensación en moneda doméstica, sin que pueda generar obligaciones presentes o futuras \\nde realizar pagos en moneda extranjera. \\n6.5. Residente. \\n6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés econ… [+412 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_exterior_cambios_actual.pdf",
+       "location": "Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 76)\", \"pasaje\": \"6.4. Operaciones a término. \\nCom\\nprende las operaciones en las cuales la liquidación está pactada en un plazo mayor a los \\n2 (dos) días hábiles desde la fecha de su concertación. \\nEn el\\n caso de que se prevea la entrega efectiva de instrumentos operados en el mer cado de \\ncambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un acceso \\nal mercado de cambios a concretarse en la fecha de su liquidación. \\nNo es\\ntán sujetas a estas normas las concertaciones y cancelaci ones de operaciones de \\nfuturos en mercados regulados, “forwards”, opciones y cualquier otro tipo de derivado en la \\nmedida que estén instrumentadas bajo ley argentina y su  liquidación se efectúe en el país por \\ncompensación en moneda doméstica, sin que pueda generar obligaciones presentes o futuras \\nde realizar pagos en moneda extranjera. \\n6.5. Residente. \\n6.5.\\n1. Persona humana. \\nSe \\nconsiderará que una persona humana es residente del país dentro de cuya frontera \\ntiene su centro de interés económico o acti… [+400 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"persona humana residente país\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"persona humana residente país\", \"total_con_match\": 75, \"resultados\": [{\"id\": \"sujeto_regulado:persona_humana_residente\", \"type\": \"SujetoRegulado\", \"label\": \"persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Cliente persona física residente que realiza la compra de moneda extranjera.', 'Persona natural residente que actúa en carácter de apoderado de un no resident…\"}, {\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\"}, {\"id\": \"concepto_definido:persona_humana_no_residente\", \"type\": \"ConceptoDefinido\", \"label\": \"persona humana no residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona que no reside en el país, identificable mediante pasaporte u otro documento habilitante para ingreso al país.\"}, {\"id\": \"sujeto_regulado:cliente_no_persona_humana_residente\", … [+2314 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "concepto_definido:residente_persona_humana"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:residente_persona_humana\", \"type\": \"ConceptoDefinido\", \"label\": \"residente: persona humana\", \"properties\": {\"description\": \"Persona humana con centro de interés económico o actividad principal dentro de un país, o con intención de permanecer por al menos un año.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 5 > Punto 6.4\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 15590,
+      "output_tokens": 282
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 17287,
+      "output_tokens": 303
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 19017,
+      "output_tokens": 611
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 19801,
+      "output_tokens": 2569
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 17,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "exoneracion_total",
+   "atribucion_sin_sintoma"
+  ],
+  "flags": [
+   "R1: voto_capa_d con mayoria de clave vacia (2 votos sin primarias)",
+   "R6a: rep 1 atrib 2 — atribución con síntoma vacío",
+   "R6a: rep 2 atrib 1 — atribución con síntoma vacío",
+   "R6a: rep 3 atrib 2 — atribución con síntoma vacío"
+  ]
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

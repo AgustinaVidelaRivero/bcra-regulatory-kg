@@ -50,12 +50,12 @@ se edita desde una skill.**
 
 ### 6. Reporte etapa 2 (final) — `frozen_run/reporte_final.md`
 
-Lo re-emite `python run_etapa2.py` (`data/experiment/evaluacion/run_etapa2.py:41`):
+Lo re-emite `python runners/run_etapa2.py` (`data/experiment/evaluacion/runners/run_etapa2.py:41`):
 aplica los veredictos del FIRMADO vía el log de propagación, recomputa la
 correctitud retenida con el mapping congelado v2.1.1 (verdadera no penaliza /
 falsa → incorrecta / parcial → parcial / no_verificable → indeterminable;
 precedencia incorrecta > parcial > indeterminable > correcta) y re-agrega modal
-(`data/experiment/evaluacion/run_etapa2.py:10-27`). No toca trazas, juez ni
+(`data/experiment/evaluacion/runners/run_etapa2.py:10-27`). No toca trazas, juez ni
 eval_set.
 
 ### Artefactos de soporte
@@ -68,7 +68,7 @@ eval_set.
   (`data/experiment/evaluacion/run_frozen.py:853-862`; ojo: `--mode selftest` lo
   REESCRIBE).
 - `01_validacion_loader.md` — reporte de integridad C1–C8 (lo reescribe
-  `validate_loader.py`).
+  `runners/validate_loader.py`).
 - `adjudicacion_worksheet.md` / `.json` — worksheet con el que se firmó.
 
 ## Walkthrough: auditar el veredicto de (qid, run, dimensión)
@@ -88,7 +88,7 @@ eval_set.
 4. **Reporte:** confirmar que la fila correspondiente de
    `reporte_final_draft.md` (etapa 1) y/o `reporte_final.md` (etapa 2) refleja lo
    anterior. Si algo no cuadra, ANTES de concluir error: regenerar el reporte
-   (`--mode report` / `run_etapa2.py`) y comparar con `git diff` — distingue
+   (`--mode report` / `runners/run_etapa2.py`) y comparar con `git diff` — distingue
    "reporte desactualizado" (diff no vacío) de "inconsistencia real en los datos"
    (diff vacío y sigue sin cuadrar → reportar a la autora, no tocar).
 

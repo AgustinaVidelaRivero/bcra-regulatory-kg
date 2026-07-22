@@ -1,0 +1,2141 @@
+{
+ "id_falla": "run_2/CQ-021",
+ "run": "run_2",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_2/CQ-021",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicar deudor cambio clasificación negativo'}",
+      "devolvio": "procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, obligacion:comunicar_clasificacion_del_deudor_a_solicitud_del_cliente, concepto:clasificacion_de_deudor, obligacion:comunicar_cambios_negativos",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación deudor umbral'}",
+      "devolvio": "mismos nodos + umbrales de otros temas (riesgo tipo de cambio, concentración por deudor)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}",
+      "devolvio": "description 'notificación a deudores sobre cambios negativos... a través de resumen impreso o resumen de cuenta mensual'; sin optatividad",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: obligacion:comunicar_cambios_negativos_en_clasificacion}",
+      "devolvio": "modalidad obligacion; 'deben comunicar a los deudores los cambios negativos'; sin optatividad",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: procedimiento:comunicacion_de_cambio_negativo... ambas}",
+      "devolvio": "0 vecinos",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{id: obligacion:comunicar_cambios_negativos... ambas}",
+      "devolvio": "aplica_a deudor situación 3,4,5; aplica_a gestión judicial; tiene_plazo 45 días; obligado_a entidad financiera dadora",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicación clasificación umbral régimen'}",
+      "devolvio": "procedimiento + umbrales inconexos (BOPREAL, RPC, APR)",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación optativa facultativa'}",
+      "devolvio": "procedimiento + notificar con preaviso SEFyC; nada sobre optatividad de comunicación al deudor",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación optativa deudor clasificación monto importe'}",
+      "devolvio": "clasificacion_de_deudor, monto max deudor moroso, procedimiento; sin optatividad",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen clasificación deudor umbral comunicación'}",
+      "devolvio": "umbrales de otros temas; nada del régimen del umbral optativo",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'facultativo no obligatorio comunicación cambio clasificación'}",
+      "devolvio": "procedimiento + preaviso SEFyC; sin optatividad",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'deudor pequeño monto bajo comunicación clasificación'}",
+      "devolvio": "clasificacion_de_deudor, monto max deudor moroso; sin optatividad",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen simplificado clasificación deudor comunicación'}",
+      "devolvio": "clasificacion_de_deudor, procedimiento, deudor; sin optatividad",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'excepción comunicación cambio clasificación deudor'}",
+      "devolvio": "procedimiento + preaviso SEFyC; sin optatividad",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{id: concepto_definido:clasificacion_de_deudor}",
+      "devolvio": "'Categorización del deudor según su situación crediticia'; no responde patas",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente buscó exhaustivamente con vocabulario apropiado y variado (optativo, facultativo, no obligatorio, excepción, régimen simplificado, monto bajo, umbral, importe) a lo largo de 15 pasos, abrió los nodos candidatos y recorrió los vecinos de la obligación. Ninguna búsqueda razonable devolvió un nodo que capturara la optatividad ni el régimen del umbral, porque ese nodo NO existe en el grafo. Ante la ausencia, declaró honestamente 'No se encontró información' (respondible=False) en lugar de alucinar. Es la conducta correcta sobre un grafo incompleto.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para dicha opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Casos en que es optativo comunicar al deudor un cambio negativo en su clasificación",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor, ni sobre qué régimen determina el umbral para ello.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "description: 'Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada.' modalidad: 'obligacion' — vecinos: aplica_a deudor_en_situacion_3_4_o_5, aplica_a gestión judicial, tiene_plazo 45 días. NINGÚN nodo/arista captura la optatividad por saldo de deuda inferior al umbral.",
+       "ubicacion": "obligacion:comunicar_cambios_negativos_en_clasificacion (+ vecinos, paso 6); concepto_definido:deudor_en_situacion_3_4_o_5 solo dice 'requiere comunicación obligatoria'"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \"Deudores Comprendidos\" de la Sección 3. \"Deudores del sistema financiero\" –Normas de Procedimiento– del Régimen Informativo Contable Mensual.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 11 (punto 3.4.2 Contenido del legajo)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "optativo optativa optar comunicación deudor",
+       "resultado": "solo nodos de deudor genéricos; ninguno con la cláusula de optatividad"
+      },
+      {
+       "consulta": "comunicación optativa cambio negativo clasificación umbral monto régimen deudor",
+       "resultado": "procedimiento + umbrales inconexos; ningún nodo captura la optatividad"
+      },
+      {
+       "consulta": "deudor situación 1 normal comunicación no obligatoria clasificación",
+       "resultado": "deudor_en_situacion_3_4_o_5 dice 'requiere comunicación OBLIGATORIA'; ningún nodo captura la contraparte optativa"
+      },
+      {
+       "consulta": "resumen impreso resumen de cuenta mensual comunicación clasificación",
+       "resultado": "el procedimiento existe pero solo describe medios; sin optatividad ni umbral"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "sin_portador_extraible",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Régimen del que depende el umbral para dicha opcionalidad",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "los detalles sobre excepciones optativos y los regímenes que establecen umbrales no están disponibles en la documentación consultada.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Existe el nodo procedimiento:regimen_informativo_contable_mensual ('Procedimiento de información mensual sobre exigencia e integración de capitales mínimos...') pero NINGUNA arista lo vincula con la obligación de comunicar cambios negativos ni lo identifica como el régimen que fija el umbral de la optatividad; el umbral mismo ('saldo inferior al monto del punto 2 Deudores Comprendidos') no está representado como nodo.",
+       "ubicacion": "procedimiento:regimen_informativo_contable_mensual; obligacion:comunicar_cambios_negativos_en_clasificacion (sin arista al régimen)"
+      },
+      "fuente": {
+       "quote": "...siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \"Deudores Comprendidos\" de la Sección 3. \"Deudores del sistema financiero\" –Normas de Procedimiento– del Régimen Informativo Contable Mensual.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 11 (punto 3.4.2)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "saldo de deuda inferior monto régimen informativo contable mensual optativo",
+       "resultado": "existe procedimiento:regimen_informativo_contable_mensual y concepto:saldo_de_deuda, pero ninguno conecta con la optatividad de comunicación ni porta el umbral"
+      },
+      {
+       "consulta": "régimen informativo contable mensual deudores comprendidos",
+       "resultado": "el nodo del régimen existe pero su description es sobre capitales mínimos; nada lo liga al umbral de comunicación optativa"
+      },
+      {
+       "consulta": "comunicación optativa deudores menor cuantía régimen informativo central de deudores",
+       "resultado": "nodos del régimen informativo inconexos; ninguno responde la pata"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep1_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "sin_portador_extraible",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: la respuesta falló en ambas patas (optatividad y régimen del umbral), que el agente declaró 'no encontradas'. C1a POR PATA: para ninguna de las dos patas apareció en la trayectoria el dato pertinente. Recorrí la trayectoria completa (pasos 1-15): el agente abrió el procedimiento y la obligación, recorrió los vecinos de la obligación (paso 6: aplica_a situación 3/4/5, gestión judicial, tiene_plazo 45 días, obligado_a entidad) y probó ~10 búsquedas léxicas con vocabulario apropiado y variado. Ningún nodo consultado ni expuesto contiene la cláusula de optatividad ni el régimen del umbral. Ambas patas → context_recall. C2 CAUSA (árbol context_recall: ¿existe nodo portador?): investigué el grafo yo mismo con múltiples búsquedas (optativo, facultativo, saldo inferior, régimen informativo contable mensual, deudores comprendidos, situación 1 normal) y NO existe ningún nodo/arista que porte (a) la optatividad por saldo de deuda inferior al umbral, ni (b) la identificación del régimen que fija ese umbral. El concepto deudor_en_situacion_3_4_o_5 captura solo la contraparte obligatoria ('requiere comunicación obligatoria'). VERIFICACIÓN CONTRA EL PDF: leí la Sección 3 completa y páginas circundantes; el dato SÍ está en el PDF, en p. 11, punto 3.4.2 (Contenido del legajo): 'deberán comunicar... los cambios negativos... siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2 Deudores Comprendidos... del Régimen Informativo Contable Mensual'. Este ÚNICO pasaje contiene ambas respuestas y es del mismo TO. El grafo extrajo de este pasaje solo la parte obligatoria (situación 3/4/5, gestión judicial, plazo 45 días, medios de comunicación) y OMITIÓ la cláusula optativa y el régimen del umbral → extracción incompleta. Como el nodo portador NO existe (no es cuestión de alcanzabilidad ni navegación: no hay qué encontrar) y el PDF SÍ tiene el dato, la causa es completitud_kg para ambas patas (defecto del grafo). Descarto navegación/alcanzabilidad_kg: no hay nodo que exhibir con el contenido correcto. Descarto estructural_kg: no es que existan dos nodos sueltos sin arista, es que el propio contenido (optatividad + umbral) nunca fue extraído. Descarto alucinacion_agente y sin_defecto: el agente actuó correctamente al declarar la ausencia en vez de inventar. El plazo de 45 días y la obligación general (aprobados por el juez) sí fueron extraídos correctamente del mismo pasaje, lo que confirma que la extracción fue parcial. Dos primarias, una por cada pata rota por la misma causa (completitud_kg).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": true,
+    "tool_calls_usadas": 41,
+    "max_tool_calls": 40,
+    "tokens_in": 982554,
+    "tokens_out": 14415
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 41,
+    "tokens_in": 982554,
+    "tokens_out": 14415,
+    "latency_s": 241.711,
+    "error": null,
+    "final_raw": "{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicar deudor cambio clasificación negativo'}\", \"devolvio\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, obligacion:comunicar_clasificacion_del_deudor_a_solicitud_del_cliente, concepto:clasificacion_de_deudor, obligacion:comunicar_cambios_negativos\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación deudor umbral'}\", \"devolvio\": \"mismos nodos + umbrales de otros temas (riesgo tipo de cambio, concentración por deudor)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}\", \"devolvio\": \"description 'notificación a deudores sobre cambios negativos... a través de resumen impreso o resumen de cuenta mensual'; sin optatividad\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: obligacion:comunicar_cambios_negativos_en_clasificacion}\", \"devolvio\": \"modalidad obligacion; 'deben comunicar a los deudores los cambios negativos'; sin optatividad\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: procedimiento:comunicacion_de_cambio_negativo... ambas}\", \"devolvio\": \"0 vecinos\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{id: obligacion:comunicar_cambios_negativos... ambas}\", \"devolvio\": \"aplica_a deudor situación 3,4,5; aplica_a gestión judicial; tiene_plazo 45 días; obligado_a entidad financiera dadora\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicación clasificación umbral régimen'}\", \"devolvio\": \"procedimiento + umbrales inconexos (BOPREAL, RPC, APR)\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación optativa facultativa'}\", \"devolvio\": \"procedimiento + notificar con preaviso SEFyC; nada sobre optatividad de comunicación al deudor\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación optativa deudor clasificación monto importe'}\", \"devolvio\": \"clasificacion_de_deudor, monto max deudor moroso, procedimiento; sin optatividad\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen clasificación deudor umbral comunicación'}\", \"devolvio\": \"umbrales de otros temas; nada del régimen del umbral optativo\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'facultativo no obligatorio comunicación cambio clasificación'}\", \"devolvio\": \"procedimiento + preaviso SEFyC; sin optatividad\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'deudor pequeño monto bajo comunicación clasificación'}\", \"devolvio\": \"clasificacion_de_deudor, monto max deudor moroso; sin optatividad\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen simplificado clasificación deudor comunicación'}\", \"devolvio\": \"clasificacion_de_deudor, procedimiento, deudor; sin optatividad\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'excepción comunicación cambio clasificación deudor'}\", \"devolvio\": \"procedimiento + preaviso SEFyC; sin optatividad\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{id: concepto_definido:clasificacion_de_deudor}\", \"devolvio\": \"'Categorización del deudor según su situación crediticia'; no responde patas\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó exhaustivamente con vocabulario apropiado y variado (optativo, facultativo, no obligatorio, excepción, régimen simplificado, monto bajo, umbral, importe) a lo largo de 15 pasos, abrió los nodos candidatos y recorrió los vecinos de la obligación. Ninguna búsqueda razonable devolvió un nodo que capturara la optatividad ni el régimen del umbral, porque ese nodo NO existe en el grafo. Ante la ausencia, declaró honestamente 'No se encontró información' (respondible=False) en lugar de alucinar. Es la conducta correcta sobre un grafo incompleto.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\",\n      \"Régimen del que depende el umbral para dicha opcionalidad\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Casos en que es optativo comunicar al deudor un cambio negativo en su clasificación\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor, ni sobre qué régimen determina el umbral para ello.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"description: 'Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada.' modalidad: 'obligacion' — vecinos: aplica_a deudor_en_situacion_3_4_o_5, aplica_a gestión judicial, tiene_plazo 45 días. NINGÚN nodo/arista captura la optatividad por saldo de deuda inferior al umbral.\", \"ubicacion\": \"obligacion:comunicar_cambios_negativos_en_clasificacion (+ vecinos, paso 6); concepto_definido:deudor_en_situacion_3_4_o_5 solo dice 'requiere comunicación obligatoria'\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \\\"Deudores Comprendidos\\\" de la Sección 3. \\\"Deudores del sistema financiero\\\" –Normas de Procedimiento– del Régimen Informativo Contable Mensual.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 11 (punto 3.4.2 Contenido del legajo)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"optativo optativa optar comunicación deudor\", \"resultado\": \"solo nodos de deudor genéricos; ninguno con la cláusula de optatividad\"},\n        {\"consulta\": \"comunicación optativa cambio negativo clasificación umbral monto régimen deudor\", \"resultado\": \"procedimiento + umbrales inconexos; ningún nodo captura la optatividad\"},\n        {\"consulta\": \"deudor situación 1 normal comunicación no obligatoria clasificación\", \"resultado\": \"deudor_en_situacion_3_4_o_5 dice 'requiere comunicación OBLIGATORIA'; ningún nodo captura la contraparte optativa\"},\n        {\"consulta\": \"resumen impreso resumen de cuenta mensual comunicación clasificación\", \"resultado\": \"el procedimiento existe pero solo describe medios; sin optatividad ni umbral\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Régimen del que depende el umbral para dicha opcionalidad\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"los detalles sobre excepciones optativos y los regímenes que establecen umbrales no están disponibles en la documentación consultada.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Existe el nodo procedimiento:regimen_informativo_contable_mensual ('Procedimiento de información mensual sobre exigencia e integración de capitales mínimos...') pero NINGUNA arista lo vincula con la obligación de comunicar cambios negativos ni lo identifica como el régimen que fija el umbral de la optatividad; el umbral mismo ('saldo inferior al monto del punto 2 Deudores Comprendidos') no está representado como nodo.\", \"ubicacion\": \"procedimiento:regimen_informativo_contable_mensual; obligacion:comunicar_cambios_negativos_en_clasificacion (sin arista al régimen)\"},\n        \"fuente\": {\"quote\": \"...siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \\\"Deudores Comprendidos\\\" de la Sección 3. \\\"Deudores del sistema financiero\\\" –Normas de Procedimiento– del Régimen Informativo Contable Mensual.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 11 (punto 3.4.2)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"saldo de deuda inferior monto régimen informativo contable mensual optativo\", \"resultado\": \"existe procedimiento:regimen_informativo_contable_mensual y concepto:saldo_de_deuda, pero ninguno conecta con la optatividad de comunicación ni porta el umbral\"},\n        {\"consulta\": \"régimen informativo contable mensual deudores comprendidos\", \"resultado\": \"el nodo del régimen existe pero su description es sobre capitales mínimos; nada lo liga al umbral de comunicación optativa\"},\n        {\"consulta\": \"comunicación optativa deudores menor cuantía régimen informativo central de deudores\", \"resultado\": \"nodos del régimen informativo inconexos; ninguno responde la pata\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: la respuesta falló en ambas patas (optatividad y régimen del umbral), que el agente declaró 'no encontradas'. C1a POR PATA: para ninguna de las dos patas apareció en la trayectoria el dato pertinente. Recorrí la trayectoria completa (pasos 1-15): el agente abrió el procedimiento y la obligación, recorrió los vecinos de la obligación (paso 6: aplica_a situación 3/4/5, gestión judicial, tiene_plazo 45 días, obligado_a entidad) y probó ~10 búsquedas léxicas con vocabulario apropiado y variado. Ningún nodo consultado ni expuesto contiene la cláusula de optatividad ni el régimen del umbral. Ambas patas → context_recall. C2 CAUSA (árbol context_recall: ¿existe nodo portador?): investigué el grafo yo mismo con múltiples búsquedas (optativo, facultativo, saldo inferior, régimen informativo contable mensual, deudores comprendidos, situación 1 normal) y NO existe ningún nodo/arista que porte (a) la optatividad por saldo de deuda inferior al umbral, ni (b) la identificación del régimen que fija ese umbral. El concepto deudor_en_situacion_3_4_o_5 captura solo la contraparte obligatoria ('requiere comunicación obligatoria'). VERIFICACIÓN CONTRA EL PDF: leí la Sección 3 completa y páginas circundantes; el dato SÍ está en el PDF, en p. 11, punto 3.4.2 (Contenido del legajo): 'deberán comunicar... los cambios negativos... siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2 Deudores Comprendidos... del Régimen Informativo Contable Mensual'. Este ÚNICO pasaje contiene ambas respuestas y es del mismo TO. El grafo extrajo de este pasaje solo la parte obligatoria (situación 3/4/5, gestión judicial, plazo 45 días, medios de comunicación) y OMITIÓ la cláusula optativa y el régimen del umbral → extracción incompleta. Como el nodo portador NO existe (no es cuestión de alcanzabilidad ni navegación: no hay qué encontrar) y el PDF SÍ tiene el dato, la causa es completitud_kg para ambas patas (defecto del grafo). Descarto navegación/alcanzabilidad_kg: no hay nodo que exhibir con el contenido correcto. Descarto estructural_kg: no es que existan dos nodos sueltos sin arista, es que el propio contenido (optatividad + umbral) nunca fue extraído. Descarto alucinacion_agente y sin_defecto: el agente actuó correctamente al declarar la ausencia en vez de inventar. El plazo de 45 días y la obligación general (aprobados por el juez) sí fueron extraídos correctamente del mismo pasaje, lo que confirma que la extracción fue parcial. Dos primarias, una por cada pata rota por la misma causa (completitud_kg).\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=-60 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicar cambios negativos en clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"comunicar cambios negativos en clasificación\", \"total_con_match\": 1026, \"resultados\": [{\"id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"type\": \"Obligacion\", \"label\": \"comunicar cambios negativos en clasificación\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada.\"}, {\"id\": \"obligacion:comunicar_cambios_en_estandares_de_originacion\", \"type\": \"Obligacion\", \"label\": \"comunicar cambios en estándares de originación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El originante debe comunicar el momento y propósito cuando los estándares de originación se ven afectados por cambios.\"}, {\"id\": \"obligacion:analizar_y_modificar_clasificacion_ante_cambios_en_criterios_objetivos\", \"type\": \"Obligacion\", \"label\": \"analizar y modificar clasificación ante cambios en criterios objetivos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Obligación de analizar y modificar la clasificación del deudor cuando se modifique alguno de los criterios objetivos de clasificación establecidos en las normas…\"}, {\"id\": \"operacion:liquidacion_en_mercado_de_cambios\", \"type\": \"Op… [+1956 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:comunicar_cambios_negativos_en_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"type\": \"Obligacion\", \"label\": \"comunicar cambios negativos en clasificación\", \"properties\": {\"description\": \"Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1 (PDF pág 9)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las a… [+395 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "optativo optativa optar comunicación deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"optativo optativa optar comunicación deudor\", \"total_con_match\": 386, \"resultados\": [{\"id\": \"concepto_definido:deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica con obligaciones crediticias respecto de la entidad.\"}, {\"id\": \"sujeto_regulado:deudor\", \"type\": \"SujetoRegulado\", \"label\": \"deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"['Persona o entidad respecto de la cual se verifica una situación de incumplimiento crediticio.', 'Persona física o jurídica cuya clasificación se determina con…\"}, {\"id\": \"concepto_definido:deudor_moroso\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"['Situación en la que el exportador mantiene acciones judiciales contra el importador u otro obligado al pago.', 'Obligado de pago que incumple sus obligaciones…\"}, {\"id\": \"sujeto_regulado:cliente_deudor\", \"type\": \"SujetoRegulado\", \"label\": \"cliente deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que ha contraído deuda con entidad financiera y está sujeto a clasificación regulatoria.\"}, {\"id\": \"concepto_definido:deu… [+1481 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.8\", \"ref\": \"Punto/Sección 3.8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.9\", \"ref\": \"Punto/Sección 3.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.7 (PDF pág 14)\", \"pasaje\": \"3.7. Importe de referencia.\\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\\naplicación de la Ley 24.467 (y sus modificatorias).\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 6\"}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 15"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\", \"metodo\": \"pagina\", \"ref\": \"p.15 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Niveles de clasificación. \\nSe han previsto niveles de agrupamiento de los clientes en orden decreciente de calidad, en ra-\\nzón directa al riesgo de incobrabilidad que se deriva de las situaciones que presentan. \\n4.2. Criterio básico de clasificación. \\nEl criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el fu-\\nturo de la deuda o de los compromisos objeto de la garantía de la entidad financiera. \\n4.3. Evaluación de la capacidad de pago. \\n4.3.1. Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos \\nde fondos realizado por la entidad. \\n4.3.2. En segundo lugar, deberá considerarse la posibilidad de liquidación de activos no im-\\nprescindibles para la operatoria de la empresa. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\nNo corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que \\nse encuentren respaldadas con tales garantías. \\n4.5. Deudores que no deben ser objeto de clasific… [+1337 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 16"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 16\", \"metodo\": \"pagina\", \"ref\": \"p.16 (PDF absoluto 1-based)\", \"pasaje\": \"5.1. Categorías. \\nLa cartera se agrupará en dos categorías básicas: \\n5.1.1. Cartera comercial. \\nAbarca todas las financiaciones comprendidas, con excepción de las siguientes: \\n5.1.1.1. Los créditos para consumo o vivienda. \\nLos créditos de esta clase que superen el equivalente a dos veces el importe de \\nreferencia establecido en el punto 3.7. y cuyo repago no se encuentre vinculado \\na ingresos fijos o periódicos del cliente sino a la evolución de su actividad pro-\\nductiva o comercial se incluirán dentro de la cartera comercial. \\n5.1.1.2. A opción de la entidad, las financiaciones de naturaleza comercial de hasta el \\nequivalente a dos veces el importe de referencia establecido en el punto 3.7., \\ncuenten o no con garantías preferidas, podrán agruparse junto con los créditos \\npara consumo o vivienda, en cuyo caso recibirán el tratamiento previsto para es-\\ntos últimos. \\nCuando el cliente mantenga financiaciones por ambos conceptos, los créditos \\npara consumo o vivienda se sumarán a los de la cartera com… [+1391 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 14"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 14\", \"metodo\": \"pagina\", \"ref\": \"p.14 (PDF absoluto 1-based)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o autorida… [+766 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6 (PDF pág 20)\", \"pasaje\": \"6.\\n5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contrap… [+404 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "notificación deudor resumen de cuenta 45 días reclasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"notificación deudor resumen de cuenta 45 días reclasificación\", \"total_con_match\": 3873, \"resultados\": [{\"id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"type\": \"Plazo\", \"label\": \"45 días de realizada la reclasificación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo máximo para remitir información de cambios negativos en clasificación a los deudores.\"}, {\"id\": \"operacion:generacion_de_resumen_de_cuenta\", \"type\": \"Operacion\", \"label\": \"generación de resumen de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación periódica de preparación y envío de extracto de movimientos.\"}, {\"id\": \"umbral:cargo_de_capital_entre_31_y_45_dias\", \"type\": \"Umbral\", \"label\": \"cargo de capital entre 31 y 45 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cargo de capital del 75% cuando la operación DvP falla entre 31 y 45 días hábiles posteriores a liquidación.\"}, {\"id\": \"obligacion:contar_con_resumen_de_cuenta_de_deposito\", \"type\": \"Obligacion\", \"label\": \"contar con resumen de cuenta de depósito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el siniestro fue liquidado en moneda local, copia del resumen de cuenta de depósito donde figure el cobro.\"}… [+1229 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 16,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "plazo:45_dias_de_realizada_la_reclasificacion"
+      },
+      "output_truncado": "{\"id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"type\": \"Plazo\", \"label\": \"45 días de realizada la reclasificación\", \"properties\": {\"description\": \"Plazo máximo para remitir información de cambios negativos en clasificación a los deudores.\", \"duracion\": \"45 días\", \"unidad\": \"días\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}"
+     },
+     {
+      "n": 17,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=-67 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 18,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 6
+      },
+      "output_truncado": "{\"paso\": 6, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"label\": \"comunicar cambios negativos en clasificación\", \"n_salientes_total\": 3, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"concepto_definido:deudor_en_situacion_3_4_o_5\", \"vecino_label\": \"deudor en situación 3, 4 o 5\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"concepto_definido:deudor_en_gestion_judicial_o_extrajudicial_de_cobro\", \"vecino_label\": \"deudor en gestión judicial o extrajudicial de cobro\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}, {\"relation\": \"tiene_plazo\", \"vecino_id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"vecino_label\": \"45 días de realizada la reclasificación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}], \"salientes_truncado\": false… [+299 chars]"
+     },
+     {
+      "n": 19,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 26"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 26\", \"metodo\": \"pagina\", \"ref\": \"p.26 (PDF absoluto 1-based)\", \"pasaje\": \"6.5.3.12. Haya refinanciado su deuda con otorgamiento de quitas de capital y, de acuer-\\ndo con la metodología establecida en el punto 2.2.6. de las normas sobre “Pre-\\nvisiones mínimas por riesgo de incobrabilidad” corresponda este nivel de clasi-\\nficación, siempre que además se observen las otras condiciones previstas en la \\npresente categoría. \\n \\nEl deudor podrá acceder a niveles superiores de clasificación conforme a lo es-\\ntablecido en el segundo y tercer párrafo del punto 6.5.3.5. \\n \\n6.5.4. Con alto riesgo de insolvencia. \\n \\nEl análisis del flujo de fondos del cliente demuestra que es altamente improbable que \\npueda atender la totalidad de sus compromisos financieros. \\n \\nEntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n \\n6.5.4.1. Presente una situación financiera ilíquida y muy alto nivel de endeudamiento, con \\nresultados negativos en la explotación y obligación de vender activos de impor-\\ntancia para la actividad desarrollada y que materialmente sean de m… [+1820 chars]"
+     },
+     {
+      "n": 20,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 27"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 27\", \"metodo\": \"pagina\", \"ref\": \"p.27 (PDF absoluto 1-based)\", \"pasaje\": \"Cuando al menos se haya cumplido con el pago, sin haber incurrido en atrasos \\nsuperiores a los 31 días del 10 % de las obligaciones refinanciadas y la totalidad \\nde los intereses devengados, con más el porcentaje acumulado que pudiera co-\\nrresponder si la refinanciación se hubiera otorgado de haberse encontrado el \\ndeudor en la categoría inferior, podrá reclasificárselo en el nivel inmediato supe-\\nrior si, además, se observan las otras condiciones previstas en el citado nivel. \\n \\n El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su \\ndeuda –aun cuando haya cancelado el porcentaje establecido en el párrafo pre-\\ncedente– y recibido crédito adicional en los términos a que se refiere el punto \\n2.2.5. de las normas sobre “Previsiones mínimas por riesgo de incobrabilidad”, y \\nen la medida en que dicha financiación adicional no hubiese sido cancelada, de-\\nberá permanecer en esta categoría por lo menos 180 días contados desde la fe-\\ncha en que se otorgó crédito adicional o desde qu… [+1816 chars]"
+     },
+     {
+      "n": 21,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 30"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 30\", \"metodo\": \"pagina\", \"ref\": \"p.30 (PDF absoluto 1-based)\", \"pasaje\": \"b) Los deudores que únicamente registren las siguientes operaciones: \\n \\n- Financiaciones que cuenten con aval de banco del exterior que cumpla con \\nlo previsto en el punto 3.1. de las normas sobre “E valuaciones crediticias”, \\nrequiriendo a ese efecto calificación internacional de riesgo comprendida en \\nla categoría “investment grade”. \\n \\n- Financiaciones vinculadas a operaciones de compraventa de títulos valores \\nconcertadas con residentes en el exterior, que se canalicen por la Caja de \\nValores S.A., Clearstream, Euroclear o Depositary Trust Company (DTC), y \\nque se originen en el cumplimiento, por parte  de la entidad financiera intervi-\\nniente, de la obligación a su cargo (entregar la especie transada o efectuar el \\npago convenido) sin que la contrapa rte cancele su compromiso en el mismo \\ndía, en razón de modalidades de liquidación usuales en esos mercados. \\n \\n- Financiaciones vinculadas a operaciones de comercio exterior. \\n \\n- Pases activos de dólares estadounidens es y de títulos valores pú… [+1283 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 31"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 31\", \"metodo\": \"pagina\", \"ref\": \"p.31 (PDF absoluto 1-based)\", \"pasaje\": \"6.5.5.9. Clientes del sector privado no financiero, cuya deuda (por todo concepto) más el\\nimporte de la financiación solicitada, al momento del otorgamiento de ésta, exc e-\\nda del 2,5 % de la responsabilidad patrimonial computable de la entidad del últ i-\\nmo día del mes anterior al que corresponda o el equivalente al importe de ref e-\\nrencia establecido en el punto 3.7., de ambos el menor, y que no hayan prese n-\\ntado declaración jurada sobre si revisten o no el carácter de vinculados al respec-\\ntivo intermediario financiero o si su relación con éste implica la ex istencia de i n-\\nfluencia controlante, o no hayan actualizado la presentada con anterioridad, con\\nexcepción de los deudores en concurso o con acuerdo preventivo extrajudicial\\nsolicitado o en gestión judicial que, por un período de hasta 540 días contados a\\npartir de la apertura del concurso, solicitud del acuerdo preventivo o inicio de las\\ngestiones judiciales de cobro, según corresponda, no hubiesen presentado la d o-\\ncumentación que permita… [+1809 chars]"
+     },
+     {
+      "n": 23,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 35"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 35\", \"metodo\": \"pagina\", \"ref\": \"p.35 (PDF absoluto 1-based)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado en este nivel. \\nLos deudores que hayan refi… [+1813 chars]"
+     },
+     {
+      "n": 24,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 36"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 36\", \"metodo\": \"pagina\", \"ref\": \"p.36 (PDF absoluto 1-based)\", \"pasaje\": \"Los clientes cuyas deudas hayan sido refinanciadas mediante obligaciones de \\npago periódico (mensual o bimestral) podrán ser reclasificados en el nivel inme-\\ndiato superior, cuando hayan cumplido puntualmente o con atrasos que no su-\\nperen los 31 días, con el pago de 1 cuota o, cuando se trate de financiaciones de \\npago único, periódico superior a bimestral o irregular, hayan cancelado al menos \\nel 5 % de sus obligaciones refinanciadas (por capital), con más la cantidad de \\ncuotas o el porcentaje acumulado que pudiera corresponder, respectivamente, si \\nla refinanciación se hubiera otorgado de encontrarse incluido el deudor en nive-\\nles inferiores. \\n \\nEl deudor que, encontrándose clasificado en esta categoría, haya refinanciado su \\ndeuda –aun cuando haya cancelado la cuota citada en el párrafo precedente– y \\nrecibido crédito adicional en los términos a que se refiere el punto 2.2.5. de las \\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad”, y en la medida \\nen que dicha financiación adici… [+1820 chars]"
+     },
+     {
+      "n": 25,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 40"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 40\", \"metodo\": \"pagina\", \"ref\": \"p.40 (PDF absoluto 1-based)\", \"pasaje\": \"F\\nICCS: cociente, expresado en tanto por ciento, entre el importe total de las financiaciones de \\nla cartera de consumo o vivienda, del total del sistema financiero, clasificadas en si-\\ntuación 3 a 5 según las normas sobre “Clasificación de deudores” y el importe total de \\nsus financiaciones de la cartera de consumo o vivienda, según la información que dé a \\nconocer el BCRA. \\nT:  el último día de un trimestre calendario al que corresponda el cálculo del cociente. \\nT-1: el último día del trimestre calendario inmediato anterior y el último día del mismo tri-\\nmestre correspondiente al año anterior, según corresponda. \\nCLASIFICACIÓN DE DEUDORES B.C.R.A. S ección 7. Clasificación de los deudores de la cartera para consumo o vivienda. \\nVersión: 1a. C OMUNICACIÓN  “A”  7024 Vigencia: \\n27/5/2020 Página 8\"}"
+     },
+     {
+      "n": 26,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 41"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\", \"metodo\": \"pagina\", \"ref\": \"p.41 (PDF absoluto 1-based)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 27,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 42"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 42\", \"metodo\": \"pagina\", \"ref\": \"p.42 (PDF absoluto 1-based)\", \"pasaje\": \"9.1. Base in\\ndividual. \\nLas entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las \\nnormas en materia de clasificación de deudores en forma individual. \\n9.2. Base consolidada. \\nSin perjuicio del cumplimiento en forma individual, las entidades financieras controlantes suje-\\ntas a supervisión consolidada observarán las normas en materia de clasificación de deudores \\nsobre base consolidada mensual y, adicional e independientemente, trimestral. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 9. Bases de observancia de las normas. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 28,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.2\", \"ref\": \"Punto/Sección 8.2 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 29,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 41)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 30,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "resumen impreso resumen de cuenta mensual comunicación clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"resumen impreso resumen de cuenta mensual comunicación clasificación\", \"total_con_match\": 4085, \"resultados\": [{\"id\": \"operacion:generacion_de_resumen_de_cuenta\", \"type\": \"Operacion\", \"label\": \"generación de resumen de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación periódica de preparación y envío de extracto de movimientos.\"}, {\"id\": \"plazo:periodicidad_mensual_de_clasificacion\", \"type\": \"Plazo\", \"label\": \"periodicidad mensual de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La clasificación de clientes se efectúa al cabo de cada mes.\"}, {\"id\": \"obligacion:contar_con_resumen_de_cuenta_de_deposito\", \"type\": \"Obligacion\", \"label\": \"contar con resumen de cuenta de depósito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el siniestro fue liquidado en moneda local, copia del resumen de cuenta de depósito donde figure el cobro.\"}, {\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resu… [+1748 chars]"
+     },
+     {
+      "n": 31,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "optativa comunicación deudores menor cuantía régimen informativo central de deudores",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"optativa comunicación deudores menor cuantía régimen informativo central de deudores\", \"total_con_match\": 4071, \"resultados\": [{\"id\": \"concepto_definido:central_de_deudores_del_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"Central de deudores del sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Sistema de información centralizado donde se registra la clasificación de deudores otorgada por múltiples acreedores.', 'Base de datos centralizada que regist…\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios\", \"type\": \"Procedimiento\", \"label\": \"régimen informativo de operaciones de cambios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento mediante el cual las entidades financieras remiten información sobre operaciones de cambios al BCRA.\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios_rioc\", \"type\": \"Procedimiento\", \"label\": \"Régimen Informativo de Operaciones de Cambios (RIOC)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Régimen a través del cual se reportan las operaciones de cambios al SEPAIMPO.\"}, {\"id\": \"requisito:informacion_de_central_de_deudores_del_sistema_financiero\", \"… [+2402 chars]"
+     },
+     {
+      "n": 32,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudor situación 1 normal comunicación no obligatoria clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudor situación 1 normal comunicación no obligatoria clasificación\", \"total_con_match\": 828, \"resultados\": [{\"id\": \"concepto_definido:deudor_en_situacion_normal\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Clasificación de deudor según normativa de clasificación de deudores del BCRA, cuya cartera no será deducida al 100% de la previsión por riesgo de incobrabilida…\"}, {\"id\": \"concepto_definido:situacion_normal\", \"type\": \"ConceptoDefinido\", \"label\": \"situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Clasificación de deudor cuyo análisis de flujo de fondos demuestra capacidad de atender adecuadamente todos sus compromisos financieros.', 'Categoría de clasi…\"}, {\"id\": \"sujeto_regulado:deudor_no_residente\", \"type\": \"SujetoRegulado\", \"label\": \"deudor no residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Persona o entidad no residente que debe pagar el crédito al exportador.\"}, {\"id\": \"concepto_definido:deudor_no_calificado\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor cuya exposición recibe un ponderado… [+1738 chars]"
+     },
+     {
+      "n": 33,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "concepto_definido:deudor_en_situacion_3_4_o_5"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:deudor_en_situacion_3_4_o_5\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor en situación 3, 4 o 5\", \"properties\": {\"description\": \"Clasificación de deudor que requiere comunicación obligatoria de cambios negativos en la clasificación.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}"
+     },
+     {
+      "n": 34,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "concepto_definido:deudor_en_situacion_3_4_o_5",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:deudor_en_situacion_3_4_o_5\", \"label\": \"deudor en situación 3, 4 o 5\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"vecino_label\": \"comunicar cambios negativos en clasificación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 35,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicación optativa cambio negativo clasificación umbral monto régimen deudor",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"comunicación optativa cambio negativo clasificación umbral monto régimen deudor\", \"total_con_match\": 1034, \"resultados\": [{\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\"}, {\"id\": \"umbral:monto_maximo_adeudado_por_deudor_moroso\", \"type\": \"Umbral\", \"label\": \"monto máximo adeudado por deudor moroso\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Valor máximo de deuda que permite utilizar la alternativa de gestión de cobro mediante agencias de recupero.\"}, {\"id\": \"concepto_definido:clasificacion_de_deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categorización del deudor según su situación crediticia y riesgo de incobrabilidad.\"}, {\"id\": \"umbral:5_del_monto_de_capital\", \"type\": \"Umbral\", \"label\": \"5% del monto de capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Límite máximo de prima de recompra … [+2847 chars]"
+     },
+     {
+      "n": 36,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"Además, corresponderá mantener en la casa central de la entidad una copia del legajo\\nde cada uno de los clientes cuyo endeudamiento (financiaciones comprendidas) sea\\nequivalente o superior al 1 % de la responsabilidad patrimonial computable.\\nEstas disposiciones también resultan aplicables a los anexos al legajo del cliente.\\n3.4.5. Aspectos formales.\\nEl legajo y los anexos podrán llevarse en medios magnéticos, electrónicos u otra tecn o-\\nlogía similar. En estos dos últimos casos deberán observarse los requisitos incluidos en\\nel punto 1. de las normas sobre “Instrumentación, conservación y reproducción de doc u-\\nmentos”.\\nLa información que surja del “Legajo Único Financiero y Económico” – establecido por la\\nResolución N° 92/21 del Ministerio de Desarrollo Productivo – será considerada para el\\ncumplimiento de requerimientos contenidos en estas normas.\\n3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado de… [+1695 chars]"
+     },
+     {
+      "n": 37,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"c) junto con el recibo de pago de la cuota, o\\nd) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta in-\\nformación e\\nn cualquier correspondencia pos tal de carácter general que se remita al\\ncliente o específica dirig\\nida a tal fin.\\nAdicionalmente y en igual plazo, las enti dades financieras que brinden servicios de in-\\nformación a sus clientes a través de In ternet (“home banking”), deberán poner en cono-\\ncimiento de cada cliente -por el medio señalado- , la información a la que se refiere esta \\ncomunicación. \\nPor otra parte, el saldo actualizado de la totalidad de las financiaciones otorgadas -que \\ncomprender\\ná las facilidades asignadas por todas las filiales y unidades operativas de la \\nentidad- deberá encontrarse disponible, discriminado por concepto, según el sistema de \\ninformación contable que utilice la entidad, en el lugar de radicación del legajo del cliente \\no la \\ncasa central, de corresponder llevar copia en ésta, de acuerdo con las normas perti-\\nnentes.… [+1817 chars]"
+     },
+     {
+      "n": 38,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 10"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 10\", \"metodo\": \"pagina\", \"ref\": \"p.10 (PDF absoluto 1-based)\", \"pasaje\": \"3.3.5. La descripción del procedimiento adoptado, cuando a los fines de la actualización del l e-\\ngajo del cliente la clasificación asignada se mantenga en planillas separadas, que perm i-\\nta la identificación precisa de la clasificación asignada a cada cliente desde la planilla al\\nlegajo y viceversa.\\n3.3.6. El ejercicio de la opción de encomendar a profesionales externos la tarea de clasific a-\\nción.\\n3.3.7. En los casos de adoptarse métodos específicos de evaluación a los efectos del otorg a-\\nmiento de asistencia financiera en los términos del punto 1.1.3.3. b) de las normas sobre\\n“Gestión crediticia”, deberá observarse  lo previsto en las especificaciones contenidas en\\ndicho punto.\\n3.3.8. La política que contenga los criterios sobre cuya base el personal con atribución en m a-\\nteria crediticia de la entidad financiera podrá decidir autorizar circunstancialmente, incl u-\\nyendo los casos en los que se supere el margen de asistencia total asignado a cada\\ncliente según lo previsto en el punto 1.1.3.2. d… [+1455 chars]"
+     },
+     {
+      "n": 39,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n … [+1820 chars]"
+     },
+     {
+      "n": 40,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "saldo de deuda inferior monto régimen informativo contable mensual optativo",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"saldo de deuda inferior monto régimen informativo contable mensual optativo\", \"total_con_match\": 3789, \"resultados\": [{\"id\": \"requisito:plazos_de_presentacion_del_regimen_informativo_contable_mensual\", \"type\": \"Requisito\", \"label\": \"plazos de presentación del régimen informativo contable mensual\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Plazos que rigen para la base individual en la presentación de información.\"}, {\"id\": \"procedimiento:regimen_informativo_contable_mensual\", \"type\": \"Procedimiento\", \"label\": \"régimen informativo contable mensual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['Procedimiento de información mensual sobre exigencia e integración de capitales mínimos bajo el Régimen Informativo Contable Mensual (R.I.-C.M.).', 'Proceso d…\"}, {\"id\": \"concepto_definido:saldo_de_deuda_en_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"saldo de deuda en sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deuda registrada del cliente en la Central de deudores a la fecha de otorgamiento.\"}, {\"id\": \"umbral:monto_maximo_de_deuda_por_importaciones\", \"type\": \"Umbral\", \"label\": \"monto máximo de deuda por importaciones\", \"tokens_m… [+2049 chars]"
+     },
+     {
+      "n": 41,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "régimen informativo contable mensual deudores comprendidos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"régimen informativo contable mensual deudores comprendidos\", \"total_con_match\": 122, \"resultados\": [{\"id\": \"procedimiento:regimen_informativo_contable_mensual\", \"type\": \"Procedimiento\", \"label\": \"régimen informativo contable mensual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['Procedimiento de información mensual sobre exigencia e integración de capitales mínimos bajo el Régimen Informativo Contable Mensual (R.I.-C.M.).', 'Proceso d…\"}, {\"id\": \"requisito:plazos_de_presentacion_del_regimen_informativo_contable_mensual\", \"type\": \"Requisito\", \"label\": \"plazos de presentación del régimen informativo contable mensual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazos que rigen para la base individual en la presentación de información.\"}, {\"id\": \"requisito:identificacion_del_cliente_segun_regimen_informativo_deudores\", \"type\": \"Requisito\", \"label\": \"identificación del cliente según régimen informativo deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Identificación del cliente según el apartado A (puntos 1 y 2) del Régimen Informativo 'Deudores del sistema financiero'.\"}, {\"id\": \"norma_referenciada:regimen_informativo_para_supervision\", \"type\": \"NormaR… [+2195 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25026,
+      "output_tokens": 276
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26904,
+      "output_tokens": 368
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29387,
+      "output_tokens": 302
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30179,
+      "output_tokens": 203
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31404,
+      "output_tokens": 312
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33998,
+      "output_tokens": 213
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35051,
+      "output_tokens": 369
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37255,
+      "output_tokens": 307
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38024,
+      "output_tokens": 352
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39366,
+      "output_tokens": 421
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 42382,
+      "output_tokens": 294
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45026,
+      "output_tokens": 321
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47912,
+      "output_tokens": 254
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49116,
+      "output_tokens": 289
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50055,
+      "output_tokens": 570
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 52384,
+      "output_tokens": 533
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 55684,
+      "output_tokens": 354
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 56531,
+      "output_tokens": 606
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 58930,
+      "output_tokens": 595
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 62016,
+      "output_tokens": 1516
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 66006,
+      "output_tokens": 1010
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 69918,
+      "output_tokens": 4950
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 47,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-021",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicar deudor cambio clasificación negativo'}",
+      "devolvio": "180 matches; top = procedimiento:comunicacion_de_cambio_negativo_de_clasificacion (resumen: notificación vía resumen impreso/mensual), obligacion:comunicar_cambios_negativos_en_clasificacion, etc. Ninguno menciona opcionalidad ni umbral.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación deudor umbral'}",
+      "devolvio": "938 matches; umbrales genéricos (factor de riesgo tipo de cambio, concentración por deudor 1%) no relacionados con la comunicación optativa.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}",
+      "devolvio": "description solo describe el canal (resumen impreso/mensual); provenance Sección 3 — preámbulo. No menciona opcionalidad ni umbral.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: obligacion:comunicar_cambios_negativos_en_clasificacion}",
+      "devolvio": "deber general de comunicar cambios negativos; sin opcionalidad ni umbral.",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}",
+      "devolvio": "0 salientes, 0 entrantes (nodo aislado).",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{id: obligacion:comunicar_cambios_negativos_en_clasificacion}",
+      "devolvio": "aplica_a deudor situación 3/4/5 y gestión judicial; tiene_plazo 45 días; obligado_a entidad financiera dadora. Nada sobre opcionalidad/umbral.",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicación clasificación umbral régimen'}",
+      "devolvio": "875 matches; umbrales de BOPREAL, RPC, APR no relacionados.",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación optativa facultativa'}",
+      "devolvio": "456 matches; notificar con preaviso a SEFyC (otra cosa), nada sobre opcionalidad al deudor.",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación optativa deudor clasificación monto importe'}",
+      "devolvio": "517 matches; monto máximo por deudor moroso (gestión de cobro, no comunicación).",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen clasificación deudor umbral comunicación'}",
+      "devolvio": "923 matches; umbrales de concentración/ingresos, nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'facultativo no obligatorio comunicación cambio clasificación'}",
+      "devolvio": "759 matches; nada sobre opcionalidad al deudor.",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'deudor pequeño monto bajo comunicación clasificación'}",
+      "devolvio": "524 matches; nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen simplificado clasificación deudor comunicación'}",
+      "devolvio": "492 matches; nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'excepción comunicación cambio clasificación deudor'}",
+      "devolvio": "541 matches; nada sobre la excepción optativa.",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{id: concepto_definido:clasificacion_de_deudor}",
+      "devolvio": "definición genérica de clasificación; sin opcionalidad ni umbral.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente ejecutó 15 llamadas con términos plausibles y variados (optativo, facultativo, excepción, umbral, régimen, monto, saldo bajo, régimen simplificado), abrió los nodos candidatos (procedimiento de comunicación y obligación de comunicar cambios negativos) y sus vecinos, y verificó que ninguno porta la opcionalidad ni el umbral. Ante la ausencia real del dato en el grafo, declaró honestamente que la información no está disponible y NO alucinó una respuesta. La única afirmación positiva que hizo (obligación general + plazo de 45 días) está soportada por los nodos consultados y fue APROBADA por el juez. La abstención sobre las patas fallidas es la conducta correcta frente a un hueco del grafo.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para dicha opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.",
+       "ubicacion": "procedimiento:comunicacion_de_cambio_negativo_de_clasificacion (description; NO menciona la opcionalidad; provenance Sección 3 — preámbulo, el mismo TO)"
+      },
+      "fuente": {
+       "quote": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \"D",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 3.4.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "optativo comunicar deudor cambio clasificación negativo (paso 1 del agente, re-ejecutado)",
+       "resultado": "top = procedimiento:comunicacion_de_cambio_negativo_de_clasificacion; su description solo describe el canal (resumen impreso/mensual), NO la opcionalidad"
+      },
+      {
+       "consulta": "comunicación optativa entidad deudor",
+       "resultado": "535 matches, solo nodos de 'deudor'/'entidad' genéricos; ningún nodo con la regla de opcionalidad"
+      },
+      {
+       "consulta": "saldo de deuda inferior monto optativo comunicar",
+       "resultado": "3767 matches, todos sobre deuda de comercio exterior/importaciones; ningún nodo porta la opcionalidad de la comunicación de clasificación"
+      },
+      {
+       "consulta": "resumen impreso resumen de cuenta comunicación clasificación",
+       "resultado": "el único nodo relevante es procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, cuya description omite la opcionalidad y el umbral"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "localizacion_fallida",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Régimen del que depende el umbral para dicha opcionalidad",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información sobre qué régimen determina el umbral para la comunicación optativa.",
+       "ubicacion": "respuesta final (reporte de alcance del agente)"
+      },
+      "nodo": {
+       "quote": "ninguno",
+       "ubicacion": "no existe nodo/umbral en el grafo que vincule la opcionalidad de la comunicación con el 'monto establecido en el punto 2' ni con el régimen del que depende"
+      },
+      "fuente": {
+       "quote": "siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \"D",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 3.4.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "régimen clasificación deudor umbral comunicación (paso 10 del agente)",
+       "resultado": "923 matches; umbrales genéricos (concentración 1%, ingresos 30%), ninguno vinculado a la comunicación optativa"
+      },
+      {
+       "consulta": "clasificación cartera consumo vivienda comercial régimen",
+       "resultado": "206 matches sobre carteras, pero ningún nodo conecta un umbral/régimen con la opcionalidad de comunicar el cambio negativo"
+      },
+      {
+       "consulta": "demás disposiciones régimen informativo central de deudores punto 2",
+       "resultado": "3781 matches sobre regímenes informativos varios; ninguno vinculado a la regla de opcionalidad del punto 3.4.2"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep2_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "sin_portador_extraible",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene dos patas — (1) los casos en que la comunicación del cambio negativo es optativa, y (2) el régimen del que depende el umbral. Reejecutando la trayectoria completa (15 pasos), NINGÚN output expuso al agente el dato pertinente a ninguna de las dos patas: el mejor candidato, procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, describe únicamente el CANAL de la comunicación (resumen impreso/mensual), y la obligación comunicar_cambios_negativos_en_clasificacion solo enuncia el deber general y su plazo de 45 días (única afirmación positiva del agente, aprobada por el juez). El dato pertinente 'es optativo cuando el saldo de deuda es inferior al monto del punto 2' nunca apareció → ambas patas son context_recall. CAUSA (C2, árbol context_recall → ¿existe nodo portador?): el PDF SÍ tiene el dato (punto 3.4.2: 'Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2'), verificado con leer_pasaje_pdf. Pero en el grafo NO existe ningún nodo que porte esa opcionalidad ni el umbral: constancia de búsqueda con múltiples términos plausibles (optativo, facultativo, excepción, saldo bajo, umbral, régimen, punto 2) devuelve solo el procedimiento genérico cuya description omitió el fragmento. El nodo del procedimiento incluso está anclado al MISMO TO (Sección 3), lo que confirma que se trata de extracción incompleta y no de un TO ausente. Por tanto: el dato del PDF no fue llevado al grafo → completitud_kg, no alcanzabilidad_kg (no hay nodo oculto por indexación) ni navegación (no hay nodo que el agente pudiera haber alcanzado). Descarto alucinacion/faithfulness porque el agente NO inventó respuesta: se abstuvo honestamente. Ambas patas son primarias porque son las dos que la pregunta exige y ambas quedaron sin cubrir por el mismo tipo de hueco del grafo. La conducta del agente fue correcta (paso_decision_error = null): buscó exhaustivamente, verificó los candidatos y declaró la ausencia.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 18,
+    "max_tool_calls": 40,
+    "tokens_in": 363166,
+    "tokens_out": 8200
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 18,
+    "tokens_in": 363166,
+    "tokens_out": 8200,
+    "latency_s": 120.179,
+    "error": null,
+    "final_raw": "Confirmado. El agente buscó con términos plausibles y el mejor candidato (`procedimiento:comunicacion_de_cambio_negativo_de_clasificacion`) NO contiene la opcionalidad ni el umbral en su description. El agente actuó correctamente: buscó exhaustivamente, abrió los nodos pertinentes, y honestamente declaró que la información no estaba disponible. El defecto es del grafo: el dato existe en el PDF (punto 3.4.2) pero no fue extraído a ningún nodo.\n\nTengo evidencia suficiente para atribuir.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicar deudor cambio clasificación negativo'}\", \"devolvio\": \"180 matches; top = procedimiento:comunicacion_de_cambio_negativo_de_clasificacion (resumen: notificación vía resumen impreso/mensual), obligacion:comunicar_cambios_negativos_en_clasificacion, etc. Ninguno menciona opcionalidad ni umbral.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación deudor umbral'}\", \"devolvio\": \"938 matches; umbrales genéricos (factor de riesgo tipo de cambio, concentración por deudor 1%) no relacionados con la comunicación optativa.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}\", \"devolvio\": \"description solo describe el canal (resumen impreso/mensual); provenance Sección 3 — preámbulo. No menciona opcionalidad ni umbral.\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: obligacion:comunicar_cambios_negativos_en_clasificacion}\", \"devolvio\": \"deber general de comunicar cambios negativos; sin opcionalidad ni umbral.\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}\", \"devolvio\": \"0 salientes, 0 entrantes (nodo aislado).\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{id: obligacion:comunicar_cambios_negativos_en_clasificacion}\", \"devolvio\": \"aplica_a deudor situación 3/4/5 y gestión judicial; tiene_plazo 45 días; obligado_a entidad financiera dadora. Nada sobre opcionalidad/umbral.\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicación clasificación umbral régimen'}\", \"devolvio\": \"875 matches; umbrales de BOPREAL, RPC, APR no relacionados.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación optativa facultativa'}\", \"devolvio\": \"456 matches; notificar con preaviso a SEFyC (otra cosa), nada sobre opcionalidad al deudor.\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación optativa deudor clasificación monto importe'}\", \"devolvio\": \"517 matches; monto máximo por deudor moroso (gestión de cobro, no comunicación).\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen clasificación deudor umbral comunicación'}\", \"devolvio\": \"923 matches; umbrales de concentración/ingresos, nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'facultativo no obligatorio comunicación cambio clasificación'}\", \"devolvio\": \"759 matches; nada sobre opcionalidad al deudor.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'deudor pequeño monto bajo comunicación clasificación'}\", \"devolvio\": \"524 matches; nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen simplificado clasificación deudor comunicación'}\", \"devolvio\": \"492 matches; nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'excepción comunicación cambio clasificación deudor'}\", \"devolvio\": \"541 matches; nada sobre la excepción optativa.\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{id: concepto_definido:clasificacion_de_deudor}\", \"devolvio\": \"definición genérica de clasificación; sin opcionalidad ni umbral.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente ejecutó 15 llamadas con términos plausibles y variados (optativo, facultativo, excepción, umbral, régimen, monto, saldo bajo, régimen simplificado), abrió los nodos candidatos (procedimiento de comunicación y obligación de comunicar cambios negativos) y sus vecinos, y verificó que ninguno porta la opcionalidad ni el umbral. Ante la ausencia real del dato en el grafo, declaró honestamente que la información no está disponible y NO alucinó una respuesta. La única afirmación positiva que hizo (obligación general + plazo de 45 días) está soportada por los nodos consultados y fue APROBADA por el juez. La abstención sobre las patas fallidas es la conducta correcta frente a un hueco del grafo.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\",\n      \"Régimen del que depende el umbral para dicha opcionalidad\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\", \"ubicacion\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion (description; NO menciona la opcionalidad; provenance Sección 3 — preámbulo, el mismo TO)\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \\\"D\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 3.4.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo (paso 1 del agente, re-ejecutado)\", \"resultado\": \"top = procedimiento:comunicacion_de_cambio_negativo_de_clasificacion; su description solo describe el canal (resumen impreso/mensual), NO la opcionalidad\"},\n        {\"consulta\": \"comunicación optativa entidad deudor\", \"resultado\": \"535 matches, solo nodos de 'deudor'/'entidad' genéricos; ningún nodo con la regla de opcionalidad\"},\n        {\"consulta\": \"saldo de deuda inferior monto optativo comunicar\", \"resultado\": \"3767 matches, todos sobre deuda de comercio exterior/importaciones; ningún nodo porta la opcionalidad de la comunicación de clasificación\"},\n        {\"consulta\": \"resumen impreso resumen de cuenta comunicación clasificación\", \"resultado\": \"el único nodo relevante es procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, cuya description omite la opcionalidad y el umbral\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Régimen del que depende el umbral para dicha opcionalidad\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información sobre qué régimen determina el umbral para la comunicación optativa.\", \"ubicacion\": \"respuesta final (reporte de alcance del agente)\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"no existe nodo/umbral en el grafo que vincule la opcionalidad de la comunicación con el 'monto establecido en el punto 2' ni con el régimen del que depende\"},\n        \"fuente\": {\"quote\": \"siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \\\"D\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 3.4.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"régimen clasificación deudor umbral comunicación (paso 10 del agente)\", \"resultado\": \"923 matches; umbrales genéricos (concentración 1%, ingresos 30%), ninguno vinculado a la comunicación optativa\"},\n        {\"consulta\": \"clasificación cartera consumo vivienda comercial régimen\", \"resultado\": \"206 matches sobre carteras, pero ningún nodo conecta un umbral/régimen con la opcionalidad de comunicar el cambio negativo\"},\n        {\"consulta\": \"demás disposiciones régimen informativo central de deudores punto 2\", \"resultado\": \"3781 matches sobre regímenes informativos varios; ninguno vinculado a la regla de opcionalidad del punto 3.4.2\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene dos patas — (1) los casos en que la comunicación del cambio negativo es optativa, y (2) el régimen del que depende el umbral. Reejecutando la trayectoria completa (15 pasos), NINGÚN output expuso al agente el dato pertinente a ninguna de las dos patas: el mejor candidato, procedimiento:comunicacion_de_cambio_negativo_de_clasificacion, describe únicamente el CANAL de la comunicación (resumen impreso/mensual), y la obligación comunicar_cambios_negativos_en_clasificacion solo enuncia el deber general y su plazo de 45 días (única afirmación positiva del agente, aprobada por el juez). El dato pertinente 'es optativo cuando el saldo de deuda es inferior al monto del punto 2' nunca apareció → ambas patas son context_recall. CAUSA (C2, árbol context_recall → ¿existe nodo portador?): el PDF SÍ tiene el dato (punto 3.4.2: 'Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2'), verificado con leer_pasaje_pdf. Pero en el grafo NO existe ningún nodo que porte esa opcionalidad ni el umbral: constancia de búsqueda con múltiples términos plausibles (optativo, facultativo, excepción, saldo bajo, umbral, régimen, punto 2) devuelve solo el procedimiento genérico cuya description omitió el fragmento. El nodo del procedimiento incluso está anclado al MISMO TO (Sección 3), lo que confirma que se trata de extracción incompleta y no de un TO ausente. Por tanto: el dato del PDF no fue llevado al grafo → completitud_kg, no alcanzabilidad_kg (no hay nodo oculto por indexación) ni navegación (no hay nodo que el agente pudiera haber alcanzado). Descarto alucinacion/faithfulness porque el agente NO inventó respuesta: se abstuvo honestamente. Ambas patas son primarias porque son las dos que la pregunta exige y ambas quedaron sin cubrir por el mismo tipo de hueco del grafo. La conducta del agente fue correcta (paso_decision_error = null): buscó exhaustivamente, verificó los candidatos y declaró la ausencia.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=-60 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "comunicación optativa entidad deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"comunicación optativa entidad deudor\", \"total_con_match\": 535, \"resultados\": [{\"id\": \"concepto_definido:deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica con obligaciones crediticias respecto de la entidad.\"}, {\"id\": \"sujeto_regulado:deudor\", \"type\": \"SujetoRegulado\", \"label\": \"deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"['Persona o entidad respecto de la cual se verifica una situación de incumplimiento crediticio.', 'Persona física o jurídica cuya clasificación se determina con…\"}, {\"id\": \"sujeto_regulado:entidad\", \"type\": \"SujetoRegulado\", \"label\": \"entidad\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad financiera responsable de verificar el cumplimiento de condiciones de seguimiento de operaciones de exportación.\"}, {\"id\": \"concepto_definido:deudor_moroso\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"['Situación en la que el exportador mantiene acciones judiciales contra el importador u otro obligado al pago.', 'Obligado de pago que incumple sus obligaciones…\"}, {\"id\": \"sujeto_regulado:cliente_deudor\", \"ty… [+1481 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1 (PDF pág 9)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las a… [+395 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "resumen impreso resumen de cuenta comunicación clasificación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"resumen impreso resumen de cuenta comunicación clasificación\", \"total_con_match\": 4075, \"resultados\": [{\"id\": \"operacion:generacion_de_resumen_de_cuenta\", \"type\": \"Operacion\", \"label\": \"generación de resumen de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación periódica de preparación y envío de extracto de movimientos.\"}, {\"id\": \"obligacion:contar_con_resumen_de_cuenta_de_deposito\", \"type\": \"Obligacion\", \"label\": \"contar con resumen de cuenta de depósito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el siniestro fue liquidado en moneda local, copia del resumen de cuenta de depósito donde figure el cobro.\"}, {\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\"}, {\"id\": \"concepto_definido:clasificacion_de_deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categorización del deudor según s… [+1730 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.8\", \"ref\": \"Punto/Sección 3.8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.9\", \"ref\": \"Punto/Sección 3.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.7 (PDF pág 14)\", \"pasaje\": \"3.7. Importe de referencia.\\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\\naplicación de la Ley 24.467 (y sus modificatorias).\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 6\"}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.5 (PDF pág 13)\", \"pasaje\": \"3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del otorgamiento de créditos y garantías.\\n3.5.2. Al sector encargado del otorgamiento de créditos y garantías.\\nDe optar por esta posibilidad, la entidad financiera deberá contar con una oficina ind e-\\npendiente que tendrá como función efectuar la revisión de las clasificaciones asignadas a\\nlos clientes por el sector de créditos.\\nDicha revisión –que podrá estar a cargo de la auditoría interna de la entidad – deberá\\ncomprender obligatoriamente a los clientes cuyo endeudamiento total en pesos y en m o-\\nneda extranjera (por las financiaciones comprendidas) supere el 1 % de la responsabil i-\\ndad patrimonial computable de la entidad del mes anterior al de la clasificación o el equ i-\\nvalente al importe de referencia establecido en el punto 3.7., de ambos el menor, y alcan-\\nzar como mínimo el 20 % de la cartera activa total, que se completará, en caso de… [+398 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4 (PDF pág 10)\", \"pasaje\": \"3.4. Legajo del cliente.\\n3.4.1. Apertura.\\nLa entidad deberá llevar un legajo de cada deudor de su cartera, así como de cada uno\\nde sus corresponsales, de acuerdo con lo establecido en las normas sobre “Cuentas de \\ncorresponsalía”.\\nEn los casos de créditos cedidos a favor de la entidad sin responsabilidad para el cedente\\n–unidad económica receptora de los fondos –, deberá abrirse el legajo del firmante, libr a-\\ndor, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos cons e-\\ncuentemente en principales y directos pagadores, al que se hayan imputado las acree n-\\ncias.\\nNo será obligatoria la apertura del legajo en los casos de deudores por servicios públicos\\no por tarjetas de crédito considerados a los fines de la clasificación por haber sido cedidos\\nlos respectivos créditos por deudores en concurso preventivo.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 8a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 2\"}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.3 (PDF pág 12)\", \"pasaje\": \"3.4.3. Anexos. \\nEn los casos de préstamos a personas humanas con garantía hipotecaria en primer gra-\\ndo \\nsobre una vivienda o con garantía prendaria en primer grado sobre automóviles o ve-\\nhículos utilitarios livianos 0 km para uso particular, comercial o alquiler, se anexarán al \\nlegajo del deudor las carpetas crediticia, legal y de administración cuando se observen \\nlas pautas previstas en los respectivos manuales de originación y administración. \\n3.4.4. Radicación. \\nEl legajo del deudor se deberá llevar en el lugar d e radicación de la cuenta. \\nSe admitirá que el legajo del cliente se encuentre en un l ugar distinto del de radicación de \\nla cuenta (por ejemplo: casa matriz o sucursal que sea asiento de gerencia regional), \\ncuando ello haya sido determinado por razones operativas -vinculadas a la evaluación, \\notorgamiento y seguimiento de los créditos- y dicha circunstancia se encuentre incluida \\nen el “Manual de procedimientos de clasificación y previsión”. \\nCLASIFICACIÓN DE DEUDORES \\nB… [+116 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 2\", \"ref\": \"Punto/Sección 2 (mejor score=-2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "saldo de deuda inferior monto optativo comunicar",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"saldo de deuda inferior monto optativo comunicar\", \"total_con_match\": 3767, \"resultados\": [{\"id\": \"concepto_definido:saldo_de_deuda_en_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"saldo de deuda en sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deuda registrada del cliente en la Central de deudores a la fecha de otorgamiento.\"}, {\"id\": \"umbral:monto_maximo_de_deuda_por_importaciones\", \"type\": \"Umbral\", \"label\": \"monto máximo de deuda por importaciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"valor: 500000; unidad: USD; version: vigente_2026-05\"}, {\"id\": \"requisito:no_superar_monto_declarado_en_padron_de_deuda\", \"type\": \"Requisito\", \"label\": \"no superar monto declarado en padrón de deuda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los pagos realizados no pueden superar el monto total declarado en el padrón de deuda comercial.\"}, {\"id\": \"requisito:declaracion_jurada_de_saldo_de_deuda_pendiente\", \"type\": \"Requisito\", \"label\": \"declaración jurada de saldo de deuda pendiente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Declaración jurada consignando el saldo de deuda pendiente a la fecha, para importaciones oficializa… [+2121 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "clasificación cartera consumo vivienda comercial régimen",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"clasificación cartera consumo vivienda comercial régimen\", \"total_con_match\": 206, \"resultados\": [{\"id\": \"concepto_definido:cartera_de_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera de consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Tipo de cartera crediticia sujeta a normas especiales de clasificación de deudores según mora.\"}, {\"id\": \"concepto_definido:cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera para consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de cartera que comprende créditos para consumo, vivienda propia, préstamos a instituciones de microcrédito y microemprendedores, y financiaciones come…\"}, {\"id\": \"concepto_definido:deudor_en_cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor en cartera para consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Prestatario clasificado en la cartera de créditos para consumo o vivienda según los parámetros de la norma.\"}, {\"id\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"type\": \"Obligacion\", \"label\": \"clasificar deudores según mora en cartera cons… [+2082 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 2\", \"ref\": \"Punto/Sección 2 (mejor score=-2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 17,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "demás disposiciones régimen informativo central de deudores punto 2",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"demás disposiciones régimen informativo central de deudores punto 2\", \"total_con_match\": 3781, \"resultados\": [{\"id\": \"concepto_definido:central_de_deudores_del_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"Central de deudores del sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Sistema de información centralizado donde se registra la clasificación de deudores otorgada por múltiples acreedores.', 'Base de datos centralizada que regist…\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios\", \"type\": \"Procedimiento\", \"label\": \"régimen informativo de operaciones de cambios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento mediante el cual las entidades financieras remiten información sobre operaciones de cambios al BCRA.\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios_rioc\", \"type\": \"Procedimiento\", \"label\": \"Régimen Informativo de Operaciones de Cambios (RIOC)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Régimen a través del cual se reportan las operaciones de cambios al SEPAIMPO.\"}, {\"id\": \"requisito:informacion_de_central_de_deudores_del_sistema_financiero\", \"type\": \"Requisito… [+1633 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo\", \"total_con_match\": 180, \"resultados\": [{\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\"}, {\"id\": \"obligacion:comunicar_clasificacion_del_deudor_a_solicitud_del_cliente\", \"type\": \"Obligacion\", \"label\": \"comunicar clasificación del deudor a solicitud del cliente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad financiera debe comunicar al cliente, a su solicitud, la última clasificación asignada, fundamentos, importe total de deudas con el sistema financier…\"}, {\"id\": \"concepto_definido:clasificacion_de_deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categorización del deudor según su situ… [+2195 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25026,
+      "output_tokens": 260
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26709,
+      "output_tokens": 292
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28977,
+      "output_tokens": 307
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29774,
+      "output_tokens": 203
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30999,
+      "output_tokens": 273
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32560,
+      "output_tokens": 292
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34194,
+      "output_tokens": 249
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34653,
+      "output_tokens": 542
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38103,
+      "output_tokens": 604
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40110,
+      "output_tokens": 517
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 42061,
+      "output_tokens": 4661
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 47,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-021",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicar deudor cambio clasificación negativo', limite:10}",
+      "devolvio": "Nodos sobre obligación de comunicar cambios negativos y comunicación a solicitud del cliente; ninguno sobre opcionalidad/umbral",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación deudor umbral', limite:10}",
+      "devolvio": "Procedimiento comunicación + umbrales genéricos (riesgo tipo de cambio, concentración) no relacionados",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}",
+      "devolvio": "Descripción: notificación vía resumen impreso/cuenta mensual; sin mención de opcionalidad",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: obligacion:comunicar_cambios_negativos_en_clasificacion}",
+      "devolvio": "Obligación general de comunicar cambios negativos; modalidad 'obligacion'",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: procedimiento:comunicacion..., ambas}",
+      "devolvio": "0 vecinos",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "ver_vecinos",
+      "args": "{id: obligacion:comunicar_cambios_negativos..., ambas}",
+      "devolvio": "aplica_a deudor sit.3/4/5 y gestión judicial; tiene_plazo 45 días; obligado_a entidad dadora",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'optativo comunicación clasificación umbral régimen'}",
+      "devolvio": "Umbrales BOPREAL/RPC/APR no relacionados",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'comunicación cambio clasificación optativa facultativa'}",
+      "devolvio": "Notificar con preaviso a SEFyC; nada sobre opcionalidad de comunicar al deudor",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'comunicación optativa deudor clasificación monto importe'}",
+      "devolvio": "clasificación de deudor, monto máximo deudor moroso; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'régimen clasificación deudor umbral comunicación'}",
+      "devolvio": "umbrales de concentración/ingresos; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'facultativo no obligatorio comunicación cambio clasificación'}",
+      "devolvio": "obligaciones varias; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'deudor pequeño monto bajo comunicación clasificación'}",
+      "devolvio": "no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'régimen simplificado clasificación deudor comunicación'}",
+      "devolvio": "no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta:'excepción comunicación cambio clasificación deudor'}",
+      "devolvio": "no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "ver_nodo",
+      "args": "{id: concepto_definido:clasificacion_de_deudor}",
+      "devolvio": "Definición genérica de clasificación de deudor",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente hizo una búsqueda exhaustiva (11 consultas léxicas con vocabulario variado: optativo, facultativo, no obligatorio, excepción, umbral, régimen, monto, importe, simplificado) y exploró vecinos de los nodos candidatos. Ningún nodo del grafo porta la respuesta a las patas (casos optativos ni régimen del umbral). Ante la ausencia real del dato, declaró honestamente 'No se encontró información en el Knowledge Graph', lo cual es la conducta correcta: no inventó ni forzó una respuesta. La única afirmación positiva que emitió (obligación general + 45 días) está soportada por nodos consultados y fue aprobada por el juez.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para dicha opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada. (modalidad: obligacion)",
+       "ubicacion": "obligacion:comunicar_cambios_negativos_en_clasificacion"
+      },
+      "fuente": {
+       "quote": "8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado (...)",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 8.1 (única disposición de la Sección 8 'Informaciones a clientes'; no contempla opcionalidad de comunicar cambios negativos)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "optativo comunicar deudor cambio clasificación negativo",
+       "resultado": "solo nodos de la obligación de comunicar y de comunicación a solicitud del cliente; ninguno sobre opcionalidad"
+      },
+      {
+       "consulta": "comunicación cambio clasificación optativa facultativa",
+       "resultado": "notificar a SEFyC con preaviso; nada sobre opcionalidad de comunicar al deudor"
+      },
+      {
+       "consulta": "facultativo no obligatorio comunicación cambio clasificación",
+       "resultado": "obligaciones varias, ningún nodo portador"
+      },
+      {
+       "consulta": "optativo comunicar deudor cambio categoría deuda mínima",
+       "resultado": "permanencia mínima en categoría / comunicar a solicitud del cliente; ningún nodo de opcionalidad"
+      },
+      {
+       "consulta": "45 días reclasificación comunicación deudor optativa umbral",
+       "resultado": "plazo:45_dias_de_realizada_la_reclasificacion (solo el plazo, sin opcionalidad ni umbral)"
+      },
+      {
+       "consulta": "PDF TO_clasificacion_deudores Sección 8 / puntos 3.4-8.1",
+       "resultado": "Sección 8 completa = solo 8.1 (comunicación a solicitud del cliente en 10 días); no existe disposición de opcionalidad de comunicar cambios negativos"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "localizacion_fallida",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Régimen del que depende el umbral para dicha opcionalidad",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "ni sobre qué régimen determina el umbral para ello (...) los regímenes que establecen umbrales no están disponibles en la documentación consultada",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "ninguno",
+       "ubicacion": "n/a — no existe nodo que vincule un umbral de opcionalidad de comunicación con un régimen"
+      },
+      "fuente": {
+       "quote": "8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación (...)",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 8.1 (el TO de clasificación de deudores no vincula umbral de opcionalidad con régimen alguno; el dato pertenece al Régimen Informativo 'Deudores del sistema financiero', no cargado con este contenido en el grafo)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "régimen clasificación deudor umbral comunicación",
+       "resultado": "umbrales de concentración/ingresos no relacionados; ningún nodo que ligue umbral de opcionalidad a un régimen"
+      },
+      {
+       "consulta": "central de deudores del sistema financiero régimen informativo",
+       "resultado": "concepto Central de deudores y requisitos de identificación/plazos de presentación; ninguno sobre umbral de comunicación optativa"
+      },
+      {
+       "consulta": "deudores sistema financiero régimen informativo notificación cambios categoría",
+       "resultado": "central de deudores + regímenes de operaciones de cambios (RIOC); ninguno pertinente a la opcionalidad de comunicar al deudor"
+      },
+      {
+       "consulta": "leer PDF TO_regimen_informativo_contable_mensual_actual p.2",
+       "resultado": "índice: capitales mínimos, apalancamiento, riesgo de tasa; no contiene la disposición de comunicación optativa al deudor"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep3_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "sin_portador_extraible",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_verificable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene dos patas — (1) casos en que es optativo comunicar un cambio negativo, y (2) régimen del que depende el umbral. Recorriendo los outputs COMPLETOS de la trayectoria (incluido ver_paso_completo del paso 1) ningún nodo porta la RESPUESTA a ninguna de las dos patas: los nodos disponibles solo describen la OBLIGACIÓN de comunicar cambios negativos (obligacion:comunicar_cambios_negativos_en_clasificacion, modalidad 'obligacion'), su plazo de 45 días, y la comunicación a solicitud del cliente (Punto 8.1) — nada sobre cuándo la comunicación es OPTATIVA ni sobre qué régimen fija el umbral. El dato pertinente nunca apareció → ambas patas son context_recall. La afirmación positiva del agente (obligación general + 45 días) fue aprobada por el juez y no se re-litiga; el juez reprobó porque las dos patas centrales quedaron sin responder. CAUSA (C2, árbol context_recall): ¿existe nodo portador? Búsqueda exhaustiva documentada con vocabulario ex ante variado (optativo/facultativo/no obligatorio/excepción/umbral/régimen/monto/deuda mínima) no devuelve ningún nodo que responda las patas → no hay nodo portador, por lo que no es navegación ni alcanzabilidad_kg. ¿El PDF tiene el dato? Verifiqué el TO_clasificacion_deudores_actual.pdf: la Sección 8 'Informaciones a clientes' contiene únicamente el Punto 8.1 (comunicación a solicitud del cliente en 10 días), y las Secciones 3, 6 y 7 tampoco contienen una disposición de opcionalidad de comunicar cambios negativos ni umbral por régimen; también revisé TO_regimen_informativo_contable_mensual_actual.pdf (capitales mínimos/apalancamiento) sin hallarlo. La disposición regulatoria real (comunicación de cambio de categoría con plazo y opcionalidad según deuda/régimen) pertenece al Régimen Informativo 'Deudores del sistema financiero', cuyo contenido no está cargado en el grafo. Se trata de información regulatoria que existe pero está ausente del KG → completitud_kg, PRIMARIA en ambas patas. El agente actuó correctamente (paso_decision_error=null): buscó exhaustivamente y declaró honestamente la ausencia, sin alucinar; el defecto es del grafo, no del agente. Nota lateral (no atribuida aquí por no ser pata fallida): el nodo de la obligación y el del plazo de 45 días citan 'Sección 3 — preámbulo', pero la Sección 3 del PDF (3.1–3.7) no funda ese contenido — indicio de provenance imprecisa que afecta a la afirmación ya aprobada, no a las patas reprobadas.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 34,
+    "max_tool_calls": 40,
+    "tokens_in": 756762,
+    "tokens_out": 13311
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 34,
+    "tokens_in": 756762,
+    "tokens_out": 13311,
+    "latency_s": 215.88,
+    "error": null,
+    "final_raw": "Confirmado: ni siquiera en el output completo del paso 1 aparece un nodo sobre la opcionalidad o el régimen del umbral. Los nodos disponibles solo hablan de la obligación de comunicar (no de cuándo es optativa). El agente actuó correctamente y honestamente.\n\nTengo evidencia suficiente. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicar deudor cambio clasificación negativo', limite:10}\", \"devolvio\": \"Nodos sobre obligación de comunicar cambios negativos y comunicación a solicitud del cliente; ninguno sobre opcionalidad/umbral\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación deudor umbral', limite:10}\", \"devolvio\": \"Procedimiento comunicación + umbrales genéricos (riesgo tipo de cambio, concentración) no relacionados\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: procedimiento:comunicacion_de_cambio_negativo_de_clasificacion}\", \"devolvio\": \"Descripción: notificación vía resumen impreso/cuenta mensual; sin mención de opcionalidad\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: obligacion:comunicar_cambios_negativos_en_clasificacion}\", \"devolvio\": \"Obligación general de comunicar cambios negativos; modalidad 'obligacion'\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: procedimiento:comunicacion..., ambas}\", \"devolvio\": \"0 vecinos\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{id: obligacion:comunicar_cambios_negativos..., ambas}\", \"devolvio\": \"aplica_a deudor sit.3/4/5 y gestión judicial; tiene_plazo 45 días; obligado_a entidad dadora\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'optativo comunicación clasificación umbral régimen'}\", \"devolvio\": \"Umbrales BOPREAL/RPC/APR no relacionados\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'comunicación cambio clasificación optativa facultativa'}\", \"devolvio\": \"Notificar con preaviso a SEFyC; nada sobre opcionalidad de comunicar al deudor\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'comunicación optativa deudor clasificación monto importe'}\", \"devolvio\": \"clasificación de deudor, monto máximo deudor moroso; no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'régimen clasificación deudor umbral comunicación'}\", \"devolvio\": \"umbrales de concentración/ingresos; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'facultativo no obligatorio comunicación cambio clasificación'}\", \"devolvio\": \"obligaciones varias; no pertinente\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'deudor pequeño monto bajo comunicación clasificación'}\", \"devolvio\": \"no pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'régimen simplificado clasificación deudor comunicación'}\", \"devolvio\": \"no pertinente\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta:'excepción comunicación cambio clasificación deudor'}\", \"devolvio\": \"no pertinente\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{id: concepto_definido:clasificacion_de_deudor}\", \"devolvio\": \"Definición genérica de clasificación de deudor\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente hizo una búsqueda exhaustiva (11 consultas léxicas con vocabulario variado: optativo, facultativo, no obligatorio, excepción, umbral, régimen, monto, importe, simplificado) y exploró vecinos de los nodos candidatos. Ningún nodo del grafo porta la respuesta a las patas (casos optativos ni régimen del umbral). Ante la ausencia real del dato, declaró honestamente 'No se encontró información en el Knowledge Graph', lo cual es la conducta correcta: no inventó ni forzó una respuesta. La única afirmación positiva que emitió (obligación general + 45 días) está soportada por nodos consultados y fue aprobada por el juez.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\",\n      \"Régimen del que depende el umbral para dicha opcionalidad\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre casos específicos en que sea optativo para la entidad comunicar cambios negativos en la clasificación del deudor\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las entidades financieras deben comunicar a los deudores los cambios negativos en la clasificación asignada. (modalidad: obligacion)\", \"ubicacion\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\"},\n        \"fuente\": {\"quote\": \"8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación que le ha asignado (...)\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 8.1 (única disposición de la Sección 8 'Informaciones a clientes'; no contempla opcionalidad de comunicar cambios negativos)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo\", \"resultado\": \"solo nodos de la obligación de comunicar y de comunicación a solicitud del cliente; ninguno sobre opcionalidad\"},\n        {\"consulta\": \"comunicación cambio clasificación optativa facultativa\", \"resultado\": \"notificar a SEFyC con preaviso; nada sobre opcionalidad de comunicar al deudor\"},\n        {\"consulta\": \"facultativo no obligatorio comunicación cambio clasificación\", \"resultado\": \"obligaciones varias, ningún nodo portador\"},\n        {\"consulta\": \"optativo comunicar deudor cambio categoría deuda mínima\", \"resultado\": \"permanencia mínima en categoría / comunicar a solicitud del cliente; ningún nodo de opcionalidad\"},\n        {\"consulta\": \"45 días reclasificación comunicación deudor optativa umbral\", \"resultado\": \"plazo:45_dias_de_realizada_la_reclasificacion (solo el plazo, sin opcionalidad ni umbral)\"},\n        {\"consulta\": \"PDF TO_clasificacion_deudores Sección 8 / puntos 3.4-8.1\", \"resultado\": \"Sección 8 completa = solo 8.1 (comunicación a solicitud del cliente en 10 días); no existe disposición de opcionalidad de comunicar cambios negativos\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Régimen del que depende el umbral para dicha opcionalidad\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"ni sobre qué régimen determina el umbral para ello (...) los regímenes que establecen umbrales no están disponibles en la documentación consultada\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"n/a — no existe nodo que vincule un umbral de opcionalidad de comunicación con un régimen\"},\n        \"fuente\": {\"quote\": \"8.1. Informaciones a suministrar. A solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera deberá comunicarle la última clasificación (...)\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 8.1 (el TO de clasificación de deudores no vincula umbral de opcionalidad con régimen alguno; el dato pertenece al Régimen Informativo 'Deudores del sistema financiero', no cargado con este contenido en el grafo)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"régimen clasificación deudor umbral comunicación\", \"resultado\": \"umbrales de concentración/ingresos no relacionados; ningún nodo que ligue umbral de opcionalidad a un régimen\"},\n        {\"consulta\": \"central de deudores del sistema financiero régimen informativo\", \"resultado\": \"concepto Central de deudores y requisitos de identificación/plazos de presentación; ninguno sobre umbral de comunicación optativa\"},\n        {\"consulta\": \"deudores sistema financiero régimen informativo notificación cambios categoría\", \"resultado\": \"central de deudores + regímenes de operaciones de cambios (RIOC); ninguno pertinente a la opcionalidad de comunicar al deudor\"},\n        {\"consulta\": \"leer PDF TO_regimen_informativo_contable_mensual_actual p.2\", \"resultado\": \"índice: capitales mínimos, apalancamiento, riesgo de tasa; no contiene la disposición de comunicación optativa al deudor\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene dos patas — (1) casos en que es optativo comunicar un cambio negativo, y (2) régimen del que depende el umbral. Recorriendo los outputs COMPLETOS de la trayectoria (incluido ver_paso_completo del paso 1) ningún nodo porta la RESPUESTA a ninguna de las dos patas: los nodos disponibles solo describen la OBLIGACIÓN de comunicar cambios negativos (obligacion:comunicar_cambios_negativos_en_clasificacion, modalidad 'obligacion'), su plazo de 45 días, y la comunicación a solicitud del cliente (Punto 8.1) — nada sobre cuándo la comunicación es OPTATIVA ni sobre qué régimen fija el umbral. El dato pertinente nunca apareció → ambas patas son context_recall. La afirmación positiva del agente (obligación general + 45 días) fue aprobada por el juez y no se re-litiga; el juez reprobó porque las dos patas centrales quedaron sin responder. CAUSA (C2, árbol context_recall): ¿existe nodo portador? Búsqueda exhaustiva documentada con vocabulario ex ante variado (optativo/facultativo/no obligatorio/excepción/umbral/régimen/monto/deuda mínima) no devuelve ningún nodo que responda las patas → no hay nodo portador, por lo que no es navegación ni alcanzabilidad_kg. ¿El PDF tiene el dato? Verifiqué el TO_clasificacion_deudores_actual.pdf: la Sección 8 'Informaciones a clientes' contiene únicamente el Punto 8.1 (comunicación a solicitud del cliente en 10 días), y las Secciones 3, 6 y 7 tampoco contienen una disposición de opcionalidad de comunicar cambios negativos ni umbral por régimen; también revisé TO_regimen_informativo_contable_mensual_actual.pdf (capitales mínimos/apalancamiento) sin hallarlo. La disposición regulatoria real (comunicación de cambio de categoría con plazo y opcionalidad según deuda/régimen) pertenece al Régimen Informativo 'Deudores del sistema financiero', cuyo contenido no está cargado en el grafo. Se trata de información regulatoria que existe pero está ausente del KG → completitud_kg, PRIMARIA en ambas patas. El agente actuó correctamente (paso_decision_error=null): buscó exhaustivamente y declaró honestamente la ausencia, sin alucinar; el defecto es del grafo, no del agente. Nota lateral (no atribuida aquí por no ser pata fallida): el nodo de la obligación y el del plazo de 45 días citan 'Sección 3 — preámbulo', pero la Sección 3 del PDF (3.1–3.7) no funda ese contenido — indicio de provenance imprecisa que afecta a la afirmación ya aprobada, no a las patas reprobadas.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=-60 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "procedimiento:comunicacion_de_cambio_negativo_de_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"properties\": {\"description\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.1 (PDF pág 9)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las a… [+395 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "procedimiento:comunicacion_de_cambio_negativo_de_clasificacion",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"label\": \"comunicación de cambio negativo de clasificación\", \"n_salientes_total\": 0, \"n_entrantes_total\": 0, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.8\", \"ref\": \"Punto/Sección 3.8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.7 (PDF pág 14)\", \"pasaje\": \"3.7. Importe de referencia.\\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\\naplicación de la Ley 24.467 (y sus modificatorias).\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 6\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.5 (PDF pág 13)\", \"pasaje\": \"3.5. Responsabilidad de la tarea de clasificación.\\nLa tarea de clasificación podrá ser encomendada:\\n3.5.1. A un área independiente del sector encargado del otorgamiento de créditos y garantías.\\n3.5.2. Al sector encargado del otorgamiento de créditos y garantías.\\nDe optar por esta posibilidad, la entidad financiera deberá contar con una oficina ind e-\\npendiente que tendrá como función efectuar la revisión de las clasificaciones asignadas a\\nlos clientes por el sector de créditos.\\nDicha revisión –que podrá estar a cargo de la auditoría interna de la entidad – deberá\\ncomprender obligatoriamente a los clientes cuyo endeudamiento total en pesos y en m o-\\nneda extranjera (por las financiaciones comprendidas) supere el 1 % de la responsabil i-\\ndad patrimonial computable de la entidad del mes anterior al de la clasificación o el equ i-\\nvalente al importe de referencia establecido en el punto 3.7., de ambos el menor, y alcan-\\nzar como mínimo el 20 % de la cartera activa total, que se completará, en caso de… [+398 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4 (PDF pág 10)\", \"pasaje\": \"3.4. Legajo del cliente.\\n3.4.1. Apertura.\\nLa entidad deberá llevar un legajo de cada deudor de su cartera, así como de cada uno\\nde sus corresponsales, de acuerdo con lo establecido en las normas sobre “Cuentas de \\ncorresponsalía”.\\nEn los casos de créditos cedidos a favor de la entidad sin responsabilidad para el cedente\\n–unidad económica receptora de los fondos –, deberá abrirse el legajo del firmante, libr a-\\ndor, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos cons e-\\ncuentemente en principales y directos pagadores, al que se hayan imputado las acree n-\\ncias.\\nNo será obligatoria la apertura del legajo en los casos de deudores por servicios públicos\\no por tarjetas de crédito considerados a los fines de la clasificación por haber sido cedidos\\nlos respectivos créditos por deudores en concurso preventivo.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 8a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 2\"}"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "resumen impreso resumen de cuenta mensual notificación deudor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"resumen impreso resumen de cuenta mensual notificación deudor\", \"total_con_match\": 3784, \"resultados\": [{\"id\": \"operacion:generacion_de_resumen_de_cuenta\", \"type\": \"Operacion\", \"label\": \"generación de resumen de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación periódica de preparación y envío de extracto de movimientos.\"}, {\"id\": \"obligacion:contar_con_resumen_de_cuenta_de_deposito\", \"type\": \"Obligacion\", \"label\": \"contar con resumen de cuenta de depósito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el siniestro fue liquidado en moneda local, copia del resumen de cuenta de depósito donde figure el cobro.\"}, {\"id\": \"plazo:plazo_de_notificacion\", \"type\": \"Plazo\", \"label\": \"plazo de notificación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo máximo para notificar al beneficiario la recepción de fondos.\"}, {\"id\": \"concepto_definido:clasificacion_de_deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categorización del deudor según su situación crediticia y riesgo de incobrabilidad.\"}, {\"id\": \"concepto_definido:deudor_de_credito_cedido\", \"type\": \"ConceptoDefinido\", \"labe… [+1552 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "plazo:45_dias_de_realizada_la_reclasificacion"
+      },
+      "output_truncado": "{\"id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"type\": \"Plazo\", \"label\": \"45 días de realizada la reclasificación\", \"properties\": {\"description\": \"Plazo máximo para remitir información de cambios negativos en clasificación a los deudores.\", \"duracion\": \"45 días\", \"unidad\": \"días\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "plazo:45_dias_de_realizada_la_reclasificacion",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"label\": \"45 días de realizada la reclasificación\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"tiene_plazo\", \"vecino_id\": \"obligacion:comunicar_cambios_negativos_en_clasificacion\", \"vecino_label\": \"comunicar cambios negativos en clasificación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.9\", \"ref\": \"Punto/Sección 3.9 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.3 (PDF pág 2)\", \"pasaje\": \"3.3. Manual de procedimientos de clasificación y previsión. \\n3.4. Legajo del cliente. \\n3.5. Responsabilidad de la tarea de clasificación. \\n3.6. Aprobación de la clasificación. \\n3.7. Importe de referencia. \\nSección 4. Criterios de clasificación. \\n4.1. Niveles de clasificación. \\n4.2. Criterio básico de clasificación. \\n4.3. Evaluación de la capacidad de pago. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\n4.5. Deudores que no deben ser objeto de clasificación. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de \\ncrédito por riesgo comercial y con seguros de riesgo de crédito “con alcance de \\ncomprador público”. \\nSección 5. Categorías de carteras. \\n5.1. Categorías. \\nSección 6. Clasificación de los deudores de la cartera comercial. \\n6.1. Información básica. \\n6.2. Criterio de clasificación. \\n6.3. Periodicidad mínima de clasificación. \\n6.4. Reconsideración obligatoria de la clasificación. \\n6.5. Niveles de clasificación. \\n6.6. Recategorización oblig… [+155 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=-67 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 17,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 2\", \"metodo\": \"pagina\", \"ref\": \"p.2 (PDF absoluto 1-based)\", \"pasaje\": \"-Índice-\\nSección 1. Deudores comprendidos. \\n1.1. Criterio general. \\n1.2. Criterios especiales de imputación. \\nSección 2. Financiaciones comprendidas. \\n2.1. Conceptos incluidos. \\n2.2. Exclusiones. \\nSección 3. Tarea de clasificación. \\n3.1. Procedimientos de análisis de cartera. \\n3.2. Periodicidad de clasificación. \\n3.3. Manual de procedimientos de clasificación y previsión. \\n3.4. Legajo del cliente. \\n3.5. Responsabilidad de la tarea de clasificación. \\n3.6. Aprobación de la clasificación. \\n3.7. Importe de referencia. \\nSección 4. Criterios de clasificación. \\n4.1. Niveles de clasificación. \\n4.2. Criterio básico de clasificación. \\n4.3. Evaluación de la capacidad de pago. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\n4.5. Deudores que no deben ser objeto de clasificación. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de \\ncrédito por riesgo comercial y con seguros de riesgo de crédito “con alcance de \\ncomprador público”. \\nSección 5. Categorías de car… [+473 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 3\", \"metodo\": \"pagina\", \"ref\": \"p.3 (PDF absoluto 1-based)\", \"pasaje\": \"-Índice-\\nSección 7. Clasificación de los deudores de la cartera para consumo o vivienda.\\n7.1. Criterio de clasificación.\\n7.2. Niveles de clasificación.\\n7.3. Recategorización obligatoria.\\n7.4. Información a la Superintendencia de Entidades Financieras y Cambiarias sobre\\nincrementos de la cartera irregular.\\nSección 8. Informaciones a clientes.\\n8.1. Informaciones a suministrar.\\nSección 9. Bases de observancia de las normas.\\n9.1. Base individual.\\n9.2. Base consolidada.\\nSección 10. Otros obligados a la observancia de las normas sobre clasificación de deudores.\\n10.1. Proveedores no financieros de crédito.\\n10.2. Fiduciarios de fideicomisos financieros comprendidos en la Ley de Entidades Fi-\\nnancieras.\\n10.3. Sociedades de garantía recíproca y fondos de garantía de carácter público. \\n10.4. Proveedores de servicios de créditos entre particulares a través de plataformas.\\nTabla de correlaciones.\\nB.C.R.A. TEXTO ORDENADO SOBRE CLASIFICACION DE DEUDORES\\nVersión: 10a. COMUNICACIÓN  “A”  8378 Vigencia:\\n20/12/202… [+12 chars]"
+     },
+     {
+      "n": 19,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 41)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 20,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.6 (PDF pág 31)\", \"pasaje\": \"6.6. Recategorización obligatoria.\\nSe deberá recategorizar al deudor cuando exista una discrepancia de más de un nivel entre la\\nclasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o\\nfideicomisos financieros en categorías inferiores a la asignada por aquella, cuyas acreencias\\n–en conjunto– representen el 40 % o más del total informado por todos los acreedores, según la\\núltima información disponible en la “Central de deudores del sistema financiero”.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 6. Clasificación de los deudores de la cartera comercial.\\nVersión: 9a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 15\"}"
+     },
+     {
+      "n": 21,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del ajuste de pre… [+266 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 42"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 42\", \"metodo\": \"pagina\", \"ref\": \"p.42 (PDF absoluto 1-based)\", \"pasaje\": \"9.1. Base in\\ndividual. \\nLas entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las \\nnormas en materia de clasificación de deudores en forma individual. \\n9.2. Base consolidada. \\nSin perjuicio del cumplimiento en forma individual, las entidades financieras controlantes suje-\\ntas a supervisión consolidada observarán las normas en materia de clasificación de deudores \\nsobre base consolidada mensual y, adicional e independientemente, trimestral. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 9. Bases de observancia de las normas. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 23,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.4 (PDF pág 39)\", \"pasaje\": \"7.4. Información a la SEFyC sobre incrementos de la cartera irregular.\\nEn los casos en que la expresión que seguidamente se establece sea mayor al 5 % al último\\ndía de un trimestre calendario o al 10 % en un año, la entidad financiera deberá informar el or i-\\ngen de dicha circunstancia a la SEFyC debiendo brindar las explicaciones que les sean requ e-\\nridas y, de corresponder, las modificaciones a realizar en su política de crédito tendientes a m e-\\njorar la calidad de su cartera crediticia.\\nFICCT - FICCT-1 - Máx (FICCST - FICCST-1 ; 0)\\nSiendo:\\nFICC:    cociente, expresado en tanto por ciento, entre el importe total de las financiaciones de\\nla cartera de consumo o vivienda, de la entidad financiera, clasificadas en situación 3 a\\n5 según las normas sobre “Clasificación de deudores” y el importe total de sus fina n-\\nciaciones de la cartera de consumo o vivienda.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 7. Clasificación de los deudores de la cartera para consumo o vivienda.\\nVersión: 5a. COMUNICA… [+48 chars]"
+     },
+     {
+      "n": 24,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 41"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 41\", \"metodo\": \"pagina\", \"ref\": \"p.41 (PDF absoluto 1-based)\", \"pasaje\": \"8.1. Informaciones a \\nsuministrar. \\nA solicitud de cada cliente, dentro de los 10 días corridos del pedido, la entidad financiera de-\\nberá comunicarle la última clasificación que le ha asignado, junto con los fundamentos que la \\njustifican según la evaluación realizada por la en tidad, el importe total de deudas con el siste-\\nma financiero y las clasificaciones asignadas que surjan de la última información disponible en \\nla “Central de deudores del sistema financiero”. \\nLos clientes deberán ser notificados de que tienen la posibilidad de requerir esos datos, en el \\nmomento de presentarse las solicitudes de crédito, mediante una fórmula independiente de \\nellas. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 8. I nformaciones a clientes. \\nVersión: 1a. COMUNICACIÓN “A“ 2729 Vigencia: \\n06/07/1998 Página 1\"}"
+     },
+     {
+      "n": 25,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 40"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 40\", \"metodo\": \"pagina\", \"ref\": \"p.40 (PDF absoluto 1-based)\", \"pasaje\": \"F\\nICCS: cociente, expresado en tanto por ciento, entre el importe total de las financiaciones de \\nla cartera de consumo o vivienda, del total del sistema financiero, clasificadas en si-\\ntuación 3 a 5 según las normas sobre “Clasificación de deudores” y el importe total de \\nsus financiaciones de la cartera de consumo o vivienda, según la información que dé a \\nconocer el BCRA. \\nT:  el último día de un trimestre calendario al que corresponda el cálculo del cociente. \\nT-1: el último día del trimestre calendario inmediato anterior y el último día del mismo tri-\\nmestre correspondiente al año anterior, según corresponda. \\nCLASIFICACIÓN DE DEUDORES B.C.R.A. S ección 7. Clasificación de los deudores de la cartera para consumo o vivienda. \\nVersión: 1a. C OMUNICACIÓN  “A”  7024 Vigencia: \\n27/5/2020 Página 8\"}"
+     },
+     {
+      "n": 26,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "central de deudores del sistema financiero régimen informativo",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"central de deudores del sistema financiero régimen informativo\", \"total_con_match\": 4294, \"resultados\": [{\"id\": \"concepto_definido:central_de_deudores_del_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"Central de deudores del sistema financiero\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"['Sistema de información centralizado donde se registra la clasificación de deudores otorgada por múltiples acreedores.', 'Base de datos centralizada que regist…\"}, {\"id\": \"requisito:informacion_de_central_de_deudores_del_sistema_financiero\", \"type\": \"Requisito\", \"label\": \"información de central de deudores del sistema financiero\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Información de la Central de deudores del sistema financiero que refleje niveles de calidad inferiores al asignado por la entidad, utilizada como pauta de clasi…\"}, {\"id\": \"requisito:identificacion_del_cliente_segun_regimen_informativo_deudores\", \"type\": \"Requisito\", \"label\": \"identificación del cliente según régimen informativo deudores\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Identificación del cliente según el apartado A (puntos 1 y 2) del Régimen Informativo 'Deudores del sistema… [+2341 chars]"
+     },
+     {
+      "n": 27,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "optativo comunicar deudor cambio categoría deuda mínima",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"optativo comunicar deudor cambio categoría deuda mínima\", \"total_con_match\": 298, \"resultados\": [{\"id\": \"requisito:permanencia_minima_de_180_dias_en_categoria\", \"type\": \"Requisito\", \"label\": \"permanencia mínima de 180 días en categoría\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo de permanencia obligatoria en la categoría cuando se ha refinanciado y recibido crédito adicional.\"}, {\"id\": \"obligacion:permanencia_minima_en_categoria_por_180_dias\", \"type\": \"Obligacion\", \"label\": \"permanencia mínima en categoría por 180 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor que refinanciador su deuda y recibió crédito adicional debe permanecer en la categoría por lo menos 180 días desde otorgamiento o acuerdo.\"}, {\"id\": \"obligacion:permanencia_minima_en_categoria_durante_180_dias\", \"type\": \"Obligacion\", \"label\": \"permanencia mínima en categoría durante 180 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligación de mantener clasificación en categoría irrecuperable por 180 días cuando existe crédito adicional no cancelado.\"}, {\"id\": \"obligacion:comunicar_clasificacion_del_deudor_a_solicitud_del_cliente\", \"type\": \"Obligacion\", \"label\": \"co… [+1964 chars]"
+     },
+     {
+      "n": 28,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 8.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 8.2\", \"ref\": \"Punto/Sección 8.2 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 29,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "45 días reclasificación comunicación deudor optativa umbral",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"45 días reclasificación comunicación deudor optativa umbral\", \"total_con_match\": 951, \"resultados\": [{\"id\": \"umbral:cargo_de_capital_entre_31_y_45_dias\", \"type\": \"Umbral\", \"label\": \"cargo de capital entre 31 y 45 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cargo de capital del 75% cuando la operación DvP falla entre 31 y 45 días hábiles posteriores a liquidación.\"}, {\"id\": \"plazo:45_dias_de_realizada_la_reclasificacion\", \"type\": \"Plazo\", \"label\": \"45 días de realizada la reclasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo máximo para remitir información de cambios negativos en clasificación a los deudores.\"}, {\"id\": \"umbral:ponderador_45\", \"type\": \"Umbral\", \"label\": \"ponderador 45\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Valor numérico de ponderación de riesgo para exposiciones minoristas normativas transaccionales.\"}, {\"id\": \"umbral:2_dias_habiles\", \"type\": \"Umbral\", \"label\": \"2 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo que diferencia operaciones al contado de operaciones a término.\"}, {\"id\": \"umbral:5_dias_habiles\", \"type\": \"Umbral\", \"label\": \"5 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propied… [+1159 chars]"
+     },
+     {
+      "n": 30,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "deudores sistema financiero régimen informativo notificación cambios categoría",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"deudores sistema financiero régimen informativo notificación cambios categoría\", \"total_con_match\": 761, \"resultados\": [{\"id\": \"concepto_definido:central_de_deudores_del_sistema_financiero\", \"type\": \"ConceptoDefinido\", \"label\": \"Central de deudores del sistema financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Sistema de información centralizado donde se registra la clasificación de deudores otorgada por múltiples acreedores.', 'Base de datos centralizada que regist…\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios\", \"type\": \"Procedimiento\", \"label\": \"régimen informativo de operaciones de cambios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento mediante el cual las entidades financieras remiten información sobre operaciones de cambios al BCRA.\"}, {\"id\": \"procedimiento:regimen_informativo_de_operaciones_de_cambios_rioc\", \"type\": \"Procedimiento\", \"label\": \"Régimen Informativo de Operaciones de Cambios (RIOC)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Régimen a través del cual se reportan las operaciones de cambios al SEPAIMPO.\"}, {\"id\": \"requisito:informacion_de_central_de_deudores_del_sistema_financiero\", \"type\": … [+2217 chars]"
+     },
+     {
+      "n": 31,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "requisito:identificacion_del_cliente_segun_regimen_informativo_deudores"
+      },
+      "output_truncado": "{\"id\": \"requisito:identificacion_del_cliente_segun_regimen_informativo_deudores\", \"type\": \"Requisito\", \"label\": \"identificación del cliente según régimen informativo deudores\", \"properties\": {\"description\": \"Identificación del cliente según el apartado A (puntos 1 y 2) del Régimen Informativo 'Deudores del sistema financiero'.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 8 > Punto 2\"}]}"
+     },
+     {
+      "n": 32,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 8"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 8\", \"ref\": \"Punto/Sección 8 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 33,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "p. 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 2\", \"metodo\": \"pagina\", \"ref\": \"p.2 (PDF absoluto 1-based)\", \"pasaje\": \"Sección 10. Coeficiente de apalancamiento. \\n10.1. Normas de procedimiento. \\n10.2. Modelo de información. \\nSección 11. Información complementaria vinculada al cálculo del riesgo de tasa de interés en \\ncartera de inversión. \\n11.1. Normas de procedimiento. \\n11.2. Modelos de información. \\nSección 12. Disposiciones transitorias. \\nVersión: 6a.\\n COMUNICACIÓN  “A”  6561 Vigencia: \\n1/7/2018 Página 2 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\"}"
+     },
+     {
+      "n": 34,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"optativo comunicar deudor cambio clasificación negativo\", \"total_con_match\": 180, \"resultados\": [{\"id\": \"procedimiento:comunicacion_de_cambio_negativo_de_clasificacion\", \"type\": \"Procedimiento\", \"label\": \"comunicación de cambio negativo de clasificación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento de notificación a deudores sobre cambios negativos en clasificación a través de resumen impreso o resumen de cuenta mensual.\"}, {\"id\": \"obligacion:comunicar_clasificacion_del_deudor_a_solicitud_del_cliente\", \"type\": \"Obligacion\", \"label\": \"comunicar clasificación del deudor a solicitud del cliente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad financiera debe comunicar al cliente, a su solicitud, la última clasificación asignada, fundamentos, importe total de deudas con el sistema financier…\"}, {\"id\": \"concepto_definido:clasificacion_de_deudor\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categorización del deudor según su situ… [+2195 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25026,
+      "output_tokens": 244
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25745,
+      "output_tokens": 308
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26901,
+      "output_tokens": 290
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27768,
+      "output_tokens": 298
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29466,
+      "output_tokens": 336
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31598,
+      "output_tokens": 365
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32459,
+      "output_tokens": 319
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33718,
+      "output_tokens": 306
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34506,
+      "output_tokens": 252
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36216,
+      "output_tokens": 167
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36832,
+      "output_tokens": 509
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38437,
+      "output_tokens": 407
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39862,
+      "output_tokens": 455
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41267,
+      "output_tokens": 745
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44853,
+      "output_tokens": 846
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47040,
+      "output_tokens": 974
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49697,
+      "output_tokens": 829
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 50741,
+      "output_tokens": 105
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 51225,
+      "output_tokens": 746
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 53405,
+      "output_tokens": 4810
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 47,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.1-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ],
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": true,
+  "motivos": [
+   "fuente_no_verificable"
+  ],
+  "flags": [
+   "S1: rep1_atrib1 — fetch sin_portador_extraible",
+   "S1: rep1_atrib2 — fetch sin_portador_extraible",
+   "S1: rep2_atrib1 — fetch localizacion_fallida",
+   "S1: rep2_atrib2 — fetch sin_portador_extraible",
+   "S1: rep3_atrib1 — fetch localizacion_fallida",
+   "S1: rep3_atrib2 — fetch sin_portador_extraible"
+  ]
+ },
+ "resumen_s1": {
+  "gatilladas": 6,
+  "juzgadas_llm": 0,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 6,
+  "tokens_in_s1": 0,
+  "tokens_out_s1": 0,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.1-dev"
+}

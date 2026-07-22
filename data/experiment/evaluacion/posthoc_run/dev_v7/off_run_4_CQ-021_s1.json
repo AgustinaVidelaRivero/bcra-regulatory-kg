@@ -1,0 +1,1073 @@
+{
+ "id_falla": "run_4/CQ-021",
+ "run": "run_4",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_4/CQ-021",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicar deudor cambio clasificación', limite: 10}",
+      "devolvio": "59 matches; primer resultado cambio_negativo_en_clasificacion con resumen sobre comunicación en 45 días y excepciones por saldo de deuda",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio negativo clasificación deudor', limite: 10}",
+      "devolvio": "60 matches; cambio_negativo_en_clasificacion primero",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'cambio_negativo_en_clasificacion'}",
+      "devolvio": "description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda'; provenance p.9-12/Punto 3.4.2",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'cambio_negativo_en_clasificacion', direccion: 'ambas'}",
+      "devolvio": "2 entrantes: debe_comunicar_al_deudor<-entidad_financiera; debe_ser_notificado_de<-deudor_en_gestion_judicial",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo saldo deuda umbral comunicación', limite: 10}",
+      "devolvio": "nodos de saldo_de_deuda genéricos, no portadores del umbral",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'excepción comunicación clasificación saldo', limite: 10}",
+      "devolvio": "nodos de saldo/clasificación genéricos",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen comunicación optativa deudor', limite: 10}",
+      "devolvio": "deudor, regímenes aduaneros no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación optativa cambio clasificación régimen', limite: 10}",
+      "devolvio": "cambio_negativo + regímenes RIOC no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen clasificación deudores excepciones', limite: 10}",
+      "devolvio": "clasificacion_de_deudores + regímenes aduaneros",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'pequeño deudor comunicación clasificación', limite: 10}",
+      "devolvio": "deudor genérico, sin nodo del umbral del régimen informativo",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen simplificado pequeños deudores', limite: 10}",
+      "devolvio": "regímenes aduaneros/metodos, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: '45 días comunicación deudor saldo', limite: 10}",
+      "devolvio": "periodo_de_45_dias (de otro TO), no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{id: 'periodo_de_45_dias'}",
+      "devolvio": "plazo de transferencia de activos de securitización (TO capitales mínimos), ajeno a la comunicación al deudor",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{id: 'periodo_de_45_dias', direccion: 'ambas'}",
+      "devolvio": "originante/fiduciario, ajeno",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'pequeño deudor régimen', limite: 10}",
+      "devolvio": "deudor + regímenes aduaneros",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación 45 días optativo', limite: 10}",
+      "devolvio": "periodo_de_45_dias + cambio_negativo",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El único claim marcado incorrecto ('la comunicación debe realizarse mediante medios especificados por la regulación del BCRA') fue construido a partir del nodo cambio_negativo_en_clasificacion que el agente abrió correctamente en el paso 3. Ese nodo dice literalmente 'debe ser comunicada al deudor dentro de 45 días mediante medios especificados', y el PDF fuente (p.11, Punto 3.4.2) confirma que la comunicación 'deberá ser remitida... dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso...; b) junto con el resumen de cuenta mensual...'. El claim está soportado por el nodo consultado y es fiel al PDF. El agente actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para determinar esa opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "afirmación [no central] sobre el medio de comunicación",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+       "ubicacion": "cambio_negativo_en_clasificacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas que se vinculen a las financiaciones que le hayan sido otorgadas, b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito,",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, p.11 / Punto 3.4.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 3.4.2",
+       "resultado": "confirma la regla de comunicación del cambio negativo y el carácter optativo por saldo; no muestra en su primer fragmento los 'medios' pero sí en p.11"
+      },
+      {
+       "consulta": "leer_pasaje_pdf p.11",
+       "resultado": "texto íntegro de 3.4.2: comunicación dentro de 45 días 'mediante alguno de los siguientes medios: a)... b)...' — confirma que los 'medios especificados' existen realmente en la norma"
+      },
+      {
+       "consulta": "ver_paso_completo paso 3",
+       "resultado": "el nodo cambio_negativo_en_clasificacion contiene 'dentro de 45 días mediante medios especificados' — el claim reproduce fielmente el nodo consultado"
+      },
+      {
+       "consulta": "medios especificados comunicación deudor 45 días (buscar_nodos)",
+       "resultado": "no hay un nodo distinto que contradiga; cambio_negativo_en_clasificacion es el portador"
+      }
+     ],
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "exoneracion_con_sintoma",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "sin_defecto",
+       "jerarquia": "sin_par"
+      },
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas que se vinculen a las financiaciones que le hayan sido otorgadas, b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito,",
+        "alcance_en_el_nodo": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+        "coinciden": "si",
+        "causa_confirmada_o_corregida": "sin_defecto",
+        "justificacion_breve": "La fuente establece la obligación de comunicar los cambios negativos en la clasificación a los deudores comprendidos dentro de 45 días mediante medios especificados, con carácter optativo cuando el saldo es inferior al monto establecido; el nodo reproduce fielmente ese alcance (45 días, medios especificados, excepciones según saldo) sin generalizarlo ni restringirlo indebidamente. La atribución trata la afirmación como no central y correctamente scopeada, por lo que sin_defecto queda confirmada."
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 1,
+       "umbral": 1,
+       "decididas": 1,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "causa_ganadora": "sin_defecto",
+       "votos_ganadores": 1
+      },
+      "corrigio": false,
+      "causa_post_s1": "sin_defecto",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó 'no_soportado' el claim [no central] 'la comunicación... debe realizarse mediante medios especificados por la regulación del BCRA'. C1: ese claim está SOPORTADO por el nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 (verificado con ver_paso_completo: description = 'debe ser comunicada al deudor dentro de 45 días mediante medios especificados'). No es faithfulness porque hay soporte explícito. Es, por precedencia, noise_sensitivity (soportado por nodo consultado → se juzga si es correcto vs PDF). C2: leer_pasaje_pdf de Punto 3.4.2 / p.11 confirma que la norma efectivamente dispone que la comunicación 'deberá ser remitida... dentro de los 45 días... mediante alguno de los siguientes medios: a)... b)...'. Por lo tanto el nodo es FIEL al PDF y el claim es fácticamente CORRECTO y pertinente (habla del medio de comunicación, que la norma sí especifica). Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF: 45 días ✓, medios especificados ✓, optativo por saldo ✓); completitud_kg (el dato está en el PDF y el claim lo refleja); faithfulness/alucinacion_agente (el claim tiene soporte directo en el nodo del paso 3, no es glosa); provenance_imprecisa (la provenance p.9-12/Punto 3.4.2 SÍ funda el contenido). Además, las dos patas centrales (casos optativos según saldo, y régimen = 'Régimen Informativo Contable Mensual, Sección 3, punto 2 Deudores Comprendidos') fueron aprobadas por el juez y el PDF las confirma. Conclusión: el único claim reprobado es en realidad correcto y soportado → sin_defecto (falso positivo del juez), jerarquia sin_par. Al ser el único claim central/relevante reprobado un FP, el caso no tiene primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 8,
+    "max_tool_calls": 40,
+    "tokens_in": 215630,
+    "tokens_out": 6189
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 8,
+    "tokens_in": 215630,
+    "tokens_out": 6189,
+    "latency_s": 84.645,
+    "error": null,
+    "final_raw": "Confirmado. El nodo `cambio_negativo_en_clasificacion` (abierto por el agente en paso 3) contiene exactamente \"debe ser comunicada al deudor dentro de 45 días mediante medios especificados\". El claim marcado incorrecto reproduce fielmente este nodo, que a su vez es fiel al PDF (p.11, 3.4.2: \"mediante alguno de los siguientes medios: a)... b)...\").\n\nEl claim está soportado y es correcto → falso positivo del juez. Emito la atribución.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicar deudor cambio clasificación', limite: 10}\", \"devolvio\": \"59 matches; primer resultado cambio_negativo_en_clasificacion con resumen sobre comunicación en 45 días y excepciones por saldo de deuda\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio negativo clasificación deudor', limite: 10}\", \"devolvio\": \"60 matches; cambio_negativo_en_clasificacion primero\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'cambio_negativo_en_clasificacion'}\", \"devolvio\": \"description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda'; provenance p.9-12/Punto 3.4.2\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'cambio_negativo_en_clasificacion', direccion: 'ambas'}\", \"devolvio\": \"2 entrantes: debe_comunicar_al_deudor<-entidad_financiera; debe_ser_notificado_de<-deudor_en_gestion_judicial\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo saldo deuda umbral comunicación', limite: 10}\", \"devolvio\": \"nodos de saldo_de_deuda genéricos, no portadores del umbral\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'excepción comunicación clasificación saldo', limite: 10}\", \"devolvio\": \"nodos de saldo/clasificación genéricos\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen comunicación optativa deudor', limite: 10}\", \"devolvio\": \"deudor, regímenes aduaneros no pertinentes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación optativa cambio clasificación régimen', limite: 10}\", \"devolvio\": \"cambio_negativo + regímenes RIOC no pertinentes\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen clasificación deudores excepciones', limite: 10}\", \"devolvio\": \"clasificacion_de_deudores + regímenes aduaneros\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'pequeño deudor comunicación clasificación', limite: 10}\", \"devolvio\": \"deudor genérico, sin nodo del umbral del régimen informativo\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen simplificado pequeños deudores', limite: 10}\", \"devolvio\": \"regímenes aduaneros/metodos, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: '45 días comunicación deudor saldo', limite: 10}\", \"devolvio\": \"periodo_de_45_dias (de otro TO), no pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: 'periodo_de_45_dias'}\", \"devolvio\": \"plazo de transferencia de activos de securitización (TO capitales mínimos), ajeno a la comunicación al deudor\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'periodo_de_45_dias', direccion: 'ambas'}\", \"devolvio\": \"originante/fiduciario, ajeno\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'pequeño deudor régimen', limite: 10}\", \"devolvio\": \"deudor + regímenes aduaneros\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación 45 días optativo', limite: 10}\", \"devolvio\": \"periodo_de_45_dias + cambio_negativo\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El único claim marcado incorrecto ('la comunicación debe realizarse mediante medios especificados por la regulación del BCRA') fue construido a partir del nodo cambio_negativo_en_clasificacion que el agente abrió correctamente en el paso 3. Ese nodo dice literalmente 'debe ser comunicada al deudor dentro de 45 días mediante medios especificados', y el PDF fuente (p.11, Punto 3.4.2) confirma que la comunicación 'deberá ser remitida... dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso...; b) junto con el resumen de cuenta mensual...'. El claim está soportado por el nodo consultado y es fiel al PDF. El agente actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\", \"Régimen del que depende el umbral para determinar esa opcionalidad\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"afirmación [no central] sobre el medio de comunicación\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"ubicacion\": \"cambio_negativo_en_clasificacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas que se vinculen a las financiaciones que le hayan sido otorgadas, b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito,\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p.11 / Punto 3.4.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.4.2\", \"resultado\": \"confirma la regla de comunicación del cambio negativo y el carácter optativo por saldo; no muestra en su primer fragmento los 'medios' pero sí en p.11\"},\n        {\"consulta\": \"leer_pasaje_pdf p.11\", \"resultado\": \"texto íntegro de 3.4.2: comunicación dentro de 45 días 'mediante alguno de los siguientes medios: a)... b)...' — confirma que los 'medios especificados' existen realmente en la norma\"},\n        {\"consulta\": \"ver_paso_completo paso 3\", \"resultado\": \"el nodo cambio_negativo_en_clasificacion contiene 'dentro de 45 días mediante medios especificados' — el claim reproduce fielmente el nodo consultado\"},\n        {\"consulta\": \"medios especificados comunicación deudor 45 días (buscar_nodos)\", \"resultado\": \"no hay un nodo distinto que contradiga; cambio_negativo_en_clasificacion es el portador\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó 'no_soportado' el claim [no central] 'la comunicación... debe realizarse mediante medios especificados por la regulación del BCRA'. C1: ese claim está SOPORTADO por el nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 (verificado con ver_paso_completo: description = 'debe ser comunicada al deudor dentro de 45 días mediante medios especificados'). No es faithfulness porque hay soporte explícito. Es, por precedencia, noise_sensitivity (soportado por nodo consultado → se juzga si es correcto vs PDF). C2: leer_pasaje_pdf de Punto 3.4.2 / p.11 confirma que la norma efectivamente dispone que la comunicación 'deberá ser remitida... dentro de los 45 días... mediante alguno de los siguientes medios: a)... b)...'. Por lo tanto el nodo es FIEL al PDF y el claim es fácticamente CORRECTO y pertinente (habla del medio de comunicación, que la norma sí especifica). Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF: 45 días ✓, medios especificados ✓, optativo por saldo ✓); completitud_kg (el dato está en el PDF y el claim lo refleja); faithfulness/alucinacion_agente (el claim tiene soporte directo en el nodo del paso 3, no es glosa); provenance_imprecisa (la provenance p.9-12/Punto 3.4.2 SÍ funda el contenido). Además, las dos patas centrales (casos optativos según saldo, y régimen = 'Régimen Informativo Contable Mensual, Sección 3, punto 2 Deudores Comprendidos') fueron aprobadas por el juez y el PDF las confirma. Conclusión: el único claim reprobado es en realidad correcto y soportado → sin_defecto (falso positivo del juez), jerarquia sin_par. Al ser el único claim central/relevante reprobado un FP, el caso no tiene primaria.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.9-12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12\", \"metodo\": \"pagina\", \"ref\": \"p.9-12 (PDF absoluto 1-based)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las acr… [+1814 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 2\", \"ref\": \"Punto/Sección 2 (mejor score=-2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4 (PDF pág 10)\", \"pasaje\": \"3.4. Legajo del cliente.\\n3.4.1. Apertura.\\nLa entidad deberá llevar un legajo de cada deudor de su cartera, así como de cada uno\\nde sus corresponsales, de acuerdo con lo establecido en las normas sobre “Cuentas de \\ncorresponsalía”.\\nEn los casos de créditos cedidos a favor de la entidad sin responsabilidad para el cedente\\n–unidad económica receptora de los fondos –, deberá abrirse el legajo del firmante, libr a-\\ndor, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos cons e-\\ncuentemente en principales y directos pagadores, al que se hayan imputado las acree n-\\ncias.\\nNo será obligatoria la apertura del legajo en los casos de deudores por servicios públicos\\no por tarjetas de crédito considerados a los fines de la clasificación por haber sido cedidos\\nlos respectivos créditos por deudores en concurso preventivo.\\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\\nSección 3. Tarea de clasificación.\\nVersión: 8a. COMUNICACIÓN  “A”  7443 Vigencia:\\n01/01/2020 Página 2\"}"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "medios especificados comunicación deudor 45 días"
+      },
+      "output_truncado": "{\"consulta\": \"medios especificados comunicación deudor 45 días\", \"total_con_match\": 50, \"resultados\": [{\"id\": \"periodo_de_45_dias\", \"type\": \"plazo_regulatorio\", \"label\": \"Período de 45 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo máximo previo a la transferencia de activos dentro del cual el originante o fiduciario debe analizar las condiciones de cumplimiento.\"}, {\"id\": \"operaciones_dvp_fallidas_entre_31_y_45_dias\", \"type\": \"categoria_de_exposicion\", \"label\": \"Operaciones DvP fallidas entre 31 y 45 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones con entrega contra pago fallidas con código 1330000 y cargo de capital del 75% cuando el pago no se realiza dentro de 31 a 45 días hábiles.\"}, {\"id\": \"deudor\", \"type\": \"sujeto_regulado\", \"label\": \"Deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Persona física o jurídica que mantiene financiaciones con la entidad y debe ser objeto de análisis de situación económica y financiera, así como de clasificació…\"}, {\"id\": \"deudor_moroso\", \"type\": \"causal_de_demora\", \"label\": \"Deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Situación en que el importador u otro obligado al pago incumple sus… [+1753 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=-60 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\… [+1819 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"cambio_negativo_en_clasificacion\"}, \"output_completo\": {\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26418,
+      "output_tokens": 269
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28706,
+      "output_tokens": 237
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29153,
+      "output_tokens": 340
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31364,
+      "output_tokens": 430
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32004,
+      "output_tokens": 99
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33365,
+      "output_tokens": 950
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 34620,
+      "output_tokens": 3864
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 51,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-021",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: optativo comunicar deudor cambio clasificación, limite: 10}",
+      "devolvio": "Encuentra cambio_negativo_en_clasificacion (2 tokens) con resumen que menciona 45 días, medios especificados y excepciones según saldo de deuda",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: comunicación cambio negativo clasificación deudor, limite: 10}",
+      "devolvio": "Reencuentra cambio_negativo_en_clasificacion (3 tokens) con el mismo resumen",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: cambio_negativo_en_clasificacion}",
+      "devolvio": "description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.' provenance Punto 3.4.2",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: cambio_negativo_en_clasificacion, direccion: ambas}",
+      "devolvio": "2 entrantes: debe_comunicar_al_deudor<-entidad_financiera; debe_ser_notificado_de<-deudor_en_gestion_judicial",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: optativo saldo deuda umbral comunicación}",
+      "devolvio": "Nodos de saldo_de_deuda genéricos, no pertinentes al umbral optativo",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: excepción comunicación clasificación saldo}",
+      "devolvio": "saldo_bruto, tarea_de_clasificacion; no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: régimen comunicación optativa deudor}",
+      "devolvio": "deudor, regimenes aduaneros; no pertinentes al régimen del umbral",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: comunicación optativa cambio clasificación régimen}",
+      "devolvio": "cambio_negativo + RIOC; RIOC no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: régimen clasificación deudores excepciones}",
+      "devolvio": "clasificacion_de_deudores, regimenes aduaneros; no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: pequeño deudor comunicación clasificación}",
+      "devolvio": "deudor, deudor_en_concurso; no portan el umbral",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: régimen simplificado pequeños deudores}",
+      "devolvio": "regimenes aduaneros, metodo_simplificado; no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 45 días comunicación deudor saldo}",
+      "devolvio": "periodo_de_45_dias (otro TO), seguro_de_vida; no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{id: periodo_de_45_dias}",
+      "devolvio": "Plazo de transferencia de activos de otro TO (capitales mínimos); no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{id: periodo_de_45_dias}",
+      "devolvio": "vecinos originante/fiduciario; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: pequeño deudor régimen}",
+      "devolvio": "deudor, regimenes aduaneros; no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{consulta: comunicación cambio clasificación 45 días optativo}",
+      "devolvio": "periodo_de_45_dias, cambio_negativo; sin nodo del umbral específico",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El único claim marcado incorrecto ('mediante medios especificados por la regulación del BCRA') está literalmente soportado por el nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 ('...comunicada al deudor dentro de 45 días mediante medios especificados...') y es fácticamente correcto contra el PDF (Punto 3.4.2 lista medios a/b/c/d + home banking). El agente reprodujo fielmente lo consultado; no hubo decisión errónea sobre este claim.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para determinar esa opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Casos en que es optativo comunicar (claim no-central sobre los medios de comunicación)",
+     "entre": [],
+     "evidencia_faltante": "",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+       "ubicacion": "cambio_negativo_en_clasificacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas (...) b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito, c) junto con el recibo de pago de la cuota, o d) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta información en cualquier correspondencia postal",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 3.4.2 y p.11-12",
+       "resultado": "El PDF especifica taxativamente los medios de comunicación (a/b/c/d + home banking); el claim del agente es correcto"
+      },
+      {
+       "consulta": "ver_paso_completo paso 3",
+       "resultado": "El nodo abierto por el agente contiene 'mediante medios especificados' en su description: el claim está soportado por lo consultado"
+      }
+     ],
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "exoneracion_con_sintoma",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "sin_defecto",
+       "jerarquia": "sin_par"
+      },
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al monto establecido en el punto 2. \"D",
+        "alcance_en_el_nodo": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+        "coinciden": "si",
+        "causa_confirmada_o_corregida": "sin_defecto",
+        "justificacion_breve": "La fuente declara que la comunicación es obligatoria en general pero OPTATIVA cuando el saldo de deuda es inferior al monto del punto 2; el nodo captura exactamente esa condicionalidad al decir 'con excepciones según el saldo de deuda'. El alcance del nodo coincide con el de la fuente (no generaliza ni sobre-limita el carácter optativo), por lo que la causa sin_defecto queda confirmada."
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 1,
+       "umbral": 1,
+       "decididas": 1,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "causa_ganadora": "sin_defecto",
+       "votos_ganadores": 1
+      },
+      "corrigio": false,
+      "causa_post_s1": "sin_defecto",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "El juez aprobó los tres claims centrales (existencia de casos optativos, dependencia del saldo de deuda, umbral dependiente de un régimen) y las patas centrales quedaron correctas. El único claim marcado no_soportado es no-central: 'La comunicación debe realizarse mediante medios especificados por la regulación del BCRA'. C1 (precedencia por claim, C1b): el dato pertinente apareció en la trayectoria (nodo cambio_negativo_en_clasificacion abierto en paso 3, cuyo output completo verificado con ver_paso_completo dice literalmente '...comunicada al deudor dentro de 45 días mediante medios especificados...'). El claim reproduce casi verbatim ese contenido → está SOPORTADO → no es faithfulness. C2/verificación contra PDF: el Punto 3.4.2 (p.11-12) dice 'Tal información deberá ser remitida (...) mediante alguno de los siguientes medios: a) resumen impreso, b) resumen de tarjetas de crédito, c) recibo de pago, d) correspondencia postal' + home banking. Es decir, el claim es fácticamente CORRECTO → no es noise_sensitivity por contenido erróneo. Aplicando el árbol de noise_sensitivity: el nodo es fiel al PDF y es pertinente al claim (describe precisamente los medios de comunicación) → sin_defecto (falso positivo del juez). Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato no falta, está en el nodo y en el PDF), alucinacion_agente (no hay glosa inventada: 'medios especificados' proviene textualmente del nodo), provenance_imprecisa (la provenance Punto 3.4.2 sí funda el contenido, verificado con leer_pasaje_pdf), navegación/alcanzabilidad (el nodo fue alcanzado y consultado). Como el único claim fallido es un FP del juez y los claims centrales fueron aprobados, el caso no tiene primaria; la atribución es sin_defecto con jerarquía sin_par.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 146401,
+    "tokens_out": 5548
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 146401,
+    "tokens_out": 5548,
+    "latency_s": 75.679,
+    "error": null,
+    "final_raw": "Confirmado plenamente. El PDF especifica taxativamente los medios (a, b, c, d + home banking). El claim del agente es fáctico correcto y está soportado por el nodo consultado.\n\nEl único claim marcado incorrecto por el juez es en realidad correcto y soportado. Es un falso positivo del juez. Como todos los claims centrales fueron aprobados y el único fallido es un FP, el caso no tiene primaria.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: optativo comunicar deudor cambio clasificación, limite: 10}\", \"devolvio\": \"Encuentra cambio_negativo_en_clasificacion (2 tokens) con resumen que menciona 45 días, medios especificados y excepciones según saldo de deuda\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: comunicación cambio negativo clasificación deudor, limite: 10}\", \"devolvio\": \"Reencuentra cambio_negativo_en_clasificacion (3 tokens) con el mismo resumen\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: cambio_negativo_en_clasificacion}\", \"devolvio\": \"description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.' provenance Punto 3.4.2\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: cambio_negativo_en_clasificacion, direccion: ambas}\", \"devolvio\": \"2 entrantes: debe_comunicar_al_deudor<-entidad_financiera; debe_ser_notificado_de<-deudor_en_gestion_judicial\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: optativo saldo deuda umbral comunicación}\", \"devolvio\": \"Nodos de saldo_de_deuda genéricos, no pertinentes al umbral optativo\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: excepción comunicación clasificación saldo}\", \"devolvio\": \"saldo_bruto, tarea_de_clasificacion; no pertinentes\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: régimen comunicación optativa deudor}\", \"devolvio\": \"deudor, regimenes aduaneros; no pertinentes al régimen del umbral\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: comunicación optativa cambio clasificación régimen}\", \"devolvio\": \"cambio_negativo + RIOC; RIOC no pertinente\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: régimen clasificación deudores excepciones}\", \"devolvio\": \"clasificacion_de_deudores, regimenes aduaneros; no pertinentes\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: pequeño deudor comunicación clasificación}\", \"devolvio\": \"deudor, deudor_en_concurso; no portan el umbral\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: régimen simplificado pequeños deudores}\", \"devolvio\": \"regimenes aduaneros, metodo_simplificado; no pertinentes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 45 días comunicación deudor saldo}\", \"devolvio\": \"periodo_de_45_dias (otro TO), seguro_de_vida; no pertinentes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: periodo_de_45_dias}\", \"devolvio\": \"Plazo de transferencia de activos de otro TO (capitales mínimos); no pertinente\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{id: periodo_de_45_dias}\", \"devolvio\": \"vecinos originante/fiduciario; no pertinente\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: pequeño deudor régimen}\", \"devolvio\": \"deudor, regimenes aduaneros; no pertinentes\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: comunicación cambio clasificación 45 días optativo}\", \"devolvio\": \"periodo_de_45_dias, cambio_negativo; sin nodo del umbral específico\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El único claim marcado incorrecto ('mediante medios especificados por la regulación del BCRA') está literalmente soportado por el nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 ('...comunicada al deudor dentro de 45 días mediante medios especificados...') y es fácticamente correcto contra el PDF (Punto 3.4.2 lista medios a/b/c/d + home banking). El agente reprodujo fielmente lo consultado; no hubo decisión errónea sobre este claim.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Casos en que es optativo para la entidad comunicar al deudor un cambio negativo en su clasificación\", \"Régimen del que depende el umbral para determinar esa opcionalidad\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Casos en que es optativo comunicar (claim no-central sobre los medios de comunicación)\",\n      \"entre\": [],\n      \"evidencia_faltante\": \"\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"ubicacion\": \"cambio_negativo_en_clasificacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas (...) b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito, c) junto con el recibo de pago de la cuota, o d) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta información en cualquier correspondencia postal\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.4.2 y p.11-12\", \"resultado\": \"El PDF especifica taxativamente los medios de comunicación (a/b/c/d + home banking); el claim del agente es correcto\"},\n        {\"consulta\": \"ver_paso_completo paso 3\", \"resultado\": \"El nodo abierto por el agente contiene 'mediante medios especificados' en su description: el claim está soportado por lo consultado\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez aprobó los tres claims centrales (existencia de casos optativos, dependencia del saldo de deuda, umbral dependiente de un régimen) y las patas centrales quedaron correctas. El único claim marcado no_soportado es no-central: 'La comunicación debe realizarse mediante medios especificados por la regulación del BCRA'. C1 (precedencia por claim, C1b): el dato pertinente apareció en la trayectoria (nodo cambio_negativo_en_clasificacion abierto en paso 3, cuyo output completo verificado con ver_paso_completo dice literalmente '...comunicada al deudor dentro de 45 días mediante medios especificados...'). El claim reproduce casi verbatim ese contenido → está SOPORTADO → no es faithfulness. C2/verificación contra PDF: el Punto 3.4.2 (p.11-12) dice 'Tal información deberá ser remitida (...) mediante alguno de los siguientes medios: a) resumen impreso, b) resumen de tarjetas de crédito, c) recibo de pago, d) correspondencia postal' + home banking. Es decir, el claim es fácticamente CORRECTO → no es noise_sensitivity por contenido erróneo. Aplicando el árbol de noise_sensitivity: el nodo es fiel al PDF y es pertinente al claim (describe precisamente los medios de comunicación) → sin_defecto (falso positivo del juez). Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF), completitud_kg (el dato no falta, está en el nodo y en el PDF), alucinacion_agente (no hay glosa inventada: 'medios especificados' proviene textualmente del nodo), provenance_imprecisa (la provenance Punto 3.4.2 sí funda el contenido, verificado con leer_pasaje_pdf), navegación/alcanzabilidad (el nodo fue alcanzado y consultado). Como el único claim fallido es un FP del juez y los claims centrales fueron aprobados, el caso no tiene primaria; la atribución es sin_defecto con jerarquía sin_par.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cambio_negativo_en_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\… [+1819 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 2\", \"ref\": \"Punto/Sección 2 (mejor score=-2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"cambio_negativo_en_clasificacion\"}, \"output_completo\": {\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"c) junto con el recibo de pago de la cuota, o\\nd) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta in-\\nformación e\\nn cualquier correspondencia pos tal de carácter general que se remita al\\ncliente o específica dirig\\nida a tal fin.\\nAdicionalmente y en igual plazo, las enti dades financieras que brinden servicios de in-\\nformación a sus clientes a través de In ternet (“home banking”), deberán poner en cono-\\ncimiento de cada cliente -por el medio señalado- , la información a la que se refiere esta \\ncomunicación. \\nPor otra parte, el saldo actualizado de la totalidad de las financiaciones otorgadas -que \\ncomprender\\ná las facilidades asignadas por todas las filiales y unidades operativas de la \\nentidad- deberá encontrarse disponible, discriminado por concepto, según el sistema de \\ninformación contable que utilice la entidad, en el lugar de radicación del legajo del cliente \\no la \\ncasa central, de corresponder llevar copia en ésta, de acuerdo con las normas perti-\\nnentes.\\… [+1816 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26418,
+      "output_tokens": 237
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27644,
+      "output_tokens": 280
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29458,
+      "output_tokens": 697
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30460,
+      "output_tokens": 756
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 32421,
+      "output_tokens": 3578
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 51,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-021",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo comunicar deudor cambio clasificación', limite: 10}",
+      "devolvio": "59 matches; primer resultado cambio_negativo_en_clasificacion (resumen: comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según saldo de deuda)",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio negativo clasificación deudor', limite: 10}",
+      "devolvio": "60 matches; nuevamente cambio_negativo_en_clasificacion como primer resultado",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'cambio_negativo_en_clasificacion'}",
+      "devolvio": "description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.'; provenance p.9-12 / Punto 3.4.2",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'cambio_negativo_en_clasificacion', direccion: 'ambas'}",
+      "devolvio": "0 salientes, 2 entrantes: entidad_financiera (debe_comunicar_al_deudor) y deudor_en_gestion_judicial_o_extrajudicial_de_cobro (debe_ser_notificado_de)",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'optativo saldo deuda umbral comunicación', limite: 10}",
+      "devolvio": "89 matches; nodos de saldo/exposición no pertinentes (saldo_de_deuda, saldo_bruto, etc.)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'excepción comunicación clasificación saldo', limite: 10}",
+      "devolvio": "17 matches; saldo_bruto, tarea_de_clasificacion, clasificacion_de_deudores — no portan el umbral ni el régimen",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen comunicación optativa deudor', limite: 10}",
+      "devolvio": "58 matches; regímenes aduaneros y deudor_en_concurso, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación optativa cambio clasificación régimen', limite: 10}",
+      "devolvio": "81 matches; cambio_negativo_en_clasificacion y regímenes RIOC no pertinentes al régimen del umbral",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen clasificación deudores excepciones', limite: 10}",
+      "devolvio": "54 matches; clasificacion_de_deudores y regímenes aduaneros",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'pequeño deudor comunicación clasificación', limite: 10}",
+      "devolvio": "24 matches; deudor, deudor_en_concurso, credito_unico_deudor",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen simplificado pequeños deudores', limite: 10}",
+      "devolvio": "50 matches; regímenes aduaneros y método/enfoque simplificado, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: '45 días comunicación deudor saldo', limite: 10}",
+      "devolvio": "52 matches; periodo_de_45_dias (otro TO), operaciones DvP, seguro de vida",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "ver_nodo",
+      "args": "{id: 'periodo_de_45_dias'}",
+      "devolvio": "Plazo de transferencia de activos de originante/fiduciario — TO_capitales_minimos, NO relacionado con comunicación al deudor",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "ver_vecinos",
+      "args": "{id: 'periodo_de_45_dias', direccion: 'ambas'}",
+      "devolvio": "vecinos originante/fiduciario, ajeno a la clasificación de deudores",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'pequeño deudor régimen', limite: 10}",
+      "devolvio": "58 matches; deudor y regímenes aduaneros",
+      "pertinente": false
+     },
+     {
+      "paso": 16,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comunicación cambio clasificación 45 días optativo', limite: 10}",
+      "devolvio": "70 matches; periodo_de_45_dias y cambio_negativo_en_clasificacion",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El único claim reprobado por el juez ('la comunicación debe realizarse mediante medios especificados por la regulación del BCRA') proviene directamente del nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 ('comunicada al deudor dentro de 45 días mediante medios especificados'). El agente reprodujo fielmente el contenido del nodo, y ese contenido es fácticamente correcto contra el PDF (Punto 3.4.2, p.11-12, que enumera los medios a/b/c/d). Por tanto el agente actuó bien sobre lo que tenía respecto de este claim.",
+    "thinking_decision": null,
+    "patas": [
+     "Casos en que es optativo comunicar al deudor un cambio negativo en su clasificación",
+     "Régimen del que depende el umbral para determinar esa opcionalidad"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Casos en que es optativo comunicar al deudor un cambio negativo (claim [no central] sobre los medios de comunicación)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+       "ubicacion": "cambio_negativo_en_clasificacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas (…) b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito, c) junto con el recibo de pago de la cuota, o d) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta información en cualquier correspondencia postal",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 3.4.2 y p.11/p.12",
+       "resultado": "El PDF confirma que la comunicación se realiza 'mediante alguno de los siguientes medios' enumerados (a,b,c,d) — el claim es fácticamente correcto y está especificado en la regulación del BCRA (TO clasificación de deudores)"
+      },
+      {
+       "consulta": "ver_paso_completo paso 3 (nodo cambio_negativo_en_clasificacion)",
+       "resultado": "El nodo consultado por el agente dice literalmente 'mediante medios especificados' — el claim está SOPORTADO por el nodo abierto"
+      }
+     ],
+     "capa_s1": {
+      "version": "s1-v0.1-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "exoneracion_con_sintoma",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "sin_defecto",
+       "jerarquia": "sin_par"
+      },
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda sea inferior al          monto establecido en el punto 2.",
+        "alcance_en_el_nodo": "Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.",
+        "coinciden": "si",
+        "causa_confirmada_o_corregida": "sin_defecto",
+        "justificacion_breve": "La fuente declara que la comunicación es obligatoria pero optativa cuando el saldo de deuda es inferior al monto del punto 2; el nodo recoge exactamente ese alcance al mencionar 'con excepciones según el saldo de deuda'. El nodo no generaliza ni sobre-scopea el contenido, por lo que la causa sin_defecto queda confirmada."
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 1,
+       "umbral": 1,
+       "decididas": 1,
+       "no_decididas": 0,
+       "resultado": "mayoria",
+       "causa_ganadora": "sin_defecto",
+       "votos_ganadores": 1
+      },
+      "corrigio": false,
+      "causa_post_s1": "sin_defecto",
+      "triage": false
+     }
+    }
+   ],
+   "razonamiento": "El síntoma es UN solo claim marcado 'no_soportado' por el juez: 'La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA' (afirmación [no central]). C1a (por pata): el dato pertinente a esta pata SÍ apareció en la trayectoria — el nodo cambio_negativo_en_clasificacion, abierto por el agente en el paso 3, cuya description dice 'comunicada al deudor dentro de 45 días mediante medios especificados'. C1b (por claim): el claim reproduce ese contenido expuesto → está SOPORTADO → no es faithfulness. Como está soportado, el síntoma candidato es noise_sensitivity: ¿es correcto contra el PDF? Leí el Punto 3.4.2 (p.11-12): el TO enumera explícitamente los medios de comunicación (a: resumen impreso; b: resumen tarjetas; c: recibo de pago; d: correspondencia postal; y adicionalmente home banking) — es decir, la comunicación efectivamente 'debe realizarse mediante medios especificados por la regulación del BCRA'. El claim es VERDADERO. C2 (causa): ¿el nodo es fiel al PDF? Sí. ¿es pertinente? Sí (habla exactamente de la comunicación del cambio negativo). Por lo tanto → sin_defecto: el juez cometió un falso positivo al marcar 'no_soportado' un claim que está soportado por el nodo consultado y es correcto contra la fuente. Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF); completitud_kg (el dato del claim está presente); provenance_imprecisa (verifiqué que Punto 3.4.2 p.11-12 contiene exactamente el contenido sobre comunicación de cambios negativos); alucinacion_agente (la coletilla 'por la regulación del BCRA' es glosa trivial y verdadera —el TO es del BCRA— y el núcleo 'mediante medios especificados' está en el nodo, así que no es afirmación sin soporte); navegación/alcanzabilidad (el dato apareció y fue usado). Nota sobre las patas centrales: el juez APROBÓ las afirmaciones centrales (optativo, depende del saldo, umbral depende de un régimen), aunque el nodo omite el nombre exacto del régimen ('Régimen Informativo Contable Mensual', Sección 3 punto 2) y el umbral concreto — pero como esas patas NO fueron reprobadas, no se litigan como primaria. Dado que el ÚNICO claim reprobado resulta ser un FP del juez, el caso no tiene atribución primaria; la única atribución es sin_defecto con jerarquía sin_par.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 150200,
+    "tokens_out": 6776
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 150200,
+    "tokens_out": 6776,
+    "latency_s": 91.703,
+    "error": null,
+    "final_raw": "Verificación completa. La provenance del nodo (p.9-12 / Punto 3.4.2) es adecuada — el contenido sobre comunicación de cambios negativos está en p.11-12 dentro del punto 3.4.2, cubierto por el rango de la provenance.\n\nTengo evidencia suficiente. El único claim que el juez marcó incorrecto (\"mediante medios especificados por la regulación del BCRA\") es en realidad verdadero contra el PDF y está soportado por el nodo que el agente abrió. Es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo comunicar deudor cambio clasificación', limite: 10}\", \"devolvio\": \"59 matches; primer resultado cambio_negativo_en_clasificacion (resumen: comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según saldo de deuda)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio negativo clasificación deudor', limite: 10}\", \"devolvio\": \"60 matches; nuevamente cambio_negativo_en_clasificacion como primer resultado\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'cambio_negativo_en_clasificacion'}\", \"devolvio\": \"description: 'Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.'; provenance p.9-12 / Punto 3.4.2\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'cambio_negativo_en_clasificacion', direccion: 'ambas'}\", \"devolvio\": \"0 salientes, 2 entrantes: entidad_financiera (debe_comunicar_al_deudor) y deudor_en_gestion_judicial_o_extrajudicial_de_cobro (debe_ser_notificado_de)\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'optativo saldo deuda umbral comunicación', limite: 10}\", \"devolvio\": \"89 matches; nodos de saldo/exposición no pertinentes (saldo_de_deuda, saldo_bruto, etc.)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'excepción comunicación clasificación saldo', limite: 10}\", \"devolvio\": \"17 matches; saldo_bruto, tarea_de_clasificacion, clasificacion_de_deudores — no portan el umbral ni el régimen\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen comunicación optativa deudor', limite: 10}\", \"devolvio\": \"58 matches; regímenes aduaneros y deudor_en_concurso, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación optativa cambio clasificación régimen', limite: 10}\", \"devolvio\": \"81 matches; cambio_negativo_en_clasificacion y regímenes RIOC no pertinentes al régimen del umbral\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen clasificación deudores excepciones', limite: 10}\", \"devolvio\": \"54 matches; clasificacion_de_deudores y regímenes aduaneros\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'pequeño deudor comunicación clasificación', limite: 10}\", \"devolvio\": \"24 matches; deudor, deudor_en_concurso, credito_unico_deudor\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen simplificado pequeños deudores', limite: 10}\", \"devolvio\": \"50 matches; regímenes aduaneros y método/enfoque simplificado, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: '45 días comunicación deudor saldo', limite: 10}\", \"devolvio\": \"52 matches; periodo_de_45_dias (otro TO), operaciones DvP, seguro de vida\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: 'periodo_de_45_dias'}\", \"devolvio\": \"Plazo de transferencia de activos de originante/fiduciario — TO_capitales_minimos, NO relacionado con comunicación al deudor\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'periodo_de_45_dias', direccion: 'ambas'}\", \"devolvio\": \"vecinos originante/fiduciario, ajeno a la clasificación de deudores\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'pequeño deudor régimen', limite: 10}\", \"devolvio\": \"58 matches; deudor y regímenes aduaneros\", \"pertinente\": false},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comunicación cambio clasificación 45 días optativo', limite: 10}\", \"devolvio\": \"70 matches; periodo_de_45_dias y cambio_negativo_en_clasificacion\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El único claim reprobado por el juez ('la comunicación debe realizarse mediante medios especificados por la regulación del BCRA') proviene directamente del nodo cambio_negativo_en_clasificacion que el agente abrió en el paso 3 ('comunicada al deudor dentro de 45 días mediante medios especificados'). El agente reprodujo fielmente el contenido del nodo, y ese contenido es fácticamente correcto contra el PDF (Punto 3.4.2, p.11-12, que enumera los medios a/b/c/d). Por tanto el agente actuó bien sobre lo que tenía respecto de este claim.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Casos en que es optativo comunicar al deudor un cambio negativo en su clasificación\", \"Régimen del que depende el umbral para determinar esa opcionalidad\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Casos en que es optativo comunicar al deudor un cambio negativo (claim [no central] sobre los medios de comunicación)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"ubicacion\": \"cambio_negativo_en_clasificacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"Tal información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación mediante alguno de los siguientes medios: a) junto con el resumen impreso que se envíe al deudor con los movimientos de alguna de las cuentas (…) b) junto con el resumen de cuenta mensual correspondiente a tarjetas de crédito, c) junto con el recibo de pago de la cuota, o d) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta información en cualquier correspondencia postal\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 3.4.2 (p.11-12)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 3.4.2 y p.11/p.12\", \"resultado\": \"El PDF confirma que la comunicación se realiza 'mediante alguno de los siguientes medios' enumerados (a,b,c,d) — el claim es fácticamente correcto y está especificado en la regulación del BCRA (TO clasificación de deudores)\"},\n        {\"consulta\": \"ver_paso_completo paso 3 (nodo cambio_negativo_en_clasificacion)\", \"resultado\": \"El nodo consultado por el agente dice literalmente 'mediante medios especificados' — el claim está SOPORTADO por el nodo abierto\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma es UN solo claim marcado 'no_soportado' por el juez: 'La comunicación del cambio negativo en la clasificación debe realizarse mediante medios especificados por la regulación del BCRA' (afirmación [no central]). C1a (por pata): el dato pertinente a esta pata SÍ apareció en la trayectoria — el nodo cambio_negativo_en_clasificacion, abierto por el agente en el paso 3, cuya description dice 'comunicada al deudor dentro de 45 días mediante medios especificados'. C1b (por claim): el claim reproduce ese contenido expuesto → está SOPORTADO → no es faithfulness. Como está soportado, el síntoma candidato es noise_sensitivity: ¿es correcto contra el PDF? Leí el Punto 3.4.2 (p.11-12): el TO enumera explícitamente los medios de comunicación (a: resumen impreso; b: resumen tarjetas; c: recibo de pago; d: correspondencia postal; y adicionalmente home banking) — es decir, la comunicación efectivamente 'debe realizarse mediante medios especificados por la regulación del BCRA'. El claim es VERDADERO. C2 (causa): ¿el nodo es fiel al PDF? Sí. ¿es pertinente? Sí (habla exactamente de la comunicación del cambio negativo). Por lo tanto → sin_defecto: el juez cometió un falso positivo al marcar 'no_soportado' un claim que está soportado por el nodo consultado y es correcto contra la fuente. Descarto activamente cada defecto: contenido_kg (el nodo no contradice el PDF); completitud_kg (el dato del claim está presente); provenance_imprecisa (verifiqué que Punto 3.4.2 p.11-12 contiene exactamente el contenido sobre comunicación de cambios negativos); alucinacion_agente (la coletilla 'por la regulación del BCRA' es glosa trivial y verdadera —el TO es del BCRA— y el núcleo 'mediante medios especificados' está en el nodo, así que no es afirmación sin soporte); navegación/alcanzabilidad (el dato apareció y fue usado). Nota sobre las patas centrales: el juez APROBÓ las afirmaciones centrales (optativo, depende del saldo, umbral depende de un régimen), aunque el nodo omite el nombre exacto del régimen ('Régimen Informativo Contable Mensual', Sección 3 punto 2) y el umbral concreto — pero como esas patas NO fueron reprobadas, no se litigan como primaria. Dado que el ÚNICO claim reprobado resulta ser un FP del juez, el caso no tiene atribución primaria; la única atribución es sin_defecto con jerarquía sin_par.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "cambio_negativo_en_clasificacion"
+      },
+      "output_truncado": "{\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.4.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.4.2 (PDF pág 11)\", \"pasaje\": \"3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n \\nA los fines de la actualización del legajo del cliente, se admitirá que la clasificación asi g-\\nnada se mantenga en planillas separadas, siempre que el procedimiento adoptado –que \\ndeberá estar descripto en el “Manual de procedimientos de clasificación y previsi ón”– \\npermita la identificación precisa de la clasificación asignada a cada cliente desde la plani-\\nlla al legajo y viceversa. \\n \\nDicho legajo deberá contar con inform… [+404 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 11\", \"metodo\": \"pagina\", \"ref\": \"p.11 (PDF absoluto 1-based)\", \"pasaje\": \"Con respecto a los créditos que se asignen a los tramos I y II de los márgenes adicion a-\\nles previstos en el TO sobre Grandes Exposiciones al Riesgo de Crédito, el prest atario \\ndeberá obligarse a que los mencionados legajos de los deudores por los créditos com-\\nprendidos en dichos tramos estén a disposición de la entidad financiera dadora, en caso \\nde mediar requerimiento de la Superintendencia de Entidades Financieras y Cambiarias. \\n \\n3.4.2. Contenido. \\n \\nEn el legajo se reunirán t odos los elementos de juicio que se tengan en cuenta para re a-\\nlizar las evaluaciones y clasificaciones y se dejará constancia de las revisiones efectu a-\\ndas y de la clasificación asignada. \\n \\nCuando no corresponda evaluar la capacidad de repago del deudor por e ncontrarse la \\ndeuda cubierta con garantías preferidas “A”, según lo previsto en el punto 4.4., no será \\nobligatorio incorporar al legajo del cliente el flujo de fondos, los estados contables ni toda \\notra información necesaria para efectuar ese análisis. \\n … [+1820 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"c) junto con el recibo de pago de la cuota, o\\nd) en ausencia de los anteriores, a opción de la entidad, mediante la inclusión de esta in-\\nformación e\\nn cualquier correspondencia pos tal de carácter general que se remita al\\ncliente o específica dirig\\nida a tal fin.\\nAdicionalmente y en igual plazo, las enti dades financieras que brinden servicios de in-\\nformación a sus clientes a través de In ternet (“home banking”), deberán poner en cono-\\ncimiento de cada cliente -por el medio señalado- , la información a la que se refiere esta \\ncomunicación. \\nPor otra parte, el saldo actualizado de la totalidad de las financiaciones otorgadas -que \\ncomprender\\ná las facilidades asignadas por todas las filiales y unidades operativas de la \\nentidad- deberá encontrarse disponible, discriminado por concepto, según el sistema de \\ninformación contable que utilice la entidad, en el lugar de radicación del legajo del cliente \\no la \\ncasa central, de corresponder llevar copia en ésta, de acuerdo con las normas perti-\\nnentes.… [+1817 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"cambio_negativo_en_clasificacion\"}, \"output_completo\": {\"id\": \"cambio_negativo_en_clasificacion\", \"type\": \"evento_regulatorio\", \"label\": \"Cambio negativo en clasificación\", \"properties\": {\"description\": \"Reclasificación desfavorable del deudor que debe ser comunicada al deudor dentro de 45 días mediante medios especificados, con excepciones según el saldo de deuda.\", \"version\": \"vigente\", \"type_raw\": [\"Evento regulatorio\"], \"type_raw_counts\": {\"Evento regulatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p.9-12 / Punto 3.4.2\"}]}}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "p. 9"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 9\", \"metodo\": \"pagina\", \"ref\": \"p.9 (PDF absoluto 1-based)\", \"pasaje\": \"3.1. Procedimientos de análisis de cartera. \\nLa entidad deberá desarrollar procedimientos de análisis de cartera que aseguren: a) un análi-\\nsis adecuado de la situación económica y financiera del deudor y b) una revisión periódica de \\nsu situación en cuanto a las condiciones objetivas y subjetivas de todos los riesgos asumidos.  \\n3.2. Periodicidad de clasificación. \\nLa clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su im-\\nportancia –considerando la totalidad de las financiaciones comprendidas–, debiendo en todos \\nlos casos documentarse el análisis efectuado. \\n3.3. Manual de procedimientos de clasificación y previsión. \\nSe volcarán en un “Manual de procedimientos de clasificación y previsión”: \\n3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido \\nen la materia. \\n3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, \\nla clasificación de los deudores y el previsionamiento de las acreenci… [+903 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26418,
+      "output_tokens": 271
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27678,
+      "output_tokens": 381
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30590,
+      "output_tokens": 877
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31772,
+      "output_tokens": 1061
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 33742,
+      "output_tokens": 4186
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 51,
+     "n_claims_fallidos": 1,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "exoneracion_total"
+  ],
+  "flags": [
+   "R1: voto_capa_d con mayoria de clave vacia (3 votos sin primarias)"
+  ]
+ },
+ "version_capa": "v6.1-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "resumen_s1": {
+  "gatilladas": 3,
+  "juzgadas_llm": 3,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "exoneracion_con_sintoma": true
+ },
+ "version_capa_s1": "s1-v0.1-dev"
+}

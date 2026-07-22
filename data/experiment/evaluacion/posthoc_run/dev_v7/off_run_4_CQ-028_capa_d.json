@@ -1,0 +1,1130 @@
+{
+ "id_falla": "run_4/CQ-028",
+ "run": "run_4",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_4/CQ-028",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"precancelación comisión financiación\", \"limite\": 10}",
+      "devolvio": "Encontró comision_por_precancelacion (nodo pertinente) y otros; resumen truncado en '...al menos la …'",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"precancelación total sujeto obligado\", \"limite\": 10}",
+      "devolvio": "sujeto_obligado, derecho_de_precancelacion_total_o_parcial, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"comision_por_precancelacion\"}",
+      "devolvio": "description: 'restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días' (omite 'de ambos el mayor')",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"comision_por_precancelacion\", \"direccion\": \"ambas\"}",
+      "devolvio": "puede_aplicar->sujeto_obligado; incluye->costo_financiero_total_cft",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"precancelación total restricción cuarta parte plazo\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes (derecho_de_precancelacion, cobertura_total, plazo_de_90_dias)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"comisión precancelación no se admite prohibida\", \"limite\": 10}",
+      "devolvio": "comision_por_precancelacion de nuevo; nada nuevo sobre el criterio",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"precancelación sin comisión crédito hipotecario consumo\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación de crédito hipotecario precancelación\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes (línea de crédito exterior, etc.)",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"crédito hipotecario vivienda comisión\", \"limite\": 10}",
+      "devolvio": "prestamo_hipotecario_en_pesos, no pertinente al criterio",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"prestamo_hipotecario_en_pesos_para_compra_de_vivienda\"}",
+      "devolvio": "definición de préstamo hipotecario dólar MEP; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación de crédito no se admite comisión precancelación\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación de crédito no se admite\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación crédito no se admite comisión\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación de crédito donde no se admite comisión\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"operación de crédito donde no se admite\", \"limite\": 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 3,
+     "quote": "\"description\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\""
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación",
+     "Si existe algún caso en que no se admita dicha comisión"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si existe algún caso en que no se admita dicha comisión (criterio combinatorio de las dos condiciones)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 / Punto 2.3.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "de ambos el mayor plazo financiación",
+       "resultado": "1824 matches, ninguno porta el criterio 'de ambos el mayor' para precancelación total de financiaciones (todos son plazos de comercio exterior/cambios)"
+      },
+      {
+       "consulta": "180 días corridos otorgamiento",
+       "resultado": "32 matches, ninguno vincula el criterio combinatorio de la precancelación total; solo plazos de otros regímenes"
+      },
+      {
+       "consulta": "precancelación parcial",
+       "resultado": "el único nodo pertinente al tema es comision_por_precancelacion, que omite 'de ambos el mayor'"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Si existe algún caso en que no se admita dicha comisión (alcance de la restricción: solo total, no parcial)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando ... haya transcurrido al menos la cuarta parte del plazo original ... o 180 días corridos ..., de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 / Punto 2.3.2.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "precancelación parcial",
+       "resultado": "confirma que la restricción temporal se circunscribe a la precancelación total; el nodo consultado por el agente marca 'restricción en precancelación total' explícitamente"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA 1 — claim central falso: el agente afirmó que el criterio es 'lo que ocurra primero' entre la cuarta parte del plazo y los 180 días. El PDF (p.12, Punto 2.3.2.1) dice exactamente lo opuesto: 'de ambos el mayor' (lo que ocurra después). C1a por pata: ¿apareció en la trayectoria el dato PERTINENTE al criterio combinatorio ('de ambos el mayor')? NO. El único nodo pertinente (comision_por_precancelacion), tanto en su resumen truncado del paso 1 como en su contenido íntegro abierto en el paso 3, dice 'o 180 días' y OMITE 'de ambos el mayor'. El agente no tenía forma de saber el criterio combinatorio; la glosa 'lo que ocurra primero' es de relleno. Como el dato pertinente nunca apareció → síntoma context_recall a nivel de esta sub-pata. C2 por árbol de context_recall: ¿existe nodo portador del dato faltante? El nodo que DEBERÍA portarlo (comision_por_precancelacion) existe pero está incompleto: el PDF tiene el criterio ('de ambos el mayor') y el nodo lo omite. Búsquedas documentadas ('de ambos el mayor plazo financiación', '180 días corridos otorgamiento', 'precancelación parcial') no devuelven ningún otro nodo que porte el criterio combinatorio. Por tanto NO es alcanzabilidad (no hay nodo con el dato correcto en ningún lado) ni navegación → completitud_kg (falta el dato que el PDF sí tiene), primaria: es lo que rompe el claim central que el juez reprobó. SÍNTOMA 2 — claim 'no_soportado' sobre precancelación parcial: el agente afirmó que la parcial se permite sin la restricción temporal. C1: este claim ESTÁ soportado por el nodo consultado, cuyo resumen y contenido dicen 'restricción en precancelación total' (delimitando la restricción a la total) → síntoma noise_sensitivity (soportado; se juzga su corrección). C2 árbol noise_sensitivity: ¿el nodo es fiel al PDF? SÍ. El PDF dice 'La precancelación total o parcial ... podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá ...' — la restricción temporal se circunscribe EXPRESAMENTE a la precancelación total, luego para la parcial no rige esa restricción. La afirmación del agente es fácticamente CORRECTA contra el PDF y está soportada por el nodo → el nodo es fiel y pertinente → sin_defecto (falso positivo del juez), jerarquía sin_par. Descarté completitud_kg (el nodo delimita la restricción a la total), contenido_kg (el nodo no contradice el PDF), alucinacion_agente (la inferencia está soportada por 'restricción en precancelación total' del nodo), aplicacion_erronea (mismo alcance/régimen). Nota de jerarquía: la primaria que explica la reprobación del juez es completitud_kg sobre el criterio 'de ambos el mayor'; el claim de la parcial es un FP del juez y por eso no lleva primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 8,
+    "max_tool_calls": 40,
+    "tokens_in": 194041,
+    "tokens_out": 7311
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 8,
+    "tokens_in": 194041,
+    "tokens_out": 7311,
+    "latency_s": 106.276,
+    "error": null,
+    "final_raw": "Confirmado: el resumen expuesto al agente decía \"restricción en precancelación total cuando haya transcurrido al menos la…\" — truncado, sin \"de ambos el mayor\" ni \"lo que ocurra primero\". El nodo completo (paso 3) tampoco tiene \"el mayor\": dice \"o 180 días\". El criterio combinatorio correcto (\"de ambos el mayor\") nunca se le expuso al agente.\n\nTengo evidencia suficiente. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación comisión financiación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Encontró comision_por_precancelacion (nodo pertinente) y otros; resumen truncado en '...al menos la …'\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación total sujeto obligado\\\", \\\"limite\\\": 10}\", \"devolvio\": \"sujeto_obligado, derecho_de_precancelacion_total_o_parcial, etc.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"comision_por_precancelacion\\\"}\", \"devolvio\": \"description: 'restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días' (omite 'de ambos el mayor')\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"comision_por_precancelacion\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"puede_aplicar->sujeto_obligado; incluye->costo_financiero_total_cft\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación total restricción cuarta parte plazo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes (derecho_de_precancelacion, cobertura_total, plazo_de_90_dias)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"comisión precancelación no se admite prohibida\\\", \\\"limite\\\": 10}\", \"devolvio\": \"comision_por_precancelacion de nuevo; nada nuevo sobre el criterio\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación sin comisión crédito hipotecario consumo\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación de crédito hipotecario precancelación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes (línea de crédito exterior, etc.)\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"crédito hipotecario vivienda comisión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"prestamo_hipotecario_en_pesos, no pertinente al criterio\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"prestamo_hipotecario_en_pesos_para_compra_de_vivienda\\\"}\", \"devolvio\": \"definición de préstamo hipotecario dólar MEP; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación de crédito no se admite comisión precancelación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación de crédito no se admite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación crédito no se admite comisión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación de crédito donde no se admite comisión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"operación de crédito donde no se admite\\\", \\\"limite\\\": 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 3, \"quote\": \"\\\"description\\\": \\\"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\\\"\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación\",\n      \"Si existe algún caso en que no se admita dicha comisión\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si existe algún caso en que no se admita dicha comisión (criterio combinatorio de las dos condiciones)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 / Punto 2.3.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor plazo financiación\", \"resultado\": \"1824 matches, ninguno porta el criterio 'de ambos el mayor' para precancelación total de financiaciones (todos son plazos de comercio exterior/cambios)\"},\n        {\"consulta\": \"180 días corridos otorgamiento\", \"resultado\": \"32 matches, ninguno vincula el criterio combinatorio de la precancelación total; solo plazos de otros regímenes\"},\n        {\"consulta\": \"precancelación parcial\", \"resultado\": \"el único nodo pertinente al tema es comision_por_precancelacion, que omite 'de ambos el mayor'\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Si existe algún caso en que no se admita dicha comisión (alcance de la restricción: solo total, no parcial)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando ... haya transcurrido al menos la cuarta parte del plazo original ... o 180 días corridos ..., de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 / Punto 2.3.2.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"precancelación parcial\", \"resultado\": \"confirma que la restricción temporal se circunscribe a la precancelación total; el nodo consultado por el agente marca 'restricción en precancelación total' explícitamente\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA 1 — claim central falso: el agente afirmó que el criterio es 'lo que ocurra primero' entre la cuarta parte del plazo y los 180 días. El PDF (p.12, Punto 2.3.2.1) dice exactamente lo opuesto: 'de ambos el mayor' (lo que ocurra después). C1a por pata: ¿apareció en la trayectoria el dato PERTINENTE al criterio combinatorio ('de ambos el mayor')? NO. El único nodo pertinente (comision_por_precancelacion), tanto en su resumen truncado del paso 1 como en su contenido íntegro abierto en el paso 3, dice 'o 180 días' y OMITE 'de ambos el mayor'. El agente no tenía forma de saber el criterio combinatorio; la glosa 'lo que ocurra primero' es de relleno. Como el dato pertinente nunca apareció → síntoma context_recall a nivel de esta sub-pata. C2 por árbol de context_recall: ¿existe nodo portador del dato faltante? El nodo que DEBERÍA portarlo (comision_por_precancelacion) existe pero está incompleto: el PDF tiene el criterio ('de ambos el mayor') y el nodo lo omite. Búsquedas documentadas ('de ambos el mayor plazo financiación', '180 días corridos otorgamiento', 'precancelación parcial') no devuelven ningún otro nodo que porte el criterio combinatorio. Por tanto NO es alcanzabilidad (no hay nodo con el dato correcto en ningún lado) ni navegación → completitud_kg (falta el dato que el PDF sí tiene), primaria: es lo que rompe el claim central que el juez reprobó. SÍNTOMA 2 — claim 'no_soportado' sobre precancelación parcial: el agente afirmó que la parcial se permite sin la restricción temporal. C1: este claim ESTÁ soportado por el nodo consultado, cuyo resumen y contenido dicen 'restricción en precancelación total' (delimitando la restricción a la total) → síntoma noise_sensitivity (soportado; se juzga su corrección). C2 árbol noise_sensitivity: ¿el nodo es fiel al PDF? SÍ. El PDF dice 'La precancelación total o parcial ... podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá ...' — la restricción temporal se circunscribe EXPRESAMENTE a la precancelación total, luego para la parcial no rige esa restricción. La afirmación del agente es fácticamente CORRECTA contra el PDF y está soportada por el nodo → el nodo es fiel y pertinente → sin_defecto (falso positivo del juez), jerarquía sin_par. Descarté completitud_kg (el nodo delimita la restricción a la total), contenido_kg (el nodo no contradice el PDF), alucinacion_agente (la inferencia está soportada por 'restricción en precancelación total' del nodo), aplicacion_erronea (mismo alcance/régimen). Nota de jerarquía: la primaria que explica la reprobación del juez es completitud_kg sobre el criterio 'de ambos el mayor'; el claim de la parcial es un FP del juez y por eso no lleva primaria.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.1 (PDF pág 11)\", \"pasaje\": \"2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrios no podrá ser superior a… [+411 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "comision_por_precancelacion"
+      },
+      "output_truncado": "{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"properties\": {\"description\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"version\": \"vigente\", \"type_raw\": [\"Comisión permitida\"], \"type_raw_counts\": {\"Comisión permitida\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12-14 / Punto 2.3.2.1, párrafo segundo\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"En las operaciones de crédito, los sujetos obl igados podrán aplicar comisiones\\nsobre los importes no utilizados de los acuerdos de asignación de fondos, dado\\nque su puesta a disposición a los usuarios configura la prestación del servicio.\\nLa precancelación total o parcial de financiaciones podrá dar lugar a la aplica-\\nción de comisiones. En el caso de precancelación total, no se admitirá la apli-\\ncación de comisiones cuando al momento de efectuarla haya transcurrido al\\nmenos la cuarta parte del plazo original de la financiación o 180 días corridos\\ndesde su otorgamiento, de ambos el mayor.\\nAdemás, será de aplicación lo previsto en el punto 1.7. de l TO sobre Tasas de\\nInterés en las Operaciones de Crédito.\\n2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en o… [+1763 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "precancelación parcial"
+      },
+      "output_truncado": "{\"consulta\": \"precancelación parcial\", \"total_con_match\": 13, \"resultados\": [{\"id\": \"derecho_de_precancelacion_total_o_parcial\", \"type\": \"contenido_contractual_obligatorio\", \"label\": \"Derecho de precancelación total o parcial\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Derecho del usuario a efectuar en cualquier momento del plazo del crédito la precancelación total o precancelaciones parciales.\"}, {\"id\": \"precancelacion_de_deudas\", \"type\": \"operacion_de_pago_anticipado\", \"label\": \"Precancelación de deudas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cancelación de obligaciones en moneda extranjera con anterioridad al vencimiento, que requiere conformidad previa del BCRA excepto en situaciones específicas.\"}, {\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la …\"}, {\"id\": \"precancelacion_de_linea_de_credito\", \"type\": \"operacion_cambiaria\", \"label\": \"Precancelación de línea de crédito\", \"tokens_matcheados\": 1, \"re… [+2152 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "derecho_de_precancelacion_total_o_parcial"
+      },
+      "output_truncado": "{\"id\": \"derecho_de_precancelacion_total_o_parcial\", \"type\": \"contenido_contractual_obligatorio\", \"label\": \"Derecho de precancelación total o parcial\", \"properties\": {\"description\": \"Derecho del usuario a efectuar en cualquier momento del plazo del crédito la precancelación total o precancelaciones parciales.\", \"version\": \"vigente\", \"type_raw\": [\"Contenido contractual obligatorio\"], \"type_raw_counts\": {\"Contenido contractual obligatorio\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.6-8 / Punto 2.3.1.1, inciso vi)\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "de ambos el mayor plazo financiación"
+      },
+      "output_truncado": "{\"consulta\": \"de ambos el mayor plazo financiación\", \"total_con_match\": 1824, \"resultados\": [{\"id\": \"plazo_minimo_de_financiacion_en_pais_de_destino\", \"type\": \"requisito_regulatorio\", \"label\": \"Plazo mínimo de financiación en país de destino\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo mínimo de financiación de importación vigente en el país de destino que puede ser mayor al plazo máximo de liquidación para cobro de exportaciones.\"}, {\"id\": \"financiacion_complementaria_de_plazo_no_superior_a_365_dias\", \"type\": \"modalidad_de_financiacion\", \"label\": \"Financiación complementaria de plazo no superior a 365 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Financiación otorgada por entidad financiera local como complemento de la financiación del exterior, con plazo no superior a 365 días corridos desde la fecha de…\"}, {\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"prorroga_de_plazo\", \"type\": \"mecanismo_de_regulari… [+1980 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "180 días corridos otorgamiento"
+      },
+      "output_truncado": "{\"consulta\": \"180 días corridos otorgamiento\", \"total_con_match\": 32, \"resultados\": [{\"id\": \"plazo_de_180_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada previas al 1…\"}, {\"id\": \"plazo_de_90_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 90 días corridos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada a partir del…\"}, {\"id\": \"bien_con_plazo_de_180_o_mas_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 180 o más días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Bien que tiene asignado un plazo de 180 o más días corridos conforme a los puntos 7.1.1.4. y 7.1.1.5., con coeficiente del 15% para cálculo de monto máximo.\"}, {\"id\": \"atraso_de_mas_de_90_hasta_180_dias\", \"type\": \"condicion_de_pago\", \"label\": \"Atraso de más de 90 hasta 180 días\", \"tokens_matcheados\": 2, \"resumen_… [+2030 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"precancelación comisión financiación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"precancelación comisión financiación\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la …\"}, {\"id\": \"comision\", \"type\": \"tipo_de_costo\", \"label\": \"Comisión\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Retribución que obedece a servicios prestados por los sujetos obligados y puede incluir retribuciones que excedan el costo de la prestación.\"}, {\"id\": \"financiacion\", \"type\": \"producto_crediticio\", \"label\": \"Financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Créditos, préstamos y otras operaciones de intermediación financiera otorgadas por la entidad a sus clientes, sujetas a clasificación de riesgo.\"}, {\"id\": \"cuota_de_financiacion\", \"type\": \"componente_de_obligacion_crediticia\", \"label\": \"Cuota de financiación\", \"tokens_mat… [+2025 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27279,
+      "output_tokens": 221
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28549,
+      "output_tokens": 262
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31588,
+      "output_tokens": 494
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32355,
+      "output_tokens": 677
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35862,
+      "output_tokens": 1229
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 38408,
+      "output_tokens": 4428
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 64,
+     "n_claims_fallidos": 2,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-028",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación comisión financiación', limite: 10}",
+      "devolvio": "Encuentra comision_por_precancelacion (nodo pertinente) y otros genéricos",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación total sujeto obligado', limite: 10}",
+      "devolvio": "sujeto_obligado, derecho_de_precancelacion_total_o_parcial y otros",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'comision_por_precancelacion'}",
+      "devolvio": "description: 'restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días'",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'comision_por_precancelacion', direccion: 'ambas'}",
+      "devolvio": "puede_aplicar->sujeto_obligado; incluye->CFT",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación total restricción cuarta parte plazo', limite: 10}",
+      "devolvio": "derecho_de_precancelacion, nodos no pertinentes (cobertura_total, valor_fob)",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comisión precancelación no se admite prohibida', limite: 10}",
+      "devolvio": "comision_por_precancelacion + comisiones no relacionadas",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación sin comisión crédito hipotecario consumo', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito hipotecario precancelación', limite: 10}",
+      "devolvio": "nodos de comercio exterior no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'crédito hipotecario vivienda comisión', limite: 10}",
+      "devolvio": "prestamo_hipotecario, comision",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{id: 'prestamo_hipotecario_en_pesos_para_compra_de_vivienda'}",
+      "devolvio": "definición dólar MEP; no relacionado con precancelación",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito no se admite comisión precancelación', limite: 10}",
+      "devolvio": "nodos no pertinentes (márgenes de crédito, proveedores)",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito no se admite', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación crédito no se admite comisión', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito donde no se admite comisión', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito donde no se admite', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 3,
+     "quote": "description: 'Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación",
+     "Si existe algún caso en que no se admita dicha comisión (con el criterio temporal aplicable)"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si existe algún caso en que no se admita dicha comisión (con el criterio temporal aplicable)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 (Punto 2.3.2.1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "de ambos el mayor precancelación plazo",
+       "resultado": "1809 matches, ninguno porta el criterio 'de ambos el mayor' aplicado a comisión por precancelación total; solo nodos de plazos ajenos (90 días, prórroga, etc.)"
+      },
+      {
+       "consulta": "180 días corridos otorgamiento financiación mayor",
+       "resultado": "79 matches, ninguno vincula '180 días corridos desde el otorgamiento / de ambos el mayor' a la comisión por precancelación; nodos de otros regímenes"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Si existe algún caso en que no se admita dicha comisión (alcance de precancelación parcial)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 (Punto 2.3.2.1)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "de ambos el mayor precancelación plazo",
+       "resultado": "ningún nodo indica que la restricción temporal aplique también a la precancelación parcial; el único nodo pertinente circunscribe la restricción a 'precancelación total'"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez reprobó dos afirmaciones. (1) La central falsa: 'El criterio para no admitir la comisión por precancelación total es el que ocurra primero entre la cuarta parte del plazo original y los 180 días'. C1a (por pata): el dato pertinente (el criterio temporal de la restricción de precancelación total) SÍ apareció en la trayectoria — el nodo comision_por_precancelacion fue abierto con ver_nodo en el paso 3 —, por lo que la pata NO es context_recall. C1b (por claim): el nodo dice literalmente 'la cuarta parte del plazo original o 180 días', usando el conector 'o' SIN el criterio de desempate. El agente resolvió esa ambigüedad afirmando 'lo que ocurra primero', afirmación que NO está en ningún nodo consultado (el nodo no dice 'primero' ni 'mayor'). Claim no soportado por lo consultado → faithfulness. C2 (causa, árbol de faithfulness): ¿el grafo tenía el dato correcto ('de ambos el mayor')? Búsqueda documentada: dos consultas ('de ambos el mayor precancelación plazo' y '180 días corridos otorgamiento financiación mayor') no devuelven ningún nodo que porte ese criterio de desempate para la comisión por precancelación; el único nodo pertinente lo omite. ¿El PDF lo tiene? SÍ: el Punto 2.3.2.1 (p.12) dice explícitamente '…o 180 días corridos desde su otorgamiento, de ambos el mayor'. El PDF establece exactamente lo CONTRARIO de lo que respondió el agente: 'de ambos el mayor' (el más largo / lo que ocurra último), no 'lo que ocurra primero'. El hueco del grafo (extracción incompleta del nodo, que perdió 'de ambos el mayor') empujó la glosa errónea → completitud_kg, PRIMARIA. No es contenido_kg porque el nodo no contradice el PDF: es fiel pero incompleto (omite el criterio de desempate). No es alucinacion_agente porque el dato faltante SÍ existe en el PDF: el árbol de faithfulness con dato ausente en el grafo pero presente en el PDF conduce a completitud_kg. (2) La afirmación no-central marcada 'no_soportado': 'La comisión por precancelación parcial se permite sin la restricción temporal mencionada'. C1a: el dato pertinente apareció (nodo del paso 3). C1b: el nodo distingue explícitamente que la restricción es 'en precancelación total', por lo que la exención de la parcial es una inferencia directa y SOPORTADA por el nodo → síntoma noise_sensitivity. C2 (árbol noise_sensitivity): ¿el nodo es fiel al PDF? SÍ — el PDF (p.12) confirma que la restricción temporal aplica solo 'En el caso de precancelación total', mientras que ambas (total o parcial) 'podrán dar lugar a la aplicación de comisiones'. ¿El nodo es pertinente? SÍ. Por el árbol → sin_defecto: la afirmación es fácticamente correcta y está soportada; el juez la marcó no_soportado erróneamente (falso positivo). Se emite como sin_par. Descarte de otras causas para esta pata: no es contenido_kg (nodo fiel), no es aplicacion_erronea (el contenido se usó dentro de su alcance), no es completitud_kg (el dato está). CONCLUSIÓN: la primaria que explica la reprobación es {faithfulness, completitud_kg} por la omisión de 'de ambos el mayor' en el nodo; la segunda afirmación reprobada es un falso positivo del juez {noise_sensitivity, sin_defecto}.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 7,
+    "max_tool_calls": 40,
+    "tokens_in": 160996,
+    "tokens_out": 7250
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 7,
+    "tokens_in": 160996,
+    "tokens_out": 7250,
+    "latency_s": 94.36,
+    "error": null,
+    "final_raw": "El resumen truncado del nodo en las búsquedas (\"...con restricción en precancelación total cuando haya transcurrido al menos la …\") corta antes de mostrar \"o 180 días\". El agente vio el contenido completo del nodo en el paso 3 (ver_nodo), que dice \"la cuarta parte del plazo original **o 180 días**\" — sin \"de ambos el mayor\". Confirmado: el grafo no expuso \"de ambos el mayor\" en ningún momento.\n\nTengo toda la evidencia. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación comisión financiación', limite: 10}\", \"devolvio\": \"Encuentra comision_por_precancelacion (nodo pertinente) y otros genéricos\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación total sujeto obligado', limite: 10}\", \"devolvio\": \"sujeto_obligado, derecho_de_precancelacion_total_o_parcial y otros\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'comision_por_precancelacion'}\", \"devolvio\": \"description: 'restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días'\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'comision_por_precancelacion', direccion: 'ambas'}\", \"devolvio\": \"puede_aplicar->sujeto_obligado; incluye->CFT\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación total restricción cuarta parte plazo', limite: 10}\", \"devolvio\": \"derecho_de_precancelacion, nodos no pertinentes (cobertura_total, valor_fob)\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comisión precancelación no se admite prohibida', limite: 10}\", \"devolvio\": \"comision_por_precancelacion + comisiones no relacionadas\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación sin comisión crédito hipotecario consumo', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito hipotecario precancelación', limite: 10}\", \"devolvio\": \"nodos de comercio exterior no pertinentes\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'crédito hipotecario vivienda comisión', limite: 10}\", \"devolvio\": \"prestamo_hipotecario, comision\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{id: 'prestamo_hipotecario_en_pesos_para_compra_de_vivienda'}\", \"devolvio\": \"definición dólar MEP; no relacionado con precancelación\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito no se admite comisión precancelación', limite: 10}\", \"devolvio\": \"nodos no pertinentes (márgenes de crédito, proveedores)\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito no se admite', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación crédito no se admite comisión', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito donde no se admite comisión', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito donde no se admite', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 3, \"quote\": \"description: 'Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación\",\n      \"Si existe algún caso en que no se admita dicha comisión (con el criterio temporal aplicable)\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si existe algún caso en que no se admita dicha comisión (con el criterio temporal aplicable)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 (Punto 2.3.2.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor precancelación plazo\", \"resultado\": \"1809 matches, ninguno porta el criterio 'de ambos el mayor' aplicado a comisión por precancelación total; solo nodos de plazos ajenos (90 días, prórroga, etc.)\"},\n        {\"consulta\": \"180 días corridos otorgamiento financiación mayor\", \"resultado\": \"79 matches, ninguno vincula '180 días corridos desde el otorgamiento / de ambos el mayor' a la comisión por precancelación; nodos de otros regímenes\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Si existe algún caso en que no se admita dicha comisión (alcance de precancelación parcial)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12 (Punto 2.3.2.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor precancelación plazo\", \"resultado\": \"ningún nodo indica que la restricción temporal aplique también a la precancelación parcial; el único nodo pertinente circunscribe la restricción a 'precancelación total'\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó dos afirmaciones. (1) La central falsa: 'El criterio para no admitir la comisión por precancelación total es el que ocurra primero entre la cuarta parte del plazo original y los 180 días'. C1a (por pata): el dato pertinente (el criterio temporal de la restricción de precancelación total) SÍ apareció en la trayectoria — el nodo comision_por_precancelacion fue abierto con ver_nodo en el paso 3 —, por lo que la pata NO es context_recall. C1b (por claim): el nodo dice literalmente 'la cuarta parte del plazo original o 180 días', usando el conector 'o' SIN el criterio de desempate. El agente resolvió esa ambigüedad afirmando 'lo que ocurra primero', afirmación que NO está en ningún nodo consultado (el nodo no dice 'primero' ni 'mayor'). Claim no soportado por lo consultado → faithfulness. C2 (causa, árbol de faithfulness): ¿el grafo tenía el dato correcto ('de ambos el mayor')? Búsqueda documentada: dos consultas ('de ambos el mayor precancelación plazo' y '180 días corridos otorgamiento financiación mayor') no devuelven ningún nodo que porte ese criterio de desempate para la comisión por precancelación; el único nodo pertinente lo omite. ¿El PDF lo tiene? SÍ: el Punto 2.3.2.1 (p.12) dice explícitamente '…o 180 días corridos desde su otorgamiento, de ambos el mayor'. El PDF establece exactamente lo CONTRARIO de lo que respondió el agente: 'de ambos el mayor' (el más largo / lo que ocurra último), no 'lo que ocurra primero'. El hueco del grafo (extracción incompleta del nodo, que perdió 'de ambos el mayor') empujó la glosa errónea → completitud_kg, PRIMARIA. No es contenido_kg porque el nodo no contradice el PDF: es fiel pero incompleto (omite el criterio de desempate). No es alucinacion_agente porque el dato faltante SÍ existe en el PDF: el árbol de faithfulness con dato ausente en el grafo pero presente en el PDF conduce a completitud_kg. (2) La afirmación no-central marcada 'no_soportado': 'La comisión por precancelación parcial se permite sin la restricción temporal mencionada'. C1a: el dato pertinente apareció (nodo del paso 3). C1b: el nodo distingue explícitamente que la restricción es 'en precancelación total', por lo que la exención de la parcial es una inferencia directa y SOPORTADA por el nodo → síntoma noise_sensitivity. C2 (árbol noise_sensitivity): ¿el nodo es fiel al PDF? SÍ — el PDF (p.12) confirma que la restricción temporal aplica solo 'En el caso de precancelación total', mientras que ambas (total o parcial) 'podrán dar lugar a la aplicación de comisiones'. ¿El nodo es pertinente? SÍ. Por el árbol → sin_defecto: la afirmación es fácticamente correcta y está soportada; el juez la marcó no_soportado erróneamente (falso positivo). Se emite como sin_par. Descarte de otras causas para esta pata: no es contenido_kg (nodo fiel), no es aplicacion_erronea (el contenido se usó dentro de su alcance), no es completitud_kg (el dato está). CONCLUSIÓN: la primaria que explica la reprobación es {faithfulness, completitud_kg} por la omisión de 'de ambos el mayor' en el nodo; la segunda afirmación reprobada es un falso positivo del juez {noise_sensitivity, sin_defecto}.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.1 (PDF pág 11)\", \"pasaje\": \"2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrios no podrá ser superior a… [+411 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "comision_por_precancelacion"
+      },
+      "output_truncado": "{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"properties\": {\"description\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"version\": \"vigente\", \"type_raw\": [\"Comisión permitida\"], \"type_raw_counts\": {\"Comisión permitida\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12-14 / Punto 2.3.2.1, párrafo segundo\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"En las operaciones de crédito, los sujetos obl igados podrán aplicar comisiones\\nsobre los importes no utilizados de los acuerdos de asignación de fondos, dado\\nque su puesta a disposición a los usuarios configura la prestación del servicio.\\nLa precancelación total o parcial de financiaciones podrá dar lugar a la aplica-\\nción de comisiones. En el caso de precancelación total, no se admitirá la apli-\\ncación de comisiones cuando al momento de efectuarla haya transcurrido al\\nmenos la cuarta parte del plazo original de la financiación o 180 días corridos\\ndesde su otorgamiento, de ambos el mayor.\\nAdemás, será de aplicación lo previsto en el punto 1.7. de l TO sobre Tasas de\\nInterés en las Operaciones de Crédito.\\n2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en o… [+1763 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p.13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"d) Generación de resúmenes de cuenta y envío de resúmenes de cuenta\\nvirtual (esos servicios deben estar incluidos en la comisión por manteni-\\nmiento de cuenta).\\ne) Evaluación, otorgamiento y/o administración de financiaciones.\\nf) Gastos de tasación, notariales o de escribanía que se originen en ocasión\\ndel otorgamiento o cancelación de financiaciones –tales como de\\nconstitución de prenda o hipoteca–.\\n2.3.3. Exposición de las tasas de interés y del costo financiero total (CFT) en los documentos.\\nPara las operaciones de financiación debe aplicarse lo dispuesto en el punto 3.2. de l\\nTO sobre Tasas de Interés en las Operaciones de Crédito.\\nLa falta de inclusión en los documentos de la tasa de interés y/o del costo financiero to-\\ntal determinará que el sujeto obligado podrá aplicar al usuario, como máximo CFT, la\\ntasa promedio que surja de la encuesta de tasas de interés de depósitos a plazo fijo de\\n30 a 59 días –de pesos o dólares estadounidenses, según la moneda de la operación –\\ninfor… [+1747 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "de ambos el mayor precancelación plazo",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"de ambos el mayor precancelación plazo\", \"total_con_match\": 1809, \"resultados\": [{\"id\": \"plazo_de_90_dias\", \"type\": \"restriccion_temporal\", \"label\": \"Plazo de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Período mínimo que debe transcurrir desde la adquisición de títulos valores en suscripción primaria antes de poder venderlos en mercado secundario con liquidaci…\"}, {\"id\": \"prorroga_de_plazo\", \"type\": \"mecanismo_de_regularizacion\", \"label\": \"Prórroga de plazo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Extensión del plazo para la demostración del registro de ingreso aduanero, concedida por la entidad a cargo del seguimiento o con conformidad del BCRA.\"}, {\"id\": \"ampliacion_de_plazo\", \"type\": \"procedimiento_administrativo\", \"label\": \"Ampliación de plazo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El exportador puede solicitar a la entidad encargada del seguimiento que el plazo para liquidación de divisas sea ampliado hasta la fecha en que se estima se ef…\"}, {\"id\": \"condiciones_de_plazo\", \"type\": \"parametro_regulatorio\", \"label\": \"Condiciones de plazo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Condiciones de plazo estipuladas para situac… [+1841 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "180 días corridos otorgamiento financiación mayor",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"180 días corridos otorgamiento financiación mayor\", \"total_con_match\": 79, \"resultados\": [{\"id\": \"plazo_de_180_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada previas al 1…\"}, {\"id\": \"atraso_mayor_a_31_dias\", \"type\": \"condicion_de_pago\", \"label\": \"Atraso mayor a 31 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Retraso en el pago de servicios de deuda refinanciada que supera los 31 días, generando reclasificación inmediata.\"}, {\"id\": \"plazo_de_90_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 90 días corridos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada a partir del…\"}, {\"id\": \"bien_con_plazo_de_180_o_mas_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 180 o más días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Bien que tiene asignado un plazo… [+1923 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"precancelación comisión financiación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"precancelación comisión financiación\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la …\"}, {\"id\": \"comision\", \"type\": \"tipo_de_costo\", \"label\": \"Comisión\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Retribución que obedece a servicios prestados por los sujetos obligados y puede incluir retribuciones que excedan el costo de la prestación.\"}, {\"id\": \"financiacion\", \"type\": \"producto_crediticio\", \"label\": \"Financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Créditos, préstamos y otras operaciones de intermediación financiera otorgadas por la entidad a sus clientes, sujetas a clasificación de riesgo.\"}, {\"id\": \"cuota_de_financiacion\", \"type\": \"componente_de_obligacion_crediticia\", \"label\": \"Cuota de financiación\", \"tokens_mat… [+2025 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27279,
+      "output_tokens": 261
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28589,
+      "output_tokens": 308
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31540,
+      "output_tokens": 1462
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35762,
+      "output_tokens": 747
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 37826,
+      "output_tokens": 4472
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 64,
+     "n_claims_fallidos": 2,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_4/CQ-028",
+   "run": "run_4",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación comisión financiación', limite: 10}",
+      "devolvio": "60 matches; primero comision_por_precancelacion con resumen 'restricción en precancelación total cuando haya transcurrido al menos la …'",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación total sujeto obligado', limite: 10}",
+      "devolvio": "sujeto_obligado, derecho_de_precancelacion_total_o_parcial, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'comision_por_precancelacion'}",
+      "devolvio": "description: 'Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.'",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'comision_por_precancelacion', direccion: 'ambas'}",
+      "devolvio": "puede_aplicar→sujeto_obligado; incluye→costo_financiero_total_cft",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación total restricción cuarta parte plazo', limite: 10}",
+      "devolvio": "derecho_de_precancelacion_total_o_parcial y nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'comisión precancelación no se admite prohibida', limite: 10}",
+      "devolvio": "comision_por_precancelacion y comisiones no relacionadas",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'precancelación sin comisión crédito hipotecario consumo', limite: 10}",
+      "devolvio": "comision_por_precancelacion y nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito hipotecario precancelación', limite: 10}",
+      "devolvio": "nodos de líneas de crédito del exterior, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'crédito hipotecario vivienda comisión', limite: 10}",
+      "devolvio": "prestamo_hipotecario_en_pesos_para_compra_de_vivienda, no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "ver_nodo",
+      "args": "{id: 'prestamo_hipotecario_en_pesos_para_compra_de_vivienda'}",
+      "devolvio": "definición de préstamo hipotecario con dólar MEP, no aporta a la restricción de precancelación",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito no se admite comisión precancelación', limite: 10}",
+      "devolvio": "1865 matches genéricos, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito no se admite', limite: 10}",
+      "devolvio": "nodos de proveedores de crédito, no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación crédito no se admite comisión', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito donde no se admite comisión', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     },
+     {
+      "paso": 15,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'operación de crédito donde no se admite', limite: 10}",
+      "devolvio": "nodos no pertinentes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente localizó el único nodo pertinente (comision_por_precancelacion) en el paso 1, lo abrió en el paso 3 y verificó sus vecinos en el paso 4. Ese nodo es el ÚNICO del grafo que porta la restricción de precancelación de financiaciones (confirmado con mis búsquedas: no existe otro nodo con el criterio 'de ambos el mayor'). El contenido del nodo dice 'la cuarta parte del plazo original o 180 días' y termina ahí, SIN el criterio decisorio 'de ambos el mayor' que el PDF sí tiene. El agente no podía extraer de su trayectoria el criterio correcto porque el grafo nunca se lo expuso; los pasos 5-15 fueron intentos razonables (búsquedas con términos de la pregunta) de encontrar más excepciones, que no arrojaron nada pertinente adicional. Actuó bien sobre lo que el grafo le dio.",
+    "thinking_decision": null,
+    "patas": [
+     "Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación",
+     "Si existe algún caso en que no se admita dicha comisión"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si existe algún caso en que no se admita dicha comisión (criterio decisorio entre cuarta parte del plazo y 180 días)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (abierto por el agente, paso 3, output íntegro)"
+      },
+      "fuente": {
+       "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "de ambos el mayor precancelación",
+       "resultado": "1792 matches, ninguno porta el criterio 'de ambos el mayor' para precancelación de financiaciones; solo nodos de operaciones cambiarias no pertinentes"
+      },
+      {
+       "consulta": "180 días corridos otorgamiento mayor plazo",
+       "resultado": "86 matches (plazo_de_180_dias_corridos y similares), todos referidos a acceso al mercado de cambios u otros regímenes; ninguno al criterio de precancelación del TO de protección de usuarios"
+      },
+      {
+       "consulta": "precancelación comisión financiación (paso 1 del agente)",
+       "resultado": "comision_por_precancelacion es el único nodo pertinente; su resumen y su description completa dicen 'o 180 días' sin 'de ambos el mayor'"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "context_recall_sin_pata"
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Precancelación parcial (afirmación no central marcada no_soportado por el juez)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.",
+       "ubicacion": "comision_por_precancelacion (paso 3 / resumen expuesto en paso 1)"
+      },
+      "fuente": {
+       "quote": "La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 2.3.2.1 / p.12",
+       "resultado": "El PDF enuncia la restricción temporal EXCLUSIVAMENTE 'en el caso de precancelación total'; la parcial 'podrá dar lugar a comisiones' sin esa restricción. La afirmación del agente es correcta contra el PDF y está soportada por el nodo consultado ('restricción en precancelación total'). Descarto contenido_kg (nodo fiel), faithfulness (soportado por resumen expuesto), aplicacion_erronea (nodo pertinente y bien aplicado): la afirmación no es defectuosa → falso positivo del juez"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas; la pata 1 (puede cobrar) fue aprobada. En la pata 2 (caso en que no se admite) el juez reprobó dos claims. (A) Claim central 'lo que ocurra primero': el PDF (p.12) dice textualmente 'de ambos el mayor' —el criterio opuesto (lo que ocurra ÚLTIMO)—. El dato pertinente que resuelve el 'o' (es decir, el criterio decisorio 'de ambos el mayor') NUNCA apareció en la trayectoria: el único nodo pertinente, comision_por_precancelacion (abierto por el agente en el paso 3, output íntegro verificado), dice 'la cuarta parte del plazo original o 180 días' y termina ahí, sin el criterio 'de ambos el mayor'. Por precedencia POR PATA (C1a), como el dato pertinente nunca se expuso, el síntoma es context_recall. Árbol context_recall: ¿existe nodo portador del dato faltante? El nodo portador existe y fue alcanzado, pero le FALTA el campo/criterio que el PDF sí tiene (búsquedas 'de ambos el mayor' y '180 días corridos mayor plazo' confirman que ningún nodo del grafo porta ese criterio para precancelación de financiaciones). No es alcanzabilidad (el nodo se alcanza sin problema y está incompleto, no oculto), ni navegación (el agente sí lo consultó), ni estructural (no falta una conexión sino un dato dentro del nodo). La provenance del nodo apunta correctamente al pasaje que lo funda (p.12), así que no es provenance_imprecisa: es una extracción incompleta del contenido → completitud_kg. Es la PRIMARIA: explica por qué el juez reprobó el claim central. El agente, ante el 'o' ambiguo del nodo, resolvió inventando 'lo que ocurra primero'; pero la raíz habilitante es el hueco del grafo (el criterio correcto nunca estuvo disponible), coherente con el árbol context_recall→completitud_kg. (B) Claim no central 'parcial sin restricción temporal', marcado no_soportado: está soportado por el resumen del nodo expuesto en la trayectoria ('restricción en precancelación total') y es CORRECTO contra el PDF, que limita la restricción del 'de ambos el mayor' exclusivamente a la precancelación total y establece que la parcial solo 'podrá dar lugar a comisiones'. Descarté activamente contenido_kg, faithfulness y aplicacion_erronea; la afirmación no es defectuosa → noise_sensitivity con causa sin_defecto (falso positivo del juez), jerarquía sin_par por ser afirmación no central y no defectuosa.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 8,
+    "max_tool_calls": 40,
+    "tokens_in": 196039,
+    "tokens_out": 7392
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 8,
+    "tokens_in": 196039,
+    "tokens_out": 7392,
+    "latency_s": 110.454,
+    "error": null,
+    "final_raw": "Confirmado el contenido íntegro del nodo: dice \"cuarta parte del plazo original **o** 180 días\" y termina ahí. No contiene \"de ambos el mayor\". El PDF sí lo tiene. La provenance apunta al pasaje correcto (p.12, párrafo de precancelación) que efectivamente funda el contenido — no es provenance imprecisa; simplemente la extracción omitió el criterio decisorio.\n\nEmito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación comisión financiación', limite: 10}\", \"devolvio\": \"60 matches; primero comision_por_precancelacion con resumen 'restricción en precancelación total cuando haya transcurrido al menos la …'\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación total sujeto obligado', limite: 10}\", \"devolvio\": \"sujeto_obligado, derecho_de_precancelacion_total_o_parcial, etc.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'comision_por_precancelacion'}\", \"devolvio\": \"description: 'Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.'\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'comision_por_precancelacion', direccion: 'ambas'}\", \"devolvio\": \"puede_aplicar→sujeto_obligado; incluye→costo_financiero_total_cft\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación total restricción cuarta parte plazo', limite: 10}\", \"devolvio\": \"derecho_de_precancelacion_total_o_parcial y nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'comisión precancelación no se admite prohibida', limite: 10}\", \"devolvio\": \"comision_por_precancelacion y comisiones no relacionadas\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'precancelación sin comisión crédito hipotecario consumo', limite: 10}\", \"devolvio\": \"comision_por_precancelacion y nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito hipotecario precancelación', limite: 10}\", \"devolvio\": \"nodos de líneas de crédito del exterior, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'crédito hipotecario vivienda comisión', limite: 10}\", \"devolvio\": \"prestamo_hipotecario_en_pesos_para_compra_de_vivienda, no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"ver_nodo\", \"args\": \"{id: 'prestamo_hipotecario_en_pesos_para_compra_de_vivienda'}\", \"devolvio\": \"definición de préstamo hipotecario con dólar MEP, no aporta a la restricción de precancelación\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito no se admite comisión precancelación', limite: 10}\", \"devolvio\": \"1865 matches genéricos, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito no se admite', limite: 10}\", \"devolvio\": \"nodos de proveedores de crédito, no pertinentes\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación crédito no se admite comisión', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito donde no se admite comisión', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'operación de crédito donde no se admite', limite: 10}\", \"devolvio\": \"nodos no pertinentes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó el único nodo pertinente (comision_por_precancelacion) en el paso 1, lo abrió en el paso 3 y verificó sus vecinos en el paso 4. Ese nodo es el ÚNICO del grafo que porta la restricción de precancelación de financiaciones (confirmado con mis búsquedas: no existe otro nodo con el criterio 'de ambos el mayor'). El contenido del nodo dice 'la cuarta parte del plazo original o 180 días' y termina ahí, SIN el criterio decisorio 'de ambos el mayor' que el PDF sí tiene. El agente no podía extraer de su trayectoria el criterio correcto porque el grafo nunca se lo expuso; los pasos 5-15 fueron intentos razonables (búsquedas con términos de la pregunta) de encontrar más excepciones, que no arrojaron nada pertinente adicional. Actuó bien sobre lo que el grafo le dio.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si un sujeto obligado puede cobrar comisión por precancelación total de una financiación\",\n      \"Si existe algún caso en que no se admita dicha comisión\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si existe algún caso en que no se admita dicha comisión (criterio decisorio entre cuarta parte del plazo y 180 días)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se admite comisión por precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días, lo que ocurra primero\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (abierto por el agente, paso 3, output íntegro)\"},\n        \"fuente\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor precancelación\", \"resultado\": \"1792 matches, ninguno porta el criterio 'de ambos el mayor' para precancelación de financiaciones; solo nodos de operaciones cambiarias no pertinentes\"},\n        {\"consulta\": \"180 días corridos otorgamiento mayor plazo\", \"resultado\": \"86 matches (plazo_de_180_dias_corridos y similares), todos referidos a acceso al mercado de cambios u otros regímenes; ninguno al criterio de precancelación del TO de protección de usuarios\"},\n        {\"consulta\": \"precancelación comisión financiación (paso 1 del agente)\", \"resultado\": \"comision_por_precancelacion es el único nodo pertinente; su resumen y su description completa dicen 'o 180 días' sin 'de ambos el mayor'\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Precancelación parcial (afirmación no central marcada no_soportado por el juez)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"En cambio, la comisión por precancelación parcial sí se permite sin esta restricción temporal.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"ubicacion\": \"comision_por_precancelacion (paso 3 / resumen expuesto en paso 1)\"},\n        \"fuente\": {\"quote\": \"La precancelación total o parcial de financiaciones podrá dar lugar a la aplicación de comisiones. En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p.12\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 2.3.2.1 / p.12\", \"resultado\": \"El PDF enuncia la restricción temporal EXCLUSIVAMENTE 'en el caso de precancelación total'; la parcial 'podrá dar lugar a comisiones' sin esa restricción. La afirmación del agente es correcta contra el PDF y está soportada por el nodo consultado ('restricción en precancelación total'). Descarto contenido_kg (nodo fiel), faithfulness (soportado por resumen expuesto), aplicacion_erronea (nodo pertinente y bien aplicado): la afirmación no es defectuosa → falso positivo del juez\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas; la pata 1 (puede cobrar) fue aprobada. En la pata 2 (caso en que no se admite) el juez reprobó dos claims. (A) Claim central 'lo que ocurra primero': el PDF (p.12) dice textualmente 'de ambos el mayor' —el criterio opuesto (lo que ocurra ÚLTIMO)—. El dato pertinente que resuelve el 'o' (es decir, el criterio decisorio 'de ambos el mayor') NUNCA apareció en la trayectoria: el único nodo pertinente, comision_por_precancelacion (abierto por el agente en el paso 3, output íntegro verificado), dice 'la cuarta parte del plazo original o 180 días' y termina ahí, sin el criterio 'de ambos el mayor'. Por precedencia POR PATA (C1a), como el dato pertinente nunca se expuso, el síntoma es context_recall. Árbol context_recall: ¿existe nodo portador del dato faltante? El nodo portador existe y fue alcanzado, pero le FALTA el campo/criterio que el PDF sí tiene (búsquedas 'de ambos el mayor' y '180 días corridos mayor plazo' confirman que ningún nodo del grafo porta ese criterio para precancelación de financiaciones). No es alcanzabilidad (el nodo se alcanza sin problema y está incompleto, no oculto), ni navegación (el agente sí lo consultó), ni estructural (no falta una conexión sino un dato dentro del nodo). La provenance del nodo apunta correctamente al pasaje que lo funda (p.12), así que no es provenance_imprecisa: es una extracción incompleta del contenido → completitud_kg. Es la PRIMARIA: explica por qué el juez reprobó el claim central. El agente, ante el 'o' ambiguo del nodo, resolvió inventando 'lo que ocurra primero'; pero la raíz habilitante es el hueco del grafo (el criterio correcto nunca estuvo disponible), coherente con el árbol context_recall→completitud_kg. (B) Claim no central 'parcial sin restricción temporal', marcado no_soportado: está soportado por el resumen del nodo expuesto en la trayectoria ('restricción en precancelación total') y es CORRECTO contra el PDF, que limita la restricción del 'de ambos el mayor' exclusivamente a la precancelación total y establece que la parcial solo 'podrá dar lugar a comisiones'. Descarté activamente contenido_kg, faithfulness y aplicacion_erronea; la afirmación no es defectuosa → noise_sensitivity con causa sin_defecto (falso positivo del juez), jerarquía sin_par por ser afirmación no central y no defectuosa.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3.2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2.1 (PDF pág 11)\", \"pasaje\": \"2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrios no podrá ser superior a… [+411 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "comision_por_precancelacion"
+      },
+      "output_truncado": "{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"properties\": {\"description\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"version\": \"vigente\", \"type_raw\": [\"Comisión permitida\"], \"type_raw_counts\": {\"Comisión permitida\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12-14 / Punto 2.3.2.1, párrafo segundo\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p.12"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"En las operaciones de crédito, los sujetos obl igados podrán aplicar comisiones\\nsobre los importes no utilizados de los acuerdos de asignación de fondos, dado\\nque su puesta a disposición a los usuarios configura la prestación del servicio.\\nLa precancelación total o parcial de financiaciones podrá dar lugar a la aplica-\\nción de comisiones. En el caso de precancelación total, no se admitirá la apli-\\ncación de comisiones cuando al momento de efectuarla haya transcurrido al\\nmenos la cuarta parte del plazo original de la financiación o 180 días corridos\\ndesde su otorgamiento, de ambos el mayor.\\nAdemás, será de aplicación lo previsto en el punto 1.7. de l TO sobre Tasas de\\nInterés en las Operaciones de Crédito.\\n2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en o… [+1763 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "p.13"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"d) Generación de resúmenes de cuenta y envío de resúmenes de cuenta\\nvirtual (esos servicios deben estar incluidos en la comisión por manteni-\\nmiento de cuenta).\\ne) Evaluación, otorgamiento y/o administración de financiaciones.\\nf) Gastos de tasación, notariales o de escribanía que se originen en ocasión\\ndel otorgamiento o cancelación de financiaciones –tales como de\\nconstitución de prenda o hipoteca–.\\n2.3.3. Exposición de las tasas de interés y del costo financiero total (CFT) en los documentos.\\nPara las operaciones de financiación debe aplicarse lo dispuesto en el punto 3.2. de l\\nTO sobre Tasas de Interés en las Operaciones de Crédito.\\nLa falta de inclusión en los documentos de la tasa de interés y/o del costo financiero to-\\ntal determinará que el sujeto obligado podrá aplicar al usuario, como máximo CFT, la\\ntasa promedio que surja de la encuesta de tasas de interés de depósitos a plazo fijo de\\n30 a 59 días –de pesos o dólares estadounidenses, según la moneda de la operación –\\ninfor… [+1747 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"precancelación comisión financiación\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"precancelación comisión financiación\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la …\"}, {\"id\": \"comision\", \"type\": \"tipo_de_costo\", \"label\": \"Comisión\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Retribución que obedece a servicios prestados por los sujetos obligados y puede incluir retribuciones que excedan el costo de la prestación.\"}, {\"id\": \"financiacion\", \"type\": \"producto_crediticio\", \"label\": \"Financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Créditos, préstamos y otras operaciones de intermediación financiera otorgadas por la entidad a sus clientes, sujetas a clasificación de riesgo.\"}, {\"id\": \"cuota_de_financiacion\", \"type\": \"componente_de_obligacion_crediticia\", \"label\": \"Cuota de financiación\", \"tokens_mat… [+2025 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "de ambos el mayor precancelación"
+      },
+      "output_truncado": "{\"consulta\": \"de ambos el mayor precancelación\", \"total_con_match\": 1792, \"resultados\": [{\"id\": \"precancelacion_de_deudas\", \"type\": \"operacion_de_pago_anticipado\", \"label\": \"Precancelación de deudas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cancelación de obligaciones en moneda extranjera con anterioridad al vencimiento, que requiere conformidad previa del BCRA excepto en situaciones específicas.\"}, {\"id\": \"orden_de_prelacion_en_el_pago\", \"type\": \"estructura_de_titulizacion\", \"label\": \"Orden de prelación en el pago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Jerarquía claramente definida de pago de compromisos de la titulización que debe contar con respaldo jurídico y no puede estructurarse como cascada inversa.\"}, {\"id\": \"proyectos_de_inversion_en_el_pais\", \"type\": \"proyecto_regulado\", \"label\": \"Proyectos de inversión en el país\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Proyectos de inversión financiados con fondos liquidados en el mercado de cambios que deben generar aumento en la producción de bienes para exportación o sustit…\"}, {\"id\": \"retiro_de_efectivo_en_el_exterior\", \"type\": \"operacion_cambiaria\", \"label\": \"Retiro de efectivo en el exterior\", \"tokens_… [+1978 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "180 días corridos otorgamiento mayor plazo"
+      },
+      "output_truncado": "{\"consulta\": \"180 días corridos otorgamiento mayor plazo\", \"total_con_match\": 86, \"resultados\": [{\"id\": \"plazo_de_180_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada previas al 1…\"}, {\"id\": \"plazo_de_90_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo de 90 días corridos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo requerido desde la fecha de prestación o devengamiento del servicio para acceso al mercado de cambios en operaciones de contraparte vinculada a partir del…\"}, {\"id\": \"bien_con_plazo_de_180_o_mas_dias\", \"type\": \"categoria_de_bien\", \"label\": \"Bien con plazo de 180 o más días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Bien que tiene asignado un plazo de 180 o más días corridos conforme a los puntos 7.1.1.4. y 7.1.1.5., con coeficiente del 15% para cálculo de monto máximo.\"}, {\"id\": \"plazo_adicional_de_15_dias_corridos\", \"type\": \"requisito_temporal\", \"label\": \"Plazo adicional de 15 días corridos\", \"tokens_matcheados… [+2099 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"comision_por_precancelacion\"}, \"output_completo\": {\"id\": \"comision_por_precancelacion\", \"type\": \"comision_permitida\", \"label\": \"Comisión por precancelación\", \"properties\": {\"description\": \"Comisión que puede aplicarse por precancelación total o parcial de financiaciones, con restricción en precancelación total cuando haya transcurrido al menos la cuarta parte del plazo original o 180 días.\", \"version\": \"vigente\", \"type_raw\": [\"Comisión permitida\"], \"type_raw_counts\": {\"Comisión permitida\": 1}, \"name_variants\": [], \"n_observations\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p.12-14 / Punto 2.3.2.1, párrafo segundo\"}]}}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27279,
+      "output_tokens": 237
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28565,
+      "output_tokens": 288
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31496,
+      "output_tokens": 356
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33169,
+      "output_tokens": 1307
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37329,
+      "output_tokens": 556
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 38201,
+      "output_tokens": 4648
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 64,
+     "n_claims_fallidos": 2,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "completitud_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 2,
+    "reps": [
+     1,
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "atribucion_no_verificable"
+  ],
+  "flags": [
+   "R6b: rep 1 atrib 1 — context_recall_sin_pata",
+   "R6b: rep 2 atrib 1 — claim_no_mapeado",
+   "R6b: rep 3 atrib 1 — context_recall_sin_pata"
+  ]
+ },
+ "version_capa": "v6.1-D(2026-07)"
+}

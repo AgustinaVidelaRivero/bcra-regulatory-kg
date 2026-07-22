@@ -1,0 +1,643 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-028",
+    "run": "run_1",
+    "categoria": "cadena_restriccion_excepcion",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-028",
+      "question": "¿Puede un sujeto obligado cobrar una comisión por la precancelación total de una financiación? ¿Existe algún caso en que no se admita?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "precancelación comisión financiación",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"precancelación comisión financiación\", \"total_con_match\": 56, \"resultados\": [{\"id\": \"ins_financiacion_rotativa\", \"type\": \"INSTRUMENT\", \"label\": \"financiación rotativa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Financiaciones en las cuales los prestatarios están autorizados a realizar giros y cancelaciones dentro de límites convenidos en una línea de crédito, incluyend…\"}, {\"id\": \"ins_intereses_de_financiacion\", \"type\": \"INSTRUMENT\", \"label\": \"intereses de financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Conceptos de intereses generados en las financiaciones que deben cumplir con plazos de vencimiento.\"}, {\"id\": \"ope_financiacion_de_exportacion\", \"type\": \"OPERATION\", \"label\": \"Financiación de exportación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Financiación general para exportaciones de bienes, incluyendo líneas de crédito y otras modalidades.\"}, {\"id\": \"ope_operaciones_de_financiacion\", \"type\": \"OPERATION\", \"label\": \"Operaciones de financiación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones de crédito de cualquier tipo, sujetas a información regulada en el Texto Ordenado sobre Tasas de Interés.\"}, {\"id\": \"ope_financiacion_d… [+1813 chars]",
+          "output_chars": 3013
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "precancelación total sujeto obligado",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"precancelación total sujeto obligado\", \"total_con_match\": 51, \"resultados\": [{\"id\": \"rsj_sujeto_obligado\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"sujeto obligado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Entidad financiera sujeta a las normas de protección de usuarios que ofrece servicios financieros y productos como cajas de ahorros, cuentas corrientes y financ…\"}, {\"id\": \"prc_reclamacion_ante_sujeto_obligado\", \"type\": \"PROCESS\", \"label\": \"reclamación ante sujeto obligado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Procedimiento mediante el cual el usuario presenta reclamo por cobros indebidos, iniciando plazo de reintegro de diez días hábiles.\"}, {\"id\": \"req_derecho_de_precancelacion_total_o_parcial\", \"type\": \"REQUIREMENT\", \"label\": \"derecho de precancelación total o parcial\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Derecho del usuario de efectuar en cualquier momento del plazo del crédito precancelaciones totales o parciales con ajuste a lo previsto en el punto 2.3.2.1.\"}, {\"id\": \"ope_precancelacion_total_o_parcial_de_financiaciones\", \"type\": \"OPERATION\", \"label\": \"Precancelación total o parcial de financiaciones\", \"tokens_matcheados\": 2, \"res… [+1762 chars]",
+          "output_chars": 2962
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias"
+          },
+          "output_truncado": "{\"id\": \"req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias\", \"type\": \"REQUIREMENT\", \"label\": \"prohibición de comisiones en precancelación total tras cuarta parte del plazo o 180 días\", \"properties\": {\"version\": \"A 8433\", \"description\": \"No se admite aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original o 180 días desde el otorgamiento.\", \"aliases\": [\"Comisiones por precancelación total\"], \"source_to\": \"proteccion_usuarios\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\"}]}",
+          "output_chars": 661
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "ope_precancelacion_total_o_parcial_de_financiaciones"
+          },
+          "output_truncado": "{\"id\": \"ope_precancelacion_total_o_parcial_de_financiaciones\", \"type\": \"OPERATION\", \"label\": \"Precancelación total o parcial de financiaciones\", \"properties\": {\"version\": \"A 8433\", \"description\": \"Cancelación anticipada de financiaciones que puede dar lugar a aplicación de comisiones.\", \"aliases\": [\"Precancelación total o parcial\"], \"source_to\": \"proteccion_usuarios\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\"}]}",
+          "output_chars": 504
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias\", \"label\": \"prohibición de comisiones en precancelación total tras cuarta parte del plazo o 180 días\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"da_lugar_a\", \"vecino_id\": \"ope_precancelacion_total_o_parcial_de_financiaciones\", \"vecino_label\": \"Precancelación total o parcial de financiaciones\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 619
+        },
+        {
+          "n": 6,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "ope_precancelacion_total_o_parcial_de_financiaciones",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"ope_precancelacion_total_o_parcial_de_financiaciones\", \"label\": \"Precancelación total o parcial de financiaciones\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"da_lugar_a\", \"vecino_id\": \"req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias\", \"vecino_label\": \"prohibición de comisiones en precancelación total tras cuarta parte del plazo o 180 días\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+          "output_chars": 619
+        },
+        {
+          "n": 7,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "comisión precancelación admite se permite",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"comisión precancelación admite se permite\", \"total_con_match\": 17, \"resultados\": [{\"id\": \"req_cobranza_de_comision_y_o_cargo\", \"type\": \"REQUIREMENT\", \"label\": \"cobranza de comisión y/o cargo\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Exigencia de instrumentar mediante concepto individualizado específicamente el cobro de comisiones o cargos por operaciones de canjes y arbitrajes.\"}, {\"id\": \"reg_comision_nacional_de_valores_cnv\", \"type\": \"REGULATOR\", \"label\": \"Comisión Nacional de Valores (CNV)\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Órgano regulador que establece las disposiciones sobre emisión de pagarés con oferta pública (Resolución General 1.003/24) y valores de deuda fiduciaria.\"}, {\"id\": \"rsj_entidad_por_la_cual_se_curso_el_pago\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"Entidad por la cual se cursó el pago\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entidad encargada del seguimiento del pago con registro de ingreso aduanero pendiente y responsable de reportar al BCRA.\"}, {\"id\": \"req_comision_por_prestamo_hipotecario_mep\", \"type\": \"REQUIREMENT\", \"label\": \"comisión por préstamo hipotecario MEP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"… [+2063 chars]",
+          "output_chars": 3263
+        },
+        {
+          "n": 8,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "comisión precancelación cuarta parte plazo 180 días",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"comisión precancelación cuarta parte plazo 180 días\", \"total_con_match\": 171, \"resultados\": [{\"id\": \"req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias\", \"type\": \"REQUIREMENT\", \"label\": \"prohibición de comisiones en precancelación total tras cuarta parte del plazo o 180 días\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"No se admite aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original o 180 días desde el otorgamiento.\"}, {\"id\": \"req_plazo_de_180_dias\", \"type\": \"REQUIREMENT\", \"label\": \"Plazo de 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo establecido para concertación de acuerdo con más de dos entidades financieras desde verificación de mora.\"}, {\"id\": \"req_plazo_de_180_dias_corridos\", \"type\": \"REQUIREMENT\", \"label\": \"Plazo de 180 días corridos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Plazo que debe transcurrir desde la fecha de prestación o devengamiento del servicio si esa fecha es previa al 14/04/25, para pago a contraparte vinculada.\"}, {\"id\": \"req_plazo_de_180_dias_corridos_para_cobro_de_exportaciones\", \"type\": \"REQUIREMENT\", \"label… [+2355 chars]",
+          "output_chars": 3555
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1476,
+          "output_tokens": 174,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.693
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3641,
+          "output_tokens": 182,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.781
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 228,
+          "cache_read": 0,
+          "cache_write": 4248,
+          "latency_s": 1.891
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 118,
+          "cache_read": 4248,
+          "cache_write": 727,
+          "latency_s": 1.752
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 6,
+          "output_tokens": 123,
+          "cache_read": 4975,
+          "cache_write": 1208,
+          "latency_s": 2.737
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 6,
+          "output_tokens": 263,
+          "cache_read": 6183,
+          "cache_write": 1340,
+          "latency_s": 3.706
+        }
+      ],
+      "final_json": {
+        "respuesta": "Sí, un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación, pero existe una excepción importante: no se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días desde el otorgamiento, lo que ocurra primero. En otras palabras, las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación (antes de que se cumpla la cuarta parte del plazo o 180 días).",
+        "citas": [
+          {
+            "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+            "location": "p. 12"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Perfecto. Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta de manera completa y precisa.\n\n```json\n{\n  \"respuesta\": \"Sí, un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación, pero existe una excepción importante: no se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días desde el otorgamiento, lo que ocurra primero. En otras palabras, las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación (antes de que se cumpla la cuarta parte del plazo o 180 días).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\",\n      \"location\": \"p. 12\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 8,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "p. 12"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5143,
+      "tokens_out": 1088,
+      "cache_read": 15406,
+      "cache_write": 7523,
+      "cost_usd": 0.021527,
+      "latency_s": 13.576,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01GyqrppgVq18Uu9t3rdRYEX",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre comisiones por precancelación de financiaciones en la regulación del BCRA.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0186NPvwbnkDUXYJRDRfwWUS",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "precancelación comisión financiación",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01JNz5JeEroeWPpQm9uFMgSC",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "precancelación total sujeto obligado",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1476,
+            "output_tokens": 174,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01SZzosm9D55YBjfmXk8Xnsu",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente, encontré un nodo muy relevante. Voy a ver los detalles de la prohibición de comisiones en precancelación total.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_013x8RtFpbV3A9PfXvd3fp6u",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LSQkFDz7vAcXnNfvmXLJNq",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "ope_precancelacion_total_o_parcial_de_financiaciones"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3641,
+            "output_tokens": 182,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01HBBApbUgagZ6Nt1TiA2nGd",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Ahora voy a explorar las relaciones de estos nodos para obtener más contexto sobre cuándo se admiten y cuándo no se admiten las comisiones.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01LAi8FQxHfdH42gN2THVvy8",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "req_prohibicion_de_comisiones_en_precancelacion_total_tras_cuarta_parte_del_plazo_o_180_dias",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01FidMDKBm4tQKvq6RogGofi",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "ope_precancelacion_total_o_parcial_de_financiaciones",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4248
+            },
+            "cache_creation_input_tokens": 4248,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 228,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01KzPKDKsLoxKYfSZ8mDEYwU",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más información sobre cuándo SÍ se admiten comisiones en precancelación, para dar una respuesta completa.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Mchjeet4UBkyJ6s5tWgV5t",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "comisión precancelación admite se permite",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 727
+            },
+            "cache_creation_input_tokens": 727,
+            "cache_read_input_tokens": 4248,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 118,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_015ckcXcXPLCHKwoAUd3EkPY",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información más específica sobre cuándo se admiten comisiones en precancelación (antes de la cuarta parte del plazo).",
+              "type": "text"
+            },
+            {
+              "id": "toolu_016c6sijg8Krd1uXXVmxYrsh",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "comisión precancelación cuarta parte plazo 180 días",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1208
+            },
+            "cache_creation_input_tokens": 1208,
+            "cache_read_input_tokens": 4975,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 123,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01PKEqmQrBbscZQZaaYu5TiG",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta de manera completa y precisa.\n\n```json\n{\n  \"respuesta\": \"Sí, un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación, pero existe una excepción importante: no se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días desde el otorgamiento, lo que ocurra primero. En otras palabras, las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación (antes de que se cumpla la cuarta parte del plazo o 180 días).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\",\n      \"location\": \"p. 12\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1340
+            },
+            "cache_creation_input_tokens": 1340,
+            "cache_read_input_tokens": 6183,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 263,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "incorrecta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Afirmación central falsa: El criterio para la excepción es el que ocurra primero entre la cuarta parte del plazo original y los 180 días.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento correcto (TO protección usuarios) pero solo a nivel de página, sin identificar el punto 2.3.2.1."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "Un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación.",
+            "central": true
+          },
+          {
+            "enunciado": "No se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación.",
+            "central": true
+          },
+          {
+            "enunciado": "No se admite la aplicación de comisiones en precancelación total si han transcurrido al menos 180 días desde el otorgamiento.",
+            "central": true
+          },
+          {
+            "enunciado": "El criterio para la excepción es el que ocurra primero entre la cuarta parte del plazo original y los 180 días.",
+            "central": true
+          },
+          {
+            "enunciado": "Las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación, antes de que se cumpla la cuarta parte del plazo o 180 días.",
+            "central": false
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "¿Puede un sujeto obligado cobrar una comisión por la precancelación total de una financiación?",
+          "¿Existe algún caso en que no se admita dicha comisión?"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "Un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "No se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "No se admite la aplicación de comisiones en precancelación total si han transcurrido al menos 180 días desde el otorgamiento.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El criterio para la excepción es el que ocurra primero entre la cuarta parte del plazo original y los 180 días.",
+            "central": true,
+            "verdict": "falso"
+          },
+          {
+            "enunciado": "Las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación, antes de que se cumpla la cuarta parte del plazo o 180 días.",
+            "central": false,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "¿Puede un sujeto obligado cobrar una comisión por la precancelación total de una financiación?",
+            "cobertura": "cubierta"
+          },
+          {
+            "pata": "¿Existe algún caso en que no se admita dicha comisión?",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento correcto (TO protección usuarios) pero solo a nivel de página, sin identificar el punto 2.3.2.1.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2730,
+        "out": 948
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011B8CGwuXVGaMQFPk9wti6Q",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\n      \"enunciado\": \"Un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"No se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"No se admite la aplicación de comisiones en precancelación total si han transcurrido al menos 180 días desde el otorgamiento.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"El criterio para la excepción es el que ocurra primero entre la cuarta parte del plazo original y los 180 días.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"Las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación, antes de que se cumpla la cuarta parte del plazo o 180 días.\",\n      \"central\": false\n    }\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"¿Puede un sujeto obligado cobrar una comisión por la precancelación total de una financiación?\",\n    \"¿Existe algún caso en que no se admita dicha comisión?\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 720,
+            "output_tokens": 379,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011f7t7wgzAFVMmLLndAKzky",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"Un sujeto obligado puede cobrar una comisión por la precancelación total de una financiación.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"No se admite la aplicación de comisiones en precancelación total si ha transcurrido al menos la cuarta parte del plazo original de la financiación.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"No se admite la aplicación de comisiones en precancelación total si han transcurrido al menos 180 días desde el otorgamiento.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El criterio para la excepción es el que ocurra primero entre la cuarta parte del plazo original y los 180 días.\",\n      \"central\": true,\n      \"verdict\": \"falso\"\n    },\n    {\n      \"enunciado\": \"Las comisiones por precancelación total solo se pueden cobrar durante el período inicial de la financiación, antes de que se cumpla la cuarta parte del plazo o 180 días.\",\n      \"central\": false,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"¿Puede un sujeto obligado cobrar una comisión por la precancelación total de una financiación?\",\n      \"cobertura\": \"cubierta\"\n    },\n    {\n      \"pata\": \"¿Existe algún caso en que no se admita dicha comisión?\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento correcto (TO protección usuarios) pero solo a nivel de página, sin identificar el punto 2.3.2.1.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 2010,
+            "output_tokens": 569,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.021527,
+    "judge_cost": 0.02241
+  }
+]

@@ -1,0 +1,909 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-034",
+    "run": "run_5",
+    "categoria": "cadena_restriccion_excepcion",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-034",
+      "question": "Una persona humana residente compra moneda extranjera para atesorar; ¿qué límite mensual aplica si la operación se cursa con débito en cuenta frente a si se realiza en efectivo, y qué límite general rige para otras modalidades de formación de activos externos?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "persona humana residente compra moneda extranjera atesorar límite mensual",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"persona humana residente compra moneda extranjera atesorar límite mensual\", \"total_con_match\": 270, \"resultados\": [{\"id\": \"persona_humana_residente\", \"type\": \"Concepto\", \"label\": \"Persona humana residente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona humana que tiene su centro de interés económico o actividad principal dentro de las fronteras de un país, o que permanece o tiene intención de permanece…\"}, {\"id\": \"compra_de_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria c…\"}, {\"id\": \"compra_de_billetes_en_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de cambio para adquisición de billetes en moneda extranjera para tenencia o constitución de depósitos.\"}, {\"id\": \"compra_de_moneda_extranjera_para_garantias\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera para garantías\", \"tokens_matcheados\": 3, \"resumen_propi… [+1744 chars]",
+          "output_chars": 2944
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "límite compra dólares débito cuenta efectivo",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"límite compra dólares débito cuenta efectivo\", \"total_con_match\": 205, \"resultados\": [{\"id\": \"limite_de_compra_con_efectivo_usd_100_mensual\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo USD 100 mensual\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades y conceptos.\"}, {\"id\": \"debito_en_moneda_de_cuenta\", \"type\": \"Restriccion\", \"label\": \"Débito en moneda de cuenta\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si la transferencia corresponde a la misma moneda en que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior\"}, {\"id\": \"limite_de_efectivo_usd_100\", \"type\": \"Restriccion\", \"label\": \"Límite de efectivo USD 100\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario.\"}, {\"id\": \"debito_en_cuenta_del_cliente\", \"type\": \"Restriccion\", \"label\": \"Débito en cuenta del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La operación debe cursarse con débito en cuenta del cliente en entidades financieras loc… [+1725 chars]",
+          "output_chars": 2925
+        },
+        {
+          "n": 3,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "formación activos externos límite general",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"formación activos externos límite general\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de formación de activos externos mediante códigos de concepto A01, A02, A03, A04, A06, A07, A08, A09, A14 y A24.\"}, {\"id\": \"formacion_de_activos_externos_en_billetes\", \"type\": \"Concepto\", \"label\": \"Formación de activos externos en billetes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Concepto regulatorio referenciado en punto 3.8 que aplica a extracciones con tarjeta en pesos.\"}, {\"id\": \"limite_de_activos_externos_liquidos_usd_100_000\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos USD 100.000\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cliente declara que sus tenencias de moneda extranjera en el país están depositadas en entidades financieras y no posee CEDEARs ni activos externos líquidos …\"}, {\"id\": \"extraccion_con_debito_en_pesos_encuadrada_en_formacion_de_ac\", \"type\": \"Restriccion\", \"label\": \"Extracción con débito en pesos encuadrada en formación de activos externos\", \"tokens_matcheados\"… [+2082 chars]",
+          "output_chars": 3282
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "limite_de_compra_con_efectivo_usd_100_mensual"
+          },
+          "output_truncado": "{\"id\": \"limite_de_compra_con_efectivo_usd_100_mensual\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo USD 100 mensual\", \"properties\": {\"description\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades y conceptos.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}",
+          "output_chars": 482
+        },
+        {
+          "n": 5,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "compra_de_moneda_extranjera_para_activos_externos"
+          },
+          "output_truncado": "{\"id\": \"compra_de_moneda_extranjera_para_activos_externos\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera para activos externos\", \"properties\": {\"description\": \"Compra de moneda extranjera por parte de personas humanas residentes para formación de activos externos bajo otras modalidades, remisión de ayuda familiar u operaciones con derivados\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9\"}]}",
+          "output_chars": 451
+        },
+        {
+          "n": 6,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "compra_de_moneda_extranjera"
+          },
+          "output_truncado": "{\"id\": \"compra_de_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"properties\": {\"description\": \"Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria con derivados.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}",
+          "output_chars": 481
+        },
+        {
+          "n": 7,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "formacion_de_activos_externos"
+          },
+          "output_truncado": "{\"id\": \"formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"properties\": {\"description\": \"Operación de formación de activos externos mediante códigos de concepto A01, A02, A03, A04, A06, A07, A08, A09, A14 y A24.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10 — Compra de moneda extranjera por parte de otros residentes –excluidas las + Punto 3.11 — Otras compras de moneda extranjera por parte de residentes con aplicación + Punto 3.13 — Repatriaciones de inversiones directas y otras compras de moneda extranjera + Punto 3.15 — Cancelación por parte de entidades financieras de líneas de crédito del exterior + Punto 3.17 — Acceso con “Certificación por los regímenes de acceso a divisas para la\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}",
+          "output_chars": 948
+        },
+        {
+          "n": 8,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "compra_de_moneda_extranjera",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"compra_de_moneda_extranjera\", \"label\": \"Compra de moneda extranjera\", \"n_salientes_total\": 4, \"n_entrantes_total\": 10, \"salientes\": [{\"relation\": \"beneficia_a\", \"vecino_id\": \"persona_humana_residente\", \"vecino_label\": \"Persona humana residente\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"comprende\", \"vecino_id\": \"formacion_de_activos_externos\", \"vecino_label\": \"Formación de activos externos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"comprende\", \"vecino_id\": \"remision_de_ayuda_familiar\", \"vecino_label\": \"Remisión de ayuda familiar\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"comprende\", \"vecino_id\": \"operatoria_con_derivados\", \"vecino_label\": \"Operatoria con derivados\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"locat… [+134 chars]",
+          "output_chars": 1334
+        },
+        {
+          "n": 9,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "compra_de_moneda_extranjera_para_activos_externos",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"compra_de_moneda_extranjera_para_activos_externos\", \"label\": \"Compra de moneda extranjera para activos externos\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false}",
+          "output_chars": 215
+        },
+        {
+          "n": 10,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "límite débito cuenta USD 250 mensual",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"límite débito cuenta USD 250 mensual\", \"total_con_match\": 155, \"resultados\": [{\"id\": \"limite_mensual_de_usd_200\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de USD 200\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cliente no puede superar el equivalente a USD 200 en el mes calendario en el conjunto de entidades y conceptos permitidos.\"}, {\"id\": \"limite_de_compra_con_efectivo_usd_100_mensual\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo USD 100 mensual\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades y conceptos.\"}, {\"id\": \"limite_de_usd_200_000\", \"type\": \"Concepto\", \"label\": \"Límite de USD 200.000\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Techo máximo de deuda pendiente para validar gestión de cobro por agencias de recupero o asegurador sin cobertura.\"}, {\"id\": \"limite_de_usd_5_millones\", \"type\": \"Concepto\", \"label\": \"Límite de USD 5 millones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Monto pendiente de regularización por pagos anticipados de importaciones a partir del cual se requiere conformidad pr… [+1651 chars]",
+          "output_chars": 2851
+        },
+        {
+          "n": 11,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "compra moneda extranjera débito cuenta límite mensual",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"compra moneda extranjera débito cuenta límite mensual\", \"total_con_match\": 286, \"resultados\": [{\"id\": \"debito_en_moneda_de_cuenta\", \"type\": \"Restriccion\", \"label\": \"Débito en moneda de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si la transferencia corresponde a la misma moneda en que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior\"}, {\"id\": \"compra_de_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria c…\"}, {\"id\": \"deposito_en_cuenta_moneda_extranjera\", \"type\": \"Restriccion\", \"label\": \"Depósito en cuenta moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los fondos adquiridos deben depositarse en cuentas en moneda extranjera de titularidad del residente abiertas en entidades financieras locales\"}, {\"id\": \"arbitraje_debito_en_moneda_extranjera\", \"type\": \"Restriccion\", \"label\": \"Arbitraje débito en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operacio… [+2045 chars]",
+          "output_chars": 3245
+        },
+        {
+          "n": 12,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "limite_mensual_de_usd_200"
+          },
+          "output_truncado": "{\"id\": \"limite_mensual_de_usd_200\", \"type\": \"Restriccion\", \"label\": \"Límite mensual de USD 200\", \"properties\": {\"description\": \"El cliente no puede superar el equivalente a USD 200 en el mes calendario en el conjunto de entidades y conceptos permitidos.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}",
+          "output_chars": 431
+        },
+        {
+          "n": 13,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "limite_mensual_de_usd_200",
+            "direccion": "entrantes"
+          },
+          "output_truncado": "{\"id\": \"limite_mensual_de_usd_200\", \"label\": \"Límite mensual de USD 200\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"entrantes\": [], \"entrantes_truncado\": false}",
+          "output_chars": 167
+        },
+        {
+          "n": 14,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "limite_mensual_de_usd_200",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"limite_mensual_de_usd_200\", \"label\": \"Límite mensual de USD 200\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"compra_de_moneda_extranjera\", \"vecino_label\": \"Compra de moneda extranjera\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}, {\"relation\": \"recae_sobre\", \"vecino_id\": \"entidades_financieras_locales__otra\", \"vecino_label\": \"Entidades financieras locales\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}], \"salientes_truncado\": false}",
+          "output_chars": 762
+        },
+        {
+          "n": 15,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "compra moneda extranjera billetes depósitos débito cuenta",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"compra moneda extranjera billetes depósitos débito cuenta\", \"total_con_match\": 231, \"resultados\": [{\"id\": \"compra_de_moneda_extranjera_para_billetes_y_depositos\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera para billetes y depósitos\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos en forma de billetes y/o depósitos\"}, {\"id\": \"compra_de_billetes_en_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de billetes en moneda extranjera\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Operación de cambio para adquisición de billetes en moneda extranjera para tenencia o constitución de depósitos.\"}, {\"id\": \"debito_en_moneda_de_cuenta\", \"type\": \"Restriccion\", \"label\": \"Débito en moneda de cuenta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si la transferencia corresponde a la misma moneda en que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior\"}, {\"id\": \"compra_de_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de acceso … [+1964 chars]",
+          "output_chars": 3164
+        },
+        {
+          "n": 16,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "punto 3.8 compra moneda extranjera personas humanas residentes",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"punto 3.8 compra moneda extranjera personas humanas residentes\", \"total_con_match\": 287, \"resultados\": [{\"id\": \"compra_de_moneda_extranjera_por_residentes\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera por residentes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Operación de compra de moneda extranjera realizada por residentes\"}, {\"id\": \"compra_de_moneda_extranjera\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de acceso al mercado de cambios para personas humanas residentes con fines de formación de activos externos, remisión de ayuda familiar u operatoria c…\"}, {\"id\": \"personas_humanas_residentes\", \"type\": \"Concepto\", \"label\": \"Personas humanas residentes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Personas físicas con residencia en Argentina que acceden al mercado de cambios.\"}, {\"id\": \"criterios_de_inclusion_punto_8_3_5\", \"type\": \"Restriccion\", \"label\": \"Criterios de inclusión punto 8.3.5\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Criterios establecidos para inclusión de participaciones minoritarias e instrumentos de subsidiarias en capitalización computable.\"}… [+2031 chars]",
+          "output_chars": 3231
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1505,
+          "output_tokens": 257,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.974
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 261,
+          "cache_read": 0,
+          "cache_write": 4857,
+          "latency_s": 2.463
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 199,
+          "cache_read": 4857,
+          "cache_write": 1124,
+          "latency_s": 2.301
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 180,
+          "cache_read": 5981,
+          "cache_write": 792,
+          "latency_s": 2.051
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 165,
+          "cache_read": 6773,
+          "cache_write": 2243,
+          "latency_s": 1.974
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 113,
+          "cache_read": 9016,
+          "cache_write": 428,
+          "latency_s": 1.449
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 219,
+          "cache_read": 9444,
+          "cache_write": 397,
+          "latency_s": 2.653
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 2,
+          "output_tokens": 575,
+          "cache_read": 9841,
+          "cache_write": 2408,
+          "latency_s": 5.995
+        }
+      ],
+      "final_json": {
+        "respuesta": "Según la regulación del BCRA: (1) Si la operación se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos. (2) Para operaciones con débito en cuenta, el límite mensual es USD 200 en el mes calendario. Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos. Sin embargo, no se encontró en los documentos consultados un límite general específico diferenciado para otras modalidades de formación de activos externos distintas a billetes y depósitos.",
+        "citas": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos"
+          },
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos"
+          }
+        ],
+        "respondible": false
+      },
+      "final_raw": "Basándome en la información recolectada del Knowledge Graph, puedo responder parcialmente la pregunta, pero hay información que no está completamente disponible en los datos obtenidos.\n\nDe acuerdo con lo encontrado:\n\n1. **Límite con efectivo**: USD 100 mensual\n2. **Límite con débito en cuenta**: USD 200 mensual (aplica a \"Compra de moneda extranjera\" por personas humanas residentes)\n3. **Límite general para otras modalidades de formación de activos externos**: No encontré un límite general específico diferenciado en los nodos consultados.\n\nSin embargo, debo ser honesto sobre las limitaciones: aunque encontré referencias al Punto 3.8 (compra con efectivo) y Punto 3.9 (compra de moneda extranjera general), no pude confirmar explícitamente que el límite de USD 200 sea específicamente para débito en cuenta versus otras modalidades, ni encontré un límite general claramente definido para \"otras modalidades de formación de activos externos\" como pregunta el usuario.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA: (1) Si la operación se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos. (2) Para operaciones con débito en cuenta, el límite mensual es USD 200 en el mes calendario. Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos. Sin embargo, no se encontró en los documentos consultados un límite general específico diferenciado para otras modalidades de formación de activos externos distintas a billetes y depósitos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 16,
+      "hit_tool_limit": true,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la for"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.10 — Compra de moneda extranjera por parte de otros residentes –excluidas las + Punto 3.11 — Otras compras de moneda extranjera por parte de residentes con aplicación + Punto 3.13 — Repatriaciones de inversiones directas y otras compras de moneda extranjera + Punto 3.15 — Cancelación por parte de entidades financieras de líneas de crédito del exterior + Punto 3.17 — Acceso con “Certificación por los regímenes de acceso a divisas para la"
+        }
+      ],
+      "citations_unseen_raw": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos"
+        }
+      ],
+      "citations_unseen_normalized": [],
+      "tokens_in": 1547,
+      "tokens_out": 1969,
+      "cache_read": 45912,
+      "cache_write": 12249,
+      "cost_usd": 0.031294,
+      "latency_s": 20.885,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01HUd61rBGMVhdX1mqNBfwfc",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre los límites de compra de moneda extranjera para personas humanas residentes según la modalidad de pago.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Tk5Y2giZGBzdKNkURJ4ZVp",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "persona humana residente compra moneda extranjera atesorar límite mensual",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_016LgMVZ5LqErB32B8rhG3BN",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "límite compra dólares débito cuenta efectivo",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01DAKcyMnmiJdqybuj72zP2o",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "formación activos externos límite general",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1505,
+            "output_tokens": 257,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_015hcXbLZNVBt3ALNh3MUydA",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Encontré nodos relevantes. Ahora voy a ver los detalles de los límites específicos y las operaciones de formación de activos externos.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Nh3TvH9KJvkmW4MwUpdsaB",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "limite_de_compra_con_efectivo_usd_100_mensual"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01DvzSPnDRbSjVFzGSdzB1R9",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "compra_de_moneda_extranjera_para_activos_externos"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01WXJowTN7kaL5dXq1K2Vujy",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "compra_de_moneda_extranjera"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01WiaMBEDC3KrB6JJ4pFWJti",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "formacion_de_activos_externos"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4857
+            },
+            "cache_creation_input_tokens": 4857,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 261,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011QXTHCtb5PruJBzJanjtt3",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Necesito ver más detalles sobre los límites específicos. Voy a explorar las relaciones de estos nodos para encontrar información sobre el límite con débito en cuenta.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01BsTAAWmzUHjmmNFABtxkhr",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "compra_de_moneda_extranjera",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01X33pXv2rvgYonCYXVLzYDb",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "compra_de_moneda_extranjera_para_activos_externos",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1124
+            },
+            "cache_creation_input_tokens": 1124,
+            "cache_read_input_tokens": 4857,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 199,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_013yEpSa1hrJDZwFaZVMBr6P",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar específicamente por límites de débito en cuenta para la compra de moneda extranjera.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01EjPmjACL5ny25ZqmLGKGyu",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "límite débito cuenta USD 250 mensual",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01F5r4HoLVzsVdJz1pe72zLa",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "compra moneda extranjera débito cuenta límite mensual",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 792
+            },
+            "cache_creation_input_tokens": 792,
+            "cache_read_input_tokens": 5981,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 180,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WQ4oHhVffxSPf5msBhb2ek",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Encontré un límite de USD 200 mensual. Voy a ver los detalles de este nodo y explorar sus relaciones.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01UEXtcmNBzC89b8irh5Z9LR",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "limite_mensual_de_usd_200"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01N6qj3ySxg2SmboCxnRzfwL",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "limite_mensual_de_usd_200",
+                "direccion": "entrantes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2243
+            },
+            "cache_creation_input_tokens": 2243,
+            "cache_read_input_tokens": 6773,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 165,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01To2Wcnay7DrqsL5C1RmNRz",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver las relaciones salientes del límite de USD 200 para entender a qué operación aplica.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Lsf7GSZQg3KKPAPMtaMf5z",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "limite_mensual_de_usd_200",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 428
+            },
+            "cache_creation_input_tokens": 428,
+            "cache_read_input_tokens": 9016,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 113,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01ThWHK6eZ1Q6zsUbNkC1XEf",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Ahora necesito buscar información específica sobre si este límite de USD 200 aplica a débito en cuenta. Voy a buscar más información sobre las modalidades de pago en la compra de moneda extranjera.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01Lag2thsJT9Wcyghgd8LaAW",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "compra moneda extranjera billetes depósitos débito cuenta",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01DJtkDVLeo1oJwtbgSi6Lu5",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "punto 3.8 compra moneda extranjera personas humanas residentes",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 397
+            },
+            "cache_creation_input_tokens": 397,
+            "cache_read_input_tokens": 9444,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 219,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Bf3nHFr12DtXdWygWPCYcJ",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Basándome en la información recolectada del Knowledge Graph, puedo responder parcialmente la pregunta, pero hay información que no está completamente disponible en los datos obtenidos.\n\nDe acuerdo con lo encontrado:\n\n1. **Límite con efectivo**: USD 100 mensual\n2. **Límite con débito en cuenta**: USD 200 mensual (aplica a \"Compra de moneda extranjera\" por personas humanas residentes)\n3. **Límite general para otras modalidades de formación de activos externos**: No encontré un límite general específico diferenciado en los nodos consultados.\n\nSin embargo, debo ser honesto sobre las limitaciones: aunque encontré referencias al Punto 3.8 (compra con efectivo) y Punto 3.9 (compra de moneda extranjera general), no pude confirmar explícitamente que el límite de USD 200 sea específicamente para débito en cuenta versus otras modalidades, ni encontré un límite general claramente definido para \"otras modalidades de formación de activos externos\" como pregunta el usuario.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA: (1) Si la operación se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos. (2) Para operaciones con débito en cuenta, el límite mensual es USD 200 en el mes calendario. Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos. Sin embargo, no se encontró en los documentos consultados un límite general específico diferenciado para otras modalidades de formación de activos externos distintas a billetes y depósitos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.8 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la formación de activos externos\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2408
+            },
+            "cache_creation_input_tokens": 2408,
+            "cache_read_input_tokens": 9841,
+            "inference_geo": "not_available",
+            "input_tokens": 2,
+            "output_tokens": 575,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "incorrecta",
+        "completitud": "parcial",
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Afirmación central falsa: Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.",
+          "completitud": "Patas no cubiertas: Límite general para otras modalidades de formación de activos externos",
+          "citas": "Las citas apuntan correctamente al TO_exterior_cambios_actual.pdf en los puntos 3.8 y 3.9, que son los ground truth secciones del referente."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "Si la operación de compra de moneda extranjera para atesorar se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos.",
+            "central": true
+          },
+          {
+            "enunciado": "Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.",
+            "central": true
+          },
+          {
+            "enunciado": "Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos.",
+            "central": false
+          }
+        ],
+        "reportes_de_alcance": [
+          "No se encontró en los documentos consultados un límite general específico diferenciado para otras modalidades de formación de activos externos distintas a billetes y depósitos."
+        ],
+        "patas_de_la_pregunta": [
+          "Límite mensual para compra de moneda extranjera para atesorar con débito en cuenta",
+          "Límite mensual para compra de moneda extranjera para atesorar en efectivo",
+          "Límite general para otras modalidades de formación de activos externos"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "Si la operación de compra de moneda extranjera para atesorar se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.",
+            "central": true,
+            "verdict": "falso"
+          },
+          {
+            "enunciado": "Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos.",
+            "central": false,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Límite mensual para compra de moneda extranjera para atesorar con débito en cuenta",
+            "cobertura": "cubierta"
+          },
+          {
+            "pata": "Límite mensual para compra de moneda extranjera para atesorar en efectivo",
+            "cobertura": "cubierta"
+          },
+          {
+            "pata": "Límite general para otras modalidades de formación de activos externos",
+            "cobertura": "no_cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "Las citas apuntan correctamente al TO_exterior_cambios_actual.pdf en los puntos 3.8 y 3.9, que son los ground truth secciones del referente.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 3010,
+        "out": 1015
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01TpaykSbnhLi5XjC2qmTFaQ",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"Si la operación de compra de moneda extranjera para atesorar se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos.\", \"central\": true},\n    {\"enunciado\": \"Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.\", \"central\": true},\n    {\"enunciado\": \"Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos.\", \"central\": false}\n  ],\n  \"reportes_de_alcance\": [\n    \"No se encontró en los documentos consultados un límite general específico diferenciado para otras modalidades de formación de activos externos distintas a billetes y depósitos.\"\n  ],\n  \"patas_de_la_pregunta\": [\n    \"Límite mensual para compra de moneda extranjera para atesorar con débito en cuenta\",\n    \"Límite mensual para compra de moneda extranjera para atesorar en efectivo\",\n    \"Límite general para otras modalidades de formación de activos externos\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 755,
+            "output_tokens": 332,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01J39LnYAM1qs2P47JGdatrZ",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"Si la operación de compra de moneda extranjera para atesorar se realiza en efectivo, el límite mensual es USD 100 en el mes calendario en el conjunto de entidades y conceptos.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.\",\n      \"central\": true,\n      \"verdict\": \"falso\"\n    },\n    {\n      \"enunciado\": \"Ambos límites aplican a personas humanas residentes que compran moneda extranjera para formación de activos externos.\",\n      \"central\": false,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Límite mensual para compra de moneda extranjera para atesorar con débito en cuenta\",\n      \"cobertura\": \"cubierta\"\n    },\n    {\n      \"pata\": \"Límite mensual para compra de moneda extranjera para atesorar en efectivo\",\n      \"cobertura\": \"cubierta\"\n    },\n    {\n      \"pata\": \"Límite general para otras modalidades de formación de activos externos\",\n      \"cobertura\": \"no_cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"punto\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"Las citas apuntan correctamente al TO_exterior_cambios_actual.pdf en los puntos 3.8 y 3.9, que son los ground truth secciones del referente.\",\n    \"abstencion\": \"\"\n  }\n}\n```\n\n**Nota sobre el veredicto \"falso\" en la segunda afirmación central:** El referente indica que el límite de USD 200 corresponde a las *otras modalidades* del punto 3.9, no a las operaciones con débito en cuenta del punto 3.8. Para el punto 3.8 (billetes/depósitos), el requisito es que la operación se curse con débito en cuenta (condición de forma), sin que el referente establezca un tope de USD 200 para esa modalidad específica; el USD 200 es el tope del punto 3.9. El agente invirtió la asociación entre modalidad y límite, lo que constituye una imprecisión que contradice el referente.",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 2255,
+            "output_tokens": 683,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.031294,
+    "judge_cost": 0.024255
+  }
+]

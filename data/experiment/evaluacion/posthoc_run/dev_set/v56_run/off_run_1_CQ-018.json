@@ -1,0 +1,396 @@
+{
+ "id_falla": "run_1/CQ-018",
+ "run": "run_1",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'proveedores no financieros crédito', limite: 10}",
+    "devolvio": "353 matches; incluye rsj_proveedor_no_financiero_de_credito (REGULATED_SUBJECT)",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'empresas no financieras emisoras tarjetas', limite: 10}",
+    "devolvio": "243 matches; rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra y rsj_entidad_no_financiera_emisora_de_tarjetas_de_credito",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'clasificación deudores criterio', limite: 10}",
+    "devolvio": "63 matches; procesos/operaciones de clasificación de deudores",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{id: 'rsj_proveedor_no_financiero_de_credito'}",
+    "devolvio": "sujeto obligado; provenance p.27 protección usuarios",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_nodo",
+    "args": "{id: 'rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra'}",
+    "devolvio": "empresa emisora que atiende usuarios; provenance p.27",
+    "pertinente": true
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{id: 'prc_clasificacion_de_deudores'}",
+    "devolvio": "proceso de asignación de categoría de riesgo",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_vecinos",
+    "args": "{id: 'rsj_proveedor_no_financiero_de_credito', direccion: 'salientes'}",
+    "devolvio": "edge debe_designar → Directivo Responsable (prov. p.27)",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{id: 'rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra', direccion: 'salientes'}",
+    "devolvio": "edge debe_designar → Directivo Responsable (prov. p.27)",
+    "pertinente": true
+   },
+   {
+    "paso": 9,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'proveedor no financiero clasificación deudores obligación', limite: 10}",
+    "devolvio": "291 matches; sujeto + procesos de clasificación",
+    "pertinente": true
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'empresa no financiera emisora tarjetas clasificación deudores reportar', limite: 10}",
+    "devolvio": "323 matches; entidad no financiera emisora (reporta clasificaciones)",
+    "pertinente": true
+   },
+   {
+    "paso": 11,
+    "tool": "ver_nodo",
+    "args": "{id: 'rsj_entidad_no_financiera_emisora_de_tarjetas_de_credito'}",
+    "devolvio": "emiten en sistema cerrado y reportan clasificaciones; prov. p.39 clasificación deudores",
+    "pertinente": true
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{consulta: 'criterio clasificación deudores mora atraso', limite: 10}",
+    "devolvio": "81 matches; niveles de clasificación",
+    "pertinente": true
+   },
+   {
+    "paso": 13,
+    "tool": "ver_nodo",
+    "args": "{id: 'cla_situacion_normal_clasificacion_de_deudores'}",
+    "devolvio": "descripción: 'análisis de flujo de fondos'; prov. p.20 (cartera comercial)",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "ver_nodo",
+    "args": "{id: 'cla_riesgo_bajo_clasificacion_de_deudores'}",
+    "devolvio": "descripción: 'atrasos no mayores a 31 días en refinanciaciones periódicas'; prov. p.35-36",
+    "pertinente": false
+   },
+   {
+    "paso": 15,
+    "tool": "ver_nodo",
+    "args": "{id: 'cla_riesgo_medio_clasificacion_de_deudores'}",
+    "devolvio": "descripción: 'atrasos de más de 90 hasta 180 días'; prov. p.36",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 13,
+   "quote": "Categoría de clasificación de deudores donde el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos."
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario",
+   "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario",
+   "Si deben clasificar a sus deudores",
+   "Bajo qué criterio clasifican a sus deudores"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "aplicacion_erronea",
+   "lado": "agente",
+   "jerarquia": "primaria",
+   "pata": "Bajo qué criterio clasifican a sus deudores (categoría 'Situación normal')",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "(1) Situación normal: cuando el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Categoría de clasificación de deudores donde el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos.",
+     "ubicacion": "cla_situacion_normal_clasificacion_de_deudores (prov. p.20)"
+    },
+    "fuente": {
+     "quote": "6.5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (...) B.C.R.A. CLASIFICACIÓN DE DEUDORES Sección 6. Clasificación de los deudores de la cartera comercial.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 20 (Sección 6 - cartera comercial)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf p.35 clasificacion_deudores (Sección 7 consumo/vivienda)",
+     "resultado": "7.2.1. Situación normal: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — definición distinta a la del nodo (flujo de fondos = cartera comercial Sección 6)"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "contenido_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Bajo qué criterio clasifican a sus deudores (categoría 'Riesgo bajo')",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "(2) Riesgo bajo: para deudores con cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Categoría de clasificación para deudores con cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas.",
+     "ubicacion": "cla_riesgo_bajo_clasificacion_de_deudores (prov. p.35, p.36)"
+    },
+    "fuente": {
+     "quote": "7.2.2. Riesgo bajo. 7.2.2.1. En observación. Comprende los clientes que registran incumplimientos ocasionales en la atención de sus obligaciones, con atrasos de más de 31 hasta 90 días.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 35 (punto 7.2.2.1)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf p.36 clasificacion_deudores",
+     "resultado": "El texto 'atrasos que no superen los 31 días... refinanciadas mediante obligaciones de pago periódico' pertenece a la regla de RECLASIFICACIÓN de refinanciados, no a la definición del nivel Riesgo bajo; la definición del nivel (7.2.2.1) es 31 a 90 días. El nodo confunde la regla de reclasificación con la definición → contradice el PDF."
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Bajo qué criterio clasifican (categorías Riesgo medio, Riesgo alto, Irrecuperable)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "(3) Riesgo medio: para clientes con incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días; (4) Riesgo alto: para clientes con atrasos de más de 180 días hasta un año; e (5) Irrecuperable: para clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Categoría de clasificación para clientes con incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días. / Categoría que comprende a clientes con atrasos de más de 180 días hasta un año. / Categoría de clasificación que comprende clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.",
+     "ubicacion": "cla_riesgo_medio / cla_riesgo_alto / cla_irrecuperable_clasificacion_de_deudores"
+    },
+    "fuente": {
+     "quote": "7.2.3. Riesgo medio. Comprende los clientes que muestran alguna incapacidad para cancelar sus obligaciones, con atrasos de más de 90 hasta 180 días. (...) 7.2.4. Riesgo alto. Comprende a los clientes con atrasos de más de 180 días hasta un año. (...) 7.2.5. Irrecuperable. Comprende a los clientes insolventes o en quiebra (...) o con atrasos superiores al año. También incluirá a los clientes que se encuentren en gestión judicial (...) una vez transcurridos más de 540 días de atraso.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, pp. 36-38 (puntos 7.2.3, 7.2.4, 7.2.5)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf p.36/p.37/p.38 clasificacion_deudores",
+     "resultado": "Las tres definiciones del grafo coinciden VERBATIM con la Sección 7 (cartera consumo/vivienda). El juez las marcó no_soportado pero son correctas contra el PDF → falso positivo del juez; se descartan contenido_kg (nodo fiel), aplicacion_erronea (definiciones sí de cartera consumo), completitud_kg (dato presente)."
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Designación de Directivo Responsable (proveedores y empresas emisoras de tarjetas)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Ambos sujetos están obligados a designar un Directivo Responsable de Protección de los Usuarios de Servicios Financieros.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "proveedor no financiero de crédito —debe_designar→ Directivo Responsable de Protección de los Usuarios de Servicios Financieros / empresa no financiera emisora de tarjetas de crédito y/o compra —debe_designar→ Directivo Responsable de Protección de los Usuarios de Servicios Financieros",
+     "ubicacion": "EDGE debe_designar (prov. p.27) x2"
+    },
+    "fuente": {
+     "quote": "Las entidades financieras, las empresas no financieras emisoras de tarjetas de crédito y/o compra y los otros proveedores no financieros de crédito que atienden a usuarios de servicios financieros deberán designar a un miembro del Directorio o autoridad equivalente como \"Directivo Responsable de Protección de los Usuarios de Servicios Financieros\" ante el BCRA",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 27"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf p.27 proteccion_usuarios",
+     "resultado": "El PDF confirma textualmente la obligación de designar el Directivo Responsable para ambos sujetos. Los edges del grafo son fieles. El juez marcó ambas como no_soportado erróneamente → falso positivo; se descartan contenido_kg (edge fiel), faithfulness (edge+nodo consultados en pasos 7-8 lo soportan)."
+    }
+   ]
+  }
+ ],
+ "razonamiento": "El síntoma es una falla parcial: el juez aprobó las patas de 'deben cumplir Protección al Usuario' y 'reportan clasificaciones' y 'criterio general' pero marcó no_soportadas dos glosas de Directivo Responsable y las cinco definiciones de categorías. Investigué cada pata cruzando afirmación/nodo/PDF. (1) Directivo Responsable: p.27 del TO protección usuarios confirma VERBATIM la obligación para ambos sujetos; los edges debe_designar (pasos 7-8) están consultados y son fieles. El agente lo soportó correctamente → falso positivo del juez (sin_defecto). (2) Categorías: descubrí que el TO de clasificación de deudores tiene DOS carteras — Sección 6 (comercial, criterio de flujo de fondos, p.20) y Sección 7 (consumo/vivienda, criterio de días de atraso, pp.35-38). La pregunta versa sobre emisoras de tarjetas (cartera consumo). (2a) 'Situación normal': el nodo reproduce fielmente su provenance p.20, pero p.20 es la definición de la cartera COMERCIAL (6.5.1: análisis de flujo de fondos); la de consumo (7.2.1) es 'atrasos ≤31 días'. El nodo es fiel a su fuente pero pertenece a otra cartera; el agente lo aplicó fuera de su alcance a la pregunta sobre tarjetas → aplicacion_erronea (primaria). (2b) 'Riesgo bajo': el nodo dice 'atrasos no mayores a 31 días en refinanciaciones periódicas' pero verifiqué en p.35 que Riesgo bajo (7.2.2.1) es 'más de 31 hasta 90 días'; el texto que el nodo tomó (p.36) es la regla de reclasificación de refinanciados, no la definición del nivel — el nodo CONTRADICE el PDF → contenido_kg (primaria). (2c) Riesgo medio/alto/irrecuperable: los nodos coinciden VERBATIM con pp.36-38 (Sección 7) y son correctos; el juez los marcó no_soportado erróneamente → sin_defecto (secundaria). El circuito se rompe por dos causas distintas en la pata de criterios: la definición de 'Situación normal' fue aplicada desde la cartera equivocada (agente) y la de 'Riesgo bajo' está mal en el propio grafo (nodo).",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 11,
+  "max_tool_calls": 40,
+  "tokens_in": 244830,
+  "tokens_out": 10324
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 11,
+  "tokens_in": 244830,
+  "tokens_out": 10324,
+  "latency_s": 122.341,
+  "error": null,
+  "final_raw": "{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'proveedores no financieros crédito', limite: 10}\", \"devolvio\": \"353 matches; incluye rsj_proveedor_no_financiero_de_credito (REGULATED_SUBJECT)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'empresas no financieras emisoras tarjetas', limite: 10}\", \"devolvio\": \"243 matches; rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra y rsj_entidad_no_financiera_emisora_de_tarjetas_de_credito\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores criterio', limite: 10}\", \"devolvio\": \"63 matches; procesos/operaciones de clasificación de deudores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'rsj_proveedor_no_financiero_de_credito'}\", \"devolvio\": \"sujeto obligado; provenance p.27 protección usuarios\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra'}\", \"devolvio\": \"empresa emisora que atiende usuarios; provenance p.27\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'prc_clasificacion_de_deudores'}\", \"devolvio\": \"proceso de asignación de categoría de riesgo\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'rsj_proveedor_no_financiero_de_credito', direccion: 'salientes'}\", \"devolvio\": \"edge debe_designar → Directivo Responsable (prov. p.27)\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'rsj_empresa_no_financiera_emisora_de_tarjetas_de_credito_y_o_compra', direccion: 'salientes'}\", \"devolvio\": \"edge debe_designar → Directivo Responsable (prov. p.27)\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'proveedor no financiero clasificación deudores obligación', limite: 10}\", \"devolvio\": \"291 matches; sujeto + procesos de clasificación\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'empresa no financiera emisora tarjetas clasificación deudores reportar', limite: 10}\", \"devolvio\": \"323 matches; entidad no financiera emisora (reporta clasificaciones)\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{id: 'rsj_entidad_no_financiera_emisora_de_tarjetas_de_credito'}\", \"devolvio\": \"emiten en sistema cerrado y reportan clasificaciones; prov. p.39 clasificación deudores\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'criterio clasificación deudores mora atraso', limite: 10}\", \"devolvio\": \"81 matches; niveles de clasificación\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{id: 'cla_situacion_normal_clasificacion_de_deudores'}\", \"devolvio\": \"descripción: 'análisis de flujo de fondos'; prov. p.20 (cartera comercial)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{id: 'cla_riesgo_bajo_clasificacion_de_deudores'}\", \"devolvio\": \"descripción: 'atrasos no mayores a 31 días en refinanciaciones periódicas'; prov. p.35-36\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{id: 'cla_riesgo_medio_clasificacion_de_deudores'}\", \"devolvio\": \"descripción: 'atrasos de más de 90 hasta 180 días'; prov. p.36\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 13, \"quote\": \"Categoría de clasificación de deudores donde el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos.\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario\",\n      \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario\",\n      \"Si deben clasificar a sus deudores\",\n      \"Bajo qué criterio clasifican a sus deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué criterio clasifican a sus deudores (categoría 'Situación normal')\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"(1) Situación normal: cuando el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Categoría de clasificación de deudores donde el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de flujo de fondos.\", \"ubicacion\": \"cla_situacion_normal_clasificacion_de_deudores (prov. p.20)\"},\n        \"fuente\": {\"quote\": \"6.5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (...) B.C.R.A. CLASIFICACIÓN DE DEUDORES Sección 6. Clasificación de los deudores de la cartera comercial.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 20 (Sección 6 - cartera comercial)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf p.35 clasificacion_deudores (Sección 7 consumo/vivienda)\", \"resultado\": \"7.2.1. Situación normal: 'Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días' — definición distinta a la del nodo (flujo de fondos = cartera comercial Sección 6)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué criterio clasifican a sus deudores (categoría 'Riesgo bajo')\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"(2) Riesgo bajo: para deudores con cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Categoría de clasificación para deudores con cumplimiento puntual o atrasos no mayores a 31 días en refinanciaciones periódicas.\", \"ubicacion\": \"cla_riesgo_bajo_clasificacion_de_deudores (prov. p.35, p.36)\"},\n        \"fuente\": {\"quote\": \"7.2.2. Riesgo bajo. 7.2.2.1. En observación. Comprende los clientes que registran incumplimientos ocasionales en la atención de sus obligaciones, con atrasos de más de 31 hasta 90 días.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 35 (punto 7.2.2.1)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf p.36 clasificacion_deudores\", \"resultado\": \"El texto 'atrasos que no superen los 31 días... refinanciadas mediante obligaciones de pago periódico' pertenece a la regla de RECLASIFICACIÓN de refinanciados, no a la definición del nivel Riesgo bajo; la definición del nivel (7.2.2.1) es 31 a 90 días. El nodo confunde la regla de reclasificación con la definición → contradice el PDF.\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Bajo qué criterio clasifican (categorías Riesgo medio, Riesgo alto, Irrecuperable)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"(3) Riesgo medio: para clientes con incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días; (4) Riesgo alto: para clientes con atrasos de más de 180 días hasta un año; e (5) Irrecuperable: para clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Categoría de clasificación para clientes con incapacidad parcial de cancelar obligaciones, con atrasos de más de 90 hasta 180 días. / Categoría que comprende a clientes con atrasos de más de 180 días hasta un año. / Categoría de clasificación que comprende clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.\", \"ubicacion\": \"cla_riesgo_medio / cla_riesgo_alto / cla_irrecuperable_clasificacion_de_deudores\"},\n        \"fuente\": {\"quote\": \"7.2.3. Riesgo medio. Comprende los clientes que muestran alguna incapacidad para cancelar sus obligaciones, con atrasos de más de 90 hasta 180 días. (...) 7.2.4. Riesgo alto. Comprende a los clientes con atrasos de más de 180 días hasta un año. (...) 7.2.5. Irrecuperable. Comprende a los clientes insolventes o en quiebra (...) o con atrasos superiores al año. También incluirá a los clientes que se encuentren en gestión judicial (...) una vez transcurridos más de 540 días de atraso.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, pp. 36-38 (puntos 7.2.3, 7.2.4, 7.2.5)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf p.36/p.37/p.38 clasificacion_deudores\", \"resultado\": \"Las tres definiciones del grafo coinciden VERBATIM con la Sección 7 (cartera consumo/vivienda). El juez las marcó no_soportado pero son correctas contra el PDF → falso positivo del juez; se descartan contenido_kg (nodo fiel), aplicacion_erronea (definiciones sí de cartera consumo), completitud_kg (dato presente).\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Designación de Directivo Responsable (proveedores y empresas emisoras de tarjetas)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Ambos sujetos están obligados a designar un Directivo Responsable de Protección de los Usuarios de Servicios Financieros.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"proveedor no financiero de crédito —debe_designar→ Directivo Responsable de Protección de los Usuarios de Servicios Financieros / empresa no financiera emisora de tarjetas de crédito y/o compra —debe_designar→ Directivo Responsable de Protección de los Usuarios de Servicios Financieros\", \"ubicacion\": \"EDGE debe_designar (prov. p.27) x2\"},\n        \"fuente\": {\"quote\": \"Las entidades financieras, las empresas no financieras emisoras de tarjetas de crédito y/o compra y los otros proveedores no financieros de crédito que atienden a usuarios de servicios financieros deberán designar a un miembro del Directorio o autoridad equivalente como \\\"Directivo Responsable de Protección de los Usuarios de Servicios Financieros\\\" ante el BCRA\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 27\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf p.27 proteccion_usuarios\", \"resultado\": \"El PDF confirma textualmente la obligación de designar el Directivo Responsable para ambos sujetos. Los edges del grafo son fieles. El juez marcó ambas como no_soportado erróneamente → falso positivo; se descartan contenido_kg (edge fiel), faithfulness (edge+nodo consultados en pasos 7-8 lo soportan).\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma es una falla parcial: el juez aprobó las patas de 'deben cumplir Protección al Usuario' y 'reportan clasificaciones' y 'criterio general' pero marcó no_soportadas dos glosas de Directivo Responsable y las cinco definiciones de categorías. Investigué cada pata cruzando afirmación/nodo/PDF. (1) Directivo Responsable: p.27 del TO protección usuarios confirma VERBATIM la obligación para ambos sujetos; los edges debe_designar (pasos 7-8) están consultados y son fieles. El agente lo soportó correctamente → falso positivo del juez (sin_defecto). (2) Categorías: descubrí que el TO de clasificación de deudores tiene DOS carteras — Sección 6 (comercial, criterio de flujo de fondos, p.20) y Sección 7 (consumo/vivienda, criterio de días de atraso, pp.35-38). La pregunta versa sobre emisoras de tarjetas (cartera consumo). (2a) 'Situación normal': el nodo reproduce fielmente su provenance p.20, pero p.20 es la definición de la cartera COMERCIAL (6.5.1: análisis de flujo de fondos); la de consumo (7.2.1) es 'atrasos ≤31 días'. El nodo es fiel a su fuente pero pertenece a otra cartera; el agente lo aplicó fuera de su alcance a la pregunta sobre tarjetas → aplicacion_erronea (primaria). (2b) 'Riesgo bajo': el nodo dice 'atrasos no mayores a 31 días en refinanciaciones periódicas' pero verifiqué en p.35 que Riesgo bajo (7.2.2.1) es 'más de 31 hasta 90 días'; el texto que el nodo tomó (p.36) es la regla de reclasificación de refinanciados, no la definición del nivel — el nodo CONTRADICE el PDF → contenido_kg (primaria). (2c) Riesgo medio/alto/irrecuperable: los nodos coinciden VERBATIM con pp.36-38 (Sección 7) y son correctos; el juez los marcó no_soportado erróneamente → sin_defecto (secundaria). El circuito se rompe por dos causas distintas en la pata de criterios: la definición de 'Situación normal' fue aplicada desde la cartera equivocada (agente) y la de 'Riesgo bajo' está mal en el propio grafo (nodo).\"\n}",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 27"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 27\", \"metodo\": \"pagina\", \"ref\": \"p.27 (PDF absoluto 1-based)\", \"pasaje\": \"Las entidades financieras, las empresas no financieras emisoras de tarjetas de \\ncrédito y/o compra y los otros proveedores no financieros de crédito que atien-\\nden a usuarios de servicios financieros deberán designar a un miembro del Di-\\nrectorio o autoridad equivalente como “Directivo Responsable de Protección de \\nlos Usuarios de Servicios Financieros” ante el BCRA, quien asumirá una res-\\nponsabilidad primaria por el cumplimiento de estas normas. \\nEl Directivo Responsable de Protección de los Usuarios de Servicios Financie-\\nros realizará un seguimiento de las actividades desarrolladas por los niveles \\ngerenciales y/o jefaturas de la entidad involucrados en el proceso interno de \\nprotección al usuario a efectos de dar cumplimiento a las siguientes cuestiones: \\ni) Vigilar el adecuado funcionamiento de los procesos relacionados con la\\nprotección de los usuarios de los servicios financieros según las disposi-\\nciones establecidas en estas normas y aquellas que regulan las operato-\\nrias … [+1832 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 20"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\", \"metodo\": \"pagina\", \"ref\": \"p.20 (PDF absoluto 1-based)\", \"pasaje\": \"6.\\n5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contraparte… [+1592 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 35"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 35\", \"metodo\": \"pagina\", \"ref\": \"p.35 (PDF absoluto 1-based)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado en este nivel. \\nLos deudores que hayan refi… [+1813 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 36"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 36\", \"metodo\": \"pagina\", \"ref\": \"p.36 (PDF absoluto 1-based)\", \"pasaje\": \"Los clientes cuyas deudas hayan sido refinanciadas mediante obligaciones de \\npago periódico (mensual o bimestral) podrán ser reclasificados en el nivel inme-\\ndiato superior, cuando hayan cumplido puntualmente o con atrasos que no su-\\nperen los 31 días, con el pago de 1 cuota o, cuando se trate de financiaciones de \\npago único, periódico superior a bimestral o irregular, hayan cancelado al menos \\nel 5 % de sus obligaciones refinanciadas (por capital), con más la cantidad de \\ncuotas o el porcentaje acumulado que pudiera corresponder, respectivamente, si \\nla refinanciación se hubiera otorgado de encontrarse incluido el deudor en nive-\\nles inferiores. \\n \\nEl deudor que, encontrándose clasificado en esta categoría, haya refinanciado su \\ndeuda –aun cuando haya cancelado la cuota citada en el párrafo precedente– y \\nrecibido crédito adicional en los términos a que se refiere el punto 2.2.5. de las \\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad”, y en la medida \\nen que dicha financiación adici… [+1820 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 39"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 39\", \"metodo\": \"pagina\", \"ref\": \"p.39 (PDF absoluto 1-based)\", \"pasaje\": \"El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su deuda\\n–aun cuando haya cancelado las cuotas o el porcentaje establecidos precedentemente –\\ny recibido crédito adicional en los términos a que se refiere el punto 2.2.5. de las normas\\nsobre “Previsiones mínimas por riesgo de incobrabilidad”, y en la medida en que dicha f i-\\nnanciación adicional no hubiese sido cancelada, deberá permanecer en esta categoría\\npor lo menos 180 días contados desde la fecha en que se otorgó el crédito adicional o\\ndesde que se celebró el acuerdo de refinanciación, la circunstancia más reciente.\\nAdemás, comprende los clientes que reúnan las condiciones previstas en los puntos\\n6.5.5.7. a 6.5.5.9.\\n7.3. Recategorización obligatoria.\\nSe deberá recategorizar al deudor cuando exista una discrepancia de más de un nivel entre la\\nclasificación dada por la entidad financiera y las otorgadas por al menos otras dos entidades o\\nfideicomisos financieros o entidades no financieras emisoras de tarjetas de crédito … [+1808 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 37"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 37\", \"metodo\": \"pagina\", \"ref\": \"p.37 (PDF absoluto 1-based)\", \"pasaje\": \"A fin de determinar el importe de la cancelación, se admitirá computar el 50 % de las ga-\\nrantías adicionales a las ofrecidas originalmente, constituidas sobre bienes no vinculados \\na la explotación del deudor –con excepción de las hipotecas sobre inmuebles rurales que, \\npor lo tanto, serán computables–, observando los márgenes de cobertura establecidos en \\nlas normas sobre “Garantías”. \\n \\nLos clientes cuyas deudas hayan sido refinanciadas mediante obligaciones de pago pe-\\nriódico (mensual o bimestral) podrán ser reclasificados en el nivel inmediato superior, \\ncuando hayan cumplido puntualmente o con atrasos que no superen los 31 días, con el \\npago de 2 cuotas consecutivas o, cuando se trate de financiaciones de pago único, perió-\\ndico superior a bimestral o irregular,  hayan cancelado al menos el 5 % de sus obligacio-\\nnes refinanciadas (por capital), con más la cantidad de cuotas o el porcentaje acumulado \\nque pudiera corresponder, respectivamente, si la refinanciación se hubiera otorgado de \\nencontr… [+1813 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "cla_riesgo_alto_clasificacion_de_deudores"
+    },
+    "output_truncado": "{\"id\": \"cla_riesgo_alto_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Riesgo alto (clasificación de deudores)\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Categoría que comprende a clientes con atrasos de más de 180 días hasta un año.\", \"aliases\": [\"Riesgo alto\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 37\"}]}"
+   },
+   {
+    "n": 8,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "cla_irrecuperable_clasificacion_de_deudores"
+    },
+    "output_truncado": "{\"id\": \"cla_irrecuperable_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Irrecuperable (clasificación de deudores)\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Categoría de clasificación que comprende clientes insolventes, en quiebra, con atrasos superiores al año o en gestión judicial con más de 540 días de atraso.\", \"aliases\": [\"irrecuperable\", \"Irrecuperable\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 4}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 22\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 25\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 28\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 38\"}]}"
+   },
+   {
+    "n": 9,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 38"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 38\", \"metodo\": \"pagina\", \"ref\": \"p.38 (PDF absoluto 1-based)\", \"pasaje\": \"L\\nos clientes cuyas deudas hayan sido refinanciadas mediante obligaciones de pago pe-\\nriódico (mensual o bimestral) podrán ser reclasificados en el nivel inmediato superior, \\ncuando hayan cumplido puntualmente o con atrasos que no superen los 31 días, con el \\npago de 3 cuotas consecutivas o, cuando se trate de financiaciones de pago único, pe-\\nriódico superior a bimestral o irregular, hayan cancelado al menos el 10 % de sus obliga-\\nciones refinanciadas (por capital), con más la cantidad de cuotas o el porcentaje acumu-\\nlado que pudiera corresponder, respectivamente, si la refinanciación se hubiera otorgado \\nde encontrarse incluido el deudor en el nivel inferior En el caso de deudores que hayan \\nsolicitado el concurso preventivo, corresponderá la reclasificación inmediata en el nivel \\nsiguiente inferior cuando se verifiquen atrasos de más de 540 días. \\nEl deudor refinanciado que haya cumplido con lo dispuesto en los párrafos precedentes, \\nsegún corresponda, podrá ser reclasificado en el nivel inmediato … [+1808 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 1
+    },
+    "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"proveedores no financieros crédito\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"proveedores no financieros crédito\", \"total_con_match\": 353, \"resultados\": [{\"id\": \"ope_asistencia_crediticia_a_proveedores_no_financieros_de_credito\", \"type\": \"OPERATION\", \"label\": \"Asistencia crediticia a proveedores no financieros de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Operación de financiamiento directo a personas no financieras proveedoras de crédito.\"}, {\"id\": \"cla_credito_no_calificado\", \"type\": \"CLASSIFICATION\", \"label\": \"Crédito no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposición crediticia que no cuenta con calificación de ECAI y recibe ponderador de riesgo por defecto.\"}, {\"id\": \"con_margenes_de_credito_no_percibidos\", \"type\": \"CONCEPT\", \"label\": \"Márgenes de crédito no percibidos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Componente de ajuste de valuación que refleja spreads de crédito no realizados en la operación.\"}, {\"id\": \"rsj_proveedor_no_financiero_de_credito\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"proveedor no financiero de crédito\", \"tokens_matcheados\": 2, \"resumen_pro… [+2028 chars]"
+   },
+   {
+    "n": 11,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "rsj_directivo_responsable_de_proteccion_de_los_usuarios_de_servicios_financieros"
+    },
+    "output_truncado": "{\"id\": \"rsj_directivo_responsable_de_proteccion_de_los_usuarios_de_servicios_financieros\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"Directivo Responsable de Protección de los Usuarios de Servicios Financieros\", \"properties\": {\"version\": \"A 8433\", \"description\": \"Rol obligatorio a designar por miembro del Directorio o autoridad equivalente con responsabilidad primaria por cumplimiento normativo.\", \"aliases\": [\"Directivo Responsable de Protección de los Usuarios de Servicios Financieros\"], \"source_to\": \"proteccion_usuarios\", \"mention_count\": 4}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 24\"}, {\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 25\"}, {\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 26\"}, {\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 27\"}]}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 25759,
+    "output_tokens": 493
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29996,
+    "output_tokens": 534
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 33097,
+    "output_tokens": 770
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35763,
+    "output_tokens": 952
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37970,
+    "output_tokens": 1393
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 40708,
+    "output_tokens": 404
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 41537,
+    "output_tokens": 5778
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 38,
+   "n_claims_fallidos": 7,
+   "categoria": "multi_norma"
+  },
+  "label": "off"
+ }
+}

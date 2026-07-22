@@ -1,0 +1,1647 @@
+{
+ "id_falla": "run_3/CQN-011",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'información complementaria riesgo tasa de interés cartera inversión', 'limite': 10}",
+      "devolvio": "Nodos sobre cálculo de riesgo de tasa de interés EVE y exigencias; pertinente a la pata de frecuencia",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'código consolidación base consolidada', 'limite': 10}",
+      "devolvio": "Obligacion_informacion_base_individual_y_consolidada (menciona código 3), Restriccion frecuencia trimestral código 3, supervisión base consolidada",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_informar_riesgo_tasa_interes_eve'}",
+      "devolvio": "plazo trimestral; base individual y consolidado mensual (códigos 0 o 1 y 2). Cubre la pata de frecuencia",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Obligacion_informacion_base_individual_y_consolidada'}",
+      "devolvio": "Los datos se informarán sobre base individual (código 0 ó 1) y consolidada trimestral (código 3). NO especifica el caso de entidad del código 3",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Obligacion_informar_riesgo_tasa_interes_eve', 'direccion': 'ambas'}",
+      "devolvio": "establecida_en TO régimen informativo; regula cálculo riesgo tasa. No aporta caso de entidad código 3",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'código consolidación 3 caso entidad', 'limite': 5}",
+      "devolvio": "Restriccion frecuencia trimestral código 3, límites y conformidades no relacionados. No devuelve caso de entidad",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'código consolidación 3 entidad controlante filial subsidiaria', 'limite': 5}",
+      "devolvio": "Restriccion frecuencia trimestral código 3, EntidadFinanciera_entidad_controlante (genérico), supervisión base consolidada. No hay nodo que defina el caso de entidad del código 3",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3'}",
+      "devolvio": "La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre. Solo frecuencia, no el caso de entidad",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'consolidación 3 entidad controlante grupo económico', 'limite': 5}",
+      "devolvio": "Nodos EntidadFinanciera de grupos A/B/C/1/2 (categorías genéricas). No definen el caso del código 3",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'código consolidación 0 1 2 3 definición significado', 'limite': 5}",
+      "devolvio": "Ponderadores, frecuencia trimestral código 3, excepciones. Ningún nodo define el caso de entidad de cada código",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 10,
+     "quote": "buscar_nodos({\"consulta\": \"código consolidación 0 1 2 3 definición significado\", \"limite\": 5})"
+    },
+    "decision_agente_correcta": "El agente buscó de forma razonable y repetida (pasos 6,7,9,10) el caso de entidad correspondiente al código 3, pero el grafo no le devolvió ningún nodo que lo portara; ante el hueco, glosó 'entidades controlantes'. La búsqueda fue exhaustiva y adecuada.",
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión",
+     "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación 3 con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente",
+       "ubicacion": "Obligacion_informacion_base_individual_y_consolidada (provenance Punto 10.1)"
+      },
+      "fuente": {
+       "quote": "- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1. Normas de procedimiento"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "código consolidación 3 casa matriz subsidiaria exterior",
+       "resultado": "EntidadFinanciera_casa_matriz_banco_del_exterior, Restriccion frecuencia trimestral código 3, supervisión base consolidada — ninguno porta la definición 'entidad financiera con filiales, subsidiarias significativas y otros entes' del código 3"
+      },
+      {
+       "consulta": "consolidada trimestral código 3 entidad financiera filiales subsidiarias significativas entes país exterior",
+       "resultado": "nodos de entidades del exterior y observancia de capitales mínimos; ningún nodo define el caso de entidad del código 3"
+      },
+      {
+       "consulta": "base consolidada código 3 caso entidad corresponde definición",
+       "resultado": "supervisión base consolidada y Obligacion_informacion_base_individual_y_consolidada (que solo dice 'consolidada trimestral (código 3)' sin el caso de entidad)"
+      },
+      {
+       "consulta": "código consolidación 0 1 2 3 9 tabla caso corresponde",
+       "resultado": "ponderadores y Restriccion frecuencia trimestral código 3; ningún nodo con la tabla de casos de entidad por código"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep1_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_no_funda",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_funda",
+      "fundamento": {
+       "span_maximo": 47,
+       "umbral": 60
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "A qué caso de entidad corresponde el código de consolidación 3 (sub-afirmación sobre la frecuencia/naturaleza del código)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 corresponde a la presentación en base consolidada trimestral",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3).",
+       "ubicacion": "Obligacion_informacion_base_individual_y_consolidada"
+      },
+      "fuente": {
+       "quote": "- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "Punto 10.1 Normas de procedimiento (lectura PDF)",
+       "resultado": "confirma verbatim que el código de consolidación 3 = base consolidada trimestral; el claim del agente es correcto contra el PDF"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas. Pata 1 (frecuencia del riesgo de tasa de interés EVE): el agente la resolvió correctamente vía Obligacion_informar_riesgo_tasa_interes_eve (plazo trimestral) y el juez la aprobó — no se re-litiga. Pata 2 ('a qué caso de entidad corresponde el código de consolidación 3'): el juez marcó falsas ambas sub-afirmaciones. Descompongo los dos claims fallidos. Claim 1 ('código 3 corresponde a base consolidada trimestral') está SOPORTADO por el nodo Obligacion_informacion_base_individual_y_consolidada (Punto 10.1) y es CORRECTO contra el PDF (Punto 10.1 verbatim: 'Base consolidada trimestral (código de consolidación 3)'). Por precedencia es noise_sensitivity, pero al verificar el PDF el nodo es fiel y pertinente → sin_defecto: es un falso positivo del juez sobre esa sub-afirmación (jerarquía sin_par, no explica la reprobación). Claim 2 ('se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias') es la sub-afirmación que rompe la respuesta. Apliqué C1a por pata: el DATO PERTINENTE (el caso de entidad del código 3, que el PDF define como 'entidad financiera CON filiales, subsidiarias significativas y otros entes en el país y en el exterior') NUNCA apareció en la trayectoria — el único nodo con el código 3 (Punto 10.1) fue extraído incompleto, cortando exactamente la cláusula del caso de entidad; los nodos de frecuencia (Restriccion_...frecuencia_trimestral_para_codigo_3), de supervisión consolidada y EntidadFinanciera_entidad_controlante (categoría genérica sin vínculo al código 3) no portan la respuesta. Por tanto la pata es context_recall. La glosa del agente ('entidades controlantes') es una reinterpretación forzada por el hueco, no un claim de relleno con defecto propio distinto. Para la causa apliqué el árbol de context_recall: probé exhaustivamente si existe nodo portador usando vocabulario ex ante Y términos textuales del propio PDF ('filiales subsidiarias significativas entes país exterior') — ninguna búsqueda devuelve un nodo con esa definición, por lo que no es alcanzabilidad_kg ni navegación. El PDF SÍ tiene el dato (Punto 10.1). Los datos existen sueltos pero el nodo del Punto 10.1 fue extraído sin la cláusula del caso de entidad → falta información que el PDF sí tiene → completitud_kg (primaria, lado grafo). No es contenido_kg porque el nodo no contradice el PDF, solo omite; no es estructural_kg porque no falta una conexión entre nodos sino el propio contenido dentro del nodo del 10.1.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 251436,
+    "tokens_out": 7640
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 12,
+    "tokens_in": 251436,
+    "tokens_out": 7640,
+    "latency_s": 103.666,
+    "error": null,
+    "final_raw": "Este nodo `EntidadFinanciera_entidad_controlante` es genérico (categoría) y no vincula al código 3. No es el dato pertinente. Confirmo la atribución.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'información complementaria riesgo tasa de interés cartera inversión', 'limite': 10}\", \"devolvio\": \"Nodos sobre cálculo de riesgo de tasa de interés EVE y exigencias; pertinente a la pata de frecuencia\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'código consolidación base consolidada', 'limite': 10}\", \"devolvio\": \"Obligacion_informacion_base_individual_y_consolidada (menciona código 3), Restriccion frecuencia trimestral código 3, supervisión base consolidada\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_informar_riesgo_tasa_interes_eve'}\", \"devolvio\": \"plazo trimestral; base individual y consolidado mensual (códigos 0 o 1 y 2). Cubre la pata de frecuencia\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_informacion_base_individual_y_consolidada'}\", \"devolvio\": \"Los datos se informarán sobre base individual (código 0 ó 1) y consolidada trimestral (código 3). NO especifica el caso de entidad del código 3\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Obligacion_informar_riesgo_tasa_interes_eve', 'direccion': 'ambas'}\", \"devolvio\": \"establecida_en TO régimen informativo; regula cálculo riesgo tasa. No aporta caso de entidad código 3\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'código consolidación 3 caso entidad', 'limite': 5}\", \"devolvio\": \"Restriccion frecuencia trimestral código 3, límites y conformidades no relacionados. No devuelve caso de entidad\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'código consolidación 3 entidad controlante filial subsidiaria', 'limite': 5}\", \"devolvio\": \"Restriccion frecuencia trimestral código 3, EntidadFinanciera_entidad_controlante (genérico), supervisión base consolidada. No hay nodo que defina el caso de entidad del código 3\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3'}\", \"devolvio\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre. Solo frecuencia, no el caso de entidad\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'consolidación 3 entidad controlante grupo económico', 'limite': 5}\", \"devolvio\": \"Nodos EntidadFinanciera de grupos A/B/C/1/2 (categorías genéricas). No definen el caso del código 3\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'código consolidación 0 1 2 3 definición significado', 'limite': 5}\", \"devolvio\": \"Ponderadores, frecuencia trimestral código 3, excepciones. Ningún nodo define el caso de entidad de cada código\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 10, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"código consolidación 0 1 2 3 definición significado\\\", \\\"limite\\\": 5})\"},\n    \"decision_agente_correcta\": \"El agente buscó de forma razonable y repetida (pasos 6,7,9,10) el caso de entidad correspondiente al código 3, pero el grafo no le devolvió ningún nodo que lo portara; ante el hueco, glosó 'entidades controlantes'. La búsqueda fue exhaustiva y adecuada.\",\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión\",\n      \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación 3 con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente\", \"ubicacion\": \"Obligacion_informacion_base_individual_y_consolidada (provenance Punto 10.1)\"},\n        \"fuente\": {\"quote\": \"- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1. Normas de procedimiento\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"código consolidación 3 casa matriz subsidiaria exterior\", \"resultado\": \"EntidadFinanciera_casa_matriz_banco_del_exterior, Restriccion frecuencia trimestral código 3, supervisión base consolidada — ninguno porta la definición 'entidad financiera con filiales, subsidiarias significativas y otros entes' del código 3\"},\n        {\"consulta\": \"consolidada trimestral código 3 entidad financiera filiales subsidiarias significativas entes país exterior\", \"resultado\": \"nodos de entidades del exterior y observancia de capitales mínimos; ningún nodo define el caso de entidad del código 3\"},\n        {\"consulta\": \"base consolidada código 3 caso entidad corresponde definición\", \"resultado\": \"supervisión base consolidada y Obligacion_informacion_base_individual_y_consolidada (que solo dice 'consolidada trimestral (código 3)' sin el caso de entidad)\"},\n        {\"consulta\": \"código consolidación 0 1 2 3 9 tabla caso corresponde\", \"resultado\": \"ponderadores y Restriccion frecuencia trimestral código 3; ningún nodo con la tabla de casos de entidad por código\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación 3 (sub-afirmación sobre la frecuencia/naturaleza del código)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 corresponde a la presentación en base consolidada trimestral\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3).\", \"ubicacion\": \"Obligacion_informacion_base_individual_y_consolidada\"},\n        \"fuente\": {\"quote\": \"- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"Punto 10.1 Normas de procedimiento (lectura PDF)\", \"resultado\": \"confirma verbatim que el código de consolidación 3 = base consolidada trimestral; el claim del agente es correcto contra el PDF\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas. Pata 1 (frecuencia del riesgo de tasa de interés EVE): el agente la resolvió correctamente vía Obligacion_informar_riesgo_tasa_interes_eve (plazo trimestral) y el juez la aprobó — no se re-litiga. Pata 2 ('a qué caso de entidad corresponde el código de consolidación 3'): el juez marcó falsas ambas sub-afirmaciones. Descompongo los dos claims fallidos. Claim 1 ('código 3 corresponde a base consolidada trimestral') está SOPORTADO por el nodo Obligacion_informacion_base_individual_y_consolidada (Punto 10.1) y es CORRECTO contra el PDF (Punto 10.1 verbatim: 'Base consolidada trimestral (código de consolidación 3)'). Por precedencia es noise_sensitivity, pero al verificar el PDF el nodo es fiel y pertinente → sin_defecto: es un falso positivo del juez sobre esa sub-afirmación (jerarquía sin_par, no explica la reprobación). Claim 2 ('se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias') es la sub-afirmación que rompe la respuesta. Apliqué C1a por pata: el DATO PERTINENTE (el caso de entidad del código 3, que el PDF define como 'entidad financiera CON filiales, subsidiarias significativas y otros entes en el país y en el exterior') NUNCA apareció en la trayectoria — el único nodo con el código 3 (Punto 10.1) fue extraído incompleto, cortando exactamente la cláusula del caso de entidad; los nodos de frecuencia (Restriccion_...frecuencia_trimestral_para_codigo_3), de supervisión consolidada y EntidadFinanciera_entidad_controlante (categoría genérica sin vínculo al código 3) no portan la respuesta. Por tanto la pata es context_recall. La glosa del agente ('entidades controlantes') es una reinterpretación forzada por el hueco, no un claim de relleno con defecto propio distinto. Para la causa apliqué el árbol de context_recall: probé exhaustivamente si existe nodo portador usando vocabulario ex ante Y términos textuales del propio PDF ('filiales subsidiarias significativas entes país exterior') — ninguna búsqueda devuelve un nodo con esa definición, por lo que no es alcanzabilidad_kg ni navegación. El PDF SÍ tiene el dato (Punto 10.1). Los datos existen sueltos pero el nodo del Punto 10.1 fue extraído sin la cláusula del caso de entidad → falta información que el PDF sí tiene → completitud_kg (primaria, lado grafo). No es contenido_kg porque el nodo no contradice el PDF, solo omite; no es estructural_kg porque no falta una conexión entre nodos sino el propio contenido dentro del nodo del 10.1.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_consolidacion_contable"
+      },
+      "output_truncado": "{\"id\": \"Operacion_consolidacion_contable\", \"type\": \"Operacion\", \"label\": \"Consolidación de información\", \"properties\": {\"tipo\": \"consolidación contable\", \"description\": \"Consolidación de información financiera según códigos de consolidación (0, 1, 2, 3, 9)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "código consolidación 3 casa matriz subsidiaria exterior",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"código consolidación 3 casa matriz subsidiaria exterior\", \"total_con_match\": 163, \"resultados\": [{\"id\": \"EntidadFinanciera_casa_matriz_banco_del_exterior\", \"type\": \"EntidadFinanciera\", \"label\": \"Casa matriz bancos del exterior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: banco del exterior\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Obligacion_en_el_caso_de_las_garantias_otorgadas_localmente_deberan_existir_contragarantias\", \"type\": \"Obligacion\", \"label\": \"Contragarantías de casa matriz\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el caso de las garantías otorgadas localmente, deberán existir contragarantías extendidas por la casa matriz o sus sucursales en otros países o por la entida…\"}, {\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matchead… [+2264 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "código consolidación 0 1 2 3 9 tabla caso corresponde",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"código consolidación 0 1 2 3 9 tabla caso corresponde\", \"total_con_match\": 194, \"resultados\": [{\"id\": \"Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250\", \"type\": \"Restriccion\", \"label\": \"Ponderador acciones grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Acciones (definidas conforme al punto 2.11.3.): 250\"}, {\"id\": \"Obligacion_la_facultad_de_revocacion_segun_lo_establecido_en_el_apartado_v_del_punto_2_3_1_\", \"type\": \"Obligacion\", \"label\": \"Informar facultad de revocación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1\", \"type\": \"Obligacion\", \"label\": \"Verificación de condiciones punto 9.3.1.\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá verificar … [+2090 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 10.1. Normas de procedimiento"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 10.1. Normas de procedimiento\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.1 (PDF pág 43)\", \"pasaje\": \"10.1. Normas de procedimiento \\n \\n10.1.1. Disposiciones generales. \\n \\nSe informará el ratio de apalancamiento y sus componentes según el modelo de in-\\nformación previsto en el punto 10.2., de conformidad con lo dispuesto en las normas \\nsobre “Ratio de apalancamiento”. \\n \\nEl presente requerimiento deberá ser cumplido por todas las entidades financieras. \\n \\nLos datos se informarán con frecuencia trimestral, sobre base individual y consolida-\\nda trimestral -considerando a este último efecto lo establecido en la sección 3. de las \\ncitadas normas-; serán aplicables los siguientes códigos de consolidación: \\n \\n- Base individual (código de consolidación 0 ó  1): entidad financiera y sucursales en \\nel país y en el exterior. \\n \\nSe regirá por los plazos de presentación previstos para el régimen in formativo \\ncontable mensual. \\n \\n- Base consolidada trimestral (código de consolidación 3): entidad financiera con fi-\\nliales, subsidiarias significativas y otros en… [+448 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_codigos_1_y_9_condicional_a_consolidacion"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion\", \"type\": \"Restriccion\", \"label\": \"Códigos 1 y 9 condicional a consolidación\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Códigos 1 y 9 sólo si consolidan con alguno de los entes a que refieren los incisos i), ii) y iii) del punto 6.2. de las normas sobre Supervisión consolidada\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "base consolidada trimestral entidad financiera con filiales subsidiarias significativas otros entes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"base consolidada trimestral entidad financiera con filiales subsidiarias significativas otros entes\", \"total_con_match\": 669, \"resultados\": [{\"id\": \"Obligacion_cuando_la_entidad_financiera_realice_operaciones_con_una_qccp_debera_determinar_\", \"type\": \"Obligacion\", \"label\": \"Determinar exposición a QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la entidad financiera realice operaciones con una QCCP deberá determinar su exposición aplicando las disposiciones del punto 4.3.3.\"}, {\"id\": \"Obligacion_la_entidad_financiera_que_cuente_con_multiples_tecnicas_de_crc_para_cubrir_una_u\", \"type\": \"Obligacion\", \"label\": \"División exposición según tipo CRC\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad financiera que cuente con múltiples técnicas de CRC para cubrir una única exposición –tales como activos admitidos y garantías personales cubriendo p…\"}, {\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán aba… [+2788 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000… [+412 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "consolidada trimestral código 3 entidad financiera filiales subsidiarias significativas entes país exterior",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"consolidada trimestral código 3 entidad financiera filiales subsidiarias significativas entes país exterior\", \"total_con_match\": 426, \"resultados\": [{\"id\": \"Restriccion_el_beneficiario_del_pago_sea_el_proveedor_del_exterior_la_entidad_financiera_del\", \"type\": \"Restriccion\", \"label\": \"Beneficiario debe ser proveedor\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El beneficiario del pago sea el proveedor del exterior, la entidad financiera del exterior o la agencia oficial de crédito que financió el pago anticipado al pr…\"}, {\"id\": \"EntidadFinanciera_entidad_financiera_del_exterior\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades financieras del exterior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: entidad financiera del exterior\"}, {\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Restriccion_la_informacion_tendr… [+2185 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "base consolidada código 3 caso entidad corresponde definición",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"base consolidada código 3 caso entidad corresponde definición\", \"total_con_match\": 338, \"resultados\": [{\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Restriccion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Restriccion\", \"label\": \"Requisito: supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las sucursales o subsidiari…\"}, {\"id\": \"Restriccion_en_caso_de_que_el_monto_a_imputar_sea_superior_al_valor_indicado_la_entidad_debe\", \"type\": \"Restriccion\", \"label\": \"Límite para auditoría externa\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En caso de que el monto a imputar sea superior al valor indicado, la entidad deberá co… [+2580 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_informacion_base_individual_y_consolidada\"}, \"output_completo\": {\"id\": \"Obligacion_informacion_base_individual_y_consolidada\", \"type\": \"Obligacion\", \"label\": \"Información base individual y consolidada\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 10.1. Normas de procedimiento\"}]}}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_entidad_controlante"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_entidad_controlante\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades controlantes\", \"properties\": {\"categoria\": \"entidad financiera controlante\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 9.1. Base individual.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23549,
+      "output_tokens": 245
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25533,
+      "output_tokens": 283
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28109,
+      "output_tokens": 581
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30705,
+      "output_tokens": 413
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32360,
+      "output_tokens": 568
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36077,
+      "output_tokens": 845
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37219,
+      "output_tokens": 535
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 37884,
+      "output_tokens": 4170
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 37,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"información complementaria riesgo tasa de interés cartera inversión\", \"limite\": 10}",
+      "devolvio": "Nodos del riesgo de tasa de interés EVE, incl. Operacion_calculo_de_riesgo_de_tasa_de_interes y Obligacion_informar_riesgo_tasa_interes_eve (código 0/1/2)",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"código consolidación base consolidada\", \"limite\": 10}",
+      "devolvio": "Restriccion_...frecuencia_trimestral_para_codigo_3 y Obligacion_informacion_base_individual_y_consolidada (código 3), nodos de supervisión consolidada",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\"}",
+      "devolvio": "riesgo tasa interés EVE cartera inversión, base individual y consolidado mensual (códigos 0 o 1 y 2), plazo trimestral",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_informacion_base_individual_y_consolidada\"}",
+      "devolvio": "base individual (0 ó 1) y consolidada trimestral (código 3); plazos RIC mensual y Supervisión — contenido genérico sin declarar a qué información se aplica",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"direccion\": \"ambas\"}",
+      "devolvio": "establecida_en RIC mensual; regula Operacion_calculo_de_riesgo_de_tasa_de_interes",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"código consolidación 3 caso entidad\", \"limite\": 5}",
+      "devolvio": "Restriccion frecuencia trimestral código 3 y nodos no relacionados (auditoría, ARCA)",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"código consolidación 3 entidad controlante filial subsidiaria\", \"limite\": 5}",
+      "devolvio": "EntidadFinanciera_entidad_controlante, supervisión base consolidada, suspensión consolidación nivel 3",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\"}",
+      "devolvio": "frecuencia trimestral saldos al cierre del trimestre; provenance Punto 1.2 (que no funda el contenido)",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"consolidación 3 entidad controlante grupo económico\", \"limite\": 5}",
+      "devolvio": "Entidades Grupo A/B/C/1/2 (categorías genéricas, no definen código 3)",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"código consolidación 0 1 2 3 definición significado\", \"limite\": 5}",
+      "devolvio": "ponderadores, revocación, frecuencia trimestral código 3 — ningún nodo define el caso de entidad de cada código",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión",
+     "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 corresponde a la presentación en base consolidada trimestral, y se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente",
+       "ubicacion": "Obligacion_informacion_base_individual_y_consolidada (abierto por el agente, paso 4)"
+      },
+      "fuente": {
+       "quote": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "consolidado mensual código 2 riesgo tasa interés cartera inversión caso entidad",
+       "resultado": "el nodo pertinente Obligacion_informar_riesgo_tasa_interes_eve confirma que esta info se presenta con códigos 0/1/2 (consolidado mensual = 2), NO 3"
+      },
+      {
+       "consulta": "código consolidación 3 caso entidad / entidad financiera con filiales subsidiarias significativas otros entes",
+       "resultado": "ningún nodo captura el caso de entidad del código 3; el único nodo genérico código 3 (Obligacion_informacion_base_individual_y_consolidada) no declara a qué información/sección aplica"
+      }
+     ],
+     "capa_d6": {
+      "regla": "R6b",
+      "accion": "claim_no_mapeado"
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep2_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_no_funda",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "contenido_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_funda",
+      "fundamento": {
+       "span_maximo": 47,
+       "umbral": 60
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 ... se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3).",
+       "ubicacion": "Obligacion_informacion_base_individual_y_consolidada (único nodo con 'código 3'; NO contiene el caso de entidad)"
+      },
+      "fuente": {
+       "quote": "- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "entidad financiera con filiales subsidiarias significativas otros entes país exterior",
+       "resultado": "ningún nodo reproduce la definición del caso de entidad del código 3 del punto 10.1"
+      },
+      {
+       "consulta": "base consolidada trimestral código 3 filiales subsidiarias significativas",
+       "resultado": "solo aparecen nodos genéricos (frecuencia trimestral, supervisión consolidada), ninguno con el caso de entidad del código 3"
+      },
+      {
+       "consulta": "código consolidación 0 1 2 3 definición significado",
+       "resultado": "ningún nodo define el caso de entidad correspondiente a cada código; el dato del PDF (punto 10.1) no fue extraído"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep2_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_no_funda",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_funda",
+      "fundamento": {
+       "span_maximo": 47,
+       "umbral": 60
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "alucinacion_agente",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias locales",
+       "ubicacion": "Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe (de TO_clasificacion_deudores; no habla del caso del código 3)"
+      },
+      "fuente": {
+       "quote": "- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "código consolidación 3 entidad controlante filial subsidiaria",
+       "resultado": "aparece EntidadFinanciera_entidad_controlante y nodos de supervisión consolidada, pero ninguno define el código 3 como 'entidades controlantes'; el PDF define el código 3 como 'entidad financiera con filiales/subsidiarias', no como 'entidad controlante'"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    }
+   ],
+   "razonamiento": "La pata OK ('frecuencia trimestral') está bien soportada por Obligacion_informar_riesgo_tasa_interes_eve (plazo trimestral). La pata fallida es 'a qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada'. FASE A: el agente abrió en el paso 3 el nodo pertinente del riesgo de tasa de interés EVE, que EXPONE que esta información se presenta 'en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2)' — es decir, en base consolidada le corresponde el CÓDIGO 2 (consolidado mensual), NO el 3. Pese a tener ese dato expuesto, en el paso 4 tomó un nodo distinto (Obligacion_informacion_base_individual_y_consolidada) que habla del código 3 y lo trasladó a la respuesta. FASE B: verifiqué el PDF: el Punto 1.1 confirma código 0/1/2 para el riesgo de tasa de interés; el Punto 10.1 muestra que el código 3 ('base consolidada trimestral: entidad financiera con filiales, subsidiarias significativas y otros entes') pertenece a otra presentación (Ratio de apalancamiento / consolidada trimestral), y el Punto 12.4 agrega que desde abril/24 el envío con código 3 está suspendido salvo Ratio de apalancamiento. FASE C — precedencia por pata: (1) El claim del código 3 aplicado a esta información está SOPORTADO por un nodo consultado (Obligacion_informacion_base_individual_y_consolidada) pero es INCORRECTO contra el PDF (para esta info es código 2) → noise_sensitivity. El nodo es fiel a su fuente (punto 10.1) pero NO es pertinente a la pata (otra información) y —criterio v2.6— OMITE su alcance: su label ('Información base individual y consolidada') y su contenido genérico no avisan que se refiere a la presentación consolidada trimestral del punto 10.1; leído solo, un lector no distingue que no aplica al riesgo de tasa de interés. Al omitir su alcance, el defecto es del grafo por des-scoping → contenido_kg (primaria). (2) El caso de entidad correcto del código 3 ('entidad financiera con filiales, subsidiarias significativas y otros entes') NUNCA apareció en la trayectoria y NO existe en ningún nodo del grafo (búsquedas documentadas), mientras el PDF sí lo tiene en el Punto 10.1 → context_recall a nivel pata → completitud_kg (primaria): la extracción capturó 'código 3 = consolidada trimestral' pero omitió la parte que define el caso de entidad. (3) La glosa 'entidades controlantes' no está soportada por ningún nodo que defina el caso del código 3; deriva de un nodo de otro TO (supervisión consolidada, casa matriz/entidad controlante) no pertinente → faithfulness / alucinacion_agente modo (a), secundaria (el hueco de completitud empujó la glosa, pero el agente además la construyó de un nodo ajeno al régimen informativo). Descarté sin_defecto porque ambos claims del código 3 son verificablemente incorrectos/no soportados contra el PDF; descarté aplicacion_erronea como etiqueta terminal porque el nodo mal usado omite su alcance (v2.6 → contenido_kg); descarté alcanzabilidad_kg porque el dato del caso de entidad simplemente no está en ningún nodo (no es cuestión de búsqueda léxica).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": true,
+    "flag_contexto": false,
+    "tool_calls_usadas": 22,
+    "max_tool_calls": 40,
+    "tokens_in": 683315,
+    "tokens_out": 14260
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 22,
+    "tokens_in": 683315,
+    "tokens_out": 14260,
+    "latency_s": 200.651,
+    "error": null,
+    "final_raw": "Confirmado que el dato pertinente para el código de consolidación de esta información (código 2, consolidado mensual) estaba disponible y expuesto en el nodo del EVE que el agente abrió. El agente lo ignoró y usó el código 3 de un nodo genérico no pertinente.\n\nAhora tengo toda la evidencia necesaria. Emito el JSON final.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"información complementaria riesgo tasa de interés cartera inversión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos del riesgo de tasa de interés EVE, incl. Operacion_calculo_de_riesgo_de_tasa_de_interes y Obligacion_informar_riesgo_tasa_interes_eve (código 0/1/2)\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"código consolidación base consolidada\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Restriccion_...frecuencia_trimestral_para_codigo_3 y Obligacion_informacion_base_individual_y_consolidada (código 3), nodos de supervisión consolidada\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_informar_riesgo_tasa_interes_eve\\\"}\", \"devolvio\": \"riesgo tasa interés EVE cartera inversión, base individual y consolidado mensual (códigos 0 o 1 y 2), plazo trimestral\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_informacion_base_individual_y_consolidada\\\"}\", \"devolvio\": \"base individual (0 ó 1) y consolidada trimestral (código 3); plazos RIC mensual y Supervisión — contenido genérico sin declarar a qué información se aplica\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Obligacion_informar_riesgo_tasa_interes_eve\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"establecida_en RIC mensual; regula Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"código consolidación 3 caso entidad\\\", \\\"limite\\\": 5}\", \"devolvio\": \"Restriccion frecuencia trimestral código 3 y nodos no relacionados (auditoría, ARCA)\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"código consolidación 3 entidad controlante filial subsidiaria\\\", \\\"limite\\\": 5}\", \"devolvio\": \"EntidadFinanciera_entidad_controlante, supervisión base consolidada, suspensión consolidación nivel 3\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\\\"}\", \"devolvio\": \"frecuencia trimestral saldos al cierre del trimestre; provenance Punto 1.2 (que no funda el contenido)\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"consolidación 3 entidad controlante grupo económico\\\", \\\"limite\\\": 5}\", \"devolvio\": \"Entidades Grupo A/B/C/1/2 (categorías genéricas, no definen código 3)\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"código consolidación 0 1 2 3 definición significado\\\", \\\"limite\\\": 5}\", \"devolvio\": \"ponderadores, revocación, frecuencia trimestral código 3 — ningún nodo define el caso de entidad de cada código\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión\", \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 corresponde a la presentación en base consolidada trimestral, y se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente\", \"ubicacion\": \"Obligacion_informacion_base_individual_y_consolidada (abierto por el agente, paso 4)\"},\n        \"fuente\": {\"quote\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"consolidado mensual código 2 riesgo tasa interés cartera inversión caso entidad\", \"resultado\": \"el nodo pertinente Obligacion_informar_riesgo_tasa_interes_eve confirma que esta info se presenta con códigos 0/1/2 (consolidado mensual = 2), NO 3\"},\n        {\"consulta\": \"código consolidación 3 caso entidad / entidad financiera con filiales subsidiarias significativas otros entes\", \"resultado\": \"ningún nodo captura el caso de entidad del código 3; el único nodo genérico código 3 (Obligacion_informacion_base_individual_y_consolidada) no declara a qué información/sección aplica\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 ... se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3).\", \"ubicacion\": \"Obligacion_informacion_base_individual_y_consolidada (único nodo con 'código 3'; NO contiene el caso de entidad)\"},\n        \"fuente\": {\"quote\": \"- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"entidad financiera con filiales subsidiarias significativas otros entes país exterior\", \"resultado\": \"ningún nodo reproduce la definición del caso de entidad del código 3 del punto 10.1\"},\n        {\"consulta\": \"base consolidada trimestral código 3 filiales subsidiarias significativas\", \"resultado\": \"solo aparecen nodos genéricos (frecuencia trimestral, supervisión consolidada), ninguno con el caso de entidad del código 3\"},\n        {\"consulta\": \"código consolidación 0 1 2 3 definición significado\", \"resultado\": \"ningún nodo define el caso de entidad correspondiente a cada código; el dato del PDF (punto 10.1) no fue extraído\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias locales\", \"ubicacion\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe (de TO_clasificacion_deudores; no habla del caso del código 3)\"},\n        \"fuente\": {\"quote\": \"- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"código consolidación 3 entidad controlante filial subsidiaria\", \"resultado\": \"aparece EntidadFinanciera_entidad_controlante y nodos de supervisión consolidada, pero ninguno define el código 3 como 'entidades controlantes'; el PDF define el código 3 como 'entidad financiera con filiales/subsidiarias', no como 'entidad controlante'\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pata OK ('frecuencia trimestral') está bien soportada por Obligacion_informar_riesgo_tasa_interes_eve (plazo trimestral). La pata fallida es 'a qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada'. FASE A: el agente abrió en el paso 3 el nodo pertinente del riesgo de tasa de interés EVE, que EXPONE que esta información se presenta 'en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2)' — es decir, en base consolidada le corresponde el CÓDIGO 2 (consolidado mensual), NO el 3. Pese a tener ese dato expuesto, en el paso 4 tomó un nodo distinto (Obligacion_informacion_base_individual_y_consolidada) que habla del código 3 y lo trasladó a la respuesta. FASE B: verifiqué el PDF: el Punto 1.1 confirma código 0/1/2 para el riesgo de tasa de interés; el Punto 10.1 muestra que el código 3 ('base consolidada trimestral: entidad financiera con filiales, subsidiarias significativas y otros entes') pertenece a otra presentación (Ratio de apalancamiento / consolidada trimestral), y el Punto 12.4 agrega que desde abril/24 el envío con código 3 está suspendido salvo Ratio de apalancamiento. FASE C — precedencia por pata: (1) El claim del código 3 aplicado a esta información está SOPORTADO por un nodo consultado (Obligacion_informacion_base_individual_y_consolidada) pero es INCORRECTO contra el PDF (para esta info es código 2) → noise_sensitivity. El nodo es fiel a su fuente (punto 10.1) pero NO es pertinente a la pata (otra información) y —criterio v2.6— OMITE su alcance: su label ('Información base individual y consolidada') y su contenido genérico no avisan que se refiere a la presentación consolidada trimestral del punto 10.1; leído solo, un lector no distingue que no aplica al riesgo de tasa de interés. Al omitir su alcance, el defecto es del grafo por des-scoping → contenido_kg (primaria). (2) El caso de entidad correcto del código 3 ('entidad financiera con filiales, subsidiarias significativas y otros entes') NUNCA apareció en la trayectoria y NO existe en ningún nodo del grafo (búsquedas documentadas), mientras el PDF sí lo tiene en el Punto 10.1 → context_recall a nivel pata → completitud_kg (primaria): la extracción capturó 'código 3 = consolidada trimestral' pero omitió la parte que define el caso de entidad. (3) La glosa 'entidades controlantes' no está soportada por ningún nodo que defina el caso del código 3; deriva de un nodo de otro TO (supervisión consolidada, casa matriz/entidad controlante) no pertinente → faithfulness / alucinacion_agente modo (a), secundaria (el hueco de completitud empujó la glosa, pero el agente además la construyó de un nodo ajeno al régimen informativo). Descarté sin_defecto porque ambos claims del código 3 son verificablemente incorrectos/no soportados contra el PDF; descarté aplicacion_erronea como etiqueta terminal porque el nodo mal usado omite su alcance (v2.6 → contenido_kg); descarté alcanzabilidad_kg porque el dato del caso de entidad simplemente no está en ningún nodo (no es cuestión de búsqueda léxica).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_consolidacion_contable"
+      },
+      "output_truncado": "{\"id\": \"Operacion_consolidacion_contable\", \"type\": \"Operacion\", \"label\": \"Consolidación de información\", \"properties\": {\"tipo\": \"consolidación contable\", \"description\": \"Consolidación de información financiera según códigos de consolidación (0, 1, 2, 3, 9)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_suspension_envio_consolidacion_nivel_3"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_suspension_envio_consolidacion_nivel_3\", \"type\": \"Restriccion\", \"label\": \"Suspensión envío consolidación nivel 3\", \"properties\": {\"tipo\": \"prohibicion\", \"description\": \"Se suspende el envío de informaciones con código de consolidación 3 -con la excepción prevista para Ratio de apalancamiento-, siendo marzo/24 el último período trimestral que corresponde informar con este nivel de consolidación\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "códigos de consolidación 0 1 2 3 9 caso entidad base individual filiales",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"códigos de consolidación 0 1 2 3 9 caso entidad base individual filiales\", \"total_con_match\": 2532, \"resultados\": [{\"id\": \"Obligacion_la_entidad_debera_verificar_las_condiciones_indicadas_en_el_punto_9_3_1\", \"type\": \"Obligacion\", \"label\": \"Verificación de condiciones punto 9.3.1.\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La entidad deberá verificar las condiciones indicadas en el punto 9.3.1.\"}, {\"id\": \"Obligacion_la_facultad_de_revocacion_segun_lo_establecido_en_el_apartado_v_del_punto_2_3_1_\", \"type\": \"Obligacion\", \"label\": \"Informar facultad de revocación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1\"}, {\"id\": \"Obligacion_la_entidad_debera_cumplir_con_lo_previsto_en_el_punto_3_1_de_las_normas_sobre_ev\", \"type\": \"Obligacion\", \"label\": \"Cumplimiento de evaluaciones crediticias\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La entidad deberá cumplir con lo previsto en el punto 3.1. de las normas sobre Evaluaciones crediticias, requiriendo calificación internacional de riesgo compre…\"}, {\"id\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion\", \"type\": \"Restriccion\", … [+2443 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Operacion_consolidacion_contable",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Operacion_consolidacion_contable\", \"label\": \"Consolidación de información\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"limita\", \"vecino_id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"vecino_label\": \"Frecuencia consolidación trimestral\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_codigos_1_y_9_condicional_a_consolidacion"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion\", \"type\": \"Restriccion\", \"label\": \"Códigos 1 y 9 condicional a consolidación\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Códigos 1 y 9 sólo si consolidan con alguno de los entes a que refieren los incisos i), ii) y iii) del punto 6.2. de las normas sobre Supervisión consolidada\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "consolidación mensual código 2 base consolidada mensual",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"consolidación mensual código 2 base consolidada mensual\", \"total_con_match\": 80, \"resultados\": [{\"id\": \"Operacion_observancia_de_requisitos_de_capitales_minimos_en_base_consolidada_mensual_y_tri\", \"type\": \"Operacion\", \"label\": \"Observancia capitales mínimos base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Observancia de requisitos de capitales mínimos en base consolidada mensual y trimestral\"}, {\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Operacion_computo\", \"type\": \"Operacion\", \"label\": \"Cómputo de c… [+2319 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 10.1. Normas de procedimiento"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 10.1. Normas de procedimiento\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.1 (PDF pág 43)\", \"pasaje\": \"10.1. Normas de procedimiento \\n \\n10.1.1. Disposiciones generales. \\n \\nSe informará el ratio de apalancamiento y sus componentes según el modelo de in-\\nformación previsto en el punto 10.2., de conformidad con lo dispuesto en las normas \\nsobre “Ratio de apalancamiento”. \\n \\nEl presente requerimiento deberá ser cumplido por todas las entidades financieras. \\n \\nLos datos se informarán con frecuencia trimestral, sobre base individual y consolida-\\nda trimestral -considerando a este último efecto lo establecido en la sección 3. de las \\ncitadas normas-; serán aplicables los siguientes códigos de consolidación: \\n \\n- Base individual (código de consolidación 0 ó  1): entidad financiera y sucursales en \\nel país y en el exterior. \\n \\nSe regirá por los plazos de presentación previstos para el régimen in formativo \\ncontable mensual. \\n \\n- Base consolidada trimestral (código de consolidación 3): entidad financiera con fi-\\nliales, subsidiarias significativas y otros en… [+448 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_incluir_entes_riesgo_mercado_consolidacion_mensual"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_incluir_entes_riesgo_mercado_consolidacion_mensual\", \"type\": \"Obligacion\", \"label\": \"Incluir entes riesgo mercado consolidación mensual\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"De corresponder, la consolidación mensual (código 2) considerará las operaciones de los entes a que refieren los incisos i), ii) y iii) del primer párrafo del punto 6.2. de las normas sobre Supervisión consolidada para datos complementarios vinculados al cálculo de exigencia por riesgo de mercado\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"código consolidación base consolidada\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"código consolidación base consolidada\", \"total_con_match\": 30, \"resultados\": [{\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Obligacion_informacion_base_individual_y_consolidada\", \"type\": \"Obligacion\", \"label\": \"Información base individual y consolidada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada tri… [+2383 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidad financiera con filiales subsidiarias significativas otros entes país exterior",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"entidad financiera con filiales subsidiarias significativas otros entes país exterior\", \"total_con_match\": 746, \"resultados\": [{\"id\": \"Operacion_financiacion_de_importaciones_de_bienes_otorgada_por_entidad_financiera_local_co\", \"type\": \"Operacion\", \"label\": \"Financiación de importaciones con línea exterior\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: financiación de importaciones de bienes otorgada por entidad financiera local con línea de crédito del exterior\"}, {\"id\": \"Obligacion_cuando_la_entidad_financiera_realice_operaciones_con_una_qccp_debera_determinar_\", \"type\": \"Obligacion\", \"label\": \"Determinar exposición a QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la entidad financiera realice operaciones con una QCCP deberá determinar su exposición aplicando las disposiciones del punto 4.3.3.\"}, {\"id\": \"Restriccion_el_beneficiario_del_pago_sea_el_proveedor_del_exterior_la_entidad_financiera_del\", \"type\": \"Restriccion\", \"label\": \"Beneficiario debe ser proveedor\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El beneficiario del pago sea el proveedor del exterior, la entidad financiera del exterior o la agencia oficial de crédito que financi… [+2455 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "base consolidada trimestral código 3 filiales subsidiarias significativas",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"base consolidada trimestral código 3 filiales subsidiarias significativas\", \"total_con_match\": 82, \"resultados\": [{\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Obligacion_informacion_base_individual_y_consolidada\", \"type\": \"Obligacion\", \"label\": \"Información base individual y consolidada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de…\"}, {\"id\": \"EntidadFinanciera_f… [+1648 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ratio apalancamiento base individual sucursales país exterior código 0 1",
+       "limite": 8
+      },
+      "output_truncado": "{\"consulta\": \"ratio apalancamiento base individual sucursales país exterior código 0 1\", \"total_con_match\": 242, \"resultados\": [{\"id\": \"Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior_\", \"type\": \"Obligacion\", \"label\": \"Observar capitales mínimos en base individual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las normas en materia de capitales mínimos en forma individual.\"}, {\"id\": \"Operacion_asistencia_crediticia_a_traves_de_sucursales_o_subsidiarias_en_exterior\", \"type\": \"Operacion\", \"label\": \"Asistencia crediticia exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: asistencia crediticia a través de sucursales o subsidiarias en exterior\"}, {\"id\": \"Operacion_instalacion_de_sucursales_en_el_exterior\", \"type\": \"Operacion\", \"label\": \"Instalación sucursales exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: instalación de sucursales en el exterior\"}, {\"id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"type\": \"Obligacion\", \"label\": \"Informar ratio de apalancamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La i… [+1372 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_informar_ratio_de_apalancamiento"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"type\": \"Obligacion\", \"label\": \"Informar ratio de apalancamiento\", \"properties\": {\"description\": \"La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de consolidación 0 o 1)\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"trimestral\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "código consolidación 3 entidad financiera con filiales subsidiarias significativas otros entes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"código consolidación 3 entidad financiera con filiales subsidiarias significativas otros entes\", \"total_con_match\": 678, \"resultados\": [{\"id\": \"Obligacion_cuando_la_entidad_financiera_realice_operaciones_con_una_qccp_debera_determinar_\", \"type\": \"Obligacion\", \"label\": \"Determinar exposición a QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la entidad financiera realice operaciones con una QCCP deberá determinar su exposición aplicando las disposiciones del punto 4.3.3.\"}, {\"id\": \"Obligacion_la_entidad_financiera_que_cuente_con_multiples_tecnicas_de_crc_para_cubrir_una_u\", \"type\": \"Obligacion\", \"label\": \"División exposición según tipo CRC\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad financiera que cuente con múltiples técnicas de CRC para cubrir una única exposición –tales como activos admitidos y garantías personales cubriendo p…\"}, {\"id\": \"Restriccion_el_acuerdo_con_la_entidad_financiera_debera_concertarse_dentro_de_los_90_o_180_d\", \"type\": \"Restriccion\", \"label\": \"Plazo para concertación de acuerdo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El acuerdo con la entidad financiera deberá concertarse dentro de los 90 o 180 días contad… [+2735 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos… [+494 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"información complementaria riesgo tasa de interés cartera inversión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"información complementaria riesgo tasa de interés cartera inversión\", \"total_con_match\": 2472, \"resultados\": [{\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo general de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del pun…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_especifico_de_tasa_de_interes_\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo específico tasa\"… [+2312 chars]"
+     },
+     {
+      "n": 17,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_informar_riesgo_tasa_interes_eve"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"properties\": {\"description\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"trimestral\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+     },
+     {
+      "n": 18,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"properties\": {\"descripcion\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias locales\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 2.2. Exclusiones.\"}]}"
+     },
+     {
+      "n": 19,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     },
+     {
+      "n": 20,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\"}, \"output_completo\": {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"properties\": {\"description\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"trimestral\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}}"
+     },
+     {
+      "n": 21,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.4 (PDF pág 58)\", \"pasaje\": \"12.4. Suspensión de la observancia  de las regulaciones técnicas sobre base consolidada \\ntrimestral (punto 6.1. de las normas sobre “Supervisión consolidada”). \\n \\nA partir del período de información abril/24: \\n \\n- Se suspende el envío de informaciones con código de consolidación 3  -con la ex-\\ncepción prevista para Ratio de apalancamiento-, siendo marzo/24 el último período \\ntrimestral que corresponde informar con este nivel de consolidación; \\n \\n- En la información sobre base consolidada mensual (códigos de consolidación 2 ó 9) \\nse incluirán -de corresponder- las operaciones de los entes a que refieren los incisos \\ni), ii) y iii) del primer párrafo del punto 6.2. de las normas sobre “Supervisión conso-\\nlidada. \\n \\n- Las entidades financieras que hasta el 31/03/24 informaban únicamente códigos de \\nconsolidación 1 y 3, de mantenerse esta situación de consolidación , pasarán a in-\\nformar: \\na) código… [+501 chars]"
+     },
+     {
+      "n": 22,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "consolidado mensual código 2 riesgo tasa interés cartera inversión caso entidad",
+       "limite": 6
+      },
+      "output_truncado": "{\"consulta\": \"consolidado mensual código 2 riesgo tasa interés cartera inversión caso entidad\", \"total_con_match\": 594, \"resultados\": [{\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_la_entidad_financiera_que_actue_en_caracter_de_miembro_compensador_de_una_ccp_po\", \"type\": \"Obligacion\", \"label\": \"Aplicar ponderador de riesgo del 2%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad financiera que actúe en carácter de miembro compensador de una CCP por operaciones propias deberá aplicar un ponderador de riesgo del 2% a sus exposi…\"}, {\"id\": \"Obl… [+1127 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23549,
+      "output_tokens": 200
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24235,
+      "output_tokens": 227
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26421,
+      "output_tokens": 241
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28479,
+      "output_tokens": 293
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29819,
+      "output_tokens": 447
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31781,
+      "output_tokens": 219
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33573,
+      "output_tokens": 479
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36446,
+      "output_tokens": 227
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36897,
+      "output_tokens": 777
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39426,
+      "output_tokens": 563
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40722,
+      "output_tokens": 1015
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43271,
+      "output_tokens": 1474
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45029,
+      "output_tokens": 1522
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 46774,
+      "output_tokens": 669
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47942,
+      "output_tokens": 213
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48500,
+      "output_tokens": 316
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 49561,
+      "output_tokens": 310
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 50890,
+      "output_tokens": 5068
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 37,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-011",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: información complementaria riesgo tasa de interés cartera inversión, limite:10}",
+      "devolvio": "nodos sobre cálculo/exigencia de riesgo de tasa EVE; el primero (Operacion_calculo_de_riesgo_de_tasa_de_interes) es pertinente al tema",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: código consolidación base consolidada, limite:10}",
+      "devolvio": "Obligacion_informacion_base_individual_y_consolidada (código 3 = consolidada trimestral) y Restriccion_...codigo_3",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: Obligacion_informar_riesgo_tasa_interes_eve}",
+      "devolvio": "descripción: riesgo de tasa en cartera de inversión, base individual y consolidado mensual (códigos 0 o 1 y 2); plazo trimestral",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: Obligacion_informacion_base_individual_y_consolidada}",
+      "devolvio": "datos en base individual (código 0 ó 1) y consolidada trimestral (código 3); no define el caso de entidad del código 3",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: Obligacion_informar_riesgo_tasa_interes_eve, direccion: ambas}",
+      "devolvio": "establecida_en RIC Mensual; regula Cálculo riesgo tasa EVE",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: código consolidación 3 caso entidad, limite:5}",
+      "devolvio": "Restriccion_...codigo_3 (frecuencia) y restricciones no relacionadas; ningún nodo con el caso de entidad",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: código consolidación 3 entidad controlante filial subsidiaria, limite:5}",
+      "devolvio": "EntidadFinanciera_entidad_controlante, Obligacion supervisión base consolidada, Restriccion suspensión nivel 3; ninguno define el caso de entidad del código 3",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3}",
+      "devolvio": "frecuencia trimestral, saldos al cierre del trimestre; provenance Punto 1.2 (importes en miles de pesos)",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: consolidación 3 entidad controlante grupo económico, limite:5}",
+      "devolvio": "entidades por grupo A/B/C/1/2; ninguno pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: código consolidación 0 1 2 3 definición significado, limite:5}",
+      "devolvio": "nodos no relacionados; ninguno define el caso de entidad de cada código",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3)."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión",
+     "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente",
+       "ubicacion": "Obligacion_informacion_base_individual_y_consolidada (único nodo que menciona el código 3; NO define su caso de entidad)"
+      },
+      "fuente": {
+       "quote": "- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "código de consolidación caso entidad casa matriz sucursal subsidiaria",
+       "resultado": "746 matches; ningún nodo define el caso de entidad del código 3"
+      },
+      {
+       "consulta": "entidad financiera con filiales subsidiarias significativas otros entes país exterior",
+       "resultado": "746 matches; ningún nodo con la definición del código 3"
+      },
+      {
+       "consulta": "base consolidada trimestral código 3 entidad financiera filiales",
+       "resultado": "303 matches; solo nodos de supervisión consolidada genérica y de frecuencia trimestral, ninguno con el caso de entidad"
+      },
+      {
+       "consulta": "código consolidación 3 base individual código 0 1 sucursales país exterior",
+       "resultado": "254 matches; ningún nodo con la definición del caso de entidad del código 3"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep3_atrib1",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "fuente_no_funda",
+      "emision_v61d": {
+       "sintoma_capa1": "context_recall",
+       "causa_capa2": "completitud_kg",
+       "jerarquia": "primaria"
+      },
+      "accion": "fuente_no_funda",
+      "fundamento": {
+       "span_maximo": 47,
+       "umbral": 60
+      },
+      "corrigio": false,
+      "triage": true
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El código de consolidación 3 corresponde a la presentación en base consolidada trimestral",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)",
+       "ubicacion": "Obligacion_informar_riesgo_tasa_interes_eve (abierto por el agente en paso 3; declara que la info de riesgo de tasa usa códigos 0 o 1 y 2, NO el 3)"
+      },
+      "fuente": {
+       "quote": "- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000).",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "consolidación 9 subconsolidación consolidación total",
+       "resultado": "Restriccion_codigos_1_y_9_condicional_a_consolidacion y Operacion_consolidacion_contable (códigos 0,1,2,3,9) sin definir el caso de entidad; confirma que el 2 es el consolidado mensual usado por riesgo de tasa"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D3",
+      "portador_id": "Obligacion_informar_riesgo_tasa_interes_eve",
+      "quote_verificado": true
+     },
+     "capa_s1": {
+      "version": "s1-v0.4b-dev",
+      "id_atribucion": "rep3_atrib2",
+      "tipo_gatillo": "causa_gatillada",
+      "estado_fetch": "completo",
+      "emision_v61d": {
+       "sintoma_capa1": "noise_sensitivity",
+       "causa_capa2": "aplicacion_erronea",
+       "jerarquia": "primaria"
+      },
+      "esquema": "causa",
+      "salidas_s1": [
+       {
+        "alcance_declarado_en_fuente": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000).",
+        "alcance_en_el_nodo": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)",
+        "coinciden": "si",
+        "sintoma_del_par": "noise_sensitivity",
+        "causa_confirmada_o_corregida": "contenido_kg",
+        "justificacion_breve": "La fuente declara que la información de riesgo de tasa EVE usa los códigos de consolidación 0 o 1 y 2 (base individual y consolidado mensual), y el nodo transcribe ese mismo alcance sin mencionar el código 3. Los claims reprobados afirman cosas sobre el código 3 (base consolidada trimestral / entidades controlantes) que no están sustentadas en la fuente ni en el nodo: el nodo NO contiene ninguna definición del código 3, por lo que la respuesta falsa no proviene de una aplicación errónea del agente sobre un contenido correcto, sino de la ausencia en el KG del contenido que define a qué caso corresponde el código de consolidación 3; se corrige a contenido_kg (falta el mapeo del código 3 en el grafo)."
+       },
+       {
+        "alcance_declarado_en_fuente": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000).",
+        "alcance_en_el_nodo": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)",
+        "coinciden": "si",
+        "sintoma_del_par": "context_recall",
+        "causa_confirmada_o_corregida": "completitud_kg",
+        "justificacion_breve": "La fuente y el nodo coinciden en alcance: ambos limitan el contenido a códigos de consolidación 0, 1 y 2 para riesgo de tasa EVE, sin mencionar nunca el código 3. La pata reprobada pregunta a qué caso de entidad corresponde el código de consolidación, definición que no existe ni en el nodo ni en el pasaje fuente recuperado; el defecto es la ausencia en el KG del nodo que define los códigos de consolidación (particularmente el 3), por lo que la causa se corrige de aplicacion_erronea a completitud_kg."
+       },
+       {
+        "alcance_declarado_en_fuente": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000).",
+        "alcance_en_el_nodo": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)",
+        "coinciden": "no",
+        "sintoma_del_par": "noise_sensitivity",
+        "causa_confirmada_o_corregida": "aplicacion_erronea",
+        "justificacion_breve": "La fuente y el nodo declaran expresamente que la info de riesgo de tasa EVE se presenta con códigos de consolidación 0 o 1 y 2, y en ningún pasaje se define el código 3 ni se lo asocia a 'base consolidada trimestral' o a entidades controlantes. El agente afirmó atributos del código 3 que la fuente no soporta, aplicando erróneamente el contenido disponible (que solo cubre 0/1/2); por eso la causa aplicacion_erronea del lado agente queda confirmada."
+       }
+      ],
+      "usage_s1": [
+       {
+        "input_tokens": 4535,
+        "output_tokens": 591
+       },
+       {
+        "input_tokens": 4535,
+        "output_tokens": 871
+       },
+       {
+        "input_tokens": 4535,
+        "output_tokens": 505
+       }
+      ],
+      "voto_s1_atrib": {
+       "n": 3,
+       "umbral": 2,
+       "esquema": "causa",
+       "decididas": 3,
+       "no_decididas": 0,
+       "resultado": "no_determinable",
+       "sintoma_ganador": null,
+       "causa_ganadora": null,
+       "votos_ganadores": null
+      },
+      "accion": "no_determinable",
+      "corrigio": false,
+      "triage": true
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas. Pata 1 (frecuencia de la info de riesgo de tasa) fue aprobada: el nodo Obligacion_informar_riesgo_tasa_interes_eve tiene plazo 'trimestral', confirmado por el Punto 1.1 del PDF. No se re-litiga. La pata 2 ('a qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada') generó los dos claims falsos. DESCOMPOSICIÓN DE LA PATA 2 EN DOS DEFECTOS INDEPENDIENTES: (1) El caso de entidad del código 3 NUNCA apareció en la trayectoria. El único nodo que menciona el código 3 (Obligacion_informacion_base_individual_y_consolidada) solo dice 'consolidada trimestral (código de consolidación 3)' sin definir a qué caso de entidad corresponde. El PDF SÍ lo tiene (Punto 10.1: 'entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior'). Cuatro búsquedas ex-ante con vocabulario plausible (caso entidad, filiales subsidiarias, base consolidada trimestral, base individual 0/1) no devuelven ningún nodo con ese contenido: el dato existe en el PDF pero NO fue extraído a un nodo → síntoma context_recall (dato pertinente nunca apareció), causa completitud_kg. El agente rellenó con 'entidades controlantes' (glosa tomada de nodos de supervisión consolidada de otro TO/contexto), lo que es incorrecto contra el PDF ('entidad financiera con filiales...'), pero como la pata es context_recall el relleno se subsume en la pata. (2) El claim 'código 3 corresponde a la presentación en base consolidada trimestral' es un claim SOPORTADO por nodos consultados (Obligacion_informacion_base_individual_y_consolidada, que es fiel al Punto 10.1) → no faithfulness. Es INCORRECTO en el contexto de la pregunta: la información de riesgo de tasa en base consolidada NO usa el código 3 sino el 2 (consolidado mensual), según el Punto 1.1 del PDF y según el propio nodo que el agente abrió en el paso 3 (Obligacion_informar_riesgo_tasa_interes_eve: 'consolidado mensual (códigos de consolidación 0 o 1 y 2)') → síntoma noise_sensitivity. Aplicando el árbol: el nodo consultado del código 3 es fiel al PDF, pero NO es pertinente a la pata (la pata pregunta por el código de la info de riesgo de tasa, que es el 2). El dato pertinente SÍ estaba disponible y expuesto en la trayectoria (nodo del paso 3 declara claramente su alcance 'Cálculo del riesgo de tasa de interés en la cartera de inversión... códigos 0 o 1 y 2'), y el agente lo ignoró usando el código 3 de un nodo de otro alcance (Ratio de apalancamiento / normas de procedimiento). El nodo pertinente declara su alcance explícitamente y el agente lo desatendió → causa aplicacion_erronea (defecto del agente). Ambas atribuciones son primarias porque cada una explica por separado por qué el juez reprobó cada claim central. Nota: el nodo Restriccion_...codigo_3 cita el Punto 1.2 (importes en miles de pesos), que no funda su contenido de frecuencia — provenance imprecisa menor, no relevante al veredicto.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 13,
+    "max_tool_calls": 40,
+    "tokens_in": 286088,
+    "tokens_out": 9994
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 13,
+    "tokens_in": 286088,
+    "tokens_out": 9994,
+    "latency_s": 130.238,
+    "error": null,
+    "final_raw": "El nodo `Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3` cita el Punto 1.2, que trata de \"importes en miles de pesos\" — NO contiene nada sobre frecuencia trimestral del código 3. Eso es una provenance imprecisa, pero es secundaria a este análisis. Tengo evidencia suficiente. Emito el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: información complementaria riesgo tasa de interés cartera inversión, limite:10}\", \"devolvio\": \"nodos sobre cálculo/exigencia de riesgo de tasa EVE; el primero (Operacion_calculo_de_riesgo_de_tasa_de_interes) es pertinente al tema\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: código consolidación base consolidada, limite:10}\", \"devolvio\": \"Obligacion_informacion_base_individual_y_consolidada (código 3 = consolidada trimestral) y Restriccion_...codigo_3\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: Obligacion_informar_riesgo_tasa_interes_eve}\", \"devolvio\": \"descripción: riesgo de tasa en cartera de inversión, base individual y consolidado mensual (códigos 0 o 1 y 2); plazo trimestral\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: Obligacion_informacion_base_individual_y_consolidada}\", \"devolvio\": \"datos en base individual (código 0 ó 1) y consolidada trimestral (código 3); no define el caso de entidad del código 3\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: Obligacion_informar_riesgo_tasa_interes_eve, direccion: ambas}\", \"devolvio\": \"establecida_en RIC Mensual; regula Cálculo riesgo tasa EVE\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: código consolidación 3 caso entidad, limite:5}\", \"devolvio\": \"Restriccion_...codigo_3 (frecuencia) y restricciones no relacionadas; ningún nodo con el caso de entidad\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: código consolidación 3 entidad controlante filial subsidiaria, limite:5}\", \"devolvio\": \"EntidadFinanciera_entidad_controlante, Obligacion supervisión base consolidada, Restriccion suspensión nivel 3; ninguno define el caso de entidad del código 3\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3}\", \"devolvio\": \"frecuencia trimestral, saldos al cierre del trimestre; provenance Punto 1.2 (importes en miles de pesos)\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: consolidación 3 entidad controlante grupo económico, limite:5}\", \"devolvio\": \"entidades por grupo A/B/C/1/2; ninguno pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: código consolidación 0 1 2 3 definición significado, limite:5}\", \"devolvio\": \"nodos no relacionados; ninguno define el caso de entidad de cada código\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3).\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se informa la información complementaria vinculada al riesgo de tasa de interés en la cartera de inversión\",\n      \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 se aplica a entidades controlantes que deben presentar información consolidada de sus filiales o subsidiarias.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los datos se informarán sobre base individual (código de consolidación 0 ó 1) y consolidada trimestral (código de consolidación 3). Se regirán por los plazos de presentación previstos para el régimen informativo contable mensual y para Supervisión respectivamente\", \"ubicacion\": \"Obligacion_informacion_base_individual_y_consolidada (único nodo que menciona el código 3; NO define su caso de entidad)\"},\n        \"fuente\": {\"quote\": \"- Base consolidada trimestral (código de consolidación 3): entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 10.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"código de consolidación caso entidad casa matriz sucursal subsidiaria\", \"resultado\": \"746 matches; ningún nodo define el caso de entidad del código 3\"},\n        {\"consulta\": \"entidad financiera con filiales subsidiarias significativas otros entes país exterior\", \"resultado\": \"746 matches; ningún nodo con la definición del código 3\"},\n        {\"consulta\": \"base consolidada trimestral código 3 entidad financiera filiales\", \"resultado\": \"303 matches; solo nodos de supervisión consolidada genérica y de frecuencia trimestral, ninguno con el caso de entidad\"},\n        {\"consulta\": \"código consolidación 3 base individual código 0 1 sucursales país exterior\", \"resultado\": \"254 matches; ningún nodo con la definición del caso de entidad del código 3\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"A qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El código de consolidación 3 corresponde a la presentación en base consolidada trimestral\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)\", \"ubicacion\": \"Obligacion_informar_riesgo_tasa_interes_eve (abierto por el agente en paso 3; declara que la info de riesgo de tasa usa códigos 0 o 1 y 2, NO el 3)\"},\n        \"fuente\": {\"quote\": \"- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000).\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"consolidación 9 subconsolidación consolidación total\", \"resultado\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion y Operacion_consolidacion_contable (códigos 0,1,2,3,9) sin definir el caso de entidad; confirma que el 2 es el consolidado mensual usado por riesgo de tasa\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas. Pata 1 (frecuencia de la info de riesgo de tasa) fue aprobada: el nodo Obligacion_informar_riesgo_tasa_interes_eve tiene plazo 'trimestral', confirmado por el Punto 1.1 del PDF. No se re-litiga. La pata 2 ('a qué caso de entidad corresponde el código de consolidación con el que se presenta en base consolidada') generó los dos claims falsos. DESCOMPOSICIÓN DE LA PATA 2 EN DOS DEFECTOS INDEPENDIENTES: (1) El caso de entidad del código 3 NUNCA apareció en la trayectoria. El único nodo que menciona el código 3 (Obligacion_informacion_base_individual_y_consolidada) solo dice 'consolidada trimestral (código de consolidación 3)' sin definir a qué caso de entidad corresponde. El PDF SÍ lo tiene (Punto 10.1: 'entidad financiera con filiales, subsidiarias significativas y otros entes en el país y en el exterior'). Cuatro búsquedas ex-ante con vocabulario plausible (caso entidad, filiales subsidiarias, base consolidada trimestral, base individual 0/1) no devuelven ningún nodo con ese contenido: el dato existe en el PDF pero NO fue extraído a un nodo → síntoma context_recall (dato pertinente nunca apareció), causa completitud_kg. El agente rellenó con 'entidades controlantes' (glosa tomada de nodos de supervisión consolidada de otro TO/contexto), lo que es incorrecto contra el PDF ('entidad financiera con filiales...'), pero como la pata es context_recall el relleno se subsume en la pata. (2) El claim 'código 3 corresponde a la presentación en base consolidada trimestral' es un claim SOPORTADO por nodos consultados (Obligacion_informacion_base_individual_y_consolidada, que es fiel al Punto 10.1) → no faithfulness. Es INCORRECTO en el contexto de la pregunta: la información de riesgo de tasa en base consolidada NO usa el código 3 sino el 2 (consolidado mensual), según el Punto 1.1 del PDF y según el propio nodo que el agente abrió en el paso 3 (Obligacion_informar_riesgo_tasa_interes_eve: 'consolidado mensual (códigos de consolidación 0 o 1 y 2)') → síntoma noise_sensitivity. Aplicando el árbol: el nodo consultado del código 3 es fiel al PDF, pero NO es pertinente a la pata (la pata pregunta por el código de la info de riesgo de tasa, que es el 2). El dato pertinente SÍ estaba disponible y expuesto en la trayectoria (nodo del paso 3 declara claramente su alcance 'Cálculo del riesgo de tasa de interés en la cartera de inversión... códigos 0 o 1 y 2'), y el agente lo ignoró usando el código 3 de un nodo de otro alcance (Ratio de apalancamiento / normas de procedimiento). El nodo pertinente declara su alcance explícitamente y el agente lo desatendió → causa aplicacion_erronea (defecto del agente). Ambas atribuciones son primarias porque cada una explica por separado por qué el juez reprobó cada claim central. Nota: el nodo Restriccion_...codigo_3 cita el Punto 1.2 (importes en miles de pesos), que no funda su contenido de frecuencia — provenance imprecisa menor, no relevante al veredicto.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Operacion_consolidacion_contable"
+      },
+      "output_truncado": "{\"id\": \"Operacion_consolidacion_contable\", \"type\": \"Operacion\", \"label\": \"Consolidación de información\", \"properties\": {\"tipo\": \"consolidación contable\", \"description\": \"Consolidación de información financiera según códigos de consolidación (0, 1, 2, 3, 9)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_suspension_envio_consolidacion_nivel_3"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_suspension_envio_consolidacion_nivel_3\", \"type\": \"Restriccion\", \"label\": \"Suspensión envío consolidación nivel 3\", \"properties\": {\"tipo\": \"prohibicion\", \"description\": \"Se suspende el envío de informaciones con código de consolidación 3 -con la excepción prevista para Ratio de apalancamiento-, siendo marzo/24 el último período trimestral que corresponde informar con este nivel de consolidación\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "código de consolidación caso entidad casa matriz sucursal subsidiaria",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"código de consolidación caso entidad casa matriz sucursal subsidiaria\", \"total_con_match\": 2501, \"resultados\": [{\"id\": \"Obligacion_en_el_caso_de_las_garantias_otorgadas_localmente_deberan_existir_contragarantias\", \"type\": \"Obligacion\", \"label\": \"Contragarantías de casa matriz\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"En el caso de las garantías otorgadas localmente, deberán existir contragarantías extendidas por la casa matriz o sus sucursales en otros países o por la entida…\"}, {\"id\": \"Restriccion_en_el_caso_de_las_garantias_otorgadas_localmente_debera_existir_respecto_de_ella\", \"type\": \"Restriccion\", \"label\": \"Requisito: contragarantías de casa matriz\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"En el caso de las garantías otorgadas localmente, deberá existir respecto de ellas contragarantías extendidas por la casa matriz o sus sucursales en otros paíse…\"}, {\"id\": \"EntidadFinanciera_sucursal_y_subsidiaria_local_de_entidad_financiera\", \"type\": \"EntidadFinanciera\", \"label\": \"Sucursales y subsidiarias locales de entidades financieras\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"categoria: sucursales y subsidiarias locales de entidades financieras\"}, {… [+2685 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "consolidación 9 subconsolidación consolidación total",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"consolidación 9 subconsolidación consolidación total\", \"total_con_match\": 50, \"resultados\": [{\"id\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion\", \"type\": \"Restriccion\", \"label\": \"Códigos 1 y 9 condicional a consolidación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Códigos 1 y 9 sólo si consolidan con alguno de los entes a que refieren los incisos i), ii) y iii) del punto 6.2. de las normas sobre Supervisión consolidada\"}, {\"id\": \"Operacion_cobertura_crediticia_total_o_proporcional\", \"type\": \"Operacion\", \"label\": \"Cobertura crediticia total\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: cobertura crediticia total o proporcional\"}, {\"id\": \"Restriccion_el_monto_maximo_sera_el_menor_entre_el_aumento_total_y_el_equivalente_al_30_del_\", \"type\": \"Restriccion\", \"label\": \"Límite de 30% del valor FOB\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El monto máximo será el menor entre el aumento total y el equivalente al 30% del valor FOB de las exportaciones computables para el año t-1\"}, {\"id\": \"Operacion_consolidacion_contable\", \"type\": \"Operacion\", \"label\": \"Consolidación de información\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Consolidació… [+2122 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 10.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 10.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.1 (PDF pág 43)\", \"pasaje\": \"10.1. Normas de procedimiento \\n \\n10.1.1. Disposiciones generales. \\n \\nSe informará el ratio de apalancamiento y sus componentes según el modelo de in-\\nformación previsto en el punto 10.2., de conformidad con lo dispuesto en las normas \\nsobre “Ratio de apalancamiento”. \\n \\nEl presente requerimiento deberá ser cumplido por todas las entidades financieras. \\n \\nLos datos se informarán con frecuencia trimestral, sobre base individual y consolida-\\nda trimestral -considerando a este último efecto lo establecido en la sección 3. de las \\ncitadas normas-; serán aplicables los siguientes códigos de consolidación: \\n \\n- Base individual (código de consolidación 0 ó  1): entidad financiera y sucursales en \\nel país y en el exterior. \\n \\nSe regirá por los plazos de presentación previstos para el régimen in formativo \\ncontable mensual. \\n \\n- Base consolidada trimestral (código de consolidación 3): entidad financiera con fi-\\nliales, subsidiarias significativas y otros entes en el país y en el ex… [+423 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_codigos_1_y_9_condicional_a_consolidacion"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_codigos_1_y_9_condicional_a_consolidacion\", \"type\": \"Restriccion\", \"label\": \"Códigos 1 y 9 condicional a consolidación\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Códigos 1 y 9 sólo si consolidan con alguno de los entes a que refieren los incisos i), ii) y iii) del punto 6.2. de las normas sobre Supervisión consolidada\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidad financiera con filiales subsidiarias significativas otros entes país exterior",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"entidad financiera con filiales subsidiarias significativas otros entes país exterior\", \"total_con_match\": 746, \"resultados\": [{\"id\": \"Operacion_financiacion_de_importaciones_de_bienes_otorgada_por_entidad_financiera_local_co\", \"type\": \"Operacion\", \"label\": \"Financiación de importaciones con línea exterior\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: financiación de importaciones de bienes otorgada por entidad financiera local con línea de crédito del exterior\"}, {\"id\": \"Obligacion_cuando_la_entidad_financiera_realice_operaciones_con_una_qccp_debera_determinar_\", \"type\": \"Obligacion\", \"label\": \"Determinar exposición a QCCP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la entidad financiera realice operaciones con una QCCP deberá determinar su exposición aplicando las disposiciones del punto 4.3.3.\"}, {\"id\": \"Restriccion_el_beneficiario_del_pago_sea_el_proveedor_del_exterior_la_entidad_financiera_del\", \"type\": \"Restriccion\", \"label\": \"Beneficiario debe ser proveedor\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El beneficiario del pago sea el proveedor del exterior, la entidad financiera del exterior o la agencia oficial de crédito que financi… [+2455 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "base consolidada trimestral código 3 entidad financiera filiales",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"base consolidada trimestral código 3 entidad financiera filiales\", \"total_con_match\": 303, \"resultados\": [{\"id\": \"Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Obligacion\", \"label\": \"Supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Restriccion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe\", \"type\": \"Restriccion\", \"label\": \"Requisito: supervisión sobre base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las sucursales o subsi… [+2480 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000… [+412 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "código consolidación 3 base individual código 0 1 sucursales país exterior",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"código consolidación 3 base individual código 0 1 sucursales país exterior\", \"total_con_match\": 254, \"resultados\": [{\"id\": \"Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior_\", \"type\": \"Obligacion\", \"label\": \"Observar capitales mínimos en base individual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las normas en materia de capitales mínimos en forma individual.\"}, {\"id\": \"Restriccion_la_informacion_tendra_frecuencia_trimestral_para_codigo_3\", \"type\": \"Restriccion\", \"label\": \"Frecuencia consolidación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La información tendrá frecuencia trimestral y se integrará con saldos al cierre del trimestre bajo informe\"}, {\"id\": \"Excepcion_no_aplicable_punto_3_12_1\", \"type\": \"Excepcion\", \"label\": \"No aplicable punto 3.12.1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En la medida que no encuadre en el punto 3.12.1\"}, {\"id\": \"Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250\", \"type\": \"Restriccion\", \"label\": \"Ponderador acciones grupo 1\", \"tokens_matcheados\": 2, \"resumen_p… [+1714 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_entidad_controlante"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_entidad_controlante\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades controlantes\", \"properties\": {\"categoria\": \"entidad financiera controlante\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 9.1. Base individual.\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\"}, \"output_completo\": {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"properties\": {\"description\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2) y su respectivo total de control (partida 70500000)\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"trimestral\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}}"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 23549,
+      "output_tokens": 205
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24240,
+      "output_tokens": 245
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27668,
+      "output_tokens": 269
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28928,
+      "output_tokens": 665
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32834,
+      "output_tokens": 502
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34041,
+      "output_tokens": 918
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36456,
+      "output_tokens": 1397
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38198,
+      "output_tokens": 1501
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40174,
+      "output_tokens": 4292
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 37,
+     "n_claims_fallidos": 2,
+     "categoria": "multi_norma"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 2,
+  "decisiones_con_puntero": 0
+ },
+ "voto_pre_d6": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "atribucion_no_verificable",
+   "aplicacion_erronea_bajo_revision",
+   "voto_dividido"
+  ],
+  "flags": [
+   "R6b: rep 2 atrib 1 — claim_no_mapeado",
+   "R2: rep 3 atrib 2 (primaria) causa aplicacion_erronea",
+   "R4: voto_capa_d.flag_voto_dividido = true"
+  ]
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "aplicacion_erronea"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "completitud_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": true,
+  "motivos": [
+   "fuente_no_funda",
+   "fuente_no_verificable"
+  ],
+  "flags": [
+   "S1: rep1_atrib1 — fuente_no_funda (span máx 47)",
+   "S1: rep2_atrib1 — fuente_no_funda (span máx 47)",
+   "S1: rep2_atrib2 — fuente_no_funda (span máx 47)",
+   "S1: rep3_atrib1 — fuente_no_funda (span máx 47)",
+   "S1: rep3_atrib2 — no_determinable (3/3 decididas)"
+  ]
+ },
+ "resumen_s1": {
+  "gatilladas": 5,
+  "juzgadas_llm": 1,
+  "corregidas": 0,
+  "no_determinable": 1,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 0,
+  "fuente_no_funda": 4,
+  "tokens_in_s1": 13605,
+  "tokens_out_s1": 1967,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4b-dev"
+}

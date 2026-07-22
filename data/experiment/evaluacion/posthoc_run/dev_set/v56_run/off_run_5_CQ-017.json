@@ -1,0 +1,394 @@
+{
+ "id_falla": "run_5/CQ-017",
+ "run": "run_5",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'operador de cambio','limite':10}",
+    "devolvio": "operador_de_cambio__agencia_cambio (Sujeto obligado), casas de cambio, boleto de cambio, etc.",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'protección usuarios servicios financieros','limite':10}",
+    "devolvio": "normas_de_proteccion..., proteccion_de_usuarios..., usuarios_de_servicios_financieros",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'mercado de cambios entidad autorizada','limite':10}",
+    "devolvio": "entidad_operadora_en_mercado_de_cambios__otra ('Entidad financiera autorizada a operar en el mercado de cambios local'), entidad_con_acceso..., mercado_de_cambios",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{'id':'operador_de_cambio__agencia_cambio'}",
+    "devolvio": "Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios; categoria agencia_cambio; prov PUSF 1.1",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_nodo",
+    "args": "{'id':'normas_de_proteccion_de_usuarios_de_servicios_financieros'}",
+    "devolvio": "Disposiciones de aplicación a todos los sujetos obligados...",
+    "pertinente": true
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{'id':'entidad_operadora_en_mercado_de_cambios__otra'}",
+    "devolvio": "Entidad financiera autorizada a operar en el mercado de cambios local; prov TO_exterior_cambios 3.16",
+    "pertinente": false
+   },
+   {
+    "paso": 7,
+    "tool": "ver_vecinos",
+    "args": "{'id':'operador_de_cambio__agencia_cambio','direccion':'ambas'}",
+    "devolvio": "0 salientes, 0 entrantes (nodo aislado)",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{'id':'normas_de_proteccion...','direccion':'salientes'}",
+    "devolvio": "recae_sobre sujetos_obligados; protege_a usuarios; complementa_a legislación consumo",
+    "pertinente": true
+   },
+   {
+    "paso": 9,
+    "tool": "ver_nodo",
+    "args": "{'id':'sujetos_obligados'}",
+    "devolvio": "Personas jurídicas comprendidas en regulación BCRA sujetas a obligaciones de protección de usuarios",
+    "pertinente": true
+   },
+   {
+    "paso": 10,
+    "tool": "ver_vecinos",
+    "args": "{'id':'sujetos_obligados','direccion':'salientes'}",
+    "devolvio": "debe_garantizar información clara/trato equitativo/acceso igualitario; recae_sobre consideración y resolución de reclamos, etc.",
+    "pertinente": true
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'operador cambio sujeto obligado','limite':10}",
+    "devolvio": "sujeto_obligado ('Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito')",
+    "pertinente": true
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'operador cambio entidad autorizada mercado cambios','limite':10}",
+    "devolvio": "entidad_con_acceso..., entidad_operadora_en_mercado_de_cambios__otra, conformidad previa BCRA",
+    "pertinente": true
+   },
+   {
+    "paso": 13,
+    "tool": "ver_nodo",
+    "args": "{'id':'sujeto_obligado'}",
+    "devolvio": "Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito; prov PUSF 1.1",
+    "pertinente": true
+   },
+   {
+    "paso": 14,
+    "tool": "ver_vecinos",
+    "args": "{'id':'sujeto_obligado','direccion':'entrantes'}",
+    "devolvio": "44 entrantes de obligaciones/recaudos",
+    "pertinente": true
+   },
+   {
+    "paso": 15,
+    "tool": "buscar_nodos",
+    "args": "{'consulta':'operador cambio autorizado intervenir mercado','limite':10}",
+    "devolvio": "operador_de_cambio__agencia_cambio, conformidad previa BCRA, verificación previa requisitos",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 6,
+   "quote": "\"description\": \"Entidad financiera autorizada a operar en el mercado de cambios local\""
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros",
+   "Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "aplicacion_erronea",
+   "lado": "agente",
+   "jerarquia": "primaria",
+   "pata": "Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Entidad financiera autorizada a operar en el mercado de cambios local",
+     "ubicacion": "entidad_operadora_en_mercado_de_cambios__otra (abierto por el agente, paso 6)"
+    },
+    "fuente": {
+     "quote": "1.1.2. Sujetos obligados.\n1.1.2.1. Entidades financieras.\n1.1.2.2. Operadores de cambio, por las operaciones comprendidas en las normas sobre “Exterior y cambios”.",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 3 (Punto 1.1.2)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "casa de cambio agencia autorizada operar",
+     "resultado": "casa_o_agencia_de_cambio__otra = 'Entidad cambiaria autorizada por el BCRA' — NO 'entidad financiera'; distinto de entidad_operadora_en_mercado_de_cambios"
+    },
+    {
+     "consulta": "operador de cambio entidad financiera autorizada",
+     "resultado": "operador_de_cambio__agencia_cambio = 'Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios' — no lo caracteriza como entidad financiera que opera en cambios"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "aplicacion_erronea",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "existen entidades operadoras en mercado de cambios que son entidades financieras autorizadas a operar en el mercado de cambios local, y los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Entidad financiera autorizada a operar en el mercado de cambios local",
+     "ubicacion": "entidad_operadora_en_mercado_de_cambios__otra"
+    },
+    "fuente": {
+     "quote": "3.16. Requisitos complementarios para los egresos por el mercado de cambios. 3.16.1. Clientes incluidos en base de facturas o documentos apócrifos de la ARCA.",
+     "ubicacion": "TO_exterior_cambios_actual.pdf, Punto 3.16"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "operador cambio entidad autorizada mercado cambios",
+     "resultado": "nodo 'entidad operadora en mercado de cambios' es concepto distinto de 'operador de cambio' (agencia de cambio)"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "La categoría de 'sujetos obligados' agrupa a entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito.",
+     "ubicacion": "sujeto_obligado (abierto por el agente, paso 13)"
+    },
+    "fuente": {
+     "quote": "1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio... 1.1.2.3. Fiduciarios... 1.1.2.4. Empresas no financieras emisoras de tarjetas de crédito y/o compra. 1.1.2.5. Otros proveedores no financieros de crédito...",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 3 (Punto 1.1.2)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "leer_pasaje_pdf Punto 1.1 y p.3",
+     "resultado": "el PDF confirma verbatim la enumeración de sujetos obligados que reproduce el nodo; claim soportado y correcto"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "secundaria",
+   "pata": "Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Como sujeto obligado, el operador de cambio debe cumplir con todas las disposiciones de protección de usuarios de servicios financieros, incluyendo garantizar información clara y suficiente, trato equitativo y digno, acceso igualitario a servicios, consideración y resolución fundada de reclamos",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Sujetos obligados —debe_garantizar→ Derecho a información clara y suficiente; Sujetos obligados —debe_garantizar→ Trato equitativo y digno; Sujetos obligados —debe_adoptar→ Acceso igualitario a servicios financieros; Sujetos obligados —recae_sobre→ Consideración y resolución fundada de reclamos",
+     "ubicacion": "aristas de sujetos_obligados/sujeto_obligado (pasos 10 y 14)"
+    },
+    "fuente": {
+     "quote": "Estas normas son de aplicación a todos los sujetos obligados enumerados en el punto 1.1.2. de acuerdo a los tipos y funcionalidades de su operatoria particular...",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.3"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "ver_vecinos sujetos_obligados salientes (paso 10)",
+     "resultado": "aristas debe_garantizar a información clara, trato equitativo, acceso igualitario, y recae_sobre consideración y resolución de reclamos — todas vistas por el agente y fieles al PDF (aplican a todos los sujetos obligados, incl. operador de cambio)"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "Descompuse la pregunta en dos patas. PATA 1 (PUSF alcanza al operador de cambio): el juez aprobó el núcleo y marcó no_soportado los claims de detalle (enumeración de la categoría y las obligaciones específicas). C1a: el dato pertinente SÍ apareció — el agente abrió sujeto_obligado (paso 13) que enumera exactamente 'entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito', y vio (pasos 10 y 14) las aristas de sujetos_obligados hacia información clara, trato equitativo y digno, acceso igualitario y resolución de reclamos. C1b: los claims están SOPORTADOS por esos nodos/aristas → noise_sensitivity. C2: el PDF (Punto 1.1.2 p.3 y 1.3) confirma verbatim tanto la enumeración como que las normas aplican a todos los sujetos obligados según su operatoria; los claims son fieles y correctos → sin_defecto (falso positivo del juez, documentado con lectura del PDF). Estas atribuciones son secundarias porque no rompen el veredicto: el núcleo de la pata 1 fue aprobado. PATA 2 (operador de cambio como entidad autorizada a operar en el mercado): esta es la falla que mueve el veredicto (claim central marcado FALSO). C1a: el dato relacionado apareció (nodo entidad_operadora_en_mercado_de_cambios__otra, paso 6). C1b: el claim 'los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios' está SOPORTADO por ese nodo pero es INCORRECTO → noise_sensitivity. C2: ¿el nodo es fiel y pertinente? El nodo es conceptualmente fiel a SU objeto ('entidad operadora en mercado de cambios' = una entidad financiera que opera en cambios), pero NO es pertinente al operador de cambio: el PDF de PUSF (Punto 1.1.2, p.3) distingue explícitamente 1.1.2.1 Entidades financieras de 1.1.2.2 Operadores de cambio como categorías SEPARADAS de sujetos obligados, y la búsqueda muestra que el operador/casa de cambio es 'entidad cambiaria autorizada por el BCRA' (casa_o_agencia_de_cambio__otra), NO una entidad financiera. El agente usó contenido fiel de un nodo (entidad operadora en mercado de cambios) fuera de su alcance, aplicándolo a otro sujeto (operador de cambio) → aplicacion_erronea (lado agente), primaria. La afirmación gemela sobre 'entidades operadoras en mercado de cambios que son entidades financieras' es la misma conflación (secundaria). El circuito se rompe en cómo el agente aplicó el nodo, no en el grafo: los nodos existen y son fieles a sus respectivos objetos; el error es la equiparación operador de cambio = entidad financiera.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 11,
+  "max_tool_calls": 40,
+  "tokens_in": 243790,
+  "tokens_out": 8918
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 11,
+  "tokens_in": 243790,
+  "tokens_out": 8918,
+  "latency_s": 108.512,
+  "error": null,
+  "final_raw": "El operador de cambio es \"entidad cambiaria autorizada por el BCRA\" — NO una entidad financiera. Confirma la distinción. Tengo evidencia suficiente.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'operador de cambio','limite':10}\", \"devolvio\": \"operador_de_cambio__agencia_cambio (Sujeto obligado), casas de cambio, boleto de cambio, etc.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'protección usuarios servicios financieros','limite':10}\", \"devolvio\": \"normas_de_proteccion..., proteccion_de_usuarios..., usuarios_de_servicios_financieros\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'mercado de cambios entidad autorizada','limite':10}\", \"devolvio\": \"entidad_operadora_en_mercado_de_cambios__otra ('Entidad financiera autorizada a operar en el mercado de cambios local'), entidad_con_acceso..., mercado_de_cambios\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id':'operador_de_cambio__agencia_cambio'}\", \"devolvio\": \"Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios; categoria agencia_cambio; prov PUSF 1.1\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id':'normas_de_proteccion_de_usuarios_de_servicios_financieros'}\", \"devolvio\": \"Disposiciones de aplicación a todos los sujetos obligados...\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id':'entidad_operadora_en_mercado_de_cambios__otra'}\", \"devolvio\": \"Entidad financiera autorizada a operar en el mercado de cambios local; prov TO_exterior_cambios 3.16\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'operador_de_cambio__agencia_cambio','direccion':'ambas'}\", \"devolvio\": \"0 salientes, 0 entrantes (nodo aislado)\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'normas_de_proteccion...','direccion':'salientes'}\", \"devolvio\": \"recae_sobre sujetos_obligados; protege_a usuarios; complementa_a legislación consumo\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id':'sujetos_obligados'}\", \"devolvio\": \"Personas jurídicas comprendidas en regulación BCRA sujetas a obligaciones de protección de usuarios\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'sujetos_obligados','direccion':'salientes'}\", \"devolvio\": \"debe_garantizar información clara/trato equitativo/acceso igualitario; recae_sobre consideración y resolución de reclamos, etc.\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'operador cambio sujeto obligado','limite':10}\", \"devolvio\": \"sujeto_obligado ('Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito')\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'operador cambio entidad autorizada mercado cambios','limite':10}\", \"devolvio\": \"entidad_con_acceso..., entidad_operadora_en_mercado_de_cambios__otra, conformidad previa BCRA\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id':'sujeto_obligado'}\", \"devolvio\": \"Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito; prov PUSF 1.1\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"ver_vecinos\", \"args\": \"{'id':'sujeto_obligado','direccion':'entrantes'}\", \"devolvio\": \"44 entrantes de obligaciones/recaudos\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta':'operador cambio autorizado intervenir mercado','limite':10}\", \"devolvio\": \"operador_de_cambio__agencia_cambio, conformidad previa BCRA, verificación previa requisitos\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 6, \"quote\": \"\\\"description\\\": \\\"Entidad financiera autorizada a operar en el mercado de cambios local\\\"\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros\",\n      \"Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Entidad financiera autorizada a operar en el mercado de cambios local\", \"ubicacion\": \"entidad_operadora_en_mercado_de_cambios__otra (abierto por el agente, paso 6)\"},\n        \"fuente\": {\"quote\": \"1.1.2. Sujetos obligados.\\n1.1.2.1. Entidades financieras.\\n1.1.2.2. Operadores de cambio, por las operaciones comprendidas en las normas sobre \\u201cExterior y cambios\\u201d.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 3 (Punto 1.1.2)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"casa de cambio agencia autorizada operar\", \"resultado\": \"casa_o_agencia_de_cambio__otra = 'Entidad cambiaria autorizada por el BCRA' — NO 'entidad financiera'; distinto de entidad_operadora_en_mercado_de_cambios\"},\n        {\"consulta\": \"operador de cambio entidad financiera autorizada\", \"resultado\": \"operador_de_cambio__agencia_cambio = 'Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios' — no lo caracteriza como entidad financiera que opera en cambios\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"aplicacion_erronea\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Si un operador de cambio debe intervenir como entidad autorizada en el mercado de cambios\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"existen entidades operadoras en mercado de cambios que son entidades financieras autorizadas a operar en el mercado de cambios local, y los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Entidad financiera autorizada a operar en el mercado de cambios local\", \"ubicacion\": \"entidad_operadora_en_mercado_de_cambios__otra\"},\n        \"fuente\": {\"quote\": \"3.16. Requisitos complementarios para los egresos por el mercado de cambios. 3.16.1. Clientes incluidos en base de facturas o documentos apócrifos de la ARCA.\", \"ubicacion\": \"TO_exterior_cambios_actual.pdf, Punto 3.16\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"operador cambio entidad autorizada mercado cambios\", \"resultado\": \"nodo 'entidad operadora en mercado de cambios' es concepto distinto de 'operador de cambio' (agencia de cambio)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La categoría de 'sujetos obligados' agrupa a entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Categoría que agrupa entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito.\", \"ubicacion\": \"sujeto_obligado (abierto por el agente, paso 13)\"},\n        \"fuente\": {\"quote\": \"1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio... 1.1.2.3. Fiduciarios... 1.1.2.4. Empresas no financieras emisoras de tarjetas de crédito y/o compra. 1.1.2.5. Otros proveedores no financieros de crédito...\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, p. 3 (Punto 1.1.2)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 1.1 y p.3\", \"resultado\": \"el PDF confirma verbatim la enumeración de sujetos obligados que reproduce el nodo; claim soportado y correcto\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Si un operador de cambio está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Como sujeto obligado, el operador de cambio debe cumplir con todas las disposiciones de protección de usuarios de servicios financieros, incluyendo garantizar información clara y suficiente, trato equitativo y digno, acceso igualitario a servicios, consideración y resolución fundada de reclamos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Sujetos obligados —debe_garantizar→ Derecho a información clara y suficiente; Sujetos obligados —debe_garantizar→ Trato equitativo y digno; Sujetos obligados —debe_adoptar→ Acceso igualitario a servicios financieros; Sujetos obligados —recae_sobre→ Consideración y resolución fundada de reclamos\", \"ubicacion\": \"aristas de sujetos_obligados/sujeto_obligado (pasos 10 y 14)\"},\n        \"fuente\": {\"quote\": \"Estas normas son de aplicación a todos los sujetos obligados enumerados en el punto 1.1.2. de acuerdo a los tipos y funcionalidades de su operatoria particular...\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"ver_vecinos sujetos_obligados salientes (paso 10)\", \"resultado\": \"aristas debe_garantizar a información clara, trato equitativo, acceso igualitario, y recae_sobre consideración y resolución de reclamos — todas vistas por el agente y fieles al PDF (aplican a todos los sujetos obligados, incl. operador de cambio)\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Descompuse la pregunta en dos patas. PATA 1 (PUSF alcanza al operador de cambio): el juez aprobó el núcleo y marcó no_soportado los claims de detalle (enumeración de la categoría y las obligaciones específicas). C1a: el dato pertinente SÍ apareció — el agente abrió sujeto_obligado (paso 13) que enumera exactamente 'entidades financieras, operadores de cambio, fiduciarios, empresas emisoras de tarjetas y proveedores no financieros de crédito', y vio (pasos 10 y 14) las aristas de sujetos_obligados hacia información clara, trato equitativo y digno, acceso igualitario y resolución de reclamos. C1b: los claims están SOPORTADOS por esos nodos/aristas → noise_sensitivity. C2: el PDF (Punto 1.1.2 p.3 y 1.3) confirma verbatim tanto la enumeración como que las normas aplican a todos los sujetos obligados según su operatoria; los claims son fieles y correctos → sin_defecto (falso positivo del juez, documentado con lectura del PDF). Estas atribuciones son secundarias porque no rompen el veredicto: el núcleo de la pata 1 fue aprobado. PATA 2 (operador de cambio como entidad autorizada a operar en el mercado): esta es la falla que mueve el veredicto (claim central marcado FALSO). C1a: el dato relacionado apareció (nodo entidad_operadora_en_mercado_de_cambios__otra, paso 6). C1b: el claim 'los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios' está SOPORTADO por ese nodo pero es INCORRECTO → noise_sensitivity. C2: ¿el nodo es fiel y pertinente? El nodo es conceptualmente fiel a SU objeto ('entidad operadora en mercado de cambios' = una entidad financiera que opera en cambios), pero NO es pertinente al operador de cambio: el PDF de PUSF (Punto 1.1.2, p.3) distingue explícitamente 1.1.2.1 Entidades financieras de 1.1.2.2 Operadores de cambio como categorías SEPARADAS de sujetos obligados, y la búsqueda muestra que el operador/casa de cambio es 'entidad cambiaria autorizada por el BCRA' (casa_o_agencia_de_cambio__otra), NO una entidad financiera. El agente usó contenido fiel de un nodo (entidad operadora en mercado de cambios) fuera de su alcance, aplicándolo a otro sujeto (operador de cambio) → aplicacion_erronea (lado agente), primaria. La afirmación gemela sobre 'entidades operadoras en mercado de cambios que son entidades financieras' es la misma conflación (secundaria). El circuito se rompe en cómo el agente aplicó el nodo, no en el grafo: los nodos existen y son fieles a sus respectivos objetos; el error es la equiparación operador de cambio = entidad financiera.\"\n}",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 1.1"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta … [+416 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 1.3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.3 (PDF pág 4)\", \"pasaje\": \"1.3. Encuadre y alcance normativo.\\nEstas normas son de aplicación a todos los sujetos obligados enumerados en el punto 1.1.2. de\\nacuerdo a los tipos y funcionalidades de su operatoria particular y a las modalidades de\\ntransacciones, relaciones y contratos que celebren con los usuarios de servicios financieros.\\nLas normas sobre “Protección de los usuarios de servicios financieros” son complementarias de \\nlas disposiciones contenidas en la legislación y regulaciones aplicables a las relaciones de\\nconsumo, en especial de lo previsto en el Código Civil y Comercial de la Nación, en la Ley\\n24.240 de Defensa del Consumidor, en la Ley 25.065 de Tarjetas de Crédito, y de las normas\\nemitidas por la Autoridad Nacional de Aplicación de estas leyes y, si correspondiese, de la de-\\nmás legislación y regulaciones emitidas por las autoridades provinciales en cuanto resulte de\\nsu jurisdicción y competencia.\\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS\\nSección 1. Disposiciones gene… [+77 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_exterior_cambios_actual.pdf",
+     "location": "Punto 3.16"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.16\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.16 (PDF pág 42)\", \"pasaje\": \"3.16. Requisitos complementarios para los egresos por el mercado de cambios. \\n3.16.1. Clientes incluidos en base de facturas o documentos apócrifos de la ARCA. \\nLa entidad deberá contar con la conformidad previa de l BCRA en el caso de que el \\ncliente sea una persona humana o jurídica incluida  por la Agencia de Recaudación y \\nControl Aduanero (ARCA) en la base de facturas o documentos equivalentes \\ncalificados como apócrifos. \\nEl listado de personas humanas o jurídicas incluidas en dicha base por la ARCA se \\nencuentra disponible en la siguiente di rección de Internet: \\nhttps://servicioscf.afip.gob.ar/Facturacion/facturasApocrifas/default.aspx. \\nB.C.R.A. EXTERIOR Y CAMBIOS \\nSección 3. Disposiciones específicas para los egresos por el mercado de cambios \\nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 27\"}"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 1.1.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1.2 (PDF pág 23)\", \"pasaje\": \"1.1.2. deberá nombrar a un  funcionario como responsable de atención al usuario de \\nservicios financieros en carácter de titular y, por lo menos, otro como suplente, quienes \\ndeberán asegurar la adecuada atención de los usuarios de servicios financieros, de \\nconformidad con lo establecido en el punto 3.1.2.  \\nDeberá obrar en poder del sujeto obligado la documentación respaldatoria de las desig-\\nnaciones, junto con los datos personales de los funcionarios nombrados como respon-\\nsables (titular y suplente/s). Además, deberán mantenerse actual izados e informarse \\npor medio del régimen informativo establecido al efecto los números de teléfonos, fax y \\ndirección/es postales y de correo electrónico destinadas a la canalización de las com u-\\nnicaciones vinculadas con el servicio de atención al usuario de servicios financieros. \\nSus funciones y responsabilidades serán: \\n3.1.1.1. Recibir y dar curso a las presentaciones –concernientes al sujeto obligado que \\nrepresentan– que inicie… [+420 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "operador de cambio entidad financiera autorizada",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"operador de cambio entidad financiera autorizada\", \"total_con_match\": 3474, \"resultados\": [{\"id\": \"operador_de_cambio__agencia_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operador de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios.\"}, {\"id\": \"cambio_de_entidad_nominada\", \"type\": \"Operacion\", \"label\": \"Cambio de entidad nominada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento mediante el cual el exportador solicita modificar la entidad nominada para emisión de certificaciones, requiriendo notificación, aceptación y regi…\"}, {\"id\": \"cliente_de_la_entidad_financiera\", \"type\": \"Concepto\", \"label\": \"Cliente de la entidad financiera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Persona en cuyo nombre la entidad financiera registra los beneficios obtenidos.\"}, {\"id\": \"notificacion_de_cambio_de_entidad\", \"type\": \"Restriccion\", \"label\": \"Notificación de cambio de entidad\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad previa a cargo debe notificar a la nueva entidad la voluntad del exportador de cambio.\"}, {\"id\": \"entidad_concertante_de_operacion_ca… [+1837 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 3\", \"metodo\": \"pagina\", \"ref\": \"p.3 (PDF absoluto 1-based)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta categor… [+1564 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "operador_de_cambios__otra"
+    },
+    "output_truncado": "{\"id\": \"operador_de_cambios__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Operador de cambios\", \"properties\": {\"description\": \"Entidad financiera autorizada a operar en el mercado de cambios\", \"categoria\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8 — Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2/2)\"}]}"
+   },
+   {
+    "n": 8,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "operadores_de_cambio__agencia_cambio"
+    },
+    "output_truncado": "{\"id\": \"operadores_de_cambio__agencia_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operadores de cambio\", \"properties\": {\"categoria\": \"agencia_cambio\", \"description\": \"Sujetos autorizados para realizar operaciones cambiarias\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4 + Punto 96844 — Incluye interpretación + Punto 13.4 — A 7917  2.4. + Punto 97065 — Incluye interpretación + Punto 14 + Punto 8307 — Incluye interpretación + Punto 14 + Punto 8307 — Incluye interpretación + Punto 15.2 — A 6844    Según Com. A 6862. (parte 1/3)\"}]}"
+   },
+   {
+    "n": 9,
+    "tool": "ver_vecinos",
+    "input": {
+     "id": "entidad_operadora_en_mercado_de_cambios__otra",
+     "direccion": "ambas"
+    },
+    "output_truncado": "{\"id\": \"entidad_operadora_en_mercado_de_cambios__otra\", \"label\": \"Entidad operadora en mercado de cambios\", \"n_salientes_total\": 1, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"realiza\", \"vecino_id\": \"acceso_al_mercado_de_cambios\", \"vecino_label\": \"Acceso al mercado de cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 1/4)\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"recae_sobre\", \"vecino_id\": \"conformidad_previa_bcra_para_clientes_apocrifos\", \"vecino_label\": \"Conformidad previa BCRA para clientes apócrifos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 1/4)\"}]}, {\"relation\": \"recae_sobre\", \"vecino_id\": \"declaracion_jurada_sobre_tenencias_de_activos_externos\", \"vecino_label\": \"Declaración jurada sobre tenencias de activos externos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 1/4)\"}]}, … [+367 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "casa de cambio agencia autorizada operar",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"casa de cambio agencia autorizada operar\", \"total_con_match\": 3398, \"resultados\": [{\"id\": \"casa_o_agencia_de_cambio__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Casa o agencia de cambio\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Entidad cambiaria autorizada por el BCRA.\"}, {\"id\": \"casas_de_cambio__casa_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Casas de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: casa_cambio\"}, {\"id\": \"operador_de_cambio__agencia_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operador de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Sujeto obligado por las operaciones comprendidas en normas sobre exterior y cambios.\"}, {\"id\": \"operadores_de_cambio__agencia_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Operadores de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Sujetos autorizados para realizar operaciones cambiarias\"}, {\"id\": \"casas_y_agencias_de_cambio__casa_cambio\", \"type\": \"EntidadFinanciera\", \"label\": \"Casas y agencias de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Entidades autorizadas a operar cambios y mantener tenencias en moneda extranjera.\"}, {\"id\": \"casas_agencias_y… [+1119 chars]"
+   },
+   {
+    "n": 11,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "casa_o_agencia_de_cambio__otra"
+    },
+    "output_truncado": "{\"id\": \"casa_o_agencia_de_cambio__otra\", \"type\": \"EntidadFinanciera\", \"label\": \"Casa o agencia de cambio\", \"properties\": {\"description\": \"Entidad cambiaria autorizada por el BCRA.\", \"categoria\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 5.4 — Identificación del cliente.\"}]}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 34838,
+    "output_tokens": 474
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37147,
+    "output_tokens": 449
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 39629,
+    "output_tokens": 544
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 41932,
+    "output_tokens": 651
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 44420,
+    "output_tokens": 1248
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 45824,
+    "output_tokens": 5552
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 99,
+   "n_claims_fallidos": 7,
+   "categoria": "multi_norma"
+  },
+  "label": "off"
+ }
+}

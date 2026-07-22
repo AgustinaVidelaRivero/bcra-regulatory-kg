@@ -1,0 +1,137 @@
+{
+  "id_falla": "run_3/CQ-034",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "sin_defecto",
+      "lado": "ninguno",
+      "jerarquia": "primaria",
+      "pata": "límite mensual con débito en cuenta y límite general para otras modalidades",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que para compra en efectivo el límite es USD 100/mes, y que el KG no contiene un límite mensual diferenciado para débito en cuenta ni un límite general para otras modalidades de formación de activos externos.",
+        "nodo": "Restriccion_limite_mensual_de_compra_en_efectivo (USD 100 solo si el cliente utiliza efectivo) y Obligacion_cursar_operacion_con_debito_en_cuenta ('La operación se curse con débito en cuenta del cliente en entidades financieras locales', sin tope cuantitativo). No existe en el grafo ningún nodo con un límite mensual con débito en cuenta distinto al efectivo ni un 'límite general' para otras modalidades del 3.8 (búsquedas dirigidas no devolvieron tal nodo; los candidatos como USD 36.000 anuales pertenecen al Punto 2.2 cobros de exportaciones de servicios, no a atesoramiento).",
+        "fuente": "Punto 3.8 del TO (Com. A 8307, vig. 26/08/2025): 3.8.1 exige que la operación se curse con débito en cuenta; SOLO 'si el cliente utiliza efectivo' aplica el tope de USD 100 mensual. La fuente NO establece un límite mensual cuantitativo cuando se cursa con débito en cuenta, ni un 'límite general para otras modalidades de formación de activos externos'. La estructura que la pregunta presupone no existe en la versión vigente."
+      }
+    }
+  ],
+  "razonamiento": "Descompuse la pregunta en tres patas: (1) límite mensual con débito en cuenta, (2) límite mensual en efectivo, (3) límite general para otras modalidades. Leí directamente el Punto 3.8 del PDF: muestra el texto íntegro del requisito (3.8.1 débito en cuenta; USD 100 mensual SOLO para efectivo; 3.8.2 entrega/acreditación). El TO vigente NO contempla un tope mensual cuantitativo para la modalidad débito en cuenta (es un requisito, no un límite con monto) ni un 'límite general para otras modalidades' dentro del 3.8 — la pregunta presupone una regulación (p. ej. tope diferenciado tipo USD 300 con débito) que no figura en la versión vigente. Busqué activamente en el grafo nodos que respondieran las patas (1) y (3) y no existe ninguno; los aparentes candidatos (USD 36.000 anuales) pertenecen a otro concepto (Punto 2.2, exportación de servicios). Por tanto no hay defecto de completitud_kg (el dato no está porque el TO no lo tiene) ni de navegación (no existe nodo que responda). El agente respondió correctamente lo que sí existe (USD 100 efectivo) y declaró honestamente la ausencia del resto, que es la respuesta correcta dada la fuente vigente. La marca de incorrecta del juez responde a que la pregunta asume hechos no presentes en el TO vigente: falso positivo.",
+  "confianza": "media",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 8,
+    "tokens_in": 142219,
+    "tokens_out": 3325,
+    "latency_s": 53.001,
+    "error": null,
+    "final_raw": "Ese límite de USD 36.000 anuales es de cobros de exportaciones de servicios (Punto 2.2), no aplica a atesoramiento del 3.8. Confirma que no hay un límite general aplicable a la pregunta en el grafo ni en la fuente del 3.8.\n\nTengo evidencia suficiente. La pregunta presupone una estructura regulatoria (límite mensual con débito en cuenta diferente al de efectivo, y límite general para otras modalidades) que no existe en el TO vigente — el Punto 3.8 solo establece el requisito de débito y el tope de USD 100 para efectivo. El agente respondió correctamente lo existente y declaró honestamente lo inexistente.\n\n```json\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"límite mensual con débito en cuenta y límite general para otras modalidades\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que para compra en efectivo el límite es USD 100/mes, y que el KG no contiene un límite mensual diferenciado para débito en cuenta ni un límite general para otras modalidades de formación de activos externos.\",\n        \"nodo\": \"Restriccion_limite_mensual_de_compra_en_efectivo (USD 100 solo si el cliente utiliza efectivo) y Obligacion_cursar_operacion_con_debito_en_cuenta ('La operación se curse con débito en cuenta del cliente en entidades financieras locales', sin tope cuantitativo). No existe en el grafo ningún nodo con un límite mensual con débito en cuenta distinto al efectivo ni un 'límite general' para otras modalidades del 3.8 (búsquedas dirigidas no devolvieron tal nodo; los candidatos como USD 36.000 anuales pertenecen al Punto 2.2 cobros de exportaciones de servicios, no a atesoramiento).\",\n        \"fuente\": \"Punto 3.8 del TO (Com. A 8307, vig. 26/08/2025): 3.8.1 exige que la operación se curse con débito en cuenta; SOLO 'si el cliente utiliza efectivo' aplica el tope de USD 100 mensual. La fuente NO establece un límite mensual cuantitativo cuando se cursa con débito en cuenta, ni un 'límite general para otras modalidades de formación de activos externos'. La estructura que la pregunta presupone no existe en la versión vigente.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"Descompuse la pregunta en tres patas: (1) límite mensual con débito en cuenta, (2) límite mensual en efectivo, (3) límite general para otras modalidades. Leí directamente el Punto 3.8 del PDF: muestra el texto íntegro del requisito (3.8.1 débito en cuenta; USD 100 mensual SOLO para efectivo; 3.8.2 entrega/acreditación). El TO vigente NO contempla un tope mensual cuantitativo para la modalidad débito en cuenta (es un requisito, no un límite con monto) ni un 'límite general para otras modalidades' dentro del 3.8 — la pregunta presupone una regulación (p. ej. tope diferenciado tipo USD 300 con débito) que no figura en la versión vigente. Busqué activamente en el grafo nodos que respondieran las patas (1) y (3) y no existe ninguno; los aparentes candidatos (USD 36.000 anuales) pertenecen a otro concepto (Punto 2.2, exportación de servicios). Por tanto no hay defecto de completitud_kg (el dato no está porque el TO no lo tiene) ni de navegación (no existe nodo que responda). El agente respondió correctamente lo que sí existe (USD 100 efectivo) y declaró honestamente la ausencia del resto, que es la respuesta correcta dada la fuente vigente. La marca de incorrecta del juez responde a que la pregunta asume hechos no presentes en el TO vigente: falso positivo.\",\n  \"confianza\": \"media\"\n}\n```",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.8"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.8\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.8 (PDF pág 32)\", \"pasaje\": \"3.8. Compra de moneda extranjera por parte de personas humanas residentes para la formación \\nde activos externos en forma de billetes y/o depósitos. \\nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \\npara la compra de billetes en moneda extranjera para su  tenencia o para la constitución de \\ndepósitos (códigos de concepto  A07 y A09)  en la  medida que se cumplan  la totalidad de los \\nsiguientes requisitos:  \\n3.8.1. La operación s e curse con débito en cuenta del cliente en entidades financieras \\nlocales. \\nSi el cliente utiliza efectivo el monto comprado por el cliente no supere el equivalente \\na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \\nentidades y por el conjunto de los conceptos señalados. En este caso, la entidad \\ndeberá contar con una declaración jurada del cliente en la cual deje constancia de \\nque cumple con el requisito mencionado precedentemente. \\n3.8.2. La entidad vendedora deberá entrega r los billetes en moneda… [+393 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_el_acceso_al_mercado_de_cambios_para_compra_de_moneda_extranjera_metales_precios"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_el_acceso_al_mercado_de_cambios_para_compra_de_moneda_extranjera_metales_precios\", \"type\": \"Restriccion\", \"label\": \"Requerimiento de autorización previa\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"descripcion\": \"El acceso al mercado de cambios para compra de moneda extranjera, metales preciosos amonedados y transferencias al exterior requerirán autorización previa con base en pautas objetivas\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 15.2. Artículos 1°, 2° y 3° del Decreto 609/19.\"}]}"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.10"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.10 (PDF pág 2)\", \"pasaje\": \"3.10. Compra de moneda extranjera por parte de otros residentes –excluidas las \\nentidades– para la formación de activos externos y por operaciones con \\nderivados. \\n3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+      },
+      {
+        "n": 4,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.11"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.11\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.11 (PDF pág 2)\", \"pasaje\": \"3.11. Otras compras de moneda extranjera por parte de residentes con aplicación \\nespecífica. \\n3.12. Compra de moneda extranjera para operaciones con derivados financieros. \\n3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera \\npor parte de no residentes. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n\\\"EXTERIOR Y CAMBIOS\\\". \\nVersión: 16a. COMUNICACIÓN  “A”  8307 Vigencia: \\n26/08/2025 Página 1\"}"
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "límite mensual débito cuenta formación activos externos personas humanas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"límite mensual débito cuenta formación activos externos personas humanas\", \"total_con_match\": 329, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"type\": \"Restriccion\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, …\"}, {\"id\": \"Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar\", \"type\": \"Restriccion\", \"la… [+2105 chars]"
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "otras modalidades formación activos externos límite general billetes depósitos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"otras modalidades formación activos externos límite general billetes depósitos\", \"total_con_match\": 298, \"resultados\": [{\"id\": \"Operacion_formacion_de_activos_externos\", \"type\": \"Operacion\", \"label\": \"Formación de activos externos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: formación de activos externos\"}, {\"id\": \"Restriccion_no_poseia_activos_externos_liquidos_disponibles_que_conjuntamente_tengan_un_valo\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No poseía activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)\"}, {\"id\": \"Restriccion_limite_de_activos_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de activos en cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Aquéllas que en cualquiera de los días de un mes registren activos (suma de las posiciones compradas y vendidas de los activos comprendidos) que en conjunto sup…\"}, {\"id\": \"Restriccion_en_la_relacion_de_activos_inmovilizados_y_otros_conceptos_seccion_4_del_respecti\", \"type\": \"Restriccion\", \"label\": \"Límite de activos inm… [+2311 chars]"
+      },
+      {
+        "n": 7,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 3"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=4 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_limite_anual_usd_36_000_para_personas_humanas"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_limite_anual_usd_36_000_para_personas_humanas\", \"type\": \"Restriccion\", \"label\": \"Límite anual USD 36.000 para personas humanas\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 36.000 anuales\", \"description\": \"El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000 (dólares estadounidenses treinta y seis mil) en el año calendario, en el conjunto de las entidades y por el conjunto de los conceptos comprendidos\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 1)\"}]}"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 19867,
+        "output_tokens": 259
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 21112,
+        "output_tokens": 377
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 22245,
+        "output_tokens": 435
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 25671,
+        "output_tokens": 467
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 26345,
+        "output_tokens": 358
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 26979,
+        "output_tokens": 1429
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 58,
+      "n_claims_fallidos": 0,
+      "categoria": "cadena_restriccion_excepcion"
+    }
+  }
+}

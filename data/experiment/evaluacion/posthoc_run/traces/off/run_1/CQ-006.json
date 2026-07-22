@@ -1,0 +1,1041 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-006",
+    "run": "run_1",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-006",
+      "question": "En la cartera para consumo o vivienda, ¿hasta cuántos días de atraso se considera que un deudor está en 'situación normal'?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "cartera consumo vivienda situación normal atraso días",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"cartera consumo vivienda situación normal atraso días\", \"total_con_match\": 178, \"resultados\": [{\"id\": \"cla_cartera_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Cartera de consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de cartera crediticia utilizada como criterio para clasificar deudores de proveedores no financieros de crédito.\"}, {\"id\": \"con_cartera_para_consumo_o_vivienda\", \"type\": \"CONCEPT\", \"label\": \"cartera para consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Carteras de financiaciones para vivienda sujetas a clasificación de deudores.\"}, {\"id\": \"con_indice_de_calidad_de_cartera_de_consumo_o_vivienda_iccs\", \"type\": \"CONCEPT\", \"label\": \"Índice de Calidad de Cartera de Consumo o Vivienda (ICCS)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cociente expresado en porcentaje entre financiaciones de cartera de consumo o vivienda clasificadas en situación 3 a 5 y el total de sus financiaciones.\"}, {\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resum… [+2063 chars]",
+          "output_chars": 3263
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "deudor situación normal atraso",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"deudor situación normal atraso\", \"total_con_match\": 61, \"resultados\": [{\"id\": \"cla_deudor_en_situacion_irregular\", \"type\": \"CLASSIFICATION\", \"label\": \"Deudor en situación irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deudor que registra atrasos superiores a 180 días en el cumplimiento de sus obligaciones, identificado en la nómina elaborada por el BCRA.\"}, {\"id\": \"cla_deudores_clasificados_en_situacion_normal\", \"type\": \"CLASSIFICATION\", \"label\": \"Deudores clasificados en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de deudores cuya cartera permite incluir previsiones por riesgo de incobrabilidad en el patrimonio neto complementario.\"}, {\"id\": \"cla_situacion_normal_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación normal (clasificación de deudores)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de clasificación de deudores donde el cliente demuestra capacidad de atender adecuadamente todos sus compromisos financieros a través del análisis de …\"}, {\"id\": \"req_analisis_adecuado_de_situacion_economica_y_financiera_del_deudor\", \"type\": \"REQUIREMENT\", \"label\": \"análisis adecuado de situación … [+1956 chars]",
+          "output_chars": 3156
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal"
+          },
+          "output_truncado": "{\"id\": \"req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal\", \"type\": \"REQUIREMENT\", \"label\": \"atrasos de hasta 31 días compatibles con clasificación de situación normal\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Plazo máximo tolerable de retraso en el pago de obligaciones que permite mantener la clasificación de situación normal si el cliente cancela sin nueva financiación.\", \"aliases\": [\"Atrasos de hasta 31 días\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}",
+          "output_chars": 612
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal\", \"label\": \"atrasos de hasta 31 días compatibles con clasificación de situación normal\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"incluye_requisito\", \"vecino_id\": \"cla_situacion_normal_clasificacion_de_deudores\", \"vecino_label\": \"Situación normal (clasificación de deudores)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 569
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "cla_situacion_normal_clasificacion_de_deudores",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"cla_situacion_normal_clasificacion_de_deudores\", \"label\": \"Situación normal (clasificación de deudores)\", \"n_salientes_total\": 5, \"n_entrantes_total\": 5, \"salientes\": [{\"relation\": \"incluye_requisito\", \"vecino_id\": \"req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal\", \"vecino_label\": \"atrasos de hasta 31 días compatibles con clasificación de situación normal\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"req_direccion_calificada_y_honesta_como_requisito_cualitativo_de_clasificacion\", \"vecino_label\": \"dirección calificada y honesta como requisito cualitativo de clasificación\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"req_sistema_de_informacion\", \"vecino_label\": \"Sistema de información\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"req_competitividad\", \"vecino_label\": \"Competitividad\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\"}]}, {\"r… [+1370 chars]",
+          "output_chars": 2570
+        },
+        {
+          "n": 6,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "cla_cartera_de_consumo_o_vivienda"
+          },
+          "output_truncado": "{\"id\": \"cla_cartera_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Cartera de consumo o vivienda\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Categoría de cartera crediticia utilizada como criterio para clasificar deudores de proveedores no financieros de crédito.\", \"aliases\": [\"Cartera de consumo o vivienda\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 2}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 39\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"pp. 42-43\"}]}",
+          "output_chars": 569
+        },
+        {
+          "n": 7,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "cla_cartera_de_consumo_o_vivienda",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"cla_cartera_de_consumo_o_vivienda\", \"label\": \"Cartera de consumo o vivienda\", \"n_salientes_total\": 0, \"n_entrantes_total\": 2, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"rep_incremento_de_cartera_irregular\", \"vecino_label\": \"Incremento de cartera irregular\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 39\"}]}, {\"relation\": \"integra\", \"vecino_id\": \"cla_situacion_3_a_5_cartera_irregular\", \"vecino_label\": \"Situación 3 a 5 (cartera irregular)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 39\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 674
+        },
+        {
+          "n": 8,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "clasificación deudores consumo vivienda situación normal",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"clasificación deudores consumo vivienda situación normal\", \"total_con_match\": 99, \"resultados\": [{\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_4_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 4 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_5_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 5 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_normal_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación normal (clasificació… [+2132 chars]",
+          "output_chars": 3332
+        },
+        {
+          "n": 9,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "situación normal consumo vivienda 31 días",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"situación normal consumo vivienda 31 días\", \"total_con_match\": 141, \"resultados\": [{\"id\": \"req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal\", \"type\": \"REQUIREMENT\", \"label\": \"atrasos de hasta 31 días compatibles con clasificación de situación normal\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Plazo máximo tolerable de retraso en el pago de obligaciones que permite mantener la clasificación de situación normal si el cliente cancela sin nueva financiac…\"}, {\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_4_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 4 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_5_clasificacion_de_deudor… [+1890 chars]",
+          "output_chars": 3090
+        },
+        {
+          "n": 10,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda"
+          },
+          "output_truncado": "{\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\", \"aliases\": [\"situación 3\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 40\"}]}",
+          "output_chars": 506
+        },
+        {
+          "n": 11,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"es_parte_de\", \"vecino_id\": \"ope_clasificacion_de_deudores\", \"vecino_label\": \"Clasificación de deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 40\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+          "output_chars": 499
+        },
+        {
+          "n": 12,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "situación 1 situación 2 consumo vivienda",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"situación 1 situación 2 consumo vivienda\", \"total_con_match\": 153, \"resultados\": [{\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_4_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 4 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_5_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 5 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"req_factor_de_1_2\", \"type\": \"REQUIREMENT\", \"label\": \"Factor de 1,2\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Multiplicador… [+1790 chars]",
+          "output_chars": 2990
+        },
+        {
+          "n": 13,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "situación 1 clasificación deudores consumo vivienda",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"situación 1 clasificación deudores consumo vivienda\", \"total_con_match\": 162, \"resultados\": [{\"id\": \"cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 3 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_4_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 4 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_5_clasificacion_de_deudores_de_consumo_o_vivienda\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación 5 (clasificación de deudores de consumo o vivienda)\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de clasificación de deudores para cartera de consumo o vivienda según normas del BCRA.\"}, {\"id\": \"cla_situacion_normal_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Situación normal (clasificación de… [+1931 chars]",
+          "output_chars": 3131
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1472,
+          "output_tokens": 182,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.315
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3827,
+          "output_tokens": 131,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.665
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 6,
+          "output_tokens": 144,
+          "cache_read": 0,
+          "cache_write": 4154,
+          "latency_s": 1.696
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 124,
+          "cache_read": 4154,
+          "cache_write": 351,
+          "latency_s": 1.507
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 4,
+          "output_tokens": 122,
+          "cache_read": 4505,
+          "cache_write": 1069,
+          "latency_s": 2.295
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 4,
+          "output_tokens": 88,
+          "cache_read": 5574,
+          "cache_write": 327,
+          "latency_s": 1.482
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3,
+          "output_tokens": 114,
+          "cache_read": 5901,
+          "cache_write": 354,
+          "latency_s": 1.512
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3,
+          "output_tokens": 115,
+          "cache_read": 6255,
+          "cache_write": 1202,
+          "latency_s": 2.011
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3,
+          "output_tokens": 117,
+          "cache_read": 7457,
+          "cache_write": 1171,
+          "latency_s": 2.272
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3,
+          "output_tokens": 99,
+          "cache_read": 8628,
+          "cache_write": 302,
+          "latency_s": 2.278
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 2,
+          "output_tokens": 133,
+          "cache_read": 8930,
+          "cache_write": 298,
+          "latency_s": 2.336
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 2,
+          "output_tokens": 123,
+          "cache_read": 9228,
+          "cache_write": 1187,
+          "latency_s": 1.672
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 2,
+          "output_tokens": 199,
+          "cache_read": 10415,
+          "cache_write": 1173,
+          "latency_s": 3.105
+        }
+      ],
+      "final_json": {
+        "respuesta": "En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando tiene atrasos de hasta 31 días. Según la normativa del BCRA, el plazo máximo tolerable de retraso en el pago de obligaciones que permite mantener la clasificación de situación normal es de 31 días, siempre que el cliente cancele sin nueva financiación.",
+        "citas": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "p. 20"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Basándome en la información que he encontrado en el Knowledge Graph, puedo proporcionar una respuesta clara:\n\n```json\n{\n  \"respuesta\": \"En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando tiene atrasos de hasta 31 días. Según la normativa del BCRA, el plazo máximo tolerable de retraso en el pago de obligaciones que permite mantener la clasificación de situación normal es de 31 días, siempre que el cliente cancele sin nueva financiación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"p. 20\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 13,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 20"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 35"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 22"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 23"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 39"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "pp. 42-43"
+        },
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 40"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5336,
+      "tokens_out": 1691,
+      "cache_read": 71047,
+      "cache_write": 11588,
+      "cost_usd": 0.035381,
+      "latency_s": 26.173,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WKkvcEXgvLKxDTgV1h3LU3",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre la cartera de consumo o vivienda y la clasificación de deudores en situación normal.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01B5P4qHQWk6UHAqo2wPevHT",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "cartera consumo vivienda situación normal atraso días",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LekXn6bSitmXdWeteUEYCk",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "deudor situación normal atraso",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1472,
+            "output_tokens": 182,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WKxEj5VjeJCm1UfRMXT7tc",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto, encontré un nodo muy relevante. Voy a ver los detalles del requirement que menciona específicamente \"atrasos de hasta 31 días compatibles con clasificación de situación normal\".",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01RuqfsNn552hQBZGyv1w2Tk",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3827,
+            "output_tokens": 131,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01QoQpqEJcsvvpddfSMoJMtP",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Ahora voy a verificar si esta regla aplica específicamente a la cartera de consumo o vivienda, explorando las relaciones de este nodo.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0166THxa7TvKyex7mu212yME",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "req_atrasos_de_hasta_31_dias_compatibles_con_clasificacion_de_situacion_normal",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4154
+            },
+            "cache_creation_input_tokens": 4154,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 144,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_016YkNPMcZ9i3vu175RJTqD1",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Ahora voy a verificar si esta clasificación de \"Situación normal\" aplica específicamente a la cartera de consumo o vivienda.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_017nRZrq48HUmcsG7iyeuaRg",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "cla_situacion_normal_clasificacion_de_deudores",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 351
+            },
+            "cache_creation_input_tokens": 351,
+            "cache_read_input_tokens": 4154,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 124,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01YDr27w92unadkvCg4iL8mo",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Ahora voy a verificar si esta clasificación aplica específicamente a la cartera de consumo o vivienda buscando la relación entre \"Situación normal\" y \"cartera de consumo o vivienda\".",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01KvUD6fULLEWrn6tjXBgorT",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "cla_cartera_de_consumo_o_vivienda"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1069
+            },
+            "cache_creation_input_tokens": 1069,
+            "cache_read_input_tokens": 4505,
+            "inference_geo": "not_available",
+            "input_tokens": 4,
+            "output_tokens": 122,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_014ReSUDj8Ha1q5v6XY9881t",
+          "container": null,
+          "content": [
+            {
+              "id": "toolu_01DbJBU723k8UhGA1kogATUB",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "cla_cartera_de_consumo_o_vivienda",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 327
+            },
+            "cache_creation_input_tokens": 327,
+            "cache_read_input_tokens": 5574,
+            "inference_geo": "not_available",
+            "input_tokens": 4,
+            "output_tokens": 88,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_017eSGgbYmFneQJHGowRDDup",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar más específicamente sobre la clasificación de deudores para cartera de consumo o vivienda.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01B8PNwnidUko2Uim19uUuLJ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "clasificación deudores consumo vivienda situación normal",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 354
+            },
+            "cache_creation_input_tokens": 354,
+            "cache_read_input_tokens": 5901,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 114,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Qpf8YZw8h3pswbeohUzsNh",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver si existe una clasificación específica de \"Situación normal\" para cartera de consumo o vivienda.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01AevY1iNuLCmdaW8CHWqNgq",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "situación normal consumo vivienda 31 días",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1202
+            },
+            "cache_creation_input_tokens": 1202,
+            "cache_read_input_tokens": 6255,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 115,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01J1uz61gAQJfmUNEmfp634X",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a ver el nodo de \"Situación 3\" para cartera de consumo o vivienda para entender mejor la estructura de clasificaciones.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_014DDMEpGywmUwHwifHSvqP2",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1171
+            },
+            "cache_creation_input_tokens": 1171,
+            "cache_read_input_tokens": 7457,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 117,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_0131p6uhK62pMg9VdfgYGE7c",
+          "container": null,
+          "content": [
+            {
+              "id": "toolu_012KiUzXv3rdmAbJBFDqyZWE",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "cla_situacion_3_clasificacion_de_deudores_de_consumo_o_vivienda",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 302
+            },
+            "cache_creation_input_tokens": 302,
+            "cache_read_input_tokens": 8628,
+            "inference_geo": "not_available",
+            "input_tokens": 3,
+            "output_tokens": 99,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_019zdwTWq5EqWc4gwWyjxxa1",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar específicamente si existe una \"Situación 1\" o \"Situación 2\" para cartera de consumo o vivienda que corresponda a \"situación normal\".",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0177frVZvZ2PGqCv9YH8FeW3",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "situación 1 situación 2 consumo vivienda",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 298
+            },
+            "cache_creation_input_tokens": 298,
+            "cache_read_input_tokens": 8930,
+            "inference_geo": "not_available",
+            "input_tokens": 2,
+            "output_tokens": 133,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01R2C7m6fbSifFcTYZKqR2PS",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar directamente por \"Situación 1\" o \"Situación 2\" para cartera de consumo o vivienda.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01CVZueLEuZZ2o4HJtvYtG2b",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "situación 1 clasificación deudores consumo vivienda",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1187
+            },
+            "cache_creation_input_tokens": 1187,
+            "cache_read_input_tokens": 9228,
+            "inference_geo": "not_available",
+            "input_tokens": 2,
+            "output_tokens": 123,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01MoDv7nj4cXmXbNvjud55eK",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Basándome en la información que he encontrado en el Knowledge Graph, puedo proporcionar una respuesta clara:\n\n```json\n{\n  \"respuesta\": \"En la cartera para consumo o vivienda, un deudor se considera que está en 'situación normal' cuando tiene atrasos de hasta 31 días. Según la normativa del BCRA, el plazo máximo tolerable de retraso en el pago de obligaciones que permite mantener la clasificación de situación normal es de 31 días, siempre que el cliente cancele sin nueva financiación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"p. 20\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1173
+            },
+            "cache_creation_input_tokens": 1173,
+            "cache_read_input_tokens": 10415,
+            "inference_geo": "not_available",
+            "input_tokens": 2,
+            "output_tokens": 199,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [
+            "Esta clasificación requiere que el cliente cancele sin nueva financiación.",
+            "Esta normativa es del BCRA (Banco Central de la República Argentina)."
+          ],
+          "n_centrales": 0,
+          "n_secundarias": 2
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) pero solo a nivel de página, sin identificar el punto 7.2.1."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "En la cartera para consumo o vivienda, un deudor se considera en 'situación normal' cuando tiene atrasos de hasta 31 días.",
+            "central": true
+          },
+          {
+            "enunciado": "El plazo máximo tolerable de retraso en el pago de obligaciones para mantener la clasificación de situación normal es de 31 días.",
+            "central": true
+          },
+          {
+            "enunciado": "Esta clasificación requiere que el cliente cancele sin nueva financiación.",
+            "central": false
+          },
+          {
+            "enunciado": "Esta normativa es del BCRA (Banco Central de la República Argentina).",
+            "central": false
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Cantidad máxima de días de atraso para que un deudor sea considerado en 'situación normal' en la cartera para consumo o vivienda"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "En la cartera para consumo o vivienda, un deudor se considera en 'situación normal' cuando tiene atrasos de hasta 31 días.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El plazo máximo tolerable de retraso en el pago de obligaciones para mantener la clasificación de situación normal es de 31 días.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Esta clasificación requiere que el cliente cancele sin nueva financiación.",
+            "central": false,
+            "verdict": "no_soportado"
+          },
+          {
+            "enunciado": "Esta normativa es del BCRA (Banco Central de la República Argentina).",
+            "central": false,
+            "verdict": "no_soportado"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Cantidad máxima de días de atraso para que un deudor sea considerado en 'situación normal' en la cartera para consumo o vivienda",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) pero solo a nivel de página, sin identificar el punto 7.2.1.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2470,
+        "out": 703
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Eiy3rikrrhA82J48Gbfnme",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"En la cartera para consumo o vivienda, un deudor se considera en 'situación normal' cuando tiene atrasos de hasta 31 días.\", \"central\": true},\n    {\"enunciado\": \"El plazo máximo tolerable de retraso en el pago de obligaciones para mantener la clasificación de situación normal es de 31 días.\", \"central\": true},\n    {\"enunciado\": \"Esta clasificación requiere que el cliente cancele sin nueva financiación.\", \"central\": false},\n    {\"enunciado\": \"Esta normativa es del BCRA (Banco Central de la República Argentina).\", \"central\": false}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"Cantidad máxima de días de atraso para que un deudor sea considerado en 'situación normal' en la cartera para consumo o vivienda\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 674,
+            "output_tokens": 254,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01HdkmkQ59g2Hbq7VvdgdxCu",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"En la cartera para consumo o vivienda, un deudor se considera en 'situación normal' cuando tiene atrasos de hasta 31 días.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El plazo máximo tolerable de retraso en el pago de obligaciones para mantener la clasificación de situación normal es de 31 días.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Esta clasificación requiere que el cliente cancele sin nueva financiación.\",\n      \"central\": false,\n      \"verdict\": \"no_soportado\"\n    },\n    {\n      \"enunciado\": \"Esta normativa es del BCRA (Banco Central de la República Argentina).\",\n      \"central\": false,\n      \"verdict\": \"no_soportado\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Cantidad máxima de días de atraso para que un deudor sea considerado en 'situación normal' en la cartera para consumo o vivienda\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) pero solo a nivel de página, sin identificar el punto 7.2.1.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1796,
+            "output_tokens": 449,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.035381,
+    "judge_cost": 0.017955
+  }
+]

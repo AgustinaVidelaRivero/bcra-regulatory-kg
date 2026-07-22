@@ -1,0 +1,974 @@
+{
+ "id_falla": "run_3/CQ-016",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "estructural_kg"
+     ]
+    ],
+    "votos": 1
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "estructural_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQ-016",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"limite\": 10}",
+      "devolvio": "154 matches; nodos de capitales/regímenes informativos genéricos, sin nodo específico para el régimen de la pregunta como entidad diferenciada",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"importes unidad decimales registro\", \"limite\": 10}",
+      "devolvio": "Devuelve el nodo pertinente Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (resumen: 'Los importes se registrarán en miles de pesos, sin decimales')",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\"}",
+      "devolvio": "Nodo con description 'Los importes se registrarán en miles de pesos, sin decimales' y provenance Punto 1.2 del TO_regimen_informativo_contable_mensual_actual.pdf",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\"}",
+      "devolvio": "Nodo TextoOrdenado de Capitales Mínimos; metadatos del PDF",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"direccion\": \"salientes\"}",
+      "devolvio": "154 referencias a Comunicaciones; no aporta unidad/decimales",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"capitales mínimos importes miles decimales\", \"limite\": 10}",
+      "devolvio": "Reaparece el nodo pertinente de miles sin decimales",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"régimen informativo capitales mínimos exigencia integración\", \"limite\": 10}",
+      "devolvio": "Mismos nodos genéricos; sin entidad separada del régimen",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo\"}",
+      "devolvio": "Obligación de presentar info de exigencia de capitales por riesgo (Punto 4.2); no aporta unidad/decimales",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"direccion\": \"entrantes\"}",
+      "devolvio": "0 entrantes",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"punto 1.2 importes miles pesos decimales\", \"limite\": 5}",
+      "devolvio": "Reaparece el nodo pertinente en primer lugar",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"TO_capitales_minimos formato unidad registro\", \"limite\": 10}",
+      "devolvio": "Nodos de capitales; sin dato adicional de unidad/decimales",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente localizó en el paso 2 el nodo pertinente (Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales), lo abrió y verificó su provenance en el paso 3, y reprodujo fielmente en la respuesta final ambas patas (unidad='miles de pesos', decimales='sin decimales') con cita correcta al Punto 1.2 del TO_regimen_informativo_contable_mensual_actual.pdf. La verificación contra el PDF confirma que ese Punto 1.2 pertenece precisamente al capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.), Sección 1. Instrucciones generales', es decir, ES el régimen por el que pregunta la CQ. Las tres afirmaciones fueron aprobadas por el juez y son correctas. El agente actuó bien sobre lo que tenía.",
+    "thinking_decision": null,
+    "patas": [
+     "Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos",
+     "Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Ambas patas (unidad y decimales)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "los importes en el régimen informativo se registran en miles de pesos, sin decimales. (...) La norma sobre registro en miles de pesos sin decimales está documentada en el Régimen Informativo Contable Mensual (Punto 1.2).",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los importes se registrarán en miles de pesos, sin decimales",
+       "ubicacion": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "1.2. Los importes se registrarán en miles de pesos, sin decimales. (...) REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "exigencia integración capitales mínimos régimen informativo importes",
+       "resultado": "El nodo Restriccion...miles_de_pesos_sin_decimales y el TextoOrdenado del RICM aparecen; el dato pertinente es alcanzable"
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 1.2 y Sección 1 del RICM",
+       "resultado": "Confirma que el Punto 1.2 es la instrucción general del capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — o sea, el régimen exacto de la pregunta"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a por pata): (1) Pata unidad — el dato pertinente 'miles de pesos' apareció en la trayectoria (paso 2, nodo Restriccion...miles_de_pesos_sin_decimales, abierto en paso 3). (2) Pata decimales — el dato pertinente 'sin decimales' apareció en el mismo nodo. Ambas patas tienen dato pertinente expuesto y usado, así que ninguna es context_recall. C1b: los claims centrales están soportados por el nodo consultado, por lo que el síntoma candidato es noise_sensitivity (¿es correcto contra el PDF?). CAUSA (C2, rama noise_sensitivity): ¿el nodo es fiel al PDF? SÍ, verbatim ('Los importes se registrarán en miles de pesos, sin decimales'). ¿La cita apunta a otro lado? NO: la provenance 'Punto 1.2' funda exactamente el contenido, y leer_pasaje_pdf confirma que ese Punto 1.2 es la Sección 1 (Instrucciones generales) del capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — precisamente el Régimen Informativo por el que pregunta la CQ. ¿El nodo es PERTINENTE a la pata (test v2.2)? SÍ: usado solo, responde ambas patas correctamente. → sin_defecto (falso positivo del juez). El juez, de hecho, APROBÓ las tres afirmaciones centrales; la marca de falla no se explica por ningún defecto del sistema. DESCARTES documentados: completitud_kg/estructural_kg descartados (el dato está en el grafo con nodo y provenance exacta); contenido_kg descartado (nodo = PDF verbatim); provenance_imprecisa descartado (Punto 1.2 funda el contenido); navegación/alcanzabilidad_kg descartados (el agente alcanzó y usó el nodo desde términos ex ante de la pregunta: 'importes unidad decimales registro'); aplicacion_erronea descartado (el contenido se aplicó dentro de su alcance, ya que el Punto 1.2 pertenece al régimen de Capitales Mínimos); alucinacion_agente: la única glosa es la salvedad conservadora ('no se encontró especificación explícita y separada para un Régimen ... como entidad diferenciada'), que es hedging innecesario pero NO una afirmación fáctica incorrecta y NO rompe la respuesta — no constituye primaria ni justifica reprobación. Por REGLA DE JERARQUÍA, como todos los claims centrales resultan correctos (FP del juez), el caso no tiene primaria; la salvedad conservadora no es un defecto del sistema con efecto en el veredicto, por lo que no se emite como secundaria. Veredicto: sin_defecto / sin_par.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 167816,
+    "tokens_out": 5695
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 167816,
+    "tokens_out": 5695,
+    "latency_s": 74.357,
+    "error": null,
+    "final_raw": "Confirmado el contexto documental. Tengo evidencia completa para emitir el veredicto.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Régimen Informativo Exigencia Integración Capitales Mínimos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"154 matches; nodos de capitales/regímenes informativos genéricos, sin nodo específico para el régimen de la pregunta como entidad diferenciada\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"importes unidad decimales registro\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve el nodo pertinente Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (resumen: 'Los importes se registrarán en miles de pesos, sin decimales')\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\\\"}\", \"devolvio\": \"Nodo con description 'Los importes se registrarán en miles de pesos, sin decimales' y provenance Punto 1.2 del TO_regimen_informativo_contable_mensual_actual.pdf\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"TextoOrdenado_to_capitales_minimos_actual_pdf\\\"}\", \"devolvio\": \"Nodo TextoOrdenado de Capitales Mínimos; metadatos del PDF\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"TextoOrdenado_to_capitales_minimos_actual_pdf\\\", \\\"direccion\\\": \\\"salientes\\\"}\", \"devolvio\": \"154 referencias a Comunicaciones; no aporta unidad/decimales\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capitales mínimos importes miles decimales\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Reaparece el nodo pertinente de miles sin decimales\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"régimen informativo capitales mínimos exigencia integración\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Mismos nodos genéricos; sin entidad separada del régimen\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_informar_exigencia_de_capitales_por_riesgo\\\"}\", \"devolvio\": \"Obligación de presentar info de exigencia de capitales por riesgo (Punto 4.2); no aporta unidad/decimales\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\\\", \\\"direccion\\\": \\\"entrantes\\\"}\", \"devolvio\": \"0 entrantes\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"punto 1.2 importes miles pesos decimales\\\", \\\"limite\\\": 5}\", \"devolvio\": \"Reaparece el nodo pertinente en primer lugar\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"TO_capitales_minimos formato unidad registro\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos de capitales; sin dato adicional de unidad/decimales\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente localizó en el paso 2 el nodo pertinente (Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales), lo abrió y verificó su provenance en el paso 3, y reprodujo fielmente en la respuesta final ambas patas (unidad='miles de pesos', decimales='sin decimales') con cita correcta al Punto 1.2 del TO_regimen_informativo_contable_mensual_actual.pdf. La verificación contra el PDF confirma que ese Punto 1.2 pertenece precisamente al capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.), Sección 1. Instrucciones generales', es decir, ES el régimen por el que pregunta la CQ. Las tres afirmaciones fueron aprobadas por el juez y son correctas. El agente actuó bien sobre lo que tenía.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\", \"Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Ambas patas (unidad y decimales)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"los importes en el régimen informativo se registran en miles de pesos, sin decimales. (...) La norma sobre registro en miles de pesos sin decimales está documentada en el Régimen Informativo Contable Mensual (Punto 1.2).\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los importes se registrarán en miles de pesos, sin decimales\", \"ubicacion\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. (...) REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"exigencia integración capitales mínimos régimen informativo importes\", \"resultado\": \"El nodo Restriccion...miles_de_pesos_sin_decimales y el TextoOrdenado del RICM aparecen; el dato pertinente es alcanzable\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 1.2 y Sección 1 del RICM\", \"resultado\": \"Confirma que el Punto 1.2 es la instrucción general del capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — o sea, el régimen exacto de la pregunta\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a por pata): (1) Pata unidad — el dato pertinente 'miles de pesos' apareció en la trayectoria (paso 2, nodo Restriccion...miles_de_pesos_sin_decimales, abierto en paso 3). (2) Pata decimales — el dato pertinente 'sin decimales' apareció en el mismo nodo. Ambas patas tienen dato pertinente expuesto y usado, así que ninguna es context_recall. C1b: los claims centrales están soportados por el nodo consultado, por lo que el síntoma candidato es noise_sensitivity (¿es correcto contra el PDF?). CAUSA (C2, rama noise_sensitivity): ¿el nodo es fiel al PDF? SÍ, verbatim ('Los importes se registrarán en miles de pesos, sin decimales'). ¿La cita apunta a otro lado? NO: la provenance 'Punto 1.2' funda exactamente el contenido, y leer_pasaje_pdf confirma que ese Punto 1.2 es la Sección 1 (Instrucciones generales) del capítulo '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — precisamente el Régimen Informativo por el que pregunta la CQ. ¿El nodo es PERTINENTE a la pata (test v2.2)? SÍ: usado solo, responde ambas patas correctamente. → sin_defecto (falso positivo del juez). El juez, de hecho, APROBÓ las tres afirmaciones centrales; la marca de falla no se explica por ningún defecto del sistema. DESCARTES documentados: completitud_kg/estructural_kg descartados (el dato está en el grafo con nodo y provenance exacta); contenido_kg descartado (nodo = PDF verbatim); provenance_imprecisa descartado (Punto 1.2 funda el contenido); navegación/alcanzabilidad_kg descartados (el agente alcanzó y usó el nodo desde términos ex ante de la pregunta: 'importes unidad decimales registro'); aplicacion_erronea descartado (el contenido se aplicó dentro de su alcance, ya que el Punto 1.2 pertenece al régimen de Capitales Mínimos); alucinacion_agente: la única glosa es la salvedad conservadora ('no se encontró especificación explícita y separada para un Régimen ... como entidad diferenciada'), que es hedging innecesario pero NO una afirmación fáctica incorrecta y NO rompe la respuesta — no constituye primaria ni justifica reprobación. Por REGLA DE JERARQUÍA, como todos los claims centrales resultan correctos (FP del juez), el caso no tiene primaria; la salvedad conservadora no es un defecto del sistema con efecto en el veredicto, por lo que no se emite como secundaria. Veredicto: sin_defecto / sin_par.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia integración capitales mínimos régimen informativo importes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia integración capitales mínimos régimen informativo importes\", \"total_con_match\": 171, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Operacion_presentacion_informativa_de_operaciones_cambiarias\", \"type\": \"Operacion\", \"label\": \"Validación en régimen informativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: presentación informativa de operaciones cambiarias\"}, {\"id\": \"… [+2146 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"type\": \"Restriccion\", \"label\": \"Registro en miles sin decimales\", \"properties\": {\"descripcion\": \"Los importes se registrarán en miles de pesos, sin decimales\", \"tipo\": \"limite_cualitativo\", \"description\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 47)\", \"pasaje\": \"1. No actualizable \\n2. CER \\n3. UVA/UVI:  \\n \\nLos saldos correspondientes a instrumentos actualizables por CER/UVA/UVI deberán \\nidentificarse con el código respectivo, e imputarse a la banda 0 (saldos a fin de mes) \\nen su totalidad. \\n \\nMárgenes comerciales\\n: \\n \\nLas entidades pueden optar por deducir los márgenes comerciales y otros componen-\\ntes del diferencial (spread), en cuyo caso: \\n \\n· Si se incluyen los márgenes comerciales.  \\n \\nSolo se informarán los flujos y el factor de descuento continuo con margen (código \\n2) \\n \\n·  Si se deducen los márgenes. \\n \\nDeberán informar los flujos y el factor de descuento continuo sin márgenes (código \\n1) y con márgenes (código 2). \\n \\nDeberán informarse las partidas que registren importes, considerando los atributos \\ndetallados precedentemente, indicados en los modelos de información de los cuadros \\n11.2.1. a) y b) y 11.2.2. a) y b) para cada una de ellas. \\n \\nCuando la estructura del modelo requiera datos en todos los escenarios (0 a 6… [+425 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importes unidad decimales registro\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"importes unidad decimales registro\", \"total_con_match\": 81, \"resultados\": [{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"type\": \"Restriccion\", \"label\": \"Registro en miles sin decimales\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Operacion_registro_contable\", \"type\": \"Operacion\", \"label\": \"Registro de importes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Obligacion_en_el_registro_de_reintegros_de_importes_rri_se_deberan_asentar_los_montos_reint\", \"type\": \"Obligacion\", \"label\": \"Asentar reintegros en registro\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el Registro de Reintegros de Importes (RRI) se deberán asentar los montos reintegrados a los usuarios, identificando en cada caso al usuario afectado, la cau…\"}, {\"id\": \"Obligacion_el_registro_de_reintegros_de_importes_rri_previsto_en_el_punto_3_1_4\", \"type\": \"Obligacion\", \"label\": \"Disponibilizar… [+1898 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Régimen Informativo Contable Mensual\", \"properties\": {\"materia\": \"Información contable y regulatoria mensual\", \"archivo\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"version\": \"actual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29851,
+      "output_tokens": 310
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32157,
+      "output_tokens": 457
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33656,
+      "output_tokens": 624
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35648,
+      "output_tokens": 634
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 36504,
+      "output_tokens": 3670
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 69,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-016",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Régimen Informativo Exigencia Integración Capitales Mínimos', limite: 10}",
+      "devolvio": "TextoOrdenado 'Régimen Informativo Contable Mensual' (label genérico, materia 'Información contable y regulatoria mensual'), Operacion integración de capitales, nodos SEPAIMPO; ningún nodo que declare que el régimen de exigencia/integración de capitales mínimos = R.I.-C.M.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'importes unidad decimales registro', limite: 10}",
+      "devolvio": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (label 'Registro en miles sin decimales') como primer resultado",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales'}",
+      "devolvio": "descripcion 'Los importes se registrarán en miles de pesos, sin decimales'; provenance TO_regimen_informativo_contable_mensual_actual.pdf Punto 1.2",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: 'TextoOrdenado_to_capitales_minimos_actual_pdf'}",
+      "devolvio": "TO Capitales Mínimos, materia 'capitales minimos', provenance Punto 1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: 'TextoOrdenado_to_capitales_minimos_actual_pdf', direccion: 'salientes'}",
+      "devolvio": "154 salientes, casi todas 'referencia'/'modificada_por' a Comunicaciones; nada sobre unidad/decimales",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capitales mínimos importes miles decimales', limite: 10}",
+      "devolvio": "de nuevo la Restriccion miles/decimales + TO Capitales Mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen informativo capitales mínimos exigencia integración', limite: 10}",
+      "devolvio": "mismos resultados genéricos que paso 1; sin nodo que vincule el régimen con capitales mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: 'Obligacion_informar_exigencia_de_capitales_por_riesgo'}",
+      "devolvio": "Presentar info exigencia por riesgo de mercado mensual; provenance TO_regimen_informativo_contable_mensual_actual.pdf Punto 4.2",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Restriccion_los_importes...', direccion: 'entrantes'}",
+      "devolvio": "0 entrantes; 3 salientes; sin aristas que la conecten al régimen de capitales mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 1.2 importes miles pesos decimales', limite: 5}",
+      "devolvio": "la Restriccion miles/decimales de nuevo",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'TO_capitales_minimos formato unidad registro', limite: 10}",
+      "devolvio": "TO Capitales Mínimos y varios nodos de registro no pertinentes",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 7,
+     "quote": "no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos",
+     "Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "estructural_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Identificación del régimen consultado como 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "label=\"Régimen Informativo Contable Mensual\"; materia: Información contable y regulatoria mensual; archivo: TO_regimen_informativo_contable_mensual_actual.pdf",
+       "ubicacion": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+      },
+      "fuente": {
+       "quote": "REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 / Sección 1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "R.I.-C.M. exigencia integración capitales mínimos régimen informativo instrucciones generales",
+       "resultado": "236 matches; TO 'Régimen Informativo Contable Mensual' con label genérico y nodos de operaciones/obligaciones de capitales, pero NINGÚN nodo/arista que declare que ese régimen = 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)'"
+      },
+      {
+       "consulta": "informar exigencia integración capitales mínimos mensual",
+       "resultado": "233 matches; obligaciones de informar exigencia por riesgo, CRO, etc., pero ninguna conecta la unidad/decimales del Punto 1.2 con el régimen de capitales mínimos"
+      },
+      {
+       "consulta": "régimen informativo exigencia integración capitales mínimos importes",
+       "resultado": "171 matches; sin nodo puente que identifique el R.I.-C.M. como el régimen de la pregunta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Unidad (miles de pesos) y decimales (sin decimales)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "los importes en el régimen informativo se registran en miles de pesos, sin decimales",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los importes se registrarán en miles de pesos, sin decimales",
+       "ubicacion": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales"
+      },
+      "fuente": {
+       "quote": "1.2. Los importes se registrarán en miles de pesos, sin decimales.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer Punto 1.2 del régimen informativo contable mensual",
+       "resultado": "El Punto 1.2 pertenece a la Sección 1 'Instrucciones generales' del régimen titulado '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — el dato es exactamente el pertinente a la pregunta; ambas patas centrales son correctas y el juez las aprobó"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El juez aprobó las TRES afirmaciones centrales (miles de pesos / sin decimales / documentado en Punto 1.2). La verificación contra el PDF confirma que son correctas: el Punto 1.2 pertenece a la Sección 1 'Instrucciones generales' del régimen que el propio PDF titula '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'. El R.I.-C.M. ES el 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' de la pregunta. Aplico la precedencia por pata (C1a). PATA unidad/decimales: el dato pertinente (nodo Restriccion..., provenance Punto 1.2) apareció y fue usado correctamente; la afirmación es fiel al PDF y responde la pata → noise_sensitivity que, al ser el nodo fiel y pertinente, resuelve como sin_defecto (falso positivo parcial: el contenido sustantivo es correcto), jerarquia sin_par. PATA identificación del régimen: el dato que conecta el nombre por el que pregunta el usuario ('Régimen Informativo de Exigencia e Integración de Capitales Mínimos') con el TO/sección que lo porta NUNCA apareció como nodo en la trayectoria — solo existe en el título de sección del PDF ('4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'). Por C1a, un dato pertinente a la pata que nunca aparece → context_recall, con independencia de que el agente rellenara con el label genérico del TextoOrdenado. Este hueco es lo que empujó al agente al hedge incorrecto de la respuesta final ('no se encontró una especificación separada... como entidad diferenciada', respondible=False) que degradó la respuesta y explica la reprobación del juez. C2 desde context_recall: ¿existe nodo portador del vínculo? No — busqué con el vocabulario ex ante de la pregunta (pasos 1, 7 y mis tres búsquedas) y ningún nodo/arista declara que el R.I.-C.M. es el régimen de capitales mínimos; el TextoOrdenado solo tiene label genérico 'Régimen Informativo Contable Mensual' y materia 'Información contable y regulatoria mensual'. Los datos existen sueltos (el TO existe; la Restriccion del Punto 1.2 existe) pero FALTA la relación/nodo que exprese la identidad del régimen bajo el nombre por el que pregunta el usuario → estructural_kg (falta la conexión), no completitud_kg (el dato de unidad/decimales sí está). Descarto navegación porque no hay nodo alcanzable que porte ese vínculo (lo exhibí buscándolo sin éxito) y descarto alcanzabilidad_kg porque no existe siquiera un nodo portador oculto: es la conexión la que falta, no su indexación. Primaria: estructural_kg.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 9,
+    "max_tool_calls": 40,
+    "tokens_in": 267159,
+    "tokens_out": 13198
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 1,
+    "tool_calls_used": 9,
+    "tokens_in": 267159,
+    "tokens_out": 13198,
+    "latency_s": 157.879,
+    "error": null,
+    "final_raw": "Debo reconciliar. El síntoma real de la pata problemática es que el dato PERTINENTE para identificar el régimen (\"R.I.-C.M.\" = régimen de exigencia e integración de capitales mínimos) **nunca apareció** en la trayectoria como nodo — solo estaba en el PDF. Por precedencia (C1a), si el dato pertinente a la pata nunca apareció, la pata es **context_recall**, no noise_sensitivity. Y desde context_recall el árbol sí conecta con estructural_kg (no existe nodo/arista que una el nombre del régimen con el TO/sección).\n\nReclasifico la pata de identificación del régimen como context_recall → estructural_kg.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Régimen Informativo Exigencia Integración Capitales Mínimos', limite: 10}\", \"devolvio\": \"TextoOrdenado 'Régimen Informativo Contable Mensual' (label genérico, materia 'Información contable y regulatoria mensual'), Operacion integración de capitales, nodos SEPAIMPO; ningún nodo que declare que el régimen de exigencia/integración de capitales mínimos = R.I.-C.M.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'importes unidad decimales registro', limite: 10}\", \"devolvio\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales (label 'Registro en miles sin decimales') como primer resultado\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales'}\", \"devolvio\": \"descripcion 'Los importes se registrarán en miles de pesos, sin decimales'; provenance TO_regimen_informativo_contable_mensual_actual.pdf Punto 1.2\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: 'TextoOrdenado_to_capitales_minimos_actual_pdf'}\", \"devolvio\": \"TO Capitales Mínimos, materia 'capitales minimos', provenance Punto 1.1\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'TextoOrdenado_to_capitales_minimos_actual_pdf', direccion: 'salientes'}\", \"devolvio\": \"154 salientes, casi todas 'referencia'/'modificada_por' a Comunicaciones; nada sobre unidad/decimales\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capitales mínimos importes miles decimales', limite: 10}\", \"devolvio\": \"de nuevo la Restriccion miles/decimales + TO Capitales Mínimos\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen informativo capitales mínimos exigencia integración', limite: 10}\", \"devolvio\": \"mismos resultados genéricos que paso 1; sin nodo que vincule el régimen con capitales mínimos\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Obligacion_informar_exigencia_de_capitales_por_riesgo'}\", \"devolvio\": \"Presentar info exigencia por riesgo de mercado mensual; provenance TO_regimen_informativo_contable_mensual_actual.pdf Punto 4.2\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Restriccion_los_importes...', direccion: 'entrantes'}\", \"devolvio\": \"0 entrantes; 3 salientes; sin aristas que la conecten al régimen de capitales mínimos\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 1.2 importes miles pesos decimales', limite: 5}\", \"devolvio\": \"la Restriccion miles/decimales de nuevo\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'TO_capitales_minimos formato unidad registro', limite: 10}\", \"devolvio\": \"TO Capitales Mínimos y varios nodos de registro no pertinentes\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 7, \"quote\": \"no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\",\n      \"Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"estructural_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Identificación del régimen consultado como 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"label=\\\"Régimen Informativo Contable Mensual\\\"; materia: Información contable y regulatoria mensual; archivo: TO_regimen_informativo_contable_mensual_actual.pdf\", \"ubicacion\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\"},\n        \"fuente\": {\"quote\": \"REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 / Sección 1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"R.I.-C.M. exigencia integración capitales mínimos régimen informativo instrucciones generales\", \"resultado\": \"236 matches; TO 'Régimen Informativo Contable Mensual' con label genérico y nodos de operaciones/obligaciones de capitales, pero NINGÚN nodo/arista que declare que ese régimen = 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)'\"},\n        {\"consulta\": \"informar exigencia integración capitales mínimos mensual\", \"resultado\": \"233 matches; obligaciones de informar exigencia por riesgo, CRO, etc., pero ninguna conecta la unidad/decimales del Punto 1.2 con el régimen de capitales mínimos\"},\n        {\"consulta\": \"régimen informativo exigencia integración capitales mínimos importes\", \"resultado\": \"171 matches; sin nodo puente que identifique el R.I.-C.M. como el régimen de la pregunta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Unidad (miles de pesos) y decimales (sin decimales)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"los importes en el régimen informativo se registran en miles de pesos, sin decimales\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los importes se registrarán en miles de pesos, sin decimales\", \"ubicacion\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\"},\n        \"fuente\": {\"quote\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer Punto 1.2 del régimen informativo contable mensual\", \"resultado\": \"El Punto 1.2 pertenece a la Sección 1 'Instrucciones generales' del régimen titulado '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)' — el dato es exactamente el pertinente a la pregunta; ambas patas centrales son correctas y el juez las aprobó\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El juez aprobó las TRES afirmaciones centrales (miles de pesos / sin decimales / documentado en Punto 1.2). La verificación contra el PDF confirma que son correctas: el Punto 1.2 pertenece a la Sección 1 'Instrucciones generales' del régimen que el propio PDF titula '4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'. El R.I.-C.M. ES el 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' de la pregunta. Aplico la precedencia por pata (C1a). PATA unidad/decimales: el dato pertinente (nodo Restriccion..., provenance Punto 1.2) apareció y fue usado correctamente; la afirmación es fiel al PDF y responde la pata → noise_sensitivity que, al ser el nodo fiel y pertinente, resuelve como sin_defecto (falso positivo parcial: el contenido sustantivo es correcto), jerarquia sin_par. PATA identificación del régimen: el dato que conecta el nombre por el que pregunta el usuario ('Régimen Informativo de Exigencia e Integración de Capitales Mínimos') con el TO/sección que lo porta NUNCA apareció como nodo en la trayectoria — solo existe en el título de sección del PDF ('4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)'). Por C1a, un dato pertinente a la pata que nunca aparece → context_recall, con independencia de que el agente rellenara con el label genérico del TextoOrdenado. Este hueco es lo que empujó al agente al hedge incorrecto de la respuesta final ('no se encontró una especificación separada... como entidad diferenciada', respondible=False) que degradó la respuesta y explica la reprobación del juez. C2 desde context_recall: ¿existe nodo portador del vínculo? No — busqué con el vocabulario ex ante de la pregunta (pasos 1, 7 y mis tres búsquedas) y ningún nodo/arista declara que el R.I.-C.M. es el régimen de capitales mínimos; el TextoOrdenado solo tiene label genérico 'Régimen Informativo Contable Mensual' y materia 'Información contable y regulatoria mensual'. Los datos existen sueltos (el TO existe; la Restriccion del Punto 1.2 existe) pero FALTA la relación/nodo que exprese la identidad del régimen bajo el nombre por el que pregunta el usuario → estructural_kg (falta la conexión), no completitud_kg (el dato de unidad/decimales sí está). Descarto navegación porque no hay nodo alcanzable que porte ese vínculo (lo exhibí buscándolo sin éxito) y descarto alcanzabilidad_kg porque no existe siquiera un nodo portador oculto: es la conexión la que falta, no su indexación. Primaria: estructural_kg.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "régimen informativo exigencia integración capitales mínimos importes",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"régimen informativo exigencia integración capitales mínimos importes\", \"total_con_match\": 171, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Operacion_presentacion_informativa_de_operaciones_cambiarias\", \"type\": \"Operacion\", \"label\": \"Validación en régimen informativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: presentación informativa de operaciones cambiarias\"}, {\"id\": \"… [+2146 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 47)\", \"pasaje\": \"1. No actualizable \\n2. CER \\n3. UVA/UVI:  \\n \\nLos saldos correspondientes a instrumentos actualizables por CER/UVA/UVI deberán \\nidentificarse con el código respectivo, e imputarse a la banda 0 (saldos a fin de mes) \\nen su totalidad. \\n \\nMárgenes comerciales\\n: \\n \\nLas entidades pueden optar por deducir los márgenes comerciales y otros componen-\\ntes del diferencial (spread), en cuyo caso: \\n \\n· Si se incluyen los márgenes comerciales.  \\n \\nSolo se informarán los flujos y el factor de descuento continuo con margen (código \\n2) \\n \\n·  Si se deducen los márgenes. \\n \\nDeberán informar los flujos y el factor de descuento continuo sin márgenes (código \\n1) y con márgenes (código 2). \\n \\nDeberán informarse las partidas que registren importes, considerando los atributos \\ndetallados precedentemente, indicados en los modelos de información de los cuadros \\n11.2.1. a) y b) y 11.2.2. a) y b) para cada una de ellas. \\n \\nCuando la estructura del modelo requiera datos en todos los escenarios (0 a 6… [+425 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000… [+412 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Régimen Informativo Contable Mensual\", \"properties\": {\"materia\": \"Información contable y regulatoria mensual\", \"archivo\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"version\": \"actual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"importes unidad decimales registro\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"importes unidad decimales registro\", \"total_con_match\": 81, \"resultados\": [{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"type\": \"Restriccion\", \"label\": \"Registro en miles sin decimales\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Operacion_registro_contable\", \"type\": \"Operacion\", \"label\": \"Registro de importes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin decimales\"}, {\"id\": \"Obligacion_en_el_registro_de_reintegros_de_importes_rri_se_deberan_asentar_los_montos_reint\", \"type\": \"Obligacion\", \"label\": \"Asentar reintegros en registro\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el Registro de Reintegros de Importes (RRI) se deberán asentar los montos reintegrados a los usuarios, identificando en cada caso al usuario afectado, la cau…\"}, {\"id\": \"Obligacion_el_registro_de_reintegros_de_importes_rri_previsto_en_el_punto_3_1_4\", \"type\": \"Obligacion\", \"label\": \"Disponibilizar… [+1898 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "R.I.-C.M. exigencia integración capitales mínimos régimen informativo instrucciones generales",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"R.I.-C.M. exigencia integración capitales mínimos régimen informativo instrucciones generales\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en … [+2074 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "informar exigencia integración capitales mínimos mensual",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"informar exigencia integración capitales mínimos mensual\", \"total_con_match\": 233, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"Obligacion_informar_exigencia_de_capitales_por_riesgo\", \"type\": \"Obligacion\", \"label\": \"Informar exigencia de capitales por riesgo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Presentar información sobre exigencia de capitales mínimos por riesgo de mercado con periodicidad mensual, desglosada por código de concepto y día del mes\"}, {\"id\": \"Operacion_observancia_de_requisitos_de_capitales_minimos_en_base_consolidada_mensual_y_tri\", \"type\": \"Operacion\", \"label\": \"Observancia capitales mínimos base consolidada\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Observancia de requisitos de capitales mínimos en base consolidada mensual y trimestral\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actua… [+2026 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"total_con_match\": 154, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Operacion_presentacion_informativa_de_operaciones_cambiarias\", \"type\": \"Operacion\", \"label\": \"Valida… [+2293 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29851,
+      "output_tokens": 398
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32245,
+      "output_tokens": 640
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34410,
+      "output_tokens": 808
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36862,
+      "output_tokens": 1369
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41165,
+      "output_tokens": 1226
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 43930,
+      "output_tokens": 4418
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 48696,
+      "output_tokens": 4339
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 69,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-016",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'Régimen Informativo Exigencia Integración Capitales Mínimos', limite: 10}",
+      "devolvio": "154 matches; TextoOrdenado 'Capitales Mínimos', TextoOrdenado 'Régimen Informativo Contable Mensual' (materia genérica), obligaciones de régimen informativo SEPAIMPO, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'importes unidad decimales registro', limite: 10}",
+      "devolvio": "Restriccion 'Registro en miles sin decimales' (Los importes se registrarán en miles de pesos, sin decimales) y Operacion 'Registro de importes' con el mismo texto",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales}",
+      "devolvio": "descripcion 'Los importes se registrarán en miles de pesos, sin decimales'; provenance TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: TextoOrdenado_to_capitales_minimos_actual_pdf}",
+      "devolvio": "materia 'capitales minimos'; provenance Punto 1.1",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_vecinos",
+      "args": "{id: TextoOrdenado_to_capitales_minimos_actual_pdf, salientes}",
+      "devolvio": "154 referencias a Comunicaciones; ninguna sobre unidad/decimales",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capitales mínimos importes miles decimales', limite: 10}",
+      "devolvio": "misma Restriccion de miles sin decimales + TextoOrdenado Capitales Mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'régimen informativo capitales mínimos exigencia integración', limite: 10}",
+      "devolvio": "TextoOrdenado 'Régimen Informativo Contable Mensual' con materia genérica 'Información contable y regulatoria mensual'; no revela alcance capitales mínimos",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_nodo",
+      "args": "{id: Obligacion_informar_exigencia_de_capitales_por_riesgo}",
+      "devolvio": "presentación mensual de exigencia por riesgo de mercado; provenance TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.2",
+      "pertinente": false
+     },
+     {
+      "paso": 9,
+      "tool": "ver_vecinos",
+      "args": "{id: Restriccion_...miles_de_pesos_sin_decimales, entrantes}",
+      "devolvio": "0 entrantes",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'punto 1.2 importes miles pesos decimales', limite: 5}",
+      "devolvio": "misma Restriccion + nodos no relacionados",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'TO_capitales_minimos formato unidad registro', limite: 10}",
+      "devolvio": "TextoOrdenado Capitales Mínimos + obligaciones no relacionadas",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 7,
+     "quote": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf ... resumen_propiedades: materia: Información contable y regulatoria mensual"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos",
+     "Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "faithfulness",
+     "causa_capa2": "completitud_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Ambas patas (unidad y decimales) referidas al 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "materia: Información contable y regulatoria mensual; archivo: TO_regimen_informativo_contable_mensual_actual.pdf; version: actual",
+       "ubicacion": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+      },
+      "fuente": {
+       "quote": "REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 (pág 3)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "R.I.-C.M. exigencia integración capitales mínimos instrucciones generales",
+       "resultado": "No aparece ningún nodo que declare que el Régimen Informativo Contable Mensual (o su Sección/capítulo de Instrucciones generales) corresponde a 'Exigencia e Integración de Capitales Mínimos'; solo el TextoOrdenado con materia genérica y nodos de exigencia por riesgo"
+      },
+      {
+       "consulta": "exigencia integración capitales mínimos régimen informativo miles pesos",
+       "resultado": "La Restriccion de miles/decimales y el TextoOrdenado del régimen aparecen por separado; ninguna arista ni nodo los vincula con 'capitales mínimos'"
+      },
+      {
+       "consulta": "ver_vecinos Restriccion_...miles_de_pesos_sin_decimales (salientes/entrantes)",
+       "resultado": "salientes: establecida_en→Régimen Informativo Contable Mensual, aplica_a→Sujetos obligados, limita→Registro de importes; entrantes: 0. Ninguna conexión con capitales mínimos / R.I.-C.M."
+      }
+     ],
+     "capa_d": {
+      "modulo": "D5",
+      "accion": "sin_literales",
+      "banderas": []
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Claims centrales de unidad ('miles de pesos') y decimales ('sin decimales')",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "los importes en el régimen informativo se registran en miles de pesos, sin decimales",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los importes se registrarán en miles de pesos, sin decimales",
+       "ubicacion": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales"
+      },
+      "fuente": {
+       "quote": "1.2. Los importes se registrarán en miles de pesos, sin decimales.",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 (pág 3)"
+      }
+     },
+     "busquedas": []
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas (unidad; decimales) sobre el 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'. Las dos afirmaciones centrales de contenido —'miles de pesos' y 'sin decimales'— fueron aprobadas por el juez y son correctas contra el PDF: el Punto 1.2 dice literalmente 'Los importes se registrarán en miles de pesos, sin decimales.' El nodo Restriccion consultado por el agente reproduce fielmente ese texto con la provenance correcta (Punto 1.2). Por tanto esos claims son noise_sensitivity → nodo fiel y PERTINENTE → sin_defecto (no explican la reprobación). Lo que rompe la respuesta es la salvedad negativa que el agente agregó y su respondible=False: 'no se encontró en el grafo una especificación explícita y separada para un Régimen Informativo de Exigencia e Integración de Capitales Mínimos como entidad diferenciada'. Esta afirmación no está soportada por ningún nodo (ningún nodo afirma la inexistencia del régimen) → síntoma faithfulness. Aplicando el árbol de faithfulness: ¿el grafo tenía el dato de que la regla aplica al régimen de exigencia e integración de capitales mínimos? NO de forma alcanzable/conectada: el nodo TextoOrdenado del régimen tiene materia genérica 'Información contable y regulatoria mensual' que OMITE que su capítulo 4 es 'EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)', y la Restriccion no tiene ninguna arista que la vincule con capitales mínimos (0 entrantes; salientes solo a 'Sujetos obligados' y 'Registro de importes'). ¿El PDF tiene el dato? SÍ: el pasaje del Punto 1.2 y de la Sección 4 muestran explícitamente 'REGIMEN INFORMATIVO CONTABLE MENSUAL ... 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)', confirmando que el régimen preguntado ES este TO y que el Punto 1.2 (Instrucciones generales) le aplica. Por el árbol, faithfulness + el dato existe en el PDF pero falta en el grafo (nodo sin el alcance capitales mínimos, sin arista de conexión) → completitud_kg, primaria: el hueco del grafo empujó la glosa negativa del agente que motivó la reprobación. No es alucinacion_agente modo (a) porque el dato afirmado (la inexistencia) no está en ningún nodo, y no es aplicacion_erronea porque no hay un nodo de otro alcance mal aplicado, sino un nodo que omite su propio alcance de capitales mínimos.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 257799,
+    "tokens_out": 8496
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 257799,
+    "tokens_out": 8496,
+    "latency_s": 111.497,
+    "error": null,
+    "final_raw": "Confirmo el diagnóstico. El nodo TextoOrdenado \"Régimen Informativo Contable Mensual\" aparece en las búsquedas del agente con materia genérica \"Información contable y regulatoria mensual\" — que NO revela que su capítulo 4 es \"Exigencia e Integración de Capitales Mínimos (R.I.-C.M.)\". El agente no tenía en el grafo cómo confirmar que el régimen preguntado era ese TO, y por eso emitió la salvedad negativa que motivó la reprobación.\n\nTengo evidencia suficiente.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'Régimen Informativo Exigencia Integración Capitales Mínimos', limite: 10}\", \"devolvio\": \"154 matches; TextoOrdenado 'Capitales Mínimos', TextoOrdenado 'Régimen Informativo Contable Mensual' (materia genérica), obligaciones de régimen informativo SEPAIMPO, etc.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'importes unidad decimales registro', limite: 10}\", \"devolvio\": \"Restriccion 'Registro en miles sin decimales' (Los importes se registrarán en miles de pesos, sin decimales) y Operacion 'Registro de importes' con el mismo texto\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales}\", \"devolvio\": \"descripcion 'Los importes se registrarán en miles de pesos, sin decimales'; provenance TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: TextoOrdenado_to_capitales_minimos_actual_pdf}\", \"devolvio\": \"materia 'capitales minimos'; provenance Punto 1.1\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{id: TextoOrdenado_to_capitales_minimos_actual_pdf, salientes}\", \"devolvio\": \"154 referencias a Comunicaciones; ninguna sobre unidad/decimales\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capitales mínimos importes miles decimales', limite: 10}\", \"devolvio\": \"misma Restriccion de miles sin decimales + TextoOrdenado Capitales Mínimos\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'régimen informativo capitales mínimos exigencia integración', limite: 10}\", \"devolvio\": \"TextoOrdenado 'Régimen Informativo Contable Mensual' con materia genérica 'Información contable y regulatoria mensual'; no revela alcance capitales mínimos\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_nodo\", \"args\": \"{id: Obligacion_informar_exigencia_de_capitales_por_riesgo}\", \"devolvio\": \"presentación mensual de exigencia por riesgo de mercado; provenance TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.2\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{id: Restriccion_...miles_de_pesos_sin_decimales, entrantes}\", \"devolvio\": \"0 entrantes\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'punto 1.2 importes miles pesos decimales', limite: 5}\", \"devolvio\": \"misma Restriccion + nodos no relacionados\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'TO_capitales_minimos formato unidad registro', limite: 10}\", \"devolvio\": \"TextoOrdenado Capitales Mínimos + obligaciones no relacionadas\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 7, \"quote\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf ... resumen_propiedades: materia: Información contable y regulatoria mensual\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Unidad en que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\",\n      \"Nivel de decimales con que deben registrarse los importes en el Régimen Informativo de Exigencia e Integración de Capitales Mínimos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Ambas patas (unidad y decimales) referidas al 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"no se encontró en el grafo una especificación explícita y separada para un 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos' como entidad diferenciada\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"materia: Información contable y regulatoria mensual; archivo: TO_regimen_informativo_contable_mensual_actual.pdf; version: actual\", \"ubicacion\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\"},\n        \"fuente\": {\"quote\": \"REGIMEN INFORMATIVO CONTABLE MENSUAL B.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) Sección 1. Instrucciones generales\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 (pág 3)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"R.I.-C.M. exigencia integración capitales mínimos instrucciones generales\", \"resultado\": \"No aparece ningún nodo que declare que el Régimen Informativo Contable Mensual (o su Sección/capítulo de Instrucciones generales) corresponde a 'Exigencia e Integración de Capitales Mínimos'; solo el TextoOrdenado con materia genérica y nodos de exigencia por riesgo\"},\n        {\"consulta\": \"exigencia integración capitales mínimos régimen informativo miles pesos\", \"resultado\": \"La Restriccion de miles/decimales y el TextoOrdenado del régimen aparecen por separado; ninguna arista ni nodo los vincula con 'capitales mínimos'\"},\n        {\"consulta\": \"ver_vecinos Restriccion_...miles_de_pesos_sin_decimales (salientes/entrantes)\", \"resultado\": \"salientes: establecida_en→Régimen Informativo Contable Mensual, aplica_a→Sujetos obligados, limita→Registro de importes; entrantes: 0. Ninguna conexión con capitales mínimos / R.I.-C.M.\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Claims centrales de unidad ('miles de pesos') y decimales ('sin decimales')\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"los importes en el régimen informativo se registran en miles de pesos, sin decimales\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los importes se registrarán en miles de pesos, sin decimales\", \"ubicacion\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\"},\n        \"fuente\": {\"quote\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales.\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.2 (pág 3)\"}\n      },\n      \"busquedas\": []\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas (unidad; decimales) sobre el 'Régimen Informativo de Exigencia e Integración de Capitales Mínimos'. Las dos afirmaciones centrales de contenido —'miles de pesos' y 'sin decimales'— fueron aprobadas por el juez y son correctas contra el PDF: el Punto 1.2 dice literalmente 'Los importes se registrarán en miles de pesos, sin decimales.' El nodo Restriccion consultado por el agente reproduce fielmente ese texto con la provenance correcta (Punto 1.2). Por tanto esos claims son noise_sensitivity → nodo fiel y PERTINENTE → sin_defecto (no explican la reprobación). Lo que rompe la respuesta es la salvedad negativa que el agente agregó y su respondible=False: 'no se encontró en el grafo una especificación explícita y separada para un Régimen Informativo de Exigencia e Integración de Capitales Mínimos como entidad diferenciada'. Esta afirmación no está soportada por ningún nodo (ningún nodo afirma la inexistencia del régimen) → síntoma faithfulness. Aplicando el árbol de faithfulness: ¿el grafo tenía el dato de que la regla aplica al régimen de exigencia e integración de capitales mínimos? NO de forma alcanzable/conectada: el nodo TextoOrdenado del régimen tiene materia genérica 'Información contable y regulatoria mensual' que OMITE que su capítulo 4 es 'EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)', y la Restriccion no tiene ninguna arista que la vincule con capitales mínimos (0 entrantes; salientes solo a 'Sujetos obligados' y 'Registro de importes'). ¿El PDF tiene el dato? SÍ: el pasaje del Punto 1.2 y de la Sección 4 muestran explícitamente 'REGIMEN INFORMATIVO CONTABLE MENSUAL ... 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)', confirmando que el régimen preguntado ES este TO y que el Punto 1.2 (Instrucciones generales) le aplica. Por el árbol, faithfulness + el dato existe en el PDF pero falta en el grafo (nodo sin el alcance capitales mínimos, sin arista de conexión) → completitud_kg, primaria: el hueco del grafo empujó la glosa negativa del agente que motivó la reprobación. No es alucinacion_agente modo (a) porque el dato afirmado (la inexistencia) no está en ningún nodo, y no es aplicacion_erronea porque no hay un nodo de otro alcance mal aplicado, sino un nodo que omite su propio alcance de capitales mínimos.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.2 (PDF pág 3)\", \"pasaje\": \"1.2. Los importes se registrarán en miles de pesos, sin decimales. \\nA los fines del redondeo de las magnitudes se incrementarán los valores en una unidad \\ncuando el primer dígito de las fracciones sea igual o mayor que 5, desechando estas últimas \\nsi resultan inferiores. \\nLos importes en moneda extranjera se convertirán a pesos utilizando el tipo de cambio de re-\\nferencia publicado por el BCRA para el dólar estadounidense, previa aplicación del tipo de \\npase correspondiente para las otras monedas comunicado por la Mesa de Operaciones. \\nVersión: 7a.\\n COMUNICACIÓN  “A”  7149 Vigencia: \\n30/10/2020 Página 1 \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.)\\nSección 1. Instrucciones generales\"}"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia integración capitales mínimos régimen informativo miles pesos",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia integración capitales mínimos régimen informativo miles pesos\", \"total_con_match\": 170, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"type\": \"Restriccion\", \"label\": \"Registro en miles sin decimales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importes se registrarán en miles de pesos, sin dec… [+2020 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 47)\", \"pasaje\": \"1. No actualizable \\n2. CER \\n3. UVA/UVI:  \\n \\nLos saldos correspondientes a instrumentos actualizables por CER/UVA/UVI deberán \\nidentificarse con el código respectivo, e imputarse a la banda 0 (saldos a fin de mes) \\nen su totalidad. \\n \\nMárgenes comerciales\\n: \\n \\nLas entidades pueden optar por deducir los márgenes comerciales y otros componen-\\ntes del diferencial (spread), en cuyo caso: \\n \\n· Si se incluyen los márgenes comerciales.  \\n \\nSolo se informarán los flujos y el factor de descuento continuo con margen (código \\n2) \\n \\n·  Si se deducen los márgenes. \\n \\nDeberán informar los flujos y el factor de descuento continuo sin márgenes (código \\n1) y con márgenes (código 2). \\n \\nDeberán informarse las partidas que registren importes, considerando los atributos \\ndetallados precedentemente, indicados en los modelos de información de los cuadros \\n11.2.1. a) y b) y 11.2.2. a) y b) para cada una de ellas. \\n \\nCuando la estructura del modelo requiera datos en todos los escenarios (0 a 6… [+425 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000… [+412 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales",
+       "direccion": "salientes"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_los_importes_se_registraran_en_miles_de_pesos_sin_decimales\", \"label\": \"Registro en miles sin decimales\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_registro_contable\", \"vecino_label\": \"Registro de importes\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.2. Los importes se registrarán en miles de pesos, sin decimales.\"}]}], \"salientes_truncado\": false}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+      },
+      "output_truncado": "{\"id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Régimen Informativo Contable Mensual\", \"properties\": {\"materia\": \"Información contable y regulatoria mensual\", \"archivo\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"version\": \"actual\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"Régimen Informativo Exigencia Integración Capitales Mínimos\", \"total_con_match\": 154, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Operacion_presentacion_informativa_de_operaciones_cambiarias\", \"type\": \"Operacion\", \"label\": \"Valida… [+2293 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "R.I.-C.M. exigencia integración capitales mínimos instrucciones generales",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"R.I.-C.M. exigencia integración capitales mínimos instrucciones generales\", \"total_con_match\": 214, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Restriccion_limite_de_reduccion_para_entidades_del_grupo_c_14_en_condicion_general_8_o_5_en_\", \"type\": \"Restriccion\", \"label\": \"Límite reducción exigencia Grupo C\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Límite de reducción para entidades del Grupo C: 14… [+2216 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4 (PDF pág 31)\", \"pasaje\": \"4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 6. Responsabilidad Patrimonial Computable \\nCódigo Concepto \\n70210000   Capital Ordinario de Nivel 1 (Con1) \\n20110000 Patrimonio Neto contable \\n20300000 100% de los resultados del último balance trimestral correspondientes al último ejercicio ce-\\nrrado sin dictamen del auditor. \\n20400000 100% de los resultados del ejercicio en curso, registrados al cierre del balance trimestral con \\ninforme del auditor. \\n20500000 50% de los resultados positivos y la totalidad de las pérdidas registradas en cada mes desde \\nel último balance trimestral o anual que cuente con informe o dictamen del auditor. \\n20600000 100% de los quebrantos no contabilizados   \\n28100000 \\nOtros Resultados Integrales provenientes de revaluación de propiedad,  planta y equipo e i n-\\ntangibles y de ganancias o pérdidas por instrumentos financieros a valor razonable con ca m-\\nbios en ORI \\n28200000 Saldo deudor proveniente del resto de l os conceptos compon… [+416 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 7
+      },
+      "output_truncado": "{\"paso\": 7, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"régimen informativo capitales mínimos exigencia integración\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"régimen informativo capitales mínimos exigencia integración\", \"total_con_match\": 154, \"resultados\": [{\"id\": \"Operacion_integracion_de_capitales\", \"type\": \"Operacion\", \"label\": \"Integración de capitales mínimos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: integración de capitales\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"materia: capitales minimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"Obligacion_las_entidades_deberan_consultar_en_el_apartado_regimen_informativo_sepaimpo_del_\", \"type\": \"Obligacion\", \"label\": \"Consultar situación del cliente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deberán consultar en el apartado 'Régimen Informativo SEPAIMPO' del sitio www3.bcra.gob.ar, si el cliente se encuentra en la situación de condena …\"}, {\"id\": \"Operacion_presentacion_informativa_de_operaciones_cambiarias\", \"type\": \"Operacion\", \"label\": \"Valida… [+2293 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29851,
+      "output_tokens": 365
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32171,
+      "output_tokens": 525
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34221,
+      "output_tokens": 857
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35866,
+      "output_tokens": 953
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39893,
+      "output_tokens": 1333
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41939,
+      "output_tokens": 392
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 43858,
+      "output_tokens": 4071
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 69,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "frontera_no_determinada",
+  "flag_voto_dividido": true,
+  "pares_primarios_ganadores": null,
+  "votos_ganadores": null,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [],
+    "votos": 1,
+    "reps": [
+     1
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "estructural_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     2
+    ]
+   },
+   {
+    "pares_primarios": [
+     [
+      "faithfulness",
+      "completitud_kg"
+     ]
+    ],
+    "votos": 1,
+    "reps": [
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [],
+  "atribuciones_corregidas": 0,
+  "discrepancias": 0,
+  "triage": 0
+ },
+ "triage_capa_d": {
+  "triage": true,
+  "motivos": [
+   "voto_dividido"
+  ],
+  "flags": [
+   "R4: voto_capa_d.flag_voto_dividido = true"
+  ]
+ },
+ "version_capa": "v6.0-D(2026-07)"
+}

@@ -54,8 +54,8 @@ aprobación explícita de la autora** (regla del non-goal de `llm-capture`, porq
      (`data/experiment/evaluacion/loader.py:73-74`).
 
 4. **Validar:** desde `data/experiment/evaluacion/`, con el venv de la raíz:
-   `python validate_loader.py`. La clave nueva entra sola al barrido (itera
-   `RUN_KEYS`, `data/experiment/evaluacion/validate_loader.py:180`)
+   `python runners/validate_loader.py`. La clave nueva entra sola al barrido (itera
+   `RUN_KEYS`, `data/experiment/evaluacion/runners/validate_loader.py:180`)
    y debe pasar C1–C8 con **conteos idénticos a `run_3`** (misma cantidad de
    nodos y edges: es una copia byte-idéntica). Exit code 0.
 
@@ -79,9 +79,9 @@ aprobación explícita de la autora** (regla del non-goal de `llm-capture`, porq
 
 ```bash
 cd data/experiment/evaluacion
-python validate_loader.py        # C1–C8 en verde para run_3_refinamiento, exit 0
-python run_posthoc.py --selftest # 14 checks; loader + cadena de caché sanos tras la edición
+python runners/validate_loader.py        # C1–C8 en verde para run_3_refinamiento, exit 0
+python runners/run_posthoc.py --selftest # 14 checks; loader + cadena de caché sanos tras la edición
 ```
 
-Y confirmar en el output de `validate_loader.py` que `run_3` y
+Y confirmar en el output de `runners/validate_loader.py` que `run_3` y
 `run_3_refinamiento` reportan conteos idénticos de nodos y edges.

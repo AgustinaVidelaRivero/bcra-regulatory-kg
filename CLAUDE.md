@@ -106,7 +106,7 @@ Harness KG-RAG **uniforme** sobre los 5 grafos (mismas tools, misma interfaz) pa
 
 ## Fase 2.5 — Refinamiento del grafo (pipeline como Skill)
 
-> **Numeración canónica (según los informes de la autora):** 2.3 = evaluación congelada; 2.3+ = instrumentación post-hoc (`llm_cache.py`, `run_posthoc.py`); **2.4 = verificador** (`verificador.py`, `pdf_locate.py`); **2.5 = refinamiento**. Versiones previas de este documento llamaban "2.4" al refinamiento — eso era incorrecto.
+> **Numeración canónica (según los informes de la autora):** 2.3 = evaluación congelada; 2.3+ = instrumentación post-hoc (`llm_cache.py`, `runners/run_posthoc.py`); **2.4 = verificador** (`verificador.py`, `pdf_locate.py`); **2.5 = refinamiento**. Versiones previas de este documento llamaban "2.4" al refinamiento — eso era incorrecto.
 
 La FASE 2.3 cerró con un ganador. La FASE 2.5 toma ese grafo y lo **refina iterativamente**: detectar dónde falla el sistema, atribuir la causa, proponer cambios, aplicarlos y demostrar mejora medible. El pipeline se empaqueta como una **Skill de Claude** para que el ciclo sea repetible, barato y confiable (workflow congelado, no loop agéntico que redescubre el camino cada vez).
 
@@ -117,8 +117,8 @@ La FASE 2.3 cerró con un ganador. La FASE 2.5 toma ese grafo y lo **refina iter
 
 ### Infraestructura construida (semana del 16-24 jun, en `data/experiment/evaluacion/`)
 
-- **`llm_cache.py`** — caché + captura del crudo. Envuelve el cliente Anthropic, guarda el objeto completo de la API (`resp.model_dump()`: tokens, razonamiento, stop_reason) en SQLite. Key = hash determinístico (prompt+modelo+temp+tools+thinking). Namespace versionado (code_version + graph_fingerprint + flag `think=0/1`). Write-through (resumible ante kill). Tests: `test_llm_cache.py`.
-- **`run_posthoc.py`** — runner instrumentado. `ParamOverrideClient` por encima de la caché inyecta thinking/temp sin tocar el harness congelado. En thinking-OFF el override es identidad → request byte-idéntico al frozen. Flags `--thinking`/`--reps`/`--run all`, modos `--preflight`/`--verify-replay`.
+- **`llm_cache.py`** — caché + captura del crudo. Envuelve el cliente Anthropic, guarda el objeto completo de la API (`resp.model_dump()`: tokens, razonamiento, stop_reason) en SQLite. Key = hash determinístico (prompt+modelo+temp+tools+thinking). Namespace versionado (code_version + graph_fingerprint + flag `think=0/1`). Write-through (resumible ante kill). Tests: `tests/test_llm_cache.py`.
+- **`runners/run_posthoc.py`** — runner instrumentado. `ParamOverrideClient` por encima de la caché inyecta thinking/temp sin tocar el harness congelado. En thinking-OFF el override es identidad → request byte-idéntico al frozen. Flags `--thinking`/`--reps`/`--run all`, modos `--preflight`/`--verify-replay`.
 - **`verifier_pilot.py`** — verificador de calidad del KG. Para cada claim fallido: recupera el nodo de la traza, localiza el pasaje en el PDF, compara (¿nodo fiel al PDF? ¿agente fiel al nodo?), clasifica con árbol auditable. Taxonomía: contenido_kg, completitud_kg, estructural_kg (defectos del KG) / desvio_agente, falla_abstencion (defectos del agente) / provenance_imprecisa. Haiku para mapeo claim→nodo, Opus para clasificación. Calibrado contra juicio manual (piloto de 10), escalado a 382 claims.
 
 ### Resultados de la evaluación cualitativa (frozen, no se re-corre sin decisión de mentores)

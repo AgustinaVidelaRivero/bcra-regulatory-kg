@@ -1,0 +1,149 @@
+{
+  "id_falla": "run_3/CQ-031",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "completitud_kg",
+      "lado": "grafo",
+      "jerarquia": "primaria",
+      "pata": "Pata 1: deudores que NO deben ser objeto de clasificación (Punto 4.5)",
+      "evidencia": {
+        "afirmacion": "El agente respondió que los deudores que no deben ser objeto de clasificación son 'quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6)', omitiendo por completo el contenido real del Punto 4.5.",
+        "nodo": "El nodo 'Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion' (provenance Punto 4.5) tiene como única descripción el título genérico 'Deudores que no deben ser objeto de clasificación', sin contenido sustantivo. Es un stub: no recoge la regla del 4.5. El único nodo con contenido de exclusión de clasificación que el agente encontró fue el de cesión (provenance Punto 4.6), por lo que rellenó la pata 1 con esa información (correcta para 4.6 pero que omite la del 4.5).",
+        "fuente": "El PDF, Punto 4.5 'Deudores que no deben ser objeto de clasificación' (pág. 15): 'Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \"A\" no serán objeto de clasificación, sin perjuicio de su información según las normas que se establezcan en los regímenes respectivos.' Esta es la respuesta canónica de la pata 1, que el nodo no captura."
+      }
+    },
+    {
+      "categoria": "sin_defecto",
+      "lado": "ninguno",
+      "jerarquia": "secundaria",
+      "pata": "Sub-afirmación: 'esta exclusión de clasificación está regulada en el Punto 4.6'",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que la exclusión de clasificación de los deudores en cesión sin responsabilidad para el cedente está en el Punto 4.6.",
+        "nodo": "El nodo 'Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces' tiene provenance 'Punto 4.6' y describe exactamente 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente'.",
+        "fuente": "El PDF, Punto 4.6 (pág. 15) contiene literalmente: 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.' Por lo tanto la atribución al Punto 4.6 es CORRECTA en la fuente; esta sub-afirmación marcada como [falso] parece un falso positivo del juez."
+      }
+    }
+  ],
+  "razonamiento": "Cruzando las tres piezas: (a) el agente, en la pata 1 (deudores que no deben ser objeto de clasificación), respondió únicamente con los deudores en cesión sin responsabilidad para el cedente y omitió la regla del Punto 4.5; (b) el nodo del Punto 4.5 ('Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion') es un stub que solo repite el título sin el contenido sustantivo, por lo que el agente no tenía en el grafo la respuesta correcta y la sustituyó por el nodo de cesión del 4.6; (c) el PDF (pág. 15) muestra que el 4.5 dice 'los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A no serán objeto de clasificación' — información que existe en la fuente pero no fue extraída al nodo. Esto es completitud_kg y es la causa primaria que rompe la pata 1. Nótese además que la pata 2 (no corresponde evaluar capacidad de repago = financiaciones con garantías preferidas A, Punto 4.4) fue respondida correctamente y verificada contra el PDF. La segunda afirmación marcada por el juez ('exclusión de clasificación regulada en el Punto 4.6') es en realidad correcta según el PDF (la cesión sí está en 4.6), por lo que esa marca específica luce como falso positivo del juez, secundaria respecto del veredicto.",
+  "confianza": "alta",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 8,
+    "tokens_in": 147525,
+    "tokens_out": 4544,
+    "latency_s": 64.465,
+    "error": null,
+    "final_raw": "Ahora tengo el cuadro completo y verificado del PDF:\n\n- **4.4** (capacidad de repago): \"No corresponderá la **evaluación de la capacidad de repago** respecto de las financiaciones que se encuentren respaldadas con tales garantías [preferidas A].\" → Pata 2 (capacidad de repago) = garantías preferidas A. **El agente respondió esto correctamente.**\n\n- **4.5** (no clasificación): \"Los **deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \"A\" no serán objeto de clasificación**.\" → Pata 1 (deudores que NO deben ser objeto de clasificación) = deudores cubiertos totalmente con garantías preferidas A.\n\n- **4.6**: \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.\" → También exclusión de clasificación, en 4.6.\n\n**Análisis de las afirmaciones marcadas como incorrectas:**\n\n1. \"Los deudores en operaciones de cesión sin responsabilidad para el cedente no deben ser objeto de clasificación\" → marcada [no_soportado/central]. Esto SÍ está en 4.6 del PDF y es VERDADERO. Pero el agente lo presentó como la respuesta a la pata 1, y la respuesta CANÓNICA del 4.5 (deudores cubiertos totalmente con garantías preferidas A) la OMITIÓ por completo en la pata 1. El juez la marca porque el agente la atribuyó al \"Punto 4.6\" pero la presentó como la principal/única respuesta a \"deudores que no deben ser objeto de clasificación\", omitiendo el 4.5.\n\n2. \"Esta exclusión de clasificación está regulada en el Punto 4.6\" → marcada [falso]. En realidad la cesión SÍ está en 4.6 según el PDF. Pero... el agente en la respuesta final escribió \"(Punto 4.6)\" para la cesión. Aquí hay un punto: el juez la marca falsa probablemente porque la considera correspondiente al 4.5/o porque mezcla. De hecho la afirmación de cesión está correctamente en 4.6.\n\nLo central: el agente confundió las categorías. El **nodo `Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion`** (provenance Punto 4.5) tiene como descripción solo el título \"Deudores que no deben ser objeto de clasificación\" — es un **stub sin contenido**: no recoge \"los deudores cubiertos totalmente con garantías preferidas A\". El PDF 4.5 SÍ tiene ese contenido. Por eso el agente no pudo dar la respuesta correcta de la pata 1 y la rellenó con el nodo de cesión (4.6).\n\nAhora examino la afirmación 2 con más cuidado: el agente escribió en la respuesta final \"(Punto 4.6)\" para cesión — y eso es correcto según PDF. Pero el síntoma dice \"regulada en el Punto 4.6\" marcado falso. Reviso: en la respuesta final el agente realmente puso \"(Punto 4.6)\" al lado de la cesión. La afirmación sintetizada del juez dice \"esta exclusión de clasificación está regulada en el Punto 4.6\". Dado que el PDF confirma que cesión está en 4.6, esa afirmación es de hecho VERDADERA — posible imprecisión del juez en esa sub-afirmación. Pero el problema de fondo (omisión de garantías preferidas A en pata 1) sí rompe la respuesta.\n\nTengo evidencia suficiente.\n\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Pata 1: deudores que NO deben ser objeto de clasificación (Punto 4.5)\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente respondió que los deudores que no deben ser objeto de clasificación son 'quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6)', omitiendo por completo el contenido real del Punto 4.5.\",\n        \"nodo\": \"El nodo 'Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion' (provenance Punto 4.5) tiene como única descripción el título genérico 'Deudores que no deben ser objeto de clasificación', sin contenido sustantivo. Es un stub: no recoge la regla del 4.5. El único nodo con contenido de exclusión de clasificación que el agente encontró fue el de cesión (provenance Punto 4.6), por lo que rellenó la pata 1 con esa información (correcta para 4.6 pero que omite la del 4.5).\",\n        \"fuente\": \"El PDF, Punto 4.5 'Deudores que no deben ser objeto de clasificación' (pág. 15): 'Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \\\"A\\\" no serán objeto de clasificación, sin perjuicio de su información según las normas que se establezcan en los regímenes respectivos.' Esta es la respuesta canónica de la pata 1, que el nodo no captura.\"\n      }\n    },\n    {\n      \"categoria\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Sub-afirmación: 'esta exclusión de clasificación está regulada en el Punto 4.6'\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que la exclusión de clasificación de los deudores en cesión sin responsabilidad para el cedente está en el Punto 4.6.\",\n        \"nodo\": \"El nodo 'Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces' tiene provenance 'Punto 4.6' y describe exactamente 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente'.\",\n        \"fuente\": \"El PDF, Punto 4.6 (pág. 15) contiene literalmente: 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.' Por lo tanto la atribución al Punto 4.6 es CORRECTA en la fuente; esta sub-afirmación marcada como [falso] parece un falso positivo del juez.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"Cruzando las tres piezas: (a) el agente, en la pata 1 (deudores que no deben ser objeto de clasificación), respondió únicamente con los deudores en cesión sin responsabilidad para el cedente y omitió la regla del Punto 4.5; (b) el nodo del Punto 4.5 ('Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion') es un stub que solo repite el título sin el contenido sustantivo, por lo que el agente no tenía en el grafo la respuesta correcta y la sustituyó por el nodo de cesión del 4.6; (c) el PDF (pág. 15) muestra que el 4.5 dice 'los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A no serán objeto de clasificación' — información que existe en la fuente pero no fue extraída al nodo. Esto es completitud_kg y es la causa primaria que rompe la pata 1. Nótese además que la pata 2 (no corresponde evaluar capacidad de repago = financiaciones con garantías preferidas A, Punto 4.4) fue respondida correctamente y verificada contra el PDF. La segunda afirmación marcada por el juez ('exclusión de clasificación regulada en el Punto 4.6') es en realidad correcta según el PDF (la cesión sí está en 4.6), por lo que esa marca específica luce como falso positivo del juez, secundaria respecto del veredicto.\",\n  \"confianza\": \"alta\"\n}",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.5"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.5 (PDF pág 15)\", \"pasaje\": \"4.5. Deudores que no deben ser objeto de clasificación. \\nLos deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \\n“A” no serán objeto de clasificación, sin perjuicio de su información según las normas que se \\nestablezcan en los regímenes respectivos. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de crédito por \\nriesgo comercial y con seguros de riesgo de crédito “con alcance de comprador público”. \\nSe procederá a clasificar a la compañía de seguros en función de la mora según los criterios \\naplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la prime-\\nra obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el re-\\nclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos \\nen la póliza (180 o 270 días, según corresponda). \\nNo serán objeto de clasificación quiene s resulten deudore s en operacione s de cesión sin res-\\nponsabilidad… [+363 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.6"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.6 (PDF pág 15)\", \"pasaje\": \"4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de crédito por \\nriesgo comercial y con seguros de riesgo de crédito “con alcance de comprador público”. \\nSe procederá a clasificar a la compañía de seguros en función de la mora según los criterios \\naplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la prime-\\nra obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el re-\\nclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos \\nen la póliza (180 o 270 días, según corresponda). \\nNo serán objeto de clasificación quiene s resulten deudore s en operacione s de cesión sin res-\\nponsabilidad para el cedente. \\nSólo se aplicarán lo s criterios precedentes cuando se trate de operacione s del título que, en \\norigen, hayan reunido los requisitos pertinentes establecidos en las normas sobre “Garantías”. \\nCLASIFICACIÓN DE DEUDORES B.C.R.A.\\nS\\nección 4. Criterios de clasificación. \\n… [+69 chars]"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.4"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.4 (PDF pág 2)\", \"pasaje\": \"4.4. Financiaciones cubiertas con garantías preferidas “A”. \\n4.5. Deudores que no deben ser objeto de clasificación. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de \\ncrédito por riesgo comercial y con seguros de riesgo de crédito “con alcance de \\ncomprador público”. \\nSección 5. Categorías de carteras. \\n5.1. Categorías. \\nSección 6. Clasificación de los deudores de la cartera comercial. \\n6.1. Información básica. \\n6.2. Criterio de clasificación. \\n6.3. Periodicidad mínima de clasificación. \\n6.4. Reconsideración obligatoria de la clasificación. \\n6.5. Niveles de clasificación. \\n6.6. Recategorización obligatoria. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n“CLASIFICACION DE DEUDORES” \\nVersión: 6a. COMUNICACIÓN  “A”  6558 Vig encia: \\n5/9/2018 Página 1\"}"
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_en_caso_de_no_efectuarse_la_evaluacion_de_creditos_cedidos_sin_responsabilidad_c"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_en_caso_de_no_efectuarse_la_evaluacion_de_creditos_cedidos_sin_responsabilidad_c\", \"type\": \"Restriccion\", \"label\": \"Clasificación irrecuperable sin evaluación\", \"properties\": {\"descripcion\": \"En caso de no efectuarse la evaluación de créditos cedidos sin responsabilidad, cualquiera sea el motivo, estos clientes se clasificarán en categoría irrecuperable\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}"
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "no corresponderá evaluación capacidad de repago garantías preferidas",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"no corresponderá evaluación capacidad de repago garantías preferidas\", \"total_con_match\": 2482, \"resultados\": [{\"id\": \"Restriccion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi\", \"type\": \"Restriccion\", \"label\": \"Excención de evaluación por garantías preferidas A\", \"tokens_matcheados\": 8, \"resumen_propiedades\": \"No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías\"}, {\"id\": \"Operacion_evaluacion_crediticia\", \"type\": \"Operacion\", \"label\": \"Evaluación de capacidad de repago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Evaluación de la capacidad de repago respecto de las financiaciones\"}, {\"id\": \"Operacion_evaluacion_de_capacidad\", \"type\": \"Operacion\", \"label\": \"Evaluación de capacidad de repago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos de fondos realizado por la entidad.\"}, {\"id\": \"Obligacion_no_se_considerara_refinanciacion_la_asistencia_que_se_otorgue_a_los_deudores_cla\", \"type\": \"Obligacion\", \"label\": \"Evaluación de capacidad de pago para ampliación… [+588 chars]"
+      },
+      {
+        "n": 6,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Sección 4"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 4\", \"ref\": \"Punto/Sección 4 (mejor score=-103 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+      },
+      {
+        "n": 7,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 14"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 14\", \"metodo\": \"pagina\", \"ref\": \"p.14 (PDF absoluto 1-based)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o autorida… [+766 chars]"
+      },
+      {
+        "n": 8,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "p. 15"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\", \"metodo\": \"pagina\", \"ref\": \"p.15 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Niveles de clasificación. \\nSe han previsto niveles de agrupamiento de los clientes en orden decreciente de calidad, en ra-\\nzón directa al riesgo de incobrabilidad que se deriva de las situaciones que presentan. \\n4.2. Criterio básico de clasificación. \\nEl criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el fu-\\nturo de la deuda o de los compromisos objeto de la garantía de la entidad financiera. \\n4.3. Evaluación de la capacidad de pago. \\n4.3.1. Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos \\nde fondos realizado por la entidad. \\n4.3.2. En segundo lugar, deberá considerarse la posibilidad de liquidación de activos no im-\\nprescindibles para la operatoria de la empresa. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\nNo corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que \\nse encuentren respaldadas con tales garantías. \\n4.5. Deudores que no deben ser objeto de clasific… [+1337 chars]"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 20779,
+        "output_tokens": 361
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 22970,
+        "output_tokens": 776
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 24801,
+        "output_tokens": 169
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 25180,
+        "output_tokens": 269
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 26289,
+        "output_tokens": 140
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 27506,
+        "output_tokens": 2829
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 68,
+      "n_claims_fallidos": 2,
+      "categoria": "cadena_restriccion_excepcion"
+    }
+  }
+}

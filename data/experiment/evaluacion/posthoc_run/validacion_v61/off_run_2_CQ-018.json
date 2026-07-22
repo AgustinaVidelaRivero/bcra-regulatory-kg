@@ -1,0 +1,1401 @@
+{
+ "id_falla": "run_2/CQ-018",
+ "run": "run_2",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ],
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ],
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ],
+     [
+      "noise_sensitivity",
+      "provenance_imprecisa"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_2/CQ-018",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'proveedores no financieros crédito'}",
+      "devolvio": "Halla sujeto_regulado:proveedores_no_financieros_de_credito y variantes",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'empresas no financieras emisoras tarjetas'}",
+      "devolvio": "Halla sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito y variantes",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'clasificación deudores criterio'}",
+      "devolvio": "Concepto y procedimiento de clasificación de deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{id: proveedores_no_financieros_de_credito}",
+      "devolvio": "Descripción del sujeto; provenances a clasif. Sección 7 y protección Sección 5>1.1 y 3",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: empresas_no_financieras_emisoras_de_tarjetas_de_credito}",
+      "devolvio": "Sujeto sujeto a protección de usuarios; provenances Sección 5>1.1 y Sección 2>2.4",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: concepto_definido:clasificacion_de_deudores}",
+      "devolvio": "Concepto genérico de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: proveedores..., salientes}",
+      "devolvio": "obligado_a: clasificar según mora consumo/vivienda, resolver reclamos, cumplimiento normas protección, designar directivo",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{id: empresas...tarjetas_de_credito, salientes}",
+      "devolvio": "obligado_a: resolver reclamos, cumplimiento normas protección, entregar detalle productos, publicar contratos, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{id: obligacion:clasificar_deudores_segun_mora...}",
+      "devolvio": "Proveedores no financieros clasifican por mora cartera consumo/vivienda",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'criterios clasificación deudores mora capacidad pago'}",
+      "devolvio": "capacidad_de_pago (label genérico), criterios_objetivos_de_clasificacion",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{id: criterios_objetivos_de_clasificacion}",
+      "devolvio": "término de morosidad, situación jurídica, cumplimiento refinanciaciones; prov Sección 6>6.4",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{id: capacidad_de_pago}",
+      "devolvio": "Criterio básico: capacidad de pago futura, flujo de fondos; prov Sección 3>3.6 y Sección 6>5.1",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'empresas no financieras tarjetas clasificación deudores obligación'}",
+      "devolvio": "Sujetos tarjetas + obligaciones sobre clasificación (excepciones), sin obligación de clasificar para tarjetas",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'sección 7 proveedores no financieros clasificación'}",
+      "devolvio": "Mismo sujeto proveedores; sin nodo nuevo de criterio específico",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{id: empresas_no_financieras_emisoras_de_tarjetas, salientes}",
+      "devolvio": "obligaciones de informar comisiones/cargos",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 12,
+     "quote": "\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\", \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\""
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario",
+     "Si los proveedores no financieros de crédito deben clasificar a sus deudores",
+     "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario",
+     "Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores",
+     "Bajo qué criterio clasifican sus deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué criterio clasifican sus deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El criterio básico de clasificación de deudores es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "[\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\", \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\"]",
+       "ubicacion": "concepto_definido:capacidad_de_pago (paso 12)"
+      },
+      "fuente": {
+       "quote": "5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (…) CLASIFICACIÓN DE DEUDORES B.C.R.A. Sección 6. Clasificación de los deudores de la cartera comercial.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 5.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 6 > Punto 5.1",
+       "resultado": "El criterio de flujo de fondos pertenece a la Sección 6 'Clasificación de los deudores de la cartera comercial' — es el criterio de cartera comercial de entidades financieras, no de los proveedores no financieros"
+      },
+      {
+       "consulta": "ver_nodo obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda",
+       "resultado": "Para proveedores no financieros el criterio real es la MORA en cartera consumo/vivienda, no el análisis de flujo de fondos"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Bajo qué criterio clasifican sus deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "criterios objetivos que incluyen el término de morosidad, la situación jurídica del cliente o sus deudas, y el cumplimiento de refinanciaciones",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones.",
+       "ubicacion": "concepto_definido:criterios_objetivos_de_clasificacion (paso 11)"
+      },
+      "fuente": {
+       "quote": "6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas normas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones y pedidos de refinanciaciones de obligaciones). (…) Sección 6. Clasificación de los deudores de la cartera comercial.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 6.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 6 > Punto 6.4",
+       "resultado": "El nodo es FIEL al texto, pero el texto es de la Sección 6 (cartera comercial de entidades financieras); el nodo omite en su contenido/label la marca de alcance, por lo que se aplicó fuera del alcance de los sujetos de la pregunta"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si los proveedores no financieros de crédito / empresas de tarjetas deben cumplir con Protección al Usuario (resolver reclamos)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "considerar y resolver fundadamente reclamos de usuarios",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.",
+       "ubicacion": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios (provenance Sección 5 > Punto 1.1)"
+      },
+      "fuente": {
+       "quote": "1.1. Partes. 1.1.1. Usuario de servicios financieros. (…) 1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 5 > Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 5 > Punto 1.1",
+       "resultado": "El punto 1.1 citado por el nodo/edge es 'Partes / Sujetos obligados' — solo lista sujetos, NO funda la obligación de resolver reclamos"
+      },
+      {
+       "consulta": "leer_pasaje Sección 3 (protección)",
+       "resultado": "El contenido real sobre recepción y resolución de reclamos está en Sección 3 > Punto 3.1.6 ('Toda consulta o reclamo deberá ser definitivamente resuelta dentro de 10 días hábiles'), no en el punto citado"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario (entregar información y publicar contratos)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "entrega de información sobre productos y servicios, publicación de contratos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Deber de publicar modelos de contrato de adhesión bajo el nombre 'Contratos de adhesión – Ley 24.240 de Defensa del Consumidor', discriminando por cada modalidad, plan, producto o servicio.",
+       "ubicacion": "obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional (provenance Sección 2 > Punto 2.4)"
+      },
+      "fuente": {
+       "quote": "2.4. Disposiciones generales. (…) 4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros automáticos) deberá respetar características apropiadas para cada uno de estos grupos poblacionales (…) eliminación de escalones (…) instalación de rampas",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 2 > Punto 2.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 2 > Punto 2.4",
+       "resultado": "El punto 2.4 citado por los edges/nodos es sobre accesibilidad física de puntos de atención — NO funda ni 'entregar detalle de productos' ni 'publicar contratos de adhesión'; la cita apunta a otro contenido"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "FASE A: el agente descompuso la pregunta correctamente y consultó los sujetos, sus vecinos (obligaciones) y los conceptos de clasificación. La respuesta enumeró obligaciones de protección y criterios de clasificación. FASE B/C: (1) Pata 'criterio de clasificación' — el juez marcó FALSO el 'criterio básico = capacidad de pago / flujo de fondos'. Contra el PDF ese criterio es fiel al texto (Sección 6 > Punto 5.1), por lo que NO es alucinación; el claim está SOPORTADO por el nodo capacidad_de_pago consultado (paso 12) → noise_sensitivity. Al verificar el PDF, el pasaje pertenece a 'Sección 6. Clasificación de los deudores de la cartera comercial' — es el criterio de cartera comercial de entidades financieras. Para los sujetos de la pregunta (proveedores no financieros / tarjetas) el criterio real es la MORA en cartera consumo/vivienda (obligacion:clasificar_deudores_segun_mora, confirmado paso 9). Es un caso de contenido aplicado fuera de alcance; según v2.6 el test decide la causa: el nodo capacidad_de_pago tiene label genérico ('capacidad de pago') y su descripción NO declara que su alcance es la cartera comercial, por lo que un lector que lo lee solo no advierte que es de otro alcance → NO es aplicacion_erronea sino des-scoping del grafo → contenido_kg (primaria: es el criterio que el juez reprobó como 'falso' y mueve el veredicto). El nodo criterios_objetivos (morosidad, situación jurídica, refinanciaciones) es fiel a Punto 6.4 pero igualmente de cartera comercial sin marca de alcance → mismo contenido_kg (secundaria). (2) Patas de protección marcadas no_soportado (resolver reclamos para ambos sujetos; entregar información y publicar contratos para tarjetas): el dato pertinente SÍ apareció y fue consultado (edges obligado_a en pasos 7 y 8, nodos abiertos), por lo que no es context_recall; el claim está soportado por nodos consultados → noise_sensitivity. Al leer las provenances de esos nodos/edges: 'resolver reclamos' y 'cumplimiento de normas de protección' citan Sección 5 > Punto 1.1, que resultó ser 'Partes / Sujetos obligados' (solo lista sujetos), y el contenido real de reclamos está en Sección 3 > Punto 3.1.6; 'entregar detalle de productos' y 'publicar contratos' citan Sección 2 > Punto 2.4, que resultó ser sobre accesibilidad física de puntos de atención. En ambos casos la cita apunta a otro lado → provenance_imprecisa (primaria: la falta de fundamento verificable en el punto citado es lo que hace que el juez marque no_soportado). No hay alucinación del agente: reprodujo fielmente lo que los nodos exponían; el defecto está en el grafo (contenido des-scoped y citas que no fundan las obligaciones). Descarté sin_defecto porque contra el PDF el criterio de flujo de fondos efectivamente no aplica a estos sujetos y las provenances no fundan las obligaciones. Descarté aplicacion_erronea por el test v2.6 (los nodos omiten su alcance). Descarté context_recall porque todo el material pertinente fue expuesto y consultado.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 14,
+    "max_tool_calls": 40,
+    "tokens_in": 189488,
+    "tokens_out": 9881
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 14,
+    "tokens_in": 189488,
+    "tokens_out": 9881,
+    "latency_s": 135.244,
+    "error": null,
+    "final_raw": "Confirmado. El nodo `capacidad_de_pago` tiene label genérico (\"capacidad de pago\") y su resumen dice \"Criterio básico de clasificación: la capacidad de pago en el futuro...\" sin marca de cartera comercial ni de alcance. El agente lo tomó como el criterio general. Pero el PDF (Sección 6 = \"Clasificación de los deudores de la cartera comercial\", Punto 5.1) muestra que ese criterio de flujo de fondos es de **cartera comercial** de entidades financieras. Para los sujetos de la pregunta (proveedores no financieros / tarjetas), el criterio es **mora en cartera consumo/vivienda**.\n\nEl nodo NO declara su alcance en su contenido → el defecto es des-scoping del grafo → **contenido_kg** (según v2.6, si el nodo omite su alcance, es defecto del grafo, no aplicacion_erronea).\n\nTengo evidencia suficiente para las atribuciones. Emito el JSON.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'proveedores no financieros crédito'}\", \"devolvio\": \"Halla sujeto_regulado:proveedores_no_financieros_de_credito y variantes\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'empresas no financieras emisoras tarjetas'}\", \"devolvio\": \"Halla sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito y variantes\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'clasificación deudores criterio'}\", \"devolvio\": \"Concepto y procedimiento de clasificación de deudores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{id: proveedores_no_financieros_de_credito}\", \"devolvio\": \"Descripción del sujeto; provenances a clasif. Sección 7 y protección Sección 5>1.1 y 3\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: empresas_no_financieras_emisoras_de_tarjetas_de_credito}\", \"devolvio\": \"Sujeto sujeto a protección de usuarios; provenances Sección 5>1.1 y Sección 2>2.4\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: concepto_definido:clasificacion_de_deudores}\", \"devolvio\": \"Concepto genérico de clasificación\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: proveedores..., salientes}\", \"devolvio\": \"obligado_a: clasificar según mora consumo/vivienda, resolver reclamos, cumplimiento normas protección, designar directivo\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{id: empresas...tarjetas_de_credito, salientes}\", \"devolvio\": \"obligado_a: resolver reclamos, cumplimiento normas protección, entregar detalle productos, publicar contratos, etc.\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{id: obligacion:clasificar_deudores_segun_mora...}\", \"devolvio\": \"Proveedores no financieros clasifican por mora cartera consumo/vivienda\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'criterios clasificación deudores mora capacidad pago'}\", \"devolvio\": \"capacidad_de_pago (label genérico), criterios_objetivos_de_clasificacion\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{id: criterios_objetivos_de_clasificacion}\", \"devolvio\": \"término de morosidad, situación jurídica, cumplimiento refinanciaciones; prov Sección 6>6.4\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{id: capacidad_de_pago}\", \"devolvio\": \"Criterio básico: capacidad de pago futura, flujo de fondos; prov Sección 3>3.6 y Sección 6>5.1\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'empresas no financieras tarjetas clasificación deudores obligación'}\", \"devolvio\": \"Sujetos tarjetas + obligaciones sobre clasificación (excepciones), sin obligación de clasificar para tarjetas\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'sección 7 proveedores no financieros clasificación'}\", \"devolvio\": \"Mismo sujeto proveedores; sin nodo nuevo de criterio específico\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{id: empresas_no_financieras_emisoras_de_tarjetas, salientes}\", \"devolvio\": \"obligaciones de informar comisiones/cargos\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 12, \"quote\": \"\\\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\\\", \\\"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\\\"\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario\",\n      \"Si los proveedores no financieros de crédito deben clasificar a sus deudores\",\n      \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario\",\n      \"Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores\",\n      \"Bajo qué criterio clasifican sus deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué criterio clasifican sus deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El criterio básico de clasificación de deudores es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"[\\\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\\\", \\\"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\\\"]\", \"ubicacion\": \"concepto_definido:capacidad_de_pago (paso 12)\"},\n        \"fuente\": {\"quote\": \"5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (…) CLASIFICACIÓN DE DEUDORES B.C.R.A. Sección 6. Clasificación de los deudores de la cartera comercial.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 5.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 6 > Punto 5.1\", \"resultado\": \"El criterio de flujo de fondos pertenece a la Sección 6 'Clasificación de los deudores de la cartera comercial' — es el criterio de cartera comercial de entidades financieras, no de los proveedores no financieros\"},\n        {\"consulta\": \"ver_nodo obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"resultado\": \"Para proveedores no financieros el criterio real es la MORA en cartera consumo/vivienda, no el análisis de flujo de fondos\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Bajo qué criterio clasifican sus deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"criterios objetivos que incluyen el término de morosidad, la situación jurídica del cliente o sus deudas, y el cumplimiento de refinanciaciones\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones.\", \"ubicacion\": \"concepto_definido:criterios_objetivos_de_clasificacion (paso 11)\"},\n        \"fuente\": {\"quote\": \"6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas normas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones y pedidos de refinanciaciones de obligaciones). (…) Sección 6. Clasificación de los deudores de la cartera comercial.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 6.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 6 > Punto 6.4\", \"resultado\": \"El nodo es FIEL al texto, pero el texto es de la Sección 6 (cartera comercial de entidades financieras); el nodo omite en su contenido/label la marca de alcance, por lo que se aplicó fuera del alcance de los sujetos de la pregunta\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si los proveedores no financieros de crédito / empresas de tarjetas deben cumplir con Protección al Usuario (resolver reclamos)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"considerar y resolver fundadamente reclamos de usuarios\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.\", \"ubicacion\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios (provenance Sección 5 > Punto 1.1)\"},\n        \"fuente\": {\"quote\": \"1.1. Partes. 1.1.1. Usuario de servicios financieros. (…) 1.1.2. Sujetos obligados. 1.1.2.1. Entidades financieras. 1.1.2.2. Operadores de cambio\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 5 > Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 5 > Punto 1.1\", \"resultado\": \"El punto 1.1 citado por el nodo/edge es 'Partes / Sujetos obligados' — solo lista sujetos, NO funda la obligación de resolver reclamos\"},\n        {\"consulta\": \"leer_pasaje Sección 3 (protección)\", \"resultado\": \"El contenido real sobre recepción y resolución de reclamos está en Sección 3 > Punto 3.1.6 ('Toda consulta o reclamo deberá ser definitivamente resuelta dentro de 10 días hábiles'), no en el punto citado\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario (entregar información y publicar contratos)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"entrega de información sobre productos y servicios, publicación de contratos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Deber de publicar modelos de contrato de adhesión bajo el nombre 'Contratos de adhesión – Ley 24.240 de Defensa del Consumidor', discriminando por cada modalidad, plan, producto o servicio.\", \"ubicacion\": \"obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional (provenance Sección 2 > Punto 2.4)\"},\n        \"fuente\": {\"quote\": \"2.4. Disposiciones generales. (…) 4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros automáticos) deberá respetar características apropiadas para cada uno de estos grupos poblacionales (…) eliminación de escalones (…) instalación de rampas\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 2 > Punto 2.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 2 > Punto 2.4\", \"resultado\": \"El punto 2.4 citado por los edges/nodos es sobre accesibilidad física de puntos de atención — NO funda ni 'entregar detalle de productos' ni 'publicar contratos de adhesión'; la cita apunta a otro contenido\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"FASE A: el agente descompuso la pregunta correctamente y consultó los sujetos, sus vecinos (obligaciones) y los conceptos de clasificación. La respuesta enumeró obligaciones de protección y criterios de clasificación. FASE B/C: (1) Pata 'criterio de clasificación' — el juez marcó FALSO el 'criterio básico = capacidad de pago / flujo de fondos'. Contra el PDF ese criterio es fiel al texto (Sección 6 > Punto 5.1), por lo que NO es alucinación; el claim está SOPORTADO por el nodo capacidad_de_pago consultado (paso 12) → noise_sensitivity. Al verificar el PDF, el pasaje pertenece a 'Sección 6. Clasificación de los deudores de la cartera comercial' — es el criterio de cartera comercial de entidades financieras. Para los sujetos de la pregunta (proveedores no financieros / tarjetas) el criterio real es la MORA en cartera consumo/vivienda (obligacion:clasificar_deudores_segun_mora, confirmado paso 9). Es un caso de contenido aplicado fuera de alcance; según v2.6 el test decide la causa: el nodo capacidad_de_pago tiene label genérico ('capacidad de pago') y su descripción NO declara que su alcance es la cartera comercial, por lo que un lector que lo lee solo no advierte que es de otro alcance → NO es aplicacion_erronea sino des-scoping del grafo → contenido_kg (primaria: es el criterio que el juez reprobó como 'falso' y mueve el veredicto). El nodo criterios_objetivos (morosidad, situación jurídica, refinanciaciones) es fiel a Punto 6.4 pero igualmente de cartera comercial sin marca de alcance → mismo contenido_kg (secundaria). (2) Patas de protección marcadas no_soportado (resolver reclamos para ambos sujetos; entregar información y publicar contratos para tarjetas): el dato pertinente SÍ apareció y fue consultado (edges obligado_a en pasos 7 y 8, nodos abiertos), por lo que no es context_recall; el claim está soportado por nodos consultados → noise_sensitivity. Al leer las provenances de esos nodos/edges: 'resolver reclamos' y 'cumplimiento de normas de protección' citan Sección 5 > Punto 1.1, que resultó ser 'Partes / Sujetos obligados' (solo lista sujetos), y el contenido real de reclamos está en Sección 3 > Punto 3.1.6; 'entregar detalle de productos' y 'publicar contratos' citan Sección 2 > Punto 2.4, que resultó ser sobre accesibilidad física de puntos de atención. En ambos casos la cita apunta a otro lado → provenance_imprecisa (primaria: la falta de fundamento verificable en el punto citado es lo que hace que el juez marque no_soportado). No hay alucinación del agente: reprodujo fielmente lo que los nodos exponían; el defecto está en el grafo (contenido des-scoped y citas que no fundan las obligaciones). Descarté sin_defecto porque contra el PDF el criterio de flujo de fondos efectivamente no aplica a estos sujetos y las provenances no fundan las obligaciones. Descarté aplicacion_erronea por el test v2.6 (los nodos omiten su alcance). Descarté context_recall porque todo el material pertinente fue expuesto y consultado.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 5 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también pa… [+428 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 2 > Punto 2.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.4 (PDF pág 6)\", \"pasaje\": \"2.4. Disposiciones generales. \\n2.2.\\n4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros \\nautomáticos) deberá respetar características apropiadas para cada uno de es-\\ntos grupos poblacionales que implican, entre otras medidas, la eliminación de \\nescalones, desniveles o cualquier otra clase de obstáculos físicos o la instala-\\nción de rampas, el manten imiento de espacios amplios entre puestos de aten-\\nción, la incorporación de elementos que orienten o faciliten la circulación. \\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS \\nSección 2. Derechos básicos de los usuarios de servicios financieros. \\nVersión: 6a. COMUNICACIÓN  “A”  7744 Vigencia: \\n28/02/2023 Página 2\"}"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del a… [+278 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3 > Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedent… [+408 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7 > Sección 7 — preámbulo"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7 > Sección 7 — preámbulo\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 5.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 20)\", \"pasaje\": \"5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo … [+417 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta … [+416 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios"
+      },
+      "output_truncado": "{\"id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"type\": \"Obligacion\", \"label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"properties\": {\"description\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:entregar_detalle_de_caracteristicas_de_productos_y_servicios"
+      },
+      "output_truncado": "{\"id\": \"obligacion:entregar_detalle_de_caracteristicas_de_productos_y_servicios\", \"type\": \"Obligacion\", \"label\": \"entregar detalle de características de productos y servicios\", \"properties\": {\"description\": \"Las casas operativas deben proporcionar a los usuarios un detalle con las características de los productos y servicios ofrecidos, incluyendo todas las comisiones y cargos.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.4\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional"
+      },
+      "output_truncado": "{\"id\": \"obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional\", \"type\": \"Obligacion\", \"label\": \"publicar contratos de adhesión en sitio de Internet institucional\", \"properties\": {\"description\": \"Deber de publicar modelos de contrato de adhesión bajo el nombre 'Contratos de adhesión – Ley 24.240 de Defensa del Consumidor', discriminando por cada modalidad, plan, producto o servicio.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.4\"}]}"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3 (PDF pág 26)\", \"pasaje\": \"3.\\n1.4. Registro de Reintegros de Importes (RRI). \\nE\\nn este registro se deberán asentar los montos reintegrados a los usuarios, identifican-\\ndo en cada caso al usuario afectado, la causal generadora del evento, los productos y \\ncasas involucradas. \\n3.\\n1.5. Registro de Denuncias ante las Instancias Judiciales y/o Administrativas de Defensa del \\nConsumidor (RDJA). \\nE\\nn este registro se asentarán todas las intervenciones originadas en denuncias efec-\\ntuadas ante instancias judiciales y/o administrativas de defensa del consumidor, ident i-\\nficando al usuario afectado y especificando el importe involucrado, la causal generado-\\nra del evento, los productos y casas involucradas. \\n3.\\n1.6. Recepción de las presentaciones y tiempo de respuestas. \\nLas\\n presentaciones de los usuarios de servicios financieros deberán poder realizarse \\npor teléfono, Internet, por escrito, fax, correo postal y electrónico (e- mail), etc. y los da-\\ntos para su direccionamiento deberán encontrarse disponib… [+423 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 10
+      },
+      "output_truncado": "{\"paso\": 10, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"criterios clasificación deudores mora capacidad pago\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"criterios clasificación deudores mora capacidad pago\", \"total_con_match\": 292, \"resultados\": [{\"id\": \"concepto_definido:capacidad_de_pago\", \"type\": \"ConceptoDefinido\", \"label\": \"capacidad de pago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.', 'Capacidad del cliente para aten…\"}, {\"id\": \"concepto_definido:clasificacion_de_deudores\", \"type\": \"ConceptoDefinido\", \"label\": \"clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Concepto central regulatorio que organiza la evaluación y categorización de la situación de los deudores.', 'Sistema de categorización de deudores según crite…\"}, {\"id\": \"procedimiento:clasificacion_de_deudores\", \"type\": \"Procedimiento\", \"label\": \"clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Procedimiento de evaluación y clasificación de clientes según su capacidad de cumplimiento de compromisos financieros.', 'Proceso … [+2175 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31673,
+      "output_tokens": 689
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35171,
+      "output_tokens": 918
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38434,
+      "output_tokens": 800
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40781,
+      "output_tokens": 1236
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 43429,
+      "output_tokens": 6238
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 59,
+     "n_claims_fallidos": 8,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-018",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'proveedores no financieros crédito', 'limite': 10}",
+      "devolvio": "sujeto_regulado:proveedores_no_financieros_de_credito y otros",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'empresas no financieras emisoras tarjetas', 'limite': 10}",
+      "devolvio": "sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito y variantes",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación deudores criterio', 'limite': 10}",
+      "devolvio": "concepto/procedimiento clasificacion_de_deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'sujeto_regulado:proveedores_no_financieros_de_credito'}",
+      "devolvio": "descripción del sujeto + provenances",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito'}",
+      "devolvio": "descripción del sujeto de tarjetas",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'concepto_definido:clasificacion_de_deudores'}",
+      "devolvio": "concepto general de clasificación",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'sujeto_regulado:proveedores_no_financieros_de_credito', 'direccion': 'salientes'}",
+      "devolvio": "obligado_a clasificar mora cartera consumo/vivienda, reclamos, cumplimiento protección, designar directivo",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito', 'direccion': 'salientes'}",
+      "devolvio": "reclamos, cumplimiento protección, entregar detalle productos, publicar contratos, etc. — SIN clasificar deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "{'id': 'obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda'}",
+      "devolvio": "Proveedores no financieros clasifican por mora aplicando criterios de cartera consumo o vivienda",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'criterios clasificación deudores mora capacidad pago', 'limite': 10}",
+      "devolvio": "capacidad_de_pago, clasificacion_de_deudores",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "{'id': 'concepto_definido:criterios_objetivos_de_clasificacion'}",
+      "devolvio": "término de morosidad, situación jurídica, cumplimiento de refinanciaciones (Sección 6 > 6.4)",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "{'id': 'concepto_definido:capacidad_de_pago'}",
+      "devolvio": "Criterio básico de clasificación: capacidad de pago futuro / análisis de flujo de fondos",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'empresas no financieras tarjetas clasificación deudores obligación', 'limite': 10}",
+      "devolvio": "sin edge de clasificación para tarjetas",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'sección 7 proveedores no financieros clasificación', 'limite': 10}",
+      "devolvio": "proveedores no financieros de crédito",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas', 'direccion': 'salientes'}",
+      "devolvio": "obligaciones de comisiones, sin clasificación de deudores",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 12,
+     "quote": "concepto_definido:capacidad_de_pago (...) 'Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.', 'Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario",
+     "Si los proveedores no financieros de crédito deben clasificar a sus deudores",
+     "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario",
+     "Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores",
+     "Bajo qué criterio clasifican sus deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué criterio clasifican sus deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "el criterio básico: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos), y (2) criterios objetivos que incluyen el término de morosidad, la situación jurídica del cliente o sus deudas, y el cumplimiento de refinanciaciones",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía. Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.",
+       "ubicacion": "concepto_definido:capacidad_de_pago (label genérico, sin marca de alcance cartera comercial); concepto_definido:criterios_objetivos_de_clasificacion ('Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones')"
+      },
+      "fuente": {
+       "quote": "5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (...) CLASIFICACIÓN DE DEUDORES B.C.R.A. Sección 6. Clasificación de los deudores de la cartera comercial.",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 5.1 y Punto 6.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "criterio clasificación cartera consumo vivienda mora",
+       "resultado": "obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda ('Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda') y concepto_definido:cartera_de_consumo_o_vivienda ('sujeta a normas especiales de clasificación según mora')"
+      },
+      {
+       "consulta": "cartera consumo cumplimiento normal atraso 31 90 dias situacion",
+       "resultado": "umbrales de atraso (31 días, 31-90, 90-180) como criterio objetivo de clasificación de cartera consumo/vivienda — confirma que el criterio de esa cartera es la MORA, no el flujo de fondos"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario / Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "considerar y resolver fundadamente reclamos de usuarios (...) Las empresas no financieras emisoras de tarjetas de crédito (...) deben cumplir con obligaciones de Protección al Usuario (cumplimiento de normas de protección, resolución de reclamos, entrega de información sobre productos y servicios, publicación de contratos, etc.)",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.",
+       "ubicacion": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios; edges obligado_a hacia reclamos, entregar_detalle_de_caracteristicas_de_productos_y_servicios y publicar_contratos_de_adhesion, vistos en pasos 7 y 8"
+      },
+      "fuente": {
+       "quote": "Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 3 > Sección 3 — preámbulo (punto 3.1.6 Recepción de presentaciones y tiempo de respuestas)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "resolver reclamos usuarios plazo respuesta",
+       "resultado": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios y obligacion:resolver_consulta_o_reclamo_en_plazo_maximo ('Toda consulta o reclamo debe ser definitivamente resuelta dentro del plazo máximo de diez días hábiles') — el dato es fáctico y correcto"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario (reclamos / información / contratos)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "considerar y resolver fundadamente reclamos de usuarios (...) entrega de información sobre productos y servicios, publicación de contratos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "considerar y resolver fundadamente reclamos de usuarios — provenance: Sección 5 > Punto 1.1; entregar detalle de características de productos y servicios / publicar contratos de adhesión — provenance: Sección 2 > Punto 2.4",
+       "ubicacion": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios; edges hacia entregar_detalle_de_caracteristicas y publicar_contratos_de_adhesion"
+      },
+      "fuente": {
+       "quote": "1.1. Partes. 1.1.1. Usuario de servicios financieros. (...) 1.1.2. Sujetos obligados. — [no menciona resolución de reclamos]; Sección 2 > Punto 2.4: '2.4. Disposiciones generales. (...) La accesibilidad a los puntos de atención al usuario (...)' — [no menciona entrega de información de productos ni publicación de contratos]",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 5 > Punto 1.1 y Sección 2 > Punto 2.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "resolver reclamos usuarios plazo respuesta",
+       "resultado": "el contenido de reclamos está realmente en Sección 3 preámbulo (punto 3.1.6), no en Sección 5>1.1 que cita el nodo; confirma que la cita apunta a otra sección"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "Descompuse las patas y clasifiqué por pata (C1a) y luego por claim (C1b). PROTECCIÓN AL USUARIO (patas 1 y 3): el dato pertinente SÍ apareció — el agente vio en los pasos 7 y 8 los edges obligado_a hacia 'considerar y resolver fundadamente reclamos de usuarios', 'entregar detalle de características de productos y servicios' y 'publicar contratos de adhesión', y el nodo de reclamos dice literalmente 'Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios'. Los claims están SOPORTADOS por nodos consultados → noise_sensitivity. Contra el PDF, el contenido es CORRECTO (Sección 3 preámbulo, punto 3.1.6: 'Toda consulta o reclamo deberá ser definitivamente resuelta dentro del plazo máximo de diez días hábiles'; y protección de usuarios sí exige información de productos y publicación de contratos). Por tanto estos claims son fieles y pertinentes → sin_defecto (falso positivo del juez, que los marcó no_soportado pese a estar soportados por nodos consultados y ser correctos). Descarté completitud/estructural (el nodo existe y se consultó), contenido_kg (el contenido no contradice el PDF), navegación (el agente lo consultó). Como defecto REAL secundario detecté provenance_imprecisa: el edge de reclamos cita Sección 5>1.1 (que trata 'Partes/Sujetos obligados', no reclamos) y los edges de información/contratos citan Sección 2>2.4 (que trata accesibilidad), cuando el contenido real está en Sección 3 preámbulo y otros puntos — la cita no funda su contenido; es secundaria porque no rompe la respuesta (el contenido es correcto). CRITERIO DE CLASIFICACIÓN (pata 5, PRIMARIA): el agente respondió con el criterio de la CARTERA COMERCIAL ('capacidad de pago... análisis de flujo de fondos' de capacidad_de_pago; 'término de morosidad, situación jurídica, cumplimiento de refinanciaciones' de criterios_objetivos_de_clasificacion), pero los proveedores no financieros clasifican por MORA en cartera CONSUMO/VIVIENDA (obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda: 'clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda'; y los umbrales de atraso de 31/90/180 días confirman que ese es el criterio real de esa cartera). Los claims están soportados por nodos consultados (pasos 11 y 12) pero son incorrectos para el alcance de la pata → noise_sensitivity. Al aplicar el test de pertinencia y el criterio v2.6 de aplicacion_erronea vs contenido_kg: los nodos capacidad_de_pago y criterios_objetivos_de_clasificacion tienen labels genéricos y descriptions que NO declaran su alcance (el PDF los ubica bajo 'Sección 6. Clasificación de los deudores de la cartera comercial', pero el nodo capacidad_de_pago dice llanamente 'Criterio básico de clasificación' sin marca de cartera). Leído solo, el nodo NO avisa al lector que su contenido es de la cartera comercial → el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, porque el alcance no está declarado en el contenido del nodo). Esta es la primaria: explica por qué el juez marcó FALSO el criterio básico y no_soportados los criterios objetivos para esta pata.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 16,
+    "max_tool_calls": 40,
+    "tokens_in": 279475,
+    "tokens_out": 9944
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 16,
+    "tokens_in": 279475,
+    "tokens_out": 9944,
+    "latency_s": 128.605,
+    "error": null,
+    "final_raw": "Confirmado: el agente vio el edge de reclamos para proveedores (paso 7) y para tarjetas (paso 8). Todos los claims de protección al usuario están soportados por nodos consultados. Tengo evidencia suficiente para emitir el JSON.\n\nResumen de atribución:\n- **Reclamos (proveedores y tarjetas), información y contratos**: soportados por nodos consultados + correctos contra PDF → noise_sensitivity → sin_defecto (falso positivo del juez). Defecto secundario: provenance_imprecisa (los edges/nodos citan Sección 5>1.1 y Sección 2>2.4 que no fundan el contenido).\n- **Criterio de clasificación (capacidad de pago / criterios objetivos)**: PRIMARIA. noise_sensitivity → contenido_kg por des-scoping (nodos con label genérico \"criterio básico de clasificación\" que no declaran que son de cartera comercial, aplicados a proveedores no financieros que clasifican por mora en cartera consumo/vivienda).\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'proveedores no financieros crédito', 'limite': 10}\", \"devolvio\": \"sujeto_regulado:proveedores_no_financieros_de_credito y otros\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'empresas no financieras emisoras tarjetas', 'limite': 10}\", \"devolvio\": \"sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito y variantes\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudores criterio', 'limite': 10}\", \"devolvio\": \"concepto/procedimiento clasificacion_de_deudores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'sujeto_regulado:proveedores_no_financieros_de_credito'}\", \"devolvio\": \"descripción del sujeto + provenances\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito'}\", \"devolvio\": \"descripción del sujeto de tarjetas\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'concepto_definido:clasificacion_de_deudores'}\", \"devolvio\": \"concepto general de clasificación\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'sujeto_regulado:proveedores_no_financieros_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"obligado_a clasificar mora cartera consumo/vivienda, reclamos, cumplimiento protección, designar directivo\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"reclamos, cumplimiento protección, entregar detalle productos, publicar contratos, etc. — SIN clasificar deudores\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda'}\", \"devolvio\": \"Proveedores no financieros clasifican por mora aplicando criterios de cartera consumo o vivienda\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'criterios clasificación deudores mora capacidad pago', 'limite': 10}\", \"devolvio\": \"capacidad_de_pago, clasificacion_de_deudores\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'concepto_definido:criterios_objetivos_de_clasificacion'}\", \"devolvio\": \"término de morosidad, situación jurídica, cumplimiento de refinanciaciones (Sección 6 > 6.4)\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'concepto_definido:capacidad_de_pago'}\", \"devolvio\": \"Criterio básico de clasificación: capacidad de pago futuro / análisis de flujo de fondos\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'empresas no financieras tarjetas clasificación deudores obligación', 'limite': 10}\", \"devolvio\": \"sin edge de clasificación para tarjetas\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'sección 7 proveedores no financieros clasificación', 'limite': 10}\", \"devolvio\": \"proveedores no financieros de crédito\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas', 'direccion': 'salientes'}\", \"devolvio\": \"obligaciones de comisiones, sin clasificación de deudores\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 12, \"quote\": \"concepto_definido:capacidad_de_pago (...) 'Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.', 'Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario\",\n      \"Si los proveedores no financieros de crédito deben clasificar a sus deudores\",\n      \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario\",\n      \"Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores\",\n      \"Bajo qué criterio clasifican sus deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué criterio clasifican sus deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"el criterio básico: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos), y (2) criterios objetivos que incluyen el término de morosidad, la situación jurídica del cliente o sus deudas, y el cumplimiento de refinanciaciones\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía. Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\", \"ubicacion\": \"concepto_definido:capacidad_de_pago (label genérico, sin marca de alcance cartera comercial); concepto_definido:criterios_objetivos_de_clasificacion ('Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones')\"},\n        \"fuente\": {\"quote\": \"5.1. En situación normal. El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. (...) CLASIFICACIÓN DE DEUDORES B.C.R.A. Sección 6. Clasificación de los deudores de la cartera comercial.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Sección 6 > Punto 5.1 y Punto 6.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"criterio clasificación cartera consumo vivienda mora\", \"resultado\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda ('Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda') y concepto_definido:cartera_de_consumo_o_vivienda ('sujeta a normas especiales de clasificación según mora')\"},\n        {\"consulta\": \"cartera consumo cumplimiento normal atraso 31 90 dias situacion\", \"resultado\": \"umbrales de atraso (31 días, 31-90, 90-180) como criterio objetivo de clasificación de cartera consumo/vivienda — confirma que el criterio de esa cartera es la MORA, no el flujo de fondos\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario / Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"considerar y resolver fundadamente reclamos de usuarios (...) Las empresas no financieras emisoras de tarjetas de crédito (...) deben cumplir con obligaciones de Protección al Usuario (cumplimiento de normas de protección, resolución de reclamos, entrega de información sobre productos y servicios, publicación de contratos, etc.)\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.\", \"ubicacion\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios; edges obligado_a hacia reclamos, entregar_detalle_de_caracteristicas_de_productos_y_servicios y publicar_contratos_de_adhesion, vistos en pasos 7 y 8\"},\n        \"fuente\": {\"quote\": \"Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 3 > Sección 3 — preámbulo (punto 3.1.6 Recepción de presentaciones y tiempo de respuestas)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"resolver reclamos usuarios plazo respuesta\", \"resultado\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios y obligacion:resolver_consulta_o_reclamo_en_plazo_maximo ('Toda consulta o reclamo debe ser definitivamente resuelta dentro del plazo máximo de diez días hábiles') — el dato es fáctico y correcto\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario (reclamos / información / contratos)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"considerar y resolver fundadamente reclamos de usuarios (...) entrega de información sobre productos y servicios, publicación de contratos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"considerar y resolver fundadamente reclamos de usuarios — provenance: Sección 5 > Punto 1.1; entregar detalle de características de productos y servicios / publicar contratos de adhesión — provenance: Sección 2 > Punto 2.4\", \"ubicacion\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios; edges hacia entregar_detalle_de_caracteristicas y publicar_contratos_de_adhesion\"},\n        \"fuente\": {\"quote\": \"1.1. Partes. 1.1.1. Usuario de servicios financieros. (...) 1.1.2. Sujetos obligados. — [no menciona resolución de reclamos]; Sección 2 > Punto 2.4: '2.4. Disposiciones generales. (...) La accesibilidad a los puntos de atención al usuario (...)' — [no menciona entrega de información de productos ni publicación de contratos]\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 5 > Punto 1.1 y Sección 2 > Punto 2.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"resolver reclamos usuarios plazo respuesta\", \"resultado\": \"el contenido de reclamos está realmente en Sección 3 preámbulo (punto 3.1.6), no en Sección 5>1.1 que cita el nodo; confirma que la cita apunta a otra sección\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Descompuse las patas y clasifiqué por pata (C1a) y luego por claim (C1b). PROTECCIÓN AL USUARIO (patas 1 y 3): el dato pertinente SÍ apareció — el agente vio en los pasos 7 y 8 los edges obligado_a hacia 'considerar y resolver fundadamente reclamos de usuarios', 'entregar detalle de características de productos y servicios' y 'publicar contratos de adhesión', y el nodo de reclamos dice literalmente 'Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios'. Los claims están SOPORTADOS por nodos consultados → noise_sensitivity. Contra el PDF, el contenido es CORRECTO (Sección 3 preámbulo, punto 3.1.6: 'Toda consulta o reclamo deberá ser definitivamente resuelta dentro del plazo máximo de diez días hábiles'; y protección de usuarios sí exige información de productos y publicación de contratos). Por tanto estos claims son fieles y pertinentes → sin_defecto (falso positivo del juez, que los marcó no_soportado pese a estar soportados por nodos consultados y ser correctos). Descarté completitud/estructural (el nodo existe y se consultó), contenido_kg (el contenido no contradice el PDF), navegación (el agente lo consultó). Como defecto REAL secundario detecté provenance_imprecisa: el edge de reclamos cita Sección 5>1.1 (que trata 'Partes/Sujetos obligados', no reclamos) y los edges de información/contratos citan Sección 2>2.4 (que trata accesibilidad), cuando el contenido real está en Sección 3 preámbulo y otros puntos — la cita no funda su contenido; es secundaria porque no rompe la respuesta (el contenido es correcto). CRITERIO DE CLASIFICACIÓN (pata 5, PRIMARIA): el agente respondió con el criterio de la CARTERA COMERCIAL ('capacidad de pago... análisis de flujo de fondos' de capacidad_de_pago; 'término de morosidad, situación jurídica, cumplimiento de refinanciaciones' de criterios_objetivos_de_clasificacion), pero los proveedores no financieros clasifican por MORA en cartera CONSUMO/VIVIENDA (obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda: 'clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda'; y los umbrales de atraso de 31/90/180 días confirman que ese es el criterio real de esa cartera). Los claims están soportados por nodos consultados (pasos 11 y 12) pero son incorrectos para el alcance de la pata → noise_sensitivity. Al aplicar el test de pertinencia y el criterio v2.6 de aplicacion_erronea vs contenido_kg: los nodos capacidad_de_pago y criterios_objetivos_de_clasificacion tienen labels genéricos y descriptions que NO declaran su alcance (el PDF los ubica bajo 'Sección 6. Clasificación de los deudores de la cartera comercial', pero el nodo capacidad_de_pago dice llanamente 'Criterio básico de clasificación' sin marca de cartera). Leído solo, el nodo NO avisa al lector que su contenido es de la cartera comercial → el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, porque el alcance no está declarado en el contenido del nodo). Esta es la primaria: explica por qué el juez marcó FALSO el criterio básico y no_soportados los criterios objetivos para esta pata.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 5 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también pa… [+428 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del a… [+278 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3 > Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedent… [+408 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 2 > Punto 2.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.4 (PDF pág 6)\", \"pasaje\": \"2.4. Disposiciones generales. \\n2.2.\\n4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros \\nautomáticos) deberá respetar características apropiadas para cada uno de es-\\ntos grupos poblacionales que implican, entre otras medidas, la eliminación de \\nescalones, desniveles o cualquier otra clase de obstáculos físicos o la instala-\\nción de rampas, el manten imiento de espacios amplios entre puestos de aten-\\nción, la incorporación de elementos que orienten o faciliten la circulación. \\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS \\nSección 2. Derechos básicos de los usuarios de servicios financieros. \\nVersión: 6a. COMUNICACIÓN  “A”  7744 Vigencia: \\n28/02/2023 Página 2\"}"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 5.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 20)\", \"pasaje\": \"5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo … [+417 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7 > Sección 7 — preámbulo"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7 > Sección 7 — preámbulo\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 3 > Sección 3 — preámbulo"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 3 > Sección 3 — preámbulo\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3 (PDF pág 26)\", \"pasaje\": \"3.\\n1.4. Registro de Reintegros de Importes (RRI). \\nE\\nn este registro se deberán asentar los montos reintegrados a los usuarios, identifican-\\ndo en cada caso al usuario afectado, la causal generadora del evento, los productos y \\ncasas involucradas. \\n3.\\n1.5. Registro de Denuncias ante las Instancias Judiciales y/o Administrativas de Defensa del \\nConsumidor (RDJA). \\nE\\nn este registro se asentarán todas las intervenciones originadas en denuncias efec-\\ntuadas ante instancias judiciales y/o administrativas de defensa del consumidor, ident i-\\nficando al usuario afectado y especificando el importe involucrado, la causal generado-\\nra del evento, los productos y casas involucradas. \\n3.\\n1.6. Recepción de las presentaciones y tiempo de respuestas. \\nLas\\n presentaciones de los usuarios de servicios financieros deberán poder realizarse \\npor teléfono, Internet, por escrito, fax, correo postal y electrónico (e- mail), etc. y los da-\\ntos para su direccionamiento debe… [+447 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "criterio clasificación cartera consumo vivienda mora",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"criterio clasificación cartera consumo vivienda mora\", \"total_con_match\": 141, \"resultados\": [{\"id\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"type\": \"Obligacion\", \"label\": \"clasificar deudores según mora en cartera consumo/vivienda\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda.\"}, {\"id\": \"concepto_definido:cartera_de_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera de consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Tipo de cartera crediticia sujeta a normas especiales de clasificación de deudores según mora.\"}, {\"id\": \"concepto_definido:cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera para consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de cartera que comprende créditos para consumo, vivienda propia, préstamos a instituciones de microcrédito y microemprendedores, y financiaciones come…\"}, {\"id\": \"concepto_definido:deudor_en_cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor en carte… [+2352 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "resolver reclamos usuarios plazo respuesta",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"resolver reclamos usuarios plazo respuesta\", \"total_con_match\": 402, \"resultados\": [{\"id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"type\": \"Obligacion\", \"label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos bá…\"}, {\"id\": \"plazo:diez_dias_habiles_para_respuesta_de_sefyc\", \"type\": \"Plazo\", \"label\": \"diez días hábiles para respuesta de SEFyC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Plazo para que SEFyC se expida respecto del descargo presentado.\"}, {\"id\": \"obligacion:resolver_consulta_o_reclamo_en_plazo_maximo\", \"type\": \"Obligacion\", \"label\": \"resolver consulta o reclamo en plazo máximo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Toda consulta o reclamo debe ser definitivamente resuelta dentro del plazo máximo de diez días hábiles, con excepciones regulamentarias.\"}, {\"id\": \"plazo:ano\", \"type\": \"Plazo\", \"label\": \"año\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Período de tiempo para medición anual de incr… [+1112 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "concepto_definido:cartera_de_consumo_o_vivienda"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:cartera_de_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera de consumo o vivienda\", \"properties\": {\"description\": \"Tipo de cartera crediticia sujeta a normas especiales de clasificación de deudores según mora.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7 > Sección 7 — preámbulo\"}]}"
+     },
+     {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios"
+      },
+      "output_truncado": "{\"id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"type\": \"Obligacion\", \"label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"properties\": {\"description\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}"
+     },
+     {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "clasificación deudores cartera consumo criterio mora atraso situación",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"clasificación deudores cartera consumo criterio mora atraso situación\", \"total_con_match\": 184, \"resultados\": [{\"id\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"type\": \"Obligacion\", \"label\": \"clasificar deudores según mora en cartera consumo/vivienda\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda.\"}, {\"id\": \"concepto_definido:ficc_financiaciones_cartera_consumo_vivienda_situacion_3_5\", \"type\": \"ConceptoDefinido\", \"label\": \"FICC - financiaciones cartera consumo vivienda situación 3-5\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cociente expresado en porcentaje entre el importe total de financiaciones de cartera de consumo o vivienda clasificadas en situación 3 a 5 y el importe total de…\"}, {\"id\": \"concepto_definido:cartera_de_consumo\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera de consumo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de cartera según la cual se clasifican deudores para operaciones de financiación.\"}, {\"id\": \"concepto_definido:clasificacion_de_deudores\", \"type\": \"ConceptoDefi… [+2084 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "cartera consumo cumplimiento normal atraso 31 90 dias situacion",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cartera consumo cumplimiento normal atraso 31 90 dias situacion\", \"total_con_match\": 360, \"resultados\": [{\"id\": \"umbral:atraso_31_a_90_dias\", \"type\": \"Umbral\", \"label\": \"atraso 31 a 90 días\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Rango de atraso que caracteriza la clasificación de riesgo bajo en observación.\"}, {\"id\": \"umbral:31_dias_de_atraso\", \"type\": \"Umbral\", \"label\": \"31 días de atraso\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Límite máximo de días de atraso para situación normal.\"}, {\"id\": \"umbral:atraso_90_a_180_dias\", \"type\": \"Umbral\", \"label\": \"atraso 90 a 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Rango de atraso que caracteriza la clasificación de riesgo medio.\"}, {\"id\": \"umbral:atraso_mayor_a_31_dias\", \"type\": \"Umbral\", \"label\": \"atraso mayor a 31 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Período de atraso en el pago que activa la prohibición de mejora de clasificación.\"}, {\"id\": \"umbral:atraso_no_superior_a_31_dias\", \"type\": \"Umbral\", \"label\": \"atraso no superior a 31 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Límite de atraso tolerable para reclasificación en nivel superior de deudores refinancia… [+1861 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "concepto_definido:cartera_para_consumo_o_vivienda"
+      },
+      "output_truncado": "{\"id\": \"concepto_definido:cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera para consumo o vivienda\", \"properties\": {\"description\": \"Categoría de cartera que comprende créditos para consumo, vivienda propia, préstamos a instituciones de microcrédito y microemprendedores, y financiaciones comerciales hasta cierto monto cuando la entidad lo elige.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Punto 5.1\"}]}"
+     },
+     {
+      "n": 16,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 7
+      },
+      "output_truncado": "{\"paso\": 7, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"sujeto_regulado:proveedores_no_financieros_de_credito\", \"direccion\": \"salientes\"}, \"output_completo\": {\"id\": \"sujeto_regulado:proveedores_no_financieros_de_credito\", \"label\": \"proveedores no financieros de crédito\", \"n_salientes_total\": 5, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"obligado_a\", \"vecino_id\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"vecino_label\": \"clasificar deudores según mora en cartera consumo/vivienda\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7 > Sección 7 — preámbulo\"}]}, {\"relation\": \"obligado_a\", \"vecino_id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"vecino_label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}, {\"relation\": \"obligado_a\", \"vecino_id\": \"obligacion:cumplimiento_de_normas_de_proteccion_de_usuarios\", \"vecino_label\": \"cumplimiento de normas de protección de usuarios\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_finan… [+692 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31673,
+      "output_tokens": 493
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34723,
+      "output_tokens": 733
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37171,
+      "output_tokens": 714
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 40741,
+      "output_tokens": 515
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43146,
+      "output_tokens": 305
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 45089,
+      "output_tokens": 974
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 46932,
+      "output_tokens": 6210
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 59,
+     "n_claims_fallidos": 8,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-018",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'proveedores no financieros crédito', 'limite': 10}",
+      "devolvio": "sujeto_regulado:proveedores_no_financieros_de_credito y variantes",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'empresas no financieras emisoras tarjetas'}",
+      "devolvio": "sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas(_de_credito)",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'clasificación deudores criterio'}",
+      "devolvio": "concepto/procedimiento clasificacion_de_deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "sujeto_regulado:proveedores_no_financieros_de_credito",
+      "devolvio": "descripción del sujeto + provenance Sección 7 y protección usuarios",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito",
+      "devolvio": "sujeto sujeto a regulaciones de protección de usuarios",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "concepto_definido:clasificacion_de_deudores",
+      "devolvio": "concepto general",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "proveedores... salientes",
+      "devolvio": "obligado_a clasificar por mora consumo/vivienda + protección usuarios",
+      "pertinente": true
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "empresas tarjetas de crédito salientes",
+      "devolvio": "obligado_a reclamos, cumplimiento protección, entregar detalle, publicar contratos, etc.",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "ver_nodo",
+      "args": "obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda",
+      "devolvio": "Proveedores no financieros clasifican por mora criterios cartera consumo/vivienda",
+      "pertinente": true
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "criterios clasificación deudores mora capacidad pago",
+      "devolvio": "capacidad_de_pago, clasificacion_de_deudores",
+      "pertinente": true
+     },
+     {
+      "paso": 11,
+      "tool": "ver_nodo",
+      "args": "concepto_definido:criterios_objetivos_de_clasificacion",
+      "devolvio": "término morosidad, situación jurídica, cumplimiento refinanciaciones (Punto 6.4)",
+      "pertinente": true
+     },
+     {
+      "paso": 12,
+      "tool": "ver_nodo",
+      "args": "concepto_definido:capacidad_de_pago",
+      "devolvio": "Criterio básico: capacidad de pago futuro, flujo de fondos (prov 3.6 y 5.1)",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "empresas tarjetas clasificación deudores obligación",
+      "devolvio": "no aparece obligación de clasificar para tarjetas",
+      "pertinente": true
+     },
+     {
+      "paso": 14,
+      "tool": "buscar_nodos",
+      "args": "sección 7 proveedores no financieros clasificación",
+      "devolvio": "proveedores no financieros de crédito",
+      "pertinente": true
+     },
+     {
+      "paso": 15,
+      "tool": "ver_vecinos",
+      "args": "empresas_no_financieras_emisoras_de_tarjetas salientes",
+      "devolvio": "obligaciones de informar comisiones/cargos",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 12,
+     "quote": "\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\", \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\""
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario",
+     "Si los proveedores no financieros de crédito deben clasificar a sus deudores",
+     "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario",
+     "Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores",
+     "Bajo qué criterio clasifican sus deudores"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Bajo qué criterio clasifican sus deudores",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "el criterio básico: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "[\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\", \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\"]",
+       "ubicacion": "concepto_definido:capacidad_de_pago"
+      },
+      "fuente": {
+       "quote": "7.1. Criterio de clasificación. (...) la clasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente pautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su situación jurídica",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "mora cartera consumo vivienda clasificación deudores criterio",
+       "resultado": "obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda: 'Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda' — el criterio pertinente a proveedores es MORA, no capacidad de pago"
+      },
+      {
+       "consulta": "leer_pasaje Punto 7.1 clasificacion deudores",
+       "resultado": "para cartera consumo/vivienda la clasificación es exclusivamente por pautas objetivas (mora/situación jurídica), no por capacidad de pago/flujo de fondos"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Si los proveedores/tarjetas deben cumplir con Protección al Usuario — resolver reclamos y criterios objetivos",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Los criterios objetivos de clasificación de deudores incluyen el término de morosidad (...) la situación jurídica del cliente o sus deudas (...) el cumplimiento de refinanciaciones.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones.",
+       "ubicacion": "concepto_definido:criterios_objetivos_de_clasificacion"
+      },
+      "fuente": {
+       "quote": "6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas normas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones y pedidos de refinanciaciones de obligaciones).",
+       "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 6.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 6 Punto 6.4",
+       "resultado": "el PDF confirma verbatim los tres criterios objetivos que el juez marcó no_soportado — están soportados por nodo consultado y son fieles"
+      },
+      {
+       "consulta": "ver_nodo obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios",
+       "resultado": "obligación genérica de sujetos obligados; edge sale de empresas_tarjetas y de proveedores en la trayectoria (pasos 7 y 8) — claim soportado y correcto"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario — entregar información / publicar contratos",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "entrega de información sobre productos y servicios, publicación de contratos",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "empresas no financieras emisoras de tarjetas de crédito —obligado_a→ publicar contratos de adhesión en sitio de Internet institucional [provenance Sección 2 > Punto 2.4]",
+       "ubicacion": "EDGE::...--obligado_a-->obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional"
+      },
+      "fuente": {
+       "quote": "2.4. Disposiciones generales. 2.4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros automáticos) deberá respetar características apropiadas (...) eliminación de escalones, desniveles (...)",
+       "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 2 > Punto 2.4"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje Sección 2 Punto 2.4 protección usuarios",
+       "resultado": "el Punto 2.4 trata sobre accesibilidad física, NO sobre publicar contratos ni entregar detalle de productos — la provenance del edge no funda su contenido"
+      },
+      {
+       "consulta": "ver_paso_completo 8",
+       "resultado": "edges de tarjetas hacia entregar detalle / publicar contratos existen con provenance Sección 2 Punto 2.4"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: la respuesta falló principalmente en la pata 'bajo qué criterio clasifican'. C1a por pata: el dato pertinente al criterio de clasificación de PROVEEDORES NO FINANCIEROS SÍ apareció en la trayectoria (paso 9: 'clasificar deudores según mora en cartera consumo/vivienda') — la pata tenía cobertura. C1b por claim: el agente, en vez de usar ese nodo pertinente, afirmó como 'criterio básico' la 'capacidad de pago / análisis de flujo de fondos' (nodo capacidad_de_pago, paso 12). Ese claim está SOPORTADO por un nodo consultado → no es faithfulness. Verificado contra el PDF: para proveedores no financieros/cartera consumo-vivienda el Punto 7.1 dice que la clasificación se efectúa 'exclusivamente [con] pautas objetivas vinculadas al grado de cumplimiento' (mora), y la capacidad de pago/flujo de fondos es el criterio de la cartera COMERCIAL (Sección 6, que se titula 'Clasificación de los deudores de la cartera comercial'). Por tanto el claim es INCORRECTO para el alcance de la pregunta → noise_sensitivity. C2: ¿el nodo es fiel/pertinente? Aplico test v2.6: el nodo capacidad_de_pago tiene label genérico ('capacidad de pago') y description 'Criterio básico de clasificación...' SIN declarar que su alcance es la cartera comercial; leído solo no le avisa al lector que aplica a otro alcance. Por regla v2.6, cuando el nodo OMITE su alcance, el defecto es del grafo → contenido_kg por des-scoping (PRIMARIA: es lo que rompe la pata del criterio). Además su provenance (Sección 3 Punto 3.6 = 'Aprobación de la clasificación'; Sección 6 Punto 5.1 = 'En situación normal') no funda el contenido, reforzando el defecto del grafo. SEGUNDA pata: los criterios objetivos (morosidad, situación jurídica, refinanciaciones) que el juez marcó 'no_soportado' están soportados por el nodo criterios_objetivos_de_clasificacion y son FIELES verbatim al PDF (Punto 6.4.1); igual la obligación de 'resolver reclamos' está soportada por edges en la trayectoria (pasos 7 y 8) y las tarjetas SÍ son sujetos obligados de protección (PDF Punto 2.5). Estos son falsos positivos del juez → sin_defecto (sin_par). TERCERA pata: los claims 'entregar información sobre productos' y 'publicar contratos' para tarjetas están soportados por edges de la trayectoria, pero la provenance de esos edges (Sección 2 Punto 2.4) apunta a 'accesibilidad física', que no funda ese contenido → provenance_imprecisa (secundaria, claims no centrales que no mueven el veredicto). El veredicto lo mueve la pata del criterio de clasificación: {noise_sensitivity, contenido_kg} primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 19,
+    "max_tool_calls": 40,
+    "tokens_in": 416683,
+    "tokens_out": 11237
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 19,
+    "tokens_in": 416683,
+    "tokens_out": 11237,
+    "latency_s": 162.167,
+    "error": null,
+    "final_raw": "El nodo de \"resolver reclamos\" existe, es genérico para \"sujetos obligados\" y las tarjetas SÍ son sujetos obligados de protección al usuario (confirmado por PDF Punto 2.5). El claim está soportado por el edge en la trayectoria y es fácticamente correcto → sin_defecto para \"resolver reclamos\" (FP del juez que lo marcó no_soportado, pero el edge lo funda).\n\nTengo evidencia suficiente. Emito el JSON final.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'proveedores no financieros crédito', 'limite': 10}\", \"devolvio\": \"sujeto_regulado:proveedores_no_financieros_de_credito y variantes\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'empresas no financieras emisoras tarjetas'}\", \"devolvio\": \"sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas(_de_credito)\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'clasificación deudores criterio'}\", \"devolvio\": \"concepto/procedimiento clasificacion_de_deudores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"sujeto_regulado:proveedores_no_financieros_de_credito\", \"devolvio\": \"descripción del sujeto + provenance Sección 7 y protección usuarios\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito\", \"devolvio\": \"sujeto sujeto a regulaciones de protección de usuarios\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"concepto_definido:clasificacion_de_deudores\", \"devolvio\": \"concepto general\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"proveedores... salientes\", \"devolvio\": \"obligado_a clasificar por mora consumo/vivienda + protección usuarios\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"empresas tarjetas de crédito salientes\", \"devolvio\": \"obligado_a reclamos, cumplimiento protección, entregar detalle, publicar contratos, etc.\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"devolvio\": \"Proveedores no financieros clasifican por mora criterios cartera consumo/vivienda\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"criterios clasificación deudores mora capacidad pago\", \"devolvio\": \"capacidad_de_pago, clasificacion_de_deudores\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"ver_nodo\", \"args\": \"concepto_definido:criterios_objetivos_de_clasificacion\", \"devolvio\": \"término morosidad, situación jurídica, cumplimiento refinanciaciones (Punto 6.4)\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"concepto_definido:capacidad_de_pago\", \"devolvio\": \"Criterio básico: capacidad de pago futuro, flujo de fondos (prov 3.6 y 5.1)\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"empresas tarjetas clasificación deudores obligación\", \"devolvio\": \"no aparece obligación de clasificar para tarjetas\", \"pertinente\": true},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"sección 7 proveedores no financieros clasificación\", \"devolvio\": \"proveedores no financieros de crédito\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"empresas_no_financieras_emisoras_de_tarjetas salientes\", \"devolvio\": \"obligaciones de informar comisiones/cargos\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 12, \"quote\": \"\\\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\\\", \\\"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\\\"\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Si los proveedores no financieros de crédito deben cumplir con Protección al Usuario\",\n      \"Si los proveedores no financieros de crédito deben clasificar a sus deudores\",\n      \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario\",\n      \"Si las empresas no financieras emisoras de tarjetas deben clasificar a sus deudores\",\n      \"Bajo qué criterio clasifican sus deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Bajo qué criterio clasifican sus deudores\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"el criterio básico: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"[\\\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\\\", \\\"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\\\"]\", \"ubicacion\": \"concepto_definido:capacidad_de_pago\"},\n        \"fuente\": {\"quote\": \"7.1. Criterio de clasificación. (...) la clasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente pautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su situación jurídica\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"mora cartera consumo vivienda clasificación deudores criterio\", \"resultado\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda: 'Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda' — el criterio pertinente a proveedores es MORA, no capacidad de pago\"},\n        {\"consulta\": \"leer_pasaje Punto 7.1 clasificacion deudores\", \"resultado\": \"para cartera consumo/vivienda la clasificación es exclusivamente por pautas objetivas (mora/situación jurídica), no por capacidad de pago/flujo de fondos\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Si los proveedores/tarjetas deben cumplir con Protección al Usuario — resolver reclamos y criterios objetivos\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Los criterios objetivos de clasificación de deudores incluyen el término de morosidad (...) la situación jurídica del cliente o sus deudas (...) el cumplimiento de refinanciaciones.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Criterios establecidos en la norma para clasificar deudores, incluyendo término de morosidad, situación jurídica del cliente o sus deudas, cumplimiento de refinanciaciones.\", \"ubicacion\": \"concepto_definido:criterios_objetivos_de_clasificacion\"},\n        \"fuente\": {\"quote\": \"6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas normas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento de refinanciaciones y pedidos de refinanciaciones de obligaciones).\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 6.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 6 Punto 6.4\", \"resultado\": \"el PDF confirma verbatim los tres criterios objetivos que el juez marcó no_soportado — están soportados por nodo consultado y son fieles\"},\n        {\"consulta\": \"ver_nodo obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"resultado\": \"obligación genérica de sujetos obligados; edge sale de empresas_tarjetas y de proveedores en la trayectoria (pasos 7 y 8) — claim soportado y correcto\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Si las empresas no financieras emisoras de tarjetas deben cumplir con Protección al Usuario — entregar información / publicar contratos\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"entrega de información sobre productos y servicios, publicación de contratos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"empresas no financieras emisoras de tarjetas de crédito —obligado_a→ publicar contratos de adhesión en sitio de Internet institucional [provenance Sección 2 > Punto 2.4]\", \"ubicacion\": \"EDGE::...--obligado_a-->obligacion:publicar_contratos_de_adhesion_en_sitio_de_internet_institucional\"},\n        \"fuente\": {\"quote\": \"2.4. Disposiciones generales. 2.4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros automáticos) deberá respetar características apropiadas (...) eliminación de escalones, desniveles (...)\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Sección 2 > Punto 2.4\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje Sección 2 Punto 2.4 protección usuarios\", \"resultado\": \"el Punto 2.4 trata sobre accesibilidad física, NO sobre publicar contratos ni entregar detalle de productos — la provenance del edge no funda su contenido\"},\n        {\"consulta\": \"ver_paso_completo 8\", \"resultado\": \"edges de tarjetas hacia entregar detalle / publicar contratos existen con provenance Sección 2 Punto 2.4\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: la respuesta falló principalmente en la pata 'bajo qué criterio clasifican'. C1a por pata: el dato pertinente al criterio de clasificación de PROVEEDORES NO FINANCIEROS SÍ apareció en la trayectoria (paso 9: 'clasificar deudores según mora en cartera consumo/vivienda') — la pata tenía cobertura. C1b por claim: el agente, en vez de usar ese nodo pertinente, afirmó como 'criterio básico' la 'capacidad de pago / análisis de flujo de fondos' (nodo capacidad_de_pago, paso 12). Ese claim está SOPORTADO por un nodo consultado → no es faithfulness. Verificado contra el PDF: para proveedores no financieros/cartera consumo-vivienda el Punto 7.1 dice que la clasificación se efectúa 'exclusivamente [con] pautas objetivas vinculadas al grado de cumplimiento' (mora), y la capacidad de pago/flujo de fondos es el criterio de la cartera COMERCIAL (Sección 6, que se titula 'Clasificación de los deudores de la cartera comercial'). Por tanto el claim es INCORRECTO para el alcance de la pregunta → noise_sensitivity. C2: ¿el nodo es fiel/pertinente? Aplico test v2.6: el nodo capacidad_de_pago tiene label genérico ('capacidad de pago') y description 'Criterio básico de clasificación...' SIN declarar que su alcance es la cartera comercial; leído solo no le avisa al lector que aplica a otro alcance. Por regla v2.6, cuando el nodo OMITE su alcance, el defecto es del grafo → contenido_kg por des-scoping (PRIMARIA: es lo que rompe la pata del criterio). Además su provenance (Sección 3 Punto 3.6 = 'Aprobación de la clasificación'; Sección 6 Punto 5.1 = 'En situación normal') no funda el contenido, reforzando el defecto del grafo. SEGUNDA pata: los criterios objetivos (morosidad, situación jurídica, refinanciaciones) que el juez marcó 'no_soportado' están soportados por el nodo criterios_objetivos_de_clasificacion y son FIELES verbatim al PDF (Punto 6.4.1); igual la obligación de 'resolver reclamos' está soportada por edges en la trayectoria (pasos 7 y 8) y las tarjetas SÍ son sujetos obligados de protección (PDF Punto 2.5). Estos son falsos positivos del juez → sin_defecto (sin_par). TERCERA pata: los claims 'entregar información sobre productos' y 'publicar contratos' para tarjetas están soportados por edges de la trayectoria, pero la provenance de esos edges (Sección 2 Punto 2.4) apunta a 'accesibilidad física', que no funda ese contenido → provenance_imprecisa (secundaria, claims no centrales que no mueven el veredicto). El veredicto lo mueve la pata del criterio de clasificación: {noise_sensitivity, contenido_kg} primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 5 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también pa… [+428 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 6.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 6.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.4 (PDF pág 18)\", \"pasaje\": \"6.4. Reconsideración obligatoria de la clasificación. \\nEn forma adicional a la periodicidad mínima expuesta precedentemente, se deberá analizar de-\\njando constancia fundamentada de la decisión adoptada en el legajo del cliente– y, de ser ne-\\ncesario, modificar la clasificación cada vez que tenga lugar alguna de las siguientes circunstan-\\ncias: \\n6.4.1. Modificación de alguno de los criterios objetivos de clasificación que surjan de estas nor-\\nmas (término de morosidad, situación jurídica del cliente o de sus deudas, cumplimiento \\nde refinanciaciones y pedidos de refinanciaciones de obligaciones). \\n6.4.2. Modificación en forma negativa de la clasificación del cliente en la “Central de deudores \\ndel sistema financiero”, llevándola a un grado inferior al de la entidad, por al menos otra \\nentidad financiera o fideicomiso financiero cuyas acreencias representen como mínimo el \\n10 % del total informado por todos los acreedores. \\n6.4.3. Notificación de la determinación final de la SEFyC del a… [+278 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3 > Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3 > Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedent… [+408 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 5.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 5.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 5.1 (PDF pág 20)\", \"pasaje\": \"5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo … [+417 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 2 > Punto 2.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.4 (PDF pág 6)\", \"pasaje\": \"2.4. Disposiciones generales. \\n2.2.\\n4.1. La accesibilidad a los puntos de atención al usuario (casas operativas y cajeros \\nautomáticos) deberá respetar características apropiadas para cada uno de es-\\ntos grupos poblacionales que implican, entre otras medidas, la eliminación de \\nescalones, desniveles o cualquier otra clase de obstáculos físicos o la instala-\\nción de rampas, el manten imiento de espacios amplios entre puestos de aten-\\nción, la incorporación de elementos que orienten o faciliten la circulación. \\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS \\nSección 2. Derechos básicos de los usuarios de servicios financieros. \\nVersión: 6a. COMUNICACIÓN  “A”  7744 Vigencia: \\n28/02/2023 Página 2\"}"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7 > Sección 7 — preámbulo"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7 > Sección 7 — preámbulo\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 2 > Punto 2.5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 2 > Punto 2.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.5 (PDF pág 21)\", \"pasaje\": \"2.5. Información al Banco Central de la República Argentina.\\nLas entidades financieras, los PSPCP, las empresas no financieras emisoras de tarjetas de\\ncrédito y/o compra y los otros proveedores no financieros de crédito que ofrezcan y comerciali-\\ncen productos y/o servicios que se perfeccionan con la firma o aceptación de contratos con\\ncláusulas preestablecidas (contratos de adhesión), deberán informar las comisi ones y cargos\\nque cobren a los usuarios de servicios financieros mediante el régimen informativo establecido\\nal efecto.\\nLas altas –comisiones de nuevos productos y/o servicios que deseen comercializar – y los au-\\nmentos en las comisiones que deseen implement ar deberán ser previamente informados al\\nBCRA por la vía consignada en el párrafo precedente y luego ser notificadas a los usuarios de\\nservicios financieros. También deberán informar las modificaciones de los cargos.\\nLas reducciones en las comisiones y/o cargos podrán aplicarse sin demora, sin perjuicio … [+428 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 6 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 4)\", \"pasaje\": \"1.1. Criterio \\ngeneral. \\nLos clientes de la entidad (tanto residentes en el país, de los sectores público y privado, finan-\\ncieros y no financieros, como residentes en el exterior), por las financiaciones comprendidas, \\ndeberán ser clasificados desde el punto de vista de la calidad de los obligados en orden al \\ncumplimiento de sus compromisos y/o las posibilidades que a este efecto se les asigne sobre la \\nbase de una evaluación de su situación particular. \\n1.2. Criterios especiales de imputación. \\n1.2.1. Créditos incorporados por cesión sin responsabilidad. \\nLos créditos cedidos a favor de la entidad sin responsabilidad para el cedente -unidad \\neconómica receptora de los fondos- se imputarán al firmante, librador, deudor, codeudor \\no\\naceptante de los respectivos instrumentos, constituidos consecuentemente en principa-\\nles y directos pagadores, realizando respecto de ellos su evaluación como sujetos de\\ncrédito \\ncon la pertinente apertura del legajo. En caso de no efectuarse la evalua… [+410 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "mora cartera consumo vivienda clasificación deudores criterio",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"mora cartera consumo vivienda clasificación deudores criterio\", \"total_con_match\": 157, \"resultados\": [{\"id\": \"obligacion:clasificar_deudores_segun_mora_en_cartera_consumo_vivienda\", \"type\": \"Obligacion\", \"label\": \"clasificar deudores según mora en cartera consumo/vivienda\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Proveedores no financieros deben clasificar deudores en función de su mora aplicando criterios de cartera consumo o vivienda.\"}, {\"id\": \"concepto_definido:cartera_de_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera de consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Tipo de cartera crediticia sujeta a normas especiales de clasificación de deudores según mora.\"}, {\"id\": \"concepto_definido:cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"cartera para consumo o vivienda\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de cartera que comprende créditos para consumo, vivienda propia, préstamos a instituciones de microcrédito y microemprendedores, y financiaciones come…\"}, {\"id\": \"concepto_definido:deudor_en_cartera_para_consumo_o_vivienda\", \"type\": \"ConceptoDefinido\", \"label\": \"deudor… [+2147 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=-33 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 3\", \"ref\": \"Punto/Sección 3 (mejor score=-60 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 12,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Sección 2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 2\", \"ref\": \"Punto/Sección 2 (mejor score=-2 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 7.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.1 (PDF pág 33)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimiento de las obligaciones a que … [+394 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 2.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 2.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.1 (PDF pág 6)\", \"pasaje\": \"2.1. Conceptos incluidos. \\n2.1.1. Préstamos (capitales, diferenc ias de cotización e intereses devengados a cobrar) sin \\ndeducir las previsiones por riesgos de incobrabilidad y de desvalorización. \\n2.1.2. Otros créditos por intermediación financiera (capitales, primas e intereses devengados \\na cobrar) sin deducir las previsiones por riesgos de incobrabilidad y de desvalorización. \\n2.1.3. Créditos por arrendamientos financieros sin deducir las correspondientes previsiones. \\n2.1.4. Créditos diversos (capitales e intereses devengados a cobrar) vinculados a la venta de \\nactivos inmovilizados, inclusive los tomados en defensa o en pago de créditos, sin de-\\nducir las previsiones por riesgo de incobrabilidad. \\n2.1.5. Responsabilidades eventuales. \\n2.1.5.1. Garantías otorgadas. \\n2.1.5.2. Avales otorgados sobre cheques de pago diferido. \\n2.1.5.3. Adelantos en cuenta corriente, créditos documentarios y otros créditos ac orda-\\ndos (saldos no utilizados). \\n2.1.5.4. Créditos documentarios utilizados y letras… [+398 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 2.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 29)\", \"pasaje\": \"2.3. Del Banco Central de la República Argentina. \\nE\\nn la sede en la cual desempeñe sus funciones el responsable de atención al usuario \\nde servicios financieros (titular o suplente a cargo) deberán encontrarse a disposición \\ndel BCRA: \\n3.\\n2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos así como la doc u-\\nmentación respaldatoria de los trámites a que dieron lugar. \\n3.\\n2.3.2. El manual de procedimiento respectivo. \\n3.\\n2.3.3. Los reportes integrales escritos anuales de la auditoría interna del sujeto obl i-\\ngado. \\n3.\\n2.3.4. Los reportes elaborados por el responsable de atención al usuario de servicios \\nfinancieros de conformidad con el punto 3.1.1.8., con la respectiva evaluación \\ndel Directorio –o autoridad equivalente–, o del Directivo Responsable de Pr o-\\ntección de los Usuarios de Servicios Financieros o del Comité de Protección de \\nlos Usuarios de Servicios Financieros, según corresponda, del sujeto obligado. \\n3.\\n2.3.5. Los reportes del Directivo Respo… [+365 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Sección 5"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5\", \"ref\": \"Punto/Sección 5 (mejor score=-30 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 17,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito\", \"direccion\": \"salientes\"}, \"output_completo\": {\"id\": \"sujeto_regulado:empresas_no_financieras_emisoras_de_tarjetas_de_credito\", \"label\": \"empresas no financieras emisoras de tarjetas de crédito\", \"n_salientes_total\": 8, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"obligado_a\", \"vecino_id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"vecino_label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}, {\"relation\": \"obligado_a\", \"vecino_id\": \"obligacion:cumplimiento_de_normas_de_proteccion_de_usuarios\", \"vecino_label\": \"cumplimiento de normas de protección de usuarios\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}, {\"relation\": \"supervisado_por\", \"vecino_id\": \"organismo_regulador:banco_central_de_la_republica_argentina\", \"vecino_label\": \"Banco Central de la República Argentina\", \"provenances\": [{\"source_doc\": \"T… [+1810 chars]"
+     },
+     {
+      "n": 18,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_clasificacion_deudores_actual.pdf",
+       "location": "Punto 3.6"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.6 (PDF pág 14)\", \"pasaje\": \"3.6. Aprobación de la clasificación.\\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\\nla entidad financiera prestamista. \\nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\\ncalculadas.\\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\\nde Administración, con las mayorías establecidas precedentemente, o au… [+396 chars]"
+     },
+     {
+      "n": 19,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios"
+      },
+      "output_truncado": "{\"id\": \"obligacion:considerar_y_resolver_fundadamente_reclamos_de_usuarios\", \"type\": \"Obligacion\", \"label\": \"considerar y resolver fundadamente reclamos de usuarios\", \"properties\": {\"description\": \"Los sujetos obligados deben considerar y resolver fundadamente los reclamos de usuarios relacionados con los servicios que ofrecen, contemplando los derechos básicos y las normas aplicables.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 5 > Punto 1.1\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31673,
+      "output_tokens": 407
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34165,
+      "output_tokens": 745
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36356,
+      "output_tokens": 670
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39873,
+      "output_tokens": 659
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 41014,
+      "output_tokens": 413
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 43128,
+      "output_tokens": 795
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 44935,
+      "output_tokens": 891
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 47209,
+      "output_tokens": 851
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 48719,
+      "output_tokens": 643
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 49611,
+      "output_tokens": 5163
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 59,
+     "n_claims_fallidos": 8,
+     "categoria": "multi_norma"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}

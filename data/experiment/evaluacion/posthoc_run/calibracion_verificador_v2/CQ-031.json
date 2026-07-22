@@ -1,0 +1,112 @@
+{
+  "id_falla": "run_3/CQ-031",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "completitud_kg",
+      "lado": "grafo",
+      "jerarquia": "primaria",
+      "pata": "Deudores que NO deben ser objeto de clasificación (Punto 4.5)",
+      "evidencia": {
+        "afirmacion": "El agente respondió que los deudores que NO deben ser objeto de clasificación son 'quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6)'.",
+        "nodo": "El nodo que cita el Punto 4.5 ('Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion') es un STUB: su contenido es solo 'Deudores que no deben ser objeto de clasificación', que repite el título sin el contenido sustantivo. No existe en el grafo un nodo fiel que diga que esos deudores son los 'cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A'. El único nodo con texto de exclusión que el agente halló es el de cesión, que cita el Punto 4.6.",
+        "fuente": "El PDF, Punto 4.5 ('Deudores que no deben ser objeto de clasificación'), dice textualmente: 'Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \"A\" no serán objeto de clasificación...'. Es decir, la respuesta correcta a la pata 1 son los deudores con garantías preferidas A cubiertas totalmente, NO los de cesión."
+      }
+    },
+    {
+      "categoria": "provenance_imprecisa",
+      "lado": "grafo",
+      "jerarquia": "secundaria",
+      "pata": "Cesión sin responsabilidad",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que la exclusión de clasificación de los deudores en cesión sin responsabilidad 'está regulada en el Punto 4.6', y la mezcló como respuesta a la pregunta sobre 'deudores que no deben ser objeto de clasificación'.",
+        "nodo": "El nodo 'Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces' cita como location 'Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr'.",
+        "fuente": "La frase 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente' SÍ aparece textualmente dentro del Punto 4.6 del PDF. Por lo tanto la cita al Punto 4.6 es literalmente correcta, pero el Punto 4.6 trata de seguros de crédito y NO es el punto que responde 'deudores que no deben ser objeto de clasificación' (ese es el 4.5). La confusión de patas, alimentada por el stub del 4.5, es lo que hace que el juez marque como falso el encuadre."
+      }
+    }
+  ],
+  "razonamiento": "La pregunta tiene dos patas. Pata 1: 'qué deudores no deben ser objeto de clasificación' → la fuente (Punto 4.5, leído íntegro) dice que son los deudores con financiaciones cubiertas totalmente con garantías preferidas 'A'. Pata 2: 'respecto de qué deudores no corresponde evaluar capacidad de repago' → financiaciones respaldadas con garantías preferidas 'A' (Punto 4.4), que el agente respondió correctamente. La pata 1 falló: el agente respondió 'cesión sin responsabilidad (Punto 4.6)'. Investigando el grafo, el nodo que cita el Punto 4.5 es un STUB cuyo contenido repite el título ('Deudores que no deben ser objeto de clasificación') sin el dato sustantivo (garantías preferidas A); no existe ningún nodo fiel que responda esa pata con el contenido real del 4.5. Por eso el agente, al no hallar la respuesta correcta, tomó la frase de cesión (que el PDF efectivamente coloca en el 4.6) y la usó como respuesta a la pata 1 — encuadre incorrecto que el juez marcó como falso. La causa primaria es completitud_kg: el nodo del 4.5 está vacío de su contenido real, dejando sin respuesta la pata 1. Secundariamente, la cita del nodo de cesión al Punto 4.6 es literalmente correcta pero indujo al agente a confundir la pata; la imprecisión funcional (mezclar la exclusión de cesión del 4.6 con la pregunta del 4.5) contribuye pero no es el factor que rompe la respuesta por sí solo.",
+  "confianza": "alta",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 5,
+    "tokens_in": 96198,
+    "tokens_out": 3448,
+    "latency_s": 52.721,
+    "error": null,
+    "final_raw": "Confirmo el cuadro completo. El nodo del 4.5 es un stub (solo el título), y el verdadero contenido del 4.5 (garantías preferidas A) no está modelado como nodo que responda esa pata. Tengo la evidencia para atribuir.\n\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Deudores que NO deben ser objeto de clasificación (Punto 4.5)\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente respondió que los deudores que NO deben ser objeto de clasificación son 'quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente (Punto 4.6)'.\",\n        \"nodo\": \"El nodo que cita el Punto 4.5 ('Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion') es un STUB: su contenido es solo 'Deudores que no deben ser objeto de clasificación', que repite el título sin el contenido sustantivo. No existe en el grafo un nodo fiel que diga que esos deudores son los 'cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A'. El único nodo con texto de exclusión que el agente halló es el de cesión, que cita el Punto 4.6.\",\n        \"fuente\": \"El PDF, Punto 4.5 ('Deudores que no deben ser objeto de clasificación'), dice textualmente: 'Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \\\"A\\\" no serán objeto de clasificación...'. Es decir, la respuesta correcta a la pata 1 son los deudores con garantías preferidas A cubiertas totalmente, NO los de cesión.\"\n      }\n    },\n    {\n      \"categoria\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cesión sin responsabilidad\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que la exclusión de clasificación de los deudores en cesión sin responsabilidad 'está regulada en el Punto 4.6', y la mezcló como respuesta a la pregunta sobre 'deudores que no deben ser objeto de clasificación'.\",\n        \"nodo\": \"El nodo 'Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces' cita como location 'Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr'.\",\n        \"fuente\": \"La frase 'No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente' SÍ aparece textualmente dentro del Punto 4.6 del PDF. Por lo tanto la cita al Punto 4.6 es literalmente correcta, pero el Punto 4.6 trata de seguros de crédito y NO es el punto que responde 'deudores que no deben ser objeto de clasificación' (ese es el 4.5). La confusión de patas, alimentada por el stub del 4.5, es lo que hace que el juez marque como falso el encuadre.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene dos patas. Pata 1: 'qué deudores no deben ser objeto de clasificación' → la fuente (Punto 4.5, leído íntegro) dice que son los deudores con financiaciones cubiertas totalmente con garantías preferidas 'A'. Pata 2: 'respecto de qué deudores no corresponde evaluar capacidad de repago' → financiaciones respaldadas con garantías preferidas 'A' (Punto 4.4), que el agente respondió correctamente. La pata 1 falló: el agente respondió 'cesión sin responsabilidad (Punto 4.6)'. Investigando el grafo, el nodo que cita el Punto 4.5 es un STUB cuyo contenido repite el título ('Deudores que no deben ser objeto de clasificación') sin el dato sustantivo (garantías preferidas A); no existe ningún nodo fiel que responda esa pata con el contenido real del 4.5. Por eso el agente, al no hallar la respuesta correcta, tomó la frase de cesión (que el PDF efectivamente coloca en el 4.6) y la usó como respuesta a la pata 1 — encuadre incorrecto que el juez marcó como falso. La causa primaria es completitud_kg: el nodo del 4.5 está vacío de su contenido real, dejando sin respuesta la pata 1. Secundariamente, la cita del nodo de cesión al Punto 4.6 es literalmente correcta pero indujo al agente a confundir la pata; la imprecisión funcional (mezclar la exclusión de cesión del 4.6 con la pregunta del 4.5) contribuye pero no es el factor que rompe la respuesta por sí solo.\",\n  \"confianza\": \"alta\"\n}",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.5"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.5 (PDF pág 15)\", \"pasaje\": \"4.5. Deudores que no deben ser objeto de clasificación. \\nLos deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \\n“A” no serán objeto de clasificación, sin perjuicio de su información según las normas que se \\nestablezcan en los regímenes respectivos. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de crédito por \\nriesgo comercial y con seguros de riesgo de crédito “con alcance de comprador público”. \\nSe procederá a clasificar a la compañía de seguros en función de la mora según los criterios \\naplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la prime-\\nra obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el re-\\nclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos \\nen la póliza (180 o 270 días, según corresponda). \\nNo serán objeto de clasificación quiene s resulten deudore s en operacione s de cesión sin res-\\nponsabilidad… [+363 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.6"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.6 (PDF pág 15)\", \"pasaje\": \"4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de crédito por \\nriesgo comercial y con seguros de riesgo de crédito “con alcance de comprador público”. \\nSe procederá a clasificar a la compañía de seguros en función de la mora según los criterios \\naplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la prime-\\nra obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el re-\\nclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos \\nen la póliza (180 o 270 días, según corresponda). \\nNo serán objeto de clasificación quiene s resulten deudore s en operacione s de cesión sin res-\\nponsabilidad para el cedente. \\nSólo se aplicarán lo s criterios precedentes cuando se trate de operacione s del título que, en \\norigen, hayan reunido los requisitos pertinentes establecidos en las normas sobre “Garantías”. \\nCLASIFICACIÓN DE DEUDORES B.C.R.A.\\nS\\nección 4. Criterios de clasificación. \\n… [+69 chars]"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 4.4"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.4 (PDF pág 2)\", \"pasaje\": \"4.4. Financiaciones cubiertas con garantías preferidas “A”. \\n4.5. Deudores que no deben ser objeto de clasificación. \\n4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de \\ncrédito por riesgo comercial y con seguros de riesgo de crédito “con alcance de \\ncomprador público”. \\nSección 5. Categorías de carteras. \\n5.1. Categorías. \\nSección 6. Clasificación de los deudores de la cartera comercial. \\n6.1. Información básica. \\n6.2. Criterio de clasificación. \\n6.3. Periodicidad mínima de clasificación. \\n6.4. Reconsideración obligatoria de la clasificación. \\n6.5. Niveles de clasificación. \\n6.6. Recategorización obligatoria. \\nB.C.R.A. TEXTO ORDENADO DE LAS NORMAS SOBRE \\n“CLASIFICACION DE DEUDORES” \\nVersión: 6a. COMUNICACIÓN  “A”  6558 Vig encia: \\n5/9/2018 Página 1\"}"
+      },
+      {
+        "n": 4,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Sección 4"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 4\", \"ref\": \"Punto/Sección 4 (mejor score=-103 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_en_caso_de_no_efectuarse_la_evaluacion_de_creditos_cedidos_sin_responsabilidad_c"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_en_caso_de_no_efectuarse_la_evaluacion_de_creditos_cedidos_sin_responsabilidad_c\", \"type\": \"Restriccion\", \"label\": \"Clasificación irrecuperable sin evaluación\", \"properties\": {\"descripcion\": \"En caso de no efectuarse la evaluación de créditos cedidos sin responsabilidad, cualquiera sea el motivo, estos clientes se clasificarán en categoría irrecuperable\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 21822,
+        "output_tokens": 350
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 24002,
+        "output_tokens": 378
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 24590,
+        "output_tokens": 947
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 25784,
+        "output_tokens": 1773
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 68,
+      "n_claims_fallidos": 2,
+      "categoria": "cadena_restriccion_excepcion"
+    }
+  }
+}

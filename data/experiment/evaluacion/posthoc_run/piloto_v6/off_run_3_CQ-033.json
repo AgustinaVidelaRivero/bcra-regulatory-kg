@@ -1,0 +1,673 @@
+{
+ "id_falla": "run_3/CQ-033",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "noise_sensitivity",
+    "contenido_kg"
+   ]
+  ],
+  "votos_ganadores": 2,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "votos": 2
+   },
+   {
+    "pares_primarios": [],
+    "votos": 1
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "noise_sensitivity",
+      "contenido_kg"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQ-033",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capital riesgo operacional Grupo 2', limite: 10}",
+      "devolvio": "402 matches; top: nodo Grupo B (label 'Límite exigencia capital operacional grupo B') y Grupo C, ambos con '...hasta el 30/06/26...'",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite exigencia capital operacional', limite: 10}",
+      "devolvio": "407 matches; mismos nodos top Grupo B/C del régimen 12.3",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_...grupo_b_determ'}",
+      "devolvio": "descripcion: 'La exigencia... para entidades del grupo B... hasta el 30/06/26 no podrá superar el 17%...'; umbral 17%; provenance Punto 12.3 (reclasificadas desde 01/01/2026)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Restriccion_...grupo_b_determ', direccion: 'ambas'}",
+      "devolvio": "aplica_a Entidades grupo B; limita Cálculo; exceptuado por dos Excepcion (reducción 11/8 y 7/5)",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...'}",
+      "devolvio": "'Los límites máximos se reducirán a 11% y 8%... calificación 1,2 o 3 SEFYC'",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_en_los_casos...aspectos_c'}",
+      "devolvio": "'...calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según grupo B o C'",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Excepcion_en_los_casos...aspectos_c', direccion: 'ambas'}",
+      "devolvio": "exceptua a Grupo B (12.3), Grupo C (12.3) y Límite 17% grupo B (7.3)",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 3,
+     "quote": "descripcion: 'La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses'"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2",
+     "Bajo qué condiciones ese límite se reduce"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses",
+       "ubicacion": "Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (paso 3)"
+      },
+      "fuente": {
+       "quote": "12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 como consecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financieras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B (...)",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.3"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "17% grupo B promedio 36 meses límite",
+       "resultado": "devuelve el nodo 'Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b...' (Punto 7.3.2) con el 17% del Grupo B SIN fecha de vigencia — el límite general permanente del Grupo 2, nodo pertinente a la pata"
+      },
+      {
+       "consulta": "ver_nodo Restriccion_el_17_...grupo_b (Punto 7.3.2)",
+       "resultado": "descripcion: 'El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses...' — sin fecha 30/06/26; provenance Punto 7.3"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA: el juez marcó no_soportado la afirmación no-central 'Ese límite del 17% está vigente hasta el 30/06/26'. C1a (pata 'cuál es el límite'): el dato apareció en la trayectoria (paso 3 devuelve un nodo con '...hasta el 30/06/26 no podrá superar el 17%') → no es context_recall. C1b: el claim está SOPORTADO literalmente por el nodo del paso 3 (texto idéntico) → no es faithfulness. ¿Correcto contra el PDF? El nodo es FIEL a su fuente: el PDF Punto 12.3 dice exactamente '...hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B'. Pero el 12.3 es un régimen TRANSITORIO que aplica SOLO a 'entidades financieras que sean reclasificadas desde el 01/01/2026'. El límite GENERAL del Grupo 2 (Punto 7.3.2), que es el pertinente a la pata, dice '17%... del promedio de los últimos 36 meses' SIN fecha de vigencia (verificado en PDF y en el nodo Restriccion_el_17_...grupo_b). Por tanto la fecha '30/06/26' es incorrecta como atributo del límite general del Grupo 2 → síntoma noise_sensitivity (nodo consultado fiel pero no pertinente a la pata; el 17% del 12.3 tiene fecha, el del 7.3.2 no). CAUSA (árbol noise_sensitivity → nodo fiel al PDF → ¿pertinente? No → test v2.6 de alcance): el nodo usado (12.3) OMITE en su CONTENIDO/descripción su alcance restringido — su descripción arranca 'La exigencia de capital por riesgo operacional para entidades del grupo B... hasta el 30/06/26...', sin ninguna marca de que aplica solo a 'entidades reclasificadas desde el 01/01/2026'. Ese scope vive únicamente en la location de la provenance del edge (paso 4), no en el texto que el agente lee como respuesta. Test v2.6: ¿el nodo, leído solo, le avisa al lector que su contenido es de un régimen transitorio de reclasificadas? NO → el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, porque el alcance no está declarado en el contenido del nodo). El agente reprodujo fielmente el nodo mal-scopeado; el circuito se rompe en el grafo. Descarto sin_defecto: la fecha efectivamente no aplica al límite general del Grupo 2, hay defecto real. Descarto aplicacion_erronea por el criterio v2.6. Primaria: aunque la afirmación de la fecha es 'no central', es el único claim reprobado y es lo que explica por qué el juez reprobó.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 7,
+    "max_tool_calls": 40,
+    "tokens_in": 165565,
+    "tokens_out": 7410
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 7,
+    "tokens_in": 165565,
+    "tokens_out": 7410,
+    "latency_s": 99.343,
+    "error": null,
+    "final_raw": "Tengo toda la evidencia necesaria. Concluyo.\n\nEl nodo pertinente al límite general del Grupo 2 (7.3.2) porta el 17% SIN fecha de vigencia. El agente usó el nodo del régimen transitorio (12.3) cuya descripción presenta el 17% \"hasta el 30/06/26\" pero OMITE en su contenido que solo aplica a \"entidades reclasificadas desde el 01/01/2026\". El agente reprodujo fielmente ese nodo; el defecto es el des-scoping del nodo del grafo (contenido_kg), no una mala aplicación imputable al agente (el nodo, leído solo, no le avisa que su alcance es distinto).\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capital riesgo operacional Grupo 2', limite: 10}\", \"devolvio\": \"402 matches; top: nodo Grupo B (label 'Límite exigencia capital operacional grupo B') y Grupo C, ambos con '...hasta el 30/06/26...'\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite exigencia capital operacional', limite: 10}\", \"devolvio\": \"407 matches; mismos nodos top Grupo B/C del régimen 12.3\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_...grupo_b_determ'}\", \"devolvio\": \"descripcion: 'La exigencia... para entidades del grupo B... hasta el 30/06/26 no podrá superar el 17%...'; umbral 17%; provenance Punto 12.3 (reclasificadas desde 01/01/2026)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Restriccion_...grupo_b_determ', direccion: 'ambas'}\", \"devolvio\": \"aplica_a Entidades grupo B; limita Cálculo; exceptuado por dos Excepcion (reducción 11/8 y 7/5)\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...'}\", \"devolvio\": \"'Los límites máximos se reducirán a 11% y 8%... calificación 1,2 o 3 SEFYC'\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_en_los_casos...aspectos_c'}\", \"devolvio\": \"'...calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según grupo B o C'\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Excepcion_en_los_casos...aspectos_c', direccion: 'ambas'}\", \"devolvio\": \"exceptua a Grupo B (12.3), Grupo C (12.3) y Límite 17% grupo B (7.3)\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 3, \"quote\": \"descripcion: 'La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses'\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2\", \"Bajo qué condiciones ese límite se reduce\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\", \"ubicacion\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (paso 3)\"},\n        \"fuente\": {\"quote\": \"12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 como consecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financieras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B (...)\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"17% grupo B promedio 36 meses límite\", \"resultado\": \"devuelve el nodo 'Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b...' (Punto 7.3.2) con el 17% del Grupo B SIN fecha de vigencia — el límite general permanente del Grupo 2, nodo pertinente a la pata\"},\n        {\"consulta\": \"ver_nodo Restriccion_el_17_...grupo_b (Punto 7.3.2)\", \"resultado\": \"descripcion: 'El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses...' — sin fecha 30/06/26; provenance Punto 7.3\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó no_soportado la afirmación no-central 'Ese límite del 17% está vigente hasta el 30/06/26'. C1a (pata 'cuál es el límite'): el dato apareció en la trayectoria (paso 3 devuelve un nodo con '...hasta el 30/06/26 no podrá superar el 17%') → no es context_recall. C1b: el claim está SOPORTADO literalmente por el nodo del paso 3 (texto idéntico) → no es faithfulness. ¿Correcto contra el PDF? El nodo es FIEL a su fuente: el PDF Punto 12.3 dice exactamente '...hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B'. Pero el 12.3 es un régimen TRANSITORIO que aplica SOLO a 'entidades financieras que sean reclasificadas desde el 01/01/2026'. El límite GENERAL del Grupo 2 (Punto 7.3.2), que es el pertinente a la pata, dice '17%... del promedio de los últimos 36 meses' SIN fecha de vigencia (verificado en PDF y en el nodo Restriccion_el_17_...grupo_b). Por tanto la fecha '30/06/26' es incorrecta como atributo del límite general del Grupo 2 → síntoma noise_sensitivity (nodo consultado fiel pero no pertinente a la pata; el 17% del 12.3 tiene fecha, el del 7.3.2 no). CAUSA (árbol noise_sensitivity → nodo fiel al PDF → ¿pertinente? No → test v2.6 de alcance): el nodo usado (12.3) OMITE en su CONTENIDO/descripción su alcance restringido — su descripción arranca 'La exigencia de capital por riesgo operacional para entidades del grupo B... hasta el 30/06/26...', sin ninguna marca de que aplica solo a 'entidades reclasificadas desde el 01/01/2026'. Ese scope vive únicamente en la location de la provenance del edge (paso 4), no en el texto que el agente lee como respuesta. Test v2.6: ¿el nodo, leído solo, le avisa al lector que su contenido es de un régimen transitorio de reclasificadas? NO → el defecto es del grafo por des-scoping → contenido_kg (no aplicacion_erronea, porque el alcance no está declarado en el contenido del nodo). El agente reprodujo fielmente el nodo mal-scopeado; el circuito se rompe en el grafo. Descarto sin_defecto: la fecha efectivamente no aplica al límite general del Grupo 2, hay defecto real. Descarto aplicacion_erronea por el criterio v2.6. Primaria: aunque la afirmación de la fecha es 'no central', es el único claim reprobado y es lo que explica por qué el juez reprobó.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.3 (PDF pág 177)\", \"pasaje\": \"12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 c omo con-\\nsecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financie-\\nras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a\\ntravés de la aplicación de la  expresión descripta en el punto 7.2 . hasta el 30/06/26 no podrá\\nsuperar:\\nEl 17% en el caso de entidades del grupo B y el 14% en el caso de entidades del C –en fun-\\nción de lo establecido, con vigencia hasta el 31/12/25, en la Sección 4. del TO sobre Autorida-\\ndes de Entidades Financieras –, del promedio de los últimos 36 meses –anteriores al mes a\\nque corresponda la determinación de la exigencia – de la exigencia de capital mínimo por ries-\\ngo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea\\ndel mes anterior al que se efectúa el cálculo.\\nLos límites máximos establecidos pre… [+475 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 7.3. Límite para las entidades del grupo 2."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.3 (PDF pág 152)\", \"pasaje\": \"7.3. Límite para las entidades del grupo 2.\\nLa exigencia determinada a través de la aplicación de la expresión descripta en el punto 7. 2. no\\npodrá superar:\\n7.3.1. El 20% en el caso de entidades del grupo A del promedio de los últimos 36 meses\\n–anteriores al mes a que  corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\n7.3.2. El 17% en el caso de e ntidades del grupo B del promedio de los últimos 36 meses\\n–anteriores al mes a que corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\nEl límite máximo establecido precedentemente se reducirá a 11% c uando la entidad fi-\\nnanciera cuente con calificación 1, 2 o 3 conforme… [+433 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "17% grupo B promedio 36 meses límite",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"17% grupo B promedio 36 meses límite\", \"total_con_match\": 295, \"resultados\": [{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"tokens_matcheados\": 7, \"resumen_propiedades\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exi…\"}, {\"id\": \"Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general_11_o_7_en\", \"type\": \"Restriccion\", \"label\": \"Límite reducción exigencia Grupo B\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Límite de reducción para entidades del Grupo B: 17% en condición general, 11% o 7% en condiciones especiales según calificación\"}, {\"id\": \"Restriccion_reduccion_de_exigencia_limitada_a_17_11_7_segun_subcategoria_para_entidades_del_\", \"type\": \"Restriccion\", \"label\": \"Límite de reducción exigencia Grupo B\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Reducción de exigencia limitada a 17%, 11%, 7% según subcategoría para entidades del Grupo B\"}, {\"id\": \"Restriccion_la_exigencia_de_capital_por_rie… [+2047 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"properties\": {\"descripcion\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exigencia de capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"label\": \"Límite 17% grupo B capital mínimo\", \"n_salientes_total\": 3, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_entidad_del_grupo_b\", \"vecino_label\": \"Entidades del grupo B\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito\", \"vecino_label\": \"Cálculo exigencia capital mínimo\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_el_limite_maximo_establecido_precedentemente_se_reducira_a_11_cuando_la_entidad_\",… [+551 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"label\": \"Límite exigencia capital operacional grupo B\", \"n_salientes_total\": 3, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_entidad_del_grupo_b\", \"vecino_label\": \"Entidades del grupo B\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_calculo\", \"vecino_label\": \"Cálculo exigencia capital riesgo operacional\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", … [+926 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"properties\": {\"descripcion\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exigencia de capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22328,
+      "output_tokens": 372
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24217,
+      "output_tokens": 608
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26672,
+      "output_tokens": 1632
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 29152,
+      "output_tokens": 1032
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31184,
+      "output_tokens": 507
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 32012,
+      "output_tokens": 3259
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 1,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-033",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"capital riesgo operacional Grupo 2\", \"limite\": 10}",
+      "devolvio": "402 matches; top: Restriccion grupo B (label 'Límite exigencia capital operacional grupo B'), grupo C, Obligacion CRO mensual",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"límite exigencia capital operacional\", \"limite\": 10}",
+      "devolvio": "407 matches; mismos top: grupo B, grupo C, CRO",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Restriccion_...grupo_b_determ\"}",
+      "devolvio": "descripcion: '...para entidades del grupo B... hasta el 30/06/26 no podrá superar el 17%...'; umbral 17%; provenance Punto 12.3 (reclasificadas desde 01/01/2026)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Restriccion_...grupo_b_determ\", \"direccion\": \"ambas\"}",
+      "devolvio": "salientes: establecida_en TO, aplica_a Entidades grupo B, limita Cálculo; entrantes: 2 Excepcion (SEFYC 1-3 y SEFYC 1-2)",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...\"}",
+      "devolvio": "'Los límites máximos se reducirán a 11% y 8%... con calificación 1, 2 o 3 según SEFYC'",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"Excepcion_en_los_casos_...cuente_en_todos_los_citados_aspectos_c\"}",
+      "devolvio": "'...calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según grupo B o C'",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"Excepcion_...aspectos_c\", \"direccion\": \"ambas\"}",
+      "devolvio": "exceptua a límite grupo B (12.3), grupo C (12.3) y límite 17% grupo B (7.3)",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 3,
+     "quote": "descripcion: \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\""
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2",
+     "Bajo qué condiciones ese límite se reduce"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "contenido_kg",
+     "lado": "grafo",
+     "jerarquia": "primaria",
+     "pata": "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses",
+       "ubicacion": "Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (label 'Límite exigencia capital operacional grupo B', abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 como consecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financieras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B [...] Los límites máximos establecidos precedentemente se reducirán a 11% y a 8%",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.3"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "17% grupo B vigencia límite riesgo operacional transitorio",
+       "resultado": "aparece el nodo usado (grupo B, 12.3, con 'hasta 30/06/26') y también 'Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general...' cuyo resumen dice '17% en condición general, 11% o 7% en condiciones especiales' — este último captura el límite general SIN fecha, confirmando que el 17% general no vence"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El único claim que el juez marcó incorrecto es la afirmación [no central] 'Ese límite del 17% está vigente hasta el 30/06/26'. Descomposición: la pata 1 ('cuál es el límite para Grupo 2') tuvo su dato pertinente (17%) presente en la trayectoria; el juez aprobó el '17% del promedio de los últimos 36 meses'. El defecto está en la coletilla temporal 'hasta el 30/06/26'. C1 (síntoma por claim, C1b): el claim está SOPORTADO por un nodo consultado — el agente abrió en el paso 3 el nodo grupo B, cuya descripcion dice literalmente 'hasta el 30/06/26 no podrá superar el 17%'. Por tanto NO es faithfulness. Verifiqué el PDF (leer_pasaje_pdf): el Punto 12.3 SÍ contiene 'hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B', y la provenance del nodo apunta correctamente a 12.3 — la cita NO está desubicada (descarto provenance_imprecisa). Sin embargo, el 12.3 es un régimen TRANSITORIO acotado a 'entidades financieras que sean reclasificadas desde el 01/01/2026'. El límite GENERAL y permanente del 17% para grupo B está en el Punto 7.3.2, SIN fecha de vencimiento (verificado en el PDF: '7.3.2. El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses...' sin coletilla temporal). La pregunta es genérica ('¿cuál es el límite para una entidad del Grupo 2?'), por lo que la respuesta correcta es el 17% general (7.3.2), y el 'hasta 30/06/26' es incorrecto aplicado a ella → noise_sensitivity. C2 (causa): el nodo reproduce fielmente el texto de 12.3, pero su CONTENIDO omite por completo el scope 'para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026' — esa condición de alcance solo existe en la 'location' de la provenance, no en la descripcion consultable, y el label ('Límite exigencia capital operacional grupo B') es genérico. Aplico el test v2.6: ¿el nodo, leído solo, le avisa al lector que su contenido es del régimen transitorio para reclasificadas? NO — nada en el label ni en la descripcion marca ese alcance. Por tanto el defecto NO es aplicacion_erronea (el agente no ignoró un scope declarado), sino des-scoping del grafo → contenido_kg. El nodo dice algo que el PDF matiza (lo presenta como límite de grupo B a secas cuando el PDF lo condiciona a reclasificadas): dice X, el PDF dice X-solo-para-reclasificadas. El agente actuó razonablemente sobre lo que el nodo le exponía. Además confirmé por búsqueda que existe un nodo alternativo ('...17_en_condicion_general_11_o_7...') que captura el 17% general sin fecha, reforzando que el hueco es del nodo usado, no del corpus. Es el único claim reprobado, luego es la primaria que explica el veredicto del juez, aun siendo el claim de baja centralidad.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 6,
+    "max_tool_calls": 40,
+    "tokens_in": 130238,
+    "tokens_out": 6453
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 6,
+    "tokens_in": 130238,
+    "tokens_out": 6453,
+    "latency_s": 87.419,
+    "error": null,
+    "final_raw": "Interesante: existe un nodo `Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general_11_o_7_en` con label \"Límite reducción exigencia Grupo B\" cuyo resumen dice \"17% en condición general, 11% o 7% en condiciones especiales según calificación\" — este nodo captura el límite GENERAL sin fecha. Este es el nodo que hubiera respondido la pregunta genérica correctamente (17% general, sin \"hasta 30/06/26\"). El agente no lo consultó, pero el defecto que explica la falla sigue siendo que el nodo que SÍ usó tenía des-scoping. Confirmo mi atribución.\n\nEl agente actuó razonablemente: buscó, encontró el nodo grupo B con label genérico, lo abrió, y su contenido decía \"hasta 30/06/26\" sin avisar del scope transitorio. El defecto raíz es el des-scoping del nodo (grafo).\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capital riesgo operacional Grupo 2\\\", \\\"limite\\\": 10}\", \"devolvio\": \"402 matches; top: Restriccion grupo B (label 'Límite exigencia capital operacional grupo B'), grupo C, Obligacion CRO mensual\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"límite exigencia capital operacional\\\", \\\"limite\\\": 10}\", \"devolvio\": \"407 matches; mismos top: grupo B, grupo C, CRO\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_...grupo_b_determ\\\"}\", \"devolvio\": \"descripcion: '...para entidades del grupo B... hasta el 30/06/26 no podrá superar el 17%...'; umbral 17%; provenance Punto 12.3 (reclasificadas desde 01/01/2026)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Restriccion_...grupo_b_determ\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"salientes: establecida_en TO, aplica_a Entidades grupo B, limita Cálculo; entrantes: 2 Excepcion (SEFYC 1-3 y SEFYC 1-2)\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...\\\"}\", \"devolvio\": \"'Los límites máximos se reducirán a 11% y 8%... con calificación 1, 2 o 3 según SEFYC'\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Excepcion_en_los_casos_...cuente_en_todos_los_citados_aspectos_c\\\"}\", \"devolvio\": \"'...calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según grupo B o C'\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"Excepcion_...aspectos_c\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"exceptua a límite grupo B (12.3), grupo C (12.3) y límite 17% grupo B (7.3)\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 3, \"quote\": \"descripcion: \\\"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\\\"\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2\", \"Bajo qué condiciones ese límite se reduce\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"contenido_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\", \"ubicacion\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (label 'Límite exigencia capital operacional grupo B', abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 como consecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financieras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B [...] Los límites máximos establecidos precedentemente se reducirán a 11% y a 8%\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"17% grupo B vigencia límite riesgo operacional transitorio\", \"resultado\": \"aparece el nodo usado (grupo B, 12.3, con 'hasta 30/06/26') y también 'Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general...' cuyo resumen dice '17% en condición general, 11% o 7% en condiciones especiales' — este último captura el límite general SIN fecha, confirmando que el 17% general no vence\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único claim que el juez marcó incorrecto es la afirmación [no central] 'Ese límite del 17% está vigente hasta el 30/06/26'. Descomposición: la pata 1 ('cuál es el límite para Grupo 2') tuvo su dato pertinente (17%) presente en la trayectoria; el juez aprobó el '17% del promedio de los últimos 36 meses'. El defecto está en la coletilla temporal 'hasta el 30/06/26'. C1 (síntoma por claim, C1b): el claim está SOPORTADO por un nodo consultado — el agente abrió en el paso 3 el nodo grupo B, cuya descripcion dice literalmente 'hasta el 30/06/26 no podrá superar el 17%'. Por tanto NO es faithfulness. Verifiqué el PDF (leer_pasaje_pdf): el Punto 12.3 SÍ contiene 'hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B', y la provenance del nodo apunta correctamente a 12.3 — la cita NO está desubicada (descarto provenance_imprecisa). Sin embargo, el 12.3 es un régimen TRANSITORIO acotado a 'entidades financieras que sean reclasificadas desde el 01/01/2026'. El límite GENERAL y permanente del 17% para grupo B está en el Punto 7.3.2, SIN fecha de vencimiento (verificado en el PDF: '7.3.2. El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses...' sin coletilla temporal). La pregunta es genérica ('¿cuál es el límite para una entidad del Grupo 2?'), por lo que la respuesta correcta es el 17% general (7.3.2), y el 'hasta 30/06/26' es incorrecto aplicado a ella → noise_sensitivity. C2 (causa): el nodo reproduce fielmente el texto de 12.3, pero su CONTENIDO omite por completo el scope 'para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026' — esa condición de alcance solo existe en la 'location' de la provenance, no en la descripcion consultable, y el label ('Límite exigencia capital operacional grupo B') es genérico. Aplico el test v2.6: ¿el nodo, leído solo, le avisa al lector que su contenido es del régimen transitorio para reclasificadas? NO — nada en el label ni en la descripcion marca ese alcance. Por tanto el defecto NO es aplicacion_erronea (el agente no ignoró un scope declarado), sino des-scoping del grafo → contenido_kg. El nodo dice algo que el PDF matiza (lo presenta como límite de grupo B a secas cuando el PDF lo condiciona a reclasificadas): dice X, el PDF dice X-solo-para-reclasificadas. El agente actuó razonablemente sobre lo que el nodo le exponía. Además confirmé por búsqueda que existe un nodo alternativo ('...17_en_condicion_general_11_o_7...') que captura el 17% general sin fecha, reforzando que el hueco es del nodo usado, no del corpus. Es el único claim reprobado, luego es la primaria que explica el veredicto del juez, aun siendo el claim de baja centralidad.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.3 (PDF pág 177)\", \"pasaje\": \"12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 c omo con-\\nsecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financie-\\nras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a\\ntravés de la aplicación de la  expresión descripta en el punto 7.2 . hasta el 30/06/26 no podrá\\nsuperar:\\nEl 17% en el caso de entidades del grupo B y el 14% en el caso de entidades del C –en fun-\\nción de lo establecido, con vigencia hasta el 31/12/25, en la Sección 4. del TO sobre Autorida-\\ndes de Entidades Financieras –, del promedio de los últimos 36 meses –anteriores al mes a\\nque corresponda la determinación de la exigencia – de la exigencia de capital mínimo por ries-\\ngo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea\\ndel mes anterior al que se efectúa el cálculo.\\nLos límites máximos establecidos pre… [+475 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 7.3. Límite para las entidades del grupo 2."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.3 (PDF pág 152)\", \"pasaje\": \"7.3. Límite para las entidades del grupo 2.\\nLa exigencia determinada a través de la aplicación de la expresión descripta en el punto 7. 2. no\\npodrá superar:\\n7.3.1. El 20% en el caso de entidades del grupo A del promedio de los últimos 36 meses\\n–anteriores al mes a que  corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\n7.3.2. El 17% en el caso de e ntidades del grupo B del promedio de los últimos 36 meses\\n–anteriores al mes a que corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\nEl límite máximo establecido precedentemente se reducirá a 11% c uando la entidad fi-\\nnanciera cuente con calificación 1, 2 o 3 conforme… [+433 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"properties\": {\"descripcion\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exigencia de capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}"
+     },
+     {
+      "n": 4,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 4
+      },
+      "output_truncado": "{\"paso\": 4, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"label\": \"Límite exigencia capital operacional grupo B\", \"n_salientes_total\": 3, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_entidad_del_grupo_b\", \"vecino_label\": \"Entidades del grupo B\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_calculo\", \"vecino_label\": \"Cálculo exigencia capital riesgo operacional\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", … [+926 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\"}, \"output_completo\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"properties\": {\"descripcion\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}}"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "17% grupo B vigencia límite riesgo operacional transitorio",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"17% grupo B vigencia límite riesgo operacional transitorio\", \"total_con_match\": 443, \"resultados\": [{\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta…\"}, {\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exi…\"}, {\"id\": \"Restriccion_limite_de_reduccion_para_entidades_del_grupo_b_17_en_condicion_general_11_o_7_en\", \"type\": \"Restriccion\", \"label\": \"Límite reducción exigencia Grupo B\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Límite de reducción para entidades del Grupo B: 17% en condición general, 11% o 7% e… [+2139 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22328,
+      "output_tokens": 355
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24200,
+      "output_tokens": 561
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26136,
+      "output_tokens": 1058
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27571,
+      "output_tokens": 923
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 30003,
+      "output_tokens": 3556
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 1,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQ-033",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'capital riesgo operacional Grupo 2', limite: 10}",
+      "devolvio": "Devuelve las Restricciones de límite grupo B y grupo C, y la obligación de informar CRO. Pertinente: localiza el nodo del límite grupo B.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'límite exigencia capital operacional', limite: 10}",
+      "devolvio": "Mismos nodos de límite grupo B/C. Pertinente.",
+      "pertinente": true
+     },
+     {
+      "paso": 3,
+      "tool": "ver_nodo",
+      "args": "{id: 'Restriccion_...grupo_b_determ'}",
+      "devolvio": "Nodo grupo B: 'hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses'; provenance Punto 12.3. Pertinente y portador del dato central Y de la fecha.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Restriccion_...grupo_b_determ', direccion: 'ambas'}",
+      "devolvio": "Aristas a EntidadFinanciera grupo B, al TO, al cálculo, y edges 'exceptua' hacia las dos Excepciones de reducción SEFYC. Pertinente para las condiciones de reducción.",
+      "pertinente": true
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...'}",
+      "devolvio": "'Los límites máximos se reducirán a 11% y 8%... con calificación 1, 2 o 3 conforme a la valoración otorgada por la SEFYC'. Pertinente (pata reducción).",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{id: 'Excepcion_en_los_casos_en_que...calificacion_1_o_2'}",
+      "devolvio": "'...con calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según pertenezca al grupo B o C'. Pertinente (pata reducción).",
+      "pertinente": true
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Excepcion_en_los_casos...', direccion: 'ambas'}",
+      "devolvio": "Edges 'exceptua' hacia límites grupo B, grupo C y el límite 17% del Punto 7.3. Pertinente.",
+      "pertinente": true
+     }
+    ],
+    "paso_decision_error": null,
+    "decision_agente_correcta": "El agente navegó correctamente: encontró el nodo del límite grupo B (paso 3) que porta literalmente 'hasta el 30/06/26 no podrá superar el 17%', y las dos Excepciones de reducción SEFYC vía los edges 'exceptua'. La afirmación marcada por el juez como 'no_soportado' ('Ese límite del 17% está vigente hasta el 30/06/26') está textualmente en el nodo que el agente abrió y coincide exactamente con el PDF Punto 12.3. El agente no inventó ni parafraseó incorrectamente.",
+    "thinking_decision": null,
+    "patas": [
+     "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2",
+     "Bajo qué condiciones ese límite se reduce"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "sin_defecto",
+     "lado": "ninguno",
+     "jerarquia": "sin_par",
+     "pata": "Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (matiz de vigencia temporal)",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses",
+       "ubicacion": "Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (abierto por el agente en paso 3)"
+      },
+      "fuente": {
+       "quote": "la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B (...) del promedio de los últimos 36 meses",
+       "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 12.3"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 12.3",
+       "resultado": "El PDF confirma verbatim 'hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B' — la fecha 30/06/26 SÍ funda el límite del 17% del grupo B."
+      },
+      {
+       "consulta": "leer_pasaje_pdf Punto 7.3",
+       "resultado": "Régimen permanente del 17% grupo B SIN fecha; existe además el régimen transitorio del 12.3 CON la fecha 30/06/26 — el agente citó el 12.3, que es donde vive la fecha."
+      },
+      {
+       "consulta": "ver_paso_completo paso 3",
+       "resultado": "Confirma que el nodo abierto por el agente contiene íntegro 'hasta el 30/06/26 no podrá superar el 17%'; el claim está soportado por lo consultado."
+      }
+     ]
+    }
+   ],
+   "razonamiento": "El único claim marcado incorrecto por el juez es 'Ese límite del 17% está vigente hasta el 30/06/26' (no central, no_soportado). C1a: el dato pertinente SÍ apareció — el nodo del paso 3 (abierto con ver_nodo) porta literalmente 'hasta el 30/06/26 no podrá superar el 17%'. No es context_recall. C1b: el claim está SOPORTADO por el contenido expuesto (nodo del paso 3) → no es faithfulness; el juez lo marcó 'no_soportado' pero el nodo lo dice textual. Al estar soportado, aplica noise_sensitivity: ¿es correcto contra el PDF? Leí el Punto 12.3 del TO y confirma verbatim la fecha 30/06/26 asociada al 17% del grupo B (grupo 2). El claim es fiel al nodo y al PDF, y es pertinente a la pata (es un matiz temporal del propio límite del 17%). Descarté cada defecto uno por uno: contenido_kg (nodo coincide con PDF, no contradice), completitud_kg (el dato está, no falta), estructural_kg (el nodo mismo trae el dato, no requiere conexión), provenance_imprecisa (Punto 12.3 SÍ contiene la fecha citada — provenance correcta), alcanzabilidad_kg/navegación (el agente alcanzó y abrió el nodo), alucinacion_agente (no hay glosa: '30/06/26' es textual del nodo y del PDF), aplicacion_erronea (nodo de alcance correcto: grupo B / grupo 2, riesgo operacional). Conclusión: falso positivo del juez → sin_defecto, sin_par. Como el único claim fallido es un FP del juez, el caso no tiene primaria.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 4,
+    "max_tool_calls": 40,
+    "tokens_in": 97833,
+    "tokens_out": 4944
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 4,
+    "tokens_in": 97833,
+    "tokens_out": 4944,
+    "latency_s": 66.886,
+    "error": null,
+    "final_raw": "Este confirma que existe el régimen permanente (Punto 7.3) sin la fecha, y el régimen transitorio (Punto 12.3) con la fecha 30/06/26. El agente usó el nodo del 12.3, cuyo contenido y fecha coinciden con el PDF. La afirmación del agente es verdadera y soportada por el nodo/PDF citado.\n\nTengo evidencia suficiente. El claim marcado \"no_soportado\" está de hecho soportado (nodo paso 3) y es correcto (PDF Punto 12.3). Es un falso positivo del juez.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'capital riesgo operacional Grupo 2', limite: 10}\", \"devolvio\": \"Devuelve las Restricciones de límite grupo B y grupo C, y la obligación de informar CRO. Pertinente: localiza el nodo del límite grupo B.\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'límite exigencia capital operacional', limite: 10}\", \"devolvio\": \"Mismos nodos de límite grupo B/C. Pertinente.\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Restriccion_...grupo_b_determ'}\", \"devolvio\": \"Nodo grupo B: 'hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses'; provenance Punto 12.3. Pertinente y portador del dato central Y de la fecha.\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Restriccion_...grupo_b_determ', direccion: 'ambas'}\", \"devolvio\": \"Aristas a EntidadFinanciera grupo B, al TO, al cálculo, y edges 'exceptua' hacia las dos Excepciones de reducción SEFYC. Pertinente para las condiciones de reducción.\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_los_limites_maximos_se_reduciran_a_11_y_8...'}\", \"devolvio\": \"'Los límites máximos se reducirán a 11% y 8%... con calificación 1, 2 o 3 conforme a la valoración otorgada por la SEFYC'. Pertinente (pata reducción).\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Excepcion_en_los_casos_en_que...calificacion_1_o_2'}\", \"devolvio\": \"'...con calificación 1 o 2, el límite máximo disminuirá a 7% o 5%, según pertenezca al grupo B o C'. Pertinente (pata reducción).\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Excepcion_en_los_casos...', direccion: 'ambas'}\", \"devolvio\": \"Edges 'exceptua' hacia límites grupo B, grupo C y el límite 17% del Punto 7.3. Pertinente.\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente navegó correctamente: encontró el nodo del límite grupo B (paso 3) que porta literalmente 'hasta el 30/06/26 no podrá superar el 17%', y las dos Excepciones de reducción SEFYC vía los edges 'exceptua'. La afirmación marcada por el juez como 'no_soportado' ('Ese límite del 17% está vigente hasta el 30/06/26') está textualmente en el nodo que el agente abrió y coincide exactamente con el PDF Punto 12.3. El agente no inventó ni parafraseó incorrectamente.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2\", \"Bajo qué condiciones ese límite se reduce\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (matiz de vigencia temporal)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"El límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2 (Grupo B) es del 17% del promedio de los últimos 36 meses, vigente hasta el 30/06/26.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\", \"ubicacion\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ (abierto por el agente en paso 3)\"},\n        \"fuente\": {\"quote\": \"la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B (...) del promedio de los últimos 36 meses\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 12.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 12.3\", \"resultado\": \"El PDF confirma verbatim 'hasta el 30/06/26 no podrá superar: El 17% en el caso de entidades del grupo B' — la fecha 30/06/26 SÍ funda el límite del 17% del grupo B.\"},\n        {\"consulta\": \"leer_pasaje_pdf Punto 7.3\", \"resultado\": \"Régimen permanente del 17% grupo B SIN fecha; existe además el régimen transitorio del 12.3 CON la fecha 30/06/26 — el agente citó el 12.3, que es donde vive la fecha.\"},\n        {\"consulta\": \"ver_paso_completo paso 3\", \"resultado\": \"Confirma que el nodo abierto por el agente contiene íntegro 'hasta el 30/06/26 no podrá superar el 17%'; el claim está soportado por lo consultado.\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El único claim marcado incorrecto por el juez es 'Ese límite del 17% está vigente hasta el 30/06/26' (no central, no_soportado). C1a: el dato pertinente SÍ apareció — el nodo del paso 3 (abierto con ver_nodo) porta literalmente 'hasta el 30/06/26 no podrá superar el 17%'. No es context_recall. C1b: el claim está SOPORTADO por el contenido expuesto (nodo del paso 3) → no es faithfulness; el juez lo marcó 'no_soportado' pero el nodo lo dice textual. Al estar soportado, aplica noise_sensitivity: ¿es correcto contra el PDF? Leí el Punto 12.3 del TO y confirma verbatim la fecha 30/06/26 asociada al 17% del grupo B (grupo 2). El claim es fiel al nodo y al PDF, y es pertinente a la pata (es un matiz temporal del propio límite del 17%). Descarté cada defecto uno por uno: contenido_kg (nodo coincide con PDF, no contradice), completitud_kg (el dato está, no falta), estructural_kg (el nodo mismo trae el dato, no requiere conexión), provenance_imprecisa (Punto 12.3 SÍ contiene la fecha citada — provenance correcta), alcanzabilidad_kg/navegación (el agente alcanzó y abrió el nodo), alucinacion_agente (no hay glosa: '30/06/26' es textual del nodo y del PDF), aplicacion_erronea (nodo de alcance correcto: grupo B / grupo 2, riesgo operacional). Conclusión: falso positivo del juez → sin_defecto, sin_par. Como el único claim fallido es un FP del juez, el caso no tiene primaria.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 12.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.3 (PDF pág 177)\", \"pasaje\": \"12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 c omo con-\\nsecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financie-\\nras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a\\ntravés de la aplicación de la  expresión descripta en el punto 7.2 . hasta el 30/06/26 no podrá\\nsuperar:\\nEl 17% en el caso de entidades del grupo B y el 14% en el caso de entidades del C –en fun-\\nción de lo establecido, con vigencia hasta el 31/12/25, en la Sección 4. del TO sobre Autorida-\\ndes de Entidades Financieras –, del promedio de los últimos 36 meses –anteriores al mes a\\nque corresponda la determinación de la exigencia – de la exigencia de capital mínimo por ries-\\ngo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea\\ndel mes anterior al que se efectúa el cálculo.\\nLos límites máximos establecidos precedentemente se reducirán a 11% y a 8%, respectiva-\\nmente, cuando la entidad fin… [+394 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_capitales_minimos_actual.pdf",
+       "location": "Punto 7.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.3 (PDF pág 152)\", \"pasaje\": \"7.3. Límite para las entidades del grupo 2.\\nLa exigencia determinada a través de la aplicación de la expresión descripta en el punto 7. 2. no\\npodrá superar:\\n7.3.1. El 20% en el caso de entidades del grupo A del promedio de los últimos 36 meses\\n–anteriores al mes a que  corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\n7.3.2. El 17% en el caso de e ntidades del grupo B del promedio de los últimos 36 meses\\n–anteriores al mes a que corresponda la determinación de la exigencia – de la exigencia\\nde capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., ex-\\npresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\\nEl límite máximo establecido precedentemente se reducirá a 11% c uando la entidad fi-\\nnanciera cuente con calificación 1, 2 o 3 conforme a la valoración otorgada por la\\nSEFYC,… [+393 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\"}, \"output_completo\": {\"id\": \"Restriccion_la_exigencia_de_capital_por_riesgo_operacional_para_entidades_del_grupo_b_determ\", \"type\": \"Restriccion\", \"label\": \"Límite exigencia capital operacional grupo B\", \"properties\": {\"descripcion\": \"La exigencia de capital por riesgo operacional para entidades del grupo B determinada a través de la aplicación de la expresión descripta en el punto 7.2. hasta el 30/06/26 no podrá superar el 17% del promedio de los últimos 36 meses\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026\"}]}}"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_el_17_en_el_caso_de_entidades_del_grupo_b_del_promedio_de_los_ultimos_36_meses_a\", \"type\": \"Restriccion\", \"label\": \"Límite 17% grupo B capital mínimo\", \"properties\": {\"descripcion\": \"El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses –anteriores al mes a que corresponda la determinación de la exigencia– de la exigencia de capital mínimo por riesgo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea del mes anterior al que se efectúa el cálculo.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"17%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 7.3. Límite para las entidades del grupo 2.\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 22328,
+      "output_tokens": 344
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24141,
+      "output_tokens": 428
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24946,
+      "output_tokens": 1151
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 26418,
+      "output_tokens": 3021
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 25,
+     "n_claims_fallidos": 1,
+     "categoria": "cadena_restriccion_excepcion"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}

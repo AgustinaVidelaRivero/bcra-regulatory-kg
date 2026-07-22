@@ -1,0 +1,671 @@
+[
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_1",
+      "qid": "CQ-010",
+      "expected": "contenido_kg",
+      "why": "DIRIGIDO: el nodo dice 1.500 millones, el PDF dice 5.000 → defecto de contenido del KG."
+    },
+    "categoria": "factual_directa",
+    "claim": {
+      "enunciado": "Los bancos deben mantener un capital mínimo de 1.500 millones de pesos en el período 01/06/24 al 31/12/24.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "¿Cuál es la exigencia básica de capital mínimo para un banco?",
+    "n_candidatos": 51,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Los bancos deben mantener un capital mínimo de 1.500 millones de pesos en el período 01/06/24 al 31/12/24.",
+      "nodo_fuente": [
+        {
+          "id": "cla_bancos",
+          "acceso": "ver_nodo",
+          "contenido": "Categoría de entidades financieras que debe mantener capital mínimo de 1.500 millones de pesos en el período 01/06/24 al 31/12/24.",
+          "provenances": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "p. 4"
+            },
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "p. 177"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "El nodo cla_bancos contiene explícitamente la afirmación sobre el capital mínimo de 1.500 millones de pesos para el período 01/06/24 al 31/12/24.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "pagina",
+        "ref": "p.4 (PDF absoluto 1-based)",
+        "pasaje": "1.1. Exigencia.\nLa exigencia de capital mínim o que las entidades financieras deberán tener integrada será\nequivalente al mayor valor que resulte de la comparación entre la exigencia básica y la suma de\nlas determinadas por riesgos de crédito, de mercado –exigencia por las posiciones diarias de\nlos activos comprendidos– y operacional.\n1.2. Exigencia básica.\nSegún la clase de entidad, serán las siguientes exigencias básicas:\nBancos Restantes entidades\n(salvo Cajas de Crédito Cooperativas)\n-En millones de pesos-\n5.000 2.500\nLas compañías financie ras que re alicen, en forma directa, operaciones de comercio exterior\ndeberán observar las exigencias establecidas para los bancos.\n1.3. Integración.\nA los fines de determinar el cumplimiento de la exigencia de capital mínimo, la integración a\nconsiderar será la responsabilidad patrimonial computable, que se determinará en función de\nlos saldos de las partidas admitidas registrados al último día del mes bajo informe.\nEn el caso de la exigencia de capital mínimo por riesgo de mercado, la integración se de termi-\nnará en forma diaria de acuerdo con lo establecido en el punto 6.7.1.\n1.4. Incumplimientos.\nLos incumplimientos al capital mínimo exigido darán lugar a las siguientes consecuencias:\n1.4.1. Nuevas entidades.\nRevocación de la autorización para func ionar si no se integra el capital mínimo exigido\ndentro de los 60 días corridos de su otorgamiento.\n1.4.2. Entidades en funcionamiento.\n1.4.2.1. Incumplimientos informados por las entidades.\nLa entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes\nsiguiente a aquel en que se registre el incumplimiento, o presentar un plan de re-\ngularización y saneamiento dentro de los 30 días corridos siguientes al último día\ndel mes al que corresponda el incumplimiento.\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\nSección 1. Capital mínimo.\nVersión: 13a. COMUNICACIÓN  “A”  8028 Vigencia:\n01/06/2024 Página 1",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p. 4"
+        },
+        "nodo_anclado": "cla_bancos"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "Según la clase de entidad, serán las siguientes exigencias básicas: Bancos [...] 5.000 [millones de pesos]; Restantes entidades (salvo Cajas de Crédito Cooperativas) [...] 2.500 [millones de pesos]. Las compañías financieras que realicen, en forma directa, operaciones de comercio exterior deberán observar las exigencias establecidas para los bancos.",
+      "nodo_fiel_al_pdf": "no",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "contenido_kg",
+      "lado": "kg",
+      "razonamiento": "El PDF establece que la exigencia básica para bancos es 5.000 millones de pesos. El nodo 'cla_bancos' afirma incorrectamente 1.500 millones de pesos, valor que no aparece en el pasaje fuente, por lo que el nodo NO es fiel al PDF. El agente reprodujo fielmente el contenido erróneo del nodo (1.500 millones), por lo que el error proviene del contenido incorrecto del KG.",
+      "confianza": "alta",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": false
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_5",
+      "qid": "CQ-017",
+      "expected": "desvio_agente",
+      "why": "DIRIGIDO: fusión de conceptos (operador de cambio = entidad autorizada) → desvío del agente."
+    },
+    "categoria": "multi_norma",
+    "claim": {
+      "enunciado": "Los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "Un operador de cambio, ¿está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros y debe intervenir como entidad autorizada en el mercado de cambios?",
+    "n_candidatos": 99,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Los operadores de cambio son entidades financieras autorizadas a operar en el mercado de cambios.",
+      "nodo_fuente": [
+        {
+          "id": "operador_de_cambios__otra",
+          "acceso": "buscar_nodos",
+          "contenido": "Entidad financiera autorizada a operar en el mercado de cambios",
+          "provenances": []
+        },
+        {
+          "id": "entidad_operadora_en_mercado_de_cambios__otra",
+          "acceso": "ver_nodo",
+          "contenido": "Entidad financiera autorizada a operar en el mercado de cambios local",
+          "provenances": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 1/4)"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "Ambos nodos definen explícitamente a los operadores de cambios como entidades financieras autorizadas a operar en el mercado de cambios.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 3.16 (PDF pág 42)",
+        "pasaje": "3.16. Requisitos complementarios para los egresos por el mercado de cambios. \n3.16.1. Clientes incluidos en base de facturas o documentos apócrifos de la ARCA. \nLa entidad deberá contar con la conformidad previa de l BCRA en el caso de que el \ncliente sea una persona humana o jurídica incluida  por la Agencia de Recaudación y \nControl Aduanero (ARCA) en la base de facturas o documentos equivalentes \ncalificados como apócrifos. \nEl listado de personas humanas o jurídicas incluidas en dicha base por la ARCA se \nencuentra disponible en la siguiente di rección de Internet: \nhttps://servicioscf.afip.gob.ar/Facturacion/facturasApocrifas/default.aspx. \nB.C.R.A. EXTERIOR Y CAMBIOS \nSección 3. Disposiciones específicas para los egresos por el mercado de cambios \nVersión: 7a. COMUNICACIÓN  “A”  8307 Vigencia: \n26/08/2025 Página 27",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.16 — Requisitos complementarios para los egresos por el mercado de cambios. (parte 1/4)"
+        },
+        "nodo_anclado": "entidad_operadora_en_mercado_de_cambios__otra"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[Protección 1.1.2.2] Operadores de cambio, por las operaciones comprendidas en las normas sobre 'Exterior y cambios'. | [Exterior 1.1] En todas las operaciones de cambio, canje y/o arbitraje que se cursen por el mercado libre de cambios [...] deberán intervenir entidades financieras o cambiarias autorizadas a operar en cambios por el Banco Central [...]",
+      "nodo_fiel_al_pdf": "parcial",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "contenido_kg",
+      "lado": "kg",
+      "razonamiento": "El nodo 'operador_de_cambios' define al operador como 'Entidad financiera autorizada a operar en el mercado de cambios', y el agente reprodujo fielmente ese contenido. Sin embargo, según el ground truth (Exterior 1.1) pueden intervenir entidades financieras O cambiarias autorizadas; los operadores de cambio no se limitan a entidades financieras. El nodo simplifica/restringe incorrectamente la definición respecto del PDF/normativa, por lo que el defecto está en el contenido del KG, no en el agente que fue fiel al nodo.",
+      "confianza": "media",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "on",
+      "run": "run_3",
+      "qid": "CQ-038",
+      "expected": "falla_abstencion",
+      "why": "DIRIGIDO: pregunta unanswerable; el agente no se abstuvo, afirmó un dato tangencial."
+    },
+    "categoria": "unanswerable",
+    "claim": {
+      "enunciado": "Existe un 'nivel máximo de ventas totales anuales para la categoría Micro correspondiente al sector Comercio' en el Punto 3.7 de Clasificación de Deudores.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "¿Qué requisitos (niveles de ventas, cantidad de empleados, sector) debe cumplir una empresa para ser considerada Micro, Pequeña o Mediana Empresa (MiPyME) a los fines de estas normas?",
+    "n_candidatos": 61,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Existe un 'nivel máximo de ventas totales anuales para la categoría Micro correspondiente al sector Comercio' en el Punto 3.7 de Clasificación de Deudores.",
+      "nodo_fuente": [
+        {
+          "id": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales",
+          "acceso": "ver_nodo",
+          "contenido": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio",
+          "provenances": [
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Punto 3.7. Importe de referencia."
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "El nodo contiene exactamente la información sobre el nivel máximo de ventas totales anuales para la categoría Micro del sector Comercio que la afirmación menciona.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 3.7 (PDF pág 14)",
+        "pasaje": "3.7. Importe de referencia.\nEl importe a considerar será el nivel máximo del valor de ventas totales anuales para la\ncategoría “Micro” correspondiente al sector “Comercio” que determine la autoridad d e\naplicación de la Ley 24.467 (y sus modificatorias).\nB.C.R.A. CLASIFICACIÓN DE DEUDORES\nSección 3. Tarea de clasificación.\nVersión: 5a. COMUNICACIÓN  “A”  7443 Vigencia:\n01/01/2020 Página 6",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 3.7. Importe de referencia."
+        },
+        "nodo_anclado": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": null,
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "falla_abstencion",
+      "lado": "agente",
+      "razonamiento": "La pregunta es unanswerable: pide requisitos (ventas, empleados, sector) para categorizar una empresa como Micro/Pequeña/Mediana, lo cual remite a la autoridad de aplicación de la Ley 24.467 y no está definido en estas normas. El nodo y el PDF (Punto 3.7) solo mencionan que el importe de referencia es el nivel máximo de ventas para 'Micro'-'Comercio' como dato tangencial para un fin distinto (importe de referencia), no enumera los criterios MiPyME pedidos. El agente, en vez de abstenerse, afirmó este dato tangencial. El nodo es fiel al PDF y el agente fiel al nodo, pero al ser unanswerable corresponde falla_abstencion.",
+      "confianza": "alta",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": false
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_3",
+      "qid": "CQ-017",
+      "expected": "completitud_kg",
+      "why": "DIRIGIDO: hedging por info inalcanzable; el KG no tiene la regla de autorización (Exterior 1.1)."
+    },
+    "categoria": "multi_norma",
+    "claim": {
+      "enunciado": "Los operadores de cambio ejecutan operaciones de cambio en divisas conforme a lo establecido en la normativa.",
+      "central": true,
+      "verdict_juez": "no_soportado"
+    },
+    "pregunta": "Un operador de cambio, ¿está alcanzado por las normas de Protección de los Usuarios de Servicios Financieros y debe intervenir como entidad autorizada en el mercado de cambios?",
+    "n_candidatos": 108,
+    "guard_falla_abstencion_aplicado": true,
+    "capa1_hechos": {
+      "afirmacion_agente": "Los operadores de cambio ejecutan operaciones de cambio en divisas conforme a lo establecido en la normativa.",
+      "nodo_fuente": [
+        {
+          "id": "EDGE::EntidadFinanciera_operador_de_cambio--ejecuta-->Operacion_operacion_de_cambio",
+          "acceso": "edge",
+          "contenido": "Operadores de cambio —ejecuta→ Operaciones de cambio en divisas",
+          "provenances": [
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 1.1. Partes."
+            }
+          ]
+        },
+        {
+          "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_compra_y_o_venta_de_cambio_conforme_a_lo",
+          "acceso": "buscar_nodos",
+          "contenido": "La entidad deberá realizar un boleto de compra y/o venta de cambio, conforme a lo estipulado en el punto 5.3",
+          "provenances": []
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "La afirmación sintetiza directamente el edge que describe que operadores de cambio ejecutan operaciones de cambio, y se respalda con la obligación de realizar boletos conforme a normativa.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 1.1 (PDF pág 3)",
+        "pasaje": "1.1. Partes.\n1.1.1. Usuario de servicios financieros.\nA los efectos de la presente reglamentación, este concepto comprende a las personas\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\ntos a una relación de consumo con tales sujetos.\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\nrazonablemente que corresponde darles otro tratamiento.\nForman también parte de esta categoría los d eudores de créditos cedidos por las entid a-\ndes financieras comprendidas en la Ley de Entidades Financieras, independientemente\nde que hayan o no sido notificados fehacientemente de la transferencia de su obligación,\nasí como los deudores de créditos adquiridos por entidades financieras por cesión.\n1.1.2. Sujetos obligados.\n1.1.2.1. Entidades financieras.\n1.1.2.2. Operadores de cambio, po",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+          "location": "Punto 1.1. Partes."
+        },
+        "nodo_anclado": "EDGE::EntidadFinanciera_operador_de_cambio--ejecuta-->Operacion_operacion_de_cambio"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[Protección 1.1.2.2] Operadores de cambio, por las operaciones comprendidas en las normas sobre 'Exterior y cambios'. | [Exterior 1.1] En todas las operaciones de cambio, canje y/o arbitraje que se cursen por el mercado libre de cambios [...] deberán intervenir entidades financieras o cambiarias autorizadas a operar en cambios por el Banco Central [...]",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "parcial"
+    },
+    "capa2_causa": {
+      "clasificacion": "completitud_kg",
+      "lado": "kg",
+      "razonamiento": "La pregunta multi_norma requiere conectar dos hechos: (1) que el operador de cambio es sujeto obligado bajo Protección de Usuarios (Protección 1.1.2.2) y (2) que en las operaciones de cambio deben intervenir entidades autorizadas en el mercado de cambios (Exterior 1.1). Los nodos fuente disponibles solo describen que los operadores 'ejecutan operaciones de cambio' y una obligación de boleto, pero NINGÚN nodo representa el hecho de que el operador esté alcanzado por las normas de Protección de Usuarios (sujeto obligado 1.1.2.2), ni el requisito de intervención como entidad autorizada del Exterior 1.1. El PDF SÍ contiene esa información (visible en el pasaje 1.1.2.2 y en la cita de ground truth), pero el KG no la representa con nodos adecuados. Por eso el agente respondió de forma genérica/tangencial ('ejecutan operaciones conforme a la normativa') sin afirmar los dos puntos centrales. El defecto es de cobertura del grafo: la info existe en el PDF pero no hay nodo que la alcance.",
+      "confianza": "media",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_4",
+      "qid": "CQ-033",
+      "expected": null,
+      "why": "run_4 / cadena / cita híbrida: el nodo dice '17% hasta 30/06/26' — testea nodo-vs-PDF en un calificador temporal."
+    },
+    "categoria": "cadena_restriccion_excepcion",
+    "claim": {
+      "enunciado": "Las entidades del Grupo 2 Grupo B tienen un límite máximo del 17% hasta el 30/06/26.",
+      "central": false,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "¿Cuál es el límite a la exigencia de capital por riesgo operacional para una entidad del Grupo 2, y bajo qué condiciones ese límite se reduce?",
+    "n_candidatos": 32,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Las entidades del Grupo 2 Grupo B tienen un límite máximo del 17% hasta el 30/06/26.",
+      "nodo_fuente": [
+        {
+          "id": "limite_maximo_de_exigencia_operacional_grupo_b",
+          "acceso": "ver_nodo",
+          "contenido": "Límite máximo del 17% para exigencia de capital por riesgo operacional de entidades del grupo B hasta el 30/06/26.",
+          "provenances": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "p.175-178 / Punto 12.3"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "El nodo especifica exactamente el límite del 17% para entidades del grupo B hasta el 30/06/26.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 12.3 (PDF pág 177)",
+        "pasaje": "12.3. Para aquellas entidades financieras que sean reclasificadas desde el 01/01/2026 c omo con-\nsecuencia de lo establecido en el punto 4.1. del TO sobre Autoridades de Entidades Financie-\nras, la exigencia de capital por riesgo operacional para entidades del grupo 2 determinada a\ntravés de la aplicación de la  expresión descripta en el punto 7.2 . hasta el 30/06/26 no podrá\nsuperar:\nEl 17% en el caso de entidades del grupo B y el 14% en el caso de entidades del C –en fun-\nción de lo establecido, con vigencia hasta el 31/12/25, en la Sección 4. del TO sobre Autorida-\ndes de Entidades Financieras –, del promedio de los últimos 36 meses –anteriores al mes a\nque corresponda la determinación de la exigencia – de la exigencia de capital mínimo por ries-\ngo de crédito calculada según lo previsto en la Sección 2., expresada en moneda homogénea\ndel mes anterior al que se efectúa el cálculo.\nLos límites máximos establecidos precedentemente se reducirán a 11% y a 8%, respectiva-\nmente, cuando la entidad financiera cuente con calificación 1, 2 o 3 conforme a la valoración\notorgada por la SEFYC, en oportunidad de la úl tima inspección efectuada, respecto de todos\nlos siguientes aspectos: la entidad en su conjunto, sus sistemas informáticos y la labor de los\nresponsables de la evaluación de sus sistemas de control interno.\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS\nSección 12.",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p.175-178 / Punto 12.3"
+        },
+        "nodo_anclado": "limite_maximo_de_exigencia_operacional_grupo_b"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[7.3.1] El 20% en el caso de entidades del grupo A del promedio de los últimos 36 meses [...] de la exigencia de capital mínimo por riesgo de crédito [...] [7.3.2] El 17% en el caso de entidades del grupo B del promedio de los últimos 36 meses [...]. El límite máximo establecido precedentemente se reducirá a 11% cuando la entidad financiera cuente con calificación 1, 2 o 3 [...]. En los casos en que la entidad financiera cuente en todos los citados aspectos con calificación 1 o 2, el límite máximo disminuirá a 7%.",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "parcial"
+    },
+    "capa2_causa": {
+      "clasificacion": "desvio_agente",
+      "lado": "agente",
+      "razonamiento": "El nodo habla de 'entidades del grupo B' fielmente al PDF (17% hasta 30/06/26). El agente inventó la categoría 'Grupo 2 Grupo B' mezclando conceptos y, lo más grave, omitió por completo la condición de reducción del límite (a 11%/8% según calificación SEFYC), que es justamente lo que pregunta la consigna. Esa omisión y la denominación errónea son agregados/distorsiones no respaldados por el nodo, por lo que es desvío del agente.",
+      "confianza": "media",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_1",
+      "qid": "CQ-019",
+      "expected": null,
+      "why": "run_1 / multi_norma / localización POR PÁGINA: el caso NIIF-9 que vi como agente-side; valida la página absoluta en otra pregunta."
+    },
+    "categoria": "multi_norma",
+    "claim": {
+      "enunciado": "La previsión por riesgo de incobrabilidad que sí se deduce aplica a activos clasificados en situación normal o cubiertos con garantías preferidas A.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "Al computar los activos para la exigencia de capital por riesgo de crédito, ¿qué previsión por incobrabilidad no se deduce, y cómo se vincula esa regla con la clasificación de deudores?",
+    "n_candidatos": 73,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "La previsión por riesgo de incobrabilidad que sí se deduce aplica a activos clasificados en situación normal o cubiertos con garantías preferidas A.",
+      "nodo_fuente": [
+        {
+          "id": "req_prevision_por_riesgo_de_incobrabilidad",
+          "acceso": "ver_nodo",
+          "contenido": "Deducción por deterioro de activos clasificados en situación normal o cubiertos con garantías preferidas A.",
+          "provenances": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "p. 10"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "pp. 5-6"
+            }
+          ]
+        },
+        {
+          "id": "req_prevision_por_riesgo_de_incobrabilidad_en_cartera_en_situacion_normal",
+          "acceso": "buscar_nodos",
+          "contenido": "Provisión específica para cartera clasificada como situación normal que debe absorberse antes de deducción de conceptos.",
+          "provenances": []
+        },
+        {
+          "id": "EDGE::req_prevision_por_riesgo_de_incobrabilidad--aplica_a-->cla_garantias_preferidas_a",
+          "acceso": "edge",
+          "contenido": "Previsión por riesgo de incobrabilidad —aplica_a→ Garantías preferidas A",
+          "provenances": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "p. 10"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "La afirmación se extrae directamente del nodo principal y sus nodos relacionados que especifican que la previsión aplica a activos en situación normal y garantías preferidas A.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "pagina",
+        "ref": "p.10 (PDF absoluto 1-based)",
+        "pasaje": "2.2.3.3. En el caso de las financiaciones, éstas deberán ser atendidas por las\nsucursales o subsidiarias locales sólo con fondos provenientes de líneas\nasignadas a ellas por los citados intermediarios del exterior.\nDe otorgarse la asistencia en moneda distinta de la de los recursos del exterior,\nla entidad local no podrá asumir el riesgo de cambio.\n2.2.3.4. En el caso de las garantías otorgadas localmente, deberá existir respecto de\nellas contragarantías extendidas por la casa matriz o sus sucursales en otros\npaíses o por la entidad controlante del exterior, cuya efectivización opere en\nforma irrestricta a simple requerimiento de la sucursal o subsidiaria local y en\nmodo inmediato a su eventual ejecución por parte del beneficiario.\n2.3. Cómputo de los conceptos comprendidos.\n2.3.1. Bases individual y consolidada mensual.\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\nencuentran cubiertas con garantías preferidas A).\n2.3.2. Base consolidada trimestral.\nSe considerarán los saldos al cierre del trimestre, aplicando en los demás aspectos las\ncorrespondientes disposiciones establecidas.\n2.4. Requisitos de debida diligencia.\nLas entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al\nmomento del otorgamiento del crédito y con frecuencia mínima anual– a fin de que puedan con-\ntar con una adecuada comprensión del perfil de riesgo y las características de sus contrapartes.\nEl grado de sofisticación de las evaluaciones de debida diligencia deberá ser proporcional a la\ndimensión e importancia económica de las entidades financieras y a la naturaleza y complejidad\nde sus operaciones. Como resultado de esa evaluación, las entidades financieras deberán de-\nmostrar a la SEFYC que los ponderadores de riesgo asignados son adecuados a los perfiles de\nriesgo de sus contrapartes.\nA tales efectos, las entidades financieras del grupo 1 deberán:\ni) adoptar medidas adecuadas y razonables con el fin de evaluar el desempeño financiero y\noperativo de cada contraparte a través del análisis crediticio;\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES F",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "p. 10"
+        },
+        "nodo_anclado": "req_prevision_por_riesgo_de_incobrabilidad"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[Capitales 2.3.1] [...] netos de las previsiones por riesgos de incobrabilidad [...] sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores– y a las financiaciones que se encuentran cubiertas con garantías preferidas A).",
+      "nodo_fiel_al_pdf": "no",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "contenido_kg",
+      "lado": "kg",
+      "razonamiento": "El PDF (2.3.1) establece que NO se deduce el 100% de la previsión correspondiente a cartera 'en situación normal' y a financiaciones cubiertas con garantías preferidas A. El nodo 'req_prevision_por_riesgo_de_incobrabilidad' invierte el sentido al describir una 'Deducción por deterioro de activos clasificados en situación normal o cubiertos con garantías preferidas A', es decir, presenta como deducible justo lo que la norma excluye de la deducción. El agente reprodujo fielmente ese nodo erróneo (afirmó que la previsión 'que sí se deduce' aplica a esos activos), por lo que el defecto está en el contenido del KG, no en el agente.",
+      "confianza": "alta",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": false
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_2",
+      "qid": "CQ-018",
+      "expected": null,
+      "why": "run_2 (grafo aún no auditado) / multi_norma / localización por punto."
+    },
+    "categoria": "multi_norma",
+    "claim": {
+      "enunciado": "El criterio básico de clasificación de deudores es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "Los proveedores no financieros de crédito y las empresas no financieras emisoras de tarjetas, ¿deben cumplir con Protección al Usuario y, además, clasificar a sus deudores? ¿Bajo qué criterio clasifican?",
+    "n_candidatos": 59,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "El criterio básico de clasificación de deudores es la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía, medida a través del análisis de flujo de fondos.",
+      "nodo_fuente": [
+        {
+          "id": "concepto_definido:capacidad_de_pago",
+          "acceso": "ver_nodo",
+          "contenido": "[\"Criterio básico de clasificación: la capacidad de pago en el futuro de la deuda o de los compromisos objeto de la garantía.\", \"Capacidad del cliente para atender el pago de capital e intereses en las condiciones pactadas, medida a través del análisis de flujo de fondos.\"]",
+          "provenances": [
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 3 > Punto 3.6"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 6 > Punto 5.1"
+            }
+          ]
+        },
+        {
+          "id": "concepto_definido:clasificacion_de_deudores",
+          "acceso": "ver_nodo",
+          "contenido": "[\"Concepto central regulatorio que organiza la evaluación y categorización de la situación de los deudores.\", \"Sistema de categorización de deudores según criterios establecidos por el BCRA.\", \"Concepto técnico regulatorio relativo a la categorización de deudores según su riesgo de incobrabilidad.\", \"Concepto regulatorio que establece la categorización del estado crediticio de los deudores en el sistema financiero.\"]",
+          "provenances": [
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 10 > Punto 1.1"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 10 > Punto 6.5"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 10 > Punto 10.4 /a"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 10 > Punto 5593 /b"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "La afirmación sintetiza directamente el contenido de estos dos nodos: el criterio básico (capacidad de pago) y su aplicación a la clasificación de deudores, con mención explícita del análisis de flujo de fondos.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 3.6 (PDF pág 14)",
+        "pasaje": "3.6. Aprobación de la clasificación.\nLa clasificación de los deudores y el cálculo de las previsiones por riesgo de incobrabilidad, ta n-\nto la regulatoria como la contable por aplicación de la de la Norma Internacional de Información\nFinanciera (NIIF) 9, por financiaciones que excedan del 2,5 % de la RPC de la entidad financi e-\nra del mes anterior al que corresponda, deberán contar con la previa aprobación de los mie m-\nbros del Directorio o C onsejo de Administración –por mayoría simple o, cuando se trate de\nclientes vinculados, de dos tercios de la totalidad de los miembros – o autoridad equivalente de\nla entidad financiera prestamista. \nDicha conformidad estará referida –con opinión fundada en todos los casos – tanto a la clasif i-\ncación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones\ncalculadas.\nLa toma de conocimiento sin formulación de observaciones por parte del Directorio o C onsejo\nde Administración, con las mayorías establecidas precedentemente, o autoridad equivalente, de\nlas opiniones fundadas que sobre la clasificación de los deudores y la determinación de prev i-\nsiones por riesgo de incobrabilidad emitan las unidades funcionales a cargo de la clasificación,\nda por cumplido el requisito antedicho, en la medida en que sea previa a la remisión a la SEFyC\nde las informaciones contables y sus complementarias.\n3.7. Importe de refere",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Sección 3 > Punto 3.6"
+        },
+        "nodo_anclado": "concepto_definido:capacidad_de_pago"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[Protección 1.1.2.4/1.1.2.5] Empresas no financieras emisoras de tarjetas de crédito y/o compra [...] Otros proveedores no financieros de crédito [...] | [Clasificación 10.1] Las empresas no financieras emisoras de tarjetas de crédito y/o compra y los otros proveedores no financieros de crédito [...] deberán clasificar a los respectivos deudores en función de su mora, según los criterios aplicables para la cartera de 'consumo o vivienda' y por aplicación de las disposiciones previstas en el punto 7.3.",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "completitud_kg",
+      "lado": "kg",
+      "razonamiento": "El agente afirmó el criterio general de capacidad de pago tomándolo fielmente del nodo 'capacidad_de_pago', que a su vez refleja correctamente el PDF general de Clasificación. Sin embargo, la pregunta es específica sobre proveedores no financieros de crédito y emisoras de tarjetas, cuyo criterio aplicable según Clasificación 10.1 es la clasificación por mora bajo cartera de consumo o vivienda. Ese nodo específico (punto 10.1) no fue recuperado ni aparece entre los nodos disponibles, por lo que el KG no representó la información puntual pedida y el agente respondió con el criterio general incorrecto para el caso. El defecto es de completitud del KG: falta el nodo del punto 10.1 que da el criterio correcto.",
+      "confianza": "media",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_5",
+      "qid": "CQ-034",
+      "expected": null,
+      "why": "run_5 / cadena / límites USD: otro grafo + categoría; calificador de monto."
+    },
+    "categoria": "cadena_restriccion_excepcion",
+    "claim": {
+      "enunciado": "Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "Una persona humana residente compra moneda extranjera para atesorar; ¿qué límite mensual aplica si la operación se cursa con débito en cuenta frente a si se realiza en efectivo, y qué límite general rige para otras modalidades de formación de activos externos?",
+    "n_candidatos": 48,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Si la operación de compra de moneda extranjera para atesorar se realiza con débito en cuenta, el límite mensual es USD 200 en el mes calendario.",
+      "nodo_fuente": [
+        {
+          "id": "limite_mensual_de_usd_200",
+          "acceso": "ver_nodo",
+          "contenido": "El cliente no puede superar el equivalente a USD 200 en el mes calendario en el conjunto de entidades y conceptos permitidos.",
+          "provenances": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "media",
+      "mapeo_razon": "El nodo establece un límite de USD 200 mensual, pero no especifica que sea exclusivamente para débito en cuenta; el agente infirió la condición del método de pago.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 3.9 (PDF pág 33)",
+        "pasaje": "3.9. Compra de moneda extranjera por parte de personas humanas residentes para la formación \nde activos externos bajo otras modalidades, la remisión de ayuda familiar u operaciones con \nderivados. \nLas entidades podrán dar acceso al mercado de cambios a las personas humanas residentes \npara la formación de activos externos (códigos de conceptos A01, A02, A03, A04, A06, A08, \nA14 y A24), la remisión de ayuda familiar y para la  operatoria con derivados  (código de con-\ncepto A05) en la medida que no  encuadre en el punto 3.12.1.,  sin la conformidad previa del \nBCRA, en la medida que se cumplan la totalidad de los siguientes requisitos:  \n3.9.1. El cliente no supere, en el mes calendario en el conjunto de las entidades y por el \nconjunto de los conce ptos señalados, el equivalente a USD 200 (dólares \nestadounidenses doscientos).  \n3.9.2. La operación se curse con débito en cuenta del cliente en entidades financieras \nlocales.  \nSi el cliente utiliza efectivo  el monto comprado por el cliente no supere el equivalente \na USD 100 (dólares estadounidenses cien) en el mes calendario en el conjunto de las \nentidades y por el conjunto de los conceptos señalados. \n3.9.3. La entidad cuenta con una declaración jurada del cliente en la que consta que el \ncliente cumple con los requisitos mencionados precedentemente. \n3.9.4. La e ntidad ha constatado en el sistema online implementado a tal",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.9 — Compra de moneda extranjera por parte de personas humanas residentes para la for"
+        },
+        "nodo_anclado": "limite_mensual_de_usd_200"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[3.8.1] La operación se curse con débito en cuenta del cliente [...]. Si el cliente utiliza efectivo el monto comprado [...] no supere el equivalente a USD 100 [...] en el mes calendario [...] | [3.9.1] El cliente no supere, en el mes calendario [...], el equivalente a USD 200 [...]. [3.9.2] [...] Si el cliente utiliza efectivo el monto comprado [...] no supere el equivalente a USD 100 [...] En todos los casos, la entidad deberá obtener evidencia de que el cliente posee ingresos y/o activos consistentes con el ahorro en moneda extranjera.",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "sin_defecto",
+      "lado": "ninguno",
+      "razonamiento": "El PDF (3.9.1) establece USD 200 mensuales para débito en cuenta y USD 100 si es en efectivo. El nodo refleja fielmente el límite de USD 200 en el mes calendario. La afirmación del agente dice exactamente eso: con débito en cuenta el límite es USD 200 mensual, lo cual es correcto según el PDF y el ground truth. El veredicto del juez de 'falso' parece erróneo, ya que la afirmación está respaldada tanto por el nodo fiel como por el PDF.",
+      "confianza": "media",
+      "requiere_revision_humana": true
+    },
+    "discrepa_del_juez": true,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_3",
+      "qid": "CQ-025",
+      "expected": null,
+      "why": "run_3 / factual / respuesta parcial: un falso SECUNDARIO (gradación parcial vs incorrecta)."
+    },
+    "categoria": "factual_directa",
+    "claim": {
+      "enunciado": "La información sobre Ratio de apalancamiento está dispuesta en el punto 10.1 del Régimen Informativo Contable Mensual",
+      "central": false,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "En el Régimen Informativo de Capitales Mínimos, ¿con qué frecuencia se informa la exigencia por riesgo de mercado y la información sobre ratio de apalancamiento?",
+    "n_candidatos": 49,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "La información sobre Ratio de apalancamiento está dispuesta en el punto 10.1 del Régimen Informativo Contable Mensual",
+      "nodo_fuente": [
+        {
+          "id": "Obligacion_informar_ratio_de_apalancamiento",
+          "acceso": "buscar_nodos",
+          "contenido": "La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de consolidación 0 o 1)",
+          "provenances": []
+        }
+      ],
+      "mapeo_confianza": "media",
+      "mapeo_razon": "El nodo menciona 'Sección 10.' para ratio de apalancamiento, pero la afirmación especifica '10.1' mientras el nodo visto refiere a '10.2.' en otro contexto.",
+      "nodo_sin_provenance": true,
+      "pdf_pasaje_nodo": null,
+      "localizacion_pdf": null,
+      "cita_textual_gt": "La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral [...] Con los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y diciembre): - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) [...] - La información sobre Ratio de apalancamiento (Sección 10.) en base individual [...]",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "no"
+    },
+    "capa2_causa": {
+      "clasificacion": "desvio_agente",
+      "lado": "agente",
+      "razonamiento": "El nodo dice que la info sobre Ratio de apalancamiento corresponde a la Sección 10. y que la pregunta apunta a la frecuencia (trimestral). El agente respondió sobre el 'punto 10.1' del Régimen Informativo Contable Mensual, dato que no figura en el nodo ni responde la pregunta sobre frecuencia. El nodo es fiel al PDF, pero el agente agregó/inventó información no respaldada, por lo que es desvío del agente.",
+      "confianza": "alta",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": true,
+    "adjudicacion": true
+  },
+  {
+    "meta": {
+      "label": "off",
+      "run": "run_2",
+      "qid": "CQ-031",
+      "expected": null,
+      "why": "run_2 / cadena / un NO_SOPORTADO para cubrir diversidad de verdict (no solo falsos)."
+    },
+    "categoria": "cadena_restriccion_excepcion",
+    "claim": {
+      "enunciado": "Los deudores que resulten de operaciones de cesión sin responsabilidad para el cedente no serán objeto de clasificación.",
+      "central": true,
+      "verdict_juez": "falso"
+    },
+    "pregunta": "¿Qué deudores no deben ser objeto de clasificación y respecto de qué deudores no corresponde evaluar la capacidad de repago?",
+    "n_candidatos": 25,
+    "guard_falla_abstencion_aplicado": false,
+    "capa1_hechos": {
+      "afirmacion_agente": "Los deudores que resulten de operaciones de cesión sin responsabilidad para el cedente no serán objeto de clasificación.",
+      "nodo_fuente": [
+        {
+          "id": "obligacion:no_incluir_en_clasificacion_a_deudores_en_cesion_sin_responsabilidad",
+          "acceso": "ver_nodo",
+          "contenido": "Excepción: los deudores que resulten de operaciones de cesión sin responsabilidad para el cedente no serán objeto de clasificación.",
+          "provenances": [
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Sección 3 > Punto 4.6"
+            }
+          ]
+        }
+      ],
+      "mapeo_confianza": "alta",
+      "mapeo_razon": "La afirmación coincide textualmente con el contenido del nodo que establece explícitamente esta excepción.",
+      "nodo_sin_provenance": false,
+      "pdf_pasaje_nodo": {
+        "metodo": "punto",
+        "ref": "Punto/Sección 4.6 (PDF pág 15)",
+        "pasaje": "4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de crédito por \nriesgo comercial y con seguros de riesgo de crédito “con alcance de comprador público”. \nSe procederá a clasificar a la compañía de seguros en función de la mora según los criterios \naplicables para la cartera de consumo, teniendo en cuenta la fecha de vencimiento de la prime-\nra obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el re-\nclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos \nen la póliza (180 o 270 días, según corresponda). \nNo serán objeto de clasificación quiene s resulten deudore s en operacione s de cesión sin res-\nponsabilidad para el cedente. \nSólo se aplicarán lo s criterios precedentes cuando se trate de operacione s del título que, en \norigen, hayan reunido los requisitos pertinentes establecidos en las normas sobre “Garantías”. \nCLASIFICACIÓN DE DEUDORES B.C.R.A.\nS\nección 4. Criterios de clasificación. \nVersión: 5a. COMUNICACIÓN  “A”  6558 V igencia: \n5/9/2018 Página 1",
+        "localizacion_pdf": "ok",
+        "prov": {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Sección 3 > Punto 4.6"
+        },
+        "nodo_anclado": "obligacion:no_incluir_en_clasificacion_a_deudores_en_cesion_sin_responsabilidad"
+      },
+      "localizacion_pdf": "ok",
+      "cita_textual_gt": "[4.4] No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías. [4.5] Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación [...]",
+      "nodo_fiel_al_pdf": "si",
+      "agente_fiel_al_nodo": "si"
+    },
+    "capa2_causa": {
+      "clasificacion": "completitud_kg",
+      "lado": "kg",
+      "razonamiento": "El nodo fuente representa fielmente el punto 4.6 del PDF ('No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente') y el agente repitió fielmente ese contenido. Sin embargo, la pregunta requiere TAMBIÉN los deudores cubiertos con garantías preferidas 'A' (4.5) y las financiaciones respaldadas con tales garantías respecto de las que no corresponde evaluar capacidad de repago (4.4). El PDF SÍ contiene esa información (citada en el ground truth) pero ningún nodo aportado la representa/alcanza, por lo que la respuesta resulta incompleta. La falla es de cobertura del KG, no del agente.",
+      "confianza": "media",
+      "requiere_revision_humana": false
+    },
+    "discrepa_del_juez": false,
+    "sin_anclaje_pdf": false,
+    "adjudicacion": true
+  }
+]

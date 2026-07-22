@@ -1,5 +1,7 @@
 # Reporte de generación — preguntas de evaluación QA sobre normativa BCRA
 
+> Nota (2026-07-20): las rutas `~/SUBSET/` de este reporte refieren a una carpeta de trabajo externa ya inexistente; el corpus canónico vive en `data/experiment/subset/`.
+
 Corpus: 5 Textos Ordenados (PDF) en la carpeta `SUBSET`. Todo el contenido de este reporte y de los archivos JSON deriva exclusivamente de esos documentos.
 
 ## Fase 0 — Preparación

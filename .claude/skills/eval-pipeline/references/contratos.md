@@ -10,7 +10,7 @@
 
 | Archivo | Preguntas | Clase | Notas (verificadas por parseo) |
 |---|---:|---|---|
-| `queries/eval_set_v1.json` | 23 | **eval set** | congelado de la Fase 2.3 (el que seleccionó al ganador; default de `run_posthoc`, `data/experiment/evaluacion/run_posthoc.py:63`) |
+| `queries/eval_set_v1.json` | 23 | **eval set** | congelado de la Fase 2.3 (el que seleccionó al ganador; default de `run_posthoc`, `data/experiment/evaluacion/runners/run_posthoc.py:63`) |
 | `queries/eval_set_v2.json` | 31 | **eval set** | v1 + 8 nuevas difíciles (CQ-040–047); dataset del refinamiento (Paso 1 de `kg-refinement`) |
 | `queries/dev.json` | 3 | desarrollo | sin `categoria` ni referente; default del CLI de `harness.py` |
 | `queries/dev_pool.json` | 17 | desarrollo | con referente (salvo `dev_unans_1`); pool de calibración del juez (`data/experiment/evaluacion/judge.py:91`) y del smoke de `run_frozen` |
@@ -20,13 +20,13 @@
 ## Input — archivo de queries
 
 Raíz aceptada: lista `[{...}]` o dict `{"preguntas": [...]}`
-(`data/experiment/evaluacion/run_posthoc.py:272-274`).
+(`data/experiment/evaluacion/runners/run_posthoc.py:272-274`).
 
 Campos por pregunta (los de `eval_set_v2.json`, parseados):
 
 | Campo | Quién lo consume |
 |---|---|
-| `id` | nombre del archivo de traza y logging (`data/experiment/evaluacion/run_posthoc.py:188`) |
+| `id` | nombre del archivo de traza y logging (`data/experiment/evaluacion/runners/run_posthoc.py:188`) |
 | `pregunta` | agente y juez |
 | `categoria` | juez — `"unanswerable"` activa la evaluación de abstención/especulación; cualquier otra la anula (`data/experiment/evaluacion/judge.py:234-236`) |
 | `respuesta_esperada`, `cita_textual`, `ground_truth_secciones` | el REFERENTE auditable del Paso 2 del juez (`data/experiment/evaluacion/judge.py:283-288`) |
@@ -41,16 +41,16 @@ veredicto no es interpretable. No correr sets incompletos sin señalarlo.
 
 ## Output — rep dict (uno por repetición, en `{qid}.json`)
 
-Campos (`data/experiment/evaluacion/run_posthoc.py:201-217`):
+Campos (`data/experiment/evaluacion/runners/run_posthoc.py:201-217`):
 
 | Campo | Contenido |
 |---|---|
 | `rep`, `qid`, `run`, `categoria`, `thinking_enabled` | identificación |
-| `failed_trace` | `true` si `not parse_ok`, truncado por max_tokens, o error (`data/experiment/evaluacion/run_posthoc.py:193`) |
+| `failed_trace` | `true` si `not parse_ok`, truncado por max_tokens, o error (`data/experiment/evaluacion/runners/run_posthoc.py:193`) |
 | `trace` | el `QuestionTrace` del harness: `steps` (tool calls), `api_calls`, `final_json`, `seen_provenances`, `citations_unseen_*`, tokens, `cost_usd` (`data/experiment/evaluacion/harness.py:292-315`) |
 | `raw_turns_agent` / `raw_turns_judge` | crudo íntegro por turno recuperado de la caché (incl. thinking blocks si ON) |
 | `judge` | `null` si `failed_trace`; si no: `{verdict, step1, step2, usage, errors}` (`data/experiment/evaluacion/judge.py:299-303`) |
-| `harness_cost` / `judge_cost` | USD por rep (precios: Haiku 1.00/5.00, Sonnet 3.00/15.00 por MTok — `data/experiment/evaluacion/run_posthoc.py:71-72`) |
+| `harness_cost` / `judge_cost` | USD por rep (precios: Haiku 1.00/5.00, Sonnet 3.00/15.00 por MTok — `data/experiment/evaluacion/runners/run_posthoc.py:71-72`) |
 
 ## El veredicto del juez (`judge.verdict`)
 
@@ -74,7 +74,7 @@ se computan en `data/experiment/evaluacion/judge.py:230-267`):
 
 ## Output — summary (`posthoc_run/summary_{label}_{run}.json`)
 
-Campos (`data/experiment/evaluacion/run_posthoc.py:250-261`): `run_key`, `label`,
+Campos (`data/experiment/evaluacion/runners/run_posthoc.py:250-261`): `run_key`, `label`,
 `thinking_enabled`, `timestamp`, `n_preguntas`, `reps_por_pregunta`,
 `n_reps_total`, `n_failed`, `costo_usd`, `agent_cache_stats` / `judge_cache_stats`
 (con `hit_rate`), `code_version`, `graph_fingerprint`.

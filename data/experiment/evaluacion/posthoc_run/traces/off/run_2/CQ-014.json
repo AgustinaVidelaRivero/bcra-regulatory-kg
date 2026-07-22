@@ -1,0 +1,574 @@
+[
+  {
+    "rep": 1,
+    "qid": "CQ-014",
+    "run": "run_2",
+    "categoria": "factual_directa",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "CQ-014",
+      "question": "¿En qué plazo deben ingresarse y liquidarse en el mercado de cambios los cobros de exportaciones de servicios?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "exportaciones servicios plazo ingreso liquidación mercado cambios",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"exportaciones servicios plazo ingreso liquidación mercado cambios\", \"total_con_match\": 928, \"resultados\": [{\"id\": \"plazo:plazo_para_ingreso_y_liquidacion_en_mercado_de_cambios\", \"type\": \"Plazo\", \"label\": \"plazo para ingreso y liquidación en mercado de cambios\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Los fondos excedentes al 125% deben ser ingresados y liquidados en el mercado de cambios dentro de los plazos previstos en las normas generales.\"}, {\"id\": \"obligacion:ingreso_y_liquidacion_de_divisas_de_exportaciones_en_mercado_de_cambios\", \"type\": \"Obligacion\", \"label\": \"ingreso y liquidación de divisas de exportaciones en mercado de cambios\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Los exportadores deben ingresar y liquidar en el mercado de cambios los cobros de exportaciones dentro de los plazos establecidos.\"}, {\"id\": \"obligacion:ingreso_y_liquidacion_en_mercado_de_cambios\", \"type\": \"Obligacion\", \"label\": \"ingreso y liquidación en mercado de cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Deber de ingresar y liquidar los cobros por prestación de servicios en el mercado de cambios dentro del plazo establecido.\"}, {\"id\": \"operacion:ingreso_y_li… [+2248 chars]",
+          "output_chars": 3448
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "cobros exportaciones servicios plazo",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"cobros exportaciones servicios plazo\", \"total_con_match\": 601, \"resultados\": [{\"id\": \"operacion:cobros_de_exportaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"cobros de exportaciones de servicios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Operación de cobro relacionada con exportaciones de servicios hacia el exterior.\"}, {\"id\": \"operacion:cobros_de_exportaciones_de_bienes_y_servicios\", \"type\": \"Operacion\", \"label\": \"cobros de exportaciones de bienes y servicios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Aplicación de cobros de exportaciones de bienes y servicios para cancelar servicios de capital e intereses a partir de su vencimiento.', 'Ingresos por exporta…\"}, {\"id\": \"operacion:ingreso_de_cobros_de_exportaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"ingreso de cobros de exportaciones de servicios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cobros percibidos por exportaciones de servicios que deben ser ingresados en divisas y liquidados en el mercado de cambios.\"}, {\"id\": \"operacion:ingreso_de_cobros_de_exportaciones_de_bienes_o_servicios\", \"type\": \"Operacion\", \"label\": \"ingreso de cobros de exportaciones de bienes o servicios\", … [+2290 chars]",
+          "output_chars": 3490
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "obligacion:ingreso_y_liquidacion_en_mercado_de_cambios"
+          },
+          "output_truncado": "{\"id\": \"obligacion:ingreso_y_liquidacion_en_mercado_de_cambios\", \"type\": \"Obligacion\", \"label\": \"ingreso y liquidación en mercado de cambios\", \"properties\": {\"description\": \"Deber de ingresar y liquidar los cobros por prestación de servicios en el mercado de cambios dentro del plazo establecido.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 1 > Punto 2.2\"}]}",
+          "output_chars": 460
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "operacion:ingreso_de_cobros_de_exportaciones_de_servicios"
+          },
+          "output_truncado": "{\"id\": \"operacion:ingreso_de_cobros_de_exportaciones_de_servicios\", \"type\": \"Operacion\", \"label\": \"ingreso de cobros de exportaciones de servicios\", \"properties\": {\"description\": \"Cobros percibidos por exportaciones de servicios que deben ser ingresados en divisas y liquidados en el mercado de cambios.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 2 > Sección 2 — preámbulo\"}]}",
+          "output_chars": 452
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "obligacion:ingreso_y_liquidacion_en_mercado_de_cambios",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"obligacion:ingreso_y_liquidacion_en_mercado_de_cambios\", \"label\": \"ingreso y liquidación en mercado de cambios\", \"n_salientes_total\": 2, \"n_entrantes_total\": 3, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"operacion:cobro_de_exportaciones_de_servicios\", \"vecino_label\": \"cobro de exportaciones de servicios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 1 > Punto 2.2\"}]}, {\"relation\": \"tiene_plazo\", \"vecino_id\": \"plazo:20_dias_habiles\", \"vecino_label\": \"20 días hábiles\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 1 > Punto 2.2\"}]}], \"salientes_truncado\": false}",
+          "output_chars": 665
+        },
+        {
+          "n": 6,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "operacion:ingreso_de_cobros_de_exportaciones_de_servicios",
+            "direccion": "salientes"
+          },
+          "output_truncado": "{\"id\": \"operacion:ingreso_de_cobros_de_exportaciones_de_servicios\", \"label\": \"ingreso de cobros de exportaciones de servicios\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"supervisado_por\", \"vecino_id\": \"organismo_regulador:bcra\", \"vecino_label\": \"bcra\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Sección 2 > Sección 2 — preámbulo\"}]}], \"salientes_truncado\": false}",
+          "output_chars": 433
+        },
+        {
+          "n": 7,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "plazo:20_dias_habiles"
+          },
+          "output_truncado": "{\"id\": \"plazo:20_dias_habiles\", \"type\": \"Plazo\", \"label\": \"20 días hábiles\", \"properties\": {\"description\": [\"Período de riesgo de margen para conjuntos de neteo cuyo número de operaciones supere las 5.000 en el trimestre anterior.\", \"Período mínimo de mantenimiento para conjuntos de neteo con activos en garantía ilíquidos o derivados OTC que no puedan sustituirse fácilmente.\", \"Plazo máximo para ingreso y liquidación contado a partir de la percepción en exterior o país o acreditación en cuentas del exterior.\", \"Plazo para liquidación en mercado de cambios.\", \"Plazo desde la percepción de fondos por enajenación de activos no financieros no producidos.\", \"Plazo máximo para ingresar y liquidar cobros de exportaciones en el mercado de cambios contado desde la fecha de cobro.\", \"Plazo para ingresar divisas contado desde la fecha de puesta a disposición de los fondos.\", \"Plazo para liquidar divisas en el mercado de cambios.\", \"Plazo máximo para ingresar y liquidar en el mercado de cambios el monto percibido en moneda extranjera.\", \"Plazo para que el importador ingrese recuperos en moneda extranjera por el mercado de cambios desde la fecha de cobro.\"], \"unidad\": \"días hábiles\", \"duracion\"… [+874 chars]",
+          "output_chars": 2074
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1465,
+          "output_tokens": 185,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 1.734
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3936,
+          "output_tokens": 168,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.246
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 198,
+          "cache_read": 0,
+          "cache_write": 4463,
+          "latency_s": 1.958
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 85,
+          "cache_read": 4463,
+          "cache_write": 672,
+          "latency_s": 2.891
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 6,
+          "output_tokens": 187,
+          "cache_read": 5135,
+          "cache_write": 815,
+          "latency_s": 2.796
+        }
+      ],
+      "final_json": {
+        "respuesta": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles, contado desde la fecha de cobro.",
+        "citas": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Sección 1 > Punto 2.2"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Excelente. Tengo la información completa. El plazo para ingresar y liquidar cobros de exportaciones de servicios en el mercado de cambios es de **20 días hábiles**, contado desde la fecha de cobro.\n\n```json\n{\n  \"respuesta\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles, contado desde la fecha de cobro.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Sección 1 > Punto 2.2\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 7,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 1 > Punto 2.2"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 2 > Sección 2 — preámbulo"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Sección 4 > Sección 4 — preámbulo"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 3 > Sección 3 — preámbulo"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 7 > Sección 7 — preámbulo"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 7 > Punto 7.6"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 10 > Sección 10 — preámbulo"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Sección 10 > Anexo d > Sección 10 — preámbulo"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5421,
+      "tokens_out": 823,
+      "cache_read": 9598,
+      "cache_write": 5950,
+      "cost_usd": 0.017933,
+      "latency_s": 11.64,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01LGZxyr5NXGDH9q942evbrL",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre los plazos para ingresar y liquidar cobros de exportaciones de servicios en el mercado de cambios.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_019Vdyqi3J8WApzQ9Vm81YMY",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "exportaciones servicios plazo ingreso liquidación mercado cambios",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01LroKUXWneDFCUBYHvwgffH",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "cobros exportaciones servicios plazo",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1465,
+            "output_tokens": 185,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Dxqf4twwfQqqrg8jrF3zwB",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Encontré resultados relevantes. Voy a ver el detalle de la obligación específica sobre ingreso y liquidación de cobros de exportaciones de servicios.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_017yM9CqUxv9yuWbZNqspq6q",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "obligacion:ingreso_y_liquidacion_en_mercado_de_cambios"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_019mqjkauSTMHLBGR9U9WX6C",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "operacion:ingreso_de_cobros_de_exportaciones_de_servicios"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3936,
+            "output_tokens": 168,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01DDTtxPhBAjCmeVXs8KbSD6",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Necesito ver los vecinos de estos nodos para encontrar el plazo específico. Voy a explorar las relaciones.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_015LVcQggXhAvmgUzTxAxSmZ",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "obligacion:ingreso_y_liquidacion_en_mercado_de_cambios",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01BJuWKedKDdsQ35jLrWe59i",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "operacion:ingreso_de_cobros_de_exportaciones_de_servicios",
+                "direccion": "salientes"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4463
+            },
+            "cache_creation_input_tokens": 4463,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 198,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01Rs1uMa3M9gc9VQhEYs5Cof",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Encontré la información. Voy a verificar el plazo específico.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01QWfdEKxzVnKTzRBdVRvriv",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "plazo:20_dias_habiles"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 672
+            },
+            "cache_creation_input_tokens": 672,
+            "cache_read_input_tokens": 4463,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 85,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01PAQKsdVQkgdhPygktsWReY",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Tengo la información completa. El plazo para ingresar y liquidar cobros de exportaciones de servicios en el mercado de cambios es de **20 días hábiles**, contado desde la fecha de cobro.\n\n```json\n{\n  \"respuesta\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles, contado desde la fecha de cobro.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Sección 1 > Punto 2.2\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 815
+            },
+            "cache_creation_input_tokens": 815,
+            "cache_read_input_tokens": 5135,
+            "inference_geo": "not_available",
+            "input_tokens": 6,
+            "output_tokens": 187,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento correcto (TO_exterior_cambios_actual.pdf) pero solo llega a nivel de sección/punto 2.2, sin precisar el subpunto 2.2.1 del ground truth."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles.",
+            "central": true
+          },
+          {
+            "enunciado": "El plazo de 20 días hábiles se cuenta desde la fecha de cobro.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El plazo de 20 días hábiles se cuenta desde la fecha de cobro.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento correcto (TO_exterior_cambios_actual.pdf) pero solo llega a nivel de sección/punto 2.2, sin precisar el subpunto 2.2.1 del ground truth.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2275,
+        "out": 500
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011FjrwdqwBnWzYbdtcwV6Xe",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles.\", \"central\": true},\n    {\"enunciado\": \"El plazo de 20 días hábiles se cuenta desde la fecha de cobro.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\"]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 616,
+            "output_tokens": 163,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_01WrYzszBt9rwkJLHguvJoY8",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"Los cobros de exportaciones de servicios deben ingresarse y liquidarse en el mercado de cambios dentro de un plazo máximo de 20 días hábiles.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El plazo de 20 días hábiles se cuenta desde la fecha de cobro.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"plazo para ingresar y liquidar en el mercado de cambios los cobros de exportaciones de servicios\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento correcto (TO_exterior_cambios_actual.pdf) pero solo llega a nivel de sección/punto 2.2, sin precisar el subpunto 2.2.1 del ground truth.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1659,
+            "output_tokens": 337,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.017933,
+    "judge_cost": 0.014325
+  }
+]

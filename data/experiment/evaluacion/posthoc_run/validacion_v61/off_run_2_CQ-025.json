@@ -1,0 +1,994 @@
+{
+ "id_falla": "run_2/CQ-025",
+ "run": "run_2",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_2/CQ-025",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'Régimen Informativo Capitales Mínimos', 'limite': 10}",
+      "devolvio": "77 matches; procedimientos del régimen informativo de capitales mínimos, norma de supervisión, régimen contable mensual",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'riesgo de mercado frecuencia informe', 'limite': 10}",
+      "devolvio": "conceptos y obligaciones de riesgo de mercado; NO incluye el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' que porta la frecuencia trimestral",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'ratio apalancamiento frecuencia reporte', 'limite': 10}",
+      "devolvio": "nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' (trimestral)",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{'id': 'obligacion:informar_exigencia_por_riesgo_de_mercado'}",
+      "devolvio": "Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1. (NO afirma frecuencia de reporte)",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{'id': 'obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento'}",
+      "devolvio": "Ratio de apalancamiento con frecuencia trimestral, datos del mes de cierre de trimestre",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{'id': 'procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos'}",
+      "devolvio": "descripción genérica del procedimiento del régimen informativo",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'obligacion:informar_exigencia_por_riesgo_de_mercado'}",
+      "devolvio": "1 saliente: referencia a Lineamientos para la Gestión de Riesgos",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos",
+     "Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.",
+       "ubicacion": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado"
+      },
+      "fuente": {
+       "quote": "1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral (...) - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) (...)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "riesgo de mercado frecuencia trimestral",
+       "resultado": "el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' (frecuencia trimestral) aparece PRIMERO — alcanzable"
+      },
+      {
+       "consulta": "datos complementarios exigencia riesgo de mercado",
+       "resultado": "el mismo nodo pertinente aparece PRIMERO — alcanzable con términos de la pregunta"
+      },
+      {
+       "consulta": "envío mensual datos riesgo de mercado (réplica del vocabulario del agente)",
+       "resultado": "el nodo trimestral aparece en 2º lugar; el agente disponía de vocabulario que lo alcanzaba"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "PATA riesgo de mercado (fallida): el juez marcó falso 'se informa con frecuencia mensual'. Verifiqué el PDF (Sección 12 Punto 1.1): la información del R.I.-C.M. es mensual por defecto EXCEPTO los datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado, que tienen frecuencia TRIMESTRAL con datos del último mes de cada trimestre — el mismo punto que fija la frecuencia trimestral del ratio de apalancamiento (pata que el juez aprobó). La respuesta correcta es trimestral. C1a — ¿apareció el dato pertinente (trimestral) en la trayectoria? NO: en el paso 2 (verificado íntegro con ver_paso_completo) el nodo portador 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' no salió en el top; el agente abrió en el paso 4 'informar_exigencia_por_riesgo_de_mercado' ('posiciones del último día del mes' — un dato de CÁLCULO/importe, no de frecuencia de reporte) y de ahí infirió erróneamente 'mensual'. El nodo pertinente nunca apareció → síntoma context_recall a nivel pata. C2 — ¿existe nodo portador y era alcanzable? Existe con contenido correcto y es ALCANZABLE por búsqueda léxica: aparece PRIMERO con 'riesgo de mercado frecuencia trimestral' y con 'datos complementarios exigencia riesgo de mercado' (términos plausibles ex ante desde la pregunta y desde el vocabulario que el propio agente ya usó para el ratio). El agente además YA sabía por el ratio que la frecuencia estaba en la Sección 12 Punto 1.1/12.4, pero no exploró el nodo análogo de riesgo de mercado allí. Por tanto no es alcanzabilidad_kg ni completitud_kg (el dato existe y se llega): es un fallo de navegación del agente. Descarto contenido_kg (el nodo es fiel al PDF) y aplicacion_erronea (el nodo de 'último día del mes' que usó el agente es sobre el cálculo del importe, distinto alcance, pero eso solo confirma que faltó traer el nodo pertinente de frecuencia — el defecto operante es no haberlo navegado). El claim no-central 'corresponde a las posiciones del último día del mes' sí tiene soporte en la trayectoria (nodo 'informar_exigencia_por_riesgo_de_mercado' y 'requisito ... código 70800000') pero es un dato de determinación de la partida mezclado con la frecuencia; no agrega un defecto de sistema distinto una vez explicada la falla central por navegación. Atribución primaria única: {context_recall, navegación}, lado agente.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 182829,
+    "tokens_out": 5969
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 11,
+    "tokens_in": 182829,
+    "tokens_out": 5969,
+    "latency_s": 99.604,
+    "error": null,
+    "final_raw": "El claim \"posiciones del último día del mes\" está soportado por varios nodos consultados. Es cierto para el importe/cálculo, pero no es la frecuencia de reporte. Tengo evidencia suficiente para atribuir.\n\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'Régimen Informativo Capitales Mínimos', 'limite': 10}\", \"devolvio\": \"77 matches; procedimientos del régimen informativo de capitales mínimos, norma de supervisión, régimen contable mensual\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'riesgo de mercado frecuencia informe', 'limite': 10}\", \"devolvio\": \"conceptos y obligaciones de riesgo de mercado; NO incluye el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' que porta la frecuencia trimestral\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'ratio apalancamiento frecuencia reporte', 'limite': 10}\", \"devolvio\": \"nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' (trimestral)\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'obligacion:informar_exigencia_por_riesgo_de_mercado'}\", \"devolvio\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1. (NO afirma frecuencia de reporte)\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento'}\", \"devolvio\": \"Ratio de apalancamiento con frecuencia trimestral, datos del mes de cierre de trimestre\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos'}\", \"devolvio\": \"descripción genérica del procedimiento del régimen informativo\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'obligacion:informar_exigencia_por_riesgo_de_mercado'}\", \"devolvio\": \"1 saliente: referencia a Lineamientos para la Gestión de Riesgos\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos\",\n      \"Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"ubicacion\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\"},\n        \"fuente\": {\"quote\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral (...) - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) (...)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"riesgo de mercado frecuencia trimestral\", \"resultado\": \"el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' (frecuencia trimestral) aparece PRIMERO — alcanzable\"},\n        {\"consulta\": \"datos complementarios exigencia riesgo de mercado\", \"resultado\": \"el mismo nodo pertinente aparece PRIMERO — alcanzable con términos de la pregunta\"},\n        {\"consulta\": \"envío mensual datos riesgo de mercado (réplica del vocabulario del agente)\", \"resultado\": \"el nodo trimestral aparece en 2º lugar; el agente disponía de vocabulario que lo alcanzaba\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"PATA riesgo de mercado (fallida): el juez marcó falso 'se informa con frecuencia mensual'. Verifiqué el PDF (Sección 12 Punto 1.1): la información del R.I.-C.M. es mensual por defecto EXCEPTO los datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado, que tienen frecuencia TRIMESTRAL con datos del último mes de cada trimestre — el mismo punto que fija la frecuencia trimestral del ratio de apalancamiento (pata que el juez aprobó). La respuesta correcta es trimestral. C1a — ¿apareció el dato pertinente (trimestral) en la trayectoria? NO: en el paso 2 (verificado íntegro con ver_paso_completo) el nodo portador 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' no salió en el top; el agente abrió en el paso 4 'informar_exigencia_por_riesgo_de_mercado' ('posiciones del último día del mes' — un dato de CÁLCULO/importe, no de frecuencia de reporte) y de ahí infirió erróneamente 'mensual'. El nodo pertinente nunca apareció → síntoma context_recall a nivel pata. C2 — ¿existe nodo portador y era alcanzable? Existe con contenido correcto y es ALCANZABLE por búsqueda léxica: aparece PRIMERO con 'riesgo de mercado frecuencia trimestral' y con 'datos complementarios exigencia riesgo de mercado' (términos plausibles ex ante desde la pregunta y desde el vocabulario que el propio agente ya usó para el ratio). El agente además YA sabía por el ratio que la frecuencia estaba en la Sección 12 Punto 1.1/12.4, pero no exploró el nodo análogo de riesgo de mercado allí. Por tanto no es alcanzabilidad_kg ni completitud_kg (el dato existe y se llega): es un fallo de navegación del agente. Descarto contenido_kg (el nodo es fiel al PDF) y aplicacion_erronea (el nodo de 'último día del mes' que usó el agente es sobre el cálculo del importe, distinto alcance, pero eso solo confirma que faltó traer el nodo pertinente de frecuencia — el defecto operante es no haberlo navegado). El claim no-central 'corresponde a las posiciones del último día del mes' sí tiene soporte en la trayectoria (nodo 'informar_exigencia_por_riesgo_de_mercado' y 'requisito ... código 70800000') pero es un dato de determinación de la partida mezclado con la frecuencia; no agrega un defecto de sistema distinto una vez explicada la falla central por navegación. Atribución primaria única: {context_recall, navegación}, lado agente.\"\n}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"total_con_match\": 3774, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición… [+2175 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 7 > Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 7 > Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "frecuencia riesgo de mercado exigencia informar periodicidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"frecuencia riesgo de mercado exigencia informar periodicidad\", \"total_con_match\": 3810, \"resultados\": [{\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por riesgo de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:determinar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"determinar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de determinar la exigencia por riesgo de mercado con los valores registrados al último día del período de información, mediante suma de códigos espec…\"}, {\"id\": \"obligacion:exigencia_de_capital_por_riesgo_de_mercado\", \"type\"… [+2299 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "envío mensual datos riesgo de mercado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"envío mensual datos riesgo de mercado\", \"total_con_match\": 3782, \"resultados\": [{\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Complementar información con envío mensual de datos según riesgo considerado.\"}, {\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo gene… [+2131 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"properties\": {\"description\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"properties\": {\"description\": \"Complementar información con envío mensual de datos según riesgo considerado.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4 > Punto 4.3\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 12 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (par… [+425 chars]"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 4 > Punto 4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4 > Punto 4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.3 (PDF pág 16)\", \"pasaje\": \"4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de \\nmercado - Modelos de información \\n \\n4.3.1. Riesgo específico de tasa \\n  \\nCódigo de  \\nPartida Descripción \\n551100/xx \\nBCRA, Gobierno Nacional, gobiernos provinciales, municipales y \\nde la Ciudad Autónoma de Buenos Aires en pesos cuando su \\nfuente de financiación es esa moneda. \\n551110/xx Plazo ≤ 6 meses. \\n551120/xx 6 meses < Plazo ≤ 24 meses. \\n551130/xx Plazo > 24 meses. \\n551200/xx \\nBanco de Pagos Internacionales, Fondo Monetario Internacional, \\nBanco Central Europeo y Comunidad Europea y Bancos Multila-\\nterales de Desarrollo del punto 2.6.3.1. de las normas sobre “Ca-\\npitales mínimos de las entidades financieras” \\n551300/xx BCRA y sector público no financiero. Demás. \\n551400/xx Otros soberanos y sus bancos centrales. \\n551500/xx Entidades financieras del país y del exterior. \\n551600/xx \\nInstrumentos con oferta pública autorizada emitidos por empre-\\nsas y otras personas jurídica… [+447 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "riesgo de mercado frecuencia trimestral",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"riesgo de mercado frecuencia trimestral\", \"total_con_match\": 3776, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo… [+2133 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "datos complementarios exigencia riesgo de mercado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"datos complementarios exigencia riesgo de mercado\", \"total_con_match\": 3790, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, {\"id\": \"obligacion:determin… [+2212 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "requisito:exigencia_por_riesgo_de_mercado_codigo_70800000"
+      },
+      "output_truncado": "{\"id\": \"requisito:exigencia_por_riesgo_de_mercado_codigo_70800000\", \"type\": \"Requisito\", \"label\": \"exigencia por riesgo de mercado código 70800000\", \"properties\": {\"description\": \"Exigencia por riesgo de mercado para posiciones del último día del mes, código 70800000.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1 > Sección 1 — preámbulo\"}]}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 19488,
+      "output_tokens": 230
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21592,
+      "output_tokens": 269
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24823,
+      "output_tokens": 253
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25570,
+      "output_tokens": 364
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27540,
+      "output_tokens": 834
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31304,
+      "output_tokens": 1013
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 32512,
+      "output_tokens": 3006
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 31,
+     "n_claims_fallidos": 2,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-025",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Régimen Informativo Capitales Mínimos\", \"limite\": 10}",
+      "devolvio": "77 matches; procedimientos del régimen informativo de capitales mínimos, norma de vencimientos, régimen contable mensual",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}",
+      "devolvio": "3774 matches; conceptos y obligaciones sobre riesgo de mercado (informar/determinar exigencia, envío mensual de datos), pero NO el nodo de frecuencia trimestral de datos complementarios",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"ratio apalancamiento frecuencia reporte\", \"limite\": 10}",
+      "devolvio": "39 matches; incluye 'mantenimiento de frecuencia trimestral del Ratio de apalancamiento' y 'presentación trimestral de ratio de apalancamiento'",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\"}",
+      "devolvio": "'Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.' — NO declara frecuencia",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\"}",
+      "devolvio": "'El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre...' — responde la pata de apalancamiento",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos\"}",
+      "devolvio": "Descripción genérica del procedimiento del régimen; sin frecuencia",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\"}",
+      "devolvio": "1 saliente: referencia a 'Lineamientos para la Gestión de Riesgos'; sin dato de frecuencia",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 2,
+     "quote": "buscar_nodos({\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}) → resultados: exigencia_por_riesgo_de_mercado, informar_exigencia_por_riesgo_de_mercado (…posiciones del último día del mes…), envio_mensual_de_datos_sobre_riesgo_de_mercado"
+    },
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos",
+     "Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Frecuencia con que se informa la exigencia por riesgo de mercado",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.",
+       "ubicacion": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado (nodo portador, NO consultado por el agente)"
+      },
+      "fuente": {
+       "quote": "1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral (…) - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) (…)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "riesgo de mercado frecuencia (réplica del vocabulario ex ante del agente)",
+       "resultado": "top-15 NO incluye el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado'; solo conceptos/obligaciones de determinar/informar y 'envío mensual de datos'"
+      },
+      {
+       "consulta": "frecuencia trimestral riesgo de mercado información complementaria",
+       "resultado": "el nodo portador aparece PRIMERO (4 tokens)"
+      },
+      {
+       "consulta": "presentación datos complementarios riesgo de mercado",
+       "resultado": "el nodo portador aparece PRIMERO con 6 tokens matcheados — alcanzable con vocabulario razonable ex ante (presentación/datos/informa/riesgo de mercado)"
+      }
+     ]
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "aplicacion_erronea",
+     "lado": "agente",
+     "jerarquia": "secundaria",
+     "pata": "Frecuencia con que se informa la exigencia por riesgo de mercado",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "La exigencia por riesgo de mercado corresponde a las posiciones del último día del mes.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.",
+       "ubicacion": "obligacion:informar_exigencia_por_riesgo_de_mercado (consultado en paso 4)"
+      },
+      "fuente": {
+       "quote": "4.1.1.1. La exigencia por riesgo de mercado se determinará con los valores que se registren al último día del período de información (n)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "verificación del período de la posición vs frecuencia de envío",
+       "resultado": "el nodo describe el PERÍODO de la posición ('último día del mes'), que es fiel al PDF, pero el agente lo usó como sustento de la FRECUENCIA de informe (mensual), alcance distinto; el PDF asigna a estos datos frecuencia TRIMESTRAL"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "La pregunta tiene dos patas. La pata de ratio de apalancamiento fue aprobada por el juez: en el paso 3 la búsqueda 'ratio apalancamiento frecuencia reporte' trajo directamente el nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' cuyo label contiene 'frecuencia trimestral', y el agente lo abrió (paso 5). Esa pata no se re-litiga. La pata fallida es la de riesgo de mercado: el juez marcó falso 'se informa con frecuencia mensual'. C1a (por pata): el dato PERTINENTE es la frecuencia de presentación del riesgo de mercado, que reside en 'obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' ('...se presentarán con frecuencia trimestral...'), fiel al PDF Sección 12 Punto 1.1. Ese nodo NUNCA apareció en la trayectoria del agente: su paso 2 ('riesgo de mercado frecuencia informe') no lo devolvió y el agente no reformuló → síntoma context_recall. C2 (árbol context_recall): ¿existe nodo portador? Sí, exhibido, con contenido correcto y provenance que ancla en el PDF. ¿Es alcanzable con búsquedas razonables del vocabulario ex ante? Sí: 'presentación datos complementarios riesgo de mercado' lo devuelve PRIMERO (6 tokens) — 'presentación', 'datos', 'informa', 'riesgo de mercado' son términos plausibles desde una pregunta sobre 'con qué frecuencia se informa la exigencia por riesgo de mercado'. Por lo tanto NO es alcanzabilidad_kg ni completitud_kg (el dato existe): es navegación (defecto del agente), primaria — es lo que explica la reprobación. Como secundaria, el agente cometió aplicacion_erronea con el claim no-central: usó el nodo 'informar_exigencia_por_riesgo_de_mercado' (que dice 'posiciones del último día del mes', fiel al PDF 4.1.1 como PERÍODO de la posición) para inferir/justificar una FRECUENCIA mensual de envío — alcance distinto (período de posición ≠ periodicidad del régimen); el propio PDF asigna a estos datos frecuencia trimestral. El nodo era fiel pero su contenido se aplicó fuera de su alcance conceptual. Descarto contenido_kg (los nodos no contradicen el PDF), completitud_kg y alcanzabilidad_kg (el nodo de frecuencia existe y es alcanzable), y sin_defecto (el claim central es efectivamente incorrecto contra el GT/PDF).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 16,
+    "max_tool_calls": 40,
+    "tokens_in": 323559,
+    "tokens_out": 8705
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 16,
+    "tokens_in": 323559,
+    "tokens_out": 8705,
+    "latency_s": 128.803,
+    "error": null,
+    "final_raw": "Confirmado el contraste: en el paso 3 (ratio de apalancamiento) el agente SÍ obtuvo directamente el nodo `mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento` porque su búsqueda \"ratio apalancamiento frecuencia reporte\" hizo match con un label que contiene \"frecuencia trimestral\". Por eso esa pata está bien.\n\nEn cambio para riesgo de mercado (paso 2), la búsqueda \"riesgo de mercado frecuencia informe\" NO trajo el nodo con la frecuencia (cuyo label empieza con \"presentación trimestral...\"), y el agente no reformuló la búsqueda ni exploró vecinos del nodo de frecuencia. El nodo portador existía y era alcanzable con reformulaciones razonables.\n\nTengo evidencia completa. Emito el JSON.\n\n{\"extraccion_traza\": {\"tool_calls\": [{\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Régimen Informativo Capitales Mínimos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"77 matches; procedimientos del régimen informativo de capitales mínimos, norma de vencimientos, régimen contable mensual\", \"pertinente\": true}, {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"riesgo de mercado frecuencia informe\\\", \\\"limite\\\": 10}\", \"devolvio\": \"3774 matches; conceptos y obligaciones sobre riesgo de mercado (informar/determinar exigencia, envío mensual de datos), pero NO el nodo de frecuencia trimestral de datos complementarios\", \"pertinente\": false}, {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"ratio apalancamiento frecuencia reporte\\\", \\\"limite\\\": 10}\", \"devolvio\": \"39 matches; incluye 'mantenimiento de frecuencia trimestral del Ratio de apalancamiento' y 'presentación trimestral de ratio de apalancamiento'\", \"pertinente\": true}, {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"obligacion:informar_exigencia_por_riesgo_de_mercado\\\"}\", \"devolvio\": \"'Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.' — NO declara frecuencia\", \"pertinente\": false}, {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\\\"}\", \"devolvio\": \"'El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre...' — responde la pata de apalancamiento\", \"pertinente\": true}, {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos\\\"}\", \"devolvio\": \"Descripción genérica del procedimiento del régimen; sin frecuencia\", \"pertinente\": false}, {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"obligacion:informar_exigencia_por_riesgo_de_mercado\\\"}\", \"devolvio\": \"1 saliente: referencia a 'Lineamientos para la Gestión de Riesgos'; sin dato de frecuencia\", \"pertinente\": false}], \"paso_decision_error\": {\"paso\": 2, \"quote\": \"buscar_nodos({\\\"consulta\\\": \\\"riesgo de mercado frecuencia informe\\\", \\\"limite\\\": 10}) → resultados: exigencia_por_riesgo_de_mercado, informar_exigencia_por_riesgo_de_mercado (…posiciones del último día del mes…), envio_mensual_de_datos_sobre_riesgo_de_mercado\"}, \"thinking_decision\": null, \"patas\": [\"Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos\", \"Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos\"]}, \"atribuciones\": [{\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"navegación\", \"lado\": \"agente\", \"jerarquia\": \"primaria\", \"pata\": \"Frecuencia con que se informa la exigencia por riesgo de mercado\", \"evidencia\": {\"afirmacion\": {\"quote\": \"En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"ubicacion\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado (nodo portador, NO consultado por el agente)\"}, \"fuente\": {\"quote\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral (…) - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) (…)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1\"}}, \"busquedas\": [{\"consulta\": \"riesgo de mercado frecuencia (réplica del vocabulario ex ante del agente)\", \"resultado\": \"top-15 NO incluye el nodo 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado'; solo conceptos/obligaciones de determinar/informar y 'envío mensual de datos'\"}, {\"consulta\": \"frecuencia trimestral riesgo de mercado información complementaria\", \"resultado\": \"el nodo portador aparece PRIMERO (4 tokens)\"}, {\"consulta\": \"presentación datos complementarios riesgo de mercado\", \"resultado\": \"el nodo portador aparece PRIMERO con 6 tokens matcheados — alcanzable con vocabulario razonable ex ante (presentación/datos/informa/riesgo de mercado)\"}]}, {\"sintoma_capa1\": \"noise_sensitivity\", \"causa_capa2\": \"aplicacion_erronea\", \"lado\": \"agente\", \"jerarquia\": \"secundaria\", \"pata\": \"Frecuencia con que se informa la exigencia por riesgo de mercado\", \"evidencia\": {\"afirmacion\": {\"quote\": \"La exigencia por riesgo de mercado corresponde a las posiciones del último día del mes.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\", \"ubicacion\": \"obligacion:informar_exigencia_por_riesgo_de_mercado (consultado en paso 4)\"}, \"fuente\": {\"quote\": \"4.1.1.1. La exigencia por riesgo de mercado se determinará con los valores que se registren al último día del período de información (n)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 4.1.1\"}}, \"busquedas\": [{\"consulta\": \"verificación del período de la posición vs frecuencia de envío\", \"resultado\": \"el nodo describe el PERÍODO de la posición ('último día del mes'), que es fiel al PDF, pero el agente lo usó como sustento de la FRECUENCIA de informe (mensual), alcance distinto; el PDF asigna a estos datos frecuencia TRIMESTRAL\"}]}], \"razonamiento\": \"La pregunta tiene dos patas. La pata de ratio de apalancamiento fue aprobada por el juez: en el paso 3 la búsqueda 'ratio apalancamiento frecuencia reporte' trajo directamente el nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' cuyo label contiene 'frecuencia trimestral', y el agente lo abrió (paso 5). Esa pata no se re-litiga. La pata fallida es la de riesgo de mercado: el juez marcó falso 'se informa con frecuencia mensual'. C1a (por pata): el dato PERTINENTE es la frecuencia de presentación del riesgo de mercado, que reside en 'obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' ('...se presentarán con frecuencia trimestral...'), fiel al PDF Sección 12 Punto 1.1. Ese nodo NUNCA apareció en la trayectoria del agente: su paso 2 ('riesgo de mercado frecuencia informe') no lo devolvió y el agente no reformuló → síntoma context_recall. C2 (árbol context_recall): ¿existe nodo portador? Sí, exhibido, con contenido correcto y provenance que ancla en el PDF. ¿Es alcanzable con búsquedas razonables del vocabulario ex ante? Sí: 'presentación datos complementarios riesgo de mercado' lo devuelve PRIMERO (6 tokens) — 'presentación', 'datos', 'informa', 'riesgo de mercado' son términos plausibles desde una pregunta sobre 'con qué frecuencia se informa la exigencia por riesgo de mercado'. Por lo tanto NO es alcanzabilidad_kg ni completitud_kg (el dato existe): es navegación (defecto del agente), primaria — es lo que explica la reprobación. Como secundaria, el agente cometió aplicacion_erronea con el claim no-central: usó el nodo 'informar_exigencia_por_riesgo_de_mercado' (que dice 'posiciones del último día del mes', fiel al PDF 4.1.1 como PERÍODO de la posición) para inferir/justificar una FRECUENCIA mensual de envío — alcance distinto (período de posición ≠ periodicidad del régimen); el propio PDF asigna a estos datos frecuencia trimestral. El nodo era fiel pero su contenido se aplicó fuera de su alcance conceptual. Descarto contenido_kg (los nodos no contradicen el PDF), completitud_kg y alcanzabilidad_kg (el nodo de frecuencia existe y es alcanzable), y sin_defecto (el claim central es efectivamente incorrecto contra el GT/PDF).\"}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 7 > Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 7 > Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"total_con_match\": 3774, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición… [+2175 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "frecuencia mensual exigencia riesgo de mercado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"frecuencia mensual exigencia riesgo de mercado\", \"total_con_match\": 3791, \"resultados\": [{\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, {\"id\": \"obligacion:determinar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"determinar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de determinar la exigencia por riesgo de mercado con los valores registrados al último día del período de información, mediante suma de códigos espec…\"}, {\"id\": \"obligacion:exigencia_de_capital_por_riesgo_de_mercado\", \"type\": \"Obligacion\"… [+2146 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "vencimiento periodicidad riesgo de mercado régimen informativo",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"vencimiento periodicidad riesgo de mercado régimen informativo\", \"total_con_match\": 3791, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"l… [+2067 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"properties\": {\"description\": \"Complementar información con envío mensual de datos según riesgo considerado.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4 > Punto 4.3\"}]}"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "requisito:exigencia_por_riesgo_de_mercado_codigo_70800000"
+      },
+      "output_truncado": "{\"id\": \"requisito:exigencia_por_riesgo_de_mercado_codigo_70800000\", \"type\": \"Requisito\", \"label\": \"exigencia por riesgo de mercado código 70800000\", \"properties\": {\"description\": \"Exigencia por riesgo de mercado para posiciones del último día del mes, código 70800000.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1 > Sección 1 — preámbulo\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 4.1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.1.1 (PDF pág 11)\", \"pasaje\": \"4.1.1. Exigencia \\n4.1.1.1. La exigencia por riesgo de mercado se determinará con los valores que se registren \\nal último día del período de información (n), y el total surgirá de la siguiente suma: \\nCódigo 70800000 (n) = Código 311000/xx + Código 312000/xx + Código 313000/xx \\n+ Código 315000/xx + Código 314000/xx\\nA estos fines, se reemplazarán las dos últimas posiciones de cada partida de \\nexigencia por el último día del período que corresponda (ejemplo, xx = 31). \\n4.1.1.2. Código 311100/xx \\nSe consignará el valor de la exigencia por riesgo específico de tasa de interés para \\nel último día del período (n) determinada conforme a las disposiciones del punto \\n6.2.1. de las normas sobre “Capitales mínimos de las entidades financieras”. \\n4.1.1.3. Código 311200/xx \\nSe consignará el valor de la exigencia por riesgo general de tasa de interés para el \\núltimo día del período (n) determinada conforme a las disposiciones del punto 6.2.2. \\nde las normas sobre “Capitales mínimos de las ent… [+417 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.3 (PDF pág 16)\", \"pasaje\": \"4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de \\nmercado - Modelos de información \\n \\n4.3.1. Riesgo específico de tasa \\n  \\nCódigo de  \\nPartida Descripción \\n551100/xx \\nBCRA, Gobierno Nacional, gobiernos provinciales, municipales y \\nde la Ciudad Autónoma de Buenos Aires en pesos cuando su \\nfuente de financiación es esa moneda. \\n551110/xx Plazo ≤ 6 meses. \\n551120/xx 6 meses < Plazo ≤ 24 meses. \\n551130/xx Plazo > 24 meses. \\n551200/xx \\nBanco de Pagos Internacionales, Fondo Monetario Internacional, \\nBanco Central Europeo y Comunidad Europea y Bancos Multila-\\nterales de Desarrollo del punto 2.6.3.1. de las normas sobre “Ca-\\npitales mínimos de las entidades financieras” \\n551300/xx BCRA y sector público no financiero. Demás. \\n551400/xx Otros soberanos y sus bancos centrales. \\n551500/xx Entidades financieras del país y del exterior. \\n551600/xx \\nInstrumentos con oferta pública autorizada emitidos por empre-\\nsas y otras personas jurídicas del país y… [+435 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "requisito:exigencia_por_riesgo_de_mercado_codigo_70800000"
+      },
+      "output_truncado": "{\"id\": \"requisito:exigencia_por_riesgo_de_mercado_codigo_70800000\", \"label\": \"exigencia por riesgo de mercado código 70800000\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"requiere\", \"vecino_id\": \"obligacion:presentar_informacion_consolidada_mensual_o_declaracion_sustitutiva\", \"vecino_label\": \"presentar información consolidada mensual o declaración sustitutiva\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1 > Sección 1 — preámbulo\"}]}], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "frecuencia trimestral riesgo de mercado información complementaria",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"frecuencia trimestral riesgo de mercado información complementaria\", \"total_con_match\": 3807, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_de… [+2160 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"properties\": {\"description\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\"}]}"
+     },
+     {
+      "n": 13,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 12 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (par… [+425 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "riesgo de mercado frecuencia",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"riesgo de mercado frecuencia\", \"total_con_match\": 3768, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por rie… [+3774 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "presentación datos complementarios riesgo de mercado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"presentación datos complementarios riesgo de mercado\", \"total_con_match\": 3782, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Complementar información con envío mensual de datos según riesgo considerado.\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label… [+2146 chars]"
+     },
+     {
+      "n": 16,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 3
+      },
+      "output_truncado": "{\"paso\": 3, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"ratio apalancamiento frecuencia reporte\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"ratio apalancamiento frecuencia reporte\", \"total_con_match\": 39, \"resultados\": [{\"id\": \"obligacion:reporte_del_ratio_de_apalancamiento_con_codigo_de_consolidacion_3\", \"type\": \"Obligacion\", \"label\": \"reporte del Ratio de apalancamiento con código de consolidación 3\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se continuará informando código de consolidación 3 para el Ratio de apalancamiento, pero las operaciones a incluir serán las del perímetro de consolidación mens…\"}, {\"id\": \"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\", \"type\": \"Obligacion\", \"label\": \"mantenimiento de frecuencia trimestral del Ratio de apalancamiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre y su vencimiento según el Régimen Informativo para Superv…\"}, {\"id\": \"concepto_definido:ratio_de_apalancamiento\", \"type\": \"ConceptoDefinido\", \"label\": \"ratio de apalancamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Med… [+2376 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 19488,
+      "output_tokens": 255
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21617,
+      "output_tokens": 325
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 24819,
+      "output_tokens": 464
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25970,
+      "output_tokens": 538
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28081,
+      "output_tokens": 522
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30368,
+      "output_tokens": 251
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30864,
+      "output_tokens": 159
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 31735,
+      "output_tokens": 866
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34720,
+      "output_tokens": 552
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36702,
+      "output_tokens": 940
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39195,
+      "output_tokens": 3833
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 31,
+     "n_claims_fallidos": 2,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_2/CQ-025",
+   "run": "run_2",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"Régimen Informativo Capitales Mínimos\", \"limite\": 10}",
+      "devolvio": "Procedimientos del régimen informativo de capitales mínimos; nodos genéricos del régimen.",
+      "pertinente": true
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}",
+      "devolvio": "Conceptos y obligaciones de riesgo de mercado; ninguno declara la frecuencia trimestral; el nodo 'informar_exigencia_por_riesgo_de_mercado' habla de 'posiciones del último día del mes'. NO aparece el nodo portador de la frecuencia real.",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{\"consulta\": \"ratio apalancamiento frecuencia reporte\", \"limite\": 10}",
+      "devolvio": "Devuelve como 2º resultado 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' (frecuencia trimestral en el label) — dato pertinente para la pata del ratio.",
+      "pertinente": true
+     },
+     {
+      "paso": 4,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\"}",
+      "devolvio": "'Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.' — no dice frecuencia.",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\"}",
+      "devolvio": "'El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre...' — dato pertinente y correcto para la pata del ratio.",
+      "pertinente": true
+     },
+     {
+      "paso": 6,
+      "tool": "ver_nodo",
+      "args": "{\"id\": \"procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos\"}",
+      "devolvio": "Descripción genérica del procedimiento; sin frecuencias.",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_vecinos",
+      "args": "{\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\"}",
+      "devolvio": "Una arista saliente a 'Lineamientos para la Gestión de Riesgos'; no aporta frecuencia.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 4,
+     "quote": "Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1."
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos",
+     "Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Frecuencia con que se informa la exigencia por riesgo de mercado",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual (para posiciones del último día del mes)",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.",
+       "ubicacion": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado"
+      },
+      "fuente": {
+       "quote": "1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de la siguiente manera: Con los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y diciembre): - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "riesgo de mercado frecuencia informe (búsqueda exacta del agente, ampliada a 20)",
+       "resultado": "El nodo portador 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' NO aparece entre los 20 primeros (3774 matches, el ranking léxico lo empuja fuera)."
+      },
+      {
+       "consulta": "presentación datos complementarios riesgo de mercado",
+       "resultado": "El nodo portador aparece 1º (6 tokens matcheados) — alcanzable con una reformulación razonable desde el vocabulario de la pregunta ('presentación'/'informa' + 'riesgo de mercado')."
+      },
+      {
+       "consulta": "información riesgo de mercado frecuencia trimestral vencimiento",
+       "resultado": "El nodo portador aparece 1º — confirma que existe y es fiel al PDF."
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a, por pata): la pregunta tiene dos patas. La pata del ratio de apalancamiento fue aprobada por el juez y su dato pertinente SÍ apareció (paso 3/5: nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento', fiel al PDF punto 12.4). La pata de la exigencia por riesgo de mercado FALLÓ: el dato pertinente (frecuencia TRIMESTRAL) NUNCA apareció en la trayectoria. El agente, en el paso 2, buscó 'riesgo de mercado frecuencia informe' y solo obtuvo nodos que hablan de 'posiciones del último día del mes' (momento de medición de la posición, no frecuencia de reporte); en el paso 4 abrió 'informar_exigencia_por_riesgo_de_mercado' ('...para posiciones del último día del mes...') y de ese fragmento infirió erróneamente 'frecuencia mensual'. Como el dato pertinente a la pata nunca apareció, el síntoma es context_recall (precede a faithfulness/noise_sensitivity). CAUSA (C2, árbol context_recall): ¿existe nodo portador del dato faltante? SÍ: 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' con contenido fiel al PDF (Sección 12 Punto 1.1: los datos complementarios del cálculo de la exigencia por riesgo de mercado —puntos 4.3, 4.4, 4.5— tienen frecuencia trimestral). ¿Se alcanzaba con búsquedas razonables? La consulta exacta del agente no lo trae ni a 20 resultados por el ruido de 3774 matches, PERO el nodo tiene 'trimestral', 'presentación', 'datos complementarios' y 'riesgo de mercado' en su LABEL (indexable), y una reformulación razonable desde el vocabulario de la pregunta ('presentación datos complementarios riesgo de mercado') lo devuelve 1º. No se alcanza SOLO con palabras del propio nodo ajenas a la pregunta: los términos 'presentación/informa' + 'riesgo de mercado' son términos de la pregunta. Por tanto NO es alcanzabilidad_kg sino navegación: el nodo era alcanzable con búsquedas razonables y el agente se conformó con el primer nodo que mencionaba 'último día del mes' sin buscar la frecuencia real. Prueba de contraste: para el ratio de apalancamiento el agente SÍ dio con el nodo 'trimestral' con una consulta análoga y respondió bien; para riesgo de mercado, con una consulta simétrica bien formulada el nodo también aparece primero, confirmando que el defecto es del agente (navegación), no del grafo. Descarto contenido_kg (los nodos consultados no contradicen el PDF; simplemente no portan la frecuencia), completitud_kg (el dato SÍ está en el grafo, exhibido) y alcanzabilidad_kg (alcanzable con términos de la pregunta). El claim no-central 'posiciones del último día del mes' pertenece al relleno de la misma pata fallida y no agrega un defecto distinto.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 15,
+    "max_tool_calls": 40,
+    "tokens_in": 264568,
+    "tokens_out": 8470
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 15,
+    "tokens_in": 264568,
+    "tokens_out": 8470,
+    "latency_s": 125.885,
+    "error": null,
+    "final_raw": "Confirmado: la pata del ratio de apalancamiento (aprobada por el juez) está bien fundada en el Punto 12.4 (\"mantendrá su frecuencia trimestral\"). El nodo del agente (`mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento`) es fiel.\n\nY para riesgo de mercado, la frecuencia real según el PDF (punto 1.1) es TRIMESTRAL (los datos complementarios del cálculo de la exigencia por riesgo de mercado — puntos 4.3, 4.4, 4.5 — se presentan trimestralmente). El agente dijo \"mensual\" → falso.\n\nTengo toda la evidencia. Emito el JSON.\n\n{\"extraccion_traza\": {\"tool_calls\": [{\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"Régimen Informativo Capitales Mínimos\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Procedimientos del régimen informativo de capitales mínimos; nodos genéricos del régimen.\", \"pertinente\": true}, {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"riesgo de mercado frecuencia informe\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Conceptos y obligaciones de riesgo de mercado; ninguno declara la frecuencia trimestral; el nodo 'informar_exigencia_por_riesgo_de_mercado' habla de 'posiciones del último día del mes'. NO aparece el nodo portador de la frecuencia real.\", \"pertinente\": false}, {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"ratio apalancamiento frecuencia reporte\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Devuelve como 2º resultado 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento' (frecuencia trimestral en el label) — dato pertinente para la pata del ratio.\", \"pertinente\": true}, {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"obligacion:informar_exigencia_por_riesgo_de_mercado\\\"}\", \"devolvio\": \"'Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.' — no dice frecuencia.\", \"pertinente\": false}, {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\\\"}\", \"devolvio\": \"'El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre...' — dato pertinente y correcto para la pata del ratio.\", \"pertinente\": true}, {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"procedimiento:regimen_informativo_sobre_exigencia_e_integracion_de_capitales_minimos\\\"}\", \"devolvio\": \"Descripción genérica del procedimiento; sin frecuencias.\", \"pertinente\": false}, {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"obligacion:informar_exigencia_por_riesgo_de_mercado\\\"}\", \"devolvio\": \"Una arista saliente a 'Lineamientos para la Gestión de Riesgos'; no aporta frecuencia.\", \"pertinente\": false}], \"paso_decision_error\": {\"paso\": 4, \"quote\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, \"decision_agente_correcta\": null, \"thinking_decision\": null, \"patas\": [\"Frecuencia con que se informa la exigencia por riesgo de mercado en el Régimen Informativo de Capitales Mínimos\", \"Frecuencia con que se informa la información sobre ratio de apalancamiento en el Régimen Informativo de Capitales Mínimos\"]}, \"atribuciones\": [{\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"navegación\", \"lado\": \"agente\", \"jerarquia\": \"primaria\", \"pata\": \"Frecuencia con que se informa la exigencia por riesgo de mercado\", \"evidencia\": {\"afirmacion\": {\"quote\": \"En el Régimen Informativo de Capitales Mínimos, la exigencia por riesgo de mercado se informa con frecuencia mensual (para posiciones del último día del mes)\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"ubicacion\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\"}, \"fuente\": {\"quote\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo análisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de la siguiente manera: Con los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y diciembre): - Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Sección 12 > Punto 1.1\"}}, \"busquedas\": [{\"consulta\": \"riesgo de mercado frecuencia informe (búsqueda exacta del agente, ampliada a 20)\", \"resultado\": \"El nodo portador 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' NO aparece entre los 20 primeros (3774 matches, el ranking léxico lo empuja fuera).\"}, {\"consulta\": \"presentación datos complementarios riesgo de mercado\", \"resultado\": \"El nodo portador aparece 1º (6 tokens matcheados) — alcanzable con una reformulación razonable desde el vocabulario de la pregunta ('presentación'/'informa' + 'riesgo de mercado').\"}, {\"consulta\": \"información riesgo de mercado frecuencia trimestral vencimiento\", \"resultado\": \"El nodo portador aparece 1º — confirma que existe y es fiel al PDF.\"}]}], \"razonamiento\": \"SÍNTOMA (C1a, por pata): la pregunta tiene dos patas. La pata del ratio de apalancamiento fue aprobada por el juez y su dato pertinente SÍ apareció (paso 3/5: nodo 'mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento', fiel al PDF punto 12.4). La pata de la exigencia por riesgo de mercado FALLÓ: el dato pertinente (frecuencia TRIMESTRAL) NUNCA apareció en la trayectoria. El agente, en el paso 2, buscó 'riesgo de mercado frecuencia informe' y solo obtuvo nodos que hablan de 'posiciones del último día del mes' (momento de medición de la posición, no frecuencia de reporte); en el paso 4 abrió 'informar_exigencia_por_riesgo_de_mercado' ('...para posiciones del último día del mes...') y de ese fragmento infirió erróneamente 'frecuencia mensual'. Como el dato pertinente a la pata nunca apareció, el síntoma es context_recall (precede a faithfulness/noise_sensitivity). CAUSA (C2, árbol context_recall): ¿existe nodo portador del dato faltante? SÍ: 'presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado' con contenido fiel al PDF (Sección 12 Punto 1.1: los datos complementarios del cálculo de la exigencia por riesgo de mercado —puntos 4.3, 4.4, 4.5— tienen frecuencia trimestral). ¿Se alcanzaba con búsquedas razonables? La consulta exacta del agente no lo trae ni a 20 resultados por el ruido de 3774 matches, PERO el nodo tiene 'trimestral', 'presentación', 'datos complementarios' y 'riesgo de mercado' en su LABEL (indexable), y una reformulación razonable desde el vocabulario de la pregunta ('presentación datos complementarios riesgo de mercado') lo devuelve 1º. No se alcanza SOLO con palabras del propio nodo ajenas a la pregunta: los términos 'presentación/informa' + 'riesgo de mercado' son términos de la pregunta. Por tanto NO es alcanzabilidad_kg sino navegación: el nodo era alcanzable con búsquedas razonables y el agente se conformó con el primer nodo que mencionaba 'último día del mes' sin buscar la frecuencia real. Prueba de contraste: para el ratio de apalancamiento el agente SÍ dio con el nodo 'trimestral' con una consulta análoga y respondió bien; para riesgo de mercado, con una consulta simétrica bien formulada el nodo también aparece primero, confirmando que el defecto es del agente (navegación), no del grafo. Descarto contenido_kg (los nodos consultados no contradicen el PDF; simplemente no portan la frecuencia), completitud_kg (el dato SÍ está en el grafo, exhibido) y alcanzabilidad_kg (alcanzable con términos de la pregunta). El claim no-central 'posiciones del último día del mes' pertenece al relleno de la misma pata fallida y no agrega un defecto distinto.\"}",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 7 > Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 7 > Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 2,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 2
+      },
+      "output_truncado": "{\"paso\": 2, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"riesgo de mercado frecuencia informe\", \"total_con_match\": 3774, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición… [+2175 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 7"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 7\", \"ref\": \"Punto/Sección 7 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "frecuencia exigencia riesgo de mercado periodicidad",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"frecuencia exigencia riesgo de mercado periodicidad\", \"total_con_match\": 3783, \"resultados\": [{\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, {\"id\": \"obligacion:determinar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"determinar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de determinar la exigencia por riesgo de mercado con los valores registrados al último día del período de información, mediante suma de códigos espec…\"}, {\"id\": \"obligacion:exigencia_de_capital_por_riesgo_de_mercado\", \"type\": \"Obliga… [+2284 chars]"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "exigencia riesgo de mercado trimestral",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exigencia riesgo de mercado trimestral\", \"total_con_match\": 3787, \"resultados\": [{\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de informar exigencia según riesgo de mercado para posiciones del último día del mes, calculada según punto 4.1.1.\"}, {\"id\": \"obligacion:determinar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"determinar exigencia por riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Obligación de determinar la exigencia por riesgo de mercado con los valores registrados al último día del período de información, mediante suma de códigos espec…\"}, {\"id\": \"obligacion:exigencia_de_capital_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label… [+2271 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"properties\": {\"description\": \"Complementar información con envío mensual de datos según riesgo considerado.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4 > Punto 4.3\"}]}"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "requisito:exigencia_por_riesgo_de_mercado_codigo_70800000"
+      },
+      "output_truncado": "{\"id\": \"requisito:exigencia_por_riesgo_de_mercado_codigo_70800000\", \"type\": \"Requisito\", \"label\": \"exigencia por riesgo de mercado código 70800000\", \"properties\": {\"description\": \"Exigencia por riesgo de mercado para posiciones del último día del mes, código 70800000.\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 1 > Sección 1 — preámbulo\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "información riesgo de mercado frecuencia trimestral vencimiento",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"información riesgo de mercado frecuencia trimestral vencimiento\", \"total_con_match\": 3819, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_defin… [+2157 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado"
+      },
+      "output_truncado": "{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"properties\": {\"description\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trimestre.\", \"modalidad\": \"obligacion\", \"version\": \"vigente_2026-05\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\"}]}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 12 > Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (par… [+425 chars]"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 4 > Punto 4.3"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 4 > Punto 4.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 4.3 (PDF pág 16)\", \"pasaje\": \"4.3. Información complementaria vinculada al cálculo de la exigencia por riesgo de \\nmercado - Modelos de información \\n \\n4.3.1. Riesgo específico de tasa \\n  \\nCódigo de  \\nPartida Descripción \\n551100/xx \\nBCRA, Gobierno Nacional, gobiernos provinciales, municipales y \\nde la Ciudad Autónoma de Buenos Aires en pesos cuando su \\nfuente de financiación es esa moneda. \\n551110/xx Plazo ≤ 6 meses. \\n551120/xx 6 meses < Plazo ≤ 24 meses. \\n551130/xx Plazo > 24 meses. \\n551200/xx \\nBanco de Pagos Internacionales, Fondo Monetario Internacional, \\nBanco Central Europeo y Comunidad Europea y Bancos Multila-\\nterales de Desarrollo del punto 2.6.3.1. de las normas sobre “Ca-\\npitales mínimos de las entidades financieras” \\n551300/xx BCRA y sector público no financiero. Demás. \\n551400/xx Otros soberanos y sus bancos centrales. \\n551500/xx Entidades financieras del país y del exterior. \\n551600/xx \\nInstrumentos con oferta pública autorizada emitidos por empre-\\nsas y otras personas jurídica… [+447 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "riesgo de mercado frecuencia informe",
+       "limite": 20
+      },
+      "output_truncado": "{\"consulta\": \"riesgo de mercado frecuencia informe\", \"total_con_match\": 3774, \"resultados\": [{\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo general de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Componente de riesgo de mercado capturado separadamente por el Método de Medición Estándar.', 'Riesgo vinculado al efecto de cambios en la tasa de interés sob…\"}, {\"id\": \"concepto_definido:exigencia_por_riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"exigencia por riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['RM: componente del cálculo de APR que refleja el riesgo de mercado.', 'Importe que representa el requerimiento de capital mínimo por exposición al riesgo de m…\"}, {\"id\": \"obligacion:informar_exigencia_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"informar exigencia… [+5625 chars]"
+     },
+     {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "presentación datos complementarios riesgo de mercado",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"presentación datos complementarios riesgo de mercado\", \"total_con_match\": 3782, \"resultados\": [{\"id\": \"obligacion:presentacion_trimestral_de_datos_complementarios_de_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"presentación trimestral de datos complementarios de riesgo de mercado\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado se presentarán con frecuencia trimestral con datos del último mes de cada trim…\"}, {\"id\": \"obligacion:envio_mensual_de_datos_sobre_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"envío mensual de datos sobre riesgo de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Complementar información con envío mensual de datos según riesgo considerado.\"}, {\"id\": \"concepto_definido:riesgo_de_mercado\", \"type\": \"ConceptoDefinido\", \"label\": \"riesgo de mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"['Riesgo determinado por las posiciones diarias de activos comprendidos, componente de la exigencia de capital mínimo.', 'Posibilidad de sufrir pérdidas en posi…\"}, {\"id\": \"concepto_definido:riesgo_general_de_mercado\", \"type\": \"ConceptoDefinido\", \"label… [+2146 chars]"
+     },
+     {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "ratio apalancamiento frecuencia reporte",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"ratio apalancamiento frecuencia reporte\", \"total_con_match\": 39, \"resultados\": [{\"id\": \"obligacion:reporte_del_ratio_de_apalancamiento_con_codigo_de_consolidacion_3\", \"type\": \"Obligacion\", \"label\": \"reporte del Ratio de apalancamiento con código de consolidación 3\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se continuará informando código de consolidación 3 para el Ratio de apalancamiento, pero las operaciones a incluir serán las del perímetro de consolidación mens…\"}, {\"id\": \"obligacion:mantenimiento_de_frecuencia_trimestral_del_ratio_de_apalancamiento\", \"type\": \"Obligacion\", \"label\": \"mantenimiento de frecuencia trimestral del Ratio de apalancamiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El Ratio de apalancamiento mantendrá su frecuencia trimestral con datos del mes de cierre de trimestre y su vencimiento según el Régimen Informativo para Superv…\"}, {\"id\": \"concepto_definido:ratio_de_apalancamiento\", \"type\": \"ConceptoDefinido\", \"label\": \"ratio de apalancamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"['Medida regulatoria presentada en base individual con códigos de consolidación 0 o 1.', 'Ratio calculado como [Medida del capital / Medida … [+2240 chars]"
+     },
+     {
+      "n": 15,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 12 > Punto 12.4"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 12 > Punto 12.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.4 (PDF pág 58)\", \"pasaje\": \"12.4. Suspensión de la observancia  de las regulaciones técnicas sobre base consolidada \\ntrimestral (punto 6.1. de las normas sobre “Supervisión consolidada”). \\n \\nA partir del período de información abril/24: \\n \\n- Se suspende el envío de informaciones con código de consolidación 3  -con la ex-\\ncepción prevista para Ratio de apalancamiento-, siendo marzo/24 el último período \\ntrimestral que corresponde informar con este nivel de consolidación; \\n \\n- En la información sobre base consolidada mensual (códigos de consolidación 2 ó 9) \\nse incluirán -de corresponder- las operaciones de los entes a que refieren los incisos \\ni), ii) y iii) del primer párrafo del punto 6.2. de las normas sobre “Supervisión conso-\\nlidada. \\n \\n- Las entidades financieras que hasta el 31/03/24 informaban únicamente códigos de \\nconsolidación 1 y 3, de mantenerse esta situación de consolidación , pasarán a in-\\nformar: \\na) códigos 1 y 9 sólo si consolidan con alguno de los entes a que refieren los… [+432 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 19488,
+      "output_tokens": 292
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 21654,
+      "output_tokens": 500
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 25385,
+      "output_tokens": 564
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 27853,
+      "output_tokens": 246
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 28344,
+      "output_tokens": 343
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30293,
+      "output_tokens": 736
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33927,
+      "output_tokens": 780
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 37680,
+      "output_tokens": 1542
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 39944,
+      "output_tokens": 3467
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 31,
+     "n_claims_fallidos": 2,
+     "categoria": "factual_directa"
+    },
+    "label": "off",
+    "rep": 3
+   }
+  }
+ ]
+}

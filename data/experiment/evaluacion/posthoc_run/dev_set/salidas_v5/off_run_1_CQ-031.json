@@ -1,0 +1,437 @@
+{
+ "id_falla": "run_1/CQ-031",
+ "run": "run_1",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"deudores no deben ser objeto clasificación\", \"limite\": 10}",
+    "devolvio": "Nodos genéricos de clasificación de deudores (ope/prc_clasificacion_de_deudores, niveles). Ninguno de garantías preferidas A ni excepciones.",
+    "pertinente": false
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"capacidad de repago evaluación deudores\", \"limite\": 10}",
+    "devolvio": "con_capacidad_de_repago_del_deudor, prc_evaluacion_de_capacidad_de_pago, etc. No trajo garantías preferidas A.",
+    "pertinente": false
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"prc_clasificacion_de_deudores\"}",
+    "devolvio": "Descripción genérica del procedimiento.",
+    "pertinente": false
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"prc_evaluacion_de_capacidad_de_pago\"}",
+    "devolvio": "Proceso de evaluación periódica; provenance p.31, p.34.",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"prc_clasificacion_de_deudores\", \"direccion\": \"ambas\"}",
+    "devolvio": "Vecinos genéricos (regula BCRA, genera categorías, etc.).",
+    "pertinente": false
+   },
+   {
+    "paso": 6,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"prc_evaluacion_de_capacidad_de_pago\", \"direccion\": \"ambas\"}",
+    "devolvio": "Edge eximido_de → cla_deudores_por_prestamos_de_monto_reducido (p.34) y no_obligatoria_cuando → métodos específicos.",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"cla_deudores_por_prestamos_de_monto_reducido\"}",
+    "devolvio": "Categoría de prestatarios de monto reducido, exentos de evaluación obligatoria de capacidad de pago por ingresos (p.34).",
+    "pertinente": false
+   },
+   {
+    "paso": 8,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"deudores excepción no clasificación exención\", \"limite\": 10}",
+    "devolvio": "Nodos genéricos; no garantías preferidas A.",
+    "pertinente": false
+   },
+   {
+    "paso": 9,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"no deben ser objeto clasificación deudores\", \"limite\": 10}",
+    "devolvio": "Idéntico al paso 1; nodos genéricos.",
+    "pertinente": false
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"deudores estado gobierno soberano\", \"limite\": 10}",
+    "devolvio": "rep_estado_de_situacion_de_deudores, gobiernos nacional/provincial/municipal.",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"deudores no clasificación estado nacional provincial municipal\", \"limite\": 10}",
+    "devolvio": "Sector público no financiero; nodos genéricos de clasificación.",
+    "pertinente": false
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"no corresponde evaluar capacidad repago\", \"limite\": 10}",
+    "devolvio": "con_capacidad_de_repago_del_deudor, con_capacidad_de_pago; no garantías preferidas A.",
+    "pertinente": false
+   },
+   {
+    "paso": 13,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"excepción clasificación deudores estado nacional\", \"limite\": 10}",
+    "devolvio": "Nodos genéricos.",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"ope_clasificacion_de_deudores\"}",
+    "devolvio": "Descripción y aliases del procedimiento.",
+    "pertinente": false
+   },
+   {
+    "paso": 15,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"ope_clasificacion_de_deudores\", \"direccion\": \"ambas\"}",
+    "devolvio": "Incluye edge entrante no_está_sujeta_a → ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (provenance p.15), pertinente a la pata 1; el agente no lo usó.",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 15,
+   "quote": "\"relation\": \"no_está_sujeta_a\", \"vecino_id\": \"ope_creditos_cedidos_sin_responsabilidad_para_el_cedente\", ... \"location\": \"p. 15\""
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Qué deudores no deben ser objeto de clasificación",
+   "Respecto de qué deudores no corresponde evaluar la capacidad de repago"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "alcanzabilidad_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Qué deudores no deben ser objeto de clasificación",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Sin embargo, en el Knowledge Graph no se encontró información específica sobre qué deudores no deben ser objeto de clasificación en general.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Deudor cuya financiación se encuentra cubierta totalmente con garantías preferidas A y no es objeto de clasificación.",
+     "ubicacion": "rsj_deudor_con_garantias_preferidas_a"
+    },
+    "fuente": {
+     "quote": "4.5. Deudores que no deben ser objeto de clasificación. Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \"A\" no serán objeto de clasificación",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 15 (Sección 4)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "deudores que no deben ser objeto de clasificación",
+     "resultado": "ope/prc_clasificacion_de_deudores y niveles genéricos; NO devuelve rsj_deudor_con_garantias_preferidas_a"
+    },
+    {
+     "consulta": "deudor no objeto clasificación exento",
+     "resultado": "deudor no calificado, activo no objeto de litigios; NO devuelve el nodo de garantías preferidas A"
+    },
+    {
+     "consulta": "deudores excepción no clasificación exención",
+     "resultado": "nodos genéricos de clasificación; sin el nodo portador"
+    },
+    {
+     "consulta": "garantías preferidas A",
+     "resultado": "SÍ devuelve rsj_deudor_con_garantias_preferidas_a y cla_garantias_preferidas_a — pero 'garantías preferidas' no es vocabulario ex ante de la pregunta"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "alcanzabilidad_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Respecto de qué deudores no corresponde evaluar la capacidad de repago",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "respecto de los deudores por préstamos de monto reducido no corresponde evaluar obligatoriamente la capacidad de repago por ingresos. Esta categoría de prestatarios cuyos préstamos son de monto reducido está eximida de la evaluación obligatoria de capacidad de pago.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Categoría de financiaciones cubiertas con garantías preferidas tipo A que no requieren evaluación de capacidad de repago.",
+     "ubicacion": "cla_financiaciones_con_garantias_preferidas_a"
+    },
+    "fuente": {
+     "quote": "4.4. Financiaciones cubiertas con garantías preferidas \"A\". No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 15 (Sección 4)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "no corresponde evaluar capacidad repago",
+     "resultado": "con_capacidad_de_repago_del_deudor, con_capacidad_de_pago; NO devuelve cla_financiaciones_con_garantias_preferidas_a"
+    },
+    {
+     "consulta": "capacidad de repago evaluación deudores",
+     "resultado": "nodos de capacidad de pago genéricos; sin el nodo de garantías preferidas A"
+    },
+    {
+     "consulta": "garantías preferidas A",
+     "resultado": "SÍ devuelve cla_financiaciones_con_garantias_preferidas_a y cla_garantias_preferidas_a ('eximen de evaluar capacidad de repago') — solo alcanzable con término del propio nodo"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "navegación",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Qué deudores no deben ser objeto de clasificación",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "en el Knowledge Graph no se encontró información específica sobre qué deudores no deben ser objeto de clasificación en general.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Clasificación de deudores —no_está_sujeta_a→ Créditos cedidos sin responsabilidad para el cedente",
+     "ubicacion": "EDGE::ope_clasificacion_de_deudores--no_está_sujeta_a-->ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (visto por el agente en paso 15, provenance p.15)"
+    },
+    "fuente": {
+     "quote": "No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, p. 15 (punto 4.6)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "créditos cedidos sin responsabilidad cedente no sujeta clasificación",
+     "resultado": "ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (alcanzable); el edge no_está_sujeta_a con provenance p.15 ya estaba en el output completo del paso 15 del agente y no fue usado"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "Arranqué del síntoma: el juez marcó falsas las dos afirmaciones centrales sobre 'préstamos de monto reducido'. Descomponiendo por patas y leyendo el PDF fuente (TO_clasificacion_deudores_actual.pdf), la respuesta canónica de AMBAS patas está en la Sección 4, p.15: punto 4.5 'Deudores que no deben ser objeto de clasificación' = deudores con garantías preferidas 'A' (y cesión sin responsabilidad), y punto 4.4 = 'No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones... respaldadas con tales garantías'. El agente respondió con 'monto reducido' (nodo cla_deudores_por_prestamos_de_monto_reducido, p.34), que es una excepción distinta (evaluación por ingresos en Gestión crediticia, punto 7.1) y NO responde ninguna de las dos patas canónicas; además declaró explícitamente no haber encontrado info sobre la pata 1. Por tanto, en ambas patas el dato PERTINENTE nunca llegó a la respuesta → síntoma context_recall en las dos. Verifiqué que los nodos portadores EXISTEN y son fieles al PDF (rsj_deudor_con_garantias_preferidas_a: 'no es objeto de clasificación'; cla_financiaciones_con_garantias_preferidas_a: 'no requieren evaluación de capacidad de repago'; cla_garantias_preferidas_a: 'eximen de evaluar capacidad de repago del deudor'). Prueba de alcanzabilidad ex ante: el agente hizo múltiples búsquedas con vocabulario razonable de la pregunta ('deudores no deben ser objeto clasificación', 'no corresponde evaluar capacidad repago', 'excepción no clasificación exención', 'deudor no objeto clasificación exento') y NINGUNA devolvió estos nodos, porque buscar_nodos indexa label/id y el label es 'garantías preferidas A' / 'deudor con garantías preferidas A'. Solo la búsqueda 'garantías preferidas A' los alcanza, y ese término NO pertenece al vocabulario ex ante (ni la pregunta ni los outputs de la trayectoria lo exponen). Eso confirma alcanzabilidad_kg como causa primaria en ambas patas. Como atribución secundaria, para la pata 1 existe además una ruta que el agente SÍ tuvo delante: en el output completo del paso 15 aparece el edge no_está_sujeta_a → ope_creditos_cedidos_sin_responsabilidad_para_el_cedente con provenance p.15, que corresponde al punto 4.6 ('No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente'); el agente lo vio y no lo usó → navegación (lado agente), secundaria. Descarto contenido_kg (los nodos son fieles al PDF) y completitud_kg (el dato SÍ está en el grafo, ya lo exhibí en mi evidencia).",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 15,
+  "max_tool_calls": 40,
+  "tokens_in": 437488,
+  "tokens_out": 10903
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 15,
+  "tokens_in": 437488,
+  "tokens_out": 10903,
+  "latency_s": 154.75,
+  "error": null,
+  "final_raw": "Este nodo describe la operación de cesión pero su description no dice \"no serán objeto de clasificación\" — eso está en el edge `no_está_sujeta_a`. El agente vio ese edge en paso 15. El contenido semántico de la exención está en el edge (relation `no_está_sujeta_a`), pertinente a la pata 1.\n\nTengo evidencia suficiente para emitir el JSON.\n\n{\"extraccion_traza\": {\"tool_calls\": [{\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores no deben ser objeto clasificación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos genéricos de clasificación de deudores (ope/prc_clasificacion_de_deudores, niveles). Ninguno de garantías preferidas A ni excepciones.\", \"pertinente\": false}, {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"capacidad de repago evaluación deudores\\\", \\\"limite\\\": 10}\", \"devolvio\": \"con_capacidad_de_repago_del_deudor, prc_evaluacion_de_capacidad_de_pago, etc. No trajo garantías preferidas A.\", \"pertinente\": false}, {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"prc_clasificacion_de_deudores\\\"}\", \"devolvio\": \"Descripción genérica del procedimiento.\", \"pertinente\": false}, {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"prc_evaluacion_de_capacidad_de_pago\\\"}\", \"devolvio\": \"Proceso de evaluación periódica; provenance p.31, p.34.\", \"pertinente\": true}, {\"paso\": 5, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"prc_clasificacion_de_deudores\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Vecinos genéricos (regula BCRA, genera categorías, etc.).\", \"pertinente\": false}, {\"paso\": 6, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"prc_evaluacion_de_capacidad_de_pago\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Edge eximido_de → cla_deudores_por_prestamos_de_monto_reducido (p.34) y no_obligatoria_cuando → métodos específicos.\", \"pertinente\": true}, {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"cla_deudores_por_prestamos_de_monto_reducido\\\"}\", \"devolvio\": \"Categoría de prestatarios de monto reducido, exentos de evaluación obligatoria de capacidad de pago por ingresos (p.34).\", \"pertinente\": false}, {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores excepción no clasificación exención\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos genéricos; no garantías preferidas A.\", \"pertinente\": false}, {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"no deben ser objeto clasificación deudores\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Idéntico al paso 1; nodos genéricos.\", \"pertinente\": false}, {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores estado gobierno soberano\\\", \\\"limite\\\": 10}\", \"devolvio\": \"rep_estado_de_situacion_de_deudores, gobiernos nacional/provincial/municipal.\", \"pertinente\": false}, {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"deudores no clasificación estado nacional provincial municipal\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Sector público no financiero; nodos genéricos de clasificación.\", \"pertinente\": false}, {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"no corresponde evaluar capacidad repago\\\", \\\"limite\\\": 10}\", \"devolvio\": \"con_capacidad_de_repago_del_deudor, con_capacidad_de_pago; no garantías preferidas A.\", \"pertinente\": false}, {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"excepción clasificación deudores estado nacional\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodos genéricos.\", \"pertinente\": false}, {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"ope_clasificacion_de_deudores\\\"}\", \"devolvio\": \"Descripción y aliases del procedimiento.\", \"pertinente\": false}, {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"ope_clasificacion_de_deudores\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Incluye edge entrante no_está_sujeta_a → ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (provenance p.15), pertinente a la pata 1; el agente no lo usó.\", \"pertinente\": true}], \"paso_decision_error\": {\"paso\": 15, \"quote\": \"\\\"relation\\\": \\\"no_está_sujeta_a\\\", \\\"vecino_id\\\": \\\"ope_creditos_cedidos_sin_responsabilidad_para_el_cedente\\\", ... \\\"location\\\": \\\"p. 15\\\"\"}, \"decision_agente_correcta\": null, \"thinking_decision\": null, \"patas\": [\"Qué deudores no deben ser objeto de clasificación\", \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\"]}, \"atribuciones\": [{\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"alcanzabilidad_kg\", \"lado\": \"grafo\", \"jerarquia\": \"primaria\", \"pata\": \"Qué deudores no deben ser objeto de clasificación\", \"evidencia\": {\"afirmacion\": {\"quote\": \"Sin embargo, en el Knowledge Graph no se encontró información específica sobre qué deudores no deben ser objeto de clasificación en general.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Deudor cuya financiación se encuentra cubierta totalmente con garantías preferidas A y no es objeto de clasificación.\", \"ubicacion\": \"rsj_deudor_con_garantias_preferidas_a\"}, \"fuente\": {\"quote\": \"4.5. Deudores que no deben ser objeto de clasificación. Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas \\\"A\\\" no serán objeto de clasificación\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 15 (Sección 4)\"}}, \"busquedas\": [{\"consulta\": \"deudores que no deben ser objeto de clasificación\", \"resultado\": \"ope/prc_clasificacion_de_deudores y niveles genéricos; NO devuelve rsj_deudor_con_garantias_preferidas_a\"}, {\"consulta\": \"deudor no objeto clasificación exento\", \"resultado\": \"deudor no calificado, activo no objeto de litigios; NO devuelve el nodo de garantías preferidas A\"}, {\"consulta\": \"deudores excepción no clasificación exención\", \"resultado\": \"nodos genéricos de clasificación; sin el nodo portador\"}, {\"consulta\": \"garantías preferidas A\", \"resultado\": \"SÍ devuelve rsj_deudor_con_garantias_preferidas_a y cla_garantias_preferidas_a — pero 'garantías preferidas' no es vocabulario ex ante de la pregunta\"}]}, {\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"alcanzabilidad_kg\", \"lado\": \"grafo\", \"jerarquia\": \"primaria\", \"pata\": \"Respecto de qué deudores no corresponde evaluar la capacidad de repago\", \"evidencia\": {\"afirmacion\": {\"quote\": \"respecto de los deudores por préstamos de monto reducido no corresponde evaluar obligatoriamente la capacidad de repago por ingresos. Esta categoría de prestatarios cuyos préstamos son de monto reducido está eximida de la evaluación obligatoria de capacidad de pago.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Categoría de financiaciones cubiertas con garantías preferidas tipo A que no requieren evaluación de capacidad de repago.\", \"ubicacion\": \"cla_financiaciones_con_garantias_preferidas_a\"}, \"fuente\": {\"quote\": \"4.4. Financiaciones cubiertas con garantías preferidas \\\"A\\\". No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que se encuentren respaldadas con tales garantías.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 15 (Sección 4)\"}}, \"busquedas\": [{\"consulta\": \"no corresponde evaluar capacidad repago\", \"resultado\": \"con_capacidad_de_repago_del_deudor, con_capacidad_de_pago; NO devuelve cla_financiaciones_con_garantias_preferidas_a\"}, {\"consulta\": \"capacidad de repago evaluación deudores\", \"resultado\": \"nodos de capacidad de pago genéricos; sin el nodo de garantías preferidas A\"}, {\"consulta\": \"garantías preferidas A\", \"resultado\": \"SÍ devuelve cla_financiaciones_con_garantias_preferidas_a y cla_garantias_preferidas_a ('eximen de evaluar capacidad de repago') — solo alcanzable con término del propio nodo\"}]}, {\"sintoma_capa1\": \"context_recall\", \"causa_capa2\": \"navegación\", \"lado\": \"agente\", \"jerarquia\": \"secundaria\", \"pata\": \"Qué deudores no deben ser objeto de clasificación\", \"evidencia\": {\"afirmacion\": {\"quote\": \"en el Knowledge Graph no se encontró información específica sobre qué deudores no deben ser objeto de clasificación en general.\", \"ubicacion\": \"respuesta final\"}, \"nodo\": {\"quote\": \"Clasificación de deudores —no_está_sujeta_a→ Créditos cedidos sin responsabilidad para el cedente\", \"ubicacion\": \"EDGE::ope_clasificacion_de_deudores--no_está_sujeta_a-->ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (visto por el agente en paso 15, provenance p.15)\"}, \"fuente\": {\"quote\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, p. 15 (punto 4.6)\"}}, \"busquedas\": [{\"consulta\": \"créditos cedidos sin responsabilidad cedente no sujeta clasificación\", \"resultado\": \"ope_creditos_cedidos_sin_responsabilidad_para_el_cedente (alcanzable); el edge no_está_sujeta_a con provenance p.15 ya estaba en el output completo del paso 15 del agente y no fue usado\"}]}], \"razonamiento\": \"Arranqué del síntoma: el juez marcó falsas las dos afirmaciones centrales sobre 'préstamos de monto reducido'. Descomponiendo por patas y leyendo el PDF fuente (TO_clasificacion_deudores_actual.pdf), la respuesta canónica de AMBAS patas está en la Sección 4, p.15: punto 4.5 'Deudores que no deben ser objeto de clasificación' = deudores con garantías preferidas 'A' (y cesión sin responsabilidad), y punto 4.4 = 'No corresponderá la evaluación de la capacidad de repago respecto de las financiaciones... respaldadas con tales garantías'. El agente respondió con 'monto reducido' (nodo cla_deudores_por_prestamos_de_monto_reducido, p.34), que es una excepción distinta (evaluación por ingresos en Gestión crediticia, punto 7.1) y NO responde ninguna de las dos patas canónicas; además declaró explícitamente no haber encontrado info sobre la pata 1. Por tanto, en ambas patas el dato PERTINENTE nunca llegó a la respuesta → síntoma context_recall en las dos. Verifiqué que los nodos portadores EXISTEN y son fieles al PDF (rsj_deudor_con_garantias_preferidas_a: 'no es objeto de clasificación'; cla_financiaciones_con_garantias_preferidas_a: 'no requieren evaluación de capacidad de repago'; cla_garantias_preferidas_a: 'eximen de evaluar capacidad de repago del deudor'). Prueba de alcanzabilidad ex ante: el agente hizo múltiples búsquedas con vocabulario razonable de la pregunta ('deudores no deben ser objeto clasificación', 'no corresponde evaluar capacidad repago', 'excepción no clasificación exención', 'deudor no objeto clasificación exento') y NINGUNA devolvió estos nodos, porque buscar_nodos indexa label/id y el label es 'garantías preferidas A' / 'deudor con garantías preferidas A'. Solo la búsqueda 'garantías preferidas A' los alcanza, y ese término NO pertenece al vocabulario ex ante (ni la pregunta ni los outputs de la trayectoria lo exponen). Eso confirma alcanzabilidad_kg como causa primaria en ambas patas. Como atribución secundaria, para la pata 1 existe además una ruta que el agente SÍ tuvo delante: en el output completo del paso 15 aparece el edge no_está_sujeta_a → ope_creditos_cedidos_sin_responsabilidad_para_el_cedente con provenance p.15, que corresponde al punto 4.6 ('No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente'); el agente lo vio y no lo usó → navegación (lado agente), secundaria. Descarto contenido_kg (los nodos son fieles al PDF) y completitud_kg (el dato SÍ está en el grafo, ya lo exhibí en mi evidencia).\"}",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 34"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 34\", \"metodo\": \"pagina\", \"ref\": \"p.34 (PDF absoluto 1-based)\", \"pasaje\": \"A ta\\nl fin, no se podrán efectuar mejoras en las clasificaciones de los clientes, si los mismos re-\\ngistran un atraso mayor a 31 días en el pago de sus obligaciones refinanciadas.  \\nLos cobros no aplicados y las quitas concedidas en forma previa a la refinanciación reducen el \\nimporte de la obligación sujeta a refinanciación, con lo cual no son computables para la mejora \\nde la clasificación en función de los parámetros establecidos para cada modalidad de pago de \\nla refinanciación. Por lo tanto, la forma en que se imputen tales conceptos a la cancelación de \\nla deuda objeto de refinanciación dependerá del criterio que opte por emplear cada entidad, sin \\nperjuicio de la observancia de las demás disposiciones de carácter general que sean aplicables \\nen la materia. \\nLos pagos por adelantado y/o anticipos que sean efectuados en oportunidad de la refinancia-\\nción para acceder a ella o con posterioridad a su estructuración, serán computados, en término \\nde las cuotas o porcentaje de amortización de capital,… [+1808 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 33"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 33\", \"metodo\": \"pagina\", \"ref\": \"p.33 (PDF absoluto 1-based)\", \"pasaje\": \"7.1. Criterio de clasificación.\\nSin perjuicio de que los análisis previos al otorgamiento de las financiaciones y refinanciaciones\\ntambién deben guardar relación con la capacidad de pago de los deudores, evaluando la afec-\\ntación de sus ingresos periódicos por la totalidad de los compromisos de crédito asumidos, la\\nclasificación de estos clientes se efectuará considerando -al cabo de cada mes- exclusivamente\\npautas objetivas vinculadas al grado de cumplimiento de las correspondientes obligaciones o su\\nsituación jurídica, las informaciones que surjan de la “Central de deudores del sistema financi e-\\nro” –cuando reflejen niveles de calidad inferiores al asignado por la entidad –, de la base de\\n“Deudores en situación irregular de ex entidades financieras” y la situación que surja de la apli-\\ncación de las pautas de refinanciación. En caso de discrepancias, se deberá considerar la pau-\\nta que indique el mayor nivel de riesgo de incobrabilidad.\\nSe entiende que el cumplimiento de las obligaciones a que se ref… [+1803 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "deudores no comprendidos clasificación sector público",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"deudores no comprendidos clasificación sector público\", \"total_con_match\": 241, \"resultados\": [{\"id\": \"rsj_sector_publico_no_financiero\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"Sector Público no Financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de emisor con exigencias de capital diferenciadas, definida en la Sección 1 del TO sobre Financiamiento al Sector Público no Financiero.\"}, {\"id\": \"cla_sector_publico_categoria_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Sector público (categoría de deudores)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de deudores que agrupa a las entidades públicas nacionales, provinciales y municipales.\"}, {\"id\": \"cla_exposicion_al_sector_publico_no_financiero\", \"type\": \"CLASSIFICATION\", \"label\": \"Exposición al sector público no financiero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de exposición cuyo importe se determina aplicando criterio de posición neta de títulos para títulos públicos nacionales con cotización normal en merca…\"}, {\"id\": \"con_financiamiento_al_sector_publico_no_financiero\", \"type\": \"CONCEPT\", \"label\": \"financiamiento al sector público no financiero\", \"tokens_match… [+2261 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "financiaciones excluidas alcance clasificación",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"financiaciones excluidas alcance clasificación\", \"total_con_match\": 102, \"resultados\": [{\"id\": \"ope_financiaciones\", \"type\": \"OPERATION\", \"label\": \"Financiaciones\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación de otorgamiento de crédito o asistencia financiera que debe ser atendida por sucursales o subsidiarias locales con fondos provenientes de líneas asign…\"}, {\"id\": \"prc_tarea_de_clasificacion\", \"type\": \"PROCESS\", \"label\": \"Tarea de clasificación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Proceso de clasificación de deudores que puede ser encomendado a un área independiente, al sector de créditos con revisión independiente, o a profesionales exte…\"}, {\"id\": \"con_clasificacion_de_deudor\", \"type\": \"CONCEPT\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Categoría o nivel asignado a un cliente por la entidad financiera según su evaluación crediticia.\"}, {\"id\": \"ope_financiaciones_a_mipyme\", \"type\": \"OPERATION\", \"label\": \"Financiaciones a Mipyme\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Financiaciones otorgadas a micro, pequeñas y medianas empresas que califican como exposiciones minoristas normativas.\"}… [+1622 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 15"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\", \"metodo\": \"pagina\", \"ref\": \"p.15 (PDF absoluto 1-based)\", \"pasaje\": \"4.1. Niveles de clasificación. \\nSe han previsto niveles de agrupamiento de los clientes en orden decreciente de calidad, en ra-\\nzón directa al riesgo de incobrabilidad que se deriva de las situaciones que presentan. \\n4.2. Criterio básico de clasificación. \\nEl criterio básico a ser utilizado para efectuar tal clasificación es la capacidad de pago en el fu-\\nturo de la deuda o de los compromisos objeto de la garantía de la entidad financiera. \\n4.3. Evaluación de la capacidad de pago. \\n4.3.1. Al evaluar la capacidad de repago, el énfasis deberá ponerse en el análisis de los flujos \\nde fondos realizado por la entidad. \\n4.3.2. En segundo lugar, deberá considerarse la posibilidad de liquidación de activos no im-\\nprescindibles para la operatoria de la empresa. \\n4.4. Financiaciones cubiertas con garantías preferidas “A”. \\nNo corresponderá la evaluación de la capacidad de repago respecto de las financiaciones que \\nse encuentren respaldadas con tales garantías. \\n4.5. Deudores que no deben ser objeto de clasific… [+1337 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 5"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 5\", \"metodo\": \"pagina\", \"ref\": \"p.5 (PDF absoluto 1-based)\", \"pasaje\": \"Igual \\ntemperamento podrá observarse cuando se trate de créditos respecto de documen-\\ntos o valores cedidos por el deudor en concurso que puedan considerarse garantías pre-\\nferidas “A” por ser cobrables directamente del tercero responsable del documento (por \\nejemplo: facturas de crédito, facturas a consumidores emitidas por empresas de servicios \\npúblicos proveedoras de electricidad, gas, etc., cupones de tarjetas de crédito, etc.). En \\nlos casos de deudores por servicios públicos o por tarjetas de crédito, no será obligatoria \\nla apertura del legajo. \\nCLASIFICACIÓN DE DEUDORES \\nB.C.R.A. Sección 1. Deudores comprendidos. \\nVersión: 2a. COMUNICACIÓN “A“ 2950 Vigencia: \\n16/07/1999 Página 2\"}"
+   },
+   {
+    "n": 7,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "garantías preferidas A",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"garantías preferidas A\", \"total_con_match\": 352, \"resultados\": [{\"id\": \"cla_garantias_preferidas_a\", \"type\": \"CLASSIFICATION\", \"label\": \"Garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Garantías preferidas clasificadas como tipo A que cubren deudas y eximem de evaluar capacidad de repago del deudor.\"}, {\"id\": \"ins_garantias_preferidas_clase_a\", \"type\": \"INSTRUMENT\", \"label\": \"Garantías preferidas Clase A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Garantías de rango preferido que cubren financiaciones y permiten incluir previsiones específicas en el capital de nivel dos.\"}, {\"id\": \"rsj_deudor_con_garantias_preferidas_a\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"deudor con garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deudor cuya financiación se encuentra cubierta totalmente con garantías preferidas A y no es objeto de clasificación.\"}, {\"id\": \"cla_financiaciones_con_garantias_preferidas_a\", \"type\": \"CLASSIFICATION\", \"label\": \"Financiaciones con garantías preferidas A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de financiaciones cubiertas con garantías preferidas tipo A que no requieren evaluación … [+1833 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "deudores que no deben ser objeto de clasificación",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"deudores que no deben ser objeto de clasificación\", \"total_con_match\": 2558, \"resultados\": [{\"id\": \"ope_clasificacion_de_deudores\", \"type\": \"OPERATION\", \"label\": \"Clasificación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento administrativo de categorización de deudores según su mora y situación crediticia, observado por entidades financieras de forma individual o conso…\"}, {\"id\": \"prc_clasificacion_de_deudores\", \"type\": \"PROCESS\", \"label\": \"Clasificación de Deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Procedimiento administrativo de evaluación y asignación de categoría de riesgo crediticio a clientes según su situación financiera.\"}, {\"id\": \"req_activo_no_objeto_de_litigios\", \"type\": \"REQUIREMENT\", \"label\": \"activo no objeto de litigios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Condición de que el documento a cobrar o derecho de crédito transferido no sea materia de litigios entre obligado y acreedor original.\"}, {\"id\": \"cla_niveles_de_clasificacion_de_deudores\", \"type\": \"CLASSIFICATION\", \"label\": \"Niveles de clasificación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categorías de clasificación de deud… [+1926 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "rsj_deudor_con_garantias_preferidas_a"
+    },
+    "output_truncado": "{\"id\": \"rsj_deudor_con_garantias_preferidas_a\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"deudor con garantías preferidas A\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Deudor cuya financiación se encuentra cubierta totalmente con garantías preferidas A y no es objeto de clasificación.\", \"aliases\": [\"Deudor con garantías preferidas A\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\"}]}"
+   },
+   {
+    "n": 10,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "cla_financiaciones_con_garantias_preferidas_a"
+    },
+    "output_truncado": "{\"id\": \"cla_financiaciones_con_garantias_preferidas_a\", \"type\": \"CLASSIFICATION\", \"label\": \"Financiaciones con garantías preferidas A\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Categoría de financiaciones cubiertas con garantías preferidas tipo A que no requieren evaluación de capacidad de repago.\", \"aliases\": [\"Financiaciones con garantías preferidas A\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 1}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\"}]}"
+   },
+   {
+    "n": 11,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 15
+    },
+    "output_truncado": "{\"paso\": 15, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"ope_clasificacion_de_deudores\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"ope_clasificacion_de_deudores\", \"label\": \"Clasificación de deudores\", \"n_salientes_total\": 11, \"n_entrantes_total\": 20, \"salientes\": [{\"relation\": \"requiere\", \"vecino_id\": \"req_documentacion_del_analisis_de_clasificacion_de_deudores\", \"vecino_label\": \"documentación del análisis de clasificación de deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 9\"}]}, {\"relation\": \"requiere_aprobación_de\", \"vecino_id\": \"rsj_directorio_o_consejo_de_administracion_de_la_entidad_financiera\", \"vecino_label\": \"Directorio o Consejo de Administración de la entidad financiera\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 14\"}]}, {\"relation\": \"aplicable_a_financiaciones_que_excedan\", \"vecino_id\": \"con_responsabilidad_patrimonial_computable_rpc\", \"vecino_label\": \"Responsabilidad patrimonial computable (RPC)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 14\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"rsj_cliente\", \"vecino_label\": \"cliente\", \"pr… [+6938 chars]"
+   },
+   {
+    "n": 12,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "deudor no objeto clasificación exento",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"deudor no objeto clasificación exento\", \"total_con_match\": 236, \"resultados\": [{\"id\": \"rsj_deudor_no_calificado\", \"type\": \"REGULATED_SUBJECT\", \"label\": \"deudor no calificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de deudores cuya exposición recibe un ponderador de riesgo no menor que el del país de constitución, excepto en casos específicos.\"}, {\"id\": \"con_clasificacion_de_deudor\", \"type\": \"CONCEPT\", \"label\": \"clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría o nivel asignado a un cliente por la entidad financiera según su evaluación crediticia.\"}, {\"id\": \"req_activo_no_objeto_de_litigios\", \"type\": \"REQUIREMENT\", \"label\": \"activo no objeto de litigios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Condición de que el documento a cobrar o derecho de crédito transferido no sea materia de litigios entre obligado y acreedor original.\"}, {\"id\": \"req_opinion_fundada_sobre_clasificacion_asignada_a_cada_deudor\", \"type\": \"REQUIREMENT\", \"label\": \"opinión fundada sobre clasificación asignada a cada deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exigencia de que la aprobación sea respaldada con opinión fundada so… [+1654 chars]"
+   },
+   {
+    "n": 13,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "cla_garantias_preferidas_a"
+    },
+    "output_truncado": "{\"id\": \"cla_garantias_preferidas_a\", \"type\": \"CLASSIFICATION\", \"label\": \"Garantías preferidas A\", \"properties\": {\"version\": \"A 8418\", \"description\": \"Garantías preferidas clasificadas como tipo A que cubren deudas y eximem de evaluar capacidad de repago del deudor.\", \"aliases\": [\"Garantías preferidas A\"], \"source_to\": \"capitales_minimos\", \"mention_count\": 3}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"p. 10\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 11\"}, {\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"p. 30\"}]}"
+   },
+   {
+    "n": 14,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "créditos cedidos sin responsabilidad cedente no sujeta clasificación",
+     "limite": 5
+    },
+    "output_truncado": "{\"consulta\": \"créditos cedidos sin responsabilidad cedente no sujeta clasificación\", \"total_con_match\": 298, \"resultados\": [{\"id\": \"ope_creditos_cedidos_sin_responsabilidad_para_el_cedente\", \"type\": \"OPERATION\", \"label\": \"Créditos cedidos sin responsabilidad para el cedente\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Créditos incorporados por cesión sin responsabilidad para el cedente, donde la unidad económica receptora de fondos pasa a ser deudora.\"}, {\"id\": \"cla_depositos_no_basicos_sin_vencimiento\", \"type\": \"CLASSIFICATION\", \"label\": \"Depósitos no básicos (sin vencimiento)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Categoría de depósito sin vencimiento identificada según la naturaleza del depósito y depositante.\"}, {\"id\": \"ope_operaciones_sin_entrega_contra_pago_no_dvp\", \"type\": \"OPERATION\", \"label\": \"Operaciones sin entrega contra pago (no DvP)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones sin mecanismo de entrega contra pago a las que se aplican ponderadores de riesgo de contraparte.\"}, {\"id\": \"cla_depositos_sin_vencimiento_mayoristas_no_basicos\", \"type\": \"CLASSIFICATION\", \"label\": \"Depósitos sin vencimiento mayoristas no básicos\", \"tokens_matchea… [+504 chars]"
+   },
+   {
+    "n": 15,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "ope_creditos_cedidos_sin_responsabilidad_para_el_cedente"
+    },
+    "output_truncado": "{\"id\": \"ope_creditos_cedidos_sin_responsabilidad_para_el_cedente\", \"type\": \"OPERATION\", \"label\": \"Créditos cedidos sin responsabilidad para el cedente\", \"properties\": {\"version\": \"A 8378\", \"description\": \"Créditos incorporados por cesión sin responsabilidad para el cedente, donde la unidad económica receptora de fondos pasa a ser deudora.\", \"aliases\": [\"Créditos cedidos sin responsabilidad\", \"créditos cedidos\", \"Operación de cesión sin responsabilidad para el cedente\"], \"source_to\": \"clasificacion_deudores\", \"mention_count\": 3}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 4\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 10\"}, {\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 15\"}]}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32097,
+    "output_tokens": 237
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 34825,
+    "output_tokens": 270
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37796,
+    "output_tokens": 295
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 39643,
+    "output_tokens": 495
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 42838,
+    "output_tokens": 482
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 43820,
+    "output_tokens": 502
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 48116,
+    "output_tokens": 1044
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 50725,
+    "output_tokens": 1812
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 53293,
+    "output_tokens": 690
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 54335,
+    "output_tokens": 5076
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 85,
+   "n_claims_fallidos": 2,
+   "categoria": "cadena_restriccion_excepcion"
+  },
+  "label": "off"
+ }
+}

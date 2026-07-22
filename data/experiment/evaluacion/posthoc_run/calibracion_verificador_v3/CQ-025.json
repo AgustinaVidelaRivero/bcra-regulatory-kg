@@ -1,0 +1,163 @@
+{
+  "id_falla": "run_3/CQ-025",
+  "run": "run_3",
+  "atribuciones": [
+    {
+      "categoria": "navegación",
+      "lado": "agente",
+      "jerarquia": "primaria",
+      "pata": "Frecuencia de información de la exigencia por riesgo de mercado en el Régimen Informativo",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que 'La exigencia por riesgo de mercado se determina en forma diaria, conforme al punto 1.3 de la normativa de Capitales Mínimos' como respuesta a la frecuencia de información.",
+        "nodo": "El agente usó 'Obligacion_determinar_integracion_por_riesgo_de_mercado' (plazo: diario, prov. Punto 1.3 Capitales Mínimos), que es fiel al PDF pero describe la INTEGRACIÓN del capital, no la frecuencia de información en el Régimen Informativo. El grafo SÍ contenía el nodo que responde: 'Operacion_calculo_de_riesgo_de_mercado' ('Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)...', prov. Punto 1.1 del RI Contable Mensual), nodo que el agente VIO en sus búsquedas pero no usó.",
+        "fuente": "El Punto 1.1 del TO_regimen_informativo_contable_mensual_actual.pdf establece que la información tiene frecuencia mensual EXCEPTO ciertas informaciones de frecuencia trimestral, entre ellas 'Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)'. Es decir, la frecuencia de información del riesgo de mercado es TRIMESTRAL, no diaria. El Punto 1.3 de Capitales Mínimos sí dice 'diaria' pero refiere a la integración, otra cosa."
+      }
+    },
+    {
+      "categoria": "sin_defecto",
+      "lado": "ninguno",
+      "jerarquia": "secundaria",
+      "pata": "Frecuencia y disposiciones del Ratio de apalancamiento (base individual y consolidada; punto 10.1; punto 12.4 suspensión nivel 3)",
+      "evidencia": {
+        "afirmacion": "El agente afirmó que el Ratio de apalancamiento se informa con frecuencia trimestral, en base individual y consolidada, según el punto 10.1 del RI Contable Mensual, y que mantiene la frecuencia trimestral en suspensión de consolidación nivel 3 (punto 12.4).",
+        "nodo": "Soportado por nodos fieles: 'Obligacion_informar_ratio_de_apalancamiento_trimestral' (plazo trimestral, base individual y consolidada, prov. Punto 10.1), 'Excepcion_excepcion_para_ratio_de_apalancamiento' (la suspensión nivel 3 no aplica al Ratio, mantiene frecuencia trimestral, prov. Punto 12.4) y 'Restriccion_ratio_apalancamiento_consolidacion_nivel_3' (prov. Punto 12.4).",
+        "fuente": "El Punto 10.1 del RI Contable Mensual confirma textualmente: 'Los datos se informarán con frecuencia trimestral, sobre base individual y consolidada trimestral'. El Punto 12.4 confirma que el Ratio de apalancamiento mantiene su frecuencia trimestral con excepción a la suspensión de consolidación nivel 3. Estas subafirmaciones están correctas y soportadas; su marcado como 'no_soportado/falso' parece un falso positivo del juez por arrastre del error central de la pata 1."
+      }
+    }
+  ],
+  "razonamiento": "La pregunta CQ-025 tiene dos patas: (1) frecuencia de información de la exigencia por riesgo de mercado y (2) frecuencia del Ratio de apalancamiento, ambas DENTRO del Régimen Informativo. Pata 1 (error central, marcado no_soportado/central): el agente respondió 'diaria, punto 1.3 Capitales Mínimos'. Verifiqué el PDF: el Punto 1.3 de Capitales Mínimos sí dice que la INTEGRACIÓN del capital por riesgo de mercado se determina en forma diaria, pero eso NO es la frecuencia de información preguntada. El Punto 1.1 del RI Contable Mensual establece que los datos del cálculo de la exigencia por riesgo de mercado tienen frecuencia TRIMESTRAL. Busqué y confirmé que el grafo contiene el nodo fiel que responde correctamente ('Operacion_calculo_de_riesgo_de_mercado', vinculado al Punto 1.1, frecuencia trimestral), y que el agente incluso lo VIO en sus búsquedas (resultados de buscar_nodos pasos 2 y 7). El agente eligió el nodo equivocado (integración diaria) en lugar del nodo correcto disponible: error de navegación del agente, no defecto del grafo (el nodo correcto existe, es fiel y estaba a la vista). Pata 2: verifiqué cada subafirmación contra el PDF (puntos 10.1 y 12.4) y contra los nodos: todas están correctas y soportadas por nodos fieles. Su marcado como no_soportado/falso no corresponde a un defecto real; son falsos positivos del juez, probablemente por arrastre del error central. Descarté contenido_kg (los nodos no contradicen el PDF), completitud_kg (la info correcta está en el grafo), estructural_kg (existen los nodos y aristas necesarios), y provenance_imprecisa (las citas de los nodos coinciden con lo que dice el PDF). La causa que rompe el veredicto es la navegación del agente en la pata 1.",
+  "confianza": "alta",
+  "_meta": {
+    "parse_ok": true,
+    "tool_calls_used": 10,
+    "tokens_in": 140386,
+    "tokens_out": 5288,
+    "latency_s": 73.316,
+    "error": null,
+    "final_raw": "El nodo de integración diaria es fiel al PDF (punto 1.3 confirma la integración diaria) — pero responde a la INTEGRACIÓN, no a la FRECUENCIA DE INFORMACIÓN del régimen informativo, que es lo que pregunta CQ-025. El agente eligió mal el nodo. Tengo evidencia completa.\n\n{\n  \"atribuciones\": [\n    {\n      \"categoria\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Frecuencia de información de la exigencia por riesgo de mercado en el Régimen Informativo\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que 'La exigencia por riesgo de mercado se determina en forma diaria, conforme al punto 1.3 de la normativa de Capitales Mínimos' como respuesta a la frecuencia de información.\",\n        \"nodo\": \"El agente usó 'Obligacion_determinar_integracion_por_riesgo_de_mercado' (plazo: diario, prov. Punto 1.3 Capitales Mínimos), que es fiel al PDF pero describe la INTEGRACIÓN del capital, no la frecuencia de información en el Régimen Informativo. El grafo SÍ contenía el nodo que responde: 'Operacion_calculo_de_riesgo_de_mercado' ('Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)...', prov. Punto 1.1 del RI Contable Mensual), nodo que el agente VIO en sus búsquedas pero no usó.\",\n        \"fuente\": \"El Punto 1.1 del TO_regimen_informativo_contable_mensual_actual.pdf establece que la información tiene frecuencia mensual EXCEPTO ciertas informaciones de frecuencia trimestral, entre ellas 'Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.)'. Es decir, la frecuencia de información del riesgo de mercado es TRIMESTRAL, no diaria. El Punto 1.3 de Capitales Mínimos sí dice 'diaria' pero refiere a la integración, otra cosa.\"\n      }\n    },\n    {\n      \"categoria\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Frecuencia y disposiciones del Ratio de apalancamiento (base individual y consolidada; punto 10.1; punto 12.4 suspensión nivel 3)\",\n      \"evidencia\": {\n        \"afirmacion\": \"El agente afirmó que el Ratio de apalancamiento se informa con frecuencia trimestral, en base individual y consolidada, según el punto 10.1 del RI Contable Mensual, y que mantiene la frecuencia trimestral en suspensión de consolidación nivel 3 (punto 12.4).\",\n        \"nodo\": \"Soportado por nodos fieles: 'Obligacion_informar_ratio_de_apalancamiento_trimestral' (plazo trimestral, base individual y consolidada, prov. Punto 10.1), 'Excepcion_excepcion_para_ratio_de_apalancamiento' (la suspensión nivel 3 no aplica al Ratio, mantiene frecuencia trimestral, prov. Punto 12.4) y 'Restriccion_ratio_apalancamiento_consolidacion_nivel_3' (prov. Punto 12.4).\",\n        \"fuente\": \"El Punto 10.1 del RI Contable Mensual confirma textualmente: 'Los datos se informarán con frecuencia trimestral, sobre base individual y consolidada trimestral'. El Punto 12.4 confirma que el Ratio de apalancamiento mantiene su frecuencia trimestral con excepción a la suspensión de consolidación nivel 3. Estas subafirmaciones están correctas y soportadas; su marcado como 'no_soportado/falso' parece un falso positivo del juez por arrastre del error central de la pata 1.\"\n      }\n    }\n  ],\n  \"razonamiento\": \"La pregunta CQ-025 tiene dos patas: (1) frecuencia de información de la exigencia por riesgo de mercado y (2) frecuencia del Ratio de apalancamiento, ambas DENTRO del Régimen Informativo. Pata 1 (error central, marcado no_soportado/central): el agente respondió 'diaria, punto 1.3 Capitales Mínimos'. Verifiqué el PDF: el Punto 1.3 de Capitales Mínimos sí dice que la INTEGRACIÓN del capital por riesgo de mercado se determina en forma diaria, pero eso NO es la frecuencia de información preguntada. El Punto 1.1 del RI Contable Mensual establece que los datos del cálculo de la exigencia por riesgo de mercado tienen frecuencia TRIMESTRAL. Busqué y confirmé que el grafo contiene el nodo fiel que responde correctamente ('Operacion_calculo_de_riesgo_de_mercado', vinculado al Punto 1.1, frecuencia trimestral), y que el agente incluso lo VIO en sus búsquedas (resultados de buscar_nodos pasos 2 y 7). El agente eligió el nodo equivocado (integración diaria) en lugar del nodo correcto disponible: error de navegación del agente, no defecto del grafo (el nodo correcto existe, es fiel y estaba a la vista). Pata 2: verifiqué cada subafirmación contra el PDF (puntos 10.1 y 12.4) y contra los nodos: todas están correctas y soportadas por nodos fieles. Su marcado como no_soportado/falso no corresponde a un defecto real; son falsos positivos del juez, probablemente por arrastre del error central. Descarté contenido_kg (los nodos no contradicen el PDF), completitud_kg (la info correcta está en el grafo), estructural_kg (existen los nodos y aristas necesarios), y provenance_imprecisa (las citas de los nodos coinciden con lo que dice el PDF). La causa que rompe el veredicto es la navegación del agente en la pata 1.\",\n  \"confianza\": \"alta\"\n}",
+    "trayectoria_verificador": [
+      {
+        "n": 1,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 1.3. Integración."
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.3 (PDF pág 4)\", \"pasaje\": \"1.3. Integración.\\nA los fines de determinar el cumplimiento de la exigencia de capital mínimo, la integración a\\nconsiderar será la responsabilidad patrimonial computable, que se determinará en función de\\nlos saldos de las partidas admitidas registrados al último día del mes bajo informe.\\nEn el caso de la exigencia de capital mínimo por riesgo de mercado, la integración se de termi-\\nnará en forma diaria de acuerdo con lo establecido en el punto 6.7.1.\\n1.4. Incumplimientos.\\nLos incumplimientos al capital mínimo exigido darán lugar a las siguientes consecuencias:\\n1.4.1. Nuevas entidades.\\nRevocación de la autorización para func ionar si no se integra el capital mínimo exigido\\ndentro de los 60 días corridos de su otorgamiento.\\n1.4.2. Entidades en funcionamiento.\\n1.4.2.1. Incumplimientos informados por las entidades.\\nLa entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes\\nsiguiente a aquel en que se registre el incumplimiento, o presentar un plan de re-\\ngularización y sa… [+269 chars]"
+      },
+      {
+        "n": 2,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 10.1. Normas de procedimiento"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 10.1. Normas de procedimiento\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 10.1 (PDF pág 43)\", \"pasaje\": \"10.1. Normas de procedimiento \\n \\n10.1.1. Disposiciones generales. \\n \\nSe informará el ratio de apalancamiento y sus componentes según el modelo de in-\\nformación previsto en el punto 10.2., de conformidad con lo dispuesto en las normas \\nsobre “Ratio de apalancamiento”. \\n \\nEl presente requerimiento deberá ser cumplido por todas las entidades financieras. \\n \\nLos datos se informarán con frecuencia trimestral, sobre base individual y consolida-\\nda trimestral -considerando a este último efecto lo establecido en la sección 3. de las \\ncitadas normas-; serán aplicables los siguientes códigos de consolidación: \\n \\n- Base individual (código de consolidación 0 ó  1): entidad financiera y sucursales en \\nel país y en el exterior. \\n \\nSe regirá por los plazos de presentación previstos para el régimen in formativo \\ncontable mensual. \\n \\n- Base consolidada trimestral (código de consolidación 3): entidad financiera con fi-\\nliales, subsidiarias significativas y otros en… [+448 chars]"
+      },
+      {
+        "n": 3,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada"
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 12.4 (PDF pág 58)\", \"pasaje\": \"12.4. Suspensión de la observancia  de las regulaciones técnicas sobre base consolidada \\ntrimestral (punto 6.1. de las normas sobre “Supervisión consolidada”). \\n \\nA partir del período de información abril/24: \\n \\n- Se suspende el envío de informaciones con código de consolidación 3  -con la ex-\\ncepción prevista para Ratio de apalancamiento-, siendo marzo/24 el último período \\ntrimestral que corresponde informar con este nivel de consolidación; \\n \\n- En la información sobre base consolidada mensual (códigos de consolidación 2 ó 9) \\nse incluirán -de corresponder- las operaciones de los entes a que refieren los incisos \\ni), ii) y iii) del primer párrafo del punto 6.2. de las normas sobre “Supervisión conso-\\nlidada. \\n \\n- Las entidades financieras que hasta el 31/03/24 informaban únicamente códigos de \\nconsolidación 1 y 3, de mantenerse esta situación de consolidación , pasarán a in-\\nformar: \\na) código… [+501 chars]"
+      },
+      {
+        "n": 4,
+        "tool": "leer_pasaje_pdf",
+        "input": {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 1.1."
+        },
+        "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 7050000… [+413 chars]"
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_riesgo_de_mercado"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo de mercado\", \"properties\": {\"tipo\": \"cálculo de riesgo de mercado\", \"description\": \"Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de consolidación 0 o 1 y 2)\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_informar_ratio_de_apalancamiento"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"type\": \"Obligacion\", \"label\": \"Informar ratio de apalancamiento\", \"properties\": {\"description\": \"La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de consolidación 0 o 1)\", \"tipo\": \"presentacion_informativa\", \"plazo\": \"trimestral\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}"
+      },
+      {
+        "n": 7,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_de_riesgo_de_mercado"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_riesgo_de_mercado\", \"label\": \"Cálculo exigencia riesgo de mercado\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "datos complementarios riesgo de mercado frecuencia trimestral sección 4",
+          "limite": 8
+        },
+        "output_truncado": "{\"consulta\": \"datos complementarios riesgo de mercado frecuencia trimestral sección 4\", \"total_con_match\": 2460, \"resultados\": [{\"id\": \"Obligacion_los_datos_se_informaran_con_frecuencia_trimestral_y_se_integraran_con_los_datos_\", \"type\": \"Obligacion\", \"label\": \"Informar frecuencia trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los datos se informarán con frecuencia trimestral y se integrarán con los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y dic…\"}, {\"id\": \"Restriccion_en_la_relacion_de_activos_inmovilizados_y_otros_conceptos_seccion_4_del_respecti\", \"type\": \"Restriccion\", \"label\": \"Límite de activos inmovilizados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"en la relación de activos inmovilizados y otros conceptos (Sección 4. del respectivo TO), excluidos los computados para la determinación del INC(inversiones sig…\"}, {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre… [+1737 chars]"
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_ratio_apalancamiento_consolidacion_nivel_3"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_ratio_apalancamiento_consolidacion_nivel_3\", \"type\": \"Restriccion\", \"label\": \"Ratio apalancamiento consolidación nivel 3\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Para Ratio de apalancamiento se continuará informando código de consolidación 3; no obstante, las operaciones a incluir serán las que correspondan al perímetro de consolidación mensual, considerando de corresponder, los sujetos previstos en el punto 6.2.\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 12.4. Suspensión de la observancia de las regulaciones técnicas sobre base consolidada\"}]}"
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_determinar_integracion_por_riesgo_de_mercado"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_determinar_integracion_por_riesgo_de_mercado\", \"type\": \"Obligacion\", \"label\": \"Determinar integración por riesgo de mercado\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"En el caso de la exigencia de capital mínimo por riesgo de mercado, la integración se determinará en forma diaria de acuerdo con lo establecido en el punto 6.7.1\", \"plazo\": \"diario\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\"}]}"
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 18292,
+        "output_tokens": 490
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 20983,
+        "output_tokens": 484
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 22746,
+        "output_tokens": 710
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 25084,
+        "output_tokens": 969
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 26326,
+        "output_tokens": 418
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 26955,
+        "output_tokens": 2217
+      }
+    ],
+    "contexto_stats": {
+      "n_seen": 49,
+      "n_claims_fallidos": 6,
+      "categoria": "factual_directa"
+    }
+  }
+}

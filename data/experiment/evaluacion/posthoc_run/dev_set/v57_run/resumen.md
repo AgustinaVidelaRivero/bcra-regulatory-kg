@@ -1,0 +1,12 @@
+# Resumen corrida v5.7 — 8 casos (2026-07-15)
+
+CODE_VER=`verificador-v5.7` (taxonomía v2.6: criterio des-scoping vs aplicación + regla de jerarquía FP-centrales; contrato: `sin_par` para `sin_defecto`). Una línea por caso: pares por jerarquía · tokens · flags. JSON íntegro por caso en esta carpeta. Sin comparación contra referencias (revisión externa).
+
+- **off/run_1/CQ-016** — sin_par: {noise_sensitivity, sin_defecto} · tokens_in=112057 tokens_out=6091 · tools=5/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **on/run_5/CQ-019** — secundaria: {faithfulness, alucinacion_agente} | sin_par: {noise_sensitivity, sin_defecto} · {noise_sensitivity, sin_defecto} · tokens_in=445375 tokens_out=9610 · tools=18/40 · formato_invalido=False · flag_encuadre_invertido=True · flag_contexto=False · format_retries=0
+- **off/run_1/CQ-018** — primaria: {noise_sensitivity, contenido_kg} · {noise_sensitivity, contenido_kg} | sin_par: {noise_sensitivity, sin_defecto} · tokens_in=378028 tokens_out=12107 · tools=14/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **off/run_1/CQ-031** — primaria: {context_recall, navegación} · {context_recall, navegación} · tokens_in=510714 tokens_out=8983 · tools=19/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **off/run_5/CQ-017** — primaria: {noise_sensitivity, aplicacion_erronea} | secundaria: {noise_sensitivity, contenido_kg} | sin_par: {noise_sensitivity, sin_defecto} · tokens_in=245638 tokens_out=7953 · tools=10/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **off/run_1/CQ-020** — sin_par: {noise_sensitivity, sin_defecto} · {noise_sensitivity, sin_defecto} · tokens_in=262091 tokens_out=8626 · tools=12/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **on/run_1/CQ-019** — primaria: {noise_sensitivity, contenido_kg} | sin_par: {noise_sensitivity, sin_defecto} · {noise_sensitivity, sin_defecto} · tokens_in=277553 tokens_out=7919 · tools=10/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0
+- **off/run_1/CQ-024** — primaria: {noise_sensitivity, contenido_kg} · {noise_sensitivity, contenido_kg} · tokens_in=241909 tokens_out=7973 · tools=10/40 · formato_invalido=False · flag_encuadre_invertido=False · flag_contexto=False · format_retries=0

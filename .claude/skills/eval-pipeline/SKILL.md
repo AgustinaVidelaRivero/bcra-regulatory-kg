@@ -1,6 +1,6 @@
 ---
 name: eval-pipeline
-description: Produce trazas juzgadas a partir de (grafo, queries) con el pipeline KG-RAG del repo — agente Haiku sobre el grafo + juez Sonnet v2.1.1 de dos pasos — vía run_posthoc.py (caché + captura de crudos incluidas). Usala SIEMPRE que haya que ejecutar una evaluación: "corré el eval sobre run_X", "evaluá el grafo con eval_set_v2", "generá trazas (juzgadas)", "corré estas preguntas contra el KG", "medí cuánto acierta", "cuántas preguntas falla run_3", "corré el harness/el juez", "probá estas queries nuevas", "re-corré el dataset sobre la copia refinada". Disparala aunque el pedido no diga "evaluación" — si hay que correr preguntas contra un grafo y obtener veredictos, es esto. NO cubre: interpretar/atribuir fallas (skill kg-refinement), auditar la corrida congelada de la Fase 2.3, ni ajustar el juez.
+description: Produce trazas juzgadas a partir de (grafo, queries) con el pipeline KG-RAG del repo — agente Haiku sobre el grafo + juez Sonnet v2.1.1 de dos pasos — vía runners/run_posthoc.py (caché + captura de crudos incluidas). Usala SIEMPRE que haya que ejecutar una evaluación: "corré el eval sobre run_X", "evaluá el grafo con eval_set_v2", "generá trazas (juzgadas)", "corré estas preguntas contra el KG", "medí cuánto acierta", "cuántas preguntas falla run_3", "corré el harness/el juez", "probá estas queries nuevas", "re-corré el dataset sobre la copia refinada". Disparala aunque el pedido no diga "evaluación" — si hay que correr preguntas contra un grafo y obtener veredictos, es esto. NO cubre: interpretar/atribuir fallas (skill kg-refinement), auditar la corrida congelada de la Fase 2.3, ni ajustar el juez.
 ---
 
 # Pipeline de evaluación — trazas juzgadas a partir de (grafo, queries)
@@ -10,10 +10,10 @@ Esta skill hace UNA cosa: dado un grafo cargable y un archivo de queries, produc
 y reporta dónde quedaron. Todo lo interpretativo (por qué falló una pregunta, a
 quién atribuir, qué cambiar) es de la skill `kg-refinement`, no de esta.
 
-**La ruta default para corridas nuevas es `run_posthoc.py`**, NUNCA `harness.py`
+**La ruta default para corridas nuevas es `runners/run_posthoc.py`**, NUNCA `harness.py`
 suelto ni `run_frozen.py`: run_posthoc corre agente+juez juntos, pasa por la caché
 persistente (no re-paga lo ya corrido) y captura los crudos íntegros por turno
-(`data/experiment/evaluacion/run_posthoc.py:1-43`).
+(`data/experiment/evaluacion/runners/run_posthoc.py:1-43`).
 
 ## El sistema que se ejecuta (fijo, no se toca)
 
@@ -31,7 +31,7 @@ persistente (no re-paga lo ya corrido) y captura los crudos íntegros por turno
 
 - Venv de la raíz del repo (`.venv/bin/python`, Python 3.10).
 - `ANTHROPIC_API_KEY` en `data/experiment/evaluacion/.env` (los modos con API
-  abortan si falta, `data/experiment/evaluacion/run_posthoc.py:283-285`).
+  abortan si falta, `data/experiment/evaluacion/runners/run_posthoc.py:283-285`).
 - Directorio de trabajo: `data/experiment/evaluacion/`.
 
 ## Insumos
@@ -42,7 +42,7 @@ de refinamiento) primero tiene que estar cableada — ver
 `.claude/skills/kg-refinement/references/preparar-run3-refinamiento.md`.
 
 **Queries** — archivo JSON: lista `[{...}]` o dict `{"preguntas": [...]}`
-(ambos aceptados, `data/experiment/evaluacion/run_posthoc.py:272-274`).
+(ambos aceptados, `data/experiment/evaluacion/runners/run_posthoc.py:272-274`).
 Sets existentes en `data/experiment/evaluacion/queries/`: **eval sets para
 conclusiones** — `eval_set_v1.json` (23 preguntas, congelado de la Fase 2.3) y
 `eval_set_v2.json` (31) — y **material de desarrollo** — `dev.json`,
@@ -73,28 +73,28 @@ print(f'{len(qs)} preguntas | sin referente (no-unanswerable): {len(inc)} {inc o
 # Esperado en eval_set_v1/v2: 0 incompletas. Si da >0, frenar y reportar — no correr.
 
 # 1. Offline, gratis — cableado y replay determinista (14 checks):
-python run_posthoc.py --selftest
+python runners/run_posthoc.py --selftest
 
 # 2. Con API, ~centavos — 1 pregunta, criterios PASS/FAIL automáticos:
-python run_posthoc.py --preflight --run run_3 --label <etiqueta>
+python runners/run_posthoc.py --preflight --run run_3 --label <etiqueta>
 
 # 3. Corrida completa:
-python run_posthoc.py --run run_3 --queries queries/eval_set_v2.json \
+python runners/run_posthoc.py --run run_3 --queries queries/eval_set_v2.json \
                       --reps 1 --label <etiqueta>
 ```
 
-Flags (`data/experiment/evaluacion/run_posthoc.py:515-527`): `--run`, `--reps`
+Flags (`data/experiment/evaluacion/runners/run_posthoc.py:515-527`): `--run`, `--reps`
 (default 3), `--thinking` (default OFF), `--queries` (default `eval_set_v1.json`),
 `--label`, `--db`.
 
 **Reglas al lanzar:**
 
 - **`--label` SIEMPRE explícito y nuevo.** El label nombra la carpeta de salida
-  `posthoc_run/traces/{label}/{run}/` (`data/experiment/evaluacion/run_posthoc.py:229`);
+  `posthoc_run/traces/{label}/{run}/` (`data/experiment/evaluacion/runners/run_posthoc.py:229`);
   repetir un label sobreescribe los `{qid}.json` de esa carpeta. Los labels `off`
   y `on` están OCUPADOS: contienen el dataset cualitativo de 230 trazas de la
   Fase 2.3+ — no reutilizarlos. (Sin `--label`, el default es justamente `off`/`on`
-  según `--thinking`, `data/experiment/evaluacion/run_posthoc.py:532` — otra razón
+  según `--thinking`, `data/experiment/evaluacion/runners/run_posthoc.py:532` — otra razón
   para pasarlo siempre.)
 - **`--reps 1` con caché caliente.** Con temperature 0 y caché, repeticiones del
   mismo request devuelven el MISMO objeto cacheado: N=3 colapsa en copias
@@ -107,17 +107,17 @@ Flags (`data/experiment/evaluacion/run_posthoc.py:515-527`): `--run`, `--reps`
   skill `llm-capture`).
 - Trazas fallidas (parse error, truncado por max_tokens, error de API) **no se
   reintentan** — son comportamiento del sistema bajo evaluación; quedan con
-  `failed_trace: true` y sin juez (`data/experiment/evaluacion/run_posthoc.py:193-199`).
+  `failed_trace: true` y sin juez (`data/experiment/evaluacion/runners/run_posthoc.py:193-199`).
 
 ## Outputs y cómo leerlos
 
 - **Por pregunta:** `posthoc_run/traces/{label}/{run}/{qid}.json` — lista de reps,
   cada una con la traza del agente, los crudos por turno, el juez completo
   (step1 + step2 + verdict) y los costos
-  (`data/experiment/evaluacion/run_posthoc.py:201-217`).
+  (`data/experiment/evaluacion/runners/run_posthoc.py:201-217`).
 - **Por corrida:** `posthoc_run/summary_{label}_{run}.json` — n_preguntas,
   n_failed, costo_usd, stats de caché, code_version y graph_fingerprint
-  (`data/experiment/evaluacion/run_posthoc.py:250-264`).
+  (`data/experiment/evaluacion/runners/run_posthoc.py:250-264`).
 
 Las dimensiones del veredicto, el mapping determinístico y el flag
 `requiere_adjudicacion_humana` están en `references/contratos.md`.
@@ -147,7 +147,7 @@ adjudicación contra los PDFs es de la autora.
 
 ```bash
 cd data/experiment/evaluacion
-python run_posthoc.py --selftest   # offline, 14 checks, exit 0 si PASS
+python runners/run_posthoc.py --selftest   # offline, 14 checks, exit 0 si PASS
 ```
 
 Tras una corrida real: verificar que `posthoc_run/summary_{label}_{run}.json`

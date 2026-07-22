@@ -1,0 +1,1225 @@
+{
+ "id_falla": "run_3/CQN-007",
+ "run": "run_3",
+ "n_reps": 3,
+ "voto": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 3
+   }
+  ],
+  "desglose": [
+   {
+    "rep": 1,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 2,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   },
+   {
+    "rep": 3,
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "formato_invalido": false
+   }
+  ]
+ },
+ "repeticiones": [
+  {
+   "id_falla": "run_3/CQN-007",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad atípica riesgo tasa interés cartera inversión', limite: 10}",
+      "devolvio": "10 nodos sobre cálculo/informe de riesgo EVE; NO incluyó el nodo Restriccion_limitacion_eve_sobre_capital_nivel_1 en el top-10",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad atípica', limite: 10}",
+      "devolvio": "categorías de EntidadFinanciera (grupo A/B/C, nominada, etc.), ninguna 'atípica'",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'atípica', limite: 15}",
+      "devolvio": "0 resultados (buscar_nodos indexa label/id; 'atípica' está en la description del nodo, no en su label)",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'circunstancia identificación entidad atípica', limite: 10}",
+      "devolvio": "obligación de informar circunstancia a SEFyC + categorías de entidad; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'riesgo tasa interés cartera inversión características', limite: 10}",
+      "devolvio": "mismos nodos de cálculo EVE del paso 1",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad financiera riesgo tasa interés EVE', limite: 10}",
+      "devolvio": "nodos de cálculo/informe EVE y ponderadores",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{id: 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}",
+      "devolvio": "definición del cálculo EVE (Sección 11.); no menciona entidad atípica",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{id: 'Operacion_calculo_de_riesgo_de_tasa_de_interes', direccion: 'ambas'}",
+      "devolvio": "entre los vecinos entrantes, relation 'limita' → Restriccion_limitacion_eve_sobre_capital_nivel_1 (el NODO PORTADOR de la respuesta) — expuesto al agente pero NO abierto",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'excepción entidad riesgo tasa interés', limite: 10}",
+      "devolvio": "nodos de cálculo EVE; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'entidad pequeña riesgo tasa interés', limite: 10}",
+      "devolvio": "nodos de cálculo EVE; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'EVE excepción entidad atípica', limite: 10}",
+      "devolvio": "nodos Excepcion de otros dominios (permisos de embarque, calificación SEFYC); no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'EVE cartera inversión entidad', limite: 10}",
+      "devolvio": "registro en cartera inversión, exclusión de acciones, categorías; no pertinente",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{consulta: 'sección 11 riesgo tasa interés', limite: 10}",
+      "devolvio": "mismos nodos de cálculo EVE; no pertinente",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 8,
+     "quote": "{\"relation\": \"limita\", \"vecino_id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"vecino_label\": \"Limitación EVE sobre capital nivel 1\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Circunstancia en que se identifica a una entidad como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas",
+       "ubicacion": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "fuente": {
+       "quote": "{\"relation\": \"limita\", \"vecino_id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"vecino_label\": \"Limitación EVE sobre capital nivel 1\"}",
+       "ubicacion": "paso 8 de la trayectoria (ver_vecinos de Operacion_calculo_de_riesgo_de_tasa_de_interes)"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "15% capital nivel 1 EVE",
+       "resultado": "Restriccion_limitacion_eve_sobre_capital_nivel_1 devuelto #1 con 4 tokens matcheados; su resumen ya expone la definición de 'entidad atípica'"
+      },
+      {
+       "consulta": "limitación EVE capital nivel 1",
+       "resultado": "Restriccion_limitacion_eve_sobre_capital_nivel_1 devuelto #1 con 5 tokens matcheados — alcanzable por label"
+      },
+      {
+       "consulta": "valor atípico outlier tasa interés",
+       "resultado": "el nodo NO aparece (su label no contiene 'atípica', que está solo en la description)"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D7",
+      "portador_id": "Restriccion_limitacion_eve_sobre_capital_nivel_1",
+      "emision_llm": "navegación",
+      "decision_codigo": "navegación",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 35,
+       "consultas_en_top10": [],
+       "mejor_rank": 160
+      },
+      "puntero_estructural": true,
+      "evidencia": {
+       "paso": 8,
+       "relacion": "limita",
+       "nodo_consultado": "Operacion_calculo_de_riesgo_de_tasa_de_interes"
+      }
+     }
+    },
+    {
+     "sintoma_capa1": "noise_sensitivity",
+     "causa_capa2": "provenance_imprecisa",
+     "lado": "grafo",
+     "jerarquia": "secundaria",
+     "pata": "Circunstancia en que se identifica a una entidad como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas",
+       "ubicacion": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "nodo": {
+       "quote": "\"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]",
+       "ubicacion": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "fuente": {
+       "quote": "8.1. Normas de procedimiento \n8.2. Modelo de información \nSección 9. Incrementos de exigencia por riesgo de crédito \n9.1. Normas de procedimiento \n9.2. Modelo de información",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.1. Normas de procedimiento."
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "leer_pasaje_pdf Punto 8.1",
+       "resultado": "el pasaje anclado es un índice/tabla de contenidos, no contiene el texto de 'entidad atípica' ni el umbral del 15% — la cita apunta a otro lado"
+      }
+     ]
+    }
+   ],
+   "razonamiento": "SÍNTOMA (C1a — por pata): la pregunta tiene una única pata (circunstancia de identificación de 'entidad atípica' por riesgo de tasa de interés/EVE). La respuesta final declara que 'no se encontró información'. ¿Apareció en la trayectoria el dato PERTINENTE que la responde? El nodo portador es Restriccion_limitacion_eve_sobre_capital_nivel_1, cuya description dice textualmente 'Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas' — ESO es exactamente la respuesta. El nodo fue EXPUESTO al agente en el paso 8 (ver_vecinos) como vecino entrante con relation 'limita', pero el agente NO lo abrió con ver_nodo ni lo incorporó a la respuesta. Como la respuesta final no usó el dato y lo negó, la pata quedó efectivamente sin contestar en el output → síntoma context_recall a nivel pata. CAUSA (C2 — árbol de context_recall): ¿existe nodo portador del dato? SÍ (exhibido, quote de su contenido). ¿Las búsquedas razonables del agente lo alcanzaban? SÍ: 'limitación EVE capital nivel 1' lo devuelve #1 por label (5 tokens) y '15% capital nivel 1 EVE' lo devuelve #1 (4 tokens) — es alcanzable por búsqueda léxica; y de forma aún más contundente, el propio agente lo TUVO DELANTE como vecino en el paso 8. Por tanto NO es alcanzabilidad_kg (el nodo se alcanza con vocabulario razonable) ni completitud_kg (el dato existe) ni estructural_kg (existe además la arista 'limita' que lo conecta con el cálculo EVE). El fallo es del AGENTE: teniendo el nodo portador expuesto en su trayectoria, no lo consultó ni lo usó → navegación, PRIMARIA (es lo que explica por qué el juez reprobó: el agente concluyó 'no respondible' pese a tener el dato al alcance). DESCARTES: descarto alcanzabilidad_kg porque el nodo se alcanza por label con términos plausibles del dominio de la pregunta (EVE, capital nivel 1); descarto completitud_kg porque el dato está presente y correcto en el grafo; descarto sin_defecto porque la respuesta 'no se encontró' es efectivamente incorrecta (el dato existía). SECUNDARIA: la provenance del nodo cita 'Punto 8.1. Normas de procedimiento', que al leerse en el PDF resulta ser un índice/tabla de contenidos sin el texto de 'entidad atípica' ni el umbral 15% → provenance_imprecisa; es un defecto real del grafo pero NO rompió esta respuesta (el agente ni siquiera abrió el nodo para verificar su cita), por eso es secundaria (síntoma noise_sensitivity por cita que apunta a otro lado).",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 10,
+    "max_tool_calls": 40,
+    "tokens_in": 280445,
+    "tokens_out": 6611
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 0,
+    "tool_calls_used": 10,
+    "tokens_in": 280445,
+    "tokens_out": 6611,
+    "latency_s": 94.136,
+    "error": null,
+    "final_raw": "Confirmado: la búsqueda inicial del agente (paso 1) NO devolvió el nodo `Restriccion_limitacion_eve_sobre_capital_nivel_1` en su top-10 (aunque el paso 8 sí lo expuso como vecino). El agente lo tuvo delante en el paso 8 y no lo abrió. Tengo la evidencia completa.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad atípica riesgo tasa interés cartera inversión', limite: 10}\", \"devolvio\": \"10 nodos sobre cálculo/informe de riesgo EVE; NO incluyó el nodo Restriccion_limitacion_eve_sobre_capital_nivel_1 en el top-10\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad atípica', limite: 10}\", \"devolvio\": \"categorías de EntidadFinanciera (grupo A/B/C, nominada, etc.), ninguna 'atípica'\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'atípica', limite: 15}\", \"devolvio\": \"0 resultados (buscar_nodos indexa label/id; 'atípica' está en la description del nodo, no en su label)\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'circunstancia identificación entidad atípica', limite: 10}\", \"devolvio\": \"obligación de informar circunstancia a SEFyC + categorías de entidad; no pertinente\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'riesgo tasa interés cartera inversión características', limite: 10}\", \"devolvio\": \"mismos nodos de cálculo EVE del paso 1\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad financiera riesgo tasa interés EVE', limite: 10}\", \"devolvio\": \"nodos de cálculo/informe EVE y ponderadores\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{id: 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}\", \"devolvio\": \"definición del cálculo EVE (Sección 11.); no menciona entidad atípica\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{id: 'Operacion_calculo_de_riesgo_de_tasa_de_interes', direccion: 'ambas'}\", \"devolvio\": \"entre los vecinos entrantes, relation 'limita' → Restriccion_limitacion_eve_sobre_capital_nivel_1 (el NODO PORTADOR de la respuesta) — expuesto al agente pero NO abierto\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'excepción entidad riesgo tasa interés', limite: 10}\", \"devolvio\": \"nodos de cálculo EVE; no pertinente\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'entidad pequeña riesgo tasa interés', limite: 10}\", \"devolvio\": \"nodos de cálculo EVE; no pertinente\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'EVE excepción entidad atípica', limite: 10}\", \"devolvio\": \"nodos Excepcion de otros dominios (permisos de embarque, calificación SEFYC); no pertinente\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'EVE cartera inversión entidad', limite: 10}\", \"devolvio\": \"registro en cartera inversión, exclusión de acciones, categorías; no pertinente\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{consulta: 'sección 11 riesgo tasa interés', limite: 10}\", \"devolvio\": \"mismos nodos de cálculo EVE; no pertinente\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 8, \"quote\": \"{\\\"relation\\\": \\\"limita\\\", \\\"vecino_id\\\": \\\"Restriccion_limitacion_eve_sobre_capital_nivel_1\\\", \\\"vecino_label\\\": \\\"Limitación EVE sobre capital nivel 1\\\", \\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_regimen_informativo_contable_mensual_actual.pdf\\\", \\\"location\\\": \\\"Punto 8.1. Normas de procedimiento.\\\"}]}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Circunstancia en que se identifica a una entidad como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\", \"ubicacion\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\"},\n        \"fuente\": {\"quote\": \"{\\\"relation\\\": \\\"limita\\\", \\\"vecino_id\\\": \\\"Restriccion_limitacion_eve_sobre_capital_nivel_1\\\", \\\"vecino_label\\\": \\\"Limitación EVE sobre capital nivel 1\\\"}\", \"ubicacion\": \"paso 8 de la trayectoria (ver_vecinos de Operacion_calculo_de_riesgo_de_tasa_de_interes)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"15% capital nivel 1 EVE\", \"resultado\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1 devuelto #1 con 4 tokens matcheados; su resumen ya expone la definición de 'entidad atípica'\"},\n        {\"consulta\": \"limitación EVE capital nivel 1\", \"resultado\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1 devuelto #1 con 5 tokens matcheados — alcanzable por label\"},\n        {\"consulta\": \"valor atípico outlier tasa interés\", \"resultado\": \"el nodo NO aparece (su label no contiene 'atípica', que está solo en la description)\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"provenance_imprecisa\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Circunstancia en que se identifica a una entidad como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\", \"ubicacion\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\"},\n        \"nodo\": {\"quote\": \"\\\"provenances\\\": [{\\\"source_doc\\\": \\\"TO_regimen_informativo_contable_mensual_actual.pdf\\\", \\\"location\\\": \\\"Punto 8.1. Normas de procedimiento.\\\"}]\", \"ubicacion\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\"},\n        \"fuente\": {\"quote\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.1. Normas de procedimiento.\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"leer_pasaje_pdf Punto 8.1\", \"resultado\": \"el pasaje anclado es un índice/tabla de contenidos, no contiene el texto de 'entidad atípica' ni el umbral del 15% — la cita apunta a otro lado\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA (C1a — por pata): la pregunta tiene una única pata (circunstancia de identificación de 'entidad atípica' por riesgo de tasa de interés/EVE). La respuesta final declara que 'no se encontró información'. ¿Apareció en la trayectoria el dato PERTINENTE que la responde? El nodo portador es Restriccion_limitacion_eve_sobre_capital_nivel_1, cuya description dice textualmente 'Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas' — ESO es exactamente la respuesta. El nodo fue EXPUESTO al agente en el paso 8 (ver_vecinos) como vecino entrante con relation 'limita', pero el agente NO lo abrió con ver_nodo ni lo incorporó a la respuesta. Como la respuesta final no usó el dato y lo negó, la pata quedó efectivamente sin contestar en el output → síntoma context_recall a nivel pata. CAUSA (C2 — árbol de context_recall): ¿existe nodo portador del dato? SÍ (exhibido, quote de su contenido). ¿Las búsquedas razonables del agente lo alcanzaban? SÍ: 'limitación EVE capital nivel 1' lo devuelve #1 por label (5 tokens) y '15% capital nivel 1 EVE' lo devuelve #1 (4 tokens) — es alcanzable por búsqueda léxica; y de forma aún más contundente, el propio agente lo TUVO DELANTE como vecino en el paso 8. Por tanto NO es alcanzabilidad_kg (el nodo se alcanza con vocabulario razonable) ni completitud_kg (el dato existe) ni estructural_kg (existe además la arista 'limita' que lo conecta con el cálculo EVE). El fallo es del AGENTE: teniendo el nodo portador expuesto en su trayectoria, no lo consultó ni lo usó → navegación, PRIMARIA (es lo que explica por qué el juez reprobó: el agente concluyó 'no respondible' pese a tener el dato al alcance). DESCARTES: descarto alcanzabilidad_kg porque el nodo se alcanza por label con términos plausibles del dominio de la pregunta (EVE, capital nivel 1); descarto completitud_kg porque el dato está presente y correcto en el grafo; descarto sin_defecto porque la respuesta 'no se encontró' es efectivamente incorrecta (el dato existía). SECUNDARIA: la provenance del nodo cita 'Punto 8.1. Normas de procedimiento', que al leerse en el PDF resulta ser un índice/tabla de contenidos sin el texto de 'entidad atípica' ni el umbral 15% → provenance_imprecisa; es un defecto real del grafo pero NO rompió esta respuesta (el agente ni siquiera abrió el nodo para verificar su cita), por eso es secundaria (síntoma noise_sensitivity por cita que apunta a otro lado).\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidad atípica",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"entidad atípica\", \"total_con_match\": 224, \"resultados\": [{\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"EntidadFinanciera_nueva_entidad\", \"type\": \"EntidadFinanciera\", \"label\": \"Nuevas entidades\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidades financieras nuevas\"}, {\"id\": \"EntidadFinanciera_entidad_encargada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad encargada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad encargada de administración de permisos de embarque\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_a\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades Grupo A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad financiera grupo A\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_b\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades grupo B\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad financiera grupo B\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_c\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades grupo C\", \"tokens_matche… [+1823 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "valor atípico outlier tasa interés",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"valor atípico outlier tasa interés\", \"total_con_match\": 82, \"resultados\": [{\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo general de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del pun…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_especifico_de_tasa_de_interes_\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo específico tasa\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por riesgo específico de tasa de interés para el último día del período (n) determinada conforme a las disposiciones del …\"}, {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado… [+4041 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "15% capital nivel 1 EVE",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"15% capital nivel 1 EVE\", \"total_con_match\": 276, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_70210000_70220000_4_5_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Capital Ordinario Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) = 70210000 – 70220000 ≥ 4,5 % s/70900000\"}, {\"id\": \"Restriccion_no_se_incluiran_activos_que_se_deducen_del_capital_ordinario_del_nivel_1_con1\", \"type\": \"Restriccion\", \"label\": \"Exclusión de activos deducibles de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se incluirán activos que se deducen del capital ordinario del nivel 1 (COn1)\"}, {\"id\": \"Operacion_calculo_de_capital_ordinario_nivel_uno\", \"type\": \"Operacion\", \"label\": \"Cómputo de capital ordinario\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: c… [+3733 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"15%\", \"description\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"n_salientes_total\": 1, \"n_entrantes_total\": 4, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"vecino_label\": \"Informar ratio de apalancamiento\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"vecino_label\": \"Informar riesgo tasa interés EVE\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual… [+700 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 8.1. Normas de procedimiento."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 11\", \"ref\": \"Punto/Sección 11 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "limitación EVE capital nivel 1",
+       "limite": 5
+      },
+      "output_truncado": "{\"consulta\": \"limitación EVE capital nivel 1\", \"total_con_match\": 283, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_70210000_70220000_4_5_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Capital Ordinario Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) = 70210000 – 70220000 ≥ 4,5 % s/70900000\"}, {\"id\": \"Restriccion_no_se_incluiran_activos_que_se_deducen_del_capital_ordinario_del_nivel_1_con1\", \"type\": \"Restriccion\", \"label\": \"Exclusión de activos deducibles de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se incluirán activos que se deducen del capital ordinario del nivel 1 (COn1)\"}, {\"id\": \"Operacion_calculo_de_capital_ordinario_nivel_uno\", \"type\": \"Operacion\", \"label\": \"Cómputo de capital ordinario\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"… [+342 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 11
+      },
+      "output_truncado": "{\"paso\": 11, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"EVE excepción entidad atípica\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"EVE excepción entidad atípica\", \"total_con_match\": 481, \"resultados\": [{\"id\": \"Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p\", \"type\": \"Excepcion\", \"label\": \"Prórroga de plazo de liquidación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad encargada del seguimiento del permiso de embarque podrá extender el plazo de liquidación cuando el cliente haya utilizado el mecanismo de acumulación…\"}, {\"id\": \"Excepcion_no_se_requerira_la_conformidad_previa_del_bcra_cuando_la_entidad_constate_que_el\", \"type\": \"Excepcion\", \"label\": \"Excepción por encuadre normativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No se requerirá la conformidad previa del BCRA cuando la entidad constate que el pago encuadra en alguna de las situaciones previstas en el punto 10.10.2. o en …\"}, {\"id\": \"Excepcion_si_la_entidad_financiera_carece_de_suficiente_capital_para_efectuar_la_deduccion\", \"type\": \"Excepcion\", \"label\": \"Remanente trasferido a nivel superior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si la ent… [+2879 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"entidad atípica riesgo tasa interés cartera inversión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"entidad atípica riesgo tasa interés cartera inversión\", \"total_con_match\": 486, \"resultados\": [{\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por … [+2283 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26614,
+      "output_tokens": 314
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 32991,
+      "output_tokens": 214
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33445,
+      "output_tokens": 318
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35068,
+      "output_tokens": 351
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35634,
+      "output_tokens": 552
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36933,
+      "output_tokens": 275
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39005,
+      "output_tokens": 217
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40755,
+      "output_tokens": 4370
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 1
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-007",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad atípica riesgo tasa interés cartera inversión', 'limite': 10}",
+      "devolvio": "486 matches; top-10 con nodos EVE/exigencia de capital, sin la Restriccion_limitacion_eve (su label 'Limitación EVE sobre capital nivel 1' no matcheó 'atípica' porque buscar_nodos indexa solo label/id)",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad atípica', 'limite': 10}",
+      "devolvio": "224 matches; categorías de EntidadFinanciera (nominada, nuevas, grupo A/B/C), ninguna 'atípica'",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'atípica', 'limite': 15}",
+      "devolvio": "0 resultados (label/id no contienen 'atípica')",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'circunstancia identificación entidad atípica', 'limite': 10}",
+      "devolvio": "240 matches; Obligacion informar circunstancia a SEFyC y categorías de entidad",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'riesgo tasa interés cartera inversión características', 'limite': 10}",
+      "devolvio": "276 matches; nodos EVE de cálculo/informe",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad financiera riesgo tasa interés EVE', 'limite': 10}",
+      "devolvio": "427 matches; nodos EVE",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}",
+      "devolvio": "Nodo EVE: 'Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.)...'",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes', 'direccion': 'ambas'}",
+      "devolvio": "Vecino entrante por relación 'limita': Restriccion_limitacion_eve_sobre_capital_nivel_1 (label 'Limitación EVE sobre capital nivel 1') — EL NODO PORTADOR DE LA RESPUESTA, expuesto pero NO abierto",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'excepción entidad riesgo tasa interés', 'limite': 10}",
+      "devolvio": "661 matches; nodos EVE y excepciones",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad pequeña riesgo tasa interés', 'limite': 10}",
+      "devolvio": "413 matches; nodos EVE",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'EVE excepción entidad atípica', 'limite': 10}",
+      "devolvio": "481 matches; excepciones varias, sin la Restriccion EVE",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'EVE cartera inversión entidad', 'limite': 10}",
+      "devolvio": "304 matches; registro cartera, exclusión acciones, categorías entidad",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'sección 11 riesgo tasa interés', 'limite': 10}",
+      "devolvio": "209 matches; nodos EVE",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 8,
+     "quote": "{'relation': 'limita', 'vecino_id': 'Restriccion_limitacion_eve_sobre_capital_nivel_1', 'vecino_label': 'Limitación EVE sobre capital nivel 1', ...}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Circunstancia en que se identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés EVE en la cartera de inversión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas",
+       "ubicacion": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "fuente": {
+       "quote": "70500000 Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (sólo se informa el último mes del trimestre)",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.2"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "entidad atípica outlier EVE capital nivel 1",
+       "resultado": "Devuelve en primer lugar Restriccion_limitacion_eve_sobre_capital_nivel_1 con la respuesta exacta en su resumen"
+      },
+      {
+       "consulta": "15% capital nivel 1 EVE riesgo tasa interés",
+       "resultado": "Devuelve la Restriccion_limitacion_eve en top-3 (tokens_matcheados 4)"
+      },
+      {
+       "consulta": "Limitación EVE sobre capital nivel 1",
+       "resultado": "Primer resultado exacto con tokens_matcheados 6 — el nodo es alcanzable por label"
+      },
+      {
+       "consulta": "ver_vecinos de Operacion_calculo_de_riesgo_de_tasa_de_interes (paso 8 del agente)",
+       "resultado": "El nodo portador aparece como vecino 'limita' con su label completo, expuesto al agente que lo abrió pero no lo consultó"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D7",
+      "portador_id": "Restriccion_limitacion_eve_sobre_capital_nivel_1",
+      "emision_llm": "navegación",
+      "decision_codigo": "navegación",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 35,
+       "consultas_en_top10": [],
+       "mejor_rank": 160
+      },
+      "puntero_estructural": true,
+      "evidencia": {
+       "paso": 8,
+       "relacion": "limita",
+       "nodo_consultado": "Operacion_calculo_de_riesgo_de_tasa_de_interes"
+      }
+     }
+    }
+   ],
+   "razonamiento": "La pregunta tiene una única pata: la circunstancia que identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés EVE en la cartera de inversión. El agente respondió que no encontró información. C1a (síntoma por pata): el dato pertinente que responde la pata NUNCA apareció en la respuesta — pese a que en el paso 8 el nodo portador fue EXPUESTO — por lo que el síntoma es context_recall. C2 (causa): ¿existe nodo portador y era alcanzable? El nodo Restriccion_limitacion_eve_sobre_capital_nivel_1 porta la respuesta exacta ('Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas'). Descarto alcanzabilidad_kg: el nodo es alcanzable por búsqueda léxica sobre su label ('Limitación EVE sobre capital nivel 1' lo devuelve en primer lugar; '15% capital nivel 1 EVE' lo devuelve en top-3), y además fue EXPUESTO directamente al agente en el paso 8 como vecino 'limita' del nodo Operacion_calculo_de_riesgo_de_tasa_de_interes que él mismo había abierto en el paso 7, con su label visible. El vocabulario 'EVE', 'capital nivel 1', 'cartera de inversión' estaba disponible ex ante en su propia trayectoria (pasos 1, 7 y 8). El agente tuvo el nodo delante y no lo abrió: siguió con 5 búsquedas léxicas más y concluyó que no había información. Esto es un fallo de navegación del agente (lado agente), causa primaria que explica la reprobación. Descarté completitud_kg y estructural_kg (el dato y la arista 'limita' EVE→Restricción existen), contenido_kg (el contenido del nodo es coherente con el marco EVE de Basilea del BCRA) y frontera_no_determinada (la evidencia es concluyente: el nodo existe, es alcanzable y fue expuesto). Nota sobre defecto secundario del grafo: la provenance del nodo (Punto 8.1. Normas de procedimiento.) apunta a un índice de secciones y no al pasaje que funda su contenido (una imprecisión de tipo provenance_imprecisa); sin embargo NO la emito como atribución porque (a) el árbol de decisión no conecta el síntoma context_recall con esa causa, y (b) no fue causa de la reprobación: el agente ni siquiera abrió el nodo para consultar su cita, de modo que la imprecisión de provenance no tuvo efecto en la respuesta fallida.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 11,
+    "max_tool_calls": 40,
+    "tokens_in": 330327,
+    "tokens_out": 11104
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 1,
+    "tool_calls_used": 11,
+    "tokens_in": 330327,
+    "tokens_out": 11104,
+    "latency_s": 134.316,
+    "error": null,
+    "final_raw": "La segunda atribución (provenance_imprecisa) no encaja bajo context_recall en el árbol. Como es un defecto secundario del grafo que no rompe la respuesta y el síntoma efectivo de la pata es context_recall (que ya cubre la causa primaria navegación), retiro la segunda atribución: no hay un claim fallido cuyo síntoma sea noise_sensitivity (el agente no citó ni usó ese nodo). La provenance imprecisa la documento en el razonamiento pero no la emito como atribución, ya que no existe camino válido en el árbol y no fue la causa de la reprobación.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad atípica riesgo tasa interés cartera inversión', 'limite': 10}\", \"devolvio\": \"486 matches; top-10 con nodos EVE/exigencia de capital, sin la Restriccion_limitacion_eve (su label 'Limitación EVE sobre capital nivel 1' no matcheó 'atípica' porque buscar_nodos indexa solo label/id)\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad atípica', 'limite': 10}\", \"devolvio\": \"224 matches; categorías de EntidadFinanciera (nominada, nuevas, grupo A/B/C), ninguna 'atípica'\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'atípica', 'limite': 15}\", \"devolvio\": \"0 resultados (label/id no contienen 'atípica')\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'circunstancia identificación entidad atípica', 'limite': 10}\", \"devolvio\": \"240 matches; Obligacion informar circunstancia a SEFyC y categorías de entidad\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'riesgo tasa interés cartera inversión características', 'limite': 10}\", \"devolvio\": \"276 matches; nodos EVE de cálculo/informe\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad financiera riesgo tasa interés EVE', 'limite': 10}\", \"devolvio\": \"427 matches; nodos EVE\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}\", \"devolvio\": \"Nodo EVE: 'Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.)...'\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes', 'direccion': 'ambas'}\", \"devolvio\": \"Vecino entrante por relación 'limita': Restriccion_limitacion_eve_sobre_capital_nivel_1 (label 'Limitación EVE sobre capital nivel 1') — EL NODO PORTADOR DE LA RESPUESTA, expuesto pero NO abierto\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'excepción entidad riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"661 matches; nodos EVE y excepciones\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad pequeña riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"413 matches; nodos EVE\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'EVE excepción entidad atípica', 'limite': 10}\", \"devolvio\": \"481 matches; excepciones varias, sin la Restriccion EVE\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'EVE cartera inversión entidad', 'limite': 10}\", \"devolvio\": \"304 matches; registro cartera, exclusión acciones, categorías entidad\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'sección 11 riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"209 matches; nodos EVE\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 8, \"quote\": \"{'relation': 'limita', 'vecino_id': 'Restriccion_limitacion_eve_sobre_capital_nivel_1', 'vecino_label': 'Limitación EVE sobre capital nivel 1', ...}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Circunstancia en que se identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés EVE en la cartera de inversión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\", \"ubicacion\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\"},\n        \"fuente\": {\"quote\": \"70500000 Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (sólo se informa el último mes del trimestre)\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 8.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"entidad atípica outlier EVE capital nivel 1\", \"resultado\": \"Devuelve en primer lugar Restriccion_limitacion_eve_sobre_capital_nivel_1 con la respuesta exacta en su resumen\"},\n        {\"consulta\": \"15% capital nivel 1 EVE riesgo tasa interés\", \"resultado\": \"Devuelve la Restriccion_limitacion_eve en top-3 (tokens_matcheados 4)\"},\n        {\"consulta\": \"Limitación EVE sobre capital nivel 1\", \"resultado\": \"Primer resultado exacto con tokens_matcheados 6 — el nodo es alcanzable por label\"},\n        {\"consulta\": \"ver_vecinos de Operacion_calculo_de_riesgo_de_tasa_de_interes (paso 8 del agente)\", \"resultado\": \"El nodo portador aparece como vecino 'limita' con su label completo, expuesto al agente que lo abrió pero no lo consultó\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"La pregunta tiene una única pata: la circunstancia que identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés EVE en la cartera de inversión. El agente respondió que no encontró información. C1a (síntoma por pata): el dato pertinente que responde la pata NUNCA apareció en la respuesta — pese a que en el paso 8 el nodo portador fue EXPUESTO — por lo que el síntoma es context_recall. C2 (causa): ¿existe nodo portador y era alcanzable? El nodo Restriccion_limitacion_eve_sobre_capital_nivel_1 porta la respuesta exacta ('Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas'). Descarto alcanzabilidad_kg: el nodo es alcanzable por búsqueda léxica sobre su label ('Limitación EVE sobre capital nivel 1' lo devuelve en primer lugar; '15% capital nivel 1 EVE' lo devuelve en top-3), y además fue EXPUESTO directamente al agente en el paso 8 como vecino 'limita' del nodo Operacion_calculo_de_riesgo_de_tasa_de_interes que él mismo había abierto en el paso 7, con su label visible. El vocabulario 'EVE', 'capital nivel 1', 'cartera de inversión' estaba disponible ex ante en su propia trayectoria (pasos 1, 7 y 8). El agente tuvo el nodo delante y no lo abrió: siguió con 5 búsquedas léxicas más y concluyó que no había información. Esto es un fallo de navegación del agente (lado agente), causa primaria que explica la reprobación. Descarté completitud_kg y estructural_kg (el dato y la arista 'limita' EVE→Restricción existen), contenido_kg (el contenido del nodo es coherente con el marco EVE de Basilea del BCRA) y frontera_no_determinada (la evidencia es concluyente: el nodo existe, es alcanzable y fue expuesto). Nota sobre defecto secundario del grafo: la provenance del nodo (Punto 8.1. Normas de procedimiento.) apunta a un índice de secciones y no al pasaje que funda su contenido (una imprecisión de tipo provenance_imprecisa); sin embargo NO la emito como atribución porque (a) el árbol de decisión no conecta el síntoma context_recall con esa causa, y (b) no fue causa de la reprobación: el agente ni siquiera abrió el nodo para consultar su cita, de modo que la imprecisión de provenance no tuvo efecto en la respuesta fallida.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidad atípica outlier EVE capital nivel 1",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"entidad atípica outlier EVE capital nivel 1\", \"total_con_match\": 479, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Obligacion_si_la_entidad_financiera_carece_de_suficiente_capital_para_efectuar_la_deduccion\", \"type\": \"Obligacion\", \"label\": \"Deducir remanente nivel superior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si la entidad financiera carece de suficiente capital para efectuar la deducción de un nivel particular de capital, el remanente se deducirá del nivel inmediato…\"}, {\"id\": \"Excepcion_si_la_entidad_financiera_carece_de_suficiente_capital_para_efectuar_la_deduccion\", \"type\": \"Excepcion\", \"label\": \"Remanente trasferido a nivel superior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si la entidad financiera carece de suficiente capital para efectuar la deducción de un nivel particular de capital, el remanente se deducirá del nivel inme… [+3977 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "15% capital nivel 1 EVE riesgo tasa interés",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"15% capital nivel 1 EVE riesgo tasa interés\", \"total_con_match\": 428, \"resultados\": [{\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Operacion_calculo_de_capital_requerido\", \"type\": \"Operacion\", \"label\": \"Cálculo … [+3785 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "Limitación EVE sobre capital nivel 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"Limitación EVE sobre capital nivel 1\", \"total_con_match\": 343, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_70210000_70220000_4_5_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Capital Ordinario Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) = 70210000 – 70220000 ≥ 4,5 % s/70900000\"}, {\"id\": \"Restriccion_no_se_incluiran_activos_que_se_deducen_del_capital_ordinario_del_nivel_1_con1\", \"type\": \"Restriccion\", \"label\": \"Exclusión de activos deducibles de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se incluirán activos que se deducen del capital ordinario del nivel 1 (COn1)\"}, {\"id\": \"Operacion_calculo_de_capital_ordinario_nivel_uno\", \"type\": \"Operacion\", \"label\": \"Cómputo de capital ordinario\", \"tokens_matcheados\": 2, \"resumen_propiedad… [+2232 chars]"
+     },
+     {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"15%\", \"description\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}"
+     },
+     {
+      "n": 5,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"n_salientes_total\": 1, \"n_entrantes_total\": 4, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"vecino_label\": \"Informar ratio de apalancamiento\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"vecino_label\": \"Informar riesgo tasa interés EVE\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual… [+700 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 8.1. Normas de procedimiento."
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 7,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 11\", \"ref\": \"Punto/Sección 11 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_vecinos",
+      "input": {
+       "id": "Restriccion_limitacion_eve_sobre_capital_nivel_1",
+       "direccion": "ambas"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"vecino_label\": \"Cálculo riesgo tasa interés EVE\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}"
+     },
+     {
+      "n": 9,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 1
+      },
+      "output_truncado": "{\"paso\": 1, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"entidad atípica riesgo tasa interés cartera inversión\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"entidad atípica riesgo tasa interés cartera inversión\", \"total_con_match\": 486, \"resultados\": [{\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"type\": \"Operacion\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"type\": \"Obligacion\", \"label\": \"Informar riesgo tasa interés EVE\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…\"}, {\"id\": \"Obligacion_se_consignara_el_valor_de_la_exigencia_por_riesgo_general_de_tasa_de_interes_par\", \"type\": \"Obligacion\", \"label\": \"Consignación de exigencia riesgo general tasa\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se consignará el valor de la exigencia por … [+2283 chars]"
+     },
+     {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "EntidadFinanciera_sujeto_obligado"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_sujeto_obligado\", \"type\": \"EntidadFinanciera\", \"label\": \"Sujetos obligados\", \"properties\": {\"categoria\": \"entidades financieras\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.2. Exigencia básica.\"}, {\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 1.3. Integración.\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 2.2. Cobros de exportaciones de servicios. (parte 2)\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}, {\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 9.7. Operaciones cursadas por el Sistema de Monedas Locales (SML).\"}]}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 8.2"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.2 (PDF pág 38)\", \"pasaje\": \"8.2. Modelo de información\\n. \\n \\nCuadro 8.2.1.  \\n \\n \\nCódigo Concepto  \\n70100000 Exigencia por riesgo de crédito sin incluir el término INC  \\n70500000 Cálculo del riesgo de tasa de interés en la cartera de inversión -  \\nMedida de riesgo EVE estandarizada (sólo se informa el último \\nmes del trimestre) \\n \\n \\n70800000 Exigencia por riesgo de mercado para las posiciones al último día del \\nmes bajo informe \\n \\n70300000 Exigencia por riesgo operacional (del mes bajo informe)  \\n70700000 Capital Mínimo Básico  \\n70400000 Total de títulos en custodia del FGS  \\n70600000 Total de letras hipotecarias escriturales registradas  \\n70200000 Total integración (del mes bajo informe)  \\n70900000 Activos ponderados por riesgo (APR)  \\n \\n \\n \\n \\n \\n \\n \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4. EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) \\nSección 8. Totales de control. \\nVersión: 6a.  COMUNICACIÓN  “A”  6561 Vigencia: \\n1/7/2018 Página 2\"}"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26614,
+      "output_tokens": 415
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33286,
+      "output_tokens": 193
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 33719,
+      "output_tokens": 295
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 35319,
+      "output_tokens": 414
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36525,
+      "output_tokens": 589
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38647,
+      "output_tokens": 676
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 39761,
+      "output_tokens": 583
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40943,
+      "output_tokens": 4219
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45513,
+      "output_tokens": 3720
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 2
+   }
+  },
+  {
+   "id_falla": "run_3/CQN-007",
+   "run": "run_3",
+   "extraccion_traza": {
+    "tool_calls": [
+     {
+      "paso": 1,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad atípica riesgo tasa interés cartera inversión', 'limite': 10}",
+      "devolvio": "486 matches; top: Operacion_calculo_de_riesgo_de_tasa_de_interes y Obligaciones sobre EVE. No aparece nodo con 'entidad atípica'.",
+      "pertinente": false
+     },
+     {
+      "paso": 2,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad atípica', 'limite': 10}",
+      "devolvio": "224 matches; solo nodos EntidadFinanciera_* (categorías genéricas), ninguno atípica.",
+      "pertinente": false
+     },
+     {
+      "paso": 3,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'atípica', 'limite': 15}",
+      "devolvio": "0 resultados (label/id no contienen 'atípica').",
+      "pertinente": false
+     },
+     {
+      "paso": 4,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'circunstancia identificación entidad atípica', 'limite': 10}",
+      "devolvio": "240 matches; nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 5,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'riesgo tasa interés cartera inversión características', 'limite': 10}",
+      "devolvio": "276 matches; los mismos nodos EVE.",
+      "pertinente": false
+     },
+     {
+      "paso": 6,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad financiera riesgo tasa interés EVE', 'limite': 10}",
+      "devolvio": "427 matches; nodos EVE.",
+      "pertinente": false
+     },
+     {
+      "paso": 7,
+      "tool": "ver_nodo",
+      "args": "{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}",
+      "devolvio": "Descripción del cálculo EVE; no menciona entidad atípica.",
+      "pertinente": false
+     },
+     {
+      "paso": 8,
+      "tool": "ver_vecinos",
+      "args": "{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes', 'direccion': 'ambas'}",
+      "devolvio": "Vecino entrante por relación 'limita': Restriccion_limitacion_eve_sobre_capital_nivel_1 (label 'Limitación EVE sobre capital nivel 1') — EL NODO PORTADOR DE LA RESPUESTA, expuesto pero NO abierto.",
+      "pertinente": true
+     },
+     {
+      "paso": 9,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'excepción entidad riesgo tasa interés', 'limite': 10}",
+      "devolvio": "661 matches; nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 10,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'entidad pequeña riesgo tasa interés', 'limite': 10}",
+      "devolvio": "413 matches; nodos EVE.",
+      "pertinente": false
+     },
+     {
+      "paso": 11,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'EVE excepción entidad atípica', 'limite': 10}",
+      "devolvio": "481 matches; solo Excepciones no relacionadas.",
+      "pertinente": false
+     },
+     {
+      "paso": 12,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'EVE cartera inversión entidad', 'limite': 10}",
+      "devolvio": "304 matches; nada pertinente.",
+      "pertinente": false
+     },
+     {
+      "paso": 13,
+      "tool": "buscar_nodos",
+      "args": "{'consulta': 'sección 11 riesgo tasa interés', 'limite': 10}",
+      "devolvio": "209 matches; nodos EVE.",
+      "pertinente": false
+     }
+    ],
+    "paso_decision_error": {
+     "paso": 8,
+     "quote": "{'relation': 'limita', 'vecino_id': 'Restriccion_limitacion_eve_sobre_capital_nivel_1', 'vecino_label': 'Limitación EVE sobre capital nivel 1', 'provenances': [{'source_doc': 'TO_regimen_informativo_contable_mensual_actual.pdf', 'location': 'Punto 8.1. Normas de procedimiento.'}]}"
+    },
+    "decision_agente_correcta": null,
+    "thinking_decision": null,
+    "patas": [
+     "Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión"
+    ]
+   },
+   "atribuciones": [
+    {
+     "sintoma_capa1": "context_recall",
+     "causa_capa2": "navegación",
+     "lado": "agente",
+     "jerarquia": "primaria",
+     "pata": "Circunstancia en que se identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés (EVE) en la cartera de inversión",
+     "evidencia": {
+      "afirmacion": {
+       "quote": "No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión. Aunque el grafo contiene regulaciones sobre el cálculo del riesgo de tasa de interés (EVE) (…) no incluye la definición o criterios de identificación de entidades atípicas en este contexto.",
+       "ubicacion": "respuesta final"
+      },
+      "nodo": {
+       "quote": "Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas",
+       "ubicacion": "Restriccion_limitacion_eve_sobre_capital_nivel_1 (properties.description)"
+      },
+      "fuente": {
+       "quote": "- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-tandarizada (Sección 11.) en base individual y consolidado mensual",
+       "ubicacion": "TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1"
+      }
+     },
+     "busquedas": [
+      {
+       "consulta": "atípica",
+       "resultado": "0 resultados: la palabra no está en label/id de ningún nodo, por eso la búsqueda léxica del agente por 'atípica' nunca lo alcanza"
+      },
+      {
+       "consulta": "Limitación EVE sobre capital nivel 1",
+       "resultado": "Restriccion_limitacion_eve_sobre_capital_nivel_1 en 1er lugar (6 tokens) — alcanzable con las palabras del label"
+      },
+      {
+       "consulta": "límite EVE 15% capital nivel 1",
+       "resultado": "Restriccion_limitacion_eve_sobre_capital_nivel_1 en 1er lugar (4 tokens) — alcanzable con términos ex ante (EVE, capital nivel 1)"
+      }
+     ],
+     "capa_d": {
+      "modulo": "D7",
+      "portador_id": "Restriccion_limitacion_eve_sobre_capital_nivel_1",
+      "emision_llm": "navegación",
+      "decision_codigo": "navegación",
+      "discrepancia": false,
+      "alcanzable": false,
+      "evidencia_d1": {
+       "alcanzable": false,
+       "n_consultas_simuladas": 35,
+       "consultas_en_top10": [],
+       "mejor_rank": 160
+      },
+      "puntero_estructural": true,
+      "evidencia": {
+       "paso": 8,
+       "relacion": "limita",
+       "nodo_consultado": "Operacion_calculo_de_riesgo_de_tasa_de_interes"
+      }
+     }
+    }
+   ],
+   "razonamiento": "Síntoma (C1a, por pata): la única pata pregunta por la circunstancia que define a una 'entidad atípica' respecto del EVE. El agente respondió 'no se encontró información'. Verifico si el dato PERTINENTE apareció en la trayectoria: el nodo portador es Restriccion_limitacion_eve_sobre_capital_nivel_1, cuya description dice exactamente 'Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas'. Ese CONTENIDO nunca fue expuesto al agente: en el paso 8 (ver_vecinos, output completo verificado) solo apareció el label del vecino ('Limitación EVE sobre capital nivel 1') vía la arista 'limita', pero el agente no abrió el nodo ni su resumen/description fue expuesto. El label solo no responde la pata. Por tanto el dato pertinente NO apareció en la trayectoria → context_recall. Causa (C2, árbol de context_recall): ¿existe nodo portador? Sí, exhibido con quote de su description. ¿Las búsquedas razonables del agente lo alcanzaban? Sí: 'Limitación EVE sobre capital nivel 1' lo devuelve 1º, y 'límite EVE 15% capital nivel 1' también (términos EVE/capital nivel 1 son vocabulario ex ante disponible en la pregunta y en los outputs de su trayectoria). Además el nodo estaba a UN CLICK: el agente lo tuvo delante en el paso 8 como vecino directo del nodo EVE que él mismo abrió, y en vez de abrirlo insistió con búsquedas léxicas por 'atípica' (paso 3: 0 resultados; pasos 9-11) que fallan porque la palabra no está indexada en label/id. Descarto alcanzabilidad_kg: el nodo no se alcanza SOLO con palabras propias — 'EVE' y 'capital nivel 1' son términos de la pregunta/trayectoria, y estaba expuesto como vecino. Descarto completitud_kg/estructural_kg: el nodo existe, con contenido correcto, y la arista 'limita' que lo conecta al EVE también existe. Descarto contenido_kg: el contenido del nodo (15% capital nivel 1 → entidad atípica → SEFyC exige medidas) es fiel a la norma del EVE. Por tanto → navegación, primaria (es lo que rompió la respuesta: el agente tuvo el dato alcanzable y a la vista y no lo usó). Nota sobre una imperfección menor NO atribuida: la provenance del nodo cita 'Punto 8.1' que ancla a un índice ('8.1. Normas de procedimiento') en pág. 1 y no al pasaje que funda su description; sería un caso de provenance_imprecisa, pero el árbol de decisión no conecta el síntoma context_recall con esa causa, y además no fue lo que rompió la respuesta (el agente tenía el contenido del nodo a mano), por lo que no se emite como atribución para no forzar un camino inválido del árbol.",
+   "formato_invalido": false,
+   "errores_formato": [],
+   "detectores": {
+    "flag_encuadre_invertido": false,
+    "flag_contexto": false,
+    "tool_calls_usadas": 12,
+    "max_tool_calls": 40,
+    "tokens_in": 289454,
+    "tokens_out": 10887
+   },
+   "_meta": {
+    "parse_ok": true,
+    "format_retries": 1,
+    "tool_calls_used": 12,
+    "tokens_in": 289454,
+    "tokens_out": 10887,
+    "latency_s": 129.986,
+    "error": null,
+    "final_raw": "La provenance imprecisa no es alcanzable desde el síntoma context_recall en el árbol. Como esa imperfección de provenance no rompió la respuesta y no encaja en el árbol de context_recall, la elimino como atribución separada (la menciono en el razonamiento). La atribución primaria es la única válida: context_recall → navegación.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad atípica riesgo tasa interés cartera inversión', 'limite': 10}\", \"devolvio\": \"486 matches; top: Operacion_calculo_de_riesgo_de_tasa_de_interes y Obligaciones sobre EVE. No aparece nodo con 'entidad atípica'.\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad atípica', 'limite': 10}\", \"devolvio\": \"224 matches; solo nodos EntidadFinanciera_* (categorías genéricas), ninguno atípica.\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'atípica', 'limite': 15}\", \"devolvio\": \"0 resultados (label/id no contienen 'atípica').\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'circunstancia identificación entidad atípica', 'limite': 10}\", \"devolvio\": \"240 matches; nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'riesgo tasa interés cartera inversión características', 'limite': 10}\", \"devolvio\": \"276 matches; los mismos nodos EVE.\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad financiera riesgo tasa interés EVE', 'limite': 10}\", \"devolvio\": \"427 matches; nodos EVE.\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes'}\", \"devolvio\": \"Descripción del cálculo EVE; no menciona entidad atípica.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_calculo_de_riesgo_de_tasa_de_interes', 'direccion': 'ambas'}\", \"devolvio\": \"Vecino entrante por relación 'limita': Restriccion_limitacion_eve_sobre_capital_nivel_1 (label 'Limitación EVE sobre capital nivel 1') — EL NODO PORTADOR DE LA RESPUESTA, expuesto pero NO abierto.\", \"pertinente\": true},\n      {\"paso\": 9, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'excepción entidad riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"661 matches; nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'entidad pequeña riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"413 matches; nodos EVE.\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'EVE excepción entidad atípica', 'limite': 10}\", \"devolvio\": \"481 matches; solo Excepciones no relacionadas.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'EVE cartera inversión entidad', 'limite': 10}\", \"devolvio\": \"304 matches; nada pertinente.\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'sección 11 riesgo tasa interés', 'limite': 10}\", \"devolvio\": \"209 matches; nodos EVE.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 8, \"quote\": \"{'relation': 'limita', 'vecino_id': 'Restriccion_limitacion_eve_sobre_capital_nivel_1', 'vecino_label': 'Limitación EVE sobre capital nivel 1', 'provenances': [{'source_doc': 'TO_regimen_informativo_contable_mensual_actual.pdf', 'location': 'Punto 8.1. Normas de procedimiento.'}]}\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Circunstancia en que se identifica a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"navegación\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Circunstancia en que se identifica a una entidad como 'entidad atípica' respecto del riesgo de tasa de interés (EVE) en la cartera de inversión\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"No se encontró información en el Knowledge Graph sobre las circunstancias específicas que identifican a una entidad financiera como 'entidad atípica' en relación con el riesgo de tasa de interés en la cartera de inversión. Aunque el grafo contiene regulaciones sobre el cálculo del riesgo de tasa de interés (EVE) (…) no incluye la definición o criterios de identificación de entidades atípicas en este contexto.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\", \"ubicacion\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1 (properties.description)\"},\n        \"fuente\": {\"quote\": \"- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-tandarizada (Sección 11.) en base individual y consolidado mensual\", \"ubicacion\": \"TO_regimen_informativo_contable_mensual_actual.pdf, Punto 1.1\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"atípica\", \"resultado\": \"0 resultados: la palabra no está en label/id de ningún nodo, por eso la búsqueda léxica del agente por 'atípica' nunca lo alcanza\"},\n        {\"consulta\": \"Limitación EVE sobre capital nivel 1\", \"resultado\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1 en 1er lugar (6 tokens) — alcanzable con las palabras del label\"},\n        {\"consulta\": \"límite EVE 15% capital nivel 1\", \"resultado\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1 en 1er lugar (4 tokens) — alcanzable con términos ex ante (EVE, capital nivel 1)\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"Síntoma (C1a, por pata): la única pata pregunta por la circunstancia que define a una 'entidad atípica' respecto del EVE. El agente respondió 'no se encontró información'. Verifico si el dato PERTINENTE apareció en la trayectoria: el nodo portador es Restriccion_limitacion_eve_sobre_capital_nivel_1, cuya description dice exactamente 'Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una entidad atípica y la SEFyC podrá exigirle la adopción de medidas específicas'. Ese CONTENIDO nunca fue expuesto al agente: en el paso 8 (ver_vecinos, output completo verificado) solo apareció el label del vecino ('Limitación EVE sobre capital nivel 1') vía la arista 'limita', pero el agente no abrió el nodo ni su resumen/description fue expuesto. El label solo no responde la pata. Por tanto el dato pertinente NO apareció en la trayectoria → context_recall. Causa (C2, árbol de context_recall): ¿existe nodo portador? Sí, exhibido con quote de su description. ¿Las búsquedas razonables del agente lo alcanzaban? Sí: 'Limitación EVE sobre capital nivel 1' lo devuelve 1º, y 'límite EVE 15% capital nivel 1' también (términos EVE/capital nivel 1 son vocabulario ex ante disponible en la pregunta y en los outputs de su trayectoria). Además el nodo estaba a UN CLICK: el agente lo tuvo delante en el paso 8 como vecino directo del nodo EVE que él mismo abrió, y en vez de abrirlo insistió con búsquedas léxicas por 'atípica' (paso 3: 0 resultados; pasos 9-11) que fallan porque la palabra no está indexada en label/id. Descarto alcanzabilidad_kg: el nodo no se alcanza SOLO con palabras propias — 'EVE' y 'capital nivel 1' son términos de la pregunta/trayectoria, y estaba expuesto como vecino. Descarto completitud_kg/estructural_kg: el nodo existe, con contenido correcto, y la arista 'limita' que lo conecta al EVE también existe. Descarto contenido_kg: el contenido del nodo (15% capital nivel 1 → entidad atípica → SEFyC exige medidas) es fiel a la norma del EVE. Por tanto → navegación, primaria (es lo que rompió la respuesta: el agente tuvo el dato alcanzable y a la vista y no lo usó). Nota sobre una imperfección menor NO atribuida: la provenance del nodo cita 'Punto 8.1' que ancla a un índice ('8.1. Normas de procedimiento') en pág. 1 y no al pasaje que funda su description; sería un caso de provenance_imprecisa, pero el árbol de decisión no conecta el síntoma context_recall con esa causa, y además no fue lo que rompió la respuesta (el agente tenía el contenido del nodo a mano), por lo que no se emite como atribución para no forzar un camino inválido del árbol.\"\n}\n```",
+    "trayectoria_verificador": [
+     {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "entidad atípica",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"entidad atípica\", \"total_con_match\": 224, \"resultados\": [{\"id\": \"EntidadFinanciera_entidad_nominada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad nominada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad nominada para seguimiento de permiso\"}, {\"id\": \"EntidadFinanciera_nueva_entidad\", \"type\": \"EntidadFinanciera\", \"label\": \"Nuevas entidades\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidades financieras nuevas\"}, {\"id\": \"EntidadFinanciera_entidad_encargada\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidad encargada\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad encargada de administración de permisos de embarque\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_a\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades Grupo A\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad financiera grupo A\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_b\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades grupo B\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: entidad financiera grupo B\"}, {\"id\": \"EntidadFinanciera_entidad_grupo_c\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades grupo C\", \"tokens_matche… [+1823 chars]"
+     },
+     {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "valor atípico EVE",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"valor atípico EVE\", \"total_con_match\": 63, \"resultados\": [{\"id\": \"Obligacion_la_relacion_entre_el_saldo_de_deuda_y_el_valor_del_inmueble_loan_to_value_ltv_se\", \"type\": \"Obligacion\", \"label\": \"Cálculo prudente del LTV\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La relación entre el saldo de deuda y el valor del inmueble (loan-to-value, LTV) se deberá calcular de manera prudente y con ajuste a los siguientes requisitos\"}, {\"id\": \"Obligacion_se_incrementara_el_valor_de_los_activos_en_garantia_dados_por_la_entidad_y_se_re\", \"type\": \"Obligacion\", \"label\": \"Aplicar aforos a garantías\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se incrementará el valor de los activos en garantía dados por la entidad y se reducirá el valor de los recibidos, utilizando aforos aplicables a transacciones R…\"}, {\"id\": \"Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos\", \"type\": \"Excepcion\", \"label\": \"Reducción generalizada BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El BCRA establezca que se debe hacer una reducción generalizada del valor. Si posteriormente se autorizan incrementos, el valor ajustado del inmueble no podrá s…\"}, {\"id\"… [+3981 chars]"
+     },
+     {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "atípica",
+       "limite": 15
+      },
+      "output_truncado": "{\"consulta\": \"atípica\", \"total_con_match\": 0, \"resultados\": []}"
+     },
+     {
+      "n": 4,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Sección 11"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Sección 11\", \"ref\": \"Punto/Sección 11 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "límite EVE 15% capital nivel 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"límite EVE 15% capital nivel 1\", \"total_con_match\": 429, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_70210000_70220000_4_5_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Capital Ordinario Nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) = 70210000 – 70220000 ≥ 4,5 % s/70900000\"}, {\"id\": \"Restriccion_participacion_en_el_capital_de_cada_empresa_15\", \"type\": \"Restriccion\", \"label\": \"Límite de participación por empresa\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"participación en el capital de cada empresa: 15%\"}, {\"id\": \"Restriccion_no_se_incluiran_activos_que_se_deducen_del_capital_ordinario_del_nivel_1_con1\", \"type\": \"Restriccion\", \"label\": \"Exclusión de activos deducibles de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se inclui… [+1982 chars]"
+     },
+     {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+       "consulta": "Limitación EVE sobre capital nivel 1",
+       "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"Limitación EVE sobre capital nivel 1\", \"total_con_match\": 343, \"resultados\": [{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medid…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_70210000_70220000_4_5_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Capital Ordinario Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) = 70210000 – 70220000 ≥ 4,5 % s/70900000\"}, {\"id\": \"Restriccion_no_se_incluiran_activos_que_se_deducen_del_capital_ordinario_del_nivel_1_con1\", \"type\": \"Restriccion\", \"label\": \"Exclusión de activos deducibles de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se incluirán activos que se deducen del capital ordinario del nivel 1 (COn1)\"}, {\"id\": \"Operacion_calculo_de_capital_ordinario_nivel_uno\", \"type\": \"Operacion\", \"label\": \"Cómputo de capital ordinario\", \"tokens_matcheados\": 2, \"resumen_propiedad… [+2232 chars]"
+     },
+     {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+       "id": "Restriccion_limitacion_eve_sobre_capital_nivel_1"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_limitacion_eve_sobre_capital_nivel_1\", \"type\": \"Restriccion\", \"label\": \"Limitación EVE sobre capital nivel 1\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"15%\", \"description\": \"Cuando esta medida supere el 15 % del nivel de capital 1, se identificará a la entidad como una 'entidad atípica' y la SEFyC podrá exigirle la adopción de medidas específicas\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}"
+     },
+     {
+      "n": 8,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 8
+      },
+      "output_truncado": "{\"paso\": 8, \"tool\": \"ver_vecinos\", \"input\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"direccion\": \"ambas\"}, \"output_completo\": {\"id\": \"Operacion_calculo_de_riesgo_de_tasa_de_interes\", \"label\": \"Cálculo riesgo tasa interés EVE\", \"n_salientes_total\": 1, \"n_entrantes_total\": 4, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_ratio_de_apalancamiento\", \"vecino_label\": \"Informar ratio de apalancamiento\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al m\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_informar_riesgo_tasa_interes_eve\", \"vecino_label\": \"Informar riesgo tasa interés EVE\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual… [+700 chars]"
+     },
+     {
+      "n": 9,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 8.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.1 (PDF pág 1)\", \"pasaje\": \"8.1. Normas de procedimiento \\n8.2. Modelo de información \\nSección 9. Incrementos de exigencia por riesgo de crédito \\n9.1. Normas de procedimiento \\n9.2. Modelo de información \\nREGIMEN INFORMATIVO CONTABLE MENSUAL \\nB.C.R.A. 4 . RÉGIMEN INFORMATIVO SOBRE EXIGENCIA E INTEGRACIÓN DE CAPITALES\\nMÍNIMOS (R.I.-C.M.)\\nVersión: 4a. COMUNICACIÓN  “A”  5877 V igencia: \\n01/12/2015 Página 1\"}"
+     },
+     {
+      "n": 10,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "entidad atípica"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"entidad atípica\", \"ref\": \"entidad atípica\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+     },
+     {
+      "n": 11,
+      "tool": "leer_pasaje_pdf",
+      "input": {
+       "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+       "location": "Punto 1.1"
+      },
+      "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 1.1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. La información tendrá frecuencia mensual y se integrará con datos referidos al mes bajo aná-\\nlisis, excepto las siguientes informaciones que tendrán frecuencia trimestral y se integrarán de \\nla siguiente manera: \\nCon los datos correspondientes al último mes de cada trimestre (marzo, junio, septiembre y \\ndiciembre): \\n- Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos\\n4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado mensual (códigos de con-\\nsolidación 0 o 1 y 2);\\n- La información sobre Ratio de apalancamiento (Sección 10.) en base individual (códigos de\\nconsolidación 0 o 1);\\nCon los datos correspondientes al mes siguiente de cada trimestre (abril, julio, octubre \\ny enero) \\n- Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE es-\\ntandarizada (Sección 11.) en base individual y consolidado mensual (códigos de consolida-\\nción 0 o 1 y 2) y su respectivo total de control (partida 70500000… [+412 chars]"
+     },
+     {
+      "n": 12,
+      "tool": "ver_paso_completo",
+      "input": {
+       "paso": 11
+      },
+      "output_truncado": "{\"paso\": 11, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"EVE excepción entidad atípica\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"EVE excepción entidad atípica\", \"total_con_match\": 481, \"resultados\": [{\"id\": \"Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p\", \"type\": \"Excepcion\", \"label\": \"Prórroga de plazo de liquidación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad encargada del seguimiento del permiso de embarque podrá extender el plazo de liquidación cuando el cliente haya utilizado el mecanismo de acumulación…\"}, {\"id\": \"Excepcion_no_se_requerira_la_conformidad_previa_del_bcra_cuando_la_entidad_constate_que_el\", \"type\": \"Excepcion\", \"label\": \"Excepción por encuadre normativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No se requerirá la conformidad previa del BCRA cuando la entidad constate que el pago encuadra en alguna de las situaciones previstas en el punto 10.10.2. o en …\"}, {\"id\": \"Excepcion_si_la_entidad_financiera_carece_de_suficiente_capital_para_efectuar_la_deduccion\", \"type\": \"Excepcion\", \"label\": \"Remanente trasferido a nivel superior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si la ent… [+2879 chars]"
+     }
+    ],
+    "api_calls": [
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 26614,
+      "output_tokens": 332
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 30790,
+      "output_tokens": 480
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 34548,
+      "output_tokens": 349
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36082,
+      "output_tokens": 469
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 36895,
+      "output_tokens": 332
+     },
+     {
+      "stop_reason": "tool_use",
+      "input_tokens": 38193,
+      "output_tokens": 808
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 40798,
+      "output_tokens": 4385
+     },
+     {
+      "stop_reason": "end_turn",
+      "input_tokens": 45534,
+      "output_tokens": 3732
+     }
+    ],
+    "contexto_stats": {
+     "n_seen": 45,
+     "n_claims_fallidos": 0,
+     "categoria": "factual_directa"
+    },
+    "label": "gate_cqn",
+    "rep": 3
+   }
+  }
+ ],
+ "voto_capa_d": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "resumen_capa_d": {
+  "reps_tocadas": [
+   1,
+   2,
+   3
+  ],
+  "atribuciones_corregidas": 3,
+  "discrepancias": 0,
+  "triage": 0,
+  "punteros_estructurales_extraidos": 5,
+  "decisiones_con_puntero": 3
+ },
+ "voto_pre_d6": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_capa_d": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "version_capa": "v6.2-D(2026-07)",
+ "voto_s1": {
+  "resultado": "mayoria",
+  "flag_voto_dividido": false,
+  "pares_primarios_ganadores": [
+   [
+    "context_recall",
+    "navegación"
+   ]
+  ],
+  "votos_ganadores": 3,
+  "reps_validas": [
+   1,
+   2,
+   3
+  ],
+  "conteo": [
+   {
+    "pares_primarios": [
+     [
+      "context_recall",
+      "navegación"
+     ]
+    ],
+    "votos": 3,
+    "reps": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ "triage_s1": {
+  "triage": false,
+  "motivos": [],
+  "flags": []
+ },
+ "resumen_s1": {
+  "gatilladas": 0,
+  "juzgadas_llm": 0,
+  "corregidas": 0,
+  "no_determinable": 0,
+  "fetch_fallido": 0,
+  "cross_doc_bloqueadas": 0,
+  "tokens_in_s1": 0,
+  "tokens_out_s1": 0,
+  "exoneracion_con_sintoma": false
+ },
+ "version_capa_s1": "s1-v0.4-dev"
+}

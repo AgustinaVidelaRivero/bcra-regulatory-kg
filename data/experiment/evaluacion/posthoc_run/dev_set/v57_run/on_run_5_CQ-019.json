@@ -1,0 +1,471 @@
+{
+ "id_falla": "run_5/CQ-019",
+ "run": "run_5",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}",
+    "devolvio": "646 matches; nodos sobre exigencia de capital por riesgo de crédito",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'activos computar capital riesgo crédito', 'limite': 10}",
+    "devolvio": "708 matches; APRC, exposiciones crediticias",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'previsión incobrabilidad deducción clasificación deudores', 'limite': 10}",
+    "devolvio": "143 matches; prevision_por_riesgo_de_incobrabilidad_deudores_normales, clasificacion_de_deudores",
+    "pertinente": true
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{'id': 'exigencia_de_capital_por_riesgo_de_credito'}",
+    "devolvio": "fórmula CRC = (k x 0,08 x APRC) + INC",
+    "pertinente": true
+   },
+   {
+    "paso": 5,
+    "tool": "ver_nodo",
+    "args": "{'id': 'prevision_por_riesgo_de_incobrabilidad_deudores_normales'}",
+    "devolvio": "stub: 'Tratamiento especial de la previsión...' sin detalle",
+    "pertinente": true
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{'id': 'activos_ponderados_por_riesgo_de_credito'}",
+    "devolvio": "APRC = A x p + PFB x CCF x p + ...",
+    "pertinente": true
+   },
+   {
+    "paso": 7,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'exigencia_de_capital_por_riesgo_de_credito', 'direccion': 'salientes'}",
+    "devolvio": "7 salientes: factor_k, APRC, datos saldos, EAD, ponderador",
+    "pertinente": true
+   },
+   {
+    "paso": 8,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'prevision_por_riesgo_de_incobrabilidad_deudores_normales', 'direccion': 'ambas'}",
+    "devolvio": "0 salientes, 0 entrantes (nodo aislado)",
+    "pertinente": false
+   },
+   {
+    "paso": 9,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'activos_ponderados_por_riesgo_de_credito', 'direccion': 'salientes'}",
+    "devolvio": "comprende exposiciones crediticias, partidas fuera de balance, etc.",
+    "pertinente": true
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'previsión deducción activos computables', 'limite': 10}",
+    "devolvio": "170 matches; deducciones varias",
+    "pertinente": true
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'activos brutos neto previsiones exposiciones crediticias', 'limite': 10}",
+    "devolvio": "268 matches; computo_neto_de_previsiones_por_riesgo",
+    "pertinente": true
+   },
+   {
+    "paso": 12,
+    "tool": "ver_nodo",
+    "args": "{'id': 'computo_neto_de_previsiones_por_riesgo'}",
+    "devolvio": "Los conceptos se computarán netos de previsiones por riesgos de incobrabilidad, depreciaciones y amortizaciones",
+    "pertinente": true
+   },
+   {
+    "paso": 13,
+    "tool": "ver_nodo",
+    "args": "{'id': 'deduccion_de_previsiones_en_activos_ponderados'}",
+    "devolvio": "titulizaciones (no pertinente)",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "ver_nodo",
+    "args": "{'id': 'exposiciones_crediticias'}",
+    "devolvio": "Activos computables y exposiciones",
+    "pertinente": true
+   },
+   {
+    "paso": 15,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'computo_neto_de_previsiones_por_riesgo', 'direccion': 'ambas'}",
+    "devolvio": "aplica_a conceptos_comprendidos",
+    "pertinente": true
+   },
+   {
+    "paso": 16,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'previsión genérica normal no se deduce', 'limite': 10}",
+    "devolvio": "222 matches; expuso resúmenes de prevision_por_cartera_en_situacion_normal ('...computada como patrimonio neto complementario'), exclusion_de_prevision_para_deudores_clasificados_en_situaci ('No se deducirá el 100%...'), situacion_normal ('atrasos que no superan 31 días')",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 0,
+   "quote": "pero esta excepción aplicable a la cartera en situación normal responde a que esos deudores presentan menor riesgo de incumplimiento"
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": "De mis búsquedas, he encontrado información muy relevante: (...) De 'prevision_por_cartera_en_situacion_normal': 'Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.' (...) La situación normal se define como: 'Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días.' [el thinking NO menciona ninguna fuente para la glosa 'menor riesgo de incumplimiento' — esa afirmación no aparece razonada; thinking cortado por truncado: +83 chars]",
+  "patas": [
+   "Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito",
+   "Cómo se vincula esa regla con la clasificación de deudores"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "sin_par",
+   "pata": "Cómo se vincula esa regla con la clasificación de deudores (definición de situación normal)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "la situación normal comprende a clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimiento normal hasta 61 días.",
+     "ubicacion": "situacion_normal (resumen expuesto en output completo del paso 16)"
+    },
+    "fuente": {
+     "quote": "7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 7.2"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "situacion_normal (ver_nodo)",
+     "resultado": "nodo fiel al PDF, provenance correcta a TO_clasificacion_deudores_actual.pdf Punto 7.2"
+    },
+    {
+     "consulta": "TO_clasificacion_deudores_actual.pdf Punto 7.2 (leer_pasaje_pdf)",
+     "resultado": "confirma verbatim 'atrasos que no superan los 31 días'"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "sin_par",
+   "pata": "Cómo se vincula esa regla con la clasificación de deudores (tratamiento de la previsión como PNc)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "su previsión se computa como patrimonio neto complementario en lugar de deducirse del monto de activos expuestos",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.",
+     "ubicacion": "prevision_por_cartera_en_situacion_normal (resumen expuesto en output completo del paso 16)"
+    },
+    "fuente": {
+     "quote": "sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–",
+     "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "limite_de_previsiones_del_1_25 (ver_nodo)",
+     "resultado": "'Las previsiones por riesgo de incobrabilidad no pueden superar el 1,25% de los activos ponderados por riesgo de crédito' — confirma que la previsión de cartera normal integra el PNc en el régimen"
+    },
+    {
+     "consulta": "patrimonio neto complementario capital nivel dos",
+     "resultado": "patrimonio_neto_complementario_pnc: 'Capital de nivel dos computable que incluye ... previsiones por riesgo de incobrabilidad' — el concepto existe y es correcto en el régimen BCRA"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "faithfulness",
+   "causa_capa2": "alucinacion_agente",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Cómo se vincula esa regla con la clasificación de deudores (justificación de la excepción)",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "esta excepción aplicable a la cartera en situación normal responde a que esos deudores presentan menor riesgo de incumplimiento",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "ninguno",
+     "ubicacion": "ningún nodo de la trayectoria ni del grafo afirma la justificación causal de 'menor riesgo de incumplimiento'"
+    },
+    "fuente": {
+     "quote": "sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' (...) (verificación negativa: el Punto 2.3 enuncia la regla contable sin dar ninguna justificación de menor riesgo)",
+     "ubicacion": "TO_capitales_minimos_actual.pdf, Punto 2.3"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "deudores situación normal menor riesgo incumplimiento razón fundamento",
+     "resultado": "ningún nodo afirma esa justificación; solo definiciones de situación normal y la exclusión de deducción"
+    },
+    {
+     "consulta": "justificación no deducción previsión menor riesgo",
+     "resultado": "ningún nodo porta la glosa causal; los nodos hablan de previsión mínima/límite, no de justificación por menor riesgo"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "SÍNTOMA: el juez marcó 'no soportadas' tres afirmaciones. FASE A: el agente hizo 16 tool calls y en el paso 16 (output completo verificado con ver_paso_completo) quedaron EXPUESTOS en su trayectoria los resúmenes de situacion_normal ('atrasos que no superan 31 días') y de prevision_por_cartera_en_situacion_normal ('computada como patrimonio neto complementario'). Por tanto, ambos claims centrales fallidos estaban SOPORTADOS por contenido expuesto (regla de soporte v2.3/v2.4: los resúmenes de buscar_nodos cuentan) → NO son faithfulness; entran por noise_sensitivity. C1b: ¿son correctos contra el PDF? (1) 'situación normal ≤31 días' es verbatim del Punto 7.2.1 del TO_clasificacion_deudores_actual.pdf y el nodo tiene provenance correcta → FIEL y PERTINENTE → sin_defecto (falso positivo del juez, que lo marcó 'no soportado' pese a estar soportado y ser correcto). (2) 'se computa como patrimonio neto complementario en lugar de deducirse' es fácticamente correcto en el régimen BCRA: el Punto 2.3 dice que la previsión de cartera normal no se deduce del activo, y los nodos limite_de_previsiones_del_1_25 y patrimonio_neto_complementario_pnc confirman que esa previsión integra el PNc/Capital Nivel 2 (hasta 1,25% de APR) → el claim está soportado y es correcto → sin_defecto (falso positivo). (3) 'responde a que esos deudores presentan menor riesgo de incumplimiento' es una GLOSA CAUSAL: dos búsquedas documentadas muestran que NINGÚN nodo del grafo afirma esa justificación, y el Punto 2.3 del PDF enuncia la regla contable sin darle justificación de riesgo → faithfulness → árbol: dato no encontrado en el grafo + verificación negativa contra el PDF → alucinacion_agente modo (b) (glosa de cosecha propia, sin nodo que exhibir). Como los DOS claims centrales fallidos resultan falsos positivos del juez, el caso NO tiene primaria de defecto del sistema; la única falla real es la glosa NO central, que se emite como secundaria (regla de jerarquía: un FP del juez no se explica con un defecto del sistema). NOTA colateral: las provenances de prevision_por_cartera_en_situacion_normal (Punto 8.4) y patrimonio_neto_complementario_pnc/limite_de_previsiones_del_1_25 (Punto 8.2) están desalineadas —el 8.2/8.4 real habla de riesgo de mercado— pero como su contenido es fácticamente correcto respecto al régimen, esa imprecisión de provenance no rompe ningún claim de esta pregunta y no altera la atribución.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": true,
+  "flag_contexto": false,
+  "tool_calls_usadas": 18,
+  "max_tool_calls": 40,
+  "tokens_in": 445375,
+  "tokens_out": 9610
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 18,
+  "tokens_in": 445375,
+  "tokens_out": 9610,
+  "latency_s": 141.8,
+  "error": null,
+  "final_raw": "La provenance del nodo `prevision_por_cartera_en_situacion_normal` (Punto 8.4) y de `limite_de_previsiones_del_1_25` / `patrimonio_neto_complementario_pnc` (Punto 8.2) están DESALINEADAS con su contenido (el Punto 8.2/8.4 real habla de riesgo de mercado, no de conceptos computables del PNc). Esto es una imprecisión de provenance del grafo, pero como el contenido de los nodos es fácticamente correcto respecto al régimen, no cambia la corrección de los claims — la registro como observación secundaria de provenance imprecisa en la zona, aunque no rompe ningún claim central de esta pregunta.\n\nTengo evidencia suficiente para emitir el JSON.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'exigencia capital riesgo crédito previsión incobrabilidad', 'limite': 10}\", \"devolvio\": \"646 matches; nodos sobre exigencia de capital por riesgo de crédito\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'activos computar capital riesgo crédito', 'limite': 10}\", \"devolvio\": \"708 matches; APRC, exposiciones crediticias\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión incobrabilidad deducción clasificación deudores', 'limite': 10}\", \"devolvio\": \"143 matches; prevision_por_riesgo_de_incobrabilidad_deudores_normales, clasificacion_de_deudores\", \"pertinente\": true},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'exigencia_de_capital_por_riesgo_de_credito'}\", \"devolvio\": \"fórmula CRC = (k x 0,08 x APRC) + INC\", \"pertinente\": true},\n      {\"paso\": 5, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'prevision_por_riesgo_de_incobrabilidad_deudores_normales'}\", \"devolvio\": \"stub: 'Tratamiento especial de la previsión...' sin detalle\", \"pertinente\": true},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'activos_ponderados_por_riesgo_de_credito'}\", \"devolvio\": \"APRC = A x p + PFB x CCF x p + ...\", \"pertinente\": true},\n      {\"paso\": 7, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'exigencia_de_capital_por_riesgo_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"7 salientes: factor_k, APRC, datos saldos, EAD, ponderador\", \"pertinente\": true},\n      {\"paso\": 8, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'prevision_por_riesgo_de_incobrabilidad_deudores_normales', 'direccion': 'ambas'}\", \"devolvio\": \"0 salientes, 0 entrantes (nodo aislado)\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'activos_ponderados_por_riesgo_de_credito', 'direccion': 'salientes'}\", \"devolvio\": \"comprende exposiciones crediticias, partidas fuera de balance, etc.\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión deducción activos computables', 'limite': 10}\", \"devolvio\": \"170 matches; deducciones varias\", \"pertinente\": true},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'activos brutos neto previsiones exposiciones crediticias', 'limite': 10}\", \"devolvio\": \"268 matches; computo_neto_de_previsiones_por_riesgo\", \"pertinente\": true},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'computo_neto_de_previsiones_por_riesgo'}\", \"devolvio\": \"Los conceptos se computarán netos de previsiones por riesgos de incobrabilidad, depreciaciones y amortizaciones\", \"pertinente\": true},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'deduccion_de_previsiones_en_activos_ponderados'}\", \"devolvio\": \"titulizaciones (no pertinente)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'exposiciones_crediticias'}\", \"devolvio\": \"Activos computables y exposiciones\", \"pertinente\": true},\n      {\"paso\": 15, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'computo_neto_de_previsiones_por_riesgo', 'direccion': 'ambas'}\", \"devolvio\": \"aplica_a conceptos_comprendidos\", \"pertinente\": true},\n      {\"paso\": 16, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'previsión genérica normal no se deduce', 'limite': 10}\", \"devolvio\": \"222 matches; expuso resúmenes de prevision_por_cartera_en_situacion_normal ('...computada como patrimonio neto complementario'), exclusion_de_prevision_para_deudores_clasificados_en_situaci ('No se deducirá el 100%...'), situacion_normal ('atrasos que no superan 31 días')\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 0, \"quote\": \"pero esta excepción aplicable a la cartera en situación normal responde a que esos deudores presentan menor riesgo de incumplimiento\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": \"De mis búsquedas, he encontrado información muy relevante: (...) De 'prevision_por_cartera_en_situacion_normal': 'Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.' (...) La situación normal se define como: 'Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días.' [el thinking NO menciona ninguna fuente para la glosa 'menor riesgo de incumplimiento' — esa afirmación no aparece razonada; thinking cortado por truncado: +83 chars]\",\n    \"patas\": [\n      \"Qué previsión por incobrabilidad no se deduce al computar los activos para la exigencia de capital por riesgo de crédito\",\n      \"Cómo se vincula esa regla con la clasificación de deudores\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores (definición de situación normal)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"la situación normal comprende a clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimiento normal hasta 61 días.\", \"ubicacion\": \"situacion_normal (resumen expuesto en output completo del paso 16)\"},\n        \"fuente\": {\"quote\": \"7.2.1. Situación normal. Comprende los clientes que atienden en forma puntual el pago de sus obligaciones o con atrasos que no superan los 31 días.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 7.2\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"situacion_normal (ver_nodo)\", \"resultado\": \"nodo fiel al PDF, provenance correcta a TO_clasificacion_deudores_actual.pdf Punto 7.2\"},\n        {\"consulta\": \"TO_clasificacion_deudores_actual.pdf Punto 7.2 (leer_pasaje_pdf)\", \"resultado\": \"confirma verbatim 'atrasos que no superan los 31 días'\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores (tratamiento de la previsión como PNc)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"su previsión se computa como patrimonio neto complementario en lugar de deducirse del monto de activos expuestos\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.\", \"ubicacion\": \"prevision_por_cartera_en_situacion_normal (resumen expuesto en output completo del paso 16)\"},\n        \"fuente\": {\"quote\": \"sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"limite_de_previsiones_del_1_25 (ver_nodo)\", \"resultado\": \"'Las previsiones por riesgo de incobrabilidad no pueden superar el 1,25% de los activos ponderados por riesgo de crédito' — confirma que la previsión de cartera normal integra el PNc en el régimen\"},\n        {\"consulta\": \"patrimonio neto complementario capital nivel dos\", \"resultado\": \"patrimonio_neto_complementario_pnc: 'Capital de nivel dos computable que incluye ... previsiones por riesgo de incobrabilidad' — el concepto existe y es correcto en el régimen BCRA\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Cómo se vincula esa regla con la clasificación de deudores (justificación de la excepción)\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"esta excepción aplicable a la cartera en situación normal responde a que esos deudores presentan menor riesgo de incumplimiento\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno\", \"ubicacion\": \"ningún nodo de la trayectoria ni del grafo afirma la justificación causal de 'menor riesgo de incumplimiento'\"},\n        \"fuente\": {\"quote\": \"sin deducir el 100% del importe de la previsión por riesgo de incobrabilidad correspondiente a la cartera de deudores clasificados 'en situación normal' (...) (verificación negativa: el Punto 2.3 enuncia la regla contable sin dar ninguna justificación de menor riesgo)\", \"ubicacion\": \"TO_capitales_minimos_actual.pdf, Punto 2.3\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"deudores situación normal menor riesgo incumplimiento razón fundamento\", \"resultado\": \"ningún nodo afirma esa justificación; solo definiciones de situación normal y la exclusión de deducción\"},\n        {\"consulta\": \"justificación no deducción previsión menor riesgo\", \"resultado\": \"ningún nodo porta la glosa causal; los nodos hablan de previsión mínima/límite, no de justificación por menor riesgo\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez marcó 'no soportadas' tres afirmaciones. FASE A: el agente hizo 16 tool calls y en el paso 16 (output completo verificado con ver_paso_completo) quedaron EXPUESTOS en su trayectoria los resúmenes de situacion_normal ('atrasos que no superan 31 días') y de prevision_por_cartera_en_situacion_normal ('computada como patrimonio neto complementario'). Por tanto, ambos claims centrales fallidos estaban SOPORTADOS por contenido expuesto (regla de soporte v2.3/v2.4: los resúmenes de buscar_nodos cuentan) → NO son faithfulness; entran por noise_sensitivity. C1b: ¿son correctos contra el PDF? (1) 'situación normal ≤31 días' es verbatim del Punto 7.2.1 del TO_clasificacion_deudores_actual.pdf y el nodo tiene provenance correcta → FIEL y PERTINENTE → sin_defecto (falso positivo del juez, que lo marcó 'no soportado' pese a estar soportado y ser correcto). (2) 'se computa como patrimonio neto complementario en lugar de deducirse' es fácticamente correcto en el régimen BCRA: el Punto 2.3 dice que la previsión de cartera normal no se deduce del activo, y los nodos limite_de_previsiones_del_1_25 y patrimonio_neto_complementario_pnc confirman que esa previsión integra el PNc/Capital Nivel 2 (hasta 1,25% de APR) → el claim está soportado y es correcto → sin_defecto (falso positivo). (3) 'responde a que esos deudores presentan menor riesgo de incumplimiento' es una GLOSA CAUSAL: dos búsquedas documentadas muestran que NINGÚN nodo del grafo afirma esa justificación, y el Punto 2.3 del PDF enuncia la regla contable sin darle justificación de riesgo → faithfulness → árbol: dato no encontrado en el grafo + verificación negativa contra el PDF → alucinacion_agente modo (b) (glosa de cosecha propia, sin nodo que exhibir). Como los DOS claims centrales fallidos resultan falsos positivos del juez, el caso NO tiene primaria de defecto del sistema; la única falla real es la glosa NO central, que se emite como secundaria (regla de jerarquía: un FP del juez no se explica con un defecto del sistema). NOTA colateral: las provenances de prevision_por_cartera_en_situacion_normal (Punto 8.4) y patrimonio_neto_complementario_pnc/limite_de_previsiones_del_1_25 (Punto 8.2) están desalineadas —el 8.2/8.4 real habla de riesgo de mercado— pero como su contenido es fácticamente correcto respecto al régimen, esa imprecisión de provenance no rompe ningún claim de esta pregunta y no altera la atribución.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "situacion_normal"
+    },
+    "output_truncado": "{\"id\": \"situacion_normal\", \"type\": \"Restriccion\", \"label\": \"Situación normal\", \"properties\": {\"description\": \"Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimiento normal hasta 61 días.\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2 — Niveles de clasificación. (parte 1/3)\"}]}"
+   },
+   {
+    "n": 2,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "prevision_por_cartera_en_situacion_normal"
+    },
+    "output_truncado": "{\"id\": \"prevision_por_cartera_en_situacion_normal\", \"type\": \"Concepto\", \"label\": \"Previsión por cartera en situación normal\", \"properties\": {\"description\": \"Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.4 — Conceptos deducibles. (parte 1/2)\"}]}"
+   },
+   {
+    "n": 3,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "exclusion_de_prevision_para_deudores_clasificados_en_situaci"
+    },
+    "output_truncado": "{\"id\": \"exclusion_de_prevision_para_deudores_clasificados_en_situaci\", \"type\": \"Restriccion\", \"label\": \"Exclusión de previsión para deudores clasificados en situación normal\", \"properties\": {\"description\": \"No se deducirá el 100% de la previsión por riesgo de incobrabilidad de deudores clasificados en situación normal.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3 — Cómputo de los conceptos comprendidos.\"}]}"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 7.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 7.2 (PDF pág 35)\", \"pasaje\": \"7.2. Niveles de clasificación. \\n7.2.1. Situación normal. \\nComprende los clientes que atienden en forma puntual el pago de sus obligaciones o con \\natrasos que no superan los 31 días. \\nLos adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal \\nhasta los 61 días contados desde su otorgamiento. \\nA los fines de establecer los días de atraso, en el caso de las financiaciones instrumenta-\\ndas mediante tarjetas de crédito, se considerarán los que resulten luego de imputar el \\npago mínimo exigido en cada liquidación a cancelar la deuda en orden decreciente de an-\\ntigüedad. \\nLos deudores que hayan accedido a refinanciaciones de deudas encontrándose clasifica-\\ndos en niveles inferiores, sólo podrán incluirse en esta categoría en la medida en que se \\nhayan observado las pautas establecidas para cada uno de los correspondientes niveles \\ny, además, que el resto de sus deudas reúnan las condiciones para que el cliente pueda \\nser recategorizado en este nivel. \\nLos deudores que haya… [+399 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "Punto 2.3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.3\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 10)\", \"pasaje\": \"2.3. Cómputo de los conceptos comprendidos.\\n2.3.1. Bases individual y consolidada mensual.\\nLos conceptos comprendidos se computarán sobre la base de los saldos al último día de\\ncada mes (capitales, intereses, primas, actualizaciones –por el Coeficiente de\\nEstabilización de Referencia CER– y diferencias de cotización, según corresponda,\\nnetos de las previsiones por riesgos de incobrabilidad  –incluyendo, de corresponder, las\\nprevisiones contabilizadas en el pasivo – y desvalorización y de las depreciaci ones y\\namortizaciones acumuladas que  les sean atribuibles y demás cuentas regulariz adoras,\\nsin deducir el 100% del importe de la previsión por riesgo de incobrabilidad\\ncorrespondiente a la cartera de deudores clasificados “en situación normal” –puntos\\n6.5.1. y 7.2.1. del TO sobre Clasificaci ón de Deudores– y a las financiaciones que se\\nencuentran cubiertas con garantías preferidas A).\\n2.3.2. Base consolidada trimestral.\\nSe considerarán los saldos al cierre del trimestre, aplicando en los demás aspec… [+393 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "Punto 8.4"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.4\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.4 (PDF pág 139)\", \"pasaje\": \"8.4. En qué medida las valuaciones de las exposiciones se pueden validar de modo consi s-\\ntente a partir de información externa. \\n6.\\n8.5. Hasta qué punto las restricciones legales u otras exigencias operativas podrían impedir \\nque la entidad liquide en forma inmediata la exposición. \\n6.\\n8.6. El grado en que la entidad puede gestionar activamente el riesgo de la exposición, en el \\nmarco de sus operaciones de negociación. \\n6.\\n8.7. Si la entidad puede transferir el riesgo o las exposiciones entre las carteras de inversión \\ny de negociación, y los criterios para hacerlo. \\n6.9. Requisitos adicionales para incluir posiciones en la cartera de negociación. \\nLas\\n entidades financieras deberán contar con: \\n6.\\n9.1. Una estrategia de negociación claramente documentada respecto de los instrumentos, \\nlas posiciones y las carteras que incluya el horizonte de tenencia esperado y que esté \\naprobado por la Alta Gerencia. \\n6.\\n9.2. Políticas y procedimientos claramente definidos para la gestión activa de las posi… [+404 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "patrimonio neto complementario previsión general normal",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"patrimonio neto complementario previsión general normal\", \"total_con_match\": 77, \"resultados\": [{\"id\": \"patrimonio_neto_complementario\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumentos financieros (PNc) que cumplen criterios de clasificación patrimonial\"}, {\"id\": \"patrimonio_neto_complementario_pnc\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario (PNc)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital de nivel dos computable que incluye instrumentos emitidos, primas de emisión y previsiones por riesgo de incobrabilidad.\"}, {\"id\": \"pnc_patrimonio_neto_complementario\", \"type\": \"InstrumentoFinanciero\", \"label\": \"PNc - Patrimonio Neto Complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumento de capital clasificado como patrimonio neto complementario, computable en requerimientos de capitalización\"}, {\"id\": \"patrimonio_neto_complementario_capital_de_nivel_2\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario capital de nivel 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de elementos que integran el capital de nivel 2 en la estructu… [+1562 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "patrimonio neto complementario capital nivel dos",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"patrimonio neto complementario capital nivel dos\", \"total_con_match\": 297, \"resultados\": [{\"id\": \"patrimonio_neto_complementario_capital_de_nivel_2\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario capital de nivel 2\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Categoría de elementos que integran el capital de nivel 2 en la estructura de patrimonio regulatorio.\"}, {\"id\": \"patrimonio_neto_complementario\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumentos financieros (PNc) que cumplen criterios de clasificación patrimonial\"}, {\"id\": \"patrimonio_neto_complementario_pnc\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario (PNc)\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Capital de nivel dos computable que incluye instrumentos emitidos, primas de emisión y previsiones por riesgo de incobrabilidad.\"}, {\"id\": \"pnc_patrimonio_neto_complementario\", \"type\": \"InstrumentoFinanciero\", \"label\": \"PNc - Patrimonio Neto Complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumento de capital clasificado como patrimonio neto complementario, computable en requerimi… [+1555 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "patrimonio_neto_complementario_pnc"
+    },
+    "output_truncado": "{\"id\": \"patrimonio_neto_complementario_pnc\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario (PNc)\", \"properties\": {\"description\": \"Capital de nivel dos computable que incluye instrumentos emitidos, primas de emisión y previsiones por riesgo de incobrabilidad.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.2 — Conceptos computables.\"}]}"
+   },
+   {
+    "n": 10,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "Punto 8.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.2 (PDF pág 138)\", \"pasaje\": \"8.2. En qué medida las exposiciones pueden valuarse diariamente a precios de mercado, \\ntomando como referencia un mercado activo, líquido y bidireccional –es decir, que exis-\\nte tanto para la oferta como para la demanda–. \\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS \\nSección 6. Capital mínimo por riesgo de mercado. \\nVersión: 2a. COMUNICACIÓN  “A”  6690 Vigencia: \\n01/04/2019 Página 23\"}"
+   },
+   {
+    "n": 11,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "previsión cartera normal 1,25% activos ponderados computable capital nivel 2",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"previsión cartera normal 1,25% activos ponderados computable capital nivel 2\", \"total_con_match\": 616, \"resultados\": [{\"id\": \"activos_deducibles_del_capital_ordinario_nivel_1\", \"type\": \"Concepto\", \"label\": \"Activos deducibles del capital ordinario nivel 1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Activos que se deducen del capital ordinario del nivel 1 (COn1), excluidos del régimen informativo.\"}, {\"id\": \"con1_capital_otro_nivel_1\", \"type\": \"Concepto\", \"label\": \"COn1 - Capital Otro Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Categoría de capital otro de primer nivel para fines de requerimientos de capitalización\"}, {\"id\": \"capital_adicional_de_nivel_1\", \"type\": \"Concepto\", \"label\": \"Capital Adicional de Nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Componente complementario de capital regulatorio que integra instrumentos emitidos conforme punto 8.3.2 no incluidos en CON1.\"}, {\"id\": \"capital_minimo_seccion_4_1_2\", \"type\": \"Restriccion\", \"label\": \"Capital mínimo sección 4.1.2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Requisito de capital mínimo regulado en la sección 4.1.2 del Texto Ordenado.\"}, {\"id\": \"capital_minimo_seccion_4_… [+1491 chars]"
+   },
+   {
+    "n": 12,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "patrimonio_neto_complementario_capital_de_nivel_2"
+    },
+    "output_truncado": "{\"id\": \"patrimonio_neto_complementario_capital_de_nivel_2\", \"type\": \"Concepto\", \"label\": \"Patrimonio neto complementario capital de nivel 2\", \"properties\": {\"description\": \"Categoría de elementos que integran el capital de nivel 2 en la estructura de patrimonio regulatorio.\", \"codigo\": \"70250000\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.2 — Modelo de Información + Punto 4 — EXIGENCIA E INTEGRACIÓN DE CAPITALES MÍNIMOS (R.I.-C.M.) (parte 2/2)\"}]}"
+   },
+   {
+    "n": 13,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 16
+    },
+    "output_truncado": "{\"paso\": 16, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"previsión genérica normal no se deduce\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"previsión genérica normal no se deduce\", \"total_con_match\": 222, \"resultados\": [{\"id\": \"pago_no_se_realiza_anterior_a_vencimiento\", \"type\": \"Restriccion\", \"label\": \"Pago no se realiza anterior a vencimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior.\"}, {\"id\": \"prevision_por_cartera_en_situacion_normal\", \"type\": \"Concepto\", \"label\": \"Previsión por cartera en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Previsión por riesgo de incobrabilidad de la cartera en situación normal computada como patrimonio neto complementario.\"}, {\"id\": \"rotacion_y_sustitucion_no_se_considera_gestion_activa\", \"type\": \"Excepcion\", \"label\": \"Rotación y sustitución no se considera gestión activa\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Incorporación de créditos en períodos de rotación o sustitución por incumplimiento de cláusulas contractuales no se considera gestión activa de cartera.\"}, {\"id\": \"exclusion_de_prevision_para_deud… [+1681 chars]"
+   },
+   {
+    "n": 14,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "conceptos computables responsabilidad patrimonial previsiones cartera normal límite",
+     "limite": 8
+    },
+    "output_truncado": "{\"consulta\": \"conceptos computables responsabilidad patrimonial previsiones cartera normal límite\", \"total_con_match\": 212, \"resultados\": [{\"id\": \"limite_minimo_responsabilidad_patrimonial_computable\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Responsabilidad Patrimonial Computable\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Responsabilidad Patrimonial Computable debe ser mayor o igual al 8% del activo total (70900000)\"}, {\"id\": \"limite_de_previsiones_del_1_25\", \"type\": \"Restriccion\", \"label\": \"Límite de previsiones del 1,25%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las previsiones por riesgo de incobrabilidad no pueden superar el 1,25% de los activos ponderados por riesgo de crédito.\"}, {\"id\": \"limite_de_valor_de_opciones_en_cartera\", \"type\": \"Restriccion\", \"label\": \"Límite de valor de opciones en cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El valor de mercado total de opciones en cartera no debe superar el 5% del RPC del mes anterior para usar método simplificado\"}, {\"id\": \"responsabilidad_patrimonial_computable\", \"type\": \"Restriccion\", \"label\": \"Responsabilidad patrimonial computable\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Elementos de… [+1271 chars]"
+   },
+   {
+    "n": 15,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "limite_de_previsiones_del_1_25"
+    },
+    "output_truncado": "{\"id\": \"limite_de_previsiones_del_1_25\", \"type\": \"Restriccion\", \"label\": \"Límite de previsiones del 1,25%\", \"properties\": {\"description\": \"Las previsiones por riesgo de incobrabilidad no pueden superar el 1,25% de los activos ponderados por riesgo de crédito.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.2 — Conceptos computables.\"}]}"
+   },
+   {
+    "n": 16,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "deudores situación normal menor riesgo incumplimiento razón fundamento",
+     "limite": 8
+    },
+    "output_truncado": "{\"consulta\": \"deudores situación normal menor riesgo incumplimiento razón fundamento\", \"total_con_match\": 370, \"resultados\": [{\"id\": \"deudores_en_situacion_normal\", \"type\": \"Concepto\", \"label\": \"Deudores en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Clasificación de deudores conforme a puntos 6.5.1 y 7.2.1 de normas sobre clasificación de deudores.\"}, {\"id\": \"exclusion_de_prevision_para_deudores_clasificados_en_situaci\", \"type\": \"Restriccion\", \"label\": \"Exclusión de previsión para deudores clasificados en situación normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se deducirá el 100% de la previsión por riesgo de incobrabilidad de deudores clasificados en situación normal.\"}, {\"id\": \"situacion_normal\", \"type\": \"Restriccion\", \"label\": \"Situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clientes que atienden puntualmente sus obligaciones o con atrasos que no superan 31 días. Adelantos transitorios en cuenta corriente se consideran de cumplimien…\"}, {\"id\": \"deudor_en_situacion_normal\", \"type\": \"Concepto\", \"label\": \"Deudor en situación normal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Clasificación de deudor conforme al TO sobre … [+1167 chars]"
+   },
+   {
+    "n": 17,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "justificación no deducción previsión menor riesgo",
+     "limite": 8
+    },
+    "output_truncado": "{\"consulta\": \"justificación no deducción previsión menor riesgo\", \"total_con_match\": 494, \"resultados\": [{\"id\": \"incumplimiento_con_prevision_menor_20\", \"type\": \"Restriccion\", \"label\": \"Incumplimiento con previsión menor 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Ponderador de riesgo del 150% para exposiciones en incumplimiento no cubiertas con previsiones específicas menores al 20% del saldo pendiente.\"}, {\"id\": \"prevision_minima_por_riesgo_de_incobrabilidad\", \"type\": \"Restriccion\", \"label\": \"Previsión mínima por riesgo de incobrabilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Obligación de constituir provisiones mínimas según la clasificación de deudores.\"}, {\"id\": \"coberturas_no_derivadas_para_riesgo_especifico\", \"type\": \"Restriccion\", \"label\": \"Coberturas no derivadas para riesgo específico\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las coberturas que no se realicen a través de derivados solo serán admisibles si han sido especialmente creadas y usadas para cubrir un riesgo específico indivi…\"}, {\"id\": \"dividendo_no_reajustable_por_riesgo_de_credito\", \"type\": \"Restriccion\", \"label\": \"Dividendo no reajustable por riesgo de crédito\", \"tokens_matcheados\"… [+1060 chars]"
+   },
+   {
+    "n": 18,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_capitales_minimos_actual.pdf",
+     "location": "Punto 8.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 8.2 (PDF pág 138)\", \"pasaje\": \"8.2. En qué medida las exposiciones pueden valuarse diariamente a precios de mercado, \\ntomando como referencia un mercado activo, líquido y bidireccional –es decir, que exis-\\nte tanto para la oferta como para la demanda–. \\nB.C.R.A. CAPITALES MÍNIMOS DE LAS ENTIDADES FINANCIERAS \\nSección 6. Capital mínimo por riesgo de mercado. \\nVersión: 2a. COMUNICACIÓN  “A”  6690 Vigencia: \\n01/04/2019 Página 23\"}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 28667,
+    "output_tokens": 253
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29553,
+    "output_tokens": 333
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32029,
+    "output_tokens": 617
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35101,
+    "output_tokens": 174
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35449,
+    "output_tokens": 101
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35854,
+    "output_tokens": 333
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37743,
+    "output_tokens": 398
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 39372,
+    "output_tokens": 713
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 41135,
+    "output_tokens": 192
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 41498,
+    "output_tokens": 467
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 43987,
+    "output_tokens": 696
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 44987,
+    "output_tokens": 5333
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 62,
+   "n_claims_fallidos": 3,
+   "categoria": "multi_norma"
+  },
+  "label": "on"
+ }
+}
