@@ -3,7 +3,7 @@
 Lee datos reales de frozen_run/ y trazas/ — sin transcripción manual."""
 import json, html, glob, os
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def esc(x):
     return html.escape(str(x)) if x is not None else ""

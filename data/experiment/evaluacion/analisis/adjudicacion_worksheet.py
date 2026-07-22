@@ -27,7 +27,11 @@ adjudicacion_worksheet.md (legible). Reporta cuántas afirmaciones únicas queda
 from __future__ import annotations
 
 import json
+import sys
 from collections import defaultdict, OrderedDict
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from loader import EVAL_DIR
 from harness import _norm_loc   # MISMA regla congelada de citas (cosmética)

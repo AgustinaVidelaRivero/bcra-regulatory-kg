@@ -20,6 +20,8 @@ from pathlib import Path
 
 from anthropic.types import Message
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import llm_cache as lc
 
 
@@ -92,6 +94,16 @@ def _new_cache(tmp, fake, *, thinking=True, namespace=None, run_label="test"):
     return lc.CachingClient(FakeClient(fake), namespace=ns,
                             db_path=Path(tmp) / "calls.db", domain="agent",
                             thinking_enabled=thinking, run_label=run_label)
+
+
+try:  # bajo pytest, `tmp` es un fixture (envuelve tmp_path); el modo script no requiere pytest
+    import pytest
+
+    @pytest.fixture
+    def tmp(tmp_path):
+        return str(tmp_path)
+except ImportError:
+    pass
 
 
 # --------------------------------------------------------------------------- #

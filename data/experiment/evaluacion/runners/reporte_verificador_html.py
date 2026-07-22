@@ -26,7 +26,7 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parent          # evaluacion/
+BASE = Path(__file__).resolve().parents[1]      # evaluacion/
 sys.path.insert(0, str(BASE))
 
 LADOS = ("grafo", "agente", "ninguno", "indeterminado")

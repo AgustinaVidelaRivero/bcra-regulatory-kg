@@ -73,7 +73,7 @@ data/experiment/
 | `evaluacion/frozen_run/`, `frozen_smoke/` | [CONGELADO] | Datos de la corrida congelada que seleccionó a run_3 (agg, checkpoints, reporte_final.md, 115 trazas tracked) y su smoke previo. |
 | `evaluacion/queries/eval_set_v1.json` | [CONGELADO] | 23 CQs, diseño ciego, frozen pre-corrida. |
 | `evaluacion/adjudicacion_FIRMADO.json` | [CONGELADO] | Adjudicación humana firmada de la Fase 2.3. |
-| `evaluacion/` (raíz: verificador.py, pdf_locate.py, verifier_pilot.py, run_posthoc.py, llm_cache.py, reporte_verificador_html.py) | [ACTIVO] | Instrumentación 2.3+ y verificador 2.4. Acá se trabaja ahora. |
+| `evaluacion/` (raíz: verificador.py, pdf_locate.py, verifier_pilot.py, runners/run_posthoc.py, llm_cache.py, runners/reporte_verificador_html.py) | [ACTIVO] | Instrumentación 2.3+ y verificador 2.4. Acá se trabaja ahora. |
 | `evaluacion/queries/eval_set_v2*.json` | [ACTIVO] | v1 + 8 CQs nuevas (CQ-040–047); dataset del refinamiento 2.5. |
 | `evaluacion/posthoc_run/revision_prompt_v4/` | [ACTIVO] | Paquete de revisión del prompt v4 armado para la ronda de feedback — lo ÚNICO tracked de `posthoc_run/`. |
 | `.claude/skills/` | [ACTIVO] | Las 4 skills operativas del pipeline. |
@@ -97,21 +97,21 @@ ninguno se importa desde fuera de `evaluacion/`). "API" = hace llamadas a la API
 | `harness.py` [CONGELADO] | Agente respondedor KG-RAG: Haiku 4.5 fijo, temp 0, 3 tools de grafo (buscar_nodos / ver_nodo / ver_vecinos) | judge, run_frozen, run_manual, run_posthoc, run_etapa2, ab_caching, ab_control, ab_investigate_cq029, adjudicacion_worksheet, verificador | Sí |
 | `judge.py` [CONGELADO] | LLM-as-judge v2.1.1: Sonnet, dos pasos, ciego al grafo; changelog v1→v2.1.1 en el docstring | run_frozen, run_posthoc, ab_caching, ab_control, ab_investigate_cq029 | Sí |
 | `run_frozen.py` [CONGELADO] | Pipeline de la corrida congelada: eval_set_v1 × 5 grafos × N reps, veredicto modal, checkpoints | nadie (entry point) | Sí |
-| `run_manual.py` | Corre UNA pregunta del pool contra un grafo (loop manual 2.3), anexa traza idempotente | nadie (entry point) | Sí |
-| `validate_loader.py` | Valida loader sobre los 5 grafos: reabre cada kg.json por su cuenta y cruza conteos (checks C1..) → `01_validacion_loader.md` | nadie (entry point) | No |
-| `ab_caching.py` | A/B de prompt caching multi-turn (6 preguntas dev_pool, run_3, sin/con cache) → `03_ab_caching.md` | nadie (entry point) | Sí |
-| `ab_control.py` | Control de no-determinismo del A/B: las 3 divergentes, off vs off2 → `03b_ab_control.md` | nadie (entry point) | Sí |
-| `ab_investigate_cq029.py` | Investigación puntual de CQ-029 (K corridas sin/con cache) → `03c_cq029_investigacion.md` | nadie (entry point) | Sí |
-| `adjudicacion_worksheet.py` | Reorganiza la cola de adjudicación humana en worksheet (propagación solo por identidad estricta) | nadie (entry point) | No |
-| `run_etapa2.py` | Reporte ETAPA 2: aplica veredictos del worksheet FIRMADO y re-emite reporte_final.md | nadie (entry point) | No |
-| `gen_demo_html.py` | Genera `demo_evaluacion.html` (trazas + juez, datos reales de frozen_run/) para mostrar en reunión | nadie (entry point) | No |
+| `analisis/run_manual.py` | Corre UNA pregunta del pool contra un grafo (loop manual 2.3), anexa traza idempotente | nadie (entry point) | Sí |
+| `runners/validate_loader.py` | Valida loader sobre los 5 grafos: reabre cada kg.json por su cuenta y cruza conteos (checks C1..) → `01_validacion_loader.md` | nadie (entry point) | No |
+| `analisis/ab_caching.py` | A/B de prompt caching multi-turn (6 preguntas dev_pool, run_3, sin/con cache) → `03_ab_caching.md` | nadie (entry point) | Sí |
+| `analisis/ab_control.py` | Control de no-determinismo del A/B: las 3 divergentes, off vs off2 → `03b_ab_control.md` | nadie (entry point) | Sí |
+| `analisis/ab_investigate_cq029.py` | Investigación puntual de CQ-029 (K corridas sin/con cache) → `03c_cq029_investigacion.md` | nadie (entry point) | Sí |
+| `analisis/adjudicacion_worksheet.py` | Reorganiza la cola de adjudicación humana en worksheet (propagación solo por identidad estricta) | nadie (entry point) | No |
+| `runners/run_etapa2.py` | Reporte ETAPA 2: aplica veredictos del worksheet FIRMADO y re-emite reporte_final.md | nadie (entry point) | No |
+| `analisis/gen_demo_html.py` | Genera `demo_evaluacion.html` (trazas + juez, datos reales de frozen_run/) para mostrar en reunión | nadie (entry point) | No |
 | `llm_cache.py` (2.3+) | Caché SQLite + captura del crudo íntegro; wrapper drop-in del cliente Anthropic, key determinística, namespace versionado | run_posthoc, verifier_pilot, verificador, test_llm_cache | Envuelve al cliente (paga API solo en cache-miss del que lo usa) |
-| `test_llm_cache.py` | Test aislado de la caché con cliente FALSO (Message real por model_validate); PASS/FAIL exit 0/1 | nadie (entry point) | No (explícitamente sin API) |
-| `run_posthoc.py` (2.3+) | Runner instrumentado: re-corrida rica con thinking ON/OFF vía ParamOverrideClient, sin tocar lo congelado; `--preflight`/`--verify-replay` | nadie (entry point) | Sí (cacheada) |
+| `tests/test_llm_cache.py` | Test aislado de la caché con cliente FALSO (Message real por model_validate); PASS/FAIL exit 0/1 | nadie (entry point) | No (explícitamente sin API) |
+| `runners/run_posthoc.py` (2.3+) | Runner instrumentado: re-corrida rica con thinking ON/OFF vía ParamOverrideClient, sin tocar lo congelado; `--preflight`/`--verify-replay` | nadie (entry point) | Sí (cacheada) |
 | `verifier_pilot.py` (2.4, piloto) | Piloto del verificador claim-level (¿defecto de KG o de agente?): mapeo claim→nodo con Haiku, verificación con Opus, evaluador A ciego con Sonnet | verificador (usa load_rep, recover_seen, _extract_json) | Sí (cacheada en cache/verifier_pilot.db) |
 | `pdf_locate.py` (2.4) | Localización de pasajes en los PDFs del subset (por punto con prose_score anti-índice, o por página). Autocontenido, solo pypdf | verificador, verifier_pilot | No |
 | `verificador.py` (2.4) | Verificador agéntico v4: por cada falla investiga por qué falló y atribuye (grafo vs agente) con taxonomía cerrada, arrancando del síntoma (anti-sesgo) | reporte_verificador_html | Sí (cacheada en cache/verificador.db) |
-| `reporte_verificador_html.py` (2.4) | Reporte HTML por corrida del verificador (`--input --run --label [--ground-truth]`); estampa commit y namespace en meta.json e index acumulado | nadie (entry point) | No |
+| `runners/reporte_verificador_html.py` (2.4) | Reporte HTML por corrida del verificador (`--input --run --label [--ground-truth]`); estampa commit y namespace en meta.json e index acumulado | nadie (entry point) | No |
 
 Documentos `.md` numerados en la misma carpeta (reportes de cada etapa 2.3/2.3+):
 `00_inventario.md` (inventario y desviaciones de schema de los 5 kg.json),
@@ -140,18 +140,18 @@ Documentos `.md` numerados en la misma carpeta (reportes de cada etapa 2.3/2.3+)
 - Trazas manuales: `evaluacion/trazas/` (manual_run_1.json, manual_run_3.json, 20260609_155542_run_3_dev.json).
 - Calibración del juez: `02_calibracion_juez.md` (changelog v1→v2.1.1 también en judge.py).
 - Adjudicación humana: `adjudicacion_pendiente.json` → `adjudicacion_worksheet.{json,md}` →
-  `adjudicacion_FIRMADO.json` (firmado) → `run_etapa2.py` re-emite reporte_final.md.
-- Demo de reunión: `demo_evaluacion.html` (generado por gen_demo_html.py).
+  `adjudicacion_FIRMADO.json` (firmado) → `runners/run_etapa2.py` re-emite reporte_final.md.
+- Demo de reunión: `demo_evaluacion.html` (generado por analisis/gen_demo_html.py).
 
 **Fase 2.3+ — instrumentación post-hoc**
-- Código: `llm_cache.py` (+ `test_llm_cache.py`), `run_posthoc.py`.
+- Código: `llm_cache.py` (+ `tests/test_llm_cache.py`), `runners/run_posthoc.py`.
 - Caché de crudos: `evaluacion/cache/*.db` [SCRATCH].
 - Trazas ricas: `posthoc_run/traces/{off,on}/` y `posthoc_run/summary_{off,on}_run_X.json` [SCRATCH].
 - Auditoría de qué se persistió: `04_auditoria_instrumentacion.md`.
 
 **Fase 2.4 — verificador**
 - Código: `verifier_pilot.py` (piloto), `verificador.py` (agéntico v4), `pdf_locate.py`,
-  `reporte_verificador_html.py`.
+  `runners/reporte_verificador_html.py`.
 - Piloto y mapa de defectos: `posthoc_run/pilot_verificador/` (mapa_agregado.json,
   mapa_depurado.json, verificador_scale_full.json, evaluador_a.json, ...) [SCRATCH].
 - Calibraciones del verificador v1–v4: `posthoc_run/calibracion_verificador{,_v2,_v3,_v4}/` [SCRATCH].
@@ -179,7 +179,7 @@ obligatorio), `kg-refinement/` (pipeline 2.5).
 
 1. **Numeración de fases:** NO se encontró ningún archivo con la numeración vieja
    ("2.4" = refinamiento). Todas las menciones a "Fase 2.4" del repo (verificador.py,
-   pdf_locate.py, verifier_pilot.py:175, reporte_verificador_html.py, hallazgos_tesis.md,
+   pdf_locate.py, verifier_pilot.py:175, runners/reporte_verificador_html.py, hallazgos_tesis.md,
    llm-capture/SKILL.md:22) refieren al **verificador** — consistente con la canónica.
    Las únicas menciones del error histórico son auto-aclaratorias (CLAUDE.md:109,
    kg-refinement/SKILL.md).
@@ -198,7 +198,7 @@ obligatorio), `kg-refinement/` (pipeline 2.5).
    — no coincide con su ubicación real en el repo.
 6. **Placeholders vacíos:** `src/extraction`, `src/kg`, `src/scraper` contienen solo
    `__init__.py`; `tests/`, `data/kg/`, `data/processed/` solo `.gitkeep`. El único test real
-   (`test_llm_cache.py`) vive en `data/experiment/evaluacion/`, no en `tests/`.
+   (`tests/test_llm_cache.py`) vive en `data/experiment/evaluacion/`, no en `tests/`.
 7. **Nombre duplicado:** `scripts/download_bcra.py` (vigente) y
    `_archive_riesgo_crediticio/scripts/download_bcra.py` (pivote archivado).
 8. **`evaluacion/cache/calls.db.verif_backup`** — backup ad-hoc junto a calls.db

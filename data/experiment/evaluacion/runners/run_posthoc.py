@@ -50,6 +50,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from loader import load_graph, EVAL_DIR, RUN_KEYS
 from harness import GraphAgent
 import judge

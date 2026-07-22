@@ -25,7 +25,10 @@ Salida: imprime a stdout y escribe data/experiment/evaluacion/01_validacion_load
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from loader import RUN_FILES, RUN_KEYS, load_graph, dump_merge_log, EVAL_DIR
 

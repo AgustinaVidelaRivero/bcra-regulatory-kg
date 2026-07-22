@@ -60,7 +60,7 @@ Esto cuesta más (no se reusa trabajo entre fallas) y es un trade-off deliberado
 
 ## PASO 2 — Generar las trazas
 
-**Qué hace:** corre cada query del dataset con el agente RAG sobre la **copia de trabajo** del grafo, guardando la traza completa. Reutiliza la infraestructura existente (`run_posthoc.py` + `llm_cache.py`).
+**Qué hace:** corre cada query del dataset con el agente RAG sobre la **copia de trabajo** del grafo, guardando la traza completa. Reutiliza la infraestructura existente (`runners/run_posthoc.py` + `llm_cache.py`).
 
 > **Prerrequisito:** si `data/experiment/run_3_refinamiento/` no existe todavía, leé `references/preparar-run3-refinamiento.md` y creala con ese procedimiento (requiere aprobación de la autora para el cableado del loader). Sin la copia, este paso no puede correr.
 

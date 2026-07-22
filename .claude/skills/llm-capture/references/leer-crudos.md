@@ -29,11 +29,11 @@ thinking ON, es decir bajo namespaces `…|think=1`.
 ## Patrón 1 — turnos de una corrida en curso (en proceso Python)
 
 El patrón canónico es `_max_access_rowid` + `_turns_since`
-(`data/experiment/evaluacion/run_posthoc.py:163-180`): tomar el
+(`data/experiment/evaluacion/runners/run_posthoc.py:163-180`): tomar el
 rowid máximo de `access_log` ANTES de la operación, y después leer los accesos
 posteriores del dominio, resolviendo cada `key` contra `cache.raw_json`. Así
 `run_posthoc` arma `raw_turns_agent` / `raw_turns_judge` por repetición
-(`data/experiment/evaluacion/run_posthoc.py:186-217`).
+(`data/experiment/evaluacion/runners/run_posthoc.py:186-217`).
 
 ## Patrón 2 — lectura post-hoc por SQL (db existente)
 
