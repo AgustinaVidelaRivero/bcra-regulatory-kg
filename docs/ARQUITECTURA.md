@@ -38,10 +38,11 @@ refinamiento.
 │   │                             corpus_analysis_for_schema.md, legacy/ (v0.1 del schema)
 │   └── hallazgos_tesis.md        Hallazgos H1–H13 para Resultados/Discusión y ronda de feedback
 ├── notebooks/                    01_turtle_basics.ipynb (intro rdflib, etapa temprana; nada lo usa)
-├── scripts/                      Descarga del corpus: download_bcra.py (subcomandos B1..B9),
-│   │                             report_b4_b5.py, retry_persistent_fails.py
+├── scripts/                      shapes_validator.py (shapes S1-S12 sobre los kg.json)
 │   └── adhoc/                    b5_minirun_ext.py (mini-run de validación del scraper)
-├── src/                          Placeholders: extraction/, kg/, scraper/ solo tienen __init__.py
+├── src/                          scraper/: download_bcra.py (subcomandos B1..B9),
+│   │                             report_b4_b5.py, retry_persistent_fails.py;
+│   │                             extraction/ y kg/ placeholders (solo __init__.py)
 ├── tests/                        VACÍO (solo .gitkeep) — el test real vive en evaluacion/
 ├── CLAUDE.md                     Memoria del proyecto (fases, reglas, lecciones) — fuente de verdad
 ├── README.md                     Presentación del proyecto (autora, mentores)
@@ -123,7 +124,7 @@ Documentos `.md` numerados en la misma carpeta (reportes de cada etapa 2.3/2.3+)
 ## 4. Dónde vive cada artefacto, por fase
 
 **Corpus (Fase 1 / B.x)**
-- Descarga: `scripts/download_bcra.py` (subcomandos B1..B9) + `report_b4_b5.py`, `retry_persistent_fails.py`.
+- Descarga: `src/scraper/download_bcra.py` (subcomandos B1..B9) + `report_b4_b5.py`, `retry_persistent_fails.py`.
 - Datos: `data/raw/` (PDF/HTML gitignoreados; manifiesto.csv y logs versionados).
 
 **Fase 2.2 — construcción de los 5 grafos**
@@ -196,10 +197,10 @@ obligatorio), `kg-refinement/` (pipeline 2.5).
    `posthoc_run/revision_prompt_v4/`, tracked.)
 5. **`scripts/adhoc/b5_minirun_ext.py`** dice en su docstring "Uso: python /tmp/b5_minirun_ext.py"
    — no coincide con su ubicación real en el repo.
-6. **Placeholders vacíos:** `src/extraction`, `src/kg`, `src/scraper` contienen solo
+6. **Placeholders vacíos:** `src/extraction` y `src/kg` contienen solo
    `__init__.py`; `tests/`, `data/kg/`, `data/processed/` solo `.gitkeep`. El único test real
    (`tests/test_llm_cache.py`) vive en `data/experiment/evaluacion/`, no en `tests/`.
-7. **Nombre duplicado:** `scripts/download_bcra.py` (vigente) y
+7. **Nombre duplicado:** `src/scraper/download_bcra.py` (vigente) y
    `_archive_riesgo_crediticio/scripts/download_bcra.py` (pivote archivado).
 8. **`evaluacion/cache/calls.db.verif_backup`** — backup ad-hoc junto a calls.db
    [propósito/momento del backup no evidente — confirmar con Agustina].

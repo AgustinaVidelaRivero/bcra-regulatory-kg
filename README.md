@@ -1,135 +1,92 @@
 # BCRA Regulatory Knowledge Graph
 
-Proyecto Final de carrera — Ingeniería en Inteligencia Artificial, Universidad de San Andrés (UdeSA).
-
-## Resumen
-
-Este proyecto diseña, construye y evalúa un Knowledge Graph (KG) sobre la regulación del Banco Central de la República Argentina (BCRA), con énfasis en la calidad del modelado, la trazabilidad documental y el rigor de la evaluación de extracción. La utilidad del KG se demuestra a través de dos casos de uso aplicados:
-
-1. Un sistema agéntico de explicabilidad que, dado un log de operaciones de un cliente o entidad, reconstruye la cadena causal de normas que justifica una restricción operativa específica.
-2. Una comparación empírica entre arquitecturas KG-RAG y RAG tradicional sobre el mismo corpus, en términos de faithfulness, citation accuracy, costo y latencia.
+Proyecto Final de Ingeniería en Inteligencia Artificial (UdeSA): diseño, construcción,
+evaluación y refinamiento de un Knowledge Graph sobre la regulación del Banco Central
+de la República Argentina (BCRA), con trazabilidad documental de cada afirmación y
+evaluación bajo custodia (varas humanas selladas antes de cada corrida).
 
 ## Pregunta de investigación
 
-¿Un Knowledge Graph que modele explícitamente las entidades regulatorias del BCRA y sus relaciones causales habilita justificaciones operativas con mayor faithfulness y citation accuracy que sistemas RAG basados en embeddings densos sobre el mismo corpus?
+¿La organización explícita del corpus regulatorio del BCRA en un Knowledge Graph
+mejora la fidelidad y la precisión de citas de un sistema de respuesta regulatoria
+(KG-RAG) frente a un RAG tradicional sobre el mismo corpus? En torno a esa pregunta,
+el proyecto investiga además qué estrategia de schema produce el mejor grafo, y si un
+pipeline de diagnóstico y refinamiento basado en evidencia puede mejorar el grafo
+ganador de forma medible.
 
-## Estado
+## Estado (julio 2026)
 
-Mayo 2026 — completando el corpus regulatorio mediante scraping y diseñando el esquema del KG (RFC v0.2 en redacción). El schema preliminar v0.1 está archivado en [docs/schema/legacy/](docs/schema/legacy/) como referencia.
+- **Corpus descargado** (Textos Ordenados vigentes e históricos, marco legal,
+  Comunicaciones A/B/C/P, complementarios) con scraper idempotente y manifiesto.
+- **Fase 2.2:** 5 KGs construidos en paralelo sobre el mismo subset de 5 TOs, cada uno
+  con una estrategia de schema distinta (`data/experiment/run_1..run_5`).
+- **Fase 2.3 (congelada):** evaluación comparativa de los 5 grafos con harness KG-RAG
+  uniforme (agente Haiku + juez LLM v2.1.1 de dos pasos, calibrado contra adjudicación
+  humana firmada). Ganador: **run_3 (PPF Core)**. Evidencia completa en el repo.
+- **Fases 2.4-2.5 (ciclo 2 cerrado, 19/07/2026):** verificador de calidad del KG +
+  capa determinística + segunda pasada con fuentes forzadas. **El instrumento del
+  proyecto es v7' = v6.2-D + S1 v0.4b**, validado contra cuatro varas humanas selladas
+  (v3, gate CQN, dev-v7, gate CQN2). En el último gate fresco (CQN2, 15 preguntas
+  generadas a ciegas y selladas antes de la corrida): las tres columnas comparadas
+  dieron 6 aciertos / 1 miss-con-flag / 1 triage sobre las primarias, con **cero misses
+  silenciosos** — todo miss salió con flag y todo triage con motivo. Límites
+  caracterizados y documentados (fuente: `docs/lectura_ciclo2.md`).
+- **En rama (`extraccion-schema-v2`):** pipeline de extracción v2 con catálogo cerrado
+  de sujetos (U1-U4e completas; U5 = subset completo, pendiente de OK).
 
-## Scope del corpus
+## Mapa del repo
 
-Regulación pública del BCRA accesible desde el sitio oficial:
+- `data/experiment/` — el laboratorio: `subset/` (5 TOs fuente, read-only),
+  `run_1..run_5/` (los 5 KGs congelados), y `evaluacion/` (pipeline de evaluación y
+  refinamiento — **ver su `README.md`**, que documenta el núcleo congelado, las zonas
+  `runners/`, `tests/` y `analisis/`, y por qué nada del núcleo se mueve ni se edita).
+- `docs/` — diseño, especificaciones, lecturas selladas y evidencia de auditoría.
+  Punto de entrada: **`docs/INDICE.md`**; arquitectura del repo: `docs/ARQUITECTURA.md`.
+- `src/` — librería. Hoy: `src/scraper/` (descargador del corpus y satélites).
+  `src/extraction/` y `src/kg/` son los hogares previstos para la extracción escalada
+  al corpus completo (pipeline v2, hoy en rama).
+- `scripts/` — `shapes_validator.py` (validador determinístico de shapes sobre los
+  kg.json; su reporte vive en `reports/`) y `adhoc/` (históricos).
+- `app/` — frente de consulta (consume el grafo vía el loader, sin tocarlo).
+- `reports/`, `notebooks/` — reportes generados y exploración.
 
-- **Textos Ordenados** vigentes e históricos (operatoria cambiaria, clasificación de deudores, capitales mínimos, garantías, tasas, protección al usuario, sistemas de pago, etc.).
-- **Marco legal** asociado: Carta Orgánica del BCRA (Ley 24.144), Ley 19.359 (Régimen Penal Cambiario), Decreto 260/02, Decreto 609/19.
-- **Comunicaciones A** (modificaciones normativas), rango post-cepo a partir de septiembre 2019.
-- **Comunicaciones B** (aclaraciones interpretativas).
-- **Documentos complementarios** linkeados desde páginas temáticas del BCRA.
+## Cómo reproducir
 
-Comunicaciones C (fe de erratas) y P (publicación administrativa) quedan fuera de scope por baja densidad informativa para el modelado del KG.
-
-## Stack técnico
-
-- Python 3.11+
-- Scraping del corpus: `requests` + `pypdf` + `BeautifulSoup` con rate limiting global, manifiesto y checkpoint persistente.
-- Extracción de tripletas: LLMs vía Anthropic SDK con structured outputs (a definir en RFC de schema v0.2).
-- Construcción y análisis del grafo: a definir entre NetworkX (iteración rápida, alineado con el [cookbook de Anthropic sobre KG](https://platform.claude.com/cookbook/capabilities-knowledge-graph-guide)), RDFLib + Turtle (artefacto académico estándar) o un grafo nativo tipo Neo4j para queries multi-hop. Decisión a consensuar con mentor.
-- Evaluación: precision/recall a nivel de tripleta contra gold standard manual, métricas estructurales del grafo, faithfulness y citation accuracy con RAGAS y FActScore sobre eval set curado.
-
-## Estructura del repositorio
-
-```text
-bcra-regulatory-kg/
-├── docs/
-│   ├── schema/
-│   │   └── legacy/    # Schemas previos archivados (v0.1)
-│   └── literatura/    # Resúmenes de papers, comparativa cruzada y análisis de gaps
-├── data/
-│   ├── raw/       # PDFs y HTMLs descargados del BCRA + manifiesto + checkpoint (gitignored)
-│   ├── processed/ # Texto extraído y limpio (gitignored)
-│   └── kg/        # Knowledge graph en formato Turtle / JSON (gitignored)
-├── notebooks/     # Exploración interactiva
-├── src/
-│   ├── scraper/    # Descarga de normativa del BCRA
-│   ├── extraction/ # PDF → tripletas estructuradas
-│   └── kg/         # Construcción, consulta y serialización del KG
-├── scripts/       # Pipelines ejecutables (descarga, extracción, evaluación)
-└── tests/         # Tests unitarios
-```
-
-## Uso del descargador
-
-El script `scripts/download_bcra.py` modulariza la descarga del corpus en pasos B.1..B.9. Por defecto descarga el corpus BCRA completo:
+Desde `data/experiment/evaluacion/` (ver su README para el detalle):
 
 ```bash
-python scripts/download_bcra.py B1   # TOs vigentes
-python scripts/download_bcra.py B2   # Marco legal
-python scripts/download_bcra.py B3   # TOs históricos
-python scripts/download_bcra.py B4   # Comunicaciones A
-python scripts/download_bcra.py B5   # Versiones tachado/negrita
-python scripts/download_bcra.py B6   # Comunicaciones B
-python scripts/download_bcra.py B9   # Documentos complementarios
+python -m pytest tests/ capa_deterministica_test.py test_alcanzabilidad_test.py
 ```
-
-Para restringir B4/B6/B7/B8 al subconjunto MULC (scope previo del proyecto):
 
 ```bash
-python scripts/download_bcra.py B4 --mulc-only
+python runners/run_posthoc.py --selftest        # cadena agente+juez+caché, offline
 ```
-
-Es idempotente: archivos ya descargados se saltean automáticamente.
-
-### Cómo correr el scraper periódicamente
-
-El BCRA actualiza los Textos Ordenados frecuentemente (típicamente al incorporar una nueva Comunicación A). Para mantener el corpus al día, el scraper puede correrse periódicamente (ej. mensual o semanal). El diseño actual es:
-
-**Modo "detectar nuevos TOs en el índice oficial"** (caso más común):
 
 ```bash
-python scripts/download_bcra.py B1
+python runners/validate_loader.py               # integridad de los 5 grafos (C1-C8)
 ```
-
-Por idempotencia, los TOs ya en disco se saltean instantáneamente y solo se descargan los TOs nuevos que el BCRA haya agregado al índice oficial (ver `step_B1` docstring y el snapshot del índice en `scripts/download_bcra.py`). Si el índice del BCRA cambia con TOs nuevos, conviene actualizar el snapshot hardcodeado en `step_B1` re-extrayendo desde https://www.bcra.gob.ar/ordenamiento-y-resumenes/ (página JS-rendered, no accesible por `curl` plano — ver caveat 3).
-
-**Modo "re-bajar TOs con cambios de contenido"** (caso menos frecuente, no automatizado todavía):
-
-El `skip-existing` actual NO detecta cuándo un PDF en el servidor cambió respecto al archivo local. Para forzar re-descarga de TOs específicos cuando se sabe que cambiaron:
 
 ```bash
-# Borrar manualmente los archivos a re-bajar, después correr el step:
-rm data/raw/01_textos_ordenados/actuales/TO_clasificacion_deudores_actual.pdf
-python scripts/download_bcra.py B1
+python runners/run_etapa2.py                    # re-emite el reporte final del frozen
 ```
 
-A futuro, para detección automática de cambios, conviene extender el cliente HTTP con verificación de `Last-Modified` / `ETag` y comparación con `manifiesto.csv`. Esto NO está implementado todavía.
-
-**Para automatizar la corrida periódica** (cron, GitHub Actions, etc.): el script está listo desde el punto de vista de idempotencia y output a `manifiesto.csv`/`log.txt`. Lo que falta agregar:
-
-- Wrapper que notifique vía email / Slack si hay nuevos TOs descargados o si aparecen `[persistent-fail]` en el log.
-- Schedule en cron (ej: `0 9 * * 1` para los lunes a las 9 AM) o equivalente.
-- Política de retención del `log.txt` (rotación, archivado).
-
-Estos elementos NO están armados en esta versión — el script solo está preparado para ser invocado periódicamente sin efectos colaterales destructivos.
-
-## Setup
-
-Requiere Python 3.11+.
+Descarga del corpus (idempotente, subcomandos B1..B9):
 
 ```bash
-git clone https://github.com/AgustinaVidelaRivero/bcra-regulatory-kg.git
-cd bcra-regulatory-kg
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install -r requirements.txt
+python src/scraper/download_bcra.py B1
 ```
 
-## Mentores
+## Convenciones del repo
 
-- **Mentor:** Luciano del Corro (UdeSA)
-- **Co-mentor:** Juan Wisznia (UdeSA)
+- **Evidencia y auditoría:** toda corrida que sustenta una conclusión queda congelada
+  en el repo (trazas, crudos de API en caché SQLite, reportes); los documentos de
+  lectura citan rutas y números de parseo real, nunca estimaciones.
+- **Zonas congeladas:** los 5 `kg.json`, el harness/juez/loader de la Fase 2.3 y los
+  módulos sellados del instrumento no se editan (el detalle, en
+  `data/experiment/evaluacion/README.md`). Las varas se commitean ANTES de cada
+  corrida (sellado por inexistencia).
+- **Setup:** Python 3.11+, `python3 -m venv .venv && pip install -r requirements.txt`,
+  credenciales de API en `data/experiment/evaluacion/.env` (no versionado).
 
 ## Autora
 

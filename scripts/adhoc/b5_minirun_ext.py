@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 
 REPO = Path("/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg")
-sys.path.insert(0, str(REPO / "scripts"))
+sys.path.insert(0, str(REPO / "src" / "scraper"))
 import download_bcra as dm  # noqa: E402
 
 SAMPLE_N = 250

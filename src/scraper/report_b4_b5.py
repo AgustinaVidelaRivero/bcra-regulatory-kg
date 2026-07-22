@@ -2,7 +2,7 @@
 Genera reporte completo B.4 + B.5 desde manifiesto + log + descartados.
 
 Uso:
-    python scripts/report_b4_b5.py
+    python src/scraper/report_b4_b5.py
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data/raw"
 
 

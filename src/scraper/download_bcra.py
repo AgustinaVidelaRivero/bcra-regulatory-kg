@@ -4,20 +4,20 @@ Rivero, UdeSA.
 
 Modular. Cada paso del plan B.1..B.9 es un subcomando:
 
-    python scripts/download_bcra.py B1   # TOs actuales
-    python scripts/download_bcra.py B2   # marco legal
-    python scripts/download_bcra.py B3   # TOs históricos
-    python scripts/download_bcra.py B4   # Comunicaciones A
-    python scripts/download_bcra.py B5   # tachado/negrita
-    python scripts/download_bcra.py B6   # Comunicaciones B
-    python scripts/download_bcra.py B7   # Comunicaciones C
-    python scripts/download_bcra.py B8   # Comunicaciones P
-    python scripts/download_bcra.py B9   # complementarios
+    python src/scraper/download_bcra.py B1   # TOs actuales
+    python src/scraper/download_bcra.py B2   # marco legal
+    python src/scraper/download_bcra.py B3   # TOs históricos
+    python src/scraper/download_bcra.py B4   # Comunicaciones A
+    python src/scraper/download_bcra.py B5   # tachado/negrita
+    python src/scraper/download_bcra.py B6   # Comunicaciones B
+    python src/scraper/download_bcra.py B7   # Comunicaciones C
+    python src/scraper/download_bcra.py B8   # Comunicaciones P
+    python src/scraper/download_bcra.py B9   # complementarios
 
 Por defecto descarga la regulación BCRA completa (scope ampliado de la PPF).
 Para restringir B4/B6/B7/B8 a temática MULC (scope previo del proyecto):
 
-    python scripts/download_bcra.py B4 --mulc-only
+    python src/scraper/download_bcra.py B4 --mulc-only
 
 El flag activa el filtro KEYWORDS_MULC sobre las Comunicaciones A/B/C/P y el
 fallback de tachado/negrita (solo para A). No afecta a B1/B2/B3/B5/B9.
@@ -51,7 +51,7 @@ import requests
 from pypdf import PdfReader
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
 
 USER_AGENT = (
@@ -601,7 +601,7 @@ def step_B1(client: RateLimitedClient, ws: Workspace) -> dict:
     Idempotencia y re-ejecución periódica:
     - Si un PDF ya está en disco con el mismo path destino, `download_and_save`
       retorna `skip-existing` instantáneo (no toca red, no toca manifiesto).
-    - Re-correr `python scripts/download_bcra.py B1` baja solo los TOs nuevos
+    - Re-correr `python src/scraper/download_bcra.py B1` baja solo los TOs nuevos
       (los que el BCRA agregó al índice) o los que cambiaron de URL.
     - Para detectar TOs que CAMBIARON contenido (mismo path pero PDF actualizado):
       esto NO está cubierto por skip-existing. Para captura de cambios

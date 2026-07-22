@@ -97,7 +97,7 @@ de la capa (ii) cita aquí sus verbatims, expedientes y verificaciones determin�
   commiteado; las demás visualizaciones se regeneran (ver `docs/ARQUITECTURA.md`).
 - `data/raw/` — el corpus regulatorio BCRA descargado (PDFs/HTML gitignoreados por
   política; `manifiesto.csv`, checkpoint y logs sí versionados;
-  descargador: `scripts/download_bcra.py`).
+  descargador: `src/scraper/download_bcra.py`).
 - `data/experiment/evaluacion/cache/` — crudos completos de todas las llamadas a la API
   (SQLite, gitignoreados; el patrón de captura está en la skill `llm-capture`).
 - `docs/tesis/` — mis borradores de escritura de la tesis (fuera de version control por
