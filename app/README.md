@@ -1,19 +1,45 @@
-# App local de chat sobre los knowledge graphs
+# App de chat sobre los knowledge graphs
 
 ## Qué es
 
-Una aplicación web local para chatear con un agente RAG que responde
-preguntas sobre regulación del BCRA usando exclusivamente un knowledge
-graph (elegís cuál de los grafos del repo usar en cada conversación).
-Cada turno y cada feedback quedan registrados en disco, para evaluación
-humana posterior de las respuestas.
+Una app web para chatear con un agente RAG que responde preguntas sobre
+regulación del BCRA usando exclusivamente uno de los knowledge graphs del
+repo, con citas a la norma y un visor de las tools que ejecutó para
+responder. Cada turno y cada feedback quedan registrados para evaluación
+humana posterior. Hay una instancia hosteada y también puede correrse
+localmente.
 
-## Requisitos
+## Usar la app (instancia hosteada)
+
+Entrá a <https://graph-tag-eval.finreggraph.com.ar/>.
+
+Elegí tu nombre de usuario y una contraseña; la primera vez te va a pedir
+además el código de invitación (provisto por la autora). Desde cualquier
+otro dispositivo volvés a entrar con nombre + contraseña — nunca ves ni
+administrás tokens.
+
+Elegí el grafo (recomendado: `run_3_ppf_core`, el grafo del experimento)
+y preguntá. Qué vas a ver: cada respuesta trae el texto del agente, sus
+citas (documento y ubicación en la norma) en una lista plegable, y un
+visor plegable con las tools ejecutadas (nombre, argumentos y un resumen
+del resultado). Debajo de cada respuesta hay botones 👍/👎 con comentario
+opcional para dejar feedback. El identificador de la sesión aparece en
+chico bajo el encabezado; "Nueva sesión" empieza un hilo nuevo, igual que
+cambiar de grafo.
+
+**Nota de transparencia:** las sesiones quedan registradas en el servidor
+(pregunta, respuesta, tools, feedback, usuario y horario) para el
+análisis de la investigación.
+
+## Correr la app localmente
+
+### Requisitos
 
 - Python 3.10 o superior.
-- Una API key de Anthropic.
+- Una API key de Anthropic — SOLO si usás el backend `anthropic`; el
+  modo Bedrock no la usa.
 
-## Instalación
+### Instalación
 
 Desde la raíz del repo:
 
@@ -23,15 +49,17 @@ source .venv-app/bin/activate
 pip install -r app/requirements.txt
 ```
 
-## Configuración
+### Modo anthropic (default)
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
+uvicorn app.main:app --port 8000
 ```
 
-La app solo lee esa variable de entorno; no usa ningún archivo `.env`.
+y abrir <http://localhost:8000/>. La app solo lee la variable de entorno;
+no usa ningún archivo `.env`.
 
-## Modo Bedrock
+### Modo Bedrock
 
 Para servir la inferencia vía Amazon Bedrock, sin ninguna API key de
 Anthropic en el entorno:
@@ -50,60 +78,43 @@ Anthropic. `APP_BEDROCK_MODEL_ID` es el model ID que Bedrock espere (por
 ejemplo un perfil de inferencia de Claude Haiku, el modelo por defecto del
 proyecto). Si falta alguna de las dos variables, la app falla al arranque
 con un mensaje claro. Con `APP_LLM_BACKEND` sin setear (o `anthropic`), la
-app funciona como siempre contra la API de Anthropic.
+app funciona contra la API de Anthropic.
 
-## Autenticación: registro por código de invitación
+### Autenticación: registro con contraseña + código de invitación
 
 Con la autenticación activa, cada persona se registra sola desde la
-página: entra, elige un nombre e ingresa el código de invitación
-(provisto por la autora). Queda identificada y puede chatear — nunca ve
-ni administra tokens: el navegador guarda el suyo (localStorage) y el
-link "salir" lo borra. Por debajo, `/chat` y `/feedback` siguen exigiendo
-`Authorization: Bearer <token>`, así que un cliente por curl puede usar
-un token del archivo directamente. La página y `GET /runs` son públicos.
+página: elige nombre de usuario y contraseña, e ingresa el código de
+invitación solo la primera vez (`POST /register`). Para volver a entrar
+— desde el mismo dispositivo u otro — alcanza con nombre + contraseña
+(`POST /login`), que devuelve el mismo token de siempre. Los tokens
+Bearer siguen existiendo por debajo (`/chat` y `/feedback` exigen
+`Authorization: Bearer <token>`) pero el usuario nunca los ve: el
+navegador guarda el suyo (localStorage) y "salir" lo borra. La página y
+`GET /runs` son públicos.
 
 Config del server:
 
 ```bash
-# Archivo de tokens (fuera de git, permisos 600): una línea token:usuario.
-# Crece solo (append) con cada registro.
+# Archivo de tokens (fuera de git, 600): una línea token:usuario.
+# Crece solo (append) con cada registro; puede arrancar vacío.
 export APP_TOKENS_FILE=/ruta/a/tokens.txt
-# Obligatorio si hay APP_TOKENS_FILE: el código que habilita registrarse.
+# Obligatorio si hay APP_TOKENS_FILE: habilita el registro.
 export APP_INVITE_CODE=<código>
 ```
 
-`APP_TOKENS` (inline, separado por comas) sigue existiendo para pruebas,
-pero sin archivo el registro autoservicio queda deshabilitado (503).
-`POST /register` responde: código incorrecto → 403; nombre en uso → 409;
-más de 10 registros en una hora (total, anti-abuso) → 429. El usuario
-admite letras, dígitos, `.`, `_` y `-` (máx. 32). Formato inválido en el
-archivo o token duplicado impiden el arranque con mensaje claro. Los
-tokens y el código viajan en claro mientras el server hable HTTP plano
-(limitación ya documentada): usar detrás de TLS o en red confiable.
+Las contraseñas nunca se almacenan en claro: van a un archivo hermano
+`<APP_TOKENS_FILE>.claves` (creado por la app, 600) como
+`usuario:salt:hash`, con pbkdf2-HMAC-SHA256 de 200.000 iteraciones.
+`APP_TOKENS` (inline, separado por comas) existe solo para pruebas y no
+habilita registro ni login (503).
 
-## Arranque
+Códigos de error: registro — código incorrecto 403, nombre en uso 409,
+usuario o contraseña inválidos 422 (usuario: letras, dígitos, `.`, `_`,
+`-`, máx. 32; contraseña: mín. 8); login — usuario no registrado 404,
+contraseña incorrecta 401. Anti-abuso: registros exitosos y fallos de
+login comparten un cupo de 10 eventos por hora en total → 429.
 
-Desde la raíz del repo, con el venv activado:
-
-```bash
-uvicorn app.main:app --port 8000
-```
-
-y abrir <http://localhost:8000/> en el navegador.
-
-## Qué vas a ver
-
-Arriba, un selector de grafo poblado con los grafos descubiertos en el
-repo, cada uno con su cantidad de nodos y aristas. En el centro, el chat:
-escribís una pregunta, el agente explora el grafo y responde. Cada
-respuesta trae sus citas (documento y ubicación en la norma) y un visor
-plegable con las tools que el agente ejecutó (nombre, argumentos y un
-resumen del resultado). Debajo de cada respuesta hay botones 👍/👎 con
-comentario opcional para dejar feedback. El identificador de la sesión
-está visible en chico bajo el encabezado; el botón "Nueva sesión" empieza
-una sesión nueva, igual que cambiar de grafo o recargar la página.
-
-## Cómo agregar un grafo
+### Cómo agregar un grafo
 
 Dejá un `kg.json` en `data/experiment/<nombre>/` y reiniciá la app: el
 descubrimiento de grafos ocurre al arranque. Si el grafo nuevo trae
@@ -111,24 +122,37 @@ provenance múltiple (varias ubicaciones por nodo o arista), registrá su
 `adapter_key` en el dict `ADAPTER_KEYS` de `app/main.py`; si no, se carga
 con el adaptador nulo.
 
-## Dónde quedan las sesiones
+### Dónde quedan las sesiones
 
 En `app/sessions/<usuario>/<session_id>.jsonl` (un archivo por sesión,
 agrupado por usuario, ignorado por git). Con autenticación activa, el
-usuario es el que corresponde al token; sin autenticación, es `local`. El registro es append-only: una
-línea JSON por turno y una por feedback, nunca se edita una línea ya
-escrita. Las líneas de turno guardan los resultados completos de las tools
-(sin truncar) más el backend e ID de modelo usados, así que sirven como
-traza íntegra de cada respuesta. Si el server se reinicia, la numeración
-de turnos de una sesión continúa desde el archivo existente.
+usuario es el que corresponde al token; sin autenticación, es `local`.
+El registro es append-only: una línea JSON por turno y una por feedback,
+nunca se edita una línea ya escrita. Las líneas de turno guardan los
+resultados completos de las tools (sin truncar) más el backend e ID de
+modelo usados, así que sirven como traza íntegra de cada respuesta. Si el
+server se reinicia, la numeración de turnos de una sesión continúa desde
+el archivo existente. En el deploy hosteado, las sesiones se bajan a la
+máquina local por rsync (comando exacto en el runbook de
+`app/deploy/reporte_frente_hosting.md`).
+
+## Operación del deploy
+
+El deploy hosteado se opera desde `app/deploy/`: `sync.sh <IP>` sube al
+server exactamente lo que la app necesita (código + grafos, preservando
+rutas relativas), y `reporte_frente_hosting.md` contiene el inventario de
+infraestructura y el runbook completo (deploy, logs, rotación del código,
+revocación de usuarios, descarga de sesiones, teardown).
 
 ## Limitaciones conocidas
 
+- Recargar la página conserva tu identidad pero inicia un hilo de chat
+  nuevo.
 - Un chat a la vez: el server serializa las preguntas.
 - Cada turno es independiente: el agente no ve la historia de la
   conversación, solo la pregunta actual.
-- Recargar la página crea una sesión nueva.
-- El server habla HTTP plano (sin TLS); al hostearlo, el TLS se agrega
-  por delante (p. ej. Cloudflare).
+- Transporte: la instancia hosteada va por HTTPS (proxy delante); el
+  server de origen habla HTTP — para despliegues propios, poner TLS
+  adelante.
 - El costo por turno registrado en las trazas usa precios de la API de
   Anthropic; bajo Bedrock es solo nominal.

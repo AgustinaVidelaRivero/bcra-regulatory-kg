@@ -13,6 +13,8 @@ el entorno para /chat; la app no lee ningún .env. Modo Bedrock: ver README):
     uvicorn app.main:app --port 8000
 """
 
+import hashlib
+import hmac
 import json
 import os
 import re
@@ -91,22 +93,64 @@ def _parse_tokens() -> dict:
                 f"y a {usuario!r})."
             )
         tokens[token] = usuario
-    if not tokens:
+    if not tokens and origen == "APP_TOKENS":
         raise RuntimeError(f"{origen}: no contiene ningún token válido.")
+    # Un ARCHIVO vacío es válido (H8): auth activa sin usuarios todavía —
+    # el registro autoservicio lo va poblando (p. ej. tras una migración).
     return tokens
 
 
 TOKENS = _parse_tokens()
-AUTH_ACTIVA = bool(TOKENS)
 
-# --- Registro autoservicio por código de invitación (H6) ---------------------
+# --- Registro autoservicio (H6) + login con contraseña (H8) ------------------
 TOKENS_FILE = (os.environ.get("APP_TOKENS_FILE") or "").strip()
 INVITE_CODE = (os.environ.get("APP_INVITE_CODE") or "").strip()
-if AUTH_ACTIVA and TOKENS_FILE and not INVITE_CODE:
+# Auth activa si hay tokens cargados O un archivo configurado (aunque esté
+# vacío: el registro autoservicio lo puebla).
+AUTH_ACTIVA = bool(TOKENS) or bool(TOKENS_FILE)
+if TOKENS_FILE and not INVITE_CODE:
     raise RuntimeError(
         "APP_INVITE_CODE es obligatoria cuando la auth usa APP_TOKENS_FILE "
         "(el registro autoservicio necesita el código de invitación)."
     )
+
+# Claves de usuario (H8): archivo hermano de tokens.txt, "usuario:salt:hash",
+# hash pbkdf2_hmac-sha256 con 200k iteraciones. El formato de tokens.txt no
+# cambia; este archivo lo crea la app con permisos 600.
+CLAVES_FILE = (TOKENS_FILE + ".claves") if TOKENS_FILE else ""
+_PBKDF2_ITER = 200_000
+
+
+def _hash_clave(clave: str, salt: bytes) -> str:
+    return hashlib.pbkdf2_hmac("sha256", clave.encode("utf-8"), salt,
+                               _PBKDF2_ITER).hex()
+
+
+def _parse_claves() -> dict:
+    """usuario -> (salt_hex, hash_hex). Archivo ausente = sin claves aún."""
+    claves = {}
+    if not CLAVES_FILE or not Path(CLAVES_FILE).exists():
+        return claves
+    for cruda in Path(CLAVES_FILE).read_text(encoding="utf-8").splitlines():
+        entrada = cruda.strip()
+        if not entrada or entrada.startswith("#"):
+            continue
+        usuario, _, resto = entrada.partition(":")
+        salt_hex, _, hash_hex = resto.partition(":")
+        if usuario and salt_hex and hash_hex:
+            claves[usuario] = (salt_hex, hash_hex)
+    return claves
+
+
+CLAVES = _parse_claves()
+
+
+def _append_clave(usuario: str, salt_hex: str, hash_hex: str) -> None:
+    """Apenda la clave al archivo, creándolo con permisos 600 si no existe."""
+    fd = os.open(CLAVES_FILE, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o600)
+    with os.fdopen(fd, "a", encoding="utf-8") as f:
+        f.write(f"{usuario}:{salt_hex}:{hash_hex}\n")
+        f.flush()
 
 
 def _usuario_de(authorization: Optional[str]) -> str:
@@ -363,17 +407,31 @@ def post_chat(req: ChatRequest,
 class RegisterRequest(BaseModel):
     usuario: str
     codigo: str
+    clave: str
 
 
-_REGISTROS = []  # time.time() de cada registro exitoso (rate limit global)
-_MAX_REGISTROS_HORA = 10
+class LoginRequest(BaseModel):
+    usuario: str
+    clave: str
+
+
+# Anti-abuso compartido: registros exitosos + fallos de login (10/hora total).
+_ANTIABUSO = []
+_MAX_EVENTOS_HORA = 10
+
+
+def _antiabuso_lleno() -> bool:
+    """Poda la ventana de 1 h y dice si el cupo está agotado. Llamar con lock."""
+    ahora = time.time()
+    _ANTIABUSO[:] = [t for t in _ANTIABUSO if ahora - t < 3600]
+    return len(_ANTIABUSO) >= _MAX_EVENTOS_HORA
 
 
 @app.post("/register")
 def post_register(req: RegisterRequest) -> dict:
     """Registro autoservicio: valida el código de invitación, genera un token
-    y lo apenda al archivo de tokens. El usuario nunca elige ni ve tokens
-    ajenos; el suyo se devuelve una única vez."""
+    y guarda la clave elegida (pbkdf2). El usuario nunca elige ni ve tokens
+    ajenos; el suyo se devuelve una única vez (y en cada login exitoso)."""
     if not (AUTH_ACTIVA and TOKENS_FILE):
         raise HTTPException(
             status_code=503,
@@ -388,23 +446,65 @@ def post_register(req: RegisterRequest) -> dict:
             status_code=422,
             detail="usuario inválido: letras, dígitos, '.', '_' y '-' (máx. 32).",
         )
+    if len(req.clave) < 8:
+        raise HTTPException(
+            status_code=422,
+            detail="la contraseña debe tener al menos 8 caracteres",
+        )
     with _LOG_LOCK:
         if usuario in TOKENS.values():
             raise HTTPException(status_code=409, detail="nombre en uso, elegí otro")
-        ahora = time.time()
-        _REGISTROS[:] = [t for t in _REGISTROS if ahora - t < 3600]
-        if len(_REGISTROS) >= _MAX_REGISTROS_HORA:
+        if _antiabuso_lleno():
             raise HTTPException(
                 status_code=429,
                 detail="límite de registros por hora alcanzado; probá más tarde",
             )
         token = secrets.token_hex(16)
-        # append-only al archivo de tokens, una línea completa con flush
+        salt = secrets.token_bytes(16)
+        # append-only a ambos archivos, una línea completa con flush
         with open(TOKENS_FILE, "a", encoding="utf-8") as f:
             f.write(f"{token}:{usuario}\n")
             f.flush()
+        _append_clave(usuario, salt.hex(), _hash_clave(req.clave, salt))
         TOKENS[token] = usuario
-        _REGISTROS.append(ahora)
+        CLAVES[usuario] = (salt.hex(), _hash_clave(req.clave, salt))
+        _ANTIABUSO.append(time.time())
+    return {"token": token, "usuario": usuario}
+
+
+@app.post("/login")
+def post_login(req: LoginRequest) -> dict:
+    """Login con nombre + contraseña: devuelve el token existente del usuario.
+    Los fallos consumen el mismo cupo anti-abuso que los registros."""
+    if not (AUTH_ACTIVA and TOKENS_FILE):
+        raise HTTPException(
+            status_code=503,
+            detail="El login está deshabilitado: el server no usa archivo "
+                   "de tokens (APP_TOKENS_FILE).",
+        )
+    usuario = req.usuario.strip()
+    with _LOG_LOCK:
+        if _antiabuso_lleno():
+            raise HTTPException(
+                status_code=429,
+                detail="límite de intentos por hora alcanzado; probá más tarde",
+            )
+        entrada = CLAVES.get(usuario)
+        if entrada is None:
+            _ANTIABUSO.append(time.time())
+            raise HTTPException(status_code=404, detail="usuario no registrado")
+        salt_hex, hash_hex = entrada
+        calculado = _hash_clave(req.clave, bytes.fromhex(salt_hex))
+        if not hmac.compare_digest(calculado, hash_hex):
+            _ANTIABUSO.append(time.time())
+            raise HTTPException(status_code=401, detail="contraseña incorrecta")
+        token = next((t for t, u in TOKENS.items() if u == usuario), None)
+        if token is None:
+            raise HTTPException(
+                status_code=500,
+                detail="inconsistencia: el usuario tiene clave pero no token; "
+                       "avisale a la autora.",
+            )
     return {"token": token, "usuario": usuario}
 
 

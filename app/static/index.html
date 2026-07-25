@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BCRA KG — chat local</title>
+<title>FinRegGraph — chat sobre regulación BCRA</title>
 <style>
   :root {
     --borde: #d8d8d8;
@@ -87,7 +87,7 @@
 </head>
 <body>
 <header>
-  <h1>BCRA KG — chat local</h1>
+  <h1>FinRegGraph — chat sobre regulación BCRA</h1>
   <div class="controles">
     <label for="run-select">Grafo:</label>
     <select id="run-select"></select>
@@ -100,14 +100,15 @@
 <main id="chat"></main>
 
 <form id="entrada">
-  <input id="pregunta" type="text" placeholder="Escribí tu pregunta sobre el grafo…" autocomplete="off">
+  <input id="pregunta" type="text" placeholder="Escribí tu pregunta sobre la regulación…" autocomplete="off">
   <button id="btn-enviar" type="submit">Enviar</button>
 </form>
 
 <script>
 "use strict";
-// Estado en memoria JS únicamente (sin localStorage ni cookies):
-// recargar la página = sesión nueva.
+// Estado del CHAT en memoria JS (recargar la página = sesión de chat nueva).
+// La identidad del registro sí persiste en localStorage — ver la nota de la
+// zona de identidad más abajo.
 let sessionId = null;
 let enviando = false;
 
@@ -179,11 +180,14 @@ async function cargarRuns() {
         o.disabled = true;
         o.textContent = r.id + " — error: " + r.error;
       } else {
-        o.textContent = r.id + " — " + r.nodos + " nodos / " + r.aristas + " aristas";
+        o.textContent = r.id + " — " + r.nodos + " nodos / " + r.aristas + " aristas"
+                      + (r.id === "run_3_ppf_core" ? " (recomendado)" : "");
       }
       sel.appendChild(o);
     }
-    const primera = Array.from(sel.options).find(o => !o.disabled);
+    const opciones = Array.from(sel.options);
+    const recomendada = opciones.find(o => o.value === "run_3_ppf_core" && !o.disabled);
+    const primera = recomendada || opciones.find(o => !o.disabled);
     if (primera) sel.value = primera.value;
   } catch (e) {
     addError("No se pudo cargar la lista de grafos: " + e.message);
@@ -284,7 +288,7 @@ function controlesFeedback(sid, turno) {
       const d = await resp.json();
       if (!resp.ok) {
         if (resp.status === 401) {
-          addError("Autenticación rechazada al enviar feedback — revisá el token: " + detailATexto(d));
+          addError("Tu identificación expiró o fue revocada: tocá 'salir' y volvé a registrarte.");
         } else {
           addError("Feedback rechazado: " + detailATexto(d));
         }
@@ -328,7 +332,7 @@ form.addEventListener("submit", async (ev) => {
     pensando.remove();
     if (!resp.ok) {
       if (resp.status === 401) {
-        addError("Autenticación rechazada — revisá el token del campo de arriba: " + detailATexto(data));
+        addError("Tu identificación expiró o fue revocada: tocá 'salir' y volvé a registrarte.");
       } else {
         addError(detailATexto(data));
       }
@@ -367,39 +371,67 @@ function renderAuth() {
   const nombre = document.createElement("input");
   nombre.placeholder = "tu nombre";
   nombre.autocomplete = "off";
+  const clave = document.createElement("input");
+  clave.type = "password";
+  clave.placeholder = "contraseña";
   const codigo = document.createElement("input");
   codigo.type = "password";
-  codigo.placeholder = "código de invitación";
+  codigo.placeholder = "código de invitación (solo la primera vez)";
   const entrar = el("button", null, "Entrar");
   entrar.type = "button";
   const err = el("span", "auth-error", "");
+
+  function guardar(d) {
+    localStorage.setItem("fg_token", d.token);
+    localStorage.setItem("fg_usuario", d.usuario);
+    authToken = d.token;
+    authUsuario = d.usuario;
+    renderAuth();
+  }
+
   entrar.addEventListener("click", async () => {
     err.textContent = "";
     entrar.disabled = true;
     try {
-      const resp = await fetch("/register", {
+      // Primero login; si el usuario no existe y hay código, registro.
+      let resp = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuario: nombre.value.trim(), codigo: codigo.value }),
+        body: JSON.stringify({ usuario: nombre.value.trim(), clave: clave.value }),
       });
-      const d = await resp.json();
-      if (!resp.ok) { err.textContent = detailATexto(d); return; }
-      localStorage.setItem("fg_token", d.token);
-      localStorage.setItem("fg_usuario", d.usuario);
-      authToken = d.token;
-      authUsuario = d.usuario;
-      renderAuth();
+      let d = await resp.json();
+      if (resp.ok) { guardar(d); return; }
+      if (resp.status === 404) {
+        if (!codigo.value.trim()) {
+          err.textContent = "primera vez: ingresá el código de invitación";
+          return;
+        }
+        resp = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario: nombre.value.trim(),
+                                 clave: clave.value,
+                                 codigo: codigo.value.trim() }),
+        });
+        d = await resp.json();
+        if (resp.ok) { guardar(d); return; }
+      }
+      err.textContent = detailATexto(d);
     } catch (e) {
       err.textContent = "Error de red: " + e.message;
     } finally {
       entrar.disabled = false;
     }
   });
-  authZona.append(nombre, codigo, entrar, err);
+  authZona.append(nombre, clave, codigo, entrar, err);
 }
 
 renderAuth();
 cargarRuns();
+// Bienvenida: solo al cargar la página (no se re-agrega al cambiar de sesión).
+addNota("Preguntale al agente sobre regulación del BCRA — responde usando solo "
+        + "el knowledge graph seleccionado y cita la norma. Por ejemplo: "
+        + "¿con cuántos días de atraso un deudor pasa a situación 2?");
 inputPregunta.focus();
 </script>
 </body>
