@@ -52,6 +52,31 @@ proyecto). Si falta alguna de las dos variables, la app falla al arranque
 con un mensaje claro. Con `APP_LLM_BACKEND` sin setear (o `anthropic`), la
 app funciona como siempre contra la API de Anthropic.
 
+## Autenticación por token
+
+Opcional. Si se configuran tokens, `/chat` y `/feedback` exigen el header
+`Authorization: Bearer <token>` (la página y `GET /runs` siguen públicos, y
+la UI tiene un campo para pegar el token). Sin tokens configurados, la app
+queda en el modo local sin autenticación (usuario `local`).
+
+Dos formas de configurar, con precedencia del archivo sobre la variable:
+
+```bash
+# Recomendado en el server: archivo fuera de git, una línea por usuario,
+# formato token:usuario (líneas con '#' se ignoran).
+export APP_TOKENS_FILE=/ruta/a/tokens.txt
+
+# Para pruebas: inline, separado por comas.
+export APP_TOKENS="tok_abc:usuaria1,tok_def:revisor1"
+```
+
+Un token razonable se genera con `openssl rand -hex 16`. El usuario admite
+solo letras, dígitos, `.`, `_` y `-`. Cualquier formato inválido (entrada
+sin usuario, usuario con otros caracteres, token duplicado) impide el
+arranque del server con un mensaje claro. Los tokens viajan en claro
+mientras el server hable HTTP plano (limitación ya documentada): usarlos
+solo detrás de TLS o en una red confiable.
+
 ## Arranque
 
 Desde la raíz del repo, con el venv activado:
@@ -85,8 +110,8 @@ con el adaptador nulo.
 ## Dónde quedan las sesiones
 
 En `app/sessions/<usuario>/<session_id>.jsonl` (un archivo por sesión,
-agrupado por usuario, ignorado por git). Sin autenticación —el modo local
-actual— el usuario es siempre `local`. El registro es append-only: una
+agrupado por usuario, ignorado por git). Con autenticación activa, el
+usuario es el que corresponde al token; sin autenticación, es `local`. El registro es append-only: una
 línea JSON por turno y una por feedback, nunca se edita una línea ya
 escrita. Las líneas de turno guardan los resultados completos de las tools
 (sin truncar) más el backend e ID de modelo usados, así que sirven como

@@ -34,6 +34,7 @@
   header h1 { margin: 0 0 0.5rem; font-size: 1.05rem; font-weight: 600; }
   .controles { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
   .controles select { max-width: 26rem; padding: 0.25rem; }
+  .controles input#token { padding: 0.3rem; border: 1px solid var(--borde); border-radius: 5px; font-size: 0.8rem; width: 15rem; }
   .sesion { margin-top: 0.35rem; font-size: 0.72rem; color: var(--tinta-suave); font-family: ui-monospace, Menlo, monospace; }
   main {
     flex: 1;
@@ -87,6 +88,8 @@
   <div class="controles">
     <label for="run-select">Grafo:</label>
     <select id="run-select"></select>
+    <input id="token" type="password" placeholder="token (si el server lo exige)"
+           autocomplete="off">
     <button id="btn-nueva-sesion" type="button">Nueva sesión</button>
   </div>
   <div class="sesion" id="sesion-info">sesión: — (se crea con el primer mensaje)</div>
@@ -112,6 +115,16 @@ const sesionInfo = document.getElementById("sesion-info");
 const form = document.getElementById("entrada");
 const inputPregunta = document.getElementById("pregunta");
 const btnEnviar = document.getElementById("btn-enviar");
+const inputToken = document.getElementById("token");
+
+// Headers de las llamadas con auth: el token vive SOLO en este input (memoria
+// del DOM, sin localStorage); si está vacío no se manda el header.
+function headersAuth() {
+  const h = { "Content-Type": "application/json" };
+  const t = inputToken.value.trim();
+  if (t) h["Authorization"] = "Bearer " + t;
+  return h;
+}
 
 function setSession(id) {
   sessionId = id;
@@ -254,7 +267,7 @@ function controlesFeedback(sid, turno) {
     try {
       const resp = await fetch("/feedback", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: headersAuth(),
         body: JSON.stringify({
           session_id: sid,
           turno: turno,
@@ -264,7 +277,11 @@ function controlesFeedback(sid, turno) {
       });
       const d = await resp.json();
       if (!resp.ok) {
-        addError("Feedback rechazado: " + detailATexto(d));
+        if (resp.status === 401) {
+          addError("Autenticación rechazada al enviar feedback — revisá el token: " + detailATexto(d));
+        } else {
+          addError("Feedback rechazado: " + detailATexto(d));
+        }
         enviar.disabled = false;
         return;
       }
@@ -298,13 +315,17 @@ form.addEventListener("submit", async (ev) => {
     if (sessionId) body.session_id = sessionId;
     const resp = await fetch("/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: headersAuth(),
       body: JSON.stringify(body),
     });
     const data = await resp.json();
     pensando.remove();
     if (!resp.ok) {
-      addError(detailATexto(data));
+      if (resp.status === 401) {
+        addError("Autenticación rechazada — revisá el token del campo de arriba: " + detailATexto(data));
+      } else {
+        addError(detailATexto(data));
+      }
       return;
     }
     setSession(data.session_id);

@@ -23,7 +23,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Literal, Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -42,6 +42,78 @@ from app.llm_backend import backend_name, build_client, effective_model_id  # no
 BACKEND = backend_name()
 LLM_CLIENT = build_client()
 MODEL_EFECTIVO = effective_model_id()
+
+# --- Auth por token (H3): mapa token -> usuario, validado al arranque --------
+_USUARIO_RE = re.compile(r"^[A-Za-z0-9._-]+$")
+
+
+def _parse_tokens() -> dict:
+    """Mapa token -> usuario. Fuentes (precedencia: archivo > env):
+    APP_TOKENS_FILE (una línea 'token:usuario' por usuario; '#' comenta) o
+    APP_TOKENS ('token:usuario' separado por comas). Sin ninguna de las dos,
+    devuelve {} = modo local sin auth. Formato inválido impide el arranque."""
+    src_file = (os.environ.get("APP_TOKENS_FILE") or "").strip()
+    src_env = (os.environ.get("APP_TOKENS") or "").strip()
+    if src_file:
+        origen = f"APP_TOKENS_FILE ({src_file})"
+        try:
+            entradas = Path(src_file).read_text(encoding="utf-8").splitlines()
+        except OSError as e:
+            raise RuntimeError(f"{origen}: no se pudo leer: {e}")
+    elif src_env:
+        origen = "APP_TOKENS"
+        entradas = src_env.split(",")
+    else:
+        return {}
+
+    tokens = {}
+    for cruda in entradas:
+        entrada = cruda.strip()
+        if not entrada or entrada.startswith("#"):
+            continue
+        token, sep, usuario = entrada.partition(":")
+        token, usuario = token.strip(), usuario.strip()
+        if not sep or not token or not usuario:
+            raise RuntimeError(
+                f"{origen}: entrada inválida {entrada!r} "
+                "(formato esperado 'token:usuario')."
+            )
+        if not _USUARIO_RE.fullmatch(usuario):
+            raise RuntimeError(
+                f"{origen}: usuario inválido {usuario!r} "
+                "(permitidos: letras, dígitos, '.', '_', '-')."
+            )
+        if token in tokens:
+            raise RuntimeError(
+                f"{origen}: token duplicado (asignado a {tokens[token]!r} "
+                f"y a {usuario!r})."
+            )
+        tokens[token] = usuario
+    if not tokens:
+        raise RuntimeError(f"{origen}: no contiene ningún token válido.")
+    return tokens
+
+
+TOKENS = _parse_tokens()
+AUTH_ACTIVA = bool(TOKENS)
+
+
+def _usuario_de(authorization: Optional[str]) -> str:
+    """Resuelve el usuario del request. Sin auth configurada: 'local'."""
+    if not AUTH_ACTIVA:
+        return "local"
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Falta el header 'Authorization: Bearer <token>'.",
+        )
+    usuario = TOKENS.get(authorization[len("Bearer "):].strip())
+    if usuario is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Token inválido: revisá el token configurado para tu usuario.",
+        )
+    return usuario
 
 # Al agregar un grafo nuevo con provenance múltiple, registrar acá su adapter_key.
 ADAPTER_KEYS = {
@@ -113,11 +185,10 @@ AGENTS = {}  # run_id -> _ChatAgent, creado perezosamente en el primer /chat
 # tool_log es estado compartido por agente: serializamos /chat para no mezclarlo.
 _CHAT_LOCK = threading.Lock()
 
-# --- Registro de sesiones (U3 + H2): jsonl append-only estricto, un archivo ---
-# --- por sesión en app/sessions/<usuario>/<session_id>.jsonl ----------------
+# --- Registro de sesiones (U3 + H2 + H3): jsonl append-only estricto, un -----
+# --- archivo por sesión en app/sessions/<usuario>/<session_id>.jsonl ---------
+# El usuario sale del token (auth activa) o es "local" (modo sin auth).
 SESSIONS_DIR = Path(__file__).resolve().parent / "sessions"
-# Sin auth (modo local) todas las sesiones se registran bajo este usuario.
-USUARIO = "local"
 _TURNOS = {}  # (usuario, session_id) -> último turno emitido (1-based)
 # Serializa contador de turnos + append al jsonl (una línea por write, con flush).
 _LOG_LOCK = threading.Lock()
@@ -194,7 +265,9 @@ def get_runs() -> list:
 
 
 @app.post("/chat")
-def post_chat(req: ChatRequest) -> dict:
+def post_chat(req: ChatRequest,
+              authorization: Optional[str] = Header(default=None)) -> dict:
+    usuario = _usuario_de(authorization)
     info = RUNS_BY_ID.get(req.run_id)
     if info is None:
         raise HTTPException(
@@ -232,7 +305,7 @@ def post_chat(req: ChatRequest) -> dict:
 
     if tr.error:
         raise HTTPException(status_code=502,
-                            detail=f"Error de la API de Anthropic: {tr.error}")
+                            detail=f"Error del backend LLM ({BACKEND}): {tr.error}")
 
     if tr.parse_ok:
         respuesta = tr.final_json
@@ -240,18 +313,18 @@ def post_chat(req: ChatRequest) -> dict:
         respuesta = {"respuesta_cruda": tr.final_raw, "parse_error": tr.parse_error}
 
     with _LOG_LOCK:
-        clave = (USUARIO, session_id)
+        clave = (usuario, session_id)
         if clave not in _TURNOS:
             # Reanudación: el contador arranca del último turno ya persistido.
-            _TURNOS[clave] = _ultimo_turno(_session_path(USUARIO, session_id))
+            _TURNOS[clave] = _ultimo_turno(_session_path(usuario, session_id))
         _TURNOS[clave] += 1
         turno = _TURNOS[clave]
-        _append_line(USUARIO, session_id, {
+        _append_line(usuario, session_id, {
             "tipo": "turno",
             "ts": _now_iso(),
             "session_id": session_id,
             "turno": turno,
-            "usuario": USUARIO,
+            "usuario": usuario,
             "run_id": req.run_id,
             "backend": BACKEND,
             "modelo": MODEL_EFECTIVO,
@@ -284,15 +357,17 @@ class FeedbackRequest(BaseModel):
 
 
 @app.post("/feedback")
-def post_feedback(req: FeedbackRequest) -> dict:
+def post_feedback(req: FeedbackRequest,
+                  authorization: Optional[str] = Header(default=None)) -> dict:
+    usuario = _usuario_de(authorization)
     session_id = _validar_session_id(req.session_id)
     with _LOG_LOCK:
-        path = _append_line(USUARIO, session_id, {
+        path = _append_line(usuario, session_id, {
             "tipo": "feedback",
             "ts": _now_iso(),
             "session_id": session_id,
             "turno": req.turno,
-            "usuario": USUARIO,
+            "usuario": usuario,
             "voto": req.voto,
             "comentario": req.comentario,
         })
