@@ -1,18 +1,21 @@
-"""main.py — App local mínima sobre los grafos del repo (U1 + U2).
+"""main.py — App local mínima sobre los grafos del repo (U1-U5 + H2).
 
 U1: descubrimiento de grafos al iniciar (glob de data/experiment/*/kg.json)
 y endpoint GET /runs. U2: POST /chat envolviendo al GraphAgent del harness.
-U3: registro append-only de turnos y feedback en app/sessions/<fecha>.jsonl
-(POST /feedback). Toda carga de grafos pasa por load_graph_from_path() del
+U3: registro append-only de turnos y feedback (POST /feedback). H2: backend
+de inferencia configurable (API Anthropic o Bedrock, ver llm_backend.py) y
+registro por app/sessions/<usuario>/<session_id>.jsonl con turno derivado
+del archivo. Toda carga de grafos pasa por load_graph_from_path() del
 loader de la Fase 2.3; acá no se parsea ningún kg.json a mano.
 
-Arranque, desde la raíz del repo (requiere ANTHROPIC_API_KEY en el entorno
-para /chat; la app no lee ningún .env):
+Arranque, desde la raíz del repo (modo local: requiere ANTHROPIC_API_KEY en
+el entorno para /chat; la app no lee ningún .env. Modo Bedrock: ver README):
     uvicorn app.main:app --port 8000
 """
 
 import json
 import os
+import re
 import sys
 import threading
 import uuid
@@ -32,6 +35,13 @@ EVALUACION_DIR = EXPERIMENT_DIR / "evaluacion"
 sys.path.insert(0, str(EVALUACION_DIR))
 from loader import load_graph_from_path  # noqa: E402
 from harness import GraphAgent  # noqa: E402
+
+from app.llm_backend import backend_name, build_client, effective_model_id  # noqa: E402
+
+# Config del backend, resuelta UNA vez al arranque (falla acá si está incompleta).
+BACKEND = backend_name()
+LLM_CLIENT = build_client()
+MODEL_EFECTIVO = effective_model_id()
 
 # Al agregar un grafo nuevo con provenance múltiple, registrar acá su adapter_key.
 ADAPTER_KEYS = {
@@ -103,11 +113,28 @@ AGENTS = {}  # run_id -> _ChatAgent, creado perezosamente en el primer /chat
 # tool_log es estado compartido por agente: serializamos /chat para no mezclarlo.
 _CHAT_LOCK = threading.Lock()
 
-# --- Registro de sesiones (U3): jsonl append-only estricto en app/sessions/ ---
+# --- Registro de sesiones (U3 + H2): jsonl append-only estricto, un archivo ---
+# --- por sesión en app/sessions/<usuario>/<session_id>.jsonl ----------------
 SESSIONS_DIR = Path(__file__).resolve().parent / "sessions"
-_TURNOS = {}  # session_id -> último turno emitido (1-based), contado en memoria
+# Sin auth (modo local) todas las sesiones se registran bajo este usuario.
+USUARIO = "local"
+_TURNOS = {}  # (usuario, session_id) -> último turno emitido (1-based)
 # Serializa contador de turnos + append al jsonl (una línea por write, con flush).
 _LOG_LOCK = threading.Lock()
+
+# El session_id es también nombre de archivo: formato restringido (sin "/",
+# sin "..") para que un id arbitrario no pueda salirse de app/sessions/.
+_SESSION_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$")
+
+
+def _validar_session_id(session_id: str) -> str:
+    if not _SESSION_ID_RE.fullmatch(session_id):
+        raise HTTPException(
+            status_code=422,
+            detail="session_id inválido: se admiten letras, dígitos, '.', '_' y "
+                   "'-' (máx. 100 chars, sin empezar con símbolo).",
+        )
+    return session_id
 
 
 def _now_iso() -> str:
@@ -115,11 +142,32 @@ def _now_iso() -> str:
     return datetime.now().astimezone().isoformat()
 
 
-def _append_line(record: dict) -> Path:
-    """Apenda `record` como UNA línea al jsonl del día y devuelve su ruta.
+def _session_path(usuario: str, session_id: str) -> Path:
+    return SESSIONS_DIR / usuario / f"{session_id}.jsonl"
+
+
+def _ultimo_turno(path: Path) -> int:
+    """Último turno registrado en el jsonl de la sesión (0 si no existe).
+    Permite que la numeración continúe tras un reinicio del server."""
+    if not path.exists():
+        return 0
+    ultimo = 0
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            try:
+                d = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if d.get("tipo") == "turno" and isinstance(d.get("turno"), int):
+                ultimo = max(ultimo, d["turno"])
+    return ultimo
+
+
+def _append_line(usuario: str, session_id: str, record: dict) -> Path:
+    """Apenda `record` como UNA línea al jsonl de la sesión y devuelve su ruta.
     Nunca reescribe: solo open en modo append + write de línea completa + flush."""
-    SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
-    path = SESSIONS_DIR / f"{datetime.now().strftime('%Y-%m-%d')}.jsonl"
+    path = _session_path(usuario, session_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
         f.flush()
@@ -160,21 +208,22 @@ def post_chat(req: ChatRequest) -> dict:
             detail=f"El run {req.run_id!r} existe pero su kg.json no cargó "
                    f"al iniciar: {info['error']}",
         )
-    if not os.environ.get("ANTHROPIC_API_KEY", "").strip():
+    # La key solo se exige en modo anthropic; en modo bedrock no debe usarse.
+    if BACKEND == "anthropic" and not os.environ.get("ANTHROPIC_API_KEY", "").strip():
         raise HTTPException(
             status_code=503,
             detail="ANTHROPIC_API_KEY no está seteada en el entorno. Exportala "
                    "antes de arrancar la app: export ANTHROPIC_API_KEY=sk-ant-...",
         )
 
-    session_id = req.session_id or str(uuid.uuid4())
+    session_id = _validar_session_id(req.session_id or str(uuid.uuid4()))
 
     with _CHAT_LOCK:
         agent = AGENTS.get(req.run_id)
         if agent is None:
             kg = load_graph_from_path(REPO_ROOT / info["ruta"],
                                       adapter_key=ADAPTER_KEYS.get(req.run_id))
-            agent = _ChatAgent(kg)
+            agent = _ChatAgent(kg, client=LLM_CLIENT)
             AGENTS[req.run_id] = agent
 
         agent.tool_log.clear()
@@ -191,14 +240,21 @@ def post_chat(req: ChatRequest) -> dict:
         respuesta = {"respuesta_cruda": tr.final_raw, "parse_error": tr.parse_error}
 
     with _LOG_LOCK:
-        _TURNOS[session_id] = _TURNOS.get(session_id, 0) + 1
-        turno = _TURNOS[session_id]
-        _append_line({
+        clave = (USUARIO, session_id)
+        if clave not in _TURNOS:
+            # Reanudación: el contador arranca del último turno ya persistido.
+            _TURNOS[clave] = _ultimo_turno(_session_path(USUARIO, session_id))
+        _TURNOS[clave] += 1
+        turno = _TURNOS[clave]
+        _append_line(USUARIO, session_id, {
             "tipo": "turno",
             "ts": _now_iso(),
             "session_id": session_id,
             "turno": turno,
+            "usuario": USUARIO,
             "run_id": req.run_id,
+            "backend": BACKEND,
+            "modelo": MODEL_EFECTIVO,
             "pregunta": req.pregunta,
             "respuesta": respuesta,
             # En el registro va el resultado COMPLETO de cada tool, sin truncar.
@@ -229,12 +285,14 @@ class FeedbackRequest(BaseModel):
 
 @app.post("/feedback")
 def post_feedback(req: FeedbackRequest) -> dict:
+    session_id = _validar_session_id(req.session_id)
     with _LOG_LOCK:
-        path = _append_line({
+        path = _append_line(USUARIO, session_id, {
             "tipo": "feedback",
             "ts": _now_iso(),
-            "session_id": req.session_id,
+            "session_id": session_id,
             "turno": req.turno,
+            "usuario": USUARIO,
             "voto": req.voto,
             "comentario": req.comentario,
         })

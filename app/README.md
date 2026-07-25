@@ -31,6 +31,27 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 La app solo lee esa variable de entorno; no usa ningún archivo `.env`.
 
+## Modo Bedrock
+
+Para servir la inferencia vía Amazon Bedrock, sin ninguna API key de
+Anthropic en el entorno:
+
+```bash
+export APP_LLM_BACKEND=bedrock
+export AWS_REGION=us-east-1
+export APP_BEDROCK_MODEL_ID=us.anthropic.claude-haiku-4-5-20251001-v1:0
+uvicorn app.main:app --port 8000
+```
+
+Las credenciales AWS se resuelven por la cadena estándar de AWS (variables
+de entorno, perfil de `~/.aws`, o el rol IAM de la instancia — lo
+recomendado en EC2): la app no guarda ni maneja secretos de AWS ni de
+Anthropic. `APP_BEDROCK_MODEL_ID` es el model ID que Bedrock espere (por
+ejemplo un perfil de inferencia de Claude Haiku, el modelo por defecto del
+proyecto). Si falta alguna de las dos variables, la app falla al arranque
+con un mensaje claro. Con `APP_LLM_BACKEND` sin setear (o `anthropic`), la
+app funciona como siempre contra la API de Anthropic.
+
 ## Arranque
 
 Desde la raíz del repo, con el venv activado:
@@ -63,16 +84,22 @@ con el adaptador nulo.
 
 ## Dónde quedan las sesiones
 
-En `app/sessions/<fecha>.jsonl` (un archivo por día, ignorado por git).
-El registro es append-only: una línea JSON por turno y una por feedback,
-nunca se edita una línea ya escrita. Las líneas de turno guardan los
-resultados completos de las tools (sin truncar), así que sirven como
-traza íntegra de cada respuesta.
+En `app/sessions/<usuario>/<session_id>.jsonl` (un archivo por sesión,
+agrupado por usuario, ignorado por git). Sin autenticación —el modo local
+actual— el usuario es siempre `local`. El registro es append-only: una
+línea JSON por turno y una por feedback, nunca se edita una línea ya
+escrita. Las líneas de turno guardan los resultados completos de las tools
+(sin truncar) más el backend e ID de modelo usados, así que sirven como
+traza íntegra de cada respuesta. Si el server se reinicia, la numeración
+de turnos de una sesión continúa desde el archivo existente.
 
 ## Limitaciones conocidas
 
 - Un chat a la vez: el server serializa las preguntas.
-- La numeración de turnos se reinicia si se reinicia el server.
 - Cada turno es independiente: el agente no ve la historia de la
   conversación, solo la pregunta actual.
 - Recargar la página crea una sesión nueva.
+- El server habla HTTP plano (sin TLS); al hostearlo, el TLS se agrega
+  por delante (p. ej. Cloudflare).
+- El costo por turno registrado en las trazas usa precios de la API de
+  Anthropic; bajo Bedrock es solo nominal.
