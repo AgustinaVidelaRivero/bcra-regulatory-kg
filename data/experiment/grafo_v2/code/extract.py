@@ -375,6 +375,7 @@ async def extract_one(
     cache_root: Path,
     semaphore: asyncio.Semaphore,
     progress: ProgressTracker,
+    model: str = MODEL,
 ) -> dict[str, Any]:
     """Extrae un chunk, con cache + retry. Devuelve el dict del resultado."""
     cache_path = chunk_cache_path(chunk, cache_root)
@@ -401,7 +402,7 @@ async def extract_one(
         for attempt in range(MAX_RETRIES):
             try:
                 resp = await client.messages.create(
-                    model=MODEL,
+                    model=model,
                     max_tokens=MAX_OUTPUT_TOKENS,
                     system=SYSTEM_PROMPT,
                     tools=[TOOL_SCHEMA],
@@ -505,7 +506,7 @@ async def extract_one(
     }
 
 
-async def extract_chunks(chunks: list[Chunk], cache_root: Path) -> list[dict[str, Any]]:
+async def extract_chunks(chunks: list[Chunk], cache_root: Path, model: str = MODEL) -> list[dict[str, Any]]:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         raise RuntimeError("ANTHROPIC_API_KEY no está set en el environment.")
@@ -530,7 +531,7 @@ async def extract_chunks(chunks: list[Chunk], cache_root: Path) -> list[dict[str
     progress.start()
 
     tasks = [
-        extract_one(client, c, cache_root, semaphore, progress)
+        extract_one(client, c, cache_root, semaphore, progress, model=model)
         for c in chunks
     ]
     results = await asyncio.gather(*tasks)
@@ -547,12 +548,23 @@ async def extract_chunks(chunks: list[Chunk], cache_root: Path) -> list[dict[str
 
 
 def main() -> int:
+    # --model <id> opcional (B1a): el modelo pasa a ser parámetro; default el actual.
+    argv = list(sys.argv[1:])
+    model = MODEL
+    if "--model" in argv:
+        i = argv.index("--model")
+        if i + 1 >= len(argv):
+            print("Uso: --model requiere un id de modelo")
+            return 1
+        model = argv[i + 1]
+        del argv[i:i + 2]
+
     valid_modes = ("smoke", "full", "one")
-    if len(sys.argv) < 2 or sys.argv[1] not in valid_modes:
-        print("Uso: python extract.py {smoke | full | one <doc_substring>}")
+    if len(argv) < 1 or argv[0] not in valid_modes:
+        print("Uso: python extract.py {smoke | full | one <doc_substring>} [--model <id>]")
         return 1
 
-    mode = sys.argv[1]
+    mode = argv[0]
 
     if mode == "smoke":
         pdf = SUBSET / "TO_proteccion_usuarios_servicios_financieros_actual.pdf"
@@ -560,10 +572,10 @@ def main() -> int:
         cache_root = CACHE_ROOT_V2 / "smoke"
         save_chunks(chunks, CACHE_ROOT_V2 / "chunks_smoke.json")
     elif mode == "one":
-        if len(sys.argv) < 3:
-            print("Uso: python extract.py one <doc_substring>")
+        if len(argv) < 2:
+            print("Uso: python extract.py one <doc_substring> [--model <id>]")
             return 1
-        substr = sys.argv[2]
+        substr = argv[1]
         pdfs = sorted(p for p in SUBSET.glob("*.pdf") if substr in p.name)
         if len(pdfs) != 1:
             print(f"Match ambiguo o nulo para '{substr}': {[p.name for p in pdfs]}")
@@ -579,14 +591,21 @@ def main() -> int:
         cache_root = CACHE_ROOT_V2 / "full"
         save_chunks(chunks, CACHE_ROOT_V2 / "chunks_all.json")
 
+    if model != MODEL:
+        # La key de caché NO incluye el modelo: correr smoke/full/one con otro
+        # modelo contaminaría cache_v2/{smoke,full}. Las corridas multi-modelo
+        # van por correr_piloto.py, que namespacea cache_v2/piloto/<modelo>/.
+        print(f"ERROR: {mode} con modelo no-default ({model}) contaminaría {cache_root}. Usá correr_piloto.py.")
+        return 1
+
     cache_root.mkdir(parents=True, exist_ok=True)
     print(
-        f"Mode: {mode} | chunks: {len(chunks)} | cache_root: {cache_root} | "
+        f"Mode: {mode} | model: {model} | chunks: {len(chunks)} | cache_root: {cache_root} | "
         f"catalogo v{CATALOGO_VERSION} ({len(SUJETOS_CATALOGO)} sujetos) | prompt_hash={PROMPT_HASH}",
         flush=True,
     )
 
-    results = asyncio.run(extract_chunks(chunks, cache_root))
+    results = asyncio.run(extract_chunks(chunks, cache_root, model=model))
 
     # Volcar resumen
     summary = {
