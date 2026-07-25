@@ -34,7 +34,10 @@
   header h1 { margin: 0 0 0.5rem; font-size: 1.05rem; font-weight: 600; }
   .controles { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
   .controles select { max-width: 26rem; padding: 0.25rem; }
-  .controles input#token { padding: 0.3rem; border: 1px solid var(--borde); border-radius: 5px; font-size: 0.8rem; width: 15rem; }
+  .controles input { padding: 0.3rem; border: 1px solid var(--borde); border-radius: 5px; font-size: 0.8rem; width: 11rem; }
+  .controles .identidad { font-size: 0.8rem; color: var(--tinta-suave); }
+  .controles a.salir { font-size: 0.75rem; color: var(--tinta-suave); margin-left: 0.2rem; }
+  .controles .auth-error { color: var(--error); font-size: 0.75rem; }
   .sesion { margin-top: 0.35rem; font-size: 0.72rem; color: var(--tinta-suave); font-family: ui-monospace, Menlo, monospace; }
   main {
     flex: 1;
@@ -88,8 +91,7 @@
   <div class="controles">
     <label for="run-select">Grafo:</label>
     <select id="run-select"></select>
-    <input id="token" type="password" placeholder="token (si el server lo exige)"
-           autocomplete="off">
+    <span id="auth-zona"></span>
     <button id="btn-nueva-sesion" type="button">Nueva sesión</button>
   </div>
   <div class="sesion" id="sesion-info">sesión: — (se crea con el primer mensaje)</div>
@@ -115,14 +117,18 @@ const sesionInfo = document.getElementById("sesion-info");
 const form = document.getElementById("entrada");
 const inputPregunta = document.getElementById("pregunta");
 const btnEnviar = document.getElementById("btn-enviar");
-const inputToken = document.getElementById("token");
+// --- Identidad por registro autoservicio (H6) ---
+// Reversión CONSCIENTE de la decisión de U4 "sin localStorage": el token del
+// registro se persiste en localStorage a propósito, para que quien se registra
+// nunca vea ni administre un token y siga identificado tras recargar la página
+// ("salir" lo borra). El resto del estado (sesión de chat, historial) sigue
+// siendo efímero en memoria.
+let authToken = localStorage.getItem("fg_token") || "";
+let authUsuario = localStorage.getItem("fg_usuario") || "";
 
-// Headers de las llamadas con auth: el token vive SOLO en este input (memoria
-// del DOM, sin localStorage); si está vacío no se manda el header.
 function headersAuth() {
   const h = { "Content-Type": "application/json" };
-  const t = inputToken.value.trim();
-  if (t) h["Authorization"] = "Bearer " + t;
+  if (authToken) h["Authorization"] = "Bearer " + authToken;
   return h;
 }
 
@@ -339,6 +345,60 @@ form.addEventListener("submit", async (ev) => {
   }
 });
 
+// ---------- zona de identidad: registro o sesión activa ----------
+const authZona = document.getElementById("auth-zona");
+
+function renderAuth() {
+  authZona.innerHTML = "";
+  if (authToken) {
+    authZona.appendChild(el("span", "identidad",
+                            "identificado como: " + (authUsuario || "?") + " "));
+    const salir = el("a", "salir", "salir");
+    salir.href = "#";
+    salir.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      localStorage.removeItem("fg_token");
+      localStorage.removeItem("fg_usuario");
+      location.reload();
+    });
+    authZona.appendChild(salir);
+    return;
+  }
+  const nombre = document.createElement("input");
+  nombre.placeholder = "tu nombre";
+  nombre.autocomplete = "off";
+  const codigo = document.createElement("input");
+  codigo.type = "password";
+  codigo.placeholder = "código de invitación";
+  const entrar = el("button", null, "Entrar");
+  entrar.type = "button";
+  const err = el("span", "auth-error", "");
+  entrar.addEventListener("click", async () => {
+    err.textContent = "";
+    entrar.disabled = true;
+    try {
+      const resp = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario: nombre.value.trim(), codigo: codigo.value }),
+      });
+      const d = await resp.json();
+      if (!resp.ok) { err.textContent = detailATexto(d); return; }
+      localStorage.setItem("fg_token", d.token);
+      localStorage.setItem("fg_usuario", d.usuario);
+      authToken = d.token;
+      authUsuario = d.usuario;
+      renderAuth();
+    } catch (e) {
+      err.textContent = "Error de red: " + e.message;
+    } finally {
+      entrar.disabled = false;
+    }
+  });
+  authZona.append(nombre, codigo, entrar, err);
+}
+
+renderAuth();
 cargarRuns();
 inputPregunta.focus();
 </script>

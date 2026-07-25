@@ -16,8 +16,10 @@ el entorno para /chat; la app no lee ningún .env. Modo Bedrock: ver README):
 import json
 import os
 import re
+import secrets
 import sys
 import threading
+import time
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -96,6 +98,15 @@ def _parse_tokens() -> dict:
 
 TOKENS = _parse_tokens()
 AUTH_ACTIVA = bool(TOKENS)
+
+# --- Registro autoservicio por código de invitación (H6) ---------------------
+TOKENS_FILE = (os.environ.get("APP_TOKENS_FILE") or "").strip()
+INVITE_CODE = (os.environ.get("APP_INVITE_CODE") or "").strip()
+if AUTH_ACTIVA and TOKENS_FILE and not INVITE_CODE:
+    raise RuntimeError(
+        "APP_INVITE_CODE es obligatoria cuando la auth usa APP_TOKENS_FILE "
+        "(el registro autoservicio necesita el código de invitación)."
+    )
 
 
 def _usuario_de(authorization: Optional[str]) -> str:
@@ -347,6 +358,54 @@ def post_chat(req: ChatRequest,
         "session_id": session_id,
         "turno": turno,
     }
+
+
+class RegisterRequest(BaseModel):
+    usuario: str
+    codigo: str
+
+
+_REGISTROS = []  # time.time() de cada registro exitoso (rate limit global)
+_MAX_REGISTROS_HORA = 10
+
+
+@app.post("/register")
+def post_register(req: RegisterRequest) -> dict:
+    """Registro autoservicio: valida el código de invitación, genera un token
+    y lo apenda al archivo de tokens. El usuario nunca elige ni ve tokens
+    ajenos; el suyo se devuelve una única vez."""
+    if not (AUTH_ACTIVA and TOKENS_FILE):
+        raise HTTPException(
+            status_code=503,
+            detail="El registro está deshabilitado: el server no usa archivo "
+                   "de tokens (APP_TOKENS_FILE).",
+        )
+    if req.codigo != INVITE_CODE:
+        raise HTTPException(status_code=403, detail="código de invitación incorrecto")
+    usuario = req.usuario.strip()
+    if not _USUARIO_RE.fullmatch(usuario) or len(usuario) > 32:
+        raise HTTPException(
+            status_code=422,
+            detail="usuario inválido: letras, dígitos, '.', '_' y '-' (máx. 32).",
+        )
+    with _LOG_LOCK:
+        if usuario in TOKENS.values():
+            raise HTTPException(status_code=409, detail="nombre en uso, elegí otro")
+        ahora = time.time()
+        _REGISTROS[:] = [t for t in _REGISTROS if ahora - t < 3600]
+        if len(_REGISTROS) >= _MAX_REGISTROS_HORA:
+            raise HTTPException(
+                status_code=429,
+                detail="límite de registros por hora alcanzado; probá más tarde",
+            )
+        token = secrets.token_hex(16)
+        # append-only al archivo de tokens, una línea completa con flush
+        with open(TOKENS_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{token}:{usuario}\n")
+            f.flush()
+        TOKENS[token] = usuario
+        _REGISTROS.append(ahora)
+    return {"token": token, "usuario": usuario}
 
 
 class FeedbackRequest(BaseModel):

@@ -52,30 +52,34 @@ proyecto). Si falta alguna de las dos variables, la app falla al arranque
 con un mensaje claro. Con `APP_LLM_BACKEND` sin setear (o `anthropic`), la
 app funciona como siempre contra la API de Anthropic.
 
-## Autenticación por token
+## Autenticación: registro por código de invitación
 
-Opcional. Si se configuran tokens, `/chat` y `/feedback` exigen el header
-`Authorization: Bearer <token>` (la página y `GET /runs` siguen públicos, y
-la UI tiene un campo para pegar el token). Sin tokens configurados, la app
-queda en el modo local sin autenticación (usuario `local`).
+Con la autenticación activa, cada persona se registra sola desde la
+página: entra, elige un nombre e ingresa el código de invitación
+(provisto por la autora). Queda identificada y puede chatear — nunca ve
+ni administra tokens: el navegador guarda el suyo (localStorage) y el
+link "salir" lo borra. Por debajo, `/chat` y `/feedback` siguen exigiendo
+`Authorization: Bearer <token>`, así que un cliente por curl puede usar
+un token del archivo directamente. La página y `GET /runs` son públicos.
 
-Dos formas de configurar, con precedencia del archivo sobre la variable:
+Config del server:
 
 ```bash
-# Recomendado en el server: archivo fuera de git, una línea por usuario,
-# formato token:usuario (líneas con '#' se ignoran).
+# Archivo de tokens (fuera de git, permisos 600): una línea token:usuario.
+# Crece solo (append) con cada registro.
 export APP_TOKENS_FILE=/ruta/a/tokens.txt
-
-# Para pruebas: inline, separado por comas.
-export APP_TOKENS="tok_abc:usuaria1,tok_def:revisor1"
+# Obligatorio si hay APP_TOKENS_FILE: el código que habilita registrarse.
+export APP_INVITE_CODE=<código>
 ```
 
-Un token razonable se genera con `openssl rand -hex 16`. El usuario admite
-solo letras, dígitos, `.`, `_` y `-`. Cualquier formato inválido (entrada
-sin usuario, usuario con otros caracteres, token duplicado) impide el
-arranque del server con un mensaje claro. Los tokens viajan en claro
-mientras el server hable HTTP plano (limitación ya documentada): usarlos
-solo detrás de TLS o en una red confiable.
+`APP_TOKENS` (inline, separado por comas) sigue existiendo para pruebas,
+pero sin archivo el registro autoservicio queda deshabilitado (503).
+`POST /register` responde: código incorrecto → 403; nombre en uso → 409;
+más de 10 registros en una hora (total, anti-abuso) → 429. El usuario
+admite letras, dígitos, `.`, `_` y `-` (máx. 32). Formato inválido en el
+archivo o token duplicado impiden el arranque con mensaje claro. Los
+tokens y el código viajan en claro mientras el server hable HTTP plano
+(limitación ya documentada): usar detrás de TLS o en red confiable.
 
 ## Arranque
 
