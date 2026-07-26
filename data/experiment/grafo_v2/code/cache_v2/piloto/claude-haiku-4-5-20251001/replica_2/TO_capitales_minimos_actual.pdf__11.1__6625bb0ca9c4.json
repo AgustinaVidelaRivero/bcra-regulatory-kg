@@ -1,0 +1,134 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::11.1",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 11.1. Adquisiciones de entidades financieras.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Determinación de RPC consolidada",
+      "properties": {
+        "tipo": "calculo_de_indice_regulatorio",
+        "description": "Determinación de la RPC (Relación Patrimonial de Capital) sobre base consolidada en adquisiciones de entidades financieras"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Adición de importe en RPC consolidada",
+      "properties": {
+        "tipo": "calculo",
+        "description": "La entidad que consolide podrá adicionar el importe registrado en la partida específica en el rubro Previsiones del Pasivo",
+        "contexto": "adquisiciones"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Determinación de RPC en fusión",
+      "properties": {
+        "tipo": "calculo_de_indice_regulatorio",
+        "description": "Determinación de la RPC en el contexto de fusión de entidades financieras"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Adición de llave negativa en RPC",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Se podrá adicionar el importe correspondiente a la llave de negocio negativa registrado en la partida específica en el rubro Previsiones del Pasivo",
+        "contexto": "fusión"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "op1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "op2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob1",
+      "target": "op1",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": "op2",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 9586,
+  "out_tokens": 898,
+  "validation": {
+    "entities_in": 5,
+    "entities_out": 5,
+    "relations_in": 8,
+    "relations_out": 8,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}
