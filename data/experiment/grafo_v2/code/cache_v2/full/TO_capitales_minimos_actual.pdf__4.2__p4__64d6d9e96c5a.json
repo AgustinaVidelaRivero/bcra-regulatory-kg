@@ -1,0 +1,377 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::4.2__p4",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 5)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capital mínimo por riesgo de crédito de contraparte",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "1a"
+      }
+    },
+    {
+      "local_id": "comm_a6260",
+      "type": "Comunicacion",
+      "label": "Com. A 6260",
+      "properties": {
+        "codigo": "A-6260",
+        "tipo": "A",
+        "numero": "6260"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Cálculo de nocional ajustado con factor de plazo",
+      "properties": {
+        "tipo": "calculo_de_exposicion_crediticia",
+        "description": "El nocional ajustado a nivel de operación se multiplicará por un factor de plazo (maturity factor), donde el numerador es el horizonte temporal mínimo y M es el plazo residual de la operación i con un mínimo de 10 días hábiles"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Operaciones con margen de variación",
+      "properties": {
+        "tipo": "gestion_de_margenes",
+        "description": "Operaciones de derivados con acuerdos de márgenes diarios, donde el período de riesgo de margen (MPOR) mínimo varía según si se liquidan en forma centralizada o no"
+      }
+    },
+    {
+      "local_id": "rest1",
+      "type": "Restriccion",
+      "label": "Mínimo 10 días para derivados no centralizados",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "description": "Al menos 10 días hábiles para las operaciones de derivados que no se liquidan en forma centralizada y están sujetas a acuerdos de márgenes diarios",
+        "umbral": "10 días hábiles"
+      }
+    },
+    {
+      "local_id": "rest2",
+      "type": "Restriccion",
+      "label": "Mínimo 5 días para derivados centralizados",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "description": "5 días hábiles para las operaciones de derivados que se liquidan en forma centralizada y están sujetas a acuerdos de márgenes diarios entre el miembro compensador y sus clientes",
+        "umbral": "5 días hábiles"
+      }
+    },
+    {
+      "local_id": "rest3",
+      "type": "Restriccion",
+      "label": "Mínimo 20 días para conjuntos neteo grande",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "description": "20 días hábiles para los conjuntos de neteo –excepto aquellos con una contraparte central– cuyo número de operaciones supere las 5.000 en cualquier momento del trimestre calendario anterior",
+        "umbral": "20 días hábiles"
+      }
+    },
+    {
+      "local_id": "rest4",
+      "type": "Restriccion",
+      "label": "Duplicación de período por disputas",
+      "properties": {
+        "tipo": "limite_cuantitativo",
+        "description": "El doble del período de riesgo de margen para los conjuntos de neteo con disputas pendientes",
+        "umbral": "2x MPOR"
+      }
+    },
+    {
+      "local_id": "exc1",
+      "type": "Excepcion",
+      "label": "Excepción: contraparte central",
+      "properties": {
+        "descripcion": "Los conjuntos de neteo con una contraparte central están exceptuados del requisito de 20 días hábiles"
+      }
+    },
+    {
+      "local_id": "ob1",
+      "type": "Obligacion",
+      "label": "Reflejar disputas en período de margen",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Si la entidad ha experimentado más de dos disputas sobre requerimientos de márgenes respecto de algún conjunto de neteo durante los dos trimestres calendario anteriores que se hayan prolongado durante períodos más extensos que el período de riesgo de margen, deberá reflejar este antecedente mediante el uso de un período de riesgo de margen que sea por lo menos el doble",
+        "plazo": "dos trimestres calendario posteriores"
+      }
+    },
+    {
+      "local_id": "ob2",
+      "type": "Obligacion",
+      "label": "Incrementar MPOR por reposición no diaria",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Los mínimos referidos se deberán incrementar cuando la frecuencia de reposición de márgenes no sea diaria: MPOR = mínimo + N - 1, donde N es la cantidad de días entre reposiciones"
+      }
+    },
+    {
+      "local_id": "ob3",
+      "type": "Obligacion",
+      "label": "Usar parámetros de correlación regulatorios",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Se utilizan parámetros de correlación regulatorios en el cálculo de la EPF de los derivados sobre acciones, créditos y commodities –no se aplican a los derivados de tasa de interés o tipo de cambio– para ponderar los componentes sistemáticos e idiosincráticos"
+      }
+    },
+    {
+      "local_id": "ob4",
+      "type": "Obligacion",
+      "label": "Aplicar adicional para derivados de tasa",
+      "properties": {
+        "tipo": "calculo",
+        "description": "Para los derivados de tasa de interés, se debe dividir en tres categorías de plazo (bandas temporales o buckets) sobre la base de la fecha de finalización: menos de un año, entre uno y cinco años y más de cinco años. Se permitirá compensación total dentro de cada categoría y compensación parcial entre categorías"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "rest1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest3",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest4",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "exc1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob3",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob4",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "op1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "op2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "to",
+      "target": "comm_a6260",
+      "predicate": "referencia",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest1",
+      "target": "op2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest2",
+      "target": "op2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest3",
+      "target": "op2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest4",
+      "target": "op2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "exc1",
+      "target": "rest3",
+      "predicate": "exceptua",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob1",
+      "target": "op2",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": "op2",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob3",
+      "target": "op1",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob4",
+      "target": "op2",
+      "predicate": "regula",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest3",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "rest4",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob3",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "ob4",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 10662,
+  "out_tokens": 2835,
+  "validation": {
+    "entities_in": 13,
+    "entities_out": 13,
+    "relations_in": 29,
+    "relations_out": 29,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}

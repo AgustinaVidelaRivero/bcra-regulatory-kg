@@ -1,0 +1,158 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::1.2",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 1.2. Exigencia básica.",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales Mínimos",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Exigencia básica bancos",
+      "properties": {
+        "descripcion": "Bancos (salvo Cajas de Crédito Cooperativas) deberán observar exigencia básica de 2.500 millones de pesos",
+        "tipo": "limite_cuantitativo",
+        "umbral": "2.500 millones de pesos"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Exigencia básica restantes entidades",
+      "properties": {
+        "descripcion": "Restantes entidades deberán observar exigencia básica de 5.000 millones de pesos",
+        "tipo": "limite_cuantitativo",
+        "umbral": "5.000 millones de pesos"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Excepcion",
+      "label": "Exclusión Cajas de Crédito Cooperativas",
+      "properties": {
+        "descripcion": "Cajas de Crédito Cooperativas están exceptuadas de la exigencia básica de bancos"
+      }
+    },
+    {
+      "local_id": "o1",
+      "type": "Operacion",
+      "label": "Operaciones comercio exterior",
+      "properties": {
+        "tipo": "operaciones de comercio exterior"
+      }
+    },
+    {
+      "local_id": "r3",
+      "type": "Restriccion",
+      "label": "Exigencia compañías financieras comercio exterior",
+      "properties": {
+        "descripcion": "Las compañías financieras que realicen, en forma directa, operaciones de comercio exterior deberán observar las exigencias establecidas para los bancos",
+        "tipo": "limite_cuantitativo",
+        "umbral": "2.500 millones de pesos"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r3",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "r1",
+      "predicate": "exceptua",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_banco",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r3",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_compania_financiera",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": "o1",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r3",
+      "target": "o1",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 9551,
+  "out_tokens": 1060,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 10,
+    "relations_out": 10,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}

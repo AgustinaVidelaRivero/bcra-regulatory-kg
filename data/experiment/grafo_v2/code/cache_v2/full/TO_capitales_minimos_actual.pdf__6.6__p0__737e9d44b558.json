@@ -1,0 +1,683 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::6.6__p0",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capital mínimo por riesgo de mercado",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "2a"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Restriccion",
+      "label": "Límite valor opciones compradas",
+      "properties": {
+        "descripcion": "Las entidades que sólo compren opciones no podrán superar el 5% del valor de mercado de la totalidad de opciones en cartera respecto a su RPC del mes anterior",
+        "tipo": "limite_cuantitativo",
+        "umbral": "5%"
+      }
+    },
+    {
+      "local_id": "e2",
+      "type": "Operacion",
+      "label": "Compra de opciones",
+      "properties": {
+        "tipo": "compra de opciones"
+      }
+    },
+    {
+      "local_id": "e3",
+      "type": "Obligacion",
+      "label": "Usar método simplificado",
+      "properties": {
+        "descripcion": "Las entidades que sólo compren opciones y el valor de mercado no supere el 5% de RPC del mes anterior, o cuyas posiciones en opciones vendidas estén cubiertas por posiciones compradas en opciones con exactamente las mismas condiciones contractuales, podrán usar el método simplificado previsto en el punto 6.6.2",
+        "tipo": "otra",
+        "plazo": "acción condicional"
+      }
+    },
+    {
+      "local_id": "e4",
+      "type": "Obligacion",
+      "label": "Usar método delta-plus",
+      "properties": {
+        "descripcion": "En los casos no cubiertos por el método simplificado, las entidades deberán usar el método delta-plus contemplado en el punto 6.6.3",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e5",
+      "type": "Obligacion",
+      "label": "Calcular exigencia capital posición comprada",
+      "properties": {
+        "descripcion": "La exigencia de capital será el valor de mercado del subyacente multiplicado por la suma de las exigencias por riesgo específico y riesgo general de mercado aplicables al subyacente menos el valor intrínseco de la opción, con límite cero",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e6",
+      "type": "Obligacion",
+      "label": "Comparar precio ejercicio con precio futuro",
+      "properties": {
+        "descripcion": "Para las opciones con plazo residual de más de seis meses, el precio de ejercicio se comparará con el precio a futuro y no con el precio corriente",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e7",
+      "type": "Obligacion",
+      "label": "Considerar valor intrínseco cero",
+      "properties": {
+        "descripcion": "Si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e8",
+      "type": "Operacion",
+      "label": "Determinación de subyacente en operaciones de cambio",
+      "properties": {
+        "tipo": "determinación de activo subyacente"
+      }
+    },
+    {
+      "local_id": "e9",
+      "type": "Obligacion",
+      "label": "Tomar activo a recibir como subyacente",
+      "properties": {
+        "descripcion": "Cuando no esté claro qué lado de una operación constituye el subyacente, tal como ocurre con operaciones de cambio, se tomará el activo a recibir si se ejerce la opción",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e10",
+      "type": "Obligacion",
+      "label": "Usar valor nocional cuando mercado es cero",
+      "properties": {
+        "descripcion": "En los casos en que el valor de mercado del subyacente sea cero, tal como ocurre en ciertos derivados referidos a tasas de interés ('caps' y 'floors') y opciones cuyo activo subyacente es un 'swaption', se tomará el valor nocional",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e11",
+      "type": "Obligacion",
+      "label": "Calcular exigencia capital opciones compradas",
+      "properties": {
+        "descripcion": "La exigencia de capital será el menor entre el valor de mercado del subyacente multiplicado por la suma de exigencias por riesgo y el valor de mercado de la opción",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e12",
+      "type": "Obligacion",
+      "label": "Usar valor contable opciones monedas",
+      "properties": {
+        "descripcion": "Se podrá usar el valor contable en el caso de las opciones sobre monedas no incluidas en la cartera de negociación",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e13",
+      "type": "Obligacion",
+      "label": "Calcular equivalente delta",
+      "properties": {
+        "descripcion": "El método delta-plus utiliza parámetros de sensibilidad o 'letras griegas' para determinar el equivalente delta de cada posición, al que se aplicará la metodología estándar para calcular exigencia de capital por riesgo general de mercado",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e14",
+      "type": "Obligacion",
+      "label": "Agregar exigencias riesgos gamma y vega",
+      "properties": {
+        "descripcion": "Al equivalente delta se le agregarán exigencias adicionales para cobertura de riesgos gamma y vega",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e15",
+      "type": "Obligacion",
+      "label": "Determinar exigencia riesgo específico",
+      "properties": {
+        "descripcion": "La exigencia por riesgo específico se determinará multiplicando el equivalente delta de cada opción por las ponderaciones de riesgo específico establecidas",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e16",
+      "type": "Obligacion",
+      "label": "Calcular posición equivalente delta",
+      "properties": {
+        "descripcion": "La posición en una opción será el equivalente al valor de mercado del subyacente multiplicado por el coeficiente delta de la opción; se deberán calcular también los coeficientes gamma y vega",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e17",
+      "type": "Obligacion",
+      "label": "Emplear modelos aprobados para cálculo",
+      "properties": {
+        "descripcion": "Para el cálculo se deberán emplear modelos aprobados por mercados de opciones autorizados a operar por la CNV o modelos propios de determinación de precios",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e18",
+      "type": "Obligacion",
+      "label": "Poner a disposición de SEFyC elementos metodológicos",
+      "properties": {
+        "descripcion": "Cuando se usen modelos propios de determinación de precios, las entidades deberán poner a disposición de la SEFyC tanto los elementos básicos de la metodología de cálculo como todo detalle requerido en función del volumen y frecuencia de transacciones",
+        "tipo": "presentacion_informativa"
+      }
+    },
+    {
+      "local_id": "e19",
+      "type": "Obligacion",
+      "label": "Asignar posiciones a bandas temporales",
+      "properties": {
+        "descripcion": "Las posiciones ponderadas por delta cuyo subyacente sean títulos de deuda o tasas de interés se asignarán a las bandas temporales establecidas en el punto 6.2",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e20",
+      "type": "Obligacion",
+      "label": "Informar dos partes operación",
+      "properties": {
+        "descripcion": "Se informarán dos partes de la operación: uno cuando el contrato subyacente entra en vigor y otro cuando vence",
+        "tipo": "presentacion_informativa"
+      }
+    },
+    {
+      "local_id": "e21",
+      "type": "Obligacion",
+      "label": "Registrar caps o floors combinados",
+      "properties": {
+        "descripcion": "Los 'caps' o 'floors' se deberán registrar como una combinación de un bono a interés variable y un conjunto de opciones europeas",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e22",
+      "type": "Obligacion",
+      "label": "Aplicar disposiciones posiciones compensadas",
+      "properties": {
+        "descripcion": "Serán de aplicación las disposiciones sobre posiciones compensadas del acápite i) del punto 6.2.3.5",
+        "tipo": "otra"
+      }
+    },
+    {
+      "local_id": "e23",
+      "type": "Obligacion",
+      "label": "Considerar mercado como subyacente separado",
+      "properties": {
+        "descripcion": "En opciones sobre acciones, cada mercado nacional se considerará como un subyacente separado",
+        "tipo": "asignacion"
+      }
+    },
+    {
+      "local_id": "e24",
+      "type": "Obligacion",
+      "label": "Incorporar posición delta a cálculo",
+      "properties": {
+        "descripcion": "La posición ponderada por delta se incorporará al cálculo descripto en el punto 6.3",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e25",
+      "type": "Obligacion",
+      "label": "Incorporar neto delta a exposición",
+      "properties": {
+        "descripcion": "En opciones sobre oro y monedas extranjeras, el neto del equivalente delta se incorporará a la exposición en oro o en la moneda extranjera correspondiente conforme a lo previsto en el punto 6.4",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e26",
+      "type": "Obligacion",
+      "label": "Incorporar posición delta método simplificado",
+      "properties": {
+        "descripcion": "En opciones sobre productos básicos, la posición ponderada por delta se incorporará por el método simplificado conforme a lo previsto en el punto 6.5",
+        "tipo": "calculo"
+      }
+    },
+    {
+      "local_id": "e27",
+      "type": "Obligacion",
+      "label": "Calcular exigencias riesgos gamma y vega",
+      "properties": {
+        "descripcion": "Las exigencias de capital para cubrir los riesgos gamma y vega se calcularán por separado para cada posición en opciones, incluidas las posiciones para cobertura",
+        "tipo": "calculo"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e3",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e4",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e5",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e6",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e7",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e9",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e10",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e11",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e12",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e13",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e14",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e15",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e16",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e17",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e18",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e19",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e20",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e21",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e22",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e23",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e24",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e25",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e26",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e27",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "e2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e3",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e4",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e5",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e6",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e7",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e9",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e10",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e11",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e12",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e13",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e14",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e15",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e16",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e17",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e18",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e19",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e20",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e21",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e22",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e23",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e24",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e25",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e26",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e27",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 11703,
+  "out_tokens": 5374,
+  "validation": {
+    "entities_in": 28,
+    "entities_out": 28,
+    "relations_in": 52,
+    "relations_out": 51,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 1,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}

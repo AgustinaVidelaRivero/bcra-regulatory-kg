@@ -1,0 +1,147 @@
+{
+  "chunk_id": "TO_clasificacion_deudores_actual.pdf::6.5__p5",
+  "doc": "TO_clasificacion_deudores_actual.pdf",
+  "location": "Punto 6.5. Niveles de clasificación. (parte 6)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Clasificación de Deudores",
+      "properties": {
+        "materia": "Clasificación de deudores",
+        "archivo": "TO_clasificacion_deudores_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Límite de deuda para clientes sin declaración jurada",
+      "properties": {
+        "descripcion": "Clientes del sector privado no financiero cuya deuda más la financiación solicitada exceda del 2,5% de la responsabilidad patrimonial computable de la entidad del último día del mes anterior o el equivalente al importe de referencia establecido en el punto 3.7., de ambos el menor, y que no hayan presentado declaración jurada sobre vinculación o influencia controlante",
+        "tipo": "limite_cuantitativo",
+        "umbral": "2,5%"
+      }
+    },
+    {
+      "local_id": "e1",
+      "type": "Excepcion",
+      "label": "Excepción para deudores en concurso con plazo de 540 días",
+      "properties": {
+        "descripcion": "Deudores en concurso o con acuerdo preventivo extrajudicial solicitado o en gestión judicial que, por un período de hasta 540 días contados a partir de la apertura del concurso, solicitud del acuerdo preventivo o inicio de las gestiones judiciales de cobro, no hubiesen presentado la documentación que permita realizarla, siempre que se cuente con informe de abogado de la entidad financiera acreedora sobre la razonabilidad del recupero"
+      }
+    },
+    {
+      "local_id": "o1",
+      "type": "Operacion",
+      "label": "Presentación de declaración jurada de vinculación",
+      "properties": {
+        "tipo": "Presentación de declaración jurada sobre vinculación o influencia controlante"
+      }
+    },
+    {
+      "local_id": "o2",
+      "type": "Operacion",
+      "label": "Evaluación periódica de cliente",
+      "properties": {
+        "tipo": "Evaluación periódica de cliente según periodicidad correspondiente"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Obligatoriedad de clasificar clientes no evaluados periódicamente",
+      "properties": {
+        "descripcion": "Corresponderá clasificar en la categoría indicada a los clientes que por cualquier motivo no hayan sido evaluados con la periodicidad correspondiente",
+        "tipo": "limite_cualitativo"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "r1",
+      "predicate": "exceptua",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "e1",
+      "target": "r2",
+      "predicate": "exceptua",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": "o1",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": "o2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_obligado_a_clasificar_clasificacion",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_obligado_a_clasificar_clasificacion",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 10296,
+  "out_tokens": 1143,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 9,
+    "relations_out": 9,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}
