@@ -1,7 +1,7 @@
 {
   "fecha": "2026-07-26",
-  "nota": "Fichas para adjudicación manual de la autora. Sin veredicto causal: el verificador no se corrió sobre este brazo (guarda de calibración intra-esquema del protocolo §6).",
-  "n_fallas": 6,
+  "nota": "Fichas del brazo grafo_v2 (9): 6 originales con falla ratificada por adjudicación humana del 26/07 (atribución causal pendiente) + 3 adjudicadas con causa (EV1-015, EV1-031, EV1-018). fichas_run_3 (2): EV1-018 (completitud compartida) y EV1-035 (simétrica inversa). El verificador no se corrió sobre v2 (protocolo §6).",
+  "n_fallas": 9,
   "fichas": [
     {
       "id": "EV1-005",
@@ -14,7 +14,7 @@
         "Punto 7.1."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "incorrecta",
           "incorrecta",
           "incorrecta"
@@ -185,7 +185,7 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
     },
     {
       "id": "EV1-011",
@@ -203,7 +203,7 @@
         "Punto 6.5.5."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "incorrecta",
           "incorrecta",
           "incorrecta"
@@ -695,7 +695,773 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
+    },
+    {
+      "id": "EV1-015",
+      "pregunta": "Según el criterio general, ¿qué clientes deben ser clasificados por la entidad financiera? ¿Alcanza la obligación a los residentes en el exterior?",
+      "familia": "sujeto",
+      "tos_fuente": [
+        "TO_clasificacion_deudores_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 1.1."
+      ],
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "incorrecta",
+          "incorrecta"
+        ],
+        "correcto_mayoria": false,
+        "patron": "3-0",
+        "n_correcta": 0
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "niegan/eluden el dato que la key afirma; el 1.1 no alcanzado, capturado el vecino 7.1",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Según el criterio general, la clasificación de clientes se efectuará considerando al cabo de cada mes exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones, situación jurídica, informaciones de Central de deudores del sistema financiero, base de Deudores en situación irregular de ex entidades financieras y situación de aplicación de pautas de refinanciación. Respecto a si la obligación alcanza a residentes en el exterior, el Knowledge Graph no contiene información explícita que defina si los residentes en el exterior están incluidos o excluidos del alcance general de la clasificación de clientes. Si bien se encontraron referencias a operaciones con no residentes y excepciones específicas para ciertos tipos de operaciones con el exterior, no hay una disposición clara que establezca si la obligación de clasificación se aplica o no a clientes residentes en el exterior como criterio general.",
+            "citas": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 7.1. Criterio de clasificación."
+              }
+            ],
+            "respondible": false
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes se efectúa al cabo de cada mes."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la situación jurídica del cliente."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera informaciones de la Central de deudores del sistema financiero."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la base de Deudores en situación irregular de ex entidades financieras."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la situación de aplicación de pautas de refinanciación."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Existen referencias a operaciones con no residentes y excepciones específicas para ciertos tipos de operaciones con el exterior en la normativa."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clasificación clientes criterio general",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "residentes exterior obligación clasificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_la_clasificacion_de_clientes_se_efectuara_considerando_al_cabo_de_cada_mes_exclu"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes residentes exterior alcance",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes deben ser clasificados entidad financiera",
+                "limite": 10
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clasificación no aplica residentes exterior excepción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clasificación clientes alcance residentes no residentes",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_cliente"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "criterio general clasificación deudores personas jurídicas personas humanas",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 7 criterio clasificación deudores",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudores no deben ser objeto clasificación residentes exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 4.5 deudores no clasificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes que deben ser clasificados todas las personas jurídicas personas humanas",
+                "limite": 10
+              }
+            },
+            {
+              "n": 16,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "criterio general clasificación todas personas jurídicas",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "niegan/eluden el dato que la key afirma; el 1.1 no alcanzado, capturado el vecino 7.1",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Según el criterio general establecido en el Punto 7.1 de la normativa de Clasificación de Deudores, la clasificación de clientes se efectuará considerando al cabo de cada mes exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones, situación jurídica, informaciones de Central de deudores del sistema financiero, base de Deudores en situación irregular de ex entidades financieras y situación de aplicación de pautas de refinanciación.\n\nRespecto a los residentes en el exterior, la normativa no establece una exclusión general de la obligación de clasificación para estos clientes. Sin embargo, existe una excepción específica en el Punto 6.5 que excluye de clasificación como deficientes a los deudores con financiaciones vinculadas a operaciones de compraventa de títulos valores concertadas con residentes en el exterior, cuando se canalicen por la Caja de Valores S.A., Clearstream, Euroclear o Depositary Trust Company (DTC), originadas en el cumplimiento de la obligación de la entidad financiera interviniente sin que la contraparte cancele su compromiso en el mismo día, en razón de modalidades de liquidación usuales en esos mercados. Esta es una excepción limitada a operaciones específicas, no una exclusión general de residentes en el exterior de la obligación de clasificación.",
+            "citas": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 7.1. Criterio de clasificación."
+              },
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.5. Niveles de clasificación. (parte 5)"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El criterio general de clasificación de clientes está establecido en el Punto 7.1 de la normativa de Clasificación de Deudores."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes se efectúa al cabo de cada mes."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación considera exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación considera la situación jurídica del cliente."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación considera informaciones de la Central de deudores del sistema financiero."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación considera la base de Deudores en situación irregular de ex entidades financieras."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación considera la situación de aplicación de pautas de refinanciación."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El Punto 6.5 de la normativa establece una excepción específica que excluye de clasificación como deficientes a ciertos deudores con financiaciones vinculadas a operaciones de compraventa de títulos valores concertadas con residentes en el exterior."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "La excepción del Punto 6.5 aplica cuando las operaciones se canalizan por la Caja de Valores S.A., Clearstream, Euroclear o Depositary Trust Company (DTC)."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "La excepción del Punto 6.5 aplica cuando la contraparte no cancela su compromiso en el mismo día por modalidades de liquidación usuales en esos mercados."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La excepción del Punto 6.5 es una excepción limitada a operaciones específicas, no una exclusión general de residentes en el exterior."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clasificación clientes criterio general",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "residentes exterior obligación clasificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_la_clasificacion_de_clientes_se_efectuara_considerando_al_cabo_de_cada_mes_exclu"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes residentes exterior alcance",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes que deben ser clasificados",
+                "limite": 10
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "no residentes clasificación excepción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 4.5 deudores no clasificación residentes",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "criterio general clasificación todos clientes deudores",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_mensual_de_deudores_segun_pautas_objetivas"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_mensual_de_deudores_segun_pautas_objetivas"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "residentes exterior no residentes clasificación deudores",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi"
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 4.5 deudores no deben clasificación",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "niegan/eluden el dato que la key afirma; el 1.1 no alcanzado, capturado el vecino 7.1",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Según el criterio general establecido en la regulación del BCRA, la clasificación de clientes se efectuará considerando al cabo de cada mes exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones, situación jurídica, informaciones de Central de deudores del sistema financiero, base de Deudores en situación irregular de ex entidades financieras y situación de aplicación de pautas de refinanciación. Sin embargo, la información disponible en el Knowledge Graph no especifica explícitamente si la obligación de clasificación alcanza o no a los residentes en el exterior. Existe una restricción sobre 'Deudores que no deben ser objeto de clasificación' (Punto 4.5), pero el contenido detallado de esa disposición no está completamente disponible en los datos consultados.",
+            "citas": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 7.1. Criterio de clasificación."
+              }
+            ],
+            "respondible": false
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes se efectúa al cabo de cada mes."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera exclusivamente pautas objetivas vinculadas al grado de cumplimiento de obligaciones."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la situación jurídica del cliente."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera informaciones de la Central de deudores del sistema financiero."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la base de Deudores en situación irregular de ex entidades financieras."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La clasificación de clientes considera la situación de aplicación de pautas de refinanciación."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Existe una disposición denominada 'Deudores que no deben ser objeto de clasificación' identificada como Punto 4.5."
+            }
+          ],
+          "pasos": 14,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clasificación clientes criterio general",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "residentes exterior obligación clasificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_la_clasificacion_de_clientes_se_efectuara_considerando_al_cabo_de_cada_mes_exclu"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes residentes exterior alcance obligación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "no residentes clasificación deudores",
+                "limite": 10
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_deudores_que_no_deben_ser_objeto_de_clasificacion"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "residentes exterior no clasificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes deben ser clasificados obligación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "alcance clasificación deudores residentes",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 4.5 deudores no clasificación residentes",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "clientes residentes país clasificación obligatoria",
+                "limite": 10
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 4 alcance clasificación deudores",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "alcance clasificación residentes no residentes",
+                "limite": 10
+              }
+            }
+          ]
+        }
+      ],
+      "veredicto_causal": "adjudicada (26/07): el 1.1 no alcanzado, capturado el vecino 7.1 — las réplicas niegan/eluden el dato que la key afirma; hit_tool_limit presente (ver réplicas)"
+    },
+    {
+      "id": "EV1-018",
+      "pregunta": "¿Para qué operaciones deben contar las entidades financieras y las empresas no financieras emisoras de tarjetas locales con la conformidad previa del BCRA a fin de acceder al mercado de cambios para realizar pagos al exterior por el uso de tarjetas emitidas en el país?",
+      "familia": "enumerativa",
+      "tos_fuente": [
+        "TO_exterior_cambios_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 4.1.4."
+      ],
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "incorrecta",
+          "incorrecta"
+        ],
+        "correcto_mayoria": false,
+        "patron": "3-0",
+        "n_correcta": 0
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de dichas tarjetas o cualquier modalidad que implique un débito inmediato en una cuenta en una entidad financiera local.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La conformidad previa del BCRA también es requerida para operaciones que impliquen un débito inmediato en una cuenta en una entidad financiera local."
+            }
+          ],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas locales pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "tarjetas locales emisoras conformidad BCRA",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deberán contar con la conformidad previa del BCRA para acceder al mercado de cambios para realizar pagos al exterior por el uso de dichas tarjetas o cualquier modalidad que implique un débito inmediato en una cuenta en una entidad financiera local.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La conformidad previa del BCRA también es requerida para operaciones que impliquen cualquier modalidad que implique un débito inmediato en una cuenta en una entidad financiera local."
+            }
+          ],
+          "pasos": 4,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidades financieras empresas emisoras tarjetas locales mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deberán contar con la conformidad previa del BCRA para acceder al mercado de cambios para realizar pagos al exterior por el uso de dichas tarjetas o cualquier modalidad que implique un débito inmediato en una cuenta en una entidad financiera local.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La conformidad previa del BCRA también es requerida para operaciones que impliquen cualquier modalidad que implique un débito inmediato en una cuenta en una entidad financiera local."
+            }
+          ],
+          "pasos": 4,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidades financieras empresas emisoras tarjetas locales mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            }
+          ]
+        }
+      ],
+      "veredicto_causal": "adjudicada (26/07): no-respuesta — repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida con run_3 (ver fichas_run_3)"
     },
     {
       "id": "EV1-028",
@@ -708,7 +1474,7 @@
         "Punto 1.1.2.5."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "incorrecta",
           "incorrecta",
           "incorrecta"
@@ -1023,7 +1789,7 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
     },
     {
       "id": "EV1-029",
@@ -1037,7 +1803,7 @@
         "Punto 3.1.1.1."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "correcta",
           "incorrecta",
           "incorrecta"
@@ -1529,7 +2295,492 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
+    },
+    {
+      "id": "EV1-031",
+      "pregunta": "En el marco de las exposiciones minoristas normativas, ¿cuál es la exposición máxima admitida frente a una misma persona humana por cartera para consumo al momento del acuerdo?",
+      "familia": "puntual",
+      "tos_fuente": [
+        "TO_capitales_minimos_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.8.3.3."
+      ],
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "incorrecta",
+          "incorrecta"
+        ],
+        "correcto_mayoria": false,
+        "patron": "3-0",
+        "n_correcta": 0
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "evasivas: dato real ajeno + \"el KG no contiene\"",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "En el marco de las exposiciones minoristas normativas, se encontraron dos límites de exposición relevantes: (1) La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad; (2) A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera. Sin embargo, el Knowledge Graph no contiene información específica sobre un límite máximo de exposición expresado en monto absoluto o porcentaje específico para cartera de consumo al momento del acuerdo frente a una misma persona humana.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.8. Exposiciones minoristas."
+              }
+            ],
+            "respondible": false
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana acuerdo momento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición máxima deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo exposición máxima deudor individual minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida cartera consumo minorista normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición cartera consumo minorista normativa acuerdo",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "evasivas: dato real ajeno + \"el KG no contiene\"",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "En el marco de las exposiciones minoristas normativas, se encontraron dos límites de exposición: (1) La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad; (2) A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera. Sin embargo, no se encontró en el grafo un límite específico expresado como monto absoluto o porcentaje fijo aplicable específicamente 'al momento del acuerdo' para la cartera de consumo.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.8. Exposiciones minoristas."
+              }
+            ],
+            "respondible": false
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana acuerdo momento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición máxima deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo exposición máxima deudor individual minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida cartera consumo minorista normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición cartera consumo minorista normativa persona",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "failed_trace": false,
+          "correctitud_juez": "incorrecta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "ya incorrecta; ratificada",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "En el marco de las exposiciones minoristas normativas, la exposición máxima admitida frente a una misma persona humana por cartera para consumo es del 0,2% del total de las exposiciones minoristas normativas de la entidad. Esta es la restricción específica que aplica a las exposiciones minoristas normativas: la exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.8. Exposiciones minoristas."
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La exposición máxima admitida frente a una misma persona humana por cartera para consumo es del 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_limite_de_exposicion_por_contraparte_minorista"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima acuerdo originación consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo límite máximo exposición momento acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima originación cartera consumo normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 16,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición consumo minorista normativa acuerdo",
+                "limite": 10
+              }
+            }
+          ]
+        }
+      ],
+      "veredicto_causal": "adjudicada (26/07): dato no alcanzado (evasivas: dato real ajeno + \"el KG no contiene\"); hit_tool_limit ×3"
     },
     {
       "id": "EV1-039",
@@ -1542,7 +2793,7 @@
         "Punto 1.2."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "incorrecta",
           "incorrecta",
           "incorrecta"
@@ -1989,7 +3240,7 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
     },
     {
       "id": "EV1-042",
@@ -2002,7 +3253,7 @@
         "Punto 3.5.3."
       ],
       "veredictos_mayoria": {
-        "veredictos": [
+        "veredictos_finales": [
           "correcta",
           "incorrecta",
           "incorrecta"
@@ -2478,7 +3729,473 @@
           ]
         }
       ],
-      "veredicto_causal": null
+      "veredicto_causal": "falla ratificada por adjudicación humana (26/07); atribución causal pendiente de la autora"
     }
-  ]
+  ],
+  "fichas_run_3": [
+    {
+      "id": "EV1-018",
+      "pregunta": "¿Para qué operaciones deben contar las entidades financieras y las empresas no financieras emisoras de tarjetas locales con la conformidad previa del BCRA a fin de acceder al mercado de cambios para realizar pagos al exterior por el uso de tarjetas emitidas en el país?",
+      "familia": "enumerativa",
+      "tos_fuente": [
+        "TO_exterior_cambios_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 4.1.4."
+      ],
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "incorrecta",
+          "incorrecta"
+        ],
+        "correcto_mayoria": false,
+        "patron": "3-0",
+        "n_correcta": 0
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de dichas tarjetas emitidas en el país.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [],
+          "pasos": 5,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidades financieras empresas no financieras emisoras tarjetas locales",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_pago_al_exterior_por_tarjeta"
+              }
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de dichas tarjetas emitidas en el país.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Las entidades financieras deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de tarjetas emitidas en el país."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de tarjetas emitidas en el país."
+            }
+          ],
+          "pasos": 5,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidades financieras empresas no financieras emisoras tarjetas locales",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_pago_al_exterior_por_tarjeta"
+              }
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida",
+          "completitud": "parcial",
+          "respuesta_final": {
+            "respuesta": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de dichas tarjetas emitidas en el país.",
+            "citas": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Las entidades financieras deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de tarjetas emitidas en el país."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Las empresas no financieras emisoras de tarjetas locales deben contar con la conformidad previa del BCRA para acceder al mercado de cambios a fin de realizar pagos al exterior por el uso de tarjetas emitidas en el país."
+            }
+          ],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "conformidad previa BCRA mercado cambios tarjetas pagos exterior",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidades financieras empresas emisoras tarjetas locales mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc"
+              }
+            }
+          ]
+        }
+      ],
+      "veredicto_causal": "adjudicada (26/07): no-respuesta — repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida con grafo_v2"
+    },
+    {
+      "id": "EV1-035",
+      "pregunta": "¿Puede considerarse normativa una exposición con garantía hipotecaria cuando el inmueble que la garantiza todavía está en construcción?",
+      "familia": "condicional",
+      "tos_fuente": [
+        "TO_capitales_minimos_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.9.2.2."
+      ],
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "incorrecta",
+          "incorrecta"
+        ],
+        "correcto_mayoria": false,
+        "patron": "3-0",
+        "n_correcta": 0
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "excepción enunciada sin sus condiciones esenciales — sobre-ampliación",
+          "completitud": "completa",
+          "respuesta_final": {
+            "respuesta": "No, según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción importante. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, la respuesta depende del tipo de deudor: si es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción; si es otra clase de deudor, no lo sería.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa."
+            }
+          ],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa requisitos hipotecaria",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "failed_trace": false,
+          "correctitud_juez": "correcta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "excepción enunciada sin sus condiciones esenciales — sobre-ampliación",
+          "completitud": "completa",
+          "respuesta_final": {
+            "respuesta": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza está todavía en construcción. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción importante: este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, la respuesta depende del tipo de deudor: si es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción; si es otra clase de deudor, no lo sería.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre un inmueble en construcción no puede considerarse normativa."
+            }
+          ],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa requisitos hipotecaria",
+                "limite": 10
+              }
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "failed_trace": false,
+          "correctitud_juez": "incorrecta",
+          "veredicto_humano": "incorrecta",
+          "causa_laudo": "ya incorrecta; ratificada",
+          "completitud": "completa",
+          "respuesta_final": {
+            "respuesta": "No, una exposición con garantía hipotecaria no puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción importante. Según la normativa del BCRA, la exposición deberá estar garantizada por un inmueble terminado. Sin embargo, este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, si la exposición es una financiación a una persona humana garantizada por un inmueble en construcción, sí puede considerarse normativa; en caso contrario, no cumple con los requisitos normativos.",
+            "citas": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+              }
+            ],
+            "respondible": true
+          },
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "Una exposición que no sea financiación a persona humana y esté garantizada por un inmueble en construcción no cumple con los requisitos normativos para ser considerada normativa."
+            }
+          ],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa requisitos hipotecaria",
+                "limite": 5
+              }
+            }
+          ]
+        }
+      ],
+      "veredicto_causal": "adjudicada (26/07): amputación de condiciones de la excepción — excepción enunciada sin sus condiciones esenciales (sobre-ampliación); registrada como simétrica inversa (v2 mayoría correcta ratificada)"
+    }
+  ],
+  "actualizado": "2026-07-26 (adjudicación humana)"
 }

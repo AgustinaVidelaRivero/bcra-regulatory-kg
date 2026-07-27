@@ -103,3 +103,33 @@ Mini anti-solapamiento (top 3): CQ-017 0.217 · CQN2-013 0.209 · CQ-014 0.187 �
 [OK] conteo por documento: Clasificación 7 · Exterior 8 · CapMin 7 · RegInf 7 · Protección 7 (todos ≥5)
      (esperado corregido por la autora: su "Clasificación 6" anterior fue error aritmético)
 ```
+
+---
+
+## Muestreo dirigido de flags (26/07, laudos humanos post-corrida)
+
+### Método
+
+Sobre las réplicas flaggeadas con `requiere_adjudicacion_humana` por el juez v2.1.1 (30 réplicas; muestreo dirigido compilado en `muestreo_flags.json`: EV1-007, 015, 018, 027, 031, 034, 035), adjudicación humana réplica por réplica contra las **piezas esenciales de la key adjudicada**, con la **misma vara para ambos brazos**. Los laudos se volcaron literalmente a `adjudicacion_humana_2026-07-26.json` (40 laudos por réplica; el veredicto humano prevalece sobre el del juez donde hay laudo). EV1-011 y EV1-029: sin cambios (subsumidas en fichas).
+
+### Laudos
+
+| Pregunta | Laudo |
+|---|---|
+| EV1-015 | v2 r1/r2/r3 → **incorrecta** (niegan/eluden el dato que la key afirma; el 1.1 no alcanzado, capturado el vecino 7.1); run_3 ×3 correcta ratificada |
+| EV1-031 | v2 r1/r2 → **incorrecta** (evasivas: dato real ajeno + "el KG no contiene"); r3 ya incorrecta; run_3 ×3 correcta ratificada |
+| EV1-018 | AMBOS brazos ×6 → **incorrecta** (no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida) |
+| EV1-035 | run_3 r1/r2 → **incorrecta** (excepción enunciada sin sus condiciones esenciales — sobre-ampliación); r3 ya incorrecta; v2 r1/r3 correcta + r2 parcial → mayoría correcta ratificada |
+| EV1-007 | run_3 r3 → **incorrecta** (evasiva aprobada); mayoría run_3 queda 2-1 correcta; v2 ×3 correcta ratificada |
+| EV1-027 | ×6 correcta ratificada |
+| EV1-034 | ×6 correcta ratificada (nota: omisión menor especular — minoritarias/no-asignados) |
+
+### Hallazgos
+
+(a) "el juez mostró indulgencia con respuestas evasivas en ambas direcciones y bajo flag su veredicto no es confiable — regla resultante: todo veredicto flaggeado requiere muestreo humano antes de integrar tablas"
+
+(b) "en EV1-035 el juez emitió veredictos opuestos (correcta r1 / incorrecta r3) sobre respuestas casi idénticas — evidencia adicional de no-determinismo que motiva la regla N=3+mayoría y el muestreo"
+
+### Efecto sobre las tablas
+
+Con los laudos integrados (verificación exacta contra lo esperado): **run_3 31/36 · grafo_v2 27/36 · b=2 (EV1-023, EV1-035) · c=6 (EV1-005, 015, 029, 031, 039, 042) · ambos fallan: EV1-011, 018, 028.** Tabla final en `resultados_FINALES_2026-07-26.json`; fichas actualizadas en `corridas/fichas_fallas_v2.json` (9 de v2 + 2 de run_3).
