@@ -1,0 +1,469 @@
+{
+ "id_falla": "run_3/EV1-023",
+ "run": "run_3",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"precancelación comisiones financiación\", \"limite\": 10}",
+    "devolvio": "124 matches; entre ellos el nodo Restriccion 'Precancelación sin comisiones tras plazo mínimo' con resumen que empieza 'En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del pl…'",
+    "pertinente": true
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"precancelación total operación comisión\", \"limite\": 10}",
+    "devolvio": "988 matches; nodos de precancelación varios (tarjeta, canje, deuda) no pertinentes a la regla de comisiones de la Sección 2.3",
+    "pertinente": false
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\"}",
+    "devolvio": "descripcion: 'En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento' (SIN el criterio 'de ambos el mayor'); provenance Punto 2.3. (parte 2)",
+    "pertinente": true
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 3,
+   "quote": "descripcion: En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento"
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Condición temporal bajo la cual no se admite la aplicación de comisiones por la precancelación total de la operación en una financiación"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "completitud_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Condición temporal (criterio de resolución entre la cuarta parte del plazo y los 180 días) bajo la cual no se admiten comisiones por precancelación total",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "La condición temporal se cumple con lo que ocurra primero entre la cuarta parte del plazo original y los 180 días corridos.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento",
+     "ubicacion": "Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu (descripcion íntegra, paso 3)"
+    },
+    "fuente": {
+     "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.1 (p. 12)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "de ambos el mayor precancelación",
+     "resultado": "el único nodo de la regla de comisiones por precancelación total sigue siendo Restriccion_en_el_caso_de_precancelacion_total... cuyo resumen se corta en 'la cuarta parte del pl…'; ningún nodo porta 'de ambos el mayor' aplicado a esta regla"
+    },
+    {
+     "consulta": "precancelación total no se admitirá aplicación comisiones mayor",
+     "resultado": "7 tokens matcheados en el mismo nodo Restriccion; ningún otro nodo contiene el criterio 'de ambos el mayor' para la precancelación total"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "faithfulness",
+   "causa_capa2": "alucinacion_agente",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Criterio de resolución entre las dos condiciones temporales",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, lo que ocurra primero.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento",
+     "ubicacion": "Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu (no contiene ningún criterio de resolución del 'o')"
+    },
+    "fuente": {
+     "quote": "180 días corridos desde su otorgamiento, de ambos el mayor.",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.1 (p. 12)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "de ambos el mayor precancelación",
+     "resultado": "ningún nodo de la trayectoria ni del grafo aporta 'lo que ocurra primero'; el criterio real del PDF es el opuesto ('de ambos el mayor'): la glosa del agente es de cosecha propia y verificación negativa contra el PDF"
+    },
+    {
+     "consulta": "precancelación total no se admitirá aplicación comisiones mayor",
+     "resultado": "ningún nodo soporta 'lo que ocurra primero'"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "SÍNTOMA: el juez reprobó el claim 'la condición temporal se cumple con lo que ocurra primero'. Una sola pata: el criterio temporal completo. Los sub-datos aprobados ('cuarta parte del plazo' y '180 días') están en el nodo y en el PDF. El punto que decide el claim fallido es el CRITERIO DE RESOLUCIÓN entre ambas condiciones. C1a (por pata): ¿apareció en la trayectoria el dato pertinente que resuelve el 'o'? NO. El contenido íntegro del nodo consultado (verificado con ver_paso_completo del paso 3) termina en '180 días corridos desde su otorgamiento' y OMITE el criterio. La pata quedó sin su dato pertinente → context_recall. C2: ¿existe nodo portador de 'de ambos el mayor'? Constancia de búsqueda (dos consultas): el único nodo de la regla es el consultado, truncado; ningún otro lo porta. ¿El PDF lo tiene? SÍ, literal en 2.3.2.1 (p. 12): '…180 días corridos desde su otorgamiento, de ambos el mayor.' Dato presente en la fuente y ausente en el grafo por extracción truncada → completitud_kg, PRIMARIA (el hueco del grafo empujó la glosa). Como defecto adicional distinto (C1b), el agente no se limitó a omitir: afirmó 'lo que ocurra primero', un claim SIN soporte en ningún nodo de su trayectoria → faithfulness. C2 para ese síntoma: ¿el grafo tenía el dato afirmado? Búsqueda documentada: ningún nodo porta 'lo que ocurra primero'; ¿el PDF? Tampoco —dice el criterio OPUESTO ('de ambos el mayor')— glosa de cosecha propia → alucinacion_agente modo (b), SECUNDARIA (no hay nodo que exhibir: la evidencia es la constancia de búsqueda más la verificación negativa contra el PDF). Se descarta noise_sensitivity/contenido_kg sobre el claim central porque el nodo no afirma 'lo que ocurra primero' (omite, no contradice). Se descarta aplicacion_erronea porque no hubo nodo de otro alcance mal aplicado. Se descarta sin_defecto porque el claim central es incorrecto contra el PDF. Nota lateral: la provenance del nodo cita 'Punto 2.3 (parte 2)' cuando el contenido real está en 2.3.2.1 —imprecisión de cita— pero no es la causa del fallo del claim, por lo que no se emite como atribución del veredicto.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": true,
+  "flag_contexto": false,
+  "tool_calls_usadas": 28,
+  "max_tool_calls": 40,
+  "tokens_in": 546156,
+  "tokens_out": 12231
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 1,
+  "tool_calls_used": 28,
+  "tokens_in": 546156,
+  "tokens_out": 12231,
+  "latency_s": 172.146,
+  "error": null,
+  "final_raw": "La segunda atribución tiene un síntoma mal etiquetado. La glosa \"lo que ocurra primero\" es un claim con soporte que se puede juzgar por faithfulness. Pero según la precedencia por pata, el dato pertinente nunca apareció → la pata es context_recall y los claims de relleno no se clasifican por separado salvo que agreguen un defecto distinto. El defecto adicional (glosa inventada) corresponde a faithfulness → alucinacion_agente modo (b). Corrijo el síntoma de la segunda atribución a `faithfulness`, que sí conecta con `alucinacion_agente` en el árbol.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación comisiones financiación\\\", \\\"limite\\\": 10}\", \"devolvio\": \"124 matches; entre ellos el nodo Restriccion 'Precancelación sin comisiones tras plazo mínimo' con resumen que empieza 'En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del pl…'\", \"pertinente\": true},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"precancelación total operación comisión\\\", \\\"limite\\\": 10}\", \"devolvio\": \"988 matches; nodos de precancelación varios (tarjeta, canje, deuda) no pertinentes a la regla de comisiones de la Sección 2.3\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\\\"}\", \"devolvio\": \"descripcion: 'En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento' (SIN el criterio 'de ambos el mayor'); provenance Punto 2.3. (parte 2)\", \"pertinente\": true}\n    ],\n    \"paso_decision_error\": {\"paso\": 3, \"quote\": \"descripcion: En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\"Condición temporal bajo la cual no se admite la aplicación de comisiones por la precancelación total de la operación en una financiación\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Condición temporal (criterio de resolución entre la cuarta parte del plazo y los 180 días) bajo la cual no se admiten comisiones por precancelación total\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"La condición temporal se cumple con lo que ocurra primero entre la cuarta parte del plazo original y los 180 días corridos.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento\", \"ubicacion\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu (descripcion íntegra, paso 3)\"},\n        \"fuente\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.1 (p. 12)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor precancelación\", \"resultado\": \"el único nodo de la regla de comisiones por precancelación total sigue siendo Restriccion_en_el_caso_de_precancelacion_total... cuyo resumen se corta en 'la cuarta parte del pl…'; ningún nodo porta 'de ambos el mayor' aplicado a esta regla\"},\n        {\"consulta\": \"precancelación total no se admitirá aplicación comisiones mayor\", \"resultado\": \"7 tokens matcheados en el mismo nodo Restriccion; ningún otro nodo contiene el criterio 'de ambos el mayor' para la precancelación total\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Criterio de resolución entre las dos condiciones temporales\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento, lo que ocurra primero.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento\", \"ubicacion\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu (no contiene ningún criterio de resolución del 'o')\"},\n        \"fuente\": {\"quote\": \"180 días corridos desde su otorgamiento, de ambos el mayor.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 2.3.2.1 (p. 12)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"de ambos el mayor precancelación\", \"resultado\": \"ningún nodo de la trayectoria ni del grafo aporta 'lo que ocurra primero'; el criterio real del PDF es el opuesto ('de ambos el mayor'): la glosa del agente es de cosecha propia y verificación negativa contra el PDF\"},\n        {\"consulta\": \"precancelación total no se admitirá aplicación comisiones mayor\", \"resultado\": \"ningún nodo soporta 'lo que ocurra primero'\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"SÍNTOMA: el juez reprobó el claim 'la condición temporal se cumple con lo que ocurra primero'. Una sola pata: el criterio temporal completo. Los sub-datos aprobados ('cuarta parte del plazo' y '180 días') están en el nodo y en el PDF. El punto que decide el claim fallido es el CRITERIO DE RESOLUCIÓN entre ambas condiciones. C1a (por pata): ¿apareció en la trayectoria el dato pertinente que resuelve el 'o'? NO. El contenido íntegro del nodo consultado (verificado con ver_paso_completo del paso 3) termina en '180 días corridos desde su otorgamiento' y OMITE el criterio. La pata quedó sin su dato pertinente → context_recall. C2: ¿existe nodo portador de 'de ambos el mayor'? Constancia de búsqueda (dos consultas): el único nodo de la regla es el consultado, truncado; ningún otro lo porta. ¿El PDF lo tiene? SÍ, literal en 2.3.2.1 (p. 12): '…180 días corridos desde su otorgamiento, de ambos el mayor.' Dato presente en la fuente y ausente en el grafo por extracción truncada → completitud_kg, PRIMARIA (el hueco del grafo empujó la glosa). Como defecto adicional distinto (C1b), el agente no se limitó a omitir: afirmó 'lo que ocurra primero', un claim SIN soporte en ningún nodo de su trayectoria → faithfulness. C2 para ese síntoma: ¿el grafo tenía el dato afirmado? Búsqueda documentada: ningún nodo porta 'lo que ocurra primero'; ¿el PDF? Tampoco —dice el criterio OPUESTO ('de ambos el mayor')— glosa de cosecha propia → alucinacion_agente modo (b), SECUNDARIA (no hay nodo que exhibir: la evidencia es la constancia de búsqueda más la verificación negativa contra el PDF). Se descarta noise_sensitivity/contenido_kg sobre el claim central porque el nodo no afirma 'lo que ocurra primero' (omite, no contradice). Se descarta aplicacion_erronea porque no hubo nodo de otro alcance mal aplicado. Se descarta sin_defecto porque el claim central es incorrecto contra el PDF. Nota lateral: la provenance del nodo cita 'Punto 2.3 (parte 2)' cuando el contenido real está en 2.3.2.1 —imprecisión de cita— pero no es la causa del fallo del claim, por lo que no se emite como atribución del veredicto.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3 (PDF pág 29)\", \"pasaje\": \"2.3. Del Banco Central de la República Argentina. \\nE\\nn la sede en la cual desempeñe sus funciones el responsable de atención al usuario \\nde servicios financieros (titular o suplente a cargo) deberán encontrarse a disposición \\ndel BCRA: \\n3.\\n2.3.1. Acceso al Registro Centralizado de Consultas y Reclamos así como la doc u-\\nmentación respaldatoria de los trámites a que dieron lugar. \\n3.\\n2.3.2. El manual de procedimiento respectivo. \\n3.\\n2.3.3. Los reportes integrales escritos anuales de la auditoría interna del sujeto obl i-\\ngado. \\n3.\\n2.3.4. Los reportes elaborados por el responsable de atención al usuario de servicios \\nfinancieros de conformidad con el punto 3.1.1.8., con la respectiva evaluación \\ndel Directorio –o autoridad equivalente–, o del Directivo Responsable de Pr o-\\ntección de los Usuarios de Servicios Financieros o del Comité de Protección de \\nlos Usuarios de Servicios Financieros, según corresponda, del sujeto … [+420 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "precancelación total comisiones cuarta parte plazo 180 días",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"precancelación total comisiones cuarta parte plazo 180 días\", \"total_con_match\": 222, \"resultados\": [{\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\", \"type\": \"Restriccion\", \"label\": \"Precancelación sin comisiones tras plazo mínimo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del pl…\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_mercado_de_cambios_en_180_dias_corridos_para_el_resto_d\", \"type\": \"Obligacion\", \"label\": \"Ingreso en plazo 180 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ingreso y liquidación en mercado de cambios en 180 días corridos para el resto de los bienes\"}, {\"id\": \"Restriccion_hasta_cinco_prorrogas_sucesivas_de_hasta_180_dias_corridos\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo gestión de cobro\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Hasta cinco prórrogas sucesivas de hasta 180 días corridos\"}, {\"id\": \"Restriccion_plazo_vigencia_garantia_maximo_180_dias\", \"type\": \"Restriccion\", \"label\": \"Plazo vigencia garantía máxim… [+2376 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.7"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.7\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.7 (PDF pág 17)\", \"pasaje\": \"2.3.7. Nuevas copias de documentación.\\nEl usuario de servicios financieros podrá solicitar –a su cargo y en cualquier momento\\nde la relación de consumo – al sujeto obligado nuevas copias del/de el/los contrato/s vi-\\ngente/s que lo vinculan con él.\\n2.3.8. Interpretación.\\nLa interpretación del contrato se hará en el sentido más favorable para el usuario de\\nservicios financieros. Cuando existan dudas sobre el alcance de su obligació n se estará\\na la que sea menos gravosa.\\n2.3.9. Cláusulas abusivas.\\nEn los contratos celebrados entre el usuario de servicios financieros y los sujetos obli-\\ngados, se tendrán por no escritas las cláusulas que:\\n2.3.9.1. Desnaturalicen las obligaciones del sujeto obligado.\\n2.3.9.2. Importen una renuncia o restricción a los derechos del usuario de servicios fi-\\nnancieros, o amplíen derechos del sujeto obligado.\\n2.3.9.3. Por su contenido, redacción o presentación no sea razonable esperar que se\\nlas incluya por no guardar conexión con la naturaleza d… [+424 chars]"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.6"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.6\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.6 (PDF pág 16)\", \"pasaje\": \"2.3.6. Restricciones al uso de productos y/o servicios contratados.\\nLas entidades financieras, las empresas no financieras emisoras de tarjetas de crédito\\ny/o compra y los otros proveedores no financieros de crédito que, como resultado de la\\naplicación de medidas de seguridad, imposibiliten el uso de productos y/o servicios con-\\ntratados por un usuario de servicios fi nancieros –por ejemplo, a través  del bloqueo de\\nVersión: 10a. COMUNICACIÓN  “A”  8203 Vigencia:\\n27/02/2025 Página 12\\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS\\nSección 2. Derechos básicos de los usuarios de servicios financieros.\"}"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "precancelación"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"precancelación\", \"ref\": \"precancelación\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.10"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.10\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.10 (PDF pág 18)\", \"pasaje\": \"2.3.10. Irrenunciabilidad.\\nLos derechos y/o facultades reconocidos al usuario por estas normas no pueden en\\nningún caso ser dispensados ni renunciados.\\n2.3.11. Denominaciones.\\nLa denominación de los productos o servicios en las solicitudes, contratos, sist ema de\\nbanca por Internet ( home banking) y resúmenes de cuenta deberá ajustarse a la pre-\\nvista en las normas del BCRA (caja de ahorros en pesos, caja de ahorros en dólares,\\ncuenta corriente bancaria, cuenta sueldo/de la seguridad social, etc.), sin perjuici o de\\nque se pueda aludir adicionalmente al paquete comercial que eventualmente confor-\\nmen.\\n2.3.12. Seguros como contratación accesoria a un servicio financiero.\\nComprende aquellos seguros que se contraten a los efectos de disminuir los riesgos\\nasociados a las financiaciones que otorgue el sujeto obligado.\\n2.3.12.1. Seguros de vida sobre saldo deudor.\\nLos sujetos obligados no podrán percibir de los usuarios ningún tipo de co-\\nmisión y/o cargo vinculado con estos… [+426 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.11"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.11\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.11 (PDF pág 18)\", \"pasaje\": \"2.3.11. Denominaciones.\\nLa denominación de los productos o servicios en las solicitudes, contratos, sist ema de\\nbanca por Internet ( home banking) y resúmenes de cuenta deberá ajustarse a la pre-\\nvista en las normas del BCRA (caja de ahorros en pesos, caja de ahorros en dólares,\\ncuenta corriente bancaria, cuenta sueldo/de la seguridad social, etc.), sin perjuici o de\\nque se pueda aludir adicionalmente al paquete comercial que eventualmente confor-\\nmen.\\n2.3.12. Seguros como contratación accesoria a un servicio financiero.\\nComprende aquellos seguros que se contraten a los efectos de disminuir los riesgos\\nasociados a las financiaciones que otorgue el sujeto obligado.\\n2.3.12.1. Seguros de vida sobre saldo deudor.\\nLos sujetos obligados no podrán percibir de los usuarios ningún tipo de co-\\nmisión y/o cargo vinculado con estos seguros.\\nDichos sujetos deberán contratar un seguro sobre saldo deudor con cobertu-\\nra de fallecimiento e invalidez total permanente respecto de aquella… [+425 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.13"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.13\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.13 (PDF pág 19)\", \"pasaje\": \"2.3.13. Seguros como contratación no accesoria a un servicio financiero. \\n \\nLos sujetos obligados no podrán percibir de los usuarios ning ún tipo de retribución  \\n–comisión y/o cargo – adicional al premio determinado por la aseguradora, vinculada \\ncon la actividad de intermediación de contratos de seguros generales prevista en el \\npunto 3.1.2. del TO sobre Servicios Complementarios de la Actividad Financiera y Acti-\\nvidades Permitidas. \\n \\nEl premio que el sujeto obligado reciba del usuario no podrá ser superior al importe que \\nla compañía de seguros elegida perciba por operaciones con particulares y sin la inter-\\nvención del sujeto obligado. \\n \\n2.3.14. Información al usuario. \\n \\nEn oportunidad del envío de resúmenes de cuenta, el sujeto obligado deberá incluir  \\n–según corresponda– las siguientes leyendas en un lugar visible y con letras de tama-\\nño destacado: \\n \\n- “Usted puede solicitar la “Caja de ahorros” en pesos con las prestaciones previstas \\nen el punto 1.8.… [+427 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.14"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.14\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.14 (PDF pág 19)\", \"pasaje\": \"2.3.14. Información al usuario. \\n \\nEn oportunidad del envío de resúmenes de cuenta, el sujeto obligado deberá incluir  \\n–según corresponda– las siguientes leyendas en un lugar visible y con letras de tama-\\nño destacado: \\n \\n- “Usted puede solicitar la “Caja de ahorros” en pesos con las prestaciones previstas \\nen el punto 1.8. del TO sobre Depósitos de Ahorro, Cuenta Sueldo y Especiales, \\nlas cuales serán gratuitas”. (Entidades financieras)  \\n \\n- “Usted puede consultar el “Régimen de Tr ansparencia” elaborado por el Banco \\nCentral sobre la base de la información proporcionada por los sujetos obligados a \\nfin de comparar los costos y características de los productos y servicios financieros \\ningresando a https://www.bcra.gob.ar/regimen-de-transparencia/ \\n \\n- “Los consumos en dólares de sus tarjetas de crédito podrán ser cancelados en esa \\nmoneda extranjera o en pesos, siendo aplicable como máximo en este caso el tipo \\nde cambio vendedor (aplicable para operaciones efectu… [+424 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.15"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.15\", \"ref\": \"Punto/Sección 2.3.15 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 11,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.16"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.16\", \"ref\": \"Punto/Sección 2.3.16 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 12,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.12.4"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.12.4\", \"ref\": \"Punto/Sección 2.3.12.4 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 13,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "cuarta parte del plazo"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"cuarta parte del plazo\", \"ref\": \"cuarta parte del plazo\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 14,
+    "tool": "ver_vecinos",
+    "input": {
+     "id": "Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu",
+     "direccion": "ambas"
+    },
+    "output_truncado": "{\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\", \"label\": \"Precancelación sin comisiones tras plazo mínimo\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\", \"vecino_label\": \"Protección de Usuarios\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)\"}]}, {\"relation\": \"prohibe\", \"vecino_id\": \"Operacion_precancelacion_de_financiacion\", \"vecino_label\": \"Precancelación de financiaciones de exportación\", \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)\"}]}], \"salientes_truncado\": false, \"entran… [+38 chars]"
+   },
+   {
+    "n": 15,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 20"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 20\", \"metodo\": \"pagina\", \"ref\": \"p.20 (PDF absoluto 1-based)\", \"pasaje\": \"- “Los consumos en dólares de sus tarjetas de crédito podrán ser cancelados en esa\\nmoneda extranjera o en pesos, siendo aplicable en este caso el tipo de cambio\\nvendedor por canales electrónicos publicado por el Banco de la Nación Argentina\\nel mismo día hábil de la fecha de pago, o el hábil inmediato anterior cuando el p a-\\ngo se efectúe un día inhábil”. (Empresas no financieras emisoras de tarjetas de \\ncrédito y/o compra) \\n2.4. Publicidad de la información.\\nLas entidades financieras, las empresas no financieras emisoras de tarjetas de crédito y los\\notros proveedores no financieros de crédito deberán dar cumplimiento a las siguientes cond i-\\nciones en cuanto al acceso a la informaci ón por parte de los usuarios de servicios financieros\\nque revistan el carácter de consumidores finales o de micro, pequeñas y medianas empresas\\n(Mipyme), en este último caso de acuerdo con el TO sobre Determinación de la Condición de\\nMicro, Pequeña y Mediana Empresa.\\n2.4.1. Todas las casas operativas de … [+1828 chars]"
+   },
+   {
+    "n": 16,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 19"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 19\", \"metodo\": \"pagina\", \"ref\": \"p.19 (PDF absoluto 1-based)\", \"pasaje\": \"El cargo que el sujeto obligado aplique al usuario no podrá ser superior al \\nque la compañía de seguros elegida perciba por operaciones con particula-\\nres y sin la intervención del sujeto obligado, concertadas en el lugar de con-\\ntratación o de domicilio del usuario. \\n \\nEn ningún caso los sujetos obligados podrán registra r retribuciones ni utili-\\ndades por los seguros qu e sus usuarios contraten con carácter accesorio a \\nun servicio financiero –independientemente de que se trate de una solicitud \\ndel usuario o de una condición establecida por el sujeto obligado para acce-\\nder al servicio financiero–, por lo cual esos conceptos no podrán integrar los \\ncargos que se les transfieran ni percibirse directa o indirectamente de la \\ncompañía de seguros. \\n \\n2.3.13. Seguros como contratación no accesoria a un servicio financiero. \\n \\nLos sujetos obligados no podrán percibir de los usuarios ning ún tipo de retribución  \\n–comisión y/o cargo – adicional al premio determinado por la asegurador… [+1839 chars]"
+   },
+   {
+    "n": 17,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 18"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 18\", \"metodo\": \"pagina\", \"ref\": \"p.18 (PDF absoluto 1-based)\", \"pasaje\": \"2.3.9.8. Permitan al sujeto obligado, directa o indirectamente, alterar el importe de las\\ntasas, comisiones y/o cargos de manera unilateral, apartándose del mecanis-\\nmo previsto en toda la normativa aplicable, para modificación de cláusulas con-\\ntractuales.\\n2.3.10. Irrenunciabilidad.\\nLos derechos y/o facultades reconocidos al usuario por estas normas no pueden en\\nningún caso ser dispensados ni renunciados.\\n2.3.11. Denominaciones.\\nLa denominación de los productos o servicios en las solicitudes, contratos, sist ema de\\nbanca por Internet ( home banking) y resúmenes de cuenta deberá ajustarse a la pre-\\nvista en las normas del BCRA (caja de ahorros en pesos, caja de ahorros en dólares,\\ncuenta corriente bancaria, cuenta sueldo/de la seguridad social, etc.), sin perjuici o de\\nque se pueda aludir adicionalmente al paquete comercial que eventualmente confor-\\nmen.\\n2.3.12. Seguros como contratación accesoria a un servicio financiero.\\nComprende aquellos seguros que se contraten a los efectos … [+1624 chars]"
+   },
+   {
+    "n": 18,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 24"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 24\", \"metodo\": \"pagina\", \"ref\": \"p.24 (PDF absoluto 1-based)\", \"pasaje\": \"3.1.1.4. Verificar que la publicidad que por cualquier medio real ice el sujeto obligado \\nsobre productos y servicios que ofrezca se ajuste a las normativas vigentes en \\nigual materia. \\n \\n3.1.1.5. Velar por el cumplimiento de las disposiciones de la Sección 2. en todos los \\npuntos de atención al usuario (casas operativas y cajeros automáticos) del s u-\\njeto obligado que representa. \\n \\n3.1.1.6. Dirigir el proceso de análisis de las causas generadoras de los eventos de r e-\\nclamos, estén o no relacionados con la devolución de importe prevista en el úl-\\ntimo párrafo del punto 2.3.5.1., de los que pueda inferirse la afectación de un \\nconjunto de usuarios, propendiendo a las correcciones que eviten que se orig i-\\nnen nuevos casos.”  \\n \\n3.1.1.7. Administrar y tener actualizado: (i) el Registro Centralizado de Consultas y R e-\\nclamos (RCCR) a que se refiere el punto 3.1.3.; (ii) el Registro de Reintegros de \\nImportes (RRI) previsto en el punto 3.1.4.; y (iii) el Registro de Denuncias an… [+1837 chars]"
+   },
+   {
+    "n": 19,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 25"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 25\", \"metodo\": \"pagina\", \"ref\": \"p.25 (PDF absoluto 1-based)\", \"pasaje\": \"3.1.2. Manual de procedimiento. \\n \\nLos sujetos obligados deberán explicitar en un manual de procedimiento los pasos y los \\nrecaudos que observarán para la atención de las consultas y reclamos de sus usuarios \\nde servicios financieros. \\n \\nDeberá ser aprobado por el Directorio o autoridad equivalente del sujeto obligado, pr e-\\nvia toma de conocimiento del Comité de Auditoría y, según corresponda, del Directivo \\nResponsable de Prot ección de los Usuarios de Servicios Financieros o del Comité de \\nProtección de los Usuarios de Servicios Financieros, dejando constancia en el acta res-\\npectiva de la versión que se autoriza. \\n \\nEl mismo procedimiento será de aplicación para toda modificación q ue se realice del \\nmanual. \\n \\nSe deberán definir detalladamente los procedimientos de atención aplicables a cada t i-\\npo de usuario de servicios financieros, contemplando separadamente los casos espe-\\nciales del punto 2.2. \\n \\n3.1.3. Registro Centralizado de Consultas y Reclamos (RCCR). \\n \\nSe d… [+1838 chars]"
+   },
+   {
+    "n": 20,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 15"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 15\", \"metodo\": \"pagina\", \"ref\": \"p.15 (PDF absoluto 1-based)\", \"pasaje\": \"- Específicas de la cuenta corriente: mantenimiento de cuenta y talonario de\\ncheques.\\n- Paquete destinado a beneficiarios de prestaciones de la seguridad social que\\nincluyan el servicio de adelanto de haberes jubilatorios.\\n- Servicio de mantenimiento de paquetes.\\n2.3.5. Reintegro de importes.\\n2.3.5.1. Todo importe cobrado o adeudado de cualquier forma al usuario de servicios fi-\\nnancieros por los siguientes conceptos:\\ni) tasas de interés, comisiones y/o cargos sin el cumplimiento de lo previsto\\nen los puntos 2.3.2. a 2.3.4.;\\nii) cargos en exceso de los costos de los servicios que terceros les cobraron a\\nlos sujetos obligados en relación con servicios prestados a los usuarios y/o\\nde los precios que el tercero prestador perciba de particulares en general;\\niii) comisiones en exceso de las máximas fijadas por el BCRA que sean de\\naplicación;\\niv) en incumplimiento al nivel de la tasa de interés máxima aplicable a finan-\\nciaciones vinculadas a tarjetas de crédito previstas en el texto o… [+1242 chars]"
+   },
+   {
+    "n": 21,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 16"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 16\", \"metodo\": \"pagina\", \"ref\": \"p.16 (PDF absoluto 1-based)\", \"pasaje\": \"En tales situaciones, corresponderá reconocer el importe de los gastos que re-\\nsulten razonables realizados para la obtención del reintegro y, en todos los ca-\\nsos, los intereses compensatorios pertinentes, computados desde la fecha del\\ncobro indebido h asta la de su efectiva devolución. A ese efecto, el sujeto obli-\\ngado deberá aplicar 1,5 veces la tasa promedio correspondiente al período\\ncomprendido entre el momento en que la citada diferencia hubiera sido exigible\\n–fecha en la que se cobraron los importe s objeto del reclamo– y el de su efecti-\\nva cancelación, computado a partir de la encuesta diaria de tasas de interés de\\ndepósitos a plazo fijo de 30 a 59 días –de pesos o dólares estadounidenses,\\nsegún la moneda de la operación – informada por el BCRA sobre la base de la\\ninformación provista por la totalidad de bancos públicos y privados. Cuando la\\ntasa correspondiente a tal encuesta no estuviera disponible, se deberá tomar la\\núltima informada.\\nCuando el usuario posea en la enti… [+1831 chars]"
+   },
+   {
+    "n": 22,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 13"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 13\", \"metodo\": \"pagina\", \"ref\": \"p.13 (PDF absoluto 1-based)\", \"pasaje\": \"d) Generación de resúmenes de cuenta y envío de resúmenes de cuenta\\nvirtual (esos servicios deben estar incluidos en la comisión por manteni-\\nmiento de cuenta).\\ne) Evaluación, otorgamiento y/o administración de financiaciones.\\nf) Gastos de tasación, notariales o de escribanía que se originen en ocasión\\ndel otorgamiento o cancelación de financiaciones –tales como de\\nconstitución de prenda o hipoteca–.\\n2.3.3. Exposición de las tasas de interés y del costo financiero total (CFT) en los documentos.\\nPara las operaciones de financiación debe aplicarse lo dispuesto en el punto 3.2. de l\\nTO sobre Tasas de Interés en las Operaciones de Crédito.\\nLa falta de inclusión en los documentos de la tasa de interés y/o del costo financiero to-\\ntal determinará que el sujeto obligado podrá aplicar al usuario, como máximo CFT, la\\ntasa promedio que surja de la encuesta de tasas de interés de depósitos a plazo fijo de\\n30 a 59 días –de pesos o dólares estadounidenses, según la moneda de la operación –\\ninfo… [+1748 chars]"
+   },
+   {
+    "n": 23,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 14"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 14\", \"metodo\": \"pagina\", \"ref\": \"p.14 (PDF absoluto 1-based)\", \"pasaje\": \"Cuando se trate de modificaciones en los valores de comisiones y/o cargos debi-\\ndamente aceptados por el usuario, su consentimiento al cambio podrá quedar con-\\nformado por la falta de objeción al mismo dentro del plazo establecido en el acápite \\niv).  \\nEn los contratos de tarjeta de crédito el consentimiento a modificaciones en las \\ncondiciones pactadas (nuevas comisiones y/o cargos) sólo puede ser dado por el ti-\\ntular de la cuenta. \\niv) Notificaciones. Forma, plazos y efectos.\\nEl usuario de servicios financieros debe ser notificado de las modificaciones que\\naplicará el sujeto obligado con una antelación mínima de sesenta (60) días corridos\\na su entrada en vigencia. Las modificaciones que resulten económicamente más\\nbeneficiosas para el usuario –por una reducción de los valores pactados– no re-\\nquieren notificación anticipada.\\nLas notificaciones por cambios de condiciones pactadas (nuevos conceptos y/o va-\\nlores o reducción de prestaciones del servicio) serán en todos los casos gr… [+1831 chars]"
+   },
+   {
+    "n": 24,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 12"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 12\", \"metodo\": \"pagina\", \"ref\": \"p.12 (PDF absoluto 1-based)\", \"pasaje\": \"En las operaciones de crédito, los sujetos obl igados podrán aplicar comisiones\\nsobre los importes no utilizados de los acuerdos de asignación de fondos, dado\\nque su puesta a disposición a los usuarios configura la prestación del servicio.\\nLa precancelación total o parcial de financiaciones podrá dar lugar a la aplica-\\nción de comisiones. En el caso de precancelación total, no se admitirá la apli-\\ncación de comisiones cuando al momento de efectuarla haya transcurrido al\\nmenos la cuarta parte del plazo original de la financiación o 180 días corridos\\ndesde su otorgamiento, de ambos el mayor.\\nAdemás, será de aplicación lo previsto en el punto 1.7. de l TO sobre Tasas de\\nInterés en las Operaciones de Crédito.\\n2.3.2.2. No admitidos.\\ni) Principio general.\\nNo corresponde el cobro a los usuarios de conceptos que  no observen las\\ncondiciones enunciadas en el punto 2.3.2.1. y/o que deriven de la prestación\\nde un servicio cuya comisión o cargo, según corresponda, ya se encuentre\\nincluida en … [+1764 chars]"
+   },
+   {
+    "n": 25,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.3.2"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3.2\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.3.2 (PDF pág 11)\", \"pasaje\": \"2.3.2. Comisiones y cargos.\\n2.3.2.1. Admitidos.\\nTodas las comisiones, cargos, costos, gastos, seguros y/o cualquier otro con-\\ncepto –excluyendo la tasa de interés– que los sujetos obligados perciban o pre-\\ntendan percibir de los usuarios de servicios financieros (com isiones y cargos),\\ndeben tener origen en un costo real, directo y demostrable y estar debidamente\\njustificados desde el punto de vista técnico y económico.\\nLa aplicación de comisiones y/o cargos debe quedar circunscripta a la efectiva\\nprestación de un servicio que haya sido previamente solicitado, pactado y/o au-\\ntorizado por el usuario.\\nLas comisiones obedecen a servicios que prestan los sujetos obligados y, en\\ntal sentido, pueden incluir retribuciones a su favor que excedan el costo de la\\nprestación.\\nLos cargos obedecen a servicios que prestan terceros, por lo que solamente\\npueden ser transferidos al costo a los usuarios.\\nAsimismo, el importe de los cargos que el sujeto obligado transfiera a los usua-\\nrio… [+424 chars]"
+   },
+   {
+    "n": 26,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "de ambos el mayor precancelación",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"de ambos el mayor precancelación\", \"total_con_match\": 2535, \"resultados\": [{\"id\": \"Restriccion_el_mayor_saldo_de_la_asistencia_crediticia_otorgada_en_el_mes_cuando_los_adelant\", \"type\": \"Restriccion\", \"label\": \"Límite adelantos sector público\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El mayor saldo de la asistencia crediticia otorgada en el mes, cuando los adelantos previstos en el punto 3.2.5 de las normas sobre Financiamiento al sector púb…\"}, {\"id\": \"Excepcion_si_la_financiacion_precancelada_por_el_cliente_hubiese_sido_otorgada_a_partir_de\", \"type\": \"Excepcion\", \"label\": \"Precancelación línea crédito exterior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si la financiación precancelada por el cliente hubiese sido otorgada a partir de una línea de crédito del exterior, la entidad financiera podrá a su vez precanc…\"}, {\"id\": \"Restriccion_en_los_casos_en_que_el_incremento_de_la_cartera_irregular_sea_mayor_al_10_en_un_\", \"type\": \"Restriccion\", \"label\": \"Límite incremento cartera irregular anual\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En los casos en que el incremento de la cartera irregular sea mayor al 10% en un año, la entidad financiera deberá … [+2772 chars]"
+   },
+   {
+    "n": 27,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "precancelación total no se admitirá aplicación comisiones mayor",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"precancelación total no se admitirá aplicación comisiones mayor\", \"total_con_match\": 738, \"resultados\": [{\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\", \"type\": \"Restriccion\", \"label\": \"Precancelación sin comisiones tras plazo mínimo\", \"tokens_matcheados\": 7, \"resumen_propiedades\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del pl…\"}, {\"id\": \"Restriccion_no_se_pueden_cobrar_comisiones_en_exceso_de_las_maximas_fijadas_por_el_bcra\", \"type\": \"Restriccion\", \"label\": \"Límite máximo de comisiones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"No se pueden cobrar comisiones en exceso de las máximas fijadas por el BCRA\"}, {\"id\": \"Restriccion_los_adicionales_de_entidades_diferentes_no_se_podran_compensar_totalmente\", \"type\": \"Restriccion\", \"label\": \"No compensación total entre entidades\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los adicionales de entidades diferentes no se podrán compensar totalmente\"}, {\"id\": \"Restriccion_no_se_puede_cobrar_tasas_de_interes_comisiones_y_o_cargos_sin_el_cumplimiento_de… [+2633 chars]"
+   },
+   {
+    "n": 28,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 3
+    },
+    "output_truncado": "{\"paso\": 3, \"tool\": \"ver_nodo\", \"input\": {\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\"}, \"output_completo\": {\"id\": \"Restriccion_en_el_caso_de_precancelacion_total_no_se_admitira_la_aplicacion_de_comisiones_cu\", \"type\": \"Restriccion\", \"label\": \"Precancelación sin comisiones tras plazo mínimo\", \"properties\": {\"descripcion\": \"En el caso de precancelación total, no se admitirá la aplicación de comisiones cuando al momento de efectuarla haya transcurrido al menos la cuarta parte del plazo original de la financiación o 180 días corridos desde su otorgamiento\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 2)\"}]}}"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 17098,
+    "output_tokens": 213
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 18068,
+    "output_tokens": 307
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 20815,
+    "output_tokens": 265
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 21741,
+    "output_tokens": 318
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 23586,
+    "output_tokens": 268
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 25331,
+    "output_tokens": 263
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 26108,
+    "output_tokens": 370
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 26980,
+    "output_tokens": 355
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 29230,
+    "output_tokens": 367
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32182,
+    "output_tokens": 296
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35059,
+    "output_tokens": 305
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 37783,
+    "output_tokens": 303
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 40679,
+    "output_tokens": 302
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 43089,
+    "output_tokens": 855
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 47452,
+    "output_tokens": 922
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 48746,
+    "output_tokens": 3113
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 52209,
+    "output_tokens": 3409
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 18,
+   "n_claims_fallidos": 1,
+   "categoria": "puntual"
+  },
+  "label": "escalon1_r1"
+ }
+}

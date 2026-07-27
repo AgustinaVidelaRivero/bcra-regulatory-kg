@@ -1,0 +1,345 @@
+{
+ "id_falla": "run_3/EV1-028",
+ "run": "run_3",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"asociación mutual financiaciones proveedor no financiero crédito\", \"limite\": 10}",
+    "devolvio": "Nodo Proveedores no financieros de crédito y varios de sector público/privado no financiero; nada sobre mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"sujeto obligado protección usuarios servicios financieros\", \"limite\": 10}",
+    "devolvio": "TextoOrdenado Protección de Usuarios y obligaciones genéricas de sujeto obligado.",
+    "pertinente": false
+   },
+   {
+    "paso": 3,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"proveedor no financiero crédito alcance normas\", \"limite\": 10}",
+    "devolvio": "Proveedores no financieros de crédito y restricciones varias; sin excepción de mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 4,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\"}",
+    "devolvio": "Metadatos del TO, provenance Punto 1.1 Partes.",
+    "pertinente": false
+   },
+   {
+    "paso": 5,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"sujeto obligado definición alcance\", \"limite\": 10}",
+    "devolvio": "EntidadFinanciera Sujetos obligados (categoria: entidades financieras) y excepciones genéricas.",
+    "pertinente": false
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"EntidadFinanciera_sujeto_obligado\"}",
+    "devolvio": "Nodo stub 'categoria: entidades financieras', provenances de otros TOs (no del de protección).",
+    "pertinente": false
+   },
+   {
+    "paso": 7,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"asociación mutual\", \"limite\": 10}",
+    "devolvio": "Solo 2 matches: Asociaciones de consumidores y una obligación de asociación denunciante. NINGÚN nodo sobre asociaciones mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 8,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"proveedor no financiero crédito sujeto obligado protección usuarios\", \"limite\": 10}",
+    "devolvio": "Proveedores no financieros de crédito y restricciones de cargos; sin excepción de mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 9,
+    "tool": "ver_vecinos",
+    "args": "{\"id\": \"EntidadFinanciera_proveedor_no_financiero_de_credito\", \"direccion\": \"ambas\"}",
+    "devolvio": "Edges 'ejecuta Otorgamiento de financiaciones' (prov. Punto 1.1) y muchos 'aplica_a' obligaciones/restricciones de protección; NINGÚN edge o nodo con la salvedad de mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 10,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"partes sujetos obligados protección usuarios punto 1.1\", \"limite\": 10}",
+    "devolvio": "Obligaciones que refieren a 'sujetos obligados enumerados en el punto 1.1.2' pero sin el listado ni la excepción.",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"punto 1.1.2 sujetos obligados enumerados\", \"limite\": 10}",
+    "devolvio": "Ningún nodo enumera el 1.1.2.5 ni la excepción de mutuales/cooperativas.",
+    "pertinente": false
+   },
+   {
+    "paso": 12,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"partes entidades financieras empresas no financieras emisoras tarjetas\", \"limite\": 10}",
+    "devolvio": "Obligaciones que enumeran 'entidades financieras, empresas no financieras emisoras de tarjetas y otros proveedores no financieros de crédito' (designar directivo, informar comisiones).",
+    "pertinente": false
+   },
+   {
+    "paso": 13,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"Obligacion_las_entidades_financieras_las_empresas_no_financieras_emisoras_de_tarjetas_de_cr\"}",
+    "devolvio": "Deber de designar Directivo Responsable de Protección ante el BCRA para EF, emisoras de tarjetas y otros proveedores no financieros de crédito.",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "buscar_nodos",
+    "args": "{\"consulta\": \"otros proveedores no financieros crédito definición alcance\", \"limite\": 10}",
+    "devolvio": "Proveedores no financieros de crédito y restricciones; sin excepción de mutuales.",
+    "pertinente": false
+   },
+   {
+    "paso": 15,
+    "tool": "ver_nodo",
+    "args": "{\"id\": \"EntidadFinanciera_proveedor_no_financiero_de_credito\"}",
+    "devolvio": "Nodo stub 'categoria: proveedor no financiero de crédito'; provenances Punto 10.1 (clasif. deudores) y Punto 3.2 (protección). Sin salvedad de mutuales.",
+    "pertinente": false
+   }
+  ],
+  "paso_decision_error": null,
+  "decision_agente_correcta": "El agente buscó insistentemente el alcance subjetivo: probó 'asociación mutual' (paso 7, solo 2 matches irrelevantes), 'punto 1.1.2 sujetos obligados enumerados' (paso 11), 'otros proveedores no financieros crédito definición alcance' (paso 14) y abrió el nodo del proveedor no financiero de crédito y sus vecinos (pasos 9, 15). Con lo disponible en el grafo (edge 'ejecuta Otorgamiento de financiaciones' con provenance Punto 1.1, y las obligaciones 'aplica_a' que sí abarcan a 'otros proveedores no financieros de crédito'), la inferencia 'es sujeto obligado' era la única sostenible: el dato que la desmiente —la excepción del 1.1.2.5 para mutuales/cooperativas por sus financiaciones— NO existe en el grafo. El agente actuó bien sobre lo que tenía; el hueco es del grafo.",
+  "thinking_decision": null,
+  "patas": [
+   "Si una asociación mutual que otorga financiaciones y está alcanzada por las normas sobre proveedores no financieros de crédito reviste el carácter de sujeto obligado de las normas de protección de los usuarios de servicios financieros por esas financiaciones"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "completitud_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "¿una asociación mutual que otorga financiaciones y está alcanzada por las normas de proveedores no financieros de crédito es sujeto obligado de protección de usuarios por esas financiaciones?",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Sí, una asociación mutual que otorga financiaciones y se encuentra alcanzada por las normas sobre proveedores no financieros de crédito reviste el carácter de sujeto obligado de las normas de protección de los usuarios de servicios financieros por esas financiaciones.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "ninguno (no existe en el grafo ningún nodo Excepcion ni contenido que capture la salvedad del punto 1.1.2.5 para asociaciones mutuales/cooperativas; el nodo EntidadFinanciera_proveedor_no_financiero_de_credito es un stub 'categoria: proveedor no financiero de crédito' y su edge 'ejecuta→Otorgamiento de financiaciones' (prov. Punto 1.1) no porta la excepción)",
+     "ubicacion": "EntidadFinanciera_proveedor_no_financiero_de_credito / EDGE::EntidadFinanciera_proveedor_no_financiero_de_credito--ejecuta-->Operacion_otorgamiento_de_financiaciones"
+    },
+    "fuente": {
+     "quote": "1.1.2.5. Otros proveedores no financieros de crédito alcanzados por las normas sobre \"Proveedores no financieros de crédito\", excepto que se trate de asociaciones mutuales o cooperativas, por las financiaciones que otorguen.",
+     "ubicacion": "TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1. Partes. (p. 3)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "asociaciones mutuales cooperativas excepto financiaciones",
+     "resultado": "76 matches, ninguno porta la excepción del 1.1.2.5; solo nodos genéricos de cooperativa/consumidores"
+    },
+    {
+     "consulta": "otros proveedores no financieros de crédito alcanzados sujetos obligados",
+     "resultado": "2505 matches, ninguno enumera el 1.1.2.5 ni la salvedad de mutuales"
+    },
+    {
+     "consulta": "excepto asociaciones mutuales sujeto obligado protección usuarios",
+     "resultado": "91 matches genéricos de sujeto obligado; sin la excepción"
+    },
+    {
+     "consulta": "mutual otorga financiaciones no sujeto obligado",
+     "resultado": "431 matches, ninguno con la salvedad"
+    },
+    {
+     "consulta": "proveedores no financieros de crédito excepto financiaciones que otorguen",
+     "resultado": "2564 matches; el nodo del proveedor es un stub sin la excepción"
+    },
+    {
+     "consulta": "punto 1.1.2 sujetos obligados enumerados (re-ejecución paso 11)",
+     "resultado": "ver_paso_completo(11): ningún resultado enumera el 1.1.2.5 ni la excepción de mutuales/cooperativas"
+    }
+   ]
+  }
+ ],
+ "razonamiento": "El síntoma es la falla de la afirmación central (juez: falso). Descompuse en la única pata: ¿la mutual que otorga financiaciones y está alcanzada por normas de proveedores no financieros de crédito es sujeto obligado de protección de usuarios por esas financiaciones? El PDF (Punto 1.1, 1.1.2.5) responde textualmente NO: 'Otros proveedores no financieros de crédito alcanzados por las normas... excepto que se trate de asociaciones mutuales o cooperativas, por las financiaciones que otorguen'. El agente respondió 'Sí'. C1a (por pata): el dato PERTINENTE que responde la pata es esa excepción del 1.1.2.5; ¿apareció en la trayectoria? No: revisé los 15 pasos y ver_paso_completo(11) —ninguna búsqueda del agente (incluida la específica 'asociación mutual' en paso 7, que arrojó solo 2 matches irrelevantes) devolvió un nodo con la salvedad. Probé yo mismo cinco búsquedas plausibles con vocabulario de la pregunta y ninguna alcanza el dato. Por lo tanto la pata es context_recall (dato pertinente nunca apareció). C2 (árbol context_recall): ¿existe nodo portador del dato faltante? No existe —constancia de búsqueda documentada. ¿El PDF lo tiene? Sí, explícito en 1.1.2.5. Como es una pieza de contenido normativo (una excepción que niega la calidad de sujeto obligado) ausente del grafo —el nodo del proveedor no financiero es un stub y su edge 'ejecuta Otorgamiento de financiaciones' con provenance Punto 1.1 NO refleja la salvedad—, la causa es completitud_kg (falta el dato que el PDF sí tiene), no estructural_kg (no es un problema de conexión entre datos existentes: el dato de la excepción directamente no está modelado). Emito {context_recall, completitud_kg} primaria: el hueco del grafo empujó al agente a la única conclusión sostenible con lo disponible (que el proveedor no financiero de crédito ejecuta financiaciones y le aplican las obligaciones de protección), invirtiendo la respuesta correcta. Descarté defectos del agente: la decisión de responder 'Sí' fue correcta sobre el contenido expuesto (edge + obligaciones aplica_a con provenance del TO); no hubo navegación fallida (el nodo no existe) ni alucinación (la conclusión se apoya en nodos reales). Las afirmaciones no centrales marcadas 'no_soportado' por el juez (designar Directivo Responsable, informar comisiones, reintegros, prohibiciones) están de hecho SOPORTADAS por nodos consultados —el agente abrió en paso 13 el nodo de Directivo Responsable y vio en paso 9 los edges 'aplica_a' con provenance del TO— y son fácticamente correctas contra el PDF (verifiqué Punto 2.5 y 3.2): son verdaderas para 'otros proveedores no financieros de crédito' en general y solo fallan porque cuelgan del marco central erróneo (aplicarlas a la mutual exceptuada); no agregan un defecto distinto del sistema, por lo que no emito atribución separada por ellas. La primaria única explica por qué el juez reprobó: la ausencia de la excepción del 1.1.2.5 en el grafo.",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": false,
+  "flag_contexto": false,
+  "tool_calls_usadas": 12,
+  "max_tool_calls": 40,
+  "tokens_in": 376796,
+  "tokens_out": 8988
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 0,
+  "tool_calls_used": 12,
+  "tokens_in": 376796,
+  "tokens_out": 8988,
+  "latency_s": 120.045,
+  "error": null,
+  "final_raw": "Confirmado: en el paso 11, buscando específicamente \"punto 1.1.2 sujetos obligados enumerados\", el agente NO obtuvo ningún nodo que enumere el 1.1.2.5 ni la excepción de mutuales/cooperativas. El nodo de la excepción no existe en el grafo. El agente hizo búsquedas razonables (pasos 1, 3, 7 con \"asociación mutual\", 8, 10, 11, 14) y ninguna alcanzó el dato porque no existe. Tengo evidencia completa.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asociación mutual financiaciones proveedor no financiero crédito\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Nodo Proveedores no financieros de crédito y varios de sector público/privado no financiero; nada sobre mutuales.\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"sujeto obligado protección usuarios servicios financieros\\\", \\\"limite\\\": 10}\", \"devolvio\": \"TextoOrdenado Protección de Usuarios y obligaciones genéricas de sujeto obligado.\", \"pertinente\": false},\n      {\"paso\": 3, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"proveedor no financiero crédito alcance normas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Proveedores no financieros de crédito y restricciones varias; sin excepción de mutuales.\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf\\\"}\", \"devolvio\": \"Metadatos del TO, provenance Punto 1.1 Partes.\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"sujeto obligado definición alcance\\\", \\\"limite\\\": 10}\", \"devolvio\": \"EntidadFinanciera Sujetos obligados (categoria: entidades financieras) y excepciones genéricas.\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"EntidadFinanciera_sujeto_obligado\\\"}\", \"devolvio\": \"Nodo stub 'categoria: entidades financieras', provenances de otros TOs (no del de protección).\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"asociación mutual\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Solo 2 matches: Asociaciones de consumidores y una obligación de asociación denunciante. NINGÚN nodo sobre asociaciones mutuales.\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"proveedor no financiero crédito sujeto obligado protección usuarios\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Proveedores no financieros de crédito y restricciones de cargos; sin excepción de mutuales.\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_vecinos\", \"args\": \"{\\\"id\\\": \\\"EntidadFinanciera_proveedor_no_financiero_de_credito\\\", \\\"direccion\\\": \\\"ambas\\\"}\", \"devolvio\": \"Edges 'ejecuta Otorgamiento de financiaciones' (prov. Punto 1.1) y muchos 'aplica_a' obligaciones/restricciones de protección; NINGÚN edge o nodo con la salvedad de mutuales.\", \"pertinente\": false},\n      {\"paso\": 10, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"partes sujetos obligados protección usuarios punto 1.1\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Obligaciones que refieren a 'sujetos obligados enumerados en el punto 1.1.2' pero sin el listado ni la excepción.\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"punto 1.1.2 sujetos obligados enumerados\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Ningún nodo enumera el 1.1.2.5 ni la excepción de mutuales/cooperativas.\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"partes entidades financieras empresas no financieras emisoras tarjetas\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Obligaciones que enumeran 'entidades financieras, empresas no financieras emisoras de tarjetas y otros proveedores no financieros de crédito' (designar directivo, informar comisiones).\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"Obligacion_las_entidades_financieras_las_empresas_no_financieras_emisoras_de_tarjetas_de_cr\\\"}\", \"devolvio\": \"Deber de designar Directivo Responsable de Protección ante el BCRA para EF, emisoras de tarjetas y otros proveedores no financieros de crédito.\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{\\\"consulta\\\": \\\"otros proveedores no financieros crédito definición alcance\\\", \\\"limite\\\": 10}\", \"devolvio\": \"Proveedores no financieros de crédito y restricciones; sin excepción de mutuales.\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"ver_nodo\", \"args\": \"{\\\"id\\\": \\\"EntidadFinanciera_proveedor_no_financiero_de_credito\\\"}\", \"devolvio\": \"Nodo stub 'categoria: proveedor no financiero de crédito'; provenances Punto 10.1 (clasif. deudores) y Punto 3.2 (protección). Sin salvedad de mutuales.\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": null,\n    \"decision_agente_correcta\": \"El agente buscó insistentemente el alcance subjetivo: probó 'asociación mutual' (paso 7, solo 2 matches irrelevantes), 'punto 1.1.2 sujetos obligados enumerados' (paso 11), 'otros proveedores no financieros crédito definición alcance' (paso 14) y abrió el nodo del proveedor no financiero de crédito y sus vecinos (pasos 9, 15). Con lo disponible en el grafo (edge 'ejecuta Otorgamiento de financiaciones' con provenance Punto 1.1, y las obligaciones 'aplica_a' que sí abarcan a 'otros proveedores no financieros de crédito'), la inferencia 'es sujeto obligado' era la única sostenible: el dato que la desmiente —la excepción del 1.1.2.5 para mutuales/cooperativas por sus financiaciones— NO existe en el grafo. El agente actuó bien sobre lo que tenía; el hueco es del grafo.\",\n    \"thinking_decision\": null,\n    \"patas\": [\"Si una asociación mutual que otorga financiaciones y está alcanzada por las normas sobre proveedores no financieros de crédito reviste el carácter de sujeto obligado de las normas de protección de los usuarios de servicios financieros por esas financiaciones\"]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"¿una asociación mutual que otorga financiaciones y está alcanzada por las normas de proveedores no financieros de crédito es sujeto obligado de protección de usuarios por esas financiaciones?\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Sí, una asociación mutual que otorga financiaciones y se encuentra alcanzada por las normas sobre proveedores no financieros de crédito reviste el carácter de sujeto obligado de las normas de protección de los usuarios de servicios financieros por esas financiaciones.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno (no existe en el grafo ningún nodo Excepcion ni contenido que capture la salvedad del punto 1.1.2.5 para asociaciones mutuales/cooperativas; el nodo EntidadFinanciera_proveedor_no_financiero_de_credito es un stub 'categoria: proveedor no financiero de crédito' y su edge 'ejecuta→Otorgamiento de financiaciones' (prov. Punto 1.1) no porta la excepción)\", \"ubicacion\": \"EntidadFinanciera_proveedor_no_financiero_de_credito / EDGE::EntidadFinanciera_proveedor_no_financiero_de_credito--ejecuta-->Operacion_otorgamiento_de_financiaciones\"},\n        \"fuente\": {\"quote\": \"1.1.2.5. Otros proveedores no financieros de crédito alcanzados por las normas sobre \\\"Proveedores no financieros de crédito\\\", excepto que se trate de asociaciones mutuales o cooperativas, por las financiaciones que otorguen.\", \"ubicacion\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf, Punto 1.1. Partes. (p. 3)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"asociaciones mutuales cooperativas excepto financiaciones\", \"resultado\": \"76 matches, ninguno porta la excepción del 1.1.2.5; solo nodos genéricos de cooperativa/consumidores\"},\n        {\"consulta\": \"otros proveedores no financieros de crédito alcanzados sujetos obligados\", \"resultado\": \"2505 matches, ninguno enumera el 1.1.2.5 ni la salvedad de mutuales\"},\n        {\"consulta\": \"excepto asociaciones mutuales sujeto obligado protección usuarios\", \"resultado\": \"91 matches genéricos de sujeto obligado; sin la excepción\"},\n        {\"consulta\": \"mutual otorga financiaciones no sujeto obligado\", \"resultado\": \"431 matches, ninguno con la salvedad\"},\n        {\"consulta\": \"proveedores no financieros de crédito excepto financiaciones que otorguen\", \"resultado\": \"2564 matches; el nodo del proveedor es un stub sin la excepción\"},\n        {\"consulta\": \"punto 1.1.2 sujetos obligados enumerados (re-ejecución paso 11)\", \"resultado\": \"ver_paso_completo(11): ningún resultado enumera el 1.1.2.5 ni la excepción de mutuales/cooperativas\"}\n      ]\n    }\n  ],\n  \"razonamiento\": \"El síntoma es la falla de la afirmación central (juez: falso). Descompuse en la única pata: ¿la mutual que otorga financiaciones y está alcanzada por normas de proveedores no financieros de crédito es sujeto obligado de protección de usuarios por esas financiaciones? El PDF (Punto 1.1, 1.1.2.5) responde textualmente NO: 'Otros proveedores no financieros de crédito alcanzados por las normas... excepto que se trate de asociaciones mutuales o cooperativas, por las financiaciones que otorguen'. El agente respondió 'Sí'. C1a (por pata): el dato PERTINENTE que responde la pata es esa excepción del 1.1.2.5; ¿apareció en la trayectoria? No: revisé los 15 pasos y ver_paso_completo(11) —ninguna búsqueda del agente (incluida la específica 'asociación mutual' en paso 7, que arrojó solo 2 matches irrelevantes) devolvió un nodo con la salvedad. Probé yo mismo cinco búsquedas plausibles con vocabulario de la pregunta y ninguna alcanza el dato. Por lo tanto la pata es context_recall (dato pertinente nunca apareció). C2 (árbol context_recall): ¿existe nodo portador del dato faltante? No existe —constancia de búsqueda documentada. ¿El PDF lo tiene? Sí, explícito en 1.1.2.5. Como es una pieza de contenido normativo (una excepción que niega la calidad de sujeto obligado) ausente del grafo —el nodo del proveedor no financiero es un stub y su edge 'ejecuta Otorgamiento de financiaciones' con provenance Punto 1.1 NO refleja la salvedad—, la causa es completitud_kg (falta el dato que el PDF sí tiene), no estructural_kg (no es un problema de conexión entre datos existentes: el dato de la excepción directamente no está modelado). Emito {context_recall, completitud_kg} primaria: el hueco del grafo empujó al agente a la única conclusión sostenible con lo disponible (que el proveedor no financiero de crédito ejecuta financiaciones y le aplican las obligaciones de protección), invirtiendo la respuesta correcta. Descarté defectos del agente: la decisión de responder 'Sí' fue correcta sobre el contenido expuesto (edge + obligaciones aplica_a con provenance del TO); no hubo navegación fallida (el nodo no existe) ni alucinación (la conclusión se apoya en nodos reales). Las afirmaciones no centrales marcadas 'no_soportado' por el juez (designar Directivo Responsable, informar comisiones, reintegros, prohibiciones) están de hecho SOPORTADAS por nodos consultados —el agente abrió en paso 13 el nodo de Directivo Responsable y vio en paso 9 los edges 'aplica_a' con provenance del TO— y son fácticamente correctas contra el PDF (verifiqué Punto 2.5 y 3.2): son verdaderas para 'otros proveedores no financieros de crédito' en general y solo fallan porque cuelgan del marco central erróneo (aplicarlas a la mutual exceptuada); no agregan un defecto distinto del sistema, por lo que no emito atribución separada por ellas. La primaria única explica por qué el juez reprobó: la ausencia de la excepción del 1.1.2.5 en el grafo.\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 1.1. Partes."
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1. Partes.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1.1 (PDF pág 3)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte… [+425 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 3.2. Controles. (parte 1)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 3.2. Controles. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 3.2 (PDF pág 26)\", \"pasaje\": \"3.2. Controles. \\n3.\\n2.1. De los sujetos obligados. \\n3.\\n2.1.1. Directivo Responsable de Protección de los Usuarios de Servicios Financi e-\\nros/Comité de Protección de los Usuarios de Servicios Financieros. \\nB\\n.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS \\nSección 3. Servicio de atención al usuario de servicios financieros. \\nVersión: 6a. COMUNICACIÓN  “A”  6664 Vigencia: \\n4/7/2019 Página 4\"}"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Sección 1"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Sección 1\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 1 (PDF pág 3)\", \"pasaje\": \"1.\\n1.2.7. Proveedores de servicios de pago que cumplen la función de iniciaci ón (PSI) y\\nprestan el servicio de billetera digital.\\nC\\nuando un tercero desarrolle tareas relativas a servicios ofrecidos por los sujetos oblig a-\\ndos o en su nombre, ambos serán responsables por el cumplimiento de las presentes\\nnormas. Lo anterior deberá est ablecerse en los instrumentos que acuerden la realización\\nde dichas tareas.\\nB.C.R.A. PROTECCIÓN DE LOS USUARIOS DE SERVICIOS FINANCIEROS\\nSección 1. Disposiciones generales.\\nVersión: 8a. COMUNICACIÓN  “A”  7744 Vigencia:\\n28/02/2023 Página 1\"}"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "p. 3"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"p. 3\", \"metodo\": \"pagina\", \"ref\": \"p.3 (PDF absoluto 1-based)\", \"pasaje\": \"1.1. Partes.\\n1.1.1. Usuario de servicios financieros.\\nA los efectos de la presente reglamentación, este concepto comprende a las personas\\nhumanas y jurídicas que en beneficio propio o de su grupo familiar o social y en carácter\\nde destinatarios finales hacen uso de los servicios ofrecidos por los sujetos obligados que\\nse enuncian en el punto 1.1.2., como a quienes de cualquier otra manera están ex pues-\\ntos a una relación de consumo con tales sujetos.\\nA los fines de que los sujetos obligados hagan operativa la individualización de los usu a-\\nrios de servicios financieros, se considerará que revisten ese carácter las personas h u-\\nmanas y las personas jurídicas que no adquieran o utilicen productos o servicios fin ancie-\\nros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.\\nEllo, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir\\nrazonablemente que corresponde darles otro tratamiento.\\nForman también parte de esta categor… [+1564 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "asociaciones mutuales cooperativas excepto financiaciones",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"asociaciones mutuales cooperativas excepto financiaciones\", \"total_con_match\": 76, \"resultados\": [{\"id\": \"EntidadFinanciera_cooperativa\", \"type\": \"EntidadFinanciera\", \"label\": \"Cooperativas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"categoria: cooperativa\"}, {\"id\": \"Obligacion_en_el_caso_de_la_compra_se_utilizara_el_concepto_p12_otras_financiaciones_locale\", \"type\": \"Obligacion\", \"label\": \"Utilizar concepto P12\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"En el caso de la compra se utilizará el concepto 'P12. Otras financiaciones locales otorgadas por la entidad (excluida la financiación de exportaciones y tarjet…\"}, {\"id\": \"Excepcion_excepto_el_maiz_pisingallo_en_posicion_1005_90_10\", \"type\": \"Excepcion\", \"label\": \"Excepción maíz pisingallo\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Excepto el maíz pisingallo en posición 1005.90.10\"}, {\"id\": \"Operacion_pago_de_capital_adeudado_en_emisiones_de_titulos_y_financiaciones\", \"type\": \"Operacion\", \"label\": \"Pago de capital pendiente\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: pago de capital adeudado en emisiones de títulos y financiaciones\"}, {\"id\": \"Operacion_analisis_crediticio\", \"type\": \"Op… [+1287 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "otros proveedores no financieros de crédito alcanzados sujetos obligados",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"otros proveedores no financieros de crédito alcanzados sujetos obligados\", \"total_con_match\": 2505, \"resultados\": [{\"id\": \"Obligacion_para_el_caso_de_los_sujetos_obligados_no_alcanzados_por_la_obligacion_prevista_e\", \"type\": \"Obligacion\", \"label\": \"Evaluar reportes de otros sujetos obligados\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Para el caso de los sujetos obligados no alcanzados por la obligación prevista en el punto 3.2.1.1., el Directorio o autoridad equivalente deberá evaluar los re…\"}, {\"id\": \"EntidadFinanciera_proveedor_no_financiero_de_credito\", \"type\": \"EntidadFinanciera\", \"label\": \"Proveedores no financieros de crédito\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"categoria: proveedor no financiero de crédito\"}, {\"id\": \"Restriccion_las_politicas_practicas_y_procedimientos_de_los_sujetos_obligados_no_podran_repr\", \"type\": \"Restriccion\", \"label\": \"Prohibición de trato discriminatorio\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las políticas, prácticas y procedimientos de los sujetos obligados no podrán representar un trato discriminatorio de los usuarios.\"}, {\"id\": \"Obligacion_los_sujetos_obligados_deberan_ofrecer_a_los_usuarios_de_servici… [+2556 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "excepto asociaciones mutuales sujeto obligado protección usuarios",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"excepto asociaciones mutuales sujeto obligado protección usuarios\", \"total_con_match\": 91, \"resultados\": [{\"id\": \"Restriccion_el_importe_de_los_cargos_que_el_sujeto_obligado_transfiera_a_los_usuarios_no_pod\", \"type\": \"Restriccion\", \"label\": \"Cargos no superiores a costo de terceros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El importe de los cargos que el sujeto obligado transfiera a los usuarios no podrá ser superior al que el tercero prestador perciba de particulares, sin interme…\"}, {\"id\": \"Obligacion_el_sujeto_obligado_debera_verificar_si_situaciones_que_generan_la_obligacion_de_\", \"type\": \"Obligacion\", \"label\": \"Verificar situaciones de reintegro en usuarios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El sujeto obligado deberá verificar si situaciones que generan la obligación de reintegros ha ocurrido respecto de los usuarios que se encuentren en la misma si…\"}, {\"id\": \"Obligacion_recibir_y_dar_curso_a_las_presentaciones_concernientes_al_sujeto_obligado_que_re\", \"type\": \"Obligacion\", \"label\": \"Recibir y dar curso a presentaciones de usuarios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Recibir y dar curso a las presentaciones –concernientes al … [+2310 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "mutual otorga financiaciones no sujeto obligado",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"mutual otorga financiaciones no sujeto obligado\", \"total_con_match\": 431, \"resultados\": [{\"id\": \"Restriccion_el_cargo_que_el_sujeto_obligado_aplique_al_usuario_no_podra_ser_superior_al_que_\", \"type\": \"Restriccion\", \"label\": \"Límite de cargo por seguro accesorio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El cargo que el sujeto obligado aplique al usuario no podrá ser superior al que la compañía de seguros elegida perciba por operaciones con particulares y sin la…\"}, {\"id\": \"Restriccion_el_importe_de_los_cargos_que_el_sujeto_obligado_transfiera_a_los_usuarios_no_pod\", \"type\": \"Restriccion\", \"label\": \"Cargos no superiores a costo de terceros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El importe de los cargos que el sujeto obligado transfiera a los usuarios no podrá ser superior al que el tercero prestador perciba de particulares, sin interme…\"}, {\"id\": \"Restriccion_el_premio_que_el_sujeto_obligado_reciba_del_usuario_no_podra_ser_superior_al_imp\", \"type\": \"Restriccion\", \"label\": \"Límite de premio por seguro no accesorio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El premio que el sujeto obligado reciba del usuario no podrá ser superior al importe que l… [+2382 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "Operacion_otorgamiento_de_financiaciones"
+    },
+    "output_truncado": "{\"id\": \"Operacion_otorgamiento_de_financiaciones\", \"type\": \"Operacion\", \"label\": \"Otorgamiento de financiaciones\", \"properties\": {\"tipo\": \"otorgamiento de financiaciones\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 1.1. Partes.\"}]}"
+   },
+   {
+    "n": 10,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "proveedores no financieros de crédito excepto financiaciones que otorguen",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"proveedores no financieros de crédito excepto financiaciones que otorguen\", \"total_con_match\": 2564, \"resultados\": [{\"id\": \"EntidadFinanciera_proveedor_no_financiero_de_credito\", \"type\": \"EntidadFinanciera\", \"label\": \"Proveedores no financieros de crédito\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"categoria: proveedor no financiero de crédito\"}, {\"id\": \"Restriccion_financiaciones_que_no_superen_el_importe_resultante_de_aplicar_sobre_el_saldo_de\", \"type\": \"Restriccion\", \"label\": \"Límite monto financiación nueva\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Financiaciones que no superen el importe resultante de aplicar sobre el saldo de deuda registrado en el sistema financiero el porcentaje establecido en punto 2.…\"}, {\"id\": \"Obligacion_debera_informar_en_las_notas_a_los_estados_financieros_de_publicacion_que_ha_pre\", \"type\": \"Obligacion\", \"label\": \"Informar respaldo crediticio no contractual\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Deberá informar en las notas a los estados financieros de publicación que ha prestado respaldo crediticio no contractual y el efecto sobre su exigencia de capit…\"}, {\"id\": \"Obligacion_el_cr_para_operaciones_con_margen_se… [+2333 chars]"
+   },
+   {
+    "n": 11,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+     "location": "Punto 2.5. Información al Banco Central de la República Argentina."
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 2.5. Información al Banco Central de la República Argentina.\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 2.5 (PDF pág 21)\", \"pasaje\": \"2.5. Información al Banco Central de la República Argentina.\\nLas entidades financieras, los PSPCP, las empresas no financieras emisoras de tarjetas de\\ncrédito y/o compra y los otros proveedores no financieros de crédito que ofrezcan y comerciali-\\ncen productos y/o servicios que se perfeccionan con la firma o aceptación de contratos con\\ncláusulas preestablecidas (contratos de adhesión), deberán informar las comisi ones y cargos\\nque cobren a los usuarios de servicios financieros mediante el régimen informativo establecido\\nal efecto.\\nLas altas –comisiones de nuevos productos y/o servicios que deseen comercializar – y los au-\\nmentos en las comisiones que deseen implement ar deberán ser previamente informados al\\nBCRA por la vía consignada en el párrafo precedente y luego ser notificadas a los usuarios de\\nservicios financieros. También deberán informar las modificaciones de los cargos.\\nLas reducciones en las comisiones y/o cargo… [+473 chars]"
+   },
+   {
+    "n": 12,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 11
+    },
+    "output_truncado": "{\"paso\": 11, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"punto 1.1.2 sujetos obligados enumerados\", \"limite\": 10}, \"output_completo\": {\"consulta\": \"punto 1.1.2 sujetos obligados enumerados\", \"total_con_match\": 118, \"resultados\": [{\"id\": \"Obligacion_los_sujetos_obligados_enumerados_en_el_punto_1_1_2_en_la_medida_en_que_correspon\", \"type\": \"Obligacion\", \"label\": \"Cobertura mínima de cajeros accesibles\", \"tokens_matcheados\": 6, \"resumen_propiedades\": \"Los sujetos obligados enumerados en el punto 1.1.2., en la medida en que corresponda, deberán alcanzar la cobertura del servicio con esos cajeros automáticos en…\"}, {\"id\": \"Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250\", \"type\": \"Restriccion\", \"label\": \"Ponderador acciones grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Acciones (definidas conforme al punto 2.11.3.): 250\"}, {\"id\": \"Obligacion_la_facultad_de_revocacion_segun_lo_establecido_en_el_apartado_v_del_punto_2_3_1_\", \"type\": \"Obligacion\", \"label\": \"Informar facultad de revocación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1\"}, {\"id\": \"EntidadFinanciera_sujeto_obligado… [+1939 chars]"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 38872,
+    "output_tokens": 331
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 40282,
+    "output_tokens": 337
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 42295,
+    "output_tokens": 590
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 45757,
+    "output_tokens": 347
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 49310,
+    "output_tokens": 380
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 51441,
+    "output_tokens": 1161
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 53286,
+    "output_tokens": 782
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 55553,
+    "output_tokens": 5060
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 98,
+   "n_claims_fallidos": 5,
+   "categoria": "sujeto"
+  },
+  "label": "escalon1_r1"
+ }
+}
