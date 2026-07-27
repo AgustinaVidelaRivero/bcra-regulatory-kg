@@ -118,7 +118,7 @@ Sobre las réplicas flaggeadas con `requiere_adjudicacion_humana` por el juez v2
 |---|---|
 | EV1-015 | v2 r1/r2/r3 → **incorrecta** (niegan/eluden el dato que la key afirma; el 1.1 no alcanzado, capturado el vecino 7.1); run_3 ×3 correcta ratificada |
 | EV1-031 | v2 r1/r2 → **incorrecta** (evasivas: dato real ajeno + "el KG no contiene"); r3 ya incorrecta; run_3 ×3 correcta ratificada |
-| EV1-018 | AMBOS brazos ×6 → **incorrecta** (no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; completitud compartida) |
+| EV1-018 | AMBOS brazos ×6 → **incorrecta** (no-respuesta: repiten la premisa sin listar operación alguna del 4.1.4; alcanzabilidad compartida (H1 — dato nodificado en ambos brazos, no alcanzado por ningún agente); causa corregida post-deslinde 27/07, laudo original decía "completitud compartida") |
 | EV1-035 | run_3 r1/r2 → **incorrecta** (excepción enunciada sin sus condiciones esenciales — sobre-ampliación); r3 ya incorrecta; v2 r1/r3 correcta + r2 parcial → mayoría correcta ratificada |
 | EV1-007 | run_3 r3 → **incorrecta** (evasiva aprobada); mayoría run_3 queda 2-1 correcta; v2 ×3 correcta ratificada |
 | EV1-027 | ×6 correcta ratificada |
