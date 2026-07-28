@@ -201,7 +201,9 @@ El único flujo que arranca de señal cruda de usuarios. Pipeline:
    | `alcanzabilidad_kg` | `alcanzabilidad` |
    | `estructural` | `hub_contaminado` |
    | `contenido_kg` | `contenido_sin_subespecie` |
+   | `provenance_imprecisa` | `provenance_desplazada` (especie ya existente del bestiario) |
    | `aplicacion_erronea` | sin entrada — descartada-con-motivo en el log de intake (defecto del agente, regla de exclusión de §2) |
+   | `frontera_no_determinada` | sin entrada automática — deriva a triage humano, registrada en el log de intake |
 
 4. **Entrada.** Se escribe con `fuente: app_feedback`, evidencia = `session_id` +
    `turno` (+ el veredicto del juez y la salida del verificador), estado `nuevo`.
@@ -209,6 +211,11 @@ El único flujo que arranca de señal cruda de usuarios. Pipeline:
 **Los 👍 no generan entrada.** Se conservan como denominador: permiten calcular tasas
 de defecto por territorio (¿qué fracción del uso de la sección X termina en 👎?), que
 informan la priorización humana. Descartarlos sesgaría toda tasa hacia arriba.
+
+**Pendiente de decisión (modo sin-gold):** las sesiones de la app no portan respuesta
+esperada; hasta que se laude el modo sin-gold, el Paso-juez de `feedback-intake` frena
+por válvula en preguntas libres — la resolución candidata (laudo humano obligatorio
+como síntoma + verificador como diagnóstico) queda registrada acá, no implementada.
 
 ### (c) Triage de extracción → entrada directa
 
