@@ -9,7 +9,11 @@ Pipeline repetible para **refinar el grafo ganador `run_3`** de forma iterativa 
 
 **Por qué como skill y no como script suelto:** congela "el camino bueno" para que el agente no lo redescubra cada vez. El ciclo se corre muchas veces; empaquetarlo como skill lo hace barato, estable y confiable, en lugar de un loop agéntico que improvisa el método en cada corrida.
 
-**Dónde encaja:** Fase 2.5 de la tesis (en los informes de la autora, 2.4 es el verificador — `verificador.py` —, no el refinamiento). La Fase 2.3 ya eligió a `run_3` comparando los 5 grafos — esa selección está cerrada y no se reabre acá. Esta skill trabaja **solo sobre `run_3`**; los otros 4 grafos quedan congelados.
+**Dónde encaja:** Fase 2.5 de la tesis (en los informes de la autora, 2.4 es el verificador — `verificador.py` —, no el refinamiento). La Fase 2.3 ya eligió a `run_3` comparando los 5 grafos — esa selección está cerrada y no se reabre acá. Esta skill trabaja **solo sobre `run_3`** (con la única extensión transitoria de abajo para entradas del backlog sobre `grafo_v2`); los otros 4 grafos del experimento quedan congelados.
+
+**Punto de entrada del trabajo:** las entradas en estado **`triaged`** de `data/backlog/backlog.jsonl` (contrato de datos y frontera de skills en `docs/spec_backlog_refinamiento.md`, §2 y §4). Cada entrada porta fuente, `diagnostico` (jerarquía de confianza), `especie`, evidencia por punteros y la `verificacion` declarada; esta skill las consume para proponer (Paso 4), aplicar y demostrar (Paso 5). El ciclo dataset-completo (Pasos 1→3 sobre el eval set) sigue vigente como circuito de **detección** de fallas nuevas que el backlog aún no registra — sus fallas atribuidas alimentan el backlog, no lo puentean. Qué entradas pasan (o no) por el Paso 3 lo fija la regla anti-re-atribución del Paso 3.
+
+**Restricción transitoria (alcance por grafo):** sobre `grafo_v2` esta skill consume **únicamente** entradas con `diagnostico: adjudicado_humano`, hasta que exista el aparato espejo de v2 — vara/casos-control propios de ese esquema y su re-calibración, pre-requisito registrado en la spec, §7 —. La copia de trabajo `run_3_refinamiento/`, la calibración del Paso 3 y el baseline del Paso 5 son run_3-específicos; nada de eso se reutiliza sobre v2 sin ese aparato.
 
 ## Principio de diseño rector
 
@@ -50,7 +54,7 @@ Esto cuesta más (no se reusa trabajo entre fallas) y es un trade-off deliberado
 **Insumo concreto actual:** `data/experiment/evaluacion/queries/eval_set_v2.json` (31 preguntas, generado a ciegas, con margen de mejora conocido en `multi_norma` y cadenas de restricción/excepción).
 
 **Fijo (y por qué):**
-- **El dataset no lo genera el agente que refina**, ni ningún agente con acceso a los grafos. Si quien refina escribe las preguntas, el refinamiento es trivial: se "examina" con preguntas que él ya sabe resolver. El dataset se genera a ciegas contra los PDFs, en un proceso aparte. (Regla dura de Lucho.)
+- **El dataset no lo genera el agente que refina**, ni ningún agente con acceso a los grafos. Si quien refina escribe las preguntas, el refinamiento es trivial: se "examina" con preguntas que él ya sabe resolver. El dataset se genera a ciegas contra los PDFs, en un proceso aparte. (Regla dura del diseño del proyecto.)
 - **El dataset debe ser difícil y no saturado.** Si el sistema ya acierta casi todo, no hay margen para demostrar mejora. Verificá que haya suficiente proporción de fallas reales antes de seguir.
 - **El mismo dataset se usa en el Paso 5 para demostrar.** No se cambia de dataset entre diagnóstico y demostración — sería comparar peras con manzanas.
 
@@ -79,6 +83,8 @@ Esto cuesta más (no se reusa trabajo entre fallas) y es un trade-off deliberado
 
 **Qué hace:** identifica dónde falló el sistema y atribuye cada falla a su causa (grafo / navegación del agente / generación del agente / sin_defecto / abstención `frontera_no_determinada`), **recolectando evidencia ANTES de concluir**, dentro de una taxonomía cerrada. Antes de analizar todo el dataset, **se calibra** contra casos-control con atribución humana conocida; solo escala si la calibración pasa.
 
+**Regla anti-re-atribución (entradas del backlog):** una entrada con `diagnostico` distinto de `sin_diagnostico` (`adjudicado_humano`, `verificador_validado`, `verificador_exploratorio`) **NO pasa por este paso**: su atribución ya fue laudada por un humano o emitida por el circuito de intake, y se respeta — re-atribuir desde cero duplicaría ese trabajo y arriesga atribuciones en conflicto entre la entrada y este paso. Para el anclaje del Paso 4, la atribución que porta la entrada vale como atribución del Paso 3. Este paso queda reservado para las fallas nuevas del ciclo dataset-completo y para las entradas `sin_diagnostico`.
+
 > Leé `references/taxonomia.md` para la taxonomía cerrada de causas y las herramientas del verificador.
 > Leé `references/casos_control.md` para las preguntas-control y su atribución humana (sub-fase A).
 
@@ -98,7 +104,7 @@ Para cada pregunta fallida, flujo **evidencia → conclusión**:
 El verificador trabaja en fases (v4): EXTRACCIÓN de la traza (su output va al campo `extraccion_traza` del contrato, que consume el reporte HTML) → INVESTIGACIÓN por pata → ATRIBUCIÓN anclada. Detalle en `references/taxonomia.md`.
 
 **Fijo (y por qué):**
-- **Arranca desde la pregunta fallida, NO desde el nodo.** Evita el sesgo de atribución hacia el grafo (preocupación explícita de Lucho: "cómo sabe que es el grafo si no lo quería"). Empezar mirando el nodo predispone a culpar al grafo.
+- **Arranca desde la pregunta fallida, NO desde el nodo.** Evita el sesgo de atribución hacia el grafo (riesgo señalado explícitamente en el diseño: si se parte queriendo culpar al grafo, la atribución nace sesgada). Empezar mirando el nodo predispone a culpar al grafo.
 - **Recolecta evidencia ANTES de concluir; no forma hipótesis de entrada.** Evita el sesgo de confirmación: si arranca con "es el grafo", busca solo lo que lo confirma.
 - **Toda atribución va con sus tres piezas de evidencia citadas** (afirmación / nodo / fuente), cada una **anclada textualmente** (`{quote verbatim, ubicacion}`): si no se puede citar el lugar exacto donde se rompe el circuito, no hay evidencia suficiente para esa etiqueta. La atribución es verificable, no una opinión del agente.
 - **Taxonomía CERRADA.** Para poder agregar y comparar resultados entre corridas. No inventes categorías nuevas; si algo no entra, eso mismo es un hallazgo a reportar.
