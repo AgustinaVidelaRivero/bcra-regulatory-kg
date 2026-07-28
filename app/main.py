@@ -171,6 +171,7 @@ def _usuario_de(authorization: Optional[str]) -> str:
     return usuario
 
 # Al agregar un grafo nuevo con provenance múltiple, registrar acá su adapter_key.
+# grafo_v2: provenance primaria única verificada (V2-APP) → adaptador nulo, sin entrada.
 ADAPTER_KEYS = {
     "run_1_cookbook": "run_1",
     "run_2_papers": "run_2",

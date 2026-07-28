@@ -24,7 +24,7 @@ Región `us-east-1`, cuenta de la autora.
 |---|---|---|
 | IAM Role | `AROARVR5QKZIFJZ4Q4KQ5` | `finreggraph-app-role` (inline policy `finreggraph-bedrock-invoke`) |
 | IAM Instance Profile | `AIPARVR5QKZILU35R4MWZ` | `finreggraph-app-profile` |
-| Security Group | `sg-07a3ff5fbf33b5106` | `finreggraph-app-sg` (`sgr-017c2837278750dc2` :80 público; `sgr-02fef41c95f22b403` :22 solo IP de la autora) |
+| Security Group | `sg-07a3ff5fbf33b5106` | `finreggraph-app-sg` (`sgr-017c2837278750dc2` :80 público; :22 restringido por IP de la autora — dos reglas conviviendo: `sgr-02fef41c95f22b403` casa y `sgr-0ef86adc1905df6f2` VPN del trabajo) |
 | Key Pair | `finreggraph-app-key` | pem local: `~/.ssh/finreggraph-app-key.pem` (400) |
 | Instancia EC2 | `i-0cc48c5e336aea5fb` | `finreggraph-app` (t4g.micro, us-east-1c, AMI `ami-02c4144237becae44` Ubuntu 24.04 ARM, EBS gp3 10 GB DeleteOnTermination) |
 | Elastic IP | `eipalloc-08496d6c2e555a5cd` (assoc `eipassoc-0ab637d0a3ed8977f`) | `finreggraph-app-eip` → `<IP>` |
@@ -65,6 +65,17 @@ ssh -i ~/.ssh/finreggraph-app-key.pem ubuntu@<IP> \
 rsync -avz -e "ssh -i ~/.ssh/finreggraph-app-key.pem" \
   ubuntu@<IP>:/home/ubuntu/finreggraph/app/sessions/ ./sessions_server/
 ```
+
+**Alta de una IP nueva para SSH** (el :22 está restringido por IP; hoy
+conviven dos reglas — casa y VPN del trabajo. Si el `sync.sh` da timeout
+de SSH, casi seguro cambió tu IP de salida):
+```bash
+curl -s https://checkip.amazonaws.com   # tu IP de salida actual
+aws ec2 authorize-security-group-ingress --region us-east-1 \
+  --group-id sg-07a3ff5fbf33b5106 --protocol tcp --port 22 --cidr <IP-nueva>/32
+```
+(las reglas que dejen de ser tuyas se dan de baja con
+`revoke-security-group-ingress`, mismos parámetros)
 
 **Stop/start de la instancia** (la EIP sobrevive y sigue siendo la misma; detenida se sigue pagando EBS + EIP, no la instancia):
 ```bash
