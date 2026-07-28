@@ -1,0 +1,35 @@
+{
+  "version": "B1a-propuesta",
+  "estado": "PROPUESTA — a confirmar por la autora antes de B1b. correr_piloto.py se niega a correr modelos que no estén en este archivo.",
+  "modelos": [
+    {
+      "rol": "haiku_actual",
+      "id": "claude-haiku-4-5-20251001",
+      "precio_in_por_mtok": 1.0,
+      "precio_out_por_mtok": 5.0,
+      "nota": "El modelo del pipeline (protocolo FASE 2.2 y smokes U4/U4b/U4c). Snapshot fechado, pineable."
+    },
+    {
+      "rol": "sonnet",
+      "id": "claude-sonnet-4-5-20250929",
+      "precio_in_por_mtok": 3.0,
+      "precio_out_por_mtok": 15.0,
+      "nota": "Sonnet 4.5, snapshot fechado. Elegido sobre Sonnet 5 porque comparte la superficie de request del pipeline congelado: sin thinking por defecto y compatible con tool_choice forzado. Sonnet 5 activa thinking adaptativo por defecto y su id no tiene snapshot fechado — rompería 'mismo pipeline, solo cambia el modelo' y la condición de pineo."
+    },
+    {
+      "rol": "opus",
+      "id": "claude-opus-4-5-20251101",
+      "precio_in_por_mtok": 5.0,
+      "precio_out_por_mtok": 25.0,
+      "nota": "Opus 4.5, snapshot fechado, misma generación/superficie de request que Haiku 4.5 y Sonnet 4.5. Los Opus 4.6+ y Opus 5 remueven parámetros y cambian defaults de thinking (id sin snapshot fechado en 4.6+) — mismos motivos que arriba. Precio a re-verificar al confirmar."
+    }
+  ],
+  "condicion_pineada": "Los ids/snapshots del bulk en Bedrock deben ser idénticos a los piloteados; si Bedrock no ofrece el snapshot ganador, se vuelve a la mesa antes de extraer.",
+  "alternativa_documentada": "Si la autora prefiere pilotar la generación 5 (claude-sonnet-5 / claude-opus-5): requiere (a) decidir el manejo del thinking adaptativo por defecto y su interacción con tool_choice forzado — un cambio de comportamiento del extractor que hoy está prohibido —, (b) aceptar ids sin snapshot fechado frente a la condición de pineo Bedrock, y (c) re-presupuestar (Sonnet 5 tokeniza ~30% más). No es la propuesta.",
+  "supuestos_estimacion": {
+    "overhead_fijo_input_tokens_por_llamada": 9600,
+    "chars_por_token_texto_chunk": 3.5,
+    "output_tokens_por_chunk": 2100,
+    "fuente": "medido en U4c (Haiku, 37 chunks de Protección: 385.056 in / 78.173 out); el output de Sonnet/Opus se ASUME igual al de Haiku — supuesto declarado, a validar en B1b"
+  }
+}

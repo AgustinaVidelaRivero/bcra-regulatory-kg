@@ -1,0 +1,134 @@
+{
+  "chunk_id": "TO_capitales_minimos_actual.pdf::3.1__p11",
+  "doc": "TO_capitales_minimos_actual.pdf",
+  "location": "Punto 3.1. Tratamiento de las titulizaciones. (parte 12)",
+  "entities": [
+    {
+      "local_id": "to",
+      "type": "TextoOrdenado",
+      "label": "Capitales Mínimos",
+      "properties": {
+        "materia": "Capitales mínimos de entidades financieras",
+        "archivo": "TO_capitales_minimos_actual.pdf",
+        "version": "actual"
+      }
+    },
+    {
+      "local_id": "com1",
+      "type": "Comunicacion",
+      "label": "Com. A 6470",
+      "properties": {
+        "codigo": "A-6470",
+        "tipo": "A",
+        "numero": "6470"
+      }
+    },
+    {
+      "local_id": "r1",
+      "type": "Restriccion",
+      "label": "Ponderador de riesgo máximo exposiciones subyacentes",
+      "properties": {
+        "descripcion": "Las exposiciones subyacentes deberán cumplir con las condiciones para recibir un ponderador de riesgo igual o inferior a: 40% para el promedio ponderado de préstamos garantizados con hipotecas sobre inmuebles residenciales; 50% para cada exposición garantizada con hipotecas sobre inmuebles comerciales; 75% para cada exposición de cartera minorista; 100% para cualquier otro tipo",
+        "tipo": "limite_cuantitativo",
+        "umbral": "40%-50%-75%-100% según tipo de exposición"
+      }
+    },
+    {
+      "local_id": "op1",
+      "type": "Operacion",
+      "label": "Asignación de ponderador de riesgo",
+      "properties": {
+        "tipo": "Asignación de ponderador de riesgo a exposiciones subyacentes"
+      }
+    },
+    {
+      "local_id": "r2",
+      "type": "Restriccion",
+      "label": "Límite de exposición a deudor individual",
+      "properties": {
+        "descripcion": "A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera",
+        "tipo": "limite_cuantitativo",
+        "umbral": "1%"
+      }
+    },
+    {
+      "local_id": "op2",
+      "type": "Operacion",
+      "label": "Concentración de exposiciones a deudor",
+      "properties": {
+        "tipo": "Concentración de exposiciones en cartera a un deudor particular"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "to",
+      "target": "com1",
+      "predicate": "referencia",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": "to",
+      "predicate": "establecida_en",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": null,
+      "predicate": "aplica_a",
+      "sujeto_id": "Sujeto_rol_alcance_capmin",
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r1",
+      "target": "op1",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    },
+    {
+      "source": "r2",
+      "target": "op2",
+      "predicate": "limita",
+      "sujeto_id": null,
+      "sujeto_propuesto": null,
+      "sujeto_propuesto_padre_sugerido": null
+    }
+  ],
+  "in_tokens": 9820,
+  "out_tokens": 997,
+  "validation": {
+    "entities_in": 6,
+    "entities_out": 6,
+    "relations_in": 7,
+    "relations_out": 7,
+    "rel_dropped_unknown_predicate": 0,
+    "rel_dropped_dangling_ref": 0,
+    "rel_dropped_domain_range": 0,
+    "rel_dropped_sujeto_invalido": 0
+  },
+  "error": null
+}

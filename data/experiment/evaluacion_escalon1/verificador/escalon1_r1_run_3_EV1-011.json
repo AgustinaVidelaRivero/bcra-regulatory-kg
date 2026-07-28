@@ -1,0 +1,472 @@
+{
+ "id_falla": "run_3/EV1-011",
+ "run": "run_3",
+ "extraccion_traza": {
+  "tool_calls": [
+   {
+    "paso": 1,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'niveles clasificación deudores cartera comercial', 'limite': 10}",
+    "devolvio": "136 matches; nodos genéricos (deudor cartera comercial, TextoOrdenado clasificación) sin enumeración de niveles",
+    "pertinente": false
+   },
+   {
+    "paso": 2,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'seguimiento especial deudores', 'limite': 10}",
+    "devolvio": "Obligacion evaluación situación en observación + nodos SEPAIMPO no pertinentes",
+    "pertinente": true
+   },
+   {
+    "paso": 3,
+    "tool": "ver_nodo",
+    "args": "{'id': 'TextoOrdenado_to_clasificacion_deudores_actual_pdf'}",
+    "devolvio": "metadata del TO, sin contenido de niveles",
+    "pertinente": false
+   },
+   {
+    "paso": 4,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'nivel normal riesgo deficiente vencido irrecuperable', 'limite': 15}",
+    "devolvio": "210 matches; nodos de riesgo de OTRO TO (ponderadores, RCD), ningún nivel de cartera comercial",
+    "pertinente": false
+   },
+   {
+    "paso": 5,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'categoría clasificación deudor normal', 'limite': 10}",
+    "devolvio": "Operacion clasificación de deudor en categoría + restricciones de recategorización",
+    "pertinente": false
+   },
+   {
+    "paso": 6,
+    "tool": "ver_nodo",
+    "args": "{'id': 'Operacion_clasificacion_de_deudor_en_categoria'}",
+    "devolvio": "tipo: clasificación de deudor en categoría; sin enumeración de niveles",
+    "pertinente": false
+   },
+   {
+    "paso": 7,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'categoría 1 2 3 4 5 deudor clasificación', 'limite': 15}",
+    "devolvio": "216 matches; ruido (ponderadores, activos en garantía)",
+    "pertinente": false
+   },
+   {
+    "paso": 8,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'situación observación potencial deficiente vencido irrecuperable', 'limite': 15}",
+    "devolvio": "19 matches; nodo observación + indicadores sueltos (situación financiera mala/ilíquida), sin nombres de nivel",
+    "pertinente": false
+   },
+   {
+    "paso": 9,
+    "tool": "ver_nodo",
+    "args": "{'id': 'Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo'}",
+    "devolvio": "descripción de la situación En observación (flujo de fondos que puede atender pero con situaciones que podrían comprometer capacidad futura)",
+    "pertinente": true
+   },
+   {
+    "paso": 10,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'Obligacion_...observacion...'}",
+    "devolvio": "3 salientes: establecida_en TO, aplica_a sujetos obligados, condiciona clasificación de deudor",
+    "pertinente": false
+   },
+   {
+    "paso": 11,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'cartera comercial nivel clasificación normal potencial deficiente', 'limite': 15}",
+    "devolvio": "138 matches; agrupación/revisión de cartera, sin enumeración de niveles",
+    "pertinente": false
+   },
+   {
+    "paso": 12,
+    "tool": "ver_nodo",
+    "args": "{'id': 'Operacion_clasificacion_de_riesgo_de_deudor'}",
+    "devolvio": "tipo: clasificación de riesgo de deudor; provenance 6.5 parte 3; sin contenido de niveles",
+    "pertinente": false
+   },
+   {
+    "paso": 13,
+    "tool": "ver_vecinos",
+    "args": "{'id': 'Operacion_clasificacion_de_riesgo_de_deudor'}",
+    "devolvio": "0 salientes, 0 entrantes (nodo aislado)",
+    "pertinente": false
+   },
+   {
+    "paso": 14,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'punto 6.5 niveles clasificación normal seguimiento especial', 'limite': 15}",
+    "devolvio": "193 matches; observación + excepciones/restricciones sin nombres de nivel",
+    "pertinente": false
+   },
+   {
+    "paso": 15,
+    "tool": "buscar_nodos",
+    "args": "{'consulta': 'observación potencial deficiente vencido irrecuperable seguimiento especial', 'limite': 15}",
+    "devolvio": "66 matches; observación + SEPAIMPO, sin niveles comerciales",
+    "pertinente": false
+   }
+  ],
+  "paso_decision_error": {
+   "paso": 15,
+   "quote": "otras categorías de riesgo (Potencial, Deficiente, Vencido e Irrecuperable)"
+  },
+  "decision_agente_correcta": null,
+  "thinking_decision": null,
+  "patas": [
+   "Niveles de clasificación previstos para los deudores de la cartera comercial",
+   "Situaciones que integran el nivel con seguimiento especial"
+  ]
+ },
+ "atribuciones": [
+  {
+   "sintoma_capa1": "context_recall",
+   "causa_capa2": "completitud_kg",
+   "lado": "grafo",
+   "jerarquia": "primaria",
+   "pata": "Niveles de clasificación previstos para los deudores de la cartera comercial",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Existen niveles de clasificación denominados 'Potencial', 'Deficiente', 'Vencido' e 'Irrecuperable' para la cartera comercial.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago. | Para clasificación en situación normal: El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financ… | El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.",
+     "ubicacion": "Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo, Obligacion_para_clasificacion_en_situacion_normal_el_analisis_del_flujo_de_fondos_del_clien, Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr (indicadores sueltos; ningún nodo enumera los cinco niveles con sus nombres)"
+    },
+    "fuente": {
+     "quote": "6.5. Niveles de clasificación. Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se detallan en cada caso.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, Punto 6.5 y pp. 20-24 (6.5.1 En situación normal; 6.5.2 Con seguimiento especial; 6.5.3 Con problemas; con alto riesgo de insolvencia; irrecuperable)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "con problemas alto riesgo insolvencia irrecuperable cartera comercial",
+     "resultado": "635 matches; solo nodos de ponderadores/riesgo de otro TO y financiaciones; ningún nodo-nivel de cartera comercial"
+    },
+    {
+     "consulta": "alto riesgo de insolvencia",
+     "resultado": "2432 matches; ningún nodo porta 'con alto riesgo de insolvencia' como nivel de clasificación (solo riesgo de crédito/ponderadores)"
+    },
+    {
+     "consulta": "cinco categorías clasificación deudor situación normal con problemas",
+     "resultado": "527 matches; solo nodos de situación normal/observación y operaciones de clasificación; no hay nodo enumerador de los cinco niveles"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "faithfulness",
+   "causa_capa2": "alucinacion_agente",
+   "lado": "agente",
+   "jerarquia": "secundaria",
+   "pata": "Niveles de clasificación previstos para los deudores de la cartera comercial",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "otras categorías de riesgo (Potencial, Deficiente, Vencido e Irrecuperable)",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "ninguno (ningún nodo de la trayectoria ni del grafo porta los nombres 'Potencial', 'Deficiente' o 'Vencido' como niveles de clasificación)",
+     "ubicacion": "n/a"
+    },
+    "fuente": {
+     "quote": "6.5.3. Con problemas (…) categorizado en los niveles 'con alto riesgo de insolvencia' o 'irrecuperable'",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, pp. 22-25 (los nombres reales de niveles 3-5 son 'con problemas', 'con alto riesgo de insolvencia', 'irrecuperable'; 'Potencial/Deficiente/Vencido' no figuran)"
+    }
+   },
+   "busquedas": [
+    {
+     "consulta": "cartera consumo vivienda cumplimiento normal riesgo bajo medio alto",
+     "resultado": "291 matches; los niveles de consumo en este TO se llaman 'riesgo bajo'/'riesgo medio', no 'Potencial/Deficiente/Vencido' — confirma que esos nombres no existen ni en grafo ni en PDF (glosa de cosecha propia)"
+    },
+    {
+     "consulta": "con problemas alto riesgo insolvencia irrecuperable cartera comercial",
+     "resultado": "635 matches; ningún nodo porta 'Potencial/Deficiente/Vencido' como nivel"
+    }
+   ]
+  },
+  {
+   "sintoma_capa1": "noise_sensitivity",
+   "causa_capa2": "sin_defecto",
+   "lado": "ninguno",
+   "jerarquia": "sin_par",
+   "pata": "Situaciones que integran el nivel con seguimiento especial",
+   "evidencia": {
+    "afirmacion": {
+     "quote": "Para la situación de Observación, el análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago.",
+     "ubicacion": "respuesta final"
+    },
+    "nodo": {
+     "quote": "Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago.",
+     "ubicacion": "Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo (abierto por el agente en paso 9)"
+    },
+    "fuente": {
+     "quote": "6.5.2.1. En observación. El análisis del flujo de fondos del cliente demuestra que, al momento de realizarse, puede atender la totalidad de sus compromisos financieros. (…) Sin embargo, existen situaciones posibles que, de no ser controladas o corregidas oportunamente, podrían comprometer la capacidad futura de pago del cliente.",
+     "ubicacion": "TO_clasificacion_deudores_actual.pdf, pp. 20-21"
+    }
+   },
+   "busquedas": []
+  }
+ ],
+ "razonamiento": "El síntoma tiene dos patas fallidas. PATA 1 (niveles de la cartera comercial): el juez marcó falso el claim 'Existen niveles Potencial, Deficiente, Vencido e Irrecuperable'. Apliqué C1a: ¿apareció en la trayectoria el dato PERTINENTE (los nombres reales de los cinco niveles de la cartera comercial)? NO. El PDF (Punto 6.5, verificado) dice que hay 'cinco categorías' con nombres: 6.5.1 En situación normal, 6.5.2 Con seguimiento especial, 6.5.3 Con problemas, y (pp.22-25) 'con alto riesgo de insolvencia' e 'irrecuperable'. En la trayectoria el agente solo vio nodos de situaciones/indicadores individuales (En observación, situación normal, financiera mala, financiera ilíquida) — ninguno enumera los niveles ni porta los nombres de los niveles 3/4/5. Ergo esta pata es context_recall. C2: ¿existe nodo portador del dato faltante? Busqué exhaustivamente ('con problemas alto riesgo insolvencia irrecuperable', 'alto riesgo de insolvencia', 'cinco categorías...'): no hay ningún nodo-nivel que enumere las categorías de la cartera comercial con sus nombres; los indicadores existen desperdigados como Restricciones/Obligaciones sin label de nivel. El PDF SÍ tiene el dato → completitud_kg, PRIMARIA (es el claim central falso que rompe el veredicto). SEGUNDA atribución de la misma pata: el nombre concreto que el agente inventó ('Potencial/Deficiente/Vencido') no lo soporta NINGÚN nodo de la trayectoria → síntoma faithfulness (no es context_recall porque no es la ausencia de la pata sino una glosa afirmada de más). C2 desde faithfulness: ¿el grafo tenía el dato afirmado? Búsqueda documentada: ningún nodo porta esos nombres. ¿El PDF los tiene? Tampoco — los niveles de consumo en este TO se llaman 'riesgo bajo/medio', no 'Potencial/Deficiente/Vencido'. Por tanto es glosa de cosecha propia → alucinacion_agente modo (b), SECUNDARIA (no explica por sí sola la reprobación, la explica el hueco del grafo; esta glosa es el relleno de la pata vacía). PATA 2 (situaciones del seguimiento especial): el juez marcó 'no_soportado' el claim sobre En observación, pero el agente abrió en el paso 9 el nodo que dice EXACTAMENTE eso, y el PDF (p.20-21) lo confirma literalmente. Claim SOPORTADO por nodo consultado → noise_sensitivity; nodo fiel al PDF y pertinente a la pata → sin_defecto (falso positivo del juez), sin_par. Descarté cada defecto para este claim: no contradice el PDF (contenido_kg descartado), la provenance apunta al punto correcto 6.5 parte 1 (provenance_imprecisa descartada), el nodo es pertinente (aplicacion_erronea descartada).",
+ "formato_invalido": false,
+ "errores_formato": [],
+ "detectores": {
+  "flag_encuadre_invertido": true,
+  "flag_contexto": false,
+  "tool_calls_usadas": 19,
+  "max_tool_calls": 40,
+  "tokens_in": 560037,
+  "tokens_out": 15482
+ },
+ "_meta": {
+  "parse_ok": true,
+  "format_retries": 1,
+  "tool_calls_used": 19,
+  "tokens_in": 560037,
+  "tokens_out": 15482,
+  "latency_s": 197.062,
+  "error": null,
+  "final_raw": "Tenés razón: el árbol no conecta context_recall con alucinacion_agente. El nombre inventado \"Potencial/Deficiente/Vencido\" es una glosa del agente que califica como claim con síntoma **faithfulness** (no soportado por ningún nodo). Desde faithfulness → grafo no tenía el dato + búsqueda exhaustiva + PDF tampoco lo tiene → alucinacion_agente modo (b). Reclasifico la atribución secundaria a faithfulness.\n\n```json\n{\n  \"extraccion_traza\": {\n    \"tool_calls\": [\n      {\"paso\": 1, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'niveles clasificación deudores cartera comercial', 'limite': 10}\", \"devolvio\": \"136 matches; nodos genéricos (deudor cartera comercial, TextoOrdenado clasificación) sin enumeración de niveles\", \"pertinente\": false},\n      {\"paso\": 2, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'seguimiento especial deudores', 'limite': 10}\", \"devolvio\": \"Obligacion evaluación situación en observación + nodos SEPAIMPO no pertinentes\", \"pertinente\": true},\n      {\"paso\": 3, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'TextoOrdenado_to_clasificacion_deudores_actual_pdf'}\", \"devolvio\": \"metadata del TO, sin contenido de niveles\", \"pertinente\": false},\n      {\"paso\": 4, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'nivel normal riesgo deficiente vencido irrecuperable', 'limite': 15}\", \"devolvio\": \"210 matches; nodos de riesgo de OTRO TO (ponderadores, RCD), ningún nivel de cartera comercial\", \"pertinente\": false},\n      {\"paso\": 5, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'categoría clasificación deudor normal', 'limite': 10}\", \"devolvio\": \"Operacion clasificación de deudor en categoría + restricciones de recategorización\", \"pertinente\": false},\n      {\"paso\": 6, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_clasificacion_de_deudor_en_categoria'}\", \"devolvio\": \"tipo: clasificación de deudor en categoría; sin enumeración de niveles\", \"pertinente\": false},\n      {\"paso\": 7, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'categoría 1 2 3 4 5 deudor clasificación', 'limite': 15}\", \"devolvio\": \"216 matches; ruido (ponderadores, activos en garantía)\", \"pertinente\": false},\n      {\"paso\": 8, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'situación observación potencial deficiente vencido irrecuperable', 'limite': 15}\", \"devolvio\": \"19 matches; nodo observación + indicadores sueltos (situación financiera mala/ilíquida), sin nombres de nivel\", \"pertinente\": false},\n      {\"paso\": 9, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo'}\", \"devolvio\": \"descripción de la situación En observación (flujo de fondos que puede atender pero con situaciones que podrían comprometer capacidad futura)\", \"pertinente\": true},\n      {\"paso\": 10, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Obligacion_...observacion...'}\", \"devolvio\": \"3 salientes: establecida_en TO, aplica_a sujetos obligados, condiciona clasificación de deudor\", \"pertinente\": false},\n      {\"paso\": 11, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'cartera comercial nivel clasificación normal potencial deficiente', 'limite': 15}\", \"devolvio\": \"138 matches; agrupación/revisión de cartera, sin enumeración de niveles\", \"pertinente\": false},\n      {\"paso\": 12, \"tool\": \"ver_nodo\", \"args\": \"{'id': 'Operacion_clasificacion_de_riesgo_de_deudor'}\", \"devolvio\": \"tipo: clasificación de riesgo de deudor; provenance 6.5 parte 3; sin contenido de niveles\", \"pertinente\": false},\n      {\"paso\": 13, \"tool\": \"ver_vecinos\", \"args\": \"{'id': 'Operacion_clasificacion_de_riesgo_de_deudor'}\", \"devolvio\": \"0 salientes, 0 entrantes (nodo aislado)\", \"pertinente\": false},\n      {\"paso\": 14, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'punto 6.5 niveles clasificación normal seguimiento especial', 'limite': 15}\", \"devolvio\": \"193 matches; observación + excepciones/restricciones sin nombres de nivel\", \"pertinente\": false},\n      {\"paso\": 15, \"tool\": \"buscar_nodos\", \"args\": \"{'consulta': 'observación potencial deficiente vencido irrecuperable seguimiento especial', 'limite': 15}\", \"devolvio\": \"66 matches; observación + SEPAIMPO, sin niveles comerciales\", \"pertinente\": false}\n    ],\n    \"paso_decision_error\": {\"paso\": 15, \"quote\": \"otras categorías de riesgo (Potencial, Deficiente, Vencido e Irrecuperable)\"},\n    \"decision_agente_correcta\": null,\n    \"thinking_decision\": null,\n    \"patas\": [\n      \"Niveles de clasificación previstos para los deudores de la cartera comercial\",\n      \"Situaciones que integran el nivel con seguimiento especial\"\n    ]\n  },\n  \"atribuciones\": [\n    {\n      \"sintoma_capa1\": \"context_recall\",\n      \"causa_capa2\": \"completitud_kg\",\n      \"lado\": \"grafo\",\n      \"jerarquia\": \"primaria\",\n      \"pata\": \"Niveles de clasificación previstos para los deudores de la cartera comercial\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Existen niveles de clasificación denominados 'Potencial', 'Deficiente', 'Vencido' e 'Irrecuperable' para la cartera comercial.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago. | Para clasificación en situación normal: El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financ… | El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.\", \"ubicacion\": \"Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo, Obligacion_para_clasificacion_en_situacion_normal_el_analisis_del_flujo_de_fondos_del_clien, Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr (indicadores sueltos; ningún nodo enumera los cinco niveles con sus nombres)\"},\n        \"fuente\": {\"quote\": \"6.5. Niveles de clasificación. Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se detallan en cada caso.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, Punto 6.5 y pp. 20-24 (6.5.1 En situación normal; 6.5.2 Con seguimiento especial; 6.5.3 Con problemas; con alto riesgo de insolvencia; irrecuperable)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"con problemas alto riesgo insolvencia irrecuperable cartera comercial\", \"resultado\": \"635 matches; solo nodos de ponderadores/riesgo de otro TO y financiaciones; ningún nodo-nivel de cartera comercial\"},\n        {\"consulta\": \"alto riesgo de insolvencia\", \"resultado\": \"2432 matches; ningún nodo porta 'con alto riesgo de insolvencia' como nivel de clasificación (solo riesgo de crédito/ponderadores)\"},\n        {\"consulta\": \"cinco categorías clasificación deudor situación normal con problemas\", \"resultado\": \"527 matches; solo nodos de situación normal/observación y operaciones de clasificación; no hay nodo enumerador de los cinco niveles\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"faithfulness\",\n      \"causa_capa2\": \"alucinacion_agente\",\n      \"lado\": \"agente\",\n      \"jerarquia\": \"secundaria\",\n      \"pata\": \"Niveles de clasificación previstos para los deudores de la cartera comercial\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"otras categorías de riesgo (Potencial, Deficiente, Vencido e Irrecuperable)\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"ninguno (ningún nodo de la trayectoria ni del grafo porta los nombres 'Potencial', 'Deficiente' o 'Vencido' como niveles de clasificación)\", \"ubicacion\": \"n/a\"},\n        \"fuente\": {\"quote\": \"6.5.3. Con problemas (…) categorizado en los niveles 'con alto riesgo de insolvencia' o 'irrecuperable'\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, pp. 22-25 (los nombres reales de niveles 3-5 son 'con problemas', 'con alto riesgo de insolvencia', 'irrecuperable'; 'Potencial/Deficiente/Vencido' no figuran)\"}\n      },\n      \"busquedas\": [\n        {\"consulta\": \"cartera consumo vivienda cumplimiento normal riesgo bajo medio alto\", \"resultado\": \"291 matches; los niveles de consumo en este TO se llaman 'riesgo bajo'/'riesgo medio', no 'Potencial/Deficiente/Vencido' — confirma que esos nombres no existen ni en grafo ni en PDF (glosa de cosecha propia)\"},\n        {\"consulta\": \"con problemas alto riesgo insolvencia irrecuperable cartera comercial\", \"resultado\": \"635 matches; ningún nodo porta 'Potencial/Deficiente/Vencido' como nivel\"}\n      ]\n    },\n    {\n      \"sintoma_capa1\": \"noise_sensitivity\",\n      \"causa_capa2\": \"sin_defecto\",\n      \"lado\": \"ninguno\",\n      \"jerarquia\": \"sin_par\",\n      \"pata\": \"Situaciones que integran el nivel con seguimiento especial\",\n      \"evidencia\": {\n        \"afirmacion\": {\"quote\": \"Para la situación de Observación, el análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago.\", \"ubicacion\": \"respuesta final\"},\n        \"nodo\": {\"quote\": \"Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromisos financieros pero existen situaciones posibles que podrían comprometer la capacidad futura de pago.\", \"ubicacion\": \"Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo (abierto por el agente en paso 9)\"},\n        \"fuente\": {\"quote\": \"6.5.2.1. En observación. El análisis del flujo de fondos del cliente demuestra que, al momento de realizarse, puede atender la totalidad de sus compromisos financieros. (…) Sin embargo, existen situaciones posibles que, de no ser controladas o corregidas oportunamente, podrían comprometer la capacidad futura de pago del cliente.\", \"ubicacion\": \"TO_clasificacion_deudores_actual.pdf, pp. 20-21\"}\n      },\n      \"busquedas\": []\n    }\n  ],\n  \"razonamiento\": \"El síntoma tiene dos patas fallidas. PATA 1 (niveles de la cartera comercial): el juez marcó falso el claim 'Existen niveles Potencial, Deficiente, Vencido e Irrecuperable'. Apliqué C1a: ¿apareció en la trayectoria el dato PERTINENTE (los nombres reales de los cinco niveles de la cartera comercial)? NO. El PDF (Punto 6.5, verificado) dice que hay 'cinco categorías' con nombres: 6.5.1 En situación normal, 6.5.2 Con seguimiento especial, 6.5.3 Con problemas, y (pp.22-25) 'con alto riesgo de insolvencia' e 'irrecuperable'. En la trayectoria el agente solo vio nodos de situaciones/indicadores individuales (En observación, situación normal, financiera mala, financiera ilíquida) — ninguno enumera los niveles ni porta los nombres de los niveles 3/4/5. Ergo esta pata es context_recall. C2: ¿existe nodo portador del dato faltante? Busqué exhaustivamente ('con problemas alto riesgo insolvencia irrecuperable', 'alto riesgo de insolvencia', 'cinco categorías...'): no hay ningún nodo-nivel que enumere las categorías de la cartera comercial con sus nombres; los indicadores existen desperdigados como Restricciones/Obligaciones sin label de nivel. El PDF SÍ tiene el dato → completitud_kg, PRIMARIA (es el claim central falso que rompe el veredicto). SEGUNDA atribución de la misma pata: el nombre concreto que el agente inventó ('Potencial/Deficiente/Vencido') no lo soporta NINGÚN nodo de la trayectoria → síntoma faithfulness (no es context_recall porque no es la ausencia de la pata sino una glosa afirmada de más). C2 desde faithfulness: ¿el grafo tenía el dato afirmado? Búsqueda documentada: ningún nodo porta esos nombres. ¿El PDF los tiene? Tampoco — los niveles de consumo en este TO se llaman 'riesgo bajo/medio', no 'Potencial/Deficiente/Vencido'. Por tanto es glosa de cosecha propia → alucinacion_agente modo (b), SECUNDARIA (no explica por sí sola la reprobación, la explica el hueco del grafo; esta glosa es el relleno de la pata vacía). PATA 2 (situaciones del seguimiento especial): el juez marcó 'no_soportado' el claim sobre En observación, pero el agente abrió en el paso 9 el nodo que dice EXACTAMENTE eso, y el PDF (p.20-21) lo confirma literalmente. Claim SOPORTADO por nodo consultado → noise_sensitivity; nodo fiel al PDF y pertinente a la pata → sin_defecto (falso positivo del juez), sin_par. Descarté cada defecto para este claim: no contradice el PDF (contenido_kg descartado), la provenance apunta al punto correcto 6.5 parte 1 (provenance_imprecisa descartada), el nodo es pertinente (aplicacion_erronea descartada).\"\n}\n```",
+  "trayectoria_verificador": [
+   {
+    "n": 1,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.5"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumplimiento de las obligaciones sin recur… [+394 chars]"
+   },
+   {
+    "n": 2,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.5. Niveles de clasificación. (parte 1)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 1)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+   },
+   {
+    "n": 3,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.5.1"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5.1\", \"ref\": \"Punto/Sección 6.5.1 (mejor score=-76 < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 4,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.5. Niveles de clasificación. (parte 3)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 3)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+   },
+   {
+    "n": 5,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 20"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 20\", \"metodo\": \"pagina\", \"ref\": \"p.20 (PDF absoluto 1-based)\", \"pasaje\": \"6.\\n5.1. En situación normal. \\nE\\nl análisis del flu jo de fondos del cliente demuestra que es capaz de atender adecuada-\\nmente todos sus compromisos financieros. \\nE\\nntre los indicadores que pueden reflejar esta situación se destacan que el cliente: \\n6.\\n5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura \\nde endeudamiento en relación con su capacidad de ganancia, y muestre una al-\\nta capacidad de pago de las deudas (capital e intereses) en las condiciones pac-\\ntadas generando fondos -medido a través del análisis de su flujo- en grado acep-\\ntable. El flujo de fondos no es susceptible de variaciones significativas ante m o-\\ndificaciones importantes en el comportamiento de las variables tanto propias \\ncomo vinculadas a su sector de actividad. \\nE\\nn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contraparte… [+1592 chars]"
+   },
+   {
+    "n": 6,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 21"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 21\", \"metodo\": \"pagina\", \"ref\": \"p.21 (PDF absoluto 1-based)\", \"pasaje\": \"Sin embargo, existen situaciones posibles que, de no ser controladas o corregi-\\ndas oportunamente, podrían comprometer la capacidad futura de pago del clien-\\nte. \\n \\nEntre los indicadores que pueden reflejar esta situación se destacan que el clien-\\nte: \\n \\ni) Presente una buena situación financiera y de rentabilidad, con moderado en-\\ndeudamiento y adecuado flujo de fondos para el pago de las deudas por capi-\\ntal e intereses. El flujo de fondos tiende a debilitarse para afrontar los pagos \\ndado que es sumamente sensible a la variación de una o dos variables, sobre \\nlas cuales existe un significativo grado de incertidumbre, siendo especialmen-\\nte susceptible a cambios en circunstancias vinculadas al sector. \\n \\nii) Incurra en atrasos de hasta 90 días en los pagos de sus obligaciones. Se en-\\ntenderá que el cliente efectúa el pago de sus obligaciones cuando no recurre \\na nueva financiación directa o indirecta de la entidad. \\n \\nEn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder,… [+1823 chars]"
+   },
+   {
+    "n": 7,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 22"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 22\", \"metodo\": \"pagina\", \"ref\": \"p.22 (PDF absoluto 1-based)\", \"pasaje\": \"v\\nii) mantenga arreglos privados con la  entidad financiera que cuenten con la opi-\\nnión del auditor externo de la entidad sobre la factibilidad del cumplimien to de\\nla \\nrefinanciación, cuando se haya cancelado, al menos, el 15 % del importe\\ninv\\nolucrado en el citado acuerdo y siempre que dicho acuerdo se haya alcan-\\nzado cuando el deudor se encontraba categorizado en los niveles “con alto\\nriesg\\no de insolvencia” o “irrecuperable”.\\nA fin de determinar el importe de la cancelación, se admitirá computar el 50 %\\nde las\\n garantías adicionales a las ofrecidas originalmente, constituidas sobre\\nbienes no vinculados a la explotación del deudor -con excepción de las hipo-\\ntecas sobre inmuebles rurales que, por lo tanto, serán computables-, obser-\\nvando los  márgenes de cobertura establecidos en las normas sobre  “Garan-\\ntías”. Será requisito indispensable, además, contar con la opinión favorable\\nsobre la calidad de las garantías, formulada por el auditor externo.\\nEn los casos de acuerdos superiores al equ… [+1822 chars]"
+   },
+   {
+    "n": 8,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 23"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 23\", \"metodo\": \"pagina\", \"ref\": \"p.23 (PDF absoluto 1-based)\", \"pasaje\": \"El acuerdo con la entidad financiera deberá concertarse dentro de los 90 o 180  \\ndías contados desde la fecha en que se verificó la mora en el pago de las obliga-\\nciones, según sea necesario llegar a acuerdos con hasta dos entidades o con \\nmás de dos, respectivamente.  \\n \\nDe no haberse alcanzado el acuerdo dentro del plazo establecido, deberá reclasi-\\nficarse al deudor en la categoría inferior que corresponda, de acuerdo con los in-\\ndicadores establecidos para cada nivel. \\n \\nLos deudores que hayan cancelado la totalidad de los intereses devengados, po-\\ndrán ser clasificados en “situación normal” si además observan las otras condi-\\nciones previstas para esa categoría. \\n \\nLos deudores que no hubieran cancelado por lo menos los intereses devengados \\ndentro de los 180 días de concertada la refinanciación, deberán ser reclasificados \\nen la categoría “con alto riesgo de insolvencia”. \\n \\nA los efectos previstos en los dos últimos párrafos anteriores y aun cuando se \\nhayan cancelado los mencionados porce… [+1824 chars]"
+   },
+   {
+    "n": 9,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 24"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 24\", \"metodo\": \"pagina\", \"ref\": \"p.24 (PDF absoluto 1-based)\", \"pasaje\": \"6.5.3.1. Presente una situación financiera ilíquida y un nivel de flujo de fondos que no le \\npermita atender el pago de la totalidad del capital y de los intereses de las deu-\\ndas, pudiendo cubrir solamente estos últimos. Escasa capacidad de ganancias. \\nLa proyección del flujo de fondos muestra un progresivo deterioro y una alta \\nsensibilidad a modificaciones menores y previsibles de variables propias o del \\nentorno, debilitando aún más sus posibilidades de pago. \\n \\nEn el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la \\neventual incidencia que en su capacidad de pago pueda tener la situación en la \\nque se encuentran los demás integrantes del grupo de contrapartes conectadas \\nal cual pertenece. \\n \\n6.5.3.2. Incurra en atrasos de hasta 180 días, con exclusión de los deudores comprendi-\\ndos en el punto 6.5.2.2. A este fin, el cómputo de los plazos no se interrumpirá \\npor el otorgamiento de renovaciones cuando previamente no se haya producido \\nla cancelación efectiva de las obl… [+1816 chars]"
+   },
+   {
+    "n": 10,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "p. 25"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"p. 25\", \"metodo\": \"pagina\", \"ref\": \"p.25 (PDF absoluto 1-based)\", \"pasaje\": \"6.5.3.6. Mantenga convenios de pago resultantes de concordatos judiciales o extrajudi-\\nciales homologados (incluyendo los acuerdos preventivos extrajudiciales homo-\\nlogados) a vencer o arreglos privados concertados en forma conjunta con enti-\\ndades financieras acreedoras cuando aún no se haya cancelado el 10 % del im-\\nporte involucrado en el citado acuerdo. \\n \\nA fin de determinar el importe de la cancelación, se admitirá computar el 50 % \\nde las garantías adicionales a las ofrecidas originalmente, constituidas sobre \\nbienes no vinculados a la explotación del deudor –con excepción de las hipote-\\ncas sobre inmuebles rurales que, por lo tanto, serán computables–, observando \\nlos márgenes de cobertura establecidos en las normas sobre “Garantías”. \\n \\n6.5.3.7. Incurra en atrasos recurrentes, incumplimiento de hasta 180 días respecto de \\ncondiciones contractuales o nulo movimiento en las cuentas con la entidad. \\n \\n6.5.3.8. Pertenezca a un sector de la actividad económica o ramo de negocios cuya ten-\\ndenci… [+1818 chars]"
+   },
+   {
+    "n": 11,
+    "tool": "ver_paso_completo",
+    "input": {
+     "paso": 8
+    },
+    "output_truncado": "{\"paso\": 8, \"tool\": \"buscar_nodos\", \"input\": {\"consulta\": \"situación observación potencial deficiente vencido irrecuperable\", \"limite\": 15}, \"output_completo\": {\"consulta\": \"situación observación potencial deficiente vencido irrecuperable\", \"total_con_match\": 19, \"resultados\": [{\"id\": \"Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación en observación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromi…\"}, {\"id\": \"Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr\", \"type\": \"Restriccion\", \"label\": \"Situación financiera mala\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: clasificació… [+4155 chars]"
+   },
+   {
+    "n": 12,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "con problemas alto riesgo insolvencia irrecuperable cartera comercial",
+     "limite": 15
+    },
+    "output_truncado": "{\"consulta\": \"con problemas alto riesgo insolvencia irrecuperable cartera comercial\", \"total_con_match\": 635, \"resultados\": [{\"id\": \"Operacion_financiacion_amparada_con_seguro_de_credito_por_riesgo_comercial\", \"type\": \"Operacion\", \"label\": \"Financiación con seguro de crédito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: financiación amparada con seguro de crédito por riesgo comercial\"}, {\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Operacion_operaciones_de_titulizacion_y_venta_o_cesion_de_cartera_con_responsabilidad\", \"type\": \"Operacion\", \"label\": \"Titulización cartera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Operaciones de titulización y venta o cesión de cartera con responsabilidad\"}, {\"id\": \"Restriccion_oro_amonedado_o_en_barras_con_ponderador_de_riesgo_0\", \"type\": \"Restriccion\", \"label\": \"Ponderador riesgo oro\", \"tokens_matcheados\": … [+3292 chars]"
+   },
+   {
+    "n": 13,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "alto riesgo de insolvencia",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"alto riesgo de insolvencia\", \"total_con_match\": 2432, \"resultados\": [{\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional\", \"type\": \"Operacion\", \"label\": \"Cálculo promedio ERC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo de promedio de exigencias de riesgo operacional\"}, {\"id\": \"Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…\"}, {\"id\": \"Restriccion_oro_amonedado_o_en_barras_con_ponderador_de_riesgo_0\", \"type\": \"Restriccion\", \"label\": \"Ponderador riesgo oro\", \"toke… [+1841 chars]"
+   },
+   {
+    "n": 14,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr"
+    },
+    "output_truncado": "{\"id\": \"Restriccion_el_cliente_presente_una_situacion_financiera_mala_con_suspension_de_pagos_quiebr\", \"type\": \"Restriccion\", \"label\": \"Situación financiera mala\", \"properties\": {\"descripcion\": \"El cliente presente una situación financiera mala con suspensión de pagos, quiebra decretada o pedido de su propia quiebra.\", \"tipo\": \"limite_cualitativo\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 4)\"}]}"
+   },
+   {
+    "n": 15,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "cinco categorías clasificación deudor situación normal con problemas",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"cinco categorías clasificación deudor situación normal con problemas\", \"total_con_match\": 527, \"resultados\": [{\"id\": \"Obligacion_para_clasificacion_con_seguimiento_especial_en_observacion_el_analisis_del_flujo\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación en observación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para clasificación con seguimiento especial en observación: El análisis del flujo de fondos del cliente demuestra que puede atender la totalidad de sus compromi…\"}, {\"id\": \"Obligacion_para_clasificacion_en_situacion_normal_el_analisis_del_flujo_de_fondos_del_clien\", \"type\": \"Obligacion\", \"label\": \"Evaluación situación financiera normal\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para clasificación en situación normal: El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financ…\"}, {\"id\": \"Operacion_clasificacion_de_deudor_en_categoria\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudor en categoría\"}, {\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasifica… [+1906 chars]"
+   },
+   {
+    "n": 16,
+    "tool": "ver_nodo",
+    "input": {
+     "id": "Restriccion_presente_una_situacion_financiera_iliquida_y_un_nivel_de_flujo_de_fondos_que_no_"
+    },
+    "output_truncado": "{\"id\": \"Restriccion_presente_una_situacion_financiera_iliquida_y_un_nivel_de_flujo_de_fondos_que_no_\", \"type\": \"Restriccion\", \"label\": \"Situación financiera ilíquida\", \"properties\": {\"descripcion\": \"Presente una situación financiera ilíquida y un nivel de flujo de fondos que no le permita atender el pago de la totalidad del capital y de los intereses de las deudas, pudiendo cubrir solamente estos últimos.\", \"tipo\": \"limite_cualitativo\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 3)\"}]}"
+   },
+   {
+    "n": 17,
+    "tool": "buscar_nodos",
+    "input": {
+     "consulta": "cartera consumo vivienda cumplimiento normal riesgo bajo medio alto",
+     "limite": 10
+    },
+    "output_truncado": "{\"consulta\": \"cartera consumo vivienda cumplimiento normal riesgo bajo medio alto\", \"total_con_match\": 291, \"resultados\": [{\"id\": \"Operacion_refinanciacion_de_los_deudores_de_cartera_de_consumo_o_vivienda\", \"type\": \"Operacion\", \"label\": \"Refinanciación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Refinanciación de los deudores de cartera de consumo o vivienda\"}, {\"id\": \"Operacion_otorgamiento_de_financiaciones_de_consumo_o_vivienda\", \"type\": \"Operacion\", \"label\": \"Financiaciones consumo vivienda\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: otorgamiento de financiaciones de consumo o vivienda\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_registran_incumplimientos_ocasionales_en_la_atencion_\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en riesgo bajo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Comprende los clientes que registran incumplimientos ocasionales en la atención de sus obligaciones, con atrasos de más de 31 hasta 90 días\"}, {\"id\": \"Restriccion_comprende_los_clientes_que_muestran_alguna_incapacidad_para_cancelar_sus_obligac\", \"type\": \"Restriccion\", \"label\": \"Límite de atraso en riesgo medio\", \"tokens_matcheados\": 2, \"resumen… [+2214 chars]"
+   },
+   {
+    "n": 18,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 7.5"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"fallida\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.5\", \"ref\": \"Punto/Sección 7.5 (mejor score=n/a < 6)\", \"mensaje\": \"No se pudo anclar el pasaje en el PDF (ubicación no localizable, o descartada como índice/tabla). NO lo interpretes como 'el PDF no dice nada': es una señal de que esta cita no se pudo resolver. Probá otra ubicación/source_doc, o tratá la imprecisión de la cita como evidencia.\"}"
+   },
+   {
+    "n": 19,
+    "tool": "leer_pasaje_pdf",
+    "input": {
+     "source_doc": "TO_clasificacion_deudores_actual.pdf",
+     "location": "Punto 6.5. Niveles de clasificación. (parte 4)"
+    },
+    "output_truncado": "{\"localizacion_pdf\": \"ok\", \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.5. Niveles de clasificación. (parte 4)\", \"metodo\": \"punto\", \"ref\": \"Punto/Sección 6.5 (PDF pág 19)\", \"pasaje\": \"6.5. Niveles de clasificación.\\nCada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las s i-\\nguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se det a-\\nllan en cada caso.\\nLos clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban f i-\\nnanciaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda\\nregistrado en el sistema financiero, según la última información disponible en la “Central de \\ndeudores” a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las\\nnormas sobre “Previsiones mínimas por riesgo de incobrabilidad” correspondiente a la  peor cla-\\nsificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el\\nanálisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a\\nlos fines a que se refiere el punto 6.6.\\nA fin de verificar el cumpl… [+431 chars]"
+   }
+  ],
+  "api_calls": [
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 32865,
+    "output_tokens": 291
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 34581,
+    "output_tokens": 298
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 35849,
+    "output_tokens": 255
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 38610,
+    "output_tokens": 249
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 41465,
+    "output_tokens": 457
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 44499,
+    "output_tokens": 541
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 49422,
+    "output_tokens": 318
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 51433,
+    "output_tokens": 439
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 53520,
+    "output_tokens": 972
+   },
+   {
+    "stop_reason": "tool_use",
+    "input_tokens": 56306,
+    "output_tokens": 993
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 57989,
+    "output_tokens": 5159
+   },
+   {
+    "stop_reason": "end_turn",
+    "input_tokens": 63498,
+    "output_tokens": 5510
+   }
+  ],
+  "contexto_stats": {
+   "n_seen": 92,
+   "n_claims_fallidos": 2,
+   "categoria": "enumerativa"
+  },
+  "label": "escalon1_r1"
+ }
+}
