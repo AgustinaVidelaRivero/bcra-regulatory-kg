@@ -188,3 +188,80 @@ Respetando la estructura del escalón 1 (informe, "Archivos producidos"):
   `evaluacion_escalon1/corridas/fichas_delta_1b.json`.
 
 — Fin del protocolo. Sellar por commit antes de la primera llamada del 1b. —
+
+## Enmienda §8 (2026-07-30)
+
+Registro esta enmienda con la corrida detenida por la guarda de §4 (log
+`data/experiment/evaluacion_escalon1/logs/corridas_1b_2026-07-30.log`). Las
+secciones 1–7 quedan intactas; esta sección solo agrega el tratamiento de los
+huecos de caché que la guarda detectó.
+
+### a) El hallazgo (mecánico)
+
+`llm_cache` no almacena errores por diseño (write-through de éxitos; un error se
+propaga sin guardarse). Por lo tanto **la caché reproduce éxitos, no fracasos**:
+las `failed_trace` del escalón 1 que murieron en una llamada fallida dejaron
+huecos irrellenables exactamente en su punto de falla — el último turno
+almacenado termina en `stop_reason=tool_use` y el turno siguiente no existe en
+ninguna db. Un replay 100% byte-idéntico del brazo v2 es **imposible por
+construcción**. La guarda de §4 detectó el primer hueco al primer request
+(evidencia: el log de la corrida detenida — miss único del turno 3 de EV1-010,
+réplica 2, brazo v2; el replay pagó ese turno y produjo una traza con
+`failed_trace=False`, divergente del sellado `failed_trace=True`).
+
+### b) Regla de exención acotada
+
+Pre-scan exhaustivo (2026-07-30, determinístico, solo lectura) sobre las TRES
+dbs selladas `escalon1_r{1,2,3}.db` y los DOS brazos cacheados: 216
+combinaciones (pregunta × réplica × brazo) reconstruidas turno a turno.
+Huecos detectados — la lista completa es:
+
+| Pregunta | Réplica | Brazo | Turnos cacheados | stop_reason del último | Error sellado registrado |
+|---|---|---|---|---|---|
+| EV1-010 | r2 | grafo_v2 | 2 | `tool_use` | `APIConnectionError: Connection error.` |
+| EV1-016 | r3 | grafo_v2 | 3 | `tool_use` | `BadRequestError 400: messages.6: user messages must have non-empty content` |
+
+Cero huecos en run_3; cero anomalías de secuencia en las 214 combinaciones
+restantes (patrón sano: historias impares consecutivas con cierre opcional de
+límite de tools). La lista concilia 1:1 con las `failed_trace` selladas del
+escalón 1: todo hueco tiene su `failed_trace` y toda `failed_trace` tiene su
+hueco.
+
+**Regla:** las dos combinaciones enumeradas — **EV1-010·r2·grafo_v2 y
+EV1-016·r3·grafo_v2** — quedan **EXENTAS del replay**: no se re-corren, no se
+pagan, y su resultado sellado (`failed_trace=True` → no-correcta dentro del
+baseline adjudicado) se **ACARREA** a los artefactos del 1b con la marca
+`origen=sellado_escalon1_hueco_cache`. La guarda de §4 permanece **totalmente
+armada** para cualquier otro request: un miss fuera de esta lista enumerada
+sigue abortando la corrida.
+
+### c) Artefactos del desvío del 2026-07-30
+
+- La fila pagada del turno 3 de EV1-010 ($0.0061) queda en `escalon1b_r2.db`
+  como crudo **INERTE**: la pregunta exenta no se re-corre, así que esa entrada
+  no vuelve a consultarse.
+- Las trazas divergentes de v2·r2 generadas por la corrida detenida se mueven a
+  `posthoc_run/traces/escalon1b_r2/grafo_v2_DIVERGENTE_NO_USAR/` y quedan como
+  **evidencia del hallazgo, excluidas de todo insumo de lectura**. El
+  directorio `escalon1b_r2/grafo_v2/` queda libre para regenerarse en el
+  relanzamiento.
+
+### d) Invariante que la enmienda preserva
+
+El baseline v2 = **27/36 vale como medido y adjudicado, incluidas sus dos
+`failed_trace`**; ninguna regla de §1–§7 cambia; esta enmienda solo gobierna el
+tratamiento de los dos huecos enumerados durante el replay. El brazo v2 del 1b
+queda así definido como: 34 preguntas × 3 réplicas por replay byte-idéntico +
+las 2 combinaciones exentas acarreadas del sellado (las otras réplicas de
+EV1-010 y EV1-016 SÍ se replican; la exención es por combinación, no por
+pregunta).
+
+### e) Registro metodológico (para la discusión de la tesis)
+
+El replay por caché tiene un punto ciego sistemático: reproduce el
+comportamiento exitoso pero no las fallas de infraestructura, porque el error
+nunca se almacena — el registro de lo medido y el registro de lo reproducible
+no coinciden exactamente donde el sistema falló. Toda arquitectura de
+re-medición barata por caché hereda este sesgo de supervivencia y necesita, como
+acá, un inventario explícito de huecos y una regla de acarreo pre-registrada
+(evidencia: `logs/corridas_1b_2026-07-30.log`).
