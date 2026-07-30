@@ -152,7 +152,10 @@ norma y tabla de referencias.
 **Fix.** Cortar por frontera de rol antes de cortar por punto: el rol es una propiedad
 de la página, y las páginas de índice y de tabla se detectan de forma determinística
 (pie `-Índice -`, encabezado `NORMA DE ORIGEN` — implementado y validado en
-`chunk_roles.py`, 508/508 clasificados).
+`chunk_roles.py`, 508/508 clasificados). **La asignación de rol debe ser por
+segmento, no por chunk**: un chunk mixto clasificado por su offset inicial puede
+portar contenido de otro rol (caso medido en la precisión de RX-07:
+`clasificacion_deudores::10.4`, índice→cuerpo).
 
 **Estado.** No mitigable en ensamblado.
 
@@ -203,6 +206,16 @@ vez del prompt de norma.
 **Estado.** Mitigado en el v3 (se excluyen del ensamblado), pero el gasto ya se hizo y
 se volvería a hacer en una re-extracción sin este fix.
 
+**Precisión (post-mapeo del delta v2→v3).** La afirmación "el índice no aporta un
+solo hecho normativo" vale para chunks de índice PUROS; un chunk MIXTO clasificado
+índice por su offset inicial puede ser el único portador de contenido normativo
+real. Caso medido: `TO_clasificacion_deudores_actual.pdf::10.4` — arranca en la
+última línea del índice, cruza al cuerpo de la Sección 1, y era la única fuente del
+criterio general del punto 1.1; su exclusión por rol en el re-ensamblado hace
+desaparecer ese texto del grafo v3 (pérdida de material respecto de v2, documentada
+en el mapeo sellado `data/experiment/evaluacion_escalon1/mapeo_delta_v2v3.md`,
+§A EV1-015 y §F.1). Reproducibilidad de esta precisión: MEDIDO.
+
 Reproducibilidad: MEDIDO — en chunks y chars (48 / 17.516 / 1,3% índice; 92 /
 124.647 / 9,4% tabla; auditoría U0, 29-07); el ahorro estimado en USD queda DECLARADO
 como piso.
@@ -248,6 +261,30 @@ de que el original midió longitudes pre-strip —1 char por PDF— no fue confi
 Reproducibilidad: MEDIDO — replicación del chunker sobre los 5 PDFs: 1.207 chars
 (230+213+283+228+253), con desvío −5 respecto del valor original, registrado sin
 causa confirmada.
+
+---
+
+### RX-10 — Linealización de tablas dentro del articulado
+
+**Defecto.** pdfplumber linealiza tablas del cuerpo normativo con los encabezados
+en un orden y los valores en otro; el extractor empareja según esa linealización.
+
+**Consecuencia medida.** Chunk `TO_capitales_minimos_actual.pdf::1.2`, texto crudo:
+"Restantes entidades Bancos (salvo Cajas de Crédito Cooperativas) -En millones de
+pesos- 5.000 2.500" → nodos con bancos 2.500 / restantes 5.000, **invertidos**
+contra la clave adjudicada del caso EV1 correspondiente. Los datos cuantitativos de
+cualquier tabla del articulado pueden quedar emparejados al revés; el daño total no
+es acotable sin gold por chunk (mismo estatus que RX-06).
+
+**Fix.** Extracción de tablas consciente de estructura en el chunker nuevo.
+
+**Estado.** No mitigable en ensamblado: la linealización está congelada en el texto
+del chunk. Referencia cruzada: los dos nodos afectados son candidatos a entrada del
+backlog de refinamiento con `nodos_objetivo`, DIFERIDA a post-1b (congelamiento del
+protocolo del escalón 1b, §5).
+
+Reproducibilidad: MEDIDO — chunk crudo del caché + nodos del grafo, verificado
+también por revisión independiente.
 
 ---
 
