@@ -61,6 +61,11 @@ de toda corrida, corrida única, lectura contra la vara. Los commits salen de `g
 14. `docs/lectura_ciclo2.md` — lectura final del ciclo 2: head-to-head a tres columnas
     sobre el gate CQN2; deja fijado el instrumento del proyecto = v7-v0.4b (commit
     `7cc3bd2`, 2026-07-20).
+15. `docs/spec_evaluacion_intrinseca.md` — pre-registro del set de métricas de
+    evaluación intrínseca del grafo (M1–M11): regla constitucional de pareo
+    sub-fusión/sobre-fusión y denominador aguas arriba, predicciones selladas sobre
+    el par defectuoso/re-ensamblado, régimen de dos pasadas sin umbrales (commit
+    pendiente de sellado; debe anteceder a `scripts/metricas_intrinsecas.py`).
 
 ## (iii) Evidencia y auditoría
 
