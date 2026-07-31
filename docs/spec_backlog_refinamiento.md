@@ -38,7 +38,7 @@ Cada entrada es un objeto JSON (una línea del jsonl). Esquema:
 ```json
 {
   "id": "BKL-0001",
-  "fuente": "vara | escalon1_fallas | triage_extraccion | verificador | app_feedback",
+  "fuente": "vara | escalon1_fallas | triage_extraccion | verificador | app_feedback | auditoria_ensamblado",
   "diagnostico": "adjudicado_humano | verificador_validado | verificador_exploratorio | sin_diagnostico",
   "especie": "amputacion | provenance_desplazada | fabricacion | quimera | descenso_sujeto | ausencia | alcanzabilidad | estrechamiento_sujeto | sujeto_termino_ajeno | clase_forzada | contenido_sin_subespecie | duplicacion | hub_contaminado | cascara",
   "grafo": "grafo_v2",
@@ -65,6 +65,9 @@ Descripción por campo:
     (`data/experiment/grafo_v2/triage_sospechosas_U5.json`).
   - `verificador`: salidas del verificador automático ({síntoma, causa}).
   - `app_feedback`: el circuito de la app de chat (§3.b).
+  - `auditoria_ensamblado`: hallazgos de auditorías de pipeline y re-ensamblados
+    (p. ej. los defectos detectados por el mapeo del delta v2→v3 y el re-triage
+    contra el grafo promovido). Enmienda 2026-07-31.
 - **`diagnostico`** — la jerarquía de confianza, de mayor a menor:
   - `adjudicado_humano`: un humano miró la evidencia y laudó. Techo de confianza.
   - `verificador_validado`: veredicto automático de un verificador **calibrado contra
@@ -271,6 +274,25 @@ calibración del detector, no defectos del grafo.
   mismo patrón que el registro de sesiones de la app (`app/README.md`: "una línea JSON
   por turno y una por feedback, nunca se edita una línea ya escrita"). El estado
   vigente de una entrada se reconstruye plegando sus eventos en orden.
+- **Evento `retriage_<grafo>` (enmienda 2026-07-31):** cuando el grafo vigente
+  cambia (p. ej. una promoción), el re-triage de las entradas existentes se
+  registra con eventos `{"evento": "retriage_<grafo>", "id": "BKL-NNNN",
+  "estado_retriage": "...", "grafo": "...", "nota": "...", "evidencia": "...",
+  "adjudicacion": "...", "ts": "..."}`. Enum de `estado_retriage`:
+  `resuelta_por_<grafo>` · `vigente_sin_cambios` · `modificada_por_<grafo>`
+  (para el re-triage del 31-07: `resuelta_por_v3` / `vigente_sin_cambios` /
+  `modificada_por_v3`). Este evento **no altera la máquina de estados
+  principal** (`nuevo → triaged → aplicado → verificado` / `descartado`): es un
+  anexo de contexto por grafo; una entrada `resuelta_por_<grafo>` sigue en su
+  estado formal hasta que su verificación declarada se corra y la lleve a
+  `verificado` (o la adjudicadora la cierre).
+- **Política de aplicación (laudada, 2026-07-31):** las correcciones se aplican
+  **in-place sobre el grafo vigente** (hoy
+  `data/experiment/grafo_v2/reensamblado_v3/kg.json`), **un commit por
+  corrección aplicada**. Convención de SHA: **el SHA de una aplicación es el
+  commit que introduce su evento de aplicación en este jsonl** — auto-resoluble
+  por `git log --follow data/backlog/backlog.jsonl`, sin campo circular dentro
+  del evento.
 - **Por qué tracked** (a diferencia de las sesiones de la app, que están fuera de
   git): el backlog **dirige ediciones del grafo**. Cada cambio que la fase de
   refinamiento aplique debe rastrear a una entrada, y esa cadena
