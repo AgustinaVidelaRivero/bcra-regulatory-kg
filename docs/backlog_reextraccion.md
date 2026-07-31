@@ -286,6 +286,11 @@ protocolo del escalón 1b, §5).
 Reproducibilidad: MEDIDO — chunk crudo del caché + nodos del grafo, verificado
 también por revisión independiente.
 
+Precisión (31-07): el daño es POR INSTANCIA, no sistemático por tabla — la
+tabla transitoria del 12.1, con el mismo desorden de linealización, quedó
+emparejada correctamente (verificación del re-test de C1); toda tabla numérica
+del corpus requiere verificación individual.
+
 ---
 
 ## Ya resuelto sin re-extraer (no entra a esta lista)
