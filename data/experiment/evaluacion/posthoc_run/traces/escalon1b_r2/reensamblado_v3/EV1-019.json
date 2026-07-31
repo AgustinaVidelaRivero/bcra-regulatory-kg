@@ -1,0 +1,409 @@
+[
+  {
+    "rep": 1,
+    "qid": "EV1-019",
+    "run": "reensamblado_v3",
+    "categoria": "condicional",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "EV1-019",
+      "question": "¿Cuál es el monto máximo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar como adelanto en efectivo a un tarjetahabiente que se encuentra en el exterior?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "adelanto efectivo tarjeta crédito exterior límite máximo",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"adelanto efectivo tarjeta crédito exterior límite máximo\", \"total_con_match\": 399, \"resultados\": [{\"id\": \"Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co_15e7ca\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto efectivo USD 50 por operación\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras y otras emisoras de tarjetas locales de crédito y/o compra podrán otorgar como adelanto en efectivo a los tarjetahabientes en el exter…\"}, {\"id\": \"Restriccion_dicho_limite_se_incrementa_a_usd_200_dolares_estadounidenses_doscientos_por_oper_4ec0a0\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto efectivo USD 200 países no limítrofes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Dicho límite se incrementa a USD 200 (dólares estadounidenses doscientos) por operación por los retiros de efectivo que se realicen en países no limítrofes.\"}, {\"id\": \"Restriccion_limite_deposito_en_exterior_e5de1d\", \"type\": \"Restriccion\", \"label\": \"Límite depósito en exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los fondos adquiridos sean depositados en cuentas abiertas en entidades financieras locales. Únicamente se ad… [+2277 chars]",
+          "output_chars": 3477
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "adelanto en efectivo tarjetahabiente exterior monto",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"adelanto en efectivo tarjetahabiente exterior monto\", \"total_con_match\": 1147, \"resultados\": [{\"id\": \"Obligacion_en_caso_de_que_la_transferencia_corresponda_a_la_misma_moneda_en_la_que_esta_den_1dffe3\", \"type\": \"Obligacion\", \"label\": \"Débito monto enviado al exterior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En caso de que la transferencia corresponda a la misma moneda en la que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior.\"}, {\"id\": \"Restriccion_si_el_cliente_utiliza_efectivo_el_monto_comprado_no_puede_superar_usd_100_en_el__a7816d\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo por mes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades\"}, {\"id\": \"Restriccion_limite_deposito_en_exterior_e5de1d\", \"type\": \"Restriccion\", \"label\": \"Límite depósito en exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los fondos adquiridos sean depositados en cuentas abiertas en entidades financieras locales. Únicamente se admitirá la constitución de garantías en cuentas en e…\"}, {\"id\": \"Operacion_d… [+2029 chars]",
+          "output_chars": 3229
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co_15e7ca"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co_15e7ca\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto efectivo USD 50 por operación\", \"properties\": {\"descripcion\": \"Las entidades financieras y otras emisoras de tarjetas locales de crédito y/o compra podrán otorgar como adelanto en efectivo a los tarjetahabientes en el exterior, un monto máximo de USD 50 (dólares estadounidenses cincuenta) por operación.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 50\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}",
+          "output_chars": 691
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_dicho_limite_se_incrementa_a_usd_200_dolares_estadounidenses_doscientos_por_oper_4ec0a0"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_dicho_limite_se_incrementa_a_usd_200_dolares_estadounidenses_doscientos_por_oper_4ec0a0\", \"type\": \"Restriccion\", \"label\": \"Límite adelanto efectivo USD 200 países no limítrofes\", \"properties\": {\"descripcion\": \"Dicho límite se incrementa a USD 200 (dólares estadounidenses doscientos) por operación por los retiros de efectivo que se realicen en países no limítrofes.\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"USD 200\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"}]}",
+          "output_chars": 615
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1493,
+          "output_tokens": 183,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 4102,
+          "output_tokens": 204,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 7,
+          "output_tokens": 251,
+          "cache_read": 0,
+          "cache_write": 4809,
+          "latency_s": 0.0
+        }
+      ],
+      "final_json": {
+        "respuesta": "El monto máximo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar como adelanto en efectivo a un tarjetahabiente en el exterior es de USD 50 (dólares estadounidenses cincuenta) por operación. Sin embargo, este límite se incrementa a USD 200 (dólares estadounidenses doscientos) por operación cuando los retiros de efectivo se realicen en países no limítrofes.",
+        "citas": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Perfecto. Tengo la información completa. Según el Knowledge Graph, el monto máximo depende de si el país es limítrofe o no:\n\n```json\n{\n  \"respuesta\": \"El monto máximo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar como adelanto en efectivo a un tarjetahabiente en el exterior es de USD 50 (dólares estadounidenses cincuenta) por operación. Sin embargo, este límite se incrementa a USD 200 (dólares estadounidenses doscientos) por operación cuando los retiros de efectivo se realicen en países no limítrofes.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 4,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar"
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5602,
+      "tokens_out": 638,
+      "cache_read": 0,
+      "cache_write": 4809,
+      "cost_usd": 0.014803,
+      "latency_s": 0.003,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdaKAVrVHxDEvBiv6sBcd",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre los límites de adelanto en efectivo para tarjetahabientes en el exterior.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01TSkS9FTu3NREBzTU3kG6hc",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "adelanto efectivo tarjeta crédito exterior límite máximo",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01Q6UDr5J8CYnZ5cyiVc2qDo",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "adelanto en efectivo tarjetahabiente exterior monto",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1493,
+            "output_tokens": 183,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdaKAesi7z8k3jCk8ASx2",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto, encontré dos restricciones relevantes. Voy a ver los detalles completos de ambas:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01CzDwmjUUsSN2F139CTmBvT",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_las_entidades_financieras_y_otras_emisoras_de_tarjetas_locales_de_credito_y_o_co_15e7ca"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01YNKAKa3saTr2QVTDy1FRHF",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_dicho_limite_se_incrementa_a_usd_200_dolares_estadounidenses_doscientos_por_oper_4ec0a0"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 4102,
+            "output_tokens": 204,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdaKAqaPjp5wjaHs9ChZo",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información completa. Según el Knowledge Graph, el monto máximo depende de si el país es limítrofe o no:\n\n```json\n{\n  \"respuesta\": \"El monto máximo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar como adelanto en efectivo a un tarjetahabiente en el exterior es de USD 50 (dólares estadounidenses cincuenta) por operación. Sin embargo, este límite se incrementa a USD 200 (dólares estadounidenses doscientos) por operación cuando los retiros de efectivo se realicen en países no limítrofes.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.1. Operaciones con débito en una cuenta en una entidad financiera local y/o con tar\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4809
+            },
+            "cache_creation_input_tokens": 4809,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 251,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta a TO_exterior_cambios_actual.pdf con referencia al Punto 4.1, consistente con el ground truth que indica Punto 4.1.1."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "El monto máximo de adelanto en efectivo en el exterior por operación es de USD 50.",
+            "central": true
+          },
+          {
+            "enunciado": "El límite de USD 50 aplica como regla general para adelantos en efectivo en el exterior.",
+            "central": true
+          },
+          {
+            "enunciado": "El límite se incrementa a USD 200 por operación cuando los retiros se realizan en países no limítrofes.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Monto máximo de adelanto en efectivo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar a un tarjetahabiente en el exterior"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "El monto máximo de adelanto en efectivo en el exterior por operación es de USD 50.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El límite de USD 50 aplica como regla general para adelantos en efectivo en el exterior.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El límite se incrementa a USD 200 por operación cuando los retiros se realizan en países no limítrofes.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Monto máximo de adelanto en efectivo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar a un tarjetahabiente en el exterior",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta a TO_exterior_cambios_actual.pdf con referencia al Punto 4.1, consistente con el ground truth que indica Punto 4.1.1.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2454,
+        "out": 622
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRYU5LpzNV5sF5Br6gVD",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"El monto máximo de adelanto en efectivo en el exterior por operación es de USD 50.\", \"central\": true},\n    {\"enunciado\": \"El límite de USD 50 aplica como regla general para adelantos en efectivo en el exterior.\", \"central\": true},\n    {\"enunciado\": \"El límite se incrementa a USD 200 por operación cuando los retiros se realizan en países no limítrofes.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"Monto máximo de adelanto en efectivo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar a un tarjetahabiente en el exterior\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 713,
+            "output_tokens": 224,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRYUNZfkLWCmHW8dzyU1",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"El monto máximo de adelanto en efectivo en el exterior por operación es de USD 50.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El límite de USD 50 aplica como regla general para adelantos en efectivo en el exterior.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El límite se incrementa a USD 200 por operación cuando los retiros se realizan en países no limítrofes.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Monto máximo de adelanto en efectivo que una entidad financiera u otra emisora de tarjetas locales de crédito y/o compra puede otorgar a un tarjetahabiente en el exterior\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"punto\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta a TO_exterior_cambios_actual.pdf con referencia al Punto 4.1, consistente con el ground truth que indica Punto 4.1.1.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1741,
+            "output_tokens": 398,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.014803,
+    "judge_cost": 0.016692
+  }
+]

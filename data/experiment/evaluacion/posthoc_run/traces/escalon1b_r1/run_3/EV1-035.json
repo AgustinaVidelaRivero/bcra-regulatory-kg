@@ -1,0 +1,596 @@
+[
+  {
+    "rep": 1,
+    "qid": "EV1-035",
+    "run": "run_3",
+    "categoria": "condicional",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "EV1-035",
+      "question": "¿Puede considerarse normativa una exposición con garantía hipotecaria cuando el inmueble que la garantiza todavía está en construcción?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "exposición garantía hipotecaria inmueble construcción",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"exposición garantía hipotecaria inmueble construcción\", \"total_con_match\": 105, \"resultados\": [{\"id\": \"Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia\", \"type\": \"Operacion\", \"label\": \"Descalce de monedas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Descalce de monedas entre exposición y activo en garantía\"}, {\"id\": \"Operacion_calculo_de_requerimiento_de_capital_por_exposicion_a_fondo_de_garantia\", \"type\": \"Operacion\", \"label\": \"Cálculo de requerimiento de capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo de requerimiento de capital por exposición a fondo de garantía\"}, {\"id\": \"Restriccion_la_garantia_hipotecaria_debera_ser_en_primer_grado_o_cualquiera_sea_su_grado_de_\", \"type\": \"Restriccion\", \"label\": \"Garantía hipotecaria en primer grado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La garantía hipotecaria deberá ser en primer grado, o cualquiera sea su grado de prelación siempre que la entidad sea la acreedora en todos los grados\"}, {\"id\": \"Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado\", \"type\": \"Restriccion\", \"label\": \"Exposición garantizada por inmueble terminado\", \"tokens_matc… [+2059 chars]",
+          "output_chars": 3259
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "garantía hipotecaria normativa construcción",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"garantía hipotecaria normativa construcción\", \"total_con_match\": 54, \"resultados\": [{\"id\": \"Restriccion_la_garantia_hipotecaria_debera_ser_en_primer_grado_o_cualquiera_sea_su_grado_de_\", \"type\": \"Restriccion\", \"label\": \"Garantía hipotecaria en primer grado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La garantía hipotecaria deberá ser en primer grado, o cualquiera sea su grado de prelación siempre que la entidad sea la acreedora en todos los grados\"}, {\"id\": \"Restriccion_exposiciones_en_situacion_de_incumplimiento_con_garantia_hipotecaria_normativas_\", \"type\": \"Restriccion\", \"label\": \"Ponderador exposiciones incumplimiento hipotecario\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones en situación de incumplimiento con garantía hipotecaria normativas sobre inmuebles residenciales: 100\"}, {\"id\": \"Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia\", \"type\": \"Operacion\", \"label\": \"Descalce de monedas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Descalce de monedas entre exposición y activo en garantía\"}, {\"id\": \"Operacion_deposito_de_efectivo_en_garantia\", \"type\": \"Operacion\", \"label\": \"Depósito de efectivo\", \"tokens_matcheado… [+1698 chars]",
+          "output_chars": 2898
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado\", \"type\": \"Restriccion\", \"label\": \"Exposición garantizada por inmueble terminado\", \"properties\": {\"descripcion\": \"La exposición deberá estar garantizada por un inmueble terminado\", \"tipo\": \"limite_cualitativo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"}]}",
+          "output_chars": 429
+        },
+        {
+          "n": 4,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado",
+            "direccion": "ambas"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado\", \"label\": \"Exposición garantizada por inmueble terminado\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_\", \"vecino_label\": \"Excepción para inmuebles rurales y construcción\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"}]}], \"entrantes_truncado\": false}",
+          "output_chars": 1123
+        },
+        {
+          "n": 5,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_"
+          },
+          "output_truncado": "{\"id\": \"Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_\", \"type\": \"Excepcion\", \"label\": \"Excepción para inmuebles rurales y construcción\", \"properties\": {\"descripcion\": \"Este requisito no se aplicará a los inmuebles rurales ni a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"}]}",
+          "output_chars": 537
+        },
+        {
+          "n": 6,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "exposición normativa requisitos hipotecaria",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"exposición normativa requisitos hipotecaria\", \"total_con_match\": 110, \"resultados\": [{\"id\": \"Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia\", \"type\": \"Operacion\", \"label\": \"Descalce de monedas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Descalce de monedas entre exposición y activo en garantía\"}, {\"id\": \"Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo 20%\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…\"}, {\"id\": \"Restriccion_exposicion_a_bmd_que_cumplen_criterios_basilea_con_ponderador_0\", \"type\": \"Restriccion\", \"label\": \"Ponderador BMD Basilea\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Exposición a BMD que cumplen criterios Basilea con ponderador 0%\"}, {\"id\": \"Restriccion_la_normativa_alcanzada_por_la_estabilidad_cambiaria_contemplada_en_los_articulos\", \"type\": \"Restriccion\", \"label\": \"Estabilidad cambiaria VPU\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"La normati… [+2017 chars]",
+          "output_chars": 3217
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1468,
+          "output_tokens": 179,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3909,
+          "output_tokens": 107,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 144,
+          "cache_read": 0,
+          "cache_write": 4163,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 121,
+          "cache_read": 4163,
+          "cache_write": 569,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 5,
+          "output_tokens": 130,
+          "cache_read": 4732,
+          "cache_write": 311,
+          "latency_s": 0.0
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 5,
+          "output_tokens": 292,
+          "cache_read": 5043,
+          "cache_write": 1255,
+          "latency_s": 0.0
+        }
+      ],
+      "final_json": {
+        "respuesta": "No, según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción importante. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, la respuesta depende del tipo de deudor: si es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción; si es otra clase de deudor, no lo sería.",
+        "citas": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Tengo la información necesaria para responder. Basándome en lo que encontré en el Knowledge Graph:\n\n```json\n{\n  \"respuesta\": \"No, según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción importante. La regla general establece que \\\"la exposición deberá estar garantizada por un inmueble terminado\\\". Sin embargo, existe una excepción: este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, la respuesta depende del tipo de deudor: si es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción; si es otra clase de deudor, no lo sería.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 6,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5397,
+      "tokens_out": 973,
+      "cache_read": 13938,
+      "cache_write": 6298,
+      "cost_usd": 0.019528,
+      "latency_s": 0.003,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZgocWF37w1cBxEAHEa",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre normativa de exposiciones con garantía hipotecaria y construcción en el Knowledge Graph.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01CKxAj4TdPq4hs37MdaUe5B",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_01XZhHoyjxyT1zsmecmWZQy9",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1468,
+            "output_tokens": 179,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZgxJ96jSL8QovEYMc7",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Encontré una restricción muy relevante. Déjame ver el detalle completo:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01JDgj9GeiyoHD3tiuvQLNPB",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3909,
+            "output_tokens": 107,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZh5GqjsqHDGA94gxgS",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Ahora voy a explorar las relaciones de este nodo para obtener más contexto sobre cuándo se considera normativa una exposición con garantía hipotecaria:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01XxskAXHM9WYcAJjN8p116n",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_la_exposicion_debera_estar_garantizada_por_un_inmueble_terminado",
+                "direccion": "ambas"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4163
+            },
+            "cache_creation_input_tokens": 4163,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 144,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZhGW218RZkrgc3RDC6",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Hay una excepción. Déjame ver el detalle de esa excepción:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01J35RK22FgGtzNN4D2dkJhC",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Excepcion_este_requisito_no_se_aplicara_a_los_inmuebles_rurales_ni_a_las_financiaciones_a_"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 569
+            },
+            "cache_creation_input_tokens": 569,
+            "cache_read_input_tokens": 4163,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 121,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZhTdFTqTqfch3u2GKE",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información completa. Déjame verificar si hay más detalles sobre qué significa \"normativa\" en este contexto buscando información sobre requisitos de normalidad:",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01J4s6W3hzVNUmLiHNciwxBe",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "exposición normativa requisitos hipotecaria",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 311
+            },
+            "cache_creation_input_tokens": 311,
+            "cache_read_input_tokens": 4732,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 130,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZhbaEuqPQZMqaFDDc2",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Tengo la información necesaria para responder. Basándome en lo que encontré en el Knowledge Graph:\n\n```json\n{\n  \"respuesta\": \"No, según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción importante. La regla general establece que \\\"la exposición deberá estar garantizada por un inmueble terminado\\\". Sin embargo, existe una excepción: este requisito no se aplica a las financiaciones a personas humanas que estén garantizadas por un inmueble en construcción o por un terreno destinado a ese fin. Por lo tanto, la respuesta depende del tipo de deudor: si es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción; si es otra clase de deudor, no lo sería.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.9. Exposiciones con garantía hipotecaria.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 1255
+            },
+            "cache_creation_input_tokens": 1255,
+            "cache_read_input_tokens": 5043,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 292,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [
+            "Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa."
+          ],
+          "secundarias": [],
+          "n_centrales": 1,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": true,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "El agente cita TO_capitales_minimos_actual.pdf apuntando al Punto 2.9, que es el documento correcto pero a nivel de sección general (no al punto 2.9.2.2. específico del referente), por lo que la precisión es de página y no de punto."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "Según la normativa del BCRA, la exposición con garantía hipotecaria debe estar garantizada por un inmueble terminado para ser considerada normativa.",
+            "central": true
+          },
+          {
+            "enunciado": "Existe una excepción al requisito de inmueble terminado para financiaciones a personas humanas garantizadas por un inmueble en construcción.",
+            "central": true
+          },
+          {
+            "enunciado": "La excepción también aplica cuando la garantía es un terreno destinado a la construcción.",
+            "central": true
+          },
+          {
+            "enunciado": "Si el deudor es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción.",
+            "central": true
+          },
+          {
+            "enunciado": "Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "Si una exposición con garantía hipotecaria puede considerarse normativa cuando el inmueble que la garantiza está en construcción"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "Según la normativa del BCRA, la exposición con garantía hipotecaria debe estar garantizada por un inmueble terminado para ser considerada normativa.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Existe una excepción al requisito de inmueble terminado para financiaciones a personas humanas garantizadas por un inmueble en construcción.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "La excepción también aplica cuando la garantía es un terreno destinado a la construcción.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Si el deudor es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa.",
+            "central": true,
+            "verdict": "no_soportado"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "Si una exposición con garantía hipotecaria puede considerarse normativa cuando el inmueble que la garantiza está en construcción",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "pagina",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "El agente cita TO_capitales_minimos_actual.pdf apuntando al Punto 2.9, que es el documento correcto pero a nivel de sección general (no al punto 2.9.2.2. específico del referente), por lo que la precisión es de página y no de punto.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2743,
+        "out": 864
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZhv9gfK1XpqJkAJrn1",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\"enunciado\": \"Según la normativa del BCRA, la exposición con garantía hipotecaria debe estar garantizada por un inmueble terminado para ser considerada normativa.\", \"central\": true},\n    {\"enunciado\": \"Existe una excepción al requisito de inmueble terminado para financiaciones a personas humanas garantizadas por un inmueble en construcción.\", \"central\": true},\n    {\"enunciado\": \"La excepción también aplica cuando la garantía es un terreno destinado a la construcción.\", \"central\": true},\n    {\"enunciado\": \"Si el deudor es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción.\", \"central\": true},\n    {\"enunciado\": \"Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa.\", \"central\": true}\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"Si una exposición con garantía hipotecaria puede considerarse normativa cuando el inmueble que la garantiza está en construcción\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 751,
+            "output_tokens": 311,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRZiJcoKkKf7pRPBRcWz",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"Según la normativa del BCRA, la exposición con garantía hipotecaria debe estar garantizada por un inmueble terminado para ser considerada normativa.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Existe una excepción al requisito de inmueble terminado para financiaciones a personas humanas garantizadas por un inmueble en construcción.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"La excepción también aplica cuando la garantía es un terreno destinado a la construcción.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Si el deudor es una persona humana, la exposición puede ser normativa incluso con inmueble en construcción.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Si el deudor no es una persona humana, la exposición con garantía hipotecaria sobre inmueble en construcción no puede considerarse normativa.\",\n      \"central\": true,\n      \"verdict\": \"no_soportado\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"Si una exposición con garantía hipotecaria puede considerarse normativa cuando el inmueble que la garantiza está en construcción\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"pagina\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"El agente cita TO_capitales_minimos_actual.pdf apuntando al Punto 2.9, que es el documento correcto pero a nivel de sección general (no al punto 2.9.2.2. específico del referente), por lo que la precisión es de página y no de punto.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1992,
+            "output_tokens": 553,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.019528,
+    "judge_cost": 0.021189
+  }
+]

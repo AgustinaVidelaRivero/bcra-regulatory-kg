@@ -1,0 +1,475 @@
+[
+  {
+    "rep": 1,
+    "qid": "EV1-038",
+    "run": "reensamblado_v3",
+    "categoria": "sujeto",
+    "thinking_enabled": false,
+    "failed_trace": false,
+    "trace": {
+      "qid": "EV1-038",
+      "question": "En los créditos incorporados por cesión sin responsabilidad para el cedente, ¿a qué sujeto debe imputarse la financiación a los fines de la clasificación, y qué clasificación corresponde asignar si la entidad no efectúa la evaluación de ese sujeto?",
+      "steps": [
+        {
+          "n": 1,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "cesión sin responsabilidad cedente créditos incorporados",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"cesión sin responsabilidad cedente créditos incorporados\", \"total_con_match\": 133, \"resultados\": [{\"id\": \"Operacion_cesion_de_creditos_sin_responsabilidad_e74f77\", \"type\": \"Operacion\", \"label\": \"Cesión de créditos sin responsabilidad\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: cesión de créditos\"}, {\"id\": \"Operacion_cesion_sin_responsabilidad_del_cedente_2c5b6c\", \"type\": \"Operacion\", \"label\": \"Cesión sin responsabilidad del cedente\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_para_el_cedente_s_a44495\", \"type\": \"Obligacion\", \"label\": \"Imputar créditos cedidos al firmante o deudor principal\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Los créditos cedidos a favor de la entidad sin responsabilidad para el cedente se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectiv…\"}, {\"id\": \"Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7\", \"type\": \"Restriccion\", \"label\": \"Obligatoriedad de evaluar deudor o clasificar irrecuperable\", \"tokens_ma… [+2213 chars]",
+          "output_chars": 3413
+        },
+        {
+          "n": 2,
+          "tool": "buscar_nodos",
+          "input": {
+            "consulta": "imputación financiación clasificación sujeto",
+            "limite": 10
+          },
+          "output_truncado": "{\"consulta\": \"imputación financiación clasificación sujeto\", \"total_con_match\": 269, \"resultados\": [{\"id\": \"Sujeto_rol_obligado_a_clasificar_clasificacion\", \"type\": \"Sujeto\", \"label\": \"Obligados a clasificar deudores (Clasificación)\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"nivel: rol\"}, {\"id\": \"Sujeto_banco\", \"type\": \"Sujeto\", \"label\": \"Bancos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase; alias: ['Bancos del exterior', 'Banco del exterior']\"}, {\"id\": \"Sujeto_mipyme\", \"type\": \"Sujeto\", \"label\": \"MiPyMEs\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Sujeto_sujeto\", \"type\": \"Sujeto\", \"label\": \"Sujetos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Sujeto_cliente\", \"type\": \"Sujeto\", \"label\": \"Clientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Sujeto_deudor\", \"type\": \"Sujeto\", \"label\": \"Deudores\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Sujeto_propuesto_inversor\", \"type\": \"Sujeto\", \"label\": \"Inversor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: propuesto; cuarentena: True\"}, {\"id\": \"Sujeto_propuesto_originante\", \"type\": \"Sujeto\", \"… [+380 chars]",
+          "output_chars": 1580
+        },
+        {
+          "n": 3,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7\", \"type\": \"Restriccion\", \"label\": \"Obligatoriedad de evaluar deudor o clasificar irrecuperable\", \"properties\": {\"descripcion\": \"Los créditos cedidos sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante, realizando respecto de ellos su evaluación como sujetos de crédito. En caso de no efectuarse la evaluación, estos clientes se clasificarán en categoría irrecuperable.\", \"tipo\": \"limite_cualitativo\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}",
+          "output_chars": 677
+        },
+        {
+          "n": 4,
+          "tool": "ver_nodo",
+          "input": {
+            "id": "Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_para_el_cedente_s_a44495"
+          },
+          "output_truncado": "{\"id\": \"Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_para_el_cedente_s_a44495\", \"type\": \"Obligacion\", \"label\": \"Imputar créditos cedidos al firmante o deudor principal\", \"properties\": {\"descripcion\": \"Los créditos cedidos a favor de la entidad sin responsabilidad para el cedente se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos como principales y directos pagadores.\", \"tipo\": \"asignacion\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}",
+          "output_chars": 618
+        },
+        {
+          "n": 5,
+          "tool": "ver_vecinos",
+          "input": {
+            "id": "Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7"
+          },
+          "output_truncado": "{\"id\": \"Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7\", \"label\": \"Obligatoriedad de evaluar deudor o clasificar irrecuperable\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_obligado_a_clasificar_clasificacion\", \"vecino_label\": \"Obligados a clasificar deudores (Clasificación)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_clasificacion_de_deudor_en_categoria_irrecuperable_83bc37\", \"vecino_label\": \"Clasificación de deudor en categoría irrecuperable\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 1.2. Criterios especiales de imputación.\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": fals… [+2 chars]",
+          "output_chars": 1202
+        }
+      ],
+      "api_calls": [
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 1504,
+          "output_tokens": 185,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.369
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 3593,
+          "output_tokens": 227,
+          "cache_read": 0,
+          "cache_write": 0,
+          "latency_s": 2.896
+        },
+        {
+          "stop_reason": "tool_use",
+          "input_tokens": 7,
+          "output_tokens": 230,
+          "cache_read": 0,
+          "cache_write": 4303,
+          "latency_s": 3.118
+        },
+        {
+          "stop_reason": "end_turn",
+          "input_tokens": 5,
+          "output_tokens": 209,
+          "cache_read": 4303,
+          "cache_write": 676,
+          "latency_s": 2.967
+        }
+      ],
+      "final_json": {
+        "respuesta": "En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos como principales y directos pagadores. Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, estos clientes deben clasificarse en categoría irrecuperable.",
+        "citas": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 1.2. Criterios especiales de imputación."
+          }
+        ],
+        "respondible": true
+      },
+      "final_raw": "Tengo toda la información necesaria. Voy a formular la respuesta final.\n\n```json\n{\n  \"respuesta\": \"En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos como principales y directos pagadores. Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, estos clientes deben clasificarse en categoría irrecuperable.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 1.2. Criterios especiales de imputación.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+      "final_stop_reason": "end_turn",
+      "truncated_max_tokens": false,
+      "parse_ok": true,
+      "parse_error": null,
+      "tool_calls_used": 5,
+      "hit_tool_limit": false,
+      "seen_provenances": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 1.2. Criterios especiales de imputación."
+        }
+      ],
+      "citations_unseen_raw": [],
+      "citations_unseen_normalized": [],
+      "tokens_in": 5109,
+      "tokens_out": 851,
+      "cache_read": 4303,
+      "cache_write": 4979,
+      "cost_usd": 0.016018,
+      "latency_s": 11.362,
+      "error": null
+    },
+    "raw_turns_agent": [
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011CdYSvuCDSbxnbw8LMHwJ3",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Voy a buscar información sobre créditos incorporados por cesión sin responsabilidad y la imputación de financiación para clasificación.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_0175GTgAjbZ6JpWmyMNPAHyr",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "cesión sin responsabilidad cedente créditos incorporados",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_013TQpkoUZDpuDBZbdL4gKMF",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "consulta": "imputación financiación clasificación sujeto",
+                "limite": 10
+              },
+              "name": "buscar_nodos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 1504,
+            "output_tokens": 185,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011CdYSw3yZ9pgtZdB6gLsPF",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Excelente. Encontré nodos relevantes. Voy a ver el detalle de la restricción que menciona la obligatoriedad de evaluar deudor o clasificar irrecuperable, que parece ser la más directa.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_016T6x6rbGxGw7wh39RYMzeR",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            },
+            {
+              "id": "toolu_015Fdm44JdY8XhaUE382EXfE",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Obligacion_los_creditos_cedidos_a_favor_de_la_entidad_sin_responsabilidad_para_el_cedente_s_a44495"
+              },
+              "name": "ver_nodo",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 3593,
+            "output_tokens": 227,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011CdYSwJ2Q8fTNCrsPPNrwR",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Perfecto. Tengo la información completa para responder la pregunta. Los nodos muestran claramente:\n\n1. **A qué sujeto debe imputarse**: Los créditos cedidos sin responsabilidad se imputarán al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos.\n\n2. **Qué clasificación corresponde si no se efectúa la evaluación**: Si la entidad no efectúa la evaluación de ese sujeto, estos clientes se clasificarán en categoría irrecuperable.",
+              "type": "text"
+            },
+            {
+              "id": "toolu_01S3JuwYsvcHmVEAgH7GQXLK",
+              "caller": {
+                "type": "direct"
+              },
+              "input": {
+                "id": "Restriccion_los_creditos_cedidos_sin_responsabilidad_se_imputaran_al_firmante_librador_deudo_8af6d7"
+              },
+              "name": "ver_vecinos",
+              "type": "tool_use"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "tool_use",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 4303
+            },
+            "cache_creation_input_tokens": 4303,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "not_available",
+            "input_tokens": 7,
+            "output_tokens": 230,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": false,
+        "raw": {
+          "id": "msg_011CdYSwVdA2qFzoNyApVLox",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "Tengo toda la información necesaria. Voy a formular la respuesta final.\n\n```json\n{\n  \"respuesta\": \"En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos, constituidos como principales y directos pagadores. Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, estos clientes deben clasificarse en categoría irrecuperable.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 1.2. Criterios especiales de imputación.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-haiku-4-5-20251001",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 676
+            },
+            "cache_creation_input_tokens": 676,
+            "cache_read_input_tokens": 4303,
+            "inference_geo": "not_available",
+            "input_tokens": 5,
+            "output_tokens": 209,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "judge": {
+      "verdict": {
+        "correctitud": "correcta",
+        "completitud": "completa",
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "afirmaciones_no_soportadas": {
+          "centrales": [],
+          "secundarias": [],
+          "n_centrales": 0,
+          "n_secundarias": 0
+        },
+        "requiere_adjudicacion_humana": false,
+        "justificacion": {
+          "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+          "completitud": "Todas las patas cubiertas.",
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) a nivel de punto, aunque indica Punto 1.2 en lugar del Punto 1.2.1 del ground truth, lo que sigue siendo precisión de punto."
+        }
+      },
+      "step1": {
+        "afirmaciones_verificables": [
+          {
+            "enunciado": "En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos.",
+            "central": true
+          },
+          {
+            "enunciado": "El firmante, librador, deudor, codeudor o aceptante están constituidos como principales y directos pagadores.",
+            "central": false
+          },
+          {
+            "enunciado": "Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, los clientes deben clasificarse en categoría irrecuperable.",
+            "central": true
+          }
+        ],
+        "reportes_de_alcance": [],
+        "patas_de_la_pregunta": [
+          "A qué sujeto debe imputarse la financiación a los fines de la clasificación en créditos incorporados por cesión sin responsabilidad para el cedente",
+          "Qué clasificación corresponde asignar si la entidad no efectúa la evaluación de ese sujeto"
+        ]
+      },
+      "step2": {
+        "verificaciones": [
+          {
+            "enunciado": "En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos.",
+            "central": true,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "El firmante, librador, deudor, codeudor o aceptante están constituidos como principales y directos pagadores.",
+            "central": false,
+            "verdict": "verdadero"
+          },
+          {
+            "enunciado": "Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, los clientes deben clasificarse en categoría irrecuperable.",
+            "central": true,
+            "verdict": "verdadero"
+          }
+        ],
+        "cobertura_patas": [
+          {
+            "pata": "A qué sujeto debe imputarse la financiación a los fines de la clasificación en créditos incorporados por cesión sin responsabilidad para el cedente",
+            "cobertura": "cubierta"
+          },
+          {
+            "pata": "Qué clasificación corresponde asignar si la entidad no efectúa la evaluación de ese sujeto",
+            "cobertura": "cubierta"
+          }
+        ],
+        "cita_documento_correcto": true,
+        "cita_precision": "punto",
+        "abstencion": null,
+        "especulacion_en_prosa": null,
+        "justificacion": {
+          "citas": "La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) a nivel de punto, aunque indica Punto 1.2 en lugar del Punto 1.2.1 del ground truth, lo que sigue siendo precisión de punto.",
+          "abstencion": ""
+        }
+      },
+      "usage": {
+        "in": 2566,
+        "out": 814
+      },
+      "errors": []
+    },
+    "raw_turns_judge": [
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRRnUhCeKJbf3KEb1N8h",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"afirmaciones_verificables\": [\n    {\n      \"enunciado\": \"En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos.\",\n      \"central\": true\n    },\n    {\n      \"enunciado\": \"El firmante, librador, deudor, codeudor o aceptante están constituidos como principales y directos pagadores.\",\n      \"central\": false\n    },\n    {\n      \"enunciado\": \"Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, los clientes deben clasificarse en categoría irrecuperable.\",\n      \"central\": true\n    }\n  ],\n  \"reportes_de_alcance\": [],\n  \"patas_de_la_pregunta\": [\n    \"A qué sujeto debe imputarse la financiación a los fines de la clasificación en créditos incorporados por cesión sin responsabilidad para el cedente\",\n    \"Qué clasificación corresponde asignar si la entidad no efectúa la evaluación de ese sujeto\"\n  ]\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 710,
+            "output_tokens": 310,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      },
+      {
+        "hit": true,
+        "raw": {
+          "id": "msg_011CdRRnnodKBBmjqmGNubvn",
+          "container": null,
+          "content": [
+            {
+              "citations": null,
+              "text": "```json\n{\n  \"verificaciones\": [\n    {\n      \"enunciado\": \"En los créditos incorporados por cesión sin responsabilidad para el cedente, la financiación debe imputarse al firmante, librador, deudor, codeudor o aceptante de los respectivos instrumentos.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"El firmante, librador, deudor, codeudor o aceptante están constituidos como principales y directos pagadores.\",\n      \"central\": false,\n      \"verdict\": \"verdadero\"\n    },\n    {\n      \"enunciado\": \"Si la entidad no efectúa la evaluación de ese sujeto como sujeto de crédito, los clientes deben clasificarse en categoría irrecuperable.\",\n      \"central\": true,\n      \"verdict\": \"verdadero\"\n    }\n  ],\n  \"cobertura_patas\": [\n    {\n      \"pata\": \"A qué sujeto debe imputarse la financiación a los fines de la clasificación en créditos incorporados por cesión sin responsabilidad para el cedente\",\n      \"cobertura\": \"cubierta\"\n    },\n    {\n      \"pata\": \"Qué clasificación corresponde asignar si la entidad no efectúa la evaluación de ese sujeto\",\n      \"cobertura\": \"cubierta\"\n    }\n  ],\n  \"cita_documento_correcto\": true,\n  \"cita_precision\": \"punto\",\n  \"abstencion\": null,\n  \"especulacion_en_prosa\": null,\n  \"justificacion\": {\n    \"citas\": \"La cita apunta al documento correcto (TO_clasificacion_deudores_actual.pdf) a nivel de punto, aunque indica Punto 1.2 en lugar del Punto 1.2.1 del ground truth, lo que sigue siendo precisión de punto.\",\n    \"abstencion\": \"\"\n  }\n}\n```",
+              "type": "text"
+            }
+          ],
+          "model": "claude-sonnet-4-6",
+          "role": "assistant",
+          "stop_details": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "type": "message",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 1856,
+            "output_tokens": 504,
+            "server_tool_use": null,
+            "service_tier": "standard"
+          }
+        }
+      }
+    ],
+    "harness_cost": 0.016018,
+    "judge_cost": 0.019908
+  }
+]

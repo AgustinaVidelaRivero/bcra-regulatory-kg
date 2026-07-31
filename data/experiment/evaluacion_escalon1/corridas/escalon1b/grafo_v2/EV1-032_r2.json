@@ -1,0 +1,199 @@
+{
+  "id": "EV1-032",
+  "grafo": "grafo_v2",
+  "replica": 2,
+  "failed_trace": false,
+  "origen": "replay_o_fresco_1b",
+  "respuesta_final": {
+    "respuesta": "No se encontró en el Knowledge Graph información específica que detalle qué exigencia de capital corresponde aplicar sobre la exposición actual positiva a fin de mes para una operación DvP fallida cuya contraprestación no fue recibida y ya transcurrieron entre 31 y 45 días hábiles posteriores a la fecha de liquidación acordada. Si bien el grafo contiene referencias a operaciones DvP fallidas y cargos de capital por demora (a partir de 5 días hábiles), no especifica los ponderadores o exigencias diferenciadas para los tramos de 31-45 días.",
+    "citas": [
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 3.1. Normas de procedimiento. (parte 2)"
+      }
+    ],
+    "respondible": false
+  },
+  "respuesta_cruda": "Basándome en la información recolectada del Knowledge Graph, encontré que existe una restricción sobre \"Cargo de capital por demora DvP\" que establece que las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de liquidación. Sin embargo, la información disponible en el grafo no especifica detalladamente qué exigencia de capital exacta corresponde aplicar para el rango específico de 31 a 45 días hábiles posteriores a la fecha de liquidación acordada.\n\nAunque encontré referencias a operaciones DvP fallidas y a cálculos de exigencia de capital por riesgo de crédito de contraparte, los nodos consultados no contienen la información específica sobre los tramos de demora (5 días, 30 días, 45 días) y sus correspondientes ponderadores o exigencias de capital diferenciadas.\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph información específica que detalle qué exigencia de capital corresponde aplicar sobre la exposición actual positiva a fin de mes para una operación DvP fallida cuya contraprestación no fue recibida y ya transcurrieron entre 31 y 45 días hábiles posteriores a la fecha de liquidación acordada. Si bien el grafo contiene referencias a operaciones DvP fallidas y cargos de capital por demora (a partir de 5 días hábiles), no especifica los ponderadores o exigencias diferenciadas para los tramos de 31-45 días.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+  "pasos": 15,
+  "hit_tool_limit": true,
+  "traza_tools_truncada": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "DvP fallida contraprestación capital exposición",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"DvP fallida contraprestación capital exposición\", \"total_con_match\": 263, \"resultados\": [{\"id\": \"Operacion_liquidacion_de_operacion_con_entrega_contra_pago\", \"type\": \"Operacion\", \"label\": \"Operación DvP fallida\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de operación con entrega contra pago\"}, {\"id\": \"Operacion_calculo_de_exigencia_de_capital_por_exposicion_potencial_futura_epf\", \"type\": \"Operacion\", \"label\": \"Cálculo de adicional EPF\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Cálculo de exigencia de capital por exposición potencial futura (EPF)\"}, {\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Operacion_calculo_de_exposicion_de_riesgo\", \"type\": \"Operacion\", \"label\": \"Cálculo de requerimiento de capital hipotético\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Calcular el requerimiento de ca… [+1894 chars]",
+      "output_chars": 3094
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "riesgo de crédito de contraparte DvP",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"riesgo de crédito de contraparte DvP\", \"total_con_match\": 2623, \"resultados\": [{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_de_credito_de_contraparte_en_operaciones_con_ent\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo de crédito\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Exigencia de capital por riesgo de crédito de contraparte en operaciones con entidades de contraparte central\"}, {\"id\": \"Obligacion_se_informara_en_el_codigo_14000000_la_exigencia_final_rcd_surgida_de_la_sumatori\", \"type\": \"Obligacion\", \"label\": \"Informar exigencia riesgo crédito contraparte\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se informará en el código 14000000 la exigencia final (RCD) surgida de la sumatoria de las exposiciones al riesgo de crédito de contraparte\"}, {\"id\": \"Obligacion_la_exigencia_final_rcd_surgira_de_la_sumatoria_de_las_exposiciones_al_riesgo_de_\", \"type\": \"Obligacion\", \"label\": \"Calcular exposición riesgo crédito contraparte\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La exigencia final (RCD) surgirá de la sumatoria de las exposiciones al riesgo de crédito de contraparte determinadas para cada conjunto de neteo y se informará…… [+2291 chars]",
+      "output_chars": 3491
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"properties\": {\"descripcion\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de liquidación, según lo establecido en el punto 4.1.1. de las normas sobre Capitales mínimos de las entidades financieras\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"5 días hábiles\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"}]}",
+      "output_chars": 689
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_exigencia_de_capital_por_riesgo_de_credito_de_contraparte_en_operaciones_con_ent"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_de_credito_de_contraparte_en_operaciones_con_ent\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo de crédito\", \"properties\": {\"descripcion\": \"Exigencia de capital por riesgo de crédito de contraparte en operaciones con entidades de contraparte central\", \"tipo\": \"limite_cuantitativo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con en-\"}]}",
+      "output_chars": 530
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "31 45 días hábiles DvP capital",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"31 45 días hábiles DvP capital\", \"total_con_match\": 273, \"resultados\": [{\"id\": \"Restriccion_limite_acceso_5_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Límite acceso 5 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se concreta dentro de los 5 (cinco) días hábiles previos al plazo normativo admitido por un monto diario que no supere el 20% (veinte por ciento) del monto que …\"}, {\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Restriccion_el_periodo_no_podra_ser_menor_que_10_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Período mínimo de 10 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El período no podrá ser menor que 10 días hábiles.\"}, {\"id\": \"Restriccion_en_el_caso_de_pagos_anticipados_de_bienes_de_capital_el_plazo_para_demostrar_el_\", \"type\": \"Restriccion\", \"label\": \"Plazo 270 días para bien… [+2401 chars]",
+      "output_chars": 3601
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "demora DvP 31 días 45 días exigencia",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"demora DvP 31 días 45 días exigencia\", \"total_con_match\": 194, \"resultados\": [{\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Restriccion_los_miembros_compensadores_podran_calcular_la_exigencia_por_la_exposicion_a_sus_\", \"type\": \"Restriccion\", \"label\": \"MPOR mínimo 5 días para clientes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los miembros compensadores podrán calcular la exigencia por la exposición a sus clientes aplicando un período de riesgo de margen que sea, como mínimo, de 5 día…\"}, {\"id\": \"Obligacion_en_caso_de_verificarse_atrasos_mayores_a_31_dias_en_el_pago_de_los_servicios_de_\", \"type\": \"Obligacion\", \"label\": \"Reclasificar por atrasos mayores a 31 días en En Observación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En caso de verificarse atrasos mayores a 31 días en el pago de los servicios de la deuda refinan… [+2398 chars]",
+      "output_chars": 3598
+    },
+    {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_liquidacion_de_operacion_con_entrega_contra_pago"
+      },
+      "output_truncado": "{\"id\": \"Operacion_liquidacion_de_operacion_con_entrega_contra_pago\", \"type\": \"Operacion\", \"label\": \"Operación DvP fallida\", \"properties\": {\"tipo\": \"Liquidación de operación con entrega contra pago\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"}]}",
+      "output_chars": 347
+    },
+    {
+      "n": 8,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"label\": \"Cargo de capital por demora DvP\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_liquidacion_de_operacion_con_entrega_contra_pago\", \"vecino_label\": \"Operación DvP fallida\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_entidad_comprendida_reginf\", \"vecino_label\": \"Entidades comprendidas (Régimen Informativo)\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 2)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+      "output_chars": 1181
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "cargo capital DvP 5 días 30 días 45 días mora",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"cargo capital DvP 5 días 30 días 45 días mora\", \"total_con_match\": 328, \"resultados\": [{\"id\": \"Operacion_calculo_del_cargo_de_capital_ajustado_por_mora\", \"type\": \"Operacion\", \"label\": \"Cálculo de variable KA\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Cálculo del cargo de capital ajustado por mora\"}, {\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Restriccion_capital_ordinario_de_nivel_1_con1_debera_ser_mayor_o_igual_al_4_5_sobre_el_activ\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo COn1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Capital Ordinario de Nivel 1 (COn1) deberá ser mayor o igual al 4,5% sobre el activo total (70900000)\"}, {\"id\": \"Restriccion_limite_acceso_5_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Límite acceso 5 días hábiles\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se concreta dent… [+2409 chars]",
+      "output_chars": 3609
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposición actual fin mes DvP fallida contraprestación",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exposición actual fin mes DvP fallida contraprestación\", \"total_con_match\": 91, \"resultados\": [{\"id\": \"Operacion_liquidacion_de_operacion_con_entrega_contra_pago\", \"type\": \"Operacion\", \"label\": \"Operación DvP fallida\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de operación con entrega contra pago\"}, {\"id\": \"Operacion_determinacion_de_la_exposicion_potencial_futura_mediante_producto_de_multiplicad\", \"type\": \"Operacion\", \"label\": \"Cálculo de EPF\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Determinación de la exposición potencial futura mediante producto de multiplicador y adicional total\"}, {\"id\": \"Operacion_exposicion_a_entidades_de_contraparte_central\", \"type\": \"Operacion\", \"label\": \"Operación con CCP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Exposición a entidades de contraparte central\"}, {\"id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Capitales Mínimos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"materia: Capitales Mínimos; archivo: TO_capitales_minimos_actual.pdf; version: actual\"}, {\"id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"type\": \"TextoOrdenado\", \"label… [+1727 chars]",
+      "output_chars": 2927
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_del_cargo_de_capital_ajustado_por_mora"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_del_cargo_de_capital_ajustado_por_mora\", \"type\": \"Operacion\", \"label\": \"Cálculo de variable KA\", \"properties\": {\"tipo\": \"Cálculo del cargo de capital ajustado por mora\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1. Tratamiento de las titulizaciones. (parte 6)\"}]}",
+      "output_chars": 335
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_del_cargo_de_capital_ajustado_por_mora"
+      },
+      "output_truncado": "{\"id\": \"Operacion_calculo_del_cargo_de_capital_ajustado_por_mora\", \"label\": \"Cálculo de variable KA\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_en_caso_de_retitulizaciones_cuya_cartera_subyacente_consista_en_tramos_de_tituli\", \"vecino_label\": \"Ajustar KA para retitulizaciones mixtas\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 3.1. Tratamiento de las titulizaciones. (parte 6)\"}]}], \"entrantes_truncado\": false}",
+      "output_chars": 569
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "DvP demora 5 días 30 días 45 días exigencia capital ponderador",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"DvP demora 5 días 30 días 45 días exigencia capital ponderador\", \"total_con_match\": 406, \"resultados\": [{\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Restriccion_los_miembros_compensadores_podran_calcular_la_exigencia_por_la_exposicion_a_sus_\", \"type\": \"Restriccion\", \"label\": \"MPOR mínimo 5 días para clientes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los miembros compensadores podrán calcular la exigencia por la exposición a sus clientes aplicando un período de riesgo de margen que sea, como mínimo, de 5 día…\"}, {\"id\": \"Obligacion_cuando_la_entidad_no_pueda_determinar_la_exigencia_de_capital_por_riesgo_especif\", \"type\": \"Obligacion\", \"label\": \"Aplicar ponderador de riesgo del 1250%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la entidad no pueda determinar la exigencia de capital por riesgo específico conforme… [+2257 chars]",
+      "output_chars": 3457
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "riesgo crédito contraparte DvP demora ponderador 100%",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"riesgo crédito contraparte DvP demora ponderador 100%\", \"total_con_match\": 320, \"resultados\": [{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_de_credito_de_contraparte_en_operaciones_con_ent\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo de crédito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exigencia de capital por riesgo de crédito de contraparte en operaciones con entidades de contraparte central\"}, {\"id\": \"Obligacion_se_informara_en_el_codigo_14000000_la_exigencia_final_rcd_surgida_de_la_sumatori\", \"type\": \"Obligacion\", \"label\": \"Informar exigencia riesgo crédito contraparte\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se informará en el código 14000000 la exigencia final (RCD) surgida de la sumatoria de las exposiciones al riesgo de crédito de contraparte\"}, {\"id\": \"Obligacion_la_exigencia_final_rcd_surgira_de_la_sumatoria_de_las_exposiciones_al_riesgo_de_\", \"type\": \"Obligacion\", \"label\": \"Calcular exposición riesgo crédito contraparte\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia final (RCD) surgirá de la sumatoria de las exposiciones al riesgo de crédito de contraparte determinadas para cada conjunto de neteo… [+2507 chars]",
+      "output_chars": 3707
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "operaciones entrega contra pago demora 5 días 30 días 45 días ponderador",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"operaciones entrega contra pago demora 5 días 30 días 45 días ponderador\", \"total_con_match\": 465, \"resultados\": [{\"id\": \"Restriccion_las_operaciones_con_entrega_contra_pago_tendran_un_cargo_directo_de_capital_cuan\", \"type\": \"Restriccion\", \"label\": \"Cargo de capital por demora DvP\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las operaciones con entrega contra pago tendrán un cargo directo de capital cuando los pagos no se realicen dentro de los cinco días hábiles desde la fecha de l…\"}, {\"id\": \"Operacion_dvp_operaciones_de_entrega_contra_pago_fallidas\", \"type\": \"Operacion\", \"label\": \"Operaciones de entrega contra pago fallidas\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: DvP - operaciones de entrega contra pago fallidas\"}, {\"id\": \"Operacion_liquidacion_de_operacion_con_entrega_contra_pago\", \"type\": \"Operacion\", \"label\": \"Operación DvP fallida\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Liquidación de operación con entrega contra pago\"}, {\"id\": \"Restriccion_el_periodo_minimo_de_mantenimiento_para_operaciones_de_pase_sera_de_5_dias_habil\", \"type\": \"Restriccion\", \"label\": \"Período mínimo de mantenimiento\", \"tokens_matcheados\": 3, \"resumen_prop… [+2241 chars]",
+      "output_chars": 3441
+    }
+  ],
+  "tokens": {
+    "in": 5617,
+    "out": 1928,
+    "cache_read": 57379,
+    "cache_write": 15724
+  },
+  "costo_usd": {
+    "agente": 0.04065,
+    "juez": 0.018867
+  },
+  "veredicto_juez": {
+    "correctitud": "correcta",
+    "completitud": "parcial",
+    "cita_documento_correcto": false,
+    "cita_precision": "punto",
+    "abstencion": null,
+    "especulacion_en_prosa": null,
+    "afirmaciones_no_soportadas": {
+      "centrales": [],
+      "secundarias": [
+        "El Knowledge Graph contiene referencias a operaciones DvP fallidas.",
+        "El Knowledge Graph contiene referencias a cargos de capital por demora a partir de 5 días hábiles."
+      ],
+      "n_centrales": 0,
+      "n_secundarias": 2
+    },
+    "requiere_adjudicacion_humana": false,
+    "justificacion": {
+      "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+      "completitud": "Patas no cubiertas: Exigencia de capital aplicable sobre la exposición actual positiva a fin de mes para una operación DvP fallida cuya contraprestación no fue recibida y han transcurrido entre 31 y 45 días hábiles posteriores a la fecha de liquidación acordada",
+      "citas": "La única cita apunta a 'TO_regimen_informativo_contable_mensual_actual.pdf', que no corresponde a ningún documento del ground truth (Punto 4.1.1. de otro TO)."
+    }
+  }
+}

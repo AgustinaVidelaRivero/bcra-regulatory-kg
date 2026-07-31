@@ -1,0 +1,206 @@
+{
+  "id": "EV1-036",
+  "grafo": "run_3",
+  "replica": 3,
+  "failed_trace": false,
+  "origen": "replay_o_fresco_1b",
+  "respuesta_final": {
+    "respuesta": "No se encontró en el Knowledge Graph una obligación específica que establezca que las entidades financieras del grupo 2 deban clasificar sus exposiciones con garantía hipotecaria en normativas y no normativas. La búsqueda reveló que: (1) Las entidades del grupo 2 tienen obligaciones de clasificación de exposiciones a instrumentos (deuda subordinada y participaciones en capital), pero estas no se refieren a exposiciones hipotecarias. (2) Existe una obligación para entidades del grupo 1 de asignar ponderadores específicos a exposiciones minoristas con garantía hipotecaria sobre inmuebles residenciales, pero no se encontró una obligación equivalente para el grupo 2. (3) La normativa contiene ponderadores de riesgo para exposiciones hipotecarias (como el 100% para exposiciones en incumplimiento con garantía hipotecaria normativa sobre inmuebles residenciales), pero no se especifica una obligación de clasificación en normativas y no normativas para el grupo 2.",
+    "citas": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.11. Exposiciones a instrumentos."
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.12. Tabla de ponderadores de riesgo. (parte 2)"
+      }
+    ],
+    "respondible": false
+  },
+  "respuesta_cruda": "```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph una obligación específica que establezca que las entidades financieras del grupo 2 deban clasificar sus exposiciones con garantía hipotecaria en normativas y no normativas. La búsqueda reveló que: (1) Las entidades del grupo 2 tienen obligaciones de clasificación de exposiciones a instrumentos (deuda subordinada y participaciones en capital), pero estas no se refieren a exposiciones hipotecarias. (2) Existe una obligación para entidades del grupo 1 de asignar ponderadores específicos a exposiciones minoristas con garantía hipotecaria sobre inmuebles residenciales, pero no se encontró una obligación equivalente para el grupo 2. (3) La normativa contiene ponderadores de riesgo para exposiciones hipotecarias (como el 100% para exposiciones en incumplimiento con garantía hipotecaria normativa sobre inmuebles residenciales), pero no se especifica una obligación de clasificación en normativas y no normativas para el grupo 2.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.11. Exposiciones a instrumentos.\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.12. Tabla de ponderadores de riesgo. (parte 2)\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+  "pasos": 15,
+  "hit_tool_limit": true,
+  "traza_tools_truncada": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "grupo 2 entidades financieras garantía hipotecaria",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"grupo 2 entidades financieras garantía hipotecaria\", \"total_con_match\": 220, \"resultados\": [{\"id\": \"EntidadFinanciera_entidad_financiera_grupo_2\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades financieras grupo 2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"categoria: entidad financiera grupo 2\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"}, {\"id\": \"EntidadFinanciera_entidad_del_grupo_2\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades del grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: entidades del grupo 2\"}, {\"id\": \"Obligacion_las_entidades_financieras_del_grupo_1_deberan_llevar_a_cabo_un_proceso_de_debida\", \"type\": \"Obligacion\", \"label\": \"Proceso de debida diligencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán llevar a cabo un proceso de debida diligencia –al momento del otorgamiento del crédito y con frecuen… [+1753 chars]",
+      "output_chars": 2953
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "clasificación exposiciones garantía hipotecaria normativas no normativas",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"clasificación exposiciones garantía hipotecaria normativas no normativas\", \"total_con_match\": 482, \"resultados\": [{\"id\": \"Restriccion_exposiciones_en_situacion_de_incumplimiento_con_garantia_hipotecaria_normativas_\", \"type\": \"Restriccion\", \"label\": \"Ponderador exposiciones incumplimiento hipotecario\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Exposiciones en situación de incumplimiento con garantía hipotecaria normativas sobre inmuebles residenciales: 100\"}, {\"id\": \"Restriccion_garantia_no_resguardada_en_nica\", \"type\": \"Restriccion\", \"label\": \"Garantía no resguardada en NICA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La garantía depositada que no esté resguardada en caso de quiebra deberá ser considerada para el Monto Neto de Garantía Independiente (NICA)\"}, {\"id\": \"Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces\", \"type\": \"Restriccion\", \"label\": \"Exclusión de deudores en cesión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente\"}, {\"id\": \"Excepcion_la_clasificacion_se_verifica_a_partir_del_mom… [+2432 chars]",
+      "output_chars": 3632
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "EntidadFinanciera_entidad_financiera_grupo_2"
+      },
+      "output_truncado": "{\"id\": \"EntidadFinanciera_entidad_financiera_grupo_2\", \"type\": \"EntidadFinanciera\", \"label\": \"Entidades financieras grupo 2\", \"properties\": {\"categoria\": \"entidad financiera grupo 2\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11. Exposiciones a instrumentos.\"}]}",
+      "output_chars": 308
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "grupo 2 exposiciones hipotecarias normativas no normativas clasificación",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"grupo 2 exposiciones hipotecarias normativas no normativas clasificación\", \"total_con_match\": 500, \"resultados\": [{\"id\": \"Excepcion_la_presente_reduccion_de_exigencia_no_rige_para_entidades_del_grupo_2_que_sean_s\", \"type\": \"Excepcion\", \"label\": \"Excepción G-SIB para reducción\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La presente reducción de exigencia no rige para entidades del Grupo 2 que sean subsidiarias o sucursales de entidades de importancia sistémica global (G-SIB)\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos: Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones: 150\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"},… [+2115 chars]",
+      "output_chars": 3315
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "obligación clasificar exposiciones hipotecarias normativas",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"obligación clasificar exposiciones hipotecarias normativas\", \"total_con_match\": 1310, \"resultados\": [{\"id\": \"Obligacion_a_los_efectos_de_considerar_en_las_exposiciones_minoristas_normativas_a_los_cred\", \"type\": \"Obligacion\", \"label\": \"Verificación de criterios en compra de cartera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los efectos de considerar en las exposiciones minoristas normativas a los créditos incorporados a través de una compra de cartera, se deberá contar con la inf…\"}, {\"id\": \"Obligacion_clasificar_exposiciones_en_deuda_subordinada_y_participaciones\", \"type\": \"Obligacion\", \"label\": \"Clasificar exposiciones en deuda subordinada y participaciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 2 deberán clasificar las exposiciones a instrumentos en: i) Deuda subordinada emitida por empresas y/o entidades financieras…\"}, {\"id\": \"Obligacion_clasificar_exposiciones_en_deuda_subordinada_acciones_e_instrumentos_de_capital\", \"type\": \"Obligacion\", \"label\": \"Clasificar exposiciones en deuda subordinada, acciones e instrumentos de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del g… [+2521 chars]",
+      "output_chars": 3721
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposiciones hipotecarias residenciales normativas no normativas",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exposiciones hipotecarias residenciales normativas no normativas\", \"total_con_match\": 401, \"resultados\": [{\"id\": \"Restriccion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_que_\", \"type\": \"Restriccion\", \"label\": \"Exclusión de operaciones al contado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No están comprendidas las exposiciones originadas en operaciones al contado que involucren títulos valores, oro o moneda extranjera\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones a instrumentos: Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones: 150\"}, {\"id\": \"Obligacion_el_ponderador_de_riesgo_de_exposiciones_a_entidades_financieras_no_puede_ser_inf\", \"type\": \"Obligacion\", \"label\": \"Aplicar ponderador jurisdicción contraparte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador de riesgo de exposiciones a entidades financieras no puede ser inferior al ponderador aplicable a jurisdicc… [+2668 chars]",
+      "output_chars": 3868
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "grupo 2 clasificar exposiciones hipotecarias normativas no normativas",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"grupo 2 clasificar exposiciones hipotecarias normativas no normativas\", \"total_con_match\": 468, \"resultados\": [{\"id\": \"Excepcion_la_presente_reduccion_de_exigencia_no_rige_para_entidades_del_grupo_2_que_sean_s\", \"type\": \"Excepcion\", \"label\": \"Excepción G-SIB para reducción\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La presente reducción de exigencia no rige para entidades del Grupo 2 que sean subsidiarias o sucursales de entidades de importancia sistémica global (G-SIB)\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos: Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones: 150\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"}, {\"… [+2135 chars]",
+      "output_chars": 3335
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "obligación grupo 2 clasificar exposiciones hipotecarias",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"obligación grupo 2 clasificar exposiciones hipotecarias\", \"total_con_match\": 1355, \"resultados\": [{\"id\": \"Obligacion_se_determinara_mensualmente_por_la_expresion_cro_a_ib_n_donde_a_es_15_n_es_numer\", \"type\": \"Obligacion\", \"label\": \"Determinar CRO mensualmente Grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se determinará mensualmente por la expresión: CRO = (a*IB) / n, donde a es 15%, n es número de períodos de 12 meses consecutivos con IB positivo, máximo 3\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"}, {\"id\": \"Obligacion_clasificar_exposiciones_en_deuda_subordinada_y_participaciones\", \"type\": \"Obligacion\", \"label\": \"Clasificar exposiciones en deuda subordinada y participaciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades financieras del grupo 2 deberán clasificar las exposiciones a instrumentos en: i) Deuda subordinada emitida por empresas y/o entidades financi… [+2261 chars]",
+      "output_chars": 3461
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_clasificar_exposiciones_en_deuda_subordinada_y_participaciones"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_clasificar_exposiciones_en_deuda_subordinada_y_participaciones\", \"type\": \"Obligacion\", \"label\": \"Clasificar exposiciones en deuda subordinada y participaciones\", \"properties\": {\"tipo\": \"asignacion\", \"description\": \"Las entidades financieras del grupo 2 deberán clasificar las exposiciones a instrumentos en: i) Deuda subordinada emitida por empresas y/o entidades financieras. ii) Participaciones en el capital emitido por empresas y/o entidades financieras.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11. Exposiciones a instrumentos.\"}]}",
+      "output_chars": 604
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposiciones minoristas hipotecarias normativas no normativas grupo 2",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exposiciones minoristas hipotecarias normativas no normativas grupo 2\", \"total_con_match\": 460, \"resultados\": [{\"id\": \"Excepcion_la_presente_reduccion_de_exigencia_no_rige_para_entidades_del_grupo_2_que_sean_s\", \"type\": \"Excepcion\", \"label\": \"Excepción G-SIB para reducción\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La presente reducción de exigencia no rige para entidades del Grupo 2 que sean subsidiarias o sucursales de entidades de importancia sistémica global (G-SIB)\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos: Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones: 150\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"}, {\"… [+2000 chars]",
+      "output_chars": 3200
+    },
+    {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposiciones hipotecarias normativas no normativas inmuebles residenciales",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"exposiciones hipotecarias normativas no normativas inmuebles residenciales\", \"total_con_match\": 403, \"resultados\": [{\"id\": \"Restriccion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_que_\", \"type\": \"Restriccion\", \"label\": \"Exclusión de operaciones al contado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No están comprendidas las exposiciones originadas en operaciones al contado que involucren títulos valores, oro o moneda extranjera\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposiciones a instrumentos: Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones: 150\"}, {\"id\": \"Obligacion_el_ponderador_de_riesgo_de_exposiciones_a_entidades_financieras_no_puede_ser_inf\", \"type\": \"Obligacion\", \"label\": \"Aplicar ponderador jurisdicción contraparte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador de riesgo de exposiciones a entidades financieras no puede ser inferior al ponderador aplicable a… [+2668 chars]",
+      "output_chars": 3868
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_exposiciones_en_situacion_de_incumplimiento_con_garantia_hipotecaria_normativas_"
+      },
+      "output_truncado": "{\"id\": \"Restriccion_exposiciones_en_situacion_de_incumplimiento_con_garantia_hipotecaria_normativas_\", \"type\": \"Restriccion\", \"label\": \"Ponderador exposiciones incumplimiento hipotecario\", \"properties\": {\"descripcion\": \"Exposiciones en situación de incumplimiento con garantía hipotecaria normativas sobre inmuebles residenciales: 100\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"100\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.12. Tabla de ponderadores de riesgo. (parte 2)\"}]}",
+      "output_chars": 523
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "obligación clasificar exposiciones minoristas hipotecarias normativas no normativas",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"obligación clasificar exposiciones minoristas hipotecarias normativas no normativas\", \"total_con_match\": 1606, \"resultados\": [{\"id\": \"Obligacion_a_los_efectos_de_considerar_en_las_exposiciones_minoristas_normativas_a_los_cred\", \"type\": \"Obligacion\", \"label\": \"Verificación de criterios en compra de cartera\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"A los efectos de considerar en las exposiciones minoristas normativas a los créditos incorporados a través de una compra de cartera, se deberá contar con la inf…\"}, {\"id\": \"Obligacion_el_ponderador_de_riesgo_de_exposiciones_a_entidades_financieras_no_puede_ser_inf\", \"type\": \"Obligacion\", \"label\": \"Aplicar ponderador jurisdicción contraparte\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El ponderador de riesgo de exposiciones a entidades financieras no puede ser inferior al ponderador aplicable a jurisdicción de constitución de contraparte cuan…\"}, {\"id\": \"Excepcion_la_obligacion_de_no_alterar_exposiciones_subyacentes_no_aplica_cuando_se_logra_m\", \"type\": \"Excepcion\", \"label\": \"Excepción de mejora crediticia mediante venta\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La obligación de no alterar exposiciones su… [+2608 chars]",
+      "output_chars": 3808
+    },
+    {
+      "n": 14,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_asignar_ponderador_a_exposiciones_minoristas_sin_cobertura"
+      },
+      "output_truncado": "{\"id\": \"Obligacion_asignar_ponderador_a_exposiciones_minoristas_sin_cobertura\", \"type\": \"Obligacion\", \"label\": \"Asignar ponderador a exposiciones minoristas sin cobertura\", \"properties\": {\"tipo\": \"asignacion\", \"description\": \"Las entidades financieras del grupo 1 deberán asignar a las exposiciones minoristas sin cobertura del riesgo y con garantía hipotecaria sobre inmuebles residenciales, denominadas en una moneda distinta a la de los ingresos de sus contrapartes, un ponderador de riesgo del 150% o el que resulte de multiplicar por 1,5 el ponderador que le corresponda, de ambos el mayor\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 1)\"}]}",
+      "output_chars": 745
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "grupo 2 asignar ponderador exposiciones minoristas hipotecarias",
+        "limite": 10
+      },
+      "output_truncado": "{\"consulta\": \"grupo 2 asignar ponderador exposiciones minoristas hipotecarias\", \"total_con_match\": 177, \"resultados\": [{\"id\": \"Restriccion_exposiciones_a_instrumentos_por_parte_de_entidades_financieras_del_grupo_2_deuda\", \"type\": \"Restriccion\", \"label\": \"Ponderador deuda subordinada grupo 2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Exposiciones a instrumentos por parte de entidades financieras del grupo 2: Deuda subordinada: 150\"}, {\"id\": \"Obligacion_asignar_ponderador_a_exposiciones_minoristas_sin_cobertura\", \"type\": \"Obligacion\", \"label\": \"Asignar ponderador a exposiciones minoristas sin cobertura\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades financieras del grupo 1 deberán asignar a las exposiciones minoristas sin cobertura del riesgo y con garantía hipotecaria sobre inmuebles residenc…\"}, {\"id\": \"Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250\", \"type\": \"Restriccion\", \"label\": \"Ponderador acciones grupo 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Acciones (definidas conforme al punto 2.11.3.): 250\"}, {\"id\": \"Restriccion_exposiciones_a_instrumentos_deuda_subordinada_e_instrumentos_de_capital_que_no_r\", \"type\": \"Restriccion\", \"label\":… [+1804 chars]",
+      "output_chars": 3004
+    }
+  ],
+  "tokens": {
+    "in": 5513,
+    "out": 1929,
+    "cache_read": 91533,
+    "cache_write": 17084
+  },
+  "costo_usd": {
+    "agente": 0.045666,
+    "juez": 0.023865
+  },
+  "veredicto_juez": {
+    "correctitud": "correcta",
+    "completitud": "parcial",
+    "cita_documento_correcto": true,
+    "cita_precision": "punto",
+    "abstencion": null,
+    "especulacion_en_prosa": null,
+    "afirmaciones_no_soportadas": {
+      "centrales": [],
+      "secundarias": [
+        "Las entidades del grupo 2 tienen obligaciones de clasificación de exposiciones a instrumentos de deuda subordinada y participaciones en capital.",
+        "Existe una obligación para entidades del grupo 1 de asignar ponderadores específicos a exposiciones minoristas con garantía hipotecaria sobre inmuebles residenciales.",
+        "La normativa contiene un ponderador de riesgo del 100% para exposiciones en incumplimiento con garantía hipotecaria normativa sobre inmuebles residenciales."
+      ],
+      "n_centrales": 0,
+      "n_secundarias": 3
+    },
+    "requiere_adjudicacion_humana": false,
+    "justificacion": {
+      "correctitud": "Centrales todas verdaderas o no_soportadas; ninguna afirmación falsa.",
+      "completitud": "Patas no cubiertas: Si las entidades financieras del grupo 2 están alcanzadas por la obligación de clasificar sus exposiciones con garantía hipotecaria en normativas y no normativas; Qué tratamiento les corresponde a las entidades del grupo 2 respecto de esas exposiciones",
+      "citas": "Las citas apuntan al documento correcto (TO_capitales_minimos_actual.pdf) a nivel de punto, pero referencian puntos 2.11 y 2.12 en lugar de los puntos 2.9.1 y 2.9.2.1 del referente."
+    }
+  }
+}
