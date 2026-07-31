@@ -1,6 +1,6 @@
 {
-  "fecha": "2026-07-30",
-  "nota": "ESQUELETO VACÍO por diseño: las fichas de los deltas v2→v3 se llenan en la unidad de LECTURA (contra las ramas del mapeo sellado, tras la adjudicación humana), no en la corrida.",
+  "fecha": "2026-07-31",
+  "nota": "Fichas de los deltas v2→v3 del escalón 1b — PARTE MECÁNICA. Los veredicto_causal de EV1-029 y EV1-035 quedan PENDIENTES por condición de válvula (mapeo sellado 6c24009 §D); los de EV1-031/EV1-042 transcriben la predicción sellada más su verificación mecánica, nada más. Formato: el de fichas_fallas_v2.json, extendido con delta_v2_v3, réplicas de ambos brazos, cruce de trazas y evidencia de predicción (extensión documentada en lectura_1b_parte_mecanica.md).",
   "formato_por_ficha": [
     "id",
     "pregunta",
@@ -11,5 +11,3198 @@
     "replicas",
     "veredicto_causal"
   ],
-  "fichas": []
+  "fichas": [
+    {
+      "id": "EV1-029",
+      "pregunta": "Un deudor cuyo crédito fue cedido por una entidad financiera a un fideicomiso financiero, sin haber sido notificado fehacientemente de la transferencia de su obligación, ¿está alcanzado como usuario de servicios financieros? En caso afirmativo, ¿qué responsable debe atender sus consultas o reclamos?",
+      "familia": "sujeto",
+      "tos_fuente": [
+        "TO_proteccion_usuarios_servicios_financieros_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 1.1.1.",
+        "Punto 3.1.1.1."
+      ],
+      "delta_v2_v3": {
+        "v2_final": {
+          "veredictos_finales": [
+            "correcta",
+            "incorrecta",
+            "incorrecta"
+          ],
+          "n_correcta": 1,
+          "correcto_mayoria": false,
+          "patron": "2-1"
+        },
+        "v3_final": {
+          "veredictos_finales": [
+            "correcta",
+            "correcta",
+            "incorrecta"
+          ],
+          "n_correcta": 2,
+          "correcto_mayoria": true,
+          "patron": "2-1"
+        }
+      },
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "correcta",
+          "correcta",
+          "incorrecta"
+        ],
+        "n_correcta": 2,
+        "correcto_mayoria": true,
+        "patron": "2-1"
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "Según la información disponible en el Knowledge Graph, no es posible responder completamente esta pregunta. El grafo contiene referencias a: (1) la existencia de 'Usuarios de servicios financieros' como una clase de sujetos; (2) la existencia de operaciones de 'Cesión de créditos'; (3) la existencia de 'Fideicomisos financieros' como sujetos; y (4) obligaciones de los 'sujetos obligados' de atender consultas y reclamos de usuarios. Sin embargo, el grafo no contiene información explícita que: (a) defina si los deudores están incluidos en la categoría de 'usuarios de servicios financieros'; (b) especifique qué responsabilidades tiene la entidad cedente respecto a la notificación del deudor cuando cede un crédito a un fideicomiso; (c) determine si el fideicomiso financiero es considerado 'sujeto obligado' en materia de protección de usuarios; o (d) establezca quién debe atender consultas y reclamos en casos de cesión de créditos sin notificación fehaciente. La información sobre cesión de créditos encontrada se refiere principalmente a aspectos de titulización y transferencia de riesgo, no a la relación con el deudor.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El Knowledge Graph contiene referencias a 'Usuarios de servicios financieros' como una clase de sujetos."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El Knowledge Graph contiene referencias a operaciones de 'Cesión de créditos'."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El Knowledge Graph contiene referencias a 'Fideicomisos financieros' como sujetos."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El Knowledge Graph contiene referencias a obligaciones de los 'sujetos obligados' de atender consultas y reclamos de usuarios."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "La información sobre cesión de créditos encontrada en el grafo se refiere principalmente a aspectos de titulización y transferencia de riesgo."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito deudor notificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros fideicomiso",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudor transferencia obligación responsable",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cesion_de_creditos_df1276"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación cesión crédito deudor fideicomiso",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "definición usuario servicios financieros deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable atención usuario reclamo consulta",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros incluye deudor acreedor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujeto obligado responsable cesión crédito fideicomiso",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fideicomiso financiero sujeto obligado usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidad cedente responsable obligación deudor notificación",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": []
+        },
+        {
+          "replica": 2,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "Sí, un deudor cuyo crédito fue cedido por una entidad financiera a un fideicomiso financiero, sin haber sido notificado fehacientemente de la transferencia de su obligación, está alcanzado como usuario de servicios financieros. En este caso específico, el responsable que debe atender sus consultas o reclamos es el responsable de atención al usuario de servicios financieros de la entidad financiera cedente (es decir, la entidad que originalmente otorgó el crédito). Esta obligación se establece expresamente en la normativa de protección de usuarios de servicios financieros del BCRA, que dispone que las consultas o reclamos originados en cuestiones suscitadas con deudores de fideicomisos financieros que no fueron notificados fehacientemente de la transferencia fiduciaria de su obligación deberán ser atendidos por el responsable de atención al usuario de servicios financieros de la entidad financiera cedente.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "La entidad financiera cedente es la entidad que originalmente otorgó el crédito."
+            }
+          ],
+          "pasos": 13,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito fideicomiso financiero notificación deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros definición alcance",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable consultas reclamos deudor cedido",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_las_consultas_o_reclamos_originados_en_cuestiones_suscitadas_con_deudores_de_fid_997afd"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros deudor definición concepto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros se entiende por persona física persona jurídica",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudor usuario servicios financieros alcance",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "definición usuario servicios financieros punto 1.1",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros toda persona física jurídica",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros",
+                "direccion": "entrantes"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "se entiende por usuario servicios financieros toda persona",
+                "limite": 5
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 3.1. Requisitos mínimos. (parte 1)"
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "Sí, un deudor cuyo crédito fue cedido por una entidad financiera a un fideicomiso financiero está alcanzado como usuario de servicios financieros, incluso sin haber sido notificado fehacientemente de la transferencia de su obligación. El responsable que debe atender sus consultas o reclamos es el fiduciario del fideicomiso financiero. Según la normativa del BCRA, los fiduciarios de fideicomisos financieros son miembros de la categoría de 'Sujetos obligados (Protección de usuarios)' y, por lo tanto, están obligados a nombrar un responsable de atención al usuario de servicios financieros que debe atender las consultas y reclamos de los deudores cuyos créditos han sido cedidos al fideicomiso.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "El responsable que debe atender las consultas o reclamos de dicho deudor es el fiduciario del fideicomiso financiero."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Los fiduciarios de fideicomisos financieros son miembros de la categoría de 'Sujetos obligados (Protección de usuarios)' según la normativa del BCRA."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Los fiduciarios de fideicomisos financieros están obligados a nombrar un responsable de atención al usuario de servicios financieros."
+            },
+            {
+              "verdict": "falso",
+              "central": false,
+              "enunciado": "El responsable de atención al usuario de servicios financieros designado por el fiduciario debe atender las consultas y reclamos de los deudores cuyos créditos han sido cedidos al fideicomiso."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito fideicomiso financiero notificación deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación transferencia obligación crédito",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable atención consultas reclamos usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión derechos crédito fideicomiso responsabilidad",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cesion_de_creditos_sin_responsabilidad_e74f77"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_el_directorio_o_autoridad_equivalente_de_los_sujetos_obligados_debera_nombrar_a__e16fc6"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujeto obligado fideicomiso financiero responsabilidad usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudor usuario servicios financieros definición alcance",
+                "limite": 10
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujeto obligado definición alcance entidades financieras",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fiduciario fideicomiso financiero sujeto obligado",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 16,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero",
+                "direccion": "ambas"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 1.1.2"
+            },
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 3.1. Requisitos mínimos. (parte 1)"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Punto 10.2"
+            }
+          ]
+        }
+      ],
+      "replicas_v2_referencia": [
+        {
+          "replica": 1,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "No se encontró en el Knowledge Graph información normativa específica que aborde directamente si un deudor cuyo crédito fue cedido a un fideicomiso financiero sin notificación fehaciente está alcanzado como usuario de servicios financieros, ni quién debe atender sus consultas o reclamos en esa situación. Si bien existen normas sobre usuarios de servicios financieros, sujetos obligados y responsables de atención, no hay disposiciones que regulen específicamente la responsabilidad post-cesión de créditos.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito fideicomiso financiero",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación transferencia obligación deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cesion_de_derechos_de_credito"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable atención consultas reclamos usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito responsable atención deudor notificación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fideicomiso financiero responsable usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujetos obligados protección usuario servicios financieros",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fideicomiso financiero sujeto obligado",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudor usuario servicios financieros definición",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros persona física jurídica contrata",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "entidad financiera cedente responsable deudor",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": []
+        },
+        {
+          "replica": 2,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "Sí, un deudor cuyo crédito fue cedido a un fideicomiso financiero está alcanzado como usuario de servicios financieros. Según la regulación del BCRA, los Fiduciarios de fideicomisos financieros son miembros de la categoría de 'Sujetos obligados (Protección de usuarios)' y, por lo tanto, deben cumplir con las obligaciones de protección al usuario de servicios financieros. El responsable que debe atender las consultas o reclamos del deudor es el Fiduciario del fideicomiso financiero, quien debe designar un funcionario como 'responsable de atención al usuario de servicios financieros' (titular y suplente) a través de su Directorio o autoridad equivalente. Este responsable debe establecer un servicio de atención para dar tratamiento y resolver las consultas y reclamos que presenten los usuarios de servicios financieros, incluyendo la extensión de constancias de consulta o reclamo y la información sobre el estado de los trámites.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Los Fiduciarios de fideicomisos financieros son miembros de la categoría de 'Sujetos obligados (Protección de usuarios)' según la regulación del BCRA."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Los Fiduciarios de fideicomisos financieros deben cumplir con las obligaciones de protección al usuario de servicios financieros."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "El responsable que debe atender las consultas o reclamos del deudor es el Fiduciario del fideicomiso financiero."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El Fiduciario debe designar un funcionario como 'responsable de atención al usuario de servicios financieros' (titular y suplente)."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "La designación del responsable de atención al usuario de servicios financieros debe realizarse a través del Directorio o autoridad equivalente del Fiduciario."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El responsable de atención al usuario debe establecer un servicio de atención para dar tratamiento y resolver las consultas y reclamos de los usuarios de servicios financieros."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El servicio de atención al usuario debe incluir la extensión de constancias de consulta o reclamo."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El servicio de atención al usuario debe incluir la información sobre el estado de los trámites."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito fideicomiso financiero",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros definición",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación transferencia obligación deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cesion_de_derechos_de_credito"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable atención consultas reclamos usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito responsable atención usuario deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fideicomiso financiero responsable usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujetos obligados protección usuario servicios financieros",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fiduciario fideicomiso sujeto obligado usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "deudor usuario servicios financieros relación",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros definición deudor acreedor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_el_directorio_o_autoridad_equivalente_de_los_sujetos_obligados_debera_nombrar_a_"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 1.1.2"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Punto 10.2"
+            },
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 3.1. Requisitos mínimos. (parte 1)"
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "Sí, un deudor cuyo crédito fue cedido a un fideicomiso financiero está alcanzado como usuario de servicios financieros, incluso sin haber sido notificado fehacientemente de la transferencia de su obligación. Los fiduciarios de fideicomisos financieros son sujetos obligados en materia de protección de usuarios de servicios financieros, según la regulación del BCRA. Por lo tanto, el responsable que debe atender las consultas o reclamos del deudor es el fiduciario del fideicomiso financiero que adquirió el crédito, quien debe designar un funcionario responsable de atención al usuario de servicios financieros y establecer un servicio de atención para dar tratamiento y resolver las consultas y reclamos que presente el usuario.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "Los fiduciarios de fideicomisos financieros son sujetos obligados en materia de protección de usuarios de servicios financieros según la regulación del BCRA."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "El responsable de atender las consultas o reclamos del deudor es el fiduciario del fideicomiso financiero que adquirió el crédito."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El fiduciario del fideicomiso financiero debe designar un funcionario responsable de atención al usuario de servicios financieros."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El fiduciario del fideicomiso financiero debe establecer un servicio de atención para dar tratamiento y resolver las consultas y reclamos que presente el usuario."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito fideicomiso financiero",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "usuario servicios financieros definición",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación transferencia obligación deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_usuario_de_servicios_financieros"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cesion_de_derechos_de_credito"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "responsable atención consultas reclamos usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cesión crédito responsable atención usuario deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fideicomiso financiero responsable usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujetos obligados protección usuario servicios financieros",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "notificación cambio acreedor cesión deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "sujeto obligado definición entidad financiera",
+                "limite": 10
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "fiduciario fideicomiso sujeto obligado usuario",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero"
+              }
+            },
+            {
+              "n": 15,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Sujeto_fiduciario_de_fideicomiso_financiero",
+                "direccion": "salientes"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+              "location": "Punto 1.1.2"
+            },
+            {
+              "source_doc": "TO_clasificacion_deudores_actual.pdf",
+              "location": "Punto 10.2"
+            }
+          ]
+        }
+      ],
+      "cruce_trazas_v2_v3": {
+        "nodos_consultados_v2": [
+          "Obligacion_el_directorio_o_autoridad_equivalente_de_los_sujetos_obligados_debera_nombrar_a_",
+          "Operacion_cesion_de_derechos_de_credito",
+          "Sujeto_fideicomiso_financiero",
+          "Sujeto_fiduciario_de_fideicomiso_financiero",
+          "Sujeto_usuario_de_servicios_financieros"
+        ],
+        "nodos_consultados_v3": [
+          "Obligacion_el_directorio_o_autoridad_equivalente_de_los_sujetos_obligados_debera_nombrar_a__e16fc6",
+          "Obligacion_las_consultas_o_reclamos_originados_en_cuestiones_suscitadas_con_deudores_de_fid_997afd",
+          "Operacion_cesion_de_creditos_df1276",
+          "Operacion_cesion_de_creditos_sin_responsabilidad_e74f77",
+          "Sujeto_fideicomiso_financiero",
+          "Sujeto_fiduciario_de_fideicomiso_financiero",
+          "Sujeto_usuario_de_servicios_financieros"
+        ]
+      },
+      "veredicto_causal": "PENDIENTE — condición de válvula; se resuelve en discusión pre-registrada"
+    },
+    {
+      "id": "EV1-031",
+      "pregunta": "En el marco de las exposiciones minoristas normativas, ¿cuál es la exposición máxima admitida frente a una misma persona humana por cartera para consumo al momento del acuerdo?",
+      "familia": "puntual",
+      "tos_fuente": [
+        "TO_capitales_minimos_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.8.3.3."
+      ],
+      "delta_v2_v3": {
+        "v2_final": {
+          "veredictos_finales": [
+            "incorrecta",
+            "incorrecta",
+            "incorrecta"
+          ],
+          "n_correcta": 0,
+          "correcto_mayoria": false,
+          "patron": "3-0"
+        },
+        "v3_final": {
+          "veredictos_finales": [
+            "correcta",
+            "correcta",
+            "correcta"
+          ],
+          "n_correcta": 3,
+          "correcto_mayoria": true,
+          "patron": "3-0"
+        }
+      },
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "correcta",
+          "correcta",
+          "correcta"
+        ],
+        "n_correcta": 3,
+        "correcto_mayoria": true,
+        "patron": "3-0"
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, la exposición máxima admitida frente a una misma persona humana por cartera para consumo al momento del acuerdo es de 75 veces el Salario Mínimo Vital y Móvil (SMVM).",
+          "claims_fallidos_del_juez": [],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.10. A los fines de calcular el límite definido en el párrafo precedente, se aplicará"
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, la exposición máxima admitida frente a una misma persona humana por cartera para consumo al momento del acuerdo es de 75 veces el Salario Mínimo Vital y Móvil (SMVM).",
+          "claims_fallidos_del_juez": [],
+          "pasos": 4,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.10. A los fines de calcular el límite definido en el párrafo precedente, se aplicará"
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, la exposición máxima admitida frente a una misma persona humana por cartera para consumo al momento del acuerdo es de 75 veces el Salario Mínimo Vital y Móvil (SMVM).",
+          "claims_fallidos_del_juez": [],
+          "pasos": 4,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.10. A los fines de calcular el límite definido en el párrafo precedente, se aplicará"
+            }
+          ]
+        }
+      ],
+      "replicas_v2_referencia": [
+        {
+          "replica": 1,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, se encontraron dos límites de exposición relevantes: (1) La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad; (2) A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera. Sin embargo, el Knowledge Graph no contiene información específica sobre un límite máximo de exposición expresado en monto absoluto o porcentaje específico para cartera de consumo al momento del acuerdo frente a una misma persona humana.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana acuerdo momento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición máxima deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo exposición máxima deudor individual minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida cartera consumo minorista normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición cartera consumo minorista normativa acuerdo",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.8. Exposiciones minoristas."
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, se encontraron dos límites de exposición: (1) La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad; (2) A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera. Sin embargo, no se encontró en el grafo un límite específico expresado como monto absoluto o porcentaje fijo aplicable específicamente 'al momento del acuerdo' para la cartera de consumo.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": true,
+              "enunciado": "El monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones incluidas en la cartera."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana acuerdo momento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición máxima deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo exposición máxima deudor individual minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida cartera consumo minorista normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición cartera consumo minorista normativa persona",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.8. Exposiciones minoristas."
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "En el marco de las exposiciones minoristas normativas, la exposición máxima admitida frente a una misma persona humana por cartera para consumo es del 0,2% del total de las exposiciones minoristas normativas de la entidad. Esta es la restricción específica que aplica a las exposiciones minoristas normativas: la exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La exposición máxima admitida frente a una misma persona humana por cartera para consumo es del 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La exposición total con cada contraparte individual no deberá superar el 0,2% del total de las exposiciones minoristas normativas de la entidad."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas persona humana cartera consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima admitida persona humana consumo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima límite minorista cartera consumo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 4,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite monto",
+                "limite": 10
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas cartera consumo máximo acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "importe de referencia cartera consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_determinacion_de_importe_de_referencia_para_clasificacion"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima cartera consumo persona humana normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposiciones minoristas normativas límite exposición deudor",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_exposiciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_limite_de_exposicion_por_contraparte_minorista"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima acuerdo originación consumo minorista",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cartera consumo límite máximo exposición momento acuerdo",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición máxima originación cartera consumo normativa",
+                "limite": 10
+              }
+            },
+            {
+              "n": 16,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "límite exposición consumo minorista normativa acuerdo",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.8. Exposiciones minoristas."
+            }
+          ]
+        }
+      ],
+      "cruce_trazas_v2_v3": {
+        "nodos_consultados_v2": [
+          "Operacion_clasificacion_exposiciones",
+          "Operacion_determinacion_de_importe_de_referencia_para_clasificacion",
+          "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular",
+          "Restriccion_limite_de_exposicion_por_contraparte_minorista"
+        ],
+        "nodos_consultados_v3": [
+          "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+        ]
+      },
+      "veredicto_causal": "PREDICCIÓN SELLADA (mapeo 6c24009 §C): acierto_nuevo_esperado — 'dato de la clave nuevo en v3 desde chunk recuperado, alcanzable por 7/11 queries históricas'. VERIFICACIÓN MECÁNICA (esta unidad): el nodo predicho Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb fue consultado vía ver_nodo en las 3 réplicas de v3 y aparece en las citas; ver evidencia_prediccion en esta ficha. Nada más se escribe: la lectura causal completa es de la discusión.",
+      "evidencia_prediccion": {
+        "1": {
+          "consultado": [
+            "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+          ],
+          "n_queries": 2
+        },
+        "2": {
+          "consultado": [
+            "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+          ],
+          "n_queries": 2
+        },
+        "3": {
+          "consultado": [
+            "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+          ],
+          "n_queries": 2
+        }
+      },
+      "nodos_predichos_por_el_mapeo": [
+        "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb"
+      ]
+    },
+    {
+      "id": "EV1-035",
+      "pregunta": "¿Puede considerarse normativa una exposición con garantía hipotecaria cuando el inmueble que la garantiza todavía está en construcción?",
+      "familia": "condicional",
+      "tos_fuente": [
+        "TO_capitales_minimos_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 2.9.2.2."
+      ],
+      "delta_v2_v3": {
+        "v2_final": {
+          "veredictos_finales": [
+            "correcta",
+            "parcial",
+            "correcta"
+          ],
+          "n_correcta": 2,
+          "correcto_mayoria": true,
+          "patron": "2-1"
+        },
+        "v3_final": {
+          "veredictos_finales": [
+            "incorrecta",
+            "correcta",
+            "parcial"
+          ],
+          "n_correcta": 1,
+          "correcto_mayoria": false,
+          "patron": "2-1"
+        }
+      },
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "incorrecta",
+          "correcta",
+          "parcial"
+        ],
+        "n_correcta": 1,
+        "correcto_mayoria": false,
+        "patron": "2-1"
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: el requisito no se aplicará a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. En estos casos excepcionales, la exposición podría considerarse normativa.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La excepción aplica siempre que se trate de construcción de hasta 4 unidades para vivienda."
+            },
+            {
+              "verdict": "falso",
+              "central": false,
+              "enunciado": "La excepción también aplica cuando el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal."
+            }
+          ],
+          "pasos": 9,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa hipotecaria requisitos",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición no normativa hipotecaria",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No, según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza está todavía en construcción, con una excepción específica. La regla general establece que 'la exposición deberá estar garantizada por un inmueble terminado'. Sin embargo, existe una excepción: el requisito no se aplicará a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. Por lo tanto, una exposición con inmueble en construcción solo podría considerarse normativa si cumple con los requisitos de esta excepción.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 9,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa no normativa hipotecaria",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa hipotecaria requisitos",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "parcial",
+          "correctitud_final": "parcial",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción. La restricción establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: el requisito no se aplicará a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. En estos casos excepcionales, la exposición sí podría considerarse normativa.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": false,
+              "enunciado": "La excepción también aplica cuando el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal."
+            }
+          ],
+          "pasos": 7,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1",
+                "direccion": "ambas"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        }
+      ],
+      "replicas_v2_referencia": [
+        {
+          "replica": 1,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: el requisito no se aplica a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda, o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. Por lo tanto, fuera de estos supuestos excepcionales, una exposición garantizada por un inmueble en construcción no cumple con los requisitos normativos.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa clasificación",
+                "limite": 5
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "parcial",
+          "correctitud_final": "parcial",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción, con una excepción específica. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción para financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. Por lo tanto, la respuesta depende de si la exposición cumple con los requisitos de la excepción mencionada.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": false,
+              "enunciado": "La excepción también aplica cuando el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal."
+            }
+          ],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa clasificación",
+                "limite": 5
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "No. Según la normativa del BCRA, una exposición con garantía hipotecaria NO puede considerarse normativa cuando el inmueble que la garantiza todavía está en construcción. La regla general establece que \"la exposición deberá estar garantizada por un inmueble terminado\". Sin embargo, existe una excepción: el requisito no se aplica a financiaciones a personas humanas garantizadas por inmueble en construcción o terreno destinado a ese fin, siempre que se trate de construcción de hasta 4 unidades para vivienda, o que el ente alcanzado por la TO de Financiamiento al Sector Público tenga potestad legal. Por lo tanto, fuera de estos supuestos excepcionales, una exposición garantizada por un inmueble en construcción no cumple con los requisitos normativos.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 6,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición garantía hipotecaria inmueble construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "garantía hipotecaria normativa construcción",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Excepcion_excepcion_para_inmuebles_en_construccion"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "exposición normativa clasificación",
+                "limite": 5
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_capitales_minimos_actual.pdf",
+              "location": "Punto 2.9. Exposiciones con garantía hipotecaria."
+            }
+          ]
+        }
+      ],
+      "cruce_trazas_v2_v3": {
+        "nodos_consultados_v2": [
+          "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "Restriccion_exposicion_garantizada_por_inmueble_terminado"
+        ],
+        "nodos_consultados_v3": [
+          "Excepcion_excepcion_para_inmuebles_en_construccion_362c92",
+          "Operacion_clasificacion_de_exposiciones_hipotecarias_d47dd1",
+          "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+        ]
+      },
+      "veredicto_causal": "PENDIENTE — condición de válvula; se resuelve en discusión pre-registrada",
+      "ranks_nodos_v2_en_indice_v3": [
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 1,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 1,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 28,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 1,
+          "consulta": "exposición normativa hipotecaria requisitos",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 1,
+          "consulta": "exposición no normativa hipotecaria",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 2,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 2,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 28,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 2,
+          "consulta": "exposición normativa no normativa hipotecaria",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 2,
+          "consulta": "exposición normativa hipotecaria requisitos",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 3,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Excepcion_excepcion_para_inmuebles_en_construccion",
+          "contrapartes_v3": [
+            "Excepcion_excepcion_para_inmuebles_en_construccion_362c92"
+          ],
+          "replica": 3,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 28,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 1,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 5,
+          "dentro_del_corte": true
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 1,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 1,
+          "consulta": "exposición normativa hipotecaria requisitos",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 1,
+          "consulta": "exposición no normativa hipotecaria",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 2,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 5,
+          "dentro_del_corte": true
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 2,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 2,
+          "consulta": "exposición normativa no normativa hipotecaria",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 2,
+          "consulta": "exposición normativa hipotecaria requisitos",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 3,
+          "consulta": "exposición garantía hipotecaria inmueble construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": 5,
+          "dentro_del_corte": true
+        },
+        {
+          "nodo_v2": "Restriccion_exposicion_garantizada_por_inmueble_terminado",
+          "contrapartes_v3": [
+            "Restriccion_exposicion_garantizada_por_inmueble_terminado_e4a6e8"
+          ],
+          "replica": 3,
+          "consulta": "garantía hipotecaria normativa construcción",
+          "limite": 10,
+          "rank_en_v3_lim50": null,
+          "dentro_del_corte": false
+        }
+      ]
+    },
+    {
+      "id": "EV1-042",
+      "pregunta": "Para la cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior, ¿con qué anterioridad máxima a la fecha de vencimiento del servicio a pagar puede producirse el acceso al mercado de cambios?",
+      "familia": "puntual",
+      "tos_fuente": [
+        "TO_exterior_cambios_actual.pdf"
+      ],
+      "ground_truth_secciones": [
+        "Punto 3.5.3."
+      ],
+      "delta_v2_v3": {
+        "v2_final": {
+          "veredictos_finales": [
+            "correcta",
+            "incorrecta",
+            "incorrecta"
+          ],
+          "n_correcta": 1,
+          "correcto_mayoria": false,
+          "patron": "2-1"
+        },
+        "v3_final": {
+          "veredictos_finales": [
+            "correcta",
+            "correcta",
+            "correcta"
+          ],
+          "n_correcta": 3,
+          "correcto_mayoria": true,
+          "patron": "3-0"
+        }
+      },
+      "veredictos_mayoria": {
+        "veredictos_finales": [
+          "correcta",
+          "correcta",
+          "correcta"
+        ],
+        "n_correcta": 3,
+        "correcto_mayoria": true,
+        "patron": "3-0"
+      },
+      "replicas": [
+        {
+          "replica": 1,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "Para la cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior, el acceso al mercado de cambios puede producirse con una anterioridad no mayor a 3 (tres) días hábiles a la fecha de vencimiento del servicio a pagar.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_b8c486"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 1.2. Las entidades podrán dar acceso al mercado de cambios a las personas humanas o j"
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "Para la cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior, el acceso al mercado de cambios puede producirse con una anterioridad no mayor a 3 (tres) días hábiles a la fecha de vencimiento del servicio a pagar.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_b8c486"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 1.2. Las entidades podrán dar acceso al mercado de cambios a las personas humanas o j"
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "reensamblado_v3",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "completa",
+          "respuesta_final": "Para la cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior, el acceso al mercado de cambios puede producirse con una anterioridad no mayor a 3 (tres) días hábiles a la fecha de vencimiento del servicio a pagar.",
+          "claims_fallidos_del_juez": [],
+          "pasos": 3,
+          "hit_tool_limit": false,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_b8c486"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 1.2. Las entidades podrán dar acceso al mercado de cambios a las personas humanas o j"
+            }
+          ]
+        }
+      ],
+      "replicas_v2_referencia": [
+        {
+          "replica": 1,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "correcta",
+          "correctitud_final": "correcta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "No se encontró en el Knowledge Graph una disposición que especifique explícitamente una anterioridad máxima permitida para acceder al mercado de cambios para cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior. La regulación establece que el acceso con anterioridad al vencimiento requiere conformidad previa del BCRA, y que los servicios pueden cancelarse a partir de su vencimiento, pero no se especifica un plazo máximo de anticipación permitido.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "El acceso al mercado de cambios con anterioridad al vencimiento para cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior requiere conformidad previa del BCRA."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Los servicios de capital o intereses de endeudamientos financieros con el exterior pueden cancelarse a partir de su vencimiento."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_de_obligaciones"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "anterioridad máxima vencimiento plazo días",
+                "limite": 10
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cinco días vencimiento acceso cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con"
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+                "direccion": "entrantes"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "plazo máximo anterioridad vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "diez días hábiles vencimiento acceso cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_limite_acceso_5_dias_habiles"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_limite_acceso_5_dias_habiles",
+                "direccion": "ambas"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios endeudamiento financiero exterior anterioridad",
+                "limite": 10
+              }
+            },
+            {
+              "n": 15,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_"
+              }
+            },
+            {
+              "n": 16,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_",
+                "direccion": "ambas"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y (parte 1)"
+            },
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+            }
+          ]
+        },
+        {
+          "replica": 2,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "Según la regulación del BCRA, los endeudamientos financieros comprendidos en el punto 3.5 quedarán habilitados a cancelar sus servicios de capital e intereses 'a partir de su vencimiento' mediante aplicación de cobros de exportaciones. Esto significa que el acceso al mercado de cambios para la cancelación de servicios de capital o intereses de endeudamientos financieros con el exterior no puede producirse con anterioridad a la fecha de vencimiento del servicio a pagar. La regulación establece que el acceso debe concretarse a partir del vencimiento, no antes del mismo.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "El acceso al mercado de cambios para cancelar servicios de capital o intereses de endeudamientos financieros con el exterior no puede producirse con anterioridad a la fecha de vencimiento del servicio a pagar."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "La regulación del BCRA establece que el acceso al mercado de cambios debe concretarse 'a partir del vencimiento' del servicio."
+            },
+            {
+              "verdict": "no_soportado",
+              "central": false,
+              "enunciado": "Los endeudamientos financieros comprendidos en el punto 3.5 quedan habilitados a cancelar sus servicios de capital e intereses mediante aplicación de cobros de exportaciones."
+            }
+          ],
+          "pasos": 15,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_a_cambios_para_cancelacion_de_servicios_de_endeudamiento"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "anterioridad máxima vencimiento plazo días",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cinco días hábiles vencimiento acceso cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_limite_acceso_5_dias_habiles"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "servicios deuda endeudamiento financiero exterior anterioridad vencimiento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_pago_de_servicios_de_deuda"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_pago_de_servicios_de_deuda",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "punto 3.5 cancelación servicios endeudamiento acceso cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 14,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_"
+              }
+            },
+            {
+              "n": 15,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_",
+                "direccion": "salientes"
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+            }
+          ]
+        },
+        {
+          "replica": 3,
+          "brazo": "grafo_v2",
+          "failed_trace": false,
+          "origen": null,
+          "correctitud_juez": "incorrecta",
+          "correctitud_final": "incorrecta",
+          "laudo_humano": null,
+          "completitud": "parcial",
+          "respuesta_final": "La información disponible en el Knowledge Graph no proporciona una respuesta clara y específica sobre la anterioridad máxima permitida para el acceso al mercado de cambios en la cancelación de servicios de capital e intereses de endeudamientos financieros con el exterior. Se encontró una restricción general que establece que 'El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior', y referencias a un plazo de 5 días hábiles en contextos particulares, pero sin especificación completa aplicable a este caso.",
+          "claims_fallidos_del_juez": [
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "Existe una restricción general que establece que el pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior."
+            },
+            {
+              "verdict": "falso",
+              "central": true,
+              "enunciado": "Se encontró una referencia a un plazo de 5 días hábiles en contextos particulares relacionados con el acceso al mercado de cambios."
+            }
+          ],
+          "pasos": 16,
+          "hit_tool_limit": true,
+          "traza_tools": [
+            {
+              "n": 1,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamientos exterior mercado cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 2,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "acceso mercado cambios vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 3,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_de_obligaciones"
+              }
+            },
+            {
+              "n": 4,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con"
+              }
+            },
+            {
+              "n": 5,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 6,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_de_obligaciones",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 7,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "anterioridad días vencimiento acceso cambios",
+                "limite": 10
+              }
+            },
+            {
+              "n": 8,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "plazo máximo anterior vencimiento servicio deuda",
+                "limite": 10
+              }
+            },
+            {
+              "n": 9,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Restriccion_el_acceso_al_mercado_de_cambios_se_debe_concretar_dentro_de_los_10_diez_dias_hab"
+              }
+            },
+            {
+              "n": 10,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cancelación servicios capital intereses endeudamiento exterior anterioridad",
+                "limite": 10
+              }
+            },
+            {
+              "n": 11,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_"
+              }
+            },
+            {
+              "n": 12,
+              "tool": "ver_nodo",
+              "input": {
+                "id": "Operacion_cancelacion_de_capital_e_intereses_de_endeudamiento_financiero"
+              }
+            },
+            {
+              "n": 13,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_cancelacion_de_capital_e_intereses_de_endeudamiento_financiero",
+                "direccion": "salientes"
+              }
+            },
+            {
+              "n": 14,
+              "tool": "ver_vecinos",
+              "input": {
+                "id": "Operacion_cancelacion_de_capital_e_intereses_de_endeudamiento_financiero",
+                "direccion": "entrantes"
+              }
+            },
+            {
+              "n": 15,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "cinco días hábiles anterior vencimiento",
+                "limite": 10
+              }
+            },
+            {
+              "n": 16,
+              "tool": "buscar_nodos",
+              "input": {
+                "consulta": "pago servicios deuda anterior vencimiento plazo",
+                "limite": 10
+              }
+            }
+          ],
+          "citas": [
+            {
+              "source_doc": "TO_exterior_cambios_actual.pdf",
+              "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+            }
+          ]
+        }
+      ],
+      "cruce_trazas_v2_v3": {
+        "nodos_consultados_v2": [
+          "Obligacion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+          "Obligacion_los_endeudamientos_financieros_comprendidos_en_punto_3_5_quedaran_habilitados_a_",
+          "Operacion_acceso_a_cambios_para_cancelacion_de_servicios_de_endeudamiento",
+          "Operacion_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_de_obligaciones",
+          "Operacion_cancelacion_de_capital_e_intereses_de_endeudamiento_financiero",
+          "Operacion_pago_de_servicios_de_deuda",
+          "Restriccion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con",
+          "Restriccion_el_acceso_al_mercado_de_cambios_se_debe_concretar_dentro_de_los_10_diez_dias_hab",
+          "Restriccion_limite_acceso_5_dias_habiles"
+        ],
+        "nodos_consultados_v3": [
+          "Operacion_acceso_al_mercado_de_cambios_b8c486"
+        ]
+      },
+      "veredicto_causal": "PREDICCIÓN SELLADA (mapeo 6c24009 §C): acierto_nuevo_esperado — 'dato de la clave en 2 nodos nuevos de chunks recuperados, alcanzables por 3/7 queries históricas (cita imperfecta: locations RX-03)'. VERIFICACIÓN MECÁNICA (esta unidad): al menos uno de los 2 nodos predichos fue consultado vía ver_nodo en las 3 réplicas de v3; ver evidencia_prediccion. Nada más se escribe.",
+      "evidencia_prediccion": {
+        "1": {
+          "consultado": [
+            "Operacion_acceso_al_mercado_de_cambios_b8c486"
+          ],
+          "n_queries": 2
+        },
+        "2": {
+          "consultado": [
+            "Operacion_acceso_al_mercado_de_cambios_b8c486"
+          ],
+          "n_queries": 2
+        },
+        "3": {
+          "consultado": [
+            "Operacion_acceso_al_mercado_de_cambios_b8c486"
+          ],
+          "n_queries": 2
+        }
+      },
+      "nodos_predichos_por_el_mapeo": [
+        "Operacion_acceso_al_mercado_de_cambios_b8c486",
+        "Restriccion_limite_temporal_acceso_mercado_cambios_b53a4f"
+      ]
+    }
+  ],
+  "cambios_de_patron_sin_cambio_de_mayoria": [
+    {
+      "id": "EV1-002",
+      "patron_v2_v3": "3-0 -> 2-1",
+      "mayoria": "correcta (sin cambio)",
+      "replica_que_difiere": "r2 (correcta -> incorrecta)"
+    },
+    {
+      "id": "EV1-010",
+      "patron_v2_v3": "2-1 -> 3-0",
+      "mayoria": "correcta (sin cambio)",
+      "replica_que_difiere": "r2 (failed acarreada §8 en v2 -> correcta en v3)"
+    },
+    {
+      "id": "EV1-012",
+      "patron_v2_v3": "2-1 -> 3-0",
+      "mayoria": "correcta (sin cambio)",
+      "replica_que_difiere": "r3 (incorrecta -> correcta)"
+    },
+    {
+      "id": "EV1-016",
+      "patron_v2_v3": "2-1 -> 3-0",
+      "mayoria": "correcta (sin cambio)",
+      "replica_que_difiere": "r3 (failed acarreada §8 en v2 -> correcta en v3)"
+    },
+    {
+      "id": "EV1-036",
+      "patron_v2_v3": "3-0 -> 2-1",
+      "mayoria": "correcta (sin cambio)",
+      "replica_que_difiere": "r3 (correcta -> incorrecta por laudo humano 1b)"
+    }
+  ]
 }
