@@ -1,0 +1,148 @@
+{
+  "spec": "docs/spec_evaluacion_intrinseca.md",
+  "spec_commit_sellado": "cdf90e6",
+  "spec_sha256": "abc16fdf31899fe27c88233c24a52ceb0a400e7d15489021010afc983a7eaefa",
+  "script_sha256": "d5a88b798c0f3e76ab096eda1019c26248ef3012b38c32eeb510f09b40f96733",
+  "rapidfuzz_version": "3.14.5",
+  "umbral_similitud": 75.0,
+  "fecha": "2026-07-31",
+  "custodia": [
+    {
+      "grafo": "grafo_v2",
+      "custodia": "OK",
+      "nodos": 3872,
+      "aristas_triples": 7231
+    },
+    {
+      "grafo": "reensamblado_v3",
+      "custodia": "OK",
+      "nodos": 4458,
+      "aristas_triples": 8044
+    }
+  ],
+  "grafo": "run_3_ppf_core",
+  "kg_path": "data/experiment/run_3_ppf_core/kg.json",
+  "nodos_totales": 4050,
+  "metricas": {
+    "M1_tasa_duplicacion_publicada": {
+      "valor": 0.672593,
+      "numerador": 2724,
+      "denominador": 4050,
+      "convencion": "partial_ratio RapidFuzz sobre label crudo, pares intra-tipo >= 75, componentes conexas, Σ(|C|-1) / nodos totales ([05] §5.1, etapa 1)",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 694,
+          "EntidadFinanciera": 104,
+          "Excepcion": 139,
+          "Obligacion": 624,
+          "Operacion": 754,
+          "Restriccion": 409
+        },
+        "labels_vacios": 0,
+        "rol": "descriptiva; DECLARADA INFLADA para este corpus (spec §5.b)"
+      }
+    },
+    "M2_tasa_duplicacion_gate": {
+      "valor": 0.417531,
+      "numerador": 1691,
+      "denominador": 4050,
+      "convencion": "ratio RapidFuzz (Levenshtein normalizado, cadenas completas) sobre label con normalización de superficie (minúsculas, sin tildes, colapso de espacios/puntuación), >= 75, mismo clustering que M1",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 694,
+          "EntidadFinanciera": 30,
+          "Excepcion": 50,
+          "Obligacion": 330,
+          "Operacion": 409,
+          "Restriccion": 178
+        },
+        "labels_vacios_tras_normalizar": 0,
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M3_tasa_conflacion": {
+      "status": "no_computable",
+      "motivo": "run_3 es de otro pipeline (Fase 2.2): sin caché de extracción en el formato de cache_v2, no hay conteo de menciones pre-fusión atribuible"
+    },
+    "M4_average_degree": {
+      "valor": 3.276049,
+      "numerador": 13268,
+      "denominador": 4050,
+      "convencion": "aristas deduplicadas por triple exacto (source, target, relation); grado = entrantes + salientes; self-loops aportan 2; average = Σ grados / nodos",
+      "cota": "exacta",
+      "notas": {
+        "aristas_unicas": 6634,
+        "aristas_repetidas_removidas": 0,
+        "self_loops": 0,
+        "aristas_dangling": 0,
+        "ids_de_nodo_duplicados": 0,
+        "rol": "descriptiva; NO se reporta sin M6"
+      }
+    },
+    "M5_avg_shortest_path": {
+      "valor": 3.6058,
+      "numerador": 50261326,
+      "denominador": 13939022,
+      "convencion": "BFS no ponderado sobre la versión no dirigida del grafo de aristas únicas, solo componente conexa mayor, promedio sobre pares ordenados distintos; nodos fuera de la componente mayor excluidos y reportados vía M9",
+      "cota": "exacta",
+      "notas": {
+        "n_componente_mayor": 3734,
+        "nodos_fuera_de_lcc": 316,
+        "rol": "descriptiva; NO se reporta sin M6 ni M9"
+      }
+    },
+    "M6_concentracion_de_grado": {
+      "valor": {
+        "grado_max": 1224,
+        "participacion_top1pct": 0.370892,
+        "gini_grado": 0.580311
+      },
+      "numerador": 4921,
+      "denominador": 13268,
+      "convencion": "top 1% = techo(0.01·N) nodos de mayor grado; participación = Σ grados top / Σ grados; Gini sobre la distribución de grados de M4",
+      "cota": "exacta",
+      "notas": {
+        "k_top1pct": 41,
+        "rol": "descriptiva de reporte OBLIGATORIO junto a M4 y M5; especie del backlog: hub_contaminado"
+      }
+    },
+    "M7_tasa_ruido_por_rol": {
+      "status": "no_computable",
+      "motivo": "run_3 es de otro pipeline: chunk_roles.py reproduce el chunker de grafo_v2; los chunks de run_3 no tienen rol documental atribuible"
+    },
+    "M8_densidad": {
+      "valor": 0.00040455,
+      "numerador": 6634,
+      "denominador": 16398450,
+      "convencion": "densidad de grafo dirigido simple: aristas únicas sin self-loops / N·(N-1)",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva"
+      }
+    },
+    "M9_nodos_aislados_y_componentes": {
+      "valor": {
+        "nodos_aislados": 310,
+        "componentes_conexas": 314,
+        "fraccion_en_componente_mayor": 0.921975
+      },
+      "numerador": 3734,
+      "denominador": 4050,
+      "convencion": "versión no dirigida del grafo de aristas únicas; aislados = grado 0; fracción = nodos de la componente mayor / nodos totales",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva; reporte obligatorio junto a M5"
+      }
+    },
+    "M10_chunks_mudos": {
+      "status": "no_computable",
+      "motivo": "run_3 es de otro pipeline: sin roles documentales ni atribución chunk→nodo replicable desde cache_v2 (misma razón que M3/M7)"
+    },
+    "M11_cobertura_CQ": {
+      "status": "no_medida_en_esta_unidad",
+      "motivo": "régimen especial de la spec §6: medición única y separada sobre el set quemado; jamás objetivo de optimización"
+    }
+  }
+}
