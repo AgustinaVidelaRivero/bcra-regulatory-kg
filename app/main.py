@@ -172,6 +172,9 @@ def _usuario_de(authorization: Optional[str]) -> str:
 
 # Al agregar un grafo nuevo con provenance múltiple, registrar acá su adapter_key.
 # grafo_v2: provenance primaria única verificada (V2-APP) → adaptador nulo, sin entrada.
+# reensamblado_v3: adaptador nulo, sin entrada — el loader pliega solo la
+# `provenance` primaria; `provenances` (lista acumulada) y `rol_fuente` no
+# llegan al harness (paridad de interfaz, protocolo escalón 1b §1).
 ADAPTER_KEYS = {
     "run_1_cookbook": "run_1",
     "run_2_papers": "run_2",
@@ -180,13 +183,30 @@ ADAPTER_KEYS = {
     "run_5_hybrid": "run_5",
 }
 
+# Grafos registrados EXPLÍCITAMENTE, listados ANTES de los descubiertos por glob.
+# Promoción 2026-07-31: `reensamblado_v3` es el grafo vigente de trabajo (acta:
+# data/experiment/grafo_v2/informes/promocion_v3_2026-07-31.md). El registro es
+# explícito a propósito — NO generalizar el glob a dos niveles: un glob
+# recursivo descubriría kg.json que no son grafos promovidos.
+GRAFOS_EXPLICITOS = [
+    ("reensamblado_v3", EXPERIMENT_DIR / "grafo_v2" / "reensamblado_v3" / "kg.json"),
+]
+
 
 def _discover_runs() -> list:
-    """Un objeto {id, ruta, nodos, aristas} por directorio con kg.json; si un
-    grafo no carga, el run entra como {id, ruta, error} sin romper el arranque."""
+    """Un objeto {id, ruta, nodos, aristas} por grafo: primero los registrados
+    explícitamente (GRAFOS_EXPLICITOS), después un directorio por kg.json de
+    primer nivel; si un grafo no carga, el run entra como {id, ruta, error} sin
+    romper el arranque."""
     runs = []
-    for kg_path in sorted(EXPERIMENT_DIR.glob("*/kg.json")):
-        run_id = kg_path.parent.name
+    vistos = set()
+    candidatos = list(GRAFOS_EXPLICITOS) + [
+        (p.parent.name, p) for p in sorted(EXPERIMENT_DIR.glob("*/kg.json"))
+    ]
+    for run_id, kg_path in candidatos:
+        if run_id in vistos:
+            continue
+        vistos.add(run_id)
         ruta = str(kg_path.relative_to(REPO_ROOT))
         try:
             kg = load_graph_from_path(kg_path, adapter_key=ADAPTER_KEYS.get(run_id))
