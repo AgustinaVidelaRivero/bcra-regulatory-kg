@@ -140,17 +140,7 @@ validado-en-familia v2/v3 (`docs/lectura_gate_u5.md`; Motor 3 habilitado).
 
 ## 6. Laudos abiertos
 
-- **Cierre de la pasada 2:** cómo cuentan las restauraciones manuales en M7 —
-  el nodo de BKL-0017 lleva `rol_fuente: restauracion_manual`
-  (`data/backlog/retests/C1_retest_2026-07-31.md`), valor fuera del
-  vocabulario de roles que M7 usa como numerador
-  (`docs/spec_evaluacion_intrinseca.md`, fila M7: numerador = {`indice`,
-  `tabla_norma_origen`}; BLOQUEANTE en pasada 2).
-  Verificado post-C3 (2026-08-02): el nodo corregido por C3 (`…_7bb7bb`)
-  conserva `rol_fuente: cuerpo` y el único nodo con
-  `rol_fuente: restauracion_manual` sigue siendo el de BKL-0017
-  (`Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_de_los_sectores_publico_y_e1946e`)
-  — C3 no amplía este bloqueante (fuente: `python3 -c "import json; kg=json.load(open('data/experiment/grafo_v2/reensamblado_v3/kg.json')); print([n['id'] for n in kg['nodes'] if n['rol_fuente']=='restauracion_manual'])"`).
+- Cierre de la pasada 2 — laudo de M7 CERRADO (2026-08-02): `restauracion_manual` cuenta como rol normativo (fuera del numerador de M7); `esqueleto` también queda fuera del numerador (nodos sin chunk de origen); ambos integran el denominador. Declarado en la fila M7 de `docs/spec_evaluacion_intrinseca.md`. El valor de M7 no cambia; el bloqueante de la pasada 2 por este punto queda LEVANTADO. Único nodo `restauracion_manual` del vigente: `Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_de_los_sectores_publico_y_e1946e` (verificado 2026-08-02).
 - **Indexación de lecturas en `docs/INDICE.md`:** hay lecturas selladas sin
   indexar (verificado: `grep -n "lectura_escalon1b" docs/INDICE.md` = vacío;
   `lectura_ciclo2.md` sí figura, línea 61).
