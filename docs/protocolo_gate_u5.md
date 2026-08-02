@@ -304,3 +304,36 @@ y ninguna clase de salida lo alcanza (`calibracion_v2v3/brechas_taxonomia.md` §
 Queda registrado como **candidata de cola: "screening de aprobadas / re-calibración del
 juez"** — unidad propia, con su pre-registro y su laudo, a incorporar al tablero en el
 próximo cierre.
+
+## 8. Enmienda §8 (2026-08-02) — renovación laudada del techo secundario
+
+> Esta enmienda se agrega DESPUÉS de la corrida cortada del 2026-08-02 y ANTES de
+> completar el gate; se commitea antes de correr nada más. §1–§7 quedan sin cambios.
+
+**a) El hecho.** La corrida del gate (driver replicando el runner congelado, preflight
+13/13) cortó por el techo secundario en G-3·rep3: **USD 20,3726 ≥ 20**, con los topes
+primarios de tokens al **60% de input (3.617.365 de 6M)** y **46% de output (91.430 de
+200K)**. Quedaron pendientes **G-4 completo (EV1-039, 3 repeticiones)** y **el S1 de
+G-3**. Cero gasto posterior al corte; G-1..G-3 completos con sus salidas persistidas.
+Evidencia: `data/experiment/evaluacion/posthoc_run/gate_u5/estado_corrida.json` (gasto,
+precios usados, topes, corte) y los 9 JSONs de la corrida.
+
+**b) La causa.** El techo secundario en USD se fijó en §5 sin conversión calibrada a la
+tarifa del modelo del verificador: a la referencia documentada (Opus 4.8, USD 5/25 por
+MTok) USD 20 equivale a ~4M tokens de input — **más restrictivo que el tope primario de
+6M**, invirtiendo la relación primario/secundario del diseño (el primario debía ser el
+rector y el techo USD un paracaídas). El corte fue **el protocolo funcionando como está
+escrito**; el parámetro estaba mal dimensionado.
+
+**c) La regla enmendada.** El tope primario de tokens queda **SIN CAMBIO** (6M in /
+200K out, rector). El techo secundario se renueva a **USD 30 TOTAL acumulado** (los
+USD 20,3726 ya gastados cuentan dentro de los 30). **Alcance de la renovación:
+exclusivamente completar el gate sellado — G-4 × 3 repeticiones + el S1 de G-3.**
+Ningún caso se agrega (N=4 fijo, §4 intacto), nada ya corrido se re-corre ni se re-paga
+(la caché repone por hit; los namespaces de G-1..G-3 no se vuelven a llamar), y los
+votos crudos de G-1..G-3 quedan intactos tal como se persistieron.
+
+**d) Invariante.** §1–§7 no cambian ni una letra. Las reglas de acierto, las ramas, la
+válvula, el criterio global (cero silenciosos + ≥3/4) y la constancia de no-iteración
+(§7) rigen tal cual. La lectura contra varas sigue siendo OTRA unidad: esta enmienda
+solo re-dimensiona el paracaídas de gasto para terminar la corrida mecánica.
