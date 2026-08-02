@@ -291,6 +291,12 @@ tabla transitoria del 12.1, con el mismo desorden de linealización, quedó
 emparejada correctamente (verificación del re-test de C1); toda tabla numérica
 del corpus requiere verificación individual.
 
+Precisión (02-08): la inversión se propaga por VALORES DERIVADOS — referencias
+textuales resueltas en extracción contra la tabla viciada quedan horneadas en
+properties de nodos ajenos a la tabla (caso …_7bb7bb, BKL-0023, detectado por
+el verificador validado en su gate); la corrección por enumeración de ids no
+las alcanza — barrido de propagación requerido por familia de montos.
+
 ---
 
 ## Ya resuelto sin re-extraer (no entra a esta lista)
