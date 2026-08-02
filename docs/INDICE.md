@@ -66,6 +66,15 @@ de toda corrida, corrida única, lectura contra la vara. Los commits salen de `g
     sub-fusión/sobre-fusión y denominador aguas arriba, predicciones selladas sobre
     el par defectuoso/re-ensamblado, régimen de dos pasadas sin umbrales (commit
     pendiente de sellado; debe anteceder a `scripts/metricas_intrinsecas.py`).
+16. `docs/protocolo_gate_u5.md` — protocolo pre-registrado del gate U5: el verificador
+    sobre la familia v2/v3, 4 casos con vara sellada y reglas de acierto, criterio
+    cero-silenciosos + ≥3/4, tope doble (commit `49721fd`, 2026-08-02); **Enmienda §8**
+    (techo secundario renovado a USD 30 total, alcance exclusivo completar el gate) en
+    commit `6150971` (2026-08-02).
+17. `docs/lectura_gate_u5.md` — lectura del gate U5: EL GATE PASA (3 aciertos de 4,
+    cuarto en rama de lectura B′, cero silenciosos); el verificador asciende a
+    VALIDADO-EN-FAMILIA v2/v3 (Motor 3: diagnóstico automático, laudo humano) y deja
+    el hallazgo residual BKL-0023 dentro de su propio gate (2026-08-02).
 
 ## (iii) Evidencia y auditoría
 

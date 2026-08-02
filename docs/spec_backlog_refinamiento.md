@@ -63,7 +63,8 @@ Descripción por campo:
     (`data/experiment/evaluacion_escalon1/`).
   - `triage_extraccion`: filas VP del triage de aristas sospechosas de la extracción
     (`data/experiment/grafo_v2/triage_sospechosas_U5.json`).
-  - `verificador`: salidas del verificador automático ({síntoma, causa}).
+  - `verificador`: salidas del verificador automático ({síntoma, causa}). Legitimados
+    por U5 como fuente de entrada al backlog (`docs/lectura_gate_u5.md`).
   - `app_feedback`: el circuito de la app de chat (§3.b).
   - `auditoria_ensamblado`: hallazgos de auditorías de pipeline y re-ensamblados
     (p. ej. los defectos detectados por el mapeo del delta v2→v3 y el re-triage
@@ -71,7 +72,8 @@ Descripción por campo:
 - **`diagnostico`** — la jerarquía de confianza, de mayor a menor:
   - `adjudicado_humano`: un humano miró la evidencia y laudó. Techo de confianza.
   - `verificador_validado`: veredicto automático de un verificador **calibrado contra
-    vara humana sobre el mismo esquema de grafo que está juzgando**.
+    vara humana sobre el mismo esquema de grafo que está juzgando**. Legitimado para
+    BKL-0023 por gate U5 sobre familia v2/v3 (`docs/lectura_gate_u5.md`).
   - `verificador_exploratorio`: veredicto automático fuera de su dominio de
     calibración.
   - `sin_diagnostico`: síntoma registrado sin causa atribuida (p. ej. un 👎 de la app

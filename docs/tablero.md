@@ -85,14 +85,18 @@ hasta que yo lo cierre). Estado por entrada:
 
 ## 5. Cola de unidades (orden vigente)
 
-1. **U5 — re-calibración del verificador (FIRME).** Expediente del juez en
-   `docs/lectura_escalon1b.md` §5: (i) abstención-aprobada (EV1-029),
-   (ii) varianza de tallado (EV1-035).
-2. Resto del backlog de nodos (§3 de este tablero).
-3. Matriz del `scripts/shapes_validator.py` a esquema v2.
-4. Adaptador jsonl→traza (`docs/spec_backlog_refinamiento.md`, pendiente C4) +
+U5 (re-calibración del verificador) HECHA: gate U5 pasado y verificador
+validado-en-familia v2/v3 (`docs/lectura_gate_u5.md`; Motor 3 habilitado).
+
+1. Resto del backlog de nodos (§3 de este tablero; incluye BKL-0023, hallazgo
+   residual del gate U5, estado `nuevo` a triage de la autora).
+2. Matriz del `scripts/shapes_validator.py` a esquema v2.
+3. Adaptador jsonl→traza (`docs/spec_backlog_refinamiento.md`, pendiente C4) +
    **U6 — exploración dirigida**, con lista de exclusión de territorio quemado
    (EV1/CQ/CQN/CQN2).
+4. **Canal de abstenciones-aprobadas (candidata):** screening de aprobadas /
+   re-calibración del juez — fuera del universo de entrada del verificador
+   (`docs/protocolo_gate_u5.md` §7, `docs/lectura_gate_u5.md` §5).
 5. EV2 por generación ciega (`docs/lectura_escalon1b.md` §5).
 6. Re-extracción única (cierra el backlog RX §4; insumos:
    `docs/literatura/mapa_incorporacion_graph_eng.md`).
@@ -108,12 +112,13 @@ hasta que yo lo cierre). Estado por entrada:
   vocabulario de roles que M7 usa como numerador
   (`docs/spec_evaluacion_intrinseca.md`, fila M7: numerador = {`indice`,
   `tabla_norma_origen`}; BLOQUEANTE en pasada 2).
-- **Experimento Graphiti post-U5:** timeboxeado, gitignoreado, nunca fuente de
-  verdad ni artefacto de tesis
-  (`docs/literatura/mapa_incorporacion_graph_eng.md`, fila d3).
 - **Indexación de lecturas en `docs/INDICE.md`:** hay lecturas selladas sin
   indexar (verificado: `grep -n "lectura_escalon1b" docs/INDICE.md` = vacío;
   `lectura_ciclo2.md` sí figura, línea 61).
+- **Experimento de memoria de sesiones** (candidatas: Graphiti — sinergia
+  Neo4j —, TencentDB-Agent-Memory modo solo-artefactos, cognee; gbrain
+  descartado): condición post-U5 CUMPLIDA; pendiente laudo de arranque y
+  timebox.
 
 ## 7. Disciplinas activas
 
@@ -131,3 +136,6 @@ hasta que yo lo cierre). Estado por entrada:
   refinamiento estrenado (C1 restauración 1.1, C2 montos 1.2; 3/22 entradas
   cerradas); biblioteca ampliada (playbook fichado, KARMA como 09, mapa de
   incorporación); CLAUDE.md + tablero. Commits 1–14 de la semana.
+- **2026-08-02:** gate U5 pasado (cero silenciosos + 3/4, cuarto en rama de
+  lectura), verificador validado-en-familia v2/v3, Motor 3 habilitado
+  (diagnóstico automático, laudo humano), USD 23,22 (`docs/lectura_gate_u5.md`).
