@@ -1,0 +1,438 @@
+[
+ {
+  "origen": "app_feedback",
+  "archivo_origen": "app/sessions/2026-07-17.jsonl",
+  "session_id": "sesion-u3-evidencia",
+  "turno": 1,
+  "usuario": null,
+  "run": "run_3_ppf_core",
+  "backend": null,
+  "modelo": null,
+  "categoria": "app_feedback",
+  "sin_gold": "laudo_humano",
+  "sintoma_humano": {
+   "voto": "down",
+   "comentario": "La respuesta no menciona el punto exacto de la norma.",
+   "ts_feedback": "2026-07-17T21:43:40.140208+02:00",
+   "declaracion": "Modo sin-gold: el sintoma lo pone el laudo humano (voto 👎 en la app). No hay juez porque no hay respuesta esperada; el diagnostico lo pone el verificador validado."
+  },
+  "trace": {
+   "question": "¿Qué plazo tiene una entidad financiera para responder un reclamo de un usuario de servicios financieros?",
+   "final_json": {
+    "respuesta": "Una entidad financiera tiene un plazo máximo de diez (10) días hábiles para responder un reclamo de un usuario de servicios financieros. Esta es la obligación general establecida en la normativa. Si transcurre este plazo sin que el usuario reciba respuesta alguna, puede informar al BCRA sobre el reclamo no respondido. La normativa permite excepciones a este plazo en situaciones específicas previstas en la regulación o cuando reglamentariamente se hayan otorgado mayores plazos al sujeto obligado.",
+    "citas": [
+     {
+      "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+      "location": "Punto 3.1. Requisitos mínimos. (parte 2)"
+     },
+     {
+      "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+      "location": "Punto 4.2. Reclamos no respondidos o con respuestas insatisfactorias."
+     }
+    ],
+    "respondible": true
+   },
+   "steps": [
+    {
+     "n": 1,
+     "tool": "buscar_nodos",
+     "input": {
+      "consulta": "plazo responder reclamo usuario servicios financieros",
+      "limite": 10
+     },
+     "output_truncado": "{\"consulta\": \"plazo responder reclamo usuario servicios financieros\", \"total_con_match\": 245, \"resultados\": [{\"id\": \"Obligacion_el_sujeto_obligado_debera_ante_la_solicitud_del_usuario_de_servicios_financieros\", \"type\": \"Obligacion\", \"label\": \"Extender constancia de consulta o reclamo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El sujeto obligado deberá, ante la solicitud del usuario de servicios financieros, extender una constancia con la identificación de su consulta o reclamo y el e…\"}, {\"id\": \"Obligacion_el_usuario_de_servicios_financieros_debe_ser_notificado_de_las_modificaciones_qu\", \"type\": \"Obligacion\", \"label\": \"Notificar cambios de condiciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días cor…\"}, {\"id\": \"Operacion_atencion_al_usuario_de_servicios_financieros\", \"type\": \"Operacion\", \"label\": \"Atención de consultas y reclamos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: atención al usuario de servicios financieros\"}, {\"id\": \"EntidadFinanciera_usuario_de_servicio_financiero\", \"type\": \"EntidadFinanciera… [+2475 chars]"
+    },
+    {
+     "n": 2,
+     "tool": "buscar_nodos",
+     "input": {
+      "consulta": "reclamo entidad financiera plazo respuesta",
+      "limite": 10
+     },
+     "output_truncado": "{\"consulta\": \"reclamo entidad financiera plazo respuesta\", \"total_con_match\": 334, \"resultados\": [{\"id\": \"Restriccion_el_acuerdo_con_la_entidad_financiera_debera_concertarse_dentro_de_los_90_o_180_d\", \"type\": \"Restriccion\", \"label\": \"Plazo para concertación de acuerdo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El acuerdo con la entidad financiera deberá concertarse dentro de los 90 o 180 días contados desde la fecha en que se verificó la mora en el pago de las obligac…\"}, {\"id\": \"Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo de respuesta a reclamo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta …\"}, {\"id\": \"Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m\", \"type\": \"Obligacion\", \"label\": \"Resolver consulta o reclamo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles, exce… [+2505 chars]"
+    },
+    {
+     "n": 3,
+     "tool": "ver_nodo",
+     "input": {
+      "id": "Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m"
+     },
+     "output_truncado": "{\"id\": \"Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m\", \"type\": \"Obligacion\", \"label\": \"Resolver consulta o reclamo\", \"properties\": {\"descripcion\": \"Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles, excepto para la situación prevista en el punto 2.3.5 o cuando reglamentariamente se hayan otorgado al sujeto obligado mayores plazos\", \"tipo\": \"otra\", \"plazo\": \"diez días hábiles\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 3.1. Requisitos mínimos. (parte 2)\"}]}"
+    },
+    {
+     "n": 4,
+     "tool": "ver_nodo",
+     "input": {
+      "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles"
+     },
+     "output_truncado": "{\"id\": \"Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles\", \"type\": \"Restriccion\", \"label\": \"Plazo máximo de respuesta a reclamo\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"descripcion\": \"El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta alguna.\", \"umbral\": \"10 días hábiles\"}, \"provenances\": [{\"source_doc\": \"TO_proteccion_usuarios_servicios_financieros_actual.pdf\", \"location\": \"Punto 4.2. Reclamos no respondidos o con respuestas insatisfactorias.\"}]}"
+    },
+    {
+     "n": 5,
+     "tool": "buscar_nodos",
+     "input": {
+      "consulta": "punto 2.3.5 excepción plazo reclamo",
+      "limite": 5
+     },
+     "output_truncado": "{\"consulta\": \"punto 2.3.5 excepción plazo reclamo\", \"total_con_match\": 439, \"resultados\": [{\"id\": \"Excepcion_precancelacion_de_capital_e_intereses_de_titulo_de_deuda_comprendido_en_punto_3_\", \"type\": \"Excepcion\", \"label\": \"Precancelación simultánea nuevo título 3.5\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Precancelación de capital e intereses de título de deuda comprendido en punto 3.6 con liquidación de fondos ingresados desde exterior por emisión de nuevo títul…\"}, {\"id\": \"Excepcion_excepcion_por_punto_3_13\", \"type\": \"Excepcion\", \"label\": \"Excepción por punto 3.13\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las entidades podrán también en el marco del punto 3.13., sin conformidad previa del BCRA si el requisito estuviese vigente\"}, {\"id\": \"Excepcion_cuando_la_operacion_se_encuentra_comprendida_en_alguna_de_las_situaciones_detall\", \"type\": \"Excepcion\", \"label\": \"Situaciones del punto 8.5\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cuando la operación se encuentra comprendida en alguna de las situaciones detalladas en el punto 8.5 y se verifiquen las condiciones previstas en cada caso\"}, {\"id\": \"Excepcion_no_aplicable_punto_3_12_1\", \"type\": \"Excepcion\", \"label\"… [+507 chars]"
+    }
+   ]
+  },
+  "judge": {
+   "stub": "sin_gold: laudo_humano — sin juez; listas vacías a propósito",
+   "step1": {
+    "patas_de_la_pregunta": [],
+    "afirmaciones_verificables": [],
+    "reportes_de_alcance": []
+   },
+   "step2": {
+    "verificaciones": []
+   }
+  },
+  "raw_turns_agent": [
+   {
+    "reconstruido": true,
+    "fuente": "tools_llamadas del jsonl de la app (adaptador_sesiones)",
+    "raw": {
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "toolu_app_001",
+       "name": "buscar_nodos",
+       "input": {
+        "consulta": "plazo responder reclamo usuario servicios financieros",
+        "limite": 10
+       }
+      }
+     ]
+    }
+   },
+   {
+    "reconstruido": true,
+    "fuente": "tools_llamadas del jsonl de la app (adaptador_sesiones)",
+    "raw": {
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "toolu_app_002",
+       "name": "buscar_nodos",
+       "input": {
+        "consulta": "reclamo entidad financiera plazo respuesta",
+        "limite": 10
+       }
+      }
+     ]
+    }
+   },
+   {
+    "reconstruido": true,
+    "fuente": "tools_llamadas del jsonl de la app (adaptador_sesiones)",
+    "raw": {
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "toolu_app_003",
+       "name": "ver_nodo",
+       "input": {
+        "id": "Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "reconstruido": true,
+    "fuente": "tools_llamadas del jsonl de la app (adaptador_sesiones)",
+    "raw": {
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "toolu_app_004",
+       "name": "ver_nodo",
+       "input": {
+        "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "reconstruido": true,
+    "fuente": "tools_llamadas del jsonl de la app (adaptador_sesiones)",
+    "raw": {
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "toolu_app_005",
+       "name": "buscar_nodos",
+       "input": {
+        "consulta": "punto 2.3.5 excepción plazo reclamo",
+        "limite": 5
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "tools_llamadas_completas": [
+   {
+    "tool": "buscar_nodos",
+    "argumentos": {
+     "consulta": "plazo responder reclamo usuario servicios financieros",
+     "limite": 10
+    },
+    "resultado": {
+     "consulta": "plazo responder reclamo usuario servicios financieros",
+     "total_con_match": 245,
+     "resultados": [
+      {
+       "id": "Obligacion_el_sujeto_obligado_debera_ante_la_solicitud_del_usuario_de_servicios_financieros",
+       "type": "Obligacion",
+       "label": "Extender constancia de consulta o reclamo",
+       "tokens_matcheados": 4,
+       "resumen_propiedades": "El sujeto obligado deberá, ante la solicitud del usuario de servicios financieros, extender una constancia con la identificación de su consulta o reclamo y el e…"
+      },
+      {
+       "id": "Obligacion_el_usuario_de_servicios_financieros_debe_ser_notificado_de_las_modificaciones_qu",
+       "type": "Obligacion",
+       "label": "Notificar cambios de condiciones",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "El usuario de servicios financieros debe ser notificado de las modificaciones que aplicará el sujeto obligado con una antelación mínima de sesenta (60) días cor…"
+      },
+      {
+       "id": "Operacion_atencion_al_usuario_de_servicios_financieros",
+       "type": "Operacion",
+       "label": "Atención de consultas y reclamos",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "tipo: atención al usuario de servicios financieros"
+      },
+      {
+       "id": "EntidadFinanciera_usuario_de_servicio_financiero",
+       "type": "EntidadFinanciera",
+       "label": "Usuarios de servicios financieros",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "categoria: usuario de servicio financiero"
+      },
+      {
+       "id": "Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje",
+       "type": "Restriccion",
+       "label": "Prohibición de cláusulas abusivas",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "En los contratos celebrados entre el usuario de servicios financieros y los sujetos obligados, se tendrán por no escritas las cláusulas que desnaturalicen las o…"
+      },
+      {
+       "id": "Obligacion_la_gerencia_principal_de_proteccion_al_usuario_de_servicios_financieros_tramitar",
+       "type": "Obligacion",
+       "label": "Tramitar denuncias de asociaciones",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "La Gerencia Principal de Protección al Usuario de Servicios Financieros tramitará las denuncias que presenten las asociaciones de consumidores y usuarios recono…"
+      },
+      {
+       "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles",
+       "type": "Restriccion",
+       "label": "Plazo máximo de respuesta a reclamo",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta …"
+      },
+      {
+       "id": "Obligacion_si_el_tramite_ha_finalizado_el_usuario_de_servicios_financieros_tendra_derecho_a",
+       "type": "Obligacion",
+       "label": "Proporcionar nota escrita de resolución",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "Si el trámite ha finalizado, el usuario de servicios financieros tendrá derecho a solicitar una nota escrita, suscripta por el responsable de atención o por fun…"
+      },
+      {
+       "id": "Obligacion_el_usuario_de_servicios_financieros_podra_solicitar_a_su_cargo_y_en_cualquier_mo",
+       "type": "Obligacion",
+       "label": "Proporcionar nuevas copias de documentación",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "El usuario de servicios financieros podrá solicitar –a su cargo y en cualquier momento de la relación de consumo– al sujeto obligado nuevas copias del/de el/los…"
+      },
+      {
+       "id": "Obligacion_la_gerencia_principal_de_proteccion_al_usuario_de_servicios_financieros_brindara",
+       "type": "Obligacion",
+       "label": "Brindar respuesta a consultas sobre normativa",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "La Gerencia Principal de Protección al Usuario de Servicios Financieros brindará respuesta por los medios habilitados a las consultas del público sobre la norma…"
+      }
+     ]
+    }
+   },
+   {
+    "tool": "buscar_nodos",
+    "argumentos": {
+     "consulta": "reclamo entidad financiera plazo respuesta",
+     "limite": 10
+    },
+    "resultado": {
+     "consulta": "reclamo entidad financiera plazo respuesta",
+     "total_con_match": 334,
+     "resultados": [
+      {
+       "id": "Restriccion_el_acuerdo_con_la_entidad_financiera_debera_concertarse_dentro_de_los_90_o_180_d",
+       "type": "Restriccion",
+       "label": "Plazo para concertación de acuerdo",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "El acuerdo con la entidad financiera deberá concertarse dentro de los 90 o 180 días contados desde la fecha en que se verificó la mora en el pago de las obligac…"
+      },
+      {
+       "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles",
+       "type": "Restriccion",
+       "label": "Plazo máximo de respuesta a reclamo",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta …"
+      },
+      {
+       "id": "Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m",
+       "type": "Obligacion",
+       "label": "Resolver consulta o reclamo",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles, excepto para la situación prevista en el punto …"
+      },
+      {
+       "id": "Obligacion_cuando_la_entidad_financiera_realice_operaciones_con_una_qccp_debera_determinar_",
+       "type": "Obligacion",
+       "label": "Determinar exposición a QCCP",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "Cuando la entidad financiera realice operaciones con una QCCP deberá determinar su exposición aplicando las disposiciones del punto 4.3.3."
+      },
+      {
+       "id": "EntidadFinanciera_entidad_financiera_grupo_2",
+       "type": "EntidadFinanciera",
+       "label": "Entidades financieras grupo 2",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "categoria: entidad financiera grupo 2"
+      },
+      {
+       "id": "Obligacion_la_entidad_financiera_encargada_del_seguimiento_de_anticipos_y_otras_financiacio",
+       "type": "Obligacion",
+       "label": "Registrar operación ante BCRA",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "La entidad financiera encargada del Seguimiento de anticipos y otras financiaciones de exportación de bienes de las operaciones deberá concretar su registro ant…"
+      },
+      {
+       "id": "Restriccion_cuando_la_suma_de_los_requisitos_de_capital_de_una_entidad_financiera_por_las_ex",
+       "type": "Restriccion",
+       "label": "Límite requisito capital QCCP",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "Cuando la suma de los requisitos de capital de una entidad financiera por las exposiciones con una QCCP sea mayor que la exigencia resultante de la aplicación d…"
+      },
+      {
+       "id": "Obligacion_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo_",
+       "type": "Obligacion",
+       "label": "Calcular requerimiento capital",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "La CCP, la entidad financiera, la autoridad de control de la CCP u otro organismo con acceso a los datos requeridos deberá calcular K_CMi, DF_pref y DF_CCP de f…"
+      },
+      {
+       "id": "Obligacion_la_entidad_encargada_del_seguimiento_del_permiso_podra_conceder_extensiones_en_e",
+       "type": "Obligacion",
+       "label": "Conceder extensiones del plazo",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "La entidad encargada del seguimiento del permiso podrá conceder extensiones en el plazo de ingreso y liquidación en las circunstancias especificadas"
+      },
+      {
+       "id": "Obligacion_la_entidad_financiera_designada_debera_notificar_su_nombramiento_a_la_gerencia_p",
+       "type": "Obligacion",
+       "label": "Notificar nombramiento al BCRA",
+       "tokens_matcheados": 2,
+       "resumen_propiedades": "La entidad financiera designada deberá notificar su nombramiento a la Gerencia Principal de Exterior y Cambios del BCRA dentro de los 10 (diez) días corridos de…"
+      }
+     ]
+    }
+   },
+   {
+    "tool": "ver_nodo",
+    "argumentos": {
+     "id": "Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m"
+    },
+    "resultado": {
+     "id": "Obligacion_toda_consulta_o_reclamo_debera_ser_definitivamente_resuelta_o_dentro_del_plazo_m",
+     "type": "Obligacion",
+     "label": "Resolver consulta o reclamo",
+     "properties": {
+      "descripcion": "Toda consulta o reclamo deberá ser definitivamente resuelta/o dentro del plazo máximo de diez (10) días hábiles, excepto para la situación prevista en el punto 2.3.5 o cuando reglamentariamente se hayan otorgado al sujeto obligado mayores plazos",
+      "tipo": "otra",
+      "plazo": "diez días hábiles"
+     },
+     "provenances": [
+      {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 3.1. Requisitos mínimos. (parte 2)"
+      }
+     ]
+    }
+   },
+   {
+    "tool": "ver_nodo",
+    "argumentos": {
+     "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles"
+    },
+    "resultado": {
+     "id": "Restriccion_el_usuario_puede_informar_al_bcra_si_transcurre_el_plazo_de_diez_10_dias_habiles",
+     "type": "Restriccion",
+     "label": "Plazo máximo de respuesta a reclamo",
+     "properties": {
+      "tipo": "limite_cuantitativo",
+      "descripcion": "El usuario puede informar al BCRA si transcurre el plazo de diez (10) días hábiles desde el momento de haber presentado su reclamo sin haber recibido respuesta alguna.",
+      "umbral": "10 días hábiles"
+     },
+     "provenances": [
+      {
+       "source_doc": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+       "location": "Punto 4.2. Reclamos no respondidos o con respuestas insatisfactorias."
+      }
+     ]
+    }
+   },
+   {
+    "tool": "buscar_nodos",
+    "argumentos": {
+     "consulta": "punto 2.3.5 excepción plazo reclamo",
+     "limite": 5
+    },
+    "resultado": {
+     "consulta": "punto 2.3.5 excepción plazo reclamo",
+     "total_con_match": 439,
+     "resultados": [
+      {
+       "id": "Excepcion_precancelacion_de_capital_e_intereses_de_titulo_de_deuda_comprendido_en_punto_3_",
+       "type": "Excepcion",
+       "label": "Precancelación simultánea nuevo título 3.5",
+       "tokens_matcheados": 4,
+       "resumen_propiedades": "Precancelación de capital e intereses de título de deuda comprendido en punto 3.6 con liquidación de fondos ingresados desde exterior por emisión de nuevo títul…"
+      },
+      {
+       "id": "Excepcion_excepcion_por_punto_3_13",
+       "type": "Excepcion",
+       "label": "Excepción por punto 3.13",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "Las entidades podrán también en el marco del punto 3.13., sin conformidad previa del BCRA si el requisito estuviese vigente"
+      },
+      {
+       "id": "Excepcion_cuando_la_operacion_se_encuentra_comprendida_en_alguna_de_las_situaciones_detall",
+       "type": "Excepcion",
+       "label": "Situaciones del punto 8.5",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "Cuando la operación se encuentra comprendida en alguna de las situaciones detalladas en el punto 8.5 y se verifiquen las condiciones previstas en cada caso"
+      },
+      {
+       "id": "Excepcion_no_aplicable_punto_3_12_1",
+       "type": "Excepcion",
+       "label": "No aplicable punto 3.12.1",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "En la medida que no encuadre en el punto 3.12.1"
+      },
+      {
+       "id": "Obligacion_cuando_el_pago_a_nombre_del_cliente_encuadre_en_el_punto_10_10_2_3_se_debera_dej",
+       "type": "Obligacion",
+       "label": "Dejar constancia en reporte",
+       "tokens_matcheados": 3,
+       "resumen_propiedades": "Cuando el pago a nombre del cliente encuadre en el punto 10.10.2.3., se deberá dejar constancia de tal circunstancia al reportar el boleto de venta a nombre del…"
+      }
+     ]
+    }
+   }
+  ]
+ }
+]
