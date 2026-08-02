@@ -4,8 +4,9 @@ Actualizado al cierre de la semana del 27 de julio al 2 de agosto de 2026 —
 se actualiza por laudo al cierre de cada semana; entre cierres, el estado real
 es `git log` + `data/backlog/backlog.jsonl`.
 
-Generado sobre HEAD `8bcc461df4c8729892e169eaefc5a80531705b39` (working tree
-limpio). Todo número de este documento sale de parseo real; la fuente se cita
+Generado sobre HEAD `1ef98cf35173d8c405113024656cd7ae7ea67594` (working tree
+limpio: `git status --porcelain` vacío al momento de generar, con la única
+excepción de este mismo archivo durante su edición). Todo número de este documento sale de parseo real; la fuente se cita
 junto a cada bloque.
 
 ---
@@ -13,12 +14,12 @@ junto a cada bloque.
 ## 1. Grafo vigente
 
 - **Ruta:** `data/experiment/grafo_v2/reensamblado_v3/kg.json`.
-- **Tamaño:** 4.459 nodos / 8.046 aristas
+- **Tamaño:** 4.459 nodos / 8.054 aristas
   (fuente: `python3 -c "import json; kg=json.load(open('data/experiment/grafo_v2/reensamblado_v3/kg.json')); print(len(kg['nodes']), len(kg['edges']))"`).
 - **Registro como vigente:** entrada explícita `GRAFOS_EXPLICITOS` en
   `app/main.py:192` (promoción 2026-07-31, comentario en `app/main.py:187`).
 - **Últimas correcciones aplicadas** (fuente: `data/backlog/backlog.jsonl`,
-  eventos `aplicacion`/`cambio_estado` con ts 2026-07-31):
+  eventos `aplicacion`/`cambio_estado` con ts 2026-07-31 y 2026-08-02):
   - **BKL-0017** (C1) — restauración del criterio general 1.1 de Clasificación
     de Deudores; estado `verificado`; re-test 4/4 PASS
     (`data/backlog/retests/C1_retest_2026-07-31.md`).
@@ -26,6 +27,19 @@ junto a cada bloque.
     corregidos contra la tabla del PDF (bancos 5.000 / restantes 2.500);
     estado `verificado` (`data/backlog/retests/C2_retest_2026-07-31.md`).
   - **BKL-0007** — cerrada por referencia junto con C2; estado `verificado`.
+  - **BKL-0023** (C3) — umbral propagado 2.500→5.000; estado `verificado`;
+    re-test 4/4 (`data/backlog/retests/C3_retest_2026-08-02.md`); sha256
+    posterior del kg `d673dd72…` (registrado en el commit `c51b96a`).
+  - **BKL-0019** (C4) — aristas `subclase_de` promovidas desde cuarentena:
+    de las 9 con padre sugerido en
+    `data/experiment/grafo_v2/reensamblado_v3/cuarentena.json`, entraron
+    **8** (bloque contiguo, `rol_fuente: cuarentena_laudada`); la novena
+    (`Sujeto_propuesto_originante_acreedor_inicial`, DUDOSA: padre de nivel
+    rol fuera del árbol de clases) quedó EXCLUIDA por laudo y DERIVADA a la
+    decisión de modelado de BKL-0020 (evento `aplicacion` de BKL-0019 en
+    `data/backlog/backlog.jsonl`); estado `verificado`; re-test 5/5
+    (`data/backlog/retests/C4_retest_2026-08-02.md`); sha256 posterior del
+    kg `0161be69…` (registrado en el commit `2c71e3f`).
 
 ## 2. Baselines y mediciones selladas
 
@@ -45,27 +59,44 @@ Fuente: `data/experiment/evaluacion_escalon1/corridas/resultados_1b_FINALES_2026
   (fuente: `data/experiment/metricas_intrinsecas/pasada1_resumen.md`, tabla §1
   y fila P-b). **Umbrales de la pasada 2: PENDIENTES** (otra unidad y otro
   laudo, ídem y `docs/spec_evaluacion_intrinseca.md` §8).
-- Nota de comparabilidad: la pasada 1 midió el v3 pre-C1/C2 (4.458 nodos /
-  8.044 aristas, `pasada1_resumen.md` cabecera); el vigente ya incluye las
-  correcciones (4.459 / 8.046).
+- Nota de comparabilidad: la pasada 1 midió el v3 previo a las correcciones
+  C1, C2, C3 y C4 (4.458 nodos / 8.044 aristas, `pasada1_resumen.md`
+  cabecera); el vigente ya las incluye (4.459 / 8.054, §1).
 
 ## 3. Backlog de nodos
 
-Fuente: `data/backlog/backlog.jsonl` (46 líneas, 22 ids únicos; estado
-efectivo = último evento por id):
+Fuente: `data/backlog/backlog.jsonl` (55 líneas, 23 ids únicos). Regla del
+estado efectivo por id: se recorre el archivo en orden y (i) todo evento con
+la clave `estado` no vacía fija el estado; (ii) la clave `estado_retriage`
+— propia de los eventos `retriage_v3` y DISTINTA de `estado` — fija el
+estado solo cuando vale `resuelta_por_v3`; su otro valor
+(`vigente_sin_cambios`) no modifica nada; (iii) los eventos sin ninguna de
+las dos claves (p. ej. `nota`) tampoco modifican. Comando que implementa la
+regla tal cual y devuelve la tabla:
+`python3 -c "import json,collections; est={}; [est.__setitem__(o['id'], o['estado'] if o.get('estado') else 'resuelta_por_v3') for o in map(json.loads, open('data/backlog/backlog.jsonl')) if o.get('estado') or o.get('estado_retriage')=='resuelta_por_v3']; print(len(est), dict(collections.Counter(est.values())))"`
+→ `23 {'resuelta_por_v3': 2, 'triaged': 16, 'verificado': 5}`.
 
 | Estado | Cantidad | Ids |
 |---|---|---|
-| `verificado` | 3 | BKL-0006, BKL-0007, BKL-0017 |
+| `verificado` | 5 | BKL-0006, BKL-0007, BKL-0017, BKL-0019, BKL-0023 |
 | `resuelta_por_v3` (retriage) | 2 | BKL-0001, BKL-0002 |
-| `triaged` vigentes | 17 | BKL-0003..0005, 0008..0016, 0018..0022 |
+| `triaged` vigentes | 16 | BKL-0003..0005, 0008..0016, 0018, 0020..0022 |
 
 Próximas candidatas, en orden:
-1. **BKL-0019** — cuarentena: 9 aristas `subclase_de` según `padres_sugeridos`
-   de `data/experiment/grafo_v2/reensamblado_v3/cuarentena.json`.
-2. **BKL-0003 / BKL-0004 / BKL-0005** (E3/E4/E5 del
-   `data/backlog/expediente_retriage_v3.md`) — defectos de contenido (especies
-   en `backlog.jsonl`: `ausencia`, `ausencia`, `amputacion`).
+1. **BKL-0004** (E4 del `data/backlog/expediente_retriage_v3.md`) — especie
+   `ausencia`.
+2. **BKL-0003** (E3, ídem) — especie `ausencia`.
+3. **BKL-0005** (E5, ídem) — especie `amputacion`.
+
+Notas:
+- **BKL-0022** queda `triaged`: su orfandad léxica está mitigada por
+  navegación tras C4, pero esa navegabilidad es orden-dependiente bajo la
+  ventana de 40 de `ver_vecinos` (fragilidad registrada en el evento `nota`
+  del 2026-08-02); el fix durable queda diferido a la migración de backend
+  (§5, unidad 7).
+- **BKL-0020** acumuló la arista pendiente de C4 (la DUDOSA de
+  `Sujeto_propuesto_originante_acreedor_inicial`), de modo que sus dos
+  originantes son hoy una sola decisión de modelado.
 
 ## 4. Backlog RX (instrumento)
 
@@ -88,12 +119,15 @@ hasta que yo lo cierre). Estado por entrada:
 U5 (re-calibración del verificador) HECHA: gate U5 pasado y verificador
 validado-en-familia v2/v3 (`docs/lectura_gate_u5.md`; Motor 3 habilitado).
 
-1. Resto del backlog de nodos (§3 de este tablero; incluye BKL-0023, hallazgo
-   residual del gate U5, estado `nuevo` a triage de la autora).
+1. Resto del backlog de nodos (§3 de este tablero). BKL-0023, hallazgo residual del gate U5, ya quedó cerrado por C3 (§1).
 2. Matriz del `scripts/shapes_validator.py` a esquema v2.
-3. Adaptador jsonl→traza (`docs/spec_backlog_refinamiento.md`, pendiente C4) +
-   **U6 — exploración dirigida**, con lista de exclusión de territorio quemado
-   (EV1/CQ/CQN/CQN2).
+3. **U6 — exploración dirigida**, con lista de exclusión de territorio
+   quemado (EV1/CQ/CQN/CQN2). El adaptador jsonl→traza
+   (`docs/spec_backlog_refinamiento.md`) ya está construido y
+   el Motor 2 operativo (`scripts/adaptador_sesiones.py`, laudo D1, commit
+   `0d5fd10`): cola de intake `data/backlog/intake/cola_intake.jsonl` con
+   3 casos, los 3 en `pendiente_de_triage`
+   (fuente: `python3 -c "import json; xs=[json.loads(l) for l in open('data/backlog/intake/cola_intake.jsonl')]; print(len(xs), sum(1 for x in xs if x['estado']=='pendiente_de_triage'))"`).
 4. **Canal de abstenciones-aprobadas (candidata):** screening de aprobadas /
    re-calibración del juez — fuera del universo de entrada del verificador
    (`docs/protocolo_gate_u5.md` §7, `docs/lectura_gate_u5.md` §5).
@@ -112,6 +146,11 @@ validado-en-familia v2/v3 (`docs/lectura_gate_u5.md`; Motor 3 habilitado).
   vocabulario de roles que M7 usa como numerador
   (`docs/spec_evaluacion_intrinseca.md`, fila M7: numerador = {`indice`,
   `tabla_norma_origen`}; BLOQUEANTE en pasada 2).
+  Verificado post-C3 (2026-08-02): el nodo corregido por C3 (`…_7bb7bb`)
+  conserva `rol_fuente: cuerpo` y el único nodo con
+  `rol_fuente: restauracion_manual` sigue siendo el de BKL-0017
+  (`Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_de_los_sectores_publico_y_e1946e`)
+  — C3 no amplía este bloqueante (fuente: `python3 -c "import json; kg=json.load(open('data/experiment/grafo_v2/reensamblado_v3/kg.json')); print([n['id'] for n in kg['nodes'] if n['rol_fuente']=='restauracion_manual'])"`).
 - **Indexación de lecturas en `docs/INDICE.md`:** hay lecturas selladas sin
   indexar (verificado: `grep -n "lectura_escalon1b" docs/INDICE.md` = vacío;
   `lectura_ciclo2.md` sí figura, línea 61).
@@ -139,3 +178,10 @@ validado-en-familia v2/v3 (`docs/lectura_gate_u5.md`; Motor 3 habilitado).
 - **2026-08-02:** gate U5 pasado (cero silenciosos + 3/4, cuarto en rama de
   lectura), verificador validado-en-familia v2/v3, Motor 3 habilitado
   (diagnóstico automático, laudo humano), USD 23,22 (`docs/lectura_gate_u5.md`).
+  Además: **C3 y C4 aplicadas y verificadas** (re-tests 4/4 y 5/5,
+  `data/backlog/retests/C{3,4}_retest_2026-08-02.md`); **adaptador de
+  sesiones (D1) construido** — Motor 2 operativo
+  (`scripts/adaptador_sesiones.py`, commit `0d5fd10`); **INFRA-2** (reglas
+  g/h del circuito de trabajo, commit `1ef98cf`). Commits de la semana
+  27/07–02/08: **30**
+  (fuente: `git rev-list --count --since=2026-07-27 HEAD`).
