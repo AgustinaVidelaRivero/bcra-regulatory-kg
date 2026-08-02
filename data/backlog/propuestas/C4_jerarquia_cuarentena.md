@@ -115,6 +115,13 @@ inmediatamente después del último `subclase_de` existente (recalcular el
 índice al aplicar), NO apendear. La inserción intermedia no altera ningún
 otro objeto (verificado: el resto de la lista queda byte-idéntico, §6).
 
+**Fragilidad (registrada al aplicar, por laudo):** la navegabilidad de
+`…grupo_2` es dependiente del orden de la lista de aristas bajo la ventana
+de 40 de `ver_vecinos` — cualquier futura inserción que empuje el bloque
+fuera de la ventana la rompe en silencio. El fix durable pertenece a la
+capa de retrieval (migración de backend, en cola del tablero §5). BKL-0022
+queda vigente con esta nota (evento `nota` en el backlog, no cierre).
+
 ## 5. Decisiones de forma propuestas (requieren laudo junto con la tabla)
 
 - **`rol_fuente` de las 9 aristas: `cuarentena_laudada`** (traza al origen
