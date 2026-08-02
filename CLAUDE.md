@@ -50,6 +50,20 @@ d. Si algo del mandato contradice un archivo del repo, mandan los archivos y
    se reporta la contradicción.
 e. Errores propios se reportan con causa; no se ocultan.
 f. Costo de API distinto de 0 solo si el mandato lo autoriza con tope.
+g. PAQUETE DE REVISIÓN: al frenar, armar un directorio `revision_<unidad>/`
+   en el scratchpad de la sesión con TODOS los archivos que la revisión
+   independiente necesita, con nombres únicos y descriptivos que incluyan
+   unidad y estado (`kg_post_C4.json`, `backlog_post_C4.jsonl` — NUNCA
+   nombres genéricos como `kg.json`, que colisionan al subirse), más un
+   `manifest.txt` con sha256 y una línea de descripción por archivo. Los
+   archivos del repo NO se renombran ni se copian dentro del repo: el
+   paquete es una copia de cortesía para la revisión, fuera del repo.
+h. REPORTE Y ARTEFACTOS: el reporte final de la unidad se redacta para ser
+   pegado como texto (conciso, con los verbatims imprescindibles); todo
+   artefacto extenso (archivos completos, tablas largas, JSONs) va al
+   paquete de revisión de la regla g, referenciado por nombre — no pegado
+   en el reporte. Regla práctica: un bloque que supera ~40 líneas es
+   artefacto, no reporte.
 
 ## 5. Convenciones de documentos
 
