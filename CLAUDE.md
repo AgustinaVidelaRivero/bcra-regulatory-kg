@@ -65,6 +65,12 @@ h. REPORTE Y ARTEFACTOS: el reporte final de la unidad se redacta para ser
    en el reporte. Regla práctica: un bloque que supera ~40 líneas es
    artefacto, no reporte.
 
+## 4bis. Prompt caching en extracción
+
+Antes de tocar `data/experiment/grafo_v2/code/extract.py` o cualquier call
+site LLM de extracción, leer `docs/decisiones_caching_extraccion.md`; sus
+cinco decisiones son vinculantes.
+
 ## 5. Convenciones de documentos
 
 - Primera persona del singular.
