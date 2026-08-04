@@ -29,6 +29,7 @@ import random
 import sys
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -60,13 +61,20 @@ BACKOFF_BASE = 2.0               # Run 2 lección 4: base 2.0 para 429
 OVERLOAD_BACKOFF_BASE = 3.0      # base más agresiva para 529 (Anthropic Overloaded)
 MAX_OUTPUT_TOKENS = 8192  # Haiku 4.5 absolute max
 
-# Precios Haiku 4.5 (per MTok) — vigentes a fecha del experimento
+# Precios Claude Haiku 4.5 con prompt caching (per MTok) — vigentes a fecha del experimento
 PRICE_IN_PER_MTOK = 1.00
+PRICE_CACHE_WRITE_PER_MTOK = 1.25
+PRICE_CACHE_READ_PER_MTOK = 0.10
 PRICE_OUT_PER_MTOK = 5.00
 
 # Caché v2: SIEMPRE bajo grafo_v2/code/cache_v2/ — nunca el cache viejo de run_3
 # (spec §4.2: doble candado; el otro candado es PROMPT_HASH en la key del chunk).
 CACHE_ROOT_V2 = Path(__file__).resolve().parent / "cache_v2"
+
+# Registro de usage por request (instrumentación de prompt caching de Anthropic).
+# Una línea JSON por response real de la API; logs/ está ignorado por git.
+REPO_ROOT = Path(__file__).resolve().parents[4]
+CACHE_USAGE_LOG = REPO_ROOT / "logs" / "cache_usage.jsonl"
 
 
 # === SYSTEM PROMPT ===
@@ -281,6 +289,8 @@ class ProgressTracker:
     throttled: int = 0
     total_in_tokens: int = 0
     total_out_tokens: int = 0
+    total_cache_write_tokens: int = 0
+    total_cache_read_tokens: int = 0
     t_start: float = 0.0
     last_window_t: float = 0.0
     last_window_completed: int = 0
@@ -292,15 +302,29 @@ class ProgressTracker:
 
     @property
     def cost_usd(self) -> float:
+        # Costo real con prompt caching: input_tokens excluye los tokens
+        # cacheados, que se cobran aparte (write 1.25x, read 0.10x).
         return (
             self.total_in_tokens / 1_000_000 * PRICE_IN_PER_MTOK
+            + self.total_cache_write_tokens / 1_000_000 * PRICE_CACHE_WRITE_PER_MTOK
+            + self.total_cache_read_tokens / 1_000_000 * PRICE_CACHE_READ_PER_MTOK
             + self.total_out_tokens / 1_000_000 * PRICE_OUT_PER_MTOK
         )
 
-    def tick(self, in_tok: int, out_tok: int, fail: bool, throttled: int) -> None:
+    def tick(
+        self,
+        in_tok: int,
+        out_tok: int,
+        fail: bool,
+        throttled: int,
+        cache_write_tok: int = 0,
+        cache_read_tok: int = 0,
+    ) -> None:
         self.completed += 1
         self.total_in_tokens += in_tok
         self.total_out_tokens += out_tok
+        self.total_cache_write_tokens += cache_write_tok
+        self.total_cache_read_tokens += cache_read_tok
         if fail:
             self.failed += 1
         self.throttled += throttled
@@ -343,6 +367,23 @@ def chunk_cache_path(chunk: Chunk, cache_root: Path, prompt_hash: str | None = N
     h = hashlib.sha1(f"{chunk.chunk_id}|{chunk.text}|{ph}".encode("utf-8")).hexdigest()[:12]
     safe = chunk.chunk_id.replace("/", "_").replace("::", "__")[:80]
     return cache_root / f"{safe}__{h}.json"
+
+
+def log_cache_usage(usage: Any, component: str, doc: str | None = None) -> None:
+    """Appendea a logs/cache_usage.jsonl los campos de usage de una response,
+    identificando componente y (si aplica) documento."""
+    CACHE_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    line = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "component": component,
+        "doc": doc,
+        "input_tokens": getattr(usage, "input_tokens", None),
+        "cache_creation_input_tokens": getattr(usage, "cache_creation_input_tokens", None),
+        "cache_read_input_tokens": getattr(usage, "cache_read_input_tokens", None),
+        "output_tokens": getattr(usage, "output_tokens", None),
+    }
+    with CACHE_USAGE_LOG.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(line, ensure_ascii=False) + "\n")
 
 
 def build_user_message(chunk: Chunk) -> str:
@@ -396,6 +437,8 @@ async def extract_one(
     last_err: str | None = None
     in_tok = 0
     out_tok = 0
+    cache_write_tok = 0
+    cache_read_tok = 0
     throttle_events = 0
 
     async with semaphore:
@@ -404,13 +447,28 @@ async def extract_one(
                 resp = await client.messages.create(
                     model=model,
                     max_tokens=MAX_OUTPUT_TOKENS,
-                    system=SYSTEM_PROMPT,
+                    # Prompt caching de Anthropic: breakpoint explícito en el último
+                    # bloque del prefijo estático (tools + system quedan cacheados;
+                    # todo lo variable por chunk va en el mensaje de usuario, después
+                    # del breakpoint). TTL default de 5 min (sin campo ttl): cada hit
+                    # refresca el TTL sin costo en corridas continuas.
+                    system=[
+                        {
+                            "type": "text",
+                            "text": SYSTEM_PROMPT,
+                            "cache_control": {"type": "ephemeral"},
+                        }
+                    ],
                     tools=[TOOL_SCHEMA],
                     tool_choice={"type": "tool", "name": "extract_kg_triples"},
                     messages=[{"role": "user", "content": user_message}],
                 )
+                log_cache_usage(resp.usage, component="extraccion_v2", doc=chunk.doc)
                 in_tok = resp.usage.input_tokens
                 out_tok = resp.usage.output_tokens
+                # None cuenta como 0 (responses sin caching siguen costeando bien).
+                cache_write_tok = getattr(resp.usage, "cache_creation_input_tokens", None) or 0
+                cache_read_tok = getattr(resp.usage, "cache_read_input_tokens", None) or 0
 
                 tool_use = None
                 text_blocks: list[str] = []
@@ -456,7 +514,14 @@ async def extract_one(
                 }
                 cache_path.parent.mkdir(parents=True, exist_ok=True)
                 cache_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-                progress.tick(in_tok=in_tok, out_tok=out_tok, fail=False, throttled=throttle_events)
+                progress.tick(
+                    in_tok=in_tok,
+                    out_tok=out_tok,
+                    fail=False,
+                    throttled=throttle_events,
+                    cache_write_tok=cache_write_tok,
+                    cache_read_tok=cache_read_tok,
+                )
                 return result
 
             except RateLimitError as e:
@@ -492,7 +557,14 @@ async def extract_one(
                 break
 
     # Si llegó acá: falló. NO cachear (Run 2 lección 5).
-    progress.tick(in_tok=in_tok, out_tok=out_tok, fail=True, throttled=throttle_events)
+    progress.tick(
+        in_tok=in_tok,
+        out_tok=out_tok,
+        fail=True,
+        throttled=throttle_events,
+        cache_write_tok=cache_write_tok,
+        cache_read_tok=cache_read_tok,
+    )
     return {
         "chunk_id": chunk.chunk_id,
         "doc": chunk.doc,
