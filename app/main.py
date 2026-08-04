@@ -185,11 +185,13 @@ ADAPTER_KEYS = {
 
 # Grafos registrados EXPLÍCITAMENTE, listados ANTES de los descubiertos por glob.
 # Promoción 2026-07-31: `reensamblado_v3` es el grafo vigente de trabajo (acta:
-# data/experiment/grafo_v2/informes/promocion_v3_2026-07-31.md). El registro es
+# data/experiment/grafo_v2/informes/promocion_v3_2026-07-31.md); en la app se
+# expone con la clave visible `v3_vigente` (verificado contra el kg sellado:
+# 4469 nodos / 8073 aristas, sha256 26fac8b4…f3571). El registro es
 # explícito a propósito — NO generalizar el glob a dos niveles: un glob
 # recursivo descubriría kg.json que no son grafos promovidos.
 GRAFOS_EXPLICITOS = [
-    ("reensamblado_v3", EXPERIMENT_DIR / "grafo_v2" / "reensamblado_v3" / "kg.json"),
+    ("v3_vigente", EXPERIMENT_DIR / "grafo_v2" / "reensamblado_v3" / "kg.json"),
 ]
 
 
