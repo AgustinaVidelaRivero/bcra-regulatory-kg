@@ -124,6 +124,16 @@ Descripción por campo:
 
   El catálogo sigue siendo cerrado a propósito (agregación entre fuentes): ampliarlo
   es una decisión registrada en esta spec, nunca improvisación del intake.
+
+  **Nota — especies de capa agente (enmienda 2026-08-07):** el enum precedente
+  cataloga defectos del grafo. Las entradas que registran defectos de capa
+  agente (generación o navegación del agente, no del KG) admiten como `especie`
+  las causas de la taxonomía v5.7 del verificador congelado. Precedente:
+  BKL-0026 (`alucinacion_agente`) y BKL-0027 (`navegación`), altas por el laudo
+  de deslinde de capas del retest de C6 (commit `5b66d8b`, 2026-08-06;
+  `data/backlog/retests/C6_retest_2026-08-03.md`). La regla de catálogo cerrado
+  se mantiene: las causas admisibles son las casillas existentes de la
+  taxonomía v5.7, nunca categorías improvisadas.
 - **`grafo`** — sobre qué grafo se detectó y se corregiría el defecto (`grafo_v2`,
   `run_3`, o el identificador del sucesor). Determina además qué vale como
   `verificador_validado` (regla de frontera).
