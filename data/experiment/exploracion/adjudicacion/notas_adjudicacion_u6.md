@@ -100,3 +100,7 @@ Dos veces mi prior de dominio contradijo al corpus y el corpus tenía razón (va
 ## 8. Costo/telemetría lateral
 
 Largo de traza correlaciona con dificultad de alcanzabilidad (correctas: 2–8 llamadas; falladas: hasta 12+ búsquedas con miles de matches). Métrica barata candidata para el HTML de revisión.
+
+## Fe de erratas al §0 (2026-08-08)
+
+El §0 declara, en su punto de trazabilidad, que "la secuencia completa de verificaciones (qué se buscó y qué texto del ancla se usó por pregunta) está en la conversación de esta sesión de revisión". Esa traza conversacional de verificación por pregunta no fue persistida a archivo: la referencia quedó apuntando a un material que ya no es recuperable. Los veredictos siguen siendo re-verificables de forma independiente contra el corpus congelado por hash y los desempates determinísticos documentados; la trazabilidad conversacional queda declarada como no disponible.
