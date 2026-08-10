@@ -1,0 +1,86 @@
+{
+ "prefijo_hash": "4dd055a4c5e8",
+ "supuestos": {
+  "S1_ratio_chars_por_token": 3.471,
+  "S1_base": "ajuste in=A+B·chars sobre 508 pares reales de grafo_v2/code/cache_v2/full/ (mensaje v2 reconstruido byte a byte)",
+  "S2_prefijo_e1_tokens": 10553,
+  "S2_base": "intercepto real 9415 tok × (chars prefijo E1 / 23271 chars prefijo v2)",
+  "S3_out": "out_i = 627 + 1.533 × var_i (ajuste sobre los mismos 508 resultados reales)",
+  "S4_writes_de_prefijo_por_corrida": 1,
+  "S5_descuento_batch": "no asumido (D4 condicional)",
+  "S6_reintentos_y_ratchet": "no incluidos (solo primera pasada E1)",
+  "S7_multiplicadores": {
+   "cache_write": 1.25,
+   "cache_read": 0.1
+  },
+  "nota_ancla_descartada": "el ancla harness (2.872 chars/1.433 tok ≈ 2,0 chars/token) se descartó para la parte variable: es JSON de tools, no prosa"
+ },
+ "calibracion": {
+  "conjunto": "calibracion_pro",
+  "n_chunks": 88,
+  "prefijo_tokens": 10553,
+  "prefijo_chars": 26085,
+  "variable_tokens_total": 62227,
+  "variable_tokens_mediana": 584,
+  "output_tokens_total": 150585,
+  "sin_caching": {
+   "input_tokens_facturables": 990891,
+   "formula_usd": "costo = 990891/1e6 × P_in + 150585/1e6 × P_out"
+  },
+  "con_caching": {
+   "input_tokens_no_cacheados": 62227,
+   "cache_write_tokens": 10553,
+   "cache_read_tokens": 918111,
+   "input_equivalente_tokens": 167229,
+   "formula_usd": "costo = 62227/1e6 × P_in + 10553/1e6 × P_cache_write + 918111/1e6 × P_cache_read + 150585/1e6 × P_out",
+   "cuenta_equivalente_input": "62227 + 1,25×10553 + 0,10×918111 = 167229 tokens-equivalentes de input (vs 990891 sin caching)"
+  },
+  "ahorro_componente_input_pct": 83.1
+ },
+ "corpus": {
+  "conjunto": "corpus_5TOs",
+  "n_chunks": 1477,
+  "prefijo_tokens": 10553,
+  "prefijo_chars": 26085,
+  "variable_tokens_total": 1008042,
+  "variable_tokens_mediana": 591,
+  "output_tokens_total": 2471656,
+  "sin_caching": {
+   "input_tokens_facturables": 16594823,
+   "formula_usd": "costo = 16594823/1e6 × P_in + 2471656/1e6 × P_out"
+  },
+  "con_caching": {
+   "input_tokens_no_cacheados": 1008042,
+   "cache_write_tokens": 10553,
+   "cache_read_tokens": 15576228,
+   "input_equivalente_tokens": 2578856,
+   "formula_usd": "costo = 1008042/1e6 × P_in + 10553/1e6 × P_cache_write + 15576228/1e6 × P_cache_read + 2471656/1e6 × P_out",
+   "cuenta_equivalente_input": "1008042 + 1,25×10553 + 0,10×15576228 = 2578856 tokens-equivalentes de input (vs 16594823 sin caching)"
+  },
+  "ahorro_componente_input_pct": 84.5
+ },
+ "corpus_por_to": {
+  "cap": {
+   "n_chunks": 401,
+   "variable_tokens_total": 298842
+  },
+  "cla": {
+   "n_chunks": 127,
+   "variable_tokens_total": 101902
+  },
+  "ext": {
+   "n_chunks": 783,
+   "variable_tokens_total": 492752
+  },
+  "pro": {
+   "n_chunks": 88,
+   "variable_tokens_total": 62227
+  },
+  "ric": {
+   "n_chunks": 78,
+   "variable_tokens_total": 52318
+  }
+ },
+ "nota_never_pay_twice": "si el corpus corre después de la calibración con el mismo prefijo y namespace, los 88 chunks de pro son hits de la caché local (never-pay-twice): el incremental real del corpus es 1.389 chunks. La tabla estima el corpus completo (1.477) sin ese descuento.",
+ "precios": "NO consultados: P_in, P_out, P_cache_write, P_cache_read se resuelven en la autorización de fase B contra la documentación oficial vigente."
+}

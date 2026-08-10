@@ -1,0 +1,194 @@
+{
+  "descripcion": "Fixtures del selftest offline de E1 (fase A). 'buenas' simulan salidas correctas del extractor para chunks reales de E0; 'malas' simulan defectos que el validador debe rechazar, cada una con el motivo esperado. Ningún contenido proviene de una llamada LLM real.",
+  "buenas": [
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "extracción correcta con provenance al punto propio y a la herencia (encabezado 1.1), sujeto de catálogo y rol por-TO",
+      "tool_input": {
+        "entities": [
+          {"local_id": "to", "type": "TextoOrdenado", "label": "Protección de Usuarios", "punto": "1.1.1",
+           "properties": {"materia": "proteccion_usuarios", "archivo": "TO_proteccion_usuarios_servicios_financieros_actual.pdf"}},
+          {"local_id": "e1", "type": "Operacion", "label": "Uso de servicios financieros", "punto": "1.1.1",
+           "properties": {"tipo": "uso_servicios"}},
+          {"local_id": "e2", "type": "Obligacion", "label": "Individualización operativa de usuarios", "punto": "1.1.1",
+           "properties": {"descripcion": "A los fines de que los sujetos obligados hagan operativa la individualización de los usuarios de servicios financieros, se considerará que revisten ese carácter las personas humanas y las personas jurídicas que no adquieran o utilicen productos o servicios financieros ofrecidos por los sujetos obligados para ser incorporados a su actividad comercial.", "tipo": "otra"}},
+          {"local_id": "e3", "type": "Operacion", "label": "Delimitación de partes de la relación", "punto": "1.1",
+           "properties": {"tipo": "definicion_alcance"}}
+        ],
+        "relations": [
+          {"source": "e2", "predicate": "establecida_en", "target": "to", "punto": "1.1.1"},
+          {"source": "e2", "predicate": "aplica_a", "sujeto_id": "Sujeto_rol_sujeto_obligado_proteccion", "punto": "1.1.1"},
+          {"source": "e2", "predicate": "regula", "target": "e1", "punto": "1.1.1"},
+          {"sujeto_id": "Sujeto_usuario_de_servicios_financieros", "predicate": "ejecuta", "target": "e1", "punto": "1.1.1"}
+        ]
+      },
+      "espera": {"entidades": 4, "relaciones": 4, "rechazos": 0}
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "sujeto fuera de catálogo propuesto correctamente (cuarentena) + slip tolerado: aplica_a con target espurio que el validador anula",
+      "tool_input": {
+        "entities": [
+          {"local_id": "to", "type": "TextoOrdenado", "label": "Protección de Usuarios", "punto": "1.1.1", "properties": {}},
+          {"local_id": "e1", "type": "Obligacion", "label": "Tratamiento diferencial a no destinatarios finales", "punto": "1.1.1",
+           "properties": {"descripcion": "Ello, siempre que estos últimos no cuenten con elementos de juicio que permitan concluir razonablemente que corresponde darles otro tratamiento.", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "establecida_en", "target": "to", "punto": "1.1.1"},
+          {"source": "e1", "target": "to", "predicate": "aplica_a", "sujeto_propuesto": "Deudores de créditos cedidos por entidades financieras", "sujeto_propuesto_padre_sugerido": "Sujeto_usuario_de_servicios_financieros", "punto": "1.1.1"}
+        ]
+      },
+      "espera": {"entidades": 2, "relaciones": 2, "rechazos": 0}
+    }
+  ],
+  "malas": [
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "firma inválida: exceptua con rango Obligacion (la matriz exige Excepcion→Restriccion)",
+      "tool_input": {
+        "entities": [
+          {"local_id": "to", "type": "TextoOrdenado", "label": "Protección de Usuarios", "punto": "1.1.1", "properties": {}},
+          {"local_id": "e1", "type": "Excepcion", "label": "Excepción por actividad comercial", "punto": "1.1.1", "properties": {"descripcion": "x"}},
+          {"local_id": "e2", "type": "Obligacion", "label": "Individualización de usuarios", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "exceptua", "target": "e2", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "firma_invalida"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "sujeto_id fuera del catálogo cerrado",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "Obligacion", "label": "Obligación de prueba", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "aplica_a", "sujeto_id": "Sujeto_empresa_de_seguros", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "sujeto_id_fuera_de_catalogo"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "provenance ausente: entidad sin campo punto",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "Restriccion", "label": "Restricción sin punto", "properties": {"descripcion": "x", "tipo": "prohibicion"}}
+        ],
+        "relations": []
+      },
+      "espera_motivo": "punto_ausente"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "punto fuera del conjunto admitido del chunk (unidad inventada)",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "Obligacion", "label": "Obligación con punto inventado", "punto": "9.9.9", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": []
+      },
+      "espera_motivo": "punto_fuera_de_admitidos"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "sujeto_id y sujeto_propuesto juntos (mutuamente excluyentes)",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "Obligacion", "label": "Obligación de prueba", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "aplica_a", "sujeto_id": "Sujeto_entidad_financiera", "sujeto_propuesto": "las entidades", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "sujeto_extremo_invalido"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "referencia colgante: relación hacia un local_id inexistente",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "Restriccion", "label": "Restricción de prueba", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "prohibicion"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "prohibe", "target": "e99", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "ref_colgante"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "type de entidad fuera del esquema (el sujeto como entidad, defecto v1)",
+      "tool_input": {
+        "entities": [
+          {"local_id": "e1", "type": "EntidadFinanciera", "label": "Entidades financieras", "punto": "1.1.1", "properties": {}}
+        ],
+        "relations": []
+      },
+      "espera_motivo": "type_invalido"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "salida entera no parseable (string que no es JSON)",
+      "tool_input": "esto no es un json {",
+      "espera_motivo": "salida_no_parseable"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "predicado fuera de la lista de 12",
+      "tool_input": {
+        "entities": [
+          {"local_id": "to", "type": "TextoOrdenado", "label": "Protección de Usuarios", "punto": "1.1.1", "properties": {}},
+          {"local_id": "e1", "type": "Obligacion", "label": "Obligación de prueba", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "regulado_por", "target": "to", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "predicado_invalido"
+    },
+    {
+      "chunk_id": "pro::1.1.1",
+      "nota": "sujeto_* en un predicado que no lo admite",
+      "tool_input": {
+        "entities": [
+          {"local_id": "to", "type": "TextoOrdenado", "label": "Protección de Usuarios", "punto": "1.1.1", "properties": {}},
+          {"local_id": "e1", "type": "Obligacion", "label": "Obligación de prueba", "punto": "1.1.1", "properties": {"descripcion": "x", "tipo": "otra"}}
+        ],
+        "relations": [
+          {"source": "e1", "predicate": "establecida_en", "target": "to", "sujeto_id": "Sujeto_entidad_financiera", "punto": "1.1.1"}
+        ]
+      },
+      "espera_motivo": "sujeto_en_predicado_no_sujeto"
+    }
+  ],
+  "flaggeado": {
+    "chunk_id": "ric::3.1.2",
+    "nota": "chunk con flag formula: salida conforme que NO extrae la fórmula y registra la omisión — cero advertencias; variante sin omisiones → advertencia flag_sin_omisiones_declaradas",
+    "tool_input_conforme": {
+      "entities": [
+        {"local_id": "to", "type": "TextoOrdenado", "label": "Régimen Informativo Contable Mensual", "punto": "3.1.2", "properties": {}},
+        {"local_id": "e1", "type": "Obligacion", "label": "Determinación de exigencia de capital", "punto": "3.1.2",
+         "properties": {"descripcion": "Se determinará de acuerdo con la expresión establecida en el punto, en función de los activos ponderados por riesgo.", "tipo": "calculo"}}
+      ],
+      "relations": [
+        {"source": "e1", "predicate": "establecida_en", "target": "to", "punto": "3.1.2"}
+      ],
+      "omisiones_no_prosa": [
+        "fórmula C = (k x 0,08 x APR) + INC y la definición de sus términos: expresión matemática declarada no-confiable por E0, coeficientes no extraídos"
+      ]
+    },
+    "tool_input_sin_declarar": {
+      "entities": [
+        {"local_id": "to", "type": "TextoOrdenado", "label": "Régimen Informativo Contable Mensual", "punto": "3.1.2", "properties": {}},
+        {"local_id": "e1", "type": "Obligacion", "label": "Determinación de exigencia de capital", "punto": "3.1.2",
+         "properties": {"descripcion": "x", "tipo": "calculo", "umbral": "0,08"}}
+      ],
+      "relations": [
+        {"source": "e1", "predicate": "establecida_en", "target": "to", "punto": "3.1.2"}
+      ]
+    }
+  }
+}
