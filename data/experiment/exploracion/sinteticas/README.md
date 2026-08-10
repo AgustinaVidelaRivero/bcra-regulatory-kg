@@ -64,7 +64,9 @@ Correr: `python3 sampler.py` · `python3 selftest.py` · `python3 estimacion.py`
 6. **Cuasi-duplicados (E-D)**: mismo type, Jaccard >= 0,5 sobre tokens de
    contenido de label+descripcion (bloqueo por token con df <= 200), y
    variación de valor/calificador (token con dígito en la diferencia
-   simétrica, o diferencia <= 8 tokens).
+   simétrica, o diferencia <= 8 tokens). **Sub-cuota estratificada**
+   (corrección pre-sellado): `ED_FRACCION_INTER = 0,25` del volumen reservado
+   a pares inter-TO — 15 intra + 5 inter sobre el objetivo de 20.
 
 7. **Solape léxico** (puerta d y variable continua §5):
    `|tokens_contenido(pregunta) ∩ prohibidos| / |tokens_contenido(pregunta)|`,
@@ -94,12 +96,22 @@ Correr: `python3 sampler.py` · `python3 selftest.py` · `python3 estimacion.py`
    replay byte-exacto en prefijo y `output_chars` en todas (`verificar_replay`
    lo re-chequea en cada corrida).
 
-## Qué queda para la fase B (con autorización de gasto)
+## Fase B — EJECUTADA (generación autorizada, Sonnet 5)
 
-- Cliente real envuelto en la caché del proyecto (skill `llm-capture` /
-  `llm_cache.py`) implementando `generador.ClienteLLM`.
-- Generación literal + evolución anti-léxica sobre `out/samples.json`.
-- Checks LLM flaggeados por el validador (V1 autocontención, V2 unicidad del
-  gold, V3 mismo-gold del par) — prompts borrador en `estimacion.py`.
-- Estimación de tokens: `out/estimacion.json` (fórmula parametrizada en
-  precio/Mtok; el precio se resuelve en la autorización).
+- `cliente_faseB.py`: implementación real de `ClienteLLM` sobre
+  `llm_cache.CachingClient` (db `cache/sinteticas_faseB.db`, namespace
+  `sinteticas|cv=sinteticas-faseB-v1|think=0`, tope duro USD 4). Sonnet 5
+  sin `temperature` (400) y con `thinking: disabled` (adaptativo activo por
+  defecto consumía el max_tokens) — ambas peculiaridades verificadas.
+- `runner_faseB.py`: calibración (10 samples, freno) → laudos de calibración
+  (V1 con contexto de dominio fijo + 3 ejemplos resueltos; regla mecánica
+  `b_fuga_ancla` en puerta b, fixture `fixtures/fuga_ancla.json`) → resto con
+  re-generación de descartadas (1 reintento).
+- **Resultado**: 64/98 pares aptos (E-A 13/20, E-B 17/20, E-C 11/18,
+  E-D 12/20, E-E 11/20), 147 intentos totales (factor 1,5 vs 1,6
+  presupuestado), 15 samples rescatados por reintento. Solape léxico de las
+  aptas: literal mediana 0,231; anti-léxica mediana 0,000 (max 0,108).
+  Output completo con pares + veredictos + solapes + registro de descartes
+  con motivo: `out/preguntas_faseB.json` (patrón generacion_u6_registro).
+- **Gasto real**: USD 2,20 acumulado (estimado sellado: 2,55; tope: 4,00).
+  Detalle en el reporte de la unidad; crudos íntegros en la caché.

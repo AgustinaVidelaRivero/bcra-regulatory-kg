@@ -57,13 +57,39 @@ def ratio_chars_por_token() -> float:
 
 
 def _prompt_validacion_comprensibilidad(pregunta: str) -> str:
-    """Borrador fase B del check V1 (medido acá para la estimación)."""
+    """Check V1 de fase B — recalibrado por laudo de calibración: aclaración de
+    contexto (dominio normativo fijo) + TRES ejemplos resueltos, en lugar de la
+    regla declarativa (que exigía nombrar el marco normativo y descartó 10/10
+    en la calibración inicial)."""
     return f"""\
-Sos un revisor de preguntas de evaluación. Indicá si la siguiente pregunta se
-entiende COMPLETA por sí sola, sin ningún contexto adicional: sin referencias
-colgantes, sin supuestos que el lector no pueda reponer, con el caso
-identificado sin ambigüedad. Respondé SOLO JSON:
-{{"autocontenida": true|false, "motivo": "..."}}
+Sos un revisor de preguntas de evaluación para un sistema cuyo dominio \
+normativo es FIJO: el corpus regulatorio del BCRA (toda pregunta se responde \
+contra esa normativa; el sistema ya lo sabe). AUTO-CONTENIDA significa: el \
+caso se identifica sin ambigüedad por su propio contenido y no hay \
+referencias colgantes al material con el que se generó la pregunta. NO exige \
+nombrar el marco normativo, el Texto Ordenado ni la comunicación — ese \
+contexto es fijo del sistema.
+
+Ejemplos resueltos:
+
+1. "En el marco del cálculo de exposición de contraparte mediante metodología \
+de aforos, ¿qué restricción aplica respecto de los contratos que contienen \
+cláusulas de abandono o ruptura (walkaway clauses) al momento de determinar \
+la exigencia de capital?"
+   -> {{"autocontenida": true, "motivo": "el caso queda identificado por su \
+contenido técnico; no necesita citar la norma"}}
+
+2. "En un caso de siniestro, ¿qué declaración jurada debe exigir la entidad y \
+quién debe firmarla?"
+   -> {{"autocontenida": true, "motivo": "pregunta corta con caso \
+identificado; el dominio fijo repone el resto"}}
+
+3. "¿Qué establece el punto anterior sobre capitales?"
+   -> {{"autocontenida": false, "motivo": "referencia colgante: 'el punto \
+anterior' no existe para quien lee la pregunta sola"}}
+
+Indicá si la siguiente pregunta es auto-contenida bajo ese criterio.
+Respondé SOLO JSON: {{"autocontenida": true|false, "motivo": "..."}}
 
 PREGUNTA:
 {pregunta}

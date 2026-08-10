@@ -80,6 +80,14 @@ _FUGAS = [
     r"[a-z]+_[a-z]+_[a-z0-9_]+",      # ids técnicos con guiones bajos
     r"\b[0-9a-f]{6}\b",               # sufijos hex de ids del grafo
 ]
+# Fuga de ANCLA (regla laudada tras la calibración de fase B, caso real
+# EE-002: la literal citaba "el punto 3.18"): una pregunta que nombra el punto
+# normativo del gold filtra el ancla de generación y trivializa la búsqueda.
+# Se aplica a literal y anti-léxica (puerta_b corre sobre ambas).
+_FUGA_ANCLA = [
+    r"\bpunto \d+(?:\.\d+)*\b",
+    r"\bsecci[oó]n \d+\b",
+]
 
 
 class Validador:
@@ -122,6 +130,9 @@ class Validador:
         for rx in _FUGAS:
             if re.search(rx, bajo):
                 motivos.append(f"b_fuga_generacion: /{rx}/")
+        for rx in _FUGA_ANCLA:
+            if re.search(rx, bajo):
+                motivos.append(f"b_fuga_ancla: /{rx}/")
         if "?" not in p:
             motivos.append("b_sin_interrogacion")
         if not (LARGO_MIN <= len(p) <= LARGO_MAX):

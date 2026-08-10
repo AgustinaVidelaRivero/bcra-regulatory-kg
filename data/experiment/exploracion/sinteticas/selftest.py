@@ -142,6 +142,20 @@ def test_validador(ancla_idx):
           r["veredicto"] == "descartado"
           and "b_sin_interrogacion" in r["motivos"])
 
+    # (b) fuga de ancla — fixture propia (caso real: EE-002 de la calibración)
+    fx_ancla = json.load(open(AQUI / "fixtures" / "fuga_ancla.json",
+                              encoding="utf-8"))
+    ok_rechaza = all(
+        any("b_fuga_ancla" in m for m in v.puerta_b(c["pregunta"])["motivos"])
+        for c in fx_ancla["rechaza"])
+    ok_acepta = all(
+        not any("b_fuga_ancla" in m for m in v.puerta_b(c["pregunta"])["motivos"])
+        for c in fx_ancla["acepta"])
+    check(f"puerta b: b_fuga_ancla dispara en {len(fx_ancla['rechaza'])}/"
+          f"{len(fx_ancla['rechaza'])} casos (incl. EE-002 real)", ok_rechaza)
+    check("puerta b: b_fuga_ancla NO dispara en preguntas sin ancla",
+          ok_acepta)
+
     # (c) territorio quemado: unidad quemada entera y parcial-que-abarca
     mala_c1 = _mini_sample([{"to": "cap", "ancla": "1.1.3"}])   # 1.1 quemada entera
     r = v.validar(mala_c1, PREGUNTA_OK)
