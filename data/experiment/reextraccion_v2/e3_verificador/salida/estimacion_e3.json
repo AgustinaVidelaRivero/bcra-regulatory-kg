@@ -1,0 +1,154 @@
+{
+ "prefijo_hash": "21a836c7de6d",
+ "supuestos": {
+  "V1_ratio_prosa_chars_por_token": 3.471,
+  "V1_base": "ancla empírica de E1 (508 pares reales sellados)",
+  "V2_ratio_render_extraccion": 2.5,
+  "V3_prefijo_e3": {
+   "chars": 26837,
+   "tokens_estimados": 10735,
+   "ratio": 2.5,
+   "nota": "se mide exacto en la primera llamada real"
+  },
+  "V4_output_por_veredicto": {
+   "completo_ok": 200,
+   "con_faltantes": 700
+  },
+  "V5_tasa_faltantes": 0.15,
+  "V5_nota": "supuesto SIN base empírica propia; fijar la tasa real es objetivo de la calibración. Sensibilidad 5/15/30 % incluida.",
+  "V6_reintento": {
+   "feedback_tokens": 300,
+   "e1_reales_por_llamada": {
+    "n_llamadas": 88,
+    "input_variable_medio": 1246,
+    "output_medio": 1182,
+    "cache_read_prefijo": 9698
+   }
+  },
+  "V7_writes_de_prefijo_por_corrida": 1,
+  "V8_ratio_render_sobre_fuente": 1.857
+ },
+ "calibracion": {
+  "conjunto": "calibracion_pro_aceptados",
+  "n_unidades": 87,
+  "tasa_faltantes_supuesta": 0.15,
+  "verificaciones_e3": {
+   "n_llamadas": 100,
+   "prefijo_tokens": 10735,
+   "variable_tokens_total": 137801,
+   "variable_tokens_medio": 1584,
+   "variable_re_verificaciones": 20592,
+   "output_tokens_total": 26525,
+   "sin_caching": {
+    "input_tokens_facturables": 1231893
+   },
+   "con_caching": {
+    "input_tokens_no_cacheados": 158393,
+    "cache_write_tokens": 10735,
+    "cache_read_tokens": 1062765,
+    "input_equivalente_tokens": 278088
+   },
+   "ahorro_componente_input_pct": 77.4,
+   "formula_usd_e3": "costo_E3 = 158393/1e6 × P_in_E3 + 10735/1e6 × P_cache_write_E3 + 1062765/1e6 × P_cache_read_E3 + 26525/1e6 × P_out_E3"
+  },
+  "reintentos_e1": {
+   "n_reintentos": 13,
+   "input_no_cacheado": 20098,
+   "cache_read": 126074,
+   "output": 15366,
+   "formula_usd_e1": "costo_reintentos_E1 = 20098/1e6 × P_in_E1 + 126074/1e6 × P_cache_read_E1 + 15366/1e6 × P_out_E1"
+  },
+  "formula_total": "costo = costo_E3 + costo_reintentos_E1"
+ },
+ "corpus": {
+  "conjunto": "corpus_5TOs",
+  "n_unidades": 1477,
+  "tasa_faltantes_supuesta": 0.15,
+  "verificaciones_e3": {
+   "n_llamadas": 1699,
+   "prefijo_tokens": 10735,
+   "variable_tokens_total": 2639992,
+   "variable_tokens_medio": 1787,
+   "variable_re_verificaciones": 396714,
+   "output_tokens_total": 450575,
+   "sin_caching": {
+    "input_tokens_facturables": 21275471
+   },
+   "con_caching": {
+    "input_tokens_no_cacheados": 3036706,
+    "cache_write_tokens": 10735,
+    "cache_read_tokens": 18228030,
+    "input_equivalente_tokens": 4872928
+   },
+   "ahorro_componente_input_pct": 77.1,
+   "formula_usd_e3": "costo_E3 = 3036706/1e6 × P_in_E3 + 10735/1e6 × P_cache_write_E3 + 18228030/1e6 × P_cache_read_E3 + 450575/1e6 × P_out_E3"
+  },
+  "reintentos_e1": {
+   "n_reintentos": 222,
+   "input_no_cacheado": 343212,
+   "cache_read": 2152956,
+   "output": 262404,
+   "formula_usd_e1": "costo_reintentos_E1 = 343212/1e6 × P_in_E1 + 2152956/1e6 × P_cache_read_E1 + 262404/1e6 × P_out_E1"
+  },
+  "formula_total": "costo = costo_E3 + costo_reintentos_E1"
+ },
+ "corpus_por_to": {
+  "cap": {
+   "n_chunks": 401,
+   "variable_tokens_total": 836162
+  },
+  "cla": {
+   "n_chunks": 127,
+   "variable_tokens_total": 256276
+  },
+  "ext": {
+   "n_chunks": 783,
+   "variable_tokens_total": 1281102
+  },
+  "pro": {
+   "n_chunks": 88,
+   "variable_tokens_total": 139100
+  },
+  "ric": {
+   "n_chunks": 78,
+   "variable_tokens_total": 127353
+  }
+ },
+ "sensibilidad_tasa": {
+  "tasa_5pct": {
+   "calibracion_input_equiv": 254171,
+   "calibracion_reintentos_e1_output": 4728,
+   "corpus_input_equiv": 4449574,
+   "corpus_reintentos_e1_output": 87468
+  },
+  "tasa_15pct": {
+   "calibracion_input_equiv": 278088,
+   "calibracion_reintentos_e1_output": 15366,
+   "corpus_input_equiv": 4872928,
+   "corpus_reintentos_e1_output": 262404
+  },
+  "tasa_30pct": {
+   "calibracion_input_equiv": 312636,
+   "calibracion_reintentos_e1_output": 30732,
+   "corpus_input_equiv": 5505098,
+   "corpus_reintentos_e1_output": 523626
+  }
+ },
+ "comparacion_por_llamada": {
+  "e1_real_fase_b": {
+   "input_variable_medio": 1246,
+   "cache_read_prefijo": 9698,
+   "output_medio": 1182,
+   "modelo": "chico (calibración fase B)"
+  },
+  "e3_estimado": {
+   "input_variable_medio": 1584,
+   "cache_read_prefijo": 10735,
+   "output_medio": 275,
+   "modelo": "FUERTE (D3 del diseño)"
+  },
+  "nota": "E3 es más caro por llamada por dos vías multiplicativas: (i) más input variable por unidad — el mensaje lleva el fuente ÍNTEGRO (propio + herencia, más largo que el texto que factura E1) MÁS la extracción completa renderizada; (ii) precios de modelo fuerte (P_in_E3/P_out_E3 > P_in_E1/P_out_E1). El output, en cambio, es menor (veredicto corto vs extracción completa)."
+ },
+ "precios": "NO consultados: P_in_E3, P_out_E3, P_cache_write_E3, P_cache_read_E3 (modelo fuerte) y P_*_E1 (modelo chico) se resuelven en la autorización de fase B contra la documentación oficial vigente.",
+ "nota_never_pay_twice": "si la fase B se relanza con el mismo prompt y namespace, cada veredicto ya pagado es hit de la caché local (cache/e3_verificacion.db)."
+}
