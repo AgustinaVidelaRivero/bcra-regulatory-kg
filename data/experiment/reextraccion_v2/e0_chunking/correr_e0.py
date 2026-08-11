@@ -105,21 +105,31 @@ def correr(salida: Path) -> dict:
             "solo_parser": sorted(inv_parser - inv_mapa),
         }
 
-        propios = [c["chars_propio"] for c in chunks]
-        completos = [c["chars_completo"] for c in chunks]
+        terminales = [c for c in chunks if c["tipo"] != "mini_chunk"]
+        minis = [c for c in chunks if c["tipo"] == "mini_chunk"]
+        minis_por_rol: dict[str, int] = {}
+        for c in minis:
+            minis_por_rol[c["rol_bloque"]] = minis_por_rol.get(c["rol_bloque"], 0) + 1
+        propios = [c["chars_propio"] for c in terminales]
+        completos = [c["chars_completo"] for c in terminales]
         roles_pag = {r: roles.count(r) for r in sorted(set(roles))}
         conteos[to] = {
             "archivo": archivo,
             "paginas": len(paginas),
             "roles_pagina": roles_pag,
             "secciones": len(res.secciones),
-            "puntos_terminales": sum(1 for c in chunks if c["tipo"] == "punto_terminal"),
-            "secciones_sin_puntos": sum(1 for c in chunks if c["tipo"] == "seccion_sin_puntos"),
+            "puntos_terminales": sum(1 for c in terminales if c["tipo"] == "punto_terminal"),
+            "secciones_sin_puntos": sum(1 for c in terminales if c["tipo"] == "seccion_sin_puntos"),
+            "chunks_terminales": len(terminales),
+            "mini_chunks": len(minis),
+            "mini_chunks_por_rol": dict(sorted(minis_por_rol.items())),
             "chunks": len(chunks),
             "flag_contenido_tabular": sum(1 for c in chunks if c["flags"]["contenido_tabular"]),
             "flag_formula": sum(1 for c in chunks if c["flags"]["formula"]),
             "mediana_chars_propio": statistics.median(propios) if propios else 0,
             "mediana_chars_completo": statistics.median(completos) if completos else 0,
+            "mediana_chars_mini_chunk": statistics.median(
+                [c["chars_propio"] for c in minis]) if minis else 0,
             "rechazos_header": len(res.rechazos_header),
             "saltos_numeracion": len(res.saltos_numeracion),
             "avisos": len(res.avisos),

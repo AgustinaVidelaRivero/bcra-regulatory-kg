@@ -162,3 +162,35 @@ del censo).
 - La provenance es a granularidad punto (principio 2.e): dos chunks que
   anclan contenido idéntico al mismo punto heredado rinden una sola cita (el
   caso (ii) del §3).
+
+---
+
+## Enmienda 01 (2026-08-11) — mapa ampliado con mini-chunks
+
+Sin lógica nueva de ensamblado (§2.c de la enmienda): los ids de E2 ya son
+función del contenido y la provenance. Cambios mínimos:
+
+- `cargar_chunks_e0`/`cargar_censo_oraculo`/`reducir` ganan `e0_dir`
+  (default: la salida sellada — los tests sellados no cambian); el CLI gana
+  `--e0-dir` y `--sufijo` para la corrida enm01 sin pisar la sellada.
+- El aporte por chunk clasifica `rol_documental = bloque_<rol>` como
+  contenido PROPIO (el bloque ES el texto propio del mini).
+- Censo nivel chunk: los mini-chunks comparten `unidad` con su punto de
+  origen, así que su cobertura se mide por el aporte propio del chunk id (no
+  por el punto, que otro chunk pudo cubrir); un mini solo-meta es ausencia
+  con diagnóstico propio.
+
+**Corrida enm01** (`python3 correr_e2.py --to pro --extracciones
+../e1_extractor/salida/faseB_pro_enm01/extracciones.jsonl --e0-dir
+../e0_chunking/salida_enm01 --sufijo _enm01`): fan-in 101 = 101 aceptados +
+0 rechazados/ausentes/duplicados; grafo `salida/grafo_pro_enm01.json` con
+370 nodos / 718 aristas (sha256 bbdf9caa41be…); conservación exacta
+(464 entidades in = 362 nodos de contenido+meta + 102 merges; 720 relaciones
+in = 718 aristas + 2 prov acumuladas + 0 rechazos E2). Censo nivel chunk
+95/101 (6 ausencias solo-meta diagnosticadas: 1.1.2.x sujetos-enumeración y
+3.2.3.7/8 — mismas clases que la corrida sellada; ningún mini en ausencia);
+nivel mapa 17/17.
+
+**Selftest ampliado: 35/35 PASS** (31 previos re-pasados + 4 de mini-chunks:
+fan-in con mini esperado, aporte bloque_*, cobertura por chunk id, ausencia
+de mini solo-meta diagnosticada).

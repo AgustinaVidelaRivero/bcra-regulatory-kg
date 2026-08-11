@@ -344,3 +344,42 @@ determinismo 20/20 archivos, cobertura, T4 a–e— más 12 nuevos: acápites en
 propio de 2.3.1.1 y herencia limpia de 2.3.1.2–4, toda reasignación es el
 caso conocido, fronteras después = 0 en los 5 TOs, ric sin reasignaciones y
 4.4.x aún en 4.3.3). Reproduce: `python3 selftest_e0.py`.
+
+---
+
+## Enmienda 01 (2026-08-11) — mini-chunks como unidades de extracción
+
+Implementación de `docs/enmienda_01_diseno_reextraccion_v2.md` §2.a. La
+corrida enmendada vive en `salida_enm01/` (la calibración sellada `salida/`
+queda intacta; los chunks terminales de `salida_enm01/` son byte-idénticos a
+los sellados — solo se AGREGAN mini-chunks, interleaved en orden documental).
+
+**Criterio de materialización adoptado (letra de §2.a, agrupado):** los
+tramos `encabezado` son línea de título pura en los 5 TOs (387/387) y nunca
+materializan; los segmentos de prosa (intro/intersticial/cierre/chapeau) no
+contienen la línea de label y materializan siempre que su texto normalizado
+no sea vacío. Los segmentos contiguos del mismo rol de una unidad se funden
+en UN mini-chunk (intro/cierre/chapeau son contiguos por construcción; evita
+fragmentar fórmulas partidas por columna); intersticiales: uno por segmento
+con `::<n>`. La heurística de escala de la enmienda (una línea ≤140 ≈ título)
+se DESCARTÓ como criterio: excluiría intros normativos de una línea (caso
+pro 2.7, «deberán contar con sendos hipervínculos…»). Invariante: todo bloque
+de prosa de ancestro con texto no vacío tiene exactamente un responsable.
+
+**Resultado: 286 mini-chunks** (estimación de la enmienda: 284) — intro 218,
+cierre 57, chapeau_seccion 8, intersticial 3; por TO: cap 61, cla 16,
+ext 190, **pro 13** (== estimación), ric 6. El «encabezado de 1.144 chars del
+7.6 de ext» de §6.b es tipo `intro` en la salida real y materializa como
+`ext::7.6::intro`. 10 mini-chunks de ≤15 chars normalizados (colas de título
+envueltas, marcas 'n1') quedan medidos como costo del criterio; sus
+extracciones vacías se diagnostican en el censo de E2.
+
+Id: `<to>::<unidad_origen>::<rol>[::<n>]`; sha256 propio del bloque;
+provenance (`unidad`) = unidad de origen; herencia del mini = SOLO los tramos
+encabezado de su cadena. `conteos.json` suma `mini_chunks` y
+`mini_chunks_por_rol`; el censo-oráculo no cambia (mismo inventario x.y).
+
+Reproduce: `python3 correr_e0.py --salida salida_enm01`.
+**Selftest ampliado: 57/57 PASS** (los 42 previos + 15 de mini-chunks:
+determinismo vía sha de archivos, criterio, ids, herencia de títulos,
+interleaving, conteos). `python3 selftest_e0.py`.

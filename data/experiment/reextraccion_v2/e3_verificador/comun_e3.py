@@ -31,7 +31,8 @@ BASE = Path(__file__).resolve().parent                  # e3_verificador/
 REEXTRACCION = BASE.parents[0]                          # reextraccion_v2/
 REPO = BASE.parents[3]                                  # raíz del repo
 
-E0_SALIDA = REEXTRACCION / "e0_chunking" / "salida"
+E0_SALIDA = REEXTRACCION / "e0_chunking" / "salida"              # calibración sellada
+E0_SALIDA_ENM01 = REEXTRACCION / "e0_chunking" / "salida_enm01"  # enmienda 01 (con mini-chunks)
 E1_DIR = REEXTRACCION / "e1_extractor"
 E1_FASEB = E1_DIR / "salida" / "faseB_pro"
 E2_SALIDA = REEXTRACCION / "e2_reduce" / "salida"
@@ -46,23 +47,29 @@ import comun_e1  # noqa: E402,F401  (agrega grafo_v2/code y evaluacion/ al sys.p
 TOS = ("cap", "cla", "ext", "pro", "ric")
 
 
-def cargar_chunks(tos: tuple[str, ...] = TOS) -> list[dict]:
-    """Chunks de E0 en orden estable (mismo criterio que comun_e1)."""
+def cargar_chunks(tos: tuple[str, ...] = TOS, e0_dir: Path = E0_SALIDA) -> list[dict]:
+    """Chunks de E0 en orden estable (mismo criterio que comun_e1). `e0_dir`
+    selecciona la salida: la sellada (default) o la de la enmienda 01."""
     chunks: list[dict] = []
     for to in tos:
-        with (E0_SALIDA / f"chunks_{to}.json").open(encoding="utf-8") as f:
+        with (e0_dir / f"chunks_{to}.json").open(encoding="utf-8") as f:
             chunks.extend(json.load(f))
     return chunks
 
 
-def cargar_extracciones_faseB() -> dict[str, dict]:
-    """Registros de la calibración E1 fase B (pro), por chunk_id."""
+def cargar_extracciones(path: Path) -> dict[str, dict]:
+    """Registros de una corrida E1 (jsonl), por chunk_id."""
     regs: dict[str, dict] = {}
-    with (E1_FASEB / "extracciones.jsonl").open(encoding="utf-8") as f:
+    with path.open(encoding="utf-8") as f:
         for line in f:
             r = json.loads(line)
             regs[r["chunk_id"]] = r
     return regs
+
+
+def cargar_extracciones_faseB() -> dict[str, dict]:
+    """Registros de la calibración E1 fase B SELLADA (pro), por chunk_id."""
+    return cargar_extracciones(E1_FASEB / "extracciones.jsonl")
 
 
 def chunk_aceptado(reg: dict) -> bool:
@@ -75,7 +82,7 @@ def chunk_aceptado(reg: dict) -> bool:
 
 def pares_calibracion() -> list[tuple[dict, dict]]:
     """(chunk E0, validación E1) de los chunks de pro aceptados — el universo
-    de la calibración de E3 fase B."""
+    de la calibración de E3 fase B SELLADA."""
     por_id = {c["id"]: c for c in cargar_chunks(("pro",))}
     regs = cargar_extracciones_faseB()
     pares = []
@@ -85,19 +92,43 @@ def pares_calibracion() -> list[tuple[dict, dict]]:
     return pares
 
 
+def pares_de(chunks: list[dict], regs: dict[str, dict]) -> list[tuple[dict, dict]]:
+    """(chunk E0, validación E1) de los chunks aceptados de una corrida
+    arbitraria (mismo criterio de fan-in que pares_calibracion), en el orden
+    documental de `chunks`."""
+    pares = []
+    for c in chunks:
+        reg = regs.get(c["id"])
+        if reg is not None and chunk_aceptado(reg):
+            pares.append((c, reg["validacion"]))
+    return pares
+
+
 # ------------------------------------------------------------------------- #
 # Texto fuente íntegro de la unidad                                          #
 # ------------------------------------------------------------------------- #
 
 def fuente_integro(chunk: dict) -> str:
-    """El texto fuente ÍNTEGRO de la unidad: herencia estructural (en su orden
-    de E0, con unidad de origen declarada) + texto del punto propio. Es lo
-    mismo que vio el extractor como DATOS — no incluye ninguna instrucción."""
+    """El texto fuente de la unidad, como DATOS (sin instrucciones).
+
+    Enmienda 01 §2.d — el blanco de completitud es el TEXTO PROPIO de la
+    unidad: el del punto para un chunk hijo, el del bloque para un mini-chunk.
+    Del contexto heredado solo viajan los tramos `encabezado` (títulos de la
+    cadena): orientan la lectura y no son contenido normativo exigible (el
+    prompt del verificador ya excluye títulos como faltante). Los bloques de
+    prosa heredados NO entran: cada uno tiene su propio mini-chunk como unidad
+    verificada — si su contenido falta, el veredicto cae sobre esa unidad, no
+    sobre el hijo."""
     partes: list[str] = []
     for h in chunk.get("herencia", []):
+        if h["tipo"] != "encabezado":
+            continue
         partes.append(f"[{h['tipo']} | punto {h['unidad_origen']}]")
         partes.append(h["texto"])
-    partes.append(f"[texto propio | punto {chunk['unidad']}]")
+    if chunk.get("tipo") == "mini_chunk":
+        partes.append(f"[bloque {chunk['rol_bloque']} | punto {chunk['unidad']}]")
+    else:
+        partes.append(f"[texto propio | punto {chunk['unidad']}]")
     partes.append(chunk["texto"])
     return "\n".join(partes)
 
@@ -187,10 +218,13 @@ def normalizar_para_cita(texto: str) -> str:
 def fuente_para_citas(chunk: dict) -> str:
     """Fuente contra el que se verifican las citas (laudo post-fase B): los
     MISMOS textos que fuente_integro pero SIN los rótulos de bloque. Los
-    rótulos ('[intersticial | punto X]') se insertan entre segmentos que E0
+    rótulos ('[bloque intro | punto X]') se insertan entre segmentos que E0
     puede haber cortado a mitad de palabra ('presta-' / 'ciones'): una cita
-    fiel que cruza esa frontera jamás matchearía contra el render con rótulos."""
-    partes = [h["texto"] for h in chunk.get("herencia", [])]
+    fiel que cruza esa frontera jamás matchearía contra el render con rótulos.
+    Enmienda 01: mismo alcance que fuente_integro — títulos heredados + texto
+    propio de la unidad."""
+    partes = [h["texto"] for h in chunk.get("herencia", [])
+              if h["tipo"] == "encabezado"]
     partes.append(chunk["texto"])
     return "\n".join(partes)
 

@@ -245,7 +245,7 @@ def test_abort_reducir_parcial(tmp_dir):
     ex_path.write_text(json.dumps(REGS_FX[0], ensure_ascii=False) + "\n",
                        encoding="utf-8")
     chunks_orig = e2_lib.cargar_chunks_e0
-    e2_lib.cargar_chunks_e0 = lambda to: CHUNKS_FX
+    e2_lib.cargar_chunks_e0 = lambda to, e0_dir=None: CHUNKS_FX
     oraculo_fx = {"pro": {"coincidencias": ["9.1", "9.2"], "solo_mapa": [],
                           "solo_parser": []}}
     try:
@@ -409,6 +409,87 @@ def test_integracion_pro():
           res["reporte"]["sha256_grafo"][:16])
 
 
+def test_minichunks_fixture():
+    """Enmienda 01: los mini-chunks son unidades esperadas del fan-in; sus
+    elementos (rol bloque_<rol>) cuentan como contenido PROPIO; la cobertura
+    del censo para un mini va por su aporte de chunk id (no por el punto, que
+    otro chunk de la misma unidad pudo cubrir)."""
+    mini = {"id": "pro::9.0::intro", "to": "pro", "archivo": "fx.pdf",
+            "unidad": "9.0", "titulo": "[bloque intro] t 9.0",
+            "tipo": "mini_chunk", "rol_bloque": "intro",
+            "herencia": [], "flags": {}}
+    chunks = [mini] + CHUNKS_FX
+
+    # fan-in: el mini es esperado — su ausencia bloquea
+    fanin_sin = guarda_fanin(chunks, REGS_FX)
+    check("fan-in: mini-chunk ausente bloquea (unidad esperada del mapa)",
+          fanin_sin["ausentes"] == 1 and fanin_sin["lista_ausentes"] == ["pro::9.0::intro"]
+          and not fanin_sin["apto_para_ensamblar"])
+
+    prov_mini = {"to": "pro", "archivo": "fx.pdf", "punto": "9.0",
+                 "rol_documental": "bloque_intro"}
+    reg_mini = {"chunk_id": "pro::9.0::intro", "error": None,
+                "validacion": {"chunk_id": "pro::9.0::intro",
+                               "entidades": [
+                                   {"local_id": "to", "type": "TextoOrdenado",
+                                    "label": "TO fx", "properties": {"archivo": "fx.pdf"},
+                                    "provenance": prov_mini},
+                                   {"local_id": "e1", "type": "Obligacion",
+                                    "label": "Obligación del bloque",
+                                    "properties": {"descripcion": "Contenido del intro."},
+                                    "provenance": prov_mini}],
+                               "relaciones": [
+                                   {"source": "e1", "target": "to",
+                                    "predicate": "establecida_en", "sujeto_id": None,
+                                    "sujeto_propuesto": None,
+                                    "sujeto_propuesto_padre_sugerido": None,
+                                    "provenance": prov_mini}],
+                               "omisiones_no_prosa": [], "rechazos": [],
+                               "advertencias": [], "metricas": {}}}
+    regs = [reg_mini] + REGS_FX
+    fanin = guarda_fanin(chunks, regs)
+    ens = ensamblar(chunks, regs)
+    ap = ens["aporte_por_chunk"]["pro::9.0::intro"]
+    check("aporte del mini: elemento bloque_intro cuenta como contenido propio",
+          ap["contenido_propio"] == 1 and ap["contenido_herencia"] == 0)
+    oraculo_fx = {"pro": {"coincidencias": ["9.0", "9.1", "9.2"], "solo_mapa": [],
+                          "solo_parser": []}}
+    censo = censo_estructural("pro", chunks, ens["nodes"], fanin, oraculo_fx,
+                              aporte_por_chunk=ens["aporte_por_chunk"])
+    check("censo: mini con contenido propio cubierto",
+          censo["nivel_chunk"]["cubiertas"] == 3
+          and not censo["nivel_chunk"]["ausencias"])
+
+    # mini vacío (solo meta) → ausencia con diagnóstico de mini, aunque el
+    # punto 9.1 esté cubierto por otro chunk (acá el mini es de la unidad 9.1)
+    mini91 = dict(mini, id="pro::9.1::cierre", unidad="9.1", rol_bloque="cierre",
+                  titulo="[bloque cierre] t 9.1")
+    prov91 = {"to": "pro", "archivo": "fx.pdf", "punto": "9.1",
+              "rol_documental": "bloque_cierre"}
+    reg91 = {"chunk_id": "pro::9.1::cierre", "error": None,
+             "validacion": {"chunk_id": "pro::9.1::cierre",
+                            "entidades": [{"local_id": "to", "type": "TextoOrdenado",
+                                           "label": "TO fx",
+                                           "properties": {"archivo": "fx.pdf"},
+                                           "provenance": prov91}],
+                            "relaciones": [], "omisiones_no_prosa": [],
+                            "rechazos": [], "advertencias": [], "metricas": {}}}
+    chunks2 = CHUNKS_FX + [mini91]
+    regs2 = REGS_FX + [reg91]
+    fanin2 = guarda_fanin(chunks2, regs2)
+    ens2 = ensamblar(chunks2, regs2)
+    censo2 = censo_estructural("pro", chunks2, ens2["nodes"], fanin2,
+                               {"pro": {"coincidencias": ["9.1", "9.2"],
+                                        "solo_mapa": [], "solo_parser": []}},
+                               aporte_por_chunk=ens2["aporte_por_chunk"])
+    aus = censo2["nivel_chunk"]["ausencias"]
+    check("censo: mini solo-meta es ausencia con diagnóstico propio aunque su "
+          "punto esté cubierto por el chunk del punto",
+          len(aus) == 1 and aus[0]["chunk_id"] == "pro::9.1::cierre"
+          and "mini-chunk" in aus[0]["diagnostico"],
+          aus[0]["diagnostico"] if aus else "—")
+
+
 def main() -> int:
     tmp = BASE / "salida" / "_selftest_tmp"
     tmp.mkdir(parents=True, exist_ok=True)
@@ -422,6 +503,7 @@ def main() -> int:
     test_determinismo()
     test_censo_fixture()
     test_censo_ric_44()
+    test_minichunks_fixture()
     test_integracion_pro()
     for f in tmp.iterdir():
         f.unlink()

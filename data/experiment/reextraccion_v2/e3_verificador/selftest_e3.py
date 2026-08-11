@@ -159,18 +159,26 @@ def main() -> int:
           ["calificador_despojado", "calificador_despojado",
            "excepcion_ausente", "enumeracion_incompleta"])
     todos_chunks = {c["id"]: c for c in cargar_chunks(("cla", "pro", "ric"))}
+    # Enmienda 01: el fuente del hijo ya no porta la prosa heredada, así que
+    # las citas de los calibradores (congelados con el render de la
+    # calibración sellada, prosa heredada incluida) se verifican contra el
+    # PROPIO fuente del calibrador — que es lo que el verificador ve en el
+    # prefijo — con la misma normalización de la capa de citas.
     citas_ok = all(
-        cita_en_fuente(f["cita_textual_del_fuente"], todos_chunks[cal["chunk_id"]])
+        normalizar_para_cita(f["cita_textual_del_fuente"])
+        in normalizar_para_cita(cal["fuente"])
         for cal in cals for f in cal["veredicto"]["faltantes"]
     )
-    check("toda cita de calibrador verifica contra el fuente real de su chunk", citas_ok)
+    check("toda cita de calibrador verifica contra el fuente del calibrador "
+          "(render congelado, normalización de la capa de citas)", citas_ok)
     cal3 = cals[2]
     check("la cita del calibrador 3 cruza un guion de corte de línea del PDF "
           "('si-\\nguientes') y aun así verifica",
           "si-\nguientes" in cal3["fuente"]
           and "siguientes" in cal3["veredicto"]["faltantes"][0]["cita_textual_del_fuente"]
-          and cita_en_fuente(cal3["veredicto"]["faltantes"][0]["cita_textual_del_fuente"],
-                             todos_chunks["cla::6.5.1.1"]))
+          and normalizar_para_cita(
+              cal3["veredicto"]["faltantes"][0]["cita_textual_del_fuente"])
+          in normalizar_para_cita(cal3["fuente"]))
     import calibradores_e3 as _cal_mod
     from comun_e3 import cargar_extracciones_faseB
     val_real = cargar_extracciones_faseB()["pro::1.1.2.5"]["validacion"]
@@ -352,6 +360,164 @@ def main() -> int:
           and prompt_e3.PREFIJO_HASH in ns and "think=0" in ns, ns)
     check("el hash del prompt E3 difiere del de E1 (contratos independientes)",
           prompt_e3.PREFIJO_HASH != prompt_e1.PREFIJO_HASH)
+
+    # ---------------- I. Enmienda 01: fuente por tipo de unidad ------------- #
+    print("\n[I] enmienda 01: blanco de completitud por tipo de unidad")
+    resumen_sellado = json.loads(
+        (BASE / "salida" / "faseB_pro" / "resumen_faseB_e3.json").read_text(encoding="utf-8"))
+    check("PREFIJO E3 INTACTO respecto del sellado (calibradores congelados; "
+          "§5 de la enmienda: el prompt del verificador no cambia)",
+          prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"],
+          f"{prompt_e3.PREFIJO_HASH} vs {resumen_sellado['prefijo_hash_e3']}")
+
+    chunks_enm = {c["id"]: c for c in cargar_chunks(("pro",),
+                                                    e0_dir=comun_e3.E0_SALIDA_ENM01)}
+    hijo = chunks_enm["pro::2.7.1"]
+    mini = chunks_enm["pro::2.7::intro"]
+    f_hijo = fuente_integro(hijo)
+    f_mini = fuente_integro(mini)
+    check("fuente del hijo: blanco = texto propio, con rótulo [texto propio]",
+          "[texto propio | punto 2.7.1]" in f_hijo and hijo["texto"] in f_hijo)
+    check("fuente del hijo: la prosa heredada NO viaja (el intro del 2.7 tiene "
+          "su propio mini-chunk)",
+          "sendos hipervínculos" not in f_hijo)
+    check("fuente del hijo: los títulos de la cadena SÍ viajan (contexto no "
+          "normativo)",
+          "[encabezado | punto 2.7]" in f_hijo
+          and "2.7. Revocación de la aceptación" in f_hijo)
+    check("fuente del mini: blanco = su bloque, con rótulo [bloque intro]",
+          "[bloque intro | punto 2.7]" in f_mini
+          and "sendos hipervínculos" in f_mini)
+    check("fuente del mini: solo títulos como contexto (ningún otro bloque)",
+          all(l.startswith("[encabezado") for l in f_mini.split("\n")
+              if l.startswith("[") and not l.startswith("[bloque intro")))
+    check("capa de citas del hijo excluye la prosa heredada y la del mini la "
+          "incluye",
+          not cita_en_fuente("sendos hipervínculos", hijo)
+          and cita_en_fuente("sendos hipervínculos", mini))
+    check("capa de citas del hijo sigue cubriendo su texto propio",
+          cita_en_fuente(hijo["texto"].split("\n")[1], hijo)
+          if len(hijo["texto"].split("\n")) > 1 else cita_en_fuente(hijo["texto"], hijo))
+    # el request E3 de un mini es función pura y lleva su fuente como datos
+    val_min = {"entidades": [], "relaciones": [], "omisiones_no_prosa": []}
+    kw_mini = prompt_e3.build_request_kwargs(mini, val_min, model="M")
+    check("request E3 del mini: prefijo idéntico al de los chunks (mismo "
+          "contrato) y fuente del bloque en el mensaje",
+          canon({"system": kw_mini["system"], "tools": kw_mini["tools"],
+                 "tool_choice": kw_mini["tool_choice"]}) == ref
+          and f_mini in kw_mini["messages"][0]["content"])
+
+    # ---------------- J. Laudos A y B (política de severidad + guardia) ----- #
+    print("\n[J] laudos A (severidad) y B (guardia estructural) — E3 congelado")
+    unidades_pro = {c["unidad"] for c in chunks_enm.values()}
+
+    # J.1 — LAUDO A: unidad con SOLO faltantes media/baja → aceptada con
+    # residuales, cero reintentos (el stub E1 con cola vacía lo prueba).
+    chunk_a = chunks_pro["pro::1.1.1"]
+    ver_mb = {"veredicto": "faltantes_detectados", "faltantes": [
+        {"tipo": "calificador_despojado", "severidad": "media",
+         "cita_textual_del_fuente": chunk_a["texto"].split("\n")[0],
+         "ubicacion": chunk_a["unidad"]},
+        {"tipo": "otro", "severidad": "baja",
+         "cita_textual_del_fuente": chunk_a["texto"].split("\n")[-1],
+         "ubicacion": chunk_a["unidad"]},
+    ]}
+    val_a = {"entidades": [], "relaciones": [], "omisiones_no_prosa": [],
+             "rechazos": [], "advertencias": [], "metricas": {}}
+    stub_e3_j1 = cliente_e3.StubClienteE3([ver_mb])
+    stub_e1_j1 = cliente_e1.StubClienteE1([])
+    exp_j1 = ratchet_e3.ciclo_ratchet(
+        chunk_a, val_a, cliente_verificador=stub_e3_j1, cliente_extractor=stub_e1_j1,
+        model_e3="M3", model_e1="M1", unidades_corpus=unidades_pro)
+    check("LAUDO A: solo media/baja → aceptado_con_residuales, 0 reintentos, "
+          "validación final intacta",
+          exp_j1["estado"] == "aceptado_con_residuales"
+          and len(stub_e1_j1.requests_recibidos) == 0
+          and exp_j1["validacion_final"] is val_a
+          and len(exp_j1["residuales"]) == 2, exp_j1["estado"])
+    check("LAUDO A: los residuales quedan declarados con su severidad",
+          sorted(f["severidad"] for f in exp_j1["residuales"]) == ["baja", "media"])
+    ev_j1 = exp_j1["veredictos"][0]
+    check("LAUDO A: el veredicto no es completo_ok pero sí aceptable "
+          "(distinción persistida)",
+          not ev_j1["es_completo_ok"] and ev_j1["aceptable"]
+          and not ev_j1["faltantes_bloqueantes"])
+
+    # J.2 — LAUDO A: 'alta' sigue bloqueando (mezcla alta+media → reintento
+    # con feedback SOLO del bloqueante).
+    ver_mix = {"veredicto": "faltantes_detectados", "faltantes": [
+        {"tipo": "excepcion_ausente", "severidad": "alta",
+         "cita_textual_del_fuente": chunk_a["texto"].split("\n")[0],
+         "ubicacion": chunk_a["unidad"]},
+        {"tipo": "otro", "severidad": "media",
+         "cita_textual_del_fuente": chunk_a["texto"].split("\n")[-1],
+         "ubicacion": chunk_a["unidad"]},
+    ]}
+    ver_ok = {"veredicto": "completo_ok", "faltantes": []}
+    stub_e3_j2 = cliente_e3.StubClienteE3([ver_mix, ver_ok])
+    stub_e1_j2 = cliente_e1.StubClienteE1([fx["amputada"]["tool_input_reintento"]])
+    exp_j2 = ratchet_e3.ciclo_ratchet(
+        chunk_a, val_a, cliente_verificador=stub_e3_j2, cliente_extractor=stub_e1_j2,
+        model_e3="M3", model_e1="M1", unidades_corpus=unidades_pro)
+    msg_j2 = stub_e1_j2.requests_recibidos[0]["messages"][0]["content"]
+    feedback_j2 = msg_j2.split(ratchet_e3.MARCA_REINTENTO)[1]
+    check("LAUDO A: alta+media → reintenta y el bloque de feedback lleva SOLO "
+          "el bloqueante (el residual no se paga)",
+          exp_j2["estado"] == "aceptado_tras_reintento"
+          and len(stub_e1_j2.requests_recibidos) == 1
+          and "excepcion_ausente" in feedback_j2
+          and chunk_a["texto"].split("\n")[0] in feedback_j2
+          and chunk_a["texto"].split("\n")[-1] not in feedback_j2)
+
+    # J.3 — LAUDO B: caso REAL pro::2.7::intro — mini ordenador (':' final,
+    # origen con descendientes) + enumeracion_incompleta alta sobre la
+    # cláusula → estructural_no_bloqueante → aceptado con residuales.
+    mini27 = chunks_enm["pro::2.7::intro"]
+    ver_27 = {"veredicto": "faltantes_detectados", "faltantes": [
+        {"tipo": "enumeracion_incompleta", "severidad": "alta",
+         "cita_textual_del_fuente":
+             "Los sujetos obligados deberán contar con sendos hipervínculos "
+             "que permitan al usuario:",
+         "ubicacion": "2.7"},
+    ]}
+    stub_e3_j3 = cliente_e3.StubClienteE3([ver_27])
+    stub_e1_j3 = cliente_e1.StubClienteE1([])
+    exp_j3 = ratchet_e3.ciclo_ratchet(
+        mini27, val_a, cliente_verificador=stub_e3_j3, cliente_extractor=stub_e1_j3,
+        model_e3="M3", model_e1="M1", unidades_corpus=unidades_pro)
+    check("LAUDO B: pro::2.7::intro (caso real) → estructural_no_bloqueante, "
+          "aceptado_con_residuales sin reintento",
+          exp_j3["estado"] == "aceptado_con_residuales"
+          and len(stub_e1_j3.requests_recibidos) == 0
+          and exp_j3["residuales"][0]["estructural_no_bloqueante"] is True,
+          exp_j3["estado"])
+    check("LAUDO B: condiciones determinísticas del caso (':' final + "
+          "descendientes 2.7.x en el corpus)",
+          ratchet_e3._bloque_abre_enumeracion(mini27)
+          and ratchet_e3._origen_tiene_descendientes(mini27, unidades_pro))
+
+    # J.4 — LAUDO B falla hacia bloquear: sin unidades_corpus la guardia no
+    # aplica y el mismo veredicto (alta) dispara el ratchet.
+    ev_sin = ratchet_e3.evaluar_veredicto(ver_27, mini27, None)
+    check("LAUDO B: sin unidades_corpus la guardia NO aplica (falla hacia "
+          "bloquear)", len(ev_sin["faltantes_bloqueantes"]) == 1
+          and not ev_sin["aceptable"])
+    # …y tampoco aplica en un chunk hijo, ni con tipo distinto, ni con cita
+    # que no es la cláusula ordenadora.
+    ev_hijo = ratchet_e3.evaluar_veredicto(ver_27, chunks_enm["pro::2.7.1"], unidades_pro)
+    ver_otro = json.loads(json.dumps(ver_27))
+    ver_otro["faltantes"][0]["tipo"] = "otro"
+    ev_tipo = ratchet_e3.evaluar_veredicto(ver_otro, mini27, unidades_pro)
+    check("LAUDO B: no aplica a hijos ni a tipos distintos de "
+          "enumeracion_incompleta",
+          not ev_hijo["faltantes"][0]["estructural_no_bloqueante"]
+          and not ev_tipo["faltantes"][0]["estructural_no_bloqueante"]
+          and ev_tipo["faltantes"][0]["bloqueante"])
+
+    # J.5 — E3 congelado: el prompt no cambió con los laudos (re-chequeo del
+    # hash sellado al cierre de la unidad).
+    check("LAUDOS: prefijo E3 sigue INTACTO tras implementar A y B",
+          prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
 
     # ---------------- H. Estimación reproducible ---------------------------- #
     print("\n[H] estimación reproducible")

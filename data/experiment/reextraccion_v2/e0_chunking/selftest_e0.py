@@ -27,6 +27,18 @@ Tests de aceptación (casos reales documentados del proyecto):
   e) tablas: cuadros de ponderadores de cap (2.12.2.4, 2.13) y cuadros de
      partidas de ric (3.1.4, 7.2) flaggeados contenido_tabular.
 
+Tests de mini-chunks (enmienda 01 §2.a, ver e0_lib):
+  i) determinismo y criterio: 286 mini-chunks en los 5 TOs (pro: 13), ids
+     <to>::<unidad>::<rol>[::<n>] únicos, sha256 propio correcto, herencia
+     solo de tramos encabezado, provenance (unidad) = unidad de origen;
+     cero mini-chunks de rol encabezado (los títulos puros no materializan);
+     el intro de 1.144 chars del 7.6 de ext (el 'encabezado sin numerar' del
+     INFORME §6.b, tipo intro en la salida real) SÍ materializa; el intro
+     normativo de una línea del 2.7 de pro SÍ materializa (la letra del
+     criterio, no la heurística de escala); terminales byte-idénticos a la
+     emisión sin minis (mismo contenido, minis interleaved); conteos con
+     mini_chunks y censo-oráculo sin cambios.
+
 Tests de la corrección post-calibración (reglas 1 y 2, ver e0_lib):
   f) regla 1 — continuidad de enumeración: los acápites vii)–x) de pro
      2.3.1.1 salen en su texto PROPIO y la herencia de 2.3.1.2–2.3.1.4 ya no
@@ -94,7 +106,10 @@ def test_cobertura(d: Path) -> None:
 
 def test_t4(d: Path) -> None:
     print("== T4(a) ext 3.9 entero")
-    ext = cargar(d, "chunks_ext.json")
+    # T4 habla de chunks TERMINALES; desde la enmienda 01 los archivos traen
+    # además mini-chunks (que comparten `unidad` con su punto de origen) — se
+    # filtran acá y se testean aparte en test_minichunks.
+    ext = [c for c in cargar(d, "chunks_ext.json") if c["tipo"] != "mini_chunk"]
     por_unidad = {c["unidad"]: c for c in ext}
     esperados = [f"3.9.{i}" for i in range(1, 6)]
     check("chunks 3.9.1–3.9.5 presentes", all(u in por_unidad for u in esperados),
@@ -126,7 +141,7 @@ def test_t4(d: Path) -> None:
 
     print("== T4(c) cla 1.1, cla 4.5, ext 9.2 (ver docstring: contradicción con "
           "el mandato, reportada)")
-    cla = cargar(d, "chunks_cla.json")
+    cla = [c for c in cargar(d, "chunks_cla.json") if c["tipo"] != "mini_chunk"]
     cla_u = {c["unidad"]: c for c in cla}
     for u, titulo in [("1.1", "Criterio general"),
                       ("4.5", "Deudores que no deben ser objeto de clasificación")]:
@@ -146,13 +161,13 @@ def test_t4(d: Path) -> None:
     print("== T4(d) ric Sección 3: 3.2 anunciado sin cuerpo; el cuerpo lo rinde 3.1.4")
     anuncios = [x["numero"] for x in div["ric"]["anunciado_sin_cuerpo"]]
     check("ric 3.2 en anunciado_sin_cuerpo", "3.2" in anuncios, str(anuncios))
-    ric = cargar(d, "chunks_ric.json")
+    ric = [c for c in cargar(d, "chunks_ric.json") if c["tipo"] != "mini_chunk"]
     ric_u = {c["unidad"]: c for c in ric}
     check("ric 3.1.4 'Modelo de información' existe como chunk",
           "3.1.4" in ric_u and "Modelo de información" in ric_u["3.1.4"]["titulo"])
 
     print("== T4(e) tablas flaggeadas")
-    cap = cargar(d, "chunks_cap.json")
+    cap = [c for c in cargar(d, "chunks_cap.json") if c["tipo"] != "mini_chunk"]
     cap_u = {c["unidad"]: c for c in cap}
     for u in ("2.12.2.4", "2.13"):
         check(f"cap {u} (cuadro de ponderadores/CCF) flag contenido_tabular",
@@ -164,7 +179,7 @@ def test_t4(d: Path) -> None:
 
 def test_correcciones(d: Path) -> None:
     print("== T6(f) regla 1: acápites vii)–x) en el propio de pro 2.3.1.1")
-    pro = cargar(d, "chunks_pro.json")
+    pro = [c for c in cargar(d, "chunks_pro.json") if c["tipo"] != "mini_chunk"]
     pro_u = {c["unidad"]: c for c in pro}
     propio = pro_u["2.3.1.1"]["texto"]
     check("'vii)' en el texto propio de pro 2.3.1.1", "vii)" in propio)
@@ -193,11 +208,74 @@ def test_correcciones(d: Path) -> None:
 
     print("== T6(h) ric 4.4: regla 1 no aplica (limitación se mantiene)")
     check("cero reasignaciones en ric", not corr["ric"]["reasignaciones_continuidad"])
-    ric = cargar(d, "chunks_ric.json")
+    ric = [c for c in cargar(d, "chunks_ric.json") if c["tipo"] != "mini_chunk"]
     ric_u = {c["unidad"]: c for c in ric}
     t433 = ric_u["4.3.3"]["texto"]
     check("contenido de 4.4.3/4.4.4 sigue en el propio de ric 4.3.3",
           "4.4.3. Riesgo de cambio" in t433 and "4.4.4." in t433)
+
+
+def test_minichunks(d: Path) -> None:
+    print("== T7(i) mini-chunks (enmienda 01 §2.a)")
+    todos = {to: cargar(d, f"chunks_{to}.json") for to in ("cap", "cla", "ext", "pro", "ric")}
+    minis = {to: [c for c in cs if c["tipo"] == "mini_chunk"] for to, cs in todos.items()}
+    n_total = sum(len(m) for m in minis.values())
+    check("286 mini-chunks en los 5 TOs (contraste con estimación 284 de la enmienda)",
+          n_total == 286, f"{n_total} ({ {to: len(m) for to, m in minis.items()} })")
+    check("pro emite 13 mini-chunks (== estimación de la enmienda)",
+          len(minis["pro"]) == 13, str([m["id"] for m in minis["pro"]]))
+
+    ids = [m["id"] for cs in minis.values() for m in cs]
+    check("ids de mini-chunks únicos", len(ids) == len(set(ids)))
+    import re as _re
+    patron = _re.compile(r"^(cap|cla|ext|pro|ric)::[S0-9.]+::(chapeau_seccion|intro|intersticial|cierre)(::\d+)?$")
+    malformados = [i for i in ids if not patron.match(i)]
+    check("ids con forma <to>::<unidad>::<rol>[::<n>]", not malformados, str(malformados[:5]))
+    check("cero mini-chunks de rol encabezado (títulos puros no materializan)",
+          not any(m["rol_bloque"] == "encabezado" for cs in minis.values() for m in cs))
+
+    import hashlib as _hl
+    check("sha256_propio de cada mini = sha del texto del bloque",
+          all(m["sha256_propio"] == _hl.sha256(m["texto"].encode()).hexdigest()
+              for cs in minis.values() for m in cs))
+    check("herencia de todo mini: solo tramos encabezado (títulos de la cadena)",
+          all(t["tipo"] == "encabezado" for cs in minis.values()
+              for m in cs for t in m["herencia"]))
+    check("la unidad del mini es su unidad de origen (el id la contiene)",
+          all(m["id"].split("::")[1] == m["unidad"] for cs in minis.values() for m in cs))
+
+    m76 = [m for m in minis["ext"] if m["id"] == "ext::7.6::intro"]
+    check("el bloque de 1.144 chars del 7.6 de ext materializa como intro",
+          len(m76) == 1 and m76[0]["chars_propio"] == 1144
+          and "20 (veinte) días hábiles" in m76[0]["texto"])
+    m27 = [m for m in minis["pro"] if m["id"] == "pro::2.7::intro"]
+    check("el intro normativo de UNA línea del 2.7 de pro materializa (letra del "
+          "criterio, no la heurística de escala)",
+          len(m27) == 1 and "sendos hipervínculos" in m27[0]["texto"])
+    m231 = [m for m in minis["pro"] if m["id"] == "pro::2.3.1::intro"]
+    check("pro::2.3.1::intro (norma de Caja de ahorros) materializa",
+          len(m231) == 1 and "Caja de" in m231[0]["texto"])
+    check("pro::S3::chapeau_seccion materializa",
+          any(m["id"] == "pro::S3::chapeau_seccion" for m in minis["pro"]))
+
+    inter = sorted(m["id"] for cs in minis.values() for m in cs
+                   if m["rol_bloque"] == "intersticial")
+    check("los 3 intersticiales de ext materializan (uno por segmento)",
+          inter == ["ext::3.16.3::intersticial", "ext::4.2::intersticial",
+                    "ext::7.9.3::intersticial"], str(inter))
+
+    # interleaved documental: intro antes del primer hijo, cierre tras el último
+    ids_pro = [c["id"] for c in todos["pro"]]
+    check("emisión interleaved: pro::2.3.1::intro antes de pro::2.3.1.1 y "
+          "pro::2.7::cierre después de pro::2.7.2",
+          ids_pro.index("pro::2.3.1::intro") < ids_pro.index("pro::2.3.1.1")
+          and ids_pro.index("pro::2.7::cierre") > ids_pro.index("pro::2.7.2"))
+
+    conteos = cargar(d, "conteos.json")
+    check("conteos: chunks = terminales + mini_chunks en los 5 TOs",
+          all(c["chunks"] == c["chunks_terminales"] + c["mini_chunks"]
+              for c in conteos.values()),
+          str({to: (c["chunks_terminales"], c["mini_chunks"]) for to, c in conteos.items()}))
 
 
 def main() -> int:
@@ -219,6 +297,7 @@ def main() -> int:
     test_cobertura(dir_a)
     test_t4(dir_a)
     test_correcciones(dir_a)
+    test_minichunks(dir_a)
 
     total = len(RESULTADOS)
     ok = sum(1 for _, b, _ in RESULTADOS if b)

@@ -32,12 +32,38 @@ Los textos fuente salen de la salida sellada de E0 y la extracción real del
 calibrador 4 de la salida sellada de E1 fase B: los verbatims no se duplican
 a mano donde existe el dato. Las extracciones amputadas (1-3) son literales
 construidos aquí, con la amputación exacta documentada en el backlog.
+
+ENMIENDA 01 — render CONGELADO: estos calibradores forman parte del PREFIJO
+cacheado de E3, cuya calidad se midió en la calibración sellada (detección
+gold 8/8, prefijo_hash_e3 en resumen_faseB_e3.json). La enmienda cambió
+comun_e3.fuente_integro (el blanco del hijo pasa al texto propio), pero el
+prompt del verificador NO cambia (§5 de la enmienda): el fuente de los
+calibradores se renderiza acá con `_fuente_estilo_calibracion`, la réplica
+byte a byte del fuente_integro vigente durante la calibración (herencia
+completa + texto propio). El selftest verifica que PREFIJO_HASH quede
+idéntico al sellado. El ejemplo CAL-3 sigue siendo pedagógicamente válido:
+enseña que todo contenido normativo DEL FUENTE RECIBIDO debe estar
+representado — exactamente la regla que el verificador aplica, cualquiera sea
+el recorte del fuente que reciba por unidad.
 """
 
 from __future__ import annotations
 
 import comun_e3
-from comun_e3 import cargar_chunks, cargar_extracciones_faseB, fuente_integro
+from comun_e3 import cargar_chunks, cargar_extracciones_faseB
+
+
+def _fuente_estilo_calibracion(chunk: dict) -> str:
+    """Réplica CONGELADA del comun_e3.fuente_integro vigente en la
+    calibración sellada de E3 (herencia estructural completa, con rótulos,
+    + texto propio). No seguir a comun_e3: cambiarla rotaría el prefijo."""
+    partes: list[str] = []
+    for h in chunk.get("herencia", []):
+        partes.append(f"[{h['tipo']} | punto {h['unidad_origen']}]")
+        partes.append(h["texto"])
+    partes.append(f"[texto propio | punto {chunk['unidad']}]")
+    partes.append(chunk["texto"])
+    return "\n".join(partes)
 
 
 def _ent(local_id: str, type_: str, label: str, punto: str, **props) -> dict:
@@ -102,7 +128,7 @@ def construir_calibradores() -> list[dict]:
         "id": "CAL-1",
         "titulo": "calificador_despojado — enumeración con renglones despojados de sus calificadores",
         "chunk_id": "ric::7.1",
-        "fuente": fuente_integro(ch_ric),
+        "fuente": _fuente_estilo_calibracion(ch_ric),
         "extraccion": extr_1,
         "veredicto": {
             "veredicto": "faltantes_detectados",
@@ -159,7 +185,7 @@ def construir_calibradores() -> list[dict]:
         "id": "CAL-2",
         "titulo": "excepcion_ausente — salvedad del alcance no representada",
         "chunk_id": "pro::1.1.2.5",
-        "fuente": fuente_integro(ch_pro),
+        "fuente": _fuente_estilo_calibracion(ch_pro),
         "extraccion": extr_2,
         "veredicto": {
             "veredicto": "faltantes_detectados",
@@ -268,7 +294,7 @@ def construir_calibradores() -> list[dict]:
         "id": "CAL-3",
         "titulo": "enumeracion_incompleta — la cláusula que ordena la enumeración quedó afuera",
         "chunk_id": "cla::6.5.1.1",
-        "fuente": fuente_integro(ch_cla),
+        "fuente": _fuente_estilo_calibracion(ch_cla),
         "extraccion": extr_3,
         "veredicto": {
             "veredicto": "faltantes_detectados",
@@ -311,7 +337,7 @@ def construir_calibradores() -> list[dict]:
         "id": "CAL-4",
         "titulo": "completo_ok — misma fuente que el calibrador 2, extracción completa",
         "chunk_id": "pro::1.1.2.5",
-        "fuente": fuente_integro(ch_pro),
+        "fuente": _fuente_estilo_calibracion(ch_pro),
         "extraccion": extr_4,
         "veredicto": {"veredicto": "completo_ok", "faltantes": []},
         "porque": (

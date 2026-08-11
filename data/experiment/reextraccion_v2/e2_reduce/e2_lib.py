@@ -47,7 +47,8 @@ BASE = Path(__file__).resolve().parent                  # e2_reduce/
 REEXTRACCION = BASE.parents[0]                          # reextraccion_v2/
 REPO = BASE.parents[3]                                  # raíz del repo
 
-E0_SALIDA = REEXTRACCION / "e0_chunking" / "salida"
+E0_SALIDA = REEXTRACCION / "e0_chunking" / "salida"              # calibración sellada
+E0_SALIDA_ENM01 = REEXTRACCION / "e0_chunking" / "salida_enm01"  # enmienda 01 (con mini-chunks)
 GRAFO_V2 = REPO / "data" / "experiment" / "grafo_v2"
 GRAFO_V2_CODE = GRAFO_V2 / "code"
 CATALOGO_PATH = GRAFO_V2 / "esquema_v2_clases.json"
@@ -122,15 +123,16 @@ def entity_slug_v3(e: dict[str, Any]) -> str:
 # Carga de insumos
 # =========================================================================
 
-def cargar_chunks_e0(to: str) -> list[dict]:
-    """Chunks de E0 de un TO, en el orden del archivo (orden documental)."""
-    path = E0_SALIDA / f"chunks_{to}.json"
+def cargar_chunks_e0(to: str, e0_dir: Path = E0_SALIDA) -> list[dict]:
+    """Chunks de E0 de un TO, en el orden del archivo (orden documental).
+    `e0_dir` selecciona la salida: la sellada (default) o la enm01."""
+    path = e0_dir / f"chunks_{to}.json"
     with path.open(encoding="utf-8") as f:
         return json.load(f)
 
 
-def cargar_censo_oraculo() -> dict:
-    with (E0_SALIDA / "censo_oraculo.json").open(encoding="utf-8") as f:
+def cargar_censo_oraculo(e0_dir: Path = E0_SALIDA) -> dict:
+    with (e0_dir / "censo_oraculo.json").open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -297,7 +299,10 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
             prov = e["provenance"]
             if etype in TIPOS_NO_CONTENIDO:
                 aporte["meta"] += 1
-            elif prov["rol_documental"] == "punto_propio":
+            elif prov["rol_documental"] == "punto_propio" \
+                    or prov["rol_documental"].startswith("bloque_"):
+                # bloque_<rol> = elemento de un mini-chunk (enmienda 01): el
+                # bloque ES el texto propio de esa unidad.
                 aporte["contenido_propio"] += 1
             else:
                 aporte["contenido_herencia"] += 1
@@ -573,7 +578,16 @@ def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
     cubiertas_chunk = 0
     for c in chunks:
         unidad = c["unidad"]
-        if unidad in puntos:
+        if c.get("tipo") == "mini_chunk":
+            # Un mini-chunk comparte `unidad` con otros (su punto de origen
+            # tiene título, intro y cierre): la cobertura se mide por el
+            # aporte PROPIO del chunk id, no por el punto (que otro chunk
+            # pudo cubrir).
+            ap = (aporte_por_chunk or {}).get(c["id"])
+            if ap and ap["contenido_propio"] > 0:
+                cubiertas_chunk += 1
+                continue
+        elif unidad in puntos:
             cubiertas_chunk += 1
             continue
         est = estados_fanin.get(c["id"], {"estado": "desconocido", "motivo": None})
@@ -584,6 +598,10 @@ def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
                    (f" ({est['motivo']})" if est["motivo"] else "")
         elif flags.get("contenido_tabular") or flags.get("formula"):
             diag = "chunk flaggeado no-prosa por E0 (tabular/formula) sin nodos de contenido"
+        elif c.get("tipo") == "mini_chunk":
+            diag = ("mini-chunk aceptado sin nodos de contenido propios: el "
+                    "extractor no encontró contenido normativo extraíble en el "
+                    "bloque (candidato a E3 / bloque no normativo)")
         elif _cubre(puntos, unidad):
             diag = "sin nodo propio pero con descendientes cubiertos (anclaje en sub-unidades)"
         elif aporte and aporte["contenido_herencia"] > 0:
@@ -633,7 +651,8 @@ def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
         "to": to,
         "criterio": "nodo de contenido = type no en "
                     f"{list(TIPOS_NO_CONTENIDO)}; anclaje por provenance.punto "
-                    "(exacto a nivel chunk; exacto-o-descendiente a nivel mapa)",
+                    "(exacto a nivel chunk; exacto-o-descendiente a nivel mapa; "
+                    "mini-chunks por aporte propio del chunk id — enmienda 01)",
         "nivel_chunk": {
             "unidades": len(chunks),
             "cubiertas": cubiertas_chunk,
@@ -664,19 +683,23 @@ class FanInError(RuntimeError):
 
 
 def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
-            censo_oraculo: dict | None = None) -> dict:
+            censo_oraculo: dict | None = None, e0_dir: Path = E0_SALIDA) -> dict:
     """Corrida E2 completa para un TO: guarda de fan-in → ensamblado → censo.
 
     Si el fan-in no es apto y no hay flag, aborta con FanInError ANTES de
     ensamblar (el reporte de fan-in viaja en la excepción). Los rechazados de
-    E1 no abortan: están contabilizados y aparecen en el censo.
+    E1 no abortan: están contabilizados y aparecen en el censo. `e0_dir`
+    selecciona la salida de E0 (sellada por default; enm01 para la corrida de
+    la enmienda, cuyo mapa incluye los mini-chunks como unidades esperadas).
     """
-    chunks = cargar_chunks_e0(to)
+    chunks = cargar_chunks_e0(to, e0_dir=e0_dir)
     registros = cargar_extracciones(extracciones_path)
     fanin = guarda_fanin(chunks, registros)
     if not fanin["apto_para_ensamblar"] and not permitir_parcial:
         raise FanInError(fanin)
 
+    if censo_oraculo is None:
+        censo_oraculo = cargar_censo_oraculo(e0_dir)
     ens = ensamblar(chunks, registros)
     censo = censo_estructural(to, chunks, ens["nodes"], fanin, censo_oraculo,
                               aporte_por_chunk=ens["aporte_por_chunk"])

@@ -25,8 +25,32 @@ del verificador de la Fase 2.4):
   - verificación de cada cita textual contra el fuente real de la unidad
     (normalización del precedente C7). Una cita que NO verifica no se inyecta
     al reintento (una cita fabricada envenenaría la re-extracción); queda
-    registrada. Si NINGÚN faltante tiene cita verificada, el veredicto es
-    inutilizable para el ratchet y el chunk va a cola humana con flag propio.
+    registrada. Si NINGÚN faltante BLOQUEANTE tiene cita verificada, el
+    veredicto es inutilizable para el ratchet y el chunk va a cola humana con
+    flag propio.
+
+LAUDOS POST-MINI-RECALIBRACIÓN (2026-08-11; E3 congelado — el prompt del
+verificador NO cambia, solo esta capa determinística):
+
+  LAUDO A — política de aceptación por severidad: SOLO los faltantes de
+  severidad 'alta' bloquean (disparan reintento o cola). Los media/baja se
+  PERSISTEN como residuales declarados por unidad y la unidad se ACEPTA con
+  residuales (estados nuevos: aceptado_con_residuales; los aceptados tras
+  reintento también portan sus residuales). Motivación medida: en la
+  mini-recalibración, 18 de las 22 unidades de cola tenían SOLO faltantes
+  media/baja en su último veredicto — blanco móvil del verificador, no
+  amputaciones que cambien una respuesta regulatoria.
+
+  LAUDO B — guardia estructural de bloques ordenadores: en un MINI-CHUNK
+  cuyo texto cierra abriendo una enumeración (última línea no vacía que
+  termina en ':') y cuya unidad de origen tiene unidades descendientes en el
+  corpus, un faltante `enumeracion_incompleta` cuya cita (verificada) es esa
+  cláusula ordenadora se marca `estructural_no_bloqueante` y NO bloquea: los
+  ítems de la enumeración SON los puntos hijos, que el mini no ve por diseño
+  (caso caracterizado pro::2.7::intro). Queda registrado en el veredicto.
+  La condición de descendencia exige el set de unidades del corpus
+  (`unidades_corpus`); si no se provee, la guardia no se aplica (falla hacia
+  bloquear, nunca hacia aceptar de más).
 """
 
 from __future__ import annotations
@@ -35,7 +59,7 @@ import json
 from pathlib import Path
 
 import comun_e3
-from comun_e3 import cita_en_fuente
+from comun_e3 import cita_en_fuente, normalizar_para_cita
 import prompt_e3
 import cliente_e3
 
@@ -45,7 +69,10 @@ import cliente_e1
 
 TOPE_REINTENTOS = 1
 
-ESTADOS = ("completo_ok_directo", "aceptado_tras_reintento",
+SEVERIDAD_BLOQUEANTE = ("alta",)   # LAUDO A: media/baja son residuales
+
+ESTADOS = ("completo_ok_directo", "aceptado_con_residuales",
+           "aceptado_tras_reintento",
            "cola_humana", "cola_humana_veredicto_inutilizable",
            "cola_humana_reextraccion_invalida")
 
@@ -56,16 +83,57 @@ MARCA_REINTENTO = "# REINTENTO DE EXTRACCIÓN — feedback del verificador de co
 # Capa determinística sobre el veredicto del LLM                             #
 # ------------------------------------------------------------------------- #
 
-def evaluar_veredicto(tool_input, chunk: dict) -> dict:
+def _bloque_abre_enumeracion(chunk: dict) -> bool:
+    """LAUDO B, condición textual: la última línea no vacía del texto del
+    mini-chunk termina en ':' (u su variante de dos puntos ancho)."""
+    lineas = [l.strip() for l in chunk.get("texto", "").split("\n") if l.strip()]
+    return bool(lineas) and lineas[-1].rstrip().endswith((":", "："))
+
+
+def _origen_tiene_descendientes(chunk: dict, unidades_corpus: set[str]) -> bool:
+    """LAUDO B, condición estructural: la unidad de origen del mini tiene
+    unidades descendientes en el corpus (los ítems de la enumeración viven en
+    los hijos). Para secciones ('S3') el prefijo de descendencia es '3.'."""
+    u = chunk["unidad"]
+    pref = (u[1:] + ".") if u.startswith("S") else (u + ".")
+    return any(x.startswith(pref) for x in unidades_corpus)
+
+
+def _guardia_estructural(f: dict, chunk: dict,
+                         unidades_corpus: set[str] | None) -> bool:
+    """LAUDO B: ¿este faltante es estructural_no_bloqueante? Exige: mini-chunk
+    ordenador (':' final) + descendientes en el corpus + tipo
+    enumeracion_incompleta + cita verificada que ES la cláusula ordenadora
+    (normalizada, termina en ':' y está contenida en el bloque). Sin
+    `unidades_corpus` la guardia no aplica (falla hacia bloquear)."""
+    if unidades_corpus is None or chunk.get("tipo") != "mini_chunk":
+        return False
+    if f.get("tipo") != "enumeracion_incompleta" or not f.get("cita_verificada"):
+        return False
+    if not _bloque_abre_enumeracion(chunk):
+        return False
+    if not _origen_tiene_descendientes(chunk, unidades_corpus):
+        return False
+    cita_n = normalizar_para_cita(f.get("cita_textual_del_fuente") or "")
+    return cita_n.endswith(":") and cita_n in normalizar_para_cita(chunk["texto"])
+
+
+def evaluar_veredicto(tool_input, chunk: dict,
+                      unidades_corpus: set[str] | None = None) -> dict:
     """Evalúa determinísticamente el tool input del verificador: coherencia
-    del contrato + verificación de citas contra el fuente. No juzga contenido
-    (eso es del LLM): juzga formato y anclaje."""
+    del contrato + verificación de citas contra el fuente + política de
+    severidad (LAUDO A) + guardia estructural (LAUDO B). No juzga contenido
+    (eso es del LLM): juzga formato, anclaje y bloqueo."""
     ev = {
         "veredicto_crudo": tool_input,
         "es_completo_ok": False,
         "faltantes": [],               # todos, cada uno con cita_verificada
         "faltantes_utilizables": [],   # solo los de cita verificada
+        "faltantes_bloqueantes": [],   # LAUDO A/B: alta y no estructural
+        "bloqueantes_utilizables": [],  # bloqueantes con cita verificada
+        "residuales": [],              # media/baja + estructural_no_bloqueante
         "incoherencias": [],
+        "aceptable": False,            # coherente y sin faltantes bloqueantes
     }
     if not isinstance(tool_input, dict):
         ev["incoherencias"].append("tool_input_no_dict")
@@ -95,10 +163,26 @@ def evaluar_veredicto(tool_input, chunk: dict) -> dict:
         cita = f.get("cita_textual_del_fuente") or ""
         f_ev = dict(f)
         f_ev["cita_verificada"] = cita_en_fuente(cita, chunk)
+        f_ev["estructural_no_bloqueante"] = _guardia_estructural(
+            f_ev, chunk, unidades_corpus)
+        # LAUDO A: solo 'alta' bloquea; LAUDO B la exime si es estructural.
+        f_ev["bloqueante"] = (f_ev.get("severidad") in SEVERIDAD_BLOQUEANTE
+                              and not f_ev["estructural_no_bloqueante"])
         ev["faltantes"].append(f_ev)
         if f_ev["cita_verificada"]:
             ev["faltantes_utilizables"].append(f_ev)
+        if f_ev["bloqueante"]:
+            ev["faltantes_bloqueantes"].append(f_ev)
+            if f_ev["cita_verificada"]:
+                ev["bloqueantes_utilizables"].append(f_ev)
+        else:
+            ev["residuales"].append(f_ev)
 
+    # Aceptable: veredicto coherente sin faltantes bloqueantes (los residuales
+    # se declaran, no bloquean). Un veredicto incoherente jamás es aceptable.
+    ev["aceptable"] = (not ev["incoherencias"]
+                       and not ev["faltantes_bloqueantes"]
+                       and veredicto in ("completo_ok", "faltantes_detectados"))
     return ev
 
 
@@ -238,11 +322,18 @@ class RegistroE3:
 def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
                   cliente_extractor, model_e3: str, model_e1: str,
                   registro: RegistroE3 | None = None,
-                  max_tokens_reintento: int | None = None) -> dict:
+                  max_tokens_reintento: int | None = None,
+                  unidades_corpus: set[str] | None = None) -> dict:
     """Ejecuta el ciclo E3 completo de una unidad:
 
-      verificación → (si faltantes) re-extracción con feedback → re-validación
-      E1 → re-verificación E3 → aceptación o cola humana.
+      verificación → (si faltantes BLOQUEANTES) re-extracción con feedback →
+      re-validación E1 → re-verificación E3 → aceptación o cola humana.
+
+    Política de aceptación (LAUDO A): solo los faltantes 'alta' bloquean; una
+    unidad con solo media/baja (o estructurales del LAUDO B) se acepta con
+    esos faltantes declarados en `residuales`. El feedback del reintento
+    lleva SOLO los bloqueantes con cita verificada (los residuales se
+    declaran, no se pagan). `unidades_corpus` habilita la guardia B.
 
     Devuelve el expediente completo (auditable). La extracción que sobrevive
     (original o re-extraída) queda en `validacion_final`; si el estado es de
@@ -254,30 +345,41 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
                 "chunk_id": chunk["id"], "fase": fase, "intento": intento,
                 "tool_input": crudo["tool_input"], "error": crudo["error"],
                 "es_completo_ok": ev["es_completo_ok"],
+                "aceptable": ev["aceptable"],
                 "n_faltantes": len(ev["faltantes"]),
                 "n_faltantes_utilizables": len(ev["faltantes_utilizables"]),
+                "n_bloqueantes": len(ev["faltantes_bloqueantes"]),
+                "n_residuales": len(ev["residuales"]),
                 "incoherencias": ev["incoherencias"],
                 "faltantes": ev["faltantes"],
             })
 
-    expediente: dict = {"chunk_id": chunk["id"], "veredictos": [], "reintentos": []}
+    def _aceptar(estado: str, ev: dict, val: dict) -> dict:
+        expediente["estado"] = estado
+        expediente["validacion_final"] = val
+        expediente["residuales"] = ev["residuales"]
+        return expediente
+
+    expediente: dict = {"chunk_id": chunk["id"], "veredictos": [],
+                        "reintentos": [], "residuales": []}
 
     # --- Verificación inicial -------------------------------------------- #
     crudo1 = cliente_e3.verificar_chunk(cliente_verificador, chunk, validacion, model=model_e3)
-    ev1 = evaluar_veredicto(crudo1["tool_input"], chunk)
+    ev1 = evaluar_veredicto(crudo1["tool_input"], chunk, unidades_corpus)
     _persistir_veredicto("verificacion", 0, crudo1, ev1)
     expediente["veredictos"].append(ev1)
 
     if ev1["es_completo_ok"]:
-        expediente["estado"] = "completo_ok_directo"
-        expediente["validacion_final"] = validacion
-        return expediente
+        return _aceptar("completo_ok_directo", ev1, validacion)
+    if ev1["aceptable"]:
+        # LAUDO A/B: sin bloqueantes — se acepta con residuales declarados.
+        return _aceptar("aceptado_con_residuales", ev1, validacion)
 
     validacion_actual = validacion
     ev_actual = ev1
     for intento in range(1, TOPE_REINTENTOS + 1):
-        if not ev_actual["faltantes_utilizables"]:
-            # Veredicto sin ninguna cita verificable: inutilizable para el
+        if not ev_actual["bloqueantes_utilizables"]:
+            # Bloqueantes sin ninguna cita verificable: inutilizable para el
             # ratchet — no se re-extrae sobre citas fabricadas.
             expediente["estado"] = "cola_humana_veredicto_inutilizable"
             expediente["validacion_final"] = None
@@ -286,8 +388,9 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
             return expediente
 
         # --- Re-extracción con feedback (después del breakpoint) --------- #
+        # Solo los bloqueantes con cita verificada entran al feedback.
         reex = reextraer_chunk(cliente_extractor, chunk,
-                               ev_actual["faltantes_utilizables"],
+                               ev_actual["bloqueantes_utilizables"],
                                model=model_e1, intento=intento,
                                max_tokens_reintento=max_tokens_reintento)
         expediente["reintentos"].append(reex)
@@ -303,16 +406,14 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
         validacion_actual = reex["validacion"]
         crudo_n = cliente_e3.verificar_chunk(cliente_verificador, chunk,
                                              validacion_actual, model=model_e3)
-        ev_actual = evaluar_veredicto(crudo_n["tool_input"], chunk)
+        ev_actual = evaluar_veredicto(crudo_n["tool_input"], chunk, unidades_corpus)
         _persistir_veredicto("re_verificacion", intento, crudo_n, ev_actual)
         expediente["veredictos"].append(ev_actual)
 
-        if ev_actual["es_completo_ok"]:
-            expediente["estado"] = "aceptado_tras_reintento"
-            expediente["validacion_final"] = validacion_actual
-            return expediente
+        if ev_actual["es_completo_ok"] or ev_actual["aceptable"]:
+            return _aceptar("aceptado_tras_reintento", ev_actual, validacion_actual)
 
-    # --- Tope agotado: cola humana, jamás ingreso silencioso -------------- #
+    # --- Tope agotado con bloqueantes: cola humana, jamás ingreso silencioso #
     expediente["estado"] = "cola_humana"
     expediente["validacion_final"] = None
     if registro is not None:

@@ -27,7 +27,7 @@ import hashlib
 import json
 
 import comun_e1  # noqa: F401  (inserta grafo_v2/code en sys.path)
-from comun_e1 import chunk_flaggeado, puntos_admitidos
+from comun_e1 import chunk_flaggeado, es_mini_chunk, puntos_admitidos
 from schema import (
     ENTITY_TYPES,
     PREDICATES,
@@ -46,7 +46,10 @@ NOMBRE_TOOL = "extraer_kg_e1"
 # PREFIJO DE SISTEMA (estable, cacheado)                                     #
 # ========================================================================== #
 
-PREFIJO_SISTEMA = f"""Sos un extractor de tripletas para un Knowledge Graph regulatorio del BCRA (Banco Central de la República Argentina). Trabajás sobre UN chunk por vez: un punto numerado de un Texto Ordenado más su contexto estructural heredado (encabezados, chapeaux, párrafos introductorios y de cierre de la jerarquía que lo contiene). No ves el resto del corpus ni la salida de otros extractores.
+PREFIJO_SISTEMA = f"""Sos un extractor de tripletas para un Knowledge Graph regulatorio del BCRA (Banco Central de la República Argentina). Trabajás sobre UNA unidad de extracción por vez. No ves el resto del corpus ni la salida de otros extractores. La unidad es de uno de dos tipos (el mensaje lo declara):
+
+- **Chunk de punto**: un punto numerado de un Texto Ordenado, más su contexto estructural heredado (encabezados, chapeaux, párrafos introductorios y de cierre de la jerarquía que lo contiene). Extraés SOLO del texto del punto; el contexto heredado orienta y ancla, pero NO se extrae de él (cada bloque heredado tiene su propia unidad de extracción responsable — ver PROVENANCE).
+- **Mini-chunk de bloque estructural**: un bloque de prosa de una unidad contenedora (chapeau de sección, párrafo introductorio, intersticial o de cierre), más la cadena de títulos que lo ubica. Ese bloque ES tu unidad: extraé TODO su contenido normativo, exactamente como harías con el texto de un punto.
 
 Trabajás con un schema CERRADO y RÍGIDO (esquema v2, catálogo de sujetos v{CATALOGO_VERSION}). NO inventes tipos. NO inventes predicados. NO inventes sujetos.
 
@@ -114,10 +117,10 @@ El sujeto de una relación `aplica_a` o `ejecuta` se ELIGE del catálogo de abaj
 
 TODA entidad y TODA relación llevan el campo `punto`: la unidad estructural del documento que FUNDA ese elemento. El mensaje del chunk trae la lista cerrada "Puntos admitidos"; `punto` debe ser EXACTAMENTE uno de esos valores.
 
-- Contenido extraído del texto del punto propio → `punto` = el punto del chunk.
-- Contenido extraído del CONTEXTO ESTRUCTURAL HEREDADO (un chapeau de sección, un párrafo introductorio del punto contenedor, un encabezado) → `punto` = la unidad de origen de ese bloque heredado, tal como figura en el mensaje. El contexto heredado NO es decorado: si un chapeau o un cierre enuncia una norma, una excepción o una condición, se extrae, anclada a SU unidad de origen.
-- Para una relación, `punto` es la unidad cuyo texto enuncia la conexión (si la norma y su conexión están en el punto propio, es el punto propio).
-- El nodo TextoOrdenado lleva `punto` = el punto del chunk.
+- Contenido extraído del texto de la unidad (el punto del chunk, o el bloque del mini-chunk) → `punto` = la unidad declarada en el mensaje.
+- **EL CONTEXTO ANCLA, LA UNIDAD EXTRAE.** En un chunk de punto, NO extraigas contenido normativo de los bloques heredados (chapeaux, intros, intersticiales, cierres): cada uno de esos bloques es la unidad de extracción de OTRO extractor (su mini-chunk), y extraerlo acá duplicaría y anclaría mal. El contexto heredado sirve para: (i) interpretar el texto del punto (resolver "dichos sujetos", "esa operación", el alcance que el chapeau fija); (ii) anclar en un ancestro un elemento que el TÍTULO de ese ancestro nombra y el texto del punto desarrolla (p. ej. la Operacion que el encabezado del punto contenedor denomina) → ese elemento lleva `punto` = la unidad del ancestro.
+- Para una relación, `punto` es la unidad cuyo texto enuncia la conexión (si la norma y su conexión están en el texto de la unidad, es la unidad).
+- El nodo TextoOrdenado lleva `punto` = la unidad del chunk.
 - Un elemento sin `punto`, o con un `punto` fuera de la lista admitida, se DESCARTA en validación. No inventes unidades.
 
 # REGLAS NO NEGOCIABLES
@@ -296,10 +299,19 @@ def build_user_message(chunk: dict) -> str:
     """Único contenido variable del request. Función pura del dict del chunk:
     mismo chunk → mismo mensaje byte a byte."""
     partes: list[str] = []
+    mini = es_mini_chunk(chunk)
 
     partes.append(f"Documento fuente: {chunk['archivo']}")
     partes.append(f"TO: {chunk['to']}")
-    partes.append(f"Punto del chunk: {chunk['unidad']} — {chunk['titulo']}")
+    if mini:
+        partes.append(
+            f"Tipo de unidad: MINI-CHUNK de bloque estructural "
+            f"({chunk['rol_bloque']} del punto {chunk['unidad']})"
+        )
+        partes.append(f"Unidad de origen: {chunk['unidad']} — {chunk['titulo']}")
+    else:
+        partes.append("Tipo de unidad: chunk de punto")
+        partes.append(f"Punto del chunk: {chunk['unidad']} — {chunk['titulo']}")
     partes.append(
         "Puntos admitidos para `punto`: " + ", ".join(puntos_admitidos(chunk))
     )
@@ -317,7 +329,14 @@ def build_user_message(chunk: dict) -> str:
 
     herencia = chunk.get("herencia", [])
     if herencia:
-        partes.append("Contexto estructural heredado (extraíble, con `punto` de su unidad de origen):")
+        if mini:
+            partes.append("Cadena de títulos (ubica el bloque; NO es contenido a extraer):")
+        else:
+            partes.append(
+                "Contexto estructural heredado (SOLO contexto y anclaje: NO extraigas "
+                "contenido normativo de estos bloques — cada uno tiene su propia unidad "
+                "de extracción; ver PROVENANCE):"
+            )
         for h in herencia:
             partes.append(f"[{h['tipo']} | punto {h['unidad_origen']}]")
             partes.append(h["texto"])
@@ -341,7 +360,13 @@ def build_user_message(chunk: dict) -> str:
             partes.append(f"  evidencia: {ev}")
         partes.append("")
 
-    partes.append(f"Texto del punto {chunk['unidad']}:")
+    if mini:
+        partes.append(
+            f"Texto del bloque {chunk['rol_bloque']} del punto {chunk['unidad']} "
+            f"(TU unidad de extracción):"
+        )
+    else:
+        partes.append(f"Texto del punto {chunk['unidad']}:")
     partes.append("```")
     partes.append(chunk["texto"])
     partes.append("```")

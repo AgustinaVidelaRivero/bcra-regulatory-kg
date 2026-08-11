@@ -227,3 +227,68 @@ vs extracción 1.182), pero no compensa el multiplicador de precios.
 - El tope de 1 reintento queda como constante laudada (`TOPE_REINTENTOS`);
   si la calibración muestra que un segundo reintento rescata unidades, se
   re-lauda con datos.
+
+---
+
+## Enmienda 01 (2026-08-11) — blanco propio por unidad + mini-recalibración pro
+
+Implementación de `docs/enmienda_01_diseno_reextraccion_v2.md` §2.d-e y
+corrida completa E0→E3 sobre pro con la arquitectura enmendada
+(`salida/faseB_pro_enm01/`; la calibración sellada queda intacta).
+
+**Cambio de armado del fuente** (`comun_e3.fuente_integro` /
+`fuente_para_citas`): el blanco de completitud del hijo es su TEXTO PROPIO;
+el del mini-chunk, su bloque. Del contexto heredado solo viajan los tramos
+`encabezado` (títulos). **El prompt del verificador NO cambió**: los
+calibradores se congelaron con `_fuente_estilo_calibracion` (réplica del
+render de la calibración) y el hash del prefijo E3 quedó **INTACTO**
+(`21a836c7de6d`, == `resumen_faseB_e3.json → prefijo_hash_e3` sellado). Las
+keys de la caché local igual rotan (fuente y extracciones nuevas): la
+verificación se pagó completa, con 1 write de prefijo de API (11.637 tok).
+`TOPE_REINTENTOS = 1` sin cambio (§2.e cierra la pregunta §7.a).
+
+**Resultados contra las predicciones de la enmienda §3** (comandos: 
+`analisis_enm01.py` → `salida/faseB_pro_enm01/analisis_enm01.json`):
+
+1. **P1 — la familia desaparece del veredicto de los hijos: CONFIRMADA.**
+   0 faltantes base de hijos verifican solo-en-prosa-heredada (sellado:
+   60/117 en 27 unidades). En los MINI-CHUNKS la familia NO reaparece como
+   tal: 6 faltantes base en 5 de los 13 minis, y son hallazgos de completitud
+   del propio bloque (no las 60 normas heredadas). Caso caracterizado:
+   `pro::2.7::intro` — el extractor representó la obligación del bloque, pero
+   E3 objeta (con razón formal) que la enumeración que el «:» abre no está en
+   el fuente del mini: los ítems son los puntos hijos 2.7.1/2.7.2. Modo
+   residual estructural de los bloques ordenadores, a laudar.
+2. **P2 — cola < 10 %: REFUTADA (mejora sin perforar la meta).** Cola real
+   22/101 = **21,8 %** (referencia sellada 29,9 %; caída de 8 pts = 27 %
+   relativo). Composición: 19 de las 26 unidades de la cola sellada ahora
+   aceptadas; solo 7 persisten; **15 unidades NUEVAS entraron en cola** (churn
+   del verificador: en 18 de las 22 el último veredicto tiene SOLO faltantes
+   media/baja — E3 encuentra faltantes marginales nuevos en cada pasada,
+   blanco móvil). La enmienda eliminó la familia dominante pero destapó cola
+   marginal que antes quedaba enmascarada.
+3. **P3 — costo baja: CONFIRMADA.** Fase B total **USD 2,4823** (E1 0,775 +
+   E3 1,2321 + reintentos E1 0,4752) vs sellado 2,87 (0,73 + 2,14) y vs
+   estimación 2,60 (`estimacion_enm01.json`; tasa de reintentos declarada
+   32/87 = 36,8 % — real: 41/101 = 40,6 %).
+
+**Distribución por tipo de unidad** (`resumen_faseB_e3.json →
+estados_por_clase`): hijos 50 ok directo / 19 aceptados tras reintento /
+18+1 cola; minis 8 ok directo / 2 aceptados tras reintento / 2+1 cola.
+Veredicto base: 38/88 hijos y 5/13 minis con faltantes (total 60 faltantes:
+54 hijos + 6 minis; tipo dominante `otro` 26 — sellado: 58/117).
+**Reintentos:** 41, todos con tope 1; 21 convirtieron (51 %). **Citas:**
+92 reportadas, 7 no verificadas — tasa de fabricación 7,6 % con la capa
+corregida. **Caching:** E1 re-extracción 101 misses / 1 write 9.983 /
+100 reads exactos; E3 142 misses / 1 write 11.637 / reads exactos
+(`cache_read` total 1.640.817 = 141×11.637); reintentos E1 41 misses /
+0 writes (prefijo caliente de la corrida E1, mismo namespace rotado).
+
+**Muestra para revisión humana**: `salida/faseB_pro_enm01/
+muestra_revision_humana.txt` — extracción + veredictos completos de
+`pro::2.3.1::intro` (norma de Caja de ahorros: ok directo), `pro::2.7::intro`
+(cola, caso caracterizado), `pro::S3::chapeau_seccion` (ok directo),
+`pro::3.1.1::intro` (aceptado tras reintento), `pro::2.4::cierre` (ok
+directo), y el veredicto nuevo de `pro::2.3.1.1` (con vii)–x) en su propio:
+los faltantes de la familia desaparecieron; E3 ahora marca calificadores del
+texto propio y la unidad quedó en cola por blanco móvil del verificador).

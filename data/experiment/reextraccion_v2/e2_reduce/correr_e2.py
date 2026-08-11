@@ -19,7 +19,7 @@ import json
 import sys
 from pathlib import Path
 
-from e2_lib import BASE, FanInError, TOS, reducir
+from e2_lib import BASE, E0_SALIDA, FanInError, TOS, reducir
 
 SALIDA = BASE / "salida"
 
@@ -36,23 +36,31 @@ def main() -> int:
     ap.add_argument("--permitir-parcial", action="store_true",
                     help="ensambla aun con fan-in no apto; el reporte queda "
                          "marcado parcial (jamás es el default)")
+    ap.add_argument("--e0-dir", type=Path, default=E0_SALIDA,
+                    help="salida de E0 a usar como mapa (default: la sellada; "
+                         "para la enmienda 01: e0_chunking/salida_enm01)")
+    ap.add_argument("--sufijo", default="",
+                    help="sufijo de los archivos de salida (p. ej. _enm01), "
+                         "para no pisar la corrida sellada")
     args = ap.parse_args()
 
     SALIDA.mkdir(parents=True, exist_ok=True)
+    suf = args.sufijo
     try:
         res = reducir(args.to, args.extracciones,
-                      permitir_parcial=args.permitir_parcial)
+                      permitir_parcial=args.permitir_parcial,
+                      e0_dir=args.e0_dir)
     except FanInError as e:
-        _dump(SALIDA / f"fanin_{args.to}.json", e.fanin)
+        _dump(SALIDA / f"fanin_{args.to}{suf}.json", e.fanin)
         print(f"ABORTADO — {e}", flush=True)
-        print(f"Reporte de fan-in: {SALIDA / f'fanin_{args.to}.json'}", flush=True)
+        print(f"Reporte de fan-in: {SALIDA / f'fanin_{args.to}{suf}.json'}", flush=True)
         return 2
 
-    (SALIDA / f"grafo_{args.to}.json").write_text(res["grafo_json"] + "\n",
-                                                  encoding="utf-8")
-    _dump(SALIDA / f"fanin_{args.to}.json", res["fanin"])
-    _dump(SALIDA / f"censo_{args.to}.json", res["censo"])
-    _dump(SALIDA / f"reporte_e2_{args.to}.json", res["reporte"])
+    (SALIDA / f"grafo_{args.to}{suf}.json").write_text(res["grafo_json"] + "\n",
+                                                       encoding="utf-8")
+    _dump(SALIDA / f"fanin_{args.to}{suf}.json", res["fanin"])
+    _dump(SALIDA / f"censo_{args.to}{suf}.json", res["censo"])
+    _dump(SALIDA / f"reporte_e2_{args.to}{suf}.json", res["reporte"])
 
     r = res["reporte"]
     print(json.dumps({k: r[k] for k in

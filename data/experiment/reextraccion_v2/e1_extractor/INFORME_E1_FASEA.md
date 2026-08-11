@@ -182,3 +182,42 @@ incremental real es 1.389 chunks (la tabla no descuenta eso).
   por longitud. Su cumplimiento se evalúa en la calibración.
 - `ClienteE1Real` está escrito pero NO ejercitado contra la API (prohibición
   de fase A); su primera prueba real es parte de la fase B.
+
+---
+
+## Enmienda 01 (2026-08-11) — el contexto ancla, la unidad extrae
+
+Implementación de `docs/enmienda_01_diseno_reextraccion_v2.md` §2.b:
+
+- **Prompt** (`prompt_e1.py`): el prefijo declara dos tipos de unidad (chunk
+  de punto / mini-chunk de bloque estructural) y reescribe la sección
+  PROVENANCE: el contexto heredado deja de ser extraíble — orienta la lectura
+  y admite anclar en un ancestro lo que su TÍTULO nombra (el caso 2.7.x→2.7
+  que ya funcionaba); el contenido de los bloques heredados es responsabilidad
+  de su mini-chunk. El mensaje del hijo marca la herencia como «SOLO contexto
+  y anclaje: NO extraigas…»; el del mini declara el bloque como SU unidad.
+- **Rotación de namespace (candado):** el hash del prefijo pasó de
+  `4dd055a4c5e8` (sellado) a `4793d6152608` → namespace
+  `e1_extraccion|cv=e1-extractor-v1-p4793d6152608|think=0`. Las extracciones
+  de la mini-recalibración se pagaron completas: no es un hit perdido, es el
+  candado operando como se diseñó.
+- **Endurecimiento del validador (decisión declarada):** para MINI-CHUNKS es
+  real y duro — `puntos_admitidos = [unidad_origen]`, todo anclaje a
+  ancestros se rechaza (`punto_fuera_de_admitidos`) y el rol documental es
+  `bloque_<rol>`. Para HIJOS la restricción del conjunto es un NO-OP a
+  granularidad de punto: todo ancestro heredado aporta su tramo `encabezado`,
+  que sigue siendo ancla legítima, y el valor `punto` no distingue de qué
+  tramo proviene el contenido; la división de responsabilidad del hijo la
+  garantizan la instrucción del prompt y el blanco propio de E3 (§2.d). Está
+  documentado en `comun_e1.puntos_admitidos`.
+
+**Corrida fase B enm01** (`runner_faseB_e1_enm01.py` →
+`salida/faseB_pro_enm01/`, sellada intacta): 101/101 ok (88 chunks + 13
+minis), 0 errores de API, gasto **USD 0,775** (fórmula D2; estimado 1,05),
+caching exacto: 1 write de prefijo (9.983 tok) y 100/100 reads de 9.983.
+Elementos aceptados: hijos 411 entidades + 637 relaciones; minis 53 + 83.
+Rechazos por elemento: 9 (7 firma_invalida, 1 punto_fuera_de_admitidos,
+1 ref_colgante), todos registrados.
+
+**Selftest ampliado: 53/53 PASS** (corre sobre `salida_enm01/`: prefijo
+idéntico en las 1.763 unidades, checks de mini-chunks y del no-op declarado).

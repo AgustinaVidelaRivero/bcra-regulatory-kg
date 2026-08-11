@@ -45,6 +45,31 @@ DÓNDE cae la frontera; el des-silabeo del texto sigue siendo decisión de E1.
 Ver `corregir_fronteras_intra_palabra` (detector y exclusiones en su
 docstring).
 
+MINI-CHUNKS (enmienda 01, docs/enmienda_01_diseno_reextraccion_v2.md §2.a):
+los bloques estructurales de los nodos NO terminales (chapeau de sección,
+intro, intersticial, cierre) se emiten además como unidades de extracción de
+primera clase. Criterio de materialización (letra de §2.a): un bloque se
+materializa si y solo si contiene texto además de su línea de título — los
+tramos `encabezado` son la línea de label y tras descontarla no queda nada
+(jamás materializan); los segmentos de prosa no contienen la línea de label y
+materializan siempre que su texto normalizado no sea vacío. La heurística de
+escala de la enmienda (una línea ≤140 chars ≈ título) queda descartada como
+criterio: excluiría intros normativos de una línea (caso pro 2.7,
+'deberán contar con sendos hipervínculos…'). Invariante resultante: todo
+bloque de prosa de un ancestro con texto no vacío tiene exactamente un
+responsable de extracción (su mini-chunk).
+
+Agrupado: los segmentos intro (y el chapeau de sección) de una unidad son
+contiguos por construcción (todos antes del primer hijo), ídem los cierre
+(después del último); cada grupo se funde en UN mini-chunk — evita fragmentar
+fórmulas y colas envueltas que el parser separó por cambio de columna. Los
+intersticiales viven en huecos distintos entre hijos: uno por segmento, con
+sufijo ::<n> (orden documental) cuando hay más de uno del mismo rol.
+Id determinístico: <to>::<unidad_origen>::<rol>[::<n>] — función de la unidad
+de origen y el rol documental, nunca del orden de emisión. Emisión
+interleaved en orden documental: intro antes de los hijos, intersticial en su
+hueco, cierre después. Ver `construir_chunks`.
+
 Sin llamadas a LLM: código determinístico puro.
 """
 
@@ -993,8 +1018,21 @@ def _rol_segmentos(nodo: Nodo) -> list[dict]:
     return out
 
 
+def _materializa_bloque(texto: str) -> bool:
+    """Criterio de materialización de mini-chunks (enmienda 01 §2.a, letra):
+    el bloque contiene texto además de su línea de título. Los tramos
+    `encabezado` SON la línea de título (construida del label) y nunca llegan
+    acá; para los segmentos de prosa —que no contienen la línea de label— el
+    criterio se reduce a texto normalizado no vacío."""
+    return bool("".join(texto.split()))
+
+
 def construir_chunks(res: ResultadoParseo) -> list[dict]:
     chunks: list[dict] = []
+
+    def _titulo_linea(a: Nodo) -> str:
+        return (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
+                else f"{a.numero}. {a.titulo}")
 
     def herencia_de(nodo: Nodo) -> list[dict]:
         """Cadena de herencia: por cada ancestro (sección → … → padre),
@@ -1008,10 +1046,8 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
         tramos: list[dict] = []
         for a in cadena:
             unidad = a.numero if a.tipo == "punto" else f"S{a.numero}"
-            titulo = (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
-                      else f"{a.numero}. {a.titulo}")
             tramos.append({"tipo": "encabezado", "unidad_origen": unidad,
-                           "texto": titulo, "paginas": [a.pagina]})
+                           "texto": _titulo_linea(a), "paginas": [a.pagina]})
             for item in _rol_segmentos(a):
                 if item["rol"] == "contenido":
                     continue  # no ocurre: los ancestros tienen hijos
@@ -1027,6 +1063,54 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
                     "paginas": _paginas_de(seg),
                 })
         return tramos
+
+    def herencia_titulos(nodo: Nodo) -> list[dict]:
+        """Cadena de títulos (tramos `encabezado`) desde la sección hasta el
+        propio nodo inclusive: el contexto mínimo de orientación de un
+        mini-chunk. Sin bloques de prosa: la prosa de cada ancestro tiene su
+        propio mini-chunk responsable."""
+        cadena: list[Nodo] = [nodo]
+        n = nodo.padre
+        while n is not None:
+            cadena.append(n)
+            n = n.padre
+        cadena.reverse()
+        return [{"tipo": "encabezado",
+                 "unidad_origen": a.numero if a.tipo == "punto" else f"S{a.numero}",
+                 "texto": _titulo_linea(a), "paginas": [a.pagina]}
+                for a in cadena]
+
+    def emitir_mini(nodo: Nodo, rol: str, segs: list[list[Linea]],
+                    n_tramo: int | None) -> None:
+        """Emite un mini-chunk desde uno o más segmentos contiguos del mismo
+        rol de un nodo NO terminal (enmienda 01 §2.a). `n_tramo` numera los
+        tramos múltiples de un mismo rol (solo intersticiales); None = único."""
+        texto = "\n".join(_texto_segmento(s) for s in segs)
+        if not _materializa_bloque(texto):
+            return
+        unidad = nodo.numero if nodo.tipo == "punto" else f"S{nodo.numero}"
+        mini_id = f"{res.to}::{unidad}::{rol}" + (f"::{n_tramo}" if n_tramo else "")
+        lineas = [l for s in segs for l in s]
+        herencia = herencia_titulos(nodo)
+        texto_herencia = "\n".join(t["texto"] for t in herencia)
+        completo = (texto_herencia + "\n" + texto) if texto_herencia else texto
+        chunks.append({
+            "id": mini_id,
+            "to": res.to,
+            "archivo": res.archivo,
+            "unidad": unidad,
+            "titulo": f"[bloque {rol}] {nodo.titulo}",
+            "tipo": "mini_chunk",
+            "rol_bloque": rol,
+            "paginas": _paginas_de(lineas),
+            "texto": texto,
+            "chars_propio": len(texto),
+            "chars_completo": len(completo),
+            "herencia": herencia,
+            "flags": _flags_tabla_formula(lineas),
+            "sha256_propio": hashlib.sha256(texto.encode("utf-8")).hexdigest(),
+            "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
+        })
 
     def emitir(nodo: Nodo) -> None:
         es_terminal = not nodo.hijos
@@ -1064,8 +1148,39 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
                 "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
             })
         else:
-            for h in nodo.hijos:
+            # Nodo NO terminal: sus bloques estructurales se emiten como
+            # mini-chunks (enmienda 01 §2.a) interleaved en orden documental —
+            # intro/chapeau antes de los hijos, intersticiales en su hueco,
+            # cierre después. La herencia de los hijos no cambia: el bloque
+            # sigue viajando además como contexto.
+            items = _rol_segmentos(nodo)
+            intro_segs = [it["seg"] for it in items if it["rol"] == "intro"]
+            cierre_segs = [it["seg"] for it in items if it["rol"] == "cierre"]
+            intersticiales = [it["seg"] for it in items if it["rol"] == "intersticial"]
+            rol_intro = "chapeau_seccion" if nodo.tipo == "seccion" else "intro"
+
+            # hueco de cada intersticial: después del hijo k (mismas marcas
+            # posicionales que _rol_segmentos)
+            marcas = [(h.pagina, h.linea_label.top if h.linea_label else 0.0)
+                      for h in nodo.hijos]
+            por_hueco: dict[int, list[list[Linea]]] = {}
+            for s in intersticiales:
+                pos = (s[0].pagina, s[0].top)
+                k = max(i for i, mp in enumerate(marcas) if mp < pos)
+                por_hueco.setdefault(k, []).append(s)
+            n_inter = len(intersticiales)
+            contador_inter = 0
+
+            if intro_segs:
+                emitir_mini(nodo, rol_intro, intro_segs, None)
+            for k, h in enumerate(nodo.hijos):
                 emitir(h)
+                for s in por_hueco.get(k, []):
+                    contador_inter += 1
+                    emitir_mini(nodo, "intersticial", [s],
+                                contador_inter if n_inter > 1 else None)
+            if cierre_segs:
+                emitir_mini(nodo, "cierre", cierre_segs, None)
 
     for s in res.secciones:
         emitir(s)
