@@ -1,0 +1,1949 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_run3",
+    "grafo": "run_3",
+    "kg_path": "data/experiment/run_3_ppf_core/kg.json",
+    "kg_sha256": "12c226e22b8fdc8f46999cae7f1eb808930e71f5dfe803f3a4f637a88348c410",
+    "eje": "navegabilidad",
+    "caso_id": "EE-017::literal",
+    "sample_id": "EE-017",
+    "variante": "literal",
+    "estrato": "E-E",
+    "pos_orden_global": 101,
+    "pos_orden_efectivo": 96,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T11:28:22",
+    "timestamp_fin": "2026-08-14T11:28:47",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "98d3ee73a23c214b",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 11
+    },
+    "fidelidad_sin_evaluar": false
+  },
+  "pregunta": "¿A partir de qué momento se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente?",
+  "trace": {
+    "qid": "EE-017::literal",
+    "question": "¿A partir de qué momento se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "mora 90 días descubierto cuenta corriente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"mora 90 días descubierto cuenta corriente\", \"total_con_match\": 109, \"resultados\": [{\"id\": \"Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene\", \"type\": \"Restriccion\", \"label\": \"Cancelación de sobregiros dentro de 30 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…\"}, {\"id\": \"Operacion_autorizacion_de_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Autorización de sobregiros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: autorización de sobregiro en cuenta corriente\"}, {\"id\": \"Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien\", \"type\": \"Restriccion\", \"label\": \"Límite temporal de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …\"}, {\"id\": \"Operacion_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Sobregiros en cuenta… [+1992 chars]",
+        "output_chars": 3192
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto en cuenta corriente mora",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto en cuenta corriente mora\", \"total_con_match\": 865, \"resultados\": [{\"id\": \"Operacion_autorizacion_de_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Autorización de sobregiros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: autorización de sobregiro en cuenta corriente\"}, {\"id\": \"Operacion_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Sobregiros en cuenta corriente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: sobregiro en cuenta corriente\"}, {\"id\": \"Operacion_adelantos_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Otorgamiento de adelantos transitorios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: adelantos en cuenta corriente\"}, {\"id\": \"Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene\", \"type\": \"Restriccion\", \"label\": \"Cancelación de sobregiros dentro de 30 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…\"}, {\"id\": \"Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_cons… [+1910 chars]",
+        "output_chars": 3110
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "clasificación mora descubierto 90 días",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"clasificación mora descubierto 90 días\", \"total_con_match\": 117, \"resultados\": [{\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudor según mora\"}, {\"id\": \"Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien\", \"type\": \"Restriccion\", \"label\": \"Límite temporal de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …\"}, {\"id\": \"Restriccion_los_requisitos_se_evaluan_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_lo\", \"type\": \"Restriccion\", \"label\": \"Límite temporal: 90 días anteriores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"los requisitos se evalúan en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores\"}, {\"id\": \"Restriccion_que_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_los_90_dias_corridos_ant\", \"type\": \"Restriccion\", \"label\": \"Prohibición de entrega a vinculadas\", \"tokens_matchea… [+2310 chars]",
+        "output_chars": 3510
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "deudor mora superior 90 días descubierto",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"deudor mora superior 90 días descubierto\", \"total_con_match\": 117, \"resultados\": [{\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudor según mora\"}, {\"id\": \"Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien\", \"type\": \"Restriccion\", \"label\": \"Límite temporal de 90 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …\"}, {\"id\": \"Restriccion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d\", \"type\": \"Restriccion\", \"label\": \"Permanencia mínima 180 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su deuda y recibido crédito adicional deberá permanecer en esta categoría por lo m…\"}, {\"id\": \"Operacion_reclasificacion_a_categoria_superior\", \"type\": \"Operacion\", \"label\": \"Reclasificación deudor superior\", \"tokens_matcheados\": … [+2218 chars]",
+        "output_chars": 3418
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_clasificacion_de_deudor_segun_mora"
+        },
+        "output_truncado": "{\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"properties\": {\"tipo\": \"clasificación de deudor según mora\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr\"}]}",
+        "output_chars": 353
+      },
+      {
+        "n": 6,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_clasificacion_de_deudor_segun_mora",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"label\": \"Clasificación de deudor\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l\", \"vecino_label\": \"Clasificar compañía según mora\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr\"}]}], \"entrantes_truncado\": false}",
+        "output_chars": 590
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "categoría mora descubierto cuenta corriente momento",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"categoría mora descubierto cuenta corriente momento\", \"total_con_match\": 82, \"resultados\": [{\"id\": \"Operacion_autorizacion_de_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Autorización de sobregiros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: autorización de sobregiro en cuenta corriente\"}, {\"id\": \"Operacion_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Sobregiros en cuenta corriente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: sobregiro en cuenta corriente\"}, {\"id\": \"Obligacion_evaluar_cuenta_corriente_del_pais\", \"type\": \"Obligacion\", \"label\": \"Evaluar cuenta corriente del país\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se deberá considerar las debilidades implícitas en la cuenta corriente del país\"}, {\"id\": \"Operacion_adelantos_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Otorgamiento de adelantos transitorios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: adelantos en cuenta corriente\"}, {\"id\": \"Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene\", \"type\": \"Restriccion\", \"label\": \"Cancelación de sobregiros dentro de 30 días\", \"tokens_matcheados\"… [+1784 chars]",
+        "output_chars": 2984
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto cuenta corriente se considera mora",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto cuenta corriente se considera mora\", \"total_con_match\": 391, \"resultados\": [{\"id\": \"Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n\", \"type\": \"Restriccion\", \"label\": \"Plazo de cumplimiento para adelantos transitorios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento\"}, {\"id\": \"Operacion_autorizacion_de_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Autorización de sobregiros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: autorización de sobregiro en cuenta corriente\"}, {\"id\": \"Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien\", \"type\": \"Excepcion\", \"label\": \"Gastos otorgamiento emisión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…\"}, {\"id\": \"Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l\", \"type\": \"Obligacio… [+2258 chars]",
+        "output_chars": 3458
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto comienza mora vencimiento",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto comienza mora vencimiento\", \"total_con_match\": 43, \"resultados\": [{\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …\"}, {\"id\": \"Operacion_clasificacion_de_deudor_segun_mora\", \"type\": \"Operacion\", \"label\": \"Clasificación de deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: clasificación de deudor según mora\"}, {\"id\": \"Operacion_vencimiento_de_capital_financiado\", \"type\": \"Operacion\", \"label\": \"Vencimientos de capital\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: vencimiento de capital financiado\"}, {\"id\": \"Restriccion_los_instrumentos_son_identicos_si_tienen_igual_emisor_cupon_moneda_y_vencimiento\", \"type\": \"Restriccion\", \"label\": \"Identidad de instrumentos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se entiende que los instrumentos son idénticos si tienen igual emisor, cupón, moneda y… [+1951 chars]",
+        "output_chars": 3151
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto cuenta corriente a partir de qué momento mora",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto cuenta corriente a partir de qué momento mora\", \"total_con_match\": 3222, \"resultados\": [{\"id\": \"Excepcion_la_clasificacion_se_verifica_a_partir_del_momento_en_que_no_habiendo_sido_rechaz\", \"type\": \"Excepcion\", \"label\": \"Excepción por rechazo de reclamo\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La clasificación se verifica a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos l…\"}, {\"id\": \"Obligacion_el_pago_garantizado_debia_ser_concretado_por_el_cliente_a_partir_de_la_fecha_que\", \"type\": \"Obligacion\", \"label\": \"Verificación de fecha de pago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El pago garantizado debía ser concretado por el cliente a partir de la fecha que resultaba de adicionar el plazo en días corridos que le corresponde al servicio…\"}, {\"id\": \"Restriccion_si_se_trata_de_servicios_que_fueron_o_seran_prestados_o_devengados_a_partir_del_\", \"type\": \"Restriccion\", \"label\": \"Servicios a partir de 13/12/23\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Si se trata de servicios que fueron o serán prestados o devengados a partir del 13/12/23, la entidad deberá co… [+2797 chars]",
+        "output_chars": 3997
+      },
+      {
+        "n": 11,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto se considera mora desde el día siguiente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto se considera mora desde el día siguiente\", \"total_con_match\": 855, \"resultados\": [{\"id\": \"Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien\", \"type\": \"Excepcion\", \"label\": \"Gastos otorgamiento emisión\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…\"}, {\"id\": \"Obligacion_se_compromete_a_que_desde_el_momento_en_que_requiere_el_acceso_al_mercado_de_cam\", \"type\": \"Obligacion\", \"label\": \"Compromiso de no venta de títulos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"se compromete a que desde el momento en que requiere el acceso al mercado de cambios y por los 90 días corridos subsiguientes no concertará ventas en el país de…\"}, {\"id\": \"Restriccion_los_punitorios_u_otros_equivalentes_que_se_devenguen_desde_el_01_01_25_continuar\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa para punitorios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los punitorios u otros equivalentes que se devenguen desde el 01/01/25 continuarán alcanzados por el requisito de… [+2623 chars]",
+        "output_chars": 3823
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto cuenta corriente día siguiente vencimiento mora",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto cuenta corriente día siguiente vencimiento mora\", \"total_con_match\": 91, \"resultados\": [{\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …\"}, {\"id\": \"Operacion_autorizacion_de_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Autorización de sobregiros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: autorización de sobregiro en cuenta corriente\"}, {\"id\": \"Operacion_sobregiro_en_cuenta_corriente\", \"type\": \"Operacion\", \"label\": \"Sobregiros en cuenta corriente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: sobregiro en cuenta corriente\"}, {\"id\": \"Obligacion_evaluar_cuenta_corriente_del_pais\", \"type\": \"Obligacion\", \"label\": \"Evaluar cuenta corriente del país\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se deberá considerar las debilidades implícitas en la cuenta corriente del país\"}… [+1866 chars]",
+        "output_chars": 3066
+      },
+      {
+        "n": 13,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n\", \"type\": \"Restriccion\", \"label\": \"Plazo de cumplimiento para adelantos transitorios\", \"properties\": {\"descripcion\": \"Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"61 días\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 7.2. Niveles de clasificación. (parte 1)\"}]}",
+        "output_chars": 543
+      },
+      {
+        "n": 14,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto cuenta corriente se considera mora a partir del día siguiente al vencimiento",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto cuenta corriente se considera mora a partir del día siguiente al vencimiento\", \"total_con_match\": 1865, \"resultados\": [{\"id\": \"Obligacion_recategorizacion_del_deudor_a_partir_del_mes_siguiente_al_de_puesta_a_disposicio\", \"type\": \"Obligacion\", \"label\": \"Recategorización a categoría superior\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"La recategorización del deudor se efectuará a partir del mes siguiente al de puesta a disposición de la pertinente información de dicha central, al menos en la …\"}, {\"id\": \"Restriccion_su_reconocimiento_como_rpc_se_limitara_al_90_del_valor_obtenido_a_partir_de_esa_\", \"type\": \"Restriccion\", \"label\": \"Límite de reconocimiento al 90% con reducción anual\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Su reconocimiento como RPC se limitará al 90% del valor obtenido a partir de esa fecha, reduciéndose cada doce meses dicho límite en 10 puntos porcentuales\"}, {\"id\": \"Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de\", \"type\": \"Obligacion\", \"label\": \"Considerar mora al vencimiento emergencia agropecuaria\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"A los fines de la clasificación,… [+2715 chars]",
+        "output_chars": 3915
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "mora descubierto definición se considera",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"mora descubierto definición se considera\", \"total_con_match\": 360, \"resultados\": [{\"id\": \"Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien\", \"type\": \"Excepcion\", \"label\": \"Gastos otorgamiento emisión\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…\"}, {\"id\": \"Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l\", \"type\": \"Obligacion\", \"label\": \"Clasificar compañía según mora\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo, teniendo en cuenta la fecha …\"}, {\"id\": \"Restriccion_definicion_de_exposiciones_en_mora\", \"type\": \"Restriccion\", \"label\": \"Definición de exposiciones en mora\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se consideran en mora a las exposiciones subyacentes cuando se verifiquen atrasos en los pagos de 90 días o más, estén sujetas a procedimientos de quiebra o con…\"}, {\"id\": \"E… [+2382 chars]",
+        "output_chars": 3582
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1476,
+        "output_tokens": 168,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.79
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3846,
+        "output_tokens": 189,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.327
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 97,
+        "cache_read": 0,
+        "cache_write": 6524,
+        "latency_s": 1.599
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 115,
+        "cache_read": 6524,
+        "cache_write": 230,
+        "latency_s": 1.579
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 169,
+        "cache_read": 6754,
+        "cache_write": 343,
+        "latency_s": 1.655
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 202,
+        "cache_read": 7097,
+        "cache_write": 2412,
+        "latency_s": 2.451
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 188,
+        "cache_read": 9509,
+        "cache_write": 2698,
+        "latency_s": 1.976
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 128,
+        "cache_read": 12207,
+        "cache_write": 2585,
+        "latency_s": 2.206
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 129,
+        "cache_read": 14792,
+        "cache_write": 320,
+        "latency_s": 1.796
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 105,
+        "cache_read": 15112,
+        "cache_write": 1497,
+        "latency_s": 1.725
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 413,
+        "cache_read": 16609,
+        "cache_write": 1388,
+        "latency_s": 5.128
+      }
+    ],
+    "final_json": {
+      "respuesta": "No se encontró en el Knowledge Graph información específica que defina claramente a partir de qué momento exacto se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente. Si bien se encontró que las exposiciones se consideran en mora cuando se verifican atrasos en los pagos de 90 días o más, no hay especificación sobre el punto de inicio del conteo (por ejemplo, si es a partir del día siguiente al vencimiento o desde otra fecha).",
+      "citas": [],
+      "respondible": false
+    },
+    "final_raw": "Basándome en la búsqueda realizada, encontré un nodo relevante sobre la definición de mora. Déjame verificar ese nodo específico que encontré:\n\nSegún los resultados de búsqueda, encontré \"Restriccion_definicion_de_exposiciones_en_mora\" que menciona: \"Se consideran en mora a las exposiciones subyacentes cuando se verifiquen atrasos en los pagos de 90 días o más...\"\n\nSin embargo, esta definición se refiere a exposiciones en general con atrasos de 90 días o más, pero no especifica claramente el momento exacto en que comienza la mora superior a 90 días para descubiertos en cuenta corriente (es decir, a partir de qué día se cuenta ese período de 90 días).\n\nLa información encontrada sobre adelantos transitorios en cuenta corriente indica que se consideran de cumplimiento normal hasta 61 días, pero esto no responde directamente a la pregunta sobre cuándo comienza la mora superior a 90 días en descubiertos.\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph información específica que defina claramente a partir de qué momento exacto se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente. Si bien se encontró que las exposiciones se consideran en mora cuando se verifican atrasos en los pagos de 90 días o más, no hay especificación sobre el punto de inicio del conteo (por ejemplo, si es a partir del día siguiente al vencimiento o desde otra fecha).\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 15,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_clasificacion_deudores_actual.pdf",
+        "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr"
+      },
+      {
+        "source_doc": "TO_clasificacion_deudores_actual.pdf",
+        "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5373,
+    "tokens_out": 1903,
+    "cache_read": 88604,
+    "cache_write": 17997,
+    "cost_usd": 0.046245,
+    "latency_s": 24.354,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "mora 90 días descubierto cuenta corriente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "mora 90 días descubierto cuenta corriente",
+        "total_con_match": 109,
+        "resultados": [
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene",
+            "type": "Restriccion",
+            "label": "Cancelación de sobregiros dentro de 30 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Operacion_autorizacion_de_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Autorización de sobregiros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: autorización de sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien",
+            "type": "Restriccion",
+            "label": "Límite temporal de 90 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …"
+          },
+          {
+            "id": "Operacion_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Sobregiros en cuenta corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Obligacion_evaluar_cuenta_corriente_del_pais",
+            "type": "Obligacion",
+            "label": "Evaluar cuenta corriente del país",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá considerar las debilidades implícitas en la cuenta corriente del país"
+          },
+          {
+            "id": "Restriccion_los_requisitos_se_evaluan_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_lo",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días anteriores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los requisitos se evalúan en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores"
+          },
+          {
+            "id": "Restriccion_que_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_los_90_dias_corridos_ant",
+            "type": "Restriccion",
+            "label": "Prohibición de entrega a vinculadas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "que en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores no ha entregado fondos en moneda local ni otros activos locales a person…"
+          },
+          {
+            "id": "Operacion_adelantos_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Otorgamiento de adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: adelantos en cuenta corriente"
+          },
+          {
+            "id": "Restriccion_el_compromiso_se_extiende_por_los_90_dias_corridos_subsiguientes_desde_que_requi",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días subsiguientes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "el compromiso se extiende por los 90 días corridos subsiguientes desde que requiere el acceso al mercado"
+          },
+          {
+            "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+            "type": "Restriccion",
+            "label": "Plazo de cumplimiento para adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento"
+          }
+        ]
+      },
+      "output_chars": 3192
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto en cuenta corriente mora",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto en cuenta corriente mora",
+        "total_con_match": 865,
+        "resultados": [
+          {
+            "id": "Operacion_autorizacion_de_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Autorización de sobregiros",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: autorización de sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Operacion_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Sobregiros en cuenta corriente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Operacion_adelantos_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Otorgamiento de adelantos transitorios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: adelantos en cuenta corriente"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene",
+            "type": "Restriccion",
+            "label": "Cancelación de sobregiros dentro de 30 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+            "type": "Restriccion",
+            "label": "Plazo de cumplimiento para adelantos transitorios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento"
+          },
+          {
+            "id": "Excepcion_los_margenes_acordados_para_descubiertos_en_cuenta_corriente_y_limites_de_compra",
+            "type": "Excepcion",
+            "label": "Exclusión de márgenes descubiertos y límites tarjeta",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los márgenes acordados para descubiertos en cuenta corriente y límites de compra de tarjetas de crédito, así como préstamos personales preacordados no formaliza…"
+          },
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          },
+          {
+            "id": "Obligacion_acreditacion_en_cuenta_local",
+            "type": "Obligacion",
+            "label": "Acreditación en cuenta local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El resultado de la liquidación de cambios deberá acreditarse en una cuenta local"
+          },
+          {
+            "id": "Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l",
+            "type": "Obligacion",
+            "label": "Clasificar compañía según mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo, teniendo en cuenta la fecha …"
+          },
+          {
+            "id": "Operacion_respaldo_crediticio",
+            "type": "Operacion",
+            "label": "Reposición de créditos en mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: respaldo crediticio"
+          }
+        ]
+      },
+      "output_chars": 3110
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "clasificación mora descubierto 90 días",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "clasificación mora descubierto 90 días",
+        "total_con_match": 117,
+        "resultados": [
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          },
+          {
+            "id": "Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien",
+            "type": "Restriccion",
+            "label": "Límite temporal de 90 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …"
+          },
+          {
+            "id": "Restriccion_los_requisitos_se_evaluan_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_lo",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días anteriores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los requisitos se evalúan en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores"
+          },
+          {
+            "id": "Restriccion_que_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_los_90_dias_corridos_ant",
+            "type": "Restriccion",
+            "label": "Prohibición de entrega a vinculadas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "que en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores no ha entregado fondos en moneda local ni otros activos locales a person…"
+          },
+          {
+            "id": "Restriccion_el_compromiso_se_extiende_por_los_90_dias_corridos_subsiguientes_desde_que_requi",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días subsiguientes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "el compromiso se extiende por los 90 días corridos subsiguientes desde que requiere el acceso al mercado"
+          },
+          {
+            "id": "Restriccion_clientes_en_gestion_judicial_concurso_preventivo_o_acuerdo_extrajudicial_con_atr",
+            "type": "Restriccion",
+            "label": "Clasificación por atrasos superiores a 540 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Clientes en gestión judicial, concurso preventivo o acuerdo extrajudicial con atrasos superiores a 540 días"
+          },
+          {
+            "id": "Restriccion_comprende_a_clientes_con_atrasos_de_mas_de_180_dias_hasta_un_ano",
+            "type": "Restriccion",
+            "label": "Clasificación por atrasos superiores a 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Comprende a clientes con atrasos de más de 180 días hasta un año"
+          },
+          {
+            "id": "Obligacion_luego_de_la_refinanciacion_y_a_los_fines_de_la_clasificacion_debera_tenerse_en_c",
+            "type": "Obligacion",
+            "label": "Considerar mora para posteriores refinanciaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Luego de la refinanciación y a los fines de la clasificación, deberá tenerse en cuenta únicamente la mora en el atraso de sus obligaciones. Para las posteriores…"
+          },
+          {
+            "id": "Restriccion_limite_de_90_dias_para_venta_de_titulos_adquiridos",
+            "type": "Restriccion",
+            "label": "Límite de 90 días para venta de títulos adquiridos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando las entidades adquieran títulos valores en suscripción primaria con liquidación contra cable en cuentas del exterior, sólo podrán venderlos en el mercado…"
+          },
+          {
+            "id": "Restriccion_requisito_plazo_90_dias_para_servicio_no_comprendido",
+            "type": "Restriccion",
+            "label": "Requisito: plazo 90 días para servicio no comprendido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte no vinculada al residente, pago se concreta a partir de la fecha de prestación o deve…"
+          }
+        ]
+      },
+      "output_chars": 3510
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "deudor mora superior 90 días descubierto",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "deudor mora superior 90 días descubierto",
+        "total_con_match": 117,
+        "resultados": [
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          },
+          {
+            "id": "Restriccion_el_cliente_se_compromete_a_demostrar_el_registro_de_ingreso_aduanero_de_los_bien",
+            "type": "Restriccion",
+            "label": "Límite temporal de 90 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cliente se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corridos de la fecha de acceso al mercado de …"
+          },
+          {
+            "id": "Restriccion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d",
+            "type": "Restriccion",
+            "label": "Permanencia mínima 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su deuda y recibido crédito adicional deberá permanecer en esta categoría por lo m…"
+          },
+          {
+            "id": "Operacion_reclasificacion_a_categoria_superior",
+            "type": "Operacion",
+            "label": "Reclasificación deudor superior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: reclasificación a categoría superior"
+          },
+          {
+            "id": "Operacion_reclasificacion_de_deudor",
+            "type": "Operacion",
+            "label": "Reclasificación a nivel superior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cambio de clasificación del deudor al nivel inmediato superior cuando se cumplen condiciones previstas"
+          },
+          {
+            "id": "Restriccion_los_requisitos_se_evaluan_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_lo",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días anteriores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los requisitos se evalúan en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores"
+          },
+          {
+            "id": "Restriccion_que_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_los_90_dias_corridos_ant",
+            "type": "Restriccion",
+            "label": "Prohibición de entrega a vinculadas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "que en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores no ha entregado fondos en moneda local ni otros activos locales a person…"
+          },
+          {
+            "id": "Excepcion_excepto_cuando_por_un_monto_igual_o_superior_al_excedente_el_deudor_registraba_l",
+            "type": "Excepcion",
+            "label": "Excepción por liquidaciones externas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "excepto cuando por un monto igual o superior al excedente el deudor registraba liquidaciones en el mercado de cambios a partir del 09/10/20 por emisiones de tít…"
+          },
+          {
+            "id": "Obligacion_el_deudor_debera_permanecer_en_esta_categoria_por_lo_menos_180_dias_contados_des",
+            "type": "Obligacion",
+            "label": "Permanecer en categoría por 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El deudor deberá permanecer en esta categoría por lo menos 180 días contados desde la fecha en que se otorgó crédito adicional o desde que se celebró el acuerdo…"
+          },
+          {
+            "id": "Obligacion_recategorizacion_del_deudor_a_partir_del_mes_siguiente_al_de_puesta_a_disposicio",
+            "type": "Obligacion",
+            "label": "Recategorización a categoría superior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La recategorización del deudor se efectuará a partir del mes siguiente al de puesta a disposición de la pertinente información de dicha central, al menos en la …"
+          }
+        ]
+      },
+      "output_chars": 3418
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_clasificacion_de_deudor_segun_mora"
+      },
+      "output": {
+        "id": "Operacion_clasificacion_de_deudor_segun_mora",
+        "type": "Operacion",
+        "label": "Clasificación de deudor",
+        "properties": {
+          "tipo": "clasificación de deudor según mora"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr"
+          }
+        ]
+      },
+      "output_chars": 353
+    },
+    {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_clasificacion_de_deudor_segun_mora",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Operacion_clasificacion_de_deudor_segun_mora",
+        "label": "Clasificación de deudor",
+        "n_salientes_total": 0,
+        "n_entrantes_total": 1,
+        "salientes": [],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l",
+            "vecino_label": "Clasificar compañía según mora",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 4.6. Financiaciones –sin responsabilidad para el cedente– amparadas con seguros de cr"
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 590
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "categoría mora descubierto cuenta corriente momento",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "categoría mora descubierto cuenta corriente momento",
+        "total_con_match": 82,
+        "resultados": [
+          {
+            "id": "Operacion_autorizacion_de_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Autorización de sobregiros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: autorización de sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Operacion_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Sobregiros en cuenta corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Obligacion_evaluar_cuenta_corriente_del_pais",
+            "type": "Obligacion",
+            "label": "Evaluar cuenta corriente del país",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá considerar las debilidades implícitas en la cuenta corriente del país"
+          },
+          {
+            "id": "Operacion_adelantos_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Otorgamiento de adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: adelantos en cuenta corriente"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene",
+            "type": "Restriccion",
+            "label": "Cancelación de sobregiros dentro de 30 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+            "type": "Restriccion",
+            "label": "Plazo de cumplimiento para adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento"
+          },
+          {
+            "id": "Excepcion_los_margenes_acordados_para_descubiertos_en_cuenta_corriente_y_limites_de_compra",
+            "type": "Excepcion",
+            "label": "Exclusión de márgenes descubiertos y límites tarjeta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los márgenes acordados para descubiertos en cuenta corriente y límites de compra de tarjetas de crédito, así como préstamos personales preacordados no formaliza…"
+          },
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_en_categoria",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor en categoría"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          }
+        ]
+      },
+      "output_chars": 2984
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto cuenta corriente se considera mora",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto cuenta corriente se considera mora",
+        "total_con_match": 391,
+        "resultados": [
+          {
+            "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+            "type": "Restriccion",
+            "label": "Plazo de cumplimiento para adelantos transitorios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento"
+          },
+          {
+            "id": "Operacion_autorizacion_de_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Autorización de sobregiros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: autorización de sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien",
+            "type": "Excepcion",
+            "label": "Gastos otorgamiento emisión",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…"
+          },
+          {
+            "id": "Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l",
+            "type": "Obligacion",
+            "label": "Clasificar compañía según mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo, teniendo en cuenta la fecha …"
+          },
+          {
+            "id": "Operacion_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Sobregiros en cuenta corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Obligacion_en_el_analisis_que_se_lleve_a_cabo_debera_tenerse_en_cuenta_de_corresponder_la_e",
+            "type": "Obligacion",
+            "label": "Consideración grupo contrapartes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la …"
+          },
+          {
+            "id": "Obligacion_evaluar_cuenta_corriente_del_pais",
+            "type": "Obligacion",
+            "label": "Evaluar cuenta corriente del país",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá considerar las debilidades implícitas en la cuenta corriente del país"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_multiproductos_paquetes_de_productos_se_debera_informar_las_cuenta",
+            "type": "Obligacion",
+            "label": "Informar detalles de multiproductos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de multiproductos (paquetes de productos), se deberá informar las cuentas y operaciones gratuitas y especificar el costo de los productos y servicios…"
+          },
+          {
+            "id": "Obligacion_con_relacion_a_la_crc_se_debera_tener_en_cuenta_las_opciones_incorporadas_que_pu",
+            "type": "Obligacion",
+            "label": "Consideración de opciones en plazo CRC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Con relación a la CRC, se deberá tener en cuenta las opciones incorporadas que puedan reducir el plazo de vencimiento, a fin de utilizar el menor plazo de venci…"
+          },
+          {
+            "id": "Obligacion_cuenta_con_la_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el",
+            "type": "Obligacion",
+            "label": "Declaración jurada de ingreso aduanero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuenta con la declaración jurada del cliente de que se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corr…"
+          }
+        ]
+      },
+      "output_chars": 3458
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto comienza mora vencimiento",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto comienza mora vencimiento",
+        "total_con_match": 43,
+        "resultados": [
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          },
+          {
+            "id": "Operacion_vencimiento_de_capital_financiado",
+            "type": "Operacion",
+            "label": "Vencimientos de capital",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: vencimiento de capital financiado"
+          },
+          {
+            "id": "Restriccion_los_instrumentos_son_identicos_si_tienen_igual_emisor_cupon_moneda_y_vencimiento",
+            "type": "Restriccion",
+            "label": "Identidad de instrumentos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se entiende que los instrumentos son idénticos si tienen igual emisor, cupón, moneda y vencimiento"
+          },
+          {
+            "id": "Restriccion_para_futuros_la_exclusion_procede_si_los_nocionales_e_instrumentos_subyacentes_r",
+            "type": "Restriccion",
+            "label": "Límite vencimiento futuros",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "cuando se trate de futuros, la exclusión sólo procederá si los nocionales e instrumentos subyacentes refieren a productos idénticos y sus vencimientos no difier…"
+          },
+          {
+            "id": "Obligacion_clasificar_mipymes_por_mora",
+            "type": "Obligacion",
+            "label": "Clasificar MiPyMEs por mora",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberán clasificar a las MiPyMEs cuyas deudas hayan sido canceladas en cumplimiento de las garantías que respaldaban las respectivas obligaciones. La clasificac…"
+          },
+          {
+            "id": "Restriccion_plazo_de_vencimiento_original_no_inferior_a_cinco_anos",
+            "type": "Restriccion",
+            "label": "Plazo mínimo de vencimiento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Plazo de vencimiento original no inferior a cinco años."
+          },
+          {
+            "id": "Obligacion_clasificar_deudores_por_mora",
+            "type": "Obligacion",
+            "label": "Clasificar deudores por mora",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberán clasificar a los respectivos deudores en función de su mora, según los criterios aplicables para la cartera de consumo o vivienda y por aplicación de la…"
+          },
+          {
+            "id": "Restriccion_vencimiento_minimo_de_capital",
+            "type": "Restriccion",
+            "label": "Vencimiento mínimo de capital",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las financiaciones no tengan vencimientos de capital y/o intereses hasta que hayan transcurrido 240 días corridos desde el registro de ingreso aduanero de los b…"
+          },
+          {
+            "id": "Obligacion_clasificar_deudores_segun_mora",
+            "type": "Obligacion",
+            "label": "Clasificar deudores según mora",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los PSCPP deberán clasificar a los deudores de los créditos que administran en función de su mora, según los criterios aplicables para la cartera de consumo o v…"
+          }
+        ]
+      },
+      "output_chars": 3151
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto cuenta corriente a partir de qué momento mora",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto cuenta corriente a partir de qué momento mora",
+        "total_con_match": 3222,
+        "resultados": [
+          {
+            "id": "Excepcion_la_clasificacion_se_verifica_a_partir_del_momento_en_que_no_habiendo_sido_rechaz",
+            "type": "Excepcion",
+            "label": "Excepción por rechazo de reclamo",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "La clasificación se verifica a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos l…"
+          },
+          {
+            "id": "Obligacion_el_pago_garantizado_debia_ser_concretado_por_el_cliente_a_partir_de_la_fecha_que",
+            "type": "Obligacion",
+            "label": "Verificación de fecha de pago",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El pago garantizado debía ser concretado por el cliente a partir de la fecha que resultaba de adicionar el plazo en días corridos que le corresponde al servicio…"
+          },
+          {
+            "id": "Restriccion_si_se_trata_de_servicios_que_fueron_o_seran_prestados_o_devengados_a_partir_del_",
+            "type": "Restriccion",
+            "label": "Servicios a partir de 13/12/23",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Si se trata de servicios que fueron o serán prestados o devengados a partir del 13/12/23, la entidad deberá constatar adicionalmente que el pago cumple las cond…"
+          },
+          {
+            "id": "Obligacion_en_el_analisis_que_se_lleve_a_cabo_debera_tenerse_en_cuenta_de_corresponder_la_e",
+            "type": "Obligacion",
+            "label": "Consideración grupo contrapartes",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la …"
+          },
+          {
+            "id": "Obligacion_se_compromete_a_que_desde_el_momento_en_que_requiere_el_acceso_al_mercado_de_cam",
+            "type": "Obligacion",
+            "label": "Compromiso de no venta de títulos",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "se compromete a que desde el momento en que requiere el acceso al mercado de cambios y por los 90 días corridos subsiguientes no concertará ventas en el país de…"
+          },
+          {
+            "id": "Obligacion_con_relacion_a_la_crc_se_debera_tener_en_cuenta_las_opciones_incorporadas_que_pu",
+            "type": "Obligacion",
+            "label": "Consideración de opciones en plazo CRC",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Con relación a la CRC, se deberá tener en cuenta las opciones incorporadas que puedan reducir el plazo de vencimiento, a fin de utilizar el menor plazo de venci…"
+          },
+          {
+            "id": "Obligacion_cuenta_con_la_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el",
+            "type": "Obligacion",
+            "label": "Declaración jurada de ingreso aduanero",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Cuenta con la declaración jurada del cliente de que se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corr…"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene",
+            "type": "Restriccion",
+            "label": "Cancelación de sobregiros dentro de 30 días",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Restriccion_a_partir_del_01_02_13_comenzaran_a_excluirse_los_instrumentos_de_capital_que_dej",
+            "type": "Restriccion",
+            "label": "Exclusión de instrumentos que no cumplen criterios",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "A partir del 01/02/13 comenzarán a excluirse los instrumentos de capital que dejen de cumplir los criterios para ser considerados capital adicional de nivel uno…"
+          },
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          }
+        ]
+      },
+      "output_chars": 3997
+    },
+    {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto se considera mora desde el día siguiente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto se considera mora desde el día siguiente",
+        "total_con_match": 855,
+        "resultados": [
+          {
+            "id": "Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien",
+            "type": "Excepcion",
+            "label": "Gastos otorgamiento emisión",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…"
+          },
+          {
+            "id": "Obligacion_se_compromete_a_que_desde_el_momento_en_que_requiere_el_acceso_al_mercado_de_cam",
+            "type": "Obligacion",
+            "label": "Compromiso de no venta de títulos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "se compromete a que desde el momento en que requiere el acceso al mercado de cambios y por los 90 días corridos subsiguientes no concertará ventas en el país de…"
+          },
+          {
+            "id": "Restriccion_los_punitorios_u_otros_equivalentes_que_se_devenguen_desde_el_01_01_25_continuar",
+            "type": "Restriccion",
+            "label": "Conformidad previa para punitorios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los punitorios u otros equivalentes que se devenguen desde el 01/01/25 continuarán alcanzados por el requisito de conformidad previa."
+          },
+          {
+            "id": "Restriccion_los_requisitos_se_evaluan_en_el_dia_en_que_solicita_el_acceso_al_mercado_y_en_lo",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días anteriores",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "los requisitos se evalúan en el día en que solicita el acceso al mercado y en los 90 días corridos anteriores"
+          },
+          {
+            "id": "Restriccion_el_compromiso_se_extiende_por_los_90_dias_corridos_subsiguientes_desde_que_requi",
+            "type": "Restriccion",
+            "label": "Límite temporal: 90 días subsiguientes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "el compromiso se extiende por los 90 días corridos subsiguientes desde que requiere el acceso al mercado"
+          },
+          {
+            "id": "Obligacion_se_reemplazaran_las_dos_ultimas_posiciones_de_cada_partida_de_exigencia_por_el_u",
+            "type": "Obligacion",
+            "label": "Reemplazo de posiciones finales con día período",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se reemplazarán las dos últimas posiciones de cada partida de exigencia por el último día del período que corresponda (ejemplo, xx = 31)"
+          },
+          {
+            "id": "Restriccion_desde_el_trigesimo_septimo_mes_la_exigencia_mensual_se_calculara_de_acuerdo_con_",
+            "type": "Restriccion",
+            "label": "Metodología cálculo desde trigésimo séptimo mes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Desde el trigésimo séptimo mes, la exigencia mensual se calculará de acuerdo con la metodología establecida para el grupo 1 o el grupo 2, según corresponda."
+          },
+          {
+            "id": "Excepcion_el_requisito_de_demostracion_de_ingreso_y_liquidacion_de_divisas_se_considera_cu",
+            "type": "Excepcion",
+            "label": "Endeudamientos desembolsados anterior a 01/09/19",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El requisito de demostración de ingreso y liquidación de divisas se considera cumplimentado para endeudamientos desembolsados con anterioridad al 01/09/19"
+          },
+          {
+            "id": "Restriccion_se_considera_que_la_cedente_mantiene_el_control_efectivo_de_las_exposiciones_tra",
+            "type": "Restriccion",
+            "label": "Prohibición de recompra para realización de beneficios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se considera que la cedente mantiene el control efectivo de las exposiciones transferidas si puede recomprarlas con el objeto de realizar sus beneficios."
+          },
+          {
+            "id": "Restriccion_se_informara_unicamente_el_ultimo_dia_de_cada_periodo_el_resto_de_los_dias_deber",
+            "type": "Restriccion",
+            "label": "Información reportada únicamente último día del período",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se informará únicamente el último día de cada período; el resto de los días deberán permanecer en una base a disposición de la SEFyC"
+          }
+        ]
+      },
+      "output_chars": 3823
+    },
+    {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto cuenta corriente día siguiente vencimiento mora",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto cuenta corriente día siguiente vencimiento mora",
+        "total_con_match": 91,
+        "resultados": [
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          },
+          {
+            "id": "Operacion_autorizacion_de_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Autorización de sobregiros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: autorización de sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Operacion_sobregiro_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Sobregiros en cuenta corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: sobregiro en cuenta corriente"
+          },
+          {
+            "id": "Obligacion_evaluar_cuenta_corriente_del_pais",
+            "type": "Obligacion",
+            "label": "Evaluar cuenta corriente del país",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá considerar las debilidades implícitas en la cuenta corriente del país"
+          },
+          {
+            "id": "Restriccion_ajuste_de_vencimiento_a_dia_habil",
+            "type": "Restriccion",
+            "label": "Ajuste de vencimiento a día hábil",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si la fecha resultante fuese un día no hábil, el vencimiento se trasladará al primer día hábil siguiente."
+          },
+          {
+            "id": "Operacion_adelantos_en_cuenta_corriente",
+            "type": "Operacion",
+            "label": "Otorgamiento de adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: adelantos en cuenta corriente"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene",
+            "type": "Restriccion",
+            "label": "Cancelación de sobregiros dentro de 30 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+            "type": "Restriccion",
+            "label": "Plazo de cumplimiento para adelantos transitorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento"
+          },
+          {
+            "id": "Excepcion_los_margenes_acordados_para_descubiertos_en_cuenta_corriente_y_limites_de_compra",
+            "type": "Excepcion",
+            "label": "Exclusión de márgenes descubiertos y límites tarjeta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los márgenes acordados para descubiertos en cuenta corriente y límites de compra de tarjetas de crédito, así como préstamos personales preacordados no formaliza…"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          }
+        ]
+      },
+      "output_chars": 3066
+    },
+    {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n"
+      },
+      "output": {
+        "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n",
+        "type": "Restriccion",
+        "label": "Plazo de cumplimiento para adelantos transitorios",
+        "properties": {
+          "descripcion": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento",
+          "tipo": "limite_cuantitativo",
+          "umbral": "61 días"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 7.2. Niveles de clasificación. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 543
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto cuenta corriente se considera mora a partir del día siguiente al vencimiento",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto cuenta corriente se considera mora a partir del día siguiente al vencimiento",
+        "total_con_match": 1865,
+        "resultados": [
+          {
+            "id": "Obligacion_recategorizacion_del_deudor_a_partir_del_mes_siguiente_al_de_puesta_a_disposicio",
+            "type": "Obligacion",
+            "label": "Recategorización a categoría superior",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "La recategorización del deudor se efectuará a partir del mes siguiente al de puesta a disposición de la pertinente información de dicha central, al menos en la …"
+          },
+          {
+            "id": "Restriccion_su_reconocimiento_como_rpc_se_limitara_al_90_del_valor_obtenido_a_partir_de_esa_",
+            "type": "Restriccion",
+            "label": "Límite de reconocimiento al 90% con reducción anual",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "Su reconocimiento como RPC se limitará al 90% del valor obtenido a partir de esa fecha, reduciéndose cada doce meses dicho límite en 10 puntos porcentuales"
+          },
+          {
+            "id": "Obligacion_a_los_fines_de_la_clasificacion_debera_tenerse_en_cuenta_la_mora_en_el_atraso_de",
+            "type": "Obligacion",
+            "label": "Considerar mora al vencimiento emergencia agropecuaria",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "A los fines de la clasificación, deberá tenerse en cuenta la mora en el atraso de sus obligaciones para el momento en que concluya la vigencia de la emergencia …"
+          },
+          {
+            "id": "Restriccion_si_se_trata_de_servicios_que_fueron_o_seran_prestados_o_devengados_a_partir_del_",
+            "type": "Restriccion",
+            "label": "Servicios a partir de 13/12/23",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Si se trata de servicios que fueron o serán prestados o devengados a partir del 13/12/23, la entidad deberá constatar adicionalmente que el pago cumple las cond…"
+          },
+          {
+            "id": "Excepcion_la_clasificacion_se_verifica_a_partir_del_momento_en_que_no_habiendo_sido_rechaz",
+            "type": "Excepcion",
+            "label": "Excepción por rechazo de reclamo",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La clasificación se verifica a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos l…"
+          },
+          {
+            "id": "Excepcion_el_cliente_tendra_acceso_al_mercado_de_cambios_si_el_pago_se_concrete_a_partir_d",
+            "type": "Excepcion",
+            "label": "Excepción acceso cambios por canje",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "el cliente tendrá acceso al mercado de cambios si el pago se concrete a partir de un canje y arbitraje con fondos depositados en cuenta local originados en cobr…"
+          },
+          {
+            "id": "Obligacion_a_los_fines_de_calcular_el_limite_se_aplicara_el_citado_porcentaje_al_saldo_de_l",
+            "type": "Obligacion",
+            "label": "Aplicación del porcentaje al saldo",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "A los fines de calcular el límite, se aplicará el citado porcentaje al saldo de las exposiciones minoristas normativas a fin del mes anterior al mes al que se r…"
+          },
+          {
+            "id": "Obligacion_cuenta_con_la_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el",
+            "type": "Obligacion",
+            "label": "Declaración jurada de ingreso aduanero",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Cuenta con la declaración jurada del cliente de que se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corr…"
+          },
+          {
+            "id": "Restriccion_en_el_caso_de_deudas_comerciales_por_servicios_el_acceso_se_produce_a_partir_de_",
+            "type": "Restriccion",
+            "label": "Acceso a partir de fecha de vencimiento",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "En el caso de deudas comerciales por servicios el acceso se produce a partir de la fecha de vencimiento, en la medida que se verifique que la operación se encue…"
+          },
+          {
+            "id": "Excepcion_no_aplica_a_la_deficiencia_correspondiente_al_ultimo_dia_del_mes",
+            "type": "Excepcion",
+            "label": "Excepción deficiencia último día del mes",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "No aplica a la deficiencia correspondiente al último día del mes"
+          }
+        ]
+      },
+      "output_chars": 3915
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "mora descubierto definición se considera",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "mora descubierto definición se considera",
+        "total_con_match": 360,
+        "resultados": [
+          {
+            "id": "Excepcion_el_requisito_se_considera_cumplimentado_por_el_monto_de_los_gastos_de_otorgamien",
+            "type": "Excepcion",
+            "label": "Gastos otorgamiento emisión",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El requisito se considera cumplimentado por el monto de los gastos de otorgamiento y/o emisión que resulten aplicables y otros gastos debitados en el exterior p…"
+          },
+          {
+            "id": "Obligacion_se_procedera_a_clasificar_a_la_compania_de_seguros_en_funcion_de_la_mora_segun_l",
+            "type": "Obligacion",
+            "label": "Clasificar compañía según mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo, teniendo en cuenta la fecha …"
+          },
+          {
+            "id": "Restriccion_definicion_de_exposiciones_en_mora",
+            "type": "Restriccion",
+            "label": "Definición de exposiciones en mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consideran en mora a las exposiciones subyacentes cuando se verifiquen atrasos en los pagos de 90 días o más, estén sujetas a procedimientos de quiebra o con…"
+          },
+          {
+            "id": "Excepcion_el_requisito_de_demostracion_de_ingreso_y_liquidacion_de_divisas_se_considera_cu",
+            "type": "Excepcion",
+            "label": "Endeudamientos desembolsados anterior a 01/09/19",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El requisito de demostración de ingreso y liquidación de divisas se considera cumplimentado para endeudamientos desembolsados con anterioridad al 01/09/19"
+          },
+          {
+            "id": "Restriccion_se_considera_que_la_cedente_mantiene_el_control_efectivo_de_las_exposiciones_tra",
+            "type": "Restriccion",
+            "label": "Prohibición de recompra para realización de beneficios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se considera que la cedente mantiene el control efectivo de las exposiciones transferidas si puede recomprarlas con el objeto de realizar sus beneficios."
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_la_compra_se_utilizara_el_concepto_p12_otras_financiaciones_locale",
+            "type": "Obligacion",
+            "label": "Utilizar concepto P12",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En el caso de la compra se utilizará el concepto 'P12. Otras financiaciones locales otorgadas por la entidad (excluida la financiación de exportaciones y tarjet…"
+          },
+          {
+            "id": "Excepcion_no_resultara_aplicable_cuando_se_cumpla_la_totalidad_de_las_siguientes_condicion",
+            "type": "Excepcion",
+            "label": "Excepción por Plan Gas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "No resultará aplicable cuando se cumpla la totalidad de las siguientes condiciones: (1) el destino de los fondos haya sido la financiación de proyectos enmarcad…"
+          },
+          {
+            "id": "Obligacion_cada_lado_de_un_swap_de_moneda_se_debera_imputar_a_la_escala_de_vencimientos_de_",
+            "type": "Obligacion",
+            "label": "Imputación swaps moneda",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cada lado de un swap de moneda se deberá imputar a la escala de vencimientos de la moneda correspondiente"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_segun_mora",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor según mora"
+          },
+          {
+            "id": "Obligacion_la_partida_correspondiente_al_bic_se_informara_por_el_importe_calculado_en_funci",
+            "type": "Obligacion",
+            "label": "Informar componentes BIC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La partida correspondiente al BIC se informará por el importe calculado en función de los coeficientes marginales que corresponda"
+          }
+        ]
+      },
+      "output_chars": 3582
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srKHgM7pKmHUvyHJCv",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre mora en descubiertos en cuenta corriente.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013FmDEZn3mSFUoKcGRnT6e9",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "mora 90 días descubierto cuenta corriente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_011ggb8Eoc8ByPF1eG6wNvMF",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto en cuenta corriente mora",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1476,
+          "output_tokens": 168,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srRgQVVkS1vo6SHwDb",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Veo resultados sobre adelantos transitorios y sobregiros. Déjame buscar más específicamente sobre clasificación de mora y descubiertos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01WxKLtZa7jpDVASuCDgT9WG",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "clasificación mora descubierto 90 días",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_017QVTbGPAiLixCX6veUhncZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "deudor mora superior 90 días descubierto",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3846,
+          "output_tokens": 189,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srcLc89DwwRtQRRkE3",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Encontré \"Clasificación de deudor según mora\". Déjame ver ese nodo en detalle.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_014QtxszR1fXXcudQwWCra9k",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_clasificacion_de_deudor_segun_mora"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 6524
+          },
+          "cache_creation_input_tokens": 6524,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 97,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srj8PSyfg3wXfeQe4s",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame explorar los vecinos de este nodo para encontrar información sobre mora en descubiertos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01LzL81mVzw5xahiQCHvwx1R",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_clasificacion_de_deudor_segun_mora",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 230
+          },
+          "cache_creation_input_tokens": 230,
+          "cache_read_input_tokens": 6524,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 115,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srqY796XA7QW3jwWVa",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar más específicamente sobre categorías de mora y descubiertos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01RVjBLDAPm9z4TagaZafWhp",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "categoría mora descubierto cuenta corriente momento",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Uf5xJuoe3rznh6serwXBCP",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto cuenta corriente se considera mora",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 343
+          },
+          "cache_creation_input_tokens": 343,
+          "cache_read_input_tokens": 6754,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 169,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2srxbm2ZyuD9bTKXdrH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Veo que hay información sobre adelantos transitorios que se consideran de cumplimiento normal hasta 61 días. Déjame buscar específicamente sobre cuándo comienza la mora en descubiertos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01R1z1MBptvfU1y2kPJTwfAZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto comienza mora vencimiento",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Jxivi8YySZjDdCxGrG7vfA",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto cuenta corriente a partir de qué momento mora",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2412
+          },
+          "cache_creation_input_tokens": 2412,
+          "cache_read_input_tokens": 7097,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 202,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ss9Q9Ky3oRUiekQMvt",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar información más específica sobre cuándo se considera que hay mora en descubiertos, particularmente sobre el momento en que comienza.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01GPsUG71MwswvcoethrVxL6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto se considera mora desde el día siguiente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01JG6Qvv5jsYeWcbhsirbAK8",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto cuenta corriente día siguiente vencimiento mora",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2698
+          },
+          "cache_creation_input_tokens": 2698,
+          "cache_read_input_tokens": 9509,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 188,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ssKzsaQiM8ptJ1fh9b",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame ver el nodo sobre adelantos transitorios que menciona 61 días, ya que podría tener información relevante sobre cuándo comienza la mora.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01UNbLWx5s7ce7zM4VpArfms",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2585
+          },
+          "cache_creation_input_tokens": 2585,
+          "cache_read_input_tokens": 12207,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 128,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ssTNP4ZQwD5B7ZDGuU",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Esto es sobre adelantos transitorios. Déjame buscar específicamente sobre cuándo comienza la mora en descubiertos en cuenta corriente.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01BkK8tzJWwF1SoSTCWcfsd6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto cuenta corriente se considera mora a partir del día siguiente al vencimiento",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 320
+          },
+          "cache_creation_input_tokens": 320,
+          "cache_read_input_tokens": 14792,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 129,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ssb5EFbHkyoTD9VGWC",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar de forma más directa sobre la definición de mora en descubiertos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01TNKZd9u7kicZpKJpGRjmkh",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "mora descubierto definición se considera",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1497
+          },
+          "cache_creation_input_tokens": 1497,
+          "cache_read_input_tokens": 15112,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 105,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ssibv4zksE8PZN5aei",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Basándome en la búsqueda realizada, encontré un nodo relevante sobre la definición de mora. Déjame verificar ese nodo específico que encontré:\n\nSegún los resultados de búsqueda, encontré \"Restriccion_definicion_de_exposiciones_en_mora\" que menciona: \"Se consideran en mora a las exposiciones subyacentes cuando se verifiquen atrasos en los pagos de 90 días o más...\"\n\nSin embargo, esta definición se refiere a exposiciones en general con atrasos de 90 días o más, pero no especifica claramente el momento exacto en que comienza la mora superior a 90 días para descubiertos en cuenta corriente (es decir, a partir de qué día se cuenta ese período de 90 días).\n\nLa información encontrada sobre adelantos transitorios en cuenta corriente indica que se consideran de cumplimiento normal hasta 61 días, pero esto no responde directamente a la pregunta sobre cuándo comienza la mora superior a 90 días en descubiertos.\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph información específica que defina claramente a partir de qué momento exacto se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente. Si bien se encontró que las exposiciones se consideran en mora cuando se verifican atrasos en los pagos de 90 días o más, no hay especificación sobre el punto de inicio del conteo (por ejemplo, si es a partir del día siguiente al vencimiento o desde otra fecha).\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1388
+          },
+          "cache_creation_input_tokens": 1388,
+          "cache_read_input_tokens": 16609,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 413,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

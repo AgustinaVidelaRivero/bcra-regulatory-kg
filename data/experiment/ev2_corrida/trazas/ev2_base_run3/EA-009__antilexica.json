@@ -1,0 +1,1386 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_run3",
+    "grafo": "run_3",
+    "kg_path": "data/experiment/run_3_ppf_core/kg.json",
+    "kg_sha256": "12c226e22b8fdc8f46999cae7f1eb808930e71f5dfe803f3a4f637a88348c410",
+    "eje": "navegabilidad",
+    "caso_id": "EA-009::antilexica",
+    "sample_id": "EA-009",
+    "variante": "antilexica",
+    "estrato": "E-A",
+    "pos_orden_global": 112,
+    "pos_orden_efectivo": 106,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T11:31:25",
+    "timestamp_fin": "2026-08-14T11:31:50",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "98d3ee73a23c214b",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 9
+    },
+    "fidelidad_sin_evaluar": false
+  },
+  "pregunta": "Para determinar el importe del piso mínimo exigido de patrimonio neto computable de una entidad, equivalente al 8% de los bienes de la entidad ajustados según su grado de exposición a pérdidas, ¿qué operación previa debe realizarse y con base en qué elementos se lleva a cabo?",
+  "trace": {
+    "qid": "EA-009::antilexica",
+    "question": "Para determinar el importe del piso mínimo exigido de patrimonio neto computable de una entidad, equivalente al 8% de los bienes de la entidad ajustados según su grado de exposición a pérdidas, ¿qué operación previa debe realizarse y con base en qué elementos se lleva a cabo?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "patrimonio neto computable 8% bienes exposición pérdidas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"patrimonio neto computable 8% bienes exposición pérdidas\", \"total_con_match\": 172, \"resultados\": [{\"id\": \"Obligacion_consignar_importe_patrimonio_neto\", \"type\": \"Obligacion\", \"label\": \"Consignar importe patrimonio neto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…\"}, {\"id\": \"Restriccion_cuando_la_proteccion_crediticia_y_la_exposicion_esten_denominadas_en_distintas_m\", \"type\": \"Restriccion\", \"label\": \"Aforo por descalce de monedas del 8%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando la protección crediticia y la exposición estén denominadas en distintas monedas, la parte de la exposición que se considera protegida se reducirá mediant…\"}, {\"id\": \"Restriccion_patrimonio_neto_basico_pnb_70210000_70220000_70230000_70240000_6_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Patrimonio Neto Básico\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Patrimonio Neto Básico (PNb) = 70210000 – 70220000 + 70230000 – 70240000 ≥ 6 % s/70900000\"}, {\"id\": \"Restriccion_patrimonio_neto_complementario_pn… [+1960 chars]",
+        "output_chars": 3160
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "piso mínimo patrimonio neto",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"piso mínimo patrimonio neto\", \"total_con_match\": 96, \"resultados\": [{\"id\": \"Restriccion_patrimonio_neto_basico_pnb_70210000_70220000_70230000_70240000_6_s_70900000\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo Patrimonio Neto Básico\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Patrimonio Neto Básico (PNb) = 70210000 – 70220000 + 70230000 – 70240000 ≥ 6 % s/70900000\"}, {\"id\": \"Obligacion_consignar_importe_patrimonio_neto\", \"type\": \"Obligacion\", \"label\": \"Consignar importe patrimonio neto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…\"}, {\"id\": \"Restriccion_patrimonio_neto_complementario_pnc_70250000_70260000\", \"type\": \"Restriccion\", \"label\": \"Límite Patrimonio Neto Complementario\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Patrimonio Neto Complementario (PNc) = 70250000 – 70260000\"}, {\"id\": \"Restriccion_el_importe_de_co_debera_ser_resultante_de_multiplicar_4_5_por_los_apr\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo CO\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El importe de CO debe… [+1852 chars]",
+        "output_chars": 3052
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo RPC\", \"properties\": {\"descripcion\": \"El importe de RPC deberá ser resultante de multiplicar 8% por los APR\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"8%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.5. Límites.\"}]}",
+        "output_chars": 397
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "APR activos ponderados riesgo cálculo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"APR activos ponderados riesgo cálculo\", \"total_con_match\": 310, \"resultados\": [{\"id\": \"Operacion_calculo_de_activos_ponderados\", \"type\": \"Operacion\", \"label\": \"Cálculo activos ponderados riesgo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…\"}, {\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo\", \"type\": \"Operacion\", \"label\": \"Aplicación de ponderadores de riesgo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. según el grupo al que pertenezca la entidad financiera\"}, {\"id\": \"Operacion_calculo_de_ponderadores\", \"type\": \"Operacion\", \"label\": \"Cálculo de activos ponderados por riesgo\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cálculo de APR_c conforme a fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5\"}, {\"id\": \"Excepcion_exclusion_del_calculo_de_activos_ponderados\", \"type\": \"Excepcion\", \"label\": \"Exclusión del cálculo de activos ponderados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entid… [+1966 chars]",
+        "output_chars": 3166
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_activos_ponderados"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_activos_ponderados\", \"type\": \"Operacion\", \"label\": \"Cálculo activos ponderados riesgo\", \"properties\": {\"tipo\": \"cálculo de activos ponderados\", \"description\": \"Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la expresión: APR = 70100000 /(k * 0,08) + (70300000 - 3600000Y + 70800000 ) * 12,5\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}",
+        "output_chars": 571
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_activos_ponderados_por_riesgo"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo\", \"type\": \"Operacion\", \"label\": \"Aplicación de ponderadores de riesgo\", \"properties\": {\"tipo\": \"cálculo de activos ponderados por riesgo\", \"description\": \"Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. según el grupo al que pertenezca la entidad financiera\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo.\"}]}",
+        "output_chars": 506
+      },
+      {
+        "n": 7,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_de_activos_ponderados",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_activos_ponderados\", \"label\": \"Cálculo activos ponderados riesgo\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 494
+      },
+      {
+        "n": 8,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo\", \"label\": \"Aplicación de ponderadores de riesgo\", \"n_salientes_total\": 0, \"n_entrantes_total\": 3, \"salientes\": [], \"salientes_truncado\": false}",
+        "output_chars": 203
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "ponderadores riesgo bienes exposición",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"ponderadores riesgo bienes exposición\", \"total_con_match\": 294, \"resultados\": [{\"id\": \"Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…\"}, {\"id\": \"Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati\", \"type\": \"Restriccion\", \"label\": \"Crédito de riesgo no negativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exposición presente respecto de la contraparte no puede tener un valor negativo\"}, {\"id\": \"Operacion_asignacion\", \"type\": \"Operacion\", \"label\": \"Asignación ponderadores riesgo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ponderador de riesgo RW a asignar a una posición de titulización se calculará conforme a criterios que varían según la relación entre D, K y K.\"}, {\"id\": \"Excepcion_el_ponderador_de_riesgo_de_la_parte_de_la_exposicion_cubierta_podra_ser_inferior\", \"type\": \"Excepcion\", \"label\": \"Excepci… [+2016 chars]",
+        "output_chars": 3216
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 2.12 ponderadores riesgo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"punto 2.12 ponderadores riesgo\", \"total_con_match\": 268, \"resultados\": [{\"id\": \"Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las\", \"type\": \"Obligacion\", \"label\": \"Considerar definiciones clasificación empresas\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entidades financieras deberán considerar las siguientes definiciones\"}, {\"id\": \"Excepcion_no_aplicable_punto_3_12_1\", \"type\": \"Excepcion\", \"label\": \"No aplicable punto 3.12.1\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En la medida que no encuadre en el punto 3.12.1\"}, {\"id\": \"Obligacion_cuando_el_pago_a_nombre_del_cliente_encuadre_en_el_punto_10_10_2_3_se_debera_dej\", \"type\": \"Obligacion\", \"label\": \"Dejar constancia en reporte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando el pago a nombre del cliente encuadre en el punto 10.10.2.3., se deberá dejar constancia de tal circunstancia al reportar el boleto de venta a nombre del…\"}, {\"id\": \"Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250\", \"type\": \"Restriccion\", \"label\": \"Ponderador acciones grupo 1\", \"tokens_matche… [+1813 chars]",
+        "output_chars": 3013
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las\", \"type\": \"Obligacion\", \"label\": \"Considerar definiciones clasificación empresas\", \"properties\": {\"descripcion\": \"A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entidades financieras deberán considerar las siguientes definiciones\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.7. Exposiciones a empresas.\"}]}",
+        "output_chars": 503
+      },
+      {
+        "n": 12,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_ponderadores"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_ponderadores\", \"type\": \"Operacion\", \"label\": \"Cálculo de activos ponderados por riesgo\", \"properties\": {\"tipo\": \"calculo de ponderadores\", \"description\": \"Cálculo de APR_c conforme a fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 3.1. Normas de procedimiento. (parte 1)\"}]}",
+        "output_chars": 437
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "bienes ajustados grado exposición pérdidas ponderador",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"bienes ajustados grado exposición pérdidas ponderador\", \"total_con_match\": 202, \"resultados\": [{\"id\": \"Restriccion_exposicion_a_entidades_grupo_1_grado_a_con_ponderador_general_40\", \"type\": \"Restriccion\", \"label\": \"Ponderador exposición grupo 1 grado A\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Exposición a entidades grupo 1 grado A con ponderador general 40%\"}, {\"id\": \"Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…\"}, {\"id\": \"Restriccion_exposicion_a_bmd_que_cumplen_criterios_basilea_con_ponderador_0\", \"type\": \"Restriccion\", \"label\": \"Ponderador BMD Basilea\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exposición a BMD que cumplen criterios Basilea con ponderador 0%\"}, {\"id\": \"Restriccion_empresas_con_grado_de_inversion_con_ponderador_de_riesgo_65\", \"type\": \"Restriccion\", \"label\": \"Ponderador empresas inversión\", \"tokens_matcheados\": 2, \"resumen_p… [+457 chars]",
+        "output_chars": 1657
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1513,
+        "output_tokens": 187,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.04
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 209,
+        "cache_read": 0,
+        "cache_write": 4106,
+        "latency_s": 2.606
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 176,
+        "cache_read": 4106,
+        "cache_write": 1572,
+        "latency_s": 2.642
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 193,
+        "cache_read": 5678,
+        "cache_write": 618,
+        "latency_s": 2.473
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 183,
+        "cache_read": 6296,
+        "cache_write": 518,
+        "latency_s": 2.221
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 129,
+        "cache_read": 6814,
+        "cache_write": 2526,
+        "latency_s": 2.04
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 110,
+        "cache_read": 9340,
+        "cache_write": 317,
+        "latency_s": 1.64
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 123,
+        "cache_read": 9657,
+        "cache_write": 295,
+        "latency_s": 2.055
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 609,
+        "cache_read": 9952,
+        "cache_write": 748,
+        "latency_s": 7.038
+      }
+    ],
+    "final_json": {
+      "respuesta": "Para determinar el importe del piso mínimo exigido de patrimonio neto computable (RPC) equivalente al 8% de los bienes de la entidad ajustados según su grado de exposición a pérdidas, la operación previa que debe realizarse es el **cálculo de los Activos Ponderados por Riesgo (APR)**. Este cálculo se lleva a cabo aplicando ponderadores de riesgo a los activos de la entidad. Específicamente, el importe de RPC debe ser resultante de multiplicar 8% por los APR. Los ponderadores de riesgo se asignan conforme a lo establecido en el punto 2.12 de las normas de capitales mínimos, considerando las definiciones y clasificación de empresas según el grupo al que pertenezca la entidad financiera. El cálculo de APR utiliza elementos como activos (A), ponderadores de riesgo (p), posiciones financieras brutos (PFB), factores de conversión de crédito (CCF), operaciones sin DVP, operaciones con DVP, riesgo de crédito de contraparte (RCD) e incertidumbre (INC), conforme a la fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 8.5. Límites."
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo."
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.7. Exposiciones a empresas."
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 3.1. Normas de procedimiento. (parte 1)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Tengo suficiente información. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"Para determinar el importe del piso mínimo exigido de patrimonio neto computable (RPC) equivalente al 8% de los bienes de la entidad ajustados según su grado de exposición a pérdidas, la operación previa que debe realizarse es el **cálculo de los Activos Ponderados por Riesgo (APR)**. Este cálculo se lleva a cabo aplicando ponderadores de riesgo a los activos de la entidad. Específicamente, el importe de RPC debe ser resultante de multiplicar 8% por los APR. Los ponderadores de riesgo se asignan conforme a lo establecido en el punto 2.12 de las normas de capitales mínimos, considerando las definiciones y clasificación de empresas según el grupo al que pertenezca la entidad financiera. El cálculo de APR utiliza elementos como activos (A), ponderadores de riesgo (p), posiciones financieras brutos (PFB), factores de conversión de crédito (CCF), operaciones sin DVP, operaciones con DVP, riesgo de crédito de contraparte (RCD) e incertidumbre (INC), conforme a la fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.5. Límites.\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo.\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.7. Exposiciones a empresas.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 3.1. Normas de procedimiento. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 13,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 8.5. Límites."
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 8.1. Normas de procedimiento."
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo."
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.7. Exposiciones a empresas."
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 3.1. Normas de procedimiento. (parte 1)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1563,
+    "tokens_out": 1919,
+    "cache_read": 51843,
+    "cache_write": 10700,
+    "cost_usd": 0.029717,
+    "latency_s": 24.775,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "patrimonio neto computable 8% bienes exposición pérdidas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "patrimonio neto computable 8% bienes exposición pérdidas",
+        "total_con_match": 172,
+        "resultados": [
+          {
+            "id": "Obligacion_consignar_importe_patrimonio_neto",
+            "type": "Obligacion",
+            "label": "Consignar importe patrimonio neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…"
+          },
+          {
+            "id": "Restriccion_cuando_la_proteccion_crediticia_y_la_exposicion_esten_denominadas_en_distintas_m",
+            "type": "Restriccion",
+            "label": "Aforo por descalce de monedas del 8%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando la protección crediticia y la exposición estén denominadas en distintas monedas, la parte de la exposición que se considera protegida se reducirá mediant…"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_basico_pnb_70210000_70220000_70230000_70240000_6_s_70900000",
+            "type": "Restriccion",
+            "label": "Límite mínimo Patrimonio Neto Básico",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Patrimonio Neto Básico (PNb) = 70210000 – 70220000 + 70230000 – 70240000 ≥ 6 % s/70900000"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_complementario_pnc_70250000_70260000",
+            "type": "Restriccion",
+            "label": "Límite Patrimonio Neto Complementario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Patrimonio Neto Complementario (PNc) = 70250000 – 70260000"
+          },
+          {
+            "id": "Restriccion_responsabilidad_patrimonial_computable_rpc_70200000_8_s_70900000",
+            "type": "Restriccion",
+            "label": "Límite mínimo Responsabilidad Patrimonial Computable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Responsabilidad Patrimonial Computable (RPC) = 70200000 ≥ 8% s/70900000"
+          },
+          {
+            "id": "Obligacion_aplicar_disposiciones_de_punto_8_3_4_a_deuda_computable_como_ca_o_pnc",
+            "type": "Obligacion",
+            "label": "Aplicar disposiciones de punto 8.3.4 a deuda computable como CA o PNc",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de los instrumentos de deuda computables como CA o PNc, al admitir los aportes, se deberá tener en cuenta lo dispuesto en el punto 8.3.4"
+          },
+          {
+            "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr",
+            "type": "Restriccion",
+            "label": "Límite mínimo RPC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El importe de RPC deberá ser resultante de multiplicar 8% por los APR"
+          },
+          {
+            "id": "Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia",
+            "type": "Operacion",
+            "label": "Descalce de monedas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Descalce de monedas entre exposición y activo en garantía"
+          },
+          {
+            "id": "Operacion_exportacion",
+            "type": "Operacion",
+            "label": "Exportación de bienes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exportaciones realizadas por cuenta y orden de terceros en el marco de la Resolución General 616/99 de la Administración Federal de Ingresos Públicos en las cua…"
+          },
+          {
+            "id": "Operacion_importacion_de_bienes",
+            "type": "Operacion",
+            "label": "Importación de bienes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operación de ingreso aduanero de bienes importados que cuenta con el correspondiente registro ante ARCA"
+          }
+        ]
+      },
+      "output_chars": 3160
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "piso mínimo patrimonio neto",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "piso mínimo patrimonio neto",
+        "total_con_match": 96,
+        "resultados": [
+          {
+            "id": "Restriccion_patrimonio_neto_basico_pnb_70210000_70220000_70230000_70240000_6_s_70900000",
+            "type": "Restriccion",
+            "label": "Límite mínimo Patrimonio Neto Básico",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Patrimonio Neto Básico (PNb) = 70210000 – 70220000 + 70230000 – 70240000 ≥ 6 % s/70900000"
+          },
+          {
+            "id": "Obligacion_consignar_importe_patrimonio_neto",
+            "type": "Obligacion",
+            "label": "Consignar importe patrimonio neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_complementario_pnc_70250000_70260000",
+            "type": "Restriccion",
+            "label": "Límite Patrimonio Neto Complementario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Patrimonio Neto Complementario (PNc) = 70250000 – 70260000"
+          },
+          {
+            "id": "Restriccion_el_importe_de_co_debera_ser_resultante_de_multiplicar_4_5_por_los_apr",
+            "type": "Restriccion",
+            "label": "Límite mínimo CO",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El importe de CO deberá ser resultante de multiplicar 4,5% por los APR"
+          },
+          {
+            "id": "Restriccion_el_importe_de_pnb_debera_ser_resultante_de_multiplicar_6_por_los_apr",
+            "type": "Restriccion",
+            "label": "Límite mínimo PNb",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El importe de PNb deberá ser resultante de multiplicar 6% por los APR"
+          },
+          {
+            "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr",
+            "type": "Restriccion",
+            "label": "Límite mínimo RPC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El importe de RPC deberá ser resultante de multiplicar 8% por los APR"
+          },
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          },
+          {
+            "id": "Restriccion_los_bancos_deberan_mantener_una_exigencia_basica_de_capital_minimo_de_5_000_mill",
+            "type": "Restriccion",
+            "label": "Exigencia básica bancos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los bancos deberán mantener una exigencia básica de capital mínimo de 5.000 millones de pesos"
+          },
+          {
+            "id": "Restriccion_el_multiplicador_que_reduce_la_garantia_en_exceso_esta_sujeto_a_un_minimo_del_5_",
+            "type": "Restriccion",
+            "label": "Multiplicador mínimo EPF",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El multiplicador que reduce la garantía en exceso está sujeto a un mínimo del 5% de la EPF"
+          },
+          {
+            "id": "Restriccion_la_vida_promedio_de_los_titulos_de_deuda_no_sea_menor_a_los_5_cinco_anos",
+            "type": "Restriccion",
+            "label": "Vida promedio mínimo 5 años",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La vida promedio de los títulos de deuda no sea menor a los 5 (cinco) años"
+          }
+        ]
+      },
+      "output_chars": 3052
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr"
+      },
+      "output": {
+        "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr",
+        "type": "Restriccion",
+        "label": "Límite mínimo RPC",
+        "properties": {
+          "descripcion": "El importe de RPC deberá ser resultante de multiplicar 8% por los APR",
+          "tipo": "limite_cuantitativo",
+          "umbral": "8%"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.5. Límites."
+          }
+        ]
+      },
+      "output_chars": 397
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "APR activos ponderados riesgo cálculo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "APR activos ponderados riesgo cálculo",
+        "total_con_match": 310,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_activos_ponderados",
+            "type": "Operacion",
+            "label": "Cálculo activos ponderados riesgo",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+            "type": "Operacion",
+            "label": "Aplicación de ponderadores de riesgo",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. según el grupo al que pertenezca la entidad financiera"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderadores",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Cálculo de APR_c conforme a fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5"
+          },
+          {
+            "id": "Excepcion_exclusion_del_calculo_de_activos_ponderados",
+            "type": "Excepcion",
+            "label": "Exclusión del cálculo de activos ponderados",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad originante podrá excluir del cálculo de los activos ponderados por riesgo a las exposiciones subyacentes objeto de la titulización en circunstancias …"
+          },
+          {
+            "id": "Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr",
+            "type": "Obligacion",
+            "label": "Cálculo de RCD",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…"
+          },
+          {
+            "id": "Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional",
+            "type": "Operacion",
+            "label": "Cálculo promedio ERC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de promedio de exigencias de riesgo operacional"
+          },
+          {
+            "id": "Restriccion_no_se_incluiran_activos_fijos_en_el_calculo",
+            "type": "Restriccion",
+            "label": "Exclusión de activos fijos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se incluirán activos fijos en el cálculo"
+          },
+          {
+            "id": "Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado",
+            "type": "Obligacion",
+            "label": "Cálculo riesgo general mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderadores_de_riesgo_para_inversiones_en_fondos",
+            "type": "Operacion",
+            "label": "Ponderación de riesgo en fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de ponderadores de riesgo para inversiones en fondos"
+          },
+          {
+            "id": "Operacion_calculo_de_riesgo_de_tasa_de_interes",
+            "type": "Operacion",
+            "label": "Cálculo riesgo tasa interés EVE",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…"
+          }
+        ]
+      },
+      "output_chars": 3166
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_activos_ponderados"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_activos_ponderados",
+        "type": "Operacion",
+        "label": "Cálculo activos ponderados riesgo",
+        "properties": {
+          "tipo": "cálculo de activos ponderados",
+          "description": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la expresión: APR = 70100000 /(k * 0,08) + (70300000 - 3600000Y + 70800000 ) * 12,5"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 8.1. Normas de procedimiento."
+          }
+        ]
+      },
+      "output_chars": 571
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_activos_ponderados_por_riesgo"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+        "type": "Operacion",
+        "label": "Aplicación de ponderadores de riesgo",
+        "properties": {
+          "tipo": "cálculo de activos ponderados por riesgo",
+          "description": "Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. según el grupo al que pertenezca la entidad financiera"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo."
+          }
+        ]
+      },
+      "output_chars": 506
+    },
+    {
+      "n": 7,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_de_activos_ponderados",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_activos_ponderados",
+        "label": "Cálculo activos ponderados riesgo",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf",
+            "vecino_label": "Régimen Informativo Contable Mensual",
+            "provenances": [
+              {
+                "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+                "location": "Punto 8.1. Normas de procedimiento."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 494
+    },
+    {
+      "n": 8,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+        "label": "Aplicación de ponderadores de riesgo",
+        "n_salientes_total": 0,
+        "n_entrantes_total": 3,
+        "salientes": [],
+        "salientes_truncado": false
+      },
+      "output_chars": 203
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "ponderadores riesgo bienes exposición",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "ponderadores riesgo bienes exposición",
+        "total_con_match": 294,
+        "resultados": [
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          },
+          {
+            "id": "Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati",
+            "type": "Restriccion",
+            "label": "Crédito de riesgo no negativo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición presente respecto de la contraparte no puede tener un valor negativo"
+          },
+          {
+            "id": "Operacion_asignacion",
+            "type": "Operacion",
+            "label": "Asignación ponderadores riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ponderador de riesgo RW a asignar a una posición de titulización se calculará conforme a criterios que varían según la relación entre D, K y K."
+          },
+          {
+            "id": "Excepcion_el_ponderador_de_riesgo_de_la_parte_de_la_exposicion_cubierta_podra_ser_inferior",
+            "type": "Excepcion",
+            "label": "Excepción ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ponderador de riesgo de la parte de la exposición cubierta podrá ser inferior al 20% en los siguientes casos: operaciones de pase con participante esencial, …"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderadores_de_riesgo_para_inversiones_en_fondos",
+            "type": "Operacion",
+            "label": "Ponderación de riesgo en fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de ponderadores de riesgo para inversiones en fondos"
+          },
+          {
+            "id": "Restriccion_exposicion_al_bcra_en_pesos_con_ponderador_de_riesgo_0",
+            "type": "Restriccion",
+            "label": "Ponderador exposición BCRA pesos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exposición al BCRA en pesos con ponderador de riesgo 0%"
+          },
+          {
+            "id": "Obligacion_la_exposicion_total_sera_el_monto_bruto_sin_computar_las_coberturas_del_riesgo_d",
+            "type": "Obligacion",
+            "label": "Cálculo de exposición total bruta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición total será el monto bruto –sin computar las coberturas del riesgo de crédito de la Sección 5.– de las exposiciones minoristas con la contraparte."
+          },
+          {
+            "id": "Operacion_multiplicacion_de_exposicion_al_riesgo_de_contraparte_por_factor_1_5",
+            "type": "Operacion",
+            "label": "Aplicación de factor multiplicador",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: multiplicación de exposición al riesgo de contraparte por factor 1,5"
+          },
+          {
+            "id": "Operacion_asignacion_de_ponderadores",
+            "type": "Operacion",
+            "label": "Asignación de ponderadores de riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Asignación de ponderadores de riesgo específicos a exposiciones según cálculos previstos en normas de capitales mínimos"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+            "type": "Operacion",
+            "label": "Aplicación de ponderadores de riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se aplicarán los ponderadores de riesgo establecidos en el punto 2.12. según el grupo al que pertenezca la entidad financiera"
+          }
+        ]
+      },
+      "output_chars": 3216
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 2.12 ponderadores riesgo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "punto 2.12 ponderadores riesgo",
+        "total_con_match": 268,
+        "resultados": [
+          {
+            "id": "Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las",
+            "type": "Obligacion",
+            "label": "Considerar definiciones clasificación empresas",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entidades financieras deberán considerar las siguientes definiciones"
+          },
+          {
+            "id": "Excepcion_no_aplicable_punto_3_12_1",
+            "type": "Excepcion",
+            "label": "No aplicable punto 3.12.1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En la medida que no encuadre en el punto 3.12.1"
+          },
+          {
+            "id": "Obligacion_cuando_el_pago_a_nombre_del_cliente_encuadre_en_el_punto_10_10_2_3_se_debera_dej",
+            "type": "Obligacion",
+            "label": "Dejar constancia en reporte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando el pago a nombre del cliente encuadre en el punto 10.10.2.3., se deberá dejar constancia de tal circunstancia al reportar el boleto de venta a nombre del…"
+          },
+          {
+            "id": "Restriccion_acciones_definidas_conforme_al_punto_2_11_3_250",
+            "type": "Restriccion",
+            "label": "Ponderador acciones grupo 1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Acciones (definidas conforme al punto 2.11.3.): 250"
+          },
+          {
+            "id": "Excepcion_salvo_que_la_operacion_quedase_comprendida_en_lo_previsto_en_el_punto_10_10_2_11",
+            "type": "Excepcion",
+            "label": "Excepción por punto 10.10.2.11",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "salvo que la operación quedase comprendida en lo previsto en el punto 10.10.2.11"
+          },
+          {
+            "id": "Operacion_asignacion",
+            "type": "Operacion",
+            "label": "Asignación ponderadores riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ponderador de riesgo RW a asignar a una posición de titulización se calculará conforme a criterios que varían según la relación entre D, K y K."
+          },
+          {
+            "id": "Obligacion_la_facultad_de_revocacion_segun_lo_establecido_en_el_apartado_v_del_punto_2_3_1_",
+            "type": "Obligacion",
+            "label": "Informar facultad de revocación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderadores_de_riesgo_para_inversiones_en_fondos",
+            "type": "Operacion",
+            "label": "Ponderación de riesgo en fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de ponderadores de riesgo para inversiones en fondos"
+          },
+          {
+            "id": "Obligacion_cumplan_las_condiciones_previstas_en_el_punto_7_9_2",
+            "type": "Obligacion",
+            "label": "Cumplimiento condiciones proyecto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "cumplan las condiciones previstas en el punto 7.9.2."
+          },
+          {
+            "id": "Obligacion_debera_verificar_previamente_que_se_cumplen_la_totalidad_de_requisitos_detallado",
+            "type": "Obligacion",
+            "label": "Verificar requisitos punto 10.3.2",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Deberá verificar previamente que se cumplen la totalidad de requisitos detallados en el punto 10.3.2."
+          }
+        ]
+      },
+      "output_chars": 3013
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las"
+      },
+      "output": {
+        "id": "Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las",
+        "type": "Obligacion",
+        "label": "Considerar definiciones clasificación empresas",
+        "properties": {
+          "descripcion": "A los fines de asignar los ponderadores de riesgo previstos en el punto 2.12., las entidades financieras deberán considerar las siguientes definiciones",
+          "tipo": "otra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.7. Exposiciones a empresas."
+          }
+        ]
+      },
+      "output_chars": 503
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_ponderadores"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_ponderadores",
+        "type": "Operacion",
+        "label": "Cálculo de activos ponderados por riesgo",
+        "properties": {
+          "tipo": "calculo de ponderadores",
+          "description": "Cálculo de APR_c conforme a fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 3.1. Normas de procedimiento. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 437
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "bienes ajustados grado exposición pérdidas ponderador",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "bienes ajustados grado exposición pérdidas ponderador",
+        "total_con_match": 202,
+        "resultados": [
+          {
+            "id": "Restriccion_exposicion_a_entidades_grupo_1_grado_a_con_ponderador_general_40",
+            "type": "Restriccion",
+            "label": "Ponderador exposición grupo 1 grado A",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Exposición a entidades grupo 1 grado A con ponderador general 40%"
+          },
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          },
+          {
+            "id": "Restriccion_exposicion_a_bmd_que_cumplen_criterios_basilea_con_ponderador_0",
+            "type": "Restriccion",
+            "label": "Ponderador BMD Basilea",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exposición a BMD que cumplen criterios Basilea con ponderador 0%"
+          },
+          {
+            "id": "Restriccion_empresas_con_grado_de_inversion_con_ponderador_de_riesgo_65",
+            "type": "Restriccion",
+            "label": "Ponderador empresas inversión",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Empresas con grado de inversión con ponderador de riesgo 65%"
+          },
+          {
+            "id": "Excepcion_el_ponderador_de_riesgo_de_la_parte_de_la_exposicion_cubierta_podra_ser_inferior",
+            "type": "Excepcion",
+            "label": "Excepción ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ponderador de riesgo de la parte de la exposición cubierta podrá ser inferior al 20% en los siguientes casos: operaciones de pase con participante esencial, …"
+          }
+        ]
+      },
+      "output_chars": 1657
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t5judPmCNywGm58oQW",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre los requisitos de patrimonio neto computable y el cálculo del 8% de bienes ajustados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018jWDMi7cquNF68ckhHVBsh",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "patrimonio neto computable 8% bienes exposición pérdidas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Acy1xXn7RxqqWoMnzU7nsW",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "piso mínimo patrimonio neto",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1513,
+          "output_tokens": 187,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t5tfydPavA4mothZ2F",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Encontré referencias a RPC (Responsabilidad Patrimonial Computable) que debe ser el 8% de los APR. Voy a explorar más sobre APR y qué operación previa se requiere.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_012NPrd4fbgggU9SBKTNRSWT",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_el_importe_de_rpc_debera_ser_resultante_de_multiplicar_8_por_los_apr"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01JNtKaYYWmBoqGwMx2kxUBQ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "APR activos ponderados riesgo cálculo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4106
+          },
+          "cache_creation_input_tokens": 4106,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 209,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t66ab35YAHndjoKzpE",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré que el cálculo de APR (Activos Ponderados por Riesgo) es la operación previa. Voy a ver más detalles sobre esta operación.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018NcHBHwEA5u6aHokQerKuf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_activos_ponderados"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01HuXqf4TYPEaY1HVpitRhcT",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_activos_ponderados_por_riesgo"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1572
+          },
+          "cache_creation_input_tokens": 1572,
+          "cache_read_input_tokens": 4106,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 176,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t6JG4TukUwxfzpUD2n",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a explorar las relaciones de estos nodos para entender mejor qué elementos se utilizan en el cálculo.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01DGLetTqJF9ZT7LkMMntU8s",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_activos_ponderados",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_017TDR7g1ejGdmnFHDFBoagg",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_activos_ponderados_por_riesgo",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 618
+          },
+          "cache_creation_input_tokens": 618,
+          "cache_read_input_tokens": 5678,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 193,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t6TsW7XRugHUWngGHc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más información sobre los ponderadores de riesgo y los elementos que se utilizan en el cálculo de APR.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013sAfYMHNtu3mffe4Drjqhc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "ponderadores riesgo bienes exposición",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_011Xp27Nd87jUbtHe2JSfT54",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 2.12 ponderadores riesgo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 518
+          },
+          "cache_creation_input_tokens": 518,
+          "cache_read_input_tokens": 6296,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 183,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t6dQyxCRDUfim6qvay",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el nodo sobre la obligación de considerar definiciones y clasificación de empresas para asignar ponderadores.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01VF4nCmt5YUkWgWfwfjPeqD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_a_los_fines_de_asignar_los_ponderadores_de_riesgo_previstos_en_el_punto_2_12_las"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2526
+          },
+          "cache_creation_input_tokens": 2526,
+          "cache_read_input_tokens": 6814,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 129,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t6mzv7V7WoMM7yJnVX",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora tengo la información necesaria. Déjame verificar si hay más detalles sobre qué elementos específicos se utilizan en el cálculo de APR.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01DdshqgzQG9cY4dzmsFJEtY",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_ponderadores"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 317
+          },
+          "cache_creation_input_tokens": 317,
+          "cache_read_input_tokens": 9340,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 110,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t6tzbw71Q1u25GHNJJ",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Ahora tengo la información completa. Voy a verificar una última cosa sobre los elementos que componen el cálculo.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01CddwvMzAgwf4atAVjf4g5o",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "bienes ajustados grado exposición pérdidas ponderador",
+              "limite": 5
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 295
+          },
+          "cache_creation_input_tokens": 295,
+          "cache_read_input_tokens": 9657,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 123,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2t74T8EjZM1Por92oHM",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo suficiente información. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"Para determinar el importe del piso mínimo exigido de patrimonio neto computable (RPC) equivalente al 8% de los bienes de la entidad ajustados según su grado de exposición a pérdidas, la operación previa que debe realizarse es el **cálculo de los Activos Ponderados por Riesgo (APR)**. Este cálculo se lleva a cabo aplicando ponderadores de riesgo a los activos de la entidad. Específicamente, el importe de RPC debe ser resultante de multiplicar 8% por los APR. Los ponderadores de riesgo se asignan conforme a lo establecido en el punto 2.12 de las normas de capitales mínimos, considerando las definiciones y clasificación de empresas según el grupo al que pertenezca la entidad financiera. El cálculo de APR utiliza elementos como activos (A), ponderadores de riesgo (p), posiciones financieras brutos (PFB), factores de conversión de crédito (CCF), operaciones sin DVP, operaciones con DVP, riesgo de crédito de contraparte (RCD) e incertidumbre (INC), conforme a la fórmula: APR_c = A x p + PFB x CCF x p + no DVP + (DVP + RCD + INC) x 12,5.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.5. Límites.\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.5. Criterios para la determinación de los activos ponderados por riesgo.\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.7. Exposiciones a empresas.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 3.1. Normas de procedimiento. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 748
+          },
+          "cache_creation_input_tokens": 748,
+          "cache_read_input_tokens": 9952,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 609,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

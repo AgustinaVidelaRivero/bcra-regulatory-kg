@@ -1,0 +1,95 @@
+{
+  "generado": "2026-08-13T19:12:22",
+  "alcance": "fase B de esta unidad: corrida del agente, N=1, ambos ejes, tres grafos. NO incluye: re-corridas N=3 sobre 'parcial', auditoría del 10%, ni juez de fidelidad (etapas posteriores con su propia autorización).",
+  "conteo_corridas": {
+    "v2": {
+      "fidelidad": 40,
+      "navegabilidad": 88,
+      "total": 128,
+      "nav_presentes": 44,
+      "nav_ausentes": 20
+    },
+    "v3": {
+      "fidelidad": 40,
+      "navegabilidad": 128,
+      "total": 168,
+      "nav_presentes": 64,
+      "nav_ausentes": 0
+    },
+    "run_3": {
+      "fidelidad": 40,
+      "navegabilidad": 120,
+      "total": 160,
+      "nav_presentes": 60,
+      "nav_ausentes": 4
+    }
+  },
+  "total_corridas": 456,
+  "tokens_por_grafo": [
+    {
+      "grafo": "v2",
+      "n_corridas": 128,
+      "tokens_por_corrida": {
+        "T_in": 4790,
+        "T_out": 1598,
+        "T_cr": 45310,
+        "T_cw": 11966
+      },
+      "fuente_tokens": "proxy conservador: máximo por campo entre posthoc_run/summary_escalon1b_r3_reensamblado_v3.json, posthoc_run/summary_off_run_3.json, posthoc_run/summary_u6_exploracion_reensamblado_v3.json (v2 no tiene corrida histórica)",
+      "tokens_totales": {
+        "T_in": 613120,
+        "T_out": 204544,
+        "T_cr": 5799680,
+        "T_cw": 1531648
+      }
+    },
+    {
+      "grafo": "v3",
+      "n_corridas": 168,
+      "tokens_por_corrida": {
+        "T_in": 3007,
+        "T_out": 1200,
+        "T_cr": 33793,
+        "T_cw": 9603
+      },
+      "fuente_tokens": "posthoc_run/summary_escalon1b_r3_reensamblado_v3.json",
+      "tokens_totales": {
+        "T_in": 505176,
+        "T_out": 201600,
+        "T_cr": 5677224,
+        "T_cw": 1613304
+      }
+    },
+    {
+      "grafo": "run_3",
+      "n_corridas": 160,
+      "tokens_por_corrida": {
+        "T_in": 4790,
+        "T_out": 1361,
+        "T_cr": 45153,
+        "T_cw": 11285
+      },
+      "fuente_tokens": "posthoc_run/summary_off_run_3.json",
+      "tokens_totales": {
+        "T_in": 766400,
+        "T_out": 217760,
+        "T_cr": 7224480,
+        "T_cw": 1805600
+      }
+    }
+  ],
+  "tokens_totales": {
+    "T_in": 1884696,
+    "T_out": 623904,
+    "T_cr": 18701384,
+    "T_cw": 4950552
+  },
+  "formula": "USD_total = sum_grafo n_grafo * (T_in*P_in + T_out*P_out + T_cw*P_cache_write + T_cr*P_cache_read) / 1e6  == (Tot_in*P_in + Tot_out*P_out + Tot_cw*P_cache_write + Tot_cr*P_cache_read) / 1e6",
+  "variables_de_precio": [
+    "P_in",
+    "P_out",
+    "P_cache_write",
+    "P_cache_read"
+  ],
+  "nota_selftest": "el selftest offline usa cliente falso: sus tokens no son medición; los T_* salen de las corridas históricas citadas en fuente_tokens"
+}

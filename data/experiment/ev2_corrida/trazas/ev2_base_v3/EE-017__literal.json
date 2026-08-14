@@ -1,0 +1,457 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_v3",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "navegabilidad",
+    "caso_id": "EE-017::literal",
+    "sample_id": "EE-017",
+    "variante": "literal",
+    "estrato": "E-E",
+    "pos_orden_global": 101,
+    "pos_orden_efectivo": 101,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T10:36:44",
+    "timestamp_fin": "2026-08-14T10:36:51",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 3
+    },
+    "fidelidad_sin_evaluar": false
+  },
+  "pregunta": "¿A partir de qué momento se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente?",
+  "trace": {
+    "qid": "EE-017::literal",
+    "question": "¿A partir de qué momento se considera que un deudor se encuentra en mora superior a 90 días cuando el crédito corresponde a un descubierto en cuenta corriente?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "mora 90 días descubierto cuenta corriente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"mora 90 días descubierto cuenta corriente\", \"total_con_match\": 148, \"resultados\": [{\"id\": \"Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43\", \"type\": \"Restriccion\", \"label\": \"Exposición en mora superior a 90 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El deudor posee un crédito en mora de más de 90 días. Se considera que un descubierto en cuenta corriente se encuentra en mora a partir del momento en que el de…\"}, {\"id\": \"Operacion_giros_en_descubierto_en_cuenta_corriente_94464e\", \"type\": \"Operacion\", \"label\": \"Giros en descubierto en cuenta corriente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Acuerdos para girar en descubierto en cuenta corriente, en la medida en que no se haya hecho uso de esa facilidad en los últimos 12 meses\"}, {\"id\": \"Obligacion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n_d78aa9\", \"type\": \"Obligacion\", \"label\": \"Contabilizar adelantos transitorios hasta 61 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento.… [+2761 chars]",
+        "output_chars": 3961
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "descubierto en cuenta corriente mora",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"descubierto en cuenta corriente mora\", \"total_con_match\": 1069, \"resultados\": [{\"id\": \"Operacion_giros_en_descubierto_en_cuenta_corriente_94464e\", \"type\": \"Operacion\", \"label\": \"Giros en descubierto en cuenta corriente\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Acuerdos para girar en descubierto en cuenta corriente, en la medida en que no se haya hecho uso de esa facilidad en los últimos 12 meses\"}, {\"id\": \"Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene_def0bc\", \"type\": \"Restriccion\", \"label\": \"Límite de plazo para cancelación de sobregiros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…\"}, {\"id\": \"Obligacion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n_d78aa9\", \"type\": \"Obligacion\", \"label\": \"Contabilizar adelantos transitorios hasta 61 días\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgami… [+2327 chars]",
+        "output_chars": 3527
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43\", \"type\": \"Restriccion\", \"label\": \"Exposición en mora superior a 90 días\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"descripcion\": \"El deudor posee un crédito en mora de más de 90 días. Se considera que un descubierto en cuenta corriente se encuentra en mora a partir del momento en que el deudor excede el límite autorizado o se le comunica un nuevo límite y éste es inferior a su saldo deudor\", \"umbral\": \"90 días\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.10. Exposiciones en situación de incumplimiento.\"}]}",
+        "output_chars": 671
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1476,
+        "output_tokens": 168,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.48
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 140,
+        "cache_read": 0,
+        "cache_write": 4314,
+        "latency_s": 2.216
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 202,
+        "cache_read": 4314,
+        "cache_write": 383,
+        "latency_s": 2.225
+      }
+    ],
+    "final_json": {
+      "respuesta": "Un descubierto en cuenta corriente se considera que se encuentra en mora a partir del momento en que el deudor excede el límite autorizado o se le comunica un nuevo límite y éste es inferior a su saldo deudor. Una vez que se encuentra en mora, se considera que la exposición está en mora superior a 90 días cuando han transcurrido más de 90 días desde ese momento.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.10. Exposiciones en situación de incumplimiento."
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto, tengo la respuesta. La información está clara en el nodo que encontré.\n\n```json\n{\n  \"respuesta\": \"Un descubierto en cuenta corriente se considera que se encuentra en mora a partir del momento en que el deudor excede el límite autorizado o se le comunica un nuevo límite y éste es inferior a su saldo deudor. Una vez que se encuentra en mora, se considera que la exposición está en mora superior a 90 días cuando han transcurrido más de 90 días desde ese momento.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.10. Exposiciones en situación de incumplimiento.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 3,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.10. Exposiciones en situación de incumplimiento."
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1488,
+    "tokens_out": 510,
+    "cache_read": 4314,
+    "cache_write": 4697,
+    "cost_usd": 0.010341,
+    "latency_s": 6.934,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "mora 90 días descubierto cuenta corriente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "mora 90 días descubierto cuenta corriente",
+        "total_con_match": 148,
+        "resultados": [
+          {
+            "id": "Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43",
+            "type": "Restriccion",
+            "label": "Exposición en mora superior a 90 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El deudor posee un crédito en mora de más de 90 días. Se considera que un descubierto en cuenta corriente se encuentra en mora a partir del momento en que el de…"
+          },
+          {
+            "id": "Operacion_giros_en_descubierto_en_cuenta_corriente_94464e",
+            "type": "Operacion",
+            "label": "Giros en descubierto en cuenta corriente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acuerdos para girar en descubierto en cuenta corriente, en la medida en que no se haya hecho uso de esa facilidad en los últimos 12 meses"
+          },
+          {
+            "id": "Obligacion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n_d78aa9",
+            "type": "Obligacion",
+            "label": "Contabilizar adelantos transitorios hasta 61 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento."
+          },
+          {
+            "id": "Obligacion_cuenta_con_la_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_08656e",
+            "type": "Obligacion",
+            "label": "Declaración jurada de registro aduanero en 90 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cuenta con la declaración jurada del cliente de que se compromete a demostrar el registro de ingreso aduanero de los bienes dentro de los 90 (noventa) días corr…"
+          },
+          {
+            "id": "Restriccion_para_el_resto_de_los_bienes_el_plazo_sera_de_90_noventa_dias_corridos_a_partir_d_1bcc86",
+            "type": "Restriccion",
+            "label": "Plazo 90 días para otros bienes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para el resto de los bienes, el plazo será de 90 (noventa) días corridos a partir de la fecha de acceso al mercado de cambios"
+          },
+          {
+            "id": "Obligacion_en_el_dia_de_solicitud_y_en_los_90_dias_corridos_anteriores_no_ha_entregado_en_e_b0587e",
+            "type": "Obligacion",
+            "label": "Verificación de no entrega a vinculados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el día de solicitud y en los 90 días corridos anteriores, no ha entregado en el país fondos en moneda local ni otros activos locales líquidos a ninguna perso…"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene_def0bc",
+            "type": "Restriccion",
+            "label": "Límite de plazo para cancelación de sobregiros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Restriccion_plazo_tambien_aplicable_para_transferencias_al_exterior_de_agentes_locales_por_s_2c6f9d",
+            "type": "Restriccion",
+            "label": "Plazo 90 días para transferencias de agentes locales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Plazo también aplicable para transferencias al exterior de agentes locales por sus recaudaciones en el país de fondos correspondientes a servicios prestados por…"
+          },
+          {
+            "id": "Restriccion_se_trata_de_servicio_no_comprendido_en_puntos_13_2_1_a_13_2_5_provisto_por_contr_8620c0",
+            "type": "Restriccion",
+            "label": "Pago plazo 90 días servicios vinculados desde 14/04/25",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se trata de servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada al residente y el pago se concreta una vez transcurrido plazo d…"
+          },
+          {
+            "id": "Excepcion_el_plazo_de_90_dias_no_resulta_aplicable_a_las_ventas_que_se_realicen_con_liquid_d7bfc5",
+            "type": "Excepcion",
+            "label": "Excepción de plazo para ventas contra cable al exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El plazo de 90 días no resulta aplicable a las ventas que se realicen con liquidación contra cable en cuentas del exterior"
+          }
+        ]
+      },
+      "output_chars": 3961
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "descubierto en cuenta corriente mora",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "descubierto en cuenta corriente mora",
+        "total_con_match": 1069,
+        "resultados": [
+          {
+            "id": "Operacion_giros_en_descubierto_en_cuenta_corriente_94464e",
+            "type": "Operacion",
+            "label": "Giros en descubierto en cuenta corriente",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Acuerdos para girar en descubierto en cuenta corriente, en la medida en que no se haya hecho uso de esa facilidad en los últimos 12 meses"
+          },
+          {
+            "id": "Restriccion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene_def0bc",
+            "type": "Restriccion",
+            "label": "Límite de plazo para cancelación de sobregiros",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los sobregiros en cuenta corriente bancaria por importes que excedan los márgenes de utilización oportunamente acordados, o los que se hayan efectivizado sin co…"
+          },
+          {
+            "id": "Obligacion_los_adelantos_transitorios_en_cuenta_corriente_se_consideraran_de_cumplimiento_n_d78aa9",
+            "type": "Obligacion",
+            "label": "Contabilizar adelantos transitorios hasta 61 días",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los adelantos transitorios en cuenta corriente se considerarán de cumplimiento normal hasta los 61 días contados desde su otorgamiento."
+          },
+          {
+            "id": "Excepcion_los_margenes_acordados_para_descubiertos_en_cuenta_corriente_limites_de_compra_d_d54b42",
+            "type": "Excepcion",
+            "label": "Exclusión de márgenes y límites de tarjetas del numerador",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los márgenes acordados para descubiertos en cuenta corriente, límites de compra de tarjetas de crédito (utilizado y disponible) y préstamos personales preacorda…"
+          },
+          {
+            "id": "Obligacion_tener_en_cuenta_lo_dispuesto_16265f",
+            "type": "Obligacion",
+            "label": "Tener en cuenta lo dispuesto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Deberá tenerse en cuenta lo dispuesto en el punto 4.2"
+          },
+          {
+            "id": "Operacion_acreditacion_en_cuenta_local_bfa7e0",
+            "type": "Operacion",
+            "label": "Acreditación en cuenta local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los movimientos de fondos a la cuenta local del cliente podrán ser instrumentados mediante una transferencia directa desde una cuenta operativa de la entidad o …"
+          },
+          {
+            "id": "Obligacion_en_el_legajo_se_reuniran_todos_los_elementos_de_juicio_que_se_tengan_en_cuenta_p_1fd739",
+            "type": "Obligacion",
+            "label": "Reunir elementos juicio legajo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el legajo se reunirán todos los elementos de juicio que se tengan en cuenta para realizar las evaluaciones y clasificaciones y se dejará constancia de las re…"
+          },
+          {
+            "id": "Obligacion_se_consideran_en_mora_a_las_exposiciones_subyacentes_cuando_se_verifiquen_atraso_ef4bc5",
+            "type": "Obligacion",
+            "label": "Clasificar exposiciones en mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consideran en mora a las exposiciones subyacentes cuando se verifiquen atrasos en los pagos de 90 días o más, estén sujetas a procedimientos de quiebra o con…"
+          },
+          {
+            "id": "Restriccion_limite_de_debito_en_cuenta_local_86d695",
+            "type": "Restriccion",
+            "label": "Límite de débito en cuenta local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La operación se curse con débito en cuenta del cliente en entidades financieras locales."
+          },
+          {
+            "id": "Obligacion_el_legajo_del_deudor_se_debera_llevar_en_el_lugar_de_radicacion_de_la_cuenta_ecc322",
+            "type": "Obligacion",
+            "label": "Radicación legajo en lugar de cuenta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El legajo del deudor se deberá llevar en el lugar de radicación de la cuenta."
+          }
+        ]
+      },
+      "output_chars": 3527
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43"
+      },
+      "output": {
+        "id": "Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43",
+        "type": "Restriccion",
+        "label": "Exposición en mora superior a 90 días",
+        "properties": {
+          "tipo": "limite_cuantitativo",
+          "descripcion": "El deudor posee un crédito en mora de más de 90 días. Se considera que un descubierto en cuenta corriente se encuentra en mora a partir del momento en que el deudor excede el límite autorizado o se le comunica un nuevo límite y éste es inferior a su saldo deudor",
+          "umbral": "90 días"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.10. Exposiciones en situación de incumplimiento."
+          }
+        ]
+      },
+      "output_chars": 671
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2outRMLiWR5T3eFTgyf",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre mora en descubiertos en cuenta corriente.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01JUYo2F3pfqR5jRqTiEcTwr",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "mora 90 días descubierto cuenta corriente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01QbH7FsoeZK4srZADjnAfqm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "descubierto en cuenta corriente mora",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1476,
+          "output_tokens": 168,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ov5GTruFTuXsqdJdPc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto, encontré un nodo muy relevante. Voy a ver el detalle de la restricción sobre \"Exposición en mora superior a 90 días\":",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01THbC6uVPpubk5GNxzAgFnZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_el_deudor_posee_un_credito_en_mora_de_mas_de_90_dias_se_considera_que_un_descubi_1acb43"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4314
+          },
+          "cache_creation_input_tokens": 4314,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 140,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ovEnxTUSNAaoPdJWrY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto, tengo la respuesta. La información está clara en el nodo que encontré.\n\n```json\n{\n  \"respuesta\": \"Un descubierto en cuenta corriente se considera que se encuentra en mora a partir del momento en que el deudor excede el límite autorizado o se le comunica un nuevo límite y éste es inferior a su saldo deudor. Una vez que se encuentra en mora, se considera que la exposición está en mora superior a 90 días cuando han transcurrido más de 90 días desde ese momento.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.10. Exposiciones en situación de incumplimiento.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 383
+          },
+          "cache_creation_input_tokens": 383,
+          "cache_read_input_tokens": 4314,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 202,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

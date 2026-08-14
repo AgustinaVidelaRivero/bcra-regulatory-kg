@@ -1,0 +1,711 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_v3",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "navegabilidad",
+    "caso_id": "EE-006::antilexica",
+    "sample_id": "EE-006",
+    "variante": "antilexica",
+    "estrato": "E-E",
+    "pos_orden_global": 8,
+    "pos_orden_efectivo": 8,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T09:40:29",
+    "timestamp_fin": "2026-08-14T09:40:38",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 4
+    },
+    "fidelidad_sin_evaluar": false
+  },
+  "pregunta": "En el marco de las transacciones de divisas, ¿cómo se define una compraventa que se liquida de forma inmediata y cuál es el número máximo de días permitidos entre el momento en que se acuerda esa transacción y el momento en que efectivamente se liquida, para que siga clasificando dentro de esa categoría?",
+  "trace": {
+    "qid": "EE-006::antilexica",
+    "question": "En el marco de las transacciones de divisas, ¿cómo se define una compraventa que se liquida de forma inmediata y cuál es el número máximo de días permitidos entre el momento en que se acuerda esa transacción y el momento en que efectivamente se liquida, para que siga clasificando dentro de esa categoría?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "compraventa divisas liquidación inmediata",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"compraventa divisas liquidación inmediata\", \"total_con_match\": 195, \"resultados\": [{\"id\": \"Operacion_ingreso_y_liquidacion_de_divisas_dc00d4\", \"type\": \"Operacion\", \"label\": \"Ingreso y liquidación de divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: ingreso_liquidacion_divisas\"}, {\"id\": \"Operacion_liquidacion_de_divisas_devueltas_032167\", \"type\": \"Operacion\", \"label\": \"Liquidación de divisas devueltas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación en mercado de cambios de divisas devueltas por pagos\"}, {\"id\": \"Operacion_liquidacion_de_divisas_de_permiso_7f9b61\", \"type\": \"Operacion\", \"label\": \"Liquidación de divisas de permiso\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de divisas\"}, {\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"type\": \"Obligacion\", \"label\": \"Liquidar divisas por devolución pago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…\"}, {\"id\": \"Obligacion_el_deudor_demuestre_el_i… [+2233 chars]",
+        "output_chars": 3433
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "spot transacciones divisas días liquidación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"spot transacciones divisas días liquidación\", \"total_con_match\": 244, \"resultados\": [{\"id\": \"Restriccion_el_cliente_debera_ingresar_y_liquidar_los_fondos_dentro_de_los_5_cinco_dias_habi_84d7ad\", \"type\": \"Restriccion\", \"label\": \"Plazo de liquidación de fondos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente deberá ingresar y liquidar los fondos dentro de los 5 (cinco) días hábiles siguientes al resultado de la operación\"}, {\"id\": \"Operacion_ingreso_y_liquidacion_de_divisas_dc00d4\", \"type\": \"Operacion\", \"label\": \"Ingreso y liquidación de divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: ingreso_liquidacion_divisas\"}, {\"id\": \"Operacion_liquidacion_de_divisas_devueltas_032167\", \"type\": \"Operacion\", \"label\": \"Liquidación de divisas devueltas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación en mercado de cambios de divisas devueltas por pagos\"}, {\"id\": \"Operacion_liquidacion_de_divisas_de_permiso_7f9b61\", \"type\": \"Operacion\", \"label\": \"Liquidación de divisas de permiso\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de divisas\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058\", \"type\": \"Obligaci… [+2019 chars]",
+        "output_chars": 3219
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operación al contado spot mercado cambios",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operación al contado spot mercado cambios\", \"total_con_match\": 1574, \"resultados\": [{\"id\": \"Operacion_acceso_al_mercado_de_cambios_b8c486\", \"type\": \"Operacion\", \"label\": \"Acceso al mercado de cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El acceso al mercado de cambios se produce con una anterioridad no mayor a los 3 (tres) días hábiles a la fecha de vencimiento del servicio de capital o interés…\"}, {\"id\": \"Operacion_operacion_al_contado_en_cambios_27d6e6\", \"type\": \"Operacion\", \"label\": \"Operación al contado en cambios\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación\"}, {\"id\": \"Operacion_acceso_al_mercado_de_cambios_para_pago_7b4cb8\", \"type\": \"Operacion\", \"label\": \"Acceso al mercado de cambios para pago\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"tipo: Acceso al mercado de cambios para pago exterior de importaciones de bienes\"}, {\"id\": \"Operacion_acceso_al_mercado_de_cambios_para_egresos_dd28ee\", \"type\": \"Operacion\", \"label\": \"Acceso al mercado de cambios para egresos\", \"tokens_matcheados\": 4, … [+2143 chars]",
+        "output_chars": 3343
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transacción acuerdo liquidación dos días",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transacción acuerdo liquidación dos días\", \"total_con_match\": 214, \"resultados\": [{\"id\": \"Restriccion_el_cliente_debera_ingresar_y_liquidar_los_fondos_dentro_de_los_5_cinco_dias_habi_84d7ad\", \"type\": \"Restriccion\", \"label\": \"Plazo de liquidación de fondos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El cliente deberá ingresar y liquidar los fondos dentro de los 5 (cinco) días hábiles siguientes al resultado de la operación\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058\", \"type\": \"Obligacion\", \"label\": \"Ingreso y liquidación plazo 30 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ingreso y liquidación de las divisas por el mercado de cambios deberá concretarse en 30 (treinta) días corridos desde la fecha del cumplido de embarque otorg…\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_plazo_60_dias_8e678a\", \"type\": \"Obligacion\", \"label\": \"Ingreso y liquidación plazo 60 días\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El ingreso y liquidación de las divisas deberá concretarse en 60 (sesenta) días corridos para las operaciones con contrapartes vinculadas que no correspondan a …\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_plazo_180_dias_e… [+2467 chars]",
+        "output_chars": 3667
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_operacion_al_contado_en_cambios_27d6e6"
+        },
+        "output_truncado": "{\"id\": \"Operacion_operacion_al_contado_en_cambios_27d6e6\", \"type\": \"Operacion\", \"label\": \"Operación al contado en cambios\", \"properties\": {\"tipo\": \"Operación de cambios al contado\", \"description\": \"Operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.3. Operaciones al contado.\"}]}",
+        "output_chars": 475
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1515,
+        "output_tokens": 173,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.317
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 4070,
+        "output_tokens": 178,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.942
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 119,
+        "cache_read": 0,
+        "cache_write": 6750,
+        "latency_s": 1.729
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 235,
+        "cache_read": 6750,
+        "cache_write": 293,
+        "latency_s": 3.395
+      }
+    ],
+    "final_json": {
+      "respuesta": "En el marco de las transacciones de divisas, una compraventa que se liquida de forma inmediata se define como una 'Operación al contado en cambios'. Se trata de una operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación. Por lo tanto, el número máximo de días permitidos entre el momento en que se acuerda la transacción y el momento en que efectivamente se liquida es de 2 días hábiles.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 6.3. Operaciones al contado."
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Tengo la información completa para responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"En el marco de las transacciones de divisas, una compraventa que se liquida de forma inmediata se define como una 'Operación al contado en cambios'. Se trata de una operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación. Por lo tanto, el número máximo de días permitidos entre el momento en que se acuerda la transacción y el momento en que efectivamente se liquida es de 2 días hábiles.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.3. Operaciones al contado.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 5,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 6.3. Operaciones al contado."
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5597,
+    "tokens_out": 705,
+    "cache_read": 6750,
+    "cache_write": 7043,
+    "cost_usd": 0.018601,
+    "latency_s": 8.405,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "compraventa divisas liquidación inmediata",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "compraventa divisas liquidación inmediata",
+        "total_con_match": 195,
+        "resultados": [
+          {
+            "id": "Operacion_ingreso_y_liquidacion_de_divisas_dc00d4",
+            "type": "Operacion",
+            "label": "Ingreso y liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: ingreso_liquidacion_divisas"
+          },
+          {
+            "id": "Operacion_liquidacion_de_divisas_devueltas_032167",
+            "type": "Operacion",
+            "label": "Liquidación de divisas devueltas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación en mercado de cambios de divisas devueltas por pagos"
+          },
+          {
+            "id": "Operacion_liquidacion_de_divisas_de_permiso_7f9b61",
+            "type": "Operacion",
+            "label": "Liquidación de divisas de permiso",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de divisas"
+          },
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Obligacion_el_deudor_demuestre_el_ingreso_y_liquidacion_de_divisas_en_el_mercado_de_cambios_7dccaa",
+            "type": "Obligacion",
+            "label": "Demostrar ingreso y liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El deudor demuestre el ingreso y liquidación de divisas en el mercado de cambios por un monto equivalente al valor nominal del endeudamiento financiero."
+          },
+          {
+            "id": "Obligacion_las_operaciones_de_compraventa_de_titulos_valores_con_liquidacion_en_moneda_extr_f4d42c",
+            "type": "Obligacion",
+            "label": "Abonarse mediante mecanismos especificados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las operaciones de compraventa de títulos valores con liquidación en moneda extranjera que concreten clientes que no sean personas humanas residentes deberán ab…"
+          },
+          {
+            "id": "Obligacion_verificar_liquidacion_de_divisas_por_venta_12a9d3",
+            "type": "Obligacion",
+            "label": "Verificar liquidación de divisas por venta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Que a la entidad interviniente le conste que el comprador argentino ha liquidado divisas en el mercado de cambios asociadas a la venta de la mercadería por un m…"
+          },
+          {
+            "id": "Excepcion_excepcion_liquidacion_de_divisas_remitidas_c6170e",
+            "type": "Excepcion",
+            "label": "Excepción: liquidación de divisas remitidas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local estará exceptuada de lo dispuesto …"
+          },
+          {
+            "id": "Obligacion_el_requisito_de_ingreso_y_liquidacion_de_las_divisas_de_las_financiaciones_se_co_a6cb15",
+            "type": "Obligacion",
+            "label": "Demostración de registro de ingreso aduanero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El requisito de ingreso y liquidación de las divisas de las financiaciones se considerará cumplimentado en la medida que se demuestre el registro de ingreso adu…"
+          },
+          {
+            "id": "Obligacion_liquidacion_de_divisas_del_seguro_en_mercado_dd87f3",
+            "type": "Obligacion",
+            "label": "Liquidación de divisas del seguro en mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "De haberse realizado el pago en moneda extranjera, el monto percibido en moneda extranjera por el cobro del seguro deberá ser ingresado y liquidado en el mercad…"
+          }
+        ]
+      },
+      "output_chars": 3433
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "spot transacciones divisas días liquidación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "spot transacciones divisas días liquidación",
+        "total_con_match": 244,
+        "resultados": [
+          {
+            "id": "Restriccion_el_cliente_debera_ingresar_y_liquidar_los_fondos_dentro_de_los_5_cinco_dias_habi_84d7ad",
+            "type": "Restriccion",
+            "label": "Plazo de liquidación de fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cliente deberá ingresar y liquidar los fondos dentro de los 5 (cinco) días hábiles siguientes al resultado de la operación"
+          },
+          {
+            "id": "Operacion_ingreso_y_liquidacion_de_divisas_dc00d4",
+            "type": "Operacion",
+            "label": "Ingreso y liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: ingreso_liquidacion_divisas"
+          },
+          {
+            "id": "Operacion_liquidacion_de_divisas_devueltas_032167",
+            "type": "Operacion",
+            "label": "Liquidación de divisas devueltas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación en mercado de cambios de divisas devueltas por pagos"
+          },
+          {
+            "id": "Operacion_liquidacion_de_divisas_de_permiso_7f9b61",
+            "type": "Operacion",
+            "label": "Liquidación de divisas de permiso",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de divisas"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 30 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas por el mercado de cambios deberá concretarse en 30 (treinta) días corridos desde la fecha del cumplido de embarque otorg…"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_60_dias_8e678a",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 60 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 60 (sesenta) días corridos para las operaciones con contrapartes vinculadas que no correspondan a …"
+          },
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_180_dias_e1a9bd",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 180 (ciento ochenta) días corridos para el resto de los bienes."
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_365_dias_7d1f37",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 365 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 365 (trescientos sesenta y cinco) días corridos para las operaciones que se concreten en el marco …"
+          },
+          {
+            "id": "Obligacion_liquidacion_anticipos_20_dias_habiles_d3a35e",
+            "type": "Obligacion",
+            "label": "Liquidación anticipos 20 días hábiles",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los anticipos, prefinanciaciones y posfinanciaciones del exterior deberán ser ingresadas y liquidadas en el mercado de cambios dentro de los 20 (veinte) días há…"
+          }
+        ]
+      },
+      "output_chars": 3219
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "operación al contado spot mercado cambios",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "operación al contado spot mercado cambios",
+        "total_con_match": 1574,
+        "resultados": [
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_b8c486",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El acceso al mercado de cambios se produce con una anterioridad no mayor a los 3 (tres) días hábiles a la fecha de vencimiento del servicio de capital o interés…"
+          },
+          {
+            "id": "Operacion_operacion_al_contado_en_cambios_27d6e6",
+            "type": "Operacion",
+            "label": "Operación al contado en cambios",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_pago_7b4cb8",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para pago",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "tipo: Acceso al mercado de cambios para pago exterior de importaciones de bienes"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_egresos_dd28ee",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para egresos",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Acceso al mercado de cambios para operaciones de egreso"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_al_momento_de_dar_acceso_al_mercado_de_cambios_contar_con_la_c_a0bd4c",
+            "type": "Obligacion",
+            "label": "Convalidar operación en sistema online BCRA",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La entidad deberá, al momento de dar acceso al mercado de cambios, contar con la convalidación de la situación de la operación en el sistema online implementado…"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_derivados_bfa697",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para derivados",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "tipo: Acceso al mercado de cambios para pago de primas, constitución de garantías y cancelaciones de operaciones de cobertura"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_cancelacion_6c2128",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para cancelación",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Acceso al mercado de cambios en casos de cancelación de garantías otorgadas por importaciones de bienes"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_por_medicamentos_de1d7b",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios por medicamentos",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "tipo: Pago al exterior de medicamentos ingresados por Solicitud Particular"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_bienes_duty_free_796e65",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para bienes duty-free",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La entidad interviniente podrá dar acceso al mercado de cambios para el pago al exterior de compras de bienes destinadas a ventas en tiendas libres de impuestos…"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_insumos_offshore_21ba95",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para insumos offshore",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La entidad interviniente podrá dar acceso al mercado de cambios para el pago al exterior de insumos, equipos y repuestos destinados a la construcción, reparació…"
+          }
+        ]
+      },
+      "output_chars": 3343
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transacción acuerdo liquidación dos días",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transacción acuerdo liquidación dos días",
+        "total_con_match": 214,
+        "resultados": [
+          {
+            "id": "Restriccion_el_cliente_debera_ingresar_y_liquidar_los_fondos_dentro_de_los_5_cinco_dias_habi_84d7ad",
+            "type": "Restriccion",
+            "label": "Plazo de liquidación de fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cliente deberá ingresar y liquidar los fondos dentro de los 5 (cinco) días hábiles siguientes al resultado de la operación"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 30 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas por el mercado de cambios deberá concretarse en 30 (treinta) días corridos desde la fecha del cumplido de embarque otorg…"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_60_dias_8e678a",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 60 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 60 (sesenta) días corridos para las operaciones con contrapartes vinculadas que no correspondan a …"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_180_dias_e1a9bd",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 180 (ciento ochenta) días corridos para el resto de los bienes."
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_plazo_365_dias_7d1f37",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación plazo 365 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ingreso y liquidación de las divisas deberá concretarse en 365 (trescientos sesenta y cinco) días corridos para las operaciones que se concreten en el marco …"
+          },
+          {
+            "id": "Obligacion_liquidacion_anticipos_20_dias_habiles_d3a35e",
+            "type": "Obligacion",
+            "label": "Liquidación anticipos 20 días hábiles",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los anticipos, prefinanciaciones y posfinanciaciones del exterior deberán ser ingresadas y liquidadas en el mercado de cambios dentro de los 20 (veinte) días há…"
+          },
+          {
+            "id": "Obligacion_liquidacion_de_cobros_anteriores_20_dias_9c6857",
+            "type": "Obligacion",
+            "label": "Liquidación de cobros anteriores 20 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los cobros de exportaciones oficializadas con anterioridad al 02/09/19 que se encontrasen pendientes de cobro a esa fecha deberán ser ingresadas y liquidadas en…"
+          },
+          {
+            "id": "Restriccion_el_acceso_se_produce_en_un_plazo_no_menor_a_los_30_treinta_dias_corridos_desde_l_7e61aa",
+            "type": "Restriccion",
+            "label": "Plazo mínimo de 30 días desde liquidación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El acceso se produce en un plazo no menor a los 30 (treinta) días corridos desde la liquidación del último aporte"
+          },
+          {
+            "id": "Obligacion_se_compromete_a_liquidar_en_el_mercado_de_cambios_dentro_de_los_5_cinco_dias_hab_c58316",
+            "type": "Obligacion",
+            "label": "Liquidación de fondos en mercado de cambios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se compromete a liquidar en el mercado de cambios, dentro de los 5 (cinco) días hábiles de su puesta a disposición, aquellos fondos que reciba en el exterior or…"
+          },
+          {
+            "id": "Restriccion_el_acceso_al_mercado_de_cambios_se_produce_no_antes_de_los_2_dos_anos_corridos_c_bdbaa6",
+            "type": "Restriccion",
+            "label": "Acceso no antes de 2 años desde liquidación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El acceso al mercado de cambios se produce no antes de los 2 (dos) años corridos contados desde la fecha de la liquidación en el mercado de cambios del aporte q…"
+          }
+        ]
+      },
+      "output_chars": 3667
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_operacion_al_contado_en_cambios_27d6e6"
+      },
+      "output": {
+        "id": "Operacion_operacion_al_contado_en_cambios_27d6e6",
+        "type": "Operacion",
+        "label": "Operación al contado en cambios",
+        "properties": {
+          "tipo": "Operación de cambios al contado",
+          "description": "Operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.3. Operaciones al contado."
+          }
+        ]
+      },
+      "output_chars": 475
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2jdL2HkxA3WqqFqkUiH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre transacciones de divisas y su clasificación según el plazo de liquidación.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_014FgDzTKgMVjoPP1qBSVCkQ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "compraventa divisas liquidación inmediata",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01WRAnYaEixog4x6jJWtVZid",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "spot transacciones divisas días liquidación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1515,
+          "output_tokens": 173,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2jdRh6yUHkzoNGGbWc4",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre transacciones \"spot\" o \"al contado\" en el mercado de cambios.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01YUaMP8D32qNmvDSF4Y9Fj1",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "operación al contado spot mercado cambios",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01UH2rqMREzj1ACeJLt6BXoN",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transacción acuerdo liquidación dos días",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 4070,
+          "output_tokens": 178,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2jda49HgAfSSXPkNAyq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré la información relevante. Voy a ver el nodo completo sobre \"Operación al contado en cambios\" para obtener todos los detalles.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0122UV37d97ncRJuzPtNNhyz",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_operacion_al_contado_en_cambios_27d6e6"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 6750
+          },
+          "cache_creation_input_tokens": 6750,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 119,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2jdiHFRg2b1xPPZoBKn",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información completa para responder la pregunta.\n\n```json\n{\n  \"respuesta\": \"En el marco de las transacciones de divisas, una compraventa que se liquida de forma inmediata se define como una 'Operación al contado en cambios'. Se trata de una operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación. Por lo tanto, el número máximo de días permitidos entre el momento en que se acuerda la transacción y el momento en que efectivamente se liquida es de 2 días hábiles.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.3. Operaciones al contado.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 293
+          },
+          "cache_creation_input_tokens": 293,
+          "cache_read_input_tokens": 6750,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 235,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

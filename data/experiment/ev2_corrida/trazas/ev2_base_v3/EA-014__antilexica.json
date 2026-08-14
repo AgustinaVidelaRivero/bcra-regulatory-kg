@@ -1,0 +1,1423 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_v3",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "navegabilidad",
+    "caso_id": "EA-014::antilexica",
+    "sample_id": "EA-014",
+    "variante": "antilexica",
+    "estrato": "E-A",
+    "pos_orden_global": 86,
+    "pos_orden_efectivo": 86,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T10:32:17",
+    "timestamp_fin": "2026-08-14T10:32:36",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": false
+  },
+  "pregunta": "Cuando una empresa necesita autorización del Banco Central para poder comprar divisas y así pagar el capital y los intereses de una deuda financiera que tiene con una parte relacionada, ¿en qué caso no se pide esa autorización para el pago de los intereses?",
+  "trace": {
+    "qid": "EA-014::antilexica",
+    "question": "Cuando una empresa necesita autorización del Banco Central para poder comprar divisas y así pagar el capital y los intereses de una deuda financiera que tiene con una parte relacionada, ¿en qué caso no se pide esa autorización para el pago de los intereses?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "autorización compra divisas deuda partes relacionadas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"autorización compra divisas deuda partes relacionadas\", \"total_con_match\": 220, \"resultados\": [{\"id\": \"Obligacion_documentacion_que_permite_determinar_la_existencia_de_una_compra_de_bienes_al_ex_19b78a\", \"type\": \"Obligacion\", \"label\": \"Deuda comercial cumple condición de compra\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Documentación que permite determinar la existencia de una compra de bienes al exterior, donde se exige el anticipo de parte o el total de los fondos con anterio…\"}, {\"id\": \"Operacion_compra_simultanea_con_liquidacion_de_divisas_ed538c\", \"type\": \"Operacion\", \"label\": \"Compra simultánea con liquidación de divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Compra de divisas\"}, {\"id\": \"Obligacion_registrar_compra_de_divisas_para_financiaciones_locales_a20124\", \"type\": \"Obligacion\", \"label\": \"Registrar compra de divisas para financiaciones locales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el caso de la compra se utilizará el concepto 'P12. Otras financiaciones locales otorgadas por la entidad (excluida la financiación de exportaciones y tarjet…\"}, {\"id\": \"Obligacion_cuando_se_trate_de_depositos_y_obligaciones_que_no_cuenten_co… [+1652 chars]",
+        "output_chars": 2852
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "pago intereses capital divisas autorización",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"pago intereses capital divisas autorización\", \"total_con_match\": 487, \"resultados\": [{\"id\": \"Operacion_pago_capital_e_intereses_vpu_rigi_4bc3c0\", \"type\": \"Operacion\", \"label\": \"Pago capital e intereses VPU-RIGI\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Pago de servicios de deuda para Vehículos de Proyecto Único RIGI\"}, {\"id\": \"Operacion_pago_capital_e_intereses_importacion_469a4e\", \"type\": \"Operacion\", \"label\": \"Pago capital e intereses importación\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Pago a partir del vencimiento de capital e intereses de deudas por la importación de bienes y servicios\"}, {\"id\": \"Operacion_pago_capital_e_intereses_titulos_valores_433831\", \"type\": \"Operacion\", \"label\": \"Pago capital e intereses títulos valores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Pago de servicios de títulos valores\"}, {\"id\": \"Operacion_pago_capital_intereses_deudas_contrapartes_194695\", \"type\": \"Operacion\", \"label\": \"Pago capital intereses deudas contrapartes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Pago de capital e intereses compensatorios de deudas con contrapartes vinculadas\"}, {\"id\": \"Operacion_pago_capital_e_intereses… [+1642 chars]",
+        "output_chars": 2842
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_pago_capital_intereses_deudas_contrapartes_194695"
+        },
+        "output_truncado": "{\"id\": \"Operacion_pago_capital_intereses_deudas_contrapartes_194695\", \"type\": \"Operacion\", \"label\": \"Pago capital intereses deudas contrapartes\", \"properties\": {\"tipo\": \"Pago de capital e intereses compensatorios de deudas con contrapartes vinculadas\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.14. Canjes y arbitrajes con clientes no asociados a ingresos de divisas del exterior\"}]}",
+        "output_chars": 428
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "no requiere autorización intereses partes relacionadas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"no requiere autorización intereses partes relacionadas\", \"total_con_match\": 478, \"resultados\": [{\"id\": \"Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d\", \"type\": \"Excepcion\", \"label\": \"Excepción pago intereses compensatorios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No aplicable para pago de intereses compensatorios que se devenguen a partir de 01/01/25 sobre valor original remanente de deudas financieras con contrapartes v…\"}, {\"id\": \"Obligacion_se_compromete_a_que_desde_el_momento_en_que_requiere_el_acceso_al_mercado_de_cam_26101d\", \"type\": \"Obligacion\", \"label\": \"Compromiso de no concertar ventas futuras\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se compromete a que desde el momento en que requiere el acceso al mercado de cambios y por los 90 días corridos subsiguientes no concertará ventas en el país de…\"}, {\"id\": \"Restriccion_revocacion_de_la_autorizacion_para_funcionar_si_no_se_integra_el_capital_minimo__027187\", \"type\": \"Restriccion\", \"label\": \"Revocación autorización si no se integra capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Revocación de la autorización para funcionar si no se in… [+2680 chars]",
+        "output_chars": 3880
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d\", \"type\": \"Excepcion\", \"label\": \"Excepción pago intereses compensatorios\", \"properties\": {\"descripcion\": \"No aplicable para pago de intereses compensatorios que se devenguen a partir de 01/01/25 sobre valor original remanente de deudas financieras con contrapartes vinculadas del exterior.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}",
+        "output_chars": 538
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c\", \"type\": \"Excepcion\", \"label\": \"Excepción pago intereses con liquidación simultánea\", \"properties\": {\"descripcion\": \"No aplicable cuando pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros (vida promedio mín. 2 años, gracia mín. 1 año) o nuevos aportes de inversión directa.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}",
+        "output_chars": 571
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 14.2.1 autorización compra divisas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"punto 14.2.1 autorización compra divisas\", \"total_con_match\": 272, \"resultados\": [{\"id\": \"Excepcion_el_requisito_no_resultara_aplicable_si_el_cliente_es_un_vehiculo_de_proyecto_uni_fd5b13\", \"type\": \"Excepcion\", \"label\": \"Excepción para VPU-RIGI en punto 14.2.1\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El requisito no resultará aplicable si el cliente es un Vehículo de Proyecto Único (VPU) adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que co…\"}, {\"id\": \"Excepcion_lo_previsto_en_puntos_3_16_3_1_al_3_16_3_4_no_resultara_aplicable_para_operacion_cf59b2\", \"type\": \"Excepcion\", \"label\": \"Excepción por operaciones de clientes en punto 3.14.2\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Lo previsto en puntos 3.16.3.1 al 3.16.3.4 no resultará aplicable para operaciones de clientes realizadas en el marco del punto 3.14.2\"}, {\"id\": \"Obligacion_la_formula_del_punto_5_3_2_1_debera_adaptarse_al_calculo_de_los_requerimientos_d_d92b1c\", \"type\": \"Obligacion\", \"label\": \"Cálculo de requerimientos capital con neteo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La fórmula del punto 5.3.2.1. deberá adaptarse al cálculo de los requerimientos de capital de … [+3012 chars]",
+        "output_chars": 4212
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "pago intereses simultáneamente liquidación nuevos endeudamientos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"pago intereses simultáneamente liquidación nuevos endeudamientos\", \"total_con_match\": 353, \"resultados\": [{\"id\": \"Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c\", \"type\": \"Excepcion\", \"label\": \"Excepción pago intereses con liquidación simultánea\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No aplicable cuando pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros (vida promedio mín. 2 años, gracia mín. 1…\"}, {\"id\": \"Operacion_pago_capital_e_intereses_endeudamientos_financieros_0da822\", \"type\": \"Operacion\", \"label\": \"Pago capital e intereses endeudamientos financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Pago de servicios de deuda\"}, {\"id\": \"Operacion_pago_de_capital_e_intereses_de_endeudamientos_financieros_b499f2\", \"type\": \"Operacion\", \"label\": \"Pago de capital e intereses de endeudamientos financieros\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Pagos de capital e intereses de endeudamientos financieros comprendidos en el punto 3.5, cuyo acreedor sea una contraparte vinculada al deudor sin la conformida…\"}, {\"id\": \"Excepcion_el_requisito_no_res… [+2237 chars]",
+        "output_chars": 3437
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16\", \"type\": \"Excepcion\", \"label\": \"Excepción por pago simultáneo con liquidación de endeudamientos\", \"properties\": {\"descripcion\": \"El requisito no resultará aplicable cuando el pago se concrete de manera simultánea con la liquidación por un importe no menor al monto de intereses, consistente en nuevos endeudamientos financieros o nuevos aportes de inversión directa de no residentes\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.2. Pagos de servicios prestados por no residentes.\"}]}",
+        "output_chars": 633
+      },
+      {
+        "n": 10,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c\", \"label\": \"Excepción pago intereses con liquidación simultánea\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af\", \"vecino_label\": \"Conformidad previa BCRA para acceso cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 608
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa BCRA para acceso cambios\", \"properties\": {\"descripcion\": \"Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios para la cancelación de capital e intereses de endeudamientos financieros comprendidos en el punto 3.5. cuando el acreedor sea una contraparte vinculada al deudor.\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}",
+        "output_chars": 629
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+          "direccion": "entrantes"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af\", \"label\": \"Conformidad previa BCRA para acceso cambios\", \"n_salientes_total\": 3, \"n_entrantes_total\": 12, \"entrantes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_requisito_de_conformidad_previa_del_bcra_no_aplicable_cuando_se_cumpla_que_desti_eff40d\", \"vecino_label\": \"Excepción conformidad previa enlace PLAN GAS\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}, {\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_el_requisito_de_conformidad_previa_no_resultara_aplicable_cuando_se_trate_de_ope_cb8431\", \"vecino_label\": \"Excepción operaciones propias entidades locales\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}, {\"relation\": \"exceptua\", \"vecino_id\": \"Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_ac24d1\", \"vecino_label\": \"Excepción endeudamiento vida 6 meses\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3… [+3170 chars]",
+        "output_chars": 4370
+      },
+      {
+        "n": 13,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002\", \"type\": \"Excepcion\", \"label\": \"Excepción endeudamiento vida 2 años período\", \"properties\": {\"descripcion\": \"No aplicable cuando se trate de endeudamiento financiero con vida promedio no inferior a 2 años y fondos ingresados entre 02/10/20 y 20/04/25.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"}]}",
+        "output_chars": 501
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1498,
+        "output_tokens": 183,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.499
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3771,
+        "output_tokens": 194,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.968
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 210,
+        "cache_read": 0,
+        "cache_write": 5514,
+        "latency_s": 2.145
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 211,
+        "cache_read": 5514,
+        "cache_write": 657,
+        "latency_s": 1.911
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 215,
+        "cache_read": 6171,
+        "cache_write": 3108,
+        "latency_s": 2.031
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 250,
+        "cache_read": 9279,
+        "cache_write": 710,
+        "latency_s": 1.918
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 144,
+        "cache_read": 9989,
+        "cache_write": 2197,
+        "latency_s": 2.575
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 475,
+        "cache_read": 12186,
+        "cache_write": 341,
+        "latency_s": 4.92
+      }
+    ],
+    "final_json": {
+      "respuesta": "Según la regulación del BCRA, la conformidad previa del BCRA para acceso al mercado de cambios no se requiere para el pago de intereses en dos casos principales: (1) Cuando el pago de intereses se concreta simultáneamente con la liquidación de nuevos endeudamientos financieros (con vida promedio mínimo 2 años y período de gracia mínimo 1 año) o nuevos aportes de inversión directa de no residentes, por un importe no menor al monto de intereses; y (2) Para el pago de intereses compensatorios que se devenguen a partir del 01/01/25 sobre el valor original remanente de deudas financieras con contrapartes vinculadas del exterior.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Ahora tengo toda la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta de manera precisa.\n\nLa pregunta pregunta cuándo NO se pide autorización para el pago de intereses (cuando sí se pide para el capital). Encontré dos excepciones principales:\n\n1. **Cuando el pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros** (con vida promedio mínimo 2 años y gracia mínimo 1 año) o nuevos aportes de inversión directa.\n\n2. **Para intereses compensatorios que se devenguen a partir de 01/01/25** sobre valor original remanente de deudas financieras con contrapartes vinculadas del exterior.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA, la conformidad previa del BCRA para acceso al mercado de cambios no se requiere para el pago de intereses en dos casos principales: (1) Cuando el pago de intereses se concreta simultáneamente con la liquidación de nuevos endeudamientos financieros (con vida promedio mínimo 2 años y período de gracia mínimo 1 año) o nuevos aportes de inversión directa de no residentes, por un importe no menor al monto de intereses; y (2) Para el pago de intereses compensatorios que se devenguen a partir del 01/01/25 sobre el valor original remanente de deudas financieras con contrapartes vinculadas del exterior.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 13,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.14. Canjes y arbitrajes con clientes no asociados a ingresos de divisas del exterior"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.2. Pagos de servicios prestados por no residentes."
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5309,
+    "tokens_out": 1882,
+    "cache_read": 43139,
+    "cache_write": 12527,
+    "cost_usd": 0.034692,
+    "latency_s": 18.989,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "autorización compra divisas deuda partes relacionadas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "autorización compra divisas deuda partes relacionadas",
+        "total_con_match": 220,
+        "resultados": [
+          {
+            "id": "Obligacion_documentacion_que_permite_determinar_la_existencia_de_una_compra_de_bienes_al_ex_19b78a",
+            "type": "Obligacion",
+            "label": "Deuda comercial cumple condición de compra",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Documentación que permite determinar la existencia de una compra de bienes al exterior, donde se exige el anticipo de parte o el total de los fondos con anterio…"
+          },
+          {
+            "id": "Operacion_compra_simultanea_con_liquidacion_de_divisas_ed538c",
+            "type": "Operacion",
+            "label": "Compra simultánea con liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Compra de divisas"
+          },
+          {
+            "id": "Obligacion_registrar_compra_de_divisas_para_financiaciones_locales_a20124",
+            "type": "Obligacion",
+            "label": "Registrar compra de divisas para financiaciones locales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de la compra se utilizará el concepto 'P12. Otras financiaciones locales otorgadas por la entidad (excluida la financiación de exportaciones y tarjet…"
+          },
+          {
+            "id": "Obligacion_cuando_se_trate_de_depositos_y_obligaciones_que_no_cuenten_con_autorizacion_para_571607",
+            "type": "Obligacion",
+            "label": "Registrar aportes de deuda sin negociación a valor contable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de depósitos y obligaciones que no cuenten con autorización para negociación en mercados secundarios, los aportes se admitirán a su valor contab…"
+          },
+          {
+            "id": "Obligacion_registrar_utilizacion_de_linea_de_credito_como_compra_de_divisas_0a0aaf",
+            "type": "Obligacion",
+            "label": "Registrar utilización de línea de crédito como compra de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La utilización de una línea de crédito, materializada con la acreditación de los fondos en la cuenta de la entidad financiera en su corresponsal del exterior, d…"
+          },
+          {
+            "id": "Operacion_compra_de_opciones_0f6162",
+            "type": "Operacion",
+            "label": "Compra de opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: compra de opciones"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_08f943",
+            "type": "Operacion",
+            "label": "Ingreso de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_de_divisas"
+          },
+          {
+            "id": "Operacion_canje_titulos_deuda_3a3596",
+            "type": "Operacion",
+            "label": "Canje títulos deuda",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Canje de títulos de deuda con entrega de nuevos títulos"
+          },
+          {
+            "id": "Operacion_cancelacion_de_deuda_b4a3e7",
+            "type": "Operacion",
+            "label": "Cancelación de deuda",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: pago"
+          },
+          {
+            "id": "Operacion_compra_de_instrumentos_93181f",
+            "type": "Operacion",
+            "label": "Compra de instrumentos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: compra de instrumentos"
+          }
+        ]
+      },
+      "output_chars": 2852
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "pago intereses capital divisas autorización",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "pago intereses capital divisas autorización",
+        "total_con_match": 487,
+        "resultados": [
+          {
+            "id": "Operacion_pago_capital_e_intereses_vpu_rigi_4bc3c0",
+            "type": "Operacion",
+            "label": "Pago capital e intereses VPU-RIGI",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de deuda para Vehículos de Proyecto Único RIGI"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_importacion_469a4e",
+            "type": "Operacion",
+            "label": "Pago capital e intereses importación",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Pago a partir del vencimiento de capital e intereses de deudas por la importación de bienes y servicios"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_titulos_valores_433831",
+            "type": "Operacion",
+            "label": "Pago capital e intereses títulos valores",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de títulos valores"
+          },
+          {
+            "id": "Operacion_pago_capital_intereses_deudas_contrapartes_194695",
+            "type": "Operacion",
+            "label": "Pago capital intereses deudas contrapartes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de capital e intereses compensatorios de deudas con contrapartes vinculadas"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_titulos_refinanciados_1d319a",
+            "type": "Operacion",
+            "label": "Pago capital e intereses títulos refinanciados",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de títulos de deuda refinanciados"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_vida_promedio_2_anos_e27edd",
+            "type": "Operacion",
+            "label": "Pago capital e intereses (vida promedio 2 años)",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de deuda con condiciones de plazo extendido"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_vida_promedio_3_anos_a79fa0",
+            "type": "Operacion",
+            "label": "Pago capital e intereses (vida promedio 3 años)",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de deuda con condiciones de plazo extendido"
+          },
+          {
+            "id": "Operacion_pago_de_intereses_y_capital_de_titulos_de_deuda_1fb67a",
+            "type": "Operacion",
+            "label": "Pago de intereses y capital de títulos de deuda",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de intereses y capital pendiente de títulos de deuda, endeudamientos financieros y otros instrumentos liquidados en mercado de cambios"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_titulos_deuda_canjeados_2278fb",
+            "type": "Operacion",
+            "label": "Pago capital e intereses títulos deuda canjeados",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de títulos de deuda resultado de canje"
+          },
+          {
+            "id": "Operacion_pago_de_capital_e_intereses_en_moneda_extranjera_cbf74c",
+            "type": "Operacion",
+            "label": "Pago de capital e intereses en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: pago_de_deuda_en_moneda_extranjera"
+          }
+        ]
+      },
+      "output_chars": 2842
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_pago_capital_intereses_deudas_contrapartes_194695"
+      },
+      "output": {
+        "id": "Operacion_pago_capital_intereses_deudas_contrapartes_194695",
+        "type": "Operacion",
+        "label": "Pago capital intereses deudas contrapartes",
+        "properties": {
+          "tipo": "Pago de capital e intereses compensatorios de deudas con contrapartes vinculadas"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.14. Canjes y arbitrajes con clientes no asociados a ingresos de divisas del exterior"
+          }
+        ]
+      },
+      "output_chars": 428
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "no requiere autorización intereses partes relacionadas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "no requiere autorización intereses partes relacionadas",
+        "total_con_match": 478,
+        "resultados": [
+          {
+            "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d",
+            "type": "Excepcion",
+            "label": "Excepción pago intereses compensatorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No aplicable para pago de intereses compensatorios que se devenguen a partir de 01/01/25 sobre valor original remanente de deudas financieras con contrapartes v…"
+          },
+          {
+            "id": "Obligacion_se_compromete_a_que_desde_el_momento_en_que_requiere_el_acceso_al_mercado_de_cam_26101d",
+            "type": "Obligacion",
+            "label": "Compromiso de no concertar ventas futuras",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se compromete a que desde el momento en que requiere el acceso al mercado de cambios y por los 90 días corridos subsiguientes no concertará ventas en el país de…"
+          },
+          {
+            "id": "Restriccion_revocacion_de_la_autorizacion_para_funcionar_si_no_se_integra_el_capital_minimo__027187",
+            "type": "Restriccion",
+            "label": "Revocación autorización si no se integra capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Revocación de la autorización para funcionar si no se integra el capital mínimo exigido dentro de los 60 días corridos de su otorgamiento."
+          },
+          {
+            "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+            "type": "Excepcion",
+            "label": "Excepción pago intereses con liquidación simultánea",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No aplicable cuando pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros (vida promedio mín. 2 años, gracia mín. 1…"
+          },
+          {
+            "id": "Obligacion_los_deudores_que_no_hubieran_cancelado_por_lo_menos_los_intereses_devengados_den_60e746",
+            "type": "Obligacion",
+            "label": "Reclasificar a alto riesgo de insolvencia tras 180 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los deudores que no hubieran cancelado por lo menos los intereses devengados dentro de los 180 días de concertada la refinanciación, deberán ser reclasificados …"
+          },
+          {
+            "id": "Obligacion_cuando_se_trate_de_depositos_y_obligaciones_que_no_cuenten_con_autorizacion_para_571607",
+            "type": "Obligacion",
+            "label": "Registrar aportes de deuda sin negociación a valor contable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de depósitos y obligaciones que no cuenten con autorización para negociación en mercados secundarios, los aportes se admitirán a su valor contab…"
+          },
+          {
+            "id": "Operacion_operaciones_no_dvp_05da87",
+            "type": "Operacion",
+            "label": "Operaciones no DvP",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Operaciones en que se entrega efectivo sin recibir contrapartida o se entregan valores sin pago de efectivo"
+          },
+          {
+            "id": "Restriccion_la_exposicion_presente_respecto_de_la_contraparte_cr_no_puede_tener_un_valor_neg_6ad0a2",
+            "type": "Restriccion",
+            "label": "CR sin valor negativo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La exposición presente respecto de la contraparte (CR) no puede tener un valor negativo. Se establece un mínimo de 0 para evitar que el costo de reposición sea …"
+          },
+          {
+            "id": "Obligacion_en_los_casos_no_cubiertos_por_el_metodo_simplificado_las_entidades_deberan_usar__55e092",
+            "type": "Obligacion",
+            "label": "Usar método delta-plus",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En los casos no cubiertos por el método simplificado, las entidades deberán usar el método delta-plus contemplado en el punto 6.6.3"
+          },
+          {
+            "id": "Excepcion_no_aplica_requisito_de_no_pago_anterior_a_vencimiento_cuando_cliente_es_vpu_adhe_42201a",
+            "type": "Excepcion",
+            "label": "Excepción para VPU RIGI",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "No aplica requisito de no pago anterior a vencimiento cuando cliente es VPU adherido a RIGI y se cancelan financiaciones comerciales según punto 14.2.1"
+          }
+        ]
+      },
+      "output_chars": 3880
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d"
+      },
+      "output": {
+        "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d",
+        "type": "Excepcion",
+        "label": "Excepción pago intereses compensatorios",
+        "properties": {
+          "descripcion": "No aplicable para pago de intereses compensatorios que se devenguen a partir de 01/01/25 sobre valor original remanente de deudas financieras con contrapartes vinculadas del exterior."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+          }
+        ]
+      },
+      "output_chars": 538
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c"
+      },
+      "output": {
+        "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+        "type": "Excepcion",
+        "label": "Excepción pago intereses con liquidación simultánea",
+        "properties": {
+          "descripcion": "No aplicable cuando pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros (vida promedio mín. 2 años, gracia mín. 1 año) o nuevos aportes de inversión directa."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+          }
+        ]
+      },
+      "output_chars": 571
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 14.2.1 autorización compra divisas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "punto 14.2.1 autorización compra divisas",
+        "total_con_match": 272,
+        "resultados": [
+          {
+            "id": "Excepcion_el_requisito_no_resultara_aplicable_si_el_cliente_es_un_vehiculo_de_proyecto_uni_fd5b13",
+            "type": "Excepcion",
+            "label": "Excepción para VPU-RIGI en punto 14.2.1",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El requisito no resultará aplicable si el cliente es un Vehículo de Proyecto Único (VPU) adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que co…"
+          },
+          {
+            "id": "Excepcion_lo_previsto_en_puntos_3_16_3_1_al_3_16_3_4_no_resultara_aplicable_para_operacion_cf59b2",
+            "type": "Excepcion",
+            "label": "Excepción por operaciones de clientes en punto 3.14.2",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Lo previsto en puntos 3.16.3.1 al 3.16.3.4 no resultará aplicable para operaciones de clientes realizadas en el marco del punto 3.14.2"
+          },
+          {
+            "id": "Obligacion_la_formula_del_punto_5_3_2_1_debera_adaptarse_al_calculo_de_los_requerimientos_d_d92b1c",
+            "type": "Obligacion",
+            "label": "Cálculo de requerimientos capital con neteo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La fórmula del punto 5.3.2.1. deberá adaptarse al cálculo de los requerimientos de capital de las operaciones con acuerdos marco de neteo"
+          },
+          {
+            "id": "Obligacion_las_financiaciones_enunciadas_en_los_puntos_14_2_1_8_al_14_2_1_11_podran_ser_com_024008",
+            "type": "Obligacion",
+            "label": "Verificación de condiciones para financiaciones RIGI",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Las financiaciones enunciadas en los puntos 14.2.1.8. al 14.2.1.11. podrán ser computadas como ingresadas y liquidadas en el mercado de cambios por un VPU adher…"
+          },
+          {
+            "id": "Restriccion_se_trata_de_servicio_no_comprendido_en_puntos_13_2_1_a_13_2_5_provisto_por_contr_8620c0",
+            "type": "Restriccion",
+            "label": "Pago plazo 90 días servicios vinculados desde 14/04/25",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se trata de servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada al residente y el pago se concreta una vez transcurrido plazo d…"
+          },
+          {
+            "id": "Restriccion_se_trata_de_servicio_no_comprendido_en_puntos_13_2_1_a_13_2_5_provisto_por_contr_9eb398",
+            "type": "Restriccion",
+            "label": "Pago plazo 180 días servicios vinculados previo 14/04/25",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se trata de servicio no comprendido en puntos 13.2.1 a 13.2.5 provisto por contraparte vinculada al residente y el pago se concreta una vez transcurrido plazo d…"
+          },
+          {
+            "id": "Excepcion_este_requisito_no_resultara_a_aplicacion_para_aquellas_operaciones_de_egresos_qu_e04c6e",
+            "type": "Excepcion",
+            "label": "Excepción para operaciones de clientes en puntos 3.8, 3.9, 3.13, 3.14.1 y 3.14.2",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Este requisito no resultará a aplicación para aquellas operaciones de egresos que correspondan a operaciones de clientes realizadas en el marco de los puntos 3.…"
+          },
+          {
+            "id": "Excepcion_otros_proveedores_no_financieros_de_credito_alcanzados_por_las_normas_sobre_prov_5f95b9",
+            "type": "Excepcion",
+            "label": "Excepción del punto 1.1.2.5 (Protección de usuarios): la asociación mutual o cooperativa (asociaciones mutuales o cooperativas) alcanzada por las normas sobre proveedores no financieros de crédito queda exceptuada del carácter de sujeto obligado por las financiaciones que otorgue",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Otros proveedores no financieros de crédito alcanzados por las normas sobre “Proveedores no financieros de crédito”, excepto que se trate de asociaciones mutual…"
+          },
+          {
+            "id": "Restriccion_accionistas_esta_es_una_linea_de_deduccion_conforme_punto_8_4_1_7_6229a7",
+            "type": "Restriccion",
+            "label": "Deducción accionistas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Accionistas. Esta es una línea de deducción conforme punto 8.4.1.7."
+          },
+          {
+            "id": "Excepcion_excepto_para_la_situacion_prevista_en_el_punto_2_3_5_cuando_reglamentariamente_s_f92586",
+            "type": "Excepcion",
+            "label": "Excepción al plazo de resolución",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepto para la situación prevista en el punto 2.3.5, cuando reglamentariamente se hayan otorgado mayores plazos para adecuarse normativamente, o cuando medien …"
+          }
+        ]
+      },
+      "output_chars": 4212
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "pago intereses simultáneamente liquidación nuevos endeudamientos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "pago intereses simultáneamente liquidación nuevos endeudamientos",
+        "total_con_match": 353,
+        "resultados": [
+          {
+            "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+            "type": "Excepcion",
+            "label": "Excepción pago intereses con liquidación simultánea",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "No aplicable cuando pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros (vida promedio mín. 2 años, gracia mín. 1…"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_endeudamientos_financieros_0da822",
+            "type": "Operacion",
+            "label": "Pago capital e intereses endeudamientos financieros",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago de servicios de deuda"
+          },
+          {
+            "id": "Operacion_pago_de_capital_e_intereses_de_endeudamientos_financieros_b499f2",
+            "type": "Operacion",
+            "label": "Pago de capital e intereses de endeudamientos financieros",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Pagos de capital e intereses de endeudamientos financieros comprendidos en el punto 3.5, cuyo acreedor sea una contraparte vinculada al deudor sin la conformida…"
+          },
+          {
+            "id": "Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16",
+            "type": "Excepcion",
+            "label": "Excepción por pago simultáneo con liquidación de endeudamientos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El requisito no resultará aplicable cuando el pago se concrete de manera simultánea con la liquidación por un importe no menor al monto de intereses, consistent…"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_vpu_rigi_4bc3c0",
+            "type": "Operacion",
+            "label": "Pago capital e intereses VPU-RIGI",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago de servicios de deuda para Vehículos de Proyecto Único RIGI"
+          },
+          {
+            "id": "Operacion_pago_de_intereses_de_financiaciones_68ccf1",
+            "type": "Operacion",
+            "label": "Pago de intereses de financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago de intereses admitidos por financiaciones"
+          },
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_importacion_469a4e",
+            "type": "Operacion",
+            "label": "Pago capital e intereses importación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago a partir del vencimiento de capital e intereses de deudas por la importación de bienes y servicios"
+          },
+          {
+            "id": "Operacion_pago_de_intereses_devengados_e_impagos_4b88f9",
+            "type": "Operacion",
+            "label": "Pago de intereses devengados e impagos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos de intereses devengados impagos hasta la fecha de aplicación y/o capital pendiente de operaciones."
+          },
+          {
+            "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d",
+            "type": "Excepcion",
+            "label": "Excepción pago intereses compensatorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No aplicable para pago de intereses compensatorios que se devenguen a partir de 01/01/25 sobre valor original remanente de deudas financieras con contrapartes v…"
+          }
+        ]
+      },
+      "output_chars": 3437
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16"
+      },
+      "output": {
+        "id": "Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16",
+        "type": "Excepcion",
+        "label": "Excepción por pago simultáneo con liquidación de endeudamientos",
+        "properties": {
+          "descripcion": "El requisito no resultará aplicable cuando el pago se concrete de manera simultánea con la liquidación por un importe no menor al monto de intereses, consistente en nuevos endeudamientos financieros o nuevos aportes de inversión directa de no residentes"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.2. Pagos de servicios prestados por no residentes."
+          }
+        ]
+      },
+      "output_chars": 633
+    },
+    {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+        "label": "Excepción pago intereses con liquidación simultánea",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "exceptua",
+            "vecino_id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+            "vecino_label": "Conformidad previa BCRA para acceso cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 608
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af"
+      },
+      "output": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+        "type": "Restriccion",
+        "label": "Conformidad previa BCRA para acceso cambios",
+        "properties": {
+          "descripcion": "Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios para la cancelación de capital e intereses de endeudamientos financieros comprendidos en el punto 3.5. cuando el acreedor sea una contraparte vinculada al deudor.",
+          "tipo": "prohibicion"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+          }
+        ]
+      },
+      "output_chars": 629
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+        "direccion": "entrantes"
+      },
+      "output": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+        "label": "Conformidad previa BCRA para acceso cambios",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 12,
+        "entrantes": [
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_requisito_de_conformidad_previa_del_bcra_no_aplicable_cuando_se_cumpla_que_desti_eff40d",
+            "vecino_label": "Excepción conformidad previa enlace PLAN GAS",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_el_requisito_de_conformidad_previa_no_resultara_aplicable_cuando_se_trate_de_ope_cb8431",
+            "vecino_label": "Excepción operaciones propias entidades locales",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_ac24d1",
+            "vecino_label": "Excepción endeudamiento vida 6 meses",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002",
+            "vecino_label": "Excepción endeudamiento vida 2 años período",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d",
+            "vecino_label": "Excepción pago intereses compensatorios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_el_cliente_es_un_vehiculo_de_proyecto_unico_vpu_adherido_al__35d5ad",
+            "vecino_label": "Excepción cliente VPU RIGI",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+            "vecino_label": "Excepción pago intereses con liquidación simultánea",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_endeudamiento_financiero_encuadra_en_mecanismo_del_punto_7_1_27f907",
+            "vecino_label": "Excepción endeudamiento mecanismo punto 7.11",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_cliente_cuenta_con_certificacion_por_regimenes_de_acceso_a_d_e97599",
+            "vecino_label": "Excepción con certificación Decreto 277/22",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_cuando_cliente_cuenta_con_certificacion_de_aumento_de_exportaciones_092eb3",
+            "vecino_label": "Excepción con certificación aumento exportaciones",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_para_endeudamiento_con_vida_promedio_no_inferior_a_2_anos_liquidado_017566",
+            "vecino_label": "Excepción endeudamiento comercial período 2021-2023",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Excepcion_no_aplicable_para_endeudamiento_con_vida_promedio_no_inferior_a_2_anos_originado_f426fc",
+            "vecino_label": "Excepción refinanciación deuda comercial",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 4370
+    },
+    {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002"
+      },
+      "output": {
+        "id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002",
+        "type": "Excepcion",
+        "label": "Excepción endeudamiento vida 2 años período",
+        "properties": {
+          "descripcion": "No aplicable cuando se trate de endeudamiento financiero con vida promedio no inferior a 2 años y fondos ingresados entre 02/10/20 y 20/04/25."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. en el marco de lo previsto en el punto 14.2.1."
+          }
+        ]
+      },
+      "output_chars": 501
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oaDr6gbumR3ei7hQqs",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre las autorizaciones del Banco Central para compra de divisas y pagos de deuda con partes relacionadas.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01M69Yw2baBjDYyqyjoxomrv",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "autorización compra divisas deuda partes relacionadas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Gp6yMAruQJAbkETPDmnvj6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "pago intereses capital divisas autorización",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1498,
+          "output_tokens": 183,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oaLJHtLpZLuLiu3Lgw",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Encontré un resultado muy relevante: \"Pago capital intereses deudas contrapartes\". Voy a explorar ese nodo y buscar más específicamente sobre excepciones o casos donde no se requiere autorización.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01BosPCU4zKGQQphwnuSe4nP",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_pago_capital_intereses_deudas_contrapartes_194695"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01P2u1jYjghdxc9iYLHQQBc6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "no requiere autorización intereses partes relacionadas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3771,
+          "output_tokens": 194,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oaUpFnCr8FiR2dJ3pt",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré dos excepciones muy relevantes. Voy a explorar ambas para entender cuál es la que responde a la pregunta:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_017MS9quvBiiWVWPMz8QMBFv",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_no_aplicable_para_pago_de_intereses_compensatorios_que_se_devenguen_a_partir_de__4f4b0d"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01A2SwTU7qutscwBNCDGCKb7",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5514
+          },
+          "cache_creation_input_tokens": 5514,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 210,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oaeD4JD3FFaK5UXeX1",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora necesito entender mejor el contexto. Voy a buscar información sobre el punto 14.2.1 y sobre qué operación o requisito estas excepciones están excluyendo:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01RTMp6TNEAVhQbVcJx4tY81",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 14.2.1 autorización compra divisas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01SusjXSMS363NhPpeMmTjVz",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "pago intereses simultáneamente liquidación nuevos endeudamientos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 657
+          },
+          "cache_creation_input_tokens": 657,
+          "cache_read_input_tokens": 5514,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 211,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oanRumTLFcGkm24yVY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré otra excepción muy relevante. Voy a explorar esta última para entender mejor:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01AP2EuAAvLKtgKoEaqnGbVE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_el_requisito_no_resultara_aplicable_cuando_el_pago_se_concrete_de_manera_simulta_b26c16"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01SSrcSKRXn4tpHAe5uT9ZFY",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_no_aplicable_cuando_pago_de_intereses_se_concreta_simultaneamente_con_liquidacio_815f9c",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 3108
+          },
+          "cache_creation_input_tokens": 3108,
+          "cache_read_input_tokens": 6171,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 215,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2oawGyALyWD7cGhHZzB",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora veo que la excepción está relacionada con una restricción sobre \"Conformidad previa BCRA para acceso cambios\". Voy a explorar esa restricción para entender mejor el contexto:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01PFivNACbhUEDVYKd9hSwUc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01URjv12zaSgGuahSmgFHBFq",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_1447af",
+              "direccion": "entrantes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 710
+          },
+          "cache_creation_input_tokens": 710,
+          "cache_read_input_tokens": 9279,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 250,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2ob6SdmJiK8JAKESUx4",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora tengo una visión clara. Voy a verificar una última cosa para asegurarme de que entiendo correctamente cuál es la excepción más directa a la pregunta:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01QdnqS5Ff6YH5P98Q7Y7D7i",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_no_aplicable_cuando_se_trate_de_endeudamiento_financiero_con_vida_promedio_no_in_50d002"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2197
+          },
+          "cache_creation_input_tokens": 2197,
+          "cache_read_input_tokens": 9989,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 144,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2obGD16PZLA9duZ6ffC",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora tengo toda la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta de manera precisa.\n\nLa pregunta pregunta cuándo NO se pide autorización para el pago de intereses (cuando sí se pide para el capital). Encontré dos excepciones principales:\n\n1. **Cuando el pago de intereses se concreta simultáneamente con liquidación de nuevos endeudamientos financieros** (con vida promedio mínimo 2 años y gracia mínimo 1 año) o nuevos aportes de inversión directa.\n\n2. **Para intereses compensatorios que se devenguen a partir de 01/01/25** sobre valor original remanente de deudas financieras con contrapartes vinculadas del exterior.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA, la conformidad previa del BCRA para acceso al mercado de cambios no se requiere para el pago de intereses en dos casos principales: (1) Cuando el pago de intereses se concreta simultáneamente con la liquidación de nuevos endeudamientos financieros (con vida promedio mínimo 2 años y período de gracia mínimo 1 año) o nuevos aportes de inversión directa de no residentes, por un importe no menor al monto de intereses; y (2) Para el pago de intereses compensatorios que se devenguen a partir del 01/01/25 sobre el valor original remanente de deudas financieras con contrapartes vinculadas del exterior.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.5. en el marco de lo previsto en el punto 14.2.1.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 341
+          },
+          "cache_creation_input_tokens": 341,
+          "cache_read_input_tokens": 12186,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 475,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

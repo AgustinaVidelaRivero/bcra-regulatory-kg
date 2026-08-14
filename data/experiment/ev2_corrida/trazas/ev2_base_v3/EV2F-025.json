@@ -1,0 +1,1456 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_v3",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-025",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 160,
+    "pos_orden_efectivo": 160,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T10:54:43",
+    "timestamp_fin": "2026-08-14T10:55:00",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": true
+  },
+  "pregunta": "¿Qué financiaciones quedan comprendidas a los fines de la clasificación de deudores?",
+  "trace": {
+    "qid": "EV2F-025",
+    "question": "¿Qué financiaciones quedan comprendidas a los fines de la clasificación de deudores?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "financiaciones clasificación deudores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"financiaciones clasificación deudores\", \"total_con_match\": 195, \"resultados\": [{\"id\": \"Restriccion_los_deudores_cuyas_financiaciones_se_encuentren_cubiertas_totalmente_con_garanti_7799cb\", \"type\": \"Restriccion\", \"label\": \"Exclusión de clasificación de deudores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación.\"}, {\"id\": \"Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi_d85ad9\", \"type\": \"Excepcion\", \"label\": \"Exclusión de financiaciones comercio exterior\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se excluyen de clasificación como deficientes los deudores con financiaciones vinculadas a operaciones de comercio exterior.\"}, {\"id\": \"Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_que_unicamente_regist_fc5e90\", \"type\": \"Excepcion\", \"label\": \"Exclusión de deudores con financiaciones específicas\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se excluyen de clasificación como deficientes los deudores que únicamente registren financiaciones que cuenten con aval de banco del ex… [+2673 chars]",
+        "output_chars": 3873
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "financiaciones comprendidas clasificación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"financiaciones comprendidas clasificación\", \"total_con_match\": 169, \"resultados\": [{\"id\": \"Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57\", \"type\": \"Obligacion\", \"label\": \"Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…\"}, {\"id\": \"Restriccion_los_deudores_cuyas_financiaciones_se_encuentren_cubiertas_totalmente_con_garanti_7799cb\", \"type\": \"Restriccion\", \"label\": \"Exclusión de clasificación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación.\"}, {\"id\": \"Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior__394306\", \"type\": \"Obligacion\", \"label\": \"Observar normas clasificación indi… [+2368 chars]",
+        "output_chars": 3568
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57\", \"type\": \"Obligacion\", \"label\": \"Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable\", \"properties\": {\"descripcion\": \"Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se detallan en cada caso.\", \"tipo\": \"criterio_general\", \"enumeracion\": \"6.5.1. En situación normal. · 6.5.2. Con seguimiento especial (6.5.2.1. En observación. · 6.5.2.2. En negociación o con acuerdos de refinanciación. · 6.5.2.3. En tratamiento especial.) · 6.5.3. Con problemas. · 6.5.4. Con alto riesgo de insolvencia. · 6.5.5. Irrecuperable.\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Sección 6. Clasificación de los deudores de la cartera comercial. Punto 6.5. Niveles de clasificación.\"}]}",
+        "output_chars": 1096
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "financiaciones comprendidas definición qué incluye",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"financiaciones comprendidas definición qué incluye\", \"total_con_match\": 501, \"resultados\": [{\"id\": \"Restriccion_financiaciones_en_pesos_que_se_acuerden_a_partir_del_01_11_24_y_hasta_el_10_04_2_44df27\", \"type\": \"Restriccion\", \"label\": \"Plazo vigencia financiaciones en pesos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiaciones en pesos que se acuerden a partir del 01/11/24 y hasta el 10/04/26\"}, {\"id\": \"Excepcion_operaciones_comprendidas_en_punto_3_13_1_4_en_la_medida_que_sean_cursadas_en_for_98ff62\", \"type\": \"Excepcion\", \"label\": \"Excepción por operaciones punto 3.13.1.4\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones comprendidas en punto 3.13.1.4 en la medida que sean cursadas en forma automática por la entidad en su carácter de apoderada del beneficiario no res…\"}, {\"id\": \"Restriccion_cuando_se_trate_de_instrumentos_que_no_satisfagan_la_definicion_de_activos_admit_cd095c\", \"type\": \"Restriccion\", \"label\": \"Aforo del 25% para garantías no admitidas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando se trate de instrumentos que no satisfagan la definición de activos admitidos como garantía de operaciones registradas en la cartera de inve… [+2980 chars]",
+        "output_chars": 4180
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8\", \"type\": \"Obligacion\", \"label\": \"Disponibilidad saldo actualizado financiaciones\", \"properties\": {\"descripcion\": \"El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de la entidad– deberá encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.\", \"tipo\": \"presentacion_informativa\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"}]}",
+        "output_chars": 752
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "financiaciones comprendidas concepto definición tipos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"financiaciones comprendidas concepto definición tipos\", \"total_con_match\": 120, \"resultados\": [{\"id\": \"Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57\", \"type\": \"Obligacion\", \"label\": \"Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…\"}, {\"id\": \"Operacion_otorgamiento_de_financiaciones_a51da4\", \"type\": \"Operacion\", \"label\": \"Otorgamiento de financiaciones\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: otorgamiento de financiación\"}, {\"id\": \"Restriccion_estara_dada_por_la_fecha_de_efectiva_cancelacion_del_concepto_al_cual_se_aplicar_b26453\", \"type\": \"Restriccion\", \"label\": \"Fecha de aplicación de divisas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas de … [+1997 chars]",
+        "output_chars": 3197
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "se entiende por financiaciones comprendidas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"se entiende por financiaciones comprendidas\", \"total_con_match\": 1027, \"resultados\": [{\"id\": \"Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57\", \"type\": \"Obligacion\", \"label\": \"Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…\"}, {\"id\": \"Excepcion_se_admitira_la_utilizacion_del_codigo_asignado_por_la_comision_nacional_de_valor_a37918\", \"type\": \"Excepcion\", \"label\": \"Excepción: código FCI\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se admitirá la utilización del código asignado por la Comisión Nacional de Valores cuando se trate de un fondo común de inversión.\"}, {\"id\": \"Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos_07108d\", \"type\": \"Excepcion\", \"label\": \"Reducción del valor por BCRA\", \"tokens_matcheados\": 2, … [+2679 chars]",
+        "output_chars": 3879
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "financiaciones otorgadas filiales unidades operativas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"financiaciones otorgadas filiales unidades operativas\", \"total_con_match\": 94, \"resultados\": [{\"id\": \"Obligacion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_entidad_debera_contar_con_9f47e8\", \"type\": \"Obligacion\", \"label\": \"Documentación sobre operación de servicio\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para financiaciones otorgadas a partir del 13/12/23, la entidad deberá contar con documentación que demuestre que la operación financiada correspondía a una imp…\"}, {\"id\": \"Excepcion_cancelaciones_de_financiaciones_en_moneda_extranjera_otorgadas_por_entidades_fin_786a43\", \"type\": \"Excepcion\", \"label\": \"Excepción por cancelación de financiaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cancelaciones de financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo pagos por consumos en moneda extranjera efectuados …\"}, {\"id\": \"Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8\", \"type\": \"Obligacion\", \"label\": \"Disponibilidad saldo actualizado financiaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El saldo actualizado de la totalidad de las financiacione… [+3000 chars]",
+        "output_chars": 4200
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "concepto financiaciones créditos préstamos descuentos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"concepto financiaciones créditos préstamos descuentos\", \"total_con_match\": 147, \"resultados\": [{\"id\": \"Obligacion_las_entidades_deben_informar_prestamos_creditos_posiciones_de_activos_financiero_52f09a\", \"type\": \"Obligacion\", \"label\": \"Informar conceptos activos por bandas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades deben informar préstamos, créditos, posiciones de activos financieros y partidas fuera de balance clasificadas por bandas temporales (0 a 19) y es…\"}, {\"id\": \"Restriccion_el_originante_de_la_titulizacion_asi_como_el_acreedor_inicial_de_los_creditos_ti_ac5985\", \"type\": \"Restriccion\", \"label\": \"Experiencia del originante en financiaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El originante de la titulización, así como el acreedor inicial de los créditos titulizados, deberán contar con experiencia suficiente en el otorgamiento de fina…\"}, {\"id\": \"Operacion_cesion_de_creditos_df1276\", \"type\": \"Operacion\", \"label\": \"Cesión de créditos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: cesión de derechos de crédito\"}, {\"id\": \"Operacion_precancelacion_de_creditos_b4d2f2\", \"type\": \"Operacion\", \"label\": \"Precancelación de crédit… [+2037 chars]",
+        "output_chars": 3237
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8\", \"type\": \"Obligacion\", \"label\": \"Disponibilidad saldo actualizado financiaciones\", \"properties\": {\"descripcion\": \"El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de la entidad– deberá encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.\", \"tipo\": \"presentacion_informativa\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"}]}",
+        "output_chars": 752
+      },
+      {
+        "n": 11,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8\", \"label\": \"Disponibilidad saldo actualizado financiaciones\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_obligado_a_clasificar_clasificacion\", \"vecino_label\": \"Obligados a clasificar deudores (Clasificación)\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 818
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "facilidades asignadas filiales unidades operativas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"facilidades asignadas filiales unidades operativas\", \"total_con_match\": 20, \"resultados\": [{\"id\": \"Obligacion_en_el_caso_de_las_financiaciones_estas_deberan_ser_atendidas_por_las_filiales_o__844ee2\", \"type\": \"Obligacion\", \"label\": \"Fondos de financiaciones de líneas asignadas exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el caso de las financiaciones, éstas deberán ser atendidas por las filiales o subsidiarias locales sólo con fondos provenientes de líneas asignadas a ellas p…\"}, {\"id\": \"Operacion_facilidades_de_liquidez_fdec9c\", \"type\": \"Operacion\", \"label\": \"Facilidades de liquidez\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Acuerdo contractual en virtud del cual una entidad financiera pone a disposición de un programa de titulización una línea crediticia a los efectos de cubrir eve…\"}, {\"id\": \"Operacion_computo_de_facilidades_del_bcra_306a6f\", \"type\": \"Operacion\", \"label\": \"Cómputo de facilidades del BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Cálculo de posiciones de riesgo\"}, {\"id\": \"Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior__394306\", \"type\": \"Obligacion\", \"label\": \"Observar n… [+2476 chars]",
+        "output_chars": 3676
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1459,
+        "output_tokens": 167,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.563
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 194,
+        "cache_read": 0,
+        "cache_write": 4133,
+        "latency_s": 2.425
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 136,
+        "cache_read": 4133,
+        "cache_write": 2087,
+        "latency_s": 1.641
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 185,
+        "cache_read": 6220,
+        "cache_write": 375,
+        "latency_s": 1.804
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 180,
+        "cache_read": 6595,
+        "cache_write": 2703,
+        "latency_s": 1.936
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 219,
+        "cache_read": 9298,
+        "cache_write": 2798,
+        "latency_s": 2.146
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 172,
+        "cache_read": 12096,
+        "cache_write": 810,
+        "latency_s": 2.118
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 256,
+        "cache_read": 12906,
+        "cache_write": 1417,
+        "latency_s": 3.748
+      }
+    ],
+    "final_json": {
+      "respuesta": "A los fines de la clasificación de deudores, quedan comprendidas las financiaciones otorgadas que incluyen las facilidades asignadas por todas las filiales y unidades operativas de la entidad. Específicamente, el saldo actualizado de la totalidad de las financiaciones otorgadas debe encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.",
+      "citas": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Basándome en la información que he encontrado en el Knowledge Graph, tengo una respuesta clara. El nodo que define qué financiaciones quedan comprendidas a los fines de la clasificación de deudores es muy específico.\n\n```json\n{\n  \"respuesta\": \"A los fines de la clasificación de deudores, quedan comprendidas las financiaciones otorgadas que incluyen las facilidades asignadas por todas las filiales y unidades operativas de la entidad. Específicamente, el saldo actualizado de la totalidad de las financiaciones otorgadas debe encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 12,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_clasificacion_deudores_actual.pdf",
+        "location": "Sección 6. Clasificación de los deudores de la cartera comercial. Punto 6.5. Niveles de clasificación."
+      },
+      {
+        "source_doc": "TO_clasificacion_deudores_actual.pdf",
+        "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1504,
+    "tokens_out": 1509,
+    "cache_read": 51248,
+    "cache_write": 14323,
+    "cost_usd": 0.032078,
+    "latency_s": 17.41,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "financiaciones clasificación deudores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "financiaciones clasificación deudores",
+        "total_con_match": 195,
+        "resultados": [
+          {
+            "id": "Restriccion_los_deudores_cuyas_financiaciones_se_encuentren_cubiertas_totalmente_con_garanti_7799cb",
+            "type": "Restriccion",
+            "label": "Exclusión de clasificación de deudores",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación."
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi_d85ad9",
+            "type": "Excepcion",
+            "label": "Exclusión de financiaciones comercio exterior",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores con financiaciones vinculadas a operaciones de comercio exterior."
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_que_unicamente_regist_fc5e90",
+            "type": "Excepcion",
+            "label": "Exclusión de deudores con financiaciones específicas",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores que únicamente registren financiaciones que cuenten con aval de banco del exterior que cumpla con lo …"
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi_580f14",
+            "type": "Excepcion",
+            "label": "Exclusión de operaciones compraventa títulos con exterior",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores con financiaciones vinculadas a operaciones de compraventa de títulos valores concertadas con residen…"
+          },
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores_82042f",
+            "type": "Operacion",
+            "label": "Clasificación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su importancia –considerando la totalidad de las financiaciones comprendid…"
+          },
+          {
+            "id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Clasificación de Deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "materia: Clasificación de deudores; archivo: TO_clasificacion_deudores_actual.pdf; version: 1a"
+          },
+          {
+            "id": "Restriccion_la_informacion_debera_ser_remitida_a_los_deudores_comprendidos_dentro_de_los_45__885669",
+            "type": "Restriccion",
+            "label": "Plazo comunicación clasificación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La información deberá ser remitida a los deudores comprendidos dentro de los 45 días de realizada la reclasificación."
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores_por_mora_5d5ac5",
+            "type": "Operacion",
+            "label": "Clasificación de deudores por mora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Clasificar a los deudores de los créditos que administran en función de su mora, según los criterios aplicables para la cartera de consumo o vivienda"
+          },
+          {
+            "id": "Obligacion_las_entidades_financieras_deberan_comunicar_a_los_deudores_los_cambios_negativos_0a0325",
+            "type": "Obligacion",
+            "label": "Informar cambios negativos clasificación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras deberán comunicar a los deudores los cambios negativos en la clasificación que se les asigne, siendo optativo cuando el saldo de deuda…"
+          }
+        ]
+      },
+      "output_chars": 3873
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "financiaciones comprendidas clasificación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "financiaciones comprendidas clasificación",
+        "total_con_match": 169,
+        "resultados": [
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          },
+          {
+            "id": "Restriccion_los_deudores_cuyas_financiaciones_se_encuentren_cubiertas_totalmente_con_garanti_7799cb",
+            "type": "Restriccion",
+            "label": "Exclusión de clasificación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas 'A' no serán objeto de clasificación."
+          },
+          {
+            "id": "Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior__394306",
+            "type": "Obligacion",
+            "label": "Observar normas clasificación individual",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las normas en materia de clasificación de deudores en forma individ…"
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi_d85ad9",
+            "type": "Excepcion",
+            "label": "Exclusión de financiaciones comercio exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores con financiaciones vinculadas a operaciones de comercio exterior."
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_que_unicamente_regist_fc5e90",
+            "type": "Excepcion",
+            "label": "Exclusión de deudores con financiaciones específicas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores que únicamente registren financiaciones que cuenten con aval de banco del exterior que cumpla con lo …"
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_con_financiaciones_vi_580f14",
+            "type": "Excepcion",
+            "label": "Exclusión de operaciones compraventa títulos con exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores con financiaciones vinculadas a operaciones de compraventa de títulos valores concertadas con residen…"
+          },
+          {
+            "id": "Operacion_clasificacion_deudor_aa8d48",
+            "type": "Operacion",
+            "label": "Clasificación deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificacion_deudor"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudor_bae9fd",
+            "type": "Operacion",
+            "label": "Clasificación de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: clasificación de deudor"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores_82042f",
+            "type": "Operacion",
+            "label": "Clasificación de deudores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La clasificación de los deudores deberá efectuarse con una periodicidad que atienda a su importancia –considerando la totalidad de las financiaciones comprendid…"
+          },
+          {
+            "id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Clasificación de Deudores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "materia: Clasificación de deudores; archivo: TO_clasificacion_deudores_actual.pdf; version: 1a"
+          }
+        ]
+      },
+      "output_chars": 3568
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57"
+      },
+      "output": {
+        "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+        "type": "Obligacion",
+        "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+        "properties": {
+          "descripcion": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se detallan en cada caso.",
+          "tipo": "criterio_general",
+          "enumeracion": "6.5.1. En situación normal. · 6.5.2. Con seguimiento especial (6.5.2.1. En observación. · 6.5.2.2. En negociación o con acuerdos de refinanciación. · 6.5.2.3. En tratamiento especial.) · 6.5.3. Con problemas. · 6.5.4. Con alto riesgo de insolvencia. · 6.5.5. Irrecuperable."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Sección 6. Clasificación de los deudores de la cartera comercial. Punto 6.5. Niveles de clasificación."
+          }
+        ]
+      },
+      "output_chars": 1096
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "financiaciones comprendidas definición qué incluye",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "financiaciones comprendidas definición qué incluye",
+        "total_con_match": 501,
+        "resultados": [
+          {
+            "id": "Restriccion_financiaciones_en_pesos_que_se_acuerden_a_partir_del_01_11_24_y_hasta_el_10_04_2_44df27",
+            "type": "Restriccion",
+            "label": "Plazo vigencia financiaciones en pesos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Financiaciones en pesos que se acuerden a partir del 01/11/24 y hasta el 10/04/26"
+          },
+          {
+            "id": "Excepcion_operaciones_comprendidas_en_punto_3_13_1_4_en_la_medida_que_sean_cursadas_en_for_98ff62",
+            "type": "Excepcion",
+            "label": "Excepción por operaciones punto 3.13.1.4",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones comprendidas en punto 3.13.1.4 en la medida que sean cursadas en forma automática por la entidad en su carácter de apoderada del beneficiario no res…"
+          },
+          {
+            "id": "Restriccion_cuando_se_trate_de_instrumentos_que_no_satisfagan_la_definicion_de_activos_admit_cd095c",
+            "type": "Restriccion",
+            "label": "Aforo del 25% para garantías no admitidas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de instrumentos que no satisfagan la definición de activos admitidos como garantía de operaciones registradas en la cartera de inversión, se les…"
+          },
+          {
+            "id": "Restriccion_aprobacion_requerida_solo_para_financiaciones_que_excedan_del_2_5_de_la_rpc_de_l_3cf7ba",
+            "type": "Restriccion",
+            "label": "Límite de financiaciones sujetas a aprobación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Aprobación requerida solo para financiaciones que excedan del 2,5 % de la RPC de la entidad financiera del mes anterior"
+          },
+          {
+            "id": "Excepcion_se_trata_de_un_pago_a_la_vista_de_importaciones_de_bienes_que_se_concreta_median_d69a3f",
+            "type": "Excepcion",
+            "label": "Pago con canje o liquidación de financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se trata de un pago a la vista de importaciones de bienes que se concreta mediante la realización de un canje y/o arbitraje con fondos en cuenta de moneda extra…"
+          },
+          {
+            "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+            "type": "Obligacion",
+            "label": "Disponibilidad saldo actualizado financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de …"
+          },
+          {
+            "id": "Excepcion_se_excluyen_de_clasificacion_como_deficientes_los_deudores_que_unicamente_regist_fc5e90",
+            "type": "Excepcion",
+            "label": "Exclusión de deudores con financiaciones específicas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se excluyen de clasificación como deficientes los deudores que únicamente registren financiaciones que cuenten con aval de banco del exterior que cumpla con lo …"
+          },
+          {
+            "id": "Obligacion_incluye_aquellos_clientes_que_ante_la_imposibilidad_de_hacer_frente_al_pago_de_s_b3cf0e",
+            "type": "Obligacion",
+            "label": "Manifestar intención de refinanciación dentro de 60 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Incluye aquellos clientes que ante la imposibilidad de hacer frente al pago de sus obligaciones en las condiciones pactadas, manifiesten fehacientemente antes d…"
+          },
+          {
+            "id": "Excepcion_para_aquellas_financiaciones_otorgadas_a_partir_del_14_04_25_se_admitira_que_el__584c57",
+            "type": "Excepcion",
+            "label": "Excepción para vencimiento compatible con embarque estimado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para aquellas financiaciones otorgadas a partir del 14/04/25, se admitirá que el vencimiento de la financiación fuera compatible con la fecha estimada de embarq…"
+          },
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          }
+        ]
+      },
+      "output_chars": 4180
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+      },
+      "output": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+        "type": "Obligacion",
+        "label": "Disponibilidad saldo actualizado financiaciones",
+        "properties": {
+          "descripcion": "El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de la entidad– deberá encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.",
+          "tipo": "presentacion_informativa"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 752
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "financiaciones comprendidas concepto definición tipos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "financiaciones comprendidas concepto definición tipos",
+        "total_con_match": 120,
+        "resultados": [
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          },
+          {
+            "id": "Operacion_otorgamiento_de_financiaciones_a51da4",
+            "type": "Operacion",
+            "label": "Otorgamiento de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: otorgamiento de financiación"
+          },
+          {
+            "id": "Restriccion_estara_dada_por_la_fecha_de_efectiva_cancelacion_del_concepto_al_cual_se_aplicar_b26453",
+            "type": "Restriccion",
+            "label": "Fecha de aplicación de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas de cobros de exportaciones."
+          },
+          {
+            "id": "Obligacion_la_sobrecolateralizacion_y_los_fondos_integrados_en_concepto_de_reserva_deberan__8662ea",
+            "type": "Obligacion",
+            "label": "Reconocer sobrecolateralización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La sobrecolateralización y los fondos integrados en concepto de reserva deberán ser reconocidos como tramos y los activos que conforman estas reservas deberán s…"
+          },
+          {
+            "id": "Operacion_precancelacion_de_financiaciones_bcca11",
+            "type": "Operacion",
+            "label": "Precancelación de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: precancelación de crédito"
+          },
+          {
+            "id": "Operacion_pago_de_capital_de_financiaciones_386fa0",
+            "type": "Operacion",
+            "label": "Pago de capital de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Pago de capital de financiaciones locales"
+          },
+          {
+            "id": "Operacion_financiaciones_en_situacion_normal_ed64c0",
+            "type": "Operacion",
+            "label": "Financiaciones en situación normal",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: financiación"
+          },
+          {
+            "id": "Excepcion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_y_qu_ef3807",
+            "type": "Excepcion",
+            "label": "Exclusión de operaciones al contado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "No están comprendidas las exposiciones originadas en operaciones al contado y que involucren títulos valores, oro o moneda extranjera"
+          },
+          {
+            "id": "Operacion_pago_de_intereses_de_financiaciones_68ccf1",
+            "type": "Operacion",
+            "label": "Pago de intereses de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Pago de intereses admitidos por financiaciones"
+          },
+          {
+            "id": "Excepcion_excepcion_vpu_rigi_en_financiaciones_45cea5",
+            "type": "Excepcion",
+            "label": "Excepción VPU-RIGI en financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En el caso que el cliente sea un Vehículo de Proyecto Único (VPU) adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que declaró ante la Autoridad…"
+          }
+        ]
+      },
+      "output_chars": 3197
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "se entiende por financiaciones comprendidas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "se entiende por financiaciones comprendidas",
+        "total_con_match": 1027,
+        "resultados": [
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          },
+          {
+            "id": "Excepcion_se_admitira_la_utilizacion_del_codigo_asignado_por_la_comision_nacional_de_valor_a37918",
+            "type": "Excepcion",
+            "label": "Excepción: código FCI",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se admitirá la utilización del código asignado por la Comisión Nacional de Valores cuando se trate de un fondo común de inversión."
+          },
+          {
+            "id": "Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos_07108d",
+            "type": "Excepcion",
+            "label": "Reducción del valor por BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El BCRA establezca que se debe hacer una reducción generalizada del valor. Si posteriormente se autorizan incrementos, el valor ajustado del inmueble no podrá s…"
+          },
+          {
+            "id": "Excepcion_se_realicen_ajustes_por_razones_objetivas_012af3",
+            "type": "Excepcion",
+            "label": "Ajustes por razones objetivas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se realicen ajustes por razones objetivas"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_por_el_monto_correspondiente_con_el_codigo_d_7e212d",
+            "type": "Obligacion",
+            "label": "Confección de boleto de venta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de venta se confeccionará por el monto correspondiente con el código de concepto para los pagos diferidos de importaciones de bienes de capital o al p…"
+          },
+          {
+            "id": "Restriccion_ademas_de_la_exigencia_por_riesgo_general_de_mercado_se_aplicara_una_exigencia_d_944fec",
+            "type": "Restriccion",
+            "label": "Exigencia adicional 2% índices",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Además de la exigencia por riesgo general de mercado, se aplicará una exigencia de capital adicional de 2% de la posición neta en contratos sobre índices calcul…"
+          },
+          {
+            "id": "Restriccion_estara_dada_por_la_fecha_de_efectiva_cancelacion_del_concepto_al_cual_se_aplicar_b26453",
+            "type": "Restriccion",
+            "label": "Fecha de aplicación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas de cobros de exportaciones."
+          },
+          {
+            "id": "Restriccion_las_franquicias_por_debajo_de_las_cuales_no_se_recibira_compensacion_en_caso_de__37dac6",
+            "type": "Restriccion",
+            "label": "Franquicias ponderadas al 1250%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las franquicias por debajo de las cuales no se recibirá compensación en caso de pérdida deberán ser ponderadas por riesgo al 1250%."
+          },
+          {
+            "id": "Obligacion_se_aplicara_el_metodo_de_sustitucion_de_ponderadores_con_este_metodo_el_ponderad_f5c3c7",
+            "type": "Obligacion",
+            "label": "Sustituir ponderador por garante",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se aplicará el método de sustitución de ponderadores. Con este método, el ponderador de riesgo de la contraparte se sustituye por el ponderador de riesgo del ga…"
+          },
+          {
+            "id": "Restriccion_las_acciones_preferidas_no_convertibles_se_excluyen_del_calculo_de_capital_por_r_f1bc5f",
+            "type": "Restriccion",
+            "label": "Exclusión de acciones preferidas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las acciones preferidas no convertibles se excluyen del cálculo de capital por riesgo de posiciones en acciones y se aplica la exigencia por riesgo de tasa de i…"
+          }
+        ]
+      },
+      "output_chars": 3879
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "financiaciones otorgadas filiales unidades operativas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "financiaciones otorgadas filiales unidades operativas",
+        "total_con_match": 94,
+        "resultados": [
+          {
+            "id": "Obligacion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_entidad_debera_contar_con_9f47e8",
+            "type": "Obligacion",
+            "label": "Documentación sobre operación de servicio",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para financiaciones otorgadas a partir del 13/12/23, la entidad deberá contar con documentación que demuestre que la operación financiada correspondía a una imp…"
+          },
+          {
+            "id": "Excepcion_cancelaciones_de_financiaciones_en_moneda_extranjera_otorgadas_por_entidades_fin_786a43",
+            "type": "Excepcion",
+            "label": "Excepción por cancelación de financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cancelaciones de financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo pagos por consumos en moneda extranjera efectuados …"
+          },
+          {
+            "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+            "type": "Obligacion",
+            "label": "Disponibilidad saldo actualizado financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de …"
+          },
+          {
+            "id": "Restriccion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_operacion_financiada_debe_105cd3",
+            "type": "Restriccion",
+            "label": "Plazo de prestación o devengamiento desde 13/12/23",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para financiaciones otorgadas a partir del 13/12/23, la operación financiada debe corresponder a una importación de servicios prestada o devengada a partir del …"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_financiaciones_otorgadas_por_entidades_financieras_locales_el_segu_e4b057",
+            "type": "Obligacion",
+            "label": "Seguimiento a cargo de entidad financiera otorgante",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de financiaciones otorgadas por entidades financieras locales, el seguimiento estará a cargo de la entidad que otorgó la financiación hasta su cancel…"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_las_financiaciones_estas_deberan_ser_atendidas_por_las_filiales_o__844ee2",
+            "type": "Obligacion",
+            "label": "Fondos de financiaciones de líneas asignadas exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de las financiaciones, éstas deberán ser atendidas por las filiales o subsidiarias locales sólo con fondos provenientes de líneas asignadas a ellas p…"
+          },
+          {
+            "id": "Excepcion_financiaciones_y_avales_fianzas_y_otras_responsabilidades_otorgadas_por_sucursal_44f1e3",
+            "type": "Excepcion",
+            "label": "Exclusión de financiaciones de sucursales y subsidiarias",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Financiaciones y avales, fianzas y otras responsabilidades otorgadas por sucursales y subsidiarias locales de entidades financieras del exterior, por cuenta y o…"
+          },
+          {
+            "id": "Excepcion_para_aquellas_financiaciones_otorgadas_a_partir_del_14_04_25_se_admitira_que_el__584c57",
+            "type": "Excepcion",
+            "label": "Excepción para vencimiento compatible con embarque estimado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para aquellas financiaciones otorgadas a partir del 14/04/25, se admitirá que el vencimiento de la financiación fuera compatible con la fecha estimada de embarq…"
+          },
+          {
+            "id": "Excepcion_no_se_consideraran_como_nuevas_financiaciones_las_refinanciaciones_otorgadas_a_p_05a5d2",
+            "type": "Excepcion",
+            "label": "Excepción de refinanciaciones bajo Ley de Emergencia Agropecuaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se considerarán como nuevas financiaciones las refinanciaciones otorgadas a productores cuando resulten de aplicación de disposiciones de la Ley de Emergenci…"
+          },
+          {
+            "id": "Excepcion_no_sera_aplicable_en_el_caso_de_financiaciones_otorgadas_a_traves_de_la_suscripc_02767f",
+            "type": "Excepcion",
+            "label": "Excepción para financiaciones por suscripción primaria de títulos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No será aplicable en el caso de financiaciones otorgadas a través de la suscripción primaria de títulos de deuda o de otros valores representativos de deuda con…"
+          }
+        ]
+      },
+      "output_chars": 4200
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "concepto financiaciones créditos préstamos descuentos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "concepto financiaciones créditos préstamos descuentos",
+        "total_con_match": 147,
+        "resultados": [
+          {
+            "id": "Obligacion_las_entidades_deben_informar_prestamos_creditos_posiciones_de_activos_financiero_52f09a",
+            "type": "Obligacion",
+            "label": "Informar conceptos activos por bandas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades deben informar préstamos, créditos, posiciones de activos financieros y partidas fuera de balance clasificadas por bandas temporales (0 a 19) y es…"
+          },
+          {
+            "id": "Restriccion_el_originante_de_la_titulizacion_asi_como_el_acreedor_inicial_de_los_creditos_ti_ac5985",
+            "type": "Restriccion",
+            "label": "Experiencia del originante en financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El originante de la titulización, así como el acreedor inicial de los créditos titulizados, deberán contar con experiencia suficiente en el otorgamiento de fina…"
+          },
+          {
+            "id": "Operacion_cesion_de_creditos_df1276",
+            "type": "Operacion",
+            "label": "Cesión de créditos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: cesión de derechos de crédito"
+          },
+          {
+            "id": "Operacion_precancelacion_de_creditos_b4d2f2",
+            "type": "Operacion",
+            "label": "Precancelación de créditos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Precancelación total o parcial de crédito"
+          },
+          {
+            "id": "Operacion_otorgamiento_de_financiaciones_a51da4",
+            "type": "Operacion",
+            "label": "Otorgamiento de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: otorgamiento de financiación"
+          },
+          {
+            "id": "Restriccion_estara_dada_por_la_fecha_de_efectiva_cancelacion_del_concepto_al_cual_se_aplicar_b26453",
+            "type": "Restriccion",
+            "label": "Fecha de aplicación de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Estará dada por la fecha de efectiva cancelación del concepto al cual se aplicaron las divisas de cobros de exportaciones."
+          },
+          {
+            "id": "Obligacion_la_sobrecolateralizacion_y_los_fondos_integrados_en_concepto_de_reserva_deberan__8662ea",
+            "type": "Obligacion",
+            "label": "Reconocer sobrecolateralización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La sobrecolateralización y los fondos integrados en concepto de reserva deberán ser reconocidos como tramos y los activos que conforman estas reservas deberán s…"
+          },
+          {
+            "id": "Obligacion_si_la_entidad_opta_por_encomendarse_la_tarea_al_sector_de_creditos_debera_contar_ad64c5",
+            "type": "Obligacion",
+            "label": "Contar con oficina independiente",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Si la entidad opta por encomendarse la tarea al sector de créditos, deberá contar con una oficina independiente que efectúe la revisión de las clasificaciones a…"
+          },
+          {
+            "id": "Obligacion_todos_los_derechos_inherentes_a_los_documentos_a_cobrar_y_creditos_deberan_ser_t_e5a6b3",
+            "type": "Obligacion",
+            "label": "Transferir derechos de inversión",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Todos los derechos inherentes a los documentos a cobrar y créditos deberán ser transferidos a la titulización, a los efectos de garantizar a los tenedores de lo…"
+          },
+          {
+            "id": "Operacion_precancelacion_de_financiaciones_bcca11",
+            "type": "Operacion",
+            "label": "Precancelación de financiaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: precancelación de crédito"
+          }
+        ]
+      },
+      "output_chars": 3237
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+      },
+      "output": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+        "type": "Obligacion",
+        "label": "Disponibilidad saldo actualizado financiaciones",
+        "properties": {
+          "descripcion": "El saldo actualizado de la totalidad de las financiaciones otorgadas –que comprenderá las facilidades asignadas por todas las filiales y unidades operativas de la entidad– deberá encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.",
+          "tipo": "presentacion_informativa"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 752
+    },
+    {
+      "n": 11,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+        "label": "Disponibilidad saldo actualizado financiaciones",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "vecino_label": "Clasificación de Deudores",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_obligado_a_clasificar_clasificacion",
+            "vecino_label": "Obligados a clasificar deudores (Clasificación)",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 3.4. Legajo del cliente. (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 818
+    },
+    {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "facilidades asignadas filiales unidades operativas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "facilidades asignadas filiales unidades operativas",
+        "total_con_match": 20,
+        "resultados": [
+          {
+            "id": "Obligacion_en_el_caso_de_las_financiaciones_estas_deberan_ser_atendidas_por_las_filiales_o__844ee2",
+            "type": "Obligacion",
+            "label": "Fondos de financiaciones de líneas asignadas exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de las financiaciones, éstas deberán ser atendidas por las filiales o subsidiarias locales sólo con fondos provenientes de líneas asignadas a ellas p…"
+          },
+          {
+            "id": "Operacion_facilidades_de_liquidez_fdec9c",
+            "type": "Operacion",
+            "label": "Facilidades de liquidez",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Acuerdo contractual en virtud del cual una entidad financiera pone a disposición de un programa de titulización una línea crediticia a los efectos de cubrir eve…"
+          },
+          {
+            "id": "Operacion_computo_de_facilidades_del_bcra_306a6f",
+            "type": "Operacion",
+            "label": "Cómputo de facilidades del BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Cálculo de posiciones de riesgo"
+          },
+          {
+            "id": "Obligacion_las_entidades_financieras_comprendidas_sus_filiales_en_el_pais_y_en_el_exterior__394306",
+            "type": "Obligacion",
+            "label": "Observar normas clasificación individual",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades financieras (comprendidas sus filiales en el país y en el exterior) observarán las normas en materia de clasificación de deudores en forma individ…"
+          },
+          {
+            "id": "Obligacion_todas_las_casas_operativas_de_estos_sujetos_obligados_deberan_entregar_a_los_ref_d60224",
+            "type": "Obligacion",
+            "label": "Entregar detalle de productos y servicios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Todas las casas operativas de estos sujetos obligados deberán entregar a los referidos usuarios de servicios financieros que lo soliciten un detalle con las car…"
+          },
+          {
+            "id": "Restriccion_hasta_que_punto_las_restricciones_legales_u_otras_exigencias_operativas_podrian__de53df",
+            "type": "Restriccion",
+            "label": "Restricción legal para liquidación inmediata",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Hasta qué punto las restricciones legales u otras exigencias operativas podrían impedir que la entidad liquide en forma inmediata la exposición"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_las_financiaciones_estas_deberan_ser_atendidas_por_las_sucursales__59dc8d",
+            "type": "Obligacion",
+            "label": "Financiaciones con fondos de líneas asignadas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En el caso de las financiaciones, éstas deberán ser atendidas por las sucursales o subsidiarias locales sólo con fondos provenientes de líneas asignadas a ellas…"
+          },
+          {
+            "id": "Operacion_facilidades_de_tarjeta_de_credito_transaccional_59f5ba",
+            "type": "Operacion",
+            "label": "Facilidades de tarjeta de crédito transaccional",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Facilidades para el uso de tarjetas de crédito o similares que hayan sido canceladas totalmente en cada fecha de vencimiento durante los últimos 12 meses"
+          },
+          {
+            "id": "Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_debe_c5a1d9",
+            "type": "Obligacion",
+            "label": "Supervisión consolidada de filiales y subsidiarias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las normas del país donde esté situada la casa matriz o entidad controlante deberán abarcar la supervisión sobre base consolidada de las filiales o subsidiarias…"
+          },
+          {
+            "id": "Operacion_otorgamiento_de_facilidades_crediticias_adicionales_c9c5e5",
+            "type": "Operacion",
+            "label": "Otorgamiento de facilidades crediticias adicionales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Ampliación de márgenes o nuevas facilidades crediticias"
+          }
+        ]
+      },
+      "output_chars": 3676
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qHSY6dSpdCGonqPuKn",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre financiaciones y clasificación de deudores en el Knowledge Graph.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_019ugD6BsqxXCEYyTu7iYDfz",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "financiaciones clasificación deudores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014iVNKyNLr4M5pPTaEccQLu",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "financiaciones comprendidas clasificación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1459,
+          "output_tokens": 167,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qHYmtWmpgSnuzCHdcR",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré referencias a \"financiaciones comprendidas\". Voy a ver el nodo que habla específicamente sobre esto.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Ce6dJrbwVWxA4YTmvN7W3Y",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01WLfciHeMjXXsimSrVEG9GX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "financiaciones comprendidas definición qué incluye",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4133
+          },
+          "cache_creation_input_tokens": 4133,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 194,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qHjCwuWkzuF8PkxWLV",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Veo una referencia a \"saldo actualizado de la totalidad de las financiaciones otorgadas\". Voy a ver ese nodo para entender mejor qué se comprende.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0194neVNgDPe4ucu8kamTFLS",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2087
+          },
+          "cache_creation_input_tokens": 2087,
+          "cache_read_input_tokens": 4133,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 136,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qHrJawJR6ZGVwZZ4ff",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Bien, pero necesito una definición más explícita de qué financiaciones quedan comprendidas. Voy a buscar más específicamente.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01HCi9rsgpp84zASzHokWFbv",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "financiaciones comprendidas concepto definición tipos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01XUAGe2ebyGZAeYEBzfpFWf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "se entiende por financiaciones comprendidas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 375
+          },
+          "cache_creation_input_tokens": 375,
+          "cache_read_input_tokens": 6220,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 185,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qHyyhaW7QChLjDqjYY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Necesito buscar una definición más explícita. Voy a intentar con términos más directos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_019poT161ozZX58EkzAFjiSP",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "financiaciones otorgadas filiales unidades operativas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01PirJocnGq8zVV4YCDMaaRG",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "concepto financiaciones créditos préstamos descuentos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2703
+          },
+          "cache_creation_input_tokens": 2703,
+          "cache_read_input_tokens": 6595,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 180,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qJ8KkHKs9EhUxhkpob",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré el nodo que define qué comprenden las financiaciones. Voy a ver ese nodo completo.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01HP6fxWNKU73ady1CUfUZti",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014u2dfGMnLRnzeF7qJVjeRp",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_el_saldo_actualizado_de_la_totalidad_de_las_financiaciones_otorgadas_que_compren_933aa8",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2798
+          },
+          "cache_creation_input_tokens": 2798,
+          "cache_read_input_tokens": 9298,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 219,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qJJKm8oA6uR3zjGV5S",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Tengo la información. El nodo dice que las financiaciones comprendidas incluyen \"las facilidades asignadas por todas las filiales y unidades operativas de la entidad\". Pero necesito ver si hay más detalles sobre qué tipos específicos de financiaciones se incluyen. Voy a buscar si hay una definición más detallada.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018J4XUGSohB5tRHS3RwCZsA",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "facilidades asignadas filiales unidades operativas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 810
+          },
+          "cache_creation_input_tokens": 810,
+          "cache_read_input_tokens": 12096,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 172,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2qJSYNXhjsYkPpPJHdP",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Basándome en la información que he encontrado en el Knowledge Graph, tengo una respuesta clara. El nodo que define qué financiaciones quedan comprendidas a los fines de la clasificación de deudores es muy específico.\n\n```json\n{\n  \"respuesta\": \"A los fines de la clasificación de deudores, quedan comprendidas las financiaciones otorgadas que incluyen las facilidades asignadas por todas las filiales y unidades operativas de la entidad. Específicamente, el saldo actualizado de la totalidad de las financiaciones otorgadas debe encontrarse disponible, discriminado por concepto, según el sistema de información contable que utilice la entidad, en el lugar de radicación del legajo del cliente o la casa central.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 3.4. Legajo del cliente. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1417
+          },
+          "cache_creation_input_tokens": 1417,
+          "cache_read_input_tokens": 12906,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 256,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

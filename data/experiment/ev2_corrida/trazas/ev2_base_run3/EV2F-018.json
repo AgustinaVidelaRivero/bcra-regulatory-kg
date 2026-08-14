@@ -1,0 +1,1710 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_base_run3",
+    "grafo": "run_3",
+    "kg_path": "data/experiment/run_3_ppf_core/kg.json",
+    "kg_sha256": "12c226e22b8fdc8f46999cae7f1eb808930e71f5dfe803f3a4f637a88348c410",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-018",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 76,
+    "pos_orden_efectivo": 71,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-14T11:20:14",
+    "timestamp_fin": "2026-08-14T11:20:37",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "98d3ee73a23c214b",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": true
+  },
+  "pregunta": "¿Cómo se mide la exposición para la exigencia de capital por riesgo de posiciones en commodities y qué compensaciones entre posiciones se admiten?",
+  "trace": {
+    "qid": "EV2F-018",
+    "question": "¿Cómo se mide la exposición para la exigencia de capital por riesgo de posiciones en commodities y qué compensaciones entre posiciones se admiten?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "exposición riesgo commodities capital",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"exposición riesgo commodities capital\", \"total_con_match\": 390, \"resultados\": [{\"id\": \"Operacion_cobertura_proporcional_de_riesgo_con_reduccion_de_capital\", \"type\": \"Operacion\", \"label\": \"Cobertura proporcional de exposición\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: cobertura proporcional de riesgo con reducción de capital\"}, {\"id\": \"Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo 20%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…\"}, {\"id\": \"Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m\", \"type\": \"Obligacion\", \"label\": \"Informar CRO mensualmente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1\"}, {\"id\": \"Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati\", \"type\": \"… [+2180 chars]",
+        "output_chars": 3380
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "compensación posiciones commodities",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"compensación posiciones commodities\", \"total_con_match\": 107, \"resultados\": [{\"id\": \"Obligacion_los_futuros_se_consideraran_como_una_combinacion_de_una_posicion_comprada_y_otra\", \"type\": \"Obligacion\", \"label\": \"Compensación posiciones futuros\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los futuros se considerarán como una combinación de una posición comprada y otra vendida en un título público\"}, {\"id\": \"Operacion_compensacion_de_posiciones\", \"type\": \"Operacion\", \"label\": \"Compensación posiciones opuestas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades podrán excluir posiciones opuestas en la misma categoría de instrumentos si consideran que están compensadas, incluso en el caso de posiciones en …\"}, {\"id\": \"Restriccion_para_compensacion_las_posiciones_deben_referirse_a_los_mismos_subyacentes_tener_\", \"type\": \"Restriccion\", \"label\": \"Requisitos compensación posiciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para que proceda la exclusión, las posiciones se deberán referir a los mismos subyacentes, tener el mismo valor nominal y estar denominadas en la misma moneda\"}, {\"id\": \"Restriccion_las_posiciones_brutas_en_cada_banda_temporal_para_m… [+2289 chars]",
+        "output_chars": 3489
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com\", \"type\": \"Restriccion\", \"label\": \"No cobertura entre conjuntos commodities\", \"properties\": {\"descripcion\": \"No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y productos agrícolas–\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}",
+        "output_chars": 532
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones\", \"type\": \"Obligacion\", \"label\": \"Aplicar factor de cobertura a operaciones commodities\", \"properties\": {\"descripcion\": \"La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}",
+        "output_chars": 557
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "medición exposición commodities valor nominal",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"medición exposición commodities valor nominal\", \"total_con_match\": 123, \"resultados\": [{\"id\": \"Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati\", \"type\": \"Restriccion\", \"label\": \"Crédito de riesgo no negativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exposición presente respecto de la contraparte no puede tener un valor negativo\"}, {\"id\": \"Excepcion_por_la_diferencia_entre_el_valor_efectivo_y_el_valor_nominal_en_emisiones_de_tit\", \"type\": \"Excepcion\", \"label\": \"Diferencia valor efectivo nominal\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Por la diferencia entre el valor efectivo y el valor nominal en emisiones de títulos de deuda colocados bajo la par\"}, {\"id\": \"Restriccion_el_valor_nominal_de_los_nuevos_titulos_entregados_en_concepto_de_prima_de_partic\", \"type\": \"Restriccion\", \"label\": \"Prima participación recompra máximo 5%\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El valor nominal de los nuevos títulos entregados en concepto de prima de participación, recompra o rescate anticipado no supere el equivalente al 5% (cinco por…\"}, {\"id\": \"Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garan… [+2287 chars]",
+        "output_chars": 3487
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "riesgo general mercado commodities cálculo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"riesgo general mercado commodities cálculo\", \"total_con_match\": 362, \"resultados\": [{\"id\": \"Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado\", \"type\": \"Obligacion\", \"label\": \"Cálculo riesgo general mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …\"}, {\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…\"}, {\"id\": \"Operacion_determinacion_de_exigencia_por_riesgo_de_mercado\", \"type\": \"Operacion\", \"label\": \"Cálculo exigencia riesgo mercado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000\"}, {\"id\": \"Operacio… [+2154 chars]",
+        "output_chars": 3354
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "posiciones commodities energía metales agrícolas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"posiciones commodities energía metales agrícolas\", \"total_con_match\": 100, \"resultados\": [{\"id\": \"Operacion_derivados_financieros\", \"type\": \"Operacion\", \"label\": \"Posiciones de derivados sobre commodities\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Derivados financieros\"}, {\"id\": \"Obligacion_informacion_de_incumplimientos_de_posiciones_de_derivados_sobre_commodities_del_\", \"type\": \"Obligacion\", \"label\": \"Informar incumplimientos de derivados commodities\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Información de incumplimientos de posiciones de derivados sobre commodities del mes bajo informe\"}, {\"id\": \"Restriccion_incremento_de_la_exigencia_por_riesgo_de_credito_por_exceso_en_posiciones_de_der\", \"type\": \"Restriccion\", \"label\": \"Incremento exigencia por exceso en derivados commodities\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Incremento de la exigencia por riesgo de crédito por exceso en posiciones de derivados sobre commodities. Información en término; fuera de término; incumplimien…\"}, {\"id\": \"Operacion_operacion_con_opciones\", \"type\": \"Operacion\", \"label\": \"Posiciones en opciones\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"posiciones … [+1795 chars]",
+        "output_chars": 2995
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado\", \"type\": \"Restriccion\", \"label\": \"Exigencia de capital por riesgo general de mercado\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"umbral\": \"8%\", \"description\": \"La exigencia de capital por riesgo general de mercado es la diferencia entre el total de posiciones compradas y el total de posiciones vendidas en cada mercado nacional, con una exigencia del 8%\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.3. Exigencia de capital por riesgo de posiciones en acciones.\"}]}",
+        "output_chars": 587
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_capital_por_metodo_de_plazos_residuales\", \"type\": \"Operacion\", \"label\": \"Cálculo capital por riesgo general de mercado\", \"properties\": {\"tipo\": \"cálculo de capital por método de plazos residuales\", \"description\": \"La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)\"}]}",
+        "output_chars": 614
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "factor cobertura commodities escenario",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"factor cobertura commodities escenario\", \"total_con_match\": 68, \"resultados\": [{\"id\": \"Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa\", \"type\": \"Obligacion\", \"label\": \"Dividir riesgo commodities en componentes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus compo…\"}, {\"id\": \"Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones\", \"type\": \"Obligacion\", \"label\": \"Aplicar factor de cobertura a operaciones commodities\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'\"}, {\"id\": \"Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com\", \"type\": \"Restriccion\", \"label\": \"No cobertura entre conjuntos commodities\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y pr… [+2120 chars]",
+        "output_chars": 3320
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa\", \"type\": \"Obligacion\", \"label\": \"Dividir riesgo commodities en componentes\", \"properties\": {\"descripcion\": \"Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus componentes sistemático e idiosincrásico\", \"tipo\": \"calculo\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}",
+        "output_chars": 600
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa\", \"label\": \"Dividir riesgo commodities en componentes\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_operacion_con_derivados_sobre_commodities\", \"vecino_label\": \"Operaciones con derivados sobre commodities\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 1168
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "conjunto cobertura energía metales productos agrícolas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"conjunto cobertura energía metales productos agrícolas\", \"total_con_match\": 78, \"resultados\": [{\"id\": \"Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa\", \"type\": \"Obligacion\", \"label\": \"Dividir riesgo commodities en componentes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus compo…\"}, {\"id\": \"Operacion_cobertura_crediticia_por_tramos\", \"type\": \"Operacion\", \"label\": \"Cobertura por tramos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: cobertura crediticia por tramos\"}, {\"id\": \"Obligacion_seleccionar_un_unico_metodo_para_aplicar_la_tecnica_de_cobertura\", \"type\": \"Obligacion\", \"label\": \"Optar por método único\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las entidades deberán optar por un único método para la aplicación de la técnica de activos admitidos como garantía de las operaciones registradas en la cartera…\"}, {\"id\": \"Operacion_aplicacion_de_tecnica_de_cobertura\", \"type\": \"Operacion\", \"label\": \"Aplicación método simple\", \"tokens_matcheados\": 1, \"resumen_pro… [+1686 chars]",
+        "output_chars": 2886
+      },
+      {
+        "n": 14,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "exposición commodities valor mercado notional",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"exposición commodities valor mercado notional\", \"total_con_match\": 234, \"resultados\": [{\"id\": \"Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati\", \"type\": \"Restriccion\", \"label\": \"Crédito de riesgo no negativo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exposición presente respecto de la contraparte no puede tener un valor negativo\"}, {\"id\": \"Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_podra_superar_\", \"type\": \"Restriccion\", \"label\": \"Límite valor opciones compradas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El valor de mercado de la totalidad de las opciones en cartera no podrá superar el 5% de su RPC del mes anterior\"}, {\"id\": \"Operacion_transferencia_de_garantias_por_cambios_en_valor_de_mercado\", \"type\": \"Operacion\", \"label\": \"Intercambio de margen de variación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: transferencia de garantías por cambios en valor de mercado\"}, {\"id\": \"Obligacion_cuando_se_trate_de_una_operacion_con_derivados_concertada_en_un_mercado_de_valor\", \"type\": \"Obligacion\", \"label\": \"Aplicar tratamiento de derivado OTC\", \"tokens_matcheados\": 2, \"res… [+2296 chars]",
+        "output_chars": 3496
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "derivados commodities cálculo exposición notional",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"derivados commodities cálculo exposición notional\", \"total_con_match\": 196, \"resultados\": [{\"id\": \"Obligacion_calculo_de_exposicion_para_derivados\", \"type\": \"Obligacion\", \"label\": \"Cálculo de exposición para derivados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"De tratarse de derivados, la EAD se calculará aplicando el enfoque SA-CCR como si se tratara de una exposición por operaciones bilaterales entre la CCP y el mie…\"}, {\"id\": \"Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr\", \"type\": \"Obligacion\", \"label\": \"Cálculo de RCD\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…\"}, {\"id\": \"Operacion_calculo_de_exposicion\", \"type\": \"Operacion\", \"label\": \"Aplicar factores regulatorios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"en base a la medición de la volatilidad de cada clase de activo, se aplicarán uno o más factores específicos al nocional efectivo a fin de obtener la EPE efecti…\"}, {\"id\": \"Obligacion_la_exposicion_total_sera_el_monto_bruto_sin_computar… [+2184 chars]",
+        "output_chars": 3384
+      },
+      {
+        "n": 16,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_derivados_financieros"
+        },
+        "output_truncado": "{\"id\": \"Operacion_derivados_financieros\", \"type\": \"Operacion\", \"label\": \"Posiciones de derivados sobre commodities\", \"properties\": {\"tipo\": \"Derivados financieros\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 9.2. Modelo de Información\"}]}",
+        "output_chars": 300
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1474,
+        "output_tokens": 175,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.353
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 4029,
+        "output_tokens": 263,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.214
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 188,
+        "cache_read": 0,
+        "cache_write": 5953,
+        "latency_s": 2.289
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 240,
+        "cache_read": 5953,
+        "cache_write": 2419,
+        "latency_s": 2.694
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 218,
+        "cache_read": 8372,
+        "cache_write": 1814,
+        "latency_s": 2.446
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 206,
+        "cache_read": 10186,
+        "cache_write": 887,
+        "latency_s": 3.898
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 157,
+        "cache_read": 11073,
+        "cache_write": 2460,
+        "latency_s": 2.026
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 461,
+        "cache_read": 13533,
+        "cache_write": 1545,
+        "latency_s": 5.768
+      }
+    ],
+    "final_json": {
+      "respuesta": "La exposición para la exigencia de capital por riesgo de posiciones en commodities se mide utilizando un modelo de un único factor dentro de cada conjunto de cobertura, que divide el riesgo correspondiente a un mismo tipo de commodity en sus componentes sistemático e idiosincrásico. Para derivados sobre commodities, la exposición se calcula aplicando factores regulatorios específicos al nocional efectivo.\n\nRespecto a las compensaciones entre posiciones admitidas:\n\n1. **Compensación permitida dentro del mismo commodity**: La compensación o cobertura total están permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de commodity.\n\n2. **Prohibición de compensación entre conjuntos de cobertura**: No se permitirá la compensación o cobertura entre conjuntos de cobertura distintos, tales como energía, metales y productos agrícolas. Estos constituyen conjuntos separados sin posibilidad de compensación cruzada.\n\n3. **Factores de escala especiales**: Cuando se aplique a conjuntos de cobertura de derivados sobre bases, el factor de escala correspondiente se multiplicará por 0,5. Cuando se aplique a operaciones sobre volatilidad, el factor se multiplicará por 5.\n\nEn síntesis, la regulación permite compensación plena entre posiciones del mismo commodity, pero prohíbe cualquier compensación entre los tres conjuntos de cobertura principales (energía, metales y productos agrícolas).",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "```json\n{\n  \"respuesta\": \"La exposición para la exigencia de capital por riesgo de posiciones en commodities se mide utilizando un modelo de un único factor dentro de cada conjunto de cobertura, que divide el riesgo correspondiente a un mismo tipo de commodity en sus componentes sistemático e idiosincrásico. Para derivados sobre commodities, la exposición se calcula aplicando factores regulatorios específicos al nocional efectivo.\\n\\nRespecto a las compensaciones entre posiciones admitidas:\\n\\n1. **Compensación permitida dentro del mismo commodity**: La compensación o cobertura total están permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de commodity.\\n\\n2. **Prohibición de compensación entre conjuntos de cobertura**: No se permitirá la compensación o cobertura entre conjuntos de cobertura distintos, tales como energía, metales y productos agrícolas. Estos constituyen conjuntos separados sin posibilidad de compensación cruzada.\\n\\n3. **Factores de escala especiales**: Cuando se aplique a conjuntos de cobertura de derivados sobre bases, el factor de escala correspondiente se multiplicará por 0,5. Cuando se aplique a operaciones sobre volatilidad, el factor se multiplicará por 5.\\n\\nEn síntesis, la regulación permite compensación plena entre posiciones del mismo commodity, pero prohíbe cualquier compensación entre los tres conjuntos de cobertura principales (energía, metales y productos agrícolas).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 16,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 6.3. Exigencia de capital por riesgo de posiciones en acciones."
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)"
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 9.2. Modelo de Información"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5541,
+    "tokens_out": 1908,
+    "cache_read": 49117,
+    "cache_write": 15078,
+    "cost_usd": 0.03884,
+    "latency_s": 22.712,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposición riesgo commodities capital",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "exposición riesgo commodities capital",
+        "total_con_match": 390,
+        "resultados": [
+          {
+            "id": "Operacion_cobertura_proporcional_de_riesgo_con_reduccion_de_capital",
+            "type": "Operacion",
+            "label": "Cobertura proporcional de exposición",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: cobertura proporcional de riesgo con reducción de capital"
+          },
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          },
+          {
+            "id": "Obligacion_se_determinara_mensualmente_la_exigencia_de_capital_por_riesgo_operacional_cro_m",
+            "type": "Obligacion",
+            "label": "Informar CRO mensualmente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se determinará mensualmente la exigencia de capital por riesgo operacional (CRO) mediante la expresión CRO = BIC x ILM para entidades del Grupo 1"
+          },
+          {
+            "id": "Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati",
+            "type": "Restriccion",
+            "label": "Crédito de riesgo no negativo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición presente respecto de la contraparte no puede tener un valor negativo"
+          },
+          {
+            "id": "Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado",
+            "type": "Obligacion",
+            "label": "Cálculo riesgo general mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …"
+          },
+          {
+            "id": "Excepcion_el_ponderador_de_riesgo_de_la_parte_de_la_exposicion_cubierta_podra_ser_inferior",
+            "type": "Excepcion",
+            "label": "Excepción ponderador mínimo 20%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El ponderador de riesgo de la parte de la exposición cubierta podrá ser inferior al 20% en los siguientes casos: operaciones de pase con participante esencial, …"
+          },
+          {
+            "id": "Operacion_calculo_de_exigencia_de_capital_minimo_por_riesgo_de_credito",
+            "type": "Operacion",
+            "label": "Cálculo exigencia capital mínimo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de exigencia de capital mínimo por riesgo de crédito"
+          },
+          {
+            "id": "Restriccion_el_computo_del_requerimiento_de_capital_por_aporte_al_fondo_de_garantia_utiliza_",
+            "type": "Restriccion",
+            "label": "Ponderador riesgo fondo garantía",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cómputo del requerimiento de capital por aporte al fondo de garantía utiliza un ponderador de riesgo del 2%"
+          },
+          {
+            "id": "Restriccion_exposicion_al_bcra_en_pesos_con_ponderador_de_riesgo_0",
+            "type": "Restriccion",
+            "label": "Ponderador exposición BCRA pesos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exposición al BCRA en pesos con ponderador de riesgo 0%"
+          },
+          {
+            "id": "Obligacion_la_exposicion_total_sera_el_monto_bruto_sin_computar_las_coberturas_del_riesgo_d",
+            "type": "Obligacion",
+            "label": "Cálculo de exposición total bruta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición total será el monto bruto –sin computar las coberturas del riesgo de crédito de la Sección 5.– de las exposiciones minoristas con la contraparte."
+          }
+        ]
+      },
+      "output_chars": 3380
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "compensación posiciones commodities",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "compensación posiciones commodities",
+        "total_con_match": 107,
+        "resultados": [
+          {
+            "id": "Obligacion_los_futuros_se_consideraran_como_una_combinacion_de_una_posicion_comprada_y_otra",
+            "type": "Obligacion",
+            "label": "Compensación posiciones futuros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los futuros se considerarán como una combinación de una posición comprada y otra vendida en un título público"
+          },
+          {
+            "id": "Operacion_compensacion_de_posiciones",
+            "type": "Operacion",
+            "label": "Compensación posiciones opuestas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades podrán excluir posiciones opuestas en la misma categoría de instrumentos si consideran que están compensadas, incluso en el caso de posiciones en …"
+          },
+          {
+            "id": "Restriccion_para_compensacion_las_posiciones_deben_referirse_a_los_mismos_subyacentes_tener_",
+            "type": "Restriccion",
+            "label": "Requisitos compensación posiciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para que proceda la exclusión, las posiciones se deberán referir a los mismos subyacentes, tener el mismo valor nominal y estar denominadas en la misma moneda"
+          },
+          {
+            "id": "Restriccion_las_posiciones_brutas_en_cada_banda_temporal_para_monedas_residuales_estaran_suj",
+            "type": "Restriccion",
+            "label": "Sin compensación monedas residuales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las posiciones brutas en cada banda temporal para monedas residuales estarán sujetas a los ponderadores de riesgo, sin compensación"
+          },
+          {
+            "id": "Obligacion_compensacion_de_posiciones_contrarias",
+            "type": "Obligacion",
+            "label": "Compensación de posiciones contrarias",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se pueden compensar posiciones contrarias, incluso en mercados diferentes o de certificados de depósito de acciones, teniendo en cuenta todos los costos de conv…"
+          },
+          {
+            "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com",
+            "type": "Restriccion",
+            "label": "No cobertura entre conjuntos commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y productos agrícolas–"
+          },
+          {
+            "id": "Restriccion_no_se_permitira_la_exclusion_o_compensacion_de_posiciones_en_diferentes_monedas",
+            "type": "Restriccion",
+            "label": "Prohibición exclusión monedas diferentes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se permitirá la exclusión o compensación de posiciones en diferentes monedas, por lo que los lados de los swaps de monedas y de los contratos a término sobre…"
+          },
+          {
+            "id": "Operacion_derivados_financieros",
+            "type": "Operacion",
+            "label": "Posiciones de derivados sobre commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Derivados financieros"
+          },
+          {
+            "id": "Obligacion_informacion_de_incumplimientos_de_posiciones_de_derivados_sobre_commodities_del_",
+            "type": "Obligacion",
+            "label": "Informar incumplimientos de derivados commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Información de incumplimientos de posiciones de derivados sobre commodities del mes bajo informe"
+          },
+          {
+            "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones",
+            "type": "Obligacion",
+            "label": "Aplicar factor de cobertura a operaciones commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'"
+          }
+        ]
+      },
+      "output_chars": 3489
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com"
+      },
+      "output": {
+        "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com",
+        "type": "Restriccion",
+        "label": "No cobertura entre conjuntos commodities",
+        "properties": {
+          "descripcion": "No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y productos agrícolas–",
+          "tipo": "prohibicion"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 532
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones"
+      },
+      "output": {
+        "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones",
+        "type": "Obligacion",
+        "label": "Aplicar factor de cobertura a operaciones commodities",
+        "properties": {
+          "descripcion": "La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'",
+          "tipo": "otra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 557
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "medición exposición commodities valor nominal",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "medición exposición commodities valor nominal",
+        "total_con_match": 123,
+        "resultados": [
+          {
+            "id": "Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati",
+            "type": "Restriccion",
+            "label": "Crédito de riesgo no negativo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición presente respecto de la contraparte no puede tener un valor negativo"
+          },
+          {
+            "id": "Excepcion_por_la_diferencia_entre_el_valor_efectivo_y_el_valor_nominal_en_emisiones_de_tit",
+            "type": "Excepcion",
+            "label": "Diferencia valor efectivo nominal",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Por la diferencia entre el valor efectivo y el valor nominal en emisiones de títulos de deuda colocados bajo la par"
+          },
+          {
+            "id": "Restriccion_el_valor_nominal_de_los_nuevos_titulos_entregados_en_concepto_de_prima_de_partic",
+            "type": "Restriccion",
+            "label": "Prima participación recompra máximo 5%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El valor nominal de los nuevos títulos entregados en concepto de prima de participación, recompra o rescate anticipado no supere el equivalente al 5% (cinco por…"
+          },
+          {
+            "id": "Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia",
+            "type": "Operacion",
+            "label": "Descalce de monedas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Descalce de monedas entre exposición y activo en garantía"
+          },
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          },
+          {
+            "id": "Restriccion_exposicion_a_bmd_que_cumplen_criterios_basilea_con_ponderador_0",
+            "type": "Restriccion",
+            "label": "Ponderador BMD Basilea",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exposición a BMD que cumplen criterios Basilea con ponderador 0%"
+          },
+          {
+            "id": "Obligacion_la_relacion_entre_el_saldo_de_deuda_y_el_valor_del_inmueble_loan_to_value_ltv_se",
+            "type": "Obligacion",
+            "label": "Cálculo prudente del LTV",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La relación entre el saldo de deuda y el valor del inmueble (loan-to-value, LTV) se deberá calcular de manera prudente y con ajuste a los siguientes requisitos"
+          },
+          {
+            "id": "Obligacion_se_incrementara_el_valor_de_los_activos_en_garantia_dados_por_la_entidad_y_se_re",
+            "type": "Obligacion",
+            "label": "Aplicar aforos a garantías",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incrementará el valor de los activos en garantía dados por la entidad y se reducirá el valor de los recibidos, utilizando aforos aplicables a transacciones R…"
+          },
+          {
+            "id": "Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos",
+            "type": "Excepcion",
+            "label": "Reducción generalizada BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El BCRA establezca que se debe hacer una reducción generalizada del valor. Si posteriormente se autorizan incrementos, el valor ajustado del inmueble no podrá s…"
+          },
+          {
+            "id": "Restriccion_el_monto_maximo_sera_el_menor_entre_el_aumento_total_y_el_equivalente_al_30_del_",
+            "type": "Restriccion",
+            "label": "Límite de 30% del valor FOB",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto máximo será el menor entre el aumento total y el equivalente al 30% del valor FOB de las exportaciones computables para el año t-1"
+          }
+        ]
+      },
+      "output_chars": 3487
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "riesgo general mercado commodities cálculo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "riesgo general mercado commodities cálculo",
+        "total_con_match": 362,
+        "resultados": [
+          {
+            "id": "Obligacion_aplicar_exigencia_capital_por_riesgo_general_mercado_a_todas_posiciones_derivado",
+            "type": "Obligacion",
+            "label": "Cálculo riesgo general mercado",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La exigencia de capital por el riesgo general de mercado alcanza a todas las posiciones en instrumentos derivados -de la misma manera que también alcanza a las …"
+          },
+          {
+            "id": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales",
+            "type": "Operacion",
+            "label": "Cálculo capital por riesgo general de mercado",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de de…"
+          },
+          {
+            "id": "Operacion_determinacion_de_exigencia_por_riesgo_de_mercado",
+            "type": "Operacion",
+            "label": "Cálculo exigencia riesgo mercado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Determinación del importe a consignar en la partida 70800000 (exigencia por riesgo de mercado) computando el mayor valor entre el código 70810000 y 70820000"
+          },
+          {
+            "id": "Operacion_calculo_de_riesgo_de_mercado",
+            "type": "Operacion",
+            "label": "Cálculo exigencia riesgo de mercado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Datos complementarios vinculados al cálculo de la exigencia por riesgo de mercado (puntos 4.3., 4.4. y 4.5. de la Sección 4.) en base individual y consolidado m…"
+          },
+          {
+            "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado",
+            "type": "Restriccion",
+            "label": "Exigencia de capital por riesgo general de mercado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La exigencia de capital por riesgo general de mercado es la diferencia entre el total de posiciones compradas y el total de posiciones vendidas en cada mercado …"
+          },
+          {
+            "id": "Operacion_calculo_de_exigencia_capital_por_riesgo_general",
+            "type": "Operacion",
+            "label": "Determinación de exigencia riesgo general tasa interés",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: cálculo de exigencia capital por riesgo general"
+          },
+          {
+            "id": "Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr",
+            "type": "Obligacion",
+            "label": "Cálculo de RCD",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…"
+          },
+          {
+            "id": "Operacion_calculo_de_promedio_de_exigencias_de_riesgo_operacional",
+            "type": "Operacion",
+            "label": "Cálculo promedio ERC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de promedio de exigencias de riesgo operacional"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderadores_de_riesgo_para_inversiones_en_fondos",
+            "type": "Operacion",
+            "label": "Ponderación de riesgo en fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de ponderadores de riesgo para inversiones en fondos"
+          },
+          {
+            "id": "Operacion_calculo_de_riesgo_de_tasa_de_interes",
+            "type": "Operacion",
+            "label": "Cálculo riesgo tasa interés EVE",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo del riesgo de tasa de interés en la cartera de inversión - Medida de riesgo EVE estandarizada (Sección 11.) en base individual y consolidado mensual (có…"
+          }
+        ]
+      },
+      "output_chars": 3354
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "posiciones commodities energía metales agrícolas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "posiciones commodities energía metales agrícolas",
+        "total_con_match": 100,
+        "resultados": [
+          {
+            "id": "Operacion_derivados_financieros",
+            "type": "Operacion",
+            "label": "Posiciones de derivados sobre commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Derivados financieros"
+          },
+          {
+            "id": "Obligacion_informacion_de_incumplimientos_de_posiciones_de_derivados_sobre_commodities_del_",
+            "type": "Obligacion",
+            "label": "Informar incumplimientos de derivados commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Información de incumplimientos de posiciones de derivados sobre commodities del mes bajo informe"
+          },
+          {
+            "id": "Restriccion_incremento_de_la_exigencia_por_riesgo_de_credito_por_exceso_en_posiciones_de_der",
+            "type": "Restriccion",
+            "label": "Incremento exigencia por exceso en derivados commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Incremento de la exigencia por riesgo de crédito por exceso en posiciones de derivados sobre commodities. Información en término; fuera de término; incumplimien…"
+          },
+          {
+            "id": "Operacion_operacion_con_opciones",
+            "type": "Operacion",
+            "label": "Posiciones en opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "posiciones en opciones (compradas o vendidas, call o put) con cálculo de delta según función de distribución normal estándar"
+          },
+          {
+            "id": "Operacion_valuacion",
+            "type": "Operacion",
+            "label": "Valuación de posiciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Valuación prudente de las posiciones contabilizadas a valor razonable (fair value), ya sea que se imputen a la cartera de negociación o a la de inversión"
+          },
+          {
+            "id": "Obligacion_computar_posiciones_netas",
+            "type": "Obligacion",
+            "label": "Computar posiciones netas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las posiciones compradas y vendidas en la misma especie podrán computarse en términos netos"
+          },
+          {
+            "id": "Operacion_ponderacion",
+            "type": "Operacion",
+            "label": "Ponderación de posiciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las posiciones imputadas a cada banda temporal deberán ponderarse por un factor que refleje su sensibilidad a los cambios en las tasas de interés"
+          },
+          {
+            "id": "Obligacion_las_entidades_deberan_informar_exigencia_por_riesgo_en_posiciones_de_opciones_me",
+            "type": "Obligacion",
+            "label": "Informar riesgo en opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades deberán informar exigencia por riesgo en posiciones de opciones, mediante método simplificado o cálculos de Gamma y Vega"
+          },
+          {
+            "id": "Operacion_conversion_a_pesos",
+            "type": "Operacion",
+            "label": "Conversión posiciones pesos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: conversión a pesos"
+          },
+          {
+            "id": "Operacion_consolidacion_y_reporte_en_terminos_netos_de_posiciones_vendidas_y_compradas_en_",
+            "type": "Operacion",
+            "label": "Consolidación neta posiciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Consolidación y reporte en términos netos de posiciones vendidas y compradas en un mismo instrumento"
+          }
+        ]
+      },
+      "output_chars": 2995
+    },
+    {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado"
+      },
+      "output": {
+        "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado",
+        "type": "Restriccion",
+        "label": "Exigencia de capital por riesgo general de mercado",
+        "properties": {
+          "tipo": "limite_cuantitativo",
+          "umbral": "8%",
+          "description": "La exigencia de capital por riesgo general de mercado es la diferencia entre el total de posiciones compradas y el total de posiciones vendidas en cada mercado nacional, con una exigencia del 8%"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 6.3. Exigencia de capital por riesgo de posiciones en acciones."
+          }
+        ]
+      },
+      "output_chars": 587
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales",
+        "type": "Operacion",
+        "label": "Cálculo capital por riesgo general de mercado",
+        "properties": {
+          "tipo": "cálculo de capital por método de plazos residuales",
+          "description": "La exigencia de capital se obtendrá como la suma de: el valor absoluto de la posición ponderada neta, un porcentaje de desestimación vertical, porcentajes de desestimación horizontal, y el cambio neto en opciones"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 6.2. Exigencia de capital por riesgo de tasa de interés. (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 614
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "factor cobertura commodities escenario",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "factor cobertura commodities escenario",
+        "total_con_match": 68,
+        "resultados": [
+          {
+            "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+            "type": "Obligacion",
+            "label": "Dividir riesgo commodities en componentes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus compo…"
+          },
+          {
+            "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones",
+            "type": "Obligacion",
+            "label": "Aplicar factor de cobertura a operaciones commodities",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La compensación o cobertura total estarán permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de 'commodity'"
+          },
+          {
+            "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com",
+            "type": "Restriccion",
+            "label": "No cobertura entre conjuntos commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se permitirá la compensación o cobertura entre conjuntos de cobertura –tal como energía, metales y productos agrícolas–"
+          },
+          {
+            "id": "Restriccion_cuando_se_aplique_a_conjuntos_de_cobertura_de_derivados_sobre_bases_el_sf_corres",
+            "type": "Restriccion",
+            "label": "Factor de escala 0,5 para operaciones sobre base",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "cuando se aplique a conjuntos de cobertura de derivados sobre bases, el SF correspondiente a la clase se multiplicará por 0,5"
+          },
+          {
+            "id": "Restriccion_cuando_se_aplique_a_conjuntos_de_cobertura_de_operaciones_sobre_la_volatilidad_e",
+            "type": "Restriccion",
+            "label": "Factor de escala 5 para operaciones sobre volatilidad",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "cuando se aplique a conjuntos de cobertura de operaciones sobre la volatilidad, el SF correspondiente a la clase se multiplicará por 5"
+          },
+          {
+            "id": "Operacion_cobertura_crediticia_por_tramos",
+            "type": "Operacion",
+            "label": "Cobertura por tramos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: cobertura crediticia por tramos"
+          },
+          {
+            "id": "Obligacion_seleccionar_un_unico_metodo_para_aplicar_la_tecnica_de_cobertura",
+            "type": "Obligacion",
+            "label": "Optar por método único",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades deberán optar por un único método para la aplicación de la técnica de activos admitidos como garantía de las operaciones registradas en la cartera…"
+          },
+          {
+            "id": "Operacion_aplicacion_de_tecnica_de_cobertura",
+            "type": "Operacion",
+            "label": "Aplicación método simple",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Emplear el método simple para la aplicación de la técnica de activos admitidos como garantía"
+          },
+          {
+            "id": "Operacion_asignacion_de_factor_de_conversion",
+            "type": "Operacion",
+            "label": "Aplicación del factor CCF",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las facilidades de liquidez y de anticipos de efectivo por parte de la entidad financiera que actúa como agente de pago y las demás posiciones de titulización r…"
+          },
+          {
+            "id": "Operacion_cobertura_crediticia_total_o_proporcional",
+            "type": "Operacion",
+            "label": "Cobertura crediticia total",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: cobertura crediticia total o proporcional"
+          }
+        ]
+      },
+      "output_chars": 3320
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa"
+      },
+      "output": {
+        "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+        "type": "Obligacion",
+        "label": "Dividir riesgo commodities en componentes",
+        "properties": {
+          "descripcion": "Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus componentes sistemático e idiosincrásico",
+          "tipo": "calculo"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 600
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+        "label": "Dividir riesgo commodities en componentes",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_operacion_con_derivados_sobre_commodities",
+            "vecino_label": "Operaciones con derivados sobre commodities",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "EntidadFinanciera_sujeto_obligado",
+            "vecino_label": "Sujetos obligados",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 1168
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "conjunto cobertura energía metales productos agrícolas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "conjunto cobertura energía metales productos agrícolas",
+        "total_con_match": 78,
+        "resultados": [
+          {
+            "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+            "type": "Obligacion",
+            "label": "Dividir riesgo commodities en componentes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se empleará un modelo de un único factor dentro de cada conjunto de cobertura para dividir el riesgo correspondiente a un mismo tipo de 'commodity' en sus compo…"
+          },
+          {
+            "id": "Operacion_cobertura_crediticia_por_tramos",
+            "type": "Operacion",
+            "label": "Cobertura por tramos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: cobertura crediticia por tramos"
+          },
+          {
+            "id": "Obligacion_seleccionar_un_unico_metodo_para_aplicar_la_tecnica_de_cobertura",
+            "type": "Obligacion",
+            "label": "Optar por método único",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades deberán optar por un único método para la aplicación de la técnica de activos admitidos como garantía de las operaciones registradas en la cartera…"
+          },
+          {
+            "id": "Operacion_aplicacion_de_tecnica_de_cobertura",
+            "type": "Operacion",
+            "label": "Aplicación método simple",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Emplear el método simple para la aplicación de la técnica de activos admitidos como garantía"
+          },
+          {
+            "id": "Operacion_implementacion_de_nuevas_comisiones_en_productos_y_servicios",
+            "type": "Operacion",
+            "label": "Alta de nuevas comisiones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: implementación de nuevas comisiones en productos y servicios"
+          },
+          {
+            "id": "Operacion_cobertura_crediticia_total_o_proporcional",
+            "type": "Operacion",
+            "label": "Cobertura crediticia total",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: cobertura crediticia total o proporcional"
+          },
+          {
+            "id": "Excepcion_excepto_aquellos_que_no_contengan_soja_en_posicion_1517_90_90",
+            "type": "Excepcion",
+            "label": "Excepción productos sin soja",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Excepto aquellos que no contengan soja en posición 1517.90.90"
+          },
+          {
+            "id": "Obligacion_el_cr_se_calculara_a_nivel_de_conjunto_de_neteo",
+            "type": "Obligacion",
+            "label": "Calcular costo de reposición",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El CR se calculará a nivel de conjunto de neteo"
+          },
+          {
+            "id": "Restriccion_la_ead_de_un_conjunto_de_neteo_que_solo_comprende_opciones_vendidas_podra_ser_ce",
+            "type": "Restriccion",
+            "label": "Límite EAD opciones vendidas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La EAD de un conjunto de neteo que sólo comprende opciones vendidas podrá ser cero cuando hayan sido cobradas todas las primas y en tanto dichas opciones no est…"
+          },
+          {
+            "id": "Operacion_cambio_de_procedimiento",
+            "type": "Operacion",
+            "label": "Cambio de método de cobertura",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cambio del método empleado para la aplicación de la técnica de cobertura"
+          }
+        ]
+      },
+      "output_chars": 2886
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposición commodities valor mercado notional",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "exposición commodities valor mercado notional",
+        "total_con_match": 234,
+        "resultados": [
+          {
+            "id": "Restriccion_la_exposicion_presente_respecto_de_la_contraparte_no_puede_tener_un_valor_negati",
+            "type": "Restriccion",
+            "label": "Crédito de riesgo no negativo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición presente respecto de la contraparte no puede tener un valor negativo"
+          },
+          {
+            "id": "Restriccion_el_valor_de_mercado_de_la_totalidad_de_las_opciones_en_cartera_no_podra_superar_",
+            "type": "Restriccion",
+            "label": "Límite valor opciones compradas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El valor de mercado de la totalidad de las opciones en cartera no podrá superar el 5% de su RPC del mes anterior"
+          },
+          {
+            "id": "Operacion_transferencia_de_garantias_por_cambios_en_valor_de_mercado",
+            "type": "Operacion",
+            "label": "Intercambio de margen de variación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: transferencia de garantías por cambios en valor de mercado"
+          },
+          {
+            "id": "Obligacion_cuando_se_trate_de_una_operacion_con_derivados_concertada_en_un_mercado_de_valor",
+            "type": "Obligacion",
+            "label": "Aplicar tratamiento de derivado OTC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de una operación con derivados concertada en un mercado de valores y la transacción entre el miembro compensador y la entidad financiera cliente…"
+          },
+          {
+            "id": "Obligacion_registrar_aportes_a_valor_de_mercado",
+            "type": "Obligacion",
+            "label": "Registrar aportes a valor de mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los aportes en títulos valores públicos e instrumentos de regulación monetaria deberán registrarse a su valor de mercado, entendiendo que los instrumentos cuent…"
+          },
+          {
+            "id": "Obligacion_para_determinar_el_valor_de_mercado_del_nocional_subyacente_se_seguiran_las_disp",
+            "type": "Obligacion",
+            "label": "Valuación prudente nocional subyacente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para determinar el valor de mercado del nocional subyacente se seguirán las disposiciones para una valuación prudente"
+          },
+          {
+            "id": "Obligacion_registrar_aportes_de_deuda_sin_mercado_secundario_a_valor_contable",
+            "type": "Obligacion",
+            "label": "Registrar aportes de deuda sin mercado secundario a valor contable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de depósitos y otras obligaciones por intermediación financiera que no cuenten con autorización para ser negociados en mercados secundarios regu…"
+          },
+          {
+            "id": "Obligacion_registrar_aportes_de_deuda_a_valor_de_mercado_o_precio_de_contralor",
+            "type": "Obligacion",
+            "label": "Registrar aportes de deuda a valor de mercado o precio de contralor",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los aportes del punto 8.6.3. deberán registrarse a su valor de mercado o, cuando se trate de entidades financieras que realicen oferta pública de sus acciones, …"
+          },
+          {
+            "id": "Operacion_descalce_de_monedas_entre_exposicion_y_activo_en_garantia",
+            "type": "Operacion",
+            "label": "Descalce de monedas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Descalce de monedas entre exposición y activo en garantía"
+          },
+          {
+            "id": "Restriccion_la_parte_de_la_exposicion_cubierta_recibira_el_ponderador_de_riesgo_correspondie",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo 20%",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salv…"
+          }
+        ]
+      },
+      "output_chars": 3496
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "derivados commodities cálculo exposición notional",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "derivados commodities cálculo exposición notional",
+        "total_con_match": 196,
+        "resultados": [
+          {
+            "id": "Obligacion_calculo_de_exposicion_para_derivados",
+            "type": "Obligacion",
+            "label": "Cálculo de exposición para derivados",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "De tratarse de derivados, la EAD se calculará aplicando el enfoque SA-CCR como si se tratara de una exposición por operaciones bilaterales entre la CCP y el mie…"
+          },
+          {
+            "id": "Obligacion_exigencia_por_riesgo_de_credito_de_contraparte_en_operaciones_con_derivados_extr",
+            "type": "Obligacion",
+            "label": "Cálculo de RCD",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "exigencia por riesgo de crédito de contraparte en operaciones con derivados extrabursátiles (over-the-counter, OTC), determinada conforme a lo establecido en el…"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion",
+            "type": "Operacion",
+            "label": "Aplicar factores regulatorios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "en base a la medición de la volatilidad de cada clase de activo, se aplicarán uno o más factores específicos al nocional efectivo a fin de obtener la EPE efecti…"
+          },
+          {
+            "id": "Obligacion_la_exposicion_total_sera_el_monto_bruto_sin_computar_las_coberturas_del_riesgo_d",
+            "type": "Obligacion",
+            "label": "Cálculo de exposición total bruta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición total será el monto bruto –sin computar las coberturas del riesgo de crédito de la Sección 5.– de las exposiciones minoristas con la contraparte."
+          },
+          {
+            "id": "Operacion_calculo_de_requerimiento_de_capital_por_exposicion_a_fondo_de_garantia",
+            "type": "Operacion",
+            "label": "Cálculo de requerimiento de capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de requerimiento de capital por exposición a fondo de garantía"
+          },
+          {
+            "id": "Restriccion_al_limite_de_derivados_sobre_materias_primas_o_productos_basicos_commodities_pre",
+            "type": "Restriccion",
+            "label": "Límite de derivados sobre commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "al límite de derivados sobre materias primas o productos básicos –commodities– previsto en el punto 1.2. del TO sobre Operaciones al Contado a Liquidar y a Térm…"
+          },
+          {
+            "id": "Excepcion_esta_regla_no_sera_aplicable_a_las_operaciones_en_las_que_el_nocional_varia_debi",
+            "type": "Excepcion",
+            "label": "Excepción para derivados FX y commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "esta regla no será aplicable a las operaciones en las que el nocional varía debido a cambios en los precios, tales como los derivados FX, y sobre acciones o com…"
+          },
+          {
+            "id": "Obligacion_calculo_exposicion_ajustada_por_cobertura",
+            "type": "Obligacion",
+            "label": "Cálculo exposición ajustada por cobertura",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El valor de la exposición ajustado por la cobertura del riesgo de crédito (E*) se calculará de la siguiente forma: E* = máx. {0; [E x (1 + H ) - C x (1 - H - H …"
+          },
+          {
+            "id": "Operacion_calculo_de_cva_para_derivados_realizados_por_el_fondo",
+            "type": "Operacion",
+            "label": "Cálculo de ajuste de valuación de crédito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de CVA para derivados realizados por el fondo"
+          },
+          {
+            "id": "Operacion_derivados_financieros",
+            "type": "Operacion",
+            "label": "Posiciones de derivados sobre commodities",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Derivados financieros"
+          }
+        ]
+      },
+      "output_chars": 3384
+    },
+    {
+      "n": 16,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_derivados_financieros"
+      },
+      "output": {
+        "id": "Operacion_derivados_financieros",
+        "type": "Operacion",
+        "label": "Posiciones de derivados sobre commodities",
+        "properties": {
+          "tipo": "Derivados financieros"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 9.2. Modelo de Información"
+          }
+        ]
+      },
+      "output_chars": 300
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sEGwYCaek4FLVqrvRp",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre la medición de exposición y compensaciones para riesgo de commodities en la regulación del BCRA.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0151jnZvqodAhPuDuxnXN3Bf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "exposición riesgo commodities capital",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_011c5Wp9BAP1c7vcn39F1P3P",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "compensación posiciones commodities",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1474,
+          "output_tokens": 175,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sENmn6fasezNyZkA3c",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré nodos relevantes. Voy a explorar los que hablan específicamente sobre compensación de posiciones en commodities y la medición de exposición.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Mq2K2gXwT14aTyvqyRXL9o",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_no_se_permitira_la_compensacion_o_cobertura_entre_conjuntos_de_cobertura_tal_com"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01PQBixtXB3xoc223vEQZF2r",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_compensacion_o_cobertura_total_estaran_permitidas_entre_todas_las_operaciones"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Dq8zdugBWu7Mgqtn9Tj5jb",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "medición exposición commodities valor nominal",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 4029,
+          "output_tokens": 263,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sEYSwmz6p9ED4TKrCq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Necesito buscar más específicamente sobre cómo se mide la exposición en commodities (por ejemplo, si es por valor nominal, valor de mercado, etc.).",
+            "type": "text"
+          },
+          {
+            "id": "toolu_017SCUEmyyAQqHb6REQkLygX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "riesgo general mercado commodities cálculo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_013t9daZto27i56QY7uEUtS4",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "posiciones commodities energía metales agrícolas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5953
+          },
+          "cache_creation_input_tokens": 5953,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 188,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sEiXuwdbZuXWaG2pmd",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el nodo sobre cálculo de riesgo general de mercado para entender mejor cómo se mide la exposición en commodities.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_016qTkTHSjVk7ZiRGf5Xn4EH",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_exigencia_de_capital_por_riesgo_general_de_mercado"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_015HCN2s2F2vpMbwVCeFKBUx",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_capital_por_metodo_de_plazos_residuales"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01C2FUn7H22SWLRxnYW2qacX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "factor cobertura commodities escenario",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2419
+          },
+          "cache_creation_input_tokens": 2419,
+          "cache_read_input_tokens": 5953,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 240,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sEumqnYfKNnKQBUizo",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Ahora voy a ver los nodos sobre el modelo de factor único y cómo se divide el riesgo en commodities.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0141mdNcUHSu89h18vdbc3Nh",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BU7NsK3jHMh4qEGoRgoFNE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_se_empleara_un_modelo_de_un_unico_factor_dentro_de_cada_conjunto_de_cobertura_pa",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1814
+          },
+          "cache_creation_input_tokens": 1814,
+          "cache_read_input_tokens": 8372,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 218,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sF9sfPh5RgzMULQLGp",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a buscar más detalles sobre cómo se calcula específicamente la exposición (si es por valor nominal, valor de mercado, etc.) y ver si hay información sobre los conjuntos de cobertura.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01DSYPtKWBs7VKXQmDXXkZ7C",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "conjunto cobertura energía metales productos agrícolas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Q2T54aKVrNw7WV8uPTbTEE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "exposición commodities valor mercado notional",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 887
+          },
+          "cache_creation_input_tokens": 887,
+          "cache_read_input_tokens": 10186,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 206,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sFP1SSDvLTmbnnqqSv",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información más específica sobre cómo se calcula la exposición en derivados sobre commodities.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Unphrpa8KS7JW17Vfbibru",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "derivados commodities cálculo exposición notional",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_011695Mh8V7n9YLLircCPUXF",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_derivados_financieros"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2460
+          },
+          "cache_creation_input_tokens": 2460,
+          "cache_read_input_tokens": 11073,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 157,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce2sFXdMrfFnqn2vNYxu3",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "```json\n{\n  \"respuesta\": \"La exposición para la exigencia de capital por riesgo de posiciones en commodities se mide utilizando un modelo de un único factor dentro de cada conjunto de cobertura, que divide el riesgo correspondiente a un mismo tipo de commodity en sus componentes sistemático e idiosincrásico. Para derivados sobre commodities, la exposición se calcula aplicando factores regulatorios específicos al nocional efectivo.\\n\\nRespecto a las compensaciones entre posiciones admitidas:\\n\\n1. **Compensación permitida dentro del mismo commodity**: La compensación o cobertura total están permitidas entre todas las operaciones de derivados que hagan referencia al mismo tipo de commodity.\\n\\n2. **Prohibición de compensación entre conjuntos de cobertura**: No se permitirá la compensación o cobertura entre conjuntos de cobertura distintos, tales como energía, metales y productos agrícolas. Estos constituyen conjuntos separados sin posibilidad de compensación cruzada.\\n\\n3. **Factores de escala especiales**: Cuando se aplique a conjuntos de cobertura de derivados sobre bases, el factor de escala correspondiente se multiplicará por 0,5. Cuando se aplique a operaciones sobre volatilidad, el factor se multiplicará por 5.\\n\\nEn síntesis, la regulación permite compensación plena entre posiciones del mismo commodity, pero prohíbe cualquier compensación entre los tres conjuntos de cobertura principales (energía, metales y productos agrícolas).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2. Los adicionales de todas las entidades se agruparán en un único conjun- (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1545
+          },
+          "cache_creation_input_tokens": 1545,
+          "cache_read_input_tokens": 13533,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 461,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}
