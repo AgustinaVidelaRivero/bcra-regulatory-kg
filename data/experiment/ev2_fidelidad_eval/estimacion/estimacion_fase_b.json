@@ -1,0 +1,76 @@
+{
+  "n_respuestas": 120,
+  "reps": 3,
+  "n_llamadas": 360,
+  "modelo": "claude-sonnet-4-6",
+  "max_tokens": 3000,
+  "prompt_sha256": "fd446f8e61f46033d7de9b862121c698b2c52dcc2696b7f10993f44e509f5455",
+  "medido_mensajes_reales": {
+    "chars_system": 3199,
+    "chars_usuario_total_120": 246706,
+    "chars_usuario_mediana": 2038.5,
+    "chars_usuario_max": 3638,
+    "chars_total_una_pasada": 630586,
+    "criterios_por_mensaje": {
+      "2": 9,
+      "3": 9,
+      "4": 63,
+      "5": 39
+    }
+  },
+  "medido_calibracion": {
+    "n_llamadas_calibracion": 75,
+    "mismo_prompt_y_modelo": true,
+    "chars_por_token_in": {
+      "mediana": 3.2563,
+      "min": 3.102,
+      "max": 3.3933
+    },
+    "out_tokens_por_k": {
+      "2": {
+        "n": 3,
+        "media": 301.7,
+        "max": 303
+      },
+      "3": {
+        "n": 39,
+        "media": 443.2,
+        "max": 632
+      },
+      "4": {
+        "n": 12,
+        "media": 599.3,
+        "max": 732
+      },
+      "5": {
+        "n": 21,
+        "media": 674,
+        "max": 811
+      }
+    },
+    "ajuste_out": {
+      "a": 86.0,
+      "b": 119.88,
+      "formula": "out ≈ a + b·K"
+    }
+  },
+  "estimacion_tokens": {
+    "input_total": {
+      "central": 580953,
+      "banda_min": 557498,
+      "banda_max": 609851
+    },
+    "output_total": {
+      "central": 207903,
+      "cota_max_observada": 258480
+    },
+    "input_por_llamada_promedio": 1614,
+    "output_por_llamada_promedio": 578
+  },
+  "formula_costo_usd": "input_total/1e6 × precio_in + output_total/1e6 × precio_out",
+  "notas": [
+    "sin prompt caching (system pagado entero por llamada, como en calibración)",
+    "ratio chars→tokens y salida por K medidos sobre las 75 llamadas reales de calibración (mismo prompt, modelo y formato); las respuestas de EV2 son más largas que las de U6, por eso la entrada se estima con los chars REALES de los 120 mensajes",
+    "el freno por proyección de la fase B recalcula el gasto real desde las dbs antes de cada llamada"
+  ]
+}
