@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Genera criterios_u6.json a partir de preguntas_u6.json y los criterios/citas redactados."""
+import json, sys
+
+PREG = "/Users/agustinavidelarivero/SUBSET/preguntas_u6.json"
+OUT = "/Users/agustinavidelarivero/SUBSET/criterios_u6.json"
+
+C = {}
+
+C["U6-001"] = [
+    ("El ejercicio de la excepción (aplicación directa de las divisas sin liquidarlas) debe efectuarse dentro del plazo aplicable a la operación para la liquidación de los fondos en el mercado de cambios.",
+     "2.7.1. El ejercicio de la excepción se efectúe dentro del plazo para la liquidación de los fondos en el mercado de cambios que sea aplicable a la operación."),
+    ("Los fondos deben haber permanecido, hasta el ejercicio de la excepción, acreditados en cuentas en moneda extranjera de titularidad del cliente en entidades financieras locales (o, si fueron percibidos en el exterior, ingresados a nombre del cliente en cuentas de corresponsalía de una entidad local).",
+     "2.7.2. Los fondos hayan permanecido hasta el ejercicio de la excepción acreditados en cuentas en moneda extranjera de titularidad del cliente en entidades financieras locales o, en el caso de fondos percibidos en el exterior, ingresados a nombre del cliente en cuentas de corresponsalía de una entidad local."),
+    ("Los fondos deben aplicarse de manera simultánea con el ejercicio de la excepción a operaciones por las que la normativa cambiaria permite el acceso al mercado de cambios contra moneda local, respetando los límites previstos para cada concepto involucrado.",
+     "2.7.3. Los fondos en moneda extranjera sean aplicados de manera simultánea con el ejercicio de la excepción a operaciones por las cuales la normativa cambiaria vigente permite el acceso al mercado de cambios contra moneda local, considerando los límites previstos para cada concepto involucrado."),
+    ("La utilización del mecanismo debe resultar neutral en materia fiscal.",
+     "2.7.4. La utilización de este mecanismo deberá resultar neutral en materia fiscal."),
+    ("Respecto de los límites mensuales: la operación se registra con dos boletos sin movimiento de pesos (compra y venta) y el monto aplicado bajo este mecanismo se computa a los efectos de los límites mensuales aplicables al concepto; además debe contarse con una declaración jurada del cliente en la que deja constancia de que conoce que los fondos se computan para los límites del concepto de venta de cambio y que no los excede.",
+     "A los efectos del registro de estas operaciones se deberán confeccionar dos boletos sin movimiento de pesos, por los conceptos de compra y venta que correspondan, computándose el monto por el cual se utiliza este mecanismo a los efectos de los límites mensuales que pudieran ser aplicables según el caso. En todos los casos se deberá contar con una declaración jurada del cliente en la que deja constancia de tener conocimiento de que los fondos que se aplican bajo esta modalidad serán computados a los efectos del cálculo de los límites que normativamente correspondan al concepto de venta de cambio que corresponda y que no los excede."),
+]
+
+C["U6-002"] = [
+    ("Las utilidades y dividendos a girar deben corresponder a balances cerrados y auditados.",
+     "3.4.1. Las utilidades y dividendos correspondan a balances cerrados y auditados."),
+    ("El monto total abonado por este concepto a accionistas no residentes, incluido el pago que se solicita, no debe superar el monto en moneda local que les corresponda según la distribución determinada por la asamblea de accionistas.",
+     "3.4.2. El monto total abonado por este concepto a accionistas no residentes, incluido el pago cuyo curso se está solicitando, no supere el monto en moneda local que les corresponda según la distribución determinada por la asamblea de accionistas."),
+    ("La entidad debe contar con una declaración jurada firmada por el representante legal de la empresa residente o un apoderado con facultades suficientes.",
+     "La entidad deberá contar con una declaración jurada firmada por el representante legal de la empresa residente o un apoderado con facultades suficientes para asumir este compromiso en nombre de la empresa."),
+]
+
+C["U6-003"] = [
+    ("Los fondos que resulten a favor del cliente local por la liquidación del derivado (o por la liberación de garantías) deben ingresarse y liquidarse dentro de los 5 (cinco) días hábiles siguientes.",
+     "se compromete a ingresar y liquidar los fondos que resulten a favor del cliente local como resultado de dicha operación, o como resultado de la liberación de los fondos de las garantías constituidas, dentro de los 5 (cinco) días hábiles siguientes."),
+    ("El compromiso previo consiste en firmar una declaración jurada comprometiéndose a ingresar y liquidar esos fondos.",
+     "firmar una declaración jurada en la que se compromete a ingresar y liquidar los fondos que resulten a favor del cliente local como resultado de dicha operación"),
+    ("El cliente también debió nominar a una entidad para que realice el seguimiento de la operación.",
+     "El cliente que acceda al mercado de cambios usando este mecanismo deberá nominar a una entidad para que realice el seguimiento de la operación"),
+]
+
+C["U6-004"] = [
+    ("Salvo que cuente con la declaración jurada del cliente al momento del acceso, la entidad debe contar con la conformidad previa del BCRA.",
+     "La entidad deberá contar con la conformidad previa del BCRA excepto que cuente al momento de acceso al mercado de cambios con una declaración jurada del cliente en la que deje constancia de que:"),
+    ("La declaración jurada debe dejar constancia de que la totalidad de las tenencias de moneda extranjera en el país del cliente están depositadas en cuentas en entidades financieras y de que, al inicio del día en que solicita el acceso, no poseía CEDEARs y/o activos externos líquidos disponibles que conjuntamente superen el equivalente de USD 100.000.",
+     "3.16.2.1. La totalidad de sus tenencias de moneda extranjera en el país se encuentran depositadas en cuentas en entidades financieras y que no poseía, al inicio del día en que solicita el acceso al mercado, certificados de depósitos argentinos representativos de acciones extranjeras (CEDEARs) y/o activos externos líquidos disponibles que conjuntamente tengan un valor superior al equivalente de USD 100.000 (dólares estadounidenses cien mil)."),
+    ("El umbral a partir del cual las tenencias hacen necesaria la conformidad previa del BCRA es un valor conjunto superior al equivalente de USD 100.000 (cien mil dólares estadounidenses); si el cliente supera ese monto, la entidad puede aceptar alternativamente una declaración jurada de que no se excede el monto al considerar las situaciones previstas en los incisos i) a vii).",
+     "En el caso de que el cliente tuviera activos externos líquidos disponibles y/o CEDEARs por un monto superior al establecido en el primer párrafo, la entidad también podrá aceptar una declaración jurada del cliente en la que deje constancia que no se excede tal monto al considerar que, parcial o totalmente, los activos externos líquidos:"),
+    ("La declaración jurada también debe incluir el compromiso de liquidar en el mercado de cambios, dentro de los 5 días hábiles de su puesta a disposición, los fondos que reciba en el exterior por cobro de préstamos a terceros, cobro de depósitos a plazo o venta de activos adquiridos/constituidos/otorgados con posterioridad al 28/05/20.",
+     "3.16.2.2. Se compromete a liquidar en el mercado de cambios, dentro de los 5 (cinco) días hábiles de su puesta a disposición, aquellos fondos que reciba en el exterior originados en el cobro de préstamos otorgados a terceros, el cobro de un depósito a plazo o de la venta de cualquier tipo de activo, cuando el activo hubiera sido adquirido, el depósito constituido o el préstamo otorgado con posterioridad al 28/05/20."),
+]
+
+C["U6-005"] = [
+    ("Puede abonar mediante transferencia de fondos desde y hacia cuentas a la vista a nombre del cliente en entidades financieras locales.",
+     "mediante transferencia de fondos desde y hacia cuentas a la vista a nombre del cliente en entidades financieras locales; o"),
+    ("Puede abonar contra cable sobre cuentas bancarias a nombre del cliente en una entidad del exterior que no esté constituida en países o territorios donde no se aplican (o no suficientemente) las Recomendaciones del GAFI.",
+     "contra cable sobre cuentas bancarias a nombre del cliente en una entidad del exterior que no esté constituida en países o territorios donde no se aplican o no se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional."),
+    ("Puede abonar contra cable sobre una cuenta de terceros en el exterior (no radicada en jurisdicciones no cooperantes según GAFI) únicamente en el caso de venta de bonos BOPREAL adquiridos en suscripción primaria por operaciones elegibles (puntos 4.4., 4.5., 4.6.1. y 4.7.).",
+     "contra cable sobre una cuenta de terceros en el exterior que no se encuentre radicada en países o territorios donde no se aplican o no se aplican suficientemente las Recomendaciones del Grupo de Acción Financiera Internacional, cuando se trate de la venta de bonos BOPREAL adquiridos por el vendedor en una suscripción primaria por operaciones elegibles en los puntos 4.4., 4.5., 4.6.1. y 4.7."),
+    ("Está expresamente vedado liquidar estas operaciones mediante el pago en billetes en moneda extranjera o mediante su depósito en cuentas custodia o en cuentas de terceros (salvo las operaciones contra cable con cuentas de terceros del punto 4.3.2.3.).",
+     "En ningún caso se permite la liquidación de estas operaciones mediante el pago en billetes en moneda extranjera o mediante su depósito en cuentas custodia o en cuentas de terceros, excepto que se trate de operaciones contra cable que utilicen cuentas de terceros en el marco de lo contemplado en el punto 4.3.2.3."),
+]
+
+C["U6-006"] = [
+    ("La entidad sólo puede vender esos títulos en el mercado secundario con liquidación en moneda extranjera en el país una vez transcurridos 90 (noventa) días corridos desde la fecha de adquisición.",
+     "sólo podrán venderlos en el mercado secundario con liquidación en moneda extranjera en el país una vez transcurridos 90 (noventa) días corridos desde la fecha de su adquisición."),
+    ("El plazo de espera no aplica a las ventas que se realicen con liquidación contra cable en cuentas del exterior.",
+     "Este plazo no resulta aplicable a las ventas que se realicen con liquidación contra cable en cuentas del exterior."),
+    ("La medida aplica a las suscripciones primarias con liquidación a partir del 20/01/25.",
+     "Esta medida resulta aplicable a todas las suscripciones primarias con liquidación a partir del 20/01/25."),
+]
+
+C["U6-007"] = [
+    ("Situación 1: control de cambios en el país del importador — la falta de pago del importador extranjero se debe a restricciones a los giros de divisas para pagar importaciones implementadas con posterioridad al embarque, o a demoras en autorizaciones previas de acceso al mercado de cambios no atribuibles a las partes.",
+     "7.6.1. Control de cambios en el país del importador. Cuando la falta de pago del importador extranjero se deba a la existencia de al menos una de las siguientes situaciones:"),
+    ("Situación 2: insolvencia posterior del importador extranjero — el importador cayó en estado de insolvencia con posterioridad al embarque y el exportador aporta la documentación requerida.",
+     "7.6.2. Insolvencia posterior del importador extranjero. Cuando el importador extranjero haya caído en estado de insolvencia con posterioridad al embarque de la mercadería y el exportador aporte la siguiente documentación:"),
+    ("Situación 3: deudor moroso — el exportador mantiene acciones judiciales contra el importador (u otro obligado al pago), acreditadas con copia del escrito de demanda certificada por el juzgado; también se admiten los casos alternativos sin acción judicial previstos en 7.6.3.1. a 7.6.3.4.",
+     "7.6.3. Deudor moroso. Cuando el exportador mantenga acciones judiciales contra el importador, u otro obligado a efectuar el pago, acreditándolo con copia del escrito de iniciación de demanda certificada por el juzgado interviniente en cuanto a su fecha de inicio y radicación."),
+    ("Con contrapartes vinculadas la figura no puede aplicarse, salvo que la falta de pago se origine en un control de cambios en el país del importador.",
+     "A excepción de los casos en que la falta de pago del importador se origine en un control de cambios en el país del importador, la figura de “Incumplido en gestión de cobro” no podrá ser aplicada por la entidad de seguimiento cuando se trate de operaciones con contrapartes vinculadas."),
+    ("Si el importador finalmente paga, el exportador (o la compañía de seguros de crédito a la exportación) debe ingresar las divisas dentro de los 20 (veinte) días hábiles desde la puesta a disposición de los fondos.",
+     "Si una vez superados los inconvenientes existentes el importador efectuara el pago, el exportador argentino o en su caso la compañía de seguros de crédito a la exportación deberá ingresar las divisas dentro de los 20 (veinte) días hábiles de la fecha de puesta a disposición de los fondos."),
+]
+
+C["U6-008"] = [
+    ("Sí: si la fecha hasta la cual los cobros deben permanecer depositados según el contrato de financiamiento es posterior al vencimiento del plazo de liquidación del permiso, el exportador puede solicitar la ampliación de ese plazo.",
+     "En caso de que la fecha hasta la cual los cobros de un permiso deben permanecer depositados en virtud de lo exigido en el contrato del financiamiento fuese posterior al vencimiento del plazo para la liquidación de divisas del permiso, el exportador podrá solicitar que este plazo sea ampliado"),
+    ("La ampliación es hasta el quinto día hábil posterior a la fecha hasta la cual los fondos deben permanecer depositados.",
+     "el exportador podrá solicitar que este plazo sea ampliado hasta el quinto día hábil posterior a dicha fecha."),
+    ("La opción está limitada hasta alcanzar el 125% de los servicios por capital e intereses a abonar en el mes corriente y los siguientes 6 (seis) meses calendario.",
+     "Esta opción estará disponible hasta alcanzar el 125% (ciento veinticinco por ciento) de los servicios por capital e intereses a abonar en el mes corriente y los siguientes 6 (seis) meses calendario."),
+]
+
+C["U6-009"] = [
+    ("La entidad debe certificar (como entidad de seguimiento de la oficialización, o contar con certificación de la entidad responsable) que cuenta con la constancia del registro aduanero del ingreso de los bienes, copia de la factura comercial emitida en el exterior a nombre del importador residente (con emisor, importador, cantidad y descripción de la mercadería, condición de venta y valor) y copia del Documento de Transporte.",
+     "i) Cuenta con constancia del registro aduanero del ingreso al país de los bienes que originan el pago a cancelarse. ii) Cuenta con copia de factura comercial emitida en el exterior a nombre del cliente residente en el país, que efectúa la compra al exterior, donde conste nombre y dirección del emisor, nombre del importador argentino, la cantidad y descripción de la mercadería, condición de venta y valor de la factura. iii) Cuenta con copia del Documento de Transporte (Conocimiento de Embarque – Carta de Porte – Guía Aérea)."),
+    ("Debe verificar que la información de la factura comercial y del Documento de Transporte sea consistente con los registros aduaneros, y que la documentación permita establecer la fecha de vencimiento de la obligación (o que no tiene vencimiento pactado).",
+     "iv) Que la información que surge de la factura comercial y del Documento de Transporte sea consistente con la que figura en los registros aduaneros, considerando las normas de declaración aduanera aplicables. v) Que la documentación presentada le permita establecer la fecha de vencimiento de la obligación con el exterior por parte del importador o, en su defecto, que la operación no tiene una fecha de vencimiento pactada."),
+    ("Debe verificar que el total de pagos imputados a la oficialización, incluido el que se solicita, no supere el monto facturado en la condición de compra pactada, y que el beneficiario sea el proveedor del exterior (o la entidad/agencia que financió la compra, o el no residente que compró el crédito).",
+     "vii) Que el total de los pagos realizados con imputación a la oficialización de importación, incluyendo el pago cuyo curso se está solicitando, no supera el monto facturado en la condición de compra pactada. viii) Que el beneficiario del pago a realizar sea el proveedor del exterior o, en su caso, la entidad financiera del exterior o la agencia oficial de crédito que financió la compra al proveedor del exterior"),
+    ("La venta de divisas debe cursarse con débito en cuentas del cliente en entidades financieras locales y el pago no debe realizarse antes de la fecha de vencimiento de la obligación con el exterior.",
+     "10.3.2.2. La venta de las divisas es cursada con débito en cuentas del cliente en entidades financieras locales por alguna de las modalidades de medios de pago vigentes. 10.3.2.3. El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior."),
+    ("Debe contar con una declaración jurada del importador (o su representante legal/apoderado) comprometiéndose a liquidar en el mercado de cambios, dentro de los 20 días hábiles de su puesta a disposición, las divisas que perciba en devolución de pagos de importaciones efectuados con acceso al mercado.",
+     "10.3.2.4. Declaración jurada comprometiéndose a liquidar en el mercado de cambios, dentro de los 20 (veinte) días hábiles de su puesta a disposición, las divisas que pudiera percibir en devolución de pagos de importaciones efectuados con acceso al mercado de cambios. Esta declaración deberá ser firmada por el importador o quien ejerza su representación legal o un apoderado con facultades suficientes para asumir este compromiso en nombre del importador."),
+]
+
+C["U6-010"] = [
+    ("El acceso al mercado de cambios para pagar los intereses tiene lugar a partir de la fecha de vencimiento del interés a pagar.",
+     "3.3.2. El acceso al mercado de cambios tiene lugar a partir de la fecha de vencimiento del interés a pagar."),
+    ("Para precancelar los intereses antes del vencimiento se requiere la conformidad previa del BCRA.",
+     "En los restantes casos se requerirá la conformidad previa del BCRA para acceder al mercado de cambios para precancelar los servicios de intereses de deudas comerciales por importaciones de bienes y servicios."),
+    ("El requisito de esperar al vencimiento no aplica si el cliente es un Vehículo de Proyecto Único (VPU) adherido al RIGI que concreta el pago en el marco del punto 14.2.1.",
+     "Este requisito no resultará aplicable si el cliente es un Vehículo de Proyecto Único (VPU) adherido al Régimen de Incentivo para Grandes Inversiones (RIGI) que concreta el pago en el marco de lo previsto en el punto 14.2.1."),
+]
+
+C["U6-011"] = [
+    ("La entidad debe encuadrarse en la exigencia a más tardar en el segundo mes siguiente a aquel en que se registre el incumplimiento, o presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento.",
+     "La entidad deberá encuadrarse en la exigencia a más tardar en el segundo mes siguiente a aquel en que se registre el incumplimiento, o presentar un plan de regularización y saneamiento dentro de los 30 días corridos siguientes al último día del mes al que corresponda el incumplimiento."),
+    ("Los depósitos (en moneda nacional y extranjera) no pueden exceder el nivel alcanzado durante el mes en que se originó el incumplimiento; el límite se mantiene mientras persista la deficiencia y se computa sobre saldos al último día de cada mes.",
+     "La obligación de presentar planes determinará que el importe de los depósitos –en moneda nacional y extranjera– no podrá exceder del nivel que haya alcanzado durante el mes en que se originó el incumplimiento. Dicho límite –que se mantendrá mientras persista la deficiencia– y su observancia se computarán a base de los saldos registrados al último día de cada uno de los meses comprendidos."),
+    ("No pueden distribuirse dividendos en efectivo (ni pagarse honorarios, participaciones o gratificaciones provenientes de la distribución de resultados) mientras los planes estén pendientes de presentación o, presentados, la SEFyC los haya observado o verifique su incumplimiento.",
+     "iii) No podrán distribuirse dividendos en efectivo, ni efectuarse pagos de honorarios, participaciones o gratificaciones provenientes de la distribución de resultados de la entidad. Esta limitación regirá en tanto los planes de regularización y saneamiento estén pendientes de presentación o, habiéndose presentado, la SEFyC los haya observado o verifique su incumplimiento."),
+]
+
+C["U6-012"] = [
+    ("A las cartas de crédito stand-by utilizadas como garantías financieras (sustitutos crediticios directos) les corresponde un CCF del 100%.",
+     "Sustitutos crediticios directos, tales como las garantías generales de endeudamiento –incluidas las cartas de crédito stand-by utilizadas como garantías financieras– y las aceptaciones y endosos con responsabilidad. 100"),
+    ("A las partidas contingentes relacionadas con operaciones comerciales del cliente, como las garantías de cumplimiento de obligaciones comerciales, les corresponde un CCF del 50%.",
+     "Partidas contingentes relacionadas con operaciones comerciales del cliente –tales como las que se derivan de garantías de cumplimiento de obligaciones comerciales–. 50"),
+    ("A las cartas de crédito comercial de corto plazo (plazo residual de hasta un año) autoliquidables que amparan el movimiento de bienes les corresponde un CCF del 20%.",
+     "iii) Cartas de crédito comercial de corto plazo –es decir, con plazo residual de hasta un año– autoliquidables que amparan el movimiento de bienes –tales como créditos documentarios garantizados mediante la documentación subyacente–. Tanto al banco emisor como al confirmante se les aplicará el CCF previsto en este acápite y el ponderador que corresponda en función de la contraparte. 20"),
+]
+
+C["U6-013"] = [
+    ("Condición de plazo: la exposición debe estar cubierta durante todo el plazo de vencimiento contractual; no se admite el descalce de plazos de vencimiento.",
+     "Para que la CRC sea reconocida, la exposición deberá estar cubierta durante todo el plazo de vencimiento contractual (no se admitirá el descalce de plazos de vencimiento)"),
+    ("Condición de valuación: el activo recibido en garantía debe estar entre los listados en el punto 5.3.1.2. y contar con valuación a precios de mercado con frecuencia mínima mensual.",
+     "el activo recibido en garantía se limitará a aquellos listados en el punto 5.3.1.2. y contar con una valuación a precios de mercado con una frecuencia mínima mensual."),
+    ("La parte cubierta de la exposición recibe el ponderador de riesgo del activo recibido en garantía, sujeto a un mínimo del 20% (salvo las excepciones del punto 5.3.1.3.); a la parte no cubierta se le aplica el ponderador de la exposición.",
+     "La parte de la exposición cubierta recibirá el ponderador de riesgo correspondiente al activo recibido en garantía, pero estará sujeta a un mínimo del 20% –salvo lo dispuesto en el punto 5.3.1.3.–. A la parte no cubierta se le aplicará el ponderador de riesgo que le corresponda según el tipo de exposición de que se trate."),
+]
+
+C["U6-014"] = [
+    ("Debe sumarse la posición neta a plazo: importes a cobrar menos importes a pagar por operaciones de cambio a término, incluidos los futuros sobre divisas y el principal de los swaps de monedas no incluidos en la posición de contado.",
+     "ii) La posición neta a plazo, conformada por importes a cobrar menos importes a pagar por operaciones de cambio a término, incluidos los futuros sobre divisas y el principal de los “swaps” de monedas no incluidos en la posición de contado."),
+    ("Deben sumarse las garantías otorgadas (e instrumentos similares) cuando su ejecución sea segura y sea altamente probable que sean irrecuperables.",
+     "iii) Las garantías otorgadas (e instrumentos similares), cuando su ejecución sea segura y sea altamente probable que sean irrecuperables."),
+    ("A discreción de la entidad, pueden sumarse los ingresos y egresos futuros netos no devengados que hayan sido objeto de una cobertura total.",
+     "iv) A discreción de la entidad, los ingresos y egresos futuros netos no devengados que hayan sido objeto de una cobertura total."),
+    ("Debe sumarse el equivalente delta neto de toda la cartera de opciones sobre divisas, cuando la entidad no emplee el método simplificado del punto 6.6.2.",
+     "v) El equivalente delta neto de toda la cartera de opciones sobre divisas, cuando la entidad no emplee el método simplificado para el cómputo de la exigencia de capital por riesgo de posiciones en opciones previsto en el punto 6.6.2."),
+]
+
+C["U6-015"] = [
+    ("Se deducen los saldos en cuentas de corresponsalía respecto de bancos del exterior que no cumplan el punto 3.1. de las normas sobre “Evaluaciones crediticias”, es decir, que no cuenten con calificación internacional de riesgo “investment grade”.",
+     "Saldos en cuentas de corresponsalía respecto de bancos del exterior que no cumplan con lo previsto en el punto 3.1. de las normas sobre “Evaluaciones crediticias”. A los efectos del cumplimiento del citado punto se deberá contar con calificación internacional de riesgo comprendida en la categoría “investment grade”."),
+    ("La deducción se practica por el mayor saldo en cada banco registrado durante el mes al que corresponda la determinación de la RPC.",
+     "Esta deducción se realizará por el mayor saldo en cada banco que se registre durante el mes al que corresponda la determinación de la RPC."),
+    ("Quedan exceptuados los saldos respecto de la casa matriz de las sucursales locales de bancos del exterior o de sus sucursales y subsidiarias en otros países.",
+     "La casa matriz de las sucursales locales de bancos del exterior o de sus sucursales y subsidiarias en otros países."),
+    ("Quedan exceptuados los bancos u otras instituciones financieras del exterior que controlen entidades financieras locales constituidas como sociedades anónimas, otros bancos del exterior autorizados en los regímenes de convenios de pagos y créditos recíprocos a los que haya adherido el BCRA (y sus sucursales y subsidiarias), y las sucursales y subsidiarias de entidades financieras locales.",
+     "ii) Los bancos u otras instituciones financieras del exterior que ejerzan el control de entidades financieras locales constituidas bajo la forma de sociedades anónimas. iii) Otros bancos del exterior autorizados a intervenir en los regímenes de convenios de pagos y créditos recíprocos a los que haya adherido el Banco Central de la República Argentina, así como sus sucursales y subsidiarias, aun cuando ellas no estén comprendidas en esos convenios. iv) Sucursales y subsidiarias de entidades financieras locales."),
+    ("Quedan exceptuados los saldos transitorios y circunstanciales originados en operaciones de clientes (comercio exterior u otras acreditaciones ordenadas por terceros) que no impliquen responsabilidad patrimonial para la entidad.",
+     "Los saldos que, con carácter transitorio y circunstancial, se originen por operaciones de clientes, tales como las vinculadas a operaciones de comercio exterior u otro tipo de acreditación ordenada por terceros que no impliquen responsabilidad patrimonial para la entidad."),
+]
+
+C["U6-016"] = [
+    ("La entidad debe clasificar a la compañía de seguros, en función de la mora según los criterios aplicables a la cartera de consumo.",
+     "Se procederá a clasificar a la compañía de seguros en función de la mora según los criterios aplicables para la cartera de consumo"),
+    ("La mora se computa teniendo en cuenta la fecha de vencimiento de la primera obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos en la póliza (180 o 270 días, según corresponda).",
+     "teniendo en cuenta la fecha de vencimiento de la primera obligación vencida impaga, a partir del momento en que, no habiendo sido rechazado el reclamo, se verifique la falta de pago del siniestro luego de vencidos los plazos comprometidos en la póliza (180 o 270 días, según corresponda)."),
+    ("Los deudores de las operaciones cedidas sin responsabilidad para el cedente no son objeto de clasificación.",
+     "No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente."),
+]
+
+C["U6-017"] = [
+    ("La aprobación previa del Directorio (o Consejo de Administración o autoridad equivalente) se requiere para la clasificación y el cálculo de previsiones por financiaciones que excedan el 2,5 % de la RPC de la entidad del mes anterior al que corresponda.",
+     "por financiaciones que excedan del 2,5 % de la RPC de la entidad financiera del mes anterior al que corresponda, deberán contar con la previa aprobación de los miembros del Directorio o Consejo de Administración"),
+    ("La aprobación es por mayoría simple, y cuando se trata de clientes vinculados se exige dos tercios de la totalidad de los miembros.",
+     "–por mayoría simple o, cuando se trate de clientes vinculados, de dos tercios de la totalidad de los miembros– o autoridad equivalente de la entidad financiera prestamista."),
+    ("La conformidad debe referirse, con opinión fundada, tanto a la clasificación asignada a cada deudor como al nivel de las previsiones calculadas.",
+     "Dicha conformidad estará referida –con opinión fundada en todos los casos– tanto a la clasificación asignada a cada uno de los deudores comprendidos como al nivel de las previsiones calculadas."),
+]
+
+C["U6-018"] = [
+    ("La obligación de informar se dispara cuando la expresión FICC(T) − FICC(T-1) − Máx(FICCS(T) − FICCS(T-1); 0) —incremento del ratio de cartera irregular de consumo o vivienda de la entidad, neto del incremento del sistema— es mayor al 5 % al último día de un trimestre calendario o al 10 % en un año.",
+     "En los casos en que la expresión que seguidamente se establece sea mayor al 5 % al último día de un trimestre calendario o al 10 % en un año, la entidad financiera deberá informar el origen de dicha circunstancia a la SEFyC"),
+    ("La entidad debe informar a la SEFyC el origen de esa circunstancia, brindar las explicaciones que le sean requeridas y, de corresponder, las modificaciones a realizar en su política de crédito para mejorar la calidad de la cartera.",
+     "la entidad financiera deberá informar el origen de dicha circunstancia a la SEFyC debiendo brindar las explicaciones que les sean requeridas y, de corresponder, las modificaciones a realizar en su política de crédito tendientes a mejorar la calidad de su cartera crediticia."),
+    ("FICC es el cociente, en porcentaje, entre las financiaciones de la cartera de consumo o vivienda de la entidad clasificadas en situación 3 a 5 y el total de sus financiaciones de consumo o vivienda.",
+     "cociente, expresado en tanto por ciento, entre el importe total de las financiaciones de la cartera de consumo o vivienda, de la entidad financiera, clasificadas en situación 3 a 5 según las normas sobre “Clasificación de deudores” y el importe total de sus financiaciones de la cartera de consumo o vivienda."),
+]
+
+C["U6-019"] = [
+    ("El manual debe documentar los procedimientos implementados, de manera que permita apreciar el proceso seguido en la materia.",
+     "3.3.1. Los procedimientos implementados, de manera que permita apreciar el proceso seguido en la materia."),
+    ("Debe documentar los niveles que intervienen en el análisis y decisión del otorgamiento de facilidades, la clasificación de deudores y el previsionamiento, según las atribuciones asignadas y los requisitos de aprobación.",
+     "3.3.2. Los niveles que intervienen en el análisis y decisión en el otorgamiento de las facilidades, la clasificación de los deudores y el previsionamiento de las acreencias, según las atribuciones que les hayan sido asignadas a cada uno de ellos y conforme a los requisitos establecidos para la aprobación de la clasificación y el previsionamiento."),
+    ("Debe documentar el ejercicio de la opción de agrupar financiaciones comerciales de hasta dos veces el importe de referencia junto con los créditos de consumo o vivienda, y la posibilidad de llevar los legajos en medios magnéticos/electrónicos o en lugar distinto de la radicación de la cuenta.",
+     "3.3.3. El ejercicio de la opción de agrupar las financiaciones de naturaleza comercial de hasta el equivalente a dos veces el importe de referencia establecido en el punto 3.7., cuenten o no con garantías preferidas, junto con los créditos para consumo o vivienda. 3.3.4. La posibilidad de que los legajos de los clientes se lleven en medios magnéticos, electrónicos u otra tecnología similar o se mantengan en un lugar distinto del de radicación de la cuenta"),
+    ("Debe documentar el procedimiento cuando la clasificación se mantenga en planillas separadas del legajo, y el ejercicio de la opción de encomendar la clasificación a profesionales externos.",
+     "3.3.5. La descripción del procedimiento adoptado, cuando a los fines de la actualización del legajo del cliente la clasificación asignada se mantenga en planillas separadas, que permita la identificación precisa de la clasificación asignada a cada cliente desde la planilla al legajo y viceversa. 3.3.6. El ejercicio de la opción de encomendar a profesionales externos la tarea de clasificación."),
+    ("El manual debe estar a disposición permanente de la Superintendencia de Entidades Financieras y Cambiarias.",
+     "El manual deberá estar a disposición permanente de la Superintendencia de Entidades Financieras y Cambiarias."),
+]
+
+C["U6-020"] = [
+    ("La RPC se determina en función de los saldos de las partidas admitidas registrados al último día del mes bajo informe.",
+     "La responsabilidad patrimonial computable se determinará en función de los saldos de las partidas admitidas, registrados al último día del mes bajo informe."),
+    ("Se informa por el mayor saldo registrado durante el mes la tenencia de títulos valores y otros instrumentos de deuda subordinados emitidos por otras entidades financieras (código 20900000).",
+     "Se incluirá el mayor saldo registrado durante el mes a que corresponde la determinación de la responsabilidad patrimonial computable, de la tenencia de títulos valores y otros instrumentos de deuda, contractualmente subordinados a los demás pasivos, emitidos por otras entidades financieras."),
+    ("Se informan por el mayor saldo del mes las cuentas de corresponsalía con entidades financieras del exterior que no cuenten con calificación “investment grade” (código 21000000).",
+     "Se consignará el mayor saldo registrado durante el mes a que corresponde la determinación de la responsabilidad patrimonial computable, de las cuentas de corresponsalía con entidades financieras del exterior que no cuenten con calificación “investment grade”"),
+    ("Se informan por el mayor saldo del mes los títulos emitidos por gobiernos de países extranjeros con calificación internacional inferior a la de los títulos públicos nacionales y sin mercados habituales relevantes (código 21100000).",
+     "Se incluirá el mayor saldo registrado durante el mes a que corresponde la determinación del capital ordinario de nivel 1 (COn1), de los títulos emitidos por gobiernos de países extranjeros, cuya calificación internacional sea inferior a la asignada a títulos públicos nacionales de la República Argentina, y que no cuenten con mercados donde se transen en forma habitual por valores relevantes"),
+    ("Se informa el mayor saldo del mes de la asistencia crediticia al sector público (adelantos del punto 3.2.5.) cuando supere el límite autorizado o no se cancele en los plazos previstos (código 22700000).",
+     "Se informará el mayor saldo de la asistencia crediticia otorgada en el mes, cuando los adelantos previstos en el punto 3.2.5. de la Sección 3. de las normas sobre “Financiamiento al sector público no financiero” superen el límite autorizado y/o no sean cancelados en los plazos allí previstos."),
+]
+
+C["U6-021"] = [
+    ("La exigencia por riesgo de mercado se determina con los valores registrados al último día del período de información (n).",
+     "4.1.1.1. La exigencia por riesgo de mercado se determinará con los valores que se registren al último día del período de información (n), y el total surgirá de la siguiente suma:"),
+    ("La exigencia por riesgo general de tasa de interés (código 311200/xx) se determina por cada moneda, y la partida se identifica según su moneda de origen con la codificación de la tabla T0003 del SISCEN, excluidas las monedas no referenciadas con código SWIFT.",
+     "La determinación de esta exigencia se efectuará por cada moneda, a cuyos efectos la presente partida se identificará según su moneda de origen de acuerdo con la codificación prevista en el Sistema Centralizado de requerimientos informativos (SISCEN), tabla T0003, de la que se excluirán aquellas que no estén referenciadas con el código SWIFT."),
+    ("Las monedas residuales, de corresponder, se identifican con el código de moneda 9999.",
+     "De corresponder, las monedas residuales (puntos 6.2.2.2. y 6.2.2.7. de las normas sobre “Capitales mínimos de las entidades financieras”) se identificarán con código de moneda 9999."),
+]
+
+C["U6-022"] = [
+    ("Los cuadros se abren por moneda: el cuadro 11.2.1. a) para posiciones en pesos (no actualizables y actualizables) y el cuadro 11.2.1. b) para posiciones en dólares estadounidenses.",
+     "La información se referirá a posiciones en pesos -cuadros 11.2.1 a) y 11.2.2 a)- y en dólares estadounidenses -cuadros 11.2.1 b) y 11.2.2 b)-, siempre que se trate de exposiciones relevantes (superiores al 5 % de los activos o pasivos de la cartera de inversión), considerando lo indicado en el punto 1.2."),
+    ("Los activos susceptibles de estandarización se informan abiertos por tipo de tasa: a tasa de interés fija, a tasa variable, a tasa fija con opciones automáticas implícitas y a tasa variable con opciones automáticas implícitas.",
+     "Activos susceptibles de estandarización a tasa de interés fija Activos susceptibles de estandarización a tasa de interés variable Activos susceptibles de estandarización a tasa de interés fija con opciones automáticas implícitas Activos susceptibles de estandarización a tasa de interés variable con opciones automáticas implícitas"),
+    ("Los pasivos susceptibles de estandarización se informan con la misma apertura por tipo de tasa (fija, variable, fija con opciones automáticas implícitas y variable con opciones automáticas implícitas).",
+     "Pasivos susceptibles de estandarización a tasa de interés fija Pasivos susceptibles de estandarización a tasa de interés variable Pasivos susceptibles de estandarización a tasa de interés fija con opciones automáticas implícitas Pasivos susceptibles de estandarización a tasa de interés variable con opciones automáticas implícitas"),
+    ("Los flujos se asignan a 19 bandas temporales predefinidas (o a sus puntos medios) para cada escenario de perturbación de tasas de interés.",
+     "Los citados flujos de fondos nocionales futuros se asignarán a 19 bandas temporales predefinidas o sus puntos medios (tabla 1) para cada escenario de perturbación de tasas de interés (tabla 2)."),
+    ("Los escenarios previstos son 0 a 6, y en la banda 0 se informan los saldos a fin del último mes del trimestre.",
+     "Deberán informar los flujos asignados a todas las bandas o puntos medios para cada uno de los escenarios previstos (0 a 6). En la banda 0 (cero) se informarán los saldos a fin del último mes del trimestre."),
+]
+
+C["U6-023"] = [
+    ("No: no corresponde rechazar solicitudes de financiación por el solo dato de la edad del solicitante cuando su nivel de ingresos proyectados es suficiente y es posible tomar cobertura por riesgo de muerte mediante un seguro de vida sobre saldo deudor.",
+     "En particular, no corresponderá el rechazo de solicitudes de financiación por el solo dato de la edad del solicitante, cuando su nivel de ingresos proyectados sea suficiente y sea posible tomar cobertura por su riesgo de muerte mediante la contratación de un seguro de vida sobre saldo deudor."),
+    ("La posibilidad de contratar el seguro de vida sobre saldo deudor es lo que habilita cubrir el riesgo de muerte, pero la decisión de contratar o no dicho seguro es del sujeto obligado.",
+     "Ello, no obstante, será decisión del sujeto obligado contratar o no dicho seguro."),
+    ("El rechazo por edad se enmarca en la prohibición de trato discriminatorio: la edad es uno de los motivos por los que los sujetos obligados deben prevenir actos u omisiones discriminatorios.",
+     "Los sujetos obligados deberán adoptar los recaudos necesarios a los efectos de prevenir particularmente los actos u omisiones discriminatorios determinados por motivos tales como raza, religión, nacionalidad, ideología, opinión política o gremial, edad, sexo, posición económica, condición social o caracteres físicos."),
+]
+
+C["U6-024"] = [
+    ("Los hipervínculos deben estar identificados con la leyenda “botón de arrepentimiento” o “botón de baja”, según corresponda.",
+     "En ambos casos, deberán estar identificados con la leyenda “botón de arrepentimiento” o “botón de baja”, según corresponda"),
+    ("Deben ubicarse en un lugar destacado —en cuanto a visibilidad y tamaño— del primer acceso del servicio de banca por Internet (home banking) o mecanismo similar.",
+     "encontrarse ubicados en un lugar destacado –en cuanto a visibilidad y tamaño– del primer acceso de su servicio de banca por Internet –home banking– o mecanismo similar"),
+    ("La finalidad es que el usuario pueda proceder en el mismo acto a la efectiva revocación o rescisión del producto o servicio.",
+     "a los fines de que el usuario pueda proceder en el mismo acto a la efectiva revocación o rescisión del producto o servicio, según corresponda."),
+]
+
+C["U6-025"] = [
+    ("El Directivo Responsable de Protección de los Usuarios de Servicios Financieros debe ser un miembro del Directorio o autoridad equivalente, designado ante el BCRA, con responsabilidad primaria por el cumplimiento de estas normas.",
+     "deberán designar a un miembro del Directorio o autoridad equivalente como “Directivo Responsable de Protección de los Usuarios de Servicios Financieros” ante el BCRA, quien asumirá una responsabilidad primaria por el cumplimiento de estas normas."),
+    ("Debe elevar al Directorio o autoridad equivalente, como mínimo trimestralmente, un reporte de análisis con las acciones realizadas, que ese órgano debe evaluar dejando constancia en el Libro de Actas.",
+     "Elevar al Directorio o autoridad equivalente, como mínimo trimestralmente, un reporte de análisis con las acciones realizadas en el marco de sus responsabilidades haciendo especial énfasis en el resultado de la evaluación realizada sobre el informe que trimestralmente le eleva el Responsable de atención al usuario de servicios financieros. El referido reporte deberá ser evaluado por ese órgano directivo, dejando constancia en el Libro de Actas respectivo."),
+    ("La figura puede reemplazarse por un Comité cuando la dimensión, operatoria y/o clientela de la entidad así lo aconsejen.",
+     "Alternativamente, cuando la dimensión, operatoria y/o clientela de la entidad así lo aconsejaran, los sujetos obligados podrán optar por la conformación de un Comité"),
+    ("El Comité debe integrarse con al menos un miembro del Directorio o autoridad equivalente y los responsables de cumplimiento normativo, gestión de riesgo operativo y asuntos legales, con las mismas funciones y responsabilidades que el Directivo Responsable.",
+     "un Comité integrado por al menos un miembro del Directorio o autoridad equivalente y por los responsables de las áreas a cargo de las funciones de cumplimiento normativo, gestión de riesgo operativo y asuntos legales, teniendo dicho comité las mismas funciones y responsabilidades asignadas por la presente norma al “Directivo Responsable de Protección de los Usuarios de Servicios Financieros”."),
+]
+
+with open(PREG, encoding="utf-8") as f:
+    preguntas = json.load(f)
+
+out = {"preguntas": []}
+for p in preguntas:
+    crits = C.get(p["id"])
+    if crits is None:
+        print("SIN CRITERIOS:", p["id"], file=sys.stderr)
+        continue
+    assert 2 <= len(crits) <= 5, (p["id"], len(crits))
+    out["preguntas"].append({
+        "id": p["id"],
+        "to": p["to"],
+        "pregunta": p["pregunta"],
+        "gold": {
+            "ancla": p["ancla"],
+            "criterios": [{"criterio": c, "cita_textual": q} for c, q in crits],
+        },
+    })
+
+with open(OUT, "w", encoding="utf-8") as f:
+    json.dump(out, f, ensure_ascii=False, indent=2)
+    f.write("\n")
+print("preguntas escritas:", len(out["preguntas"]), "criterios totales:", sum(len(x["gold"]["criterios"]) for x in out["preguntas"]))
