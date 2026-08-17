@@ -24,14 +24,21 @@ Nomenclatura canónica de `docs/nomenclatura_grafos.md`: KG-Base (`12c226e2`,
 - `regla_atribucion.md` — **A0.2 Fase A**: definiciones operativas exactas de
   las cuatro clases (ausencia_kg / alcanzabilidad / vista_no_consultada /
   generacion), precedencia, campos de traza, ancla primaria, columna cruzada
-  abstención/contenido, población base (120) y opcional §7 (198). A LAUDO.
+  abstención/contenido, población base (120) y opcional §7 (198). RATIFICADA
+  y sellada en el commit `40603a9`.
 - `code/atribucion_fallas.py` — módulo que implementa la regla importando el
   replay/métrica de `ev2_corrida` y `exploracion/sinteticas` (sin copiar):
   `--selftest` (sintético, 24 checks → `selftest_out/`, gitignorado),
   `--verificar-estructura` (conteos de veredictos por respuesta, sin abrir
-  trazas), `--correr [--incluir-enc]` (Fase B; **se niega a correr si
-  `regla_atribucion.md` no tiene commit**) → `salida/atribucion_fallas.{json,md}`
-  + `salida/atribucion_por_traza.md`.
+  trazas), `--correr [--incluir-enc] [--sensibilidad-descendientes]` (Fase B;
+  **se niega a correr si `regla_atribucion.md` no tiene commit**) →
+  `salida/atribucion_fallas.{json,md}` (clase × grafo × veredicto, cruces con
+  auxiliar/respondible/criterios no cumplidos, pares definitivos con traza
+  representativa, censo de las 40 anclas de fidelidad, sensibilidad
+  informativa, hallazgos H1–H7) + `salida/atribucion_por_traza.md` (311 filas).
+  `--sensibilidad-descendientes` es INFORMATIVO, fuera de la regla ratificada.
+- `code/hallazgos_atribucion_texto.md` — texto fijo de los hallazgos que
+  `render_md` incluye en `salida/atribucion_fallas.md` (§5).
 
 ## Reproducción (USD 0)
 
@@ -41,8 +48,8 @@ python3 -B data/experiment/ev2_reporte/code/recomputo_ev2.py
 .venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --verificar-estructura
 ```
 
-Fase B (solo tras el commit del laudo de la regla):
+Fase B (corrida tras el commit del laudo `40603a9`; doble corrida byte-idéntica salvo `generado`):
 
 ```
-.venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --correr [--incluir-enc]
+.venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --correr --incluir-enc --sensibilidad-descendientes
 ```

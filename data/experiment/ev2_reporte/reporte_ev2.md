@@ -1,9 +1,10 @@
 # Reporte consolidado de EV2 — fidelidad, navegabilidad, censo, juez y costos (U-A0 / A0.1)
 
 Unidad U-A0 (plan de tesis §4, unidad 1; sub-tarea A0.1). Generado sobre HEAD
-`237fb8f887b754a48e9882d48b37705e44f9f9e2` (working tree limpio salvo el
-directorio nuevo `data/experiment/ev2_reporte/` y el archivo previo no
-rastreado `adjudicar.py`, ajeno a esta unidad). USD 0: ninguna llamada a API.
+`237fb8f887b754a48e9882d48b37705e44f9f9e2` (A0.1 y A0.2 fase A) y completado
+sobre HEAD `40603a99caf5842a2a994e0e1ae7376214e5a596` (A0.2 fase B, §12);
+working tree limpio salvo esta unidad y el archivo previo no rastreado
+`adjudicar.py`, ajeno a ella. USD 0: ninguna llamada a API.
 Cero commits (los hace la autora).
 
 **Todo número de este documento sale de un archivo commiteado y se recomputa
@@ -414,10 +415,10 @@ dbs" del commit `bb89a8e` (tope 18,50).
 2. **KG-Refinado y KG-Reextraído están en empate técnico en fidelidad**:
    5/26/9 vs 4/27/9, cobertura 73 vs 70 criterios sobre 164, misma cantidad de
    incorrectos (9-9) con composición distinta (KG-Refinado 4 abstenciones +
-   5 con contenido; KG-Reextraído 6 abstenciones + 3 con contenido). Si esos
-   9-9 esconden perfiles de falla distintos es exactamente lo que A0.2
-   responde con la atribución determinística por traza (regla en
-   `regla_atribucion.md`, a laudo).
+   5 con contenido; KG-Reextraído 6 abstenciones + 3 con contenido). La
+   atribución determinística por traza (§12, H1) muestra que esos 9-9 son
+   perfiles distintos: navegación con ancla presente en KG-Refinado,
+   granularidad de ancla + generación en KG-Reextraído.
 3. **La brecha literal vs anti-léxica se confirma en los tres grafos** (recall
    consultada micro cae 0.22 / 0.34 / 0.13; §4): la navegación depende del
    léxico de la pregunta; KG-Refinado, con presencia total, es el que más
@@ -461,14 +462,71 @@ dbs" del commit `bb89a8e` (tope 18,50).
 > para parciales (sesgo alcista compartido). Costo del período USD 35,62.
 > Reporte consolidado con recómputo: `data/experiment/ev2_reporte/reporte_ev2.md`
 > (commits `bb89a8e`, `5b02d22`, `1a0ac5c`, `b624865`, `9044a04`, `03ebe83`,
-> `64de678`, `237fb8f`). La atribución determinística de fallas por traza
-> (A0.2) sigue en `data/experiment/ev2_reporte/regla_atribucion.md`.
+> `64de678`, `237fb8f`). Atribución determinística de fallas por traza (A0.2,
+> regla `40603a9`): los 9-9 incorrectos de los refinados son perfiles distintos
+> — KG-Refinado navegación con ancla presente (5/9), KG-Reextraído granularidad
+> de ancla (4/9) + generación (3/9); KG-Base navegación (10/17)
+> (`data/experiment/ev2_reporte/salida/atribucion_fallas.md`).
 
-## 12. Reproducción y convenciones
+## 12. A0.2 — atribución determinística de fallas (Fase B, tras el laudo `40603a9`)
+
+Regla ratificada: `regla_atribucion.md` (sha256 `20040e94…`, commit `40603a9`;
+precedencia ausencia_kg → generacion → vista_no_consultada → alcanzabilidad,
+veredicto de ESA traza, solo ancla primaria). Salida completa:
+`salida/atribucion_fallas.{json,md}` + `salida/atribucion_por_traza.md`
+(comando: `.venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --correr --incluir-enc --sensibilidad-descendientes`).
+Replay 120/120 (base) y 191/191 (§7) estándar y fuerte OK; sha256 de los tres
+grafos verificados; **doble corrida byte-idéntica** salvo `generado` (json, md
+y por_traza; sha256 sin `generado` `b2c357cc…` / `561381d7…` / `38b3d2dd…`).
+USD 0.
+
+**Clase × grafo, 120 trazas base** (`atribucion_fallas.md` §1.a; veredicto de
+esa respuesta = juez base + adjudicación de los 21 heredados):
+
+| Grafo | ausencia_kg | alcanzabilidad | vista_no_consultada | generacion | correcto (no atribuible) |
+|---|---|---|---|---|---|
+| KG-Base | 6 | 11 | 3 | 17 | 3 |
+| KG-Refinado | 4 | 6 | 1 | 25 | 4 |
+| KG-Reextraído | 9 | 1 | 5 | 21 | 4 |
+
+**Clase × grafo × veredicto DEFINITIVO** (120 pares, traza representativa del
+veredicto — regla ratificada; `atribucion_fallas.md` §3.a), incorrectos /
+parciales (ausencia / alcanzabilidad / vista_no_consultada / generacion):
+KG-Base 4/8/2/3 y 2/3/0/15; KG-Refinado 2/4/1/2 y 2/3/0/21; KG-Reextraído
+4/1/1/3 y 6/0/3/18.
+
+**Criterios no cumplidos × clase** (`atribucion_fallas.md`, tabla de
+criterios de §1): la clase generacion tiene la tasa de no cumplidos más baja
+en los tres grafos (0,50 / 0,48 / 0,59); ausencia_kg 0,75 / 0,78 / 0,72;
+alcanzabilidad 0,88 / 0,76 / 0,75. Columna cruzada abstención (§1.c):
+generacion × abstención 1 / 2 / 4.
+
+**Hallazgos** (H1–H7 en `atribucion_fallas.md` §5, cada uno con las tablas
+que lo sostienen): **H1** los 9-9 incorrectos de KG-Refinado y KG-Reextraído
+esconden perfiles distintos — KG-Refinado falla por navegación con el ancla
+presente (4 alcanzabilidad + 1 vista de 9) y KG-Reextraído por granularidad de
+ancla (4 ausencia_kg, 3 de ellas con el punto presente solo como sub-puntos) y
+generación (3); **H2** KG-Base falla por navegación (10/17 incorrectos) y
+tiene 6 anclas de fidelidad totalmente ausentes; **H3** la generación es la
+clase dominante de los parciales en los tres grafos (grounded ≠ correct);
+**H4** ausencia_kg es ausencia total en KG-Base/KG-Refinado (6/6, 4/4) y
+granularidad en KG-Reextraído (8/10 + 2 contenedor; sensibilidad informativa
+con descendientes: 9 → 6 generacion + 2 alcanzabilidad + 1 ausencia); **H5**
+generacion × abstención = nodo-ancla cáscara (encabezado/puntero) —
+limitación declarada de la clase, material del verificador causal; **H6** las
+191 re-corridas §7 replican el perfil base; **H7** instrumento verificado.
+
+Adición declarada de la Fase B (a ratificar): el flag
+`--sensibilidad-descendientes` (§4.b de `atribucion_fallas.md`) es un análisis
+INFORMATIVO fuera de la regla ratificada, sobre las trazas base con clase
+ausencia_kg; no reemplaza la clase primaria ni toca `regla_atribucion.md`.
+
+## 13. Reproducción y convenciones
 
 ```
 python3 -B data/experiment/ev2_reporte/code/recomputo_ev2.py          # todos los números de §2–§6 y §9
 .venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --selftest   # A0.2 fase A (24/24)
+.venv/bin/python -B data/experiment/ev2_reporte/code/atribucion_fallas.py --correr --incluir-enc --sensibilidad-descendientes   # A0.2 fase B
 ```
 
 Los shas de los grafos se re-verifican en cada corrida del módulo de

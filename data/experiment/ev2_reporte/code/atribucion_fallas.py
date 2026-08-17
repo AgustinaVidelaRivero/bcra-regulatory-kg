@@ -272,7 +272,8 @@ def _agregar(filas: list[dict], clave_extra: str | None = None) -> dict:
     }
 
 
-def correr(incluir_enc: bool = False, out_dir: Path | None = None, exigir_sello: bool = True) -> dict:
+def correr(incluir_enc: bool = False, out_dir: Path | None = None, exigir_sello: bool = True,
+           sensibilidad_descendientes: bool = False) -> dict:
     out_dir = out_dir or SALIDA_DIR
     sello = regla_sellada()
     if exigir_sello and sello is None:
@@ -287,8 +288,19 @@ def correr(incluir_enc: bool = False, out_dir: Path | None = None, exigir_sello:
         label = GRAFOS[g]["label"]
         aidx = indice_anclas(g)
         index = GraphIndex(cargar_runtime(g))
-        censo_anclas[g] = {q: {a: len(ids) for a, ids in resolver_anclas(anclas, aidx).items()}
-                           for q, anclas in gold.items()}
+        # censo de las 40 anclas de fidelidad en este grafo + diagnóstico de las no
+        # resueltas (misma lectura que censo/ausencias_diagnostico.json: crudo =
+        # incluyendo contenedores; desc = incluyendo descendientes sin contenedores)
+        censo_anclas[g] = {}
+        for q, anclas in gold.items():
+            censo_anclas[g][q] = {}
+            for a in anclas:
+                to, punto = parse_ancla(a)
+                censo_anclas[g][q][a] = {
+                    "n": len(aidx.resolver(to, punto)),
+                    "crudo_incl_contenedores": len(aidx.resolver(to, punto, incluir_contenedores=True)),
+                    "con_descendientes": len(aidx.resolver(to, punto, incluir_descendientes=True)),
+                }
         tdir = CORRIDA_DIR / "trazas" / label
         for p in sorted(tdir.glob("EV2F-*.json")):
             payload = json.loads(p.read_text(encoding="utf-8"))
@@ -348,10 +360,113 @@ def correr(incluir_enc: bool = False, out_dir: Path | None = None, exigir_sello:
                                     "marcas": v["marcas"], **at})
         res["enc"] = {"n_trazas": len(filas_e), "n_excluidas_sin_veredicto_propio": len(excluidas),
                       "excluidas": excluidas, **_agregar(filas_e), "por_traza": filas_e}
+    # diagnóstico de anclas de fidelidad no resueltas por grafo
+    diag = {}
+    for g in ORDEN_GRAFOS:
+        cnt = Counter(); det = []
+        for q, d in censo_anclas[g].items():
+            for a, x in d.items():
+                if x["n"] == 0:
+                    if x["crudo_incl_contenedores"] == 0 and x["con_descendientes"] > 0:
+                        k = "crudo=0,desc>0 (solo sub-puntos: granularidad de ancla)"
+                    elif x["crudo_incl_contenedores"] == 0:
+                        k = "crudo=0,desc=0 (ausencia total)"
+                    else:
+                        k = "crudo>=1 (portador es contenedor >10 anclas)"
+                    cnt[k] += 1; det.append({"id_pregunta": q, "ancla": a, **x, "diagnostico": k})
+        diag[g] = {"nombre": CANONICO[g]["nombre"], "n_anclas_no_resueltas": len(det),
+                   "diagnostico": dict(cnt), "detalle": det}
+    res["diagnostico_ausencias_fidelidad"] = diag
+    res["pares_definitivos"] = pares_definitivos(res)
+
+    if sensibilidad_descendientes:
+        # SENSIBILIDAD (fuera de la regla ratificada, informativa, solo trazas
+        # base): las ausencia_kg se re-resuelven con incluir_descendientes=True
+        # (sub-puntos del punto ancla, contenedores siempre excluidos) y se
+        # re-clasifican. No reemplaza la clase primaria.
+        sens = []
+        for g in ORDEN_GRAFOS:
+            aidx = indice_anclas(g)
+            index = GraphIndex(cargar_runtime(g))
+            for x in filas:
+                if x["grafo"] != g or x["clase"] != "ausencia_kg":
+                    continue
+                payload = json.loads((REPO_DIR / x["traza"]).read_text(encoding="utf-8"))
+                resueltas = {a: aidx.resolver(*parse_ancla(a), incluir_descendientes=True) for a in x["anclas"]}
+                nav = navegacion_de_traza(payload["trace"], resueltas, index, verificar_replay=False)
+                sens.append({"id_pregunta": x["id_pregunta"], "grafo": g, "nombre": CANONICO[g]["nombre"],
+                             "veredicto": x["veredicto"], "clase_primaria": "ausencia_kg",
+                             "n_nodos_desc": sum(len(v) for v in resueltas.values()),
+                             "clase_con_descendientes": clasificar(x["veredicto"], nav["presente"], nav["vista"], nav["consultada"])})
+        t = defaultdict(Counter)
+        for s in sens:
+            t[s["grafo"]][s["clase_con_descendientes"]] += 1
+        res["sensibilidad_descendientes_base"] = {
+            "nota": "INFORMATIVA, fuera de la regla ratificada: re-clasificación de las trazas base ausencia_kg "
+                    "resolviendo el ancla con incluir_descendientes=True (sub-puntos; contenedores excluidos). "
+                    "No reemplaza la clase primaria.",
+            "reclasificacion_x_grafo": {g: dict(t[g]) for g in ORDEN_GRAFOS}, "detalle": sens}
     escribir_json(out_dir / "atribucion_fallas.json", res)
     (out_dir / "atribucion_fallas.md").write_text(render_md(res), encoding="utf-8")
     (out_dir / "atribucion_por_traza.md").write_text(render_por_traza(res), encoding="utf-8")
     return res
+
+
+# --------------------------------------------------------------------------- #
+# Pares definitivos: clase de la respuesta representativa del veredicto        #
+# --------------------------------------------------------------------------- #
+def pares_definitivos(res: dict) -> dict:
+    """Para cada par (pregunta, grafo) con veredicto DEFINITIVO (64de678), la
+    clase de la traza que porta ese veredicto — regla de respuesta
+    representativa ratificada como métrica de esta unidad: vías juez_base /
+    adjudicacion_base → la traza base; vías juez_enc / adjudicacion_s7 → la
+    re-corrida de MENOR rep cuyo veredicto propio coincide con el definitivo.
+    Responde la pregunta del mandato (¿los 9-9 incorrectos esconden perfiles
+    distintos?) sin mezclar veredictos entre trazas: cada clase sigue siendo la
+    de la traza contra su propio veredicto."""
+    tabla = {f["id_opaco"]: f for f in cargar("tabla_base")["filas"]}
+    defs = cargar("veredictos_definitivos")["definitivos"]
+    base = {(x["id_pregunta"], x["grafo"]): x for x in res["base"]["por_traza"]}
+    enc = defaultdict(dict)
+    for x in res.get("enc", {}).get("por_traza", []):
+        enc[(x["id_pregunta"], x["grafo"])][x["rep"]] = x
+    filas = []
+    for d in defs:
+        f = tabla[d["id_opaco_base"]]
+        q, g = f["id_pregunta"], f["grafo"]
+        if d["via"] in ("juez_base", "adjudicacion_base"):
+            x = base[(q, g)]; rep = None
+            assert x["veredicto"] == d["definitivo"], (q, g, x["veredicto"], d["definitivo"])
+        else:
+            if not enc:
+                continue   # sin --incluir-enc no hay traza representativa para vías §7
+            rep = None
+            for r in (1, 2, 3):
+                if r in enc[(q, g)] and enc[(q, g)][r]["veredicto"] == d["definitivo"]:
+                    rep = r; break
+            assert rep is not None, (q, g, d)
+            x = enc[(q, g)][rep]
+        filas.append({"id_pregunta": q, "grafo": g, "nombre": CANONICO[g]["nombre"], "via": d["via"],
+                      "definitivo": d["definitivo"], "traza_representativa": "base" if rep is None else f"enc_r{rep}",
+                      "clase": x["clase"], "clasificacion_auxiliar": x["clasificacion_auxiliar"],
+                      "n_no_cumplidos": x["n_no_cumplidos"], "n_criterios": x["n_criterios"],
+                      "clase_base": base[(q, g)]["clase"], "veredicto_base": base[(q, g)]["veredicto"],
+                      "clases_enc": [enc[(q, g)][r]["clase"] if r in enc[(q, g)] else "sin_veredicto_propio"
+                                     for r in (1, 2, 3)] if (q, g) in enc else []})
+    filas.sort(key=lambda x: (x["id_pregunta"], ORDEN_GRAFOS.index(x["grafo"])))
+    t = defaultdict(lambda: defaultdict(Counter))
+    for x in filas:
+        t[x["grafo"]][x["definitivo"]][x["clase"] or "correcto"] += 1
+    perfil_inc = defaultdict(list)
+    for x in filas:
+        if x["definitivo"] == "incorrecto":
+            perfil_inc[x["grafo"]].append({"id_pregunta": x["id_pregunta"], "via": x["via"],
+                                           "traza": x["traza_representativa"], "clase": x["clase"],
+                                           "aux": x["clasificacion_auxiliar"]})
+    return {"regla": pares_definitivos.__doc__.strip(), "n_pares": len(filas),
+            "clase_x_grafo_x_definitivo": {g: {v: dict(c) for v, c in sorted(t[g].items())} for g in ORDEN_GRAFOS if g in t},
+            "incorrectos_definitivos": {g: perfil_inc[g] for g in ORDEN_GRAFOS},
+            "por_par": filas}
 
 
 # --------------------------------------------------------------------------- #
@@ -414,7 +529,38 @@ def render_md(res: dict) -> str:
         L += _tabla_cruce(e["clase_x_grafo_x_veredicto"], "2.b Clase × grafo × veredicto", "veredicto")
         L += _tabla_cruce(e["clase_x_grafo_x_auxiliar"], "2.c Clase × grafo × clasificación auxiliar", "auxiliar")
         L += _tabla_crit(e["criterios_no_cumplidos_x_grafo_x_clase"])
-    L += ["## Tabla por traza", "", "Ver `atribucion_por_traza.md` (paquete de revisión) y `atribucion_fallas.json` → `base.por_traza`.", ""]
+    if "pares_definitivos" in res and res["pares_definitivos"]["n_pares"] == 120:
+        pd = res["pares_definitivos"]
+        L += ["## 3. Pares definitivos (120): clase de la traza representativa del veredicto definitivo", "",
+              "Regla ratificada de respuesta representativa (vías juez_base/adjudicacion_base → traza base; "
+              "juez_enc/adjudicacion_s7 → re-corrida de menor rep cuyo veredicto propio coincide con el definitivo). "
+              "Cada clase sigue siendo la de una traza contra su propio veredicto.", ""]
+        L += _tabla_cruce(pd["clase_x_grafo_x_definitivo"], "3.a Clase × grafo × veredicto DEFINITIVO", "definitivo")
+        L += ["### 3.b Los incorrectos definitivos, uno por uno (traza representativa, clase, auxiliar)", "",
+              "| grafo | id_pregunta | vía | traza | clase | auxiliar |", "|---|---|---|---|---|---|"]
+        for g in ORDEN_GRAFOS:
+            for x in pd["incorrectos_definitivos"][g]:
+                L.append(f"| {CANONICO[g]['nombre']} | {x['id_pregunta']} | {x['via']} | {x['traza']} | {x['clase']} | {x['aux']} |")
+        L += [""]
+    if "diagnostico_ausencias_fidelidad" in res:
+        L += ["## 4. Censo de las 40 anclas de fidelidad por grafo: anclas no resueltas y diagnóstico", "",
+              "| grafo | anclas no resueltas | diagnóstico | detalle (id: ancla, crudo/desc) |", "|---|---|---|---|"]
+        for g in ORDEN_GRAFOS:
+            d = res["diagnostico_ausencias_fidelidad"][g]
+            det = "; ".join(f"{x['id_pregunta']}: {x['ancla']} {x['crudo_incl_contenedores']}/{x['con_descendientes']}" for x in d["detalle"])
+            L.append(f"| {d['nombre']} | {d['n_anclas_no_resueltas']} | {d['diagnostico']} | {det} |")
+        L += [""]
+    if "sensibilidad_descendientes_base" in res:
+        sb = res["sensibilidad_descendientes_base"]
+        L += ["## 4.b Sensibilidad (INFORMATIVA, fuera de la regla ratificada): ausencia_kg base con descendientes", "",
+              sb["nota"], "", "| grafo | id_pregunta | veredicto | nodos con descendientes | clase con descendientes |", "|---|---|---|---|---|"]
+        for x in sb["detalle"]:
+            L.append(f"| {x['nombre']} | {x['id_pregunta']} | {x['veredicto']} | {x['n_nodos_desc']} | {x['clase_con_descendientes']} |")
+        L += ["", "Reclasificación × grafo: " + json.dumps(sb["reclasificacion_x_grafo"], ensure_ascii=False), ""]
+    hallazgos = UNIDAD_DIR / "code" / "hallazgos_atribucion_texto.md"
+    if hallazgos.exists():
+        L += ["## 5. Hallazgos numerados", "", hallazgos.read_text(encoding="utf-8").strip(), ""]
+    L += ["## Tabla por traza", "", "Ver `atribucion_por_traza.md` (paquete de revisión) y `atribucion_fallas.json` → `base.por_traza` / `enc.por_traza` / `pares_definitivos.por_par`.", ""]
     return "\n".join(L)
 
 
@@ -592,6 +738,8 @@ def main() -> int:
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--correr", action="store_true", help="Fase B: exige regla_atribucion.md commiteada")
     ap.add_argument("--incluir-enc", action="store_true", help="tabla separada de las 198 re-corridas §7")
+    ap.add_argument("--sensibilidad-descendientes", action="store_true",
+                    help="informativo: re-clasifica las ausencia_kg base resolviendo con descendientes")
     ap.add_argument("--verificar-estructura", action="store_true",
                     help="Fase A: solo conteos de los veredictos por respuesta (base 120 / §7 198); "
                          "no abre trazas ni atribuye nada")
@@ -612,7 +760,8 @@ def main() -> int:
         print("regla commiteada:", regla_sellada())
         return 0
     if args.correr:
-        res = correr(incluir_enc=args.incluir_enc, out_dir=args.out)
+        res = correr(incluir_enc=args.incluir_enc, out_dir=args.out,
+                     sensibilidad_descendientes=args.sensibilidad_descendientes)
         b = res["base"]
         print(json.dumps(b["clase_x_grafo"], ensure_ascii=False, indent=1))
         print("replay:", b["replay"])
