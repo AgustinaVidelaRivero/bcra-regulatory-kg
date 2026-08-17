@@ -1,0 +1,1493 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_enc_v3_r3",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-005",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 162,
+    "pos_orden_efectivo": 23,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-16T19:10:15",
+    "timestamp_fin": "2026-08-16T19:10:33",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": true,
+    "encadenamiento": {
+      "unidad": "ev2_encadenamiento",
+      "rep": 3,
+      "reps_previstas": 3,
+      "label": "ev2_enc_v3_r3",
+      "tipo": "parcial_disparado",
+      "veredicto_base": "parcial",
+      "id_opaco_base": "EV2R-b9757343f9",
+      "label_base": "ev2_base_v3",
+      "sha256_respuesta_base": "1613c89aa321b95cdc915389639df0f575d5e176149bd106aa1f112afade8996",
+      "regla": "protocolo §3: re-corrida N=3 disparada por veredicto base 'parcial'; auditoria_correcto = muestra 10 % de 'correcto' con semilla auditoria-ev2-v1"
+    }
+  },
+  "pregunta": "Una empresa local tiene dividendos aprobados por asamblea que siguen pendientes de pago a su accionista del exterior y evalúa suscribir bonos BOPREAL por esa deuda. ¿Qué debe verificar la entidad que concreta la suscripción y con qué tope?",
+  "trace": {
+    "qid": "EV2F-005",
+    "question": "Una empresa local tiene dividendos aprobados por asamblea que siguen pendientes de pago a su accionista del exterior y evalúa suscribir bonos BOPREAL por esa deuda. ¿Qué debe verificar la entidad que concreta la suscripción y con qué tope?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "BOPREAL suscripción requisitos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"BOPREAL suscripción requisitos\", \"total_con_match\": 95, \"resultados\": [{\"id\": \"Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d\", \"type\": \"Obligacion\", \"label\": \"Verificar requisitos para suscripción BOPREAL\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL\"}, {\"id\": \"Operacion_suscripcion_de_bopreal_a24f7f\", \"type\": \"Operacion\", \"label\": \"Suscripción de BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: suscripción de Bonos para la Reconstrucción de una Argentina Libre\"}, {\"id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"type\": \"Operacion\", \"label\": \"Suscripción de Bonos BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…\"}, {\"id\": \"Restriccion_limite_de_suscripcion_bopreal_737452\", \"type\": \"Restriccion\", \"label\": \"Límite de suscripción BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalen… [+2333 chars]",
+        "output_chars": 3533
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "BOPREAL bonos dividendos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"BOPREAL bonos dividendos\", \"total_con_match\": 57, \"resultados\": [{\"id\": \"Restriccion_los_clientes_podran_suscribir_bonos_por_hasta_la_suma_adeudada_a_la_fecha_de_la__1c240d\", \"type\": \"Restriccion\", \"label\": \"Límite monto bonos BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los clientes podrán suscribir Bonos por hasta la suma adeudada a la fecha de la suscripción\"}, {\"id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"type\": \"Operacion\", \"label\": \"Suscripción de Bonos BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…\"}, {\"id\": \"Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac\", \"type\": \"Restriccion\", \"label\": \"Monto máximo de suscripción BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios\"}, {\"id\": \"Operacion_registro_de_capital_vencido_bonos_bopreal_572d37\", \"type\": \"Operacion\", \"label\":… [+2180 chars]",
+        "output_chars": 3380
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d\", \"type\": \"Obligacion\", \"label\": \"Verificar requisitos para suscripción BOPREAL\", \"properties\": {\"tipo\": \"otra\", \"description\": \"Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"}]}",
+        "output_chars": 484
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_limite_de_suscripcion_bopreal_737452\", \"type\": \"Restriccion\", \"label\": \"Límite de suscripción BOPREAL\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"description\": \"Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"}]}",
+        "output_chars": 646
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef\", \"type\": \"Obligacion\", \"label\": \"Suscripción de BOPREAL con conformidad BCRA\", \"properties\": {\"descripcion\": \"Los clientes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el equivalente al monto en moneda local de las utilidades y dividendos pendientes de pago a accionistas no residentes según la distribución determinada por la asamblea de accionistas, en la medida que se encuentren sujetos a conformidad previa del BCRA y se cumplan los requisitos previstos en el punto 4.6.1\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.4. Pagos de utilidades y dividendos.\"}]}",
+        "output_chars": 774
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 4.6.2 requisitos suscripción",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"punto 4.6.2 requisitos suscripción\", \"total_con_match\": 189, \"resultados\": [{\"id\": \"Obligacion_en_los_casos_encuadrados_en_los_puntos_7_6_3_2_y_7_6_3_4_en_la_medida_que_el_mon_a21b47\", \"type\": \"Obligacion\", \"label\": \"Presentar informe de auditor externo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En los casos encuadrados en los puntos 7.6.3.2. y 7.6.3.4., en la medida que el monto supere el equivalente de USD 25.000, la entidad deberá solicitar adicional…\"}, {\"id\": \"Excepcion_en_el_caso_de_que_se_haya_encuadrado_la_operacion_en_la_excepcion_prevista_en_el_e5c031\", \"type\": \"Excepcion\", \"label\": \"Excepción en punto 2.6 para economía del conocimiento\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En el caso de que se haya encuadrado la operación en la excepción prevista en el punto 2.6.\"}, {\"id\": \"Excepcion_lo_previsto_en_puntos_3_16_3_1_al_3_16_3_4_no_resultara_aplicable_para_operacion_cf59b2\", \"type\": \"Excepcion\", \"label\": \"Excepción por operaciones de clientes en punto 3.14.2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Lo previsto en puntos 3.16.3.1 al 3.16.3.4 no resultará aplicable para operaciones de clientes realizadas en el marco del punto 3.14.2\"}… [+2580 chars]",
+        "output_chars": 3780
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "4.6.1 requisitos BOPREAL",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"4.6.1 requisitos BOPREAL\", \"total_con_match\": 177, \"resultados\": [{\"id\": \"Excepcion_el_pago_es_concretado_en_el_marco_de_lo_dispuesto_en_el_punto_4_8_4_por_un_clien_39bf70\", \"type\": \"Excepcion\", \"label\": \"Pago cliente BOPREAL Serie 1 ≥50% deudas elegibles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El pago es concretado en el marco de lo dispuesto en el punto 4.8.4. por un cliente que suscribió BOPREAL Serie 1 por un monto igual o mayor al 50% del total pe…\"}, {\"id\": \"Excepcion_el_pago_es_concretado_en_el_marco_de_lo_dispuesto_en_el_punto_4_8_5_por_un_clien_92cc8a\", \"type\": \"Excepcion\", \"label\": \"Pago cliente BOPREAL Serie 1 ≥25% deudas elegibles\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El pago es concretado en el marco de lo dispuesto en el punto 4.8.5. por un cliente que suscribió BOPREAL Serie 1 por un monto igual o mayor al 25% del total pe…\"}, {\"id\": \"Restriccion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_c5bd18\", \"type\": \"Restriccion\", \"label\": \"Requisitos no aplicables a compras de títulos valores\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los requisitos previstos en los puntos 4.3.2.1. y 4.3.2.2. no r… [+2531 chars]",
+        "output_chars": 3731
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "verificar balance auditado distribución asamblea accionistas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"verificar balance auditado distribución asamblea accionistas\", \"total_con_match\": 101, \"resultados\": [{\"id\": \"Obligacion_el_monto_total_abonado_por_este_concepto_a_accionistas_no_residentes_incluido_el_459761\", \"type\": \"Obligacion\", \"label\": \"Verificar monto no supere distribución de asamblea\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El monto total abonado por este concepto a accionistas no residentes, incluido el pago cuyo curso se está solicitando, no supere el monto en moneda local que le…\"}, {\"id\": \"Restriccion_accionistas_esta_es_una_linea_de_deduccion_conforme_punto_8_4_1_7_6229a7\", \"type\": \"Restriccion\", \"label\": \"Deducción accionistas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Accionistas. Esta es una línea de deducción conforme punto 8.4.1.7.\"}, {\"id\": \"Excepcion_algunos_de_los_criterios_se_deberan_verificar_solo_al_momento_de_la_originacion__056c01\", \"type\": \"Excepcion\", \"label\": \"Verificación solo al origen\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Algunos de los criterios se deberán verificar sólo al momento de la originación o cuando se genere la posición, tal como en el caso de las garantías y las facil…\"}, {\"id\": \"Obligacion_verif… [+2499 chars]",
+        "output_chars": 3699
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "entidad verificar conformidad BCRA dividendos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"entidad verificar conformidad BCRA dividendos\", \"total_con_match\": 461, \"resultados\": [{\"id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_excepto_cuando_la_entidad_constate_q_339a9a\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa BCRA para acceso cambios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se requerirá la conformidad previa del BCRA excepto cuando la entidad constate que el pago encuadra en alguna de las situaciones previstas en el punto 10.10.2. …\"}, {\"id\": \"Restriccion_la_entidad_debera_contar_con_la_conformidad_previa_del_bcra_en_el_caso_de_que_el_baef59\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa para clientes en base ARCA\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá contar con la conformidad previa del BCRA en el caso de que el cliente sea una persona humana o jurídica incluida por la Agencia de Recaudació…\"}, {\"id\": \"Restriccion_la_entidad_debera_contar_con_la_conformidad_previa_del_bcra_excepto_que_cuente_a_c92140\", \"type\": \"Restriccion\", \"label\": \"Límite de activos externos líquidos USD 100.000\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá contar con la conformidad previa d… [+2620 chars]",
+        "output_chars": 3820
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa\", \"type\": \"Obligacion\", \"label\": \"Verificar documentación de utilidades y dividendos\", \"properties\": {\"descripcion\": \"La entidad que concrete la oferta de suscripción en nombre del cliente deberá verificar el cumplimiento de los siguientes requisitos: Cuenta con la documentación que le permite avalar que la deuda pendiente corresponde a utilidades y dividendos de balances cerrados y auditados.\", \"tipo\": \"verificacion\", \"plazo\": \"Previo a la suscripción\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}]}",
+        "output_chars": 740
+      },
+      {
+        "n": 11,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa\", \"label\": \"Verificar documentación de utilidades y dividendos\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_entidad_autorizada_exterior\", \"vecino_label\": \"Entidades autorizadas a operar en cambios (Exterior)\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"vecino_label\": \"Suscripción de Bonos BOPREAL\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}]}], \"salientes_truncado\": fal… [+3 chars]",
+        "output_chars": 1203
+      },
+      {
+        "n": 12,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_limite_de_suscripcion_bopreal_737452\", \"type\": \"Restriccion\", \"label\": \"Límite de suscripción BOPREAL\", \"properties\": {\"tipo\": \"limite_cuantitativo\", \"description\": \"Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"}]}",
+        "output_chars": 646
+      },
+      {
+        "n": 13,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_limite_de_suscripcion_bopreal_737452\", \"label\": \"Límite de suscripción BOPREAL\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"}]}, {\"relation\": \"limita\", \"vecino_id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"vecino_label\": \"Suscripción de Bonos BOPREAL\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 825
+      },
+      {
+        "n": 14,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "balance cerrado auditado utilidades dividendos",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"balance cerrado auditado utilidades dividendos\", \"total_con_match\": 31, \"resultados\": [{\"id\": \"Operacion_pago_utilidades_y_dividendos_14dfc1\", \"type\": \"Operacion\", \"label\": \"Pago utilidades y dividendos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pago de utilidades y dividendos que correspondan a balances cerrados y auditados\"}, {\"id\": \"Operacion_pago_de_utilidades_y_dividendos_626c9d\", \"type\": \"Operacion\", \"label\": \"Pago de utilidades y dividendos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Pago de utilidades y dividendos a accionistas no residentes\"}, {\"id\": \"Obligacion_las_utilidades_y_dividendos_correspondan_a_balances_cerrados_y_auditados_5b9490\", \"type\": \"Obligacion\", \"label\": \"Verificar balances cerrados y auditados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las utilidades y dividendos correspondan a balances cerrados y auditados\"}, {\"id\": \"Restriccion_el_monto_total_abonado_por_concepto_de_utilidades_y_dividendos_a_accionistas_no__aae56d\", \"type\": \"Restriccion\", \"label\": \"Límite en monto de utilidades y dividendos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto total abonado por concepto de utilidades y dividendos a accionis… [+493 chars]",
+        "output_chars": 1693
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1508,
+        "output_tokens": 170,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.423
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 268,
+        "cache_read": 0,
+        "cache_write": 4298,
+        "latency_s": 2.352
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 200,
+        "cache_read": 4298,
+        "cache_write": 997,
+        "latency_s": 1.83
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 193,
+        "cache_read": 5295,
+        "cache_write": 3271,
+        "latency_s": 2.137
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 230,
+        "cache_read": 8566,
+        "cache_write": 2882,
+        "latency_s": 2.326
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 212,
+        "cache_read": 11448,
+        "cache_write": 975,
+        "latency_s": 2.261
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 123,
+        "cache_read": 12423,
+        "cache_write": 792,
+        "latency_s": 1.496
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 385,
+        "cache_read": 13215,
+        "cache_write": 730,
+        "latency_s": 4.298
+      }
+    ],
+    "final_json": {
+      "respuesta": "La entidad que concrete la suscripción de bonos BOPREAL por dividendos pendientes de pago debe verificar que: (1) la deuda pendiente corresponde a utilidades y dividendos de balances cerrados y auditados, según la documentación que le permite avalar esta condición. Esta verificación debe realizarse previo a la suscripción.\n\nRespecto al tope de suscripción, los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+        },
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Tengo toda la información necesaria para responder la pregunta. Déjame compilar la respuesta basada en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"La entidad que concrete la suscripción de bonos BOPREAL por dividendos pendientes de pago debe verificar que: (1) la deuda pendiente corresponde a utilidades y dividendos de balances cerrados y auditados, según la documentación que le permite avalar esta condición. Esta verificación debe realizarse previo a la suscripción.\\n\\nRespecto al tope de suscripción, los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 14,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.4. Pagos de utilidades y dividendos."
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1555,
+    "tokens_out": 1781,
+    "cache_read": 55245,
+    "cache_write": 13945,
+    "cost_usd": 0.033416,
+    "latency_s": 18.158,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "BOPREAL suscripción requisitos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "BOPREAL suscripción requisitos",
+        "total_con_match": 95,
+        "resultados": [
+          {
+            "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d",
+            "type": "Obligacion",
+            "label": "Verificar requisitos para suscripción BOPREAL",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL"
+          },
+          {
+            "id": "Operacion_suscripcion_de_bopreal_a24f7f",
+            "type": "Operacion",
+            "label": "Suscripción de BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: suscripción de Bonos para la Reconstrucción de una Argentina Libre"
+          },
+          {
+            "id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "type": "Operacion",
+            "label": "Suscripción de Bonos BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…"
+          },
+          {
+            "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+            "type": "Restriccion",
+            "label": "Límite de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del…"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Restriccion_limite_de_monto_para_suscripcion_bopreal_d6d2b4",
+            "type": "Restriccion",
+            "label": "Límite de monto para suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de bienes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el monto de la deuda pendiente de pago por s…"
+          },
+          {
+            "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef",
+            "type": "Obligacion",
+            "label": "Suscripción de BOPREAL con conformidad BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el equivalente al monto en moneda local de las utilidades …"
+          },
+          {
+            "id": "Excepcion_excepcion_por_suscripcion_bopreal_serie_1_25_162430",
+            "type": "Excepcion",
+            "label": "Excepción por suscripción BOPREAL Serie 1 25%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exceptúa el requisito cuando el pago se concreta en el marco de lo dispuesto en el punto 4.8.5. por un cliente que suscribió BOPREAL Serie 1 por un monto igual …"
+          },
+          {
+            "id": "Excepcion_excepcion_por_suscripcion_bopreal_serie_1_50_47318a",
+            "type": "Excepcion",
+            "label": "Excepción por suscripción BOPREAL Serie 1 50%",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exceptúa el requisito cuando el pago se concreta en el marco de lo dispuesto en el punto 4.8.4. por un cliente que suscribió BOPREAL Serie 1 por un monto igual …"
+          },
+          {
+            "id": "Restriccion_requisito_minimo_suscripcion_bopreal_25_para_punto_4_8_5_dbce01",
+            "type": "Restriccion",
+            "label": "Requisito mínimo suscripción BOPREAL 25% para punto 4.8.5",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Clientes que suscribieron BOPREAL Serie 1 antes del 31/01/24 por monto igual o mayor al 25% del total pendiente de deudas elegibles para puntos 4.4 y 4.5"
+          }
+        ]
+      },
+      "output_chars": 3533
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "BOPREAL bonos dividendos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "BOPREAL bonos dividendos",
+        "total_con_match": 57,
+        "resultados": [
+          {
+            "id": "Restriccion_los_clientes_podran_suscribir_bonos_por_hasta_la_suma_adeudada_a_la_fecha_de_la__1c240d",
+            "type": "Restriccion",
+            "label": "Límite monto bonos BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos por hasta la suma adeudada a la fecha de la suscripción"
+          },
+          {
+            "id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "type": "Operacion",
+            "label": "Suscripción de Bonos BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Operacion_registro_de_capital_vencido_bonos_bopreal_572d37",
+            "type": "Operacion",
+            "label": "Registro de capital vencido bonos BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Registro de deudas con contrapartes vinculadas por adjudicación de bonos BOPREAL (concepto P28)"
+          },
+          {
+            "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef",
+            "type": "Obligacion",
+            "label": "Suscripción de BOPREAL con conformidad BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el equivalente al monto en moneda local de las utilidades …"
+          },
+          {
+            "id": "Excepcion_se_permite_cable_sobre_cuenta_de_terceros_en_exterior_cuando_se_trate_de_la_vent_e4494e",
+            "type": "Excepcion",
+            "label": "Excepción para venta de bonos BOPREAL adquiridos en suscripción primaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se permite cable sobre cuenta de terceros en exterior cuando se trate de la venta de bonos BOPREAL adquiridos por el vendedor en una suscripción primaria por op…"
+          },
+          {
+            "id": "Operacion_suscripcion_de_bopreal_a24f7f",
+            "type": "Operacion",
+            "label": "Suscripción de BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: suscripción de Bonos para la Reconstrucción de una Argentina Libre"
+          },
+          {
+            "id": "Operacion_pago_utilidades_y_dividendos_14dfc1",
+            "type": "Operacion",
+            "label": "Pago utilidades y dividendos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de utilidades y dividendos que correspondan a balances cerrados y auditados"
+          },
+          {
+            "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+            "type": "Restriccion",
+            "label": "Límite de suscripción BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del…"
+          },
+          {
+            "id": "Excepcion_excepcion_por_canje_con_bopreal_221932",
+            "type": "Excepcion",
+            "label": "Excepción por canje con BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exceptúa el requisito cuando el pago se concreta mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados e…"
+          }
+        ]
+      },
+      "output_chars": 3380
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d"
+      },
+      "output": {
+        "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d",
+        "type": "Obligacion",
+        "label": "Verificar requisitos para suscripción BOPREAL",
+        "properties": {
+          "tipo": "otra",
+          "description": "Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 484
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+      },
+      "output": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+        "type": "Restriccion",
+        "label": "Límite de suscripción BOPREAL",
+        "properties": {
+          "tipo": "limite_cuantitativo",
+          "description": "Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 646
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef"
+      },
+      "output": {
+        "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef",
+        "type": "Obligacion",
+        "label": "Suscripción de BOPREAL con conformidad BCRA",
+        "properties": {
+          "descripcion": "Los clientes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el equivalente al monto en moneda local de las utilidades y dividendos pendientes de pago a accionistas no residentes según la distribución determinada por la asamblea de accionistas, en la medida que se encuentren sujetos a conformidad previa del BCRA y se cumplan los requisitos previstos en el punto 4.6.1",
+          "tipo": "otra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.4. Pagos de utilidades y dividendos."
+          }
+        ]
+      },
+      "output_chars": 774
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 4.6.2 requisitos suscripción",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "punto 4.6.2 requisitos suscripción",
+        "total_con_match": 189,
+        "resultados": [
+          {
+            "id": "Obligacion_en_los_casos_encuadrados_en_los_puntos_7_6_3_2_y_7_6_3_4_en_la_medida_que_el_mon_a21b47",
+            "type": "Obligacion",
+            "label": "Presentar informe de auditor externo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En los casos encuadrados en los puntos 7.6.3.2. y 7.6.3.4., en la medida que el monto supere el equivalente de USD 25.000, la entidad deberá solicitar adicional…"
+          },
+          {
+            "id": "Excepcion_en_el_caso_de_que_se_haya_encuadrado_la_operacion_en_la_excepcion_prevista_en_el_e5c031",
+            "type": "Excepcion",
+            "label": "Excepción en punto 2.6 para economía del conocimiento",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En el caso de que se haya encuadrado la operación en la excepción prevista en el punto 2.6."
+          },
+          {
+            "id": "Excepcion_lo_previsto_en_puntos_3_16_3_1_al_3_16_3_4_no_resultara_aplicable_para_operacion_cf59b2",
+            "type": "Excepcion",
+            "label": "Excepción por operaciones de clientes en punto 3.14.2",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Lo previsto en puntos 3.16.3.1 al 3.16.3.4 no resultará aplicable para operaciones de clientes realizadas en el marco del punto 3.14.2"
+          },
+          {
+            "id": "Restriccion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_c5bd18",
+            "type": "Restriccion",
+            "label": "Requisitos no aplicables a compras de títulos valores",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los requisitos previstos en los puntos 4.3.2.1. y 4.3.2.2. no resultarán aplicables en las compras de títulos valores que sean concretadas por los clientes con …"
+          },
+          {
+            "id": "Restriccion_requisito_minimo_suscripcion_bopreal_25_para_punto_4_8_5_dbce01",
+            "type": "Restriccion",
+            "label": "Requisito mínimo suscripción BOPREAL 25% para punto 4.8.5",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Clientes que suscribieron BOPREAL Serie 1 antes del 31/01/24 por monto igual o mayor al 25% del total pendiente de deudas elegibles para puntos 4.4 y 4.5"
+          },
+          {
+            "id": "Restriccion_requisito_minimo_suscripcion_bopreal_serie_1_para_punto_4_8_4_d8061b",
+            "type": "Restriccion",
+            "label": "Requisito mínimo suscripción BOPREAL Serie 1 para punto 4.8.4",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Clientes que suscribieron BOPREAL Serie 1 antes del 31/01/24 por monto igual o mayor al 50% del total pendiente de deudas elegibles para puntos 4.4 y 4.5"
+          },
+          {
+            "id": "Restriccion_accionistas_esta_es_una_linea_de_deduccion_conforme_punto_8_4_1_7_6229a7",
+            "type": "Restriccion",
+            "label": "Deducción accionistas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Accionistas. Esta es una línea de deducción conforme punto 8.4.1.7."
+          },
+          {
+            "id": "Excepcion_excepto_para_la_situacion_prevista_en_el_punto_2_3_5_cuando_reglamentariamente_s_f92586",
+            "type": "Excepcion",
+            "label": "Excepción al plazo de resolución",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepto para la situación prevista en el punto 2.3.5, cuando reglamentariamente se hayan otorgado mayores plazos para adecuarse normativamente, o cuando medien …"
+          },
+          {
+            "id": "Restriccion_los_garantes_admisibles_se_limitan_a_los_estipulados_en_el_punto_5_4_1_los_spe_n_1cfa85",
+            "type": "Restriccion",
+            "label": "Limitación garantes admisibles CRC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los garantes admisibles se limitan a los estipulados en el punto 5.4.1. Los SPE no son garantes admisibles"
+          },
+          {
+            "id": "Obligacion_si_se_trata_de_pagos_de_deudas_por_servicios_de_no_residentes_que_fueron_prestad_68a978",
+            "type": "Obligacion",
+            "label": "Verificar situación según punto 13.4",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si se trata de pagos de deudas por servicios de no residentes que fueron prestados y/o devengados hasta el 12/12/23, la entidad deberá verificar que la operació…"
+          }
+        ]
+      },
+      "output_chars": 3780
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "4.6.1 requisitos BOPREAL",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "4.6.1 requisitos BOPREAL",
+        "total_con_match": 177,
+        "resultados": [
+          {
+            "id": "Excepcion_el_pago_es_concretado_en_el_marco_de_lo_dispuesto_en_el_punto_4_8_4_por_un_clien_39bf70",
+            "type": "Excepcion",
+            "label": "Pago cliente BOPREAL Serie 1 ≥50% deudas elegibles",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El pago es concretado en el marco de lo dispuesto en el punto 4.8.4. por un cliente que suscribió BOPREAL Serie 1 por un monto igual o mayor al 50% del total pe…"
+          },
+          {
+            "id": "Excepcion_el_pago_es_concretado_en_el_marco_de_lo_dispuesto_en_el_punto_4_8_5_por_un_clien_92cc8a",
+            "type": "Excepcion",
+            "label": "Pago cliente BOPREAL Serie 1 ≥25% deudas elegibles",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El pago es concretado en el marco de lo dispuesto en el punto 4.8.5. por un cliente que suscribió BOPREAL Serie 1 por un monto igual o mayor al 25% del total pe…"
+          },
+          {
+            "id": "Restriccion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_c5bd18",
+            "type": "Restriccion",
+            "label": "Requisitos no aplicables a compras de títulos valores",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los requisitos previstos en los puntos 4.3.2.1. y 4.3.2.2. no resultarán aplicables en las compras de títulos valores que sean concretadas por los clientes con …"
+          },
+          {
+            "id": "Restriccion_requisito_minimo_suscripcion_bopreal_serie_1_para_punto_4_8_4_d8061b",
+            "type": "Restriccion",
+            "label": "Requisito mínimo suscripción BOPREAL Serie 1 para punto 4.8.4",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Clientes que suscribieron BOPREAL Serie 1 antes del 31/01/24 por monto igual o mayor al 50% del total pendiente de deudas elegibles para puntos 4.4 y 4.5"
+          },
+          {
+            "id": "Restriccion_capital_ordinario_de_nivel_1_con1_debera_ser_mayor_o_igual_al_4_5_sobre_el_activ_929a41",
+            "type": "Restriccion",
+            "label": "Límite mínimo COn1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Capital Ordinario de Nivel 1 (COn1) deberá ser mayor o igual al 4,5% sobre el activo total (70900000)"
+          },
+          {
+            "id": "Restriccion_accionistas_esta_es_una_linea_de_deduccion_conforme_punto_8_4_1_7_6229a7",
+            "type": "Restriccion",
+            "label": "Deducción accionistas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Accionistas. Esta es una línea de deducción conforme punto 8.4.1.7."
+          },
+          {
+            "id": "Restriccion_los_garantes_admisibles_se_limitan_a_los_estipulados_en_el_punto_5_4_1_los_spe_n_1cfa85",
+            "type": "Restriccion",
+            "label": "Limitación garantes admisibles CRC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los garantes admisibles se limitan a los estipulados en el punto 5.4.1. Los SPE no son garantes admisibles"
+          },
+          {
+            "id": "Obligacion_en_los_casos_encuadrados_en_los_puntos_7_6_3_2_y_7_6_3_4_en_la_medida_que_el_mon_a21b47",
+            "type": "Obligacion",
+            "label": "Presentar informe de auditor externo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En los casos encuadrados en los puntos 7.6.3.2. y 7.6.3.4., en la medida que el monto supere el equivalente de USD 25.000, la entidad deberá solicitar adicional…"
+          },
+          {
+            "id": "Excepcion_operaciones_comprendidas_en_punto_3_13_1_4_en_la_medida_que_sean_cursadas_en_for_98ff62",
+            "type": "Excepcion",
+            "label": "Excepción por operaciones punto 3.13.1.4",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones comprendidas en punto 3.13.1.4 en la medida que sean cursadas en forma automática por la entidad en su carácter de apoderada del beneficiario no res…"
+          },
+          {
+            "id": "Restriccion_partidas_pendientes_de_imputacion_saldos_deudores_otras_conforme_punto_8_4_1_10_832227",
+            "type": "Restriccion",
+            "label": "Deducción partidas pendientes imputación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Partidas pendientes de imputación - Saldos deudores - Otras, conforme punto 8.4.1.10."
+          }
+        ]
+      },
+      "output_chars": 3731
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "verificar balance auditado distribución asamblea accionistas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "verificar balance auditado distribución asamblea accionistas",
+        "total_con_match": 101,
+        "resultados": [
+          {
+            "id": "Obligacion_el_monto_total_abonado_por_este_concepto_a_accionistas_no_residentes_incluido_el_459761",
+            "type": "Obligacion",
+            "label": "Verificar monto no supere distribución de asamblea",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El monto total abonado por este concepto a accionistas no residentes, incluido el pago cuyo curso se está solicitando, no supere el monto en moneda local que le…"
+          },
+          {
+            "id": "Restriccion_accionistas_esta_es_una_linea_de_deduccion_conforme_punto_8_4_1_7_6229a7",
+            "type": "Restriccion",
+            "label": "Deducción accionistas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Accionistas. Esta es una línea de deducción conforme punto 8.4.1.7."
+          },
+          {
+            "id": "Excepcion_algunos_de_los_criterios_se_deberan_verificar_solo_al_momento_de_la_originacion__056c01",
+            "type": "Excepcion",
+            "label": "Verificación solo al origen",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Algunos de los criterios se deberán verificar sólo al momento de la originación o cuando se genere la posición, tal como en el caso de las garantías y las facil…"
+          },
+          {
+            "id": "Obligacion_verificar_calificacion_de_deuda_95aaf6",
+            "type": "Obligacion",
+            "label": "Verificar calificación de deuda",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "la obligación califica como una deuda por importaciones de bienes según lo indicado en el punto 10.2.4"
+          },
+          {
+            "id": "Obligacion_debera_verificar_que_la_documentacion_comercial_resulte_consistente_con_los_regi_174d75",
+            "type": "Obligacion",
+            "label": "Verificar consistencia documental",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberá verificar que la documentación comercial resulte consistente con los registros aduaneros, considerando las normas de declaración aduanera aplicables."
+          },
+          {
+            "id": "Obligacion_verificar_encuadre_en_excepciones_62459e",
+            "type": "Obligacion",
+            "label": "Verificar encuadre en excepciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se deberá verificar el encuadre en alguna de las situaciones previstas en los puntos 13.3.1. a 13.3.9. para permitir el acceso anticipado al mercado de cambios"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_deudas_comerciales_por_servicios_el_acceso_se_produce_a_partir_de__f30f77",
+            "type": "Obligacion",
+            "label": "Verificar deuda comercial declarada",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En el caso de deudas comerciales por servicios el acceso se produce a partir de la fecha de vencimiento, en la medida que se verifique que la operación se encue…"
+          },
+          {
+            "id": "Obligacion_la_entidad_debe_verificar_que_el_deudor_hubiese_tenido_acceso_para_realizar_el_p_20bbe8",
+            "type": "Obligacion",
+            "label": "Verificar acceso al pago del deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad debe verificar que el deudor hubiese tenido acceso para realizar el pago a su nombre por cumplimentar las disposiciones normativas aplicables"
+          },
+          {
+            "id": "Obligacion_si_se_trata_de_pagos_de_deudas_por_servicios_de_no_residentes_que_fueron_prestad_68a978",
+            "type": "Obligacion",
+            "label": "Verificar situación según punto 13.4",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Si se trata de pagos de deudas por servicios de no residentes que fueron prestados y/o devengados hasta el 12/12/23, la entidad deberá verificar que la operació…"
+          },
+          {
+            "id": "Obligacion_verificar_consistencia_de_mercaderia_e0fd42",
+            "type": "Obligacion",
+            "label": "Verificar consistencia de mercadería",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad verificó que las cantidades y descripciones de la mercadería de la factura de venta sean consistentes con aquellas que constan en la factura comercia…"
+          }
+        ]
+      },
+      "output_chars": 3699
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "entidad verificar conformidad BCRA dividendos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "entidad verificar conformidad BCRA dividendos",
+        "total_con_match": 461,
+        "resultados": [
+          {
+            "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_excepto_cuando_la_entidad_constate_q_339a9a",
+            "type": "Restriccion",
+            "label": "Conformidad previa BCRA para acceso cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se requerirá la conformidad previa del BCRA excepto cuando la entidad constate que el pago encuadra en alguna de las situaciones previstas en el punto 10.10.2. …"
+          },
+          {
+            "id": "Restriccion_la_entidad_debera_contar_con_la_conformidad_previa_del_bcra_en_el_caso_de_que_el_baef59",
+            "type": "Restriccion",
+            "label": "Conformidad previa para clientes en base ARCA",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá contar con la conformidad previa del BCRA en el caso de que el cliente sea una persona humana o jurídica incluida por la Agencia de Recaudació…"
+          },
+          {
+            "id": "Restriccion_la_entidad_debera_contar_con_la_conformidad_previa_del_bcra_excepto_que_cuente_a_c92140",
+            "type": "Restriccion",
+            "label": "Límite de activos externos líquidos USD 100.000",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá contar con la conformidad previa del BCRA excepto que cuente al momento de acceso al mercado de cambios con una declaración jurada del cliente…"
+          },
+          {
+            "id": "Excepcion_agotados_los_plazos_que_puede_otorgar_la_entidad_a_cargo_del_seguimiento_esta_ul_fc990c",
+            "type": "Excepcion",
+            "label": "Ampliación mayor de plazo con conformidad del BCRA",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Agotados los plazos que puede otorgar la entidad a cargo del seguimiento, esta última podrá solicitar la conformidad del BCRA para una ampliación mayor en la me…"
+          },
+          {
+            "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+            "type": "Obligacion",
+            "label": "Verificar documentación de utilidades y dividendos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad que concrete la oferta de suscripción en nombre del cliente deberá verificar el cumplimiento de los siguientes requisitos: Cuenta con la documentació…"
+          },
+          {
+            "id": "Obligacion_el_cambio_de_entidad_debera_quedar_registrado_en_el_bcra_1a8db4",
+            "type": "Obligacion",
+            "label": "Registrar cambio en el BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El cambio de entidad deberá quedar registrado en el BCRA"
+          },
+          {
+            "id": "Excepcion_este_requisito_no_sera_de_aplicacion_para_i_el_sector_publico_ii_todas_las_organ_70abd6",
+            "type": "Excepcion",
+            "label": "Excepciones a conformidad BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Este requisito no será de aplicación para: i) el sector público; ii) todas las organizaciones empresariales, cualquiera sea su forma societaria, en donde el Est…"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_registrar_ante_el_bcra_toda_operacion_que_realice_en_el_mercad_a05d6d",
+            "type": "Obligacion",
+            "label": "Registrar operaciones ante BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad deberá registrar ante el BCRA toda operación que realice en el mercado de cambios."
+          },
+          {
+            "id": "Obligacion_en_todos_los_casos_la_entidad_debera_al_momento_de_dar_acceso_al_mercado_de_camb_f9e8cf",
+            "type": "Obligacion",
+            "label": "Contar con convalidación del BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En todos los casos la entidad deberá, al momento de dar acceso al mercado de cambios, contar con la convalidación de la situación de la operación en el sistema …"
+          },
+          {
+            "id": "Restriccion_conformidad_previa_bcra_requerida_776be0",
+            "type": "Restriccion",
+            "label": "Conformidad previa BCRA requerida",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de tratarse de prefinanciaciones de exportaciones del exterior pendientes al 31/08/19 y que no fueron liquidados en el mercado de cambios se requerirá l…"
+          }
+        ]
+      },
+      "output_chars": 3820
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa"
+      },
+      "output": {
+        "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+        "type": "Obligacion",
+        "label": "Verificar documentación de utilidades y dividendos",
+        "properties": {
+          "descripcion": "La entidad que concrete la oferta de suscripción en nombre del cliente deberá verificar el cumplimiento de los siguientes requisitos: Cuenta con la documentación que le permite avalar que la deuda pendiente corresponde a utilidades y dividendos de balances cerrados y auditados.",
+          "tipo": "verificacion",
+          "plazo": "Previo a la suscripción"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+          }
+        ]
+      },
+      "output_chars": 740
+    },
+    {
+      "n": 11,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+        "label": "Verificar documentación de utilidades y dividendos",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_entidad_autorizada_exterior",
+            "vecino_label": "Entidades autorizadas a operar en cambios (Exterior)",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "vecino_label": "Suscripción de Bonos BOPREAL",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 1203
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+      },
+      "output": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+        "type": "Restriccion",
+        "label": "Límite de suscripción BOPREAL",
+        "properties": {
+          "tipo": "limite_cuantitativo",
+          "description": "Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 646
+    },
+    {
+      "n": 13,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+        "label": "Límite de suscripción BOPREAL",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+              }
+            ]
+          },
+          {
+            "relation": "limita",
+            "vecino_id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "vecino_label": "Suscripción de Bonos BOPREAL",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 825
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "balance cerrado auditado utilidades dividendos",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "balance cerrado auditado utilidades dividendos",
+        "total_con_match": 31,
+        "resultados": [
+          {
+            "id": "Operacion_pago_utilidades_y_dividendos_14dfc1",
+            "type": "Operacion",
+            "label": "Pago utilidades y dividendos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago de utilidades y dividendos que correspondan a balances cerrados y auditados"
+          },
+          {
+            "id": "Operacion_pago_de_utilidades_y_dividendos_626c9d",
+            "type": "Operacion",
+            "label": "Pago de utilidades y dividendos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago de utilidades y dividendos a accionistas no residentes"
+          },
+          {
+            "id": "Obligacion_las_utilidades_y_dividendos_correspondan_a_balances_cerrados_y_auditados_5b9490",
+            "type": "Obligacion",
+            "label": "Verificar balances cerrados y auditados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las utilidades y dividendos correspondan a balances cerrados y auditados"
+          },
+          {
+            "id": "Restriccion_el_monto_total_abonado_por_concepto_de_utilidades_y_dividendos_a_accionistas_no__aae56d",
+            "type": "Restriccion",
+            "label": "Límite en monto de utilidades y dividendos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto total abonado por concepto de utilidades y dividendos a accionistas no residentes no debe superar el monto en moneda local según la distribución determ…"
+          },
+          {
+            "id": "Restriccion_el_monto_total_de_transferencias_por_el_concepto_de_utilidades_y_dividendos_curs_36fbfb",
+            "type": "Restriccion",
+            "label": "Límite de transferencias al 30% de aportes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto total de transferencias por el concepto de utilidades y dividendos cursadas a través del mercado de cambios desde el 17/01/20, incluido el pago cuyo cu…"
+          }
+        ]
+      },
+      "output_chars": 1693
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GgxaBcQhxmgxhfMxqd",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre BOPREAL y los requisitos para su suscripción.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Bzd5k93LBLkn4gxrdsRzUE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "BOPREAL suscripción requisitos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BSRgdti5Szj6dp4KUPWYNu",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "BOPREAL bonos dividendos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1508,
+          "output_tokens": 170,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7Gh4dKJ6CHmj3WgiToT",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Veo que hay una obligación específica sobre verificar requisitos. Déjame ver los detalles de esa obligación y también explorar la restricción sobre límites de suscripción para dividendos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01RhBmZYh5hdVgxSEpGMeGSm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01ASG27ohZzWBsUQhujNp5aD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01364mkHsTHravcu3rianNoh",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_los_clientes_podran_suscribir_bonos_para_la_reconstruccion_de_una_argentina_libr_8ac5ef"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4298
+          },
+          "cache_creation_input_tokens": 4298,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 268,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GhEbLwnanXFftjDXZy",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora necesito ver qué dice el punto 4.6.2 sobre los requisitos específicos que debe verificar la entidad. Déjame buscar esa información.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01US8nK4NwDUPENq5JLEVvtD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 4.6.2 requisitos suscripción",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01WvsrzdcTwGkUWMBFqSEXjU",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "4.6.1 requisitos BOPREAL",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 997
+          },
+          "cache_creation_input_tokens": 997,
+          "cache_read_input_tokens": 4298,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 200,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GhNgGf29bStFZMJS9V",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Necesito encontrar específicamente qué dice el punto 4.6.1 y 4.6.2. Déjame buscar de forma más directa.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0113fVi1M1gein6k4R1vLYNE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "verificar balance auditado distribución asamblea accionistas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01AzdxJjmmTvr7BiS7Rq81PJ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "entidad verificar conformidad BCRA dividendos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 3271
+          },
+          "cache_creation_input_tokens": 3271,
+          "cache_read_input_tokens": 5295,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 193,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GhXqgMEYogQ1wYfvnu",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré la obligación específica. Déjame ver los detalles completos de esa obligación sobre verificación de documentación.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_011d8q5kfsdoGaB3J4J6gzNn",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01LePQrvuZPGnQhULRmGR1SB",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_3efeaa",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2882
+          },
+          "cache_creation_input_tokens": 2882,
+          "cache_read_input_tokens": 8566,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 230,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7Ghhw9EozXepn4ghrEV",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora tengo la información sobre qué debe verificar. Ahora necesito confirmar el tope de suscripción. Ya vi que hay una restricción sobre el límite, pero déjame verificar si hay más detalles sobre el tope específico.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01E2dFBkXxoRgc42QoYzrVRb",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_limite_de_suscripcion_bopreal_737452"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_016UFd3vFaNQPLQXDudaLxvZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 975
+          },
+          "cache_creation_input_tokens": 975,
+          "cache_read_input_tokens": 11448,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 212,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GhsTPB1A12AB4XWUYS",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Tengo toda la información necesaria. Déjame verificar si hay algún otro requisito específico que deba mencionar sobre la verificación.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01WQhLbgp5BoBYjG2ZbirANj",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "balance cerrado auditado utilidades dividendos",
+              "limite": 5
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 792
+          },
+          "cache_creation_input_tokens": 792,
+          "cache_read_input_tokens": 12423,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 123,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7Ghz6FESRnkUUfxhFsr",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo toda la información necesaria para responder la pregunta. Déjame compilar la respuesta basada en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"La entidad que concrete la suscripción de bonos BOPREAL por dividendos pendientes de pago debe verificar que: (1) la deuda pendiente corresponde a utilidades y dividendos de balances cerrados y auditados, según la documentación que le permite avalar esta condición. Esta verificación debe realizarse previo a la suscripción.\\n\\nRespecto al tope de suscripción, los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del 01/09/19 según la distribución determinada por la asamblea de accionistas, ajustado por el último IPC disponible.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"\n    },\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.13. Repatriaciones de inversiones directas y otras compras de moneda extranjera por (parte 2)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 730
+          },
+          "cache_creation_input_tokens": 730,
+          "cache_read_input_tokens": 13215,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 385,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

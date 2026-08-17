@@ -1,0 +1,786 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_enc_run3_r1",
+    "grafo": "run_3",
+    "kg_path": "data/experiment/run_3_ppf_core/kg.json",
+    "kg_sha256": "12c226e22b8fdc8f46999cae7f1eb808930e71f5dfe803f3a4f637a88348c410",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-027",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 96,
+    "pos_orden_efectivo": 10,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-16T19:13:10",
+    "timestamp_fin": "2026-08-16T19:13:19",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "98d3ee73a23c214b",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 6
+    },
+    "fidelidad_sin_evaluar": true,
+    "encadenamiento": {
+      "unidad": "ev2_encadenamiento",
+      "rep": 1,
+      "reps_previstas": 3,
+      "label": "ev2_enc_run3_r1",
+      "tipo": "parcial_disparado",
+      "veredicto_base": "parcial",
+      "id_opaco_base": "EV2R-4b149f2b86",
+      "label_base": "ev2_base_run3",
+      "sha256_respuesta_base": "11435a61fd9e2838bcf0d3e148dde2dec7758a412d04f093c9ad99961bce9218",
+      "regla": "protocolo §3: re-corrida N=3 disparada por veredicto base 'parcial'; auditoria_correcto = muestra 10 % de 'correcto' con semilla auditoria-ev2-v1"
+    }
+  },
+  "pregunta": "¿Sobre qué información se practica la revisión de la cartera comercial para clasificar a los deudores?",
+  "trace": {
+    "qid": "EV2F-027",
+    "question": "¿Sobre qué información se practica la revisión de la cartera comercial para clasificar a los deudores?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "revisión cartera comercial clasificación deudores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"revisión cartera comercial clasificación deudores\", \"total_con_match\": 145, \"resultados\": [{\"id\": \"EntidadFinanciera_deudor_cartera_comercial\", \"type\": \"EntidadFinanciera\", \"label\": \"Deudores cartera comercial\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: deudor cartera comercial\"}, {\"id\": \"Operacion_revision_de_cartera\", \"type\": \"Operacion\", \"label\": \"Revisión cartera comercial\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Operacion_revision_de_clasificacion_de_deudores\", \"type\": \"Operacion\", \"label\": \"Revisión de clasificación trimestral\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En el curso de cada trimestre calendario, respecto de clientes individualmente considerados cuyas financiaciones comprendidas en algún momento sean equivalentes…\"}, {\"id\": \"Operacion_clasificacion_de_cartera\", \"type\": … [+1586 chars]",
+        "output_chars": 2786
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "cartera comercial información deudores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"cartera comercial información deudores\", \"total_con_match\": 157, \"resultados\": [{\"id\": \"EntidadFinanciera_deudor_cartera_comercial\", \"type\": \"EntidadFinanciera\", \"label\": \"Deudores cartera comercial\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"categoria: deudor cartera comercial\"}, {\"id\": \"Operacion_refinanciacion_de_los_deudores_de_cartera_de_consumo_o_vivienda\", \"type\": \"Operacion\", \"label\": \"Refinanciación de deudores\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Refinanciación de los deudores de cartera de consumo o vivienda\"}, {\"id\": \"Operacion_revision_de_cartera\", \"type\": \"Operacion\", \"label\": \"Revisión cartera comercial\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada\"}, {\"id\": \"Operacion_clasificacion_de_deudores_en_situacion_irregular\", \"type\": \"Operacion\", \"label\": \"Incremento cartera irregular\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: clasificación de deudores en situación irregular\"}, {\"id\": \"Obligacion_informacion_a_la_sefyc_sobre_incrementos_de_la_cartera_irregular\", \"type\": \"Obligacion\", \"label\": \"Informar incrementos c… [+1487 chars]",
+        "output_chars": 2687
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_revision_de_cartera"
+        },
+        "output_truncado": "{\"id\": \"Operacion_revision_de_cartera\", \"type\": \"Operacion\", \"label\": \"Revisión cartera comercial\", \"properties\": {\"tipo\": \"revisión de cartera\", \"description\": \"La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}",
+        "output_chars": 388
+      },
+      {
+        "n": 4,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_revision_de_cartera",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Operacion_revision_de_cartera\", \"label\": \"Revisión cartera comercial\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"Obligacion_proporcionar_informacion_financiera\", \"vecino_label\": \"Proporcionar información financiera\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"limita\", \"vecino_id\": \"Restriccion_parametros_sectoriales_de_revision\", \"vecino_label\": \"Parámetros sectoriales de revisión\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}], \"entrantes_truncado\": false}",
+        "output_chars": 1000
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_proporcionar_informacion_financiera"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_proporcionar_informacion_financiera\", \"type\": \"Obligacion\", \"label\": \"Proporcionar información financiera\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"Los clientes deberán proporcionar información financiera actualizada (estados financieros o contables e información complementaria, proyectos de inversión, etc.) ante requerimiento de las entidades\"}, \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}",
+        "output_chars": 513
+      },
+      {
+        "n": 6,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_proporcionar_informacion_financiera",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_proporcionar_informacion_financiera\", \"label\": \"Proporcionar información financiera\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_clasificacion_deudores_actual_pdf\", \"vecino_label\": \"Clasificación de Deudores\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"EntidadFinanciera_sujeto_obligado\", \"vecino_label\": \"Sujetos obligados\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"requiere\", \"vecino_id\": \"Operacion_revision_de_cartera\", \"vecino_label\": \"Revisión cartera comercial\", \"provenances\": [{\"source_doc\": \"TO_clasificacion_deudores_actual.pdf\", \"location\": \"Punto 6.1. Información básica.\"}]}], \"entrantes_truncado\": false}",
+        "output_chars": 972
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1461,
+        "output_tokens": 175,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.602
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3543,
+        "output_tokens": 99,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.315
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3774,
+        "output_tokens": 120,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.677
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 100,
+        "cache_read": 0,
+        "cache_write": 4251,
+        "latency_s": 1.113
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 121,
+        "cache_read": 4251,
+        "cache_write": 256,
+        "latency_s": 1.239
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 196,
+        "cache_read": 4507,
+        "cache_write": 479,
+        "latency_s": 2.177
+      }
+    ],
+    "final_json": {
+      "respuesta": "La revisión de la cartera comercial para clasificar a los deudores se practica sobre la base de la información financiera actualizada. Específicamente, los clientes deberán proporcionar información financiera actualizada que incluye: estados financieros o contables, información complementaria, y proyectos de inversión, ante requerimiento de las entidades financieras.",
+      "citas": [
+        {
+          "source_doc": "TO_clasificacion_deudores_actual.pdf",
+          "location": "Punto 6.1. Información básica."
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta:\n\n```json\n{\n  \"respuesta\": \"La revisión de la cartera comercial para clasificar a los deudores se practica sobre la base de la información financiera actualizada. Específicamente, los clientes deberán proporcionar información financiera actualizada que incluye: estados financieros o contables, información complementaria, y proyectos de inversión, ante requerimiento de las entidades financieras.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 6.1. Información básica.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 6,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_clasificacion_deudores_actual.pdf",
+        "location": "Punto 6.1. Información básica."
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 8793,
+    "tokens_out": 811,
+    "cache_read": 8758,
+    "cache_write": 4986,
+    "cost_usd": 0.019956,
+    "latency_s": 9.132,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "revisión cartera comercial clasificación deudores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "revisión cartera comercial clasificación deudores",
+        "total_con_match": 145,
+        "resultados": [
+          {
+            "id": "EntidadFinanciera_deudor_cartera_comercial",
+            "type": "EntidadFinanciera",
+            "label": "Deudores cartera comercial",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "categoria: deudor cartera comercial"
+          },
+          {
+            "id": "Operacion_revision_de_cartera",
+            "type": "Operacion",
+            "label": "Revisión cartera comercial",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores_en_situacion_irregular",
+            "type": "Operacion",
+            "label": "Incremento cartera irregular",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: clasificación de deudores en situación irregular"
+          },
+          {
+            "id": "Operacion_revision_de_clasificacion_de_deudores",
+            "type": "Operacion",
+            "label": "Revisión de clasificación trimestral",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En el curso de cada trimestre calendario, respecto de clientes individualmente considerados cuyas financiaciones comprendidas en algún momento sean equivalentes…"
+          },
+          {
+            "id": "Operacion_clasificacion_de_cartera",
+            "type": "Operacion",
+            "label": "Agrupación de cartera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: clasificación de cartera"
+          },
+          {
+            "id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Clasificación de Deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "materia: clasificacion_deudores; archivo: TO_clasificacion_deudores_actual.pdf; version: vigente"
+          },
+          {
+            "id": "Operacion_refinanciacion_de_los_deudores_de_cartera_de_consumo_o_vivienda",
+            "type": "Operacion",
+            "label": "Refinanciación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Refinanciación de los deudores de cartera de consumo o vivienda"
+          },
+          {
+            "id": "Restriccion_no_seran_objeto_de_clasificacion_quienes_resulten_deudores_en_operaciones_de_ces",
+            "type": "Restriccion",
+            "label": "Exclusión de deudores en cesión",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No serán objeto de clasificación quienes resulten deudores en operaciones de cesión sin responsabilidad para el cedente"
+          },
+          {
+            "id": "Obligacion_en_el_curso_del_ejercicio_economico_en_los_demas_casos_por_lo_que_a_su_finalizac",
+            "type": "Obligacion",
+            "label": "Revisión totalidad cartera anual",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el curso del ejercicio económico, en los demás casos, por lo que a su finalización la revisión deberá haber alcanzado a la totalidad de la cartera comercial …"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores",
+            "type": "Operacion",
+            "label": "Tarea de clasificación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: clasificación de deudores"
+          }
+        ]
+      },
+      "output_chars": 2786
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "cartera comercial información deudores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "cartera comercial información deudores",
+        "total_con_match": 157,
+        "resultados": [
+          {
+            "id": "EntidadFinanciera_deudor_cartera_comercial",
+            "type": "EntidadFinanciera",
+            "label": "Deudores cartera comercial",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "categoria: deudor cartera comercial"
+          },
+          {
+            "id": "Operacion_refinanciacion_de_los_deudores_de_cartera_de_consumo_o_vivienda",
+            "type": "Operacion",
+            "label": "Refinanciación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Refinanciación de los deudores de cartera de consumo o vivienda"
+          },
+          {
+            "id": "Operacion_revision_de_cartera",
+            "type": "Operacion",
+            "label": "Revisión cartera comercial",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada"
+          },
+          {
+            "id": "Operacion_clasificacion_de_deudores_en_situacion_irregular",
+            "type": "Operacion",
+            "label": "Incremento cartera irregular",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: clasificación de deudores en situación irregular"
+          },
+          {
+            "id": "Obligacion_informacion_a_la_sefyc_sobre_incrementos_de_la_cartera_irregular",
+            "type": "Obligacion",
+            "label": "Informar incrementos cartera irregular",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Información a la SEFyC sobre incrementos de la cartera irregular"
+          },
+          {
+            "id": "Obligacion_informacion_de_deudores_segun_regimenes",
+            "type": "Obligacion",
+            "label": "Información de deudores según regímenes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los deudores cuyas financiaciones se encuentren cubiertas totalmente con garantías preferidas A deberán ser informados según las normas que se establezcan en lo…"
+          },
+          {
+            "id": "Obligacion_la_informacion_que_surge_de_la_factura_comercial_sea_consistente_con_la_informac",
+            "type": "Obligacion",
+            "label": "Verificar consistencia de información de factura",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La información que surge de la factura comercial sea consistente con la información que figura en el formulario ZFE del registro de ingreso aduanero"
+          },
+          {
+            "id": "EntidadFinanciera_deudor",
+            "type": "EntidadFinanciera",
+            "label": "Deudores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "categoria: deudor"
+          },
+          {
+            "id": "EntidadFinanciera_banco_comercial",
+            "type": "EntidadFinanciera",
+            "label": "Bancos comerciales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "categoria: banco comercial"
+          },
+          {
+            "id": "Operacion_operaciones_de_titulizacion_y_venta_o_cesion_de_cartera_con_responsabilidad",
+            "type": "Operacion",
+            "label": "Titulización cartera",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Operaciones de titulización y venta o cesión de cartera con responsabilidad"
+          }
+        ]
+      },
+      "output_chars": 2687
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_revision_de_cartera"
+      },
+      "output": {
+        "id": "Operacion_revision_de_cartera",
+        "type": "Operacion",
+        "label": "Revisión cartera comercial",
+        "properties": {
+          "tipo": "revisión de cartera",
+          "description": "La revisión de la cartera comercial se practicará sobre la base de la información financiera actualizada"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 6.1. Información básica."
+          }
+        ]
+      },
+      "output_chars": 388
+    },
+    {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_revision_de_cartera",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Operacion_revision_de_cartera",
+        "label": "Revisión cartera comercial",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 1,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "vecino_label": "Clasificación de Deudores",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          },
+          {
+            "relation": "requiere",
+            "vecino_id": "Obligacion_proporcionar_informacion_financiera",
+            "vecino_label": "Proporcionar información financiera",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "limita",
+            "vecino_id": "Restriccion_parametros_sectoriales_de_revision",
+            "vecino_label": "Parámetros sectoriales de revisión",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 1000
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_proporcionar_informacion_financiera"
+      },
+      "output": {
+        "id": "Obligacion_proporcionar_informacion_financiera",
+        "type": "Obligacion",
+        "label": "Proporcionar información financiera",
+        "properties": {
+          "tipo": "presentacion_informativa",
+          "description": "Los clientes deberán proporcionar información financiera actualizada (estados financieros o contables e información complementaria, proyectos de inversión, etc.) ante requerimiento de las entidades"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_clasificacion_deudores_actual.pdf",
+            "location": "Punto 6.1. Información básica."
+          }
+        ]
+      },
+      "output_chars": 513
+    },
+    {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_proporcionar_informacion_financiera",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Obligacion_proporcionar_informacion_financiera",
+        "label": "Proporcionar información financiera",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 1,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+            "vecino_label": "Clasificación de Deudores",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "EntidadFinanciera_sujeto_obligado",
+            "vecino_label": "Sujetos obligados",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "requiere",
+            "vecino_id": "Operacion_revision_de_cartera",
+            "vecino_label": "Revisión cartera comercial",
+            "provenances": [
+              {
+                "source_doc": "TO_clasificacion_deudores_actual.pdf",
+                "location": "Punto 6.1. Información básica."
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 972
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GuqfZxLWoNi6Be5Hk1",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre la revisión de cartera comercial y clasificación de deudores en el Knowledge Graph.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01VU22CdS1BY3geUNHVjGBdQ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "revisión cartera comercial clasificación deudores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01DiYQJL7DAk8gB53nQhuUqV",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "cartera comercial información deudores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1461,
+          "output_tokens": 175,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7Guxf1JTg32DBck388o",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto, encontré un nodo muy relevante. Voy a ver los detalles de la operación \"Revisión cartera comercial\":",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01NKjonYjsgHuwGiapMafN51",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_revision_de_cartera"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3543,
+          "output_tokens": 99,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7Gv4BtSTaJqBFhAAaH3",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Ahora voy a explorar las relaciones de este nodo para obtener más detalles sobre qué información específica se utiliza:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01REeg2WvGd1hYwfKQ2VFg59",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_revision_de_cartera",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3774,
+          "output_tokens": 120,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GvBNyi2MEidKxbuBMh",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el detalle de la obligación \"Proporcionar información financiera\" para conocer qué información específica se requiere:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01QsXcKPVWHR89m63CmSwzxt",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_proporcionar_informacion_financiera"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4251
+          },
+          "cache_creation_input_tokens": 4251,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 100,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GvGNs6rrtKEcFL7CfE",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a explorar las relaciones de esta obligación para ver si hay más detalles sobre qué información se utiliza:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01XogtAhSFQwGM6tZCJXeGJE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_proporcionar_informacion_financiera",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 256
+          },
+          "cache_creation_input_tokens": 256,
+          "cache_read_input_tokens": 4251,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 121,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7GvMVSn1tvEpyy41y8u",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta:\n\n```json\n{\n  \"respuesta\": \"La revisión de la cartera comercial para clasificar a los deudores se practica sobre la base de la información financiera actualizada. Específicamente, los clientes deberán proporcionar información financiera actualizada que incluye: estados financieros o contables, información complementaria, y proyectos de inversión, ante requerimiento de las entidades financieras.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_clasificacion_deudores_actual.pdf\",\n      \"location\": \"Punto 6.1. Información básica.\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 479
+          },
+          "cache_creation_input_tokens": 479,
+          "cache_read_input_tokens": 4507,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 196,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

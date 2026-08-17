@@ -1,0 +1,1605 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_enc_v3_r1",
+    "grafo": "v3",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-010",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 31,
+    "pos_orden_efectivo": 4,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-08-16T18:50:09",
+    "timestamp_fin": "2026-08-16T18:50:34",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 11
+    },
+    "fidelidad_sin_evaluar": true,
+    "encadenamiento": {
+      "unidad": "ev2_encadenamiento",
+      "rep": 1,
+      "reps_previstas": 3,
+      "label": "ev2_enc_v3_r1",
+      "tipo": "parcial_disparado",
+      "veredicto_base": "parcial",
+      "id_opaco_base": "EV2R-cc9fe3cb38",
+      "label_base": "ev2_base_v3",
+      "sha256_respuesta_base": "7855fb99106c5046074c3cb924e962a906fa2057189e03815d3f9fc5b967247e",
+      "regla": "protocolo §3: re-corrida N=3 disparada por veredicto base 'parcial'; auditoria_correcto = muestra 10 % de 'correcto' con semilla auditoria-ev2-v1"
+    }
+  },
+  "pregunta": "Para imputar una donación recibida desde el exterior necesito entender la categoría cambiaria de transferencias corrientes: ¿cómo se define y qué operaciones incluye?",
+  "trace": {
+    "qid": "EV2F-010",
+    "question": "Para imputar una donación recibida desde el exterior necesito entender la categoría cambiaria de transferencias corrientes: ¿cómo se define y qué operaciones incluye?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencias corrientes categoría cambiaria",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencias corrientes categoría cambiaria\", \"total_con_match\": 47, \"resultados\": [{\"id\": \"Sujeto_entidad_cambiaria\", \"type\": \"Sujeto\", \"label\": \"Entidades cambiarias\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambiarias del exterior', 'Compañía cambista del exterior']\"}, {\"id\": \"Operacion_transferencias_al_exterior_ce7f17\", \"type\": \"Operacion\", \"label\": \"Transferencias al exterior\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Transferencias al exterior que requieren autorización previa\"}, {\"id\": \"Restriccion_sujecion_a_norma_cambiaria_6e1f79\", \"type\": \"Restriccion\", \"label\": \"Sujeción a norma cambiaria\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cuando se prevea la entrega efectiva de instrumentos operados en el mercado de cambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un…\"}, {\"id\": \"Operacion_asignacion_de_categoria_de_deudor_f7053f\", \"type\": \"Operacion\", \"label\": \"Asignación de categoría de deudor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Asignación de categoría de endeudamiento\"}, {\"id\": \"Operacion_transferencias_por_ayud… [+2086 chars]",
+        "output_chars": 3286
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donación exterior transferencia",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"donación exterior transferencia\", \"total_con_match\": 138, \"resultados\": [{\"id\": \"Obligacion_en_caso_de_que_la_transferencia_corresponda_a_la_misma_moneda_en_la_que_esta_den_1dffe3\", \"type\": \"Obligacion\", \"label\": \"Débito monto enviado al exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En caso de que la transferencia corresponda a la misma moneda en la que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior.\"}, {\"id\": \"Operacion_transferencia_divisas_al_exterior_personas_0745bb\", \"type\": \"Operacion\", \"label\": \"Transferencia divisas al exterior personas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior\"}, {\"id\": \"Operacion_operaciones_arbitraje_sin_transferencia_exterior_259e30\", \"type\": \"Operacion\", \"label\": \"Operaciones arbitraje sin transferencia exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Arbitraje sin transferencias al exterior\"}, {\"id\": \"Operacion_transferencia_fondos_exterior_cliente_no_residente_515924\", \"type\": \"Operacion\", \"label\": \"Transferencia fondos… [+2037 chars]",
+        "output_chars": 3237
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_transferencia_corriente_4f3e0c"
+        },
+        "output_truncado": "{\"id\": \"Operacion_transferencia_corriente_4f3e0c\", \"type\": \"Operacion\", \"label\": \"Transferencia corriente\", \"properties\": {\"tipo\": \"transferencia_corriente\", \"description\": \"Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente de otra economía, sin recibir a cambio una contraprestación con valor económico.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10. Transferencias corrientes (ingreso secundario).\"}]}",
+        "output_chars": 560
+      },
+      {
+        "n": 4,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_transferencia_corriente_4f3e0c",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_transferencia_corriente_4f3e0c\", \"label\": \"Transferencia corriente\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10. Transferencias corrientes (ingreso secundario).\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 451
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donación ingreso secundario transferencia corriente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"donación ingreso secundario transferencia corriente\", \"total_con_match\": 123, \"resultados\": [{\"id\": \"Operacion_transferencia_corriente_4f3e0c\", \"type\": \"Operacion\", \"label\": \"Transferencia corriente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente…\"}, {\"id\": \"Operacion_ingreso_de_divisas_08f943\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: ingreso_de_divisas\"}, {\"id\": \"Operacion_transferencia_personal_715cdd\", \"type\": \"Operacion\", \"label\": \"Transferencia personal\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas.\"}, {\"id\": \"Operacion_transferencia_de_activos_975aee\", \"type\": \"Operacion\", \"label\": \"Transferencia de activos\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: transferencia de derechos de crédito\"}, {\"id\": \"Excepcion_las_operaciones_de_ingreso_de_divisas_pueden_negociarse_en_el_mercado_segun_las__8834e6\", \"type\": \"Excepc… [+1882 chars]",
+        "output_chars": 3082
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencias corrientes operaciones incluidas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencias corrientes operaciones incluidas\", \"total_con_match\": 199, \"resultados\": [{\"id\": \"Restriccion_las_operaciones_de_arbitraje_sin_transferencias_al_exterior_debitadas_de_cuenta__80e16a\", \"type\": \"Restriccion\", \"label\": \"Arbitraje fondos en moneda local limitado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las operaciones de arbitraje sin transferencias al exterior debitadas de cuenta en moneda local (no extranjera) del cliente sólo podrán ser realizadas sin confo…\"}, {\"id\": \"Operacion_operaciones_no_dvp_05da87\", \"type\": \"Operacion\", \"label\": \"Operaciones no DvP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: Operaciones en que se entrega efectivo sin recibir contrapartida o se entregan valores sin pago de efectivo\"}, {\"id\": \"Operacion_operaciones_con_qccp_484d1c\", \"type\": \"Operacion\", \"label\": \"Operaciones con QCCP\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: operaciones con entidades de contraparte central calificadas\"}, {\"id\": \"Operacion_operaciones_a_termino_39e8e1\", \"type\": \"Operacion\", \"label\": \"Operaciones a término\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales la liquidación está pactada en un pl… [+1368 chars]",
+        "output_chars": 2568
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donación",
+          "limite": 15
+        },
+        "output_truncado": "{\"consulta\": \"donación\", \"total_con_match\": 1, \"resultados\": [{\"id\": \"Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f\", \"type\": \"Obligacion\", \"label\": \"Verificar constancia de aceptación de donación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la don…\"}]}",
+        "output_chars": 465
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f\", \"type\": \"Obligacion\", \"label\": \"Verificar constancia de aceptación de donación\", \"properties\": {\"descripcion\": \"Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la donación por parte del Ministerio de Salud de la Nación\", \"tipo\": \"calculo\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.6. Otras disposiciones.\"}]}",
+        "output_chars": 570
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "ingreso secundario ayuda familiar remesas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"ingreso secundario ayuda familiar remesas\", \"total_con_match\": 78, \"resultados\": [{\"id\": \"Operacion_remision_de_ayuda_familiar_4f9dc9\", \"type\": \"Operacion\", \"label\": \"Remisión de ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Remisión de ayuda familiar en moneda extranjera\"}, {\"id\": \"Operacion_transferencias_por_ayuda_familiar_cf2ef0\", \"type\": \"Operacion\", \"label\": \"Transferencias por ayuda familiar\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, {\"id\": \"Operacion_ingreso_de_divisas_08f943\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: ingreso_de_divisas\"}, {\"id\": \"Excepcion_las_operaciones_de_ingreso_de_divisas_pueden_negociarse_en_el_mercado_segun_las__8834e6\", \"type\": \"Excepcion\", \"label\": \"Condiciones y plazos del BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las operaciones de ingreso de divisas pueden negociarse en el mercado según las condiciones y plazos que establezca el BCRA\"}, {\"id\": \"Obligacion_ingreso_y_liquidacion_en_plazo_59fbe3\", \"type\": \"Obligacion\", \"label\": \"Ingreso y liquidación en pla… [+1622 chars]",
+        "output_chars": 2822
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0"
+        },
+        "output_truncado": "{\"id\": \"Operacion_transferencias_por_ayuda_familiar_cf2ef0\", \"type\": \"Operacion\", \"label\": \"Transferencias por ayuda familiar\", \"properties\": {\"tipo\": \"Ingreso y remisión de transferencias en concepto de ayuda familiar\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.2. Operaciones cursadas a través del Sistema de Monedas Locales (SML).\"}]}",
+        "output_chars": 382
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_remision_de_ayuda_familiar_4f9dc9"
+        },
+        "output_truncado": "{\"id\": \"Operacion_remision_de_ayuda_familiar_4f9dc9\", \"type\": \"Operacion\", \"label\": \"Remisión de ayuda familiar\", \"properties\": {\"tipo\": \"Transferencia de fondos\", \"description\": \"Remisión de ayuda familiar en moneda extranjera\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.9. Compra de moneda extranjera por parte de personas humanas residentes para la for\"}]}",
+        "output_chars": 404
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 6.10 transferencias corrientes ingreso secundario",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"punto 6.10 transferencias corrientes ingreso secundario\", \"total_con_match\": 196, \"resultados\": [{\"id\": \"Restriccion_exclusion_de_operaciones_del_punto_10_6_6_f2098b\", \"type\": \"Restriccion\", \"label\": \"Exclusión de operaciones del punto 10.6.6\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los pagos diferidos de importaciones no comprendidas en el punto 10.6.6. y que se verifiquen los restantes requisitos normativos aplicables\"}, {\"id\": \"Obligacion_para_importaciones_con_registro_aduanero_hasta_12_12_23_la_entidad_debe_verifica_918dbf\", \"type\": \"Obligacion\", \"label\": \"Verificación situación según punto 10.11\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para importaciones con registro aduanero hasta 12/12/23, la entidad debe verificar que operación encuadra en situaciones previstas en punto 10.11\"}, {\"id\": \"Restriccion_partidas_pendientes_de_imputacion_saldos_deudores_otras_conforme_punto_8_4_1_10_832227\", \"type\": \"Restriccion\", \"label\": \"Deducción partidas pendientes imputación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Partidas pendientes de imputación - Saldos deudores - Otras, conforme punto 8.4.1.10.\"}, {\"id\": \"Excepcion_en_caso_de_tratarse_de_fletes… [+2577 chars]",
+        "output_chars": 3777
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencia corriente bienes servicios activos financieros",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencia corriente bienes servicios activos financieros\", \"total_con_match\": 359, \"resultados\": [{\"id\": \"Operacion_transferencia_corriente_4f3e0c\", \"type\": \"Operacion\", \"label\": \"Transferencia corriente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente…\"}, {\"id\": \"Operacion_transferencia_de_activos_975aee\", \"type\": \"Operacion\", \"label\": \"Transferencia de activos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: transferencia de derechos de crédito\"}, {\"id\": \"Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje_518b0a\", \"type\": \"Restriccion\", \"label\": \"Cláusulas abusivas nulas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En los contratos celebrados entre el usuario de servicios financieros y los sujetos obligados, se tendrán por no escritas las cláusulas que desnaturalicen las o…\"}, {\"id\": \"Restriccion_los_usuarios_de_servicios_financieros_tienen_derecho_a_condiciones_de_trato_equi_dc9846\", \"type\": \"Restriccion\", \"label\": \"Trato equitativo y digno\", \"token… [+2187 chars]",
+        "output_chars": 3387
+      },
+      {
+        "n": 14,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_transferencia_corriente_4f3e0c",
+          "direccion": "entrantes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_transferencia_corriente_4f3e0c\", \"label\": \"Transferencia corriente\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 180
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1477,
+        "output_tokens": 166,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.401
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3891,
+        "output_tokens": 103,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.278
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 115,
+        "cache_read": 0,
+        "cache_write": 4166,
+        "latency_s": 1.269
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 172,
+        "cache_read": 4166,
+        "cache_write": 288,
+        "latency_s": 6.547
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 104,
+        "cache_read": 4454,
+        "cache_write": 2170,
+        "latency_s": 1.443
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 194,
+        "cache_read": 6624,
+        "cache_write": 279,
+        "latency_s": 1.653
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 166,
+        "cache_read": 6903,
+        "cache_write": 1440,
+        "latency_s": 1.75
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 116,
+        "cache_read": 8343,
+        "cache_write": 492,
+        "latency_s": 1.48
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 113,
+        "cache_read": 8835,
+        "cache_write": 1509,
+        "latency_s": 1.865
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 137,
+        "cache_read": 10344,
+        "cache_write": 1291,
+        "latency_s": 1.982
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 347,
+        "cache_read": 11635,
+        "cache_write": 215,
+        "latency_s": 4.24
+      }
+    ],
+    "final_json": {
+      "respuesta": "Las transferencias corrientes constituyen una categoría cambiaria definida como transferencias entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente de otra economía, sin recibir a cambio una contraprestación con valor económico. Esta categoría se clasifica como ingreso secundario en la regulación del BCRA. Las operaciones que se incluyen en esta categoría comprenden transferencias de fondos sin contraprestación económica, como ayuda familiar, remesas y donaciones. En el caso específico de donaciones recibidas desde el exterior, estas se encuadran dentro de las transferencias corrientes, siendo necesario verificar los requisitos previstos en cada caso (por ejemplo, en el caso de donaciones de bienes, se requiere la constancia de aceptación de la donación por parte de la autoridad competente).",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 6.10. Transferencias corrientes (ingreso secundario)."
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta sobre transferencias corrientes y cómo se define esta categoría cambiaria.\n\n```json\n{\n  \"respuesta\": \"Las transferencias corrientes constituyen una categoría cambiaria definida como transferencias entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente de otra economía, sin recibir a cambio una contraprestación con valor económico. Esta categoría se clasifica como ingreso secundario en la regulación del BCRA. Las operaciones que se incluyen en esta categoría comprenden transferencias de fondos sin contraprestación económica, como ayuda familiar, remesas y donaciones. En el caso específico de donaciones recibidas desde el exterior, estas se encuadran dentro de las transferencias corrientes, siendo necesario verificar los requisitos previstos en cada caso (por ejemplo, en el caso de donaciones de bienes, se requiere la constancia de aceptación de la donación por parte de la autoridad competente).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.10. Transferencias corrientes (ingreso secundario).\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 14,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 6.10. Transferencias corrientes (ingreso secundario)."
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 10.6. Otras disposiciones."
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.2. Operaciones cursadas a través del Sistema de Monedas Locales (SML)."
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.9. Compra de moneda extranjera por parte de personas humanas residentes para la for"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5419,
+    "tokens_out": 1733,
+    "cache_read": 61304,
+    "cache_write": 11850,
+    "cost_usd": 0.035027,
+    "latency_s": 24.95,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencias corrientes categoría cambiaria",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencias corrientes categoría cambiaria",
+        "total_con_match": 47,
+        "resultados": [
+          {
+            "id": "Sujeto_entidad_cambiaria",
+            "type": "Sujeto",
+            "label": "Entidades cambiarias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambiarias del exterior', 'Compañía cambista del exterior']"
+          },
+          {
+            "id": "Operacion_transferencias_al_exterior_ce7f17",
+            "type": "Operacion",
+            "label": "Transferencias al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias al exterior que requieren autorización previa"
+          },
+          {
+            "id": "Restriccion_sujecion_a_norma_cambiaria_6e1f79",
+            "type": "Restriccion",
+            "label": "Sujeción a norma cambiaria",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cuando se prevea la entrega efectiva de instrumentos operados en el mercado de cambios, estas operaciones quedan sujetas a la norma cambiaria y se consideran un…"
+          },
+          {
+            "id": "Operacion_asignacion_de_categoria_de_deudor_f7053f",
+            "type": "Operacion",
+            "label": "Asignación de categoría de deudor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Asignación de categoría de endeudamiento"
+          },
+          {
+            "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0",
+            "type": "Operacion",
+            "label": "Transferencias por ayuda familiar",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Ingreso y remisión de transferencias en concepto de ayuda familiar"
+          },
+          {
+            "id": "Obligacion_la_recategorizacion_del_deudor_se_efectuara_a_partir_del_mes_siguiente_al_de_pue_c0c1b3",
+            "type": "Obligacion",
+            "label": "Recategorizar en categoría superior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La recategorización del deudor se efectuará a partir del mes siguiente al de puesta a disposición de la información, al menos en la categoría inmediata superior…"
+          },
+          {
+            "id": "Operacion_estabilidad_cambiaria_aplicable_vpu_ea619f",
+            "type": "Operacion",
+            "label": "Estabilidad cambiaria aplicable VPU",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Aplicación de la normativa de estabilidad cambiaria contemplada en los artículos 201 y 205 de la Ley 27.742 al VPU conforme lo dispuesto en esos artículos, a la…"
+          },
+          {
+            "id": "Restriccion_se_clasifican_en_categoria_de_deficiencia_a_deudores_que_pertenezcan_a_un_sector_eb8c1c",
+            "type": "Restriccion",
+            "label": "Restricción por sector en extinción",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se clasifican en categoría de deficiencia a deudores que pertenezcan a un sector de la actividad económica o ramo de negocios en extinción, con graves problemas…"
+          },
+          {
+            "id": "Obligacion_debera_permanecer_en_esta_categoria_por_lo_menos_180_dias_contados_desde_la_fech_42d5d0",
+            "type": "Obligacion",
+            "label": "Permanencia de 180 días en categoría",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberá permanecer en esta categoría por lo menos 180 días contados desde la fecha en que se otorgó crédito adicional o desde que se celebró el acuerdo de refina…"
+          },
+          {
+            "id": "Restriccion_categoria_minima_en_recategorizacion_8a0d0d",
+            "type": "Restriccion",
+            "label": "Categoría mínima en recategorización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La recategorización se realizará al menos en la categoría inmediata superior a aquella en la que registre mayor nivel de endeudamiento, considerando el conjunto…"
+          }
+        ]
+      },
+      "output_chars": 3286
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donación exterior transferencia",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "donación exterior transferencia",
+        "total_con_match": 138,
+        "resultados": [
+          {
+            "id": "Obligacion_en_caso_de_que_la_transferencia_corresponda_a_la_misma_moneda_en_la_que_esta_den_1dffe3",
+            "type": "Obligacion",
+            "label": "Débito monto enviado al exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que la transferencia corresponda a la misma moneda en la que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior."
+          },
+          {
+            "id": "Operacion_transferencia_divisas_al_exterior_personas_0745bb",
+            "type": "Operacion",
+            "label": "Transferencia divisas al exterior personas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior"
+          },
+          {
+            "id": "Operacion_operaciones_arbitraje_sin_transferencia_exterior_259e30",
+            "type": "Operacion",
+            "label": "Operaciones arbitraje sin transferencia exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Arbitraje sin transferencias al exterior"
+          },
+          {
+            "id": "Operacion_transferencia_fondos_exterior_cliente_no_residente_515924",
+            "type": "Operacion",
+            "label": "Transferencia fondos exterior cliente no residente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operación de transferencia al exterior de los fondos percibidos por cliente no residente acreedor de endeudamiento con VPU"
+          },
+          {
+            "id": "Restriccion_en_el_caso_de_fondos_percibidos_o_acreditados_en_el_exterior_se_podra_considerar_f19c2d",
+            "type": "Restriccion",
+            "label": "Descuento por gastos de transferencia del exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de fondos percibidos o acreditados en el exterior, se podrá considerar cumplimentado el ingreso y liquidación por el monto equivalente a los gastos h…"
+          },
+          {
+            "id": "Restriccion_la_transferencia_de_fondos_a_cuentas_de_inversion_en_administradores_de_inversio_82a1fa",
+            "type": "Restriccion",
+            "label": "Pagos con conformidad BCRA para inversión exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La transferencia de fondos a cuentas de inversión en administradores de inversiones radicados en el exterior requiere conformidad previa del BCRA para acceder a…"
+          },
+          {
+            "id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Exterior y Cambios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "materia: Operaciones en cambios y exterior; archivo: TO_exterior_cambios_actual.pdf; version: actual"
+          },
+          {
+            "id": "Operacion_transferencia_personal_715cdd",
+            "type": "Operacion",
+            "label": "Transferencia personal",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Operacion_transferencia_corriente_4f3e0c",
+            "type": "Operacion",
+            "label": "Transferencia corriente",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente…"
+          },
+          {
+            "id": "Sujeto_acreedor_del_exterior",
+            "type": "Sujeto",
+            "label": "Acreedores del exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase"
+          }
+        ]
+      },
+      "output_chars": 3237
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_transferencia_corriente_4f3e0c"
+      },
+      "output": {
+        "id": "Operacion_transferencia_corriente_4f3e0c",
+        "type": "Operacion",
+        "label": "Transferencia corriente",
+        "properties": {
+          "tipo": "transferencia_corriente",
+          "description": "Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente de otra economía, sin recibir a cambio una contraprestación con valor económico."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.10. Transferencias corrientes (ingreso secundario)."
+          }
+        ]
+      },
+      "output_chars": 560
+    },
+    {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_transferencia_corriente_4f3e0c",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_transferencia_corriente_4f3e0c",
+        "label": "Transferencia corriente",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.10. Transferencias corrientes (ingreso secundario)."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 451
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donación ingreso secundario transferencia corriente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "donación ingreso secundario transferencia corriente",
+        "total_con_match": 123,
+        "resultados": [
+          {
+            "id": "Operacion_transferencia_corriente_4f3e0c",
+            "type": "Operacion",
+            "label": "Transferencia corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente…"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_08f943",
+            "type": "Operacion",
+            "label": "Ingreso de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_de_divisas"
+          },
+          {
+            "id": "Operacion_transferencia_personal_715cdd",
+            "type": "Operacion",
+            "label": "Transferencia personal",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Operacion_transferencia_de_activos_975aee",
+            "type": "Operacion",
+            "label": "Transferencia de activos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: transferencia de derechos de crédito"
+          },
+          {
+            "id": "Excepcion_las_operaciones_de_ingreso_de_divisas_pueden_negociarse_en_el_mercado_segun_las__8834e6",
+            "type": "Excepcion",
+            "label": "Condiciones y plazos del BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las operaciones de ingreso de divisas pueden negociarse en el mercado según las condiciones y plazos que establezca el BCRA"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_en_plazo_59fbe3",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación en plazo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El contravalor percibido por parte de residentes por la enajenación a no residentes de activos no financieros no producidos deberá ingresarse en divisas y liqui…"
+          },
+          {
+            "id": "Obligacion_a_efectos_de_cumplir_con_el_principio_de_transferencia_real_debera_realizarse_un_958edd",
+            "type": "Obligacion",
+            "label": "Principio de transferencia real",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "A efectos de cumplir con el principio de transferencia real, deberá realizarse una cesión efectiva de derechos de forma tal que los documentos a cobrar y derech…"
+          },
+          {
+            "id": "Obligacion_demostracion_de_ingreso_aduanero_f17ced",
+            "type": "Obligacion",
+            "label": "Demostración de ingreso aduanero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se deberá demostrar ante la entidad encargada del seguimiento de ese pago la existencia del registro de ingreso aduanero a su nombre o a nombre de un tercero en…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_la_transferencia_corresponda_a_la_misma_moneda_en_la_que_esta_den_1dffe3",
+            "type": "Obligacion",
+            "label": "Débito monto enviado al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En caso de que la transferencia corresponda a la misma moneda en la que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior."
+          },
+          {
+            "id": "Operacion_ingreso_y_liquidacion_de_divisas_dc00d4",
+            "type": "Operacion",
+            "label": "Ingreso y liquidación de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_liquidacion_divisas"
+          }
+        ]
+      },
+      "output_chars": 3082
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencias corrientes operaciones incluidas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencias corrientes operaciones incluidas",
+        "total_con_match": 199,
+        "resultados": [
+          {
+            "id": "Restriccion_las_operaciones_de_arbitraje_sin_transferencias_al_exterior_debitadas_de_cuenta__80e16a",
+            "type": "Restriccion",
+            "label": "Arbitraje fondos en moneda local limitado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las operaciones de arbitraje sin transferencias al exterior debitadas de cuenta en moneda local (no extranjera) del cliente sólo podrán ser realizadas sin confo…"
+          },
+          {
+            "id": "Operacion_operaciones_no_dvp_05da87",
+            "type": "Operacion",
+            "label": "Operaciones no DvP",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Operaciones en que se entrega efectivo sin recibir contrapartida o se entregan valores sin pago de efectivo"
+          },
+          {
+            "id": "Operacion_operaciones_con_qccp_484d1c",
+            "type": "Operacion",
+            "label": "Operaciones con QCCP",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones con entidades de contraparte central calificadas"
+          },
+          {
+            "id": "Operacion_operaciones_a_termino_39e8e1",
+            "type": "Operacion",
+            "label": "Operaciones a término",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales la liquidación está pactada en un plazo mayor a los 2 (dos) días hábiles desde la fecha de su concertación"
+          },
+          {
+            "id": "Operacion_operaciones_en_divisas_e95908",
+            "type": "Operacion",
+            "label": "Operaciones en divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones_cambiarias"
+          },
+          {
+            "id": "Operacion_operaciones_dvp_fallidas_a8ff95",
+            "type": "Operacion",
+            "label": "Operaciones DvP fallidas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Operaciones de entrega contra pago (DvP) que no se liquidan en plazo de cinco días hábiles"
+          },
+          {
+            "id": "Operacion_operaciones_con_derivados_15f68c",
+            "type": "Operacion",
+            "label": "Operaciones con derivados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones con derivados no comprendidas en el punto 2.12.14"
+          },
+          {
+            "id": "Operacion_operaciones_por_ventanilla_ebfe32",
+            "type": "Operacion",
+            "label": "Operaciones por ventanilla",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Operaciones por ventanilla"
+          },
+          {
+            "id": "Operacion_transferencias_al_exterior_ce7f17",
+            "type": "Operacion",
+            "label": "Transferencias al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias al exterior que requieren autorización previa"
+          },
+          {
+            "id": "Operacion_operaciones_de_financiacion_6f83bb",
+            "type": "Operacion",
+            "label": "Operaciones de financiación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones de financiación"
+          }
+        ]
+      },
+      "output_chars": 2568
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donación",
+        "limite": 15
+      },
+      "output": {
+        "consulta": "donación",
+        "total_con_match": 1,
+        "resultados": [
+          {
+            "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f",
+            "type": "Obligacion",
+            "label": "Verificar constancia de aceptación de donación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la don…"
+          }
+        ]
+      },
+      "output_chars": 465
+    },
+    {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f"
+      },
+      "output": {
+        "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f",
+        "type": "Obligacion",
+        "label": "Verificar constancia de aceptación de donación",
+        "properties": {
+          "descripcion": "Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la donación por parte del Ministerio de Salud de la Nación",
+          "tipo": "calculo"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.6. Otras disposiciones."
+          }
+        ]
+      },
+      "output_chars": 570
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "ingreso secundario ayuda familiar remesas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "ingreso secundario ayuda familiar remesas",
+        "total_con_match": 78,
+        "resultados": [
+          {
+            "id": "Operacion_remision_de_ayuda_familiar_4f9dc9",
+            "type": "Operacion",
+            "label": "Remisión de ayuda familiar",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Remisión de ayuda familiar en moneda extranjera"
+          },
+          {
+            "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0",
+            "type": "Operacion",
+            "label": "Transferencias por ayuda familiar",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Ingreso y remisión de transferencias en concepto de ayuda familiar"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_08f943",
+            "type": "Operacion",
+            "label": "Ingreso de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_de_divisas"
+          },
+          {
+            "id": "Excepcion_las_operaciones_de_ingreso_de_divisas_pueden_negociarse_en_el_mercado_segun_las__8834e6",
+            "type": "Excepcion",
+            "label": "Condiciones y plazos del BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las operaciones de ingreso de divisas pueden negociarse en el mercado según las condiciones y plazos que establezca el BCRA"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_en_plazo_59fbe3",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación en plazo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El contravalor percibido por parte de residentes por la enajenación a no residentes de activos no financieros no producidos deberá ingresarse en divisas y liqui…"
+          },
+          {
+            "id": "Obligacion_demostracion_de_ingreso_aduanero_f17ced",
+            "type": "Obligacion",
+            "label": "Demostración de ingreso aduanero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se deberá demostrar ante la entidad encargada del seguimiento de ese pago la existencia del registro de ingreso aduanero a su nombre o a nombre de un tercero en…"
+          },
+          {
+            "id": "Operacion_ingreso_y_liquidacion_de_divisas_dc00d4",
+            "type": "Operacion",
+            "label": "Ingreso y liquidación de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_liquidacion_divisas"
+          },
+          {
+            "id": "Operacion_ingreso_en_divisas_de_contravalor_8a4390",
+            "type": "Operacion",
+            "label": "Ingreso en divisas de contravalor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ingreso en divisas del contravalor percibido por enajenación de activos no financieros no producidos"
+          },
+          {
+            "id": "Obligacion_informar_ingreso_bruto_del_periodo_411e08",
+            "type": "Obligacion",
+            "label": "Informar ingreso bruto del período",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se informará el ingreso bruto del período X"
+          },
+          {
+            "id": "Obligacion_ingreso_de_divisas_por_exportacion_13746a",
+            "type": "Obligacion",
+            "label": "Ingreso de divisas por exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El contravalor de la exportación de bienes y servicios deberá ingresarse al país en divisas y/o negociarse en el mercado de cambios en las condiciones y plazos …"
+          }
+        ]
+      },
+      "output_chars": 2822
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0"
+      },
+      "output": {
+        "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0",
+        "type": "Operacion",
+        "label": "Transferencias por ayuda familiar",
+        "properties": {
+          "tipo": "Ingreso y remisión de transferencias en concepto de ayuda familiar"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.2. Operaciones cursadas a través del Sistema de Monedas Locales (SML)."
+          }
+        ]
+      },
+      "output_chars": 382
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_remision_de_ayuda_familiar_4f9dc9"
+      },
+      "output": {
+        "id": "Operacion_remision_de_ayuda_familiar_4f9dc9",
+        "type": "Operacion",
+        "label": "Remisión de ayuda familiar",
+        "properties": {
+          "tipo": "Transferencia de fondos",
+          "description": "Remisión de ayuda familiar en moneda extranjera"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.9. Compra de moneda extranjera por parte de personas humanas residentes para la for"
+          }
+        ]
+      },
+      "output_chars": 404
+    },
+    {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 6.10 transferencias corrientes ingreso secundario",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "punto 6.10 transferencias corrientes ingreso secundario",
+        "total_con_match": 196,
+        "resultados": [
+          {
+            "id": "Restriccion_exclusion_de_operaciones_del_punto_10_6_6_f2098b",
+            "type": "Restriccion",
+            "label": "Exclusión de operaciones del punto 10.6.6",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los pagos diferidos de importaciones no comprendidas en el punto 10.6.6. y que se verifiquen los restantes requisitos normativos aplicables"
+          },
+          {
+            "id": "Obligacion_para_importaciones_con_registro_aduanero_hasta_12_12_23_la_entidad_debe_verifica_918dbf",
+            "type": "Obligacion",
+            "label": "Verificación situación según punto 10.11",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para importaciones con registro aduanero hasta 12/12/23, la entidad debe verificar que operación encuadra en situaciones previstas en punto 10.11"
+          },
+          {
+            "id": "Restriccion_partidas_pendientes_de_imputacion_saldos_deudores_otras_conforme_punto_8_4_1_10_832227",
+            "type": "Restriccion",
+            "label": "Deducción partidas pendientes imputación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Partidas pendientes de imputación - Saldos deudores - Otras, conforme punto 8.4.1.10."
+          },
+          {
+            "id": "Excepcion_en_caso_de_tratarse_de_fletes_de_operacion_de_importacion_encuadrada_en_punto_10_863a71",
+            "type": "Excepcion",
+            "label": "Fletes importación desde embarque en origen",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de tratarse de fletes de operación de importación encuadrada en punto 10.10.2.1., el pago podrá realizarse a partir del embarque de los bienes en origen"
+          },
+          {
+            "id": "Excepcion_la_exigencia_de_compatibilidad_del_vencimiento_con_los_plazos_previstos_en_el_pu_43090f",
+            "type": "Excepcion",
+            "label": "Excepción para operación en punto 10.10.2.11",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de compatibilidad del vencimiento con los plazos previstos en el punto 10.10.1. no aplicará cuando la operación quedase comprendida en lo previsto …"
+          },
+          {
+            "id": "Excepcion_en_el_caso_de_que_se_haya_encuadrado_la_operacion_en_la_excepcion_prevista_en_el_e5c031",
+            "type": "Excepcion",
+            "label": "Excepción en punto 2.6 para economía del conocimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de que se haya encuadrado la operación en la excepción prevista en el punto 2.6."
+          },
+          {
+            "id": "Obligacion_dejar_constancia_de_encuadramiento_en_punto_10_10_2_3_2eb2fa",
+            "type": "Obligacion",
+            "label": "Dejar constancia de encuadramiento en punto 10.10.2.3",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando el pago a nombre del cliente encuadre en el punto 10.10.2.3., se deberá dejar constancia de tal circunstancia al reportar el boleto de venta a nombre del…"
+          },
+          {
+            "id": "Obligacion_cada_cliente_y_la_totalidad_de_sus_financiaciones_comprendidas_se_incluira_en_un_772a57",
+            "type": "Obligacion",
+            "label": "Niveles de clasificación de los deudores de la cartera comercial (punto 6.5): cinco categorías — en situación normal, con seguimiento especial, con problemas, con alto riesgo de insolvencia, irrecuperable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta la…"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623",
+            "type": "Restriccion",
+            "label": "Límite mínimo PNb",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Patrimonio Neto Básico (PNb) deberá ser mayor o igual al 6% sobre el activo total (70900000)"
+          },
+          {
+            "id": "Restriccion_pnb_importe_resultante_de_multiplicar_6_por_los_apr_a0ff98",
+            "type": "Restriccion",
+            "label": "Límite mínimo PNb",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "PNb: importe resultante de multiplicar 6% por los APR"
+          }
+        ]
+      },
+      "output_chars": 3777
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencia corriente bienes servicios activos financieros",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencia corriente bienes servicios activos financieros",
+        "total_con_match": 359,
+        "resultados": [
+          {
+            "id": "Operacion_transferencia_corriente_4f3e0c",
+            "type": "Operacion",
+            "label": "Transferencia corriente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente…"
+          },
+          {
+            "id": "Operacion_transferencia_de_activos_975aee",
+            "type": "Operacion",
+            "label": "Transferencia de activos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: transferencia de derechos de crédito"
+          },
+          {
+            "id": "Restriccion_en_los_contratos_celebrados_entre_el_usuario_de_servicios_financieros_y_los_suje_518b0a",
+            "type": "Restriccion",
+            "label": "Cláusulas abusivas nulas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En los contratos celebrados entre el usuario de servicios financieros y los sujetos obligados, se tendrán por no escritas las cláusulas que desnaturalicen las o…"
+          },
+          {
+            "id": "Restriccion_los_usuarios_de_servicios_financieros_tienen_derecho_a_condiciones_de_trato_equi_dc9846",
+            "type": "Restriccion",
+            "label": "Trato equitativo y digno",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los usuarios de servicios financieros tienen derecho a condiciones de trato equitativo y digno en toda relación de consumo"
+          },
+          {
+            "id": "Restriccion_el_monto_total_de_sus_deudas_por_importaciones_de_bienes_y_servicios_previas_al__d21883",
+            "type": "Restriccion",
+            "label": "Deuda total MiPyMe ≤USD 500.000",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto total de sus deudas por importaciones de bienes y servicios previas al 13/12/23 pendiente de pago al 24/01/24 fuera menor o igual al equivalente a USD …"
+          },
+          {
+            "id": "Restriccion_los_usuarios_de_servicios_financieros_tienen_derecho_a_la_libertad_de_eleccion_e_da1ecc",
+            "type": "Restriccion",
+            "label": "Libertad de elección del usuario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los usuarios de servicios financieros tienen derecho a la libertad de elección en toda relación de consumo"
+          },
+          {
+            "id": "Obligacion_proporcionar_o_poner_a_disposicion_del_usuario_de_servicios_financieros_un_ejemp_beec9b",
+            "type": "Obligacion",
+            "label": "Proporcionar ejemplar de contrato",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Proporcionar o poner a disposición del usuario de servicios financieros un ejemplar del contrato con la firma autorizada del sujeto obligado, dentro de los diez…"
+          },
+          {
+            "id": "Sujeto_usuario_de_servicios_financieros",
+            "type": "Sujeto",
+            "label": "Usuarios de servicios financieros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Restriccion_la_transferencia_de_fondos_a_cuentas_en_proveedores_de_servicios_de_pago_requier_e1a8af",
+            "type": "Restriccion",
+            "label": "Pagos con conformidad BCRA para PSP",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La transferencia de fondos a cuentas en Proveedores de Servicios de Pago requiere conformidad previa del BCRA para acceder al mercado de cambios."
+          },
+          {
+            "id": "Operacion_utilizacion_de_servicios_financieros_6ef984",
+            "type": "Operacion",
+            "label": "Utilización de servicios financieros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Acto de hacer uso de los servicios ofrecidos por los sujetos obligados por parte de personas humanas y jurídicas en carácter de destinatarios finales o expuesto…"
+          }
+        ]
+      },
+      "output_chars": 3387
+    },
+    {
+      "n": 14,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_transferencia_corriente_4f3e0c",
+        "direccion": "entrantes"
+      },
+      "output": {
+        "id": "Operacion_transferencia_corriente_4f3e0c",
+        "label": "Transferencia corriente",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 180
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FA3VNpz66YYBbiKmjf",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre transferencias corrientes y su categoría cambiaria en el Knowledge Graph.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01LJUE7s5qjqZUyX6bwvQ5a2",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencias corrientes categoría cambiaria",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01KgRyonS4qjsVk27ienZoiu",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donación exterior transferencia",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1477,
+          "output_tokens": 166,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FA99CPF8HXNMevPvhY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré un nodo específico sobre \"Transferencia corriente\". Voy a obtener sus detalles completos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01MAGWxQUcXDmAAj9MnYwJXg",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_transferencia_corriente_4f3e0c"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3891,
+          "output_tokens": 103,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FAEiK6hzCdkowDoSid",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a explorar qué operaciones específicas están incluidas en esta categoría.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01ACiWESxigADHMs161P4ec7",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_transferencia_corriente_4f3e0c",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4166
+          },
+          "cache_creation_input_tokens": 4166,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 115,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FAL7FWMgo5rnueLmC1",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente qué operaciones se incluyen en transferencias corrientes, como donaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01JemNTiGps4cSYiUrfLo1SQ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donación ingreso secundario transferencia corriente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_019nh6RYdANgYcFZT2rwiQc5",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencias corrientes operaciones incluidas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 288
+          },
+          "cache_creation_input_tokens": 288,
+          "cache_read_input_tokens": 4166,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 172,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FApDwVE6AJEyW1nZyS",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar específicamente por \"donación\" para ver si hay operaciones específicas clasificadas bajo transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_012FxePyQTEYXJ7u2wxC8mEo",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donación",
+              "limite": 15
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2170
+          },
+          "cache_creation_input_tokens": 2170,
+          "cache_read_input_tokens": 4454,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 104,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FAvViKiPsTMEHrf4Q8",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el detalle de esa obligación y buscar más información sobre qué operaciones específicas se incluyen en transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01BjENSx6jSfL5i8uwjmrPxi",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_016BoGmLt4fMXf67Riys6neL",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "ingreso secundario ayuda familiar remesas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 279
+          },
+          "cache_creation_input_tokens": 279,
+          "cache_read_input_tokens": 6624,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 194,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FB3nWpzE77U9osye5z",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Ahora voy a ver los detalles de las operaciones de ayuda familiar para entender mejor qué se incluye en transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018eex499i1SmQdP9Y4Mq8JL",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_transferencias_por_ayuda_familiar_cf2ef0"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01V2xmTTGJvbLkQvAqzMnZVz",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_remision_de_ayuda_familiar_4f9dc9"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1440
+          },
+          "cache_creation_input_tokens": 1440,
+          "cache_read_input_tokens": 6903,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 166,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FBBCkFyiYu9GkFBBfE",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más información sobre qué operaciones específicas se clasifican bajo transferencias corrientes o ingreso secundario.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_019s3GhXn74y7nuUz45TJeic",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 6.10 transferencias corrientes ingreso secundario",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 492
+          },
+          "cache_creation_input_tokens": 492,
+          "cache_read_input_tokens": 8343,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 116,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FBHprxunoqTKf1bCeG",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar directamente en el documento sobre qué operaciones específicas se incluyen en transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01U1CmYhQ9rmcC1XuZmYrz1f",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencia corriente bienes servicios activos financieros",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1509
+          },
+          "cache_creation_input_tokens": 1509,
+          "cache_read_input_tokens": 8835,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 113,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FBRWUW7WXYZ5Aeg6uk",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información clave. Ahora voy a verificar si hay más detalles sobre qué operaciones específicas se incluyen bajo transferencias corrientes buscando en el documento.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_011cFUybRe5qkXy81ncPQNhK",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_transferencia_corriente_4f3e0c",
+              "direccion": "entrantes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1291
+          },
+          "cache_creation_input_tokens": 1291,
+          "cache_read_input_tokens": 10344,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 137,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011Ce7FBZwUzipuZQ8jNdgyP",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo la información necesaria. Basándome en lo que encontré en el Knowledge Graph, puedo responder la pregunta sobre transferencias corrientes y cómo se define esta categoría cambiaria.\n\n```json\n{\n  \"respuesta\": \"Las transferencias corrientes constituyen una categoría cambiaria definida como transferencias entre dos economías cuando un residente de una economía provee bienes, servicios, activos financieros u otros activos no producidos a un residente de otra economía, sin recibir a cambio una contraprestación con valor económico. Esta categoría se clasifica como ingreso secundario en la regulación del BCRA. Las operaciones que se incluyen en esta categoría comprenden transferencias de fondos sin contraprestación económica, como ayuda familiar, remesas y donaciones. En el caso específico de donaciones recibidas desde el exterior, estas se encuadran dentro de las transferencias corrientes, siendo necesario verificar los requisitos previstos en cada caso (por ejemplo, en el caso de donaciones de bienes, se requiere la constancia de aceptación de la donación por parte de la autoridad competente).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.10. Transferencias corrientes (ingreso secundario).\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 215
+          },
+          "cache_creation_input_tokens": 215,
+          "cache_read_input_tokens": 11635,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 347,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}
