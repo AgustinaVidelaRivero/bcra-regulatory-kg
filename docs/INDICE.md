@@ -15,6 +15,11 @@ evidencia de respaldo, y dónde viven el corpus y los datos. Las rutas son exact
   (commit `7db9020`, 2026-07-09).
 - `docs/ppf/main.tex` — fuente LaTeX de mi PPF preliminar (commit `c0bb059`, 2026-06-03);
   el PDF compilado vive en el mismo directorio `docs/ppf/`.
+- `docs/nomenclatura_grafos.md` — nombres canónicos de los tres grafos medidos en EV2
+  (KG-Base `12c226e2` / KG-Refinado `26fac8b4` / KG-Reextraído `8e2eadee`): alias
+  históricos, paths, shas, commit de sellado y generación de pipeline de cada uno, la
+  colisión del alias "v2" y la regla de uso para toda la prosa (commit `237fb8f`,
+  2026-08-17). Leer antes de cualquier documento que nombre un grafo.
 
 Contexto adicional: `docs/schema/experiment_protocol.md` y
 `docs/schema/experiment_instance_template.md` (protocolo de la Fase 2.2, con `docs/schema/legacy/`
@@ -65,7 +70,8 @@ de toda corrida, corrida única, lectura contra la vara. Los commits salen de `g
     evaluación intrínseca del grafo (M1–M11): regla constitucional de pareo
     sub-fusión/sobre-fusión y denominador aguas arriba, predicciones selladas sobre
     el par defectuoso/re-ensamblado, régimen de dos pasadas sin umbrales (commit
-    pendiente de sellado; debe anteceder a `scripts/metricas_intrinsecas.py`).
+    `cdf90e6`, 2026-07-30, anterior a `scripts/metricas_intrinsecas.py`; laudo M7 en la
+    fila M7, commit `38ac8b1`, 2026-08-02).
 16. `docs/protocolo_gate_u5.md` — protocolo pre-registrado del gate U5: el verificador
     sobre la familia v2/v3, 4 casos con vara sellada y reglas de acierto, criterio
     cero-silenciosos + ≥3/4, tope doble (commit `49721fd`, 2026-08-02); **Enmienda §8**
@@ -74,7 +80,75 @@ de toda corrida, corrida única, lectura contra la vara. Los commits salen de `g
 17. `docs/lectura_gate_u5.md` — lectura del gate U5: EL GATE PASA (3 aciertos de 4,
     cuarto en rama de lectura B′, cero silenciosos); el verificador asciende a
     VALIDADO-EN-FAMILIA v2/v3 (Motor 3: diagnóstico automático, laudo humano) y deja
-    el hallazgo residual BKL-0023 dentro de su propio gate (2026-08-02).
+    el hallazgo residual BKL-0023 dentro de su propio gate (commit `f5bfb2c`, 2026-08-02).
+
+**Evaluación de los grafos: escalón 1b, re-extracción y EV2** (misma disciplina —
+protocolo o pre-registro sellado antes de la corrida, corrida única, lectura contra la
+vara — aplicada ahora al grafo y no al verificador; nombres de grafos según
+`docs/nomenclatura_grafos.md`).
+
+18. `docs/lectura_escalon1b.md` — lectura sellada del escalón 1b (EV1, 36 preguntas,
+    material QUEMADO): `grafo_v2` (`2c7487bb`) 27/36 → KG-Refinado pre-C1–C7 29/36,
+    KG-Base 31/36 de referencia; el defecto de ensamblado explicaba la mitad del gap
+    (commit `e77b11f`, 2026-07-31; protocolo `docs/protocolo_escalon1b.md`, `d235342`).
+19. `docs/diseno_reextraccion_v2.md` — diseño de la re-extracción v2 (issue #8):
+    pipeline E0–E5 (chunking estructural con herencia, extractor con prefijo cacheado,
+    reduce determinístico, verificador de completitud en contexto fresco, E4/E5), con
+    alternativas descartadas y el backlog RX como spec (commit `a8fa053`, 2026-08-10).
+20. `docs/diseno_queries_sinteticas.md` — diseño del eje de navegabilidad de EV2:
+    muestreo estratificado con control uniforme, gold por provenance invariante entre
+    grafos, pares literal / anti-léxica, recall determinístico visto/consultado (commit
+    `e40bbb9`, 2026-08-10).
+21. `docs/diseno_ev2.md` — diseño de EV2 (issue #4): dos ejes (fidelidad ciega +
+    navegabilidad sintética), cohortes núcleo-limpio/dirigida con veredicto solo del
+    núcleo, gold anclas+criterios, protocolo de sellado en un commit (commit `7c21053`,
+    2026-08-10).
+22. `docs/enmienda_01_diseno_reextraccion_v2.md` — Enmienda 01 al diseño de la
+    re-extracción: bloques estructurales como unidades de extracción de primera clase,
+    motivada por la calibración E0→E3 sobre `pro` (60/117 faltantes solo-en-herencia,
+    cola real 29,9 %), con predicciones refutables P1–P3 (commit `baf5608`, 2026-08-11;
+    implementación y mini-recalibración: P1 confirmada, P2 refutada, P3 confirmada,
+    commit `d082812`).
+23. `docs/protocolo_corrida_ev2.md` — protocolo de corrida de EV2 sellado junto con el
+    eje de fidelidad (40 preguntas ciegas, 164 criterios) y el manifest sha256: semillas
+    `orden-ev2-v1` / `auditoria-ev2-v1`, repeticiones pre-declaradas, anti-cache
+    (commit `9c44516`, 2026-08-13 — SELLO EV2, issues #3 y #4).
+24. `docs/preregistro_evaluacion_fidelidad_ev2.md` — pre-registro del método de
+    evaluación de fidelidad: juez Sonnet N=3 modal con ceguera de grafo, mapping en
+    código, calibración solo-U6, adjudicación simétrica 10 %/10 % (commit `be8a84f`,
+    2026-08-14; sellado después de la corrida del agente y antes de leer respuesta
+    alguna).
+25. `data/experiment/ev2_corrida/navegabilidad/reporte_navegabilidad.md` — lectura del
+    eje de navegabilidad de EV2: replay determinístico 336/336, brecha literal vs
+    anti-léxica confirmada en los tres grafos (recall consultada micro KG-Refinado
+    0,958→0,620, KG-Base 0,716→0,493, KG-Reextraído 0,396→0,271 sobre 64/60/44 casos
+    presentes), ausencias reportadas aparte (commit `5b02d22`, 2026-08-14).
+26. `data/experiment/exploracion/u6_fidelidad/registro_criterios_u6.md` — registro de
+    los criterios de calibración del juez (25 preguntas U6 / 92 criterios con cita
+    verbatim): redacción por instancia ciega + revisión independiente + laudos A–D
+    (commit `2ac2fab`, 2026-08-16).
+27. `data/experiment/ev2_juez/calibracion/registro_calibracion.md` — registro de
+    calibración del juez de fidelidad EV2: prompt v1 congelado (sha `fd446f8e`), 14/20
+    acuerdos + 5 a adjudicación, 3/3 incorrectas detectadas, iteración v1.1 descartada
+    por candado de ajuste, cuatro limitaciones documentadas (commit `1a0ac5c`,
+    2026-08-16).
+28. `data/experiment/ev2_reporte/reporte_ev2.md` — reporte consolidado de EV2 (U-A0 /
+    A0.1): tabla definitiva de fidelidad KG-Base 3/20/17, KG-Refinado 5/26/9,
+    KG-Reextraído 4/27/9 con vías y etapas, cobertura por criterios, navegabilidad,
+    censo, validación del juez (11/12, 52/53), salvedades, desvíos del período y costos
+    (USD 35,62), todo recomputable con un comando (commit `40603a9`, 2026-08-17; §12
+    completado en `85d9fdb`).
+29. `data/experiment/ev2_reporte/regla_atribucion.md` — regla de atribución
+    determinística de fallas sellada ANTES del cómputo (A0.2 fase A): cuatro clases
+    ausencia_kg / alcanzabilidad / vista_no_consultada / generacion con precedencia,
+    veredicto por traza de esa misma respuesta, ancla primaria, abstención como columna
+    cruzada (commit `40603a9`, 2026-08-17).
+30. `data/experiment/ev2_reporte/salida/atribucion_fallas.md` — lectura de la
+    atribución (A0.2 fase B): clase × grafo × veredicto sobre 120 trazas base + 191
+    re-corridas, hallazgos H1–H7 (perfiles de falla distintos en el empate 9-9,
+    generación clase modal 17/25/21, techo de retrieval 14/7/6, nodo-ancla cáscara),
+    replay 120/120 + 191/191, doble corrida byte-idéntica (commit `85d9fdb`,
+    2026-08-17).
 
 ## (iii) Evidencia y auditoría
 

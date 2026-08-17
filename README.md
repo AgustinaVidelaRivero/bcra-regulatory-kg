@@ -14,25 +14,40 @@ el proyecto investiga además qué estrategia de schema produce el mejor grafo, 
 pipeline de diagnóstico y refinamiento basado en evidencia puede mejorar el grafo
 ganador de forma medible.
 
-## Estado (julio 2026)
+## Estado (agosto 2026)
 
-- **Corpus descargado** (Textos Ordenados vigentes e históricos, marco legal,
-  Comunicaciones A/B/C/P, complementarios) con scraper idempotente y manifiesto.
-- **Fase 2.2:** 5 KGs construidos en paralelo sobre el mismo subset de 5 TOs, cada uno
-  con una estrategia de schema distinta (`data/experiment/run_1..run_5`).
-- **Fase 2.3 (congelada):** evaluación comparativa de los 5 grafos con harness KG-RAG
-  uniforme (agente Haiku + juez LLM v2.1.1 de dos pasos, calibrado contra adjudicación
-  humana firmada). Ganador: **run_3 (PPF Core)**. Evidencia completa en el repo.
-- **Fases 2.4-2.5 (ciclo 2 cerrado, 19/07/2026):** verificador de calidad del KG +
-  capa determinística + segunda pasada con fuentes forzadas. **El instrumento del
-  proyecto es v7' = v6.2-D + S1 v0.4b**, validado contra cuatro varas humanas selladas
-  (v3, gate CQN, dev-v7, gate CQN2). En el último gate fresco (CQN2, 15 preguntas
-  generadas a ciegas y selladas antes de la corrida): las tres columnas comparadas
-  dieron 6 aciertos / 1 miss-con-flag / 1 triage sobre las primarias, con **cero misses
-  silenciosos** — todo miss salió con flag y todo triage con motivo. Límites
-  caracterizados y documentados (fuente: `docs/lectura_ciclo2.md`).
-- **En rama (`extraccion-schema-v2`):** pipeline de extracción v2 con catálogo cerrado
-  de sujetos (U1-U4e completas; U5 = subset completo, pendiente de OK).
+Qué es hoy el proyecto: un pipeline que convierte los Textos Ordenados del BCRA en un
+Knowledge Graph con provenance por elemento; un agente RAG (Haiku, tres tools:
+`buscar_nodos` / `ver_nodo` / `ver_vecinos`) que navega ese grafo; y una evaluación
+bajo custodia — sets generados a ciegas y sellados por commit antes de toda corrida,
+juez LLM calibrado contra adjudicación humana, atribución determinística de fallas
+por replay de trazas. Hallazgo rector: **grounded ≠ correct** — una respuesta anclada
+en el grafo puede seguir siendo incorrecta contra la norma.
+
+**Los tres grafos** (nombres canónicos y shas en `docs/nomenclatura_grafos.md`):
+
+| Grafo | Qué es | Path |
+|---|---|---|
+| **KG-Base** (`12c226e2`) | ganador de la Fase 2.3 entre 5 estrategias de schema (7 entidades / 12 relaciones), baseline congelado | `data/experiment/run_3_ppf_core/kg.json` |
+| **KG-Refinado** (`26fac8b4`) | extracción con esquema v2 + re-ensamblado + siete correcciones selladas (C1–C7); **grafo vigente** de la app | `data/experiment/grafo_v2/reensamblado_v3/kg.json` |
+| **KG-Reextraído** (`8e2eadee`) | re-extracción desde los PDFs con el pipeline E0–E3 (Enmienda 01), sin heredar C1–C7 | `data/experiment/reextraccion_v2/corpus_v2/salida/kg.json` |
+
+**Resultado central de EV2** (40 preguntas ciegas × 3 grafos, 164 criterios con cita
+verbatim, juez validado 11/12 contra adjudicación humana; commit `64de678`, reporte
+`data/experiment/ev2_reporte/reporte_ev2.md`):
+
+- Fidelidad (correcto / parcial / incorrecto): KG-Base 3 / 20 / **17**; KG-Refinado
+  5 / 26 / 9; KG-Reextraído 4 / 27 / 9.
+- Ambos grafos del pipeline refinado reducen los incorrectos casi a la mitad respecto
+  del baseline (9 y 9 contra 17); el esquema v2 es el factor común. Entre sí quedan en
+  empate técnico, pero fallan distinto: KG-Refinado por navegación con el ancla
+  presente, KG-Reextraído por granularidad de ancla.
+- La generación es la clase modal de fallas en los tres grafos (17 / 25 / 21 sobre 40):
+  grounded ≠ correct cuantificado. Ningún grafo cubre la mitad de los criterios de la
+  norma; la brecha literal vs anti-léxica de navegación se confirma en los tres.
+
+Estado detallado y cola de trabajo: `docs/tablero.md`. Mapa de lectura y cadena de
+validación: `docs/INDICE.md`.
 
 ## Mapa del repo
 
@@ -44,7 +59,7 @@ ganador de forma medible.
   Punto de entrada: **`docs/INDICE.md`**; arquitectura del repo: `docs/ARQUITECTURA.md`.
 - `src/` — librería. Hoy: `src/scraper/` (descargador del corpus y satélites).
   `src/extraction/` y `src/kg/` son los hogares previstos para la extracción escalada
-  al corpus completo (pipeline v2, hoy en rama).
+  al corpus completo (el pipeline v2 vive hoy en `data/experiment/reextraccion_v2/`).
 - `scripts/` — `shapes_validator.py` (validador determinístico de shapes sobre los
   kg.json; su reporte vive en `reports/`) y `adhoc/` (históricos).
 - `app/` — frente de consulta (consume el grafo vía el loader, sin tocarlo).
