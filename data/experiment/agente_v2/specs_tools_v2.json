@@ -1,0 +1,60 @@
+[
+  {
+    "name": "buscar_nodos",
+    "description": "Búsqueda de texto completo (BM25, con normalización de acentos, stemming en castellano y stopwords) de nodos del grafo por coincidencia de términos en su label, id o descripción. Devuelve id, type, label, la cantidad de términos de la consulta presentes en label/id (tokens_matcheados; puede ser 0 cuando la coincidencia está solo en la descripción) y un resumen corto de propiedades, ordenados por relevancia. total_con_match cuenta los nodos con al menos un término de la consulta en alguno de esos campos. Es el punto de entrada habitual.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "consulta": {
+          "type": "string",
+          "description": "Palabras clave a buscar."
+        },
+        "limite": {
+          "type": "integer",
+          "description": "Máximo de resultados (def. 10, máx. 50)."
+        }
+      },
+      "required": ["consulta"]
+    }
+  },
+  {
+    "name": "ver_nodo",
+    "description": "Devuelve un nodo completo por su id exacto: type, label, properties y provenances (source_doc + location).",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id exacto del nodo."
+        }
+      },
+      "required": ["id"]
+    }
+  },
+  {
+    "name": "ver_vecinos",
+    "description": "Devuelve las relaciones (edges) de un nodo en ambas direcciones en una sola llamada: 'salientes' (el nodo es origen) y 'entrantes' (el nodo es destino), cada una con relation, vecino y provenances del edge. Cada dirección se pagina por separado con el mismo número de página e informa su total, la cantidad de páginas, la página siguiente (null si no hay más) y el conteo por tipo de relación. 'relacion' restringe ambas listas a ese tipo de relación exacto.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id exacto del nodo."
+        },
+        "relacion": {
+          "type": "string",
+          "description": "Tipo de relación exacto para filtrar (opcional; sin filtro devuelve todas)."
+        },
+        "pagina": {
+          "type": "integer",
+          "description": "Número de página, desde 1 (def. 1)."
+        },
+        "por_pagina": {
+          "type": "integer",
+          "description": "Edges por dirección y por página (def. 40, máx. 40)."
+        }
+      },
+      "required": ["id"]
+    }
+  }
+]

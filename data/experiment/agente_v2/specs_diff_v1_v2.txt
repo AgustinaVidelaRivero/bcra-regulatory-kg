@@ -1,0 +1,74 @@
+# Specs de tools que lee el modelo — v1 (harness.TOOLS) vs v2 (specs_tools_v2.json)
+
+
+## buscar_nodos
+
+--- harness.TOOLS[buscar_nodos]
++++ specs_tools_v2.json[buscar_nodos]
+@@ -1,5 +1,5 @@
+ {
+   "name": "buscar_nodos",
+-  "description": "Búsqueda léxica de nodos del grafo por coincidencia de palabras en su label o id (normalizada, sin acentos). Devuelve id, type, label y un resumen corto de propiedades. Es el punto de entrada habitual.",
++  "description": "Búsqueda de texto completo (BM25, con normalización de acentos, stemming en castellano y stopwords) de nodos del grafo por coincidencia de términos en su label, id o descripción. Devuelve id, type, label, la cantidad de términos de la consulta presentes en label/id (tokens_matcheados; puede ser 0 cuando la coincidencia está solo en la descripción) y un resumen corto de propiedades, ordenados por relevancia. total_con_match cuenta los nodos con al menos un término de la consulta en alguno de esos campos. Es el punto de entrada habitual.",
+   "input_schema": {
+     "type": "object",
+@@ -11,5 +11,5 @@
+       "limite": {
+         "type": "integer",
+-        "description": "Máximo de resultados (def. 10)."
++        "description": "Máximo de resultados (def. 10, máx. 50)."
+       }
+     },
+
+## ver_nodo
+
+(sin cambios: byte-idéntico)
+
+## ver_vecinos
+
+--- harness.TOOLS[ver_vecinos]
++++ specs_tools_v2.json[ver_vecinos]
+@@ -1,5 +1,5 @@
+ {
+   "name": "ver_vecinos",
+-  "description": "Devuelve las relaciones (edges) de un nodo: relation, vecino y provenances del edge. 'direccion' puede ser 'salientes', 'entrantes' o 'ambas'.",
++  "description": "Devuelve las relaciones (edges) de un nodo en ambas direcciones en una sola llamada: 'salientes' (el nodo es origen) y 'entrantes' (el nodo es destino), cada una con relation, vecino y provenances del edge. Cada dirección se pagina por separado con el mismo número de página e informa su total, la cantidad de páginas, la página siguiente (null si no hay más) y el conteo por tipo de relación. 'relacion' restringe ambas listas a ese tipo de relación exacto.",
+   "input_schema": {
+     "type": "object",
+@@ -9,12 +9,15 @@
+         "description": "id exacto del nodo."
+       },
+-      "direccion": {
++      "relacion": {
+         "type": "string",
+-        "enum": [
+-          "ambas",
+-          "salientes",
+-          "entrantes"
+-        ],
+-        "description": "Dirección de los edges (def. ambas)."
++        "description": "Tipo de relación exacto para filtrar (opcional; sin filtro devuelve todas)."
++      },
++      "pagina": {
++        "type": "integer",
++        "description": "Número de página, desde 1 (def. 1)."
++      },
++      "por_pagina": {
++        "type": "integer",
++        "description": "Edges por dirección y por página (def. 40, máx. 40)."
+       }
+     },
+
+
+# Prompt del sistema — harness.SYSTEM_PROMPT vs SYSTEM_PROMPT_V2_PROPUESTO (INERTE, pendiente de laudo)
+
+--- harness.SYSTEM_PROMPT
++++ SYSTEM_PROMPT_V2_PROPUESTO
+@@ -3,5 +3,5 @@
+ Tools disponibles:
+-- buscar_nodos(consulta, limite): búsqueda léxica de nodos por label/id. Empezá siempre por acá para encontrar puntos de entrada.
++- buscar_nodos(consulta, limite): búsqueda de texto completo (BM25) de nodos por label, id y descripción. Empezá siempre por acá para encontrar puntos de entrada.
+ - ver_nodo(id): devuelve type, label, properties y provenances de un nodo.
+-- ver_vecinos(id, direccion): devuelve los edges (relaciones) entrantes/salientes de un nodo, con el vecino y las provenances del edge.
++- ver_vecinos(id, relacion, pagina): devuelve los edges (relaciones) entrantes y salientes de un nodo en una sola llamada, paginados y filtrables por relación, con el vecino y las provenances del edge.
+ 
