@@ -22,7 +22,8 @@ laudos requeridos, principio 7, tarifas, cuello de botella de revisión, gate in
 intrínsecas, mapa de mecanismos con fuentes M-1…M-19, B2.6–B2.8) y cierres registrados de
 U-A0, U-C0.1, U-A1.1, U-A1.2.
 v2 (2026-08-18) — reencuadre por los resultados de A1.4 (el cuello es la política del agente,
-no el retriever) y por las recomendaciones de la sesión de mentoría sobre el head-to-head:
+no el retriever) y por el rediseño del head-to-head (un solo harness y un solo prompt para
+los dos brazos, con el brazo como variable declarada vía MCP):
 principio 8 (dos instrumentos declarados), banco de evaluación en Claude Code + MCP
 (A2.0/A2.0b), A1.7 re-enfocada como puente de calibración de agente (absorbe A3),
 embeddings sobre nodos (B1.10), re-corrida de robustez como unidad condicional (A2.5),
@@ -283,8 +284,8 @@ autorización correspondiente si una tarifa cambia.
 Regla de recorte si S5 llega atrasado: se recorta primero **B6** (a tanda 1 o descope),
 después **B3.3–B3.4** (A3 ya quedó absorbida por A1.7). Nunca se recorta A2 ni C1.
 Prioridad entre las unidades nuevas nacidas de A1.4, si el calendario aprieta:
-**A1.7 > B2.9 > B1.9** (las dos últimas cuestan USD 0). De las nacidas del reencuadre de
-mentoría: **A2.0/A2.0b son T1 y no se recortan** (sin banco no hay head-to-head);
+**A1.7 > B2.9 > B1.9** (las dos últimas cuestan USD 0). De las nacidas del rediseño del
+head-to-head: **A2.0/A2.0b son T1 y no se recortan** (sin banco no hay head-to-head);
 **B1.10 y A2.5 son las primeras en caer**, en ese orden.
 Si S4 llega atrasado, B2.8 (documento del método) se reduce a esqueleto más secciones ya
 existentes y se completa durante la escritura de C1.4; B2.6 (protocolo del ciclo) y B2.1
