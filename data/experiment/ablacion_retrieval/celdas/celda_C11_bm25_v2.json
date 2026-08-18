@@ -1,0 +1,113 @@
+{
+ "celda_id": "C11_bm25_v2",
+ "retriever": "bm25",
+ "tools": "v2",
+ "es_control": false,
+ "es_paquete_A1_2_verbatim": true,
+ "modelo_agente": {
+  "model": "claude-haiku-4-5-20251001",
+  "temperature": 0,
+  "max_tokens": 2048,
+  "max_tool_calls": 15
+ },
+ "retriever_config": {
+  "campos": [
+   "label",
+   "descripcion",
+   "description",
+   "id_texto"
+  ],
+  "analyzer": "spanish",
+  "score": "BM25 Lucene (db.index.fulltext.queryNodes), score no expuesto",
+  "orden": "score DESC, size(label) ASC, id ASC",
+  "limite_default": 10,
+  "clamp_limite": "1..50; no entero -> 10",
+  "indice": "nodos_fulltext_kg_refinado (uno por grafo)"
+ },
+ "ver_vecinos_config": {
+  "firma": "(id, relacion=None, pagina=1, por_pagina=40)",
+  "por_pagina_default": 40,
+  "por_pagina_max": 40,
+  "bidireccional_siempre": true,
+  "paginacion": "offset sobre r.orden",
+  "filtro_relacion": true
+ },
+ "backend": {
+  "grafo": "KG_Refinado",
+  "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+  "buscar_nodos": "Neo4jIndex(driver, grafo='KG_Refinado', modo='fulltext').buscar_nodos(consulta, limite)  [= ToolsV2.buscar_nodos_v2]",
+  "ver_nodo": "Neo4jIndex.ver_nodo(id)  [byte-idéntico al harness en ambos modos]",
+  "ver_vecinos": "ToolsV2.ver_vecinos_v2(id, relacion=None, pagina=1, por_pagina=40)",
+  "clase_agente_A1_4": "subclase de agente_v2.GraphAgentV2 con system_prompt/tools de ESTA celda y _run_tool despachando según 'buscar_nodos'/'ver_vecinos' de arriba; ask = copia verificada del harness (2 sustituciones)",
+  "replay_A1_4": "celdas v1: metrica.evaluar_por_anclas con index=Neo4jIndex(modo) sin cambios; celdas v2: mismo evaluar_por_anclas con re-ejecutor v2-aware inyectado por atributo de módulo (metrica._reejecutar_step) — metrica.py no se edita"
+ },
+ "system_prompt": "Sos un asistente que responde preguntas sobre regulación del BCRA usando EXCLUSIVAMENTE un Knowledge Graph, al que accedés mediante tres tools. No tenés otro conocimiento disponible: si algo no está en el grafo, no lo sabés.\n\nTools disponibles:\n- buscar_nodos(consulta, limite): búsqueda de texto completo (BM25) de nodos por label, id y descripción. Empezá siempre por acá para encontrar puntos de entrada.\n- ver_nodo(id): devuelve type, label, properties y provenances de un nodo.\n- ver_vecinos(id, relacion, pagina): devuelve los edges (relaciones) entrantes y salientes de un nodo en una sola llamada, paginados y filtrables por relación, con el vecino y las provenances del edge.\n\nEstrategia: buscá nodos relevantes, abrí los que parezcan pertinentes con ver_nodo, y explorá relaciones con ver_vecinos hasta tener evidencia suficiente. Tenés un máximo de 15 tool calls por pregunta: usalas con criterio.\n\nREGLAS DURAS:\n1. Solo afirmá lo que esté respaldado por lo que devolvieron las tools. No inventes obligaciones, plazos, montos ni entidades que no viste en el grafo.\n2. Si la información necesaria no está en el grafo, respondé con \"respondible\": false y explicá brevemente en \"respuesta\" qué falta. No inventes.\n3. Las citas deben salir de las provenances que viste en ver_nodo / ver_vecinos (campos source_doc y location). No cites provenances que no observaste.\n\nFORMATO DE SALIDA: cuando tengas la respuesta final, respondé con UN ÚNICO objeto JSON válido, sin texto adicional ni markdown, con exactamente estas claves:\n{\n  \"respuesta\": \"<texto de la respuesta en español>\",\n  \"citas\": [{\"source_doc\": \"<archivo>\", \"location\": \"<ubicación>\"}, ...],\n  \"respondible\": true|false\n}\nSi \"respondible\" es false, \"citas\" puede ser una lista vacía.",
+ "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+ "tools_specs": [
+  {
+   "name": "buscar_nodos",
+   "description": "Búsqueda de texto completo (BM25, con normalización de acentos, stemming en castellano y stopwords) de nodos del grafo por coincidencia de términos en su label, id o descripción. Devuelve id, type, label, la cantidad de términos de la consulta presentes en label/id (tokens_matcheados; puede ser 0 cuando la coincidencia está solo en la descripción) y un resumen corto de propiedades, ordenados por relevancia. total_con_match cuenta los nodos con al menos un término de la consulta en alguno de esos campos. Es el punto de entrada habitual.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "consulta": {
+      "type": "string",
+      "description": "Palabras clave a buscar."
+     },
+     "limite": {
+      "type": "integer",
+      "description": "Máximo de resultados (def. 10, máx. 50)."
+     }
+    },
+    "required": [
+     "consulta"
+    ]
+   }
+  },
+  {
+   "name": "ver_nodo",
+   "description": "Devuelve un nodo completo por su id exacto: type, label, properties y provenances (source_doc + location).",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "id exacto del nodo."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   }
+  },
+  {
+   "name": "ver_vecinos",
+   "description": "Devuelve las relaciones (edges) de un nodo en ambas direcciones en una sola llamada: 'salientes' (el nodo es origen) y 'entrantes' (el nodo es destino), cada una con relation, vecino y provenances del edge. Cada dirección se pagina por separado con el mismo número de página e informa su total, la cantidad de páginas, la página siguiente (null si no hay más) y el conteo por tipo de relación. 'relacion' restringe ambas listas a ese tipo de relación exacto.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "id exacto del nodo."
+     },
+     "relacion": {
+      "type": "string",
+      "description": "Tipo de relación exacto para filtrar (opcional; sin filtro devuelve todas)."
+     },
+     "pagina": {
+      "type": "integer",
+      "description": "Número de página, desde 1 (def. 1)."
+     },
+     "por_pagina": {
+      "type": "integer",
+      "description": "Edges por dirección y por página (def. 40, máx. 40)."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   }
+  }
+ ],
+ "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260"
+}

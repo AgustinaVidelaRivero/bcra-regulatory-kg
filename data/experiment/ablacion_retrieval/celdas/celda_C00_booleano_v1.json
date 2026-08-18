@@ -1,0 +1,104 @@
+{
+ "celda_id": "C00_booleano_v1",
+ "retriever": "booleano",
+ "tools": "v1",
+ "es_control": true,
+ "es_paquete_A1_2_verbatim": false,
+ "modelo_agente": {
+  "model": "claude-haiku-4-5-20251001",
+  "temperature": 0,
+  "max_tokens": 2048,
+  "max_tool_calls": 15
+ },
+ "retriever_config": {
+  "campos": [
+   "label",
+   "id"
+  ],
+  "score": "|tokens(consulta) ∩ tokens(label+id)|",
+  "orden": "(-score, len(label), id)",
+  "limite_default": 10,
+  "clamp_limite": "1..50; no entero -> 10"
+ },
+ "ver_vecinos_config": {
+  "firma": "(id, direccion='ambas')",
+  "ventana": 40,
+  "paginacion": false,
+  "filtro_relacion": false
+ },
+ "backend": {
+  "grafo": "KG_Refinado",
+  "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+  "buscar_nodos": "Neo4jIndex(driver, grafo='KG_Refinado', modo='paridad').buscar_nodos(consulta, limite)",
+  "ver_nodo": "Neo4jIndex.ver_nodo(id)  [byte-idéntico al harness en ambos modos]",
+  "ver_vecinos": "Neo4jIndex.ver_vecinos(id, direccion='ambas')  [byte-idéntico al harness]",
+  "clase_agente_A1_4": "subclase de agente_v2.GraphAgentV2 con system_prompt/tools de ESTA celda y _run_tool despachando según 'buscar_nodos'/'ver_vecinos' de arriba; ask = copia verificada del harness (2 sustituciones)",
+  "replay_A1_4": "celdas v1: metrica.evaluar_por_anclas con index=Neo4jIndex(modo) sin cambios; celdas v2: mismo evaluar_por_anclas con re-ejecutor v2-aware inyectado por atributo de módulo (metrica._reejecutar_step) — metrica.py no se edita"
+ },
+ "system_prompt": "Sos un asistente que responde preguntas sobre regulación del BCRA usando EXCLUSIVAMENTE un Knowledge Graph, al que accedés mediante tres tools. No tenés otro conocimiento disponible: si algo no está en el grafo, no lo sabés.\n\nTools disponibles:\n- buscar_nodos(consulta, limite): búsqueda léxica de nodos por label/id. Empezá siempre por acá para encontrar puntos de entrada.\n- ver_nodo(id): devuelve type, label, properties y provenances de un nodo.\n- ver_vecinos(id, direccion): devuelve los edges (relaciones) entrantes/salientes de un nodo, con el vecino y las provenances del edge.\n\nEstrategia: buscá nodos relevantes, abrí los que parezcan pertinentes con ver_nodo, y explorá relaciones con ver_vecinos hasta tener evidencia suficiente. Tenés un máximo de 15 tool calls por pregunta: usalas con criterio.\n\nREGLAS DURAS:\n1. Solo afirmá lo que esté respaldado por lo que devolvieron las tools. No inventes obligaciones, plazos, montos ni entidades que no viste en el grafo.\n2. Si la información necesaria no está en el grafo, respondé con \"respondible\": false y explicá brevemente en \"respuesta\" qué falta. No inventes.\n3. Las citas deben salir de las provenances que viste en ver_nodo / ver_vecinos (campos source_doc y location). No cites provenances que no observaste.\n\nFORMATO DE SALIDA: cuando tengas la respuesta final, respondé con UN ÚNICO objeto JSON válido, sin texto adicional ni markdown, con exactamente estas claves:\n{\n  \"respuesta\": \"<texto de la respuesta en español>\",\n  \"citas\": [{\"source_doc\": \"<archivo>\", \"location\": \"<ubicación>\"}, ...],\n  \"respondible\": true|false\n}\nSi \"respondible\" es false, \"citas\" puede ser una lista vacía.",
+ "system_prompt_sha256": "001a5eee6fedbdba5c343aa783e1918f8cdf08eafb48fb5d0080ab7eb2c956de",
+ "tools_specs": [
+  {
+   "name": "buscar_nodos",
+   "description": "Búsqueda léxica de nodos del grafo por coincidencia de palabras en su label o id (normalizada, sin acentos). Devuelve id, type, label y un resumen corto de propiedades. Es el punto de entrada habitual.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "consulta": {
+      "type": "string",
+      "description": "Palabras clave a buscar."
+     },
+     "limite": {
+      "type": "integer",
+      "description": "Máximo de resultados (def. 10)."
+     }
+    },
+    "required": [
+     "consulta"
+    ]
+   }
+  },
+  {
+   "name": "ver_nodo",
+   "description": "Devuelve un nodo completo por su id exacto: type, label, properties y provenances (source_doc + location).",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "id exacto del nodo."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   }
+  },
+  {
+   "name": "ver_vecinos",
+   "description": "Devuelve las relaciones (edges) de un nodo: relation, vecino y provenances del edge. 'direccion' puede ser 'salientes', 'entrantes' o 'ambas'.",
+   "input_schema": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "description": "id exacto del nodo."
+     },
+     "direccion": {
+      "type": "string",
+      "enum": [
+       "ambas",
+       "salientes",
+       "entrantes"
+      ],
+      "description": "Dirección de los edges (def. ambas)."
+     }
+    },
+    "required": [
+     "id"
+    ]
+   }
+  }
+ ],
+ "tools_specs_sha256": "3f2e3263ca72ce009dd19b666733eb6c6edc4baf3542805698a7e4f7de03501e"
+}

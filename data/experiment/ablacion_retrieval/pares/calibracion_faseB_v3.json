@@ -1,0 +1,1844 @@
+{
+ "config": {
+  "modo": "calibracion",
+  "modelo": "claude-sonnet-5",
+  "samples": [
+   "EA-001",
+   "EA-002",
+   "EB-001",
+   "EB-002",
+   "ED-001",
+   "ED-002",
+   "EE-001",
+   "EE-002"
+  ],
+  "semilla_samples": "sinteticas-faseA-v3",
+  "solape_umbral": 0.15
+ },
+ "registros": [
+  {
+   "sample_id": "EA-001",
+   "estrato": "E-A",
+   "sub_estrato": null,
+   "literal": "¿Qué operación regula la obligación de ingresar y liquidar los fondos excedentes en el mercado de cambios dentro de los plazos previstos por las normas generales en la materia?",
+   "antilexica": "¿Qué operación regula la obligación de ingresar y convertir en el mercado cambiario los excedentes de dinero dentro de los plazos previstos por las normas generales en la materia?",
+   "tokens_prohibidos": [
+    "acumulacion",
+    "cuentas",
+    "extranjera",
+    "fondos",
+    "garantia",
+    "moneda"
+   ],
+   "solape_literal": {
+    "solape": 0.06666666666666667,
+    "tokens_pregunta": 15,
+    "tokens_en_comun": [
+     "fondos"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 15,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "7.8",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 7.8. Otras disposiciones. (parte 2)"
+     }
+    ]
+   },
+   "veredicto": "descartado",
+   "motivos": [
+    "V1_literal_no_autocontenida: la pregunta pregunta por 'qué operación' regula algo, pero no describe ninguna operación ni caso concreto identificable; es una referencia colgante a un contenido no especificado ('las normas generales en la materia' y una operación no descrita)",
+    "V3_par_divergente: La original habla de 'liquidar los fondos excedentes en el mercado de cambios', mientras que la reformulación dice 'convertir en el mercado cambiario los excedentes de dinero'. 'Liquidar' (vender/convertir a moneda local) y 'convertir' pueden implicar operaciones o interpretaciones distintas, cambiando el sentido técnico preciso de la obligación regulada."
+   ],
+   "puertas_mecanicas": {
+    "sample_id": "EA-001",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_exportaciones_por_cuenta_y_orden_de_terceros_4d0443",
+        "Obligacion_cumplimiento_de_ingreso_y_liquidacion_de_divisas_9d0edb",
+        "Obligacion_computacion_de_liquidaciones_y_aplicaciones_de_divisas_8b9ed3",
+        "Operacion_exportaciones_con_precios_revisables_o_concentrados_de_minerales_ef1e8e",
+        "Obligacion_calculo_del_plazo_de_ingreso_y_liquidacion_de_divisas_6599c7",
+        "Obligacion_computacion_del_monto_de_obligacion_de_divisas_c3b609",
+        "Obligacion_imputacion_de_liquidaciones_entre_permisos_provisorio_y_definitivo_64c997",
+        "Obligacion_otorgamiento_de_cumplido_cuando_permiso_definitivo_aun_no_oficializado_af0936",
+        "Excepcion_extension_de_plazo_por_indeterminacion_de_precio_b5b799",
+        "Excepcion_cumplido_de_embarque_definitivo_para_embarque_provisorio_anterior_a_02_09_19_3c8f8a",
+        "Operacion_aplicacion_de_divisas_de_anticipos_y_financiaciones_a_cancelacion_189888",
+        "Obligacion_registro_simultaneo_de_liquidacion_y_egreso_de_divisas_08960d",
+        "Restriccion_conformidad_previa_bcra_requerida_776be0",
+        "Excepcion_excepcion_de_liquidacion_para_beneficiarios_economia_del_conocimiento_4fb5ff",
+        "Obligacion_declaracion_jurada_de_beneficiario_economia_del_conocimiento_60aa91",
+        "Obligacion_acreditacion_en_cuenta_especial_economia_del_conocimiento_d9c95b",
+        "Obligacion_certificacion_de_incremento_de_exportaciones_economia_del_conocimiento_08e38e",
+        "Restriccion_exclusividad_del_tratamiento_cambiario_diferencial_c17bf5",
+        "Obligacion_confeccion_de_boletos_para_operaciones_economia_del_conocimiento_0d4263",
+        "Operacion_presentacion_de_documentacion_de_transferencias_de_remesas_8af0d5",
+        "Restriccion_la_imputacion_del_monto_ingresado_al_cumplimiento_del_permiso_de_embarque_requer_597b9a",
+        "Operacion_extension_plazo_liquidacion_permiso_embarque_72e664",
+        "Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p_8267a0",
+        "Operacion_prefinanciacion_de_exportaciones_con_fondeo_externo_992cad",
+        "Restriccion_las_prefinanciaciones_de_exportaciones_otorgadas_por_entidades_financieras_del_e_467a8d",
+        "Operacion_acumulacion_fondos_en_cuentas_moneda_extranjera_como_garantia_1ce9d2",
+        "Restriccion_los_fondos_originados_en_cobro_de_exportaciones_podran_acumularse_en_cuentas_en__9b2dcd",
+        "Obligacion_los_fondos_excedentes_deben_ser_ingresados_y_liquidados_en_el_mercado_de_cambios_b4887f",
+        "Excepcion_en_caso_de_que_la_fecha_hasta_la_cual_los_cobros_deben_permanecer_depositados_en_fe2de7",
+        "Operacion_compra_moneda_extranjera_para_constitucion_garantias_02350f"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 15,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": false,
+     "motivo": "la pregunta pregunta por 'qué operación' regula algo, pero no describe ninguna operación ni caso concreto identificable; es una referencia colgante a un contenido no especificado ('las normas generales en la materia' y una operación no descrita)"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica por su contenido (obligación de ingreso y conversión de excedentes de dinero en el mercado cambiario) sin depender de referencias externas como 'el punto anterior' o 'dicha norma'"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": false,
+     "diferencia": "La original habla de 'liquidar los fondos excedentes en el mercado de cambios', mientras que la reformulación dice 'convertir en el mercado cambiario los excedentes de dinero'. 'Liquidar' (vender/convertir a moneda local) y 'convertir' pueden implicar operaciones o interpretaciones distintas, cambiando el sentido técnico preciso de la obligación regulada."
+    },
+    "ok": false,
+    "motivos": [
+     "V1_literal_no_autocontenida: la pregunta pregunta por 'qué operación' regula algo, pero no describe ninguna operación ni caso concreto identificable; es una referencia colgante a un contenido no especificado ('las normas generales en la materia' y una operación no descrita)",
+     "V3_par_divergente: La original habla de 'liquidar los fondos excedentes en el mercado de cambios', mientras que la reformulación dice 'convertir en el mercado cambiario los excedentes de dinero'. 'Liquidar' (vender/convertir a moneda local) y 'convertir' pueden implicar operaciones o interpretaciones distintas, cambiando el sentido técnico preciso de la obligación regulada."
+    ]
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "EA-001",
+   "estrato": "E-A",
+   "sub_estrato": null,
+   "literal": "Cuando existen fondos excedentes que deben ingresarse y liquidarse en el mercado de cambios dentro de los plazos previstos por las normas generales aplicables, ¿qué operación queda regulada por esta obligación?",
+   "antilexica": "Cuando existe dinero de más que debe convertirse a pesos y traspasarse al circuito cambiario dentro de los tiempos que marcan las disposiciones generales vigentes, ¿qué tipo de transacción queda alcanzada por esta obligación?",
+   "tokens_prohibidos": [
+    "acumulacion",
+    "cuentas",
+    "extranjera",
+    "fondos",
+    "garantia",
+    "moneda"
+   ],
+   "solape_literal": {
+    "solape": 0.05555555555555555,
+    "tokens_pregunta": 18,
+    "tokens_en_comun": [
+     "fondos"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 19,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "7.8",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 7.8. Otras disposiciones. (parte 2)"
+     }
+    ]
+   },
+   "veredicto": "descartado",
+   "motivos": [
+    "V1_literal_no_autocontenida: la pregunta es circular: pregunta qué operación queda regulada por 'esta obligación' pero la obligación se describe en términos genéricos ('fondos excedentes', 'normas generales aplicables') sin identificar el caso concreto, y remite a 'esta obligación' como si fuera un antecedente externo no provisto",
+    "V1_antilexica_no_autocontenida: la pregunta depende de referencias colgantes como 'dinero de más' y 'disposiciones generales vigentes' sin especificar de qué operatoria o contexto normativo puntual se trata, por lo que no se identifica el caso sin ambigüedad"
+   ],
+   "puertas_mecanicas": {
+    "sample_id": "EA-001",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_exportaciones_por_cuenta_y_orden_de_terceros_4d0443",
+        "Obligacion_cumplimiento_de_ingreso_y_liquidacion_de_divisas_9d0edb",
+        "Obligacion_computacion_de_liquidaciones_y_aplicaciones_de_divisas_8b9ed3",
+        "Operacion_exportaciones_con_precios_revisables_o_concentrados_de_minerales_ef1e8e",
+        "Obligacion_calculo_del_plazo_de_ingreso_y_liquidacion_de_divisas_6599c7",
+        "Obligacion_computacion_del_monto_de_obligacion_de_divisas_c3b609",
+        "Obligacion_imputacion_de_liquidaciones_entre_permisos_provisorio_y_definitivo_64c997",
+        "Obligacion_otorgamiento_de_cumplido_cuando_permiso_definitivo_aun_no_oficializado_af0936",
+        "Excepcion_extension_de_plazo_por_indeterminacion_de_precio_b5b799",
+        "Excepcion_cumplido_de_embarque_definitivo_para_embarque_provisorio_anterior_a_02_09_19_3c8f8a",
+        "Operacion_aplicacion_de_divisas_de_anticipos_y_financiaciones_a_cancelacion_189888",
+        "Obligacion_registro_simultaneo_de_liquidacion_y_egreso_de_divisas_08960d",
+        "Restriccion_conformidad_previa_bcra_requerida_776be0",
+        "Excepcion_excepcion_de_liquidacion_para_beneficiarios_economia_del_conocimiento_4fb5ff",
+        "Obligacion_declaracion_jurada_de_beneficiario_economia_del_conocimiento_60aa91",
+        "Obligacion_acreditacion_en_cuenta_especial_economia_del_conocimiento_d9c95b",
+        "Obligacion_certificacion_de_incremento_de_exportaciones_economia_del_conocimiento_08e38e",
+        "Restriccion_exclusividad_del_tratamiento_cambiario_diferencial_c17bf5",
+        "Obligacion_confeccion_de_boletos_para_operaciones_economia_del_conocimiento_0d4263",
+        "Operacion_presentacion_de_documentacion_de_transferencias_de_remesas_8af0d5",
+        "Restriccion_la_imputacion_del_monto_ingresado_al_cumplimiento_del_permiso_de_embarque_requer_597b9a",
+        "Operacion_extension_plazo_liquidacion_permiso_embarque_72e664",
+        "Excepcion_la_entidad_encargada_del_seguimiento_del_permiso_de_embarque_podra_extender_el_p_8267a0",
+        "Operacion_prefinanciacion_de_exportaciones_con_fondeo_externo_992cad",
+        "Restriccion_las_prefinanciaciones_de_exportaciones_otorgadas_por_entidades_financieras_del_e_467a8d",
+        "Operacion_acumulacion_fondos_en_cuentas_moneda_extranjera_como_garantia_1ce9d2",
+        "Restriccion_los_fondos_originados_en_cobro_de_exportaciones_podran_acumularse_en_cuentas_en__9b2dcd",
+        "Obligacion_los_fondos_excedentes_deben_ser_ingresados_y_liquidados_en_el_mercado_de_cambios_b4887f",
+        "Excepcion_en_caso_de_que_la_fecha_hasta_la_cual_los_cobros_deben_permanecer_depositados_en_fe2de7",
+        "Operacion_compra_moneda_extranjera_para_constitucion_garantias_02350f"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 19,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": false,
+     "motivo": "la pregunta es circular: pregunta qué operación queda regulada por 'esta obligación' pero la obligación se describe en términos genéricos ('fondos excedentes', 'normas generales aplicables') sin identificar el caso concreto, y remite a 'esta obligación' como si fuera un antecedente externo no provisto"
+    },
+    "v1_antilexica": {
+     "autocontenida": false,
+     "motivo": "la pregunta depende de referencias colgantes como 'dinero de más' y 'disposiciones generales vigentes' sin especificar de qué operatoria o contexto normativo puntual se trata, por lo que no se identifica el caso sin ambigüedad"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "La reformulación usa sinónimos coloquiales ('dinero de más' por 'fondos excedentes', 'convertirse a pesos y traspasarse al circuito cambiario' por 'ingresarse y liquidarse en el mercado de cambios', 'tiempos que marcan las disposiciones generales vigentes' por 'plazos previstos por las normas generales aplicables'), pero mantiene el mismo objeto de la pregunta y la misma respuesta correcta esperada."
+    },
+    "ok": false,
+    "motivos": [
+     "V1_literal_no_autocontenida: la pregunta es circular: pregunta qué operación queda regulada por 'esta obligación' pero la obligación se describe en términos genéricos ('fondos excedentes', 'normas generales aplicables') sin identificar el caso concreto, y remite a 'esta obligación' como si fuera un antecedente externo no provisto",
+     "V1_antilexica_no_autocontenida: la pregunta depende de referencias colgantes como 'dinero de más' y 'disposiciones generales vigentes' sin especificar de qué operatoria o contexto normativo puntual se trata, por lo que no se identifica el caso sin ambigüedad"
+    ]
+   },
+   "intento": 2
+  },
+  {
+   "sample_id": "EA-002",
+   "estrato": "E-A",
+   "sub_estrato": null,
+   "literal": "Cuando una entidad financiera local otorga una financiación, ¿qué obligación de seguimiento condiciona esa operación hasta su cancelación total?",
+   "antilexica": "Cuando un banco de nuestro país da un préstamo, ¿qué deber de control acompaña esa operación hasta que se pague por completo?",
+   "tokens_prohibidos": [
+    "entidad",
+    "financiacion",
+    "local",
+    "otorgamiento"
+   ],
+   "solape_literal": {
+    "solape": 0.2727272727272727,
+    "tokens_pregunta": 11,
+    "tokens_en_comun": [
+     "entidad",
+     "financiacion",
+     "local"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 10,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "7.10",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 7.10. 9.1.7. Aportes de inversión extranjera directa admitidos en los puntos 7.9. o 7."
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "EA-002",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_cobro_en_divisas_de_exportacion_de_bienes_d5c26f",
+        "Operacion_pago_capital_e_intereses_importacion_469a4e",
+        "Operacion_pago_capital_e_intereses_endeudamiento_financiero_5dcf43",
+        "Operacion_pago_utilidades_y_dividendos_14dfc1",
+        "Operacion_repatriacion_inversion_directa_1b6d4f",
+        "Operacion_designacion_entidad_seguimiento_proyecto_92583f",
+        "Operacion_registro_boletos_cambios_sin_movimiento_45fc75",
+        "Restriccion_limite_monto_por_permiso_1cf37a",
+        "Restriccion_limite_monto_anual_por_inversiones_732ef1",
+        "Restriccion_plazo_computo_inversiones_ad8101",
+        "Restriccion_limite_beneficiarios_decreto_277_22_f01454",
+        "Obligacion_designar_entidad_seguimiento_30ce70",
+        "Obligacion_constatar_certificado_inversion_fbe4e3",
+        "Obligacion_certificar_vinculacion_exportaciones_69fabb",
+        "Obligacion_seguimiento_permisos_embarques_512696",
+        "Obligacion_registro_importaciones_bienes_capital_7cd13f",
+        "Obligacion_seguimiento_fondos_pendientes_67a79e",
+        "Obligacion_cumplir_requerimientos_informacion_bcra_2d1942",
+        "Obligacion_notificar_designacion_al_bcra_80b8a5",
+        "Obligacion_notificar_inversiones_ingresadas_2da057",
+        "Obligacion_confeccionar_boletos_rioc_b4f17a",
+        "Obligacion_registrar_boletos_fecha_ingreso_aduanero_3cfb1d",
+        "Obligacion_presentar_documentacion_capitalizacion_f322ac",
+        "Operacion_deposito_de_cobros_en_cuentas_corresponsales_b0020d",
+        "Obligacion_ampliacion_de_plazo_para_liquidacion_de_divisas_40cf41",
+        "Restriccion_limite_de_aplicacion_de_beneficio_ampliado_40_e0afd0",
+        "Restriccion_limite_de_aplicacion_de_beneficio_ampliado_60_dc27fd",
+        "Restriccion_limite_de_vigencia_para_acceso_a_beneficio_ampliado_9bf968",
+        "Restriccion_restriccion_geografica_para_cuentas_bancarias_del_exterior_24561e",
+        "Obligacion_compensacion_de_excedentes_en_mecanismos_combinados_f67e07",
+        "Operacion_aplicacion_de_cobros_a_usos_admitidos_f63742",
+        "Operacion_seleccion_de_entidad_nominada_para_seguimiento_736631",
+        "Obligacion_por_cada_operacion_comprendida_el_exportador_debera_seleccionar_una_entidad_como_b84189",
+        "Operacion_emision_de_certificados_de_aplicacion_be9910",
+        "Obligacion_esta_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion__0b3d4e",
+        "Restriccion_esta_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_b14e98",
+        "Operacion_otorgamiento_de_financiacion_por_entidad_local_385414",
+        "Obligacion_en_el_caso_de_financiaciones_otorgadas_por_entidades_financieras_locales_el_segu_e4b057",
+        "Operacion_registro_de_operacion_ante_bcra_b33c19",
+        "Obligacion_en_el_caso_de_las_operaciones_comprendidas_en_el_punto_9_1_8_el_seguimiento_qued_88e55e",
+        "Operacion_liquidacion_de_operacion_por_mercado_de_cambios_84c36b",
+        "Obligacion_en_los_restantes_casos_el_seguimiento_quedara_inicialmente_a_cargo_de_la_entidad_66e16d",
+        "Operacion_cambio_de_entidad_responsable_de_seguimiento_148ba3",
+        "Obligacion_en_caso_de_que_el_exportador_solicite_el_cambio_la_entidad_a_cargo_del_seguimien_0debc7",
+        "Restriccion_el_exportador_puede_modificar_la_entidad_responsable_del_seguimiento_en_la_medid_a1ffda",
+        "Comunicacion_a_7664",
+        "Comunicacion_a_7770",
+        "Comunicacion_a_7313",
+        "Comunicacion_a_7845",
+        "Comunicacion_a_7898",
+        "Comunicacion_a_6788",
+        "Comunicacion_a_7259",
+        "Comunicacion_a_7853",
+        "Comunicacion_a_7217",
+        "Comunicacion_a_7852",
+        "Comunicacion_a_7507",
+        "Comunicacion_a_7780",
+        "Comunicacion_a_7833"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {
+        "ext:7.10": 58
+       }
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 10,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso queda identificado por su propio contenido (financiación otorgada por entidad financiera local y obligación de seguimiento hasta cancelación total) sin referencias colgantes a material externo"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso (préstamo bancario y deber de control durante su vigencia hasta la cancelación) queda identificado por su propio contenido, sin referencias a material externo o secciones previas"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "Ninguna sustancial; solo se usan sinónimos ('entidad financiera local' por 'banco de nuestro país', 'financiación' por 'préstamo', 'obligación de seguimiento' por 'deber de control', 'cancelación total' por 'se pague por completo'), pero el objeto de la pregunta es idéntico."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "EB-001",
+   "estrato": "E-B",
+   "sub_estrato": "saliente",
+   "literal": "Cuando un cliente es un Vehículo de Proyecto Único (VPU) adherido al RIGI que declaró ante la Autoridad de Aplicación que preveía acogerse a los beneficios del artículo 198 de la Ley 27.742 en materia de cobro de exportaciones, ¿qué excepción se aplica respecto de la obligación de ingreso y liquidación de divisas en el plazo de 30 días corridos desde el cumplido de embarque para las posiciones arancelarias comprendidas, y qué operación general de mercado de cambios queda regulada por dicha obligación?",
+   "antilexica": "Cuando un cliente es una empresa organizada específicamente para un proyecto (adherida al régimen de incentivo para grandes inversiones) y que informó ante el organismo de control que planeaba tomar los beneficios del artículo 198 de la Ley 27.742 en cuanto al cobro de ventas al exterior, ¿qué excepción corresponde respecto de la obligación de traer y convertir a pesos las monedas extranjeras recibidas dentro de los 30 días corridos desde que se completó el envío de la mercadería, para las posiciones arancelarias abarcadas, y qué operación general del mercado cambiario queda regulada por esa obligación?",
+   "tokens_prohibidos": [
+    "alcanzar",
+    "condicion",
+    "contravalor",
+    "divisas",
+    "exportacion",
+    "facturado",
+    "ingresarse",
+    "ingreso",
+    "liquidacion",
+    "liquidarse",
+    "pactada"
+   ],
+   "solape_literal": {
+    "solape": 0.06818181818181818,
+    "tokens_pregunta": 44,
+    "tokens_en_comun": [
+     "divisas",
+     "ingreso",
+     "liquidacion"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 51,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "6.12",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 6.12. Gobiernos locales."
+     }
+    ]
+   },
+   "veredicto": "descartado",
+   "motivos": [
+    "b_largo_fuera_de_rango: 610 chars (rango [40, 600])"
+   ],
+   "puertas_mecanicas": {
+    "sample_id": "EB-001",
+    "veredicto": "descartado",
+    "motivos": [
+     "b_largo_fuera_de_rango: 610 chars (rango [40, 600])"
+    ],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_ingreso_y_liquidacion_de_divisas_de_exportacion_cd242d",
+        "Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058",
+        "Obligacion_ingreso_y_liquidacion_plazo_30_dias_cereales_4a3383",
+        "Obligacion_ingreso_y_liquidacion_plazo_60_dias_8e678a",
+        "Obligacion_ingreso_y_liquidacion_plazo_180_dias_e1a9bd",
+        "Obligacion_ingreso_y_liquidacion_plazo_365_dias_7d1f37",
+        "Restriccion_cobros_liquidados_plazo_20_dias_habiles_fa0d69",
+        "Excepcion_excepcion_para_vpu_rigi_en_exportaciones_259f50",
+        "Obligacion_seleccion_de_entidad_para_seguimiento_6f0bc9",
+        "Operacion_cobro_de_exportaciones_anterior_a_02_09_19_a167f4",
+        "Obligacion_liquidacion_de_cobros_anteriores_20_dias_9c6857",
+        "Operacion_anticipos_y_prefinanciaciones_del_exterior_d23a09",
+        "Obligacion_liquidacion_anticipos_20_dias_habiles_d3a35e",
+        "Operacion_prefinanciacion_a_importadores_del_exterior_c06cd0",
+        "Obligacion_liquidacion_financiaciones_al_desembolso_0331e4",
+        "Excepcion_excepcion_vpu_rigi_en_anticipos_f1ab57",
+        "Excepcion_excepcion_vpu_rigi_en_financiaciones_45cea5",
+        "Restriccion_cumplimiento_de_plazos_maximos_e37a38"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": false,
+      "motivos": [
+       "b_largo_fuera_de_rango: 610 chars (rango [40, 600])"
+      ],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 51,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica completamente por su contenido (VPU adherido al RIGI, artículo 198 de la Ley 27.742, plazo de 30 días corridos desde cumplido de embarque) sin referencias colgantes a material externo"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica plenamente por su propio contenido (empresa de proyecto RIGI, art. 198 Ley 27.742, plazo de 30 días corridos) sin necesidad de referencias externas colgantes"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "Ninguna: es una reformulación con sinónimos y paráfrasis (VPU -> empresa organizada para un proyecto, RIGI -> régimen de incentivo para grandes inversiones, ingreso y liquidación de divisas -> traer y convertir a pesos las monedas extranjeras, cumplido de embarque -> se completó el envío) que mantiene el mismo contenido y objeto de la pregunta."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "EB-001",
+   "estrato": "E-B",
+   "sub_estrato": "saliente",
+   "literal": "En el caso de un Vehículo de Proyecto Único (VPU) adherido al RIGI que haya declarado ante la Autoridad de Aplicación su intención de utilizar los beneficios del artículo 198 de la Ley 27.742 respecto del cobro de exportaciones, ¿qué obligación de plazo queda exceptuada y qué operación regula finalmente esa obligación en materia de ingreso y liquidación de divisas?",
+   "antilexica": "En el caso de una empresa con proyecto único inscripta en el régimen de incentivos para grandes inversiones que haya informado a la autoridad correspondiente su decisión de tomar los beneficios previstos en el artículo 198 de la Ley 27.742 respecto del cobro de ventas al exterior, ¿qué requisito de tiempo deja de aplicarse y qué operación termina rigiendo esa obligación en cuanto al cambio y entrega de las monedas extranjeras recibidas?",
+   "tokens_prohibidos": [
+    "alcanzar",
+    "condicion",
+    "contravalor",
+    "divisas",
+    "exportacion",
+    "facturado",
+    "ingresarse",
+    "ingreso",
+    "liquidacion",
+    "liquidarse",
+    "pactada"
+   ],
+   "solape_literal": {
+    "solape": 0.09090909090909091,
+    "tokens_pregunta": 33,
+    "tokens_en_comun": [
+     "divisas",
+     "ingreso",
+     "liquidacion"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 40,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "6.12",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 6.12. Gobiernos locales."
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "EB-001",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_ingreso_y_liquidacion_de_divisas_de_exportacion_cd242d",
+        "Obligacion_ingreso_y_liquidacion_plazo_30_dias_17b058",
+        "Obligacion_ingreso_y_liquidacion_plazo_30_dias_cereales_4a3383",
+        "Obligacion_ingreso_y_liquidacion_plazo_60_dias_8e678a",
+        "Obligacion_ingreso_y_liquidacion_plazo_180_dias_e1a9bd",
+        "Obligacion_ingreso_y_liquidacion_plazo_365_dias_7d1f37",
+        "Restriccion_cobros_liquidados_plazo_20_dias_habiles_fa0d69",
+        "Excepcion_excepcion_para_vpu_rigi_en_exportaciones_259f50",
+        "Obligacion_seleccion_de_entidad_para_seguimiento_6f0bc9",
+        "Operacion_cobro_de_exportaciones_anterior_a_02_09_19_a167f4",
+        "Obligacion_liquidacion_de_cobros_anteriores_20_dias_9c6857",
+        "Operacion_anticipos_y_prefinanciaciones_del_exterior_d23a09",
+        "Obligacion_liquidacion_anticipos_20_dias_habiles_d3a35e",
+        "Operacion_prefinanciacion_a_importadores_del_exterior_c06cd0",
+        "Obligacion_liquidacion_financiaciones_al_desembolso_0331e4",
+        "Excepcion_excepcion_vpu_rigi_en_anticipos_f1ab57",
+        "Excepcion_excepcion_vpu_rigi_en_financiaciones_45cea5",
+        "Restriccion_cumplimiento_de_plazos_maximos_e37a38"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 40,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso identifica claramente el sujeto (VPU adherido al RIGI), el artículo específico (198 de la Ley 27.742) y el tema puntual (excepción de plazo en cobro de exportaciones e ingreso/liquidación de divisas), sin depender de referencias externas como 'el punto anterior' o 'dicha comunicación'"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica plenamente por su contenido (empresa con proyecto único, régimen RIGI, art. 198 Ley 27.742) sin depender de referencias externas colgantes"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "Ninguna sustancial: es una reformulación con sinónimos (VPU = empresa con proyecto único, RIGI = régimen de incentivos para grandes inversiones, exportaciones = ventas al exterior, ingreso y liquidación de divisas = cambio y entrega de monedas extranjeras). El objeto de la pregunta y la respuesta correcta esperada son los mismos."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 2
+  },
+  {
+   "sample_id": "EB-002",
+   "estrato": "E-B",
+   "sub_estrato": "saliente",
+   "literal": "Cuando los fondos liquidados en operaciones de financiación se destinan a proyectos de inversión que generan aumento de producción o capacidad de transporte, ¿qué obligación adicional debe cumplir la entidad respecto de ese proyecto para que la operación resulte elegible?",
+   "antilexica": "Cuando el dinero obtenido a través de una operación de crédito se aplica a una iniciativa que busca incrementar la producción o ampliar la capacidad de transporte, ¿qué tarea extra debe realizar la entidad en relación con esa iniciativa para que dicha operación pueda ser considerada válida a los fines buscados?",
+   "tokens_prohibidos": [
+    "9",
+    "certificar",
+    "comprendidos",
+    "condiciones",
+    "cumplimiento",
+    "destinadas",
+    "elegibilidad",
+    "proyecto",
+    "proyectos"
+   ],
+   "solape_literal": {
+    "solape": 0.09090909090909091,
+    "tokens_pregunta": 22,
+    "tokens_en_comun": [
+     "proyecto",
+     "proyectos"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 25,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "3.17",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 3.17. ii) el resto del capital que vencía fue, como mínimo, refinanciado con un (parte 1)"
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "EB-002",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_refinanciacion_de_capital_con_endeudamiento_exterior_525902",
+        "Restriccion_vida_promedio_minima_en_refinanciacion_470437",
+        "Restriccion_limite_temporal_acceso_mercado_cambios_b53a4f",
+        "Restriccion_espera_minima_por_fecha_emision_titulo_deuda_12_meses_106c3e",
+        "Restriccion_espera_minima_por_fecha_emision_titulo_deuda_6_meses_b96649",
+        "Restriccion_espera_minima_por_fecha_emision_titulo_deuda_18_meses_1010f8",
+        "Restriccion_conformidad_previa_bcra_para_acceso_anticipado_f07fb4",
+        "Excepcion_la_precancelacion_de_capital_sea_efectuada_en_manera_simultanea_con_la_liquidaci_bb1516",
+        "Operacion_precancelacion_de_capital_con_refinanciacion_5ffaf3",
+        "Restriccion_ano_de_gracia_en_nuevo_titulo_de_deuda_d04334",
+        "Restriccion_vencimientos_acumulados_no_superan_deuda_original_2eb6da",
+        "Operacion_precancelacion_de_intereses_devengados_930d91",
+        "Restriccion_prima_recompra_maximo_5_del_capital_102af6",
+        "Operacion_pago_de_gastos_emision_titulos_deuda_b701e7",
+        "Operacion_precancelacion_simultanea_con_nuevo_endeudamiento_financiero_8e5476",
+        "Restriccion_vida_promedio_nuevo_endeudamiento_mayor_a_remanente_4833dd",
+        "Operacion_canje_de_titulos_de_deuda_994436",
+        "Restriccion_intereses_devengados_hasta_cierre_canje_ae256e",
+        "Operacion_financiamiento_local_de_linea_credito_exterior_15dd59",
+        "Operacion_precancelacion_por_vpu_adherido_al_rigi_d54dd4",
+        "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+        "Restriccion_el_cliente_podra_acceder_al_mercado_de_cambios_por_hasta_el_monto_de_la_certific_b792da",
+        "Operacion_pago_de_capital_de_deudas_por_importacion_de_bienes_cb6328",
+        "Restriccion_pagos_de_capital_de_deudas_originadas_en_la_importacion_de_bienes_con_registro_d_167fcb",
+        "Operacion_pago_de_capital_de_deudas_por_importacion_de_servicios_dd9d52",
+        "Restriccion_pagos_de_capital_de_deudas_originadas_en_la_importacion_de_servicios_prestados_o_e3be9a",
+        "Operacion_pago_de_intereses_de_deudas_comerciales_vinculadas_e6e789",
+        "Restriccion_pagos_de_intereses_de_deudas_comerciales_por_importacion_de_bienes_y_servicios_c_10679c",
+        "Operacion_pago_de_utilidades_y_dividendos_a_no_residentes_a85eed",
+        "Restriccion_pagos_de_utilidades_y_dividendos_a_accionistas_no_residentes_sujeto_a_verificaci_58d8eb",
+        "Operacion_pago_de_capital_e_intereses_financieros_con_exterior_7c19f4",
+        "Restriccion_pagos_de_capital_e_intereses_de_endeudamientos_con_exterior_cuyo_acreedor_sea_co_205065",
+        "Operacion_repatriacion_de_inversiones_directas_de_no_residentes_b8be0b",
+        "Restriccion_repatriaciones_de_inversiones_directas_de_no_residentes_en_empresas_que_no_sean__b527f2",
+        "Obligacion_se_debera_acreditar_el_cumplimiento_de_los_restantes_requisitos_generales_y_espe_a28bb7",
+        "Obligacion_en_caso_de_cesion_del_beneficiario_original_en_marco_del_decreto_277_22_la_entid_20e3bf",
+        "Obligacion_los_beneficiarios_de_radpip_y_o_radpign_deberan_nominar_una_unica_entidad_financ_56e22e",
+        "Obligacion_la_entidad_debe_estar_nominada_por_el_cliente_como_responsable_de_la_emision_de__dae7e6",
+        "Obligacion_la_entidad_nominada_debera_tomar_registro_de_los_montos_de_beneficios_reconocido_e8a16b",
+        "Obligacion_la_entidad_podra_emitir_certificaciones_por_hasta_el_monto_que_surge_de_consider_75dc3b",
+        "Obligacion_la_entidad_financiera_designada_debera_notificar_su_nombramiento_a_la_gerencia_p_efe278",
+        "Obligacion_la_entidad_debera_mantener_a_disposicion_de_la_sefyc_un_registro_de_los_benefici_ca24c4",
+        "Obligacion_la_entidad_debera_cumplimentar_los_requerimientos_de_informacion_que_establezca__d3d9c5",
+        "Obligacion_cuando_el_beneficiario_desee_modificar_la_entidad_nominada_la_entidad_a_cargo_de_b49bec",
+        "Sujeto_propuesto_beneficiarios_de_radpip_y_o_radpign",
+        "Restriccion_el_resto_del_capital_que_vencia_fue_como_minimo_refinanciado_con_un_nuevo_endeud_238862",
+        "Operacion_pago_de_capital_e_intereses_de_titulos_de_deuda_con_registro_publico_b3f543",
+        "Operacion_liquidacion_de_fondos_en_mercado_de_cambios_9cbdae",
+        "Restriccion_las_operaciones_de_los_puntos_7_9_1_1_a_7_9_1_3_seran_elegibles_en_la_medida_que_761a67",
+        "Operacion_destinacion_de_fondos_a_financiacion_de_proyectos_de_inversion_b3635a",
+        "Restriccion_se_entendera_como_cumplida_la_condicion_precedente_cuando_se_demuestre_razonable_eafa04",
+        "Operacion_designacion_de_entidad_financiera_local_para_seguimiento_e721a1",
+        "Obligacion_la_entidad_financiera_designada_debera_certificar_el_cumplimiento_de_las_condici_5479b2",
+        "Obligacion_la_entidad_debera_efectuar_el_seguimiento_de_los_permisos_de_embarques_cuyos_cob_ad63ce",
+        "Obligacion_la_entidad_debera_efectuar_el_seguimiento_de_las_garantias_constituidas_y_de_las_267425",
+        "Obligacion_la_entidad_debera_cumplimentar_los_requerimientos_de_informacion_que_establezca__60d950",
+        "Obligacion_la_entidad_financiera_designada_debera_remitir_por_nota_dirigida_a_la_gerencia_p_5b6acf",
+        "Obligacion_para_operaciones_destinadas_a_los_proyectos_comprendidos_en_el_punto_7_9_2_la_en_9ddaee",
+        "Obligacion_la_entidad_debera_efectuar_el_seguimiento_de_la_ejecucion_del_proyecto_y_su_fina_e7dba0",
+        "Restriccion_se_admitira_que_los_fondos_originados_en_el_cobro_de_exportaciones_de_bienes_y_s_ee2416",
+        "Operacion_ingreso_y_liquidacion_de_fondos_excedentes_en_mercado_de_cambios_8d29da",
+        "Operacion_ampliacion_de_plazo_para_liquidacion_de_divisas_40cf41",
+        "Restriccion_los_cobros_deben_permanecer_depositados_conforme_al_contrato_del_financiamiento__6b6d64",
+        "Excepcion_en_caso_de_que_la_fecha_hasta_la_cual_los_cobros_deben_permanecer_depositados_se_c18a9d",
+        "Obligacion_los_residentes_con_endeudamientos_comprendidos_en_el_punto_7_9_1_o_los_fideicomi_679d1b"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {
+        "ext:3.17": 65
+       }
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 25,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso (financiación de proyectos de inversión que aumentan producción o capacidad de transporte) está identificado por su propio contenido técnico, sin referencias a puntos o normas anteriores"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso (financiamiento de proyecto de aumento de producción o transporte) está identificado por su propio contenido; no hay referencias colgantes a material externo"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "Ninguna sustancial: es una reformulación con sinónimos (fondos/dinero, operación de financiación/operación de crédito, proyecto/iniciativa, elegible/válida a los fines buscados), preguntando exactamente lo mismo sobre la obligación adicional que debe cumplir la entidad."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "ED-001",
+   "estrato": "E-D",
+   "sub_estrato": "intra_to",
+   "literal": "Cuando el exportador desea modificar la entidad nominada para la emisión de las certificaciones, ¿qué obligación tiene la entidad a cargo del seguimiento respecto de la nueva entidad?",
+   "antilexica": "Si quien exporta decide reemplazar a la institución financiera designada para emitir los comprobantes correspondientes, ¿qué debe hacer la institución que actualmente supervisa el proceso en relación con la institución que pasará a ocupar ese rol?",
+   "tokens_prohibidos": [
+    "cambio",
+    "cargo",
+    "certificaciones",
+    "desee",
+    "entidad",
+    "modificar",
+    "nominada",
+    "notificar",
+    "notificarle",
+    "nueva",
+    "voluntad"
+   ],
+   "solape_literal": {
+    "solape": 0.5,
+    "tokens_pregunta": 12,
+    "tokens_en_comun": [
+     "cargo",
+     "certificaciones",
+     "entidad",
+     "modificar",
+     "nominada",
+     "nueva"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 19,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "2.6",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 2.6. Excepción de liquidación de cobros de exportaciones de bienes y servicios para l"
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "ED-001",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Excepcion_las_personas_juridicas_inscriptas_en_el_registro_nacional_de_beneficiarios_del_r_b9dfe3",
+        "Obligacion_obligacion_de_liquidacion_de_los_cobros_de_exportaciones_de_bienes_y_servicios_44fe13",
+        "Restriccion_hayan_ingresado_por_el_mercado_de_cambios_en_los_plazos_establecidos_en_cada_cas_c62438",
+        "Restriccion_cuenten_con_una_certificacion_de_incremento_de_exportaciones_asociadas_a_la_econ_bc363c",
+        "Restriccion_se_den_cumplimiento_a_los_restantes_requisitos_establecidos_en_los_puntos_2_2_2__13b28b",
+        "Restriccion_los_montos_de_las_divisas_a_ser_afectadas_en_el_marco_de_lo_dispuesto_en_el_capi_3366ef",
+        "Obligacion_el_beneficiario_debera_nominar_una_unica_entidad_financiera_local_que_sera_la_re_1198a5",
+        "Operacion_emision_de_certificaciones_trimestrales_018312",
+        "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e",
+        "Obligacion_la_entidad_debera_antes_de_la_emision_de_cada_certificacion_constatar_el_valor_d_725b4d",
+        "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+        "Obligacion_a_los_efectos_del_computo_de_los_cobros_de_exportaciones_de_servicios_se_tomaran_c0fc0d",
+        "Obligacion_la_entidad_cuente_con_una_declaracion_jurada_del_exportador_en_la_que_se_deja_co_f779fc",
+        "Restriccion_los_cobros_de_exportaciones_que_pretenden_enmarcarse_en_este_mecanismo_no_fueron_325de9",
+        "Operacion_seleccion_de_entidad_nominada_fd5f29",
+        "Obligacion_el_bcra_considerara_inicialmente_como_entidad_nominada_por_el_exportador_a_aquel_3406d9",
+        "Obligacion_cuando_el_exportador_desee_modificar_la_entidad_nominada_para_la_emision_de_las__95bfab",
+        "Restriccion_en_el_caso_de_aceptar_la_nueva_entidad_quedara_habilitada_para_emitir_nuevas_cer_d4900f",
+        "Comunicacion_a_7518"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 19,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso (cambio de entidad nominada para certificaciones y obligación de la entidad a cargo del seguimiento) está identificado por su propio contenido, sin referencias a puntos o secciones anteriores"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso (reemplazo de institución financiera designada para emitir comprobantes de exportación) queda identificado por su propio contenido, sin referencias colgantes a puntos o secciones externas"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "La reformulación usa sinónimos (institución financiera por entidad nominada, comprobantes por certificaciones, institución que supervisa por entidad a cargo del seguimiento) pero mantiene exactamente el mismo objeto de la pregunta: qué obligación tiene la entidad de seguimiento respecto de la nueva entidad nominada."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "ED-002",
+   "estrato": "E-D",
+   "sub_estrato": "intra_to",
+   "literal": "¿Qué tipo de operación corresponde a la financiación de importaciones argentinas de servicios, según el punto normativo ext:13.6?",
+   "antilexica": "¿Cómo se clasifica la operación por la cual se otorgan fondos a empresas argentinas para pagar prestaciones que compran a proveedores del exterior, según lo indicado en el punto ext:13.6?",
+   "tokens_prohibidos": [
+    "financiacion",
+    "importaciones",
+    "servicios"
+   ],
+   "solape_literal": {
+    "solape": 0.25,
+    "tokens_pregunta": 12,
+    "tokens_en_comun": [
+     "financiacion",
+     "importaciones",
+     "servicios"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 16,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "13.6",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 13.6. Líneas de crédito de entidades financieras aplicadas a la financiación de import"
+     }
+    ]
+   },
+   "veredicto": "descartado",
+   "motivos": [
+    "V1_literal_no_autocontenida: contiene una referencia colgante explícita ('punto normativo ext:13.6') que remite a un identificador externo del material fuente, no reconstruible desde el propio contenido de la pregunta",
+    "V1_antilexica_no_autocontenida: referencia colgante: cita explícitamente 'el punto ext:13.6' como fuente, lo cual remite a un documento externo sin integrarlo al contenido de la pregunta"
+   ],
+   "puertas_mecanicas": {
+    "sample_id": "ED-002",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_financiacion_de_importaciones_de_servicios_c6f2be",
+        "Obligacion_la_entidad_debe_contar_con_la_documentacion_que_demuestre_que_al_momento_del_oto_0c5f69",
+        "Obligacion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_entidad_debera_contar_con_9f47e8",
+        "Obligacion_la_fecha_de_vencimiento_de_la_financiacion_otorgada_debe_ser_compatible_con_los__91c2d9",
+        "Restriccion_el_acceso_al_mercado_de_cambios_esta_condicionado_a_que_la_linea_de_credito_cali_e5153c",
+        "Restriccion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_operacion_financiada_debe_105cd3",
+        "Restriccion_la_fecha_de_vencimiento_de_la_financiacion_debe_ser_compatible_con_los_plazos_pr_c5f4c4",
+        "Excepcion_en_el_caso_del_concepto_s30_servicios_de_fletes_por_operaciones_de_importaciones_42b013",
+        "Restriccion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedaran_sujetos_a_la_confor_53709a"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 16,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": false,
+     "motivo": "contiene una referencia colgante explícita ('punto normativo ext:13.6') que remite a un identificador externo del material fuente, no reconstruible desde el propio contenido de la pregunta"
+    },
+    "v1_antilexica": {
+     "autocontenida": false,
+     "motivo": "referencia colgante: cita explícitamente 'el punto ext:13.6' como fuente, lo cual remite a un documento externo sin integrarlo al contenido de la pregunta"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "La reformulación describe con otras palabras el mismo concepto (financiación de importaciones argentinas de servicios), sin alterar el objeto de la pregunta ni la referencia normativa."
+    },
+    "ok": false,
+    "motivos": [
+     "V1_literal_no_autocontenida: contiene una referencia colgante explícita ('punto normativo ext:13.6') que remite a un identificador externo del material fuente, no reconstruible desde el propio contenido de la pregunta",
+     "V1_antilexica_no_autocontenida: referencia colgante: cita explícitamente 'el punto ext:13.6' como fuente, lo cual remite a un documento externo sin integrarlo al contenido de la pregunta"
+    ]
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "ED-002",
+   "estrato": "E-D",
+   "sub_estrato": "intra_to",
+   "literal": "¿Cómo se clasifica, dentro de las operaciones cambiarias, la financiación de importaciones argentinas de servicios?",
+   "antilexica": "Dentro de las operaciones de cambio, ¿en qué categoría se ubica el hecho de dar crédito o pago diferido a proveedores del exterior por prestaciones que un país compra fuera de sus fronteras (por ejemplo, fletes, seguros, honorarios profesionales u otras prestaciones intangibles adquiridas a no residentes)?",
+   "tokens_prohibidos": [
+    "13",
+    "anterior",
+    "antilexica",
+    "autocontenida",
+    "cita",
+    "colgante",
+    "contenido",
+    "contiene",
+    "descartada",
+    "explicita",
+    "explicitamente",
+    "ext",
+    "externo",
+    "financiacion",
+    "fuente",
+    "identificador",
+    "importaciones",
+    "literal",
+    "material",
+    "normativo",
+    "pregunta",
+    "propio",
+    "punt",
+    "reconstruible",
+    "referencia",
+    "reintento",
+    "remite",
+    "servicios",
+    "version"
+   ],
+   "solape_literal": {
+    "solape": 0.375,
+    "tokens_pregunta": 8,
+    "tokens_en_comun": [
+     "financiacion",
+     "importaciones",
+     "servicios"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 25,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "13.6",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 13.6. Líneas de crédito de entidades financieras aplicadas a la financiación de import"
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "ED-002",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_financiacion_de_importaciones_de_servicios_c6f2be",
+        "Obligacion_la_entidad_debe_contar_con_la_documentacion_que_demuestre_que_al_momento_del_oto_0c5f69",
+        "Obligacion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_entidad_debera_contar_con_9f47e8",
+        "Obligacion_la_fecha_de_vencimiento_de_la_financiacion_otorgada_debe_ser_compatible_con_los__91c2d9",
+        "Restriccion_el_acceso_al_mercado_de_cambios_esta_condicionado_a_que_la_linea_de_credito_cali_e5153c",
+        "Restriccion_para_financiaciones_otorgadas_a_partir_del_13_12_23_la_operacion_financiada_debe_105cd3",
+        "Restriccion_la_fecha_de_vencimiento_de_la_financiacion_debe_ser_compatible_con_los_plazos_pr_c5f4c4",
+        "Excepcion_en_el_caso_del_concepto_s30_servicios_de_fletes_por_operaciones_de_importaciones_42b013",
+        "Restriccion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedaran_sujetos_a_la_confor_53709a"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 25,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica por su propio contenido (clasificación de la financiación de importaciones de servicios dentro de operaciones cambiarias) sin referencias colgantes a material externo"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso y el ejemplo quedan completamente descritos en la pregunta misma, sin referencias a material externo o previo"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "La reformulación es equivalente, solo agrega ejemplos aclaratorios (fletes, seguros, honorarios profesionales) y una explicación en lenguaje llano de qué significa 'financiación de importaciones de servicios', pero pregunta por el mismo concepto y clasificación."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 2
+  },
+  {
+   "sample_id": "EE-001",
+   "estrato": "E-E",
+   "sub_estrato": null,
+   "literal": "¿Qué requisitos debe cumplir el boleto de venta cuando se utiliza para cancelar pagos diferidos de importaciones de bienes de capital o el pago de fletes de importaciones de bienes mediante este mecanismo?",
+   "antilexica": "¿Qué condiciones debe reunir el comprobante de la operación de cambio cuando se lo usa para cancelar pagos con vencimiento a plazo por importaciones de bienes de capital o para abonar el costo de transporte de mercaderías importadas mediante ese procedimiento?",
+   "tokens_prohibidos": [
+    "boleto",
+    "concreta",
+    "confeccion",
+    "confeccionara",
+    "dejando",
+    "diferidos",
+    "fletes",
+    "mecanismo",
+    "presente",
+    "venta"
+   ],
+   "solape_literal": {
+    "solape": 0.3333333333333333,
+    "tokens_pregunta": 15,
+    "tokens_en_comun": [
+     "boleto",
+     "diferidos",
+     "fletes",
+     "mecanismo",
+     "venta"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 20,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "14.5",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 14.5. Otras disposiciones. (parte 1)"
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "EE-001",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Restriccion_los_beneficios_cambiarios_del_rigi_no_podran_ser_acumulados_con_otros_incentivos_995620",
+        "Restriccion_cualquier_mecanismo_previsto_en_las_normas_cambiarias_que_tome_en_consideracion__26c1cd",
+        "Restriccion_cualquier_mecanismo_previsto_en_las_normas_cambiarias_que_tome_en_consideracion__920523",
+        "Operacion_computo_de_financiaciones_como_ingresadas_y_liquidadas_b42a49",
+        "Obligacion_las_financiaciones_enunciadas_en_los_puntos_14_2_1_8_al_14_2_1_11_podran_ser_com_024008",
+        "Obligacion_el_vpu_haya_demostrado_el_registro_de_ingreso_aduanero_de_los_bienes_por_un_valo_22b58f",
+        "Obligacion_a_los_efectos_del_valor_de_los_bienes_podra_tomarse_todo_concepto_que_forme_part_8e6e73",
+        "Obligacion_la_entidad_cuente_con_una_declaracion_jurada_del_cliente_en_la_cual_deje_constan_e6542c",
+        "Obligacion_la_entidad_debera_contar_con_la_correspondiente_certificacion_de_la_entidad_enca_3472ff",
+        "Obligacion_la_entidad_financiera_ha_concretado_el_registro_de_la_financiacion_ante_el_bcra__511fbf",
+        "Obligacion_los_boletos_deberan_quedar_registrados_independientemente_de_cual_sea_el_momento_7da1ec",
+        "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+        "Obligacion_si_la_financiacion_fue_otorgada_por_el_propio_proveedor_el_boleto_se_registrara__afd18d",
+        "Obligacion_en_caso_de_que_el_vpu_contemple_la_posibilidad_de_aplicar_cobros_de_exportacione_9d5caa",
+        "Obligacion_el_boleto_de_venta_se_confeccionara_por_el_monto_correspondiente_con_el_codigo_d_7e212d",
+        "Obligacion_el_vpu_haya_demostrado_el_registro_de_ingreso_aduanero_del_bien_de_capital_por_u_9415c9",
+        "Restriccion_la_operacion_podra_incluir_bienes_que_no_revistan_la_condicion_de_bien_de_capita_0433f7",
+        "Obligacion_el_vpu_debera_presentar_la_documentacion_que_avale_la_capitalizacion_definitiva__9d75a5",
+        "Obligacion_en_caso_de_no_disponerla_debera_presentar_constancia_del_inicio_del_tramite_de_i_b05b27",
+        "Obligacion_una_entidad_financiera_haya_registrado_al_aporte_de_capital_en_el_regimen_inform_16e605",
+        "Obligacion_los_boletos_deberan_ser_registrados_en_la_fecha_en_que_se_produjo_el_registro_de_31ecc1",
+        "Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6",
+        "Obligacion_en_caso_de_que_el_vpu_contemple_la_posibilidad_de_aplicar_cobros_de_exportacione_5cf2e0",
+        "Obligacion_el_boleto_de_venta_se_confeccionara_con_el_codigo_de_concepto_de_pago_diferido_d_1f49f2",
+        "Operacion_aporte_de_capital_en_regimen_rigi_820259",
+        "Operacion_registro_en_rioc_212a22",
+        "Operacion_confeccion_de_boletos_de_cambio_da0942",
+        "Operacion_importacion_de_bienes_de_capital_52799f",
+        "Operacion_exportacion_de_bienes_para_repatriacion_02abfd"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {}
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 20,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica por su propio contenido técnico (boleto de venta para cancelar pagos diferidos de importaciones de bienes de capital o fletes) sin depender de referencias externas colgantes"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso está identificado por su contenido: comprobante de operación de cambio para cancelar pagos a plazo por importación de bienes de capital o transporte de mercaderías importadas; no depende de referencias externas"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "La reformulación usa sinónimos ('comprobante de la operación de cambio' por 'boleto de venta', 'pagos con vencimiento a plazo' por 'pagos diferidos', 'costo de transporte de mercaderías importadas' por 'fletes de importaciones de bienes'), pero el objeto y alcance de la pregunta son idénticos."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  },
+  {
+   "sample_id": "EE-002",
+   "estrato": "E-E",
+   "sub_estrato": null,
+   "literal": "¿En qué fecha deben registrarse los boletos correspondientes al ingreso de bienes de capital, y esto depende del momento en que el cliente solicite el registro ante la entidad financiera?",
+   "antilexica": "¿Cuándo corresponde asentar en el sistema los comprobantes vinculados con el arribo de maquinaria y equipos productivos al país, y esto varía según el momento en que el cliente pide a la entidad financiera que lo haga constar?",
+   "tokens_prohibidos": [
+    "aduanero",
+    "boletos",
+    "fecha",
+    "independientemente",
+    "ingreso",
+    "produjo",
+    "registrados",
+    "registrar",
+    "solicita"
+   ],
+   "solape_literal": {
+    "solape": 0.1875,
+    "tokens_pregunta": 16,
+    "tokens_en_comun": [
+     "boletos",
+     "fecha",
+     "ingreso"
+    ]
+   },
+   "solape_antilexica": {
+    "solape": 0.0,
+    "tokens_pregunta": 19,
+    "tokens_en_comun": []
+   },
+   "gold": {
+    "anclas": [
+     {
+      "to": "ext",
+      "ancla": "7.10",
+      "source_doc": "TO_exterior_cambios_actual.pdf",
+      "location_ejemplo": "Punto 7.10. Operaciones habilitadas para la aplicación de cobros de exportaciones de bienes (parte 1)"
+     }
+    ]
+   },
+   "veredicto": "apto",
+   "motivos": [],
+   "puertas_mecanicas": {
+    "sample_id": "EE-002",
+    "veredicto": "apto",
+    "motivos": [],
+    "requiere_llm": [
+     "a_unicidad_nodal_dentro_del_punto",
+     "a_unicidad_semantica_de_la_pregunta",
+     "b_comprensibilidad_sin_contexto",
+     "d_misma_resolucion_semantica"
+    ],
+    "detalle_puertas": [
+     {
+      "puerta": "a",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "a_unicidad_semantica_de_la_pregunta",
+       "a_unicidad_nodal_dentro_del_punto"
+      ],
+      "censo": {
+       "nodos_gold": [
+        "Operacion_cobro_en_divisas_de_exportacion_de_bienes_d5c26f",
+        "Operacion_pago_capital_e_intereses_importacion_469a4e",
+        "Operacion_pago_capital_e_intereses_endeudamiento_financiero_5dcf43",
+        "Operacion_pago_utilidades_y_dividendos_14dfc1",
+        "Operacion_repatriacion_inversion_directa_1b6d4f",
+        "Operacion_designacion_entidad_seguimiento_proyecto_92583f",
+        "Operacion_registro_boletos_cambios_sin_movimiento_45fc75",
+        "Restriccion_limite_monto_por_permiso_1cf37a",
+        "Restriccion_limite_monto_anual_por_inversiones_732ef1",
+        "Restriccion_plazo_computo_inversiones_ad8101",
+        "Restriccion_limite_beneficiarios_decreto_277_22_f01454",
+        "Obligacion_designar_entidad_seguimiento_30ce70",
+        "Obligacion_constatar_certificado_inversion_fbe4e3",
+        "Obligacion_certificar_vinculacion_exportaciones_69fabb",
+        "Obligacion_seguimiento_permisos_embarques_512696",
+        "Obligacion_registro_importaciones_bienes_capital_7cd13f",
+        "Obligacion_seguimiento_fondos_pendientes_67a79e",
+        "Obligacion_cumplir_requerimientos_informacion_bcra_2d1942",
+        "Obligacion_notificar_designacion_al_bcra_80b8a5",
+        "Obligacion_notificar_inversiones_ingresadas_2da057",
+        "Obligacion_confeccionar_boletos_rioc_b4f17a",
+        "Obligacion_registrar_boletos_fecha_ingreso_aduanero_3cfb1d",
+        "Obligacion_presentar_documentacion_capitalizacion_f322ac",
+        "Operacion_deposito_de_cobros_en_cuentas_corresponsales_b0020d",
+        "Obligacion_ampliacion_de_plazo_para_liquidacion_de_divisas_40cf41",
+        "Restriccion_limite_de_aplicacion_de_beneficio_ampliado_40_e0afd0",
+        "Restriccion_limite_de_aplicacion_de_beneficio_ampliado_60_dc27fd",
+        "Restriccion_limite_de_vigencia_para_acceso_a_beneficio_ampliado_9bf968",
+        "Restriccion_restriccion_geografica_para_cuentas_bancarias_del_exterior_24561e",
+        "Obligacion_compensacion_de_excedentes_en_mecanismos_combinados_f67e07",
+        "Operacion_aplicacion_de_cobros_a_usos_admitidos_f63742",
+        "Operacion_seleccion_de_entidad_nominada_para_seguimiento_736631",
+        "Obligacion_por_cada_operacion_comprendida_el_exportador_debera_seleccionar_una_entidad_como_b84189",
+        "Operacion_emision_de_certificados_de_aplicacion_be9910",
+        "Obligacion_esta_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion__0b3d4e",
+        "Restriccion_esta_entidad_sera_la_unica_responsable_de_emitir_los_certificados_de_aplicacion_b14e98",
+        "Operacion_otorgamiento_de_financiacion_por_entidad_local_385414",
+        "Obligacion_en_el_caso_de_financiaciones_otorgadas_por_entidades_financieras_locales_el_segu_e4b057",
+        "Operacion_registro_de_operacion_ante_bcra_b33c19",
+        "Obligacion_en_el_caso_de_las_operaciones_comprendidas_en_el_punto_9_1_8_el_seguimiento_qued_88e55e",
+        "Operacion_liquidacion_de_operacion_por_mercado_de_cambios_84c36b",
+        "Obligacion_en_los_restantes_casos_el_seguimiento_quedara_inicialmente_a_cargo_de_la_entidad_66e16d",
+        "Operacion_cambio_de_entidad_responsable_de_seguimiento_148ba3",
+        "Obligacion_en_caso_de_que_el_exportador_solicite_el_cambio_la_entidad_a_cargo_del_seguimien_0debc7",
+        "Restriccion_el_exportador_puede_modificar_la_entidad_responsable_del_seguimiento_en_la_medid_a1ffda",
+        "Comunicacion_a_7664",
+        "Comunicacion_a_7770",
+        "Comunicacion_a_7313",
+        "Comunicacion_a_7845",
+        "Comunicacion_a_7898",
+        "Comunicacion_a_6788",
+        "Comunicacion_a_7259",
+        "Comunicacion_a_7853",
+        "Comunicacion_a_7217",
+        "Comunicacion_a_7852",
+        "Comunicacion_a_7507",
+        "Comunicacion_a_7780",
+        "Comunicacion_a_7833"
+       ],
+       "anclas_ausentes": [],
+       "censo_grande_diagnostico": {
+        "ext:7.10": 58
+       }
+      }
+     },
+     {
+      "puerta": "b",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "c",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": []
+     },
+     {
+      "puerta": "b_antilexica",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "b_comprensibilidad_sin_contexto"
+      ]
+     },
+     {
+      "puerta": "d",
+      "ok": true,
+      "motivos": [],
+      "requiere_llm": [
+       "d_misma_resolucion_semantica"
+      ],
+      "solape": {
+       "solape": 0.0,
+       "tokens_pregunta": 19,
+       "tokens_en_comun": []
+      }
+     }
+    ]
+   },
+   "checks_llm": {
+    "v1_literal": {
+     "autocontenida": true,
+     "motivo": "el caso (registro de boletos por ingreso de bienes de capital) queda identificado por su propio contenido técnico, sin referencias a 'el punto anterior' u otro material externo; el dominio normativo fijo aporta el resto del contexto"
+    },
+    "v1_antilexica": {
+     "autocontenida": true,
+     "motivo": "el caso se identifica por su contenido (asiento de comprobantes de arribo de maquinaria y equipos productivos) sin necesitar referencias externas a un punto o sección previa"
+    },
+    "v2": {
+     "gold_unico": true,
+     "respuesta_alternativa": ""
+    },
+    "v3": {
+     "misma_pregunta": true,
+     "diferencia": "Ninguna sustancial: 'bienes de capital' se reformula como 'maquinaria y equipos productivos', y 'ingreso' como 'arribo al país', pero el sentido y la respuesta esperada son equivalentes."
+    },
+    "ok": true,
+    "motivos": []
+   },
+   "intento": 1
+  }
+ ],
+ "resumen": {
+  "n_registros": 11,
+  "n_aptos": 7,
+  "aptos_por_estrato": {
+   "E-A": 1,
+   "E-B": 2,
+   "E-D": 2,
+   "E-E": 2
+  },
+  "gasto": {
+   "modelo": "claude-sonnet-5",
+   "llamadas": 66,
+   "hits_cache": 0,
+   "gasto_usd_real": 0.1422,
+   "tope_usd": 3.0,
+   "precio_por_mtok": {
+    "in": 2.0,
+    "out": 10.0
+   },
+   "cache_stats": {
+    "hits": 0,
+    "misses": 66,
+    "tokens_in": 40021,
+    "tokens_out": 6217,
+    "cache_read": 0,
+    "cache_write": 0,
+    "accesses": 66,
+    "hit_rate": 0.0,
+    "domain": "sinteticas",
+    "namespace": "sinteticas|cv=sinteticas-faseB-v1|think=0"
+   }
+  }
+ }
+}

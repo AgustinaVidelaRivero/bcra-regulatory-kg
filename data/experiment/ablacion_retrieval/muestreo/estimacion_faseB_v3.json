@@ -1,0 +1,108 @@
+{
+ "n_samples": 98,
+ "formula_pipeline": {
+  "supuestos": {
+   "S1_ratio_chars_por_token": 2.004,
+   "S1_base": "2872 chars / 1433 tok (prefijo harness)",
+   "S2_chars_out_pregunta": 400,
+   "S3_chars_out_veredicto": 200,
+   "S4_factor_descarte": 1.6,
+   "S4_base": "precedente U6: 39 generadas / 25 aptas = 1,56",
+   "S5_placeholder_literal_chars": 400,
+   "n_samples_base": 98
+  },
+  "lineas": [
+   {
+    "item": "generacion_literal",
+    "n_llamadas": 156.8,
+    "tokens_in_por_llamada": 1195,
+    "tokens_out_por_llamada": 200,
+    "tokens_in_total": 187435,
+    "tokens_out_total": 31294
+   },
+   {
+    "item": "evolucion_antilexica",
+    "n_llamadas": 156.8,
+    "tokens_in_por_llamada": 651,
+    "tokens_out_por_llamada": 200,
+    "tokens_in_total": 102009,
+    "tokens_out_total": 31294
+   },
+   {
+    "item": "V1_autocontencion (x2 preguntas)",
+    "n_llamadas": 313.6,
+    "tokens_in_por_llamada": 905,
+    "tokens_out_por_llamada": 100,
+    "tokens_in_total": 283841,
+    "tokens_out_total": 31294
+   },
+   {
+    "item": "V2_unicidad_gold (x1 sample)",
+    "n_llamadas": 156.8,
+    "tokens_in_por_llamada": 1007,
+    "tokens_out_por_llamada": 100,
+    "tokens_in_total": 157919,
+    "tokens_out_total": 15647
+   },
+   {
+    "item": "V3_mismo_gold (x1 par)",
+    "n_llamadas": 156.8,
+    "tokens_in_por_llamada": 545,
+    "tokens_out_por_llamada": 100,
+    "tokens_in_total": 85512,
+    "tokens_out_total": 15647
+   }
+  ],
+  "totales": {
+   "tokens_in": 816716,
+   "tokens_out": 125176,
+   "formula_costo_usd": "costo = 816716/1e6 * P_in + 125176/1e6 * P_out   (P_in, P_out = precio USD por Mtok del modelo que se laude; sin caching — los prompts no comparten prefijo largo)"
+  }
+ },
+ "precios_usd_por_mtok": {
+  "sonnet5_intro_hasta_2026-08-31": [
+   2.0,
+   10.0
+  ],
+  "sonnet5_lista": [
+   3.0,
+   15.0
+  ]
+ },
+ "costo_por_precio_usd": {
+  "sonnet5_intro_hasta_2026-08-31": 2.8852,
+  "sonnet5_lista": 4.3278
+ },
+ "empirico_5ceb816": {
+  "samples": 98,
+  "aptos": 64,
+  "intentos": 147,
+  "llamadas": 810,
+  "gasto_usd": 2.2,
+  "estimado_sellado_usd": 2.55,
+  "usd_por_sample_5ceb816": 0.02245,
+  "usd_estimado_para_n": 2.2,
+  "aptos_esperados_al_rendimiento_5ceb816": 64.0,
+  "llamadas_esperadas": 810,
+  "intentos_esperados": 147
+ },
+ "escenarios_N": {
+  "46": {
+   "usd_formula_intro": 1.354,
+   "usd_empirico": 1.033,
+   "aptos_esperados": 30.0
+  },
+  "60": {
+   "usd_formula_intro": 1.766,
+   "usd_empirico": 1.347,
+   "aptos_esperados": 39.2
+  },
+  "98": {
+   "usd_formula_intro": 2.885,
+   "usd_empirico": 2.2,
+   "aptos_esperados": 64.0
+  }
+ },
+ "tope_fase_B_esta_unidad_usd": 3.0,
+ "nota": "La fórmula del pipeline (S4 factor 1,6 de descarte, output 400/200 chars) sobre-estimó la fase B real de 5ceb816 (2,55 sellado vs 2,20 real); el estimador empírico usa el gasto real por sample de esa corrida. Ambos quedan por debajo del tope de 3."
+}
