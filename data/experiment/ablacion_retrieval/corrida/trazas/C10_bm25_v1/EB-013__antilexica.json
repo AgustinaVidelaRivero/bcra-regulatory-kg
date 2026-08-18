@@ -1,0 +1,1543 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C10_bm25_v1",
+    "celda_id": "C10_bm25_v1",
+    "retriever": "bm25",
+    "tools": "v1",
+    "es_control": false,
+    "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+    "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+    "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C10_bm25_v1",
+      "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+      "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+      "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "EB-013::antilexica",
+    "sample_id": "EB-013",
+    "variante": "antilexica",
+    "estrato": "E-B",
+    "sub_estrato": "entrante",
+    "pos_orden": 42,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:31:46",
+    "timestamp_fin": "2026-08-18T14:32:05",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.033683,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "En el cálculo del monto de referencia de una operación con pagos múltiples y condicionados a un estado o situación (por ejemplo, opciones digitales), donde hay que determinar el monto de referencia de cada estado posible eligiendo el más alto, ¿cómo se resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando dicho monto surge de un cálculo basado en precios o cotizaciones vigentes en el ámbito financiero?",
+  "trace": {
+    "qid": "EB-013::antilexica",
+    "question": "En el cálculo del monto de referencia de una operación con pagos múltiples y condicionados a un estado o situación (por ejemplo, opciones digitales), donde hay que determinar el monto de referencia de cada estado posible eligiendo el más alto, ¿cómo se resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando dicho monto surge de un cálculo basado en precios o cotizaciones vigentes en el ámbito financiero?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto de referencia operaciones pagos múltiples condicionados\", \"total_con_match\": 1873, \"resultados\": [{\"id\": \"Operacion_derivados_con_intercambios_multiples_ed49c3\", \"type\": \"Operacion\", \"label\": \"Derivados con intercambios múltiples\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Derivados con intercambios múltiples del principal.\"}, {\"id\": \"Restriccion_controlar_que_el_monto_de_los_pagos_y_otros_movimientos_registrados_con_imputaci_382d38\", \"type\": \"Restriccion\", \"label\": \"Límite monto pagos no superior facturado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Controlar que el monto de los pagos y otros movimientos registrados con imputación al despacho no supere el monto facturado según la condición de compra pactada…\"}, {\"id\": \"Restriccion_el_total_de_pagos_realizados_con_imputacion_a_la_oficializacion_de_importacion_n_657617\", \"type\": \"Restriccion\", \"label\": \"Limite monto pagos a facturado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El total de pagos realizados con imputación a la oficialización de importación no puede superar el monto facturado en condición de compra pactada\"}, {\"id\": \"Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_… [+2381 chars]",
+        "output_chars": 3581
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia opciones digitales precios cotizaciones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia opciones digitales precios cotizaciones\", \"total_con_match\": 374, \"resultados\": [{\"id\": \"Obligacion_para_las_opciones_con_plazo_residual_de_mas_de_seis_meses_el_precio_de_ejercicio_cc77d3\", \"type\": \"Obligacion\", \"label\": \"Comparar precio ejercicio con precio futuro\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Para las opciones con plazo residual de más de seis meses, el precio de ejercicio se comparará con el precio a futuro y no con el precio corriente\"}, {\"id\": \"Obligacion_publicacion_de_cotizaciones_minoristas_f09af0\", \"type\": \"Obligacion\", \"label\": \"Publicación de cotizaciones minoristas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"En la página de Internet del BCRA se podrá consultar las cotizaciones de tipos de cambio minoristas ofrecidas en la Ciudad Autónoma de Buenos Aires por las enti…\"}, {\"id\": \"Operacion_informacion_sobre_opciones_6e87c1\", \"type\": \"Operacion\", \"label\": \"Información sobre opciones\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Reporte de información sobre opciones derivadas, incluyendo descripción del activo subyacente, fecha de vencimiento, contraparte, precio de mercado, delta, gamm…\"}, {\"id\": \"Obligacion_para… [+2538 chars]",
+        "output_chars": 3738
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia no invariable vencimiento cálculo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia no invariable vencimiento cálculo\", \"total_con_match\": 545, \"resultados\": [{\"id\": \"Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803\", \"type\": \"Restriccion\", \"label\": \"Coincidencia exacta de obligación de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …\"}, {\"id\": \"Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412\", \"type\": \"Obligacion\", \"label\": \"Cálculo de tipos de cambio minoristas de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados.\"}, {\"id\": \"Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_b70afd\", \"type\": \"Restriccion\", \"label\": \"Límite de vencimientos de capital en precancelación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El monto acumulado de los vencimientos de capital del nuevo endeudamiento … [+2535 chars]",
+        "output_chars": 3735
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia derivados mayor estado posible",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia derivados mayor estado posible\", \"total_con_match\": 470, \"resultados\": [{\"id\": \"Obligacion_los_derivados_que_hagan_referencia_a_indices_de_credito_se_consideraran_como_si__2eb165\", \"type\": \"Obligacion\", \"label\": \"Aplicación de factor de correlación mayor para índices\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los derivados que hagan referencia a índices de crédito se considerarán como si hicieran referencia a entidades determinadas pero se les aplicará un mayor facto…\"}, {\"id\": \"Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803\", \"type\": \"Restriccion\", \"label\": \"Coincidencia exacta de obligación de referencia\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …\"}, {\"id\": \"Obligacion_todos_los_derivados_de_credito_que_hagan_referencia_a_una_misma_entidad_un_unico_ab4f52\", \"type\": \"Obligacion\", \"label\": \"Compensación plena de derivados de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Todos los derivados de crédito que hagan refer… [+2827 chars]",
+        "output_chars": 4027
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia máximo escenarios condicionados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia máximo escenarios condicionados\", \"total_con_match\": 319, \"resultados\": [{\"id\": \"Obligacion_constatar_monto_maximo_e_incumplimientos_86f3d1\", \"type\": \"Obligacion\", \"label\": \"Constatar monto máximo e incumplimientos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad nominada antes de la emisión de cada certificación, deberá constatar en la información suministrada por el BCRA: el monto máximo total que pueden acu…\"}, {\"id\": \"Obligacion_calcular_monto_maximo_de_certificaciones_675c62\", \"type\": \"Obligacion\", \"label\": \"Calcular monto máximo de certificaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo …\"}, {\"id\": \"Operacion_informacion_de_flujos_por_escenarios_60d6d1\", \"type\": \"Operacion\", \"label\": \"Información de flujos por escenarios\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Presentación de flujos asignados a todas las bandas o puntos medios para cada uno de los escenarios previstos (0 a 6)\"}, {\"id\": \"Obligacion_consignar_importes_en_todos_los_escenarios_4a41ec\", \"type\": … [+2478 chars]",
+        "output_chars": 3678
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia operación determinación escenarios",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia operación determinación escenarios\", \"total_con_match\": 1816, \"resultados\": [{\"id\": \"Operacion_determinacion_de_importe_de_referencia_658c80\", \"type\": \"Operacion\", \"label\": \"Determinación de importe de referencia\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: Determinación de importe de referencia para clasificación\"}, {\"id\": \"Operacion_informacion_de_flujos_por_escenarios_60d6d1\", \"type\": \"Operacion\", \"label\": \"Información de flujos por escenarios\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Presentación de flujos asignados a todas las bandas o puntos medios para cada uno de los escenarios previstos (0 a 6)\"}, {\"id\": \"Obligacion_consignar_importes_en_todos_los_escenarios_4a41ec\", \"type\": \"Obligacion\", \"label\": \"Consignar importes en todos los escenarios\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cuando la estructura del modelo requiera datos en todos los escenarios (0 a 6) para un concepto determinado, deberán consignarse los importes en todos ellos, au…\"}, {\"id\": \"Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803\", \"type\": \"Restriccion\", \"label\": \"Coincidencia exacta de obligació… [+2467 chars]",
+        "output_chars": 3667
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia no está claramente definido variable",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia no está claramente definido variable\", \"total_con_match\": 275, \"resultados\": [{\"id\": \"Operacion_operaciones_con_nocional_no_definido_eba277\", \"type\": \"Operacion\", \"label\": \"Operaciones con nocional no definido\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones en las que el nocional no está claramente definido o no se mantiene fijo hasta el vencimiento.\"}, {\"id\": \"Obligacion_los_derechos_del_inversor_deberan_estar_claramente_definidos_en_toda_circunstanc_1d3341\", \"type\": \"Obligacion\", \"label\": \"Definir claramente derechos del inversor\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Los derechos del inversor deberán estar claramente definidos en toda circunstancia, incluidos los concernientes a los tenedores con preferencia respecto de los …\"}, {\"id\": \"Obligacion_las_entidades_deberan_contar_con_politicas_y_procedimientos_claramente_definidos_334e73\", \"type\": \"Obligacion\", \"label\": \"Contar con políticas y procedimientos para cartera de negociación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las entidades deberán contar con políticas y procedimientos claramente definidos para determinar qué exposiciones incluir o excluir de la cartera… [+2732 chars]",
+        "output_chars": 3932
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+        },
+        "output_truncado": "{\"id\": \"Operacion_operaciones_con_nocional_no_definido_eba277\", \"type\": \"Operacion\", \"label\": \"Operaciones con nocional no definido\", \"properties\": {\"tipo\": \"derivado\", \"description\": \"Operaciones en las que el nocional no está claramente definido o no se mantiene fijo hasta el vencimiento.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}",
+        "output_chars": 479
+      },
+      {
+        "n": 9,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+        },
+        "output_truncado": "{\"id\": \"Operacion_operaciones_con_nocional_no_definido_eba277\", \"label\": \"Operaciones con nocional no definido\", \"n_salientes_total\": 1, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08\", \"vecino_label\": \"Determinar nocional en operaciones contingentes\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_aplicar_valores_de_mercado_corrientes_39aae5\", \"vecino_label\": \"Aplicar valores de mercado corrientes\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en oper… [+60 chars]",
+        "output_chars": 1260
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08\", \"type\": \"Obligacion\", \"label\": \"Determinar nocional en operaciones contingentes\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Para operaciones con retribuciones múltiples y contingentes respecto de un estado o situación (tal como opciones digitales), se calculará un nocional para cada estado y se tomará el que resulte mayor.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}",
+        "output_chars": 596
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_aplicar_valores_de_mercado_corrientes_39aae5\", \"type\": \"Obligacion\", \"label\": \"Aplicar valores de mercado corrientes\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Cuando el nocional sea una fórmula en base a valores de mercado, se tomarán los valores de mercado corrientes para determinar el nocional de la operación.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}",
+        "output_chars": 530
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08\", \"label\": \"Determinar nocional en operaciones contingentes\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_operaciones_con_nocional_no_definido_eba277\", \"vecino_label\": \"Operaciones con nocional no definido\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_alcance_capmin\", \"vecino_label\": \"Entidades alcanzadas (Capitales Mínimos)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}], \"salientes_truncado\": false, \"entrant… [+37 chars]",
+        "output_chars": 1237
+      },
+      {
+        "n": 13,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_aplicar_valores_de_mercado_corrientes_39aae5\", \"label\": \"Aplicar valores de mercado corrientes\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_operaciones_con_nocional_no_definido_eba277\", \"vecino_label\": \"Operaciones con nocional no definido\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_alcance_capmin\", \"vecino_label\": \"Entidades alcanzadas (Capitales Mínimos)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_… [+17 chars]",
+        "output_chars": 1217
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1714,
+        "output_tokens": 281,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 3.618
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 191,
+        "cache_read": 0,
+        "cache_write": 5864,
+        "latency_s": 2.175
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 189,
+        "cache_read": 5864,
+        "cache_write": 2871,
+        "latency_s": 2.041
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 109,
+        "cache_read": 8735,
+        "cache_write": 2783,
+        "latency_s": 1.489
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 112,
+        "cache_read": 11518,
+        "cache_write": 278,
+        "latency_s": 1.361
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 155,
+        "cache_read": 11796,
+        "cache_write": 567,
+        "latency_s": 1.858
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 165,
+        "cache_read": 12363,
+        "cache_write": 566,
+        "latency_s": 1.59
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 7,
+        "output_tokens": 409,
+        "cache_read": 12929,
+        "cache_write": 1110,
+        "latency_s": 4.737
+      }
+    ],
+    "final_json": {
+      "respuesta": "Según la regulación del BCRA, para operaciones con pagos múltiples y condicionados a un estado o situación (como opciones digitales), el cálculo del monto de referencia se resuelve mediante dos reglas complementarias:\n\n1. **Selección del mayor nocional entre estados posibles**: Para operaciones con retribuciones múltiples y contingentes respecto de un estado o situación, se calculará un nocional para cada estado posible y se tomará el que resulte mayor.\n\n2. **Aplicación de valores de mercado corrientes**: Cuando el nocional sea una fórmula basada en valores de mercado (precios o cotizaciones vigentes en el ámbito financiero), se tomarán los valores de mercado corrientes para determinar el nocional de la operación.\n\nEsta combinación de reglas resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento: se utiliza el valor más alto entre los escenarios posibles, calculado con los precios o cotizaciones vigentes en el momento de la evaluación.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Tengo la información completa. Ahora puedo responder la pregunta con precisión basándome en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA, para operaciones con pagos múltiples y condicionados a un estado o situación (como opciones digitales), el cálculo del monto de referencia se resuelve mediante dos reglas complementarias:\\n\\n1. **Selección del mayor nocional entre estados posibles**: Para operaciones con retribuciones múltiples y contingentes respecto de un estado o situación, se calculará un nocional para cada estado posible y se tomará el que resulte mayor.\\n\\n2. **Aplicación de valores de mercado corrientes**: Cuando el nocional sea una fórmula basada en valores de mercado (precios o cotizaciones vigentes en el ámbito financiero), se tomarán los valores de mercado corrientes para determinar el nocional de la operación.\\n\\nEsta combinación de reglas resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento: se utiliza el valor más alto entre los escenarios posibles, calculado con los precios o cotizaciones vigentes en el momento de la evaluación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 13,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1759,
+    "tokens_out": 1611,
+    "cache_read": 63205,
+    "cache_write": 14039,
+    "cost_usd": 0.033683,
+    "latency_s": 19.02,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+        "total_con_match": 1873,
+        "resultados": [
+          {
+            "id": "Operacion_derivados_con_intercambios_multiples_ed49c3",
+            "type": "Operacion",
+            "label": "Derivados con intercambios múltiples",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Derivados con intercambios múltiples del principal."
+          },
+          {
+            "id": "Restriccion_controlar_que_el_monto_de_los_pagos_y_otros_movimientos_registrados_con_imputaci_382d38",
+            "type": "Restriccion",
+            "label": "Límite monto pagos no superior facturado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Controlar que el monto de los pagos y otros movimientos registrados con imputación al despacho no supere el monto facturado según la condición de compra pactada…"
+          },
+          {
+            "id": "Restriccion_el_total_de_pagos_realizados_con_imputacion_a_la_oficializacion_de_importacion_n_657617",
+            "type": "Restriccion",
+            "label": "Limite monto pagos a facturado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El total de pagos realizados con imputación a la oficialización de importación no puede superar el monto facturado en condición de compra pactada"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Operacion_control_monto_pagos_importacion_e116a9",
+            "type": "Operacion",
+            "label": "Control monto pagos importación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Control que montos de pagos no superen monto facturado"
+          },
+          {
+            "id": "Operacion_liquidacion_de_operacion_por_multiples_entidades_d52391",
+            "type": "Operacion",
+            "label": "Liquidación de operación por múltiples entidades",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de operación"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Restriccion_los_pagos_por_deudas_de_bienes_o_servicios_realizados_en_el_marco_de_los_mecanis_e28638",
+            "type": "Restriccion",
+            "label": "Pagos no superen monto declarado en Padrón",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los pagos por deudas de bienes o servicios realizados en el marco de los mecanismos previstos en este punto y/o en el punto 13.4.8., en el conjunto de las entid…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          }
+        ]
+      },
+      "output_chars": 3581,
+      "latency_tool_s": 0.0476
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia opciones digitales precios cotizaciones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia opciones digitales precios cotizaciones",
+        "total_con_match": 374,
+        "resultados": [
+          {
+            "id": "Obligacion_para_las_opciones_con_plazo_residual_de_mas_de_seis_meses_el_precio_de_ejercicio_cc77d3",
+            "type": "Obligacion",
+            "label": "Comparar precio ejercicio con precio futuro",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Para las opciones con plazo residual de más de seis meses, el precio de ejercicio se comparará con el precio a futuro y no con el precio corriente"
+          },
+          {
+            "id": "Obligacion_publicacion_de_cotizaciones_minoristas_f09af0",
+            "type": "Obligacion",
+            "label": "Publicación de cotizaciones minoristas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En la página de Internet del BCRA se podrá consultar las cotizaciones de tipos de cambio minoristas ofrecidas en la Ciudad Autónoma de Buenos Aires por las enti…"
+          },
+          {
+            "id": "Operacion_informacion_sobre_opciones_6e87c1",
+            "type": "Operacion",
+            "label": "Información sobre opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Reporte de información sobre opciones derivadas, incluyendo descripción del activo subyacente, fecha de vencimiento, contraparte, precio de mercado, delta, gamm…"
+          },
+          {
+            "id": "Obligacion_para_el_calculo_del_ajuste_las_entidades_deben_computar_los_precios_a_los_que_po_ea3db5",
+            "type": "Obligacion",
+            "label": "Computar precios para liquidación de posiciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Para el cálculo del ajuste las entidades deben computar los precios a los que podrían liquidar las posiciones concentradas o vencidas y considerar factores como…"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Operacion_valuacion_a_precios_de_mercado_1e3c28",
+            "type": "Operacion",
+            "label": "Valuación a precios de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Valuación del activo recibido en garantía a precios de mercado con frecuencia mínima mensual"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Operacion_exportaciones_con_precios_revisables_o_concentrados_de_minerales_ef1e8e",
+            "type": "Operacion",
+            "label": "Exportaciones con precios revisables o concentrados de minerales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exportaciones de productos que se comercializan sobre la base de precios FOB sujetos a determinación posterior (precios revisables – Resolución General 4073-E/1…"
+          },
+          {
+            "id": "Obligacion_todas_las_operaciones_neteadas_deberan_valuarse_diariamente_a_precios_de_mercado_303020",
+            "type": "Obligacion",
+            "label": "Valuación diaria a precios de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Todas las operaciones neteadas deberán valuarse diariamente a precios de mercado"
+          }
+        ]
+      },
+      "output_chars": 3738,
+      "latency_tool_s": 0.005
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia no invariable vencimiento cálculo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia no invariable vencimiento cálculo",
+        "total_con_match": 545,
+        "resultados": [
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_b70afd",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos de capital en precancelación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo endeudamiento en ningún momento podrá superar, hasta la fecha de vencimiento de la deuda que se canc…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_084cb6",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos de capital en refinanciación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo endeudamiento en ningún momento, hasta la fecha de vencimiento de la deuda que se cancela, podrá sup…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_titulo_de_deuda_en_n_77e2bd",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos acumulados del nuevo título",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo título de deuda en ningún momento, hasta la fecha de vencimiento de la deuda que se cancela, podrá s…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_en_ningun_momento_superara_el__2b26d8",
+            "type": "Restriccion",
+            "label": "Límite vencimientos de capital acumulados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital en ningún momento superará el monto que surge de computar el equivalente a un quinto del valor total del capit…"
+          },
+          {
+            "id": "Operacion_calculo_de_plazo_de_vencimiento_0d8e97",
+            "type": "Operacion",
+            "label": "Cálculo de plazo de vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo del mayor plazo residual posible antes del cumplimiento"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Restriccion_vencimientos_acumulados_no_superan_deuda_original_2eb6da",
+            "type": "Restriccion",
+            "label": "Vencimientos acumulados no superan deuda original",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo endeudamiento en ningún momento podrá superar, hasta la fecha de vencimiento de la deuda que se canc…"
+          }
+        ]
+      },
+      "output_chars": 3735,
+      "latency_tool_s": 0.0039
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia derivados mayor estado posible",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia derivados mayor estado posible",
+        "total_con_match": 470,
+        "resultados": [
+          {
+            "id": "Obligacion_los_derivados_que_hagan_referencia_a_indices_de_credito_se_consideraran_como_si__2eb165",
+            "type": "Obligacion",
+            "label": "Aplicación de factor de correlación mayor para índices",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los derivados que hagan referencia a índices de crédito se considerarán como si hicieran referencia a entidades determinadas pero se les aplicará un mayor facto…"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Obligacion_todos_los_derivados_de_credito_que_hagan_referencia_a_una_misma_entidad_un_unico_ab4f52",
+            "type": "Obligacion",
+            "label": "Compensación plena de derivados de crédito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Todos los derivados de crédito que hagan referencia a una misma entidad (un único deudor o un índice) se compensarán plenamente entre sí"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Obligacion_los_derivados_que_hagan_referencia_a_un_indice_de_acciones_se_trataran_como_si_h_4bd06f",
+            "type": "Obligacion",
+            "label": "Trato de índices de acciones como single names",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los derivados que hagan referencia a un índice de acciones se tratarán como si hicieran referencia a entidades determinadas pero con un factor de correlación má…"
+          },
+          {
+            "id": "Obligacion_la_valuacion_se_debera_hacer_a_mercado_siempre_que_sea_posible_se_debera_utiliza_e5f700",
+            "type": "Obligacion",
+            "label": "Valuación a mercado cuando sea posible",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La valuación se deberá hacer a mercado siempre que sea posible. Se deberá utilizar el valor más prudente del intervalo precio de compra/precio de venta, a menos…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Restriccion_descalce_de_obligacion_en_derivados_252572",
+            "type": "Restriccion",
+            "label": "Descalce de obligación en derivados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se admitirá que el derivado de crédito cubra obligaciones que no incluyen la obligación subyacente, siempre que la obligación de referencia sea de categoría sim…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e",
+            "type": "Restriccion",
+            "label": "Límite del 30% en montos de certificaciones trimestrales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto de las certificaciones obtenidas para el periodo trimestral de referencia, incluyendo la que se solicita emitir, no supera al equivalente en dólares es…"
+          }
+        ]
+      },
+      "output_chars": 4027,
+      "latency_tool_s": 0.0164
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia máximo escenarios condicionados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia máximo escenarios condicionados",
+        "total_con_match": 319,
+        "resultados": [
+          {
+            "id": "Obligacion_constatar_monto_maximo_e_incumplimientos_86f3d1",
+            "type": "Obligacion",
+            "label": "Constatar monto máximo e incumplimientos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad nominada antes de la emisión de cada certificación, deberá constatar en la información suministrada por el BCRA: el monto máximo total que pueden acu…"
+          },
+          {
+            "id": "Obligacion_calcular_monto_maximo_de_certificaciones_675c62",
+            "type": "Obligacion",
+            "label": "Calcular monto máximo de certificaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo …"
+          },
+          {
+            "id": "Operacion_informacion_de_flujos_por_escenarios_60d6d1",
+            "type": "Operacion",
+            "label": "Información de flujos por escenarios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Presentación de flujos asignados a todas las bandas o puntos medios para cada uno de los escenarios previstos (0 a 6)"
+          },
+          {
+            "id": "Obligacion_consignar_importes_en_todos_los_escenarios_4a41ec",
+            "type": "Obligacion",
+            "label": "Consignar importes en todos los escenarios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cuando la estructura del modelo requiera datos en todos los escenarios (0 a 6) para un concepto determinado, deberán consignarse los importes en todos ellos, au…"
+          },
+          {
+            "id": "Obligacion_informar_maxima_perdida_eve_9b3cb7",
+            "type": "Obligacion",
+            "label": "Informar máxima pérdida EVE",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se consignará el importe máximo de los registrados en las partidas 3650000X, es decir, se toma la máxima pérdida registrada para los 6 escenarios posibles"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Restriccion_limite_maximo_de_certificaciones_acumuladas_8ff773",
+            "type": "Restriccion",
+            "label": "Límite máximo de certificaciones acumuladas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto de las certificaciones emitidas, incluyendo la que se solicita emitir, no supera el equivalente en moneda extranjera al monto máximo establecido para e…"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Restriccion_limite_maximo_mensual_10_cobros_anticipados_adc40e",
+            "type": "Restriccion",
+            "label": "Límite máximo mensual 10% cobros anticipados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Liquidación en razón de máximo mensual equivalente al 10% del monto total de los anticipos que se encuadraron en este mecanismo"
+          }
+        ]
+      },
+      "output_chars": 3678,
+      "latency_tool_s": 0.0075
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia operación determinación escenarios",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia operación determinación escenarios",
+        "total_con_match": 1816,
+        "resultados": [
+          {
+            "id": "Operacion_determinacion_de_importe_de_referencia_658c80",
+            "type": "Operacion",
+            "label": "Determinación de importe de referencia",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Determinación de importe de referencia para clasificación"
+          },
+          {
+            "id": "Operacion_informacion_de_flujos_por_escenarios_60d6d1",
+            "type": "Operacion",
+            "label": "Información de flujos por escenarios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Presentación de flujos asignados a todas las bandas o puntos medios para cada uno de los escenarios previstos (0 a 6)"
+          },
+          {
+            "id": "Obligacion_consignar_importes_en_todos_los_escenarios_4a41ec",
+            "type": "Obligacion",
+            "label": "Consignar importes en todos los escenarios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cuando la estructura del modelo requiera datos en todos los escenarios (0 a 6) para un concepto determinado, deberán consignarse los importes en todos ellos, au…"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Operacion_determinacion_del_nocional_ajustado_0a13a9",
+            "type": "Operacion",
+            "label": "Determinación del nocional ajustado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El nocional ajustado estará dado por la cantidad de moneda extranjera a la que hace referencia el contrato, expresada en pesos"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Operacion_determinacion_de_ponderador_de_inversiones_subsiguientes_b52410",
+            "type": "Operacion",
+            "label": "Determinación de ponderador de inversiones subsiguientes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Determinación del ponderador para inversiones subsiguientes en fondos (del Fondo B en el Fondo C y siguientes) mediante LTA o FBA"
+          },
+          {
+            "id": "Restriccion_el_monto_en_divisas_a_ingresar_y_liquidar_por_una_exportacion_estara_determinado_b16aad",
+            "type": "Restriccion",
+            "label": "Determinación del monto FOB más conceptos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto en divisas a ingresar y liquidar por una exportación estará determinado por el valor FOB de la mercadería registrado en la Aduana más el valor de los d…"
+          }
+        ]
+      },
+      "output_chars": 3667,
+      "latency_tool_s": 0.0175
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia no está claramente definido variable",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia no está claramente definido variable",
+        "total_con_match": 275,
+        "resultados": [
+          {
+            "id": "Operacion_operaciones_con_nocional_no_definido_eba277",
+            "type": "Operacion",
+            "label": "Operaciones con nocional no definido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones en las que el nocional no está claramente definido o no se mantiene fijo hasta el vencimiento."
+          },
+          {
+            "id": "Obligacion_los_derechos_del_inversor_deberan_estar_claramente_definidos_en_toda_circunstanc_1d3341",
+            "type": "Obligacion",
+            "label": "Definir claramente derechos del inversor",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los derechos del inversor deberán estar claramente definidos en toda circunstancia, incluidos los concernientes a los tenedores con preferencia respecto de los …"
+          },
+          {
+            "id": "Obligacion_las_entidades_deberan_contar_con_politicas_y_procedimientos_claramente_definidos_334e73",
+            "type": "Obligacion",
+            "label": "Contar con políticas y procedimientos para cartera de negociación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades deberán contar con políticas y procedimientos claramente definidos para determinar qué exposiciones incluir o excluir de la cartera de negociación…"
+          },
+          {
+            "id": "Obligacion_deberan_contar_con_politicas_y_procedimientos_claramente_definidos_para_verifica_4f6c5f",
+            "type": "Obligacion",
+            "label": "Verificar conformidad con estrategia de negociación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberán contar con políticas y procedimientos claramente definidos para verificar que las posiciones están de acuerdo con la estrategia de negociación de la ent…"
+          },
+          {
+            "id": "Operacion_asignacion_de_instrumentos_a_tasa_variable_bd1d3d",
+            "type": "Operacion",
+            "label": "Asignación de instrumentos a tasa variable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los instrumentos a tasa variable según el plazo que resta hasta el siguiente ajuste del interés"
+          },
+          {
+            "id": "Obligacion_deberan_contar_con_politicas_y_procedimientos_claramente_definidos_para_la_gesti_5dbff5",
+            "type": "Obligacion",
+            "label": "Definir políticas para gestión activa de posiciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberán contar con políticas y procedimientos claramente definidos para la gestión activa de las posiciones, para asegurarse de que sean gestionadas por un equi…"
+          },
+          {
+            "id": "Obligacion_las_obligaciones_contractuales_deberes_y_responsabilidades_de_los_participantes__4a3d5c",
+            "type": "Obligacion",
+            "label": "Definir claramente obligaciones de participantes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las obligaciones contractuales, deberes y responsabilidades de los participantes de la titulización deberán estar claramente definidos en la oferta inicial y en…"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Obligacion_el_orden_de_prelacion_en_el_pago_de_todos_los_compromisos_debera_estar_clarament_dd160f",
+            "type": "Obligacion",
+            "label": "Definir orden de prelación de pagos",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El orden de prelación en el pago de todos los compromisos deberá estar claramente definido desde el inicio y contar con apropiado respaldo jurídico en lo relati…"
+          }
+        ]
+      },
+      "output_chars": 3932,
+      "latency_tool_s": 0.0068
+    },
+    {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+      },
+      "output": {
+        "id": "Operacion_operaciones_con_nocional_no_definido_eba277",
+        "type": "Operacion",
+        "label": "Operaciones con nocional no definido",
+        "properties": {
+          "tipo": "derivado",
+          "description": "Operaciones en las que el nocional no está claramente definido o no se mantiene fijo hasta el vencimiento."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 479,
+      "latency_tool_s": 0.0019
+    },
+    {
+      "n": 9,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+      },
+      "output": {
+        "id": "Operacion_operaciones_con_nocional_no_definido_eba277",
+        "label": "Operaciones con nocional no definido",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 2,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08",
+            "vecino_label": "Determinar nocional en operaciones contingentes",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5",
+            "vecino_label": "Aplicar valores de mercado corrientes",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 1260,
+      "latency_tool_s": 0.0226
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+      },
+      "output": {
+        "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08",
+        "type": "Obligacion",
+        "label": "Determinar nocional en operaciones contingentes",
+        "properties": {
+          "tipo": "calculo",
+          "description": "Para operaciones con retribuciones múltiples y contingentes respecto de un estado o situación (tal como opciones digitales), se calculará un nocional para cada estado y se tomará el que resulte mayor."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 596,
+      "latency_tool_s": 0.0028
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+      },
+      "output": {
+        "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5",
+        "type": "Obligacion",
+        "label": "Aplicar valores de mercado corrientes",
+        "properties": {
+          "tipo": "calculo",
+          "description": "Cuando el nocional sea una fórmula en base a valores de mercado, se tomarán los valores de mercado corrientes para determinar el nocional de la operación."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 530,
+      "latency_tool_s": 0.0019
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+      },
+      "output": {
+        "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08",
+        "label": "Determinar nocional en operaciones contingentes",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_operaciones_con_nocional_no_definido_eba277",
+            "vecino_label": "Operaciones con nocional no definido",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_alcance_capmin",
+            "vecino_label": "Entidades alcanzadas (Capitales Mínimos)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 1237,
+      "latency_tool_s": 0.0073
+    },
+    {
+      "n": 13,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+      },
+      "output": {
+        "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5",
+        "label": "Aplicar valores de mercado corrientes",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_operaciones_con_nocional_no_definido_eba277",
+            "vecino_label": "Operaciones con nocional no definido",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_alcance_capmin",
+            "vecino_label": "Entidades alcanzadas (Capitales Mínimos)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 1217,
+      "latency_tool_s": 0.007
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh58kHHbRkNi1KjREjP",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre el cálculo del monto de referencia en operaciones con pagos múltiples y condicionados, especialmente en casos donde el monto no está claramente definido o varía según precios o cotizaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Rc3FpyevmnGbTd5KUpcq6R",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01QyxaCjz1J155dmgha6ULiE",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia opciones digitales precios cotizaciones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BvFZsVyY7jM6utTjWrwxon",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia no invariable vencimiento cálculo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1714,
+          "output_tokens": 281,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh5MP43ZAsYreLnBzaM",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre el monto de referencia en derivados y opciones, y cómo se calcula cuando hay múltiples escenarios posibles.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_017yTUzC9bvB6oERADusCsph",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia derivados mayor estado posible",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01UMyDMvb3xZZoggeuhxsVXk",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia máximo escenarios condicionados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5864
+          },
+          "cache_creation_input_tokens": 5864,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 191,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh5Wp5qQhDq3irFZxAp",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre cómo se determina el monto de referencia en operaciones con múltiples escenarios o pagos condicionados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_016DLsYEBe6FLhqbLfUYzaZD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia operación determinación escenarios",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_018wyybQArngzPEw91emBbfs",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia no está claramente definido variable",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2871
+          },
+          "cache_creation_input_tokens": 2871,
+          "cache_read_input_tokens": 5864,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 189,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh5fh8B6tx7grVYfHnA",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré un nodo muy relevante: \"Operaciones con nocional no definido\". Voy a verlo en detalle.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01736KD3wWBit2UyaR4rg8q2",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2783
+          },
+          "cache_creation_input_tokens": 2783,
+          "cache_read_input_tokens": 8735,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 109,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh5nJ14AN6FQcgAgkUQ",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Ahora voy a ver los vecinos de este nodo para entender cómo se resuelve el cálculo del monto de referencia en estos casos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Az1u5JTEbAreBjbTFc87Xm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_operaciones_con_nocional_no_definido_eba277"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 278
+          },
+          "cache_creation_input_tokens": 278,
+          "cache_read_input_tokens": 11518,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 112,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh5t1J2C1FVRHR2XWpS",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Voy a ver las dos obligaciones que regulan este tipo de operaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_011nvsqca5A6gvfPL4wZ6QBi",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01KS72rauWGQrcv7BYm99JGS",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 567
+          },
+          "cache_creation_input_tokens": 567,
+          "cache_read_input_tokens": 11796,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 155,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh62FPZ8ok4Loej4FVK",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información que necesito. Voy a verificar si hay más detalles relacionados con estas obligaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018QFBVGT4fw9x2rqGMhytgP",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_determinar_nocional_en_operaciones_contingentes_4aae08"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_015a4hjY3B5Luxkz2owysZ9H",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_aplicar_valores_de_mercado_corrientes_39aae5"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 566
+          },
+          "cache_creation_input_tokens": 566,
+          "cache_read_input_tokens": 12363,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 165,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh68p2iTMdy8f2dGiVb",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo la información completa. Ahora puedo responder la pregunta con precisión basándome en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"Según la regulación del BCRA, para operaciones con pagos múltiples y condicionados a un estado o situación (como opciones digitales), el cálculo del monto de referencia se resuelve mediante dos reglas complementarias:\\n\\n1. **Selección del mayor nocional entre estados posibles**: Para operaciones con retribuciones múltiples y contingentes respecto de un estado o situación, se calculará un nocional para cada estado posible y se tomará el que resulte mayor.\\n\\n2. **Aplicación de valores de mercado corrientes**: Cuando el nocional sea una fórmula basada en valores de mercado (precios o cotizaciones vigentes en el ámbito financiero), se tomarán los valores de mercado corrientes para determinar el nocional de la operación.\\n\\nEsta combinación de reglas resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento: se utiliza el valor más alto entre los escenarios posibles, calculado con los precios o cotizaciones vigentes en el momento de la evaluación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1110
+          },
+          "cache_creation_input_tokens": 1110,
+          "cache_read_input_tokens": 12929,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 409,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

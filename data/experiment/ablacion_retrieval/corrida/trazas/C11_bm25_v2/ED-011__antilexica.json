@@ -1,0 +1,1637 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C11_bm25_v2",
+    "celda_id": "C11_bm25_v2",
+    "retriever": "bm25",
+    "tools": "v2",
+    "es_control": false,
+    "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+    "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+    "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v2",
+      "celda_id": "C11_bm25_v2",
+      "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+      "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+      "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "ED-011::antilexica",
+    "sample_id": "ED-011",
+    "variante": "antilexica",
+    "estrato": "E-D",
+    "sub_estrato": "intra_to",
+    "pos_orden": 21,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T15:47:19",
+    "timestamp_fin": "2026-08-18T15:47:44",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.034372,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "En el marco de los requisitos que una entidad financiera debe cumplir en materia de solvencia, ¿cómo se obtiene el monto que corresponde al patrimonio neto computable, y qué porcentaje se le aplica a la suma de los activos que fueron ajustados según su nivel de riesgo?",
+  "trace": {
+    "qid": "ED-011::antilexica",
+    "question": "En el marco de los requisitos que una entidad financiera debe cumplir en materia de solvencia, ¿cómo se obtiene el monto que corresponde al patrimonio neto computable, y qué porcentaje se le aplica a la suma de los activos que fueron ajustados según su nivel de riesgo?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "patrimonio neto computable solvencia",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"patrimonio neto computable solvencia\", \"total_con_match\": 90, \"resultados\": [{\"id\": \"Operacion_calculo_de_patrimonio_neto_complementario_07ceef\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Complementario\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…\"}, {\"id\": \"Obligacion_se_consignara_el_importe_total_del_patrimonio_neto_rubro_400000_del_balance_excl_c6929d\", \"type\": \"Obligacion\", \"label\": \"Consignar importe total Patrimonio Neto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…\"}, {\"id\": \"Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837\", \"type\": \"Operacion\", \"label\": \"Determinación de responsabilidad patrimonial computable\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde P… [+2108 chars]",
+        "output_chars": 3308
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "activos ajustados riesgo porcentaje",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"activos ajustados riesgo porcentaje\", \"total_con_match\": 605, \"resultados\": [{\"id\": \"Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e\", \"type\": \"Operacion\", \"label\": \"Cálculo de activo ponderado por riesgo\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…\"}, {\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb\", \"type\": \"Operacion\", \"label\": \"Cálculo de activos ponderados por riesgo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA\"}, {\"id\": \"Obligacion_se_registrara_el_incremento_calculado_por_la_entidad_aplicando_los_porcentajes_e_b6be54\", \"type\": \"Obligacion\", \"label\": \"Aplicar porcentajes de exigencia establecidos\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"Se registrará el incremento calculado por la entidad aplicando los porcentajes establecidos de acuerdo con lo dispuesto en la Sección 2 de las normas sobre Capi…\"}, {\"id\": \"Operacion_determinacion_del_nocional_ajustado_0a1… [+2504 chars]",
+        "output_chars": 3704
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837"
+        },
+        "output_truncado": "{\"id\": \"Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837\", \"type\": \"Operacion\", \"label\": \"Determinación de responsabilidad patrimonial computable\", \"properties\": {\"tipo\": \"calculo_capital_regulatorio\", \"description\": \"Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde PNb es patrimonio neto básico (capital de nivel uno) y PNc es patrimonio neto complementario (capital de nivel dos)\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.1. Determinación.\"}]}",
+        "output_chars": 604
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_patrimonio_neto_basico_b463e0\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Básico\", \"properties\": {\"tipo\": \"calculo_capitales_minimos\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.3. Límites mínimos:\"}]}",
+        "output_chars": 310
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623\", \"type\": \"Restriccion\", \"label\": \"Límite mínimo PNb\", \"properties\": {\"descripcion\": \"Patrimonio Neto Básico (PNb) deberá ser mayor o igual al 6% sobre el activo total (70900000)\", \"tipo\": \"limite_cuantitativo\", \"umbral\": \"6%\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.3. Límites mínimos:\"}]}",
+        "output_chars": 466
+      },
+      {
+        "n": 6,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+          "por_pagina": 40
+        },
+        "output_truncado": "{\"id\": \"Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837\", \"label\": \"Determinación de responsabilidad patrimonial computable\", \"n_salientes_total\": 0, \"n_entrantes_total\": 2, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 0, \"salientes_paginas\": 0, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {}, \"salientes\": [], \"entrantes_total\": 2, \"entrantes_paginas\": 1, \"entrantes_pagina_siguiente\": null, \"entrantes_por_relacion\": {\"regula\": 2}, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_calcular_responsabilidad_patrimonial_computable_73d54c\", \"vecino_label\": \"Calcular responsabilidad patrimonial computable\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.1. Determinación.\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_la_responsabilidad_patrimonial_computable_se_determinara_en_funcion_de_los_saldo_964702\", \"vecino_label\": \"Determinar responsabilidad patrimonial computable\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.1. Normas de procedimiento (parte 1)\"}]}]}",
+        "output_chars": 1158
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "requisito capital mínimo porcentaje activos ponderados riesgo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"requisito capital mínimo porcentaje activos ponderados riesgo\", \"total_con_match\": 1109, \"resultados\": [{\"id\": \"Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e\", \"type\": \"Operacion\", \"label\": \"Cálculo de activo ponderado por riesgo\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…\"}, {\"id\": \"Obligacion_informar_activos_ponderados_por_riesgo_837724\", \"type\": \"Obligacion\", \"label\": \"Informar activos ponderados por riesgo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…\"}, {\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb\", \"type\": \"Operacion\", \"label\": \"Cálculo de activos ponderados por riesgo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA\"}, {\"id\": \"Operacion_excluir_exposiciones_de_activos_ponderados_por_riesgo_ebdb5a\"… [+2250 chars]",
+        "output_chars": 3450
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "capital mínimo 8% activos ponderados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"capital mínimo 8% activos ponderados\", \"total_con_match\": 758, \"resultados\": [{\"id\": \"Restriccion_capital_minimo_riesgo_cambio_8_5274a6\", \"type\": \"Restriccion\", \"label\": \"Capital mínimo riesgo cambio 8%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La exigencia de capital será el 8% de la posición neta total\"}, {\"id\": \"Obligacion_informar_activos_ponderados_por_riesgo_837724\", \"type\": \"Obligacion\", \"label\": \"Informar activos ponderados por riesgo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…\"}, {\"id\": \"Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb\", \"type\": \"Operacion\", \"label\": \"Cálculo de activos ponderados por riesgo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA\"}, {\"id\": \"Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e\", \"type\": \"Operacion\", \"label\": \"Cálculo de activo ponderado por riesgo\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"El activo ponderado por riesgo … [+2180 chars]",
+        "output_chars": 3380
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_informar_activos_ponderados_por_riesgo_837724\", \"type\": \"Obligacion\", \"label\": \"Informar activos ponderados por riesgo\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la expresión: APR = 70100000 /(k * 0,08) + (70300000 - 3600000Y + 70800000 ) * 12,5\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 8.1. Normas de procedimiento.\"}]}",
+        "output_chars": 589
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "patrimonio neto computable cálculo componentes",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"patrimonio neto computable cálculo componentes\", \"total_con_match\": 294, \"resultados\": [{\"id\": \"Operacion_calculo_de_patrimonio_neto_complementario_07ceef\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…\"}, {\"id\": \"Operacion_calculo_del_componente_financiero_1c546a\", \"type\": \"Operacion\", \"label\": \"Cálculo del componente financiero\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cálculo del componente FC mediante el resultado neto de cartera de negociación e inversión en valor absoluto\"}, {\"id\": \"Operacion_calculo_de_patrimonio_neto_basico_b463e0\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Básico\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: calculo_capitales_minimos\"}, {\"id\": \"Obligacion_se_consignara_el_importe_total_del_patrimonio_neto_rubro_400000_del_balance_excl_c6929d\", \"type\": \"Obligacion\", \"label\": \"Consignar importe total Patrimonio Neto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Se consigna… [+2247 chars]",
+        "output_chars": 3447
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_patrimonio_neto_basico_b463e0\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Básico\", \"properties\": {\"tipo\": \"calculo_capitales_minimos\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.3. Límites mínimos:\"}]}",
+        "output_chars": 310
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+          "por_pagina": 40
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_patrimonio_neto_basico_b463e0\", \"label\": \"Cálculo de Patrimonio Neto Básico\", \"n_salientes_total\": 1, \"n_entrantes_total\": 1, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 1, \"salientes_paginas\": 1, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {\"establecida_en\": 1}, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf\", \"vecino_label\": \"Régimen Informativo Contable Mensual\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.3. Límites mínimos:\"}]}], \"entrantes_total\": 1, \"entrantes_paginas\": 1, \"entrantes_pagina_siguiente\": null, \"entrantes_por_relacion\": {\"limita\": 1}, \"entrantes\": [{\"relation\": \"limita\", \"vecino_id\": \"Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623\", \"vecino_label\": \"Límite mínimo PNb\", \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.3. Límites mínimos:\"}]}]}",
+        "output_chars": 1100
+      },
+      {
+        "n": 13,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_patrimonio_neto_complementario_07ceef\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Complementario\", \"properties\": {\"tipo\": \"calculo_capital_regulatorio\", \"description\": \"Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de emisión resultantes\"}, \"provenances\": [{\"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\", \"location\": \"Punto 6.2. Modelo de Información (parte 1)\"}]}",
+        "output_chars": 542
+      },
+      {
+        "n": 14,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "12.5 factor ponderación activos riesgo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"12.5 factor ponderación activos riesgo\", \"total_con_match\": 718, \"resultados\": [{\"id\": \"Operacion_ponderacion_de_posiciones_por_factor_de_sensibilidad_2a8f34\", \"type\": \"Operacion\", \"label\": \"Ponderación de posiciones por factor de sensibilidad\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las posiciones imputadas a cada banda temporal deberán ponderarse por un factor que refleje su sensibilidad a los cambios en las tasas de interés\"}, {\"id\": \"Operacion_ponderacion_de_flujos_mediante_factor_descuento_3e934b\", \"type\": \"Operacion\", \"label\": \"Ponderación de flujos mediante factor descuento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los flujos de fondos nocionales netos sujetos a reapreciación en cada banda temporal o punto medio, se ponderan mediante el factor de descuento continuo\"}, {\"id\": \"Restriccion_ponderacion_segun_activo_o_contraparte_740e3c\", \"type\": \"Restriccion\", \"label\": \"Ponderación según activo o contraparte\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Ventas de activos con pacto de recompra, compromisos de adquisición de activos no contabilizados en balance, se ponderarán según el activo y no en función de la…\"}, {\"id\": \"Operacion_operacione… [+2420 chars]",
+        "output_chars": 3620
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "patrimonio neto básico complementario suma RPC",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"patrimonio neto básico complementario suma RPC\", \"total_con_match\": 164, \"resultados\": [{\"id\": \"Operacion_calculo_de_patrimonio_neto_complementario_07ceef\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…\"}, {\"id\": \"Operacion_calculo_de_patrimonio_neto_basico_b463e0\", \"type\": \"Operacion\", \"label\": \"Cálculo de Patrimonio Neto Básico\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: calculo_capitales_minimos\"}, {\"id\": \"Obligacion_informar_patrimonio_neto_complementario_efe931\", \"type\": \"Obligacion\", \"label\": \"Informar Patrimonio Neto Complementario\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Presentar información sobre instrumentos emitidos que observen requisitos del punto 8.3.3 no incluidos en Capital Ordinario ni Adicional de Nivel 1, y primas de…\"}, {\"id\": \"Operacion_computo_de_patrimonio_neto_complementario_87fd43\", \"type\": \"Operacion\", \"label\": \"Cómputo de patrimonio neto complementario\", \"tokens_matcheados\": 3, \"resume… [+2312 chars]",
+        "output_chars": 3512
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1905,
+        "output_tokens": 175,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.026
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 261,
+        "cache_read": 0,
+        "cache_write": 4562,
+        "latency_s": 3.607
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 221,
+        "cache_read": 4562,
+        "cache_write": 849,
+        "latency_s": 2.74
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 178,
+        "cache_read": 5411,
+        "cache_write": 1899,
+        "latency_s": 2.303
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 181,
+        "cache_read": 7310,
+        "cache_write": 1651,
+        "latency_s": 2.482
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 198,
+        "cache_read": 8961,
+        "cache_write": 1566,
+        "latency_s": 2.444
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 203,
+        "cache_read": 10527,
+        "cache_write": 881,
+        "latency_s": 2.682
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 557,
+        "cache_read": 11408,
+        "cache_write": 2779,
+        "latency_s": 6.797
+      }
+    ],
+    "final_json": {
+      "respuesta": "El patrimonio neto computable (también denominado Responsabilidad Patrimonial Computable o RPC) se obtiene mediante la suma de dos componentes: RPC = PNb + PNc, donde PNb es el Patrimonio Neto Básico (capital de Nivel 1) y PNc es el Patrimonio Neto Complementario (capital de Nivel 2). El Patrimonio Neto Básico se calcula conforme a lo establecido en las normas sobre capitales mínimos, mientras que el Patrimonio Neto Complementario incluye instrumentos emitidos que observen requisitos específicos y primas de emisión resultantes.\n\nRespecto al porcentaje aplicado a la suma de los activos ajustados según su nivel de riesgo (activos ponderados por riesgo), la regulación establece que se aplica un factor de 12,5 (o equivalentemente, un 8% de capital mínimo). Esto se refleja en la fórmula de cálculo de Activos Ponderados por Riesgo (APR), donde se multiplica por 12,5 la suma de ciertos componentes de activos ponderados, lo que corresponde al inverso del requisito de capital mínimo del 8% que las entidades financieras deben mantener integrado.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 8.1. Determinación."
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 8.1. Normas de procedimiento."
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 6.2. Modelo de Información (parte 1)"
+        },
+        {
+          "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "location": "Punto 6.3. Límites mínimos:"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "```json\n{\n  \"respuesta\": \"El patrimonio neto computable (también denominado Responsabilidad Patrimonial Computable o RPC) se obtiene mediante la suma de dos componentes: RPC = PNb + PNc, donde PNb es el Patrimonio Neto Básico (capital de Nivel 1) y PNc es el Patrimonio Neto Complementario (capital de Nivel 2). El Patrimonio Neto Básico se calcula conforme a lo establecido en las normas sobre capitales mínimos, mientras que el Patrimonio Neto Complementario incluye instrumentos emitidos que observen requisitos específicos y primas de emisión resultantes.\\n\\nRespecto al porcentaje aplicado a la suma de los activos ajustados según su nivel de riesgo (activos ponderados por riesgo), la regulación establece que se aplica un factor de 12,5 (o equivalentemente, un 8% de capital mínimo). Esto se refleja en la fórmula de cálculo de Activos Ponderados por Riesgo (APR), donde se multiplica por 12,5 la suma de ciertos componentes de activos ponderados, lo que corresponde al inverso del requisito de capital mínimo del 8% que las entidades financieras deben mantener integrado.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.1. Determinación.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 8.1. Normas de procedimiento.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 6.2. Modelo de Información (parte 1)\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 6.3. Límites mínimos:\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 15,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 8.1. Determinación."
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 6.3. Límites mínimos:"
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 6.1. Normas de procedimiento (parte 1)"
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 8.1. Normas de procedimiento."
+      },
+      {
+        "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+        "location": "Punto 6.2. Modelo de Información (parte 1)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1950,
+    "tokens_out": 1974,
+    "cache_read": 48179,
+    "cache_write": 14187,
+    "cost_usd": 0.034372,
+    "latency_s": 25.192,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "patrimonio neto computable solvencia",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "patrimonio neto computable solvencia",
+        "total_con_match": 90,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Complementario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…"
+          },
+          {
+            "id": "Obligacion_se_consignara_el_importe_total_del_patrimonio_neto_rubro_400000_del_balance_excl_c6929d",
+            "type": "Obligacion",
+            "label": "Consignar importe total Patrimonio Neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…"
+          },
+          {
+            "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+            "type": "Operacion",
+            "label": "Determinación de responsabilidad patrimonial computable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde PNb es patrimonio neto bá…"
+          },
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Básico",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo_capitales_minimos"
+          },
+          {
+            "id": "Obligacion_informar_patrimonio_neto_complementario_efe931",
+            "type": "Obligacion",
+            "label": "Informar Patrimonio Neto Complementario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Presentar información sobre instrumentos emitidos que observen requisitos del punto 8.3.3 no incluidos en Capital Ordinario ni Adicional de Nivel 1, y primas de…"
+          },
+          {
+            "id": "Operacion_computo_de_patrimonio_neto_complementario_87fd43",
+            "type": "Operacion",
+            "label": "Cómputo de patrimonio neto complementario",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Cálculo de componentes de patrimonio neto complementario (PNc)"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623",
+            "type": "Restriccion",
+            "label": "Límite mínimo PNb",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Patrimonio Neto Básico (PNb) deberá ser mayor o igual al 6% sobre el activo total (70900000)"
+          },
+          {
+            "id": "Operacion_calculo_de_responsabilidad_patrimonial_computable_1109a0",
+            "type": "Operacion",
+            "label": "Cálculo de responsabilidad patrimonial computable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Responsabilidad patrimonial computable: (CO -CD ) + (CA -CD ) + (PNc-CD )"
+          },
+          {
+            "id": "Operacion_calculo_valor_economico_del_patrimonio_824be3",
+            "type": "Operacion",
+            "label": "Cálculo valor económico del patrimonio",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Mide el valor económico del patrimonio correspondiente a todas las bandas temporales, para los 6 escenarios en cada moneda significativa"
+          },
+          {
+            "id": "Obligacion_calcular_responsabilidad_patrimonial_computable_73d54c",
+            "type": "Obligacion",
+            "label": "Calcular responsabilidad patrimonial computable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La responsabilidad patrimonial computable de las entidades financieras surgirá de la siguiente expresión: RPC = PNb + PNc"
+          }
+        ]
+      },
+      "output_chars": 3308,
+      "latency_tool_s": 0.009
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "activos ajustados riesgo porcentaje",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "activos ajustados riesgo porcentaje",
+        "total_con_match": 605,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e",
+            "type": "Operacion",
+            "label": "Cálculo de activo ponderado por riesgo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA"
+          },
+          {
+            "id": "Obligacion_se_registrara_el_incremento_calculado_por_la_entidad_aplicando_los_porcentajes_e_b6be54",
+            "type": "Obligacion",
+            "label": "Aplicar porcentajes de exigencia establecidos",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se registrará el incremento calculado por la entidad aplicando los porcentajes establecidos de acuerdo con lo dispuesto en la Sección 2 de las normas sobre Capi…"
+          },
+          {
+            "id": "Operacion_determinacion_del_nocional_ajustado_0a13a9",
+            "type": "Operacion",
+            "label": "Determinación del nocional ajustado",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El nocional ajustado estará dado por la cantidad de moneda extranjera a la que hace referencia el contrato, expresada en pesos"
+          },
+          {
+            "id": "Operacion_excluir_exposiciones_de_activos_ponderados_por_riesgo_ebdb5a",
+            "type": "Operacion",
+            "label": "Excluir exposiciones de activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad originante podrá excluir del cálculo de los activos ponderados por riesgo a las exposiciones subyacentes objeto de la titulización"
+          },
+          {
+            "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724",
+            "type": "Obligacion",
+            "label": "Informar activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…"
+          },
+          {
+            "id": "Obligacion_calcular_nocional_ajustado_para_volatilidad_4a5ae4",
+            "type": "Obligacion",
+            "label": "Calcular nocional ajustado para volatilidad",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Para operaciones sobre volatilidad de acciones y productos básicos, el nocional ajustado será el producto de la volatilidad o la varianza referenciadas en la op…"
+          },
+          {
+            "id": "Obligacion_computar_otros_resultados_positivos_y_negativos_en_co_n1_segun_porcentajes_100_d_85f69f",
+            "type": "Obligacion",
+            "label": "Aplicar porcentajes graduales a otros resultados",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Computar otros resultados (positivos y negativos) en CO_n1 según porcentajes: 100% de resultados hasta último estado trimestral con informe auditor del ejercici…"
+          },
+          {
+            "id": "Obligacion_para_los_derivados_sobre_acciones_y_commodities_el_nocional_ajustado_sera_el_pro_226fa6",
+            "type": "Obligacion",
+            "label": "Calcular nocional ajustado para derivados de acciones y commodities",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Para los derivados sobre acciones y commodities, el nocional ajustado será el producto del precio corriente de una unidad de la acción o producto por el número …"
+          },
+          {
+            "id": "Restriccion_limite_de_apalancamiento_ajustado_9a0ce9",
+            "type": "Restriccion",
+            "label": "Límite de apalancamiento ajustado",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El requisito de capital por apalancamiento se sujeta a un tope del 1250%. El producto del ponderador de riesgo promedio y el apalancamiento del fondo no podrá s…"
+          }
+        ]
+      },
+      "output_chars": 3704,
+      "latency_tool_s": 0.0032
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837"
+      },
+      "output": {
+        "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+        "type": "Operacion",
+        "label": "Determinación de responsabilidad patrimonial computable",
+        "properties": {
+          "tipo": "calculo_capital_regulatorio",
+          "description": "Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde PNb es patrimonio neto básico (capital de nivel uno) y PNc es patrimonio neto complementario (capital de nivel dos)"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.1. Determinación."
+          }
+        ]
+      },
+      "output_chars": 604,
+      "latency_tool_s": 0.004
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+        "type": "Operacion",
+        "label": "Cálculo de Patrimonio Neto Básico",
+        "properties": {
+          "tipo": "calculo_capitales_minimos"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 6.3. Límites mínimos:"
+          }
+        ]
+      },
+      "output_chars": 310,
+      "latency_tool_s": 0.002
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623"
+      },
+      "output": {
+        "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623",
+        "type": "Restriccion",
+        "label": "Límite mínimo PNb",
+        "properties": {
+          "descripcion": "Patrimonio Neto Básico (PNb) deberá ser mayor o igual al 6% sobre el activo total (70900000)",
+          "tipo": "limite_cuantitativo",
+          "umbral": "6%"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 6.3. Límites mínimos:"
+          }
+        ]
+      },
+      "output_chars": 466,
+      "latency_tool_s": 0.0024
+    },
+    {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+        "por_pagina": 40
+      },
+      "output": {
+        "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+        "label": "Determinación de responsabilidad patrimonial computable",
+        "n_salientes_total": 0,
+        "n_entrantes_total": 2,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 0,
+        "salientes_paginas": 0,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {},
+        "salientes": [],
+        "entrantes_total": 2,
+        "entrantes_paginas": 1,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {
+          "regula": 2
+        },
+        "entrantes": [
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_calcular_responsabilidad_patrimonial_computable_73d54c",
+            "vecino_label": "Calcular responsabilidad patrimonial computable",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.1. Determinación."
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_la_responsabilidad_patrimonial_computable_se_determinara_en_funcion_de_los_saldo_964702",
+            "vecino_label": "Determinar responsabilidad patrimonial computable",
+            "provenances": [
+              {
+                "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+                "location": "Punto 6.1. Normas de procedimiento (parte 1)"
+              }
+            ]
+          }
+        ]
+      },
+      "output_chars": 1158,
+      "latency_tool_s": 0.0135
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "requisito capital mínimo porcentaje activos ponderados riesgo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "requisito capital mínimo porcentaje activos ponderados riesgo",
+        "total_con_match": 1109,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e",
+            "type": "Operacion",
+            "label": "Cálculo de activo ponderado por riesgo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…"
+          },
+          {
+            "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724",
+            "type": "Obligacion",
+            "label": "Informar activos ponderados por riesgo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA"
+          },
+          {
+            "id": "Operacion_excluir_exposiciones_de_activos_ponderados_por_riesgo_ebdb5a",
+            "type": "Operacion",
+            "label": "Excluir exposiciones de activos ponderados por riesgo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad originante podrá excluir del cálculo de los activos ponderados por riesgo a las exposiciones subyacentes objeto de la titulización"
+          },
+          {
+            "id": "Obligacion_requisito_de_capital_minimo_en_reestructuracion_04abe9",
+            "type": "Obligacion",
+            "label": "Requisito de capital mínimo en reestructuración",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El requisito de capitales mínimos que se determine para instrumentos derivados de canje de deuda por acciones en reestructuración no puede ser menor al que le h…"
+          },
+          {
+            "id": "Operacion_determinacion_activos_ponderados_riesgo_79f7da",
+            "type": "Operacion",
+            "label": "Determinación activos ponderados riesgo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: calculo de activos ponderados"
+          },
+          {
+            "id": "Operacion_informe_de_activos_ponderados_por_riesgo_68dc5e",
+            "type": "Operacion",
+            "label": "Informe de Activos Ponderados por Riesgo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: presentación informativa"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_la_exigencia_de_capital_minimo_por_riesgo_de_mercado_la_integracio_71c758",
+            "type": "Obligacion",
+            "label": "Determinar integración capital mínimo riesgo mercado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En el caso de la exigencia de capital mínimo por riesgo de mercado, la integración se determinará en forma diaria de acuerdo con lo establecido en el punto 6.7.…"
+          },
+          {
+            "id": "Obligacion_se_registrara_el_incremento_calculado_por_la_entidad_aplicando_los_porcentajes_e_b6be54",
+            "type": "Obligacion",
+            "label": "Aplicar porcentajes de exigencia establecidos",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se registrará el incremento calculado por la entidad aplicando los porcentajes establecidos de acuerdo con lo dispuesto en la Sección 2 de las normas sobre Capi…"
+          },
+          {
+            "id": "Obligacion_integracion_de_capital_minimo_e22e8b",
+            "type": "Obligacion",
+            "label": "Integración de capital mínimo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exig…"
+          }
+        ]
+      },
+      "output_chars": 3450,
+      "latency_tool_s": 0.0092
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "capital mínimo 8% activos ponderados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "capital mínimo 8% activos ponderados",
+        "total_con_match": 758,
+        "resultados": [
+          {
+            "id": "Restriccion_capital_minimo_riesgo_cambio_8_5274a6",
+            "type": "Restriccion",
+            "label": "Capital mínimo riesgo cambio 8%",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La exigencia de capital será el 8% de la posición neta total"
+          },
+          {
+            "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724",
+            "type": "Obligacion",
+            "label": "Informar activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA"
+          },
+          {
+            "id": "Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e",
+            "type": "Operacion",
+            "label": "Cálculo de activo ponderado por riesgo",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…"
+          },
+          {
+            "id": "Operacion_excluir_exposiciones_de_activos_ponderados_por_riesgo_ebdb5a",
+            "type": "Operacion",
+            "label": "Excluir exposiciones de activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad originante podrá excluir del cálculo de los activos ponderados por riesgo a las exposiciones subyacentes objeto de la titulización"
+          },
+          {
+            "id": "Restriccion_la_exigencia_de_capital_por_riesgo_especifico_sera_del_8_de_la_posicion_bruta_en_3e857d",
+            "type": "Restriccion",
+            "label": "Exigencia de capital 8% riesgo específico",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital por riesgo específico será del 8% de la posición bruta en acciones"
+          },
+          {
+            "id": "Restriccion_la_exigencia_de_capital_por_riesgo_general_de_mercado_sera_del_8_de_la_posicion__11f89b",
+            "type": "Restriccion",
+            "label": "Exigencia de capital 8% riesgo general mercado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital por riesgo general de mercado será del 8% de la posición neta total en cada mercado nacional"
+          },
+          {
+            "id": "Operacion_informar_capital_minimo_basico_f125e4",
+            "type": "Operacion",
+            "label": "Informar Capital Mínimo Básico",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Capital Mínimo Básico –punto 1.2. de las normas sobre Capitales mínimos de las entidades financieras"
+          },
+          {
+            "id": "Obligacion_integracion_de_capital_minimo_e22e8b",
+            "type": "Obligacion",
+            "label": "Integración de capital mínimo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exig…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_en_posiciones_superpuestas_069e15",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados en posiciones superpuestas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "A los fines del cálculo de la exigencia de capital, se considera que una posición de titulización se superpone con otra si el cumplimiento de las obligaciones d…"
+          }
+        ]
+      },
+      "output_chars": 3380,
+      "latency_tool_s": 0.018
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724"
+      },
+      "output": {
+        "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724",
+        "type": "Obligacion",
+        "label": "Informar activos ponderados por riesgo",
+        "properties": {
+          "tipo": "presentacion_informativa",
+          "description": "Se informarán los activos ponderados por riesgo (parámetro para el cálculo de los límites mínimos aplicables a los componentes de la RPC), determinados según la expresión: APR = 70100000 /(k * 0,08) + (70300000 - 3600000Y + 70800000 ) * 12,5"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 8.1. Normas de procedimiento."
+          }
+        ]
+      },
+      "output_chars": 589,
+      "latency_tool_s": 0.002
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "patrimonio neto computable cálculo componentes",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "patrimonio neto computable cálculo componentes",
+        "total_con_match": 294,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Complementario",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…"
+          },
+          {
+            "id": "Operacion_calculo_del_componente_financiero_1c546a",
+            "type": "Operacion",
+            "label": "Cálculo del componente financiero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo del componente FC mediante el resultado neto de cartera de negociación e inversión en valor absoluto"
+          },
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Básico",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: calculo_capitales_minimos"
+          },
+          {
+            "id": "Obligacion_se_consignara_el_importe_total_del_patrimonio_neto_rubro_400000_del_balance_excl_c6929d",
+            "type": "Obligacion",
+            "label": "Consignar importe total Patrimonio Neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…"
+          },
+          {
+            "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+            "type": "Operacion",
+            "label": "Determinación de responsabilidad patrimonial computable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde PNb es patrimonio neto bá…"
+          },
+          {
+            "id": "Operacion_calculo_del_componente_de_servicios_b0a2eb",
+            "type": "Operacion",
+            "label": "Cálculo del componente de servicios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo del componente SC como máximo entre otros ingresos/egresos por operaciones y máximo entre ingresos/egresos por honorarios y comisiones"
+          },
+          {
+            "id": "Operacion_calculo_de_efecto_gamma_neto_7d0ecb",
+            "type": "Operacion",
+            "label": "Cálculo de efecto gamma neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo de la suma de los efectos gamma individuales de opciones sobre el mismo subyacente, resultando en un efecto gamma neto que puede ser positivo o negativo"
+          },
+          {
+            "id": "Operacion_calculo_componente_riesgo_opciones_automaticas_6dc22e",
+            "type": "Operacion",
+            "label": "Cálculo componente riesgo opciones automáticas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo del componente adicional por las opciones automáticas sobre tasas de interés vendidas, ya sean explícitas o implícitas, por cada moneda y por escenario"
+          },
+          {
+            "id": "Operacion_calculo_del_componente_de_intereses_arrendamientos_y_dividendos_e33298",
+            "type": "Operacion",
+            "label": "Cálculo del componente de intereses, arrendamientos y dividendos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cálculo del componente ILDC que determina el mínimo entre los ingresos/egresos por intereses y el 5% de activos que devengan intereses, sumado a ingresos por di…"
+          },
+          {
+            "id": "Operacion_calculo_de_responsabilidad_patrimonial_computable_1109a0",
+            "type": "Operacion",
+            "label": "Cálculo de responsabilidad patrimonial computable",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Responsabilidad patrimonial computable: (CO -CD ) + (CA -CD ) + (PNc-CD )"
+          }
+        ]
+      },
+      "output_chars": 3447,
+      "latency_tool_s": 0.0033
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+        "type": "Operacion",
+        "label": "Cálculo de Patrimonio Neto Básico",
+        "properties": {
+          "tipo": "calculo_capitales_minimos"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 6.3. Límites mínimos:"
+          }
+        ]
+      },
+      "output_chars": 310,
+      "latency_tool_s": 0.0014
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+        "por_pagina": 40
+      },
+      "output": {
+        "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+        "label": "Cálculo de Patrimonio Neto Básico",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 1,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 1,
+        "salientes_paginas": 1,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {
+          "establecida_en": 1
+        },
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf",
+            "vecino_label": "Régimen Informativo Contable Mensual",
+            "provenances": [
+              {
+                "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+                "location": "Punto 6.3. Límites mínimos:"
+              }
+            ]
+          }
+        ],
+        "entrantes_total": 1,
+        "entrantes_paginas": 1,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {
+          "limita": 1
+        },
+        "entrantes": [
+          {
+            "relation": "limita",
+            "vecino_id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623",
+            "vecino_label": "Límite mínimo PNb",
+            "provenances": [
+              {
+                "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+                "location": "Punto 6.3. Límites mínimos:"
+              }
+            ]
+          }
+        ]
+      },
+      "output_chars": 1100,
+      "latency_tool_s": 0.0163
+    },
+    {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef",
+        "type": "Operacion",
+        "label": "Cálculo de Patrimonio Neto Complementario",
+        "properties": {
+          "tipo": "calculo_capital_regulatorio",
+          "description": "Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de emisión resultantes"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_regimen_informativo_contable_mensual_actual.pdf",
+            "location": "Punto 6.2. Modelo de Información (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 542,
+      "latency_tool_s": 0.0021
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "12.5 factor ponderación activos riesgo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "12.5 factor ponderación activos riesgo",
+        "total_con_match": 718,
+        "resultados": [
+          {
+            "id": "Operacion_ponderacion_de_posiciones_por_factor_de_sensibilidad_2a8f34",
+            "type": "Operacion",
+            "label": "Ponderación de posiciones por factor de sensibilidad",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las posiciones imputadas a cada banda temporal deberán ponderarse por un factor que refleje su sensibilidad a los cambios en las tasas de interés"
+          },
+          {
+            "id": "Operacion_ponderacion_de_flujos_mediante_factor_descuento_3e934b",
+            "type": "Operacion",
+            "label": "Ponderación de flujos mediante factor descuento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los flujos de fondos nocionales netos sujetos a reapreciación en cada banda temporal o punto medio, se ponderan mediante el factor de descuento continuo"
+          },
+          {
+            "id": "Restriccion_ponderacion_segun_activo_o_contraparte_740e3c",
+            "type": "Restriccion",
+            "label": "Ponderación según activo o contraparte",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ventas de activos con pacto de recompra, compromisos de adquisición de activos no contabilizados en balance, se ponderarán según el activo y no en función de la…"
+          },
+          {
+            "id": "Operacion_operaciones_sobre_base_de_factores_de_riesgo_694ffc",
+            "type": "Operacion",
+            "label": "Operaciones sobre base de factores de riesgo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Derivados que referencian la base entre dos factores de riesgo y están denominados en una sola moneda (operaciones sobre base, 'basis transactions')."
+          },
+          {
+            "id": "Obligacion_ambos_componentes_se_ponderaran_por_un_factor_de_correlacion_que_determinara_el__9a6ec4",
+            "type": "Obligacion",
+            "label": "Ponderación por factor de correlación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ambos componentes se ponderarán por un factor de correlación que determinará el grado de compensación/cobertura"
+          },
+          {
+            "id": "Obligacion_la_homogeneidad_se_debera_evaluar_en_funcion_de_factores_y_perfiles_de_riesgo_co_82ad61",
+            "type": "Obligacion",
+            "label": "Evaluación de homogeneidad por riesgo común",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La homogeneidad se deberá evaluar en función de factores y perfiles de riesgo comunes al conjunto de los activos"
+          },
+          {
+            "id": "Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e",
+            "type": "Operacion",
+            "label": "Cálculo de activo ponderado por riesgo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…"
+          },
+          {
+            "id": "Obligacion_se_utilizara_un_modelo_de_factor_unico_para_dividir_el_riesgo_en_componentes_sis_4553f1",
+            "type": "Obligacion",
+            "label": "Aplicación de modelo factor único derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se utilizará un modelo de factor único para dividir el riesgo en componentes sistemático e idiosincrásico"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA"
+          },
+          {
+            "id": "Obligacion_cuando_sea_posible_identificar_claramente_el_factor_principal_la_operacion_se_im_b9b5ff",
+            "type": "Obligacion",
+            "label": "Identificar factor de riesgo principal de derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando sea posible identificar claramente el factor principal, la operación se imputará a una de las siguientes clases de activos: tasa de interés, tipo de camb…"
+          }
+        ]
+      },
+      "output_chars": 3620,
+      "latency_tool_s": 0.0113
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "patrimonio neto básico complementario suma RPC",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "patrimonio neto básico complementario suma RPC",
+        "total_con_match": 164,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Complementario",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cálculo del Patrimonio Neto Complementario (capital de Nivel 2) incluyendo instrumentos emitidos que observen requisitos específicos del punto 8.3.3 y primas de…"
+          },
+          {
+            "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+            "type": "Operacion",
+            "label": "Cálculo de Patrimonio Neto Básico",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: calculo_capitales_minimos"
+          },
+          {
+            "id": "Obligacion_informar_patrimonio_neto_complementario_efe931",
+            "type": "Obligacion",
+            "label": "Informar Patrimonio Neto Complementario",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Presentar información sobre instrumentos emitidos que observen requisitos del punto 8.3.3 no incluidos en Capital Ordinario ni Adicional de Nivel 1, y primas de…"
+          },
+          {
+            "id": "Operacion_computo_de_patrimonio_neto_complementario_87fd43",
+            "type": "Operacion",
+            "label": "Cómputo de patrimonio neto complementario",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Cálculo de componentes de patrimonio neto complementario (PNc)"
+          },
+          {
+            "id": "Obligacion_se_consignara_el_importe_total_del_patrimonio_neto_rubro_400000_del_balance_excl_c6929d",
+            "type": "Obligacion",
+            "label": "Consignar importe total Patrimonio Neto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se consignará el importe total del Patrimonio Neto (rubro 400000 del balance), excluyendo las acciones con preferencia patrimonial y la reserva especial para in…"
+          },
+          {
+            "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623",
+            "type": "Restriccion",
+            "label": "Límite mínimo PNb",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Patrimonio Neto Básico (PNb) deberá ser mayor o igual al 6% sobre el activo total (70900000)"
+          },
+          {
+            "id": "Operacion_calculo_de_rpc_con_exclusion_de_instrumentos_1d914b",
+            "type": "Operacion",
+            "label": "Cálculo de RPC con exclusión de instrumentos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Determinación de la RPC a partir del 01/02/13 excluyendo los instrumentos de capital que dejen de cumplir los criterios para ser considerados capital adicional …"
+          },
+          {
+            "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+            "type": "Operacion",
+            "label": "Determinación de responsabilidad patrimonial computable",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Cálculo de la responsabilidad patrimonial computable (RPC) de las entidades financieras conforme a la expresión RPC = PNb + PNc, donde PNb es patrimonio neto bá…"
+          },
+          {
+            "id": "Obligacion_los_instrumentos_en_poder_de_terceros_que_conforman_la_rpc_de_una_subsidiaria_su_3161bd",
+            "type": "Obligacion",
+            "label": "Reconocimiento de capital admisible en RPC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los instrumentos en poder de terceros que conforman la RPC de una subsidiaria sujeta a supervisión consolidada pueden reconocerse en la RPC de la entidad financ…"
+          },
+          {
+            "id": "Restriccion_los_activos_suma_de_posiciones_compradas_y_vendidas_que_en_conjunto_superen_el_2_028067",
+            "type": "Restriccion",
+            "label": "Límite de activos en 25% de RPC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los activos (suma de posiciones compradas y vendidas) que en conjunto superen el 25% de la RPC registrada al último día del segundo mes anterior"
+          }
+        ]
+      },
+      "output_chars": 3512,
+      "latency_tool_s": 0.0103
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnqD1KfWu2a6AX1ijxK",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre los requisitos de solvencia y patrimonio neto computable en el Knowledge Graph.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01SJa28xw24421LpyXDn1xdz",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "patrimonio neto computable solvencia",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01D5XifardevBRMhvtywWQFy",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "activos ajustados riesgo porcentaje",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1905,
+          "output_tokens": 175,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnqP9md5Xync5wzj4Z2",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Veo resultados sobre patrimonio neto computable y activos ponderados por riesgo. Voy a explorar los nodos más relevantes para obtener detalles específicos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013MhtLdCG8YMCxxZadUGmkZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014fsc81tvCyNtBj7PDzBrqG",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01QVvyqxryF1uk4fvRmvk4Dm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_patrimonio_neto_basico_pnb_debera_ser_mayor_o_igual_al_6_sobre_el_activo_total_7_cb4623"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4562
+          },
+          "cache_creation_input_tokens": 4562,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 261,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnqdXTvnjdyH4hADExq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Necesito más detalles sobre cómo se calcula el patrimonio neto computable y qué porcentaje se aplica a los activos ponderados. Voy a explorar las relaciones de estos nodos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01NqkXUo1a1xeKACFPYVQ6Qx",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837",
+              "por_pagina": 40
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01RH4vgdwAskB6L37ygTz2oJ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "requisito capital mínimo porcentaje activos ponderados riesgo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 849
+          },
+          "cache_creation_input_tokens": 849,
+          "cache_read_input_tokens": 4562,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 221,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnqqDBCpu8FAT39fEBq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información más específica sobre los porcentajes de capital mínimo y cómo se relacionan con los activos ponderados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_016aFTzMNCTSY8Wg6brgf5nq",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "capital mínimo 8% activos ponderados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01ECUSdPH3DK3AZfsDPjp44o",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_informar_activos_ponderados_por_riesgo_837724"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1899
+          },
+          "cache_creation_input_tokens": 1899,
+          "cache_read_input_tokens": 5411,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 178,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnr1BhcTroSzAW9fGrc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré información clave. Voy a buscar más detalles sobre cómo se obtiene el patrimonio neto computable específicamente.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01TAb9zrB4D1rgNUyZW8FoRj",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "patrimonio neto computable cálculo componentes",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01AdK4GUvbSNhQs7d1VY2zwB",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1651
+          },
+          "cache_creation_input_tokens": 1651,
+          "cache_read_input_tokens": 7310,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 181,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnrBoBRA4VVVJzsHmQQ",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a explorar más específicamente cómo se calcula el patrimonio neto básico y complementario, y buscar la información sobre el porcentaje aplicado a activos ponderados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01HmAEKZpxovkUEFCZ7Tcegu",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_patrimonio_neto_basico_b463e0",
+              "por_pagina": 40
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014zMVx7QYHTA1tuGMnvEXmc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_patrimonio_neto_complementario_07ceef"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1566
+          },
+          "cache_creation_input_tokens": 1566,
+          "cache_read_input_tokens": 8961,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 198,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnrNKSeaxkAcTNm93jH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información más específica sobre cómo se calcula el patrimonio neto computable y el porcentaje de 8% o 12.5 que vi en la fórmula de APR.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Uj633CvzwyntojtYWi99fG",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "12.5 factor ponderación activos riesgo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01TqZYFDC5KVB32dR3iug8rG",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "patrimonio neto básico complementario suma RPC",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 881
+          },
+          "cache_creation_input_tokens": 881,
+          "cache_read_input_tokens": 10527,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 203,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAnraVgC1CtiPeyHmgCH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "```json\n{\n  \"respuesta\": \"El patrimonio neto computable (también denominado Responsabilidad Patrimonial Computable o RPC) se obtiene mediante la suma de dos componentes: RPC = PNb + PNc, donde PNb es el Patrimonio Neto Básico (capital de Nivel 1) y PNc es el Patrimonio Neto Complementario (capital de Nivel 2). El Patrimonio Neto Básico se calcula conforme a lo establecido en las normas sobre capitales mínimos, mientras que el Patrimonio Neto Complementario incluye instrumentos emitidos que observen requisitos específicos y primas de emisión resultantes.\\n\\nRespecto al porcentaje aplicado a la suma de los activos ajustados según su nivel de riesgo (activos ponderados por riesgo), la regulación establece que se aplica un factor de 12,5 (o equivalentemente, un 8% de capital mínimo). Esto se refleja en la fórmula de cálculo de Activos Ponderados por Riesgo (APR), donde se multiplica por 12,5 la suma de ciertos componentes de activos ponderados, lo que corresponde al inverso del requisito de capital mínimo del 8% que las entidades financieras deben mantener integrado.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.1. Determinación.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 8.1. Normas de procedimiento.\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 6.2. Modelo de Información (parte 1)\"\n    },\n    {\n      \"source_doc\": \"TO_regimen_informativo_contable_mensual_actual.pdf\",\n      \"location\": \"Punto 6.3. Límites mínimos:\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2779
+          },
+          "cache_creation_input_tokens": 2779,
+          "cache_read_input_tokens": 11408,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 557,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

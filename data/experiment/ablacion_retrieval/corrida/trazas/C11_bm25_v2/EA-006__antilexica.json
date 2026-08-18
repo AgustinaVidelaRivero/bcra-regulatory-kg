@@ -1,0 +1,746 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C11_bm25_v2",
+    "celda_id": "C11_bm25_v2",
+    "retriever": "bm25",
+    "tools": "v2",
+    "es_control": false,
+    "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+    "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+    "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v2",
+      "celda_id": "C11_bm25_v2",
+      "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+      "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+      "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "EA-006::antilexica",
+    "sample_id": "EA-006",
+    "variante": "antilexica",
+    "estrato": "E-A",
+    "sub_estrato": null,
+    "pos_orden": 37,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T15:52:26",
+    "timestamp_fin": "2026-08-18T15:52:36",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 5
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.016134,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "Cuando una entidad le vende a alguien bonos BOPREAL pero con el compromiso de volver a comprárselos más adelante, ¿qué debe verificar o exigir respecto de los papeles o información de esa persona que recibe los bonos?",
+  "trace": {
+    "qid": "EA-006::antilexica",
+    "question": "Cuando una entidad le vende a alguien bonos BOPREAL pero con el compromiso de volver a comprárselos más adelante, ¿qué debe verificar o exigir respecto de los papeles o información de esa persona que recibe los bonos?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "BOPREAL venta recompra compromiso",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"BOPREAL venta recompra compromiso\", \"total_con_match\": 179, \"resultados\": [{\"id\": \"Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2\", \"type\": \"Operacion\", \"label\": \"Venta de títulos BOPREAL con obligación de recompra\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: venta_con_obligacion_de_recompra\"}, {\"id\": \"Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f\", \"type\": \"Operacion\", \"label\": \"Boleto de venta de cambio para BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…\"}, {\"id\": \"Restriccion_limite_venta_titulos_valores_bopreal_24329c\", \"type\": \"Restriccion\", \"label\": \"Límite venta títulos valores BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…\"}, {\"id\": \"Operacion_venta_de_bopreal_por_importadores_de_bienes_y_servicios_e22a39\", \"type\": \"Operacion\", \"label\": \"Venta de BOPREAL por importadores de bien… [+2371 chars]",
+        "output_chars": 3571
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "BOPREAL verificación información papeles",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"BOPREAL verificación información papeles\", \"total_con_match\": 241, \"resultados\": [{\"id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"type\": \"Operacion\", \"label\": \"Suscripción de Bonos BOPREAL\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…\"}, {\"id\": \"Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d\", \"type\": \"Obligacion\", \"label\": \"Verificar requisitos para suscripción BOPREAL\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL\"}, {\"id\": \"Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f\", \"type\": \"Operacion\", \"label\": \"Boleto de venta de cambio para BOPREAL\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…\"}, {\"id\": \"Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac\", \"type\": \"R… [+2434 chars]",
+        "output_chars": 3634
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+        },
+        "output_truncado": "{\"id\": \"Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2\", \"type\": \"Operacion\", \"label\": \"Venta de títulos BOPREAL con obligación de recompra\", \"properties\": {\"tipo\": \"venta_con_obligacion_de_recompra\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"}]}",
+        "output_chars": 407
+      },
+      {
+        "n": 4,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+        },
+        "output_truncado": "{\"id\": \"Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2\", \"label\": \"Venta de títulos BOPREAL con obligación de recompra\", \"n_salientes_total\": 2, \"n_entrantes_total\": 1, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 2, \"salientes_paginas\": 1, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {\"requiere\": 2}, \"salientes\": [{\"relation\": \"requiere\", \"vecino_id\": \"Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47\", \"vecino_label\": \"Contar con declaración jurada del importador\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49\", \"vecino_label\": \"Contar con declaración jurada del cliente\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"}]}], \"entrantes_total\": 1, \"entrantes_pagin… [+500 chars]",
+        "output_chars": 1700
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47\", \"type\": \"Obligacion\", \"label\": \"Contar con declaración jurada del importador\", \"properties\": {\"descripcion\": \"La entidad deberá contar con una declaración jurada del importador en la cual deja constancia de que será necesaria la conformidad previa del BCRA para la cancelación de estos cobros anticipados de exportaciones de bienes\", \"tipo\": \"presentacion_informativa\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"}]}",
+        "output_chars": 663
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49\", \"type\": \"Obligacion\", \"label\": \"Contar con declaración jurada del cliente\", \"properties\": {\"descripcion\": \"La entidad deberá contar con una declaración jurada del cliente en la que conste el monto suscripto del BOPREAL Serie 1 y los montos de las deudas comerciales de bienes y servicios por operaciones anteriores al 13/12/23 elegibles y que el pago queda encuadrado en los límites previstos\", \"tipo\": \"presentacion_informativa\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"}]}",
+        "output_chars": 724
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1892,
+        "output_tokens": 181,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.084
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 129,
+        "cache_read": 0,
+        "cache_write": 4662,
+        "latency_s": 2.298
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 112,
+        "cache_read": 4662,
+        "cache_write": 293,
+        "latency_s": 1.207
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 201,
+        "cache_read": 4955,
+        "cache_write": 755,
+        "latency_s": 1.623
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 7,
+        "output_tokens": 309,
+        "cache_read": 5710,
+        "cache_write": 710,
+        "latency_s": 2.566
+      }
+    ],
+    "final_json": {
+      "respuesta": "Cuando una entidad vende bonos BOPREAL con obligación de recompra, debe verificar y exigir dos declaraciones juradas:\n\n1. **Declaración jurada del importador**: en la cual conste que será necesaria la conformidad previa del BCRA para la cancelación de estos cobros anticipados de exportaciones de bienes.\n\n2. **Declaración jurada del cliente**: en la que conste el monto suscripto del BOPREAL Serie 1 y los montos de las deudas comerciales de bienes y servicios por operaciones anteriores al 13/12/23 elegibles, y que el pago queda encuadrado en los límites previstos.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Tengo la información completa. Ahora puedo responder la pregunta con precisión basándome en lo que encontré en el grafo.\n\n```json\n{\n  \"respuesta\": \"Cuando una entidad vende bonos BOPREAL con obligación de recompra, debe verificar y exigir dos declaraciones juradas:\\n\\n1. **Declaración jurada del importador**: en la cual conste que será necesaria la conformidad previa del BCRA para la cancelación de estos cobros anticipados de exportaciones de bienes.\\n\\n2. **Declaración jurada del cliente**: en la que conste el monto suscripto del BOPREAL Serie 1 y los montos de las deudas comerciales de bienes y servicios por operaciones anteriores al 13/12/23 elegibles, y que el pago queda encuadrado en los límites previstos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 6,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1916,
+    "tokens_out": 932,
+    "cache_read": 15327,
+    "cache_write": 6420,
+    "cost_usd": 0.016134,
+    "latency_s": 9.821,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "BOPREAL venta recompra compromiso",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "BOPREAL venta recompra compromiso",
+        "total_con_match": 179,
+        "resultados": [
+          {
+            "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2",
+            "type": "Operacion",
+            "label": "Venta de títulos BOPREAL con obligación de recompra",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: venta_con_obligacion_de_recompra"
+          },
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Restriccion_limite_venta_titulos_valores_bopreal_24329c",
+            "type": "Restriccion",
+            "label": "Límite venta títulos valores BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…"
+          },
+          {
+            "id": "Operacion_venta_de_bopreal_por_importadores_de_bienes_y_servicios_e22a39",
+            "type": "Operacion",
+            "label": "Venta de BOPREAL por importadores de bienes y servicios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ventas con liquidación en moneda extranjera en el exterior o las transferencias a depositarios del exterior que concreten los importadores de bienes y servicios…"
+          },
+          {
+            "id": "Operacion_venta_y_transferencia_de_bopreal_con_liquidacion_en_moneda_extranjera_b540c5",
+            "type": "Operacion",
+            "label": "Venta y transferencia de BOPREAL con liquidación en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ventas con liquidación en moneda extranjera en el país o en el exterior de los Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) o las transferencia…"
+          },
+          {
+            "id": "Operacion_informacion_de_compromisos_con_ccp_fc9666",
+            "type": "Operacion",
+            "label": "Información de compromisos con CCP",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Información de todo otro tipo de compromiso con CCP y su naturaleza, incluyendo compromisos no desembolsados"
+          },
+          {
+            "id": "Operacion_recompra_de_exposiciones_titulizadas_5ff625",
+            "type": "Operacion",
+            "label": "Recompra de exposiciones titulizadas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Recompra de exposiciones con el objeto de realizar sus beneficios"
+          },
+          {
+            "id": "Obligacion_informar_compromisos_con_ccp_no_calificadas_c9e773",
+            "type": "Obligacion",
+            "label": "Informar compromisos con CCP no calificadas",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Las entidades deberán informar todo tipo de compromiso con CCP no calificadas y su naturaleza, a fin de que SEFyC determine el importe de compromisos no desembo…"
+          },
+          {
+            "id": "Restriccion_el_pago_de_los_compromisos_de_una_titulizacion_no_debera_depender_de_la_venta_o__46380f",
+            "type": "Restriccion",
+            "label": "Pago sin dependencia de refinanciación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El pago de los compromisos de una titulización no deberá depender de la venta o refinanciación de los activos subyacentes, excepto que la cartera subyacente est…"
+          },
+          {
+            "id": "Excepcion_se_permite_cable_sobre_cuenta_de_terceros_en_exterior_cuando_se_trate_de_la_vent_e4494e",
+            "type": "Excepcion",
+            "label": "Excepción para venta de bonos BOPREAL adquiridos en suscripción primaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se permite cable sobre cuenta de terceros en exterior cuando se trate de la venta de bonos BOPREAL adquiridos por el vendedor en una suscripción primaria por op…"
+          }
+        ]
+      },
+      "output_chars": 3571,
+      "latency_tool_s": 0.0125
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "BOPREAL verificación información papeles",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "BOPREAL verificación información papeles",
+        "total_con_match": 241,
+        "resultados": [
+          {
+            "id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "type": "Operacion",
+            "label": "Suscripción de Bonos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…"
+          },
+          {
+            "id": "Obligacion_verificar_requisitos_para_suscripcion_bopreal_de9e0d",
+            "type": "Obligacion",
+            "label": "Verificar requisitos para suscripción BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deberá cumplirse los requisitos previstos en el punto 4.6.2 para la suscripción de Bonos BOPREAL"
+          },
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Excepcion_excepcion_por_canje_con_bopreal_221932",
+            "type": "Excepcion",
+            "label": "Excepción por canje con BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exceptúa el requisito cuando el pago se concreta mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados e…"
+          },
+          {
+            "id": "Restriccion_limite_de_suscripcion_bopreal_737452",
+            "type": "Restriccion",
+            "label": "Límite de suscripción BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes no residentes podrán suscribir Bonos BOPREAL por hasta el equivalente al monto en moneda local de las utilidades y dividendos cobrados a partir del…"
+          },
+          {
+            "id": "Restriccion_la_informacion_a_que_se_refiere_la_informacion_de_exposiciones_debe_haber_sido_v_43512a",
+            "type": "Restriccion",
+            "label": "Requisito de verificación por tercero independiente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La información a que se refiere la información de exposiciones debe haber sido verificada por un tercero independiente, tal como la entidad depositaria o custod…"
+          },
+          {
+            "id": "Restriccion_limite_de_monto_para_suscripcion_bopreal_d6d2b4",
+            "type": "Restriccion",
+            "label": "Límite de monto para suscripción BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los importadores de bienes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el monto de la deuda pendiente de pago por s…"
+          },
+          {
+            "id": "Obligacion_no_incluir_en_declaraciones_juradas_operaciones_bopreal_59ad4c",
+            "type": "Obligacion",
+            "label": "No incluir en declaraciones juradas operaciones BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes que adquirieron BOPREAL en suscripción primaria no deberán tener en cuenta en las declaraciones juradas de los puntos 3.16.3.1 y 3.16.3.2 las venta…"
+          },
+          {
+            "id": "Operacion_canje_y_arbitraje_con_fondos_bopreal_c31f6c",
+            "type": "Operacion",
+            "label": "Canje y arbitraje con fondos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes podrán acceder al mercado de cambios mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados …"
+          }
+        ]
+      },
+      "output_chars": 3634,
+      "latency_tool_s": 0.0067
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+      },
+      "output": {
+        "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2",
+        "type": "Operacion",
+        "label": "Venta de títulos BOPREAL con obligación de recompra",
+        "properties": {
+          "tipo": "venta_con_obligacion_de_recompra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 407,
+      "latency_tool_s": 0.005
+    },
+    {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+      },
+      "output": {
+        "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2",
+        "label": "Venta de títulos BOPREAL con obligación de recompra",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 1,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 2,
+        "salientes_paginas": 1,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {
+          "requiere": 2
+        },
+        "salientes": [
+          {
+            "relation": "requiere",
+            "vecino_id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47",
+            "vecino_label": "Contar con declaración jurada del importador",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+              }
+            ]
+          },
+          {
+            "relation": "requiere",
+            "vecino_id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49",
+            "vecino_label": "Contar con declaración jurada del cliente",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+              }
+            ]
+          }
+        ],
+        "entrantes_total": 1,
+        "entrantes_paginas": 1,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {
+          "limita": 1
+        },
+        "entrantes": [
+          {
+            "relation": "limita",
+            "vecino_id": "Restriccion_la_venta_de_los_titulos_en_el_origen_de_la_operacion_no_debera_tenerse_en_cuenta_9bfcb4",
+            "vecino_label": "Exclusión de venta en confección de declaraciones juradas",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+              }
+            ]
+          }
+        ]
+      },
+      "output_chars": 1700,
+      "latency_tool_s": 0.0095
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47"
+      },
+      "output": {
+        "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47",
+        "type": "Obligacion",
+        "label": "Contar con declaración jurada del importador",
+        "properties": {
+          "descripcion": "La entidad deberá contar con una declaración jurada del importador en la cual deja constancia de que será necesaria la conformidad previa del BCRA para la cancelación de estos cobros anticipados de exportaciones de bienes",
+          "tipo": "presentacion_informativa"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 663,
+      "latency_tool_s": 0.0064
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49"
+      },
+      "output": {
+        "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49",
+        "type": "Obligacion",
+        "label": "Contar con declaración jurada del cliente",
+        "properties": {
+          "descripcion": "La entidad deberá contar con una declaración jurada del cliente en la que conste el monto suscripto del BOPREAL Serie 1 y los montos de las deudas comerciales de bienes y servicios por operaciones anteriores al 13/12/23 elegibles y que el pago queda encuadrado en los límites previstos",
+          "tipo": "presentacion_informativa"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 724,
+      "latency_tool_s": 0.0026
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAoDqzfekYDDe4nx3P7g",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre BOPREAL y las obligaciones de verificación en operaciones de venta con compromiso de recompra.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01BusA1a3XfNPjPZjt3FHymd",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "BOPREAL venta recompra compromiso",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014SfKypStXNeVvZJn4RMKcN",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "BOPREAL verificación información papeles",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1892,
+          "output_tokens": 181,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAoE13dRJi9B5E6dE8Mp",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré un nodo específico sobre \"Venta de títulos BOPREAL con obligación de recompra\". Déjame ver sus detalles completos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_018qTV52EwAMw1T5Kvw6wEfa",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4662
+          },
+          "cache_creation_input_tokens": 4662,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 129,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAoEAqVezUPyiPJSgM76",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Ahora voy a explorar las relaciones de este nodo para encontrar las obligaciones de verificación asociadas.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01HQtUBzXb2M8Ao4JomHEhrx",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 293
+          },
+          "cache_creation_input_tokens": 293,
+          "cache_read_input_tokens": 4662,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 112,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAoEG8ypmjxyqEzC43RJ",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré dos obligaciones de verificación. Déjame ver los detalles de ambas.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013Qh31S6uhh4sMnP6KsgGgA",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_importador_en_la_cual_de_e47a47"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01VPqWmagteafJJYmufTt9TV",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_b8be49"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 755
+          },
+          "cache_creation_input_tokens": 755,
+          "cache_read_input_tokens": 4955,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 201,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAoEP8vTAeptfcnHSy37",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información completa. Ahora puedo responder la pregunta con precisión basándome en lo que encontré en el grafo.\n\n```json\n{\n  \"respuesta\": \"Cuando una entidad vende bonos BOPREAL con obligación de recompra, debe verificar y exigir dos declaraciones juradas:\\n\\n1. **Declaración jurada del importador**: en la cual conste que será necesaria la conformidad previa del BCRA para la cancelación de estos cobros anticipados de exportaciones de bienes.\\n\\n2. **Declaración jurada del cliente**: en la que conste el monto suscripto del BOPREAL Serie 1 y los montos de las deudas comerciales de bienes y servicios por operaciones anteriores al 13/12/23 elegibles, y que el pago queda encuadrado en los límites previstos.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.8. Disposiciones complementarias asociadas a los Bonos para la Reconstrucción de un (parte 2)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 710
+          },
+          "cache_creation_input_tokens": 710,
+          "cache_read_input_tokens": 5710,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 309,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

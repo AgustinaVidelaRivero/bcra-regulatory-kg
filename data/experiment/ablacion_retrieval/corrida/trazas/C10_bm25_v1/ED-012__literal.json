@@ -1,0 +1,490 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C10_bm25_v1",
+    "celda_id": "C10_bm25_v1",
+    "retriever": "bm25",
+    "tools": "v1",
+    "es_control": false,
+    "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+    "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+    "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C10_bm25_v1",
+      "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+      "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+      "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "ED-012::literal",
+    "sample_id": "ED-012",
+    "variante": "literal",
+    "estrato": "E-D",
+    "sub_estrato": "intra_to",
+    "pos_orden": 39,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:30:58",
+    "timestamp_fin": "2026-08-18T14:31:03",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 3
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.01089,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "Cuando una entidad debe confeccionar un boleto de venta de cambio a nombre del cliente utilizando el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL', ¿qué valor debe consignarse en dicho boleto?",
+  "trace": {
+    "qid": "ED-012::literal",
+    "question": "Cuando una entidad debe confeccionar un boleto de venta de cambio a nombre del cliente utilizando el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL', ¿qué valor debe consignarse en dicho boleto?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "boleto venta cambio I09 BOPREAL dividendos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"boleto venta cambio I09 BOPREAL dividendos\", \"total_con_match\": 536, \"resultados\": [{\"id\": \"Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f\", \"type\": \"Operacion\", \"label\": \"Boleto de venta de cambio para BOPREAL\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…\"}, {\"id\": \"Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de venta de cambio\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La mencionada entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto 'I09. Registro de utilidades y dividendos por …\"}, {\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_de_la_empresa_q_584813\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de venta de cambio por fondos abonados\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad deberá realizar un boleto de venta de cambio a nombre de la empresa que hubiera abonado las utilidades … [+2545 chars]",
+        "output_chars": 3745
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "código concepto I09 registro utilidades dividendos bonos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"código concepto I09 registro utilidades dividendos bonos\", \"total_con_match\": 423, \"resultados\": [{\"id\": \"Operacion_pago_utilidades_y_dividendos_14dfc1\", \"type\": \"Operacion\", \"label\": \"Pago utilidades y dividendos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pago de utilidades y dividendos que correspondan a balances cerrados y auditados\"}, {\"id\": \"Restriccion_el_monto_total_abonado_por_concepto_de_utilidades_y_dividendos_a_accionistas_no__aae56d\", \"type\": \"Restriccion\", \"label\": \"Límite en monto de utilidades y dividendos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El monto total abonado por concepto de utilidades y dividendos a accionistas no residentes no debe superar el monto en moneda local según la distribución determ…\"}, {\"id\": \"Operacion_pago_de_utilidades_y_dividendos_a_no_residentes_a85eed\", \"type\": \"Operacion\", \"label\": \"Pago de utilidades y dividendos a no residentes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pagos de utilidades y dividendos a accionistas no residentes en la medida que se verifiquen los requisitos previstos en los puntos 3.4.1. a 3.4.3\"}, {\"id\": \"Operacion_suscripcion_de_bonos_bopreal_086e60\", \"type\": \"Operacion\", \"label\"… [+2174 chars]",
+        "output_chars": 3374
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de venta de cambio\", \"properties\": {\"descripcion\": \"La mencionada entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL'; consignando el valor nominal en moneda extranjera de los bonos BOPREAL adjudicado al cliente.\", \"tipo\": \"calculo\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"}]}",
+        "output_chars": 690
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1653,
+        "output_tokens": 192,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.625
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 135,
+        "cache_read": 0,
+        "cache_write": 4447,
+        "latency_s": 1.534
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 222,
+        "cache_read": 4447,
+        "cache_write": 381,
+        "latency_s": 1.993
+      }
+    ],
+    "final_json": {
+      "respuesta": "Cuando una entidad debe confeccionar un boleto de venta de cambio a nombre del cliente utilizando el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL', debe consignarse el valor nominal en moneda extranjera de los bonos BOPREAL adjudicado al cliente.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Tengo la información completa. La obligación especifica claramente qué valor debe consignarse en el boleto de venta de cambio.\n\n```json\n{\n  \"respuesta\": \"Cuando una entidad debe confeccionar un boleto de venta de cambio a nombre del cliente utilizando el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL', debe consignarse el valor nominal en moneda extranjera de los bonos BOPREAL adjudicado al cliente.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 3,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1665,
+    "tokens_out": 549,
+    "cache_read": 4447,
+    "cache_write": 4828,
+    "cost_usd": 0.01089,
+    "latency_s": 5.185,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "boleto venta cambio I09 BOPREAL dividendos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "boleto venta cambio I09 BOPREAL dividendos",
+        "total_con_match": 536,
+        "resultados": [
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La mencionada entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto 'I09. Registro de utilidades y dividendos por …"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_de_la_empresa_q_584813",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio por fondos abonados",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá realizar un boleto de venta de cambio a nombre de la empresa que hubiera abonado las utilidades y dividendos bajo el código 'P21. Registro de …"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador__cb454a",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto S33, consignando el valor nominal en moneda extranjera…"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto que identifique el tipo de operación, consignando el valo…"
+          },
+          {
+            "id": "Obligacion_realizar_boleto_compra_venta_cambio_f9a711",
+            "type": "Obligacion",
+            "label": "Realizar boleto compra venta cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Por cada operación de cambio, canje y/o arbitraje, las entidades deberán realizar un boleto de compra y/o venta de cambio, según corresponda"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_compra_y_o_venta_de_cambio_segun_corresp_7b5aa2",
+            "type": "Obligacion",
+            "label": "Realizar boleto de compra y venta de cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad deberá realizar un boleto de compra y/o venta de cambio, según corresponda, conforme a lo estipulado en el punto 5.3."
+          },
+          {
+            "id": "Operacion_emision_de_boleto_cambio_e98178",
+            "type": "Operacion",
+            "label": "Emisión de boleto cambio",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Por cada operación de cambio, canje y/o arbitraje, realizar un boleto de compra y/o venta de cambio"
+          },
+          {
+            "id": "Obligacion_debe_quedar_constancia_en_el_boleto_de_cambio_de_venta_la_identificacion_del_vpu_42a410",
+            "type": "Obligacion",
+            "label": "Registrar identificación VPU en boleto cambio",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Debe quedar constancia en el boleto de cambio de venta la identificación del VPU cuyo endeudamiento ha permitido el acceso"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_cambio_de_venta_se_realizara_por_los_conceptos_b06_b14_b15_o_b22_se_f7039a",
+            "type": "Obligacion",
+            "label": "Realizar boleto de cambio diferenciado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El boleto de cambio de venta se realizará por los conceptos B06, B14, B15 o B22 según corresponda, identificando número de oficialización del despacho o documen…"
+          }
+        ]
+      },
+      "output_chars": 3745,
+      "latency_tool_s": 0.0124
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "código concepto I09 registro utilidades dividendos bonos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "código concepto I09 registro utilidades dividendos bonos",
+        "total_con_match": 423,
+        "resultados": [
+          {
+            "id": "Operacion_pago_utilidades_y_dividendos_14dfc1",
+            "type": "Operacion",
+            "label": "Pago utilidades y dividendos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago de utilidades y dividendos que correspondan a balances cerrados y auditados"
+          },
+          {
+            "id": "Restriccion_el_monto_total_abonado_por_concepto_de_utilidades_y_dividendos_a_accionistas_no__aae56d",
+            "type": "Restriccion",
+            "label": "Límite en monto de utilidades y dividendos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El monto total abonado por concepto de utilidades y dividendos a accionistas no residentes no debe superar el monto en moneda local según la distribución determ…"
+          },
+          {
+            "id": "Operacion_pago_de_utilidades_y_dividendos_a_no_residentes_a85eed",
+            "type": "Operacion",
+            "label": "Pago de utilidades y dividendos a no residentes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos de utilidades y dividendos a accionistas no residentes en la medida que se verifiquen los requisitos previstos en los puntos 3.4.1. a 3.4.3"
+          },
+          {
+            "id": "Operacion_suscripcion_de_bonos_bopreal_086e60",
+            "type": "Operacion",
+            "label": "Suscripción de Bonos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Suscripción de Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por clientes no residentes por hasta el equivalente al monto en moneda local de las…"
+          },
+          {
+            "id": "Obligacion_las_utilidades_y_dividendos_deben_corresponder_a_balances_cerrados_y_auditados_999fbd",
+            "type": "Obligacion",
+            "label": "Verificar relación de utilidades con balances",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las utilidades y dividendos deben corresponder a balances cerrados y auditados"
+          },
+          {
+            "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La mencionada entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto 'I09. Registro de utilidades y dividendos por …"
+          },
+          {
+            "id": "Operacion_pago_de_utilidades_y_dividendos_626c9d",
+            "type": "Operacion",
+            "label": "Pago de utilidades y dividendos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago de utilidades y dividendos a accionistas no residentes"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+            "type": "Obligacion",
+            "label": "Confección de boleto de compra con código de concepto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…"
+          },
+          {
+            "id": "Operacion_pagos_de_intereses_y_dividendos_3c4c10",
+            "type": "Operacion",
+            "label": "Pagos de intereses y dividendos",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Comprende los pagos de intereses y de utilidades y dividendos"
+          },
+          {
+            "id": "Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645",
+            "type": "Obligacion",
+            "label": "Informar conceptos deducibles del COn1",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000)."
+          }
+        ]
+      },
+      "output_chars": 3374,
+      "latency_tool_s": 0.0049
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e"
+      },
+      "output": {
+        "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e",
+        "type": "Obligacion",
+        "label": "Realizar boleto de venta de cambio",
+        "properties": {
+          "descripcion": "La mencionada entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL'; consignando el valor nominal en moneda extranjera de los bonos BOPREAL adjudicado al cliente.",
+          "tipo": "calculo"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid"
+          }
+        ]
+      },
+      "output_chars": 690,
+      "latency_tool_s": 0.0156
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh1Z3AqUzj7v1hjxQyp",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre el boleto de venta de cambio y el código de concepto I09 relacionado con BOPREAL.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01DxU8jBRwrCczRtetn5y4ch",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "boleto venta cambio I09 BOPREAL dividendos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01EbziewL3JZw4bXMtuEtTeA",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "código concepto I09 registro utilidades dividendos bonos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1653,
+          "output_tokens": 192,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh1gGzJKiJkbZUV4XFf",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto, encontré la obligación específica. Voy a ver el nodo completo para obtener los detalles sobre qué valor debe consignarse.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Ak83Q9QRFmcNxvmfJosxRg",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__9bc38e"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4447
+          },
+          "cache_creation_input_tokens": 4447,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 135,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAh1nkfpZnXfgjcJ5Udq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información completa. La obligación especifica claramente qué valor debe consignarse en el boleto de venta de cambio.\n\n```json\n{\n  \"respuesta\": \"Cuando una entidad debe confeccionar un boleto de venta de cambio a nombre del cliente utilizando el código de concepto 'I09. Registro de utilidades y dividendos por adjudicación de bonos BOPREAL', debe consignarse el valor nominal en moneda extranjera de los bonos BOPREAL adjudicado al cliente.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 4.6. Suscripción de bonos BOPREAL por utilidades y dividendos de accionistas no resid\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 381
+          },
+          "cache_creation_input_tokens": 381,
+          "cache_read_input_tokens": 4447,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 222,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

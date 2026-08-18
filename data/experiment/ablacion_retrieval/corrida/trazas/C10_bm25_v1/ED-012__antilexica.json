@@ -1,0 +1,1926 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C10_bm25_v1",
+    "celda_id": "C10_bm25_v1",
+    "retriever": "bm25",
+    "tools": "v1",
+    "es_control": false,
+    "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+    "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+    "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C10_bm25_v1",
+      "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+      "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+      "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "ED-012::antilexica",
+    "sample_id": "ED-012",
+    "variante": "antilexica",
+    "estrato": "E-D",
+    "sub_estrato": "intra_to",
+    "pos_orden": 23,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:26:54",
+    "timestamp_fin": "2026-08-18T14:27:13",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.043256,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "Cuando una entidad tiene que emitir el comprobante de operación de moneda extranjera a favor del cliente, usando el código de concepto que identifica el registro de ganancias repartidas por la entrega de títulos BOPREAL a los tenedores, ¿qué cifra hay que anotar en ese comprobante?",
+  "trace": {
+    "qid": "ED-012::antilexica",
+    "question": "Cuando una entidad tiene que emitir el comprobante de operación de moneda extranjera a favor del cliente, usando el código de concepto que identifica el registro de ganancias repartidas por la entrega de títulos BOPREAL a los tenedores, ¿qué cifra hay que anotar en ese comprobante?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "comprobante operación moneda extranjera cliente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"comprobante operación moneda extranjera cliente\", \"total_con_match\": 1944, \"resultados\": [{\"id\": \"Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82\", \"type\": \"Operacion\", \"label\": \"Operación con monedas y billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende monedas y billetes emitidos por un estado extranjero.\"}, {\"id\": \"Operacion_arbitrajes_en_monedas_extranjeras_7928a7\", \"type\": \"Operacion\", \"label\": \"Arbitrajes en monedas extranjeras\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…\"}, {\"id\": \"Operacion_compra_de_moneda_extranjera_4818a4\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de otros residentes para la formación de activos externos\"}, {\"id\": \"Operacion_operacion_con_divisas_en_moneda_extranjera_935872\", \"type\": \"Operacion\", \"label\": \"Operación con divisas en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Son instrumento… [+2288 chars]",
+        "output_chars": 3488
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "código concepto ganancias BOPREAL tenedores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"código concepto ganancias BOPREAL tenedores\", \"total_con_match\": 244, \"resultados\": [{\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7\", \"type\": \"Obligacion\", \"label\": \"Confección de boleto de compra con código de concepto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…\"}, {\"id\": \"Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645\", \"type\": \"Obligacion\", \"label\": \"Informar conceptos deducibles del COn1\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000).\"}, {\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6\", \"type\": \"Obligacion\", \"label\": \"Confeccionar boleto de compra con código de aporte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendido e… [+2632 chars]",
+        "output_chars": 3832
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "BOPREAL ganancias repartidas títulos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"BOPREAL ganancias repartidas títulos\", \"total_con_match\": 254, \"resultados\": [{\"id\": \"Restriccion_limite_venta_titulos_valores_bopreal_24329c\", \"type\": \"Restriccion\", \"label\": \"Límite venta títulos valores BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…\"}, {\"id\": \"Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33\", \"type\": \"Obligacion\", \"label\": \"Incluir ganancias de activos no corrientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …\"}, {\"id\": \"Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e\", \"type\": \"Obligacion\", \"label\": \"Deducción neta de ganancias por titulización\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant… [+2582 chars]",
+        "output_chars": 3782
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "comprobante operación moneda extranjera cifra monto",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"comprobante operación moneda extranjera cifra monto\", \"total_con_match\": 1890, \"resultados\": [{\"id\": \"Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82\", \"type\": \"Operacion\", \"label\": \"Operación con monedas y billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende monedas y billetes emitidos por un estado extranjero.\"}, {\"id\": \"Operacion_arbitrajes_en_monedas_extranjeras_7928a7\", \"type\": \"Operacion\", \"label\": \"Arbitrajes en monedas extranjeras\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…\"}, {\"id\": \"Operacion_compra_de_moneda_extranjera_4818a4\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de otros residentes para la formación de activos externos\"}, {\"id\": \"Operacion_operacion_con_divisas_en_moneda_extranjera_935872\", \"type\": \"Operacion\", \"label\": \"Operación con divisas en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Son instrum… [+2319 chars]",
+        "output_chars": 3519
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "código concepto B BOPREAL ganancias repartidas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"código concepto B BOPREAL ganancias repartidas\", \"total_con_match\": 328, \"resultados\": [{\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7\", \"type\": \"Obligacion\", \"label\": \"Confección de boleto de compra con código de concepto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…\"}, {\"id\": \"Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645\", \"type\": \"Obligacion\", \"label\": \"Informar conceptos deducibles del COn1\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000).\"}, {\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6\", \"type\": \"Obligacion\", \"label\": \"Confeccionar boleto de compra con código de aporte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendid… [+2605 chars]",
+        "output_chars": 3805
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f"
+        },
+        "output_truncado": "{\"id\": \"Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f\", \"type\": \"Operacion\", \"label\": \"Boleto de venta de cambio para BOPREAL\", \"properties\": {\"tipo\": \"registro de boleto de cambio\", \"description\": \"Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPREAL'; consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado al importador y el número de oficialización al que corresponde\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.4. Suscripción de bonos BOPREAL por parte de deudores de importaciones de bienes co\"}]}",
+        "output_chars": 692
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "B27 ganancias repartidas entrega títulos BOPREAL tenedores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"B27 ganancias repartidas entrega títulos BOPREAL tenedores\", \"total_con_match\": 285, \"resultados\": [{\"id\": \"Restriccion_limite_venta_titulos_valores_bopreal_24329c\", \"type\": \"Restriccion\", \"label\": \"Límite venta títulos valores BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…\"}, {\"id\": \"Operacion_entrega_de_instrumentos_en_mercado_de_cambios_110541\", \"type\": \"Operacion\", \"label\": \"Entrega de instrumentos en mercado de cambios\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entrega efectiva de instrumentos operados en el mercado de cambios\"}, {\"id\": \"Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33\", \"type\": \"Obligacion\", \"label\": \"Incluir ganancias de activos no corrientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …\"}, {\"id\": \"Operacion_imputacion_de_multas_por_demoras_en_entrega_2696e3\", \"type\": \"Operacion\", \"label\": \"Im… [+2357 chars]",
+        "output_chars": 3557
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "comprobante operación moneda extranjera favor cliente código concepto",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"comprobante operación moneda extranjera favor cliente código concepto\", \"total_con_match\": 2046, \"resultados\": [{\"id\": \"Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82\", \"type\": \"Operacion\", \"label\": \"Operación con monedas y billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende monedas y billetes emitidos por un estado extranjero.\"}, {\"id\": \"Operacion_arbitrajes_en_monedas_extranjeras_7928a7\", \"type\": \"Operacion\", \"label\": \"Arbitrajes en monedas extranjeras\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…\"}, {\"id\": \"Operacion_compra_de_moneda_extranjera_4818a4\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de otros residentes para la formación de activos externos\"}, {\"id\": \"Operacion_operacion_con_divisas_en_moneda_extranjera_935872\", \"type\": \"Operacion\", \"label\": \"Operación con divisas en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propieda… [+2351 chars]",
+        "output_chars": 3551
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "B27 registro ganancias repartidas",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"B27 registro ganancias repartidas\", \"total_con_match\": 216, \"resultados\": [{\"id\": \"Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33\", \"type\": \"Obligacion\", \"label\": \"Incluir ganancias de activos no corrientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …\"}, {\"id\": \"Operacion_registro_de_otros_resultados_integrales_7ddf44\", \"type\": \"Operacion\", \"label\": \"Registro de otros resultados integrales\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Registro de Otros Resultados Integrales (ORI) provenientes de revaluación de propiedad, planta y equipo e intangibles y de ganancias o pérdidas por instrumentos…\"}, {\"id\": \"Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e\", \"type\": \"Obligacion\", \"label\": \"Deducción neta de ganancias por titulización\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…… [+2793 chars]",
+        "output_chars": 3993
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "comprobante operación cambios cliente cifra anotar",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"comprobante operación cambios cliente cifra anotar\", \"total_con_match\": 2001, \"resultados\": [{\"id\": \"Operacion_operacion_de_cambio_305a62\", \"type\": \"Operacion\", \"label\": \"Operación de cambio\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operación de cambio realizada al tipo de cambio libremente pactado entre las partes\"}, {\"id\": \"Operacion_operaciones_de_cambio_en_divisas_5a5524\", \"type\": \"Operacion\", \"label\": \"Operaciones de cambio en divisas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las operaciones de cambio en divisas extranjeras\"}, {\"id\": \"Operacion_operaciones_de_cambio_canje_y_arbitraje_aa233e\", \"type\": \"Operacion\", \"label\": \"Operaciones de cambio, canje y arbitraje\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"En todas las operaciones de cambio, canje y/o arbitraje que se cursen por el mercado libre de cambios\"}, {\"id\": \"Operacion_realizacion_operaciones_de_cambio_entre_entidades_68a0d1\", \"type\": \"Operacion\", \"label\": \"Realización operaciones de cambio entre entidades\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones de cambio (compraventa de cambio) realizadas entre entidades\"}, {\"id\": \"Obligacion_en_los_boletos_debera_constar_la_fi… [+1941 chars]",
+        "output_chars": 3141
+      },
+      {
+        "n": 11,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "código concepto B27 BOPREAL tenedores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"código concepto B27 BOPREAL tenedores\", \"total_con_match\": 230, \"resultados\": [{\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7\", \"type\": \"Obligacion\", \"label\": \"Confección de boleto de compra con código de concepto\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…\"}, {\"id\": \"Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645\", \"type\": \"Obligacion\", \"label\": \"Informar conceptos deducibles del COn1\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000).\"}, {\"id\": \"Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6\", \"type\": \"Obligacion\", \"label\": \"Confeccionar boleto de compra con código de aporte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendido en este… [+2450 chars]",
+        "output_chars": 3650
+      },
+      {
+        "n": 12,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063\", \"type\": \"Obligacion\", \"label\": \"Realizar boleto de venta de cambio\", \"properties\": {\"descripcion\": \"La entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto que identifique el tipo de operación, consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 4.7. Suscripción de bonos BOPREAL por parte de deudores de capital e intereses vencid\"}]}",
+        "output_chars": 620
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "ganancias repartidas entrega títulos BOPREAL tenedores valor nominal",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"ganancias repartidas entrega títulos BOPREAL tenedores valor nominal\", \"total_con_match\": 447, \"resultados\": [{\"id\": \"Restriccion_limite_venta_titulos_valores_bopreal_24329c\", \"type\": \"Restriccion\", \"label\": \"Límite venta títulos valores BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…\"}, {\"id\": \"Restriccion_el_valor_nominal_de_los_nuevos_titulos_entregados_en_concepto_de_prima_de_partic_1096cd\", \"type\": \"Restriccion\", \"label\": \"Valor nominal de primas no supera 5%\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El valor nominal de los nuevos títulos entregados, en concepto de prima de participación, recompra o rescate anticipado o similar, no supere el equivalente al 5…\"}, {\"id\": \"Restriccion_limite_venta_titulos_valores_posteriores_a_01_04_24_d9509b\", \"type\": \"Restriccion\", \"label\": \"Límite venta títulos valores posteriores a 01/04/24\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Venta de otras operaciones de títulos valores concretadas a partir de 01/04/24 puede liquidarse cuando el valor de… [+2623 chars]",
+        "output_chars": 3823
+      },
+      {
+        "n": 14,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "comprobante operación moneda extranjera a favor cliente entidad emitir",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"comprobante operación moneda extranjera a favor cliente entidad emitir\", \"total_con_match\": 2521, \"resultados\": [{\"id\": \"Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82\", \"type\": \"Operacion\", \"label\": \"Operación con monedas y billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Comprende monedas y billetes emitidos por un estado extranjero.\"}, {\"id\": \"Obligacion_la_entidad_vendedora_debera_entregar_los_billetes_en_moneda_extranjera_o_acredit_98f1da\", \"type\": \"Obligacion\", \"label\": \"Entrega de billetes en moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La entidad vendedora deberá entregar los billetes en moneda extranjera o acreditar los fondos en una cuenta en moneda extranjera de titularidad del cliente en e…\"}, {\"id\": \"Operacion_arbitrajes_en_monedas_extranjeras_7928a7\", \"type\": \"Operacion\", \"label\": \"Arbitrajes en monedas extranjeras\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…\"}, {\"id\": \"Restriccion_deposito_en_moneda_extranjera_lo… [+2378 chars]",
+        "output_chars": 3578
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "B27 ganancias repartidas tenedores BOPREAL",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"B27 ganancias repartidas tenedores BOPREAL\", \"total_con_match\": 76, \"resultados\": [{\"id\": \"Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33\", \"type\": \"Obligacion\", \"label\": \"Incluir ganancias de activos no corrientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …\"}, {\"id\": \"Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e\", \"type\": \"Obligacion\", \"label\": \"Deducción neta de ganancias por titulización\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…\"}, {\"id\": \"Sujeto_propuesto_inversores_y_tenedores_de_titulizacion\", \"type\": \"Sujeto\", \"label\": \"Inversores y tenedores de titulización\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: propuesto; cuarentena: True; padre_sugerido: Sujeto_contraparte\"}, {\"id\": \"Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_… [+2705 chars]",
+        "output_chars": 3905
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1662,
+        "output_tokens": 268,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.838
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 190,
+        "cache_read": 0,
+        "cache_write": 5801,
+        "latency_s": 1.851
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 199,
+        "cache_read": 5801,
+        "cache_write": 2773,
+        "latency_s": 2.057
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 188,
+        "cache_read": 8574,
+        "cache_write": 1705,
+        "latency_s": 2.071
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 181,
+        "cache_read": 10279,
+        "cache_write": 2828,
+        "latency_s": 2.073
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 205,
+        "cache_read": 13107,
+        "cache_write": 2635,
+        "latency_s": 2.205
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 194,
+        "cache_read": 15742,
+        "cache_write": 1732,
+        "latency_s": 2.22
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 379,
+        "cache_read": 17474,
+        "cache_write": 2871,
+        "latency_s": 4.37
+      }
+    ],
+    "final_json": {
+      "respuesta": "No se encontró en el Knowledge Graph información específica sobre qué cifra debe anotarse en un comprobante de operación de moneda extranjera a favor del cliente cuando se utiliza el código de concepto que identifica el registro de ganancias repartidas por la entrega de títulos BOPREAL a los tenedores. Si bien se encontraron referencias a boletos de venta de cambio para BOPREAL que consignan el valor nominal en moneda extranjera, no se localizó la regulación específica sobre el código de concepto para ganancias repartidas ni la cifra que debe anotarse en ese caso.",
+      "citas": [],
+      "respondible": false
+    },
+    "final_raw": "Basándome en la información recolectada del Knowledge Graph, no he encontrado evidencia específica sobre:\n\n1. Un comprobante de operación de moneda extranjera a favor del cliente que use un código de concepto específico para \"ganancias repartidas por la entrega de títulos BOPREAL a los tenedores\"\n2. La cifra exacta que debe anotarse en ese comprobante\n\nHe encontrado referencias a:\n- Boletos de venta de cambio para BOPREAL (código B26 para importaciones)\n- Obligaciones de realizar boletos de venta de cambio consignando \"el valor nominal en moneda extranjera de bonos BOPREAL adjudicado\"\n- Pero no he localizado un código B27 específico para \"ganancias repartidas\" ni la cifra correspondiente\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph información específica sobre qué cifra debe anotarse en un comprobante de operación de moneda extranjera a favor del cliente cuando se utiliza el código de concepto que identifica el registro de ganancias repartidas por la entrega de títulos BOPREAL a los tenedores. Si bien se encontraron referencias a boletos de venta de cambio para BOPREAL que consignan el valor nominal en moneda extranjera, no se localizó la regulación específica sobre el código de concepto para ganancias repartidas ni la cifra que debe anotarse en ese caso.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 15,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.4. Suscripción de bonos BOPREAL por parte de deudores de importaciones de bienes co"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 4.7. Suscripción de bonos BOPREAL por parte de deudores de capital e intereses vencid"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1707,
+    "tokens_out": 1804,
+    "cache_read": 70977,
+    "cache_write": 20345,
+    "cost_usd": 0.043256,
+    "latency_s": 18.81,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "comprobante operación moneda extranjera cliente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "comprobante operación moneda extranjera cliente",
+        "total_con_match": 1944,
+        "resultados": [
+          {
+            "id": "Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82",
+            "type": "Operacion",
+            "label": "Operación con monedas y billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Comprende monedas y billetes emitidos por un estado extranjero."
+          },
+          {
+            "id": "Operacion_arbitrajes_en_monedas_extranjeras_7928a7",
+            "type": "Operacion",
+            "label": "Arbitrajes en monedas extranjeras",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Operacion_operacion_con_divisas_en_moneda_extranjera_935872",
+            "type": "Operacion",
+            "label": "Operación con divisas en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Son instrumentos de pago expresados en una moneda emitida por un estado extranjero y generalmente aceptados en transacciones transnacionales: transferencia banc…"
+          },
+          {
+            "id": "Obligacion_la_entidad_vendedora_debera_entregar_los_billetes_en_moneda_extranjera_o_acredit_98f1da",
+            "type": "Obligacion",
+            "label": "Entrega de billetes en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad vendedora deberá entregar los billetes en moneda extranjera o acreditar los fondos en una cuenta en moneda extranjera de titularidad del cliente en e…"
+          },
+          {
+            "id": "Restriccion_deposito_en_moneda_extranjera_local_36752d",
+            "type": "Restriccion",
+            "label": "Depósito en moneda extranjera local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas en moneda extranjera de titularidad del cliente abiertas en entidades financieras locales"
+          },
+          {
+            "id": "Obligacion_acreditacion_de_ingresos_en_moneda_extranjera_ebbb6f",
+            "type": "Obligacion",
+            "label": "Acreditación de ingresos en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras deberán permitir la acreditación de ingresos de divisas del exterior a las cuentas abiertas por el cliente en moneda extranjera"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera para garantías",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos"
+          },
+          {
+            "id": "Obligacion_registrar_venta_moneda_extranjera_bcra_b73ece",
+            "type": "Obligacion",
+            "label": "Registrar venta moneda extranjera BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La venta de moneda extranjera liquidada por el cliente deberá ser registrada ante el BCRA por la entidad interviniente de acuerdo con las pautas habituales"
+          },
+          {
+            "id": "Operacion_compra_de_billetes_en_moneda_extranjera_51871c",
+            "type": "Operacion",
+            "label": "Compra de billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de billetes en moneda extranjera para la tenencia o constitución de depósitos por parte de personas humanas residentes, mediante débito en cuenta o efect…"
+          }
+        ]
+      },
+      "output_chars": 3488,
+      "latency_tool_s": 0.0196
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "código concepto ganancias BOPREAL tenedores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "código concepto ganancias BOPREAL tenedores",
+        "total_con_match": 244,
+        "resultados": [
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+            "type": "Obligacion",
+            "label": "Confección de boleto de compra con código de concepto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…"
+          },
+          {
+            "id": "Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645",
+            "type": "Obligacion",
+            "label": "Informar conceptos deducibles del COn1",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000)."
+          },
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de compra con código de aporte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendido en este mecanismo"
+          },
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_con_el_codigo_de_concepto_de_pago_diferido_d_1f49f2",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de venta con código de pago diferido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de venta se confeccionará con el código de concepto de pago diferido de importaciones de bienes de capital, dejando constancia que el pago se enmarca …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Operacion_reporte_de_codigos_de_consolidacion_b752be",
+            "type": "Operacion",
+            "label": "Reporte de códigos de consolidación",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Informar códigos de consolidación 1 y 9, o código 0, según situación de consolidación de las entidades financieras"
+          },
+          {
+            "id": "Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e",
+            "type": "Obligacion",
+            "label": "Deducción neta de ganancias por titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…"
+          }
+        ]
+      },
+      "output_chars": 3832,
+      "latency_tool_s": 0.0044
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "BOPREAL ganancias repartidas títulos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "BOPREAL ganancias repartidas títulos",
+        "total_con_match": 254,
+        "resultados": [
+          {
+            "id": "Restriccion_limite_venta_titulos_valores_bopreal_24329c",
+            "type": "Restriccion",
+            "label": "Límite venta títulos valores BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…"
+          },
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e",
+            "type": "Obligacion",
+            "label": "Deducción neta de ganancias por titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…"
+          },
+          {
+            "id": "Operacion_pago_capital_deudas_elegibles_no_suscritas_bopreal_e3130c",
+            "type": "Operacion",
+            "label": "Pago capital deudas elegibles no suscritas BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Acceso al mercado de cambios para pagar capital de deudas elegibles por las cuales no se suscribió un título BOPREAL"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Restriccion_escasa_capacidad_de_ganancias_la_proyeccion_del_flujo_de_fondos_muestra_un_progr_0151fc",
+            "type": "Restriccion",
+            "label": "Escasa capacidad de ganancias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Escasa capacidad de ganancias. La proyección del flujo de fondos muestra un progresivo deterioro y una alta sensibilidad a modificaciones menores y previsibles …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          },
+          {
+            "id": "Operacion_venta_de_titulos_bopreal_con_obligacion_de_recompra_c123a2",
+            "type": "Operacion",
+            "label": "Venta de títulos BOPREAL con obligación de recompra",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: venta_con_obligacion_de_recompra"
+          },
+          {
+            "id": "Obligacion_se_trata_de_utilidades_distribuibles_obtenidas_a_partir_de_ganancias_realizadas__76b32e",
+            "type": "Obligacion",
+            "label": "Verificar ganancias realizadas en estados contables anuales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se trata de utilidades distribuibles obtenidas a partir de ganancias realizadas en estados contables anuales regulares y auditados de ejercicios iniciados a par…"
+          },
+          {
+            "id": "Restriccion_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_presunta_neto_de__c8586e",
+            "type": "Restriccion",
+            "label": "Deducción saldos a favor impuesto ganancia",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Saldo a favor por aplicación del impuesto a la ganancia mínima presunta –neto de previsiones– que excedan el 10 % del PNb correspondiente al mes anterior y sald…"
+          }
+        ]
+      },
+      "output_chars": 3782,
+      "latency_tool_s": 0.0041
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "comprobante operación moneda extranjera cifra monto",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "comprobante operación moneda extranjera cifra monto",
+        "total_con_match": 1890,
+        "resultados": [
+          {
+            "id": "Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82",
+            "type": "Operacion",
+            "label": "Operación con monedas y billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Comprende monedas y billetes emitidos por un estado extranjero."
+          },
+          {
+            "id": "Operacion_arbitrajes_en_monedas_extranjeras_7928a7",
+            "type": "Operacion",
+            "label": "Arbitrajes en monedas extranjeras",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Operacion_operacion_con_divisas_en_moneda_extranjera_935872",
+            "type": "Operacion",
+            "label": "Operación con divisas en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Son instrumentos de pago expresados en una moneda emitida por un estado extranjero y generalmente aceptados en transacciones transnacionales: transferencia banc…"
+          },
+          {
+            "id": "Restriccion_limite_de_repatriacion_en_moneda_extranjera_a2f053",
+            "type": "Restriccion",
+            "label": "Límite de repatriación en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso que el cobro de los servicios o venta de la inversión sea percibido en moneda extranjera la repatriación podrá concretarse por hasta el equivalente d…"
+          },
+          {
+            "id": "Restriccion_si_el_importador_percibiera_un_monto_en_moneda_extranjera_el_mismo_debera_ser_in_5134eb",
+            "type": "Restriccion",
+            "label": "Obligación de ingreso de moneda extranjera al mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Si el importador percibiera un monto en moneda extranjera, el mismo deberá ser ingresado y liquidado en el mercado de cambios dentro de los 20 (veinte) días háb…"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera para garantías",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos"
+          },
+          {
+            "id": "Operacion_compra_de_billetes_en_moneda_extranjera_51871c",
+            "type": "Operacion",
+            "label": "Compra de billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de billetes en moneda extranjera para la tenencia o constitución de depósitos por parte de personas humanas residentes, mediante débito en cuenta o efect…"
+          },
+          {
+            "id": "Excepcion_exclusion_de_divisas_en_moneda_extranjera_4e3125",
+            "type": "Excepcion",
+            "label": "Exclusión de divisas en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Quedan excluidos de esta definición las monedas y billetes en moneda extranjera, el oro amonedado y el oro en barras de buena entrega."
+          },
+          {
+            "id": "Operacion_operaciones_de_cambio_de_monedas_5f6570",
+            "type": "Operacion",
+            "label": "Operaciones de cambio de monedas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones de cambio que incluyen compra y venta de monedas y billetes extranjeros, oro amonedado o en barra de buena entrega y cheques de viajero, giros, tran…"
+          }
+        ]
+      },
+      "output_chars": 3519,
+      "latency_tool_s": 0.015
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "código concepto B BOPREAL ganancias repartidas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "código concepto B BOPREAL ganancias repartidas",
+        "total_con_match": 328,
+        "resultados": [
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+            "type": "Obligacion",
+            "label": "Confección de boleto de compra con código de concepto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…"
+          },
+          {
+            "id": "Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645",
+            "type": "Obligacion",
+            "label": "Informar conceptos deducibles del COn1",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000)."
+          },
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de compra con código de aporte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendido en este mecanismo"
+          },
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_con_el_codigo_de_concepto_de_pago_diferido_d_1f49f2",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de venta con código de pago diferido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de venta se confeccionará con el código de concepto de pago diferido de importaciones de bienes de capital, dejando constancia que el pago se enmarca …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Restriccion_cambio_de_codigos_consolidacion_para_entidades_e9677d",
+            "type": "Restriccion",
+            "label": "Cambio de códigos consolidación para entidades",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Las entidades financieras que hasta el 31/03/24 informaban únicamente códigos de consolidación 1 y 3, de mantenerse esta situación de consolidación, pasarán a i…"
+          },
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Operacion_reporte_de_codigos_de_consolidacion_b752be",
+            "type": "Operacion",
+            "label": "Reporte de códigos de consolidación",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Informar códigos de consolidación 1 y 9, o código 0, según situación de consolidación de las entidades financieras"
+          }
+        ]
+      },
+      "output_chars": 3805,
+      "latency_tool_s": 0.0055
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f"
+      },
+      "output": {
+        "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+        "type": "Operacion",
+        "label": "Boleto de venta de cambio para BOPREAL",
+        "properties": {
+          "tipo": "registro de boleto de cambio",
+          "description": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPREAL'; consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado al importador y el número de oficialización al que corresponde"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.4. Suscripción de bonos BOPREAL por parte de deudores de importaciones de bienes co"
+          }
+        ]
+      },
+      "output_chars": 692,
+      "latency_tool_s": 0.0037
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "B27 ganancias repartidas entrega títulos BOPREAL tenedores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "B27 ganancias repartidas entrega títulos BOPREAL tenedores",
+        "total_con_match": 285,
+        "resultados": [
+          {
+            "id": "Restriccion_limite_venta_titulos_valores_bopreal_24329c",
+            "type": "Restriccion",
+            "label": "Límite venta títulos valores BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…"
+          },
+          {
+            "id": "Operacion_entrega_de_instrumentos_en_mercado_de_cambios_110541",
+            "type": "Operacion",
+            "label": "Entrega de instrumentos en mercado de cambios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Entrega efectiva de instrumentos operados en el mercado de cambios"
+          },
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Operacion_imputacion_de_multas_por_demoras_en_entrega_2696e3",
+            "type": "Operacion",
+            "label": "Imputación de multas por demoras en entrega",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Imputación del valor de las multas aplicadas por el importador por demoras en la entrega del bien"
+          },
+          {
+            "id": "Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e",
+            "type": "Obligacion",
+            "label": "Deducción neta de ganancias por titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…"
+          },
+          {
+            "id": "Sujeto_propuesto_inversores_y_tenedores_de_titulizacion",
+            "type": "Sujeto",
+            "label": "Inversores y tenedores de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: propuesto; cuarentena: True; padre_sugerido: Sujeto_contraparte"
+          },
+          {
+            "id": "Operacion_pago_capital_deudas_elegibles_no_suscritas_bopreal_e3130c",
+            "type": "Operacion",
+            "label": "Pago capital deudas elegibles no suscritas BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Acceso al mercado de cambios para pagar capital de deudas elegibles por las cuales no se suscribió un título BOPREAL"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Restriccion_escasa_capacidad_de_ganancias_la_proyeccion_del_flujo_de_fondos_muestra_un_progr_0151fc",
+            "type": "Restriccion",
+            "label": "Escasa capacidad de ganancias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Escasa capacidad de ganancias. La proyección del flujo de fondos muestra un progresivo deterioro y una alta sensibilidad a modificaciones menores y previsibles …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          }
+        ]
+      },
+      "output_chars": 3557,
+      "latency_tool_s": 0.0049
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "comprobante operación moneda extranjera favor cliente código concepto",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "comprobante operación moneda extranjera favor cliente código concepto",
+        "total_con_match": 2046,
+        "resultados": [
+          {
+            "id": "Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82",
+            "type": "Operacion",
+            "label": "Operación con monedas y billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Comprende monedas y billetes emitidos por un estado extranjero."
+          },
+          {
+            "id": "Operacion_arbitrajes_en_monedas_extranjeras_7928a7",
+            "type": "Operacion",
+            "label": "Arbitrajes en monedas extranjeras",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Operacion_operacion_con_divisas_en_moneda_extranjera_935872",
+            "type": "Operacion",
+            "label": "Operación con divisas en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Son instrumentos de pago expresados en una moneda emitida por un estado extranjero y generalmente aceptados en transacciones transnacionales: transferencia banc…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+            "type": "Obligacion",
+            "label": "Confección de boleto de compra con código de concepto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…"
+          },
+          {
+            "id": "Obligacion_la_entidad_vendedora_debera_entregar_los_billetes_en_moneda_extranjera_o_acredit_98f1da",
+            "type": "Obligacion",
+            "label": "Entrega de billetes en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad vendedora deberá entregar los billetes en moneda extranjera o acreditar los fondos en una cuenta en moneda extranjera de titularidad del cliente en e…"
+          },
+          {
+            "id": "Restriccion_deposito_en_moneda_extranjera_local_36752d",
+            "type": "Restriccion",
+            "label": "Depósito en moneda extranjera local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas en moneda extranjera de titularidad del cliente abiertas en entidades financieras locales"
+          },
+          {
+            "id": "Obligacion_acreditacion_de_ingresos_en_moneda_extranjera_ebbb6f",
+            "type": "Obligacion",
+            "label": "Acreditación de ingresos en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras deberán permitir la acreditación de ingresos de divisas del exterior a las cuentas abiertas por el cliente en moneda extranjera"
+          },
+          {
+            "id": "Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645",
+            "type": "Obligacion",
+            "label": "Informar conceptos deducibles del COn1",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000)."
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera para garantías",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos"
+          }
+        ]
+      },
+      "output_chars": 3551,
+      "latency_tool_s": 0.0082
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "B27 registro ganancias repartidas",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "B27 registro ganancias repartidas",
+        "total_con_match": 216,
+        "resultados": [
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Operacion_registro_de_otros_resultados_integrales_7ddf44",
+            "type": "Operacion",
+            "label": "Registro de otros resultados integrales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Registro de Otros Resultados Integrales (ORI) provenientes de revaluación de propiedad, planta y equipo e intangibles y de ganancias o pérdidas por instrumentos…"
+          },
+          {
+            "id": "Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e",
+            "type": "Obligacion",
+            "label": "Deducción neta de ganancias por titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Restriccion_escasa_capacidad_de_ganancias_la_proyeccion_del_flujo_de_fondos_muestra_un_progr_0151fc",
+            "type": "Restriccion",
+            "label": "Escasa capacidad de ganancias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Escasa capacidad de ganancias. La proyección del flujo de fondos muestra un progresivo deterioro y una alta sensibilidad a modificaciones menores y previsibles …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          },
+          {
+            "id": "Obligacion_se_trata_de_utilidades_distribuibles_obtenidas_a_partir_de_ganancias_realizadas__76b32e",
+            "type": "Obligacion",
+            "label": "Verificar ganancias realizadas en estados contables anuales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se trata de utilidades distribuibles obtenidas a partir de ganancias realizadas en estados contables anuales regulares y auditados de ejercicios iniciados a par…"
+          },
+          {
+            "id": "Restriccion_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_presunta_neto_de__c8586e",
+            "type": "Restriccion",
+            "label": "Deducción saldos a favor impuesto ganancia",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Saldo a favor por aplicación del impuesto a la ganancia mínima presunta –neto de previsiones– que excedan el 10 % del PNb correspondiente al mes anterior y sald…"
+          },
+          {
+            "id": "Obligacion_comprende_el_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_pres_16ac80",
+            "type": "Obligacion",
+            "label": "Informar saldo impuesto ganancia mínima presunta",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Comprende el saldo a favor por aplicación del impuesto a la ganancia mínima presunta -neto de las previsiones- que exceda el 10% del patrimonio neto básico corr…"
+          },
+          {
+            "id": "Restriccion_el_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_presunta_se_in_8cb19e",
+            "type": "Restriccion",
+            "label": "Límite saldo favor impuesto ganancia mínima presunta",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El saldo a favor por aplicación del impuesto a la ganancia mínima presunta se incluirá solamente si excede el 10% del patrimonio neto básico."
+          }
+        ]
+      },
+      "output_chars": 3993,
+      "latency_tool_s": 0.0019
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "comprobante operación cambios cliente cifra anotar",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "comprobante operación cambios cliente cifra anotar",
+        "total_con_match": 2001,
+        "resultados": [
+          {
+            "id": "Operacion_operacion_de_cambio_305a62",
+            "type": "Operacion",
+            "label": "Operación de cambio",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operación de cambio realizada al tipo de cambio libremente pactado entre las partes"
+          },
+          {
+            "id": "Operacion_operaciones_de_cambio_en_divisas_5a5524",
+            "type": "Operacion",
+            "label": "Operaciones de cambio en divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las operaciones de cambio en divisas extranjeras"
+          },
+          {
+            "id": "Operacion_operaciones_de_cambio_canje_y_arbitraje_aa233e",
+            "type": "Operacion",
+            "label": "Operaciones de cambio, canje y arbitraje",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En todas las operaciones de cambio, canje y/o arbitraje que se cursen por el mercado libre de cambios"
+          },
+          {
+            "id": "Operacion_realizacion_operaciones_de_cambio_entre_entidades_68a0d1",
+            "type": "Operacion",
+            "label": "Realización operaciones de cambio entre entidades",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones de cambio (compraventa de cambio) realizadas entre entidades"
+          },
+          {
+            "id": "Obligacion_en_los_boletos_debera_constar_la_firma_del_cliente_que_realiza_la_operacion_de_c_b0ee36",
+            "type": "Obligacion",
+            "label": "Constar firma del cliente en boleto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En los boletos deberá constar la firma del cliente que realiza la operación de cambio."
+          },
+          {
+            "id": "Operacion_operaciones_de_cambio_de_monedas_5f6570",
+            "type": "Operacion",
+            "label": "Operaciones de cambio de monedas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones de cambio que incluyen compra y venta de monedas y billetes extranjeros, oro amonedado o en barra de buena entrega y cheques de viajero, giros, tran…"
+          },
+          {
+            "id": "Restriccion_operaciones_de_cambio_autorizadas_1f53bf",
+            "type": "Restriccion",
+            "label": "Operaciones de cambio autorizadas",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Las operaciones de cambio serán realizadas por las entidades financieras y las demás personas autorizadas por el Banco Central de la República Argentina para de…"
+          },
+          {
+            "id": "Operacion_canjes_y_arbitrajes_con_clientes_4a86e3",
+            "type": "Operacion",
+            "label": "Canjes y arbitrajes con clientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones de canjes y arbitrajes con clientes asociados a ingresos de divisas del exterior"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063",
+            "type": "Obligacion",
+            "label": "Realizar boleto de venta de cambio",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto que identifique el tipo de operación, consignando el valo…"
+          },
+          {
+            "id": "Operacion_operacion_al_contado_en_cambios_27d6e6",
+            "type": "Operacion",
+            "label": "Operación al contado en cambios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operación en la cual la liquidación por parte de ambas partes está pactada dentro de un plazo de hasta 2 (dos) días hábiles desde la fecha de su concertación"
+          }
+        ]
+      },
+      "output_chars": 3141,
+      "latency_tool_s": 0.0221
+    },
+    {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "código concepto B27 BOPREAL tenedores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "código concepto B27 BOPREAL tenedores",
+        "total_con_match": 230,
+        "resultados": [
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7",
+            "type": "Obligacion",
+            "label": "Confección de boleto de compra con código de concepto",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará por un código de concepto que identifique que se trata de una financiación comprendida en este mecanismo, debiendo dejar co…"
+          },
+          {
+            "id": "Obligacion_se_informaran_los_conceptos_deducibles_del_con1_no_incluidos_en_otros_codigos_co_edb645",
+            "type": "Obligacion",
+            "label": "Informar conceptos deducibles del COn1",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Se informarán los conceptos deducibles del COn1, no incluidos en otros códigos (Código 21200000)."
+          },
+          {
+            "id": "Obligacion_el_boleto_de_compra_se_confeccionara_con_un_codigo_de_concepto_que_identifique_q_30f6f6",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de compra con código de aporte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de compra se confeccionará con un código de concepto que identifique que se trata de un aporte comprendido en este mecanismo"
+          },
+          {
+            "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f",
+            "type": "Operacion",
+            "label": "Boleto de venta de cambio para BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Realizar un boleto de venta de cambio a nombre del importador por el código de concepto 'B26. Registro de importaciones de bienes por adjudicación de bonos BOPR…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_con_el_codigo_de_concepto_de_pago_diferido_d_1f49f2",
+            "type": "Obligacion",
+            "label": "Confeccionar boleto de venta con código de pago diferido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de venta se confeccionará con el código de concepto de pago diferido de importaciones de bienes de capital, dejando constancia que el pago se enmarca …"
+          },
+          {
+            "id": "Operacion_reporte_de_codigos_de_consolidacion_b752be",
+            "type": "Operacion",
+            "label": "Reporte de códigos de consolidación",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Informar códigos de consolidación 1 y 9, o código 0, según situación de consolidación de las entidades financieras"
+          },
+          {
+            "id": "Sujeto_propuesto_inversores_y_tenedores_de_titulizacion",
+            "type": "Sujeto",
+            "label": "Inversores y tenedores de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: propuesto; cuarentena: True; padre_sugerido: Sujeto_contraparte"
+          },
+          {
+            "id": "Restriccion_cambio_de_codigos_consolidacion_para_entidades_e9677d",
+            "type": "Restriccion",
+            "label": "Cambio de códigos consolidación para entidades",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Las entidades financieras que hasta el 31/03/24 informaban únicamente códigos de consolidación 1 y 3, de mantenerse esta situación de consolidación, pasarán a i…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_con_el_codigo_de_concepto_que_refleje_el_tip_251108",
+            "type": "Obligacion",
+            "label": "Confección de boleto de venta sin movimiento de fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El boleto de venta se confeccionará con el código de concepto que refleje el tipo de pago de importaciones de bienes que se efectúa, dejando constancia que el p…"
+          },
+          {
+            "id": "Obligacion_restar_de_los_conceptos_citados_en_pnc_los_conceptos_deducibles_previstos_en_pun_cd6d80",
+            "type": "Obligacion",
+            "label": "Restar conceptos deducibles de PNc",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Restar de los conceptos citados en PNc los conceptos deducibles previstos en punto 8.4.2, de corresponder"
+          }
+        ]
+      },
+      "output_chars": 3650,
+      "latency_tool_s": 0.004
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063"
+      },
+      "output": {
+        "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063",
+        "type": "Obligacion",
+        "label": "Realizar boleto de venta de cambio",
+        "properties": {
+          "descripcion": "La entidad deberá realizar un boleto de venta de cambio a nombre del cliente por el código de concepto que identifique el tipo de operación, consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado",
+          "tipo": "otra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 4.7. Suscripción de bonos BOPREAL por parte de deudores de capital e intereses vencid"
+          }
+        ]
+      },
+      "output_chars": 620,
+      "latency_tool_s": 0.0115
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "ganancias repartidas entrega títulos BOPREAL tenedores valor nominal",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "ganancias repartidas entrega títulos BOPREAL tenedores valor nominal",
+        "total_con_match": 447,
+        "resultados": [
+          {
+            "id": "Restriccion_limite_venta_titulos_valores_bopreal_24329c",
+            "type": "Restriccion",
+            "label": "Límite venta títulos valores BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No deberán considerar en declaraciones juradas venta de títulos valores con liquidación en moneda extranjera o transferencias a depositarios en exterior desde 0…"
+          },
+          {
+            "id": "Restriccion_el_valor_nominal_de_los_nuevos_titulos_entregados_en_concepto_de_prima_de_partic_1096cd",
+            "type": "Restriccion",
+            "label": "Valor nominal de primas no supera 5%",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El valor nominal de los nuevos títulos entregados, en concepto de prima de participación, recompra o rescate anticipado o similar, no supere el equivalente al 5…"
+          },
+          {
+            "id": "Restriccion_limite_venta_titulos_valores_posteriores_a_01_04_24_d9509b",
+            "type": "Restriccion",
+            "label": "Límite venta títulos valores posteriores a 01/04/24",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Venta de otras operaciones de títulos valores concretadas a partir de 01/04/24 puede liquidarse cuando el valor de mercado no supere la diferencia entre valor o…"
+          },
+          {
+            "id": "Restriccion_la_venta_no_habilitara_al_cliente_a_concretar_las_operaciones_de_titulos_valores_0e812a",
+            "type": "Restriccion",
+            "label": "Limitación de operaciones por diferencia de valor",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La venta no habilitará al cliente a concretar las operaciones de títulos valores por la diferencia entre el valor obtenido por la venta y el valor nominal de lo…"
+          },
+          {
+            "id": "Restriccion_requisito_emision_de_titulos_valores_89bc26",
+            "type": "Restriccion",
+            "label": "Requisito emisión de títulos valores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La empresa con grado de inversión (o su controlante) deberá haber emitido títulos valores que coticen en bolsas o mercados de valores reconocidos"
+          },
+          {
+            "id": "Operacion_venta_titulos_valores_contra_cable_cuenta_terceros_exterior_070e52",
+            "type": "Operacion",
+            "label": "Venta títulos valores contra cable cuenta terceros exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Venta de títulos valores contra cable sobre cuenta de terceros en el exterior para clientes que adquirieron BOPREAL en suscripción primaria, según requisitos pu…"
+          },
+          {
+            "id": "Operacion_operaciones_financiacion_con_titulos_valores_3b76d8",
+            "type": "Operacion",
+            "label": "Operaciones financiación con títulos valores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones de financiación con títulos valores (Securities Financing Transactions, SFT) tales como operaciones de pase"
+          },
+          {
+            "id": "Operacion_emision_de_titulos_valores_en_spe_fa7c89",
+            "type": "Operacion",
+            "label": "Emisión de títulos valores en SPE",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cesión efectuada a un Ente de Propósito Especial (SPE) e inversores pueden gravar o enajenar sus títulos valores sin restricción"
+          },
+          {
+            "id": "Obligacion_ejecutar_operaciones_de_compraventa_de_titulos_valores_d7ed15",
+            "type": "Obligacion",
+            "label": "Ejecutar operaciones de compraventa de títulos valores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Por la porción no liquidada del cobro deberá concretar operaciones de compraventa con títulos valores, en las cuales los títulos valores son adquiridos con liqu…"
+          },
+          {
+            "id": "Excepcion_se_podran_liquidar_en_las_condiciones_indicadas_otras_ventas_de_titulos_valores__7bf416",
+            "type": "Excepcion",
+            "label": "Excepción para otras ventas de títulos valores a partir de 01/04/24",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrán liquidar en las condiciones indicadas otras ventas de títulos valores concertadas a partir del 01/04/24 en la medida que el valor de mercado de estas …"
+          }
+        ]
+      },
+      "output_chars": 3823,
+      "latency_tool_s": 0.0077
+    },
+    {
+      "n": 14,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "comprobante operación moneda extranjera a favor cliente entidad emitir",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "comprobante operación moneda extranjera a favor cliente entidad emitir",
+        "total_con_match": 2521,
+        "resultados": [
+          {
+            "id": "Operacion_operacion_con_monedas_y_billetes_en_moneda_extranjera_d1ac82",
+            "type": "Operacion",
+            "label": "Operación con monedas y billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Comprende monedas y billetes emitidos por un estado extranjero."
+          },
+          {
+            "id": "Obligacion_la_entidad_vendedora_debera_entregar_los_billetes_en_moneda_extranjera_o_acredit_98f1da",
+            "type": "Obligacion",
+            "label": "Entrega de billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La entidad vendedora deberá entregar los billetes en moneda extranjera o acreditar los fondos en una cuenta en moneda extranjera de titularidad del cliente en e…"
+          },
+          {
+            "id": "Operacion_arbitrajes_en_monedas_extranjeras_7928a7",
+            "type": "Operacion",
+            "label": "Arbitrajes en monedas extranjeras",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Restriccion_deposito_en_moneda_extranjera_local_36752d",
+            "type": "Restriccion",
+            "label": "Depósito en moneda extranjera local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas en moneda extranjera de titularidad del cliente abiertas en entidades financieras locales"
+          },
+          {
+            "id": "Obligacion_acreditacion_de_ingresos_en_moneda_extranjera_ebbb6f",
+            "type": "Obligacion",
+            "label": "Acreditación de ingresos en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras deberán permitir la acreditación de ingresos de divisas del exterior a las cuentas abiertas por el cliente en moneda extranjera"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Operacion_operacion_con_divisas_en_moneda_extranjera_935872",
+            "type": "Operacion",
+            "label": "Operación con divisas en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Son instrumentos de pago expresados en una moneda emitida por un estado extranjero y generalmente aceptados en transacciones transnacionales: transferencia banc…"
+          },
+          {
+            "id": "Obligacion_las_entidades_podran_darle_acceso_al_cliente_para_pagar_financiaciones_en_moneda_6d6fa8",
+            "type": "Obligacion",
+            "label": "Acceso mercado cambios para financiaciones en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Las entidades podrán darle acceso al cliente para pagar financiaciones en moneda extranjera otorgadas por entidades financieras locales, liquidadas en el mercad…"
+          },
+          {
+            "id": "Obligacion_registrar_venta_moneda_extranjera_bcra_b73ece",
+            "type": "Obligacion",
+            "label": "Registrar venta moneda extranjera BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La venta de moneda extranjera liquidada por el cliente deberá ser registrada ante el BCRA por la entidad interviniente de acuerdo con las pautas habituales"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera para garantías",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos"
+          }
+        ]
+      },
+      "output_chars": 3578,
+      "latency_tool_s": 0.0111
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "B27 ganancias repartidas tenedores BOPREAL",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "B27 ganancias repartidas tenedores BOPREAL",
+        "total_con_match": 76,
+        "resultados": [
+          {
+            "id": "Obligacion_incluir_ganancias_de_activos_no_corrientes_858c33",
+            "type": "Obligacion",
+            "label": "Incluir ganancias de activos no corrientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluyen ganancias que produzcan los activos no corrientes y grupos de activos mantenidos para la venta que no califiquen como operaciones discontinuadas en …"
+          },
+          {
+            "id": "Obligacion_ganancias_por_ventas_relacionadas_con_operaciones_de_titulizacion_se_computaran__ff226e",
+            "type": "Obligacion",
+            "label": "Deducción neta de ganancias por titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Ganancias por ventas relacionadas con operaciones de titulización se computarán en la medida que subsista el riesgo de crédito y en la proporción en que se mant…"
+          },
+          {
+            "id": "Sujeto_propuesto_inversores_y_tenedores_de_titulizacion",
+            "type": "Sujeto",
+            "label": "Inversores y tenedores de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: propuesto; cuarentena: True; padre_sugerido: Sujeto_contraparte"
+          },
+          {
+            "id": "Obligacion_se_incluiran_las_ganancias_por_ventas_resultantes_de_operaciones_de_titulizacion_643e99",
+            "type": "Obligacion",
+            "label": "Informar ganancias por operaciones de titulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se incluirán las ganancias por ventas resultantes de operaciones de titulización (deberán computarse cuando no se cumpla con los requisitos vinculados con opcio…"
+          },
+          {
+            "id": "Restriccion_escasa_capacidad_de_ganancias_la_proyeccion_del_flujo_de_fondos_muestra_un_progr_0151fc",
+            "type": "Restriccion",
+            "label": "Escasa capacidad de ganancias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Escasa capacidad de ganancias. La proyección del flujo de fondos muestra un progresivo deterioro y una alta sensibilidad a modificaciones menores y previsibles …"
+          },
+          {
+            "id": "Obligacion_deduccion_de_ganancia_por_venta_de_capital_ordinario_b365e8",
+            "type": "Obligacion",
+            "label": "Deducción de ganancia por venta de capital ordinario",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La entidad financiera deberá deducir del capital ordinario de nivel uno (CO n1) el importe total en concepto de ganancia por venta resultante de la operación de…"
+          },
+          {
+            "id": "Obligacion_se_trata_de_utilidades_distribuibles_obtenidas_a_partir_de_ganancias_realizadas__76b32e",
+            "type": "Obligacion",
+            "label": "Verificar ganancias realizadas en estados contables anuales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se trata de utilidades distribuibles obtenidas a partir de ganancias realizadas en estados contables anuales regulares y auditados de ejercicios iniciados a par…"
+          },
+          {
+            "id": "Restriccion_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_presunta_neto_de__c8586e",
+            "type": "Restriccion",
+            "label": "Deducción saldos a favor impuesto ganancia",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Saldo a favor por aplicación del impuesto a la ganancia mínima presunta –neto de previsiones– que excedan el 10 % del PNb correspondiente al mes anterior y sald…"
+          },
+          {
+            "id": "Obligacion_comprende_el_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_pres_16ac80",
+            "type": "Obligacion",
+            "label": "Informar saldo impuesto ganancia mínima presunta",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Comprende el saldo a favor por aplicación del impuesto a la ganancia mínima presunta -neto de las previsiones- que exceda el 10% del patrimonio neto básico corr…"
+          },
+          {
+            "id": "Restriccion_el_saldo_a_favor_por_aplicacion_del_impuesto_a_la_ganancia_minima_presunta_se_in_8cb19e",
+            "type": "Restriccion",
+            "label": "Límite saldo favor impuesto ganancia mínima presunta",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "El saldo a favor por aplicación del impuesto a la ganancia mínima presunta se incluirá solamente si excede el 10% del patrimonio neto básico."
+          }
+        ]
+      },
+      "output_chars": 3905,
+      "latency_tool_s": 0.0014
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAghZf86uE4cyX4dBtFr",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre el comprobante de operación de moneda extranjera, el código de concepto para ganancias repartidas por BOPREAL y la cifra que debe anotarse.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01WaUSbohqHmyAAngHbcA4fw",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "comprobante operación moneda extranjera cliente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Ci3YVokJSWHb4u8ZBvSPrJ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "código concepto ganancias BOPREAL tenedores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01XqxBdVqw3UDeVAL5p9SBcB",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "BOPREAL ganancias repartidas títulos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1662,
+          "output_tokens": 268,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAghhnGgk5jy3a4wWpNF",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre comprobantes de operación de moneda extranjera y códigos de concepto para BOPREAL:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Xnh4w4j85XMpi325JbEnsw",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "comprobante operación moneda extranjera cifra monto",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Ppe9VNjYtH5eJkuKi7oiQW",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "código concepto B BOPREAL ganancias repartidas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5801
+          },
+          "cache_creation_input_tokens": 5801,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 190,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAghr1sofTBvxyJGY56N",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el nodo sobre el boleto de venta de cambio para BOPREAL y buscar más específicamente sobre códigos de concepto para ganancias repartidas:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_019beEQHRYhNAxu8KqKQynLD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_boleto_de_venta_de_cambio_para_bopreal_90d44f"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_018jpvJbyMt8g3dSNoHc4sng",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "B27 ganancias repartidas entrega títulos BOPREAL tenedores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2773
+          },
+          "cache_creation_input_tokens": 2773,
+          "cache_read_input_tokens": 5801,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 199,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAghzi1DtJ1thqGrTsM1",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre comprobantes de operación de moneda extranjera a favor del cliente y códigos de concepto B27:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01TLK8gomZATzCPDGL6ZVmGh",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "comprobante operación moneda extranjera favor cliente código concepto",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01LeyTa5Di7FBFRoWRfZ3GUm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "B27 registro ganancias repartidas",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1705
+          },
+          "cache_creation_input_tokens": 1705,
+          "cache_read_input_tokens": 8574,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 188,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAgi9cnZu1Rh6VjSDNcH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar directamente sobre comprobantes de operación de cambios y códigos de concepto específicos:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01EJJmBCWzjPx6rKfXAfacrr",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "comprobante operación cambios cliente cifra anotar",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_018UqyBKuKygwg9iG5bWTjtc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "código concepto B27 BOPREAL tenedores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2828
+          },
+          "cache_creation_input_tokens": 2828,
+          "cache_read_input_tokens": 10279,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 181,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAgiJhjKCFKWUNDcPsv6",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver la obligación sobre realizar boleto de venta de cambio y buscar específicamente sobre ganancias repartidas por BOPREAL:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01AEJzrHSrVM4dKtE5tYzx2c",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_862063"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Q7XyxLXJzqivrXjzRXtBiZ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "ganancias repartidas entrega títulos BOPREAL tenedores valor nominal",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2635
+          },
+          "cache_creation_input_tokens": 2635,
+          "cache_read_input_tokens": 13107,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 205,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAgiU7H7WdpoxkeGzZZY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre comprobantes de operación de moneda extranjera a favor del cliente y el código B27:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01UxG2EYHNUhJWxQ11DrCmRX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "comprobante operación moneda extranjera a favor cliente entidad emitir",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01D3TbwmepNMuopiTfz68kVa",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "B27 ganancias repartidas tenedores BOPREAL",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1732
+          },
+          "cache_creation_input_tokens": 1732,
+          "cache_read_input_tokens": 15742,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 194,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAgidb3LTnhzzy1GJ5Cd",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Basándome en la información recolectada del Knowledge Graph, no he encontrado evidencia específica sobre:\n\n1. Un comprobante de operación de moneda extranjera a favor del cliente que use un código de concepto específico para \"ganancias repartidas por la entrega de títulos BOPREAL a los tenedores\"\n2. La cifra exacta que debe anotarse en ese comprobante\n\nHe encontrado referencias a:\n- Boletos de venta de cambio para BOPREAL (código B26 para importaciones)\n- Obligaciones de realizar boletos de venta de cambio consignando \"el valor nominal en moneda extranjera de bonos BOPREAL adjudicado\"\n- Pero no he localizado un código B27 específico para \"ganancias repartidas\" ni la cifra correspondiente\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph información específica sobre qué cifra debe anotarse en un comprobante de operación de moneda extranjera a favor del cliente cuando se utiliza el código de concepto que identifica el registro de ganancias repartidas por la entrega de títulos BOPREAL a los tenedores. Si bien se encontraron referencias a boletos de venta de cambio para BOPREAL que consignan el valor nominal en moneda extranjera, no se localizó la regulación específica sobre el código de concepto para ganancias repartidas ni la cifra que debe anotarse en ese caso.\",\n  \"citas\": [],\n  \"respondible\": false\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2871
+          },
+          "cache_creation_input_tokens": 2871,
+          "cache_read_input_tokens": 17474,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 379,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,704 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C10_bm25_v1",
+    "celda_id": "C10_bm25_v1",
+    "retriever": "bm25",
+    "tools": "v1",
+    "es_control": false,
+    "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+    "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+    "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C10_bm25_v1",
+      "system_prompt_sha256": "8e80984bffe5047e2c0e3c608a1acfac89fb19ffa6c98ddc08ca12cd7ff72e7e",
+      "tools_specs_sha256": "22f07517c32a63ed7792cbefb0a4a6515cf6b4bc788ca49776135131fbdbccb2",
+      "celda_archivo_sha256": "41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "EA-011::antilexica",
+    "sample_id": "EA-011",
+    "variante": "antilexica",
+    "estrato": "E-A",
+    "sub_estrato": null,
+    "pos_orden": 50,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:34:00",
+    "timestamp_fin": "2026-08-18T14:34:10",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+41881363348a8c14f045e350e01cf8ee5213ebc08474072142abd9ba1868c919|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 5
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.01463,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "¿En qué clase de contratos financieros corresponde calcular el valor promedio, ponderado por el paso del tiempo, del monto de referencia durante lo que resta hasta el vencimiento del contrato?",
+  "trace": {
+    "qid": "EA-011::antilexica",
+    "question": "¿En qué clase de contratos financieros corresponde calcular el valor promedio, ponderado por el paso del tiempo, del monto de referencia durante lo que resta hasta el vencimiento del contrato?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "valor promedio ponderado monto referencia vencimiento contrato",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"valor promedio ponderado monto referencia vencimiento contrato\", \"total_con_match\": 734, \"resultados\": [{\"id\": \"Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce\", \"type\": \"Obligacion\", \"label\": \"Calcular promedio ponderado por tiempo de nocional\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual de…\"}, {\"id\": \"Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803\", \"type\": \"Restriccion\", \"label\": \"Coincidencia exacta de obligación de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …\"}, {\"id\": \"Restriccion_los_titulos_valores_deben_tener_vida_promedio_no_inferior_a_1_un_ano_considerand_8eb670\", \"type\": \"Restriccion\", \"label\": \"Vida promedio mínima 1 año títulos valores\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Los títulos valores deben tener vida promedio no inferior a 1 (… [+2801 chars]",
+        "output_chars": 4001
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "promedio ponderado tiempo monto referencia",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"promedio ponderado tiempo monto referencia\", \"total_con_match\": 331, \"resultados\": [{\"id\": \"Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce\", \"type\": \"Obligacion\", \"label\": \"Calcular promedio ponderado por tiempo de nocional\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual de…\"}, {\"id\": \"Excepcion_excepcion_a_promedio_ponderado_de_nocional_a28d13\", \"type\": \"Excepcion\", \"label\": \"Excepción a promedio ponderado de nocional\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Esta regla no será aplicable a operaciones en las que el nocional varía debido a cambios en los precios, tales como los derivados FX y sobre acciones o 'commodi…\"}, {\"id\": \"Operacion_calculo_de_ponderador_de_riesgo_promedio_790b10\", \"type\": \"Operacion\", \"label\": \"Cálculo de ponderador de riesgo promedio\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Calcular el ponderador de riesgo promedio del fondo (PR Prom fondo) dividiendo el total de activos ponderados por riesgo por el total de activos del fondo\"}, {\"id\": \"Restriccio… [+2505 chars]",
+        "output_chars": 3705
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce\", \"type\": \"Obligacion\", \"label\": \"Calcular promedio ponderado por tiempo de nocional\", \"properties\": {\"tipo\": \"calculo\", \"description\": \"Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual del instrumento.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}",
+        "output_chars": 576
+      },
+      {
+        "n": 4,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce\", \"label\": \"Calcular promedio ponderado por tiempo de nocional\", \"n_salientes_total\": 3, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2\", \"vecino_label\": \"Derivados de tasa e interés o crédito\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}, {\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_alcance_capmin\", \"vecino_label\": \"Entidades alcanzadas (Capitales Mínimos)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}], \"salientes_truncado\": false, … [+403 chars]",
+        "output_chars": 1603
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2"
+        },
+        "output_truncado": "{\"id\": \"Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2\", \"type\": \"Operacion\", \"label\": \"Derivados de tasa e interés o crédito\", \"properties\": {\"tipo\": \"derivado\", \"description\": \"Derivados de tasa de interés o crédito con nocionales variables, tales como 'swaps' de nocional variable ('amortising swaps' y 'accreting swaps').\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"}]}",
+        "output_chars": 521
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1631,
+        "output_tokens": 179,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.818
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 121,
+        "cache_read": 0,
+        "cache_write": 4479,
+        "latency_s": 1.72
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 134,
+        "cache_read": 4479,
+        "cache_write": 317,
+        "latency_s": 2.508
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 127,
+        "cache_read": 4796,
+        "cache_write": 738,
+        "latency_s": 1.399
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 274,
+        "cache_read": 5534,
+        "cache_write": 323,
+        "latency_s": 2.677
+      }
+    ],
+    "final_json": {
+      "respuesta": "El cálculo del valor promedio, ponderado por el paso del tiempo, del monto de referencia (nocional) durante lo que resta hasta el vencimiento del contrato corresponde a derivados de tasa de interés o crédito con nocionales variables, tales como swaps de nocional variable (amortising swaps y accreting swaps).",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Perfecto. Tengo la información completa. La obligación de calcular el valor promedio ponderado por el tiempo del monto de referencia (nocional) durante la vida residual del contrato corresponde a **derivados de tasa de interés o crédito** con nocionales variables, específicamente swaps de nocional variable (amortising swaps y accreting swaps).\n\n```json\n{\n  \"respuesta\": \"El cálculo del valor promedio, ponderado por el paso del tiempo, del monto de referencia (nocional) durante lo que resta hasta el vencimiento del contrato corresponde a derivados de tasa de interés o crédito con nocionales variables, tales como swaps de nocional variable (amortising swaps y accreting swaps).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 5,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1653,
+    "tokens_out": 835,
+    "cache_read": 14809,
+    "cache_write": 5857,
+    "cost_usd": 0.01463,
+    "latency_s": 10.268,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "valor promedio ponderado monto referencia vencimiento contrato",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "valor promedio ponderado monto referencia vencimiento contrato",
+        "total_con_match": 734,
+        "resultados": [
+          {
+            "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+            "type": "Obligacion",
+            "label": "Calcular promedio ponderado por tiempo de nocional",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual de…"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Restriccion_los_titulos_valores_deben_tener_vida_promedio_no_inferior_a_1_un_ano_considerand_8eb670",
+            "type": "Restriccion",
+            "label": "Vida promedio mínima 1 año títulos valores",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los títulos valores deben tener vida promedio no inferior a 1 (un) año considerando los vencimientos de capital e intereses."
+          },
+          {
+            "id": "Restriccion_monto_de_garantia_no_supera_valor_de_exportaciones_538473",
+            "type": "Restriccion",
+            "label": "Monto de garantía no supera valor de exportaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto de la garantía que otorga la entidad financiera local no supera el valor de las exportaciones de bienes y/o servicios que realizará el residente a part…"
+          },
+          {
+            "id": "Excepcion_excepcion_a_promedio_ponderado_de_nocional_a28d13",
+            "type": "Excepcion",
+            "label": "Excepción a promedio ponderado de nocional",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Esta regla no será aplicable a operaciones en las que el nocional varía debido a cambios en los precios, tales como los derivados FX y sobre acciones o 'commodi…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_b70afd",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos de capital en precancelación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo endeudamiento en ningún momento podrá superar, hasta la fecha de vencimiento de la deuda que se canc…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_084cb6",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos de capital en refinanciación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo endeudamiento en ningún momento, hasta la fecha de vencimiento de la deuda que se cancela, podrá sup…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_en_ningun_momento_superara_el__2b26d8",
+            "type": "Restriccion",
+            "label": "Límite vencimientos de capital acumulados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital en ningún momento superará el monto que surge de computar el equivalente a un quinto del valor total del capit…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_titulo_de_deuda_en_n_77e2bd",
+            "type": "Restriccion",
+            "label": "Límite de vencimientos acumulados del nuevo título",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto acumulado de los vencimientos de capital del nuevo título de deuda en ningún momento, hasta la fecha de vencimiento de la deuda que se cancela, podrá s…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          }
+        ]
+      },
+      "output_chars": 4001,
+      "latency_tool_s": 0.0803
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "promedio ponderado tiempo monto referencia",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "promedio ponderado tiempo monto referencia",
+        "total_con_match": 331,
+        "resultados": [
+          {
+            "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+            "type": "Obligacion",
+            "label": "Calcular promedio ponderado por tiempo de nocional",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual de…"
+          },
+          {
+            "id": "Excepcion_excepcion_a_promedio_ponderado_de_nocional_a28d13",
+            "type": "Excepcion",
+            "label": "Excepción a promedio ponderado de nocional",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Esta regla no será aplicable a operaciones en las que el nocional varía debido a cambios en los precios, tales como los derivados FX y sobre acciones o 'commodi…"
+          },
+          {
+            "id": "Operacion_calculo_de_ponderador_de_riesgo_promedio_790b10",
+            "type": "Operacion",
+            "label": "Cálculo de ponderador de riesgo promedio",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Calcular el ponderador de riesgo promedio del fondo (PR Prom fondo) dividiendo el total de activos ponderados por riesgo por el total de activos del fondo"
+          },
+          {
+            "id": "Restriccion_coinciden_exactamente_la_obligacion_de_referencia_el_plazo_de_vencimiento_de_la__993803",
+            "type": "Restriccion",
+            "label": "Coincidencia exacta de obligación de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Coinciden exactamente la obligación de referencia, el plazo de vencimiento de la obligación de referencia y del derivado de crédito y la moneda de denominación …"
+          },
+          {
+            "id": "Restriccion_las_tasas_de_interes_o_de_descuento_de_referencia_deberan_ser_tasas_de_interes_d_77d5aa",
+            "type": "Restriccion",
+            "label": "Tasas de interés de referencia de mercado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las tasas de interés o de descuento de referencia deberán ser tasas de interés de mercado y de fácil consulta, evitándose referencias a fórmulas complejas o der…"
+          },
+          {
+            "id": "Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb",
+            "type": "Operacion",
+            "label": "Cálculo de activos ponderados por riesgo",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Calcular el total de los activos ponderados por riesgo del fondo (APR fondo) en función del LTA o del MBA"
+          },
+          {
+            "id": "Operacion_calculo_de_activo_ponderado_por_riesgo_b8fb4e",
+            "type": "Operacion",
+            "label": "Cálculo de activo ponderado por riesgo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El activo ponderado por riesgo correspondiente a una posición de titulización se calculará multiplicando el importe de la posición por el ponderador de riesgo c…"
+          },
+          {
+            "id": "Obligacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412",
+            "type": "Obligacion",
+            "label": "Cálculo de tipos de cambio minoristas de referencia",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se podrá consultar los tipos de cambio minoristas de referencia (TCMR) comprador y vendedor, calculados por el BCRA a partir de los valores informados."
+          },
+          {
+            "id": "Restriccion_la_vida_promedio_del_nuevo_endeudamiento_sea_mayor_a_la_vida_promedio_remanente__ec39a1",
+            "type": "Restriccion",
+            "label": "Vida promedio mínima del nuevo endeudamiento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La vida promedio del nuevo endeudamiento sea mayor a la vida promedio remanente del título de deuda que se precancela."
+          },
+          {
+            "id": "Restriccion_vida_promedio_minima_en_refinanciacion_470437",
+            "type": "Restriccion",
+            "label": "Vida promedio mínima en refinanciación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El nuevo endeudamiento con el exterior debe tener una vida promedio de 2 (dos) años mayor a la vida promedio remanente del capital refinanciado."
+          }
+        ]
+      },
+      "output_chars": 3705,
+      "latency_tool_s": 0.0039
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce"
+      },
+      "output": {
+        "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+        "type": "Obligacion",
+        "label": "Calcular promedio ponderado por tiempo de nocional",
+        "properties": {
+          "tipo": "calculo",
+          "description": "Para derivados de tasa de interés o crédito con nocionales variables, se empleará el promedio, ponderado por el tiempo, del nocional durante la vida residual del instrumento."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 576,
+      "latency_tool_s": 0.0038
+    },
+    {
+      "n": 4,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+        "label": "Calcular promedio ponderado por tiempo de nocional",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 1,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2",
+            "vecino_label": "Derivados de tasa e interés o crédito",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          },
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_alcance_capmin",
+            "vecino_label": "Entidades alcanzadas (Capitales Mínimos)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "exceptua_obligacion",
+            "vecino_id": "Excepcion_excepcion_a_promedio_ponderado_de_nocional_a28d13",
+            "vecino_label": "Excepción a promedio ponderado de nocional",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 1603,
+      "latency_tool_s": 0.0313
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2"
+      },
+      "output": {
+        "id": "Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2",
+        "type": "Operacion",
+        "label": "Derivados de tasa e interés o crédito",
+        "properties": {
+          "tipo": "derivado",
+          "description": "Derivados de tasa de interés o crédito con nocionales variables, tales como 'swaps' de nocional variable ('amortising swaps' y 'accreting swaps')."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 521,
+      "latency_tool_s": 0.0247
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAhExzgbUyWgmZbA6sUc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre cálculos de valor promedio ponderado en contratos financieros.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Kp4nwZwADaSgGzikGNbt5V",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "valor promedio ponderado monto referencia vencimiento contrato",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01LQ2vdYyykDN7YJDjzj1kv6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "promedio ponderado tiempo monto referencia",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1631,
+          "output_tokens": 179,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAhF72dDNP3sP5ZyDfXH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. El primer resultado es muy relevante. Voy a ver el nodo completo sobre el cálculo de promedio ponderado por tiempo de nocional.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Sq2E3RfAAoZ6oX1VSS3Z89",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4479
+          },
+          "cache_creation_input_tokens": 4479,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 121,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAhFGUQVCMRBbxeNg6Hs",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a explorar las relaciones de este nodo para entender mejor a qué clase de contratos se aplica.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01XWeCXiupToukWbEDEJN2Rf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_calcular_promedio_ponderado_por_tiempo_de_nocional_8e07ce",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 317
+          },
+          "cache_creation_input_tokens": 317,
+          "cache_read_input_tokens": 4479,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 134,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAhFRuSJ3PtEZW4eS79C",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Veo que la obligación regula \"Derivados de tasa e interés o crédito\". Voy a ver ese nodo para confirmar la clase de contratos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_016yyt3bxMtppAE6odURh5Fy",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_derivados_de_tasa_e_interes_o_credito_6e74e2"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 738
+          },
+          "cache_creation_input_tokens": 738,
+          "cache_read_input_tokens": 4796,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 127,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAhFZ2pAVpBmCQjy6cCH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la información completa. La obligación de calcular el valor promedio ponderado por el tiempo del monto de referencia (nocional) durante la vida residual del contrato corresponde a **derivados de tasa de interés o crédito** con nocionales variables, específicamente swaps de nocional variable (amortising swaps y accreting swaps).\n\n```json\n{\n  \"respuesta\": \"El cálculo del valor promedio, ponderado por el paso del tiempo, del monto de referencia (nocional) durante lo que resta hasta el vencimiento del contrato corresponde a derivados de tasa de interés o crédito con nocionales variables, tales como swaps de nocional variable (amortising swaps y accreting swaps).\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 4)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 323
+          },
+          "cache_creation_input_tokens": 323,
+          "cache_read_input_tokens": 5534,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 274,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

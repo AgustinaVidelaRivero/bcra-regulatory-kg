@@ -1,0 +1,1806 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C00_booleano_v1",
+    "celda_id": "C00_booleano_v1",
+    "retriever": "booleano",
+    "tools": "v1",
+    "es_control": true,
+    "system_prompt_sha256": "001a5eee6fedbdba5c343aa783e1918f8cdf08eafb48fb5d0080ab7eb2c956de",
+    "tools_specs_sha256": "3f2e3263ca72ce009dd19b666733eb6c6edc4baf3542805698a7e4f7de03501e",
+    "celda_archivo_sha256": "029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "booleano",
+      "modo_busqueda": "paridad",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C00_booleano_v1",
+      "system_prompt_sha256": "001a5eee6fedbdba5c343aa783e1918f8cdf08eafb48fb5d0080ab7eb2c956de",
+      "tools_specs_sha256": "3f2e3263ca72ce009dd19b666733eb6c6edc4baf3542805698a7e4f7de03501e",
+      "celda_archivo_sha256": "029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "EB-013::antilexica",
+    "sample_id": "EB-013",
+    "variante": "antilexica",
+    "estrato": "E-B",
+    "sub_estrato": "entrante",
+    "pos_orden": 42,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:04:10",
+    "timestamp_fin": "2026-08-18T14:04:31",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.039266,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "En el cálculo del monto de referencia de una operación con pagos múltiples y condicionados a un estado o situación (por ejemplo, opciones digitales), donde hay que determinar el monto de referencia de cada estado posible eligiendo el más alto, ¿cómo se resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando dicho monto surge de un cálculo basado en precios o cotizaciones vigentes en el ámbito financiero?",
+  "trace": {
+    "qid": "EB-013::antilexica",
+    "question": "En el cálculo del monto de referencia de una operación con pagos múltiples y condicionados a un estado o situación (por ejemplo, opciones digitales), donde hay que determinar el monto de referencia de cada estado posible eligiendo el más alto, ¿cómo se resuelve el caso particular de operaciones cuyo monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando dicho monto surge de un cálculo basado en precios o cotizaciones vigentes en el ámbito financiero?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto de referencia operaciones pagos múltiples condicionados\", \"total_con_match\": 3012, \"resultados\": [{\"id\": \"Restriccion_el_total_de_pagos_realizados_con_imputacion_a_la_oficializacion_de_importacion_n_657617\", \"type\": \"Restriccion\", \"label\": \"Limite monto pagos a facturado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El total de pagos realizados con imputación a la oficialización de importación no puede superar el monto facturado en condición de compra pactada\"}, {\"id\": \"Restriccion_ponderador_de_1250_aplicable_al_monto_equivalente_al_valor_transferido_mas_costo_e15d2b\", \"type\": \"Restriccion\", \"label\": \"Ponderador mínimo operaciones no DvP\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Ponderador de 1250% aplicable al monto equivalente al valor transferido más costo de reposición para operaciones no DvP incumplidas después de quinto día hábil\"}, {\"id\": \"Restriccion_controlar_que_el_monto_de_los_pagos_y_otros_movimientos_registrados_con_imputaci_382d38\", \"type\": \"Restriccion\", \"label\": \"Límite monto pagos no superior facturado\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Controlar que el monto de los pagos y otros movimientos registrados con imputación… [+2573 chars]",
+        "output_chars": 3773
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia opciones digitales precios cotizaciones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia opciones digitales precios cotizaciones\", \"total_con_match\": 120, \"resultados\": [{\"id\": \"Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa\", \"type\": \"Obligacion\", \"label\": \"Deducir certificaciones cuarto trimestre 2022\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…\"}, {\"id\": \"Operacion_compra_de_opciones_0f6162\", \"type\": \"Operacion\", \"label\": \"Compra de opciones\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: compra de opciones\"}, {\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_el_valor_de_mercado_no_supere_el_5_de__072e2a\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Las entidades que sólo compren opciones y el valor de mercado no supere el 5% de RPC del mes anterior, o cuyas posiciones en opciones vendidas estén cubiertas p…\"}, {\"id\": \"Restriccion_limite_monto_por_permiso_1cf37a\", \"type\": \"Restriccion\", \"label\": \"Límite monto por permiso\", \"tokens_matcheado… [+2124 chars]",
+        "output_chars": 3324
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia no invariable vencimiento cálculo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia no invariable vencimiento cálculo\", \"total_con_match\": 655, \"resultados\": [{\"id\": \"Excepcion_no_aplica_requisito_de_no_pago_anterior_a_vencimiento_cuando_cliente_es_vpu_adhe_42201a\", \"type\": \"Excepcion\", \"label\": \"Excepción para VPU RIGI\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No aplica requisito de no pago anterior a vencimiento cuando cliente es VPU adherido a RIGI y se cancelan financiaciones comerciales según punto 14.2.1\"}, {\"id\": \"Operacion_calculo_de_monto_alcanzado_b506e3\", \"type\": \"Operacion\", \"label\": \"Cálculo de monto alcanzado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: calculo de monto de exportación\"}, {\"id\": \"Restriccion_el_pago_no_se_realiza_con_anterioridad_a_la_fecha_de_vencimiento_de_la_obligacio_f5a490\", \"type\": \"Restriccion\", \"label\": \"Pago no anterior a vencimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior\"}, {\"id\": \"Operacion_calculo_de_plazo_de_vencimiento_0d8e97\", \"type\": \"Operacion\", \"label\": \"Cálculo de plazo de vencimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cálculo del mayor pl… [+2260 chars]",
+        "output_chars": 3460
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia estado situación máximo elegir",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia estado situación máximo elegir\", \"total_con_match\": 139, \"resultados\": [{\"id\": \"Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4\", \"type\": \"Restriccion\", \"label\": \"Límite de importe de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio\"}, {\"id\": \"Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac\", \"type\": \"Restriccion\", \"label\": \"Monto máximo de suscripción BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios\"}, {\"id\": \"Obligacion_calcular_monto_maximo_de_certificaciones_675c62\", \"type\": \"Obligacion\", \"label\": \"Calcular monto máximo de certificaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo … [+2223 chars]",
+        "output_chars": 3423
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia derivados opciones valor intrínseco",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia derivados opciones valor intrínseco\", \"total_con_match\": 227, \"resultados\": [{\"id\": \"Obligacion_las_entidades_que_solo_compren_opciones_y_el_valor_de_mercado_no_supere_el_5_de__072e2a\", \"type\": \"Obligacion\", \"label\": \"Usar método simplificado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades que sólo compren opciones y el valor de mercado no supere el 5% de RPC del mes anterior, o cuyas posiciones en opciones vendidas estén cubiertas p…\"}, {\"id\": \"Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4\", \"type\": \"Restriccion\", \"label\": \"Límite de importe de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio\"}, {\"id\": \"Restriccion_las_entidades_que_solo_compren_opciones_no_podran_superar_el_5_del_valor_de_merc_bdc212\", \"type\": \"Restriccion\", \"label\": \"Límite valor opciones compradas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las entidades que sólo compren opciones no podrán superar el 5% del valor de mercado de la totalidad de opciones en ca… [+2653 chars]",
+        "output_chars": 3853
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b\", \"type\": \"Obligacion\", \"label\": \"Considerar valor intrínseco cero\", \"properties\": {\"descripcion\": \"Si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero\", \"tipo\": \"otra\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"}]}",
+        "output_chars": 518
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia máximo posible escenarios estados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia máximo posible escenarios estados\", \"total_con_match\": 117, \"resultados\": [{\"id\": \"Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4\", \"type\": \"Restriccion\", \"label\": \"Límite de importe de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio\"}, {\"id\": \"Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac\", \"type\": \"Restriccion\", \"label\": \"Monto máximo de suscripción BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios\"}, {\"id\": \"Obligacion_calcular_monto_maximo_de_certificaciones_675c62\", \"type\": \"Obligacion\", \"label\": \"Calcular monto máximo de certificaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómpu… [+2305 chars]",
+        "output_chars": 3505
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia exposición máxima posible derivados",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia exposición máxima posible derivados\", \"total_con_match\": 239, \"resultados\": [{\"id\": \"Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular_af5ab4\", \"type\": \"Restriccion\", \"label\": \"Límite de exposición a deudor individual\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones…\"}, {\"id\": \"Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb\", \"type\": \"Restriccion\", \"label\": \"Límite exposición máxima por contraparte\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La exposición máxima frente a una misma contraparte individual no deberá superar, al momento del acuerdo, los límites especificados para personas humanas en car…\"}, {\"id\": \"Obligacion_todos_los_derivados_de_credito_que_hagan_referencia_a_una_misma_entidad_un_unico_ab4f52\", \"type\": \"Obligacion\", \"label\": \"Compensación plena de derivados de crédito\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Todos los derivados de crédito que hagan referencia a una mi… [+2645 chars]",
+        "output_chars": 3845
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "EAD monto referencia cálculo exposición",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"EAD monto referencia cálculo exposición\", \"total_con_match\": 303, \"resultados\": [{\"id\": \"Operacion_calculo_de_exposicion_ead_de_miembro_caf9ee\", \"type\": \"Operacion\", \"label\": \"Cálculo de exposición (EAD) de miembro\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Calcular el valor de la exposición del miembro compensador, incluyendo operaciones propias, operaciones de clientes garantizadas, activos en garantía y aportes …\"}, {\"id\": \"Operacion_calculo_de_ead_para_sft_9da1b2\", \"type\": \"Operacion\", \"label\": \"Cálculo de EAD para SFT\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para operaciones de financiamiento de valores (SFT), calcular EAD mediante fórmula: máx. (EBRM_i – IM_i – DF_i; 0)\"}, {\"id\": \"Operacion_calculo_de_monto_alcanzado_b506e3\", \"type\": \"Operacion\", \"label\": \"Cálculo de monto alcanzado\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: calculo de monto de exportación\"}, {\"id\": \"Operacion_calculo_de_ead_para_derivados_d7eece\", \"type\": \"Operacion\", \"label\": \"Cálculo de EAD para derivados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador… [+1754 chars]",
+        "output_chars": 2954
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_ead_para_derivados_d7eece"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_ead_para_derivados_d7eece\", \"type\": \"Operacion\", \"label\": \"Cálculo de EAD para derivados\", \"properties\": {\"tipo\": \"cálculo de exposición\", \"description\": \"Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador, utilizando MPOR de 10 días para exposición potencial futura\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 4)\"}]}",
+        "output_chars": 544
+      },
+      {
+        "n": 11,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_ead_para_derivados_d7eece\", \"label\": \"Cálculo de EAD para derivados\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 4)\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 506
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "monto referencia máximo escenario futuro posible",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"monto referencia máximo escenario futuro posible\", \"total_con_match\": 116, \"resultados\": [{\"id\": \"Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4\", \"type\": \"Restriccion\", \"label\": \"Límite de importe de referencia\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio\"}, {\"id\": \"Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac\", \"type\": \"Restriccion\", \"label\": \"Monto máximo de suscripción BOPREAL\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios\"}, {\"id\": \"Obligacion_calcular_monto_maximo_de_certificaciones_675c62\", \"type\": \"Obligacion\", \"label\": \"Calcular monto máximo de certificaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo… [+2303 chars]",
+        "output_chars": 3503
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "exposición potencial futura EPF derivados cálculo",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"exposición potencial futura EPF derivados cálculo\", \"total_con_match\": 301, \"resultados\": [{\"id\": \"Operacion_calculo_exposicion_potencial_futura_8c2f6e\", \"type\": \"Operacion\", \"label\": \"Cálculo exposición potencial futura\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Cálculo de la EPF de acuerdo con el método de Exposición Potencial Futura\"}, {\"id\": \"Operacion_calculo_de_epf_bdb9d5\", \"type\": \"Operacion\", \"label\": \"Cálculo de EPF\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Determinación de la exposición potencial futura mediante producto de multiplicador y adicional total\"}, {\"id\": \"Operacion_calculo_de_adicional_epf_36825c\", \"type\": \"Operacion\", \"label\": \"Cálculo de adicional EPF\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Cálculo de exigencia de capital por exposición potencial futura (EPF)\"}, {\"id\": \"Operacion_calculo_de_ead_para_derivados_d7eece\", \"type\": \"Operacion\", \"label\": \"Cálculo de EAD para derivados\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador, utilizando MPOR de 10 días para exposición pote…\"}, {\"id\": \"Operacion_ca… [+1694 chars]",
+        "output_chars": 2894
+      },
+      {
+        "n": 14,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_exposicion_potencial_futura_8c2f6e\", \"type\": \"Operacion\", \"label\": \"Cálculo exposición potencial futura\", \"properties\": {\"tipo\": \"Cálculo\", \"description\": \"Cálculo de la EPF de acuerdo con el método de Exposición Potencial Futura\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 1)\"}]}",
+        "output_chars": 443
+      },
+      {
+        "n": 15,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_calculo_de_epf_bdb9d5"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_de_epf_bdb9d5\", \"type\": \"Operacion\", \"label\": \"Cálculo de EPF\", \"properties\": {\"tipo\": \"Determinación de la exposición potencial futura mediante producto de multiplicador y adicional total\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 2)\"}]}",
+        "output_chars": 402
+      },
+      {
+        "n": 16,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_calculo_exposicion_potencial_futura_8c2f6e\", \"label\": \"Cálculo exposición potencial futura\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 1)\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 518
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1565,
+        "output_tokens": 281,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.9
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 202,
+        "cache_read": 0,
+        "cache_write": 5670,
+        "latency_s": 2.187
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 221,
+        "cache_read": 5670,
+        "cache_write": 2793,
+        "latency_s": 2.69
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 192,
+        "cache_read": 8463,
+        "cache_write": 1695,
+        "latency_s": 2.075
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 184,
+        "cache_read": 10158,
+        "cache_write": 2669,
+        "latency_s": 1.948
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 197,
+        "cache_read": 12827,
+        "cache_write": 625,
+        "latency_s": 1.943
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 232,
+        "cache_read": 13452,
+        "cache_write": 2522,
+        "latency_s": 2.478
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 483,
+        "cache_read": 15974,
+        "cache_write": 859,
+        "latency_s": 5.563
+      }
+    ],
+    "final_json": {
+      "respuesta": "No se encontró en el Knowledge Graph una norma específica que resuelva el caso particular de operaciones con pagos múltiples y condicionados (como opciones digitales) donde el monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando surge de cálculos basados en precios o cotizaciones vigentes. La única disposición relacionada establece que si no puede calcularse el valor intrínseco de una opción, debe considerarse cero.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)"
+        }
+      ],
+      "respondible": false
+    },
+    "final_raw": "Basándome en la información recolectada del Knowledge Graph, debo informar que no encontré una norma específica que aborde directamente el caso particular que plantea sobre cómo resolver el cálculo del monto de referencia en operaciones con pagos múltiples y condicionados (como opciones digitales) cuando el monto no está claramente definido o no permanece invariable hasta el vencimiento, y surge de cálculos basados en precios o cotizaciones vigentes.\n\nLo que sí encontré en el grafo es:\n\n1. Una obligación que establece que **si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero** (Punto 6.6 sobre Exigencia de capital por riesgo de posiciones en opciones).\n\n2. Operaciones sobre cálculo de exposición potencial futura (EPF) y EAD para derivados, pero sin especificar cómo se resuelve el caso particular de montos que varían según precios o cotizaciones vigentes en múltiples escenarios.\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph una norma específica que resuelva el caso particular de operaciones con pagos múltiples y condicionados (como opciones digitales) donde el monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando surge de cálculos basados en precios o cotizaciones vigentes. La única disposición relacionada establece que si no puede calcularse el valor intrínseco de una opción, debe considerarse cero.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 16,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 4)"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 1)"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 2)"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1610,
+    "tokens_out": 1992,
+    "cache_read": 66544,
+    "cache_write": 16833,
+    "cost_usd": 0.039266,
+    "latency_s": 21.224,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+        "total_con_match": 3012,
+        "resultados": [
+          {
+            "id": "Restriccion_el_total_de_pagos_realizados_con_imputacion_a_la_oficializacion_de_importacion_n_657617",
+            "type": "Restriccion",
+            "label": "Limite monto pagos a facturado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El total de pagos realizados con imputación a la oficialización de importación no puede superar el monto facturado en condición de compra pactada"
+          },
+          {
+            "id": "Restriccion_ponderador_de_1250_aplicable_al_monto_equivalente_al_valor_transferido_mas_costo_e15d2b",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo operaciones no DvP",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Ponderador de 1250% aplicable al monto equivalente al valor transferido más costo de reposición para operaciones no DvP incumplidas después de quinto día hábil"
+          },
+          {
+            "id": "Restriccion_controlar_que_el_monto_de_los_pagos_y_otros_movimientos_registrados_con_imputaci_382d38",
+            "type": "Restriccion",
+            "label": "Límite monto pagos no superior facturado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Controlar que el monto de los pagos y otros movimientos registrados con imputación al despacho no supere el monto facturado según la condición de compra pactada…"
+          },
+          {
+            "id": "Restriccion_los_pagos_por_deudas_de_bienes_o_servicios_realizados_en_el_marco_de_los_mecanis_e28638",
+            "type": "Restriccion",
+            "label": "Pagos no superen monto declarado en Padrón",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los pagos por deudas de bienes o servicios realizados en el marco de los mecanismos previstos en este punto y/o en el punto 13.4.8., en el conjunto de las entid…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Obligacion_cuando_el_monto_pendiente_de_ingreso_de_las_operaciones_haya_sido_prefinanciado__e293e4",
+            "type": "Obligacion",
+            "label": "Extender plazo para liquidación de financiaciones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cuando el monto pendiente de ingreso de las operaciones haya sido prefinanciado en su totalidad y los fondos liquidados en el mercado de cambios en concepto de …"
+          },
+          {
+            "id": "Obligacion_si_en_monto_total_se_incluyeran_otros_conceptos_que_no_forman_parte_de_condicion_c7a167",
+            "type": "Obligacion",
+            "label": "Elaborar boletos diferenciados si múltiples conceptos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Si en monto total se incluyeran otros conceptos que no forman parte de condición de compra pactada, deberán elaborarse boletos diferenciados con formalidades ha…"
+          },
+          {
+            "id": "Restriccion_la_realizacion_de_operaciones_cambiarias_en_el_exterior_requiere_conformidad_pre_2b3ab7",
+            "type": "Restriccion",
+            "label": "Pagos con conformidad BCRA para operaciones cambiarias",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La realización de operaciones cambiarias en el exterior requiere conformidad previa del BCRA para acceder al mercado de cambios."
+          },
+          {
+            "id": "Operacion_operaciones_por_cobros_y_pagos_de_jubilaciones_y_pensiones_83305b",
+            "type": "Operacion",
+            "label": "Operaciones por cobros y pagos de jubilaciones y pensiones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: transferencias de fondos de jubilaciones y pensiones"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          }
+        ]
+      },
+      "output_chars": 3773,
+      "latency_tool_s": 0.165
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia opciones digitales precios cotizaciones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia opciones digitales precios cotizaciones",
+        "total_con_match": 120,
+        "resultados": [
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Operacion_compra_de_opciones_0f6162",
+            "type": "Operacion",
+            "label": "Compra de opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: compra de opciones"
+          },
+          {
+            "id": "Obligacion_las_entidades_que_solo_compren_opciones_y_el_valor_de_mercado_no_supere_el_5_de__072e2a",
+            "type": "Obligacion",
+            "label": "Usar método simplificado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las entidades que sólo compren opciones y el valor de mercado no supere el 5% de RPC del mes anterior, o cuyas posiciones en opciones vendidas estén cubiertas p…"
+          },
+          {
+            "id": "Restriccion_limite_monto_por_permiso_1cf37a",
+            "type": "Restriccion",
+            "label": "Límite monto por permiso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto aplicado no supere el 20% (veinte por ciento) del monto en divisas que corresponden al permiso de exportación cuyos cobros se aplican"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Operacion_informacion_sobre_opciones_6e87c1",
+            "type": "Operacion",
+            "label": "Información sobre opciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Reporte de información sobre opciones derivadas, incluyendo descripción del activo subyacente, fecha de vencimiento, contraparte, precio de mercado, delta, gamm…"
+          },
+          {
+            "id": "Restriccion_ead_opciones_vendidas_cero_affce9",
+            "type": "Restriccion",
+            "label": "EAD opciones vendidas cero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La EAD de un conjunto de neteo que sólo comprende opciones vendidas podrá ser cero cuando hayan sido cobradas todas las primas y en tanto dichas opciones no est…"
+          },
+          {
+            "id": "Restriccion_los_clientes_podran_suscribir_bonos_por_hasta_la_suma_adeudada_a_la_fecha_de_la__1c240d",
+            "type": "Restriccion",
+            "label": "Límite monto bonos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos por hasta la suma adeudada a la fecha de la suscripción"
+          },
+          {
+            "id": "Obligacion_la_entidad_calculara_el_monto_alcanzado_por_la_obligacion_a_partir_de_la_informa_9f4991",
+            "type": "Obligacion",
+            "label": "Calcular monto de obligación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad calculará el monto alcanzado por la obligación a partir de la información disponible en el sistema SECOEXPO y la documentación comercial aportada por…"
+          },
+          {
+            "id": "Obligacion_el_boleto_de_venta_se_confeccionara_por_el_monto_correspondiente_con_el_codigo_d_7e212d",
+            "type": "Obligacion",
+            "label": "Confección de boleto de venta",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El boleto de venta se confeccionará por el monto correspondiente con el código de concepto para los pagos diferidos de importaciones de bienes de capital o al p…"
+          }
+        ]
+      },
+      "output_chars": 3324,
+      "latency_tool_s": 0.0137
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia no invariable vencimiento cálculo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia no invariable vencimiento cálculo",
+        "total_con_match": 655,
+        "resultados": [
+          {
+            "id": "Excepcion_no_aplica_requisito_de_no_pago_anterior_a_vencimiento_cuando_cliente_es_vpu_adhe_42201a",
+            "type": "Excepcion",
+            "label": "Excepción para VPU RIGI",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No aplica requisito de no pago anterior a vencimiento cuando cliente es VPU adherido a RIGI y se cancelan financiaciones comerciales según punto 14.2.1"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Restriccion_el_pago_no_se_realiza_con_anterioridad_a_la_fecha_de_vencimiento_de_la_obligacio_f5a490",
+            "type": "Restriccion",
+            "label": "Pago no anterior a vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior"
+          },
+          {
+            "id": "Operacion_calculo_de_plazo_de_vencimiento_0d8e97",
+            "type": "Operacion",
+            "label": "Cálculo de plazo de vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo del mayor plazo residual posible antes del cumplimiento"
+          },
+          {
+            "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b",
+            "type": "Obligacion",
+            "label": "Considerar valor intrínseco cero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero"
+          },
+          {
+            "id": "Restriccion_las_acciones_preferidas_no_convertibles_se_excluyen_del_calculo_de_capital_por_r_f1bc5f",
+            "type": "Restriccion",
+            "label": "Exclusión de acciones preferidas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las acciones preferidas no convertibles se excluyen del cálculo de capital por riesgo de posiciones en acciones y se aplica la exigencia por riesgo de tasa de i…"
+          },
+          {
+            "id": "Operacion_calculo_de_k_ccp_no_calificadas_f3e235",
+            "type": "Operacion",
+            "label": "Cálculo de K (CCP no calificadas)",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo de exigencia de capital por exposiciones a CCP que no califican, tratándolas como entidades financieras"
+          },
+          {
+            "id": "Restriccion_plazo_de_vencimiento_original_no_inferior_a_cinco_anos_no_existir_clausulas_de_r_f51f4a",
+            "type": "Restriccion",
+            "label": "Vencimiento mínimo de PNc: 5 años",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Plazo de vencimiento original no inferior a cinco años; no existir cláusulas de remuneración escalonada creciente u otros incentivos para su amortización antici…"
+          },
+          {
+            "id": "Obligacion_en_los_casos_en_los_que_la_entidad_haya_constituido_una_provision_especifica_o_t_212d79",
+            "type": "Obligacion",
+            "label": "Usar monto bruto en cálculo de KSA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En los casos en los que la entidad haya constituido una provisión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al con…"
+          },
+          {
+            "id": "Restriccion_ponderador_de_1250_aplicable_al_monto_equivalente_al_valor_transferido_mas_costo_e15d2b",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo operaciones no DvP",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ponderador de 1250% aplicable al monto equivalente al valor transferido más costo de reposición para operaciones no DvP incumplidas después de quinto día hábil"
+          }
+        ]
+      },
+      "output_chars": 3460,
+      "latency_tool_s": 0.0334
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia estado situación máximo elegir",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia estado situación máximo elegir",
+        "total_con_match": 139,
+        "resultados": [
+          {
+            "id": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4",
+            "type": "Restriccion",
+            "label": "Límite de importe de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Obligacion_calcular_monto_maximo_de_certificaciones_675c62",
+            "type": "Obligacion",
+            "label": "Calcular monto máximo de certificaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo …"
+          },
+          {
+            "id": "Obligacion_constatar_monto_maximo_e_incumplimientos_86f3d1",
+            "type": "Obligacion",
+            "label": "Constatar monto máximo e incumplimientos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad nominada antes de la emisión de cada certificación, deberá constatar en la información suministrada por el BCRA: el monto máximo total que pueden acu…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Operacion_presentacion_de_estado_de_situacion_de_deudores_217505",
+            "type": "Operacion",
+            "label": "Presentación de Estado de situación de deudores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Presentación informativa"
+          },
+          {
+            "id": "Restriccion_limite_monto_por_permiso_1cf37a",
+            "type": "Restriccion",
+            "label": "Límite monto por permiso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto aplicado no supere el 20% (veinte por ciento) del monto en divisas que corresponden al permiso de exportación cuyos cobros se aplican"
+          },
+          {
+            "id": "Restriccion_plazo_maximo_de_garantia_6fc363",
+            "type": "Restriccion",
+            "label": "Plazo máximo de garantía",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El plazo de vigencia de la garantía no excede los 180 (ciento ochenta) días corridos de la fecha de embarque de bienes locales o finalización de la prestación d…"
+          },
+          {
+            "id": "Obligacion_en_los_casos_de_acuerdos_superiores_al_equivalente_a_2_5_veces_el_importe_de_ref_a22f49",
+            "type": "Obligacion",
+            "label": "Plantear situación a SEFyC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En los casos de acuerdos superiores al equivalente a 2,5 veces el importe de referencia establecido en el punto 3.7., la reclasificación inicial del cliente a e…"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          }
+        ]
+      },
+      "output_chars": 3423,
+      "latency_tool_s": 0.0221
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia derivados opciones valor intrínseco",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia derivados opciones valor intrínseco",
+        "total_con_match": 227,
+        "resultados": [
+          {
+            "id": "Obligacion_las_entidades_que_solo_compren_opciones_y_el_valor_de_mercado_no_supere_el_5_de__072e2a",
+            "type": "Obligacion",
+            "label": "Usar método simplificado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades que sólo compren opciones y el valor de mercado no supere el 5% de RPC del mes anterior, o cuyas posiciones en opciones vendidas estén cubiertas p…"
+          },
+          {
+            "id": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4",
+            "type": "Restriccion",
+            "label": "Límite de importe de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio"
+          },
+          {
+            "id": "Restriccion_las_entidades_que_solo_compren_opciones_no_podran_superar_el_5_del_valor_de_merc_bdc212",
+            "type": "Restriccion",
+            "label": "Límite valor opciones compradas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades que sólo compren opciones no podrán superar el 5% del valor de mercado de la totalidad de opciones en cartera respecto a su RPC del mes anterior"
+          },
+          {
+            "id": "Obligacion_cuando_se_trate_de_una_operacion_con_derivados_concertada_en_un_mercado_de_valor_146a5d",
+            "type": "Obligacion",
+            "label": "Aplicar tratamiento derivado OTC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando se trate de una operación con derivados concertada en un mercado de valores y la transacción entre el miembro compensador y la entidad financiera cliente…"
+          },
+          {
+            "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b",
+            "type": "Obligacion",
+            "label": "Considerar valor intrínseco cero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_antes_de_la_emision_de_cada_certificacion_constatar_el_valor_d_725b4d",
+            "type": "Obligacion",
+            "label": "Constatar valor del monto disponible",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad deberá, antes de la emisión de cada certificación, constatar el valor del monto indicado en la información suministrada por el BCRA"
+          },
+          {
+            "id": "Obligacion_se_podra_usar_el_valor_contable_en_el_caso_de_las_opciones_sobre_monedas_no_incl_3e7504",
+            "type": "Obligacion",
+            "label": "Usar valor contable opciones monedas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se podrá usar el valor contable en el caso de las opciones sobre monedas no incluidas en la cartera de negociación"
+          },
+          {
+            "id": "Restriccion_ponderador_de_1250_aplicable_al_monto_equivalente_al_valor_transferido_mas_costo_e15d2b",
+            "type": "Restriccion",
+            "label": "Ponderador mínimo operaciones no DvP",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ponderador de 1250% aplicable al monto equivalente al valor transferido más costo de reposición para operaciones no DvP incumplidas después de quinto día hábil"
+          },
+          {
+            "id": "Obligacion_a_excepcion_de_opciones_sobre_acciones_e_indices_bursatiles_los_restantes_deriva_8dd34a",
+            "type": "Obligacion",
+            "label": "Incluir derivados en cómputo exigencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "A excepción de opciones sobre acciones e índices bursátiles, los restantes derivados sobre acciones y posiciones fuera de balance sensibles a cambios en precios…"
+          },
+          {
+            "id": "Operacion_derivados_con_reformulacion_a_valor_cero_9293cc",
+            "type": "Operacion",
+            "label": "Derivados con reformulación a valor cero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Derivados estructurados de tal manera que en fechas predeterminadas se cancele la exposición vigente y se reformulen las condiciones de modo que el valor razona…"
+          }
+        ]
+      },
+      "output_chars": 3853,
+      "latency_tool_s": 0.0325
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b"
+      },
+      "output": {
+        "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b",
+        "type": "Obligacion",
+        "label": "Considerar valor intrínseco cero",
+        "properties": {
+          "descripcion": "Si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero",
+          "tipo": "otra"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 518,
+      "latency_tool_s": 0.0052
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia máximo posible escenarios estados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia máximo posible escenarios estados",
+        "total_con_match": 117,
+        "resultados": [
+          {
+            "id": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4",
+            "type": "Restriccion",
+            "label": "Límite de importe de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Obligacion_calcular_monto_maximo_de_certificaciones_675c62",
+            "type": "Obligacion",
+            "label": "Calcular monto máximo de certificaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo …"
+          },
+          {
+            "id": "Obligacion_constatar_monto_maximo_e_incumplimientos_86f3d1",
+            "type": "Obligacion",
+            "label": "Constatar monto máximo e incumplimientos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad nominada antes de la emisión de cada certificación, deberá constatar en la información suministrada por el BCRA: el monto máximo total que pueden acu…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Restriccion_limite_monto_por_permiso_1cf37a",
+            "type": "Restriccion",
+            "label": "Límite monto por permiso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto aplicado no supere el 20% (veinte por ciento) del monto en divisas que corresponden al permiso de exportación cuyos cobros se aplican"
+          },
+          {
+            "id": "Restriccion_plazo_maximo_de_garantia_6fc363",
+            "type": "Restriccion",
+            "label": "Plazo máximo de garantía",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El plazo de vigencia de la garantía no excede los 180 (ciento ochenta) días corridos de la fecha de embarque de bienes locales o finalización de la prestación d…"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Restriccion_los_clientes_podran_suscribir_bonos_por_hasta_la_suma_adeudada_a_la_fecha_de_la__1c240d",
+            "type": "Restriccion",
+            "label": "Límite monto bonos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos por hasta la suma adeudada a la fecha de la suscripción"
+          },
+          {
+            "id": "Obligacion_la_entidad_calculara_el_monto_alcanzado_por_la_obligacion_a_partir_de_la_informa_9f4991",
+            "type": "Obligacion",
+            "label": "Calcular monto de obligación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad calculará el monto alcanzado por la obligación a partir de la información disponible en el sistema SECOEXPO y la documentación comercial aportada por…"
+          }
+        ]
+      },
+      "output_chars": 3505,
+      "latency_tool_s": 0.0251
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia exposición máxima posible derivados",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia exposición máxima posible derivados",
+        "total_con_match": 239,
+        "resultados": [
+          {
+            "id": "Restriccion_a_la_fecha_de_corte_el_monto_total_de_las_exposiciones_a_un_deudor_en_particular_af5ab4",
+            "type": "Restriccion",
+            "label": "Límite de exposición a deudor individual",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "A la fecha de corte, el monto total de las exposiciones a un deudor en particular no deberá exceder el 1% del valor agregado del saldo de todas las exposiciones…"
+          },
+          {
+            "id": "Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_61edfb",
+            "type": "Restriccion",
+            "label": "Límite exposición máxima por contraparte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exposición máxima frente a una misma contraparte individual no deberá superar, al momento del acuerdo, los límites especificados para personas humanas en car…"
+          },
+          {
+            "id": "Obligacion_todos_los_derivados_de_credito_que_hagan_referencia_a_una_misma_entidad_un_unico_ab4f52",
+            "type": "Obligacion",
+            "label": "Compensación plena de derivados de crédito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Todos los derivados de crédito que hagan referencia a una misma entidad (un único deudor o un índice) se compensarán plenamente entre sí"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Obligacion_los_derivados_que_hagan_referencia_a_un_indice_de_acciones_se_trataran_como_si_h_4bd06f",
+            "type": "Obligacion",
+            "label": "Trato de índices de acciones como single names",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los derivados que hagan referencia a un índice de acciones se tratarán como si hicieran referencia a entidades determinadas pero con un factor de correlación má…"
+          },
+          {
+            "id": "Restriccion_la_maxima_perdida_posible_se_debera_calcular_para_cada_posicion_individual_1ab262",
+            "type": "Restriccion",
+            "label": "Máxima pérdida cálculo individual por posición",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La máxima pérdida posible se deberá calcular para cada posición individual."
+          },
+          {
+            "id": "Obligacion_cuando_sea_posible_identificar_claramente_el_factor_principal_la_operacion_se_im_b9b5ff",
+            "type": "Obligacion",
+            "label": "Identificar factor de riesgo principal de derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando sea posible identificar claramente el factor principal, la operación se imputará a una de las siguientes clases de activos: tasa de interés, tipo de camb…"
+          },
+          {
+            "id": "Obligacion_se_debera_multiplicar_la_exposicion_al_riesgo_de_credito_de_contraparte_por_un_f_ee5895",
+            "type": "Obligacion",
+            "label": "Aplicar factor 1,5 a exposición contraparte derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá multiplicar la exposición al riesgo de crédito de contraparte por un factor de 1,5 antes de aplicar el ponderador"
+          },
+          {
+            "id": "Obligacion_los_derivados_que_hagan_referencia_a_indices_de_credito_se_consideraran_como_si__2eb165",
+            "type": "Obligacion",
+            "label": "Aplicación de factor de correlación mayor para índices",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los derivados que hagan referencia a índices de crédito se considerarán como si hicieran referencia a entidades determinadas pero se les aplicará un mayor facto…"
+          },
+          {
+            "id": "Operacion_limitacion_de_exigencia_de_capital_a_maxima_perdida_posible_04fb6e",
+            "type": "Operacion",
+            "label": "Limitación de exigencia de capital a máxima pérdida posible",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: limitacion_capital"
+          }
+        ]
+      },
+      "output_chars": 3845,
+      "latency_tool_s": 0.0401
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "EAD monto referencia cálculo exposición",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "EAD monto referencia cálculo exposición",
+        "total_con_match": 303,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_de_exposicion_ead_de_miembro_caf9ee",
+            "type": "Operacion",
+            "label": "Cálculo de exposición (EAD) de miembro",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Calcular el valor de la exposición del miembro compensador, incluyendo operaciones propias, operaciones de clientes garantizadas, activos en garantía y aportes …"
+          },
+          {
+            "id": "Operacion_calculo_de_ead_para_sft_9da1b2",
+            "type": "Operacion",
+            "label": "Cálculo de EAD para SFT",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para operaciones de financiamiento de valores (SFT), calcular EAD mediante fórmula: máx. (EBRM_i – IM_i – DF_i; 0)"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+            "type": "Operacion",
+            "label": "Cálculo de EAD para derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador, utilizando MPOR de 10 días para exposición pote…"
+          },
+          {
+            "id": "Operacion_calculo_de_ead_por_subcuentas_14f2a8",
+            "type": "Operacion",
+            "label": "Cálculo de EAD por subcuentas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando miembros compensadores brindan servicios de compensación a clientes y mantienen subcuentas separadas, sumar las EAD correspondientes a subcuentas de clie…"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion_con_mpor_23dd65",
+            "type": "Operacion",
+            "label": "Cálculo de exposición con MPOR",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de exposición conforme a SACCR con mínimo MPOR"
+          },
+          {
+            "id": "Obligacion_en_los_casos_en_los_que_la_entidad_haya_constituido_una_provision_especifica_o_t_212d79",
+            "type": "Obligacion",
+            "label": "Usar monto bruto en cálculo de KSA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En los casos en los que la entidad haya constituido una provisión específica o tenga un descuento no reembolsable en el precio de compra de su exposición al con…"
+          },
+          {
+            "id": "Operacion_calculo_de_medida_de_la_exposicion_497c71",
+            "type": "Operacion",
+            "label": "Cálculo de medida de la exposición",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo"
+          },
+          {
+            "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+            "type": "Operacion",
+            "label": "Cálculo exposición potencial futura",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cálculo de la EPF de acuerdo con el método de Exposición Potencial Futura"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion_de_contraparte_9ac1cf",
+            "type": "Operacion",
+            "label": "Cálculo de exposición de contraparte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Determinación de la exposición presente respecto de la contraparte aplicando metodología de aforos"
+          }
+        ]
+      },
+      "output_chars": 2954,
+      "latency_tool_s": 0.0247
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_ead_para_derivados_d7eece"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+        "type": "Operacion",
+        "label": "Cálculo de EAD para derivados",
+        "properties": {
+          "tipo": "cálculo de exposición",
+          "description": "Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador, utilizando MPOR de 10 días para exposición potencial futura"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 4)"
+          }
+        ]
+      },
+      "output_chars": 544,
+      "latency_tool_s": 0.0091
+    },
+    {
+      "n": 11,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+        "label": "Cálculo de EAD para derivados",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.3. Exigencia de capital por riesgo de crédito de contraparte en operaciones con ent (parte 4)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 506,
+      "latency_tool_s": 0.0101
+    },
+    {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "monto referencia máximo escenario futuro posible",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "monto referencia máximo escenario futuro posible",
+        "total_con_match": 116,
+        "resultados": [
+          {
+            "id": "Restriccion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_4c7fc4",
+            "type": "Restriccion",
+            "label": "Límite de importe de referencia",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría Micro correspondiente al sector Comercio"
+          },
+          {
+            "id": "Restriccion_los_importadores_de_servicios_podran_suscribir_bonos_bopreal_por_hasta_el_monto__79b6ac",
+            "type": "Restriccion",
+            "label": "Monto máximo de suscripción BOPREAL",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los importadores de servicios podrán suscribir Bonos BOPREAL por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios"
+          },
+          {
+            "id": "Obligacion_calcular_monto_maximo_de_certificaciones_675c62",
+            "type": "Obligacion",
+            "label": "Calcular monto máximo de certificaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto máximo de las certificaciones para cada año será calculado a partir de considerar aquel que resulte menor entre el aumento total que surge del cómputo …"
+          },
+          {
+            "id": "Obligacion_constatar_monto_maximo_e_incumplimientos_86f3d1",
+            "type": "Obligacion",
+            "label": "Constatar monto máximo e incumplimientos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad nominada antes de la emisión de cada certificación, deberá constatar en la información suministrada por el BCRA: el monto máximo total que pueden acu…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa",
+            "type": "Obligacion",
+            "label": "Deducir certificaciones cuarto trimestre 2022",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En caso de que el trimestre de referencia sea el cuarto de 2022, del monto disponible deberá deducirse la suma de las certificaciones que se hubieran emitido op…"
+          },
+          {
+            "id": "Restriccion_limite_monto_por_permiso_1cf37a",
+            "type": "Restriccion",
+            "label": "Límite monto por permiso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El monto aplicado no supere el 20% (veinte por ciento) del monto en divisas que corresponden al permiso de exportación cuyos cobros se aplican"
+          },
+          {
+            "id": "Restriccion_plazo_maximo_de_garantia_6fc363",
+            "type": "Restriccion",
+            "label": "Plazo máximo de garantía",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El plazo de vigencia de la garantía no excede los 180 (ciento ochenta) días corridos de la fecha de embarque de bienes locales o finalización de la prestación d…"
+          },
+          {
+            "id": "Operacion_calculo_de_monto_alcanzado_b506e3",
+            "type": "Operacion",
+            "label": "Cálculo de monto alcanzado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: calculo de monto de exportación"
+          },
+          {
+            "id": "Restriccion_los_clientes_podran_suscribir_bonos_por_hasta_la_suma_adeudada_a_la_fecha_de_la__1c240d",
+            "type": "Restriccion",
+            "label": "Límite monto bonos BOPREAL",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los clientes podrán suscribir Bonos por hasta la suma adeudada a la fecha de la suscripción"
+          },
+          {
+            "id": "Obligacion_la_entidad_calculara_el_monto_alcanzado_por_la_obligacion_a_partir_de_la_informa_9f4991",
+            "type": "Obligacion",
+            "label": "Calcular monto de obligación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La entidad calculará el monto alcanzado por la obligación a partir de la información disponible en el sistema SECOEXPO y la documentación comercial aportada por…"
+          }
+        ]
+      },
+      "output_chars": 3503,
+      "latency_tool_s": 0.0243
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exposición potencial futura EPF derivados cálculo",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "exposición potencial futura EPF derivados cálculo",
+        "total_con_match": 301,
+        "resultados": [
+          {
+            "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+            "type": "Operacion",
+            "label": "Cálculo exposición potencial futura",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Cálculo de la EPF de acuerdo con el método de Exposición Potencial Futura"
+          },
+          {
+            "id": "Operacion_calculo_de_epf_bdb9d5",
+            "type": "Operacion",
+            "label": "Cálculo de EPF",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Determinación de la exposición potencial futura mediante producto de multiplicador y adicional total"
+          },
+          {
+            "id": "Operacion_calculo_de_adicional_epf_36825c",
+            "type": "Operacion",
+            "label": "Cálculo de adicional EPF",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Cálculo de exigencia de capital por exposición potencial futura (EPF)"
+          },
+          {
+            "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+            "type": "Operacion",
+            "label": "Cálculo de EAD para derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para derivados, calcular EAD aplicando enfoque SA-CCR como exposición bilateral entre CCP y miembro compensador, utilizando MPOR de 10 días para exposición pote…"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion_con_mpor_23dd65",
+            "type": "Operacion",
+            "label": "Cálculo de exposición con MPOR",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cálculo de exposición conforme a SACCR con mínimo MPOR"
+          },
+          {
+            "id": "Obligacion_para_el_calculo_de_exigencias_por_riesgo_especifico_y_riesgo_general_las_posicio_7c9852",
+            "type": "Obligacion",
+            "label": "Convertir derivados a nocionales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para el cálculo de exigencias por riesgo específico y riesgo general, las posiciones en derivados deberán convertirse en nocionales: futuros y forwards al preci…"
+          },
+          {
+            "id": "Operacion_calculo_de_medida_de_la_exposicion_497c71",
+            "type": "Operacion",
+            "label": "Cálculo de medida de la exposición",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: calculo"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion_de_contraparte_9ac1cf",
+            "type": "Operacion",
+            "label": "Cálculo de exposición de contraparte",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Determinación de la exposición presente respecto de la contraparte aplicando metodología de aforos"
+          },
+          {
+            "id": "Operacion_calculo_de_posicion_neta_en_derivados_8079b6",
+            "type": "Operacion",
+            "label": "Cálculo de posición neta en derivados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: conversión y neteación de derivados a posiciones en subyacentes"
+          },
+          {
+            "id": "Operacion_calculo_de_exposicion_ead_de_miembro_caf9ee",
+            "type": "Operacion",
+            "label": "Cálculo de exposición (EAD) de miembro",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Calcular el valor de la exposición del miembro compensador, incluyendo operaciones propias, operaciones de clientes garantizadas, activos en garantía y aportes …"
+          }
+        ]
+      },
+      "output_chars": 2894,
+      "latency_tool_s": 0.0181
+    },
+    {
+      "n": 14,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e"
+      },
+      "output": {
+        "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+        "type": "Operacion",
+        "label": "Cálculo exposición potencial futura",
+        "properties": {
+          "tipo": "Cálculo",
+          "description": "Cálculo de la EPF de acuerdo con el método de Exposición Potencial Futura"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 443,
+      "latency_tool_s": 0.0042
+    },
+    {
+      "n": 15,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_calculo_de_epf_bdb9d5"
+      },
+      "output": {
+        "id": "Operacion_calculo_de_epf_bdb9d5",
+        "type": "Operacion",
+        "label": "Cálculo de EPF",
+        "properties": {
+          "tipo": "Determinación de la exposición potencial futura mediante producto de multiplicador y adicional total"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 402,
+      "latency_tool_s": 0.0029
+    },
+    {
+      "n": 16,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+        "label": "Cálculo exposición potencial futura",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 4.2. Exigencia de capital por riesgo de crédito de contraparte en operaciones con der (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 518,
+      "latency_tool_s": 0.0061
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAey1tdn9Ten2vHrhMPM",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre el cálculo del monto de referencia en operaciones con pagos múltiples y condicionados, especialmente en casos donde el monto no está claramente definido o varía según precios o cotizaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01HiGoSCySNdok8fKSDvojGC",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto de referencia operaciones pagos múltiples condicionados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01SYTkdRqdxQZGriBsAR8xFV",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia opciones digitales precios cotizaciones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01JXw6txtDbMSy4yEkgxpgco",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia no invariable vencimiento cálculo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1565,
+          "output_tokens": 281,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyB7GJXFgHLHE8arCY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Veo que hay una obligación sobre el cálculo del valor intrínseco de opciones. Déjame buscar más específicamente sobre monto de referencia en operaciones con estados o situaciones múltiples.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Vp7ogJMR158srqhoRMwoGy",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia estado situación máximo elegir",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01YC6CMvyYZDPg6SPWctinvc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia derivados opciones valor intrínseco",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5670
+          },
+          "cache_creation_input_tokens": 5670,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 202,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyLfF3rhkCdU8iJPSH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré la obligación sobre valor intrínseco de opciones. Ahora déjame ver el nodo completo para entender mejor cómo se resuelve el caso cuando el monto no está claramente definido.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Y8w8hGZznPNHCc9y54BpFn",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_si_la_entidad_no_pudiera_realizar_el_calculo_del_valor_intrinseco_de_la_opcion_d_927b3b"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_0127Gkigsr9JhVbiFCsmCqUc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia máximo posible escenarios estados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2793
+          },
+          "cache_creation_input_tokens": 2793,
+          "cache_read_input_tokens": 5670,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 221,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyYJUX1XZJjVRwZ2Qo",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar más específicamente sobre cómo se calcula el monto de referencia en operaciones con múltiples escenarios o pagos condicionados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01FJJDRAJyoHSURbgMuyjB1L",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia exposición máxima posible derivados",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01GmEYp6cc1CrpMEzpzzqhTH",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "EAD monto referencia cálculo exposición",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1695
+          },
+          "cache_creation_input_tokens": 1695,
+          "cache_read_input_tokens": 8463,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 192,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyhTtWH7Yb3nvC5QYj",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto, encontré operaciones sobre cálculo de EAD para derivados. Déjame ver esos nodos en detalle.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_017FJ4YEssF19BzZKgpVdbny",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_ead_para_derivados_d7eece"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Xr6ZJBeTvTax3H2BhNERqM",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_ead_para_derivados_d7eece",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2669
+          },
+          "cache_creation_input_tokens": 2669,
+          "cache_read_input_tokens": 10158,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 184,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyqy7A3DRkfiQ84bAX",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar más específicamente sobre cómo se determina el monto de referencia cuando hay múltiples escenarios o pagos condicionados, especialmente en derivados.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01QxVG59tF855zCzBWZ1ETYt",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "monto referencia máximo escenario futuro posible",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01GFUwZg1JGehTsTp1hoooQt",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "exposición potencial futura EPF derivados cálculo",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 625
+          },
+          "cache_creation_input_tokens": 625,
+          "cache_read_input_tokens": 12827,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 197,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAeyzPcmAfhpP7kc4LSr",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré operaciones sobre EPF. Déjame ver esos nodos en detalle.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01VcSNDzrm4eCREd3W1RqbaR",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01HNRGTV6QLxePNyxMQwrE3J",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_de_epf_bdb9d5"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_014GUWkWGDXGsBHcsByWm2dt",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_calculo_exposicion_potencial_futura_8c2f6e",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2522
+          },
+          "cache_creation_input_tokens": 2522,
+          "cache_read_input_tokens": 13452,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 232,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAezB5ZS4r7oEGiTcY8G",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Basándome en la información recolectada del Knowledge Graph, debo informar que no encontré una norma específica que aborde directamente el caso particular que plantea sobre cómo resolver el cálculo del monto de referencia en operaciones con pagos múltiples y condicionados (como opciones digitales) cuando el monto no está claramente definido o no permanece invariable hasta el vencimiento, y surge de cálculos basados en precios o cotizaciones vigentes.\n\nLo que sí encontré en el grafo es:\n\n1. Una obligación que establece que **si la entidad no pudiera realizar el cálculo del valor intrínseco de la opción, deberá considerar que el valor intrínseco es cero** (Punto 6.6 sobre Exigencia de capital por riesgo de posiciones en opciones).\n\n2. Operaciones sobre cálculo de exposición potencial futura (EPF) y EAD para derivados, pero sin especificar cómo se resuelve el caso particular de montos que varían según precios o cotizaciones vigentes en múltiples escenarios.\n\n```json\n{\n  \"respuesta\": \"No se encontró en el Knowledge Graph una norma específica que resuelva el caso particular de operaciones con pagos múltiples y condicionados (como opciones digitales) donde el monto de referencia no está claramente definido o no permanece invariable hasta el vencimiento, cuando surge de cálculos basados en precios o cotizaciones vigentes. La única disposición relacionada establece que si no puede calcularse el valor intrínseco de una opción, debe considerarse cero.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 6.6. Exigencia de capital por riesgo de posiciones en opciones. (parte 1)\"\n    }\n  ],\n  \"respondible\": false\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 859
+          },
+          "cache_creation_input_tokens": 859,
+          "cache_read_input_tokens": 15974,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 483,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

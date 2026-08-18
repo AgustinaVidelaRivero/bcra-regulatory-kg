@@ -1,0 +1,1757 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C00_booleano_v1",
+    "celda_id": "C00_booleano_v1",
+    "retriever": "booleano",
+    "tools": "v1",
+    "es_control": true,
+    "system_prompt_sha256": "001a5eee6fedbdba5c343aa783e1918f8cdf08eafb48fb5d0080ab7eb2c956de",
+    "tools_specs_sha256": "3f2e3263ca72ce009dd19b666733eb6c6edc4baf3542805698a7e4f7de03501e",
+    "celda_archivo_sha256": "029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "booleano",
+      "modo_busqueda": "paridad",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v1",
+      "celda_id": "C00_booleano_v1",
+      "system_prompt_sha256": "001a5eee6fedbdba5c343aa783e1918f8cdf08eafb48fb5d0080ab7eb2c956de",
+      "tools_specs_sha256": "3f2e3263ca72ce009dd19b666733eb6c6edc4baf3542805698a7e4f7de03501e",
+      "celda_archivo_sha256": "029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "EB-019::antilexica",
+    "sample_id": "EB-019",
+    "variante": "antilexica",
+    "estrato": "E-B",
+    "sub_estrato": "entrante",
+    "pos_orden": 57,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T14:08:30",
+    "timestamp_fin": "2026-08-18T14:08:48",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+029a4ea62d2ed2d078f5254625fd592508d2a716c2100061532f9e04fae5f533|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.034954,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "Cuando el dinero de una operación en moneda extranjera vuelve al país porque se había abonado por adelantado una compra al exterior que finalmente no se concretó (o se concretó parcialmente), y siguiendo toda la cadena de trámites que exige el organismo cambiario -empezando por vincular ese reintegro con la erogación al exterior original y continuando por el asiento correspondiente en el sistema de control de divisas para compras al exterior-, ¿cuál es el requisito final al que se llega en todo este proceso y en qué consiste concretamente?",
+  "trace": {
+    "qid": "EB-019::antilexica",
+    "question": "Cuando el dinero de una operación en moneda extranjera vuelve al país porque se había abonado por adelantado una compra al exterior que finalmente no se concretó (o se concretó parcialmente), y siguiendo toda la cadena de trámites que exige el organismo cambiario -empezando por vincular ese reintegro con la erogación al exterior original y continuando por el asiento correspondiente en el sistema de control de divisas para compras al exterior-, ¿cuál es el requisito final al que se llega en todo este proceso y en qué consiste concretamente?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "reintegro divisas compra exterior no concretada",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"reintegro divisas compra exterior no concretada\", \"total_con_match\": 594, \"resultados\": [{\"id\": \"Operacion_compra_de_bienes_al_exterior_8a8e83\", \"type\": \"Operacion\", \"label\": \"Compra de bienes al exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: compra_bienes_exterior\"}, {\"id\": \"Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas desde el exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de divisas en mercado de cambios\"}, {\"id\": \"Operacion_compra_moneda_extranjera_no_residente_119e08\", \"type\": \"Operacion\", \"label\": \"Compra moneda extranjera no residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: compra_moneda_extranjera\"}, {\"id\": \"Restriccion_si_el_cliente_utiliza_efectivo_el_monto_comprado_no_puede_superar_usd_100_en_el__a7816d\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo por mes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades\"}, {\"id\": \"Restriccion_no_formaran_parte_de_la_pgc_las_inversiones_directas_en_el_exterior… [+1956 chars]",
+        "output_chars": 3156
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "reintegro moneda extranjera adelantado",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"reintegro moneda extranjera adelantado\", \"total_con_match\": 105, \"resultados\": [{\"id\": \"Operacion_compra_de_moneda_extranjera_4818a4\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de otros residentes para la formación de activos externos\"}, {\"id\": \"Operacion_cobros_o_pagos_en_moneda_extranjera_ec543c\", \"type\": \"Operacion\", \"label\": \"Cobros o pagos en moneda extranjera\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: cobro_pago_moneda_extranjera\"}, {\"id\": \"Restriccion_deposito_en_moneda_extranjera_local_36752d\", \"type\": \"Restriccion\", \"label\": \"Depósito en moneda extranjera local\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los fondos adquiridos sean depositados en cuentas en moneda extranjera de titularidad del cliente abiertas en entidades financieras locales\"}, {\"id\": \"Operacion_compra_moneda_extranjera_no_residente_119e08\", \"type\": \"Operacion\", \"label\": \"Compra moneda extranjera no residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: compra_moneda_extranjera\"}, {\"id\": \"Operacion_compras_y_ventas_de_moneda_extranjera_c39715\", \"type\": \"Operac… [+1713 chars]",
+        "output_chars": 2913
+      },
+      {
+        "n": 3,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "control divisas compras exterior requisitos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"control divisas compras exterior requisitos\", \"total_con_match\": 241, \"resultados\": [{\"id\": \"Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas desde el exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de divisas en mercado de cambios\"}, {\"id\": \"Operacion_transferencia_divisas_al_exterior_personas_0745bb\", \"type\": \"Operacion\", \"label\": \"Transferencia divisas al exterior personas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior\"}, {\"id\": \"Obligacion_la_entidad_debera_verificar_los_requisitos_habituales_a_los_efectos_de_certifica_84a041\", \"type\": \"Obligacion\", \"label\": \"Verificación de requisitos de aplicación de divisas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"La entidad deberá verificar los requisitos habituales a los efectos de certificar la aplicación de divisas a la cancelación de la financiación.\"}, {\"id\": \"Restriccion_no_formaran_parte_de_la_pgc_las_ventas_y_compras_a_termino_de_divisas_o_valores__f1a679\", \"type\": \"Restriccio… [+1818 chars]",
+        "output_chars": 3018
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "reintegro devolución divisas compra no realizada",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"reintegro devolución divisas compra no realizada\", \"total_con_match\": 507, \"resultados\": [{\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"type\": \"Obligacion\", \"label\": \"Liquidar divisas por devolución pago\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…\"}, {\"id\": \"Operacion_compra_moneda_extranjera_no_residente_119e08\", \"type\": \"Operacion\", \"label\": \"Compra moneda extranjera no residente\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: compra_moneda_extranjera\"}, {\"id\": \"Restriccion_si_el_cliente_utiliza_efectivo_el_monto_comprado_no_puede_superar_usd_100_en_el__a7816d\", \"type\": \"Restriccion\", \"label\": \"Límite de compra con efectivo por mes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades\"}, {\"id\": \"Obligacion_la_devolucion_de_las_certificaciones_no_utilizadas_sera_efectuada_entre_las_enti_cf41b8\", \"type\": \"Obligacio… [+2364 chars]",
+        "output_chars": 3564
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "vinculación erogación exterior reintegro",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"vinculación erogación exterior reintegro\", \"total_con_match\": 109, \"resultados\": [{\"id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"type\": \"TextoOrdenado\", \"label\": \"Exterior y Cambios\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"materia: Operaciones en cambios y exterior; archivo: TO_exterior_cambios_actual.pdf; version: actual\"}, {\"id\": \"Sujeto_acreedor_del_exterior\", \"type\": \"Sujeto\", \"label\": \"Acreedores del exterior\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Operacion_transferencias_al_exterior_ce7f17\", \"type\": \"Operacion\", \"label\": \"Transferencias al exterior\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Transferencias al exterior que requieren autorización previa\"}, {\"id\": \"Restriccion_limite_deposito_en_exterior_e5de1d\", \"type\": \"Restriccion\", \"label\": \"Límite depósito en exterior\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Los fondos adquiridos sean depositados en cuentas abiertas en entidades financieras locales. Únicamente se admitirá la constitución de garantías en cuentas en e…\"}, {\"id\": \"Operacion_compra_de_bienes_al_exterior_8a8e83\", \"type\": \"Operacion\", \"label\": \"Compra de bienes al exterior\", \"tokens… [+1425 chars]",
+        "output_chars": 2625
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "asiento sistema control divisas compras exterior",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"asiento sistema control divisas compras exterior\", \"total_con_match\": 209, \"resultados\": [{\"id\": \"Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas desde el exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Liquidación de divisas en mercado de cambios\"}, {\"id\": \"Operacion_transferencia_divisas_al_exterior_personas_0745bb\", \"type\": \"Operacion\", \"label\": \"Transferencia divisas al exterior personas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior\"}, {\"id\": \"Restriccion_no_formaran_parte_de_la_pgc_las_ventas_y_compras_a_termino_de_divisas_o_valores__f1a679\", \"type\": \"Restriccion\", \"label\": \"Exclusión de ventas compras a término divisas de PGC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No formarán parte de la PGC las ventas y compras a término de divisas o valores externos\"}, {\"id\": \"Operacion_ingreso_de_divisas_08f943\", \"type\": \"Operacion\", \"label\": \"Ingreso de divisas\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"tipo: ingreso_de_divisas\"}, {\"… [+1361 chars]",
+        "output_chars": 2561
+      },
+      {
+        "n": 7,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"type\": \"Obligacion\", \"label\": \"Liquidar divisas por devolución pago\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"plazo\": \"según plazo de regularización\", \"descripcion\": \"En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del pago efectuado\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}",
+        "output_chars": 648
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_compra_de_bienes_al_exterior_8a8e83"
+        },
+        "output_truncado": "{\"id\": \"Operacion_compra_de_bienes_al_exterior_8a8e83\", \"type\": \"Operacion\", \"label\": \"Compra de bienes al exterior\", \"properties\": {\"tipo\": \"compra_bienes_exterior\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.2. Definiciones. (parte 2)\"}]}",
+        "output_chars": 285
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "ingreso aduanero pendiente pago importaciones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"ingreso aduanero pendiente pago importaciones\", \"total_con_match\": 299, \"resultados\": [{\"id\": \"Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6\", \"type\": \"Obligacion\", \"label\": \"Demostrar ingreso aduanero pendiente\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En los casos en que se trate de pagos que sean con registro de ingreso aduanero pendiente, el cliente deberá demostrarlo posteriormente de acuerdo con las norma…\"}, {\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"type\": \"Obligacion\", \"label\": \"Liquidar divisas por devolución pago\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…\"}, {\"id\": \"Operacion_pago_de_importaciones_bienes_registro_aduanero_b7550c\", \"type\": \"Operacion\", \"label\": \"Pago de importaciones bienes registro aduanero\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"tipo: pago_importaciones\"}, {\"id\": \"Operacion_pago_de_importacion_con_registro_aduanero_pendiente_7728f7\", \"type\": \"Operacion\", \"label\": \"Pago de importaci… [+2115 chars]",
+        "output_chars": 3315
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "liquidación mercado cambios devolución pago",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"liquidación mercado cambios devolución pago\", \"total_con_match\": 456, \"resultados\": [{\"id\": \"Obligacion_las_entidades_para_otorgar_acceso_al_mercado_de_cambios_para_el_pago_de_importac_07e38d\", \"type\": \"Obligacion\", \"label\": \"Verificar liquidación de exportaciones o prefinanciaciones\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Las entidades para otorgar acceso al mercado de cambios para el pago de importaciones temporales deberán verificar que el cliente por el monto que pretende abon…\"}, {\"id\": \"Operacion_liquidacion_en_mercado_de_cambios_d7d852\", \"type\": \"Operacion\", \"label\": \"Liquidación en mercado de cambios\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Liquidación del contravalor en el mercado de cambios\"}, {\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"type\": \"Obligacion\", \"label\": \"Liquidar divisas por devolución pago\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…\"}, {\"id\": \"Operacion_acceso_al_mercado_de_cambios_para_pago_7b4c… [+2476 chars]",
+        "output_chars": 3676
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6\", \"type\": \"Obligacion\", \"label\": \"Demostrar ingreso aduanero pendiente\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"description\": \"En los casos en que se trate de pagos que sean con registro de ingreso aduanero pendiente, el cliente deberá demostrarlo posteriormente de acuerdo con las normas generales en la materia.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.7. Líneas de crédito de entidades financieras aplicadas a la financiación de import\"}]}",
+        "output_chars": 567
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"label\": \"Liquidar divisas por devolución pago\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_regularizacion_de_ingreso_aduanero_4b2bfa\", \"vecino_label\": \"Regularización de ingreso aduanero\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 934
+      },
+      {
+        "n": 13,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa"
+        },
+        "output_truncado": "{\"id\": \"Operacion_regularizacion_de_ingreso_aduanero_4b2bfa\", \"type\": \"Operacion\", \"label\": \"Regularización de ingreso aduanero\", \"properties\": {\"tipo\": \"regularizacion_ingreso_aduanero\", \"description\": \"Demostración del registro del ingreso aduanero de los bienes dentro del plazo correspondiente según tipo de bien a importar\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}",
+        "output_chars": 511
+      },
+      {
+        "n": 14,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Operacion_regularizacion_de_ingreso_aduanero_4b2bfa\", \"label\": \"Regularización de ingreso aduanero\", \"n_salientes_total\": 1, \"n_entrantes_total\": 4, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"regula\", \"vecino_id\": \"Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867\", \"vecino_label\": \"Demostrar ingreso aduanero en plazo\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee\", \"vecino_label\": \"Liquidar divisas por devolución pago\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de impor… [+854 chars]",
+        "output_chars": 2054
+      },
+      {
+        "n": 15,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867\", \"type\": \"Obligacion\", \"label\": \"Demostrar ingreso aduanero en plazo\", \"properties\": {\"tipo\": \"presentacion_informativa\", \"plazo\": \"270 días (bienes capital) / 90 días (otros bienes)\", \"descripcion\": \"Declaración jurada del cliente de que se compromete a demostrar el registro del ingreso aduanero de los bienes dentro del plazo que corresponda según tipo de bien a importar\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}",
+        "output_chars": 666
+      },
+      {
+        "n": 16,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867\", \"label\": \"Demostrar ingreso aduanero en plazo\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}, {\"relation\": \"regula\", \"vecino_id\": \"Operacion_regularizacion_de_ingreso_aduanero_4b2bfa\", \"vecino_label\": \"Regularización de ingreso aduanero\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 933
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1575,
+        "output_tokens": 247,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.005
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 237,
+        "cache_read": 0,
+        "cache_write": 5118,
+        "latency_s": 2.293
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 176,
+        "cache_read": 5118,
+        "cache_write": 3400,
+        "latency_s": 2.348
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 191,
+        "cache_read": 8518,
+        "cache_write": 568,
+        "latency_s": 1.874
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 219,
+        "cache_read": 9086,
+        "cache_write": 2722,
+        "latency_s": 2.161
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 189,
+        "cache_read": 11808,
+        "cache_write": 808,
+        "latency_s": 1.434
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 212,
+        "cache_read": 12616,
+        "cache_write": 1188,
+        "latency_s": 1.93
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 305,
+        "cache_read": 13804,
+        "cache_write": 883,
+        "latency_s": 3.478
+      }
+    ],
+    "final_json": {
+      "respuesta": "El requisito final al que se llega en el proceso de reintegro de divisas por una compra al exterior que no se concretó (o se concretó parcialmente), después de vincular el reintegro con la erogación original y realizar el asiento en el sistema de control de divisas, es la presentación de una declaración jurada del cliente en la que se compromete a demostrar el registro del ingreso aduanero de los bienes dentro del plazo que corresponda según el tipo de bien a importar. Este plazo es de 270 días para bienes de capital, o de 90 días corridos para el resto de los bienes. En defecto de demostrar el ingreso aduanero dentro de este plazo, procede la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del pago efectuado.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "```json\n{\n  \"respuesta\": \"El requisito final al que se llega en el proceso de reintegro de divisas por una compra al exterior que no se concretó (o se concretó parcialmente), después de vincular el reintegro con la erogación original y realizar el asiento en el sistema de control de divisas, es la presentación de una declaración jurada del cliente en la que se compromete a demostrar el registro del ingreso aduanero de los bienes dentro del plazo que corresponda según el tipo de bien a importar. Este plazo es de 270 días para bienes de capital, o de 90 días corridos para el resto de los bienes. En defecto de demostrar el ingreso aduanero dentro de este plazo, procede la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del pago efectuado.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 16,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 10.2. Definiciones. (parte 2)"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 10.7. Líneas de crédito de entidades financieras aplicadas a la financiación de import"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1620,
+    "tokens_out": 1776,
+    "cache_read": 60950,
+    "cache_write": 14687,
+    "cost_usd": 0.034954,
+    "latency_s": 17.86,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "reintegro divisas compra exterior no concretada",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "reintegro divisas compra exterior no concretada",
+        "total_con_match": 594,
+        "resultados": [
+          {
+            "id": "Operacion_compra_de_bienes_al_exterior_8a8e83",
+            "type": "Operacion",
+            "label": "Compra de bienes al exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: compra_bienes_exterior"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e",
+            "type": "Operacion",
+            "label": "Ingreso de divisas desde el exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de divisas en mercado de cambios"
+          },
+          {
+            "id": "Operacion_compra_moneda_extranjera_no_residente_119e08",
+            "type": "Operacion",
+            "label": "Compra moneda extranjera no residente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: compra_moneda_extranjera"
+          },
+          {
+            "id": "Restriccion_si_el_cliente_utiliza_efectivo_el_monto_comprado_no_puede_superar_usd_100_en_el__a7816d",
+            "type": "Restriccion",
+            "label": "Límite de compra con efectivo por mes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades"
+          },
+          {
+            "id": "Restriccion_no_formaran_parte_de_la_pgc_las_inversiones_directas_en_el_exterior_54cb34",
+            "type": "Restriccion",
+            "label": "Exclusión de inversiones directas de PGC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No formarán parte de la PGC las inversiones directas en el exterior"
+          },
+          {
+            "id": "Operacion_transferencia_divisas_al_exterior_personas_0745bb",
+            "type": "Operacion",
+            "label": "Transferencia divisas al exterior personas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior"
+          },
+          {
+            "id": "Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_a1f06e",
+            "type": "Obligacion",
+            "label": "Conformidad previa BCRA para pagos exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades financieras y las empresas no financieras emisoras de tarjetas locales deberán contar con la conformidad previa del BCRA para acceder al mercado d…"
+          },
+          {
+            "id": "Excepcion_las_exportaciones_de_bienes_efectuadas_por_un_vpu_adherido_al_rigi_por_un_proyec_54c1c4",
+            "type": "Excepcion",
+            "label": "Excepción ingreso divisas VPU no Estratégica",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las exportaciones de bienes efectuadas por un VPU adherido al RIGI por un proyecto que no fue declarado de Exportación Estratégica de Largo Plazo quedarán excep…"
+          },
+          {
+            "id": "Operacion_compra_simultanea_con_liquidacion_de_divisas_ed538c",
+            "type": "Operacion",
+            "label": "Compra simultánea con liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Compra de divisas"
+          },
+          {
+            "id": "Restriccion_no_haber_sido_comprados_por_la_entidad_financiera_ni_por_alguna_entidad_que_ella_ca3cd4",
+            "type": "Restriccion",
+            "label": "Prohibición de compra por la entidad emisora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No haber sido comprados por la entidad financiera –ni por alguna entidad que ella controle o sobre la que ejerza influencia significativa–."
+          }
+        ]
+      },
+      "output_chars": 3156,
+      "latency_tool_s": 0.0672
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "reintegro moneda extranjera adelantado",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "reintegro moneda extranjera adelantado",
+        "total_con_match": 105,
+        "resultados": [
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Operacion_cobros_o_pagos_en_moneda_extranjera_ec543c",
+            "type": "Operacion",
+            "label": "Cobros o pagos en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: cobro_pago_moneda_extranjera"
+          },
+          {
+            "id": "Restriccion_deposito_en_moneda_extranjera_local_36752d",
+            "type": "Restriccion",
+            "label": "Depósito en moneda extranjera local",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas en moneda extranjera de titularidad del cliente abiertas en entidades financieras locales"
+          },
+          {
+            "id": "Operacion_compra_moneda_extranjera_no_residente_119e08",
+            "type": "Operacion",
+            "label": "Compra moneda extranjera no residente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: compra_moneda_extranjera"
+          },
+          {
+            "id": "Operacion_compras_y_ventas_de_moneda_extranjera_c39715",
+            "type": "Operacion",
+            "label": "Compras y ventas de moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: compra y venta de moneda extranjera en mercado de cambios"
+          },
+          {
+            "id": "Restriccion_los_riesgos_de_tasa_de_interes_y_de_moneda_extranjera_deberan_mitigarse_en_forma_7b4f8e",
+            "type": "Restriccion",
+            "label": "Cobertura de riesgos de tasa y moneda",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los riesgos de tasa de interés y de moneda extranjera deberán mitigarse en forma adecuada. Los únicos derivados admisibles son los que se toman para la genuina …"
+          },
+          {
+            "id": "Obligacion_registrar_venta_moneda_extranjera_bcra_b73ece",
+            "type": "Obligacion",
+            "label": "Registrar venta moneda extranjera BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La venta de moneda extranjera liquidada por el cliente deberá ser registrada ante el BCRA por la entidad interviniente de acuerdo con las pautas habituales"
+          },
+          {
+            "id": "Operacion_cancelacion_consumos_moneda_extranjera_ad06f5",
+            "type": "Operacion",
+            "label": "Cancelación consumos moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Cancelación de consumos"
+          },
+          {
+            "id": "Operacion_depositos_a_plazo_en_moneda_extranjera_feecc2",
+            "type": "Operacion",
+            "label": "Depósitos a plazo en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: depósito a plazo en el exterior"
+          },
+          {
+            "id": "Operacion_compra_de_billetes_en_moneda_extranjera_51871c",
+            "type": "Operacion",
+            "label": "Compra de billetes en moneda extranjera",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Compra de billetes en moneda extranjera para la tenencia o constitución de depósitos por parte de personas humanas residentes, mediante débito en cuenta o efect…"
+          }
+        ]
+      },
+      "output_chars": 2913,
+      "latency_tool_s": 0.0235
+    },
+    {
+      "n": 3,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "control divisas compras exterior requisitos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "control divisas compras exterior requisitos",
+        "total_con_match": 241,
+        "resultados": [
+          {
+            "id": "Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e",
+            "type": "Operacion",
+            "label": "Ingreso de divisas desde el exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de divisas en mercado de cambios"
+          },
+          {
+            "id": "Operacion_transferencia_divisas_al_exterior_personas_0745bb",
+            "type": "Operacion",
+            "label": "Transferencia divisas al exterior personas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior"
+          },
+          {
+            "id": "Obligacion_la_entidad_debera_verificar_los_requisitos_habituales_a_los_efectos_de_certifica_84a041",
+            "type": "Obligacion",
+            "label": "Verificación de requisitos de aplicación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad deberá verificar los requisitos habituales a los efectos de certificar la aplicación de divisas a la cancelación de la financiación."
+          },
+          {
+            "id": "Restriccion_no_formaran_parte_de_la_pgc_las_ventas_y_compras_a_termino_de_divisas_o_valores__f1a679",
+            "type": "Restriccion",
+            "label": "Exclusión de ventas compras a término divisas de PGC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No formarán parte de la PGC las ventas y compras a término de divisas o valores externos"
+          },
+          {
+            "id": "Restriccion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_c5bd18",
+            "type": "Restriccion",
+            "label": "Requisitos no aplicables a compras de títulos valores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los requisitos previstos en los puntos 4.3.2.1. y 4.3.2.2. no resultarán aplicables en las compras de títulos valores que sean concretadas por los clientes con …"
+          },
+          {
+            "id": "Excepcion_financiaciones_y_avales_fianzas_y_otras_responsabilidades_otorgados_por_sucursal_9536c0",
+            "type": "Excepcion",
+            "label": "Exclusión financiaciones de sucursales exterior con requisitos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Financiaciones y avales, fianzas y otras responsabilidades otorgados por sucursales y subsidiarias locales de entidades financieras del exterior por cuenta y or…"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_08f943",
+            "type": "Operacion",
+            "label": "Ingreso de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_de_divisas"
+          },
+          {
+            "id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Exterior y Cambios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "materia: Operaciones en cambios y exterior; archivo: TO_exterior_cambios_actual.pdf; version: actual"
+          },
+          {
+            "id": "Operacion_operaciones_en_divisas_e95908",
+            "type": "Operacion",
+            "label": "Operaciones en divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones_cambiarias"
+          },
+          {
+            "id": "Sujeto_acreedor_del_exterior",
+            "type": "Sujeto",
+            "label": "Acreedores del exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase"
+          }
+        ]
+      },
+      "output_chars": 3018,
+      "latency_tool_s": 0.0194
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "reintegro devolución divisas compra no realizada",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "reintegro devolución divisas compra no realizada",
+        "total_con_match": 507,
+        "resultados": [
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Operacion_compra_moneda_extranjera_no_residente_119e08",
+            "type": "Operacion",
+            "label": "Compra moneda extranjera no residente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: compra_moneda_extranjera"
+          },
+          {
+            "id": "Restriccion_si_el_cliente_utiliza_efectivo_el_monto_comprado_no_puede_superar_usd_100_en_el__a7816d",
+            "type": "Restriccion",
+            "label": "Límite de compra con efectivo por mes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Si el cliente utiliza efectivo, el monto comprado no puede superar USD 100 en el mes calendario en el conjunto de entidades"
+          },
+          {
+            "id": "Obligacion_la_devolucion_de_las_certificaciones_no_utilizadas_sera_efectuada_entre_las_enti_cf41b8",
+            "type": "Obligacion",
+            "label": "Devolución de certificaciones no utilizadas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La devolución de las certificaciones no utilizadas será efectuada entre las entidades involucradas"
+          },
+          {
+            "id": "Excepcion_las_exportaciones_de_bienes_efectuadas_por_un_vpu_adherido_al_rigi_por_un_proyec_54c1c4",
+            "type": "Excepcion",
+            "label": "Excepción ingreso divisas VPU no Estratégica",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las exportaciones de bienes efectuadas por un VPU adherido al RIGI por un proyecto que no fue declarado de Exportación Estratégica de Largo Plazo quedarán excep…"
+          },
+          {
+            "id": "Operacion_compra_simultanea_con_liquidacion_de_divisas_ed538c",
+            "type": "Operacion",
+            "label": "Compra simultánea con liquidación de divisas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Compra de divisas"
+          },
+          {
+            "id": "Restriccion_no_haber_sido_comprados_por_la_entidad_financiera_ni_por_alguna_entidad_que_ella_ca3cd4",
+            "type": "Restriccion",
+            "label": "Prohibición de compra por la entidad emisora",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No haber sido comprados por la entidad financiera –ni por alguna entidad que ella controle o sobre la que ejerza influencia significativa–."
+          },
+          {
+            "id": "Restriccion_los_fondos_en_moneda_extranjera_que_no_se_utilicen_en_la_cancelacion_del_servici_bf1a23",
+            "type": "Restriccion",
+            "label": "Liquidación de fondos en divisas no utilizados",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los fondos en moneda extranjera que no se utilicen en la cancelación del servicio de deuda y/o el mantenimiento del monto de la garantía exigido deberán ser liq…"
+          },
+          {
+            "id": "Restriccion_no_haber_sido_comprados_con_la_financiacion_directa_o_indirecta_de_la_entidad_fi_f0ad77",
+            "type": "Restriccion",
+            "label": "Prohibición de compra con financiación de emisor",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No haber sido comprados con la financiación directa o indirecta de la entidad financiera."
+          },
+          {
+            "id": "Restriccion_el_inversor_no_tendra_ningun_derecho_a_acelerar_la_devolucion_de_los_pagos_futur_9555f0",
+            "type": "Restriccion",
+            "label": "Sin derecho a acelerar devolución de pagos futuros",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El inversor no tendrá ningún derecho a acelerar la devolución de los pagos futuros previstos (cupón de renta o amortización), excepto en caso de quiebra o liqui…"
+          }
+        ]
+      },
+      "output_chars": 3564,
+      "latency_tool_s": 0.0464
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "vinculación erogación exterior reintegro",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "vinculación erogación exterior reintegro",
+        "total_con_match": 109,
+        "resultados": [
+          {
+            "id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Exterior y Cambios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "materia: Operaciones en cambios y exterior; archivo: TO_exterior_cambios_actual.pdf; version: actual"
+          },
+          {
+            "id": "Sujeto_acreedor_del_exterior",
+            "type": "Sujeto",
+            "label": "Acreedores del exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Operacion_transferencias_al_exterior_ce7f17",
+            "type": "Operacion",
+            "label": "Transferencias al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias al exterior que requieren autorización previa"
+          },
+          {
+            "id": "Restriccion_limite_deposito_en_exterior_e5de1d",
+            "type": "Restriccion",
+            "label": "Límite depósito en exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas abiertas en entidades financieras locales. Únicamente se admitirá la constitución de garantías en cuentas en e…"
+          },
+          {
+            "id": "Operacion_compra_de_bienes_al_exterior_8a8e83",
+            "type": "Operacion",
+            "label": "Compra de bienes al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: compra_bienes_exterior"
+          },
+          {
+            "id": "Operacion_operaciones_comercio_exterior_cb4d13",
+            "type": "Operacion",
+            "label": "Operaciones comercio exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones de comercio exterior"
+          },
+          {
+            "id": "Operacion_endeudamientos_con_el_exterior_1e4df4",
+            "type": "Operacion",
+            "label": "Endeudamientos con el exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Endeudamientos financieros con el exterior y títulos de deuda denominados en moneda extranjera con registro público en el país, admitidos en los puntos 7.9."
+          },
+          {
+            "id": "Operacion_consumo_en_exterior_con_tarjeta_a57c52",
+            "type": "Operacion",
+            "label": "Consumo en exterior con tarjeta",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Consumo en exterior"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_la_transferencia_corresponda_a_la_misma_moneda_en_la_que_esta_den_1dffe3",
+            "type": "Obligacion",
+            "label": "Débito monto enviado al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En caso de que la transferencia corresponda a la misma moneda en la que está denominada la cuenta, la entidad deberá debitar el monto enviado al exterior."
+          },
+          {
+            "id": "Operacion_operaciones_de_comercio_exterior_89996c",
+            "type": "Operacion",
+            "label": "Operaciones de comercio exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Financiaciones vinculadas a comercio exterior"
+          }
+        ]
+      },
+      "output_chars": 2625,
+      "latency_tool_s": 0.0113
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "asiento sistema control divisas compras exterior",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "asiento sistema control divisas compras exterior",
+        "total_con_match": 209,
+        "resultados": [
+          {
+            "id": "Operacion_ingreso_de_divisas_desde_el_exterior_71bb4e",
+            "type": "Operacion",
+            "label": "Ingreso de divisas desde el exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Liquidación de divisas en mercado de cambios"
+          },
+          {
+            "id": "Operacion_transferencia_divisas_al_exterior_personas_0745bb",
+            "type": "Operacion",
+            "label": "Transferencia divisas al exterior personas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Transferencia de divisas al exterior de personas humanas desde cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior"
+          },
+          {
+            "id": "Restriccion_no_formaran_parte_de_la_pgc_las_ventas_y_compras_a_termino_de_divisas_o_valores__f1a679",
+            "type": "Restriccion",
+            "label": "Exclusión de ventas compras a término divisas de PGC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No formarán parte de la PGC las ventas y compras a término de divisas o valores externos"
+          },
+          {
+            "id": "Operacion_ingreso_de_divisas_08f943",
+            "type": "Operacion",
+            "label": "Ingreso de divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: ingreso_de_divisas"
+          },
+          {
+            "id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "type": "TextoOrdenado",
+            "label": "Exterior y Cambios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "materia: Operaciones en cambios y exterior; archivo: TO_exterior_cambios_actual.pdf; version: actual"
+          },
+          {
+            "id": "Operacion_operaciones_en_divisas_e95908",
+            "type": "Operacion",
+            "label": "Operaciones en divisas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: operaciones_cambiarias"
+          },
+          {
+            "id": "Sujeto_acreedor_del_exterior",
+            "type": "Sujeto",
+            "label": "Acreedores del exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Operacion_transferencias_al_exterior_ce7f17",
+            "type": "Operacion",
+            "label": "Transferencias al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Transferencias al exterior que requieren autorización previa"
+          },
+          {
+            "id": "Restriccion_limite_deposito_en_exterior_e5de1d",
+            "type": "Restriccion",
+            "label": "Límite depósito en exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los fondos adquiridos sean depositados en cuentas abiertas en entidades financieras locales. Únicamente se admitirá la constitución de garantías en cuentas en e…"
+          },
+          {
+            "id": "Operacion_compra_de_bienes_al_exterior_8a8e83",
+            "type": "Operacion",
+            "label": "Compra de bienes al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: compra_bienes_exterior"
+          }
+        ]
+      },
+      "output_chars": 2561,
+      "latency_tool_s": 0.0198
+    },
+    {
+      "n": 7,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee"
+      },
+      "output": {
+        "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+        "type": "Obligacion",
+        "label": "Liquidar divisas por devolución pago",
+        "properties": {
+          "tipo": "presentacion_informativa",
+          "plazo": "según plazo de regularización",
+          "descripcion": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del pago efectuado"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 648,
+      "latency_tool_s": 0.0058
+    },
+    {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_compra_de_bienes_al_exterior_8a8e83"
+      },
+      "output": {
+        "id": "Operacion_compra_de_bienes_al_exterior_8a8e83",
+        "type": "Operacion",
+        "label": "Compra de bienes al exterior",
+        "properties": {
+          "tipo": "compra_bienes_exterior"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.2. Definiciones. (parte 2)"
+          }
+        ]
+      },
+      "output_chars": 285,
+      "latency_tool_s": 0.0014
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "ingreso aduanero pendiente pago importaciones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "ingreso aduanero pendiente pago importaciones",
+        "total_con_match": 299,
+        "resultados": [
+          {
+            "id": "Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6",
+            "type": "Obligacion",
+            "label": "Demostrar ingreso aduanero pendiente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En los casos en que se trate de pagos que sean con registro de ingreso aduanero pendiente, el cliente deberá demostrarlo posteriormente de acuerdo con las norma…"
+          },
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Operacion_pago_de_importaciones_bienes_registro_aduanero_b7550c",
+            "type": "Operacion",
+            "label": "Pago de importaciones bienes registro aduanero",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: pago_importaciones"
+          },
+          {
+            "id": "Operacion_pago_de_importacion_con_registro_aduanero_pendiente_7728f7",
+            "type": "Operacion",
+            "label": "Pago de importación con registro aduanero pendiente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: pago_de_importacion"
+          },
+          {
+            "id": "Operacion_seguimiento_de_pago_con_registro_aduanero_pendiente_ae7c8e",
+            "type": "Operacion",
+            "label": "Seguimiento de pago con registro aduanero pendiente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: seguimiento_de_pago"
+          },
+          {
+            "id": "Excepcion_tendran_acceso_para_realizar_pagos_con_registro_de_ingreso_aduanero_pendiente_po_181804",
+            "type": "Excepcion",
+            "label": "Acceso para medicamentos con ingreso aduanero pendiente",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Tendrán acceso para realizar pagos con registro de ingreso aduanero pendiente por los medicamentos que serán ingresados por el beneficiario de la cobertura"
+          },
+          {
+            "id": "Operacion_pago_con_registro_aduanero_pendiente_por_infraestructura_4c9a32",
+            "type": "Operacion",
+            "label": "Pago con registro aduanero pendiente por infraestructura",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Pago al exterior con registro aduanero pendiente por bienes a ser importados para obras de infraestructura"
+          },
+          {
+            "id": "Obligacion_demostracion_de_ingreso_aduanero_f17ced",
+            "type": "Obligacion",
+            "label": "Demostración de ingreso aduanero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se deberá demostrar ante la entidad encargada del seguimiento de ese pago la existencia del registro de ingreso aduanero a su nombre o a nombre de un tercero en…"
+          },
+          {
+            "id": "Obligacion_la_entidad_que_cursa_el_pago_al_exterior_debera_intervenir_el_documento_aduanero_adf5ab",
+            "type": "Obligacion",
+            "label": "Intervenir documento aduanero ZFE",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad que cursa el pago al exterior deberá intervenir el documento aduanero ZFE correspondiente al ingreso de los bienes desde zona franca"
+          },
+          {
+            "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+            "type": "Operacion",
+            "label": "Regularización de ingreso aduanero",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Demostración del registro del ingreso aduanero de los bienes dentro del plazo correspondiente según tipo de bien a importar"
+          }
+        ]
+      },
+      "output_chars": 3315,
+      "latency_tool_s": 0.0392
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "liquidación mercado cambios devolución pago",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "liquidación mercado cambios devolución pago",
+        "total_con_match": 456,
+        "resultados": [
+          {
+            "id": "Obligacion_las_entidades_para_otorgar_acceso_al_mercado_de_cambios_para_el_pago_de_importac_07e38d",
+            "type": "Obligacion",
+            "label": "Verificar liquidación de exportaciones o prefinanciaciones",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Las entidades para otorgar acceso al mercado de cambios para el pago de importaciones temporales deberán verificar que el cliente por el monto que pretende abon…"
+          },
+          {
+            "id": "Operacion_liquidacion_en_mercado_de_cambios_d7d852",
+            "type": "Operacion",
+            "label": "Liquidación en mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Liquidación del contravalor en el mercado de cambios"
+          },
+          {
+            "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "type": "Obligacion",
+            "label": "Liquidar divisas por devolución pago",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En defecto de demostrar el ingreso aduanero, proceder a la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del…"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_pago_7b4cb8",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para pago",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Acceso al mercado de cambios para pago exterior de importaciones de bienes"
+          },
+          {
+            "id": "Obligacion_en_el_caso_de_no_haber_dado_curso_a_la_operacion_en_el_mercado_de_cambios_la_ent_7d0aee",
+            "type": "Obligacion",
+            "label": "Contar con certificación de liquidación",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En el caso de no haber dado curso a la operación en el mercado de cambios, la entidad deberá contar con una certificación de liquidación emitida por aquella que…"
+          },
+          {
+            "id": "Restriccion_los_fondos_excedentes_deben_ser_ingresados_y_liquidados_en_el_mercado_de_cambios_b4887f",
+            "type": "Restriccion",
+            "label": "Liquidación de fondos excedentes en plazo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los fondos excedentes deben ser ingresados y liquidados en el mercado de cambios dentro de los plazos previstos en las normas generales en la materia."
+          },
+          {
+            "id": "Excepcion_se_permite_acceso_al_mercado_de_cambios_para_pagar_el_equivalente_de_la_deuda_cu_1e9137",
+            "type": "Excepcion",
+            "label": "Excepción pago con canje arbitraje BOPREAL",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se permite acceso al mercado de cambios para pagar el equivalente de la deuda cuando el pago se concrete a partir de un canje y arbitraje con los fondos deposit…"
+          },
+          {
+            "id": "Obligacion_el_deudor_demuestre_el_ingreso_y_liquidacion_de_divisas_en_el_mercado_de_cambios_7dccaa",
+            "type": "Obligacion",
+            "label": "Demostrar ingreso y liquidación de divisas",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El deudor demuestre el ingreso y liquidación de divisas en el mercado de cambios por un monto equivalente al valor nominal del endeudamiento financiero."
+          },
+          {
+            "id": "Obligacion_se_compromete_a_liquidar_en_el_mercado_de_cambios_dentro_de_los_5_cinco_dias_hab_c58316",
+            "type": "Obligacion",
+            "label": "Liquidación de fondos en mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se compromete a liquidar en el mercado de cambios, dentro de los 5 (cinco) días hábiles de su puesta a disposición, aquellos fondos que reciba en el exterior or…"
+          },
+          {
+            "id": "Operacion_liquidacion_de_fondos_en_mercado_de_cambios_9cbdae",
+            "type": "Operacion",
+            "label": "Liquidación de fondos en mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: Liquidación de fondos de endeudamiento en el mercado de cambios entre 16/10/20 y 31/12/23"
+          }
+        ]
+      },
+      "output_chars": 3676,
+      "latency_tool_s": 0.0293
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6"
+      },
+      "output": {
+        "id": "Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6",
+        "type": "Obligacion",
+        "label": "Demostrar ingreso aduanero pendiente",
+        "properties": {
+          "tipo": "presentacion_informativa",
+          "description": "En los casos en que se trate de pagos que sean con registro de ingreso aduanero pendiente, el cliente deberá demostrarlo posteriormente de acuerdo con las normas generales en la materia."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.7. Líneas de crédito de entidades financieras aplicadas a la financiación de import"
+          }
+        ]
+      },
+      "output_chars": 567,
+      "latency_tool_s": 0.0057
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+        "label": "Liquidar divisas por devolución pago",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+            "vecino_label": "Regularización de ingreso aduanero",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 934,
+      "latency_tool_s": 0.0287
+    },
+    {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa"
+      },
+      "output": {
+        "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+        "type": "Operacion",
+        "label": "Regularización de ingreso aduanero",
+        "properties": {
+          "tipo": "regularizacion_ingreso_aduanero",
+          "description": "Demostración del registro del ingreso aduanero de los bienes dentro del plazo correspondiente según tipo de bien a importar"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 511,
+      "latency_tool_s": 0.0088
+    },
+    {
+      "n": 14,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+        "label": "Regularización de ingreso aduanero",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 4,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+            "vecino_label": "Demostrar ingreso aduanero en plazo",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+            "vecino_label": "Liquidar divisas por devolución pago",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "limita",
+            "vecino_id": "Restriccion_en_el_caso_de_pagos_anticipados_de_bienes_de_capital_el_plazo_para_demostrar_el__c4cd5f",
+            "vecino_label": "Plazo 270 días para bienes capital",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "limita",
+            "vecino_id": "Restriccion_para_el_resto_de_los_bienes_el_plazo_sera_de_90_noventa_dias_corridos_a_partir_d_1bcc86",
+            "vecino_label": "Plazo 90 días para otros bienes",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 2054,
+      "latency_tool_s": 0.0142
+    },
+    {
+      "n": 15,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867"
+      },
+      "output": {
+        "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+        "type": "Obligacion",
+        "label": "Demostrar ingreso aduanero en plazo",
+        "properties": {
+          "tipo": "presentacion_informativa",
+          "plazo": "270 días (bienes capital) / 90 días (otros bienes)",
+          "descripcion": "Declaración jurada del cliente de que se compromete a demostrar el registro del ingreso aduanero de los bienes dentro del plazo que corresponda según tipo de bien a importar"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+          }
+        ]
+      },
+      "output_chars": 666,
+      "latency_tool_s": 0.0053
+    },
+    {
+      "n": 16,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+        "label": "Demostrar ingreso aduanero en plazo",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          },
+          {
+            "relation": "regula",
+            "vecino_id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+            "vecino_label": "Regularización de ingreso aduanero",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 933,
+      "latency_tool_s": 0.0088
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfJC9oHm5wfW6k8Fbr1",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre los requisitos para reintegros de divisas en operaciones de compras al exterior que no se concretaron.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01NMWnbWZpqXrAXzefvgY5xm",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "reintegro divisas compra exterior no concretada",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01G6U8fbmewGNiaBzEnstKQs",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "reintegro moneda extranjera adelantado",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BJmQuVRACrmTYMtDfpJrPp",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "control divisas compras exterior requisitos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1575,
+          "output_tokens": 247,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfJLxPBwZdJPsFhNxUh",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre reintegros y devoluciones de divisas:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Pp61MRPJAoQPepcQYSkri3",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "reintegro devolución divisas compra no realizada",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01WZp7U55xymXeH5h5x9kgM4",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "vinculación erogación exterior reintegro",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BWkxA5tAHX8ZZjoqWfPXhe",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "asiento sistema control divisas compras exterior",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5118
+          },
+          "cache_creation_input_tokens": 5118,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 237,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfJYLVXTApvNa89qkJ4",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Encontré una obligación relevante. Voy a examinarla en detalle:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_011JTr2a3F4d2EFnfr1FcU5f",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01D3zhHwM6uxgsqZRbbsaTyD",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_compra_de_bienes_al_exterior_8a8e83"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 3400
+          },
+          "cache_creation_input_tokens": 3400,
+          "cache_read_input_tokens": 5118,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 176,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfJhVevwFiLi9mmNn4h",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré información relevante. Voy a explorar más sobre este punto 10.4 y buscar información adicional sobre los requisitos finales:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_012N5B94BJQSiYUyzHUFSGX4",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "ingreso aduanero pendiente pago importaciones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Ezat3njLSJdNDP1ffkG21J",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "liquidación mercado cambios devolución pago",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 568
+          },
+          "cache_creation_input_tokens": 568,
+          "cache_read_input_tokens": 8518,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 191,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfJqdJQXMB7e1LJmvyT",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a ver los detalles de la obligación sobre demostración de ingreso aduanero y explorar más sobre los requisitos finales:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Go6auLEQBe98ac7q7rzawM",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_demostrar_ingreso_aduanero_pendiente_6b8be6"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01RpSmANfqPAKU69RhjDZmFR",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_en_defecto_de_demostrar_el_ingreso_aduanero_proceder_a_la_liquidacion_en_el_merc_0372ee",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2722
+          },
+          "cache_creation_input_tokens": 2722,
+          "cache_read_input_tokens": 9086,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 219,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfK16KWaPus2KSS7XSw",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Ahora voy a ver la operación de regularización de ingreso aduanero para entender mejor el requisito final:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01QA8dU23Kb5xEvsVhFjh38b",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_015icN4KN3PJhzt73yyNSAY2",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_regularizacion_de_ingreso_aduanero_4b2bfa",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 808
+          },
+          "cache_creation_input_tokens": 808,
+          "cache_read_input_tokens": 11808,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 189,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfK7hw33rUAWH6nLBfH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a ver la obligación sobre la declaración jurada que es el requisito final:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_0134QwcoJBBbgdYUCiUsiHW7",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_019F3BFcqtGqHDQQBRhntMQ1",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_declaracion_jurada_del_cliente_de_que_se_compromete_a_demostrar_el_registro_del__70d867",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1188
+          },
+          "cache_creation_input_tokens": 1188,
+          "cache_read_input_tokens": 12616,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 212,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeAfKFpLzYijW5S7NW867",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "```json\n{\n  \"respuesta\": \"El requisito final al que se llega en el proceso de reintegro de divisas por una compra al exterior que no se concretó (o se concretó parcialmente), después de vincular el reintegro con la erogación original y realizar el asiento en el sistema de control de divisas, es la presentación de una declaración jurada del cliente en la que se compromete a demostrar el registro del ingreso aduanero de los bienes dentro del plazo que corresponda según el tipo de bien a importar. Este plazo es de 270 días para bienes de capital, o de 90 días corridos para el resto de los bienes. En defecto de demostrar el ingreso aduanero dentro de este plazo, procede la liquidación en el mercado de cambios de los fondos en moneda extranjera asociados a la devolución del pago efectuado.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 883
+          },
+          "cache_creation_input_tokens": 883,
+          "cache_read_input_tokens": 13804,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 305,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

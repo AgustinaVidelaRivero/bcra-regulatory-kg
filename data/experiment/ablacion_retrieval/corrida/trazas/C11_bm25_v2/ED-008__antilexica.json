@@ -1,0 +1,1508 @@
+{
+  "meta": {
+    "unidad": "U-A1.4",
+    "label": "ablacion_C11_bm25_v2",
+    "celda_id": "C11_bm25_v2",
+    "retriever": "bm25",
+    "tools": "v2",
+    "es_control": false,
+    "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+    "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+    "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+    "backend": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "retriever": "bm25",
+      "modo_busqueda": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "tools": "v2",
+      "celda_id": "C11_bm25_v2",
+      "system_prompt_sha256": "85617ef3d98954fc94a0071a935f5b23de4d646233be20b36b2e63b330dfe7dc",
+      "tools_specs_sha256": "cda004e5fe4d71a24b73a7dd27011ef8240ddb9d220893a58fa3227899ba2260",
+      "celda_archivo_sha256": "803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    "grafo": "KG_Refinado",
+    "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "caso_id": "ED-008::antilexica",
+    "sample_id": "ED-008",
+    "variante": "antilexica",
+    "estrato": "E-D",
+    "sub_estrato": "intra_to",
+    "pos_orden": 90,
+    "semilla_orden": "orden-ablacion-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tokens": 2048,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "cache_conversation": true,
+    "timestamp_inicio": "2026-08-18T16:07:34",
+    "timestamp_fin": "2026-08-18T16:07:52",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "91573e01c7135581",
+    "namespace": "agent|gfp=26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571|cv=fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e+803ed12d47b4d322a791fdff4ab4c37dac066af969ec6c5c35ff79e584ba4f2b|think=0",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "precios_cli_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    },
+    "costo_usd_cli": 0.032595,
+    "precios_harness_usd_por_mtok": {
+      "in": 1.0,
+      "out": 5.0
+    }
+  },
+  "pregunta": "¿Los clientes necesitan una autorización especial del banco central para pagar por adelantado, antes de que venza el plazo, préstamos otorgados por organismos internacionales o agencias oficiales de crédito, cuando ese pago no implica que el propio deudor esté adelantando fondos propios?",
+  "trace": {
+    "qid": "ED-008::antilexica",
+    "question": "¿Los clientes necesitan una autorización especial del banco central para pagar por adelantado, antes de que venza el plazo, préstamos otorgados por organismos internacionales o agencias oficiales de crédito, cuando ese pago no implica que el propio deudor esté adelantando fondos propios?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "pago anticipado préstamo organismos internacionales autorización banco central",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"pago anticipado préstamo organismos internacionales autorización banco central\", \"total_con_match\": 479, \"resultados\": [{\"id\": \"Sujeto_organismo_internacional\", \"type\": \"Sujeto\", \"label\": \"Organismos internacionales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432\", \"type\": \"Excepcion\", \"label\": \"Cancelación de deudas garantizadas por organismos internacionales\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…\"}, {\"id\": \"Operacion_transferencia_fondos_organismos_internacionales_64703d\", \"type\": \"Operacion\", \"label\": \"Transferencia fondos organismos internacionales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: transferencia_fondos\"}, {\"id\": \"Operacion_pago_anticipado_al_exterior_de_importaciones_2510cc\", \"type\": \"Operacion\", \"label\": \"Pago anticipado al exterior de importaciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pagos anticipados al exterior a la fecha de entrega … [+2258 chars]",
+        "output_chars": 3458
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "prepago préstamo agencias crédito oficial",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"prepago préstamo agencias crédito oficial\", \"total_con_match\": 320, \"resultados\": [{\"id\": \"Operacion_financiacion_por_agencia_oficial_de_credito_a_la_exportacion_41992c\", \"type\": \"Operacion\", \"label\": \"Financiación por agencia oficial de crédito a la exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiación a cualquier plazo otorgada por una agencia de crédito a la exportación del exterior para financiar importaciones argentinas de bienes.\"}, {\"id\": \"Sujeto_agencia_oficial_de_credito\", \"type\": \"Sujeto\", \"label\": \"Agencias oficiales de crédito\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"nivel: clase\"}, {\"id\": \"Excepcion_entrega_de_activos_locales_para_cancelar_una_deuda_con_agencia_oficial_de_credit_8c6700\", \"type\": \"Excepcion\", \"label\": \"Excepción entrega de activos para cancelar deuda externa\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Entrega de activos locales para cancelar una deuda con agencia oficial de crédito o entidad financiera del exterior, cuando se produzca a partir del vencimiento…\"}, {\"id\": \"Operacion_operacion_con_sucursal_o_agencia_de_banco_oficial_local_0fbc3a\", \"type\": \"Operacion\", \"label\": \"Operación con sucursal o agen… [+2273 chars]",
+        "output_chars": 3473
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432\", \"type\": \"Excepcion\", \"label\": \"Cancelación de deudas garantizadas por organismos internacionales\", \"properties\": {\"descripcion\": \"El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"}]}",
+        "output_chars": 581
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf"
+        },
+        "output_truncado": "{\"id\": \"Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf\", \"type\": \"Operacion\", \"label\": \"Cancelación deudas organismos internacionales agencias crédito\", \"properties\": {\"tipo\": \"Pago corresponde a cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 13.3. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/\"}]}",
+        "output_chars": 565
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "autorización acceso mercado cambios compra moneda extranjera",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"autorización acceso mercado cambios compra moneda extranjera\", \"total_con_match\": 833, \"resultados\": [{\"id\": \"Operacion_compra_de_moneda_extranjera_para_garantias_6f3257\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera para garantías\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos\"}, {\"id\": \"Operacion_compra_de_moneda_extranjera_4818a4\", \"type\": \"Operacion\", \"label\": \"Compra de moneda extranjera\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Compra de moneda extranjera por parte de otros residentes para la formación de activos externos\"}, {\"id\": \"Obligacion_las_entidades_podran_darle_acceso_al_cliente_para_pagar_financiaciones_en_moneda_6d6fa8\", \"type\": \"Obligacion\", \"label\": \"Acceso mercado cambios para financiaciones en moneda extranjera\", \"tokens_matcheados\": 5, \"resumen_propiedades\": \"Las entidades podrán darle acceso al cliente para pagar financiaciones en moneda extranjera otorgadas por entidades financieras locales, liquidadas en el mercad…\"}, {\"id\": \"Operacion_compra_de_billetes_en_moneda… [+2341 chars]",
+        "output_chars": 3541
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "pago deuda sin adelantar fondos propios",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"pago deuda sin adelantar fondos propios\", \"total_con_match\": 723, \"resultados\": [{\"id\": \"Operacion_pago_de_deudas_con_accionistas_no_residentes_1a9a1f\", \"type\": \"Operacion\", \"label\": \"Pago de deudas con accionistas no residentes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Pago de deudas con accionistas no residentes por utilidades y dividendos, elegibles según punto 4.6.1\"}, {\"id\": \"Operacion_anticipo_de_fondos_propios_del_exterior_f7e482\", \"type\": \"Operacion\", \"label\": \"Anticipo de fondos propios del exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"tipo: transferencia de fondos desde el exterior por el exportador\"}, {\"id\": \"Operacion_pago_de_deudas_comerciales_importaciones_servicios_f98896\", \"type\": \"Operacion\", \"label\": \"Pago de deudas comerciales importaciones servicios\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Pago de deudas comerciales por importaciones de servicios prestados o devengados hasta el 12/12/23, elegibles según punto 4.5\"}, {\"id\": \"Operacion_pago_de_deudas_comerciales_importaciones_bienes_f2d015\", \"type\": \"Operacion\", \"label\": \"Pago de deudas comerciales importaciones bienes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Pa… [+2182 chars]",
+        "output_chars": 3382
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "excepción no requiere autorización pago cancelación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"excepción no requiere autorización pago cancelación\", \"total_con_match\": 659, \"resultados\": [{\"id\": \"Excepcion_excepcion_para_cancelacion_de_valores_de_deuda_fiduciaria_emitidos_por_fiduciari_02c0b3\", \"type\": \"Excepcion\", \"label\": \"Excepción cancelación valores deuda fiduciaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Excepción para cancelación de valores de deuda fiduciaria emitidos por fiduciarios de fideicomisos financieros con oferta pública en concordancia con disposicio…\"}, {\"id\": \"Excepcion_excepcion_para_cancelacion_de_giros_en_descubierto_en_cuentas_corrientes_en_dola_7a9078\", \"type\": \"Excepcion\", \"label\": \"Excepción cancelación giros descubierto cuentas corrientes\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Excepción para cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre …\"}, {\"id\": \"Excepcion_excepcion_para_cancelacion_de_emisiones_de_titulos_de_deuda_realizadas_a_partir__844bc4\", \"type\": \"Excepcion\", \"label\": \"Excepción cancelación emisiones títulos deuda refinanciamiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Excepción para cancelación … [+2995 chars]",
+        "output_chars": 4195
+      },
+      {
+        "n": 8,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432\", \"label\": \"Cancelación de deudas garantizadas por organismos internacionales\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 2, \"salientes_paginas\": 1, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {\"establecida_en\": 1, \"exceptua\": 1}, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"}]}, {\"relation\": \"exceptua\", \"vecino_id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6\", \"vecino_label\": \"Conformidad previa del BCRA para acceso al mercado de cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.11. Disposiciones complementarias para importaciones de bienes con registro de ingre\"}]}], \"entrantes_total\": 0, \"entrantes_paginas\": 0, \"entrantes_pagin… [+66 chars]",
+        "output_chars": 1266
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6\", \"type\": \"Restriccion\", \"label\": \"Conformidad previa del BCRA para acceso al mercado de cambios\", \"properties\": {\"descripcion\": \"Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios para realizar pagos de importaciones por bienes con registro de ingreso aduanero hasta el 12/12/23\", \"tipo\": \"prohibicion\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 10.11. Disposiciones complementarias para importaciones de bienes con registro de ingre\"}]}",
+        "output_chars": 619
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "pago anticipado vencimiento plazo sin autorización",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"pago anticipado vencimiento plazo sin autorización\", \"total_con_match\": 637, \"resultados\": [{\"id\": \"Obligacion_fechas_de_vencimiento_compatibles_con_plazo_de_pago_e72af1\", \"type\": \"Obligacion\", \"label\": \"Fechas de vencimiento compatibles con plazo de pago\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las fechas de vencimiento y los montos de capital a pagar de la financiación otorgada sean compatibles con lo previsto en el punto 10.10.1., 10.10.2.1. o 10.10.…\"}, {\"id\": \"Restriccion_no_se_admitira_el_descalce_de_plazos_de_vencimiento_la_exposicion_debera_estar_c_4b3b67\", \"type\": \"Restriccion\", \"label\": \"Cobertura durante plazo completo de vencimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"No se admitirá el descalce de plazos de vencimiento; la exposición deberá estar cubierta durante todo el plazo de vencimiento contractual\"}, {\"id\": \"Restriccion_el_pago_no_se_realiza_con_anterioridad_a_la_fecha_de_vencimiento_de_la_obligacio_f5a490\", \"type\": \"Restriccion\", \"label\": \"Pago no anterior a vencimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior\"}, {\"id\": \"… [+2607 chars]",
+        "output_chars": 3807
+      },
+      {
+        "n": 11,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "canje arbitraje fondos depositados pago anticipado",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"canje arbitraje fondos depositados pago anticipado\", \"total_con_match\": 616, \"resultados\": [{\"id\": \"Operacion_canje_arbitraje_con_fondos_depositados_5c1fc9\", \"type\": \"Operacion\", \"label\": \"Canje/arbitraje con fondos depositados\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Realización de un canje y/o arbitraje con fondos depositados en una cuenta local originados en cobros en moneda extranjera de capital o intereses de bonos BOPRE…\"}, {\"id\": \"Excepcion_el_pago_es_concretado_mediante_la_realizacion_de_un_canje_y_o_arbitraje_con_los__ae9cc4\", \"type\": \"Excepcion\", \"label\": \"Pago mediante canje/arbitraje con fondos BOPREAL\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El pago es concretado mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados en cobros de capital e inter…\"}, {\"id\": \"Operacion_canje_y_arbitraje_con_fondos_bopreal_c31f6c\", \"type\": \"Operacion\", \"label\": \"Canje y arbitraje con fondos BOPREAL\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los clientes podrán acceder al mercado de cambios mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originado… [+2382 chars]",
+        "output_chars": 3582
+      },
+      {
+        "n": 12,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016\", \"type\": \"Excepcion\", \"label\": \"Pago anticipado con canje o liquidación\", \"properties\": {\"descripcion\": \"Se trata de un pago anticipado de importaciones de bienes de capital que se concreta mediante la realización de un canje y/o arbitraje con fondos depositados en cuenta de moneda extranjera, y/o en forma simultánea con la liquidación de financiaciones en moneda extranjera otorgadas por entidades financieras locales\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"}]}",
+        "output_chars": 687
+      },
+      {
+        "n": 13,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016\", \"label\": \"Pago anticipado con canje o liquidación\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 1, \"salientes_paginas\": 1, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {\"establecida_en\": 1}, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"}]}], \"entrantes_total\": 0, \"entrantes_paginas\": 0, \"entrantes_pagina_siguiente\": null, \"entrantes_por_relacion\": {}, \"entrantes\": []}",
+        "output_chars": 826
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1906,
+        "output_tokens": 187,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.486
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 200,
+        "cache_read": 0,
+        "cache_write": 4473,
+        "latency_s": 2.076
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 189,
+        "cache_read": 4473,
+        "cache_write": 641,
+        "latency_s": 2.253
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 194,
+        "cache_read": 5114,
+        "cache_write": 2629,
+        "latency_s": 2.238
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 131,
+        "cache_read": 7743,
+        "cache_write": 2182,
+        "latency_s": 1.639
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 190,
+        "cache_read": 9925,
+        "cache_write": 345,
+        "latency_s": 2.065
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 214,
+        "cache_read": 10270,
+        "cache_write": 2878,
+        "latency_s": 2.247
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 7,
+        "output_tokens": 319,
+        "cache_read": 13148,
+        "cache_write": 816,
+        "latency_s": 3.614
+      }
+    ],
+    "final_json": {
+      "respuesta": "No. Según la regulación del BCRA, los clientes NO necesitan autorización especial del banco central para pagar por adelantado préstamos otorgados por organismos internacionales o agencias oficiales de crédito, cuando ese pago se concreta mediante canje y/o arbitraje con fondos depositados en cuenta de moneda extranjera, o en forma simultánea con la liquidación de financiaciones en moneda extranjera otorgadas por entidades financieras locales. En estos casos, el pago anticipado está exceptuado de los requisitos de conformidad previa del BCRA. Adicionalmente, existe una excepción específica para la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Basándome en la información encontrada en el Knowledge Graph, puedo responder la pregunta:\n\n```json\n{\n  \"respuesta\": \"No. Según la regulación del BCRA, los clientes NO necesitan autorización especial del banco central para pagar por adelantado préstamos otorgados por organismos internacionales o agencias oficiales de crédito, cuando ese pago se concreta mediante canje y/o arbitraje con fondos depositados en cuenta de moneda extranjera, o en forma simultánea con la liquidación de financiaciones en moneda extranjera otorgadas por entidades financieras locales. En estos casos, el pago anticipado está exceptuado de los requisitos de conformidad previa del BCRA. Adicionalmente, existe una excepción específica para la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 13,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 13.3. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/"
+      },
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 10.11. Disposiciones complementarias para importaciones de bienes con registro de ingre"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1953,
+    "tokens_out": 1624,
+    "cache_read": 50673,
+    "cache_write": 13964,
+    "cost_usd": 0.032595,
+    "latency_s": 17.775,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "pago anticipado préstamo organismos internacionales autorización banco central",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "pago anticipado préstamo organismos internacionales autorización banco central",
+        "total_con_match": 479,
+        "resultados": [
+          {
+            "id": "Sujeto_organismo_internacional",
+            "type": "Sujeto",
+            "label": "Organismos internacionales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432",
+            "type": "Excepcion",
+            "label": "Cancelación de deudas garantizadas por organismos internacionales",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Operacion_transferencia_fondos_organismos_internacionales_64703d",
+            "type": "Operacion",
+            "label": "Transferencia fondos organismos internacionales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: transferencia_fondos"
+          },
+          {
+            "id": "Operacion_pago_anticipado_al_exterior_de_importaciones_2510cc",
+            "type": "Operacion",
+            "label": "Pago anticipado al exterior de importaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos anticipados al exterior a la fecha de entrega de los bienes por parte del proveedor del exterior"
+          },
+          {
+            "id": "Restriccion_limite_pago_50_liquidacion_cobros_anticipados_96f95b",
+            "type": "Restriccion",
+            "label": "Límite pago 50% liquidación cobros anticipados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de capital de deudas no puede superar el equivalente al 50% del monto liquidado simultáneamente en concepto de cobros anticipados de exportaciones"
+          },
+          {
+            "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf",
+            "type": "Operacion",
+            "label": "Cancelación deudas organismos internacionales agencias crédito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago corresponde a cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Obligacion_bcra_establece_supuestos_de_autorizacion_previa_e82783",
+            "type": "Obligacion",
+            "label": "BCRA establece supuestos de autorización previa",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El BANCO CENTRAL establecerá los supuestos en los que el acceso al mercado de cambios para la compra de moneda extranjera y metales preciosos amonedados y las t…"
+          },
+          {
+            "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016",
+            "type": "Excepcion",
+            "label": "Pago anticipado con canje o liquidación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se trata de un pago anticipado de importaciones de bienes de capital que se concreta mediante la realización de un canje y/o arbitraje con fondos depositados en…"
+          },
+          {
+            "id": "Excepcion_creditos_frente_al_banco_central_de_la_republica_argentina_estan_excluidos_471971",
+            "type": "Excepcion",
+            "label": "Exclusión de créditos frente al BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Créditos frente al Banco Central de la República Argentina están excluidos"
+          },
+          {
+            "id": "Excepcion_este_requerimiento_no_sera_de_aplicacion_para_el_caso_de_exposiciones_a_gobierno_c2b283",
+            "type": "Excepcion",
+            "label": "Excepción para exposiciones a gobiernos y bancos centrales",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Este requerimiento no será de aplicación para el caso de exposiciones a gobiernos y bancos centrales previstas en el punto 2.12.2."
+          }
+        ]
+      },
+      "output_chars": 3458,
+      "latency_tool_s": 0.0304
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "prepago préstamo agencias crédito oficial",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "prepago préstamo agencias crédito oficial",
+        "total_con_match": 320,
+        "resultados": [
+          {
+            "id": "Operacion_financiacion_por_agencia_oficial_de_credito_a_la_exportacion_41992c",
+            "type": "Operacion",
+            "label": "Financiación por agencia oficial de crédito a la exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Financiación a cualquier plazo otorgada por una agencia de crédito a la exportación del exterior para financiar importaciones argentinas de bienes."
+          },
+          {
+            "id": "Sujeto_agencia_oficial_de_credito",
+            "type": "Sujeto",
+            "label": "Agencias oficiales de crédito",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Excepcion_entrega_de_activos_locales_para_cancelar_una_deuda_con_agencia_oficial_de_credit_8c6700",
+            "type": "Excepcion",
+            "label": "Excepción entrega de activos para cancelar deuda externa",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Entrega de activos locales para cancelar una deuda con agencia oficial de crédito o entidad financiera del exterior, cuando se produzca a partir del vencimiento…"
+          },
+          {
+            "id": "Operacion_operacion_con_sucursal_o_agencia_de_banco_oficial_local_0fbc3a",
+            "type": "Operacion",
+            "label": "Operación con sucursal o agencia de banco oficial local",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "tipo: Arbitraje y canje con sucursal o agencia en el exterior de bancos oficiales locales"
+          },
+          {
+            "id": "Operacion_inclusion_de_prestamos_en_clasificacion_3807d4",
+            "type": "Operacion",
+            "label": "Inclusión de préstamos en clasificación",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Préstamos (capitales, diferencias de cotización e intereses devengados a cobrar) sin deducir las previsiones por riesgos de incobrabilidad y de desvalorización"
+          },
+          {
+            "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf",
+            "type": "Operacion",
+            "label": "Cancelación deudas organismos internacionales agencias crédito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: Pago corresponde a cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Restriccion_deben_corresponder_a_transferencias_efectuadas_por_organismos_oficiales_o_privad_998656",
+            "type": "Restriccion",
+            "label": "Transferencias de organismos oficiales o privados de jubilación",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Deben corresponder a transferencias efectuadas por organismos oficiales o privados de fondos de jubilaciones y pensiones o fondos compensadores de previsión, a …"
+          },
+          {
+            "id": "Sujeto_agencia_de_cambio",
+            "type": "Sujeto",
+            "label": "Agencias de cambio",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase"
+          },
+          {
+            "id": "Restriccion_limite_para_prestamos_a_instituciones_de_microcredito_39f2d3",
+            "type": "Restriccion",
+            "label": "Límite para préstamos a instituciones de microcrédito",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Préstamos a Instituciones de Microcrédito en la cartera para consumo o vivienda no podrán superar el equivalente al 40% del importe de referencia establecido en…"
+          },
+          {
+            "id": "Obligacion_toda_la_informacion_que_se_solicite_tanto_en_la_originacion_del_prestamo_como_du_16b153",
+            "type": "Obligacion",
+            "label": "Documentación de información del préstamo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Toda la información que se solicite –tanto en la originación del préstamo como durante su seguimiento– deberá encontrarse debidamente documentada; en particular…"
+          }
+        ]
+      },
+      "output_chars": 3473,
+      "latency_tool_s": 0.0049
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+      },
+      "output": {
+        "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432",
+        "type": "Excepcion",
+        "label": "Cancelación de deudas garantizadas por organismos internacionales",
+        "properties": {
+          "descripcion": "El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+          }
+        ]
+      },
+      "output_chars": 581,
+      "latency_tool_s": 0.0055
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf"
+      },
+      "output": {
+        "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf",
+        "type": "Operacion",
+        "label": "Cancelación deudas organismos internacionales agencias crédito",
+        "properties": {
+          "tipo": "Pago corresponde a cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 13.3. Pagos de servicios que fueron o serán prestados o devengados a partir del 13/12/"
+          }
+        ]
+      },
+      "output_chars": 565,
+      "latency_tool_s": 0.003
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "autorización acceso mercado cambios compra moneda extranjera",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "autorización acceso mercado cambios compra moneda extranjera",
+        "total_con_match": 833,
+        "resultados": [
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_para_garantias_6f3257",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera para garantías",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para compra de moneda extranjera destinada a la constitución de garantías por servicios de capital e intereses de endeudamientos"
+          },
+          {
+            "id": "Operacion_compra_de_moneda_extranjera_4818a4",
+            "type": "Operacion",
+            "label": "Compra de moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera por parte de otros residentes para la formación de activos externos"
+          },
+          {
+            "id": "Obligacion_las_entidades_podran_darle_acceso_al_cliente_para_pagar_financiaciones_en_moneda_6d6fa8",
+            "type": "Obligacion",
+            "label": "Acceso mercado cambios para financiaciones en moneda extranjera",
+            "tokens_matcheados": 5,
+            "resumen_propiedades": "Las entidades podrán darle acceso al cliente para pagar financiaciones en moneda extranjera otorgadas por entidades financieras locales, liquidadas en el mercad…"
+          },
+          {
+            "id": "Operacion_compra_de_billetes_en_moneda_extranjera_51871c",
+            "type": "Operacion",
+            "label": "Compra de billetes en moneda extranjera",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de billetes en moneda extranjera para la tenencia o constitución de depósitos por parte de personas humanas residentes, mediante débito en cuenta o efect…"
+          },
+          {
+            "id": "Operacion_compra_anticipada_moneda_extranjera_servicios_3f8924",
+            "type": "Operacion",
+            "label": "Compra anticipada moneda extranjera servicios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Compra de moneda extranjera con anterioridad al plazo admitido para pago de servicios de deudas financieras o títulos valores"
+          },
+          {
+            "id": "Restriccion_se_prohibe_el_acceso_al_mercado_de_cambios_para_el_pago_de_deudas_y_otras_obliga_38e000",
+            "type": "Restriccion",
+            "label": "Prohibición acceso mercado cambios deudas entre residentes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_egresos_dd28ee",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para egresos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios para operaciones de egreso"
+          },
+          {
+            "id": "Restriccion_no_tendra_acceso_al_mercado_de_cambios_para_pagar_el_equivalente_de_la_deuda_por_9307cf",
+            "type": "Restriccion",
+            "label": "Prohibición de acceso al mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "No tendrá acceso al mercado de cambios para pagar el equivalente de la deuda por la cual se suscribió excepto que el pago se concrete a partir de un canje y arb…"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_b8c486",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El acceso al mercado de cambios se produce con una anterioridad no mayor a los 3 (tres) días hábiles a la fecha de vencimiento del servicio de capital o interés…"
+          },
+          {
+            "id": "Operacion_acceso_al_mercado_de_cambios_para_cancelacion_6c2128",
+            "type": "Operacion",
+            "label": "Acceso al mercado de cambios para cancelación",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Acceso al mercado de cambios en casos de cancelación de garantías otorgadas por importaciones de bienes"
+          }
+        ]
+      },
+      "output_chars": 3541,
+      "latency_tool_s": 0.0143
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "pago deuda sin adelantar fondos propios",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "pago deuda sin adelantar fondos propios",
+        "total_con_match": 723,
+        "resultados": [
+          {
+            "id": "Operacion_pago_de_deudas_con_accionistas_no_residentes_1a9a1f",
+            "type": "Operacion",
+            "label": "Pago de deudas con accionistas no residentes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de deudas con accionistas no residentes por utilidades y dividendos, elegibles según punto 4.6.1"
+          },
+          {
+            "id": "Operacion_anticipo_de_fondos_propios_del_exterior_f7e482",
+            "type": "Operacion",
+            "label": "Anticipo de fondos propios del exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: transferencia de fondos desde el exterior por el exportador"
+          },
+          {
+            "id": "Operacion_pago_de_deudas_comerciales_importaciones_servicios_f98896",
+            "type": "Operacion",
+            "label": "Pago de deudas comerciales importaciones servicios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de deudas comerciales por importaciones de servicios prestados o devengados hasta el 12/12/23, elegibles según punto 4.5"
+          },
+          {
+            "id": "Operacion_pago_de_deudas_comerciales_importaciones_bienes_f2d015",
+            "type": "Operacion",
+            "label": "Pago de deudas comerciales importaciones bienes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de deudas comerciales por importaciones de bienes con registro de ingreso aduanero hasta el 12/12/23, elegibles según punto 4.4"
+          },
+          {
+            "id": "Operacion_pago_capital_e_intereses_deudas_contrapartes_vinculadas_79678c",
+            "type": "Operacion",
+            "label": "Pago capital e intereses deudas contrapartes vinculadas",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de capital e intereses de deudas con contrapartes vinculadas, elegibles según punto 4.7"
+          },
+          {
+            "id": "Operacion_pago_de_deudas_comerciales_al_exterior_f3cecc",
+            "type": "Operacion",
+            "label": "Pago de deudas comerciales al exterior",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pagos de deudas comerciales al exterior (operaciones en las que se cumplió la condición de compra pactada entre exportador e importador)"
+          },
+          {
+            "id": "Operacion_pago_de_intereses_de_deudas_comerciales_17e9d8",
+            "type": "Operacion",
+            "label": "Pago de intereses de deudas comerciales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pagos de intereses de deudas comerciales por importación de bienes y servicios cuyo acreedor sea una contraparte vinculada al deudor sin la conformidad previa r…"
+          },
+          {
+            "id": "Restriccion_el_pago_de_prima_se_concrete_de_manera_simultanea_con_una_liquidacion_de_fondos__9516ba",
+            "type": "Restriccion",
+            "label": "Requisito de liquidación de fondos para prima de recompra",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El pago de prima se concrete de manera simultánea con una liquidación de fondos ingresados desde el exterior por el nuevo título de deuda que exceda al monto de…"
+          },
+          {
+            "id": "Excepcion_obligaciones_negociables_compradas_emisiones_propias_estan_excluidas_47c807",
+            "type": "Excepcion",
+            "label": "Exclusión de obligaciones negociables propias",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Obligaciones negociables compradas (emisiones propias) están excluidas"
+          },
+          {
+            "id": "Excepcion_este_requisito_no_resultara_aplicable_para_operaciones_propias_de_una_entidad_en_bda685",
+            "type": "Excepcion",
+            "label": "Excepción para operaciones propias de entidad",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Este requisito no resultará aplicable para operaciones propias de una entidad en carácter de cliente."
+          }
+        ]
+      },
+      "output_chars": 3382,
+      "latency_tool_s": 0.005
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "excepción no requiere autorización pago cancelación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "excepción no requiere autorización pago cancelación",
+        "total_con_match": 659,
+        "resultados": [
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_de_valores_de_deuda_fiduciaria_emitidos_por_fiduciari_02c0b3",
+            "type": "Excepcion",
+            "label": "Excepción cancelación valores deuda fiduciaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación de valores de deuda fiduciaria emitidos por fiduciarios de fideicomisos financieros con oferta pública en concordancia con disposicio…"
+          },
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_de_giros_en_descubierto_en_cuentas_corrientes_en_dola_7a9078",
+            "type": "Excepcion",
+            "label": "Excepción cancelación giros descubierto cuentas corrientes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre …"
+          },
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_de_emisiones_de_titulos_de_deuda_realizadas_a_partir__844bc4",
+            "type": "Excepcion",
+            "label": "Excepción cancelación emisiones títulos deuda refinanciamiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación de emisiones de títulos de deuda realizadas a partir del 01/09/19 con objeto de refinanciar deudas que conlleven incremento de vida p…"
+          },
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_en_el_pais_a_partir_de_su_vencimiento_de_capital_e_in_40cbbe",
+            "type": "Excepcion",
+            "label": "Excepción cancelación capital e intereses financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación en el país a partir de su vencimiento de capital e intereses de financiaciones en moneda extranjera otorgadas por entidades financier…"
+          },
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_de_pagares_con_oferta_publica_emitidos_en_marco_de_re_f73811",
+            "type": "Excepcion",
+            "label": "Excepción cancelación pagarés oferta pública CNV",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación de pagarés con oferta pública emitidos en marco de Resolución General 1.003/24 de CNV, denominados y suscriptos en moneda extranjera,…"
+          },
+          {
+            "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_e6072b",
+            "type": "Excepcion",
+            "label": "Cancelación de deudas financiadas por entidades financieras",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por entidades financieras locales o del e…"
+          },
+          {
+            "id": "Excepcion_excepcion_para_cancelacion_de_emisiones_realizadas_a_partir_del_29_11_19_de_titu_c54de0",
+            "type": "Excepcion",
+            "label": "Excepción cancelación títulos deuda registro público",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepción para cancelación de emisiones realizadas a partir del 29/11/19 de títulos de deuda con registro público en el país, denominadas y suscriptas en moneda…"
+          },
+          {
+            "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432",
+            "type": "Excepcion",
+            "label": "Cancelación de deudas garantizadas por organismos internacionales",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Excepcion_cancelaciones_de_financiaciones_en_moneda_extranjera_otorgadas_por_entidades_fin_786a43",
+            "type": "Excepcion",
+            "label": "Excepción por cancelación de financiaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cancelaciones de financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo pagos por consumos en moneda extranjera efectuados …"
+          },
+          {
+            "id": "Obligacion_cualquier_restitucion_de_capital_requerira_la_autorizacion_previa_de_la_sefyc_y__4d6b7d",
+            "type": "Obligacion",
+            "label": "Autorización previa para restitución de capital",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cualquier restitución de capital requerirá la autorización previa de la SEFyC y la entidad financiera no deberá tener la expectativa ni crearla en el mercado de…"
+          }
+        ]
+      },
+      "output_chars": 4195,
+      "latency_tool_s": 0.0234
+    },
+    {
+      "n": 8,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+      },
+      "output": {
+        "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432",
+        "label": "Cancelación de deudas garantizadas por organismos internacionales",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 2,
+        "salientes_paginas": 1,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {
+          "establecida_en": 1,
+          "exceptua": 1
+        },
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6",
+            "vecino_label": "Conformidad previa del BCRA para acceso al mercado de cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 10.11. Disposiciones complementarias para importaciones de bienes con registro de ingre"
+              }
+            ]
+          }
+        ],
+        "entrantes_total": 0,
+        "entrantes_paginas": 0,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {},
+        "entrantes": []
+      },
+      "output_chars": 1266,
+      "latency_tool_s": 0.0148
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6"
+      },
+      "output": {
+        "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6",
+        "type": "Restriccion",
+        "label": "Conformidad previa del BCRA para acceso al mercado de cambios",
+        "properties": {
+          "descripcion": "Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios para realizar pagos de importaciones por bienes con registro de ingreso aduanero hasta el 12/12/23",
+          "tipo": "prohibicion"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 10.11. Disposiciones complementarias para importaciones de bienes con registro de ingre"
+          }
+        ]
+      },
+      "output_chars": 619,
+      "latency_tool_s": 0.0041
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "pago anticipado vencimiento plazo sin autorización",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "pago anticipado vencimiento plazo sin autorización",
+        "total_con_match": 637,
+        "resultados": [
+          {
+            "id": "Obligacion_fechas_de_vencimiento_compatibles_con_plazo_de_pago_e72af1",
+            "type": "Obligacion",
+            "label": "Fechas de vencimiento compatibles con plazo de pago",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Las fechas de vencimiento y los montos de capital a pagar de la financiación otorgada sean compatibles con lo previsto en el punto 10.10.1., 10.10.2.1. o 10.10.…"
+          },
+          {
+            "id": "Restriccion_no_se_admitira_el_descalce_de_plazos_de_vencimiento_la_exposicion_debera_estar_c_4b3b67",
+            "type": "Restriccion",
+            "label": "Cobertura durante plazo completo de vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se admitirá el descalce de plazos de vencimiento; la exposición deberá estar cubierta durante todo el plazo de vencimiento contractual"
+          },
+          {
+            "id": "Restriccion_el_pago_no_se_realiza_con_anterioridad_a_la_fecha_de_vencimiento_de_la_obligacio_f5a490",
+            "type": "Restriccion",
+            "label": "Pago no anterior a vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El pago no se realiza con anterioridad a la fecha de vencimiento de la obligación con el exterior"
+          },
+          {
+            "id": "Obligacion_el_plazo_de_vencimiento_de_la_exposicion_subyacente_se_calculara_como_el_mayor_p_877a92",
+            "type": "Obligacion",
+            "label": "Calcular plazo de vencimiento conservador",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El plazo de vencimiento de la exposición subyacente se calculará como el mayor plazo de vencimiento restante posible antes de que la contraparte deba cumplir su…"
+          },
+          {
+            "id": "Restriccion_se_admitira_que_exista_un_descalce_entre_los_plazos_de_vencimiento_de_la_posicio_0d4a6a",
+            "type": "Restriccion",
+            "label": "Descalce permitido entre plazo de vencimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se admitirá que exista un descalce entre los plazos de vencimiento de la posición subyacente y del swap de rendimiento total."
+          },
+          {
+            "id": "Operacion_pago_anticipado_al_exterior_de_importaciones_2510cc",
+            "type": "Operacion",
+            "label": "Pago anticipado al exterior de importaciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos anticipados al exterior a la fecha de entrega de los bienes por parte del proveedor del exterior"
+          },
+          {
+            "id": "Restriccion_limite_pago_50_liquidacion_cobros_anticipados_96f95b",
+            "type": "Restriccion",
+            "label": "Límite pago 50% liquidación cobros anticipados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago de capital de deudas no puede superar el equivalente al 50% del monto liquidado simultáneamente en concepto de cobros anticipados de exportaciones"
+          },
+          {
+            "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016",
+            "type": "Excepcion",
+            "label": "Pago anticipado con canje o liquidación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se trata de un pago anticipado de importaciones de bienes de capital que se concreta mediante la realización de un canje y/o arbitraje con fondos depositados en…"
+          },
+          {
+            "id": "Excepcion_si_la_nacionalizacion_de_los_bienes_requiere_un_plazo_mayor_y_el_pago_anticipado_f11902",
+            "type": "Excepcion",
+            "label": "Extensión de plazo por nacionalización mayor",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Si la nacionalización de los bienes requiere un plazo mayor y el pago anticipado se concreta en su totalidad en el marco de lo previsto en los puntos 10.10.2.3.…"
+          },
+          {
+            "id": "Restriccion_plazo_de_vencimiento_original_no_inferior_a_cinco_anos_no_existir_clausulas_de_r_f51f4a",
+            "type": "Restriccion",
+            "label": "Vencimiento mínimo de PNc: 5 años",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Plazo de vencimiento original no inferior a cinco años; no existir cláusulas de remuneración escalonada creciente u otros incentivos para su amortización antici…"
+          }
+        ]
+      },
+      "output_chars": 3807,
+      "latency_tool_s": 0.0255
+    },
+    {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "canje arbitraje fondos depositados pago anticipado",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "canje arbitraje fondos depositados pago anticipado",
+        "total_con_match": 616,
+        "resultados": [
+          {
+            "id": "Operacion_canje_arbitraje_con_fondos_depositados_5c1fc9",
+            "type": "Operacion",
+            "label": "Canje/arbitraje con fondos depositados",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Realización de un canje y/o arbitraje con fondos depositados en una cuenta local originados en cobros en moneda extranjera de capital o intereses de bonos BOPRE…"
+          },
+          {
+            "id": "Excepcion_el_pago_es_concretado_mediante_la_realizacion_de_un_canje_y_o_arbitraje_con_los__ae9cc4",
+            "type": "Excepcion",
+            "label": "Pago mediante canje/arbitraje con fondos BOPREAL",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El pago es concretado mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados en cobros de capital e inter…"
+          },
+          {
+            "id": "Operacion_canje_y_arbitraje_con_fondos_bopreal_c31f6c",
+            "type": "Operacion",
+            "label": "Canje y arbitraje con fondos BOPREAL",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los clientes podrán acceder al mercado de cambios mediante la realización de un canje y/o arbitraje con los fondos depositados en una cuenta local y originados …"
+          },
+          {
+            "id": "Obligacion_el_cliente_realiza_una_operacion_de_canje_y_o_arbitraje_con_fondos_depositados_e_1a61ad",
+            "type": "Obligacion",
+            "label": "Verificar operación de canje con fondos locales",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El cliente realiza una operación de canje y/o arbitraje con fondos depositados en una cuenta local y originados en cobros en moneda extranjera de capital o inte…"
+          },
+          {
+            "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016",
+            "type": "Excepcion",
+            "label": "Pago anticipado con canje o liquidación",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se trata de un pago anticipado de importaciones de bienes de capital que se concreta mediante la realización de un canje y/o arbitraje con fondos depositados en…"
+          },
+          {
+            "id": "Operacion_canjes_y_arbitrajes_con_clientes_4a86e3",
+            "type": "Operacion",
+            "label": "Canjes y arbitrajes con clientes",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Operaciones de canjes y arbitrajes con clientes asociados a ingresos de divisas del exterior"
+          },
+          {
+            "id": "Operacion_operaciones_de_cambio_canje_y_arbitraje_aa233e",
+            "type": "Operacion",
+            "label": "Operaciones de cambio, canje y arbitraje",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En todas las operaciones de cambio, canje y/o arbitraje que se cursen por el mercado libre de cambios"
+          },
+          {
+            "id": "Excepcion_el_acceso_al_mercado_de_cambios_sera_permitido_si_el_pago_o_repatriacion_se_conc_ce2db5",
+            "type": "Excepcion",
+            "label": "Excepción por canje y arbitraje con fondos BOPREAL",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El acceso al mercado de cambios será permitido si el pago o repatriación se concrete a partir de un canje y/o arbitraje con los fondos depositados en una cuenta…"
+          },
+          {
+            "id": "Operacion_canje_y_o_arbitraje_con_fondos_bopreal_5f8e6d",
+            "type": "Operacion",
+            "label": "Canje y/o arbitraje con fondos BOPREAL",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "tipo: canje_arbitraje"
+          },
+          {
+            "id": "Excepcion_se_permite_acceso_al_mercado_de_cambios_para_pagar_el_equivalente_de_la_deuda_cu_1e9137",
+            "type": "Excepcion",
+            "label": "Excepción pago con canje arbitraje BOPREAL",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se permite acceso al mercado de cambios para pagar el equivalente de la deuda cuando el pago se concrete a partir de un canje y arbitraje con los fondos deposit…"
+          }
+        ]
+      },
+      "output_chars": 3582,
+      "latency_tool_s": 0.0093
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+      },
+      "output": {
+        "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016",
+        "type": "Excepcion",
+        "label": "Pago anticipado con canje o liquidación",
+        "properties": {
+          "descripcion": "Se trata de un pago anticipado de importaciones de bienes de capital que se concreta mediante la realización de un canje y/o arbitraje con fondos depositados en cuenta de moneda extranjera, y/o en forma simultánea con la liquidación de financiaciones en moneda extranjera otorgadas por entidades financieras locales"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+          }
+        ]
+      },
+      "output_chars": 687,
+      "latency_tool_s": 0.0033
+    },
+    {
+      "n": 13,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+      },
+      "output": {
+        "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016",
+        "label": "Pago anticipado con canje o liquidación",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 1,
+        "salientes_paginas": 1,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {
+          "establecida_en": 1
+        },
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el"
+              }
+            ]
+          }
+        ],
+        "entrantes_total": 0,
+        "entrantes_paginas": 0,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {},
+        "entrantes": []
+      },
+      "output_chars": 826,
+      "latency_tool_s": 0.011
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApNmQTTBF5gjEqFGD9U",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre pagos anticipados de préstamos de organismos internacionales y si requieren autorización del banco central.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01PL5pPdBhHZFQy6e7oPxYSn",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "pago anticipado préstamo organismos internacionales autorización banco central",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01MZhRps1TmH8jNMsKV7hBCf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "prepago préstamo agencias crédito oficial",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1906,
+          "output_tokens": 187,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApNss9bx7nQGiTaBCGN",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Encontré una excepción muy relevante. Déjame ver el detalle de la excepción sobre cancelación de deudas garantizadas por organismos internacionales:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01T3gBmFpF6JuQrGf8865vZo",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01LXgrvE11oFJXGcrKFeUfhW",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_cancelacion_deudas_organismos_internacionales_agencias_credito_4437cf"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4473
+          },
+          "cache_creation_input_tokens": 4473,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 200,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApP3dH9vjn1eN6TvfuZ",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Necesito entender mejor el contexto de estas excepciones. Déjame buscar información sobre qué requiere autorización y qué no:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_011LB3AeyPRDA1SUJEbZJwiY",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "autorización acceso mercado cambios compra moneda extranjera",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_017jnng8UF6W6xxdAyDz2LjU",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "pago deuda sin adelantar fondos propios",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 641
+          },
+          "cache_creation_input_tokens": 641,
+          "cache_read_input_tokens": 4473,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 189,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApPCbXUU63Qz7eT7G5c",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Déjame buscar más específicamente sobre excepciones a restricciones de pago y qué operaciones no requieren autorización:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01AYvGpsQVo5wHRiPShaSqeX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "excepción no requiere autorización pago cancelación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01BU7dnzy6vNSaMKShYMLeUW",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_el_pago_corresponda_a_la_cancelacion_de_deudas_por_operaciones_financiadas_o_gar_475432"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2629
+          },
+          "cache_creation_input_tokens": 2629,
+          "cache_read_input_tokens": 5114,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 194,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApPNSsC9hfE6kDr5EeV",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré que esta excepción exceptúa una restricción. Déjame ver cuál es esa restricción:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_014HxBcZ5exGB8FLhXYPYvaa",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_9081e6"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2182
+          },
+          "cache_creation_input_tokens": 2182,
+          "cache_read_input_tokens": 7743,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 131,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApPW4Fx7eX1sg3nM7oc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Esto es sobre importaciones de bienes. Necesito buscar más específicamente sobre pagos anticipados y si hay excepciones que no requieran autorización:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01K6C4AVEcVjNr86NqycShZc",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "pago anticipado vencimiento plazo sin autorización",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_016HJAq9mbFKHECaouvAi3tW",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "canje arbitraje fondos depositados pago anticipado",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 345
+          },
+          "cache_creation_input_tokens": 345,
+          "cache_read_input_tokens": 9925,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 190,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApPeMpxqYGM3KnQmkG3",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré la excepción clave sobre pago anticipado con canje o liquidación. Déjame ver el detalle:",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01UvDnJ1WRFG1K79cZX3NZUy",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Ambh7yr7dcJK4TM6eAb6wf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_se_trata_de_un_pago_anticipado_de_importaciones_de_bienes_de_capital_que_se_conc_b2a016"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2878
+          },
+          "cache_creation_input_tokens": 2878,
+          "cache_read_input_tokens": 10270,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 214,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CeApPp8hU91jouk6uLMhY",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Basándome en la información encontrada en el Knowledge Graph, puedo responder la pregunta:\n\n```json\n{\n  \"respuesta\": \"No. Según la regulación del BCRA, los clientes NO necesitan autorización especial del banco central para pagar por adelantado préstamos otorgados por organismos internacionales o agencias oficiales de crédito, cuando ese pago se concreta mediante canje y/o arbitraje con fondos depositados en cuenta de moneda extranjera, o en forma simultánea con la liquidación de financiaciones en moneda extranjera otorgadas por entidades financieras locales. En estos casos, el pago anticipado está exceptuado de los requisitos de conformidad previa del BCRA. Adicionalmente, existe una excepción específica para la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agencias oficiales de crédito.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 3.5. o un aporte de inversión extranjera directa que encuadren en el\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 816
+          },
+          "cache_creation_input_tokens": 816,
+          "cache_read_input_tokens": 13148,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 319,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,2595 @@
+{
+  "unidad": "U-A1.4",
+  "operacionalizaciones": {
+    "nivel_P1_P5": "grupo `todos` (todos los pares apareados), recall MICRO pooled por ancla — mismo nivel que la referencia EV2 (0,958→0,620); las cohortes E-E y E-A..E-D se reportan aparte y no entran promediadas",
+    "pares_apareados": "solo pares con las 2 variantes presentes en las 4 celdas entran a la tabla central, a las diferencias y a P1–P6; los faltantes se listan",
+    "P4_i": "sub-estrato E-B/entrante; recall consultada micro POOLED sobre ambas variantes (el pre-registro no fija variante); se reporta además por variante",
+    "P4_ii_a": "tasa de hit_tool_limit = trazas con hit_tool_limit / trazas de la celda (ambas variantes)",
+    "P4_ii_b": "clase K = (par, variante) cuya traza en C00 tiene hit_tool_limit o n_brecha > 0; 'pasa a consultada' = recall_consultada(C01) > recall_consultada(C00) (estrictamente mayor); se compara la fracción en K vs el resto; evaluable si K y resto tienen >= 8 pares distintos",
+    "P4_iii": "efecto de T = recall_c anti micro (C01 − C00); efecto de R = (C10 − C00); cumplida si T < R",
+    "P4_veredicto": "cumplida si (i), (ii-a), (ii-b) y (iii) cumplidas; no cumplida si alguna no cumplida; no evaluable si alguna no evaluable y ninguna no cumplida",
+    "P5": "mejor celda = C11 estrictamente máxima en recall consultada micro anti-léxica; aditividad |(C11−C00) − [(C10−C00)+(C01−C00)]| <= 0,10",
+    "P6": "unidad = (par, variante, nodo gold huérfano de label) sobre los 11 pares marcados ex-ante; (i) fracción vista C10 <= C00 + 0,10; (ii) fracción consultada en celdas v2 (C01 ∪ C11 pooled) > celdas v1 (C00 ∪ C10 pooled), y además por par de celdas; tasa de paginación = llamadas ver_vecinos con pagina > 1 / llamadas ver_vecinos, en celdas v2",
+    "abstencion": "traza con parse_ok y final_json.respondible == false",
+    "error_tecnico": "traza con trace.error no nulo (persistida; la métrica se computa sobre sus steps)",
+    "percentil": "interpolación lineal entre órdenes (tipo numpy default) sobre los valores presentes",
+    "no_evaluable_n": "una clase con < 8 pares distintos es no evaluable a priori"
+  },
+  "n_pares_apareados": 50,
+  "pares_apareados": [
+    "EA-002",
+    "EA-003",
+    "EA-005",
+    "EA-006",
+    "EA-007",
+    "EA-009",
+    "EA-010",
+    "EA-011",
+    "EA-013",
+    "EA-014",
+    "EA-017",
+    "EA-019",
+    "EA-020",
+    "EB-001",
+    "EB-002",
+    "EB-003",
+    "EB-005",
+    "EB-006",
+    "EB-007",
+    "EB-008",
+    "EB-009",
+    "EB-010",
+    "EB-011",
+    "EB-012",
+    "EB-013",
+    "EB-014",
+    "EB-016",
+    "EB-017",
+    "EB-018",
+    "EB-019",
+    "EB-020",
+    "ED-001",
+    "ED-002",
+    "ED-004",
+    "ED-008",
+    "ED-011",
+    "ED-012",
+    "ED-015",
+    "ED-018",
+    "EE-001",
+    "EE-002",
+    "EE-003",
+    "EE-004",
+    "EE-007",
+    "EE-008",
+    "EE-010",
+    "EE-015",
+    "EE-016",
+    "EE-017",
+    "EE-019"
+  ],
+  "apareamiento": {
+    "n_casos_union": 100,
+    "faltantes_por_celda": {
+      "C00_booleano_v1": [],
+      "C10_bm25_v1": [],
+      "C01_booleano_v2": [],
+      "C11_bm25_v2": []
+    },
+    "excluidos_por_no_apareados": []
+  },
+  "n_trazas_por_celda": {
+    "C00_booleano_v1": 100,
+    "C10_bm25_v1": 100,
+    "C01_booleano_v2": 100,
+    "C11_bm25_v2": 100
+  },
+  "replay": {
+    "C00_booleano_v1": {
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": true,
+      "n_divergencias": 0
+    },
+    "C10_bm25_v1": {
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null,
+      "n_divergencias": 0
+    },
+    "C01_booleano_v2": {
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null,
+      "n_divergencias": 0
+    },
+    "C11_bm25_v2": {
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null,
+      "n_divergencias": 0
+    }
+  },
+  "tabla_central": {
+    "C00_booleano_v1": {
+      "todos": {
+        "literal": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 52,
+          "n_consultadas": 47,
+          "n_brecha_vista_sin_consultar": 6,
+          "recall_vista_micro": 0.9811,
+          "recall_consultada_micro": 0.8868,
+          "recall_vista_macro": 0.99,
+          "recall_consultada_macro": 0.88
+        },
+        "antilexica": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 46,
+          "n_consultadas": 33,
+          "n_brecha_vista_sin_consultar": 13,
+          "recall_vista_micro": 0.8679,
+          "recall_consultada_micro": 0.6226,
+          "recall_vista_macro": 0.88,
+          "recall_consultada_macro": 0.63
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1132,
+          "recall_consultada_micro": 0.2642,
+          "recall_vista_macro": 0.11,
+          "recall_consultada_macro": 0.25
+        }
+      },
+      "cohorte_nucleo_limpio_EE": {
+        "literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8182,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8182
+        },
+        "antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 10,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9091,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.9091,
+          "recall_consultada_macro": 0.5455
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.0909,
+          "recall_consultada_micro": 0.2727,
+          "recall_vista_macro": 0.0909,
+          "recall_consultada_macro": 0.2727
+        }
+      },
+      "cohorte_dirigida_EA_ED": {
+        "literal": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 41,
+          "n_consultadas": 38,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9762,
+          "recall_consultada_micro": 0.9048,
+          "recall_vista_macro": 0.9872,
+          "recall_consultada_macro": 0.8974
+        },
+        "antilexica": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 36,
+          "n_consultadas": 27,
+          "n_brecha_vista_sin_consultar": 9,
+          "recall_vista_micro": 0.8571,
+          "recall_consultada_micro": 0.6429,
+          "recall_vista_macro": 0.8718,
+          "recall_consultada_macro": 0.6538
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1191,
+          "recall_consultada_micro": 0.2619,
+          "recall_vista_macro": 0.1154,
+          "recall_consultada_macro": 0.2436
+        }
+      },
+      "por_estrato_variante": {
+        "E-A::literal": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 14,
+          "n_consultadas": 14,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.9333,
+          "recall_consultada_micro": 0.9333,
+          "recall_vista_macro": 0.9615,
+          "recall_consultada_macro": 0.9231
+        },
+        "E-A::antilexica": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 11,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 0.7333,
+          "recall_consultada_micro": 0.6,
+          "recall_vista_macro": 0.7692,
+          "recall_consultada_macro": 0.6154
+        },
+        "E-A::brecha": {
+          "recall_vista_micro": 0.2,
+          "recall_consultada_micro": 0.3333,
+          "recall_vista_macro": 0.1923,
+          "recall_consultada_macro": 0.3077
+        },
+        "E-B::literal": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 19,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B::antilexica": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 14,
+          "n_brecha_vista_sin_consultar": 5,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.7368,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.75
+        },
+        "E-B::brecha": {
+          "recall_vista_micro": 0.0,
+          "recall_consultada_micro": 0.2632,
+          "recall_vista_macro": 0.0,
+          "recall_consultada_macro": 0.25
+        },
+        "E-D::literal": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 8,
+          "n_consultadas": 5,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.625,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.625
+        },
+        "E-D::antilexica": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 6,
+          "n_consultadas": 4,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 0.75,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.75,
+          "recall_consultada_macro": 0.5
+        },
+        "E-D::brecha": {
+          "recall_vista_micro": 0.25,
+          "recall_consultada_micro": 0.125,
+          "recall_vista_macro": 0.25,
+          "recall_consultada_macro": 0.125
+        },
+        "E-E::literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8182,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8182
+        },
+        "E-E::antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 10,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9091,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.9091,
+          "recall_consultada_macro": 0.5455
+        },
+        "E-E::brecha": {
+          "recall_vista_micro": 0.0909,
+          "recall_consultada_micro": 0.2727,
+          "recall_vista_macro": 0.0909,
+          "recall_consultada_macro": 0.2727
+        }
+      },
+      "por_sub_estrato": {
+        "E-B/entrante::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/entrante::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.7,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.7222
+        },
+        "E-B/entrante::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 20,
+          "n_vistas": 20,
+          "n_consultadas": 17,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.85,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8611
+        },
+        "E-B/saliente::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/saliente::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.7778,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.7778
+        },
+        "E-B/saliente::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 18,
+          "n_vistas": 18,
+          "n_consultadas": 16,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8889,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8889
+        },
+        "E-D/intra_to::literal": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 7,
+          "n_consultadas": 4,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.5714,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.5714
+        },
+        "E-D/intra_to::antilexica": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 5,
+          "n_consultadas": 3,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 0.7143,
+          "recall_consultada_micro": 0.4286,
+          "recall_vista_macro": 0.7143,
+          "recall_consultada_macro": 0.4286
+        },
+        "E-D/intra_to::ambas": {
+          "n_casos": 14,
+          "n_pares": 7,
+          "n_anclas": 14,
+          "n_vistas": 12,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 5,
+          "recall_vista_micro": 0.8571,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.8571,
+          "recall_consultada_macro": 0.5
+        },
+        "E-D/inter_to::literal": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::antilexica": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::ambas": {
+          "n_casos": 2,
+          "n_pares": 1,
+          "n_anclas": 2,
+          "n_vistas": 2,
+          "n_consultadas": 2,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        }
+      }
+    },
+    "C10_bm25_v1": {
+      "todos": {
+        "literal": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 52,
+          "n_consultadas": 52,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.9811,
+          "recall_consultada_micro": 0.9811,
+          "recall_vista_macro": 0.99,
+          "recall_consultada_macro": 0.98
+        },
+        "antilexica": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 48,
+          "n_consultadas": 36,
+          "n_brecha_vista_sin_consultar": 12,
+          "recall_vista_micro": 0.9057,
+          "recall_consultada_micro": 0.6792,
+          "recall_vista_macro": 0.91,
+          "recall_consultada_macro": 0.68
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.0754,
+          "recall_consultada_micro": 0.3019,
+          "recall_vista_macro": 0.08,
+          "recall_consultada_macro": 0.3
+        }
+      },
+      "cohorte_nucleo_limpio_EE": {
+        "literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 11,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 9,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8182,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.8182,
+          "recall_consultada_macro": 0.5455
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1818,
+          "recall_consultada_micro": 0.4545,
+          "recall_vista_macro": 0.1818,
+          "recall_consultada_macro": 0.4545
+        }
+      },
+      "cohorte_dirigida_EA_ED": {
+        "literal": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 41,
+          "n_consultadas": 41,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.9762,
+          "recall_consultada_micro": 0.9762,
+          "recall_vista_macro": 0.9872,
+          "recall_consultada_macro": 0.9744
+        },
+        "antilexica": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 39,
+          "n_consultadas": 30,
+          "n_brecha_vista_sin_consultar": 9,
+          "recall_vista_micro": 0.9286,
+          "recall_consultada_micro": 0.7143,
+          "recall_vista_macro": 0.9359,
+          "recall_consultada_macro": 0.7179
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.0476,
+          "recall_consultada_micro": 0.2619,
+          "recall_vista_macro": 0.0513,
+          "recall_consultada_macro": 0.2565
+        }
+      },
+      "por_estrato_variante": {
+        "E-A::literal": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 14,
+          "n_consultadas": 15,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 0.9333,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 0.9615,
+          "recall_consultada_macro": 1.0
+        },
+        "E-A::antilexica": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 13,
+          "n_consultadas": 12,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.8667,
+          "recall_consultada_micro": 0.8,
+          "recall_vista_macro": 0.8846,
+          "recall_consultada_macro": 0.8077
+        },
+        "E-A::brecha": {
+          "recall_vista_micro": 0.0666,
+          "recall_consultada_micro": 0.2,
+          "recall_vista_macro": 0.0769,
+          "recall_consultada_macro": 0.1923
+        },
+        "E-B::literal": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 19,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B::antilexica": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 15,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.7895,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8056
+        },
+        "E-B::brecha": {
+          "recall_vista_micro": 0.0,
+          "recall_consultada_micro": 0.2105,
+          "recall_vista_macro": 0.0,
+          "recall_consultada_macro": 0.1944
+        },
+        "E-D::literal": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 8,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.875,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.875
+        },
+        "E-D::antilexica": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 7,
+          "n_consultadas": 3,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.875,
+          "recall_consultada_micro": 0.375,
+          "recall_vista_macro": 0.875,
+          "recall_consultada_macro": 0.375
+        },
+        "E-D::brecha": {
+          "recall_vista_micro": 0.125,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.125,
+          "recall_consultada_macro": 0.5
+        },
+        "E-E::literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 11,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-E::antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 9,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8182,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.8182,
+          "recall_consultada_macro": 0.5455
+        },
+        "E-E::brecha": {
+          "recall_vista_micro": 0.1818,
+          "recall_consultada_micro": 0.4545,
+          "recall_vista_macro": 0.1818,
+          "recall_consultada_macro": 0.4545
+        }
+      },
+      "por_sub_estrato": {
+        "E-B/entrante::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/entrante::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 8,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8333
+        },
+        "E-B/entrante::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 20,
+          "n_vistas": 20,
+          "n_consultadas": 18,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9167
+        },
+        "E-B/saliente::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/saliente::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.7778,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.7778
+        },
+        "E-B/saliente::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 18,
+          "n_vistas": 18,
+          "n_consultadas": 16,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8889,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8889
+        },
+        "E-D/intra_to::literal": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 7,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8571,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8571
+        },
+        "E-D/intra_to::antilexica": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 6,
+          "n_consultadas": 2,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.8571,
+          "recall_consultada_micro": 0.2857,
+          "recall_vista_macro": 0.8571,
+          "recall_consultada_macro": 0.2857
+        },
+        "E-D/intra_to::ambas": {
+          "n_casos": 14,
+          "n_pares": 7,
+          "n_anclas": 14,
+          "n_vistas": 13,
+          "n_consultadas": 8,
+          "n_brecha_vista_sin_consultar": 5,
+          "recall_vista_micro": 0.9286,
+          "recall_consultada_micro": 0.5714,
+          "recall_vista_macro": 0.9286,
+          "recall_consultada_macro": 0.5714
+        },
+        "E-D/inter_to::literal": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::antilexica": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::ambas": {
+          "n_casos": 2,
+          "n_pares": 1,
+          "n_anclas": 2,
+          "n_vistas": 2,
+          "n_consultadas": 2,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        }
+      }
+    },
+    "C01_booleano_v2": {
+      "todos": {
+        "literal": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 52,
+          "n_consultadas": 47,
+          "n_brecha_vista_sin_consultar": 6,
+          "recall_vista_micro": 0.9811,
+          "recall_consultada_micro": 0.8868,
+          "recall_vista_macro": 0.99,
+          "recall_consultada_macro": 0.89
+        },
+        "antilexica": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 46,
+          "n_consultadas": 32,
+          "n_brecha_vista_sin_consultar": 15,
+          "recall_vista_micro": 0.8679,
+          "recall_consultada_micro": 0.6038,
+          "recall_vista_macro": 0.87,
+          "recall_consultada_macro": 0.59
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1132,
+          "recall_consultada_micro": 0.283,
+          "recall_vista_macro": 0.12,
+          "recall_consultada_macro": 0.3
+        }
+      },
+      "cohorte_nucleo_limpio_EE": {
+        "literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9091,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9091
+        },
+        "antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 10,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9091,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.9091,
+          "recall_consultada_macro": 0.5455
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.0909,
+          "recall_consultada_micro": 0.3636,
+          "recall_vista_macro": 0.0909,
+          "recall_consultada_macro": 0.3636
+        }
+      },
+      "cohorte_dirigida_EA_ED": {
+        "literal": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 41,
+          "n_consultadas": 37,
+          "n_brecha_vista_sin_consultar": 5,
+          "recall_vista_micro": 0.9762,
+          "recall_consultada_micro": 0.881,
+          "recall_vista_macro": 0.9872,
+          "recall_consultada_macro": 0.8846
+        },
+        "antilexica": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 36,
+          "n_consultadas": 26,
+          "n_brecha_vista_sin_consultar": 11,
+          "recall_vista_micro": 0.8571,
+          "recall_consultada_micro": 0.619,
+          "recall_vista_macro": 0.859,
+          "recall_consultada_macro": 0.6026
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1191,
+          "recall_consultada_micro": 0.262,
+          "recall_vista_macro": 0.1282,
+          "recall_consultada_macro": 0.282
+        }
+      },
+      "por_estrato_variante": {
+        "E-A::literal": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 14,
+          "n_consultadas": 14,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.9333,
+          "recall_consultada_micro": 0.9333,
+          "recall_vista_macro": 0.9615,
+          "recall_consultada_macro": 0.9231
+        },
+        "E-A::antilexica": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 14,
+          "n_consultadas": 12,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.9333,
+          "recall_consultada_micro": 0.8,
+          "recall_vista_macro": 0.9615,
+          "recall_consultada_macro": 0.7692
+        },
+        "E-A::brecha": {
+          "recall_vista_micro": 0.0,
+          "recall_consultada_micro": 0.1333,
+          "recall_vista_macro": 0.0,
+          "recall_consultada_macro": 0.1539
+        },
+        "E-B::literal": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 18,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9474,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9722
+        },
+        "E-B::antilexica": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 17,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 7,
+          "recall_vista_micro": 0.8947,
+          "recall_consultada_micro": 0.5263,
+          "recall_vista_macro": 0.8889,
+          "recall_consultada_macro": 0.5278
+        },
+        "E-B::brecha": {
+          "recall_vista_micro": 0.1053,
+          "recall_consultada_micro": 0.4211,
+          "recall_vista_macro": 0.1111,
+          "recall_consultada_macro": 0.4444
+        },
+        "E-D::literal": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 8,
+          "n_consultadas": 5,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.625,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.625
+        },
+        "E-D::antilexica": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 5,
+          "n_consultadas": 4,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.625,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.625,
+          "recall_consultada_macro": 0.5
+        },
+        "E-D::brecha": {
+          "recall_vista_micro": 0.375,
+          "recall_consultada_micro": 0.125,
+          "recall_vista_macro": 0.375,
+          "recall_consultada_macro": 0.125
+        },
+        "E-E::literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9091,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9091
+        },
+        "E-E::antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 10,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9091,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.9091,
+          "recall_consultada_macro": 0.5455
+        },
+        "E-E::brecha": {
+          "recall_vista_micro": 0.0909,
+          "recall_consultada_micro": 0.3636,
+          "recall_vista_macro": 0.0909,
+          "recall_consultada_macro": 0.3636
+        }
+      },
+      "por_sub_estrato": {
+        "E-B/entrante::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9444
+        },
+        "E-B/entrante::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 9,
+          "n_consultadas": 5,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.8889,
+          "recall_consultada_macro": 0.5
+        },
+        "E-B/entrante::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 20,
+          "n_vistas": 19,
+          "n_consultadas": 14,
+          "n_brecha_vista_sin_consultar": 5,
+          "recall_vista_micro": 0.95,
+          "recall_consultada_micro": 0.7,
+          "recall_vista_macro": 0.9444,
+          "recall_consultada_macro": 0.7222
+        },
+        "E-B/saliente::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/saliente::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 8,
+          "n_consultadas": 5,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8889,
+          "recall_consultada_micro": 0.5556,
+          "recall_vista_macro": 0.8889,
+          "recall_consultada_macro": 0.5556
+        },
+        "E-B/saliente::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 18,
+          "n_vistas": 17,
+          "n_consultadas": 14,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.9444,
+          "recall_consultada_micro": 0.7778,
+          "recall_vista_macro": 0.9444,
+          "recall_consultada_macro": 0.7778
+        },
+        "E-D/intra_to::literal": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 7,
+          "n_consultadas": 4,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.5714,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.5714
+        },
+        "E-D/intra_to::antilexica": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 4,
+          "n_consultadas": 3,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 0.5714,
+          "recall_consultada_micro": 0.4286,
+          "recall_vista_macro": 0.5714,
+          "recall_consultada_macro": 0.4286
+        },
+        "E-D/intra_to::ambas": {
+          "n_casos": 14,
+          "n_pares": 7,
+          "n_anclas": 14,
+          "n_vistas": 11,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.7857,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.7857,
+          "recall_consultada_macro": 0.5
+        },
+        "E-D/inter_to::literal": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::antilexica": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::ambas": {
+          "n_casos": 2,
+          "n_pares": 1,
+          "n_anclas": 2,
+          "n_vistas": 2,
+          "n_consultadas": 2,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        }
+      }
+    },
+    "C11_bm25_v2": {
+      "todos": {
+        "literal": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 53,
+          "n_consultadas": 52,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9811,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.98
+        },
+        "antilexica": {
+          "n_casos": 50,
+          "n_pares": 50,
+          "n_anclas": 53,
+          "n_vistas": 47,
+          "n_consultadas": 37,
+          "n_brecha_vista_sin_consultar": 11,
+          "recall_vista_micro": 0.8868,
+          "recall_consultada_micro": 0.6981,
+          "recall_vista_macro": 0.89,
+          "recall_consultada_macro": 0.69
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1132,
+          "recall_consultada_micro": 0.283,
+          "recall_vista_macro": 0.11,
+          "recall_consultada_macro": 0.29
+        }
+      },
+      "cohorte_nucleo_limpio_EE": {
+        "literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 11,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 9,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8182,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.8182,
+          "recall_consultada_macro": 0.5455
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.1818,
+          "recall_consultada_micro": 0.4545,
+          "recall_vista_macro": 0.1818,
+          "recall_consultada_macro": 0.4545
+        }
+      },
+      "cohorte_dirigida_EA_ED": {
+        "literal": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 42,
+          "n_consultadas": 41,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9762,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9744
+        },
+        "antilexica": {
+          "n_casos": 39,
+          "n_pares": 39,
+          "n_anclas": 42,
+          "n_vistas": 38,
+          "n_consultadas": 31,
+          "n_brecha_vista_sin_consultar": 8,
+          "recall_vista_micro": 0.9048,
+          "recall_consultada_micro": 0.7381,
+          "recall_vista_macro": 0.9103,
+          "recall_consultada_macro": 0.7308
+        },
+        "brecha_literal_menos_antilexica": {
+          "recall_vista_micro": 0.0952,
+          "recall_consultada_micro": 0.2381,
+          "recall_vista_macro": 0.0897,
+          "recall_consultada_macro": 0.2436
+        }
+      },
+      "por_estrato_variante": {
+        "E-A::literal": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 15,
+          "n_consultadas": 15,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-A::antilexica": {
+          "n_casos": 13,
+          "n_pares": 13,
+          "n_anclas": 15,
+          "n_vistas": 12,
+          "n_consultadas": 11,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 0.8,
+          "recall_consultada_micro": 0.7333,
+          "recall_vista_macro": 0.8077,
+          "recall_consultada_macro": 0.6923
+        },
+        "E-A::brecha": {
+          "recall_vista_micro": 0.2,
+          "recall_consultada_micro": 0.2667,
+          "recall_vista_macro": 0.1923,
+          "recall_consultada_macro": 0.3077
+        },
+        "E-B::literal": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 19,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B::antilexica": {
+          "n_casos": 18,
+          "n_pares": 18,
+          "n_anclas": 19,
+          "n_vistas": 19,
+          "n_consultadas": 16,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8421,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8611
+        },
+        "E-B::brecha": {
+          "recall_vista_micro": 0.0,
+          "recall_consultada_micro": 0.1579,
+          "recall_vista_macro": 0.0,
+          "recall_consultada_macro": 0.1389
+        },
+        "E-D::literal": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 8,
+          "n_consultadas": 7,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.875,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.875
+        },
+        "E-D::antilexica": {
+          "n_casos": 8,
+          "n_pares": 8,
+          "n_anclas": 8,
+          "n_vistas": 7,
+          "n_consultadas": 4,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.875,
+          "recall_consultada_micro": 0.5,
+          "recall_vista_macro": 0.875,
+          "recall_consultada_macro": 0.5
+        },
+        "E-D::brecha": {
+          "recall_vista_micro": 0.125,
+          "recall_consultada_micro": 0.375,
+          "recall_vista_macro": 0.125,
+          "recall_consultada_macro": 0.375
+        },
+        "E-E::literal": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 11,
+          "n_consultadas": 11,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-E::antilexica": {
+          "n_casos": 11,
+          "n_pares": 11,
+          "n_anclas": 11,
+          "n_vistas": 9,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8182,
+          "recall_consultada_micro": 0.5455,
+          "recall_vista_macro": 0.8182,
+          "recall_consultada_macro": 0.5455
+        },
+        "E-E::brecha": {
+          "recall_vista_micro": 0.1818,
+          "recall_consultada_micro": 0.4545,
+          "recall_vista_macro": 0.1818,
+          "recall_consultada_macro": 0.4545
+        }
+      },
+      "por_sub_estrato": {
+        "E-B/entrante::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 10,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/entrante::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 10,
+          "n_vistas": 10,
+          "n_consultadas": 8,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8333
+        },
+        "E-B/entrante::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 20,
+          "n_vistas": 20,
+          "n_consultadas": 18,
+          "n_brecha_vista_sin_consultar": 2,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9167
+        },
+        "E-B/saliente::literal": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-B/saliente::antilexica": {
+          "n_casos": 9,
+          "n_pares": 9,
+          "n_anclas": 9,
+          "n_vistas": 9,
+          "n_consultadas": 8,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8889,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8889
+        },
+        "E-B/saliente::ambas": {
+          "n_casos": 18,
+          "n_pares": 9,
+          "n_anclas": 18,
+          "n_vistas": 18,
+          "n_consultadas": 17,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.9444,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.9444
+        },
+        "E-D/intra_to::literal": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 7,
+          "n_consultadas": 6,
+          "n_brecha_vista_sin_consultar": 1,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 0.8571,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 0.8571
+        },
+        "E-D/intra_to::antilexica": {
+          "n_casos": 7,
+          "n_pares": 7,
+          "n_anclas": 7,
+          "n_vistas": 6,
+          "n_consultadas": 3,
+          "n_brecha_vista_sin_consultar": 3,
+          "recall_vista_micro": 0.8571,
+          "recall_consultada_micro": 0.4286,
+          "recall_vista_macro": 0.8571,
+          "recall_consultada_macro": 0.4286
+        },
+        "E-D/intra_to::ambas": {
+          "n_casos": 14,
+          "n_pares": 7,
+          "n_anclas": 14,
+          "n_vistas": 13,
+          "n_consultadas": 9,
+          "n_brecha_vista_sin_consultar": 4,
+          "recall_vista_micro": 0.9286,
+          "recall_consultada_micro": 0.6429,
+          "recall_vista_macro": 0.9286,
+          "recall_consultada_macro": 0.6429
+        },
+        "E-D/inter_to::literal": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::antilexica": {
+          "n_casos": 1,
+          "n_pares": 1,
+          "n_anclas": 1,
+          "n_vistas": 1,
+          "n_consultadas": 1,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        },
+        "E-D/inter_to::ambas": {
+          "n_casos": 2,
+          "n_pares": 1,
+          "n_anclas": 2,
+          "n_vistas": 2,
+          "n_consultadas": 2,
+          "n_brecha_vista_sin_consultar": 0,
+          "recall_vista_micro": 1.0,
+          "recall_consultada_micro": 1.0,
+          "recall_vista_macro": 1.0,
+          "recall_consultada_macro": 1.0
+        }
+      }
+    }
+  },
+  "diferencias_apareadas": {
+    "n_pares": 50,
+    "semilla": "bootstrap-ablacion-v1",
+    "n_remuestreos": 10000,
+    "metodo": "percentil 2,5–97,5 sobre remuestreo de pares con reposición (ambas variantes viajan con el par)",
+    "estadisticos": {
+      "dif_consultada_micro::literal::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.0943,
+        "ic95_inf": 0.0192,
+        "ic95_sup": 0.18,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::literal::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.1,
+        "ic95_inf": 0.02,
+        "ic95_sup": 0.18,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::literal::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.0,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::antilexica::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.0566,
+        "ic95_inf": -0.08,
+        "ic95_sup": 0.1964,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::antilexica::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.05,
+        "ic95_inf": -0.1,
+        "ic95_sup": 0.2,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::antilexica::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.0377,
+        "ic95_inf": -0.06,
+        "ic95_sup": 0.1373,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::literal::C01_booleano_v2-C00_booleano_v1": {
+        "punto": 0.0,
+        "ic95_inf": -0.0545,
+        "ic95_sup": 0.0566,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::literal::C01_booleano_v2-C00_booleano_v1": {
+        "punto": 0.01,
+        "ic95_inf": -0.03,
+        "ic95_sup": 0.06,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::literal::C01_booleano_v2-C00_booleano_v1": {
+        "punto": 0.0,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::antilexica::C01_booleano_v2-C00_booleano_v1": {
+        "punto": -0.0189,
+        "ic95_inf": -0.1569,
+        "ic95_sup": 0.1111,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::antilexica::C01_booleano_v2-C00_booleano_v1": {
+        "punto": -0.04,
+        "ic95_inf": -0.17,
+        "ic95_sup": 0.09,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::antilexica::C01_booleano_v2-C00_booleano_v1": {
+        "punto": 0.0,
+        "ic95_inf": -0.1,
+        "ic95_sup": 0.1071,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::literal::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.0943,
+        "ic95_inf": 0.0192,
+        "ic95_sup": 0.18,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::literal::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.1,
+        "ic95_inf": 0.02,
+        "ic95_sup": 0.18,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::literal::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.0189,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0566,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::antilexica::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.0755,
+        "ic95_inf": -0.0943,
+        "ic95_sup": 0.2353,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::antilexica::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.06,
+        "ic95_inf": -0.11,
+        "ic95_sup": 0.23,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::antilexica::C11_bm25_v2-C00_booleano_v1": {
+        "punto": 0.0189,
+        "ic95_inf": -0.0962,
+        "ic95_sup": 0.1296,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::literal::C11_bm25_v2-C10_bm25_v1": {
+        "punto": 0.0,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::literal::C11_bm25_v2-C10_bm25_v1": {
+        "punto": 0.0,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::literal::C11_bm25_v2-C10_bm25_v1": {
+        "punto": 0.0189,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0566,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::antilexica::C11_bm25_v2-C10_bm25_v1": {
+        "punto": 0.0189,
+        "ic95_inf": -0.0784,
+        "ic95_sup": 0.1154,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::antilexica::C11_bm25_v2-C10_bm25_v1": {
+        "punto": 0.01,
+        "ic95_inf": -0.09,
+        "ic95_sup": 0.11,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::antilexica::C11_bm25_v2-C10_bm25_v1": {
+        "punto": -0.0189,
+        "ic95_inf": -0.1091,
+        "ic95_sup": 0.0588,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::literal::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.0943,
+        "ic95_inf": 0.0192,
+        "ic95_sup": 0.1765,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::literal::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.09,
+        "ic95_inf": 0.02,
+        "ic95_sup": 0.17,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::literal::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.0189,
+        "ic95_inf": 0.0,
+        "ic95_sup": 0.0566,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_micro::antilexica::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.0943,
+        "ic95_inf": -0.0566,
+        "ic95_sup": 0.2457,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_consultada_macro::antilexica::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.1,
+        "ic95_inf": -0.06,
+        "ic95_sup": 0.26,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_vista_micro::antilexica::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.0189,
+        "ic95_inf": -0.0943,
+        "ic95_sup": 0.1321,
+        "n_remuestreos_validos": 10000
+      },
+      "delta_c_micro::C00_booleano_v1": {
+        "punto": 0.2642,
+        "ic95_inf": 0.1321,
+        "ic95_sup": 0.3962,
+        "n_remuestreos_validos": 10000
+      },
+      "delta_c_micro::C10_bm25_v1": {
+        "punto": 0.3019,
+        "ic95_inf": 0.1818,
+        "ic95_sup": 0.4259,
+        "n_remuestreos_validos": 10000
+      },
+      "delta_c_micro::C01_booleano_v2": {
+        "punto": 0.283,
+        "ic95_inf": 0.1509,
+        "ic95_sup": 0.42,
+        "n_remuestreos_validos": 10000
+      },
+      "delta_c_micro::C11_bm25_v2": {
+        "punto": 0.283,
+        "ic95_inf": 0.1509,
+        "ic95_sup": 0.4231,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_delta_c_micro::C10_bm25_v1-C00_booleano_v1": {
+        "punto": 0.0377,
+        "ic95_inf": -0.1154,
+        "ic95_sup": 0.1961,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_delta_c_micro::C11_bm25_v2-C01_booleano_v2": {
+        "punto": 0.0,
+        "ic95_inf": -0.1569,
+        "ic95_sup": 0.1569,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_delta_c_micro::C01_booleano_v2-C00_booleano_v1": {
+        "punto": 0.0189,
+        "ic95_inf": -0.1273,
+        "ic95_sup": 0.1765,
+        "n_remuestreos_validos": 10000
+      },
+      "dif_delta_c_micro::C11_bm25_v2-C10_bm25_v1": {
+        "punto": -0.0189,
+        "ic95_inf": -0.1154,
+        "ic95_sup": 0.0784,
+        "n_remuestreos_validos": 10000
+      },
+      "interaccion_anti_micro::(C11-C00)-[(C10-C00)+(C01-C00)]": {
+        "punto": 0.0377,
+        "ic95_inf": -0.0962,
+        "ic95_sup": 0.18,
+        "n_remuestreos_validos": 10000
+      }
+    }
+  },
+  "predicciones": {
+    "P1": {
+      "veredicto": "cumplida",
+      "delta_c_C00": 0.2642,
+      "umbral": 0.15,
+      "n_pares": 50,
+      "recall_c_lit_C00": 0.8868,
+      "recall_c_anti_C00": 0.6226,
+      "referencia_ev2": {
+        "delta_c": 0.338,
+        "lit": 0.958,
+        "anti": 0.62
+      }
+    },
+    "P2": {
+      "veredicto": "no cumplida",
+      "delta_c": {
+        "C00_booleano_v1": 0.2642,
+        "C10_bm25_v1": 0.3019,
+        "C01_booleano_v2": 0.283,
+        "C11_bm25_v2": 0.283
+      },
+      "factor": 0.5,
+      "C10_vs_C00": {
+        "delta_C10": 0.3019,
+        "mitad_delta_C00": 0.1321,
+        "cumple": false,
+        "ratio": 1.1427
+      },
+      "C11_vs_C01": {
+        "delta_C11": 0.283,
+        "mitad_delta_C01": 0.1415,
+        "cumple": false,
+        "ratio": 1.0
+      }
+    },
+    "P3": {
+      "veredicto": "cumplida",
+      "margen": 0.05,
+      "condiciones": {
+        "consultada_lit_C10_vs_C00": {
+          "bm25": 0.9811,
+          "booleano": 0.8868,
+          "cumple": true
+        },
+        "consultada_lit_C11_vs_C01": {
+          "bm25": 0.9811,
+          "booleano": 0.8868,
+          "cumple": true
+        },
+        "vista_lit_C10_vs_C00": {
+          "bm25": 0.9811,
+          "booleano": 0.9811,
+          "cumple": true
+        },
+        "vista_lit_C11_vs_C01": {
+          "bm25": 1.0,
+          "booleano": 0.9811,
+          "cumple": true
+        }
+      }
+    },
+    "P4": {
+      "veredicto": "no cumplida",
+      "sub": {
+        "i_EB_entrante": {
+          "veredicto": "no cumplida",
+          "n_pares": 9,
+          "recall_c_micro_ambas": {
+            "C00_booleano_v1": 0.85,
+            "C10_bm25_v1": 0.9,
+            "C01_booleano_v2": 0.7,
+            "C11_bm25_v2": 0.9
+          },
+          "por_variante": {
+            "literal": {
+              "C00_booleano_v1": 1.0,
+              "C10_bm25_v1": 1.0,
+              "C01_booleano_v2": 0.9,
+              "C11_bm25_v2": 1.0
+            },
+            "antilexica": {
+              "C00_booleano_v1": 0.7,
+              "C10_bm25_v1": 0.8,
+              "C01_booleano_v2": 0.5,
+              "C11_bm25_v2": 0.8
+            }
+          },
+          "C01_gt_C00": false,
+          "C11_gt_C10": false
+        },
+        "ii_a_hit_tool_limit_baja": {
+          "veredicto": "no cumplida",
+          "tasa_hit_tool_limit": {
+            "C00_booleano_v1": 0.36,
+            "C10_bm25_v1": 0.29,
+            "C01_booleano_v2": 0.37,
+            "C11_bm25_v2": 0.24
+          },
+          "C01_lt_C00": false,
+          "C11_lt_C10": true
+        },
+        "ii_b_clase_K_mejora_mas": {
+          "veredicto": "cumplida",
+          "K_definicion": "clase K = (par, variante) cuya traza en C00 tiene hit_tool_limit o n_brecha > 0; 'pasa a consultada' = recall_consultada(C01) > recall_consultada(C00) (estrictamente mayor); se compara la fracción en K vs el resto; evaluable si K y resto tienen >= 8 pares distintos",
+          "K_n_unidades": 43,
+          "K_n_pares": 35,
+          "K_mejoran_en_C01": 6,
+          "K_fraccion": 0.1395,
+          "resto_n_unidades": 57,
+          "resto_n_pares": 42,
+          "resto_mejoran_en_C01": 1,
+          "resto_fraccion": 0.0175
+        },
+        "iii_efecto_T_menor_que_R": {
+          "veredicto": "cumplida",
+          "efecto_T_C01_menos_C00": -0.0188,
+          "efecto_R_C10_menos_C00": 0.0566
+        }
+      }
+    },
+    "P5": {
+      "veredicto": "cumplida",
+      "recall_c_anti_micro": {
+        "C00_booleano_v1": 0.6226,
+        "C10_bm25_v1": 0.6792,
+        "C01_booleano_v2": 0.6038,
+        "C11_bm25_v2": 0.6981
+      },
+      "mejor_celda": "C11_bm25_v2",
+      "C11_estrictamente_maxima": true,
+      "interaccion": 0.0377,
+      "umbral_aditividad": 0.1,
+      "aditiva": true,
+      "empates_con_C11": []
+    },
+    "P6": {
+      "veredicto": "no cumplida",
+      "n_pares_con_huerfano": 11,
+      "pares": [
+        "EA-002",
+        "EA-003",
+        "EA-006",
+        "EA-014",
+        "EB-001",
+        "EB-003",
+        "EB-007",
+        "EB-008",
+        "ED-002",
+        "ED-004",
+        "EE-017"
+      ],
+      "i_vista": {
+        "fraccion_vista": {
+          "C00_booleano_v1": 0.3636,
+          "C10_bm25_v1": 0.4091,
+          "C01_booleano_v2": 0.2273,
+          "C11_bm25_v2": 0.5
+        },
+        "num_den": {
+          "C00_booleano_v1": [
+            8,
+            22
+          ],
+          "C10_bm25_v1": [
+            9,
+            22
+          ],
+          "C01_booleano_v2": [
+            5,
+            22
+          ],
+          "C11_bm25_v2": [
+            11,
+            22
+          ]
+        },
+        "margen": 0.1,
+        "cumple_C10_le_C00_mas_margen": true
+      },
+      "ii_consultada": {
+        "fraccion_consultada": {
+          "C00_booleano_v1": 0.4091,
+          "C10_bm25_v1": 0.5455,
+          "C01_booleano_v2": 0.4091,
+          "C11_bm25_v2": 0.5455
+        },
+        "num_den": {
+          "C00_booleano_v1": [
+            9,
+            22
+          ],
+          "C10_bm25_v1": [
+            12,
+            22
+          ],
+          "C01_booleano_v2": [
+            9,
+            22
+          ],
+          "C11_bm25_v2": [
+            12,
+            22
+          ]
+        },
+        "v1_pooled": 0.4773,
+        "v2_pooled": 0.4773,
+        "cumple_v2_gt_v1": false,
+        "C01_gt_C00": false,
+        "C11_gt_C10": false
+      },
+      "tasa_paginacion_v2": {
+        "C01_booleano_v2": {
+          "pagina_gt1": 0,
+          "ver_vecinos": 123,
+          "tasa": 0.0
+        },
+        "C11_bm25_v2": {
+          "pagina_gt1": 0,
+          "ver_vecinos": 152,
+          "tasa": 0.0
+        }
+      },
+      "sub": {
+        "i": {
+          "veredicto": "cumplida"
+        },
+        "ii": {
+          "veredicto": "no cumplida"
+        }
+      }
+    },
+    "resumen": {
+      "P1": "cumplida",
+      "P2": "no cumplida",
+      "P3": "cumplida",
+      "P4": "no cumplida",
+      "P5": "cumplida",
+      "P6": "no cumplida"
+    },
+    "gate_P1": true,
+    "umbrales": {
+      "P1_gate_delta_c": 0.15,
+      "P2_factor_brecha": 0.5,
+      "P3_margen": 0.05,
+      "P5_aditividad": 0.1,
+      "P6_margen_vista": 0.1,
+      "n_min_pares_clase": 8
+    }
+  },
+  "lecturas_por_cohorte": {
+    "cohorte_nucleo_limpio_EE": {
+      "C00_booleano_v1": {
+        "n_pares": 11,
+        "recall_c_micro": {
+          "literal": 0.8182,
+          "antilexica": 0.5455
+        },
+        "recall_v_micro": {
+          "literal": 1.0,
+          "antilexica": 0.9091
+        },
+        "delta_c_micro": 0.2727
+      },
+      "C10_bm25_v1": {
+        "n_pares": 11,
+        "recall_c_micro": {
+          "literal": 1.0,
+          "antilexica": 0.5455
+        },
+        "recall_v_micro": {
+          "literal": 1.0,
+          "antilexica": 0.8182
+        },
+        "delta_c_micro": 0.4545
+      },
+      "C01_booleano_v2": {
+        "n_pares": 11,
+        "recall_c_micro": {
+          "literal": 0.9091,
+          "antilexica": 0.5455
+        },
+        "recall_v_micro": {
+          "literal": 1.0,
+          "antilexica": 0.9091
+        },
+        "delta_c_micro": 0.3636
+      },
+      "C11_bm25_v2": {
+        "n_pares": 11,
+        "recall_c_micro": {
+          "literal": 1.0,
+          "antilexica": 0.5455
+        },
+        "recall_v_micro": {
+          "literal": 1.0,
+          "antilexica": 0.8182
+        },
+        "delta_c_micro": 0.4545
+      },
+      "evaluable_n": true
+    },
+    "cohorte_dirigida_EA_ED": {
+      "C00_booleano_v1": {
+        "n_pares": 39,
+        "recall_c_micro": {
+          "literal": 0.9048,
+          "antilexica": 0.6429
+        },
+        "recall_v_micro": {
+          "literal": 0.9762,
+          "antilexica": 0.8571
+        },
+        "delta_c_micro": 0.2619
+      },
+      "C10_bm25_v1": {
+        "n_pares": 39,
+        "recall_c_micro": {
+          "literal": 0.9762,
+          "antilexica": 0.7143
+        },
+        "recall_v_micro": {
+          "literal": 0.9762,
+          "antilexica": 0.9286
+        },
+        "delta_c_micro": 0.2619
+      },
+      "C01_booleano_v2": {
+        "n_pares": 39,
+        "recall_c_micro": {
+          "literal": 0.881,
+          "antilexica": 0.619
+        },
+        "recall_v_micro": {
+          "literal": 0.9762,
+          "antilexica": 0.8571
+        },
+        "delta_c_micro": 0.262
+      },
+      "C11_bm25_v2": {
+        "n_pares": 39,
+        "recall_c_micro": {
+          "literal": 0.9762,
+          "antilexica": 0.7381
+        },
+        "recall_v_micro": {
+          "literal": 1.0,
+          "antilexica": 0.9048
+        },
+        "delta_c_micro": 0.2381
+      },
+      "evaluable_n": true
+    }
+  },
+  "tasas_y_latencias": {
+    "C00_booleano_v1": {
+      "todas": {
+        "n_trazas": 100,
+        "hit_tool_limit": 36,
+        "tasa_hit_tool_limit": 0.36,
+        "abstenciones": 20,
+        "tasa_abstencion": 0.2,
+        "parse_ok": 100,
+        "tasa_parse_ok": 1.0,
+        "errores_tecnicos": [],
+        "truncated_max_tokens": 0,
+        "tool_calls_media": 10.25,
+        "latencia_s_p50": 17.661,
+        "latencia_s_p95": 28.968,
+        "latencia_s_media": 17.066,
+        "tokens_in": 290944,
+        "tokens_out": 138758,
+        "cache_read": 4351248,
+        "cache_write": 1127441,
+        "costo_usd_cli": 2.8292,
+        "costo_usd_harness": 2.8292
+      },
+      "por_variante": {
+        "literal": {
+          "n_trazas": 50,
+          "hit_tool_limit": 6,
+          "tasa_hit_tool_limit": 0.12,
+          "abstenciones": 4,
+          "tasa_abstencion": 0.08,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 7.6,
+          "latencia_s_p50": 10.607,
+          "latencia_s_p95": 25.5,
+          "latencia_s_media": 13.51,
+          "tokens_in": 134888,
+          "tokens_out": 57012,
+          "cache_read": 1348343,
+          "cache_write": 404916,
+          "costo_usd_cli": 1.0609,
+          "costo_usd_harness": 1.0609
+        },
+        "antilexica": {
+          "n_trazas": 50,
+          "hit_tool_limit": 30,
+          "tasa_hit_tool_limit": 0.6,
+          "abstenciones": 16,
+          "tasa_abstencion": 0.32,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 12.9,
+          "latencia_s_p50": 20.291,
+          "latencia_s_p95": 29.12,
+          "latencia_s_media": 20.621,
+          "tokens_in": 156056,
+          "tokens_out": 81746,
+          "cache_read": 3002905,
+          "cache_write": 722525,
+          "costo_usd_cli": 1.7682,
+          "costo_usd_harness": 1.7682
+        }
+      },
+      "latencia_por_tool_s": {
+        "buscar_nodos": {
+          "n": 608,
+          "p50": 0.0328,
+          "p95": 0.1112
+        },
+        "ver_nodo": {
+          "n": 286,
+          "p50": 0.0041,
+          "p95": 0.017
+        },
+        "ver_vecinos": {
+          "n": 131,
+          "p50": 0.0087,
+          "p95": 0.0219
+        }
+      },
+      "llamadas_por_tool": {
+        "buscar_nodos": 608,
+        "ver_nodo": 286,
+        "ver_vecinos": 131
+      },
+      "ver_vecinos_pagina_gt1": {
+        "n": 0,
+        "de": 131,
+        "tasa": 0.0
+      },
+      "ver_vecinos_con_relacion": {
+        "n": 0,
+        "de": 131,
+        "tasa": 0.0
+      },
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": true
+    },
+    "C10_bm25_v1": {
+      "todas": {
+        "n_trazas": 100,
+        "hit_tool_limit": 29,
+        "tasa_hit_tool_limit": 0.29,
+        "abstenciones": 11,
+        "tasa_abstencion": 0.11,
+        "parse_ok": 99,
+        "tasa_parse_ok": 0.99,
+        "errores_tecnicos": [
+          {
+            "caso_id": "EB-005::antilexica",
+            "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'messages.24: user messages must have non-empty content'}, 'request_id': 'req_011CeAhWdJxArEQ6vsx3SPBx'}"
+          }
+        ],
+        "truncated_max_tokens": 0,
+        "tool_calls_media": 10.02,
+        "latencia_s_p50": 16.449,
+        "latencia_s_p95": 28.026,
+        "latencia_s_media": 16.544,
+        "tokens_in": 204570,
+        "tokens_out": 140848,
+        "cache_read": 4662934,
+        "cache_write": 1113435,
+        "costo_usd_cli": 2.7669,
+        "costo_usd_harness": 2.7669
+      },
+      "por_variante": {
+        "literal": {
+          "n_trazas": 50,
+          "hit_tool_limit": 5,
+          "tasa_hit_tool_limit": 0.1,
+          "abstenciones": 1,
+          "tasa_abstencion": 0.02,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 7.18,
+          "latencia_s_p50": 10.573,
+          "latencia_s_p95": 25.009,
+          "latencia_s_media": 12.435,
+          "tokens_in": 110848,
+          "tokens_out": 55118,
+          "cache_read": 1256124,
+          "cache_write": 379025,
+          "costo_usd_cli": 0.9858,
+          "costo_usd_harness": 0.9858
+        },
+        "antilexica": {
+          "n_trazas": 50,
+          "hit_tool_limit": 24,
+          "tasa_hit_tool_limit": 0.48,
+          "abstenciones": 10,
+          "tasa_abstencion": 0.2,
+          "parse_ok": 49,
+          "tasa_parse_ok": 0.98,
+          "errores_tecnicos": [
+            {
+              "caso_id": "EB-005::antilexica",
+              "error": "BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'messages.24: user messages must have non-empty content'}, 'request_id': 'req_011CeAhWdJxArEQ6vsx3SPBx'}"
+            }
+          ],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 12.86,
+          "latencia_s_p50": 22.229,
+          "latencia_s_p95": 29.29,
+          "latencia_s_media": 20.652,
+          "tokens_in": 93722,
+          "tokens_out": 85730,
+          "cache_read": 3406810,
+          "cache_write": 734410,
+          "costo_usd_cli": 1.7811,
+          "costo_usd_harness": 1.7811
+        }
+      },
+      "latencia_por_tool_s": {
+        "buscar_nodos": {
+          "n": 535,
+          "p50": 0.0123,
+          "p95": 0.0381
+        },
+        "ver_nodo": {
+          "n": 305,
+          "p50": 0.0039,
+          "p95": 0.0162
+        },
+        "ver_vecinos": {
+          "n": 162,
+          "p50": 0.0095,
+          "p95": 0.0226
+        }
+      },
+      "llamadas_por_tool": {
+        "buscar_nodos": 535,
+        "ver_nodo": 305,
+        "ver_vecinos": 162
+      },
+      "ver_vecinos_pagina_gt1": {
+        "n": 0,
+        "de": 162,
+        "tasa": 0.0
+      },
+      "ver_vecinos_con_relacion": {
+        "n": 0,
+        "de": 162,
+        "tasa": 0.0
+      },
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null
+    },
+    "C01_booleano_v2": {
+      "todas": {
+        "n_trazas": 100,
+        "hit_tool_limit": 37,
+        "tasa_hit_tool_limit": 0.37,
+        "abstenciones": 15,
+        "tasa_abstencion": 0.15,
+        "parse_ok": 100,
+        "tasa_parse_ok": 1.0,
+        "errores_tecnicos": [],
+        "truncated_max_tokens": 0,
+        "tool_calls_media": 10.16,
+        "latencia_s_p50": 19.973,
+        "latencia_s_p95": 30.68,
+        "latencia_s_media": 24.796,
+        "tokens_in": 216186,
+        "tokens_out": 139151,
+        "cache_read": 4642247,
+        "cache_write": 1180596,
+        "costo_usd_cli": 2.8519,
+        "costo_usd_harness": 2.8519
+      },
+      "por_variante": {
+        "literal": {
+          "n_trazas": 50,
+          "hit_tool_limit": 5,
+          "tasa_hit_tool_limit": 0.1,
+          "abstenciones": 2,
+          "tasa_abstencion": 0.04,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 7.14,
+          "latencia_s_p50": 13.156,
+          "latencia_s_p95": 28.989,
+          "latencia_s_media": 26.092,
+          "tokens_in": 106684,
+          "tokens_out": 54091,
+          "cache_read": 1248016,
+          "cache_write": 412994,
+          "costo_usd_cli": 1.0182,
+          "costo_usd_harness": 1.0182
+        },
+        "antilexica": {
+          "n_trazas": 50,
+          "hit_tool_limit": 32,
+          "tasa_hit_tool_limit": 0.64,
+          "abstenciones": 13,
+          "tasa_abstencion": 0.26,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 13.18,
+          "latencia_s_p50": 24.12,
+          "latencia_s_p95": 32.784,
+          "latencia_s_media": 23.501,
+          "tokens_in": 109502,
+          "tokens_out": 85060,
+          "cache_read": 3394231,
+          "cache_write": 767602,
+          "costo_usd_cli": 1.8337,
+          "costo_usd_harness": 1.8337
+        }
+      },
+      "latencia_por_tool_s": {
+        "buscar_nodos": {
+          "n": 615,
+          "p50": 0.0349,
+          "p95": 0.1268
+        },
+        "ver_nodo": {
+          "n": 278,
+          "p50": 0.004,
+          "p95": 0.0168
+        },
+        "ver_vecinos": {
+          "n": 123,
+          "p50": 0.0144,
+          "p95": 0.0403
+        }
+      },
+      "llamadas_por_tool": {
+        "buscar_nodos": 615,
+        "ver_nodo": 278,
+        "ver_vecinos": 123
+      },
+      "ver_vecinos_pagina_gt1": {
+        "n": 0,
+        "de": 123,
+        "tasa": 0.0
+      },
+      "ver_vecinos_con_relacion": {
+        "n": 5,
+        "de": 123,
+        "tasa": 0.0407
+      },
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null
+    },
+    "C11_bm25_v2": {
+      "todas": {
+        "n_trazas": 100,
+        "hit_tool_limit": 24,
+        "tasa_hit_tool_limit": 0.24,
+        "abstenciones": 12,
+        "tasa_abstencion": 0.12,
+        "parse_ok": 100,
+        "tasa_parse_ok": 1.0,
+        "errores_tecnicos": [],
+        "truncated_max_tokens": 0,
+        "tool_calls_media": 9.51,
+        "latencia_s_p50": 16.714,
+        "latencia_s_p95": 31.664,
+        "latencia_s_media": 17.289,
+        "tokens_in": 220768,
+        "tokens_out": 136496,
+        "cache_read": 4542062,
+        "cache_write": 1111453,
+        "costo_usd_cli": 2.7468,
+        "costo_usd_harness": 2.7468
+      },
+      "por_variante": {
+        "literal": {
+          "n_trazas": 50,
+          "hit_tool_limit": 2,
+          "tasa_hit_tool_limit": 0.04,
+          "abstenciones": 1,
+          "tasa_abstencion": 0.02,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 6.78,
+          "latencia_s_p50": 10.966,
+          "latencia_s_p95": 26.874,
+          "latencia_s_media": 13.125,
+          "tokens_in": 116478,
+          "tokens_out": 53725,
+          "cache_read": 1197681,
+          "cache_write": 377178,
+          "costo_usd_cli": 0.9763,
+          "costo_usd_harness": 0.9763
+        },
+        "antilexica": {
+          "n_trazas": 50,
+          "hit_tool_limit": 22,
+          "tasa_hit_tool_limit": 0.44,
+          "abstenciones": 11,
+          "tasa_abstencion": 0.22,
+          "parse_ok": 50,
+          "tasa_parse_ok": 1.0,
+          "errores_tecnicos": [],
+          "truncated_max_tokens": 0,
+          "tool_calls_media": 12.24,
+          "latencia_s_p50": 21.087,
+          "latencia_s_p95": 31.994,
+          "latencia_s_media": 21.453,
+          "tokens_in": 104290,
+          "tokens_out": 82771,
+          "cache_read": 3344381,
+          "cache_write": 734275,
+          "costo_usd_cli": 1.7704,
+          "costo_usd_harness": 1.7704
+        }
+      },
+      "latencia_por_tool_s": {
+        "buscar_nodos": {
+          "n": 504,
+          "p50": 0.0109,
+          "p95": 0.0306
+        },
+        "ver_nodo": {
+          "n": 295,
+          "p50": 0.0041,
+          "p95": 0.0159
+        },
+        "ver_vecinos": {
+          "n": 152,
+          "p50": 0.0147,
+          "p95": 0.0313
+        }
+      },
+      "llamadas_por_tool": {
+        "buscar_nodos": 504,
+        "ver_nodo": 295,
+        "ver_vecinos": 152
+      },
+      "ver_vecinos_pagina_gt1": {
+        "n": 0,
+        "de": 152,
+        "tasa": 0.0
+      },
+      "ver_vecinos_con_relacion": {
+        "n": 7,
+        "de": 152,
+        "tasa": 0.0461
+      },
+      "replay_ok_todos": true,
+      "replay_fuerte_ok_todos": true,
+      "cruce_inmemory_ok_todos": null
+    }
+  }
+}
