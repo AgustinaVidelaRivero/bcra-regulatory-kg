@@ -5,12 +5,12 @@
   "grafo_juguete": "data/experiment/banco_mcp/gate/grafo_juguete.json",
   "determinismo_adaptador": {
     "ok": true,
-    "n_trazas": 11,
+    "n_trazas": 9,
     "diferencias": [],
     "nota": "comparación byte a byte del JSON canónico salvo `meta.generado`"
   },
-  "n_casos": 11,
-  "n_pass": 10,
+  "n_casos": 9,
+  "n_pass": 8,
   "casos": [
     {
       "caso_id": "GATE-01",
@@ -23,7 +23,7 @@
       },
       "veredicto": "incorrecto",
       "clase_esperada": "ausencia_kg",
-      "n_steps": 2,
+      "n_steps": 7,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
@@ -58,7 +58,7 @@
       },
       "veredicto": "parcial",
       "clase_esperada": "ausencia_kg",
-      "n_steps": 2,
+      "n_steps": 4,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
@@ -95,14 +95,14 @@
       },
       "veredicto": "incorrecto",
       "clase_esperada": "alcanzabilidad",
-      "n_steps": 2,
+      "n_steps": 6,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
-      "clase_obtenida": "alcanzabilidad",
+      "clase_obtenida": "generacion",
       "ancla_presente": true,
       "ancla_vista": false,
-      "ancla_consultada": false,
+      "ancla_consultada": true,
       "replay_ok": true,
       "replay_fuerte_ok": true,
       "replay_fallas": [],
@@ -112,25 +112,27 @@
           "presente": true,
           "n_nodos_censo": 1,
           "vista": false,
-          "consultada": false,
+          "consultada": true,
           "vista_en_step": null,
-          "consultada_en_step": null,
-          "consultada_via": [],
+          "consultada_en_step": 5,
+          "consultada_via": [
+            "ver_vecinos"
+          ],
           "por_nodo": [
             {
               "nodo": "Restriccion_ancla_beta",
               "visto": false,
               "visto_en_step": null,
-              "consultado": false,
-              "consultado_via": null,
-              "consultado_en_step": null,
+              "consultado": true,
+              "consultado_via": "ver_vecinos",
+              "consultado_en_step": 5,
               "brecha_visto_sin_consultar": false
             }
           ]
         }
       },
       "error_atribucion": null,
-      "veredicto_caso": "PASS"
+      "veredicto_caso": "FAIL"
     },
     {
       "caso_id": "GATE-04",
@@ -145,7 +147,7 @@
       },
       "veredicto": "parcial",
       "clase_esperada": "vista_no_consultada",
-      "n_steps": 2,
+      "n_steps": 3,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
@@ -253,7 +255,7 @@
       "determinismo_atribucion": true,
       "clase_obtenida": "generacion",
       "ancla_presente": true,
-      "ancla_vista": false,
+      "ancla_vista": true,
       "ancla_consultada": true,
       "replay_ok": true,
       "replay_fuerte_ok": true,
@@ -263,9 +265,9 @@
         "ext:6.11": {
           "presente": true,
           "n_nodos_censo": 1,
-          "vista": false,
+          "vista": true,
           "consultada": true,
-          "vista_en_step": null,
+          "vista_en_step": 1,
           "consultada_en_step": 2,
           "consultada_via": [
             "ver_vecinos"
@@ -273,8 +275,8 @@
           "por_nodo": [
             {
               "nodo": "Obligacion_ancla_alfa",
-              "visto": false,
-              "visto_en_step": null,
+              "visto": true,
+              "visto_en_step": 1,
               "consultado": true,
               "consultado_via": "ver_vecinos",
               "consultado_en_step": 2,
@@ -299,7 +301,7 @@
       },
       "veredicto": "incorrecto",
       "clase_esperada": "alcanzabilidad",
-      "n_steps": 0,
+      "n_steps": 5,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
@@ -387,57 +389,6 @@
       "veredicto_caso": "PASS"
     },
     {
-      "caso_id": "GATE-09",
-      "contrato": "v1",
-      "anclas": [
-        "ext:6.11"
-      ],
-      "censo_nodos": {
-        "ext:6.11": [
-          "Obligacion_ancla_alfa"
-        ]
-      },
-      "veredicto": "incorrecto",
-      "clase_esperada": "generacion",
-      "n_steps": 1,
-      "corte_sesion": true,
-      "atribuible_por_el_adaptador": false,
-      "determinismo_atribucion": true,
-      "clase_obtenida": "vista_no_consultada",
-      "ancla_presente": true,
-      "ancla_vista": true,
-      "ancla_consultada": false,
-      "replay_ok": true,
-      "replay_fuerte_ok": true,
-      "replay_fallas": [],
-      "replay_fuerte_fallas": [],
-      "por_ancla": {
-        "ext:6.11": {
-          "presente": true,
-          "n_nodos_censo": 1,
-          "vista": true,
-          "consultada": false,
-          "vista_en_step": 1,
-          "consultada_en_step": null,
-          "consultada_via": [],
-          "por_nodo": [
-            {
-              "nodo": "Obligacion_ancla_alfa",
-              "visto": true,
-              "visto_en_step": 1,
-              "consultado": false,
-              "consultado_via": null,
-              "consultado_en_step": null,
-              "brecha_visto_sin_consultar": true
-            }
-          ]
-        }
-      },
-      "error_atribucion": null,
-      "veredicto_caso": "PASS (detectado como no atribuible)",
-      "clase_si_se_atribuyera_igual": "vista_no_consultada"
-    },
-    {
       "caso_id": "GATE-10",
       "contrato": "v1",
       "anclas": [
@@ -450,7 +401,7 @@
       },
       "veredicto": "incorrecto",
       "clase_esperada": "generacion",
-      "n_steps": 2,
+      "n_steps": 3,
       "corte_sesion": false,
       "atribuible_por_el_adaptador": true,
       "determinismo_atribucion": true,
@@ -488,70 +439,6 @@
       },
       "error_atribucion": null,
       "veredicto_caso": "PASS"
-    },
-    {
-      "caso_id": "GATE-11",
-      "contrato": "v2",
-      "anclas": [
-        "ext:6.11"
-      ],
-      "censo_nodos": {
-        "ext:6.11": [
-          "Obligacion_ancla_alfa"
-        ]
-      },
-      "veredicto": "parcial",
-      "clase_esperada": "generacion",
-      "n_steps": 2,
-      "corte_sesion": false,
-      "atribuible_por_el_adaptador": true,
-      "determinismo_atribucion": true,
-      "clase_obtenida": "generacion",
-      "ancla_presente": true,
-      "ancla_vista": false,
-      "ancla_consultada": true,
-      "replay_ok": false,
-      "replay_fuerte_ok": false,
-      "replay_fallas": [
-        {
-          "n": 2,
-          "tool": "ver_vecinos",
-          "motivo": "prefijo_distinto"
-        }
-      ],
-      "replay_fuerte_fallas": [
-        {
-          "n": 2,
-          "tool": "ver_vecinos",
-          "motivo": "output_completo_distinto"
-        }
-      ],
-      "por_ancla": {
-        "ext:6.11": {
-          "presente": true,
-          "n_nodos_censo": 1,
-          "vista": false,
-          "consultada": true,
-          "vista_en_step": null,
-          "consultada_en_step": 2,
-          "consultada_via": [
-            "ver_vecinos"
-          ],
-          "por_nodo": [
-            {
-              "nodo": "Obligacion_ancla_alfa",
-              "visto": false,
-              "visto_en_step": null,
-              "consultado": true,
-              "consultado_via": "ver_vecinos",
-              "consultado_en_step": 2,
-              "brecha_visto_sin_consultar": false
-            }
-          ]
-        }
-      },
-      "error_atribucion": null,
-      "veredicto_caso": "FAIL"
     }
   ]
 }

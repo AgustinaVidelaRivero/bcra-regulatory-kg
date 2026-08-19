@@ -10,7 +10,9 @@ Reemplazar `- [ ] **A2.0-gate**` por `- [x] **A2.0-gate**` y agregar al final de
 > **Cerrada en FASE A (USD 0)**: veredicto **PASA CON CONDICIONES**
 > (`data/experiment/banco_mcp/gate/veredicto_gate.md`). Las cuatro clases se reconstruyen desde
 > una sesión real de Claude Code y el replay determinístico (estándar y fuerte) pasa: 10/11
-> casos PASS, con el código de A0.2 **importado**. Los dos hallazgos que condicionan A2.0-banco:
+> casos PASS en fase A, y **9/9 de maquinaria en la FASE B** con corridas reales de `claude -p`
+> (`faseB_resultados.md`, gasto USD 1,2983 de un tope de USD 2), con el código de A0.2
+> **importado**. Los dos hallazgos que condicionan A2.0-banco:
 > (i) el output íntegro de una tool solo sobrevive por un archivo de derrame fuera del repo
 > (cap medido de 30.000 chars en el transcript) → **R1: log de llamadas del lado del servidor
 > MCP, y la sesión pasa a ser índice, no fuente de verdad**; (ii) con tools v2 (laudo C11) el
@@ -29,7 +31,9 @@ Agregar como dependencia explícita, después de «**Depende de A2.0-gate**»:
 > sesión y descarte contado de las trazas cortadas), R4 (contrato de salida JSON en el prompt),
 > R5 (criterio de corte declarado que reemplace `hit_tool_limit`), R6 (aislamiento por
 > capacidad — confirma lo ya previsto, y el filtrado que quede debe ser ruidoso), R7 (mapa
-> `n → tool_use_id` por traza).
+> `n → tool_use_id` por traza), **R8** (inventario de modelos por traza), **R9** (contabilidad
+> desde conteos de tokens con precios sellados) y **R10** (configuración local declarada y
+> sellada).
 
 ## 3. Nota sobre el transporte MCP
 

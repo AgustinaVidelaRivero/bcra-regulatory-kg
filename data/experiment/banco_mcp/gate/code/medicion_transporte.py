@@ -15,10 +15,10 @@ NO persiste contenido de las sesiones: solo longitudes y conteos. El corpus de
 sesiones vive fuera del repo y no se copia.
 
 Uso (el directorio de sesiones se deriva del cwd, sin rutas absolutas en el
-código: Claude Code slugifica el cwd reemplazando '/' y ' ' por '-'):
+código: Claude Code slugifica el cwd reemplazando '/', ' ' y '_' por '-'):
 
   python3 -B data/experiment/banco_mcp/gate/code/medicion_transporte.py \
-      --proyecto "$HOME/.claude/projects/$(pwd | tr '/ ' '--')"
+      --proyecto "$HOME/.claude/projects/$(pwd | tr '/ _' '---')"
 """
 from __future__ import annotations
 

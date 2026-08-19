@@ -59,34 +59,35 @@ def _sin_generado(p: Path) -> str:
     return json.dumps(d, ensure_ascii=False, sort_keys=True)
 
 
-def determinismo_adaptador() -> dict:
+def determinismo_adaptador(rebanada: Path, trazas_dir: Path, casos_path: Path) -> dict:
     """Re-adapta la rebanada a un directorio temporal y compara con lo persistido."""
     with tempfile.TemporaryDirectory() as td:
         r = subprocess.run([sys.executable, "-B", str(CODE_DIR / "adaptador_cc.py"), "adaptar",
-                            "--rebanada", str(REBANADA), "--out", td],
+                            "--rebanada", str(rebanada), "--out", td, "--casos", str(casos_path)],
                            capture_output=True, text=True)
         if r.returncode != 0:
             return {"ok": False, "motivo": r.stderr[-500:]}
         difs = []
-        for p in sorted(TRAZAS_DIR.glob("GATE-*.json")):
+        for p in sorted(trazas_dir.glob("GATE-*.json")):
             q = Path(td) / p.name
             if not q.exists():
                 difs.append(f"{p.name}: ausente en la re-adaptación")
             elif _sin_generado(p) != _sin_generado(q):
                 difs.append(f"{p.name}: contenido distinto")
-        return {"ok": not difs, "n_trazas": len(list(TRAZAS_DIR.glob('GATE-*.json'))),
+        return {"ok": not difs, "n_trazas": len(list(trazas_dir.glob('GATE-*.json'))),
                 "diferencias": difs,
                 "nota": "comparación byte a byte del JSON canónico salvo `meta.generado`"}
 
 
-def correr(out_dir: Path) -> dict:
-    casos = {c["caso_id"]: c for c in json.loads(CASOS_PATH.read_text(encoding="utf-8"))["casos"]}
+def correr(out_dir: Path, casos_path: Path = CASOS_PATH, trazas_dir: Path = TRAZAS_DIR,
+           rebanada: Path = REBANADA, nombre: str = "demostracion_gate") -> dict:
+    casos = {c["caso_id"]: c for c in json.loads(casos_path.read_text(encoding="utf-8"))["casos"]}
     index = TJ.cargar_index()
     aidx = TJ.cargar_ancla_index()
 
     filas = []
     for caso_id, decl in casos.items():
-        p = TRAZAS_DIR / f"{caso_id}.json"
+        p = trazas_dir / f"{caso_id}.json"
         payload = json.loads(p.read_text(encoding="utf-8"))
         anclas = decl["anclas"]
         veredicto = decl["veredicto"]
@@ -125,19 +126,21 @@ def correr(out_dir: Path) -> dict:
             fila["veredicto_caso"] = "PASS" if ok else "FAIL"
         filas.append(fila)
 
-    det = determinismo_adaptador()
+    det = determinismo_adaptador(rebanada, trazas_dir, casos_path)
     res = {"generado": datetime.now().isoformat(timespec="seconds"),
            "unidad": "U-A2.0-gate — entregable 5 (demostración por clase)",
            "codigo_a02_importado": str(A02_CODE.relative_to(REPO_DIR)),
            "grafo_juguete": "data/experiment/banco_mcp/gate/grafo_juguete.json",
            "determinismo_adaptador": det,
+           "_nombre": nombre,
            "n_casos": len(filas),
            "n_pass": sum(1 for f in filas if f["veredicto_caso"].startswith("PASS")),
            "casos": filas}
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "demostracion_gate.json").write_text(
+    nombre = res.pop("_nombre", "demostracion_gate")
+    (out_dir / f"{nombre}.json").write_text(
         json.dumps(res, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (out_dir / "demostracion_gate.md").write_text(render(res), encoding="utf-8")
+    (out_dir / f"{nombre}.md").write_text(render(res), encoding="utf-8")
     return res
 
 
@@ -164,8 +167,12 @@ def render(res: dict) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, default=GATE_DIR / "corrida")
+    ap.add_argument("--casos", type=Path, default=CASOS_PATH)
+    ap.add_argument("--trazas", type=Path, default=TRAZAS_DIR)
+    ap.add_argument("--rebanada", type=Path, default=REBANADA)
+    ap.add_argument("--nombre", default="demostracion_gate")
     a = ap.parse_args()
-    res = correr(a.out)
+    res = correr(a.out, a.casos, a.trazas, a.rebanada, a.nombre)
     print(render(res))
     return 0
 

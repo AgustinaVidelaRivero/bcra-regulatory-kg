@@ -95,7 +95,7 @@ Comando que reproduce todos los números de esta sección:
 
 ```
 python3 -B data/experiment/banco_mcp/gate/code/medicion_transporte.py \
-  --proyecto "$HOME/.claude/projects/$(pwd | tr '/ ' '--')" \
+  --proyecto "$HOME/.claude/projects/$(pwd | tr '/ _' '---')" \
   --out data/experiment/banco_mcp/gate/corrida/medicion_transporte.json
 ```
 

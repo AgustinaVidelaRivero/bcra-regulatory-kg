@@ -11,6 +11,12 @@ sobrevive tal cual: necesita un driver nuevo.
 
 FRENO acá: la autora lauda antes de construir el banco.
 
+> **Actualización tras la FASE B** (corridas reales con `claude -p`, laudo §3): el veredicto
+> **se mantiene y se refuerza**. La maquinaria pasó 9/9 sobre sesiones reales — replay estándar,
+> replay fuerte y determinismo en verde, cero steps perdidos — y el borde del output por encima
+> del cap se reprodujo en producción. Detalle en `faseB_resultados.md`; los hallazgos nuevos
+> (B1–B5) están en §7 de este documento.
+
 ---
 
 ## 1. Qué quedó demostrado
@@ -198,3 +204,50 @@ Autorizar la FASE B (smoke) **solo para confirmar el transporte con `claude -p`*
 está resuelto offline — y laudar R1..R7 **antes** de escribir una línea de los servidores MCP.
 El orden importa: R1 y R2 son decisiones de **diseño de los servidores**, no parches
 posteriores, y esa es exactamente la razón por la que el gate va primero.
+
+
+## 7. Confirmación en FASE B y hallazgos nuevos
+
+Corrida real: 9 sesiones con `claude -p --model claude-sonnet-5 --safe-mode`, modelo y tope de
+tool calls declarados antes de correr (`faseB_predeclaracion.md`). Gasto **USD 1,2983** sobre un
+tope de USD 2. Resultados completos en `faseB_resultados.md`.
+
+**Qué confirmó.** Las cuatro clases se reconstruyeron desde sesiones reales; el replay estándar y
+el fuerte pasaron en las nueve; la atribución fue determinística y la re-adaptación desde la
+rebanada, byte-idéntica. Con `--tools Bash --allowedTools "Bash(python3 *)"` el adaptador tuvo
+**cero rechazos** (contra 3 en la fase A, donde el agente tenía todas las tools): **R6 deja de
+ser una recomendación y pasa a ser una condición medida**. El contrato de salida del prompt
+(**R4**) se cumplió en las nueve. Y GATE-10 volvió a pasar el replay fuerte sobre una sesión
+real, siguiendo el derrame a disco: **R1 sigue siendo el requisito bloqueante correcto**, ahora
+con evidencia de producción y no solo de laboratorio.
+
+**Qué cambió respecto de la fase A.** Ocho de nueve clases coincidieron con la predicción. La
+novena (GATE-03) dio `generacion` donde se predijo `alcanzabilidad`, porque el agente real llegó
+al ancla por `ver_vecinos` sin haberla visto nunca en una búsqueda. **No es una falla de
+maquinaria** —la clase es la correcta para lo que el agente hizo— y estaba declarada como
+predicción frágil antes de correr. De paso deja algo útil: el caso (V,F,V) de la regla, que en
+la fase A era teórico, **ocurre de verdad** con un agente real, y sin la precedencia sellada esa
+traza habría dicho que el agente nunca tuvo el contenido.
+
+**Requisitos nuevos que la fase B le agrega a A2.0-banco:**
+
+**R8 — La metadata por traza no puede declarar un solo modelo.** Cada sesión usó
+`claude-sonnet-5` (el declarado, para los turnos del agente) **y** `claude-haiku-4-5-20251001`
+para trabajo interno del harness. El punto (v) del diseño de A2.0-banco pide «model id exacto
+devuelto por la API»: tiene que ser el **inventario de modelos de la sesión con su uso**, no un
+string.
+
+**R9 — La contabilidad se computa desde los conteos de tokens, no desde el costo que reporta el
+harness.** El `total_cost_usd` del CLI sobre-factura Sonnet 5 ~3× contra los precios oficiales
+(USD 1,2983 contra USD 0,4191 recomputado; la parte de Haiku coincide al centavo). El banco debe
+sellar los precios con la corrida y recomputar, con el número del harness como control cruzado.
+
+**R10 — La configuración local es una variable del banco, no un detalle del entorno.** El prompt
+de sistema mide **9.412 tokens** con `--safe-mode` y **19.074** con la configuración de usuario:
+la configuración local **duplica** `P0`, y `P0` se paga una vez por turno. En qué configuración
+corre el banco se declara y se sella, como cualquier otra variable.
+
+**Lo que la fase B NO pudo demostrar** (además de lo ya declarado en §4): el borde «sesión sin
+tool calls» **no se obtuvo** — el agente llamó a las tools igual, y la sesión no se editó; y el
+corte de sesión no es producible con una corrida real, porque es una propiedad del archivo en
+disco. Ambos siguen demostrados solo por la fase A.

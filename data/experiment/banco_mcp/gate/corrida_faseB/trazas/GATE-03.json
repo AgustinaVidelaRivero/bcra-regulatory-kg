@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "unidad": "U-A2.0-gate",
+    "caso_id": "GATE-03",
+    "origen": "claude_code_session",
+    "contrato_tools": "v1",
+    "grafo": "data/experiment/banco_mcp/gate/grafo_juguete.json",
+    "grafo_sha256": "959106ec9361c7d5b21e616b08805b55bc8adab43ca8eb28edc592936fe0a822",
+    "adaptador": "data/experiment/banco_mcp/gate/code/adaptador_cc.py",
+    "rebanada": "sesiones_faseB/rebanada_cruda.jsonl",
+    "anclas_gold": [
+      "ext:7.4"
+    ],
+    "veredicto_declarado": "incorrecto",
+    "clase_esperada": "alcanzabilidad",
+    "generado": "2026-08-18T21:36:39"
+  },
+  "trace": {
+    "question": null,
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operacion epsilon",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operacion epsilon\", \"total_con_match\": 1, \"resultados\": [{\"id\": \"Operacion_puente_epsilon\", \"type\": \"Operacion\", \"label\": \"Operacion epsilon puente de acreditacion\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Nodo puente: su vecino saliente es el ancla alfa.\"}]}",
+        "output_chars": 281
+      },
+      {
+        "n": 2,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_puente_epsilon"
+        },
+        "output_truncado": "{\"id\": \"Operacion_puente_epsilon\", \"type\": \"Operacion\", \"label\": \"Operacion epsilon puente de acreditacion\", \"properties\": {\"descripcion\": \"Nodo puente: su vecino saliente es el ancla alfa.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.12. texto sintético\"}]}",
+        "output_chars": 302
+      },
+      {
+        "n": 3,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_puente_epsilon",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Operacion_puente_epsilon\", \"label\": \"Operacion epsilon puente de acreditacion\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Obligacion_ancla_alfa\", \"vecino_label\": \"Obligacion alfa de acreditacion de fondos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.12. texto sintético\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 460
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_ancla_alfa"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_ancla_alfa\", \"type\": \"Obligacion\", \"label\": \"Obligacion alfa de acreditacion de fondos\", \"properties\": {\"descripcion\": \"Contenido sintetico del ancla alfa (ext:6.11).\", \"sujeto\": \"entidad alcanzada\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.11. texto sintético\"}]}",
+        "output_chars": 329
+      },
+      {
+        "n": 5,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_ancla_alfa",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_ancla_alfa\", \"label\": \"Obligacion alfa de acreditacion de fondos\", \"n_salientes_total\": 1, \"n_entrantes_total\": 2, \"salientes\": [{\"relation\": \"restringido_por\", \"vecino_id\": \"Restriccion_ancla_beta\", \"vecino_label\": \"Restriccion beta sobre plazos de liquidacion\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.11. texto sintético\"}]}], \"salientes_truncado\": false, \"entrantes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Operacion_puente_epsilon\", \"vecino_label\": \"Operacion epsilon puente de acreditacion\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.12. texto sintético\"}]}, {\"relation\": \"complementa_a\", \"vecino_id\": \"Obligacion_ancla_gamma\", \"vecino_label\": \"Obligacion gamma de acreditacion complementaria\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.2. texto sintético\"}]}], \"entrantes_truncado\": false}",
+        "output_chars": 950
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_ancla_beta"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_ancla_beta\", \"type\": \"Restriccion\", \"label\": \"Restriccion beta sobre plazos de liquidacion\", \"properties\": {\"descripcion\": \"Contenido sintetico del ancla beta (ext:7.4).\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.4. texto sintético\"}]}",
+        "output_chars": 301
+      }
+    ],
+    "final_json": null,
+    "tool_calls_used": 6,
+    "hit_tool_limit": false
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "operacion epsilon",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "operacion epsilon",
+        "total_con_match": 1,
+        "resultados": [
+          {
+            "id": "Operacion_puente_epsilon",
+            "type": "Operacion",
+            "label": "Operacion epsilon puente de acreditacion",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Nodo puente: su vecino saliente es el ancla alfa."
+          }
+        ]
+      },
+      "output_chars": 281
+    },
+    {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_puente_epsilon"
+      },
+      "output": {
+        "id": "Operacion_puente_epsilon",
+        "type": "Operacion",
+        "label": "Operacion epsilon puente de acreditacion",
+        "properties": {
+          "descripcion": "Nodo puente: su vecino saliente es el ancla alfa."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.12. texto sintético"
+          }
+        ]
+      },
+      "output_chars": 302
+    },
+    {
+      "n": 3,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_puente_epsilon",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Operacion_puente_epsilon",
+        "label": "Operacion epsilon puente de acreditacion",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Obligacion_ancla_alfa",
+            "vecino_label": "Obligacion alfa de acreditacion de fondos",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.12. texto sintético"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 460
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_ancla_alfa"
+      },
+      "output": {
+        "id": "Obligacion_ancla_alfa",
+        "type": "Obligacion",
+        "label": "Obligacion alfa de acreditacion de fondos",
+        "properties": {
+          "descripcion": "Contenido sintetico del ancla alfa (ext:6.11).",
+          "sujeto": "entidad alcanzada"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.11. texto sintético"
+          }
+        ]
+      },
+      "output_chars": 329
+    },
+    {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_ancla_alfa",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Obligacion_ancla_alfa",
+        "label": "Obligacion alfa de acreditacion de fondos",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 2,
+        "salientes": [
+          {
+            "relation": "restringido_por",
+            "vecino_id": "Restriccion_ancla_beta",
+            "vecino_label": "Restriccion beta sobre plazos de liquidacion",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.11. texto sintético"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Operacion_puente_epsilon",
+            "vecino_label": "Operacion epsilon puente de acreditacion",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.12. texto sintético"
+              }
+            ]
+          },
+          {
+            "relation": "complementa_a",
+            "vecino_id": "Obligacion_ancla_gamma",
+            "vecino_label": "Obligacion gamma de acreditacion complementaria",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 8.2. texto sintético"
+              }
+            ]
+          }
+        ],
+        "entrantes_truncado": false
+      },
+      "output_chars": 950
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_ancla_beta"
+      },
+      "output": {
+        "id": "Restriccion_ancla_beta",
+        "type": "Restriccion",
+        "label": "Restriccion beta sobre plazos de liquidacion",
+        "properties": {
+          "descripcion": "Contenido sintetico del ancla beta (ext:7.4)."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 7.4. texto sintético"
+          }
+        ]
+      },
+      "output_chars": 301
+    }
+  ],
+  "gate": {
+    "corte_sesion": false,
+    "atribuible": true,
+    "n_steps_adaptados": 6,
+    "mapa_steps": [
+      {
+        "n": 1,
+        "tool_use_id": "toolu_0151dYXxTBcWB8xHfNsWZry7",
+        "linea_tool_use": 23,
+        "linea_tool_result": 24,
+        "uuid_asistente": "5ba1baf5-890b-453b-8e44-a46049e468db",
+        "timestamp": "2026-08-19T01:25:42.650Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 2,
+        "tool_use_id": "toolu_01VPy9FRHCBvveztuT7H3yTh",
+        "linea_tool_use": 25,
+        "linea_tool_result": 26,
+        "uuid_asistente": "f2b510b4-0706-434d-88f8-b85f2140d3c4",
+        "timestamp": "2026-08-19T01:25:45.657Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 3,
+        "tool_use_id": "toolu_011hcbEkMp5YNqeg9phAmVBk",
+        "linea_tool_use": 27,
+        "linea_tool_result": 28,
+        "uuid_asistente": "b20f034a-ad72-4a68-81dc-232cb85f1dd4",
+        "timestamp": "2026-08-19T01:25:48.497Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 4,
+        "tool_use_id": "toolu_01UJNkQ9KuRGWXH9HZhufpTC",
+        "linea_tool_use": 29,
+        "linea_tool_result": 30,
+        "uuid_asistente": "522791a3-8591-4447-aada-b75de6800097",
+        "timestamp": "2026-08-19T01:25:51.030Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 5,
+        "tool_use_id": "toolu_01DnDn1pmGGkXS9y25ouRcQZ",
+        "linea_tool_use": 31,
+        "linea_tool_result": 32,
+        "uuid_asistente": "84f86b84-b5fd-475a-bd4e-a2cc84ab0833",
+        "timestamp": "2026-08-19T01:25:56.525Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 6,
+        "tool_use_id": "toolu_01KqjKbN3cdRA8eqhukkFEDM",
+        "linea_tool_use": 33,
+        "linea_tool_result": 34,
+        "uuid_asistente": "1b3dee6b-84b1-4432-b9bf-fe9e4452bb7e",
+        "timestamp": "2026-08-19T01:25:59.245Z",
+        "transporte": "bash"
+      }
+    ],
+    "incidencias": [
+      {
+        "n": 1,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 281
+      },
+      {
+        "n": 2,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 302
+      },
+      {
+        "n": 3,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 460
+      },
+      {
+        "n": 4,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 329
+      },
+      {
+        "n": 5,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 950
+      },
+      {
+        "n": 6,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 301
+      }
+    ]
+  }
+}

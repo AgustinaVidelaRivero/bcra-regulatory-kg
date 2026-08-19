@@ -96,8 +96,8 @@ def _truncar(s: str) -> str:
     return s if len(s) <= TRUNC else s[:TRUNC] + f"… [+{len(s)-TRUNC} chars]"
 
 
-def cargar_casos() -> dict:
-    d = json.loads(CASOS_PATH.read_text(encoding="utf-8"))
+def cargar_casos(path: Path | None = None) -> dict:
+    d = json.loads((path or CASOS_PATH).read_text(encoding="utf-8"))
     return {c["caso_id"]: c for c in d["casos"]}
 
 
@@ -310,8 +310,9 @@ def recuperar_output(res: dict, dir_derrames: Path | None) -> dict:
 # --------------------------------------------------------------------------- #
 # extraer                                                                      #
 # --------------------------------------------------------------------------- #
-def extraer(sesion: Path, out_dir: Path, hasta_linea: int | None = None) -> dict:
-    casos = cargar_casos()
+def extraer(sesion: Path, out_dir: Path, hasta_linea: int | None = None,
+            casos_path: Path | None = None) -> dict:
+    casos = cargar_casos(casos_path)
     lineas = leer_sesion(sesion)
     if hasta_linea is not None:
         # Ventana de captura: el jsonl de sesion sigue creciendo mientras la
@@ -344,7 +345,10 @@ def extraer(sesion: Path, out_dir: Path, hasta_linea: int | None = None) -> dict
 
     conservar = lineas_tool_use | lineas_result
     out_dir.mkdir(parents=True, exist_ok=True)
-    TOOL_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    # los derrames se copian JUNTO a la rebanada que los referencia, para que
+    # cada captura sea autosuficiente y las fases no se pisen entre si
+    derrames_dir = out_dir / "tool_results"
+    derrames_dir.mkdir(parents=True, exist_ok=True)
     seleccion = [L for L in lineas if L["nro"] in conservar]
     (out_dir / "rebanada_cruda.jsonl").write_text(
         "".join(L["cruda"] + "\n" for L in seleccion), encoding="utf-8")
@@ -356,9 +360,9 @@ def extraer(sesion: Path, out_dir: Path, hasta_linea: int | None = None) -> dict
         if isinstance(tur, dict) and tur.get("persistedOutputPath"):
             src = Path(tur["persistedOutputPath"])
             if src.exists():
-                dst = TOOL_RESULTS_DIR / src.name
+                dst = derrames_dir / src.name
                 shutil.copyfile(src, dst)
-                derrames.append({"origen": ruta_portable(src), "copia": str(dst.relative_to(GATE_DIR)),
+                derrames.append({"origen": ruta_portable(src), "copia": str(dst.resolve().relative_to(GATE_DIR)),
                                  "bytes": dst.stat().st_size,
                                  "sha256": sha256_bytes(dst.read_bytes()),
                                  "persistedOutputSize": tur.get("persistedOutputSize")})
@@ -407,8 +411,8 @@ def extraer(sesion: Path, out_dir: Path, hasta_linea: int | None = None) -> dict
 # --------------------------------------------------------------------------- #
 # adaptar                                                                      #
 # --------------------------------------------------------------------------- #
-def adaptar(rebanada: Path, out_dir: Path) -> dict:
-    casos = cargar_casos()
+def adaptar(rebanada: Path, out_dir: Path, casos_path: Path | None = None) -> dict:
+    casos = cargar_casos(casos_path)
     lineas = leer_sesion(rebanada)
     acept, rech = candidatos(lineas)
     idx = indice_resultados(lineas)
@@ -436,7 +440,7 @@ def adaptar(rebanada: Path, out_dir: Path) -> dict:
                                     "input": a["input"], "motivo": "tool_use sin tool_result "
                                     "(corte de sesion)"})
                 continue
-            rec = recuperar_output(r, TOOL_RESULTS_DIR)
+            rec = recuperar_output(r, rebanada.parent / "tool_results")
             n += 1
             mapa_steps.append({"n": n, "tool_use_id": a["tool_use_id"],
                                "linea_tool_use": a["linea_tool_use"],
@@ -518,12 +522,14 @@ def main() -> int:
     p.add_argument("--out", type=Path, default=SESIONES_DIR)
     p.add_argument("--hasta-linea", dest="hasta_linea", type=int, default=None,
                    help="ventana de captura: ignora las lineas posteriores de la sesion")
+    p.add_argument("--casos", type=Path, default=None)
     p = sub.add_parser("adaptar"); p.add_argument("--rebanada", type=Path, default=REBANADA)
     p.add_argument("--out", type=Path, default=TRAZAS_DIR)
+    p.add_argument("--casos", type=Path, default=None)
     a = ap.parse_args()
     if a.cmd == "extraer":
-        extraer(a.sesion, a.out, a.hasta_linea); return 0
-    adaptar(a.rebanada, a.out); return 0
+        extraer(a.sesion, a.out, a.hasta_linea, a.casos); return 0
+    adaptar(a.rebanada, a.out, a.casos); return 0
 
 
 if __name__ == "__main__":

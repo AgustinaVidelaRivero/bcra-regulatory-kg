@@ -1,0 +1,38 @@
+{
+  "unidad": "U-A2.0-gate — FASE B",
+  "nota": "Los 9 casos efectivamente corridos con `claude -p` (modelo y tope declarados en faseB_predeclaracion.md). El 'veredicto' es el insumo que en el instrumento real pone el juez; aca se declara para poder ejercitar la atribucion (esta unidad NO evalua respuestas) — mismos valores que en fase A, para que la comparacion fase A / fase B sea de maquinaria y no de veredictos. 'clase_esperada' es la PREDICCION del disenio de la pregunta; en fase B la navegacion la decide el agente real, asi que una clase distinta es DATO, no falla: el criterio PASS/FAIL de fase B es sobre la maquinaria (replay, replay fuerte, determinismo, atribucion computable).",
+  "grafo": "grafo_juguete.json",
+  "no_corridos": {
+    "GATE-09": "corte de sesion: el corte es una propiedad del archivo en disco, no del agente. No se puede producir con una corrida real sin escenificar. La demostracion de fase A se mantiene y se declara.",
+    "GATE-11": "contrato v2: el laudo resolvio R2 por la OPCION B (el banco expone la firma v1), asi que el hallazgo de fase A ya esta sellado y correrlo no decide nada. Se omite para no gastar presupuesto en confirmar lo laudado."
+  },
+  "casos": [
+    {"caso_id": "GATE-01", "contrato": "v1", "anclas": ["ext:9.9"], "veredicto": "incorrecto",
+     "clase_esperada": "ausencia_kg",
+     "disenio": "El ancla no la porta ningun nodo. La clase no depende de lo que haga el agente: es la unica clase inmune al transporte y al comportamiento."},
+    {"caso_id": "GATE-02", "contrato": "v1", "anclas": ["ext:3.3"], "veredicto": "parcial",
+     "clase_esperada": "ausencia_kg",
+     "disenio": "El unico portador de ext:3.3 es el contenedor (11 anclas > 10), que el censo excluye."},
+    {"caso_id": "GATE-03", "contrato": "v1", "anclas": ["ext:7.4"], "veredicto": "incorrecto",
+     "clase_esperada": "alcanzabilidad",
+     "disenio": "Prediccion fragil declarada: la pregunta usa vocabulario disjunto del label del ancla, pero un agente real puede alcanzarla por vecindad desde alfa. Si la alcanza, la clase sera generacion y eso es dato."},
+    {"caso_id": "GATE-04", "contrato": "v1", "anclas": ["ext:8.2"], "veredicto": "parcial",
+     "clase_esperada": "vista_no_consultada",
+     "disenio": "La pregunta apunta al senuelo lexico (eta) mientras el gold es gamma: reproduce el caso real de una respuesta mal anclada. Prediccion fragil: si el agente abre gamma tambien, sera generacion."},
+    {"caso_id": "GATE-05", "contrato": "v1", "anclas": ["ext:6.11"], "veredicto": "incorrecto",
+     "clase_esperada": "generacion",
+     "disenio": "La pregunta solo se contesta abriendo el nodo ancla: ver_nodo esperado."},
+    {"caso_id": "GATE-06", "contrato": "v1", "anclas": ["ext:6.11"], "veredicto": "parcial",
+     "clase_esperada": "generacion",
+     "disenio": "La pregunta apunta al nodo puente; el ancla se alcanza como vecino_id. Ejercita la precedencia consultada > vista (caso V,F,V)."},
+    {"caso_id": "GATE-07", "contrato": "v1", "anclas": ["ext:6.11"], "veredicto": "incorrecto",
+     "clase_esperada": "alcanzabilidad", "best_effort": true,
+     "disenio": "BORDE best effort: la pregunta es contestable sin consultar el grafo. Si el agente igual llama a una tool, el borde 'sesion sin tool calls' se reporta como NO OBTENIDO y la sesion no se edita."},
+    {"caso_id": "GATE-08", "contrato": "v1", "anclas": ["ext:6.11"], "veredicto": "parcial",
+     "clase_esperada": "alcanzabilidad",
+     "disenio": "BORDE: la pregunta usa vocabulario ausente del mini-grafo, asi que buscar_nodos devuelve resultados vacios."},
+    {"caso_id": "GATE-10", "contrato": "v1", "anclas": ["ext:10.1"], "veredicto": "incorrecto",
+     "clase_esperada": "generacion",
+     "disenio": "BORDE: abrir el nodo produce 42.248 chars, por encima del cap de 30.000 del transporte. Corre UNA sola vez."}
+  ]
+}
