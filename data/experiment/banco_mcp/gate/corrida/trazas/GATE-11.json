@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "unidad": "U-A2.0-gate",
+    "caso_id": "GATE-11",
+    "origen": "claude_code_session",
+    "contrato_tools": "v2",
+    "grafo": "data/experiment/banco_mcp/gate/grafo_juguete.json",
+    "grafo_sha256": "959106ec9361c7d5b21e616b08805b55bc8adab43ca8eb28edc592936fe0a822",
+    "adaptador": "data/experiment/banco_mcp/gate/code/adaptador_cc.py",
+    "rebanada": "sesiones/rebanada_cruda.jsonl",
+    "anclas_gold": [
+      "ext:6.11"
+    ],
+    "veredicto_declarado": "parcial",
+    "clase_esperada": "generacion",
+    "generado": "2026-08-18T18:59:03"
+  },
+  "trace": {
+    "question": null,
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "epsilon puente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"epsilon puente\", \"total_con_match\": 1, \"resultados\": [{\"id\": \"Operacion_puente_epsilon\", \"type\": \"Operacion\", \"label\": \"Operacion epsilon puente de acreditacion\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Nodo puente: su vecino saliente es el ancla alfa.\"}]}",
+        "output_chars": 278
+      },
+      {
+        "n": 2,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_puente_epsilon",
+          "pagina": 1,
+          "por_pagina": 40
+        },
+        "output_truncado": "{\"id\": \"Operacion_puente_epsilon\", \"label\": \"Operacion epsilon puente de acreditacion\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"filtro_relacion\": null, \"pagina\": 1, \"por_pagina\": 40, \"salientes_total\": 1, \"salientes_paginas\": 1, \"salientes_pagina_siguiente\": null, \"salientes_por_relacion\": {\"aplica_a\": 1}, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Obligacion_ancla_alfa\", \"vecino_label\": \"Obligacion alfa de acreditacion de fondos\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.12. texto sintético\"}]}], \"entrantes_total\": 0, \"entrantes_paginas\": 0, \"entrantes_pagina_siguiente\": null, \"entrantes_por_relacion\": {}, \"entrantes\": []}",
+        "output_chars": 695
+      }
+    ],
+    "final_json": null,
+    "tool_calls_used": 2,
+    "hit_tool_limit": false
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "epsilon puente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "epsilon puente",
+        "total_con_match": 1,
+        "resultados": [
+          {
+            "id": "Operacion_puente_epsilon",
+            "type": "Operacion",
+            "label": "Operacion epsilon puente de acreditacion",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Nodo puente: su vecino saliente es el ancla alfa."
+          }
+        ]
+      },
+      "output_chars": 278
+    },
+    {
+      "n": 2,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_puente_epsilon",
+        "pagina": 1,
+        "por_pagina": 40
+      },
+      "output": {
+        "id": "Operacion_puente_epsilon",
+        "label": "Operacion epsilon puente de acreditacion",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "filtro_relacion": null,
+        "pagina": 1,
+        "por_pagina": 40,
+        "salientes_total": 1,
+        "salientes_paginas": 1,
+        "salientes_pagina_siguiente": null,
+        "salientes_por_relacion": {
+          "aplica_a": 1
+        },
+        "salientes": [
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Obligacion_ancla_alfa",
+            "vecino_label": "Obligacion alfa de acreditacion de fondos",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.12. texto sintético"
+              }
+            ]
+          }
+        ],
+        "entrantes_total": 0,
+        "entrantes_paginas": 0,
+        "entrantes_pagina_siguiente": null,
+        "entrantes_por_relacion": {},
+        "entrantes": []
+      },
+      "output_chars": 695
+    }
+  ],
+  "gate": {
+    "corte_sesion": false,
+    "atribuible": true,
+    "n_steps_adaptados": 2,
+    "mapa_steps": [
+      {
+        "n": 1,
+        "tool_use_id": "toolu_016B3zcXuTdQ7nN4GE57Qt2Z",
+        "linea_tool_use": 40,
+        "linea_tool_result": 41,
+        "uuid_asistente": "35ea88f0-e514-472f-8a81-d2d67ed24439",
+        "timestamp": "2026-08-18T22:46:13.438Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 2,
+        "tool_use_id": "toolu_01VHUxq8uw58gCUJYR4L9xDi",
+        "linea_tool_use": 42,
+        "linea_tool_result": 43,
+        "uuid_asistente": "825e1559-a2d5-48d1-af5f-72f6798c822e",
+        "timestamp": "2026-08-18T22:46:14.953Z",
+        "transporte": "bash"
+      }
+    ],
+    "incidencias": [
+      {
+        "n": 1,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 278
+      },
+      {
+        "n": 2,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 695
+      }
+    ]
+  }
+}

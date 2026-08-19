@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "unidad": "U-A2.0-gate",
+    "caso_id": "GATE-05",
+    "origen": "claude_code_session",
+    "contrato_tools": "v1",
+    "grafo": "data/experiment/banco_mcp/gate/grafo_juguete.json",
+    "grafo_sha256": "959106ec9361c7d5b21e616b08805b55bc8adab43ca8eb28edc592936fe0a822",
+    "adaptador": "data/experiment/banco_mcp/gate/code/adaptador_cc.py",
+    "rebanada": "sesiones/rebanada_cruda.jsonl",
+    "anclas_gold": [
+      "ext:6.11"
+    ],
+    "veredicto_declarado": "incorrecto",
+    "clase_esperada": "generacion",
+    "generado": "2026-08-18T18:59:03"
+  },
+  "trace": {
+    "question": null,
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "acreditacion fondos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"acreditacion fondos\", \"total_con_match\": 5, \"resultados\": [{\"id\": \"Excepcion_senuelo_zeta\", \"type\": \"Excepcion\", \"label\": \"Excepcion zeta de acreditacion de fondos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Señuelo lexico: compite con alfa en la busqueda.\"}, {\"id\": \"Obligacion_ancla_alfa\", \"type\": \"Obligacion\", \"label\": \"Obligacion alfa de acreditacion de fondos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Contenido sintetico del ancla alfa (ext:6.11).\"}, {\"id\": \"Operacion_puente_epsilon\", \"type\": \"Operacion\", \"label\": \"Operacion epsilon puente de acreditacion\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Nodo puente: su vecino saliente es el ancla alfa.\"}, {\"id\": \"Obligacion_ancla_gamma\", \"type\": \"Obligacion\", \"label\": \"Obligacion gamma de acreditacion complementaria\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Contenido sintetico del ancla gamma (ext:8.2).\"}, {\"id\": \"Procedimiento_senuelo_eta\", \"type\": \"Procedimiento\", \"label\": \"Procedimiento eta de acreditacion complementaria\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Señuelo lexico: compite con gamma en la busqueda.\"}]}",
+        "output_chars": 1132
+      },
+      {
+        "n": 2,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_ancla_alfa"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_ancla_alfa\", \"type\": \"Obligacion\", \"label\": \"Obligacion alfa de acreditacion de fondos\", \"properties\": {\"descripcion\": \"Contenido sintetico del ancla alfa (ext:6.11).\", \"sujeto\": \"entidad alcanzada\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.11. texto sintético\"}]}",
+        "output_chars": 329
+      }
+    ],
+    "final_json": null,
+    "tool_calls_used": 2,
+    "hit_tool_limit": false
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "acreditacion fondos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "acreditacion fondos",
+        "total_con_match": 5,
+        "resultados": [
+          {
+            "id": "Excepcion_senuelo_zeta",
+            "type": "Excepcion",
+            "label": "Excepcion zeta de acreditacion de fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Señuelo lexico: compite con alfa en la busqueda."
+          },
+          {
+            "id": "Obligacion_ancla_alfa",
+            "type": "Obligacion",
+            "label": "Obligacion alfa de acreditacion de fondos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Contenido sintetico del ancla alfa (ext:6.11)."
+          },
+          {
+            "id": "Operacion_puente_epsilon",
+            "type": "Operacion",
+            "label": "Operacion epsilon puente de acreditacion",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Nodo puente: su vecino saliente es el ancla alfa."
+          },
+          {
+            "id": "Obligacion_ancla_gamma",
+            "type": "Obligacion",
+            "label": "Obligacion gamma de acreditacion complementaria",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Contenido sintetico del ancla gamma (ext:8.2)."
+          },
+          {
+            "id": "Procedimiento_senuelo_eta",
+            "type": "Procedimiento",
+            "label": "Procedimiento eta de acreditacion complementaria",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Señuelo lexico: compite con gamma en la busqueda."
+          }
+        ]
+      },
+      "output_chars": 1132
+    },
+    {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_ancla_alfa"
+      },
+      "output": {
+        "id": "Obligacion_ancla_alfa",
+        "type": "Obligacion",
+        "label": "Obligacion alfa de acreditacion de fondos",
+        "properties": {
+          "descripcion": "Contenido sintetico del ancla alfa (ext:6.11).",
+          "sujeto": "entidad alcanzada"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.11. texto sintético"
+          }
+        ]
+      },
+      "output_chars": 329
+    }
+  ],
+  "gate": {
+    "corte_sesion": false,
+    "atribuible": true,
+    "n_steps_adaptados": 2,
+    "mapa_steps": [
+      {
+        "n": 1,
+        "tool_use_id": "toolu_01FSF62kTiFTdskVDmNV4wYL",
+        "linea_tool_use": 19,
+        "linea_tool_result": 20,
+        "uuid_asistente": "d41d4daf-30a0-45a7-b138-c6549e89e055",
+        "timestamp": "2026-08-18T22:45:46.923Z",
+        "transporte": "bash"
+      },
+      {
+        "n": 2,
+        "tool_use_id": "toolu_01EWLptULXAiCcwWAnNSxMmu",
+        "linea_tool_use": 21,
+        "linea_tool_result": 22,
+        "uuid_asistente": "4db96ddc-d7f4-4c5e-a882-942b3fa5eb9b",
+        "timestamp": "2026-08-18T22:45:48.342Z",
+        "transporte": "bash"
+      }
+    ],
+    "incidencias": [
+      {
+        "n": 1,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 1132
+      },
+      {
+        "n": 2,
+        "fuente_output": "stdout",
+        "igual_a_la_sesion": true,
+        "chars": 329
+      }
+    ]
+  }
+}
