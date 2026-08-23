@@ -1,0 +1,226 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Paquetes de Idioma y Codificación ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[T1]{fontenc}
+
+% --- Formato de Página y Márgenes ---
+\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing % Interlineado 1.5
+
+% --- Paquetes para Ciencia y Gráficos ---
+\usepackage{amsmath, amsfonts, amssymb} % Matemáticas
+\usepackage{graphicx} % Imágenes
+\usepackage{booktabs} % Tablas profesionales
+\usepackage{hyperref} % Enlaces y marcadores
+\usepackage{csquotes} % Citas tipográficas (lo pide biblatex con babel)
+\hypersetup{hidelinks} % sin recuadros de color en índice y citas
+
+% --- Configuración de Bibliografía ---
+% Convención (Clase7 + skill latex-udesa): IEEE, numerada por orden de
+% aparición, citas tipo "...como se propuso en [1]". REGLA DURA: no se
+% cita lo que no se leyó/verificó; nada de entradas reconstruidas de memoria.
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{bibliografia.bib}
+
+% ======================================================
+% ESTRUCTURA OFICIAL DEL INFORME (diapositivas "Informe de PF"):
+%   Portada · Resumen y Abstract (<500 palabras entre ambos) ·
+%   Agradecimientos · Índice · 1. Introducción · 2..N-2 Desarrollo ·
+%   N-1. Conclusiones · N. Bibliografía · Apéndices A, B, ...
+% Registro (skill latex-udesa): formal e impersonal, sin voseo;
+% términos de arte en inglés integrados sin comillas; un concepto = un
+% nombre en todo el documento; números con coma decimal y "N %".
+% ======================================================
+
+\begin{document}
+
+% --- PORTADA ---
+% PPT: Título del PF, nombre del alumno y mentores, logo de la universidad y fecha.
+\begin{titlepage}
+
+	\begin{figure}
+	\centering
+	%descargar imagen desde https://images.udesa.edu.ar/sites/default/files/2023-04/logo_azul_vert_hipng.png
+	\includegraphics[width=0.45\linewidth]{logo_azul_vert_hipng.png}
+	\end{figure}
+
+    \centering
+    {\bfseries \Large Universidad de San Andrés \par} \vspace{3mm}
+    {\Large Departamento de Ingeniería \par} \vspace{3mm}
+    {\Large Ingeniería en Inteligencia Artificial \par} \vspace{10mm}
+
+    {\LARGE Informe de Proyecto Final \par}
+    \vspace{5mm}
+
+    \vfill
+
+        % Modificar con los datos del PF
+    {\bfseries\LARGE Knowledge Graph para la regulación del Banco Central de la República Argentina \par}    \vfill
+    {\Large \textbf{Autor:} Agustina Videla Rivero \par}
+    \vspace{5mm}
+    {\Large \textbf{Legajo:} 34376 \par}
+    \vspace{5mm}
+    {\Large \textbf{Mentor:} Dr. Luciano Manuel Del Corro \par}
+    % Descomentar si hay comentor
+    \vspace{5mm}
+    {\Large \textbf{Comentor:} Dr. Juan Wisznia \par}
+    \vspace{15mm}
+    {\large Victoria, Buenos Aires \par}
+    \vspace{2mm}
+    {\large Octubre 2026 \par}
+\end{titlepage}
+
+% --- RESUMEN / ABSTRACT / AGRADECIMIENTOS ---
+\newpage
+
+\section*{Resumen}
+\addcontentsline{toc}{section}{Resumen}
+% PPT: Resumen + Abstract juntos suman MENOS DE 500 PALABRAS.
+% Se escribe AL FINAL, cuando los números de la tesis estén sellados.
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+% Versión en inglés del resumen. Misma regla: al final.
+
+\section*{Agradecimientos}
+\addcontentsline{toc}{section}{Agradecimientos}
+
+% --- ÍNDICE ---
+\newpage
+\tableofcontents
+\newpage
+
+% ======================================================
+% 1. INTRODUCCIÓN
+% PPT: "contexto y motivación, objetivos, estado del arte, organización,
+% contribuciones". Guía CEU: tres movimientos — (i) establecer el
+% territorio, (ii) conformar el nicho (vacío + problema), (iii) ocupar el
+% nicho (objetivos, método, resultados, estructura).
+%
+% MAPA DE LAS OCHO IDEAS (notas de reunión con el mentor; cada idea = un
+% párrafo, expandible a dos si hace falta; se reparten entre las
+% subsecciones como se indica abajo). Reglas de estilo acordadas:
+%   - UN PÁRRAFO UNA IDEA; una oración un concepto; cada párrafo conecta
+%     con el siguiente. SIN remate al final de cada párrafo.
+%   - Self-contained: lector técnico NO experto en NLP/KG tiene que poder
+%     leerla completa; el experto tiene que poder saltearse el background.
+%   - Visual: aprovechar que el KG se puede mostrar (figura de una sección
+%     del grafo en la idea 5).
+%   - Números solo parseados de archivos del repo, con corrida/commit de
+%     origen identificable (skill latex-udesa); lo no verificado queda como
+%     hueco marcado [TODO: fuente].
+%
+%   IDEA 1 (→ Motivación): los LLMs habilitaron la construcción de KGs a
+%     escala; por qué los KGs son buenos para conocimiento estructurado.
+%   IDEA 2 (→ Motivación / Definición del problema): limitaciones actuales
+%     de los LLMs — SOLO las que conectan con lo que esta tesis resuelve
+%     (alucinación con fuentes correctas, pérdida de estructura del
+%     documento, remisiones normativas rotas por chunking).
+%   IDEA 3 (→ Definición del problema): "en este trabajo se aborda..." —
+%     qué resolvemos exactamente, sobre qué corpus (5 TOs del BCRA).
+%   IDEA 4 (→ Definición del problema / Metodología en Desarrollo): overview
+%     de CÓMO: pipeline de extracción E0-E5, evaluación extrínseca sellada,
+%     atribución causal de fallas.
+%   IDEA 5 (→ puede ser subsección propia o abrir el Desarrollo): el grafo
+%     en sí — schema, escala (6.529 nodos / 17.772 aristas / 16 relaciones (fe de erratas 6c5507b)
+%     en KG-Reextraído-r1, commit 185e042), FIGURA de una sección del grafo.
+%   IDEA 6 (→ Contribuciones / Desarrollo): la evaluación — "los grafos son
+%     difíciles de evaluar; se desarrolló un método..." (fidelidad EV2 con
+%     juez calibrado, atribución causal determinística, evaluación
+%     intrínseca por tripletas).
+%   IDEA 7 (→ Contribuciones, con moderación acá; el grueso al Desarrollo):
+%     números principales — "grounded ≠ correct" con sus cifras selladas
+%     [TODO: elegir 2-3 números, cada uno con su commit].
+%   IDEA 8 (→ Contribuciones): lista explícita de contribuciones.
+% ======================================================
+
+\section{Introducción}
+
+\subsection{Motivación}
+% PPT: "Por qué es importante el área de estudio".
+% Lleva IDEAS 1 y 2 (primera mitad): LLMs + KGs; qué prometen para
+% dominios regulatorios; por qué el dominio BCRA importa (normativa
+% viva, interconectada, de cumplimiento obligatorio).
+
+\subsection{Definición del problema}
+% PPT: "Qué falla, qué falta o qué se busca mejorar de forma explícita".
+% Lleva IDEAS 2 (segunda mitad), 3 y 4: las limitaciones concretas que
+% esta tesis ataca; el enunciado del problema (¿organizar el corpus como
+% KG mejora la fidelidad de un agente RAG frente a retrieval
+% tradicional?); overview del enfoque en un párrafo.
+
+\subsection{Estado del arte}
+% PPT: "Introduce y revisa los trabajos previos. Enmarca el trabajo en un
+% escenario mayor. Señala vacíos, limitaciones, falta de respuestas".
+% Insumos: los papers del proyecto (KG-anchored IE, legal KGs, RAGulating
+% compliance, iterative zero-shot KG...) + la tesis con buen background de
+% KG que el mentor quedó en pasar [PENDIENTE: pedírsela].
+% Cada afirmación sobre la literatura lleva su cita [n] en el punto exacto.
+
+\subsection{Objetivos}
+% PPT: "Objetivo General (la meta macro) y Objetivos Específicos (los
+% pasos técnicos medibles para lograrlo)".
+% Fuente: PPF preliminar (mantener consistencia con lo ya declarado ahí;
+% si algo cambió de alcance, se declara la evolución, no se reescribe la
+% historia).
+
+\subsubsection{Objetivo general}
+
+
+\subsubsection{Objetivos específicos}
+
+
+\subsection{Contribuciones}
+% PPT: "Indicar el aporte novedoso del trabajo".
+% Lleva IDEAS 6, 7 y 8: el método de evaluación (juez calibrado +
+% atribución causal M-19), el hallazgo central ("grounded ≠ correct" con
+% 2-3 números sellados), los dos grafos (científico e industrial,
+% principio 9), y la lista explícita de contribuciones al final.
+
+\subsection{Organización del informe}
+% PPT: "Explica la estructura del Informe". Un párrafo por capítulo, al
+% final, cuando la estructura del Desarrollo esté cerrada.
+
+
+% ======================================================
+% 2..N-2 DESARROLLO DEL PF
+% PPT: cuerpo principal; capítulos a necesidad; cada capítulo puede
+% dividirse en Marco Teórico (si hace falta) / Metodología / Resultados.
+% Estructura tentativa (se decide con la autora y mentores; skill
+% latex-udesa: el orden narrativo NO lo decide una instancia):
+%   2. Marco teórico / background (qué es un KG, RAG, agentes con tools —
+%      self-contained para el lector técnico no experto)
+%   3. Corpus y construcción del grafo (E0-E5, releases, principio 9)
+%   4. Evaluación de fidelidad (EV2: diseño sellado, juez, resultados)
+%   5. Atribución causal de fallas (M-19, clases, "grounded ≠ correct")
+%   6. Comparación KG vs RAG (banco Claude Code + MCP, head-to-head)
+%   7. Evaluación intrínseca por tripletas (B4)
+% ======================================================
+
+
+\section{Conclusiones y trabajo futuro}
+\label{sec:conclusiones}
+% PPT (diapo Conclusión): discutir resultados y contrastarlos con
+% resultados previos; importancia Y limitaciones; si se lograron los
+% objetivos de la introducción; qué estudios futuros se abren.
+% Guía CEU: la conclusión reafirma la introducción — cerrar contra los
+% objetivos específicos declarados arriba.
+% Temas reales de esta tesis para trabajo futuro [TODO: validar lista]:
+% escalado al corpus BCRA completo, r2 con correcciones trazadas a
+% hallazgos, E4-LLM para los 196 conflictos persistidos, rangos→contenedor,
+% actualización incremental ante normativa nueva.
+
+% --- BIBLIOGRAFIA ---
+\section{Bibliografía}
+\printbibliography[heading=none]
+
+% --- APÉNDICES ---
+% PPT: material complementario, tablas, código. Candidatos naturales:
+% protocolo EV2, pre-registros, prompts sellados, tabla de hallazgos H1-H26.
+\appendix
+
+
+\end{document}
