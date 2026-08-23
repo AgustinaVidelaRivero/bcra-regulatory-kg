@@ -1,0 +1,80 @@
+{
+  "supuestos": {
+    "P0_safe_mode_b08095a": 9412,
+    "P0_bare": "NO medido; se asume <= P0_safe (bare carga menos que safe-mode): la estimación usa 9.412 como cota",
+    "chars_por_token": 3.5,
+    "prompt_banco_chars": 1500,
+    "tool_defs_tokens": 400,
+    "tamanios_resultado_chars_medidos": {
+      "kg": {
+        "buscar_nodos": 3486,
+        "ver_nodo": 531,
+        "ver_vecinos": 1242
+      },
+      "vector": {
+        "buscar_pasajes": 11508
+      }
+    },
+    "navegacion_tipica": {
+      "kg": [
+        3486,
+        531,
+        1242,
+        531
+      ],
+      "vector": [
+        11508,
+        11508
+      ]
+    },
+    "output_por_turno": 150,
+    "haiku_interno_por_sesion": {
+      "input": 507,
+      "output": 13,
+      "fuente": "b08095a (p0_safemode.json)"
+    }
+  },
+  "formula": "por sesión: tokens_cache_write = P0+Q (turno 1); tokens_cache_read = (T-1)·(P0+Q); tokens_input_sin_cache = Σ_{k=2..T} (Σ_{j<k} R_j/3,5 + out·(k-1)) [conservador: los tool results no se asumen cacheados]; output = out·T. Costo = tokens × precios_sellados.json (R9), nunca total_cost_usd.",
+  "plan_fase_B": {
+    "preguntas_propias": 4,
+    "brazos": 2,
+    "sesiones_smoke": 8,
+    "sesiones_P0": 2,
+    "sesiones_total": 10,
+    "max_turns": 12,
+    "max_budget_usd_por_sesion": 0.3
+  },
+  "por_sesion_tokens": {
+    "kg": {
+      "turnos": 5,
+      "tool_calls": 4,
+      "cache_write": 10241,
+      "cache_read": 40962,
+      "input_sin_cache": 6801,
+      "output": 750
+    },
+    "vector": {
+      "turnos": 3,
+      "tool_calls": 2,
+      "cache_write": 10241,
+      "cache_read": 20481,
+      "input_sin_cache": 10314,
+      "output": 450
+    }
+  },
+  "total_tokens_sonnet": {
+    "cache_write": 102409,
+    "cache_read": 245772,
+    "input_sin_cache": 68460,
+    "output": 4900
+  },
+  "total_tokens_haiku": {
+    "input": 5070,
+    "output": 130
+  },
+  "costo_indicativo_usd_precios_sellados": 0.4968,
+  "contraste_gate_faseB": "9 sesiones reales con Sonnet 5 costaron USD 0,4191 a precios oficiales (b08095a): ≈0,047/sesión; 10 sesiones ⇒ ≈0,47. Coherente con la estimación.",
+  "tope_propuesto_usd": 3.0,
+  "freno_interno_usd": 2.0,
+  "freno_por_proyeccion": "tras las 2 sesiones de P0 se proyecta; si proyección > 2,4 se frena"
+}

@@ -1,0 +1,11 @@
+{
+  "fuente": "https://platform.claude.com/docs/en/about-claude/pricing (sección Model pricing), leída 2026-08-23",
+  "unidad": "USD por millón de tokens",
+  "nota_sonnet5": "la doc declara que el precio introductorio 2/10 de Sonnet 5 pasó a ser el estándar (no sube el 2026-09-01)",
+  "modelos": {
+    "claude-sonnet-5":             {"input": 2.00, "cache_write_5m": 2.50, "cache_write_1h": 4.00, "cache_read": 0.20, "output": 10.00},
+    "claude-haiku-4-5-20251001":   {"input": 1.00, "cache_write_5m": 1.25, "cache_write_1h": 2.00, "cache_read": 0.10, "output": 5.00},
+    "claude-opus-5":               {"input": 5.00, "cache_write_5m": 6.25, "cache_write_1h": 10.00, "cache_read": 0.50, "output": 25.00}
+  },
+  "formula": "costo = Σ_modelo (inputTokens*input + cacheCreationInputTokens*cache_write_5m + cacheReadInputTokens*cache_read + outputTokens*output) / 1e6 — la escritura de caché se valúa a 5 min (la que usa el harness por defecto; si modelUsage distinguiera 1h se usaría cache_write_1h). NUNCA se usa total_cost_usd del CLI (R9: sobrefactura ~3x medida en b08095a)."
+}

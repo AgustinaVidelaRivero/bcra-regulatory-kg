@@ -1,0 +1,32 @@
+{
+  "unidad": "U-A2.0-banco — entregable 6 (vía de credenciales parametrizada)",
+  "principio": "la vía de autenticación es el ÚNICO parámetro que cambia entre corridas equivalentes; todo lo demás (prompt, plantilla, bloques de tools, configs de agentes/MCP/servidores, modelo, flags) entra en sha_identidad_pipeline, que se persiste en comando_<id>.json y meta_<id>.json de cada traza. Dos trazas con el mismo sha_identidad_pipeline y distinta vía son estructuralmente idénticas por construcción.",
+  "vias": {
+    "api": {
+      "seleccion": "--via api (default) en agentes/lanzar_agente.py",
+      "mecanismo": "ANTHROPIC_API_KEY en el entorno del proceso claude (doc headless, bare mode: 'For the Anthropic API, set ANTHROPIC_API_KEY in the environment, with a key created in the Claude Console'). apiKeySource en system/init = 'ANTHROPIC_API_KEY' (verificado en modo init).",
+      "compatible_con_modo_harness_sellado": true,
+      "limites_publicados": "platform.claude.com/docs/en/api/rate-limits (leído 2026-08-23): Claude Sonnet 5 — Start tier 1.000 RPM / 2.000.000 ITPM / 400.000 OTPM; Build 5.000 / 5.000.000 / 1.000.000; Scale 10.000 / 10.000.000 / 2.000.000. Solo input_tokens + cache_creation cuentan para ITPM (cache_read no). Tope de gasto mensual: Start USD 500, Build USD 1.000, Scale USD 200.000. Al exceder: HTTP 429 con retry-after. 'New organizations ... may start in the Evaluation tier, with limits below the standard limits'. El tier efectivo de la cuenta NO se verificó (requiere la consola): se declara como no verificado.",
+      "cache": "vida de caché 5 minutos por defecto en API (doc costs: 'on an API key or cloud provider, it's five minutes by default'); cache_write se valúa a precio 5m"
+    },
+    "bedrock": {
+      "seleccion": "--via bedrock",
+      "mecanismo": "CLAUDE_CODE_USE_BEDROCK=1 + credenciales AWS del entorno (doc headless, bare mode: 'Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry continue to read their own provider credentials as usual'). El lanzador solo agrega esa variable; nada más cambia.",
+      "compatible_con_modo_harness_sellado": true,
+      "limites_publicados": "los de Bedrock (aws.amazon.com/bedrock/pricing y cuotas por región): NO verificados en esta unidad. Precios por token: la doc de pricing remite a AWS; endpoints regionales +10 %. Para R9 habría que sellar la tabla de Bedrock antes de usar esta vía; hasta entonces el recómputo de costo usa los precios first-party como APROXIMACIÓN declarada.",
+      "no_probada": "no hay credenciales AWS en este entorno; la vía queda implementada y sin ejercitar (se declara)"
+    },
+    "suscripcion": {
+      "seleccion": "NO disponible con la configuración sellada",
+      "motivo": "el modo sellado del harness es --bare (único en que --mcp-config carga y el prompt del harness es mínimo; ver config_agentes.json). La doc es explícita: 'In bare mode, Claude Code never reads OAuth credentials or the system keychain' y 'bare mode doesn't use your subscription login'. Medido: sin --bare la suscripción sí carga MCP (apiKeySource=none, servidores connected) pero con otro prompt de sistema (CLAUDE.md/hooks/plugins del host; P0 19.074 vs 9.412 medidos en b08095a con safe-mode), es decir OTRO harness: rompe la identidad estructural.",
+      "si_se_usara_igual": "sería una configuración R10 distinta, con su propio sha y su propio P0, y sus trazas no se mezclarían con las de --bare. Límites publicados (doc costs): 'a per-seat allowance that resets on a rolling five-hour window and a weekly window', caché de 1 hora ('The lifetime is an hour on a subscription'). Si el uso automatizado/headless está permitido por los términos del plan: NO verificado en la documentación consultada; se declara como no verificado."
+    }
+  },
+  "umbral_de_switch": {
+    "regla": "se cambia de vía (api -> bedrock, o viceversa) cuando en una corrida se acumulan 3 sesiones consecutivas terminadas por error de cuota/capacidad (system/api_retry con error ∈ {rate_limit, overloaded, billing_error} agotando los reintentos, o result.subtype de error por esa causa), o cuando la proyección de la corrida supera el 80 % del tope de gasto mensual publicado para el tier de la vía (Start: USD 400 de 500).",
+    "numero_sesiones_consecutivas": 3,
+    "fraccion_tope_mensual": 0.8,
+    "que_no_cambia_al_switchear": "sha_identidad_pipeline (se verifica igual antes y después); las trazas llevan via_declarada y apiKeySource_en_init para estratificar."
+  },
+  "verificacion": "agentes/lanzar_agente.py persiste comando_<id>.json con archivos_identidad (ruta + sha256 de cada archivo) y sha_identidad_pipeline; el selftest (agentes/selftest_metadata.py) demuestra que dos lanzamientos con --via api y --via bedrock en modo init producen el mismo sha_identidad_pipeline."
+}

@@ -1,0 +1,370 @@
+{
+  "contrato": "agentes/contrato_metadata.md v1",
+  "unidad": "U-A2.0-banco",
+  "generado": "2026-08-23T19:19:40+00:00",
+  "pregunta_id": "SMK-02-kg",
+  "brazo": "kg",
+  "modo": "real",
+  "sesion": {
+    "session_id": "2047f672-cb1b-4344-9dc6-c91a18d8ea4c",
+    "copia_jsonl": "data/experiment/banco_mcp/smoke/resultados/faseB_corrida2/sesion_SMK-02-kg.jsonl",
+    "cwd": "data/experiment/banco_mcp/smoke/cwd_kg",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_en_init": "2.1.241"
+  },
+  "modelos_R8": {
+    "declarado": "claude-sonnet-5",
+    "inventario_observado": [
+      "claude-haiku-4-5-20251001",
+      "claude-sonnet-5"
+    ],
+    "uso_por_modelo": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1518,
+        "outputTokens": 27,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001653,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty"
+      },
+      "claude-sonnet-5": {
+        "inputTokens": 13,
+        "outputTokens": 2616,
+        "cacheReadInputTokens": 47237,
+        "cacheCreationInputTokens": 9893,
+        "webSearchRequests": 0,
+        "costUSD": 0.0603659,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "canonicalModel": "claude-sonnet-5",
+        "provider": "firstParty"
+      }
+    },
+    "nota": "una sesión usa más de un modelo (b08095a, B1): el inventario es la verdad, el declarado es la intención"
+  },
+  "credenciales": {
+    "via_declarada": "api",
+    "apiKeySource_en_init": "ANTHROPIC_API_KEY"
+  },
+  "servidores_mcp": {
+    "en_init": [
+      {
+        "name": "kg",
+        "status": "connected"
+      }
+    ],
+    "servidor_log_r1": "mcp_kg",
+    "version_servidor": "1.0",
+    "config": {
+      "servidor": "mcp_kg",
+      "version": "1.0",
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "modo": "fulltext",
+      "kg_sha256_esperado": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "firma_tools": "v1 (harness.TOOLS, laudo R2 opcion B)",
+      "nota": "modo fulltext = indice Lucene/BM25 de Neo4j sobre label+descripcion+id (base C10 laudada). ver_nodo/ver_vecinos son identicos en ambos modos. Cambiar cualquier valor cambia el sha de config que viaja en cada linea del log R1."
+    },
+    "config_sha256": "516bebf337d0b5f91bbcd68af292cdb3f4e2e9ef0276a248b5ce7507865183bb",
+    "fuente": {
+      "backend": "neo4j",
+      "grafo": "KG_Refinado",
+      "modo": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_refinado",
+      "kg_path": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+      "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "kg_meta_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+      "n_nodos": 4469,
+      "n_aristas": 8073,
+      "neo4j_index_sha256": "5f38db1b915caf8a4cd71e0f7f0d281ba5a9ca6867d327a9e0f4aac67cd2d0c1"
+    },
+    "entorno_servidor": {
+      "python": "3.10.13",
+      "platform": "macOS-15.7.1-arm64-arm-64bit",
+      "mcp": "1.29.0",
+      "neo4j": "6.2.0",
+      "config_path": "data/experiment/banco_mcp/mcp_kg/config_mcp_kg.json"
+    }
+  },
+  "sha_fuentes": {
+    "kg_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "sha256_matriz_vectorial": null
+  },
+  "harness_R10": {
+    "modo": "--bare",
+    "permission_mode": "dontAsk",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_sellada": "2.1.241",
+    "coincide_con_sellada": true,
+    "flags_estructurales": [
+      "--bare",
+      "-p",
+      "--model",
+      "claude-sonnet-5",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--tools",
+      "",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "agentes/mcp_kg.json",
+      "--permission-mode",
+      "dontAsk",
+      "--allowedTools",
+      "mcp__kg__*",
+      "--disallowedTools",
+      "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+      "--max-turns",
+      "12",
+      "--max-budget-usd",
+      "0.3"
+    ],
+    "tools_denegadas": "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+    "tools_builtin": "\"\" (ninguna)",
+    "config_agentes_sha256": "c178d9fd8fb66eeb612e2c8926a374c84504c9af24ac30153aeb1746f1db6274",
+    "sha_identidad_pipeline": "427d2473dc1eecf7b4a3b5d3f4c3a2cbdb9b9b3eb74c78c4b818351a2fffbacf"
+  },
+  "inventario_tools_R6": {
+    "tools_en_init": [
+      "mcp__kg__buscar_nodos",
+      "mcp__kg__ver_nodo",
+      "mcp__kg__ver_vecinos"
+    ],
+    "esperadas": [
+      "mcp__kg__buscar_nodos",
+      "mcp__kg__ver_nodo",
+      "mcp__kg__ver_vecinos"
+    ],
+    "coincide": true
+  },
+  "corte_R5": {
+    "max_turns": 12,
+    "tope_tool_calls_prompt": 10,
+    "max_budget_usd": 0.3,
+    "num_turns_observado": 11,
+    "n_tool_calls_observado": 10,
+    "corte_disparado": null
+  },
+  "completitud_R3": {
+    "completa": true,
+    "motivos_incompleta": [],
+    "regla": "sin marca de completitud la traza se excluye de la métrica y se declara; nunca se atribuye"
+  },
+  "mapa_R7": [
+    {
+      "n": 1,
+      "tool_use_id": "toolu_01SaQYMDrmw3SAqE6fSVHCXB",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "revocación aceptación producto rescisión mismos medios",
+        "limite": 10
+      },
+      "call_id_log": "mcp_kg-53956-1",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 2,
+      "tool_use_id": "toolu_01Buqi7PmQDwxw5wrKhoqHKs",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_los_contratos_deben_incluir_clausula_de_revocacion_en_donde_se_indique_que_el_us_c616e2"
+      },
+      "call_id_log": "mcp_kg-53956-2",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 3,
+      "tool_use_id": "toolu_019NQgKbtx2bqrNq4nKmvZzx",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "rescindir relación comercial mismos medios contratación",
+        "limite": 10
+      },
+      "call_id_log": "mcp_kg-53956-3",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 4,
+      "tool_use_id": "toolu_01UiRV6WjBU9umovZsPMeF6k",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_rescindir_relaciones_contractuales_886ea0"
+      },
+      "call_id_log": "mcp_kg-53956-4",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 5,
+      "tool_use_id": "toolu_0116hddW9UKSSvGsmBbfbhZy",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_proveer_hipervinculo_de_revocacion_85c056"
+      },
+      "call_id_log": "mcp_kg-53956-5",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 6,
+      "tool_use_id": "toolu_01WpfzSRPPQ6ooJybS1cYASq",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "botón de arrepentimiento botón de baja facilidades tecnológicas",
+        "limite": 10
+      },
+      "call_id_log": "mcp_kg-53956-6",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 7,
+      "tool_use_id": "toolu_0196wKMMkThq47jdcD2Jzcdz",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_identificar_botones_con_leyenda_especifica_8c28ea"
+      },
+      "call_id_log": "mcp_kg-53956-7",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 8,
+      "tool_use_id": "toolu_01KNHzZxC2QR89pymNmZYPQ1",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_ubicar_botones_en_lugar_destacado_34ac87"
+      },
+      "call_id_log": "mcp_kg-53956-8",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 9,
+      "tool_use_id": "toolu_01XpF7wiQzoLnuQqXM6tcod8",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_proveer_hipervinculo_de_rescision_db2439"
+      },
+      "call_id_log": "mcp_kg-53956-9",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 10,
+      "tool_use_id": "toolu_01PmikwXx17rm9G1Tdjv1imD",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Restriccion_la_revocacion_sera_sin_costo_ni_responsabilidad_alguna_para_el_usuario_de_servic_5402dd"
+      },
+      "call_id_log": "mcp_kg-53956-10",
+      "coincide_tool_input": true
+    }
+  ],
+  "tokens_R9": {
+    "por_llamada_api": [
+      {
+        "message_id": "msg_011CeLDiyVFfd62ndBXsk4rH",
+        "usage_parcial_de_stream": true,
+        "uuid": "7d3165e8-7c41-49e3-94fb-d7d08a1ca162",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 1,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 1049,
+        "cache_read_input_tokens": 2100
+      },
+      {
+        "message_id": "msg_011CeLDjAYXMTLPjjVcDfj5G",
+        "usage_parcial_de_stream": true,
+        "uuid": "1b1d3c90-a03c-4270-955e-1f7a346082d0",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 1767,
+        "cache_read_input_tokens": 3149
+      },
+      {
+        "message_id": "msg_011CeLDjXZKN6W3oHr4i1QsC",
+        "usage_parcial_de_stream": true,
+        "uuid": "e0b87064-c898-4e28-9e7c-1aca4a97ee09",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 6,
+        "cache_creation_input_tokens": 2285,
+        "cache_read_input_tokens": 4916
+      },
+      {
+        "message_id": "msg_011CeLDjtPCvYBvh9bcVPmzP",
+        "usage_parcial_de_stream": true,
+        "uuid": "0175c578-678f-4c23-9204-8229ec7d9c1e",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 883,
+        "cache_read_input_tokens": 7201
+      },
+      {
+        "message_id": "msg_011CeLDkPk3q39DUG2yja3o9",
+        "usage_parcial_de_stream": true,
+        "uuid": "0666284f-bede-4998-9384-f0afbdedd28d",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 2155,
+        "cache_read_input_tokens": 8084
+      },
+      {
+        "message_id": "msg_011CeLDknP54VRfjwWuUSrQb",
+        "usage_parcial_de_stream": true,
+        "uuid": "b01d1445-199e-41e4-87d0-8caaa4c6d5e5",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 1309,
+        "cache_read_input_tokens": 10239
+      },
+      {
+        "message_id": "msg_011CeLDkydVZbacSFTUU19VS",
+        "usage_parcial_de_stream": true,
+        "uuid": "f12df64e-29ea-4bea-a01d-964cc78385a7",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 1,
+        "cache_creation_input_tokens": 445,
+        "cache_read_input_tokens": 11548
+      }
+    ],
+    "costo_recomputado": {
+      "total_usd": 0.062019,
+      "por_modelo": {
+        "claude-haiku-4-5-20251001": 0.001653,
+        "claude-sonnet-5": 0.060366
+      },
+      "modelos_sin_precio_sellado": []
+    },
+    "total_cost_usd_cli_solo_para_contraste": 0.06201889999999999,
+    "precios_sellados_sha256": "6f2520ee56755fc2f43e689d0eb194c3305a6dcee257acae37d167f7e549fc2d"
+  },
+  "final_json_R4": {
+    "respuesta": "El TO de Protección de los Usuarios de Servicios Financieros exige que las entidades ofrezcan a los usuarios mecanismos electrónicos concretos, análogos al medio en que se contrató, para revocar la aceptación de un producto/servicio o rescindir la relación contractual. En concreto, deben: (1) contar con sendos hipervínculos que permitan al usuario revocar la aceptación del producto o servicio contratado (\"botón de arrepentimiento\") y, por separado, rescindir relaciones contractuales (\"botón de baja\"); (2) que dichos botones estén identificados con la leyenda 'botón de arrepentimiento' o 'botón de baja', según corresponda; y (3) que se ubiquen en un lugar destacado -en cuanto a visibilidad y tamaño- del primer acceso del servicio de banca por Internet (home banking) o mecanismo similar, de modo que el usuario pueda proceder en el mismo acto a la efectiva revocación o rescisión del producto o servicio. Además, el contrato debe incluir una cláusula de revocación que informe al usuario su derecho a revocar la aceptación dentro de los 10 días hábiles desde recibido el contrato o la disponibilidad efectiva del producto/servicio, notificando de manera fehaciente o por el mismo medio en que el producto o servicio fue contratado; y la revocación es sin costo ni responsabilidad para el usuario si no hizo uso del producto/servicio (si lo usó, solo se cobran comisiones/cargos proporcionales al tiempo de utilización).",
+    "citas": [
+      "TO_proteccion_usuarios_servicios_financieros_actual.pdf | Punto 2.7. Revocación de la aceptación y rescisión de relaciones contractuales.",
+      "TO_proteccion_usuarios_servicios_financieros_actual.pdf | Punto 2.3. Recaudos mínimos de la relación de consumo. (parte 1)"
+    ],
+    "respondible": true
+  },
+  "permission_denials": [],
+  "log_r1": {
+    "existe": true,
+    "ruta": "data/experiment/banco_mcp/smoke/resultados/faseB_corrida2/log_r1_SMK-02-kg.jsonl",
+    "sha256": "5cdb48d39dd035a67c4759036c146f91a607126aaaa3da4cf5b49af8df3f171a",
+    "n_llamadas": 10
+  },
+  "duracion_s": 36.9
+}

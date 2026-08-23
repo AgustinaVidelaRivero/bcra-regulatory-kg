@@ -1,0 +1,1100 @@
+{
+  "meta": {
+    "unidad": "U-A2.0-banco",
+    "origen": "claude_code_session+mcp_log_r1",
+    "transporte": "mcp",
+    "adaptador": "data/experiment/banco_mcp/adaptador/adaptador_banco.py",
+    "adaptador_version": "1.0",
+    "adaptador_gate_importado": "data/experiment/banco_mcp/gate/code/adaptador_cc.py",
+    "servidor": "mcp_kg",
+    "config_sha256_servidor": "516bebf337d0b5f91bbcd68af292cdb3f4e2e9ef0276a248b5ce7507865183bb",
+    "grafo": "data/experiment/grafo_v2/reensamblado_v3/kg.json",
+    "grafo_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+    "stream": "data/experiment/banco_mcp/smoke/resultados/faseB_corrida2/stream_SMK-04-kg.jsonl",
+    "log_r1": "data/experiment/banco_mcp/smoke/resultados/faseB_corrida2/log_r1_SMK-04-kg.jsonl",
+    "log_r1_sha256": "b6ad1e3b438e2c5185482bf0319afee56ffc9371a527950fbe786612ee92a28e",
+    "session_id": "6e6a3ad6-94d4-4baa-9442-6f17b5d1798c",
+    "contrato_tools": "v1",
+    "generado": "2026-08-23T16:29:35",
+    "caso_id": "SMK-04-kg",
+    "brazo": "kg",
+    "pregunta": "¿Qué operaciones quedan comprendidas en el seguimiento de exportaciones de bienes del texto ordenado de exterior y cambios, y cuáles quedan excluidas?",
+    "anclas_gold": [
+      "ext:8.1"
+    ]
+  },
+  "trace": {
+    "question": "¿Qué operaciones quedan comprendidas en el seguimiento de exportaciones de bienes del texto ordenado de exterior y cambios, y cuáles quedan excluidas?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "seguimiento de exportaciones de bienes",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"seguimiento de exportaciones de bienes\", \"total_con_match\": 495, \"resultados\": [{\"id\": \"Operacion_seguimiento_de_exportaciones_de_bienes_ba197e\", \"type\": \"Operacion\", \"label\": \"Seguimiento de exportaciones de bienes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de emb…\"}, {\"id\": \"Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298\", \"type\": \"Operacion\", \"label\": \"Seguimiento anticipos financiaciones exportación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Seguimiento de anticipos y otras financiaciones de exportación de bienes\"}, {\"id\": \"Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40\", \"type\": \"Operacion\", \"label\": \"Seguimiento negociaciones divisas exportación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Seguimiento de las negociaciones de divisas por exportaciones de bienes (SECOEXPO)\"}, {\"id\": \"Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff\", \"type\": \"Operacion\", \"label\": \"Seguimiento de anticipos de exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": … [+2293 chars]",
+        "output_chars": 3493
+      },
+      {
+        "n": 2,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e"
+        },
+        "output_truncado": "{\"id\": \"Operacion_seguimiento_de_exportaciones_de_bienes_ba197e\", \"type\": \"Operacion\", \"label\": \"Seguimiento de exportaciones de bienes\", \"properties\": {\"tipo\": \"seguimiento_de_exportacion\", \"description\": \"Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de embarque aduanero\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}",
+        "output_chars": 503
+      },
+      {
+        "n": 3,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Operacion_seguimiento_de_exportaciones_de_bienes_ba197e\", \"label\": \"Seguimiento de exportaciones de bienes\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}, {\"relation\": \"requiere\", \"vecino_id\": \"Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa\", \"vecino_label\": \"Ingreso y liquidación de divisas por exportación\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 800
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "exportaciones de bienes excluidas seguimiento",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"exportaciones de bienes excluidas seguimiento\", \"total_con_match\": 505, \"resultados\": [{\"id\": \"Operacion_seguimiento_de_exportaciones_de_bienes_ba197e\", \"type\": \"Operacion\", \"label\": \"Seguimiento de exportaciones de bienes\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de emb…\"}, {\"id\": \"Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298\", \"type\": \"Operacion\", \"label\": \"Seguimiento anticipos financiaciones exportación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Seguimiento de anticipos y otras financiaciones de exportación de bienes\"}, {\"id\": \"Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40\", \"type\": \"Operacion\", \"label\": \"Seguimiento negociaciones divisas exportación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Seguimiento de las negociaciones de divisas por exportaciones de bienes (SECOEXPO)\"}, {\"id\": \"Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff\", \"type\": \"Operacion\", \"label\": \"Seguimiento de anticipos de exportación\", \"tokens_matcheados\": 2, \"resumen_propied… [+2300 chars]",
+        "output_chars": 3500
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa\", \"type\": \"Obligacion\", \"label\": \"Ingreso y liquidación de divisas por exportación\", \"properties\": {\"tipo\": \"otra\", \"description\": \"Si el exportador recibiera cobros por una exportación, éstos se encontrarán alcanzados por la obligación de ingreso y liquidación de divisas, independientemente de que la exportación sea considerada exceptuada del seguimiento\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}",
+        "output_chars": 554
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "exceptuada del seguimiento exportación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"exceptuada del seguimiento exportación\", \"total_con_match\": 326, \"resultados\": [{\"id\": \"Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff\", \"type\": \"Operacion\", \"label\": \"Seguimiento de anticipos de exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Seguimiento de anticipos y otras financiaciones de exportación de bienes, basado en el monto en moneda nacional acreditado en la cuenta del exportador\"}, {\"id\": \"Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298\", \"type\": \"Operacion\", \"label\": \"Seguimiento anticipos financiaciones exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Seguimiento de anticipos y otras financiaciones de exportación de bienes\"}, {\"id\": \"Operacion_cobro_de_exportaciones_exceptuadas_8c0821\", \"type\": \"Operacion\", \"label\": \"Cobro de exportaciones exceptuadas\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"tipo: liquidación de cobros de exportaciones con excención de obligación\"}, {\"id\": \"Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40\", \"type\": \"Operacion\", \"label\": \"Seguimiento negociaciones divisas exportación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Seguimiento de las negociaci… [+2061 chars]",
+        "output_chars": 3261
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operaciones no comprendidas exportación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operaciones no comprendidas exportación\", \"total_con_match\": 1733, \"resultados\": [{\"id\": \"Obligacion_esta_extension_del_plazo_tambien_se_podra_otorgar_a_exportaciones_de_bienes_comp_f03171\", \"type\": \"Obligacion\", \"label\": \"Otorgar extensión para exportaciones comprendidas en decretos especiales\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Esta extensión del plazo también se podrá otorgar a exportaciones de bienes comprendidas en lo dispuesto por los Decretos 492/23, 549/23, 597/23 y 28/23, en la …\"}, {\"id\": \"Restriccion_la_operacion_debe_quedar_comprendida_en_algunas_de_las_situaciones_detalladas_co_f953a5\", \"type\": \"Restriccion\", \"label\": \"Pago de servicios comprendido en códigos de concepto\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"La operación debe quedar comprendida en algunas de las situaciones detalladas: códigos S03, S06, S23, S25, S26, S27, S34, S35, S36 (servicios específicos)\"}, {\"id\": \"Excepcion_excepcion_por_servicios_comprendidos_7349f5\", \"type\": \"Excepcion\", \"label\": \"Excepción por servicios comprendidos\", \"tokens_matcheados\": 0, \"resumen_propiedades\": \"Exceptúa el requisito de conformidad previa cuando el pago corresponde a servicios compre… [+2792 chars]",
+        "output_chars": 3992
+      },
+      {
+        "n": 8,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0\", \"type\": \"Excepcion\", \"label\": \"Excepción de seguimiento para operaciones aduaneras\", \"properties\": {\"description\": \"Operaciones aduaneras listadas en el punto 8.5.17 están exceptuadas del seguimiento\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}",
+        "output_chars": 400
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f\", \"type\": \"Excepcion\", \"label\": \"Operaciones aduaneras exceptuadas del seguimiento\", \"properties\": {\"descripcion\": \"Exención del seguimiento para operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento. (parte 3)\"}]}",
+        "output_chars": 550
+      },
+      {
+        "n": 10,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0\", \"label\": \"Excepción de seguimiento para operaciones aduaneras\", \"n_salientes_total\": 2, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"exceptua\", \"vecino_id\": \"Restriccion_exclusion_de_operaciones_aduaneras_1ccc16\", \"vecino_label\": \"Exclusión de operaciones aduaneras\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}, {\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y Cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 799
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_cobro_de_exportaciones_exceptuadas_8c0821"
+        },
+        "output_truncado": "{\"id\": \"Operacion_cobro_de_exportaciones_exceptuadas_8c0821\", \"type\": \"Operacion\", \"label\": \"Cobro de exportaciones exceptuadas\", \"properties\": {\"tipo\": \"liquidación de cobros de exportaciones con excención de obligación\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 7.2. Liquidaciones y otros ingresos imputables al cumplimiento de un permiso de embar\"}]}",
+        "output_chars": 397
+      },
+      {
+        "n": 12,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_exclusion_de_operaciones_aduaneras_1ccc16"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_exclusion_de_operaciones_aduaneras_1ccc16\", \"type\": \"Restriccion\", \"label\": \"Exclusión de operaciones aduaneras\", \"properties\": {\"tipo\": \"limite_cualitativo\", \"description\": \"Excepto las operaciones aduaneras que se detallan en el punto 8.5.17\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 8.1. Operaciones comprendidas.\"}]}",
+        "output_chars": 385
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "8.5.17 operaciones aduaneras",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"8.5.17 operaciones aduaneras\", \"total_con_match\": 1744, \"resultados\": [{\"id\": \"Restriccion_exclusion_de_operaciones_aduaneras_1ccc16\", \"type\": \"Restriccion\", \"label\": \"Exclusión de operaciones aduaneras\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Excepto las operaciones aduaneras que se detallan en el punto 8.5.17\"}, {\"id\": \"Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f\", \"type\": \"Excepcion\", \"label\": \"Operaciones aduaneras exceptuadas del seguimiento\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Exención del seguimiento para operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales\"}, {\"id\": \"Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0\", \"type\": \"Excepcion\", \"label\": \"Excepción de seguimiento para operaciones aduaneras\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones aduaneras listadas en el punto 8.5.17 están exceptuadas del seguimiento\"}, {\"id\": \"Restriccion_capital_minimo_riesgo_cambio_8_5274a6\", \"type\": \"Restriccion\", \"label\": \"Capital mínimo riesgo cambio 8%\", \"tokens_matcheados\": 1, \"resumen_pr… [+406 chars]",
+        "output_chars": 1606
+      }
+    ],
+    "final_json": {
+      "respuesta": "Según el Texto Ordenado de Exterior y Cambios (TO_exterior_cambios_actual.pdf), el punto 8.1 'Operaciones comprendidas' establece que el seguimiento de exportaciones de bienes alcanza a TODAS las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de embarque aduanero. Esta operatoria está vinculada a la obligación de ingreso y liquidación de divisas por exportación: si el exportador recibe cobros por una exportación, dichos cobros quedan alcanzados por la obligación de ingreso y liquidación de divisas, independientemente de que la exportación esté exceptuada del seguimiento. En cuanto a las exclusiones, el mismo punto 8.1 dispone que quedan exceptuadas del seguimiento las operaciones aduaneras detalladas en el punto 8.5.17 (listado específico no recuperado en la evidencia disponible). Adicionalmente, el punto 8.5 ('Otras imputaciones admitidas en el cumplimiento del seguimiento') indica que también están exentas del seguimiento las operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales. No se recuperó en el grafo el detalle taxativo de qué operaciones aduaneras específicas integran el listado del punto 8.5.17, por lo que la exclusión queda identificada por remisión a ese punto pero sin su contenido literal completo.",
+      "citas": [
+        "TO_exterior_cambios_actual.pdf | Punto 8.1. Operaciones comprendidas.",
+        "TO_exterior_cambios_actual.pdf | Punto 8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento. (parte 3)"
+      ],
+      "respondible": true
+    },
+    "tool_calls_used": 13,
+    "hit_tool_limit": false
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "seguimiento de exportaciones de bienes",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "seguimiento de exportaciones de bienes",
+        "total_con_match": 495,
+        "resultados": [
+          {
+            "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+            "type": "Operacion",
+            "label": "Seguimiento de exportaciones de bienes",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de emb…"
+          },
+          {
+            "id": "Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298",
+            "type": "Operacion",
+            "label": "Seguimiento anticipos financiaciones exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes"
+          },
+          {
+            "id": "Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40",
+            "type": "Operacion",
+            "label": "Seguimiento negociaciones divisas exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Seguimiento de las negociaciones de divisas por exportaciones de bienes (SECOEXPO)"
+          },
+          {
+            "id": "Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff",
+            "type": "Operacion",
+            "label": "Seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes, basado en el monto en moneda nacional acreditado en la cuenta del exportador"
+          },
+          {
+            "id": "Operacion_cobro_de_exportaciones_de_bienes_773193",
+            "type": "Operacion",
+            "label": "Cobro de exportaciones de bienes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Operatoria de exportaciones de bienes, cobros asociados a las exportaciones"
+          },
+          {
+            "id": "Obligacion_asumir_seguimiento_de_anticipos_de_exportacion_2247bb",
+            "type": "Obligacion",
+            "label": "Asumir seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad en la cual se le acreditaron los fondos al exportador deberá asumir el 'Seguimiento de anticipos y otras financiaciones de exportación de bienes' tom…"
+          },
+          {
+            "id": "Operacion_cobro_en_divisas_de_exportacion_de_bienes_d5c26f",
+            "type": "Operacion",
+            "label": "Cobro en divisas de exportación de bienes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Aplicación de cobros en divisas por exportaciones de bienes que correspondan a proyectos comprendidos en el régimen de fomento de inversión para las exportacion…"
+          },
+          {
+            "id": "Obligacion_verificar_aumento_de_exportaciones_de_bienes_5b0254",
+            "type": "Obligacion",
+            "label": "Verificar aumento de exportaciones de bienes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El valor FOB de las exportaciones de bienes comprendidos en los puntos 7.1.1.2. a 7.1.1.5. embarcados en el año t y que cuenten con una certificación de cumplid…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_vpu_contemple_la_posibilidad_de_aplicar_cobros_de_exportacione_9d5caa",
+            "type": "Obligacion",
+            "label": "Asignación de número APX para seguimiento de exportaciones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En caso de que el VPU contemple la posibilidad de aplicar cobros de exportaciones de bienes a la cancelación del capital o intereses de la financiación, la enti…"
+          },
+          {
+            "id": "Operacion_posfinanciacion_de_exportaciones_de_bienes_liquidada_f5a9e8",
+            "type": "Operacion",
+            "label": "Posfinanciación de exportaciones de bienes liquidada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Financiación otorgada al exportador por una entidad financiera local o del exterior o por compañías internacionales dedicadas al descuento de créditos a la expo…"
+          }
+        ]
+      },
+      "output_chars": 3493
+    },
+    {
+      "n": 2,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e"
+      },
+      "output": {
+        "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+        "type": "Operacion",
+        "label": "Seguimiento de exportaciones de bienes",
+        "properties": {
+          "tipo": "seguimiento_de_exportacion",
+          "description": "Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de embarque aduanero"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 8.1. Operaciones comprendidas."
+          }
+        ]
+      },
+      "output_chars": 503
+    },
+    {
+      "n": 3,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+        "label": "Seguimiento de exportaciones de bienes",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 8.1. Operaciones comprendidas."
+              }
+            ]
+          },
+          {
+            "relation": "requiere",
+            "vecino_id": "Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa",
+            "vecino_label": "Ingreso y liquidación de divisas por exportación",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 8.1. Operaciones comprendidas."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 800
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exportaciones de bienes excluidas seguimiento",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "exportaciones de bienes excluidas seguimiento",
+        "total_con_match": 505,
+        "resultados": [
+          {
+            "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+            "type": "Operacion",
+            "label": "Seguimiento de exportaciones de bienes",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de emb…"
+          },
+          {
+            "id": "Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298",
+            "type": "Operacion",
+            "label": "Seguimiento anticipos financiaciones exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes"
+          },
+          {
+            "id": "Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40",
+            "type": "Operacion",
+            "label": "Seguimiento negociaciones divisas exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Seguimiento de las negociaciones de divisas por exportaciones de bienes (SECOEXPO)"
+          },
+          {
+            "id": "Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff",
+            "type": "Operacion",
+            "label": "Seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes, basado en el monto en moneda nacional acreditado en la cuenta del exportador"
+          },
+          {
+            "id": "Operacion_cobro_de_exportaciones_de_bienes_773193",
+            "type": "Operacion",
+            "label": "Cobro de exportaciones de bienes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Operatoria de exportaciones de bienes, cobros asociados a las exportaciones"
+          },
+          {
+            "id": "Obligacion_asumir_seguimiento_de_anticipos_de_exportacion_2247bb",
+            "type": "Obligacion",
+            "label": "Asumir seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad en la cual se le acreditaron los fondos al exportador deberá asumir el 'Seguimiento de anticipos y otras financiaciones de exportación de bienes' tom…"
+          },
+          {
+            "id": "Operacion_cobro_en_divisas_de_exportacion_de_bienes_d5c26f",
+            "type": "Operacion",
+            "label": "Cobro en divisas de exportación de bienes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Aplicación de cobros en divisas por exportaciones de bienes que correspondan a proyectos comprendidos en el régimen de fomento de inversión para las exportacion…"
+          },
+          {
+            "id": "Obligacion_verificar_aumento_de_exportaciones_de_bienes_5b0254",
+            "type": "Obligacion",
+            "label": "Verificar aumento de exportaciones de bienes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El valor FOB de las exportaciones de bienes comprendidos en los puntos 7.1.1.2. a 7.1.1.5. embarcados en el año t y que cuenten con una certificación de cumplid…"
+          },
+          {
+            "id": "Obligacion_en_caso_de_que_el_vpu_contemple_la_posibilidad_de_aplicar_cobros_de_exportacione_9d5caa",
+            "type": "Obligacion",
+            "label": "Asignación de número APX para seguimiento de exportaciones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "En caso de que el VPU contemple la posibilidad de aplicar cobros de exportaciones de bienes a la cancelación del capital o intereses de la financiación, la enti…"
+          },
+          {
+            "id": "Operacion_posfinanciacion_de_exportaciones_de_bienes_liquidada_f5a9e8",
+            "type": "Operacion",
+            "label": "Posfinanciación de exportaciones de bienes liquidada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Financiación otorgada al exportador por una entidad financiera local o del exterior o por compañías internacionales dedicadas al descuento de créditos a la expo…"
+          }
+        ]
+      },
+      "output_chars": 3500
+    },
+    {
+      "n": 5,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa"
+      },
+      "output": {
+        "id": "Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa",
+        "type": "Obligacion",
+        "label": "Ingreso y liquidación de divisas por exportación",
+        "properties": {
+          "tipo": "otra",
+          "description": "Si el exportador recibiera cobros por una exportación, éstos se encontrarán alcanzados por la obligación de ingreso y liquidación de divisas, independientemente de que la exportación sea considerada exceptuada del seguimiento"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 8.1. Operaciones comprendidas."
+          }
+        ]
+      },
+      "output_chars": 554
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "exceptuada del seguimiento exportación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "exceptuada del seguimiento exportación",
+        "total_con_match": 326,
+        "resultados": [
+          {
+            "id": "Operacion_seguimiento_de_anticipos_de_exportacion_9f33ff",
+            "type": "Operacion",
+            "label": "Seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes, basado en el monto en moneda nacional acreditado en la cuenta del exportador"
+          },
+          {
+            "id": "Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298",
+            "type": "Operacion",
+            "label": "Seguimiento anticipos financiaciones exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Seguimiento de anticipos y otras financiaciones de exportación de bienes"
+          },
+          {
+            "id": "Operacion_cobro_de_exportaciones_exceptuadas_8c0821",
+            "type": "Operacion",
+            "label": "Cobro de exportaciones exceptuadas",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "tipo: liquidación de cobros de exportaciones con excención de obligación"
+          },
+          {
+            "id": "Operacion_seguimiento_negociaciones_divisas_exportacion_c8ab40",
+            "type": "Operacion",
+            "label": "Seguimiento negociaciones divisas exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Seguimiento de las negociaciones de divisas por exportaciones de bienes (SECOEXPO)"
+          },
+          {
+            "id": "Operacion_seguimiento_de_exportaciones_de_bienes_ba197e",
+            "type": "Operacion",
+            "label": "Seguimiento de exportaciones de bienes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Seguimiento de todas las exportaciones de bienes cuya oficialización se haya concretado a partir del 02/09/19 y que hayan obtenido el pertinente cumplido de emb…"
+          },
+          {
+            "id": "Obligacion_asumir_seguimiento_de_anticipos_de_exportacion_2247bb",
+            "type": "Obligacion",
+            "label": "Asumir seguimiento de anticipos de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La entidad en la cual se le acreditaron los fondos al exportador deberá asumir el 'Seguimiento de anticipos y otras financiaciones de exportación de bienes' tom…"
+          },
+          {
+            "id": "Operacion_seguimiento_de_exportacion_a4208b",
+            "type": "Operacion",
+            "label": "Seguimiento de exportación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "tipo: seguimiento de operación de exportación"
+          },
+          {
+            "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+            "type": "Excepcion",
+            "label": "Excepción de seguimiento para operaciones aduaneras",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones aduaneras listadas en el punto 8.5.17 están exceptuadas del seguimiento"
+          },
+          {
+            "id": "Obligacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa",
+            "type": "Obligacion",
+            "label": "Ingreso y liquidación de divisas por exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Si el exportador recibiera cobros por una exportación, éstos se encontrarán alcanzados por la obligación de ingreso y liquidación de divisas, independientemente…"
+          },
+          {
+            "id": "Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f",
+            "type": "Excepcion",
+            "label": "Operaciones aduaneras exceptuadas del seguimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exención del seguimiento para operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales"
+          }
+        ]
+      },
+      "output_chars": 3261
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "operaciones no comprendidas exportación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "operaciones no comprendidas exportación",
+        "total_con_match": 1733,
+        "resultados": [
+          {
+            "id": "Obligacion_esta_extension_del_plazo_tambien_se_podra_otorgar_a_exportaciones_de_bienes_comp_f03171",
+            "type": "Obligacion",
+            "label": "Otorgar extensión para exportaciones comprendidas en decretos especiales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Esta extensión del plazo también se podrá otorgar a exportaciones de bienes comprendidas en lo dispuesto por los Decretos 492/23, 549/23, 597/23 y 28/23, en la …"
+          },
+          {
+            "id": "Restriccion_la_operacion_debe_quedar_comprendida_en_algunas_de_las_situaciones_detalladas_co_f953a5",
+            "type": "Restriccion",
+            "label": "Pago de servicios comprendido en códigos de concepto",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "La operación debe quedar comprendida en algunas de las situaciones detalladas: códigos S03, S06, S23, S25, S26, S27, S34, S35, S36 (servicios específicos)"
+          },
+          {
+            "id": "Excepcion_excepcion_por_servicios_comprendidos_7349f5",
+            "type": "Excepcion",
+            "label": "Excepción por servicios comprendidos",
+            "tokens_matcheados": 0,
+            "resumen_propiedades": "Exceptúa el requisito de conformidad previa cuando el pago corresponde a servicios comprendidos en los puntos 13.2.1. o 13.2.2."
+          },
+          {
+            "id": "Operacion_cobro_en_divisas_de_exportacion_de_bienes_d5c26f",
+            "type": "Operacion",
+            "label": "Cobro en divisas de exportación de bienes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Aplicación de cobros en divisas por exportaciones de bienes que correspondan a proyectos comprendidos en el régimen de fomento de inversión para las exportacion…"
+          },
+          {
+            "id": "Operacion_operaciones_financieras_para_aplicacion_de_cobros_de_exportaciones_bbeb61",
+            "type": "Operacion",
+            "label": "Operaciones financieras para aplicación de cobros de exportaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las operaciones financieras enunciadas en el punto 7.9. en la medida que se cumplan los requisitos y procedimientos estipulados para quedar habilitadas para la …"
+          },
+          {
+            "id": "Restriccion_los_cobros_por_aplicarse_correspondan_a_exportaciones_de_bienes_concretadas_con__49721f",
+            "type": "Restriccion",
+            "label": "Restricción temporal de cobros de exportación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los cobros por aplicarse correspondan a exportaciones de bienes concretadas con posterioridad al registro de ingreso de los bienes. En el caso de operaciones co…"
+          },
+          {
+            "id": "Excepcion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_y_qu_ef3807",
+            "type": "Excepcion",
+            "label": "Exclusión de operaciones al contado",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "No están comprendidas las exposiciones originadas en operaciones al contado y que involucren títulos valores, oro o moneda extranjera"
+          },
+          {
+            "id": "Operacion_operaciones_en_marco_de_regimen_de_fomento_de_inversion_para_exportaciones_2791da",
+            "type": "Operacion",
+            "label": "Operaciones en marco de régimen de fomento de inversión para exportaciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las operaciones enunciadas en el punto 7.10. en la medida que se cumplan los requisitos y procedimientos estipulados para quedar habilitadas para la aplicación …"
+          },
+          {
+            "id": "Restriccion_el_pago_de_servicios_de_fletes_por_exportacion_debe_corresponder_a_operacion_con_8f2fb1",
+            "type": "Restriccion",
+            "label": "Fletes de exportación con embarque otorgado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El pago de servicios de fletes por exportación debe corresponder a operación con código S31, donde fletes forman parte de condición de venta pactada, y se concr…"
+          },
+          {
+            "id": "Excepcion_operaciones_comprendidas_en_punto_3_13_1_4_en_la_medida_que_sean_cursadas_en_for_98ff62",
+            "type": "Excepcion",
+            "label": "Excepción por operaciones punto 3.13.1.4",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones comprendidas en punto 3.13.1.4 en la medida que sean cursadas en forma automática por la entidad en su carácter de apoderada del beneficiario no res…"
+          }
+        ]
+      },
+      "output_chars": 3992
+    },
+    {
+      "n": 8,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0"
+      },
+      "output": {
+        "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+        "type": "Excepcion",
+        "label": "Excepción de seguimiento para operaciones aduaneras",
+        "properties": {
+          "description": "Operaciones aduaneras listadas en el punto 8.5.17 están exceptuadas del seguimiento"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 8.1. Operaciones comprendidas."
+          }
+        ]
+      },
+      "output_chars": 400
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f"
+      },
+      "output": {
+        "id": "Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f",
+        "type": "Excepcion",
+        "label": "Operaciones aduaneras exceptuadas del seguimiento",
+        "properties": {
+          "descripcion": "Exención del seguimiento para operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento. (parte 3)"
+          }
+        ]
+      },
+      "output_chars": 550
+    },
+    {
+      "n": 10,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+        "label": "Excepción de seguimiento para operaciones aduaneras",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "exceptua",
+            "vecino_id": "Restriccion_exclusion_de_operaciones_aduaneras_1ccc16",
+            "vecino_label": "Exclusión de operaciones aduaneras",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 8.1. Operaciones comprendidas."
+              }
+            ]
+          },
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y Cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 8.1. Operaciones comprendidas."
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 799
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_cobro_de_exportaciones_exceptuadas_8c0821"
+      },
+      "output": {
+        "id": "Operacion_cobro_de_exportaciones_exceptuadas_8c0821",
+        "type": "Operacion",
+        "label": "Cobro de exportaciones exceptuadas",
+        "properties": {
+          "tipo": "liquidación de cobros de exportaciones con excención de obligación"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 7.2. Liquidaciones y otros ingresos imputables al cumplimiento de un permiso de embar"
+          }
+        ]
+      },
+      "output_chars": 397
+    },
+    {
+      "n": 12,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_exclusion_de_operaciones_aduaneras_1ccc16"
+      },
+      "output": {
+        "id": "Restriccion_exclusion_de_operaciones_aduaneras_1ccc16",
+        "type": "Restriccion",
+        "label": "Exclusión de operaciones aduaneras",
+        "properties": {
+          "tipo": "limite_cualitativo",
+          "description": "Excepto las operaciones aduaneras que se detallan en el punto 8.5.17"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 8.1. Operaciones comprendidas."
+          }
+        ]
+      },
+      "output_chars": 385
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "8.5.17 operaciones aduaneras",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "8.5.17 operaciones aduaneras",
+        "total_con_match": 1744,
+        "resultados": [
+          {
+            "id": "Restriccion_exclusion_de_operaciones_aduaneras_1ccc16",
+            "type": "Restriccion",
+            "label": "Exclusión de operaciones aduaneras",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Excepto las operaciones aduaneras que se detallan en el punto 8.5.17"
+          },
+          {
+            "id": "Excepcion_exencion_del_seguimiento_para_operaciones_aduaneras_que_correspondan_a_ventajas__ca221f",
+            "type": "Excepcion",
+            "label": "Operaciones aduaneras exceptuadas del seguimiento",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exención del seguimiento para operaciones aduaneras que correspondan a ventajas aduaneras u otras situaciones previstas en el listado de regímenes especiales"
+          },
+          {
+            "id": "Excepcion_excepcion_de_seguimiento_para_operaciones_aduaneras_040cb0",
+            "type": "Excepcion",
+            "label": "Excepción de seguimiento para operaciones aduaneras",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones aduaneras listadas en el punto 8.5.17 están exceptuadas del seguimiento"
+          },
+          {
+            "id": "Restriccion_capital_minimo_riesgo_cambio_8_5274a6",
+            "type": "Restriccion",
+            "label": "Capital mínimo riesgo cambio 8%",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La exigencia de capital será el 8% de la posición neta total"
+          },
+          {
+            "id": "Restriccion_la_exigencia_de_capital_por_riesgo_especifico_sera_del_8_de_la_posicion_bruta_en_3e857d",
+            "type": "Restriccion",
+            "label": "Exigencia de capital 8% riesgo específico",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "La exigencia de capital por riesgo específico será del 8% de la posición bruta en acciones"
+          }
+        ]
+      },
+      "output_chars": 1606
+    }
+  ],
+  "gate": {
+    "corte_sesion": false,
+    "atribuible": true,
+    "n_steps_adaptados": 13,
+    "mapa_steps": [
+      {
+        "n": 1,
+        "tool_use_id": "toolu_01TvAMXYGE6cdrST6MecwkQK",
+        "linea_tool_use": 5,
+        "linea_tool_result": 6,
+        "uuid_asistente": "b199b7ed-1b08-4b01-9dc9-32f23c648a94",
+        "timestamp": "2026-08-23T19:20:47.334Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-1",
+        "n_log": 1,
+        "ok": true,
+        "output_sha256_log": "63ff6a81a5914a336492c9e21b7b437189a1ad81e28268f83f6fe2d340c1e145",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 3493,
+        "chars_log": 3493
+      },
+      {
+        "n": 2,
+        "tool_use_id": "toolu_01NYHQLoQKanUQSPD8Q4JJLo",
+        "linea_tool_use": 10,
+        "linea_tool_result": 11,
+        "uuid_asistente": "04228f84-8066-4815-bf59-99173314bd24",
+        "timestamp": "2026-08-23T19:20:50.587Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-2",
+        "n_log": 2,
+        "ok": true,
+        "output_sha256_log": "340749074c3e30b19fd0fe4095520f3830254f0f8c89035220a9f4b802852a81",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 503,
+        "chars_log": 503
+      },
+      {
+        "n": 3,
+        "tool_use_id": "toolu_01P5c75tjWPUEd3dgmPZtauv",
+        "linea_tool_use": 12,
+        "linea_tool_result": 13,
+        "uuid_asistente": "235a45cf-d542-4c7d-90dc-7033c951cfed",
+        "timestamp": "2026-08-23T19:20:50.678Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-3",
+        "n_log": 3,
+        "ok": true,
+        "output_sha256_log": "42ffd80805f2e3a535b657029f6ad0e2cb2502cbcb0b79a01c9d07d1a52c98e8",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 800,
+        "chars_log": 800
+      },
+      {
+        "n": 4,
+        "tool_use_id": "toolu_01FPMqZQEwMmpAcfhctKNPnT",
+        "linea_tool_use": 17,
+        "linea_tool_result": 18,
+        "uuid_asistente": "0a933986-1054-4f00-b52e-6c39b195a293",
+        "timestamp": "2026-08-23T19:20:53.689Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-4",
+        "n_log": 4,
+        "ok": true,
+        "output_sha256_log": "a5d4eea5b507b5d15dfd2802fa4fb795ab8c1969d7eeb25d65972f2be60fdc36",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 3500,
+        "chars_log": 3500
+      },
+      {
+        "n": 5,
+        "tool_use_id": "toolu_01Vj1mznJB5ap3J33V2UTTw7",
+        "linea_tool_use": 19,
+        "linea_tool_result": 20,
+        "uuid_asistente": "d2b740cb-54b4-47ce-929a-7fd5ab79ca62",
+        "timestamp": "2026-08-23T19:20:54.010Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-5",
+        "n_log": 5,
+        "ok": true,
+        "output_sha256_log": "55580d68b6ed96e5a78919ab4c01768399a25f9dcce132e3e71c67daeef0ba45",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 554,
+        "chars_log": 554
+      },
+      {
+        "n": 6,
+        "tool_use_id": "toolu_0154yLaXTPPDyzFC5bTqMkjQ",
+        "linea_tool_use": 24,
+        "linea_tool_result": 25,
+        "uuid_asistente": "a0923200-a4be-4447-9d80-c3989bd11388",
+        "timestamp": "2026-08-23T19:20:57.108Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-6",
+        "n_log": 6,
+        "ok": true,
+        "output_sha256_log": "f3ebf7c269f632573c6ae473310abd26df121fee0c837a7ef37d5ccb0a432c26",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 3261,
+        "chars_log": 3261
+      },
+      {
+        "n": 7,
+        "tool_use_id": "toolu_016q9QDUf4u8VaviCUWAKLZx",
+        "linea_tool_use": 26,
+        "linea_tool_result": 27,
+        "uuid_asistente": "bae5eb3b-531b-4ff4-bc69-1d13bd262f79",
+        "timestamp": "2026-08-23T19:20:57.384Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-7",
+        "n_log": 7,
+        "ok": true,
+        "output_sha256_log": "311fb80f4c89d89984319535d35c760875e75fe5e775cbc9fd275b1c8a727015",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 3992,
+        "chars_log": 3992
+      },
+      {
+        "n": 8,
+        "tool_use_id": "toolu_01FKTrmTrhXNSVuayXgnmXtP",
+        "linea_tool_use": 32,
+        "linea_tool_result": 33,
+        "uuid_asistente": "7b91116e-92e6-4a00-b21f-027a3a7c11b4",
+        "timestamp": "2026-08-23T19:21:02.152Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-8",
+        "n_log": 8,
+        "ok": true,
+        "output_sha256_log": "c23ab8ab587cc635d4d289cdf8aae6bc8ef9df583cf71c3f647af60a8f5d76e5",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 400,
+        "chars_log": 400
+      },
+      {
+        "n": 9,
+        "tool_use_id": "toolu_01VEQB4GMss86qVD6C1jEJus",
+        "linea_tool_use": 34,
+        "linea_tool_result": 35,
+        "uuid_asistente": "8ab23fdd-7c1b-4532-96c0-8fb1627809c3",
+        "timestamp": "2026-08-23T19:21:02.521Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-9",
+        "n_log": 9,
+        "ok": true,
+        "output_sha256_log": "3eba3c31706a929fc09c804cdf741d443d36dd13b2c6d5bab7a0f17c1c07f8af",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 550,
+        "chars_log": 550
+      },
+      {
+        "n": 10,
+        "tool_use_id": "toolu_01TZFYPaBPCr3SYSEkV2hg54",
+        "linea_tool_use": 39,
+        "linea_tool_result": 41,
+        "uuid_asistente": "5925785f-313c-4202-bfbc-eca8c32a8b0a",
+        "timestamp": "2026-08-23T19:21:07.091Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-10",
+        "n_log": 10,
+        "ok": true,
+        "output_sha256_log": "15eb55e028f5c6145f58a494f774ee7f1ab4777bd1843e6037f320bc88efe715",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 799,
+        "chars_log": 799
+      },
+      {
+        "n": 11,
+        "tool_use_id": "toolu_015yZVe5wyBYtwdzcRYTGf1r",
+        "linea_tool_use": 40,
+        "linea_tool_result": 42,
+        "uuid_asistente": "684c4ef0-18a1-4578-abfe-59e51b4634bc",
+        "timestamp": "2026-08-23T19:21:07.100Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-11",
+        "n_log": 11,
+        "ok": true,
+        "output_sha256_log": "f79922331a8c7f9e3c76c22b5c5b819c5b7c2a7ce30f1ac637e384c2feb3eae9",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 397,
+        "chars_log": 397
+      },
+      {
+        "n": 12,
+        "tool_use_id": "toolu_01JDTWTVjqejoYCpqW4kQqXt",
+        "linea_tool_use": 46,
+        "linea_tool_result": 47,
+        "uuid_asistente": "bb2f2942-dce7-4083-a9ce-27f79a682447",
+        "timestamp": "2026-08-23T19:21:10.083Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-12",
+        "n_log": 12,
+        "ok": true,
+        "output_sha256_log": "7b62634877e9d38b183d0079fffce1e5b3307801ce7d5875f16845d001c9027b",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 385,
+        "chars_log": 385
+      },
+      {
+        "n": 13,
+        "tool_use_id": "toolu_01XsZyVYMLJ34pSVGefMJiN3",
+        "linea_tool_use": 53,
+        "linea_tool_result": 54,
+        "uuid_asistente": "fdcd9165-b053-40fd-8ac2-2d1e6e5b1577",
+        "timestamp": "2026-08-23T19:21:17.001Z",
+        "transporte": "mcp",
+        "call_id_log": "mcp_kg-54105-13",
+        "n_log": 13,
+        "ok": true,
+        "output_sha256_log": "ba547863dbb765206f66b4465af3cf848117bd4a9f604f76d7aa84cf32a1a873",
+        "sesion_igual_al_log": true,
+        "sesion_truncada_por_transporte": false,
+        "chars_sesion": 1606,
+        "chars_log": 1606
+      }
+    ],
+    "incidencias": [
+      {
+        "n": 1,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 3493
+      },
+      {
+        "n": 2,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 503
+      },
+      {
+        "n": 3,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 800
+      },
+      {
+        "n": 4,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 3500
+      },
+      {
+        "n": 5,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 554
+      },
+      {
+        "n": 6,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 3261
+      },
+      {
+        "n": 7,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 3992
+      },
+      {
+        "n": 8,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 400
+      },
+      {
+        "n": 9,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 550
+      },
+      {
+        "n": 10,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 799
+      },
+      {
+        "n": 11,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 397
+      },
+      {
+        "n": 12,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 385
+      },
+      {
+        "n": 13,
+        "fuente_output": "log_r1",
+        "igual_a_la_sesion": true,
+        "chars": 1606
+      }
+    ],
+    "rechazos": []
+  },
+  "banco": {
+    "completitud_R3": {
+      "completa": true,
+      "motivos": []
+    },
+    "n_tool_use_mcp": 13,
+    "n_tool_use_ajenos": 0,
+    "ajenos": [],
+    "n_llamadas_log": 13,
+    "corte_R5": {
+      "num_turns": 14,
+      "subtype": "success"
+    },
+    "steps_con_sesion_truncada": 0
+  }
+}
