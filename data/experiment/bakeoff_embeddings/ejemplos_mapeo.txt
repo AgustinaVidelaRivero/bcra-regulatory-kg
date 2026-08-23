@@ -1,0 +1,76 @@
+==============================================================================
+EE-017  [E-E]  via (b) — ancla contenedora sin chunk propio, fan-out grande
+  literal    : ¿Qué debe permitir verificar el sistema SEPAIMPO en relación con pagos de importaciones
+               efectuados antes del registro de ingreso aduanero de los bienes?
+  antilexica : ¿Qué debe posibilitar chequear la plataforma que registra los pagos al exterior por compras
+               internacionales, cuando esos pagos se hicieron antes de que los bienes
+               quedaran oficializados en la aduana?
+  GOLD ancla ext:10.2  via=(b)  n_chunks=25
+     location_ejemplo: Punto 10.2. Definiciones. (parte 1)
+     -> ext::10.2.1.1  tipo=punto_terminal  chars_propio=78  pags=[130]
+      | 10.2.1.1. Pagos de importaciones que cuentan con registro de ingreso aduanero.
+     -> ext::10.2.1.2  tipo=punto_terminal  chars_propio=86  pags=[130]
+      | 10.2.1.2. Pagos de importaciones de bienes con registro de ingreso aduanero
+      | pendiente.
+     -> ext::10.2.1::cierre  tipo=mini_chunk  chars_propio=190  pags=[130]
+      | En este último caso, los pagos cursados quedarán sujetos a un seguimiento para
+      | verificar que se efectúe el registro de ingreso aduanero de los bienes en los plazos
+      | previstos en la normativa.
+     -> ext::10.2.1::intro  tipo=mini_chunk  chars_propio=498  pags=[130]
+      | Se consideran importaciones argentinas de bienes a aquellas operaciones que
+      | cuenten con el correspondiente registro de ingreso aduanero de los bienes ante la
+      | Agencia de Recaudación y Control Aduanero (ARCA) de la República Argentina.
+     ... y 21 chunks mas: ['ext::10.2.2', 'ext::10.2.3', 'ext::10.2.4.1', 'ext::10.2.4.2', 'ext::10.2.4.3', 'ext::10.2.4.4', 'ext::10.2.4.5', 'ext::10.2.4.6', 'ext::10.2.4.7', 'ext::10.2.4.8', 'ext::10.2.4.9', 'ext::10.2.4::cierre', 'ext::10.2.4::intro', 'ext::10.2.5', 'ext::10.2.6', 'ext::10.2.7', 'ext::10.2.8.1', 'ext::10.2.8.2', 'ext::10.2.8.3', 'ext::10.2.8.4', 'ext::10.2.8::intro']
+  |gold| = 25   ambiguo=True
+==============================================================================
+EA-013  [E-A]  (a) intro-only + (b) — caso mixto, muestra la patologia
+  literal    : En el marco de pagos anticipados de importaciones, ¿qué excepción se aplica al plazo general
+               de 90 días corridos desde el acceso al mercado de cambios cuando la
+               nacionalización de los bienes requiere un plazo mayor al normal?
+  antilexica : En el contexto de adelantos para operaciones de importación, ¿qué excepción existe al límite
+               general de tres meses corridos contados desde el acceso al mercado de
+               cambios, cuando el proceso de nacionalización de la mercadería demanda un
+               tiempo más extenso de lo habitual?
+  GOLD ancla ext:10.4  via=(b)  n_chunks=27
+     location_ejemplo: Punto 10.4. Pagos de importaciones de bienes con registro de ingreso aduanero pendiente. (parte 1)
+     -> ext::10.4.1.1  tipo=punto_terminal  chars_propio=113  pags=[138]
+      | 10.4.1.1. Pagos anticipados al exterior a la fecha de entrega de los bienes por parte
+      | del proveedor del exterior.
+     -> ext::10.4.1.2  tipo=punto_terminal  chars_propio=82  pags=[139]
+      | 10.4.1.2. Pagos a la vista contra la presentación de la documentación de embarque.
+     -> ext::10.4.1.3  tipo=punto_terminal  chars_propio=147  pags=[139]
+      | 10.4.1.3. Pagos de deudas comerciales al exterior (operaciones en las que se
+      | cumplió la condición de compra pactada entre exportador e importador).
+     -> ext::10.4.1.4  tipo=punto_terminal  chars_propio=106  pags=[139]
+      | 10.4.1.4. Cancelación de garantías comerciales de importaciones de bienes
+      | otorgadas por entidades locales.
+     ... y 23 chunks mas: ['ext::10.4.1::cierre', 'ext::10.4.1::intro', 'ext::10.4.2.1', 'ext::10.4.2.2', 'ext::10.4.2.3', 'ext::10.4.2.4', 'ext::10.4.2.5', 'ext::10.4.2.6', 'ext::10.4.2.7', 'ext::10.4.2.8', 'ext::10.4.2.9', 'ext::10.4.2::intro', 'ext::10.4.3.1', 'ext::10.4.3.2', 'ext::10.4.3.3', 'ext::10.4.3.4', 'ext::10.4.3.5', 'ext::10.4.3.6', 'ext::10.4.3.7', 'ext::10.4.3.8', 'ext::10.4.3::intro', 'ext::10.4.4', 'ext::10.4.5']
+  |gold| = 27   ambiguo=True
+==============================================================================
+ED-002  [E-D]  via (a) sobre punto_terminal — caso limpio
+  literal    : ¿Cómo se clasifica, dentro de las operaciones cambiarias, la financiación de importaciones
+               argentinas de servicios?
+  antilexica : Dentro de las operaciones de cambio, ¿en qué categoría se ubica el hecho de dar crédito o
+               pago diferido a proveedores del exterior por prestaciones que un país compra
+               fuera de sus fronteras (por ejemplo, fletes, seguros, honorarios
+               profesionales u otras prestaciones intangibles adquiridas a no residentes)?
+  GOLD ancla ext:13.6  via=(a)  n_chunks=1
+     location_ejemplo: Punto 13.6. Líneas de crédito de entidades financieras aplicadas a la financiación de import
+     -> ext::13.6  tipo=punto_terminal  chars_propio=1917  pags=[174]
+      | 13.6. Líneas de crédito de entidades financieras aplicadas a la financiación de importaciones de
+      | servicios.
+      | La entidad financiera tendrá acceso al mercado de cambios, en las condiciones previstas en
+  |gold| = 1   ambiguo=False
+
+
+### pares con |gold|=1 y tipo punto_terminal (candidatos a 'caso limpio')
+   EA-005 ric::12.4
+   EA-009 cap::2.4
+   EB-001 ext::6.12
+   EB-003 ext::13.6
+   EB-005 ext::2.3
+   EB-009 pro::2.5
+   EB-011 ext::2.8
+   EB-016 pro::2.5
+   ED-002 ext::13.6
+   ED-018 cap::9.1
