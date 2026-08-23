@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v5 (2026-08-23)
+# Plan de cierre de la tesis — v6 (2026-08-23)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -31,6 +31,14 @@ M-21 en el mapa de mecanismos.
 v3 (2026-08-18) — A2.0 se parte en tres unidades con el gate primero (A2.0-gate → A2.0-banco →
 A2.0-reportes: el gate de trazabilidad es condición de posibilidad del banco y falla barato);
 nota de equivalencia de nomenclatura; transversal de **checkpoint en disco** agregado a §3.
+v6 (2026-08-23) — rediseño de la evaluación intrínseca y arranque de la escritura:
+principio 9 (el grafo evaluado se sella; las correcciones producen una versión posterior);
+B4 rediseñada como evaluación intrínseca a nivel tripleta con dos vías (precisión con juicio
+de correctitud + importancia sobre muestra del grafo; recall por ranking de importancia sobre
+tripletas extraídas de fragmentos) y juez LLM calibrado contra adjudicación humana; B6.3
+reusa ese instrumento sobre el grafo escalado; C1 con estructura de introducción en ocho
+ideas, reglas de estilo y template LaTeX del taller; prompt custom del banco como argumento
+sellado (A2.0-banco).
 v5 (2026-08-23) — cierre de A2.0b: modelo de embeddings laudado por bake-off propio
 (`docs/decision_modelo_embeddings.md`); requisitos del laudo incorporados a A2.0-banco (ii) y
 B1.10; hallazgos del bake-off agregados a C0.3.
@@ -133,6 +141,13 @@ negociable"; (b) caso de uso 1 explicabilidad agéntica — cero rastro en el re
    negra**. Los resultados de un instrumento **no se cruzan** con los del otro en una misma
    tabla; el puente entre ambos es A1.7, medido con material propio. Nada sellado se
    re-corre para reemplazarse: los resultados nuevos se **agregan**, nunca sustituyen.
+9. **El grafo evaluado se sella y no se corrige.** Toda evaluación (extrínseca o
+   intrínseca) se reporta sobre el grafo tal como estaba al sellarse; los defectos que la
+   evaluación revela se corrigen en una **versión posterior**, declarada como tal (release
+   r+1 del ciclo B2.6). La tesis tiene así dos contribuciones con dos objetos: el **método**
+   (cuánto rinde, con resultados sinceros sobre el grafo pre-corrección) y el **entregable**
+   (el mejor grafo posible, post-evaluación, con las correcciones trazadas a los hallazgos
+   que las motivaron). Nunca se presenta el segundo como si fuera el primero.
 
 Tiers: **T1** = sin esto la tesis no cierra · **T2** = la hace mucho mejor · **T3** = si sobra.
 
@@ -163,7 +178,7 @@ Depende de: A0 (para leer resultados con la atribución). Riesgo: contenedor Doc
 
 ### A2 · Baseline RAG tradicional y head-to-head (issue #12, pregunta rectora) — T1 · S3–S5
 - [x] **A2.0-gate** (I, USD 0 en fase A; fase B USD 1,30 de tope 2) **HECHA (fases A y B)** — veredicto **PASA CON CONDICIONES**: la atribución causal se reconstruye desde una sesión de Claude Code en las cuatro clases, con el código de A0.2 importado, replay estándar y fuerte en verde y doble corrida byte-idéntica (**10/11 PASS**; el caso 11 falla el replay por el contrato v2 de las tools). Artefactos en `data/experiment/banco_mcp/gate/` (`veredicto_gate.md`, `inventario_campos.md`, `corrida/`, `sesiones/`), sellados en `c09663a`. Laudo de los siete requisitos en **`docs/laudo_gate_trazabilidad.md`**. **Fase B en `b08095a`** (sesiones reales con `claude -p`, pre-declaración sellada antes de correr): maquinaria 9/9 (replay estándar + fuerte, determinismo, re-adaptación byte-idéntica, 35 tool calls sin rechazos); las patologías de A1.4 **se replican con otro modelo y agente real** (`vista_no_consultada` emerge sola en GATE-04; el caso (V,F,V) de la regla ocurre en GATE-03); P0 (prompt de sistema del harness) medido: 9.412 tokens en modo seguro vs 19.074 con la configuración local; ratio de caché 12,2× lecturas por escritura. **Tres requisitos nuevos para A2.0-banco**: **R8** una sesión usa varios modelos → la metadata de modelo es un inventario, no un string; **R9** el `total_cost_usd` del CLI sobrefactura ~3× (1,2983 vs 0,4191 recomputado) → el banco computa costo desde tokens con precios sellados; **R10** la configuración del harness es variable sellada. Enunciado original de la unidad: Adaptador de sesión de Claude Code → traza del formato del repo, demostrando **por clase** (`ausencia_kg`, `alcanzabilidad`, `vista_no_consultada`, `generacion`) que **el replay determinístico y la atribución causal de A0.2 sobreviven** (`data/experiment/ev2_reporte/regla_atribucion.md`, `40603a9`). Se hace contra sesiones de Claude Code capturadas a mano con **tools de juguete que imitan el contrato** de las tools del grafo: **no requiere el banco ni los servidores MCP**. Si algo no sobrevive → **freno y laudo antes de construir nada**: A2 cambiaría de forma (la atribución causal es el diferencial de la tesis, no un accesorio) y eso hay que saberlo **antes** de gastar en infraestructura. **Va primero porque falla barato.**
-- [ ] **A2.0-banco** (I, ~$0 en construcción + smoke con tope) **El banco: Claude Code + MCP** — el brazo de evaluación pasa a ser una **variable declarada** (qué servidor MCP se enchufa), no dos harness distintos. Piezas: (i) **servidor MCP del KG** que **reusa** `Neo4jIndex` (A1.1) y expone las tools con la **firma v1** (`buscar_nodos` BM25, `ver_nodo`, `ver_vecinos(id, direccion)`) por el laudo R2 — nada se reimplementa; la paginación, el filtro por relación y `contexto_de` (A1.2) **quedan fuera del banco** y siguen disponibles del lado del harness congelado; (ii) **servidor MCP vectorial** sobre los **chunks de E0** en composición propio + herencia (índice local determinístico, sin servicio externo) con **`microsoft/harrier-oss-v1-0.6b` según el laudo A2.0b** (`docs/decision_modelo_embeddings.md` §7–§8): revisión pinneada, `float32`, `max_seq_length=32768`, prompt `web_search_query` **solo en consultas** y nunca en documentos, con test de asimetría; versiones de librería del bake-off pinneadas en el `requirements.txt` del banco; (iii) los dos agentes vía `claude -p` (no interactivo) con `--model` fijo; (iv) **aislamiento verificado, no asumido**, por capacidad y no por contenido: (a) inventario de tools por brazo, (b) denegación de acceso a los artefactos del grafo (`kg.json`, directorios del backend) y (c) al puerto de la base, (d) test positivo por brazo; (v) **metadata por traza**: model id exacto devuelto por la API, vía de credenciales, versión de cada servidor MCP, sha256 del `kg.json` y del índice vectorial, config del retriever, e inventario de tools efectivamente disponibles en esa sesión; (vi) **vía de credenciales parametrizada** (suscripción / API / Bedrock) con identidad estructural verificable por hash y umbral de switch declarado como número (trazas u horas), con los límites de uso verificados **antes** de una corrida larga; (vii) selftest integrador y estimación de la corrida; (viii) **los siete requisitos laudados en `docs/laudo_gate_trazabilidad.md`, como diseño y no como parche**: **R1** log de llamadas del lado del servidor con entrada y salida íntegras (la sesión es índice, no fuente de verdad — el registro de sesión trunca resultados a 30.000 chars); **R2** el banco expone la **firma v1** de las tools (opción laudada; no se escribe driver de replay nuevo ni se edita `metrica.py`); **R3** marca de completitud por sesión, y toda traza sin ella se excluye de la métrica y se declara —nunca se atribuye—, porque dos clases se afirman por ausencia y un paso perdido migra la clase en silencio; **R4** contrato de salida estructurada fijado en el prompt, idéntico en los dos brazos; **R5** criterio de corte declarado y registrado por traza (reemplaza al tope de 15 llamadas; no se compara numéricamente con `hit_tool_limit`); **R6** aislamiento por capacidad (ya previsto); **R7** mapa de numeración de pasos a identificadores de llamada; (ix) **R8–R10 de la fase B del gate** (`b08095a`): metadata de modelo como inventario por traza; costo computado desde tokens con precios sellados, nunca del `total_cost_usd` del CLI; configuración del harness (modo seguro vs local, P0 ≈ 9,4k vs 19,1k tokens) sellada y registrada por traza; (x) **repetir la demostración por clase del gate sobre el transporte MCP** —condición de aceptación, no extra: lo demostrado en A2.0-gate vale para tool calls de sesión— y **medir y declarar el tope de tamaño de resultados por MCP**. **Depende de A2.0-gate**: se construye sabiendo **qué debe persistir cada servidor** para que el adaptador funcione (si el gate exige campos extra en la salida de las tools, entran en el diseño de los servidores, no como parche posterior). Limitación declarada: el prompt interno de Claude Code no está bajo control de la autora; la validez interna viene de que **ambos brazos comparten la misma caja negra**.
+- [ ] **A2.0-banco** (I, ~$0 en construcción + smoke con tope) **El banco: Claude Code + MCP** — el brazo de evaluación pasa a ser una **variable declarada** (qué servidor MCP se enchufa), no dos harness distintos. Piezas: (i) **servidor MCP del KG** que **reusa** `Neo4jIndex` (A1.1) y expone las tools con la **firma v1** (`buscar_nodos` BM25, `ver_nodo`, `ver_vecinos(id, direccion)`) por el laudo R2 — nada se reimplementa; la paginación, el filtro por relación y `contexto_de` (A1.2) **quedan fuera del banco** y siguen disponibles del lado del harness congelado; (ii) **servidor MCP vectorial** sobre los **chunks de E0** en composición propio + herencia (índice local determinístico, sin servicio externo) con **`microsoft/harrier-oss-v1-0.6b` según el laudo A2.0b** (`docs/decision_modelo_embeddings.md` §7–§8): revisión pinneada, `float32`, `max_seq_length=32768`, prompt `web_search_query` **solo en consultas** y nunca en documentos, con test de asimetría; versiones de librería del bake-off pinneadas en el `requirements.txt` del banco; (iii) los dos agentes vía `claude -p` (no interactivo) con `--model` fijo; **el prompt custom entra como argumento** (archivo de instrucciones por brazo o string pasado a `claude -p`), es parte de la configuración sellada (R10), idéntico entre brazos salvo la descripción de la tool, y en la tesis se reporta como «harness fijo + prompt custom declarado»; (iv) **aislamiento verificado, no asumido**, por capacidad y no por contenido: (a) inventario de tools por brazo, (b) denegación de acceso a los artefactos del grafo (`kg.json`, directorios del backend) y (c) al puerto de la base, (d) test positivo por brazo; (v) **metadata por traza**: model id exacto devuelto por la API, vía de credenciales, versión de cada servidor MCP, sha256 del `kg.json` y del índice vectorial, config del retriever, e inventario de tools efectivamente disponibles en esa sesión; (vi) **vía de credenciales parametrizada** (suscripción / API / Bedrock) con identidad estructural verificable por hash y umbral de switch declarado como número (trazas u horas), con los límites de uso verificados **antes** de una corrida larga; (vii) selftest integrador y estimación de la corrida; (viii) **los siete requisitos laudados en `docs/laudo_gate_trazabilidad.md`, como diseño y no como parche**: **R1** log de llamadas del lado del servidor con entrada y salida íntegras (la sesión es índice, no fuente de verdad — el registro de sesión trunca resultados a 30.000 chars); **R2** el banco expone la **firma v1** de las tools (opción laudada; no se escribe driver de replay nuevo ni se edita `metrica.py`); **R3** marca de completitud por sesión, y toda traza sin ella se excluye de la métrica y se declara —nunca se atribuye—, porque dos clases se afirman por ausencia y un paso perdido migra la clase en silencio; **R4** contrato de salida estructurada fijado en el prompt, idéntico en los dos brazos; **R5** criterio de corte declarado y registrado por traza (reemplaza al tope de 15 llamadas; no se compara numéricamente con `hit_tool_limit`); **R6** aislamiento por capacidad (ya previsto); **R7** mapa de numeración de pasos a identificadores de llamada; (ix) **R8–R10 de la fase B del gate** (`b08095a`): metadata de modelo como inventario por traza; costo computado desde tokens con precios sellados, nunca del `total_cost_usd` del CLI; configuración del harness (modo seguro vs local, P0 ≈ 9,4k vs 19,1k tokens) sellada y registrada por traza; (x) **repetir la demostración por clase del gate sobre el transporte MCP** —condición de aceptación, no extra: lo demostrado en A2.0-gate vale para tool calls de sesión— y **medir y declarar el tope de tamaño de resultados por MCP**. **Depende de A2.0-gate**: se construye sabiendo **qué debe persistir cada servidor** para que el adaptador funcione (si el gate exige campos extra en la salida de las tools, entran en el diseño de los servidores, no como parche posterior). Limitación declarada: el prompt interno de Claude Code no está bajo control de la autora; la validez interna viene de que **ambos brazos comparten la misma caja negra**.
 - [ ] **A2.0-reportes** (I, $0) **Agente de reportes** sobre trazas ya adaptadas: arma el informe con las tablas del repo desde las trazas del banco. **Depende de A2.0-gate y A2.0-banco** (sin trazas adaptadas no hay insumo). Es lo último y lo más recortable de los tres.
 - [x] A2.0b (H) **HECHA — laudo en `docs/decision_modelo_embeddings.md`**: elegido **`microsoft/harrier-oss-v1-0.6b`** (MIT, revisión `f9b9dc8d…`) por bake-off propio sobre el corpus (`data/experiment/bakeoff_embeddings/`, USD 0): gana las 6 celdas recall@{1,5,10} × {literal, anti-léxica} contra los elegibles bajo la regla principal (n=50 por variante), menor brecha (+16 pp), y la referencia no elegible por licencia no lo supera en ninguna columna. El criterio sellado ex ante no resolvió (control n=30 subpotenciado) y la elección se declara como tal, no como superioridad estadística. Hallazgos colaterales: complementariedad léxico/denso medida (BM25 72 vs 52 literal; 16 vs 36 anti-léxica) y la brecha anti-léxica sobrevive a un tercer instrumento. Requisitos para el banco en §8 del laudo (prompt de query obligatorio y asimétrico con test; despliegue de lo medido; versiones pinneadas). Enunciado original: fecha del snapshot del leaderboard (MTEB), filtros aplicados (retrieval · multilingüe/español · tamaño que entra), **solo modelos abiertos** con licencia registrada, y los **detalles de uso leídos de la model card original** (prefijos o instrucción de query, normalización, dimensión, longitud máxima) — nunca un default silencioso ni parámetros inferidos por una instancia. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: bloquea la pieza (ii) de A2.0-banco y B1.10.
 - [ ] A2.1 (H+I) **Pre-registro sellado**: baseline BM25 sobre los **chunks de E0** (unidades estructurales + herencia; mismo texto que vio el extractor — el baseline no pierde por chunking tonto), top-k=5, **el mismo agente del banco A2.0 en los dos brazos** (no el harness congelado) con una sola tool de recuperación por brazo, mismo juez de fidelidad EV2, mismas 40 preguntas; brazo denso con el modelo laudado en A2.0b (chunks de E0; la variante de chunks 512 que prometía `gaps.md` queda como secundaria si hay tiempo). GraphRAG-MS: **descartado con laudo** (costo, opacidad, fuera de criterio de citabilidad). Predicciones: incorrectos, criterios cubiertos, abstenciones, latencia, costo por pregunta. **Se corre sobre el banco de A2.0-banco** (mismo agente, mismo modelo, mismo prompt, mismos chunks de E0; el brazo es el servidor MCP enchufado), con el **aislamiento verificado como precondición** y con **declaración explícita de no-comparabilidad con la tabla de EV2** (principio 8). El brazo denso **deja de ser opcional**: es el brazo RAG. **La comparación NO se rediseña** (grafo vs bolsa de chunks es la pregunta del PPF y el brazo KG puro se mantiene tal cual). Se agregan dos cosas: (a) **predicción explícita de la asimetría texto-crudo vs representación-comprimida** — el RAG recupera el texto fuente con todo su vocabulario superficial mientras el KG recupera label + descripción, y A1.4 mostró que esa superficie es el 35 % de las fallas anti-léxicas de búsqueda; (b) el **brazo híbrido** de B1.9 (nodos + texto fuente indexado por provenance) como tercer brazo, que aísla el efecto de representación con el mismo texto recuperado en los dos lados.
@@ -219,13 +234,53 @@ Objetivo: que "refinar" signifique arreglar el pipeline y re-correr, no editar e
 - [ ] B3.3 (I, $0) Propuesta pre-registrada de **M12 densidad de referencias cruzadas**, **M13 completitud de provenance** y **M14 solapamiento léxico entre label+descripción y el texto fuente** (aditivas a la spec, con laudo). M14 sale de A1.4: es la candidata a predecir alcanzabilidad anti-léxica y el mejor puente intrínseco↔extrínseco para B3.4.
 - [ ] B3.4 (I) Cruce intrínseco ↔ extrínseco (EV2): ¿alguna métrica intrínseca predice fidelidad? Tabla + hallazgo (probablemente "no, y eso es el punto": P-b).
 
-### B4 · Gold standard de tripletas (promesa "no negociable" del PPF) — T1 · S2–S4
-Objetivo mínimo defendible: precisión/recall de extracción a nivel tripleta sobre una
-muestra estratificada, con protocolo ciego. Es humano-intensivo; acotar.
-- [ ] B4.1 (H+I) Diseño sellado: 5 unidades de E0 por TO (25 unidades, ~1.100 chars mediana), muestreo con semilla, anotación **por instancia ciega** de tripletas gold (tipo, label, relación, sujeto, provenance) + revisión de la autora (mismo patrón que criterios U6, Laudos A–D); regla de matching (exacto tras normalización / parcial por juez humano).
-- [ ] B4.2 (H) Anotación + revisión (~200–300 tripletas). Sellado por commit.
-- [ ] B4.3 (I, $0) P/R por grafo (KG-Base, KG-Refinado, KG-Reextraído, KG-Reextraído-r1) y por tipo; cruce con EV2 y con M1–M3. Publicable como dataset (B7).
-Si el tiempo no da: laudo escrito de reducción de alcance (3 unidades × 5 TOs) — nunca silencio.
+### B4 · Evaluación intrínseca a nivel tripleta: precisión, importancia y recall (promesa "no negociable" del PPF) — T1 · S4–S5
+Objetivo: medir la **calidad de extracción** del grafo a nivel tripleta sin adjudicación manual
+masiva, con dos vías separadas y un juez LLM calibrado contra adjudicación humana. **Secuencia: DECISIÓN ABIERTA D-f (se lleva a la reunión de mentoría).** Dos escenarios, mismo
+instrumento: **(E1, recomendación del plan)** correr B4 primero sobre **KG-Reextraído-r1** (S4–S5)
+y reusarla sobre el gran grafo en B6.3 — argumentos: el PPF la declara no negociable y el
+escalado es T2 (lo primero que se recorta), y correrla sobre el subset deja el juez calibrado y
+el protocolo probado, de modo que sobre el gran grafo se repite a costo marginal; **(E2)** correr
+B4 una sola vez sobre el **grafo escalado** cuando se considere el mejor grafo posible —
+argumento: evaluar el objeto final y no un intermedio. Hasta el laudo, B4.1 (el diseño) avanza
+igual porque es idéntico en ambos escenarios; lo que espera es la **fecha de la corrida**. Reemplaza el diseño anterior de anotación ciega
+de tripletas gold sobre 25 unidades.
+- [ ] B4.1 (H+I, $0) **Diseño sellado** (`docs/preregistro_evaluacion_tripletas.md`): (a) **vía
+  de precisión** — muestra aleatoria con semilla de **100 tripletas del grafo** (estratificada
+  por tipo de relación y por TO), presentadas como nodo–relación–nodo **+ evidencia** (el texto
+  fuente que la provenance señala; con B1.4, chunk y páginas), con dos juicios por tripleta:
+  **correcta** (la evidencia la sostiene: sujetos, valores, calificadores, modalidad) e
+  **importancia** (escala corta declarada: ¿merece estar en un KG regulatorio?); (b) **vía de
+  recall** — de una muestra de fragmentos de E0 (párrafos/unidades chicas, donde un LLM no se
+  pierde: ≤ 5–10 cláusulas), un LLM extrae **la tripleta más importante que no puede faltar**
+  en un KG de regulación; otro LLM **rankea** el conjunto por importancia; la **presencia en el
+  grafo** se decide por regla declarada (match de sujeto/objeto normalizados + relación, con
+  política de descendientes explícita — ver hallazgo de la frontera ancla/chunk) → **recall@k
+  sobre el ranking de importancia**; (c) **juez LLM** con prompt congelado por sha, N=3 modal,
+  ciego al grafo de origen; (d) **calibración**: la autora adjudica primero **de a 10** hasta
+  100 (correctitud + importancia) y, aparte, valida el **orden** de las top-100 del ranking;
+  acuerdo juez–humana medido en ambas direcciones (mismo patrón que el juez de fidelidad EV2);
+  el juez escala al resto solo si el acuerdo lo habilita, con umbral declarado; (e) las
+  tripletas **ausentes** del grafo van a adjudicación **post hoc** (¿importaba o no?) — lo
+  presente no se adjudica; (f) categorización asistida por LLM de dificultad/experticia para
+  priorizar qué adjudica la autora; (g) material: fragmentos **frescos** (no los chunks cuyas
+  anclas ya están quemadas por EV2/sintéticas), EV2 no se abre; (h) predicciones con umbral y
+  tope de costo. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]** (D-b).
+- [ ] B4.2 (H) **Adjudicación humana**: 100 tripletas de precisión (correctitud + importancia)
+  y orden de las top-100 de recall, en tandas de 10 con freno tras la primera tanda para
+  ajustar la ficha (no el juez). Sellado por commit antes de correr el juez sobre el resto.
+- [ ] B4.3 (I, ~$10) **Juez calibrado y corrida**: acuerdo juez–humana; si pasa el umbral,
+  juez sobre la muestra ampliada (precisión) y sobre el ranking completo (recall);
+  presencia en el grafo por regla; **precisión@100 (correctas), precisión ponderada por
+  importancia, recall@10/50/100 del ranking de importancia**, por tipo de relación y por TO;
+  adjudicación post hoc de las ausentes importantes. Todo con replay determinístico de la
+  regla de presencia y costo desde tokens.
+- [ ] B4.4 (I, $0) **Lectura y cruce**: lista de ausencias importantes → entradas de backlog con
+  `capa_pipeline` (insumo de la release r2 = grafo post-evaluación, principio 9); cruce con
+  EV2 (¿las ausencias explican fallas de fidelidad?) y con M1–M3/M12–M14 (B3.4). Publicable
+  como dataset (C2).
+Si el tiempo no da: laudo escrito de reducción (50 tripletas de precisión, top-50 de recall)
+— nunca silencio. Depende de: B1 (KG-Reextraído-r1). Habilita: B2.6 (release r2), B6.3, C1.6.
 
 ### B5 · Escalado: endurecimiento y prerrequisitos (issue #6, #11) — T2 · S4–S5
 - [ ] B5.1 (I, $0) A1: parametrizar runner/E2/ensamblado por manifiesto (hoy cableado a 5 TOs; `censo_oraculo[to]` → KeyError; `LIMITACIONES_E0` hardcodeado; `ROL_POR_TO` con 5 keys); modo E2 sin oráculo.
@@ -239,7 +294,7 @@ Si el tiempo no da: laudo escrito de reducción de alcance (3 unidades × 5 TOs)
 ### B6 · Escalado: corrida por tandas (issue #11) — T2 · S6–S7 (máquina; humano mínimo)
 - [ ] B6.1 (I, ~$40) Tanda 1: 20 TOs digeribles (normativa general prioritaria), E0–E5, **gate de release de B2.6** (regression + shapes + intrínsecas + material propio) antes de ensamblar, carga en Neo4j, app sirviendo el grafo. Reporte: volúmenes, costo real vs estimado, incidencias. Es la primera ejecución del método de B2.8 de punta a punta sobre TOs nunca vistos.
 - [ ] B6.2 (I, ~$85) Tanda 2: resto de digeribles (48) si tanda 1 cierra sin sorpresas. Créditos AWS/Bedrock si aplica (`app/llm_backend.py` ya soporta Bedrock).
-- [ ] B6.3 (I, ~$5) Sanity funcional sobre el grafo escalado: 10 preguntas ciegas nuevas (protocolo U6) por instancia aislada, N=1, juez EV2 → solo descriptivo (no comparación).
+- [ ] B6.3 (I, ~$5–15) Sanity funcional sobre el grafo escalado: 10 preguntas ciegas nuevas (protocolo U6) por instancia aislada, N=1, juez EV2 → solo descriptivo (no comparación); **más la evaluación intrínseca de B4 reusada** (mismo juez calibrado, misma regla de presencia, muestra nueva de tripletas y fragmentos del corpus escalado) → precisión/importancia/recall del gran grafo, comparables con r1 por construcción (en el escenario E2 de D-f, esta es la única corrida de B4 y se ejecuta con el alcance completo de B4.2–B4.4).
 - [ ] B6.4 (I) Cierre #11: reporte de escalado (vacío #5: costo, throughput, latencia).
 Condición de arranque: B1, B2, B5 cerrados y A2 en curso o cerrado. Si S6 llega sin B5 cerrado → **se recorta a tanda 1** o se descopa con laudo.
 
@@ -256,8 +311,19 @@ Condición de arranque: B1, B2, B5 cerrados y A2 en curso o cerrado. Si S6 llega
 - [ ] C0.6 (I, $0) **Pendiente de la próxima pasada de C0**: (a) en `docs/tablero.md` §5, reemplazar "plan de tesis de la autora (documento de trabajo, no commiteado)" por la referencia a `docs/plan_tesis.md`; (b) actualizar el párrafo "Migración Neo4j" del `docs/tablero.md` (cola de unidades / estado del backend) con el estado post-A1.1: backend con paridad verificada 322/322 en `9e131bf`, modos `paridad`/`fulltext`, `GraphAgentNeo4j`, no inyectado en el pipeline de evaluación; A1.2 como punto de extensión.
 
 ### C1 · Esqueleto y redacción de la tesis (skill `latex-udesa`) — T1 · S1–S9
+**Arranca ya** (S2): el trabajo y el entregable están claros; nada impide escribir. Base: el
+**template LaTeX del taller** (la autora lo incorpora a `docs/tesis/` o a un directorio de
+fuentes versionado; `docs/ppf/main.tex` es el antecedente de estilo). **Reglas de escritura
+vinculantes**: un párrafo = una idea; una oración = un concepto; cada párrafo conecta con el
+siguiente, sin remates; corta (el material es nítido, no necesita verbosidad); **visual** —
+figuras y esquemas del grafo y del pipeline en cada capítulo donde aporten; **self-contained**
+para un lector técnico no experto en NLP (background amplio, explicar qué es un KG), con
+estructura que permita al experto saltear el background y leer contribuciones; la primera
+pasada puede ser asistida, pero se reescribe con voz propia y se revisa contra estas reglas
+(las estructuras genéricas de LLM se rechazan). Referencia de background: una tesis con buen
+capítulo de KG, pendiente de recibir como insumo de lectura.
 Capítulos (borrador → revisión → final), cada uno alimentado por un bloque:
-- [ ] C1.1 Introducción + pregunta + tres sub-preguntas (esquema / retrieval-vs-estructura / KG-RAG vs RAG) + hallazgo rector. (S1–S2)
+- [ ] C1.1 **Introducción** — estructura en ocho ideas (cada una un párrafo o dos): (1) los LLM habilitaron la construcción de KGs a escala y por qué los KGs importan para RAG; (2) limitaciones actuales, **solo las que este trabajo resuelve** (fidelidad no medida, comparación sin baseline justo, castellano/banca central, costo, evaluación intrínseca ciega a la sobre-fusión); (3) «acá se resuelve X, Y, Z»; (4) overview del método (corpus → esquema → E0–E5 → retrieval → evaluación bajo custodia → refinamiento por releases); (5) el grafo en sí (esquema, sujetos, provenance) con **una figura** de un subgrafo real; (6) la evaluación: «los grafos son difíciles de evaluar, por eso se desarrolló…» (juez de dos pasos, fidelidad por criterios, atribución causal, tripletas con importancia); (7) los números principales (EV2 3/20/17 · 5/26/9 · 4/27/9; ablación; head-to-head cuando exista); (8) lista de contribuciones. Pregunta + tres sub-preguntas + hallazgo rector quedan dentro de (3)/(6). **Primer borrador en S2**, antes de que haya más resultados: se actualiza después. (S2–S3)
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
 - [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3)
 - [ ] C1.4 **El método** — construcción y refinamiento de un KG regulatorio de punta a punta (sigue B2.8): pipeline E0–E5 (diseño, principios, enmienda 01 con P1–P3, costos, limitaciones) + ciclo de refinamiento por releases (B2.6) + retriever/backend + intake. Cada mecanismo con puntero al experimento que lo demuestra (§6). (S3–S4, cierra con B1/B2)
@@ -279,10 +345,10 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 | Sem | Carril A | Carril B | Carril C |
 |---|---|---|---|
 | S1 (17–23 ago) | A0.1–A0.2 (U-A0) | — (U-B1a entra recién al cierre revisado de U-A0 o de U-C0) | C0.1–C0.5, C1.1 (U-C0) |
-| S2 (24–30 ago) | A0.3–A0.4, A1.1–A1.3 | B1.1–B1.7 (U-B1a, arranque condicionado), B2.1 | B4.1, C1.2–C1.3 |
-| S3 (31 ago–6 sep) | A1.4–A1.5 | B2.2–B2.5, B3 | B4.2, C1.4–C1.5 |
-| S4 (7–13 sep) | A1.6, A2.1–A2.2 | B1.8, B5.1–B5.4 | B4.2–B4.3, C1.5 |
-| S5 (14–20 sep) | A2.3–A2.4 | B5.5–B5.7 | C1.6 |
+| S2 (24–30 ago) | A0.3–A0.4, A1.1–A1.3 | B1.1–B1.7 (U-B1a, arranque condicionado), B2.1 | C1.1 (borrador de intro), C1.2–C1.3 |
+| S3 (31 ago–6 sep) | A1.4–A1.5 | B2.2–B2.5, B3 | C1.4–C1.5 |
+| S4 (7–13 sep) | A1.6, A2.1–A2.2 | B1.8, B4.1–B4.2, B5.1–B5.4 | C1.5 |
+| S5 (14–20 sep) | A2.3–A2.4 | B4.3–B4.4, B5.5–B5.7 | C1.6 |
 | S6 (21–27 sep) | A3 (T2) | B6.1 | C1.6–C1.7 |
 | S7 (28 sep–4 oct) | — | B6.2–B6.4 | C1.7 |
 | S8 (5–11 oct) | buffer | buffer | C1.8–C1.9, C2 |
@@ -361,10 +427,19 @@ Las decisiones D-a..D-e las toma la autora; cada una queda registrada como laudo
 justificación técnica antes de ejecutar la unidad que la usa.
 
 - D-a Caso de uso 1: descope escrito vs demo mínima (A2.4 / C0.4).
-- D-b Gold de tripletas: alcance (25 unidades) y quién anota (instancia ciega + revisión). **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: B4 no arranca sin laudo redactado y fechado por la autora.
+- D-b Evaluación intrínseca a nivel tripleta (B4 rediseñada): alcance (100 tripletas de precisión, top-100 de recall), escala de importancia, regla de presencia y umbral de acuerdo del juez. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: B4 no arranca sin laudo redactado y fechado por la autora.
 - D-c Corpus a escalar (D5) y si el escalado entra o se recorta a tanda 1.
 - D-d Umbrales de intrínsecas pasada 2 (B3.1).
 - D-e **RESUELTA**: el plan vive en `docs/plan_tesis.md` (C0.2); issues por bloque abiertos en U-C0.1.
+- D-f **ABIERTA — se decide con los mentores**: ¿la evaluación intrínseca de tripletas (B4) se corre
+  primero sobre KG-Reextraído-r1 (E1, recomendación del plan) o una sola vez sobre el grafo
+  escalado (E2)? **No bloquea**: B4.1 (pre-registro), B1, B2, B5.1–B5.4, A2, C1. **Sí bloquea la
+  fecha de**: B4.2–B4.4 (la corrida y su lectura), B6.3 (reuso sobre el gran grafo, que en E2
+  pasa a ser la única corrida), y la **release r2** (grafo post-evaluación, principio 9: sin
+  evaluación previa no hay r2; en E2 la r2 sería la versión industrial del gran grafo). Si se
+  lauda E2, el cronograma mueve B4.2–B4.4 detrás de B6.1–B6.2 y el riesgo a declarar es que lo
+  «no negociable» del PPF queda atado a una unidad T2 recortable — en ese caso B4 sube a T1
+  dentro del escalado y deja de ser recortable.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
@@ -390,7 +465,7 @@ cierre se declara como mecanismo propuesto sin validar.
 | M-14 | Intake de feedback de la app → backlog (Motor 2) | U6 (25 preguntas reales), BKL-0024/0025, cola de intake cerrada | `0d5fd10` (`scripts/adaptador_sesiones.py`); `b337152` (`exploracion/adjudicacion/u6_adjudicacion_humana.jsonl`); `data/backlog/intake/cola_intake.jsonl` | hecho |
 | M-15 | Comparación justa KG-RAG vs RAG sobre los mismos chunks de E0 | A2 head-to-head + Pareto, sobre el banco de M-21 (mismo agente y mismo prompt en los dos brazos) | — (depende de A2.0-gate y A2.0-banco) | **pendiente** |
 | M-16 | Escalado por tandas con gate de release y reporte de costo/throughput | B5–B6 (68 TOs digeribles) | — (prep `111ed19`, `escalado_prep/resumen_escalado.md`) | **pendiente / T2** |
-| M-17 | Gold de tripletas y P/R de extracción | B4 | — | **pendiente** |
+| M-17 | Evaluación intrínseca a nivel tripleta sin anotación masiva: precisión con juicio de correctitud + importancia sobre muestra del grafo con evidencia; recall por ranking de importancia sobre tripletas extraídas de fragmentos; juez LLM calibrado contra adjudicación humana en tandas; adjudicación post hoc solo de ausencias | B4 sobre KG-Reextraído-r1 (sellado, principio 9); reuso sobre el grafo escalado en B6.3 | — | **pendiente** |
 | M-18 | Circuito de custodia revisor-ejecutor para investigación con agentes LLM: mandatos por unidad con criterios de aceptación, frenos declarados, laudos de la autora, pre-registro por commit, verificación de mesa contra archivos (nunca narrativa), errores de ambos lados detectados y documentados | Registros de desvíos declarados del período: sello tardío `9c44516`; pasada inválida de calibración documentada; commit tardío declarado en `b624865`. Destino en la tesis: C1.5 (metodología) + candidato a sección propia de contribuciones | `CLAUDE.md` (reglas del circuito, §4 a–h); mensaje de commit `9c44516` ("sello efectivo 2026-08-13… pre-registro válido"); `data/experiment/ev2_juez/calibracion/registro_calibracion.md` (commit `1a0ac5c`); mensaje de commit `b624865` ("commit tardío respecto del cierre de la unidad, detectado por la unidad §7") | hecho |
 | M-19 | Atribución causal de fallas determinística de primer nivel (presente→consultada→vista→generación, por replay de trazas, USD 0, reproducible al byte; abstención como columna cruzada) | EV2: 120 trazas base + 191 §7 atribuidas; perfiles de falla distintos en el empate 9-9; generación clase modal 17/25/21; techo de retrieval 14/7/6 (H1–H7) | `40603a9` (regla sellada pre-cómputo, `data/experiment/ev2_reporte/regla_atribucion.md`, selftest 24/24) + `85d9fdb` (`data/experiment/ev2_reporte/salida/atribucion_fallas.{json,md}`, doble corrida byte-idéntica) | hecho |
 | M-20 | Descomposición experimental retrieval / tools / política del agente (factorial con material propio, replay determinístico, IC bootstrap apareado) como método para localizar el cuello de botella de un sistema KG-RAG | A1.4 (índice × tools: el cuello no era ninguno de los dos) + A1.7 (política) | `68c79dc` (pre-registro) + corrida A1.4; A1.7 pendiente | parcial (A1.4 hecho, A1.7 pendiente) |
