@@ -348,9 +348,12 @@ existentes y se completa durante la escritura de C1.4; B2.6 (protocolo del ciclo
 2. **U-C0** (carril C): actualización de tablero/INDICE/README/hallazgos H14–H20/backlog RX
    (C0.1, C0.3, C0.5) + esqueleto LaTeX de capítulos con mapa bloque→sección (C1.1 borrador).
    $0. Los laudos C0.2/C0.4 son de la autora.
-3. **U-B1a** (carril B, **condicionada al cierre revisado de U-A0 o de U-C0**): E5 esqueleto +
-   E4 determinístico + referencias cruzadas + provenance rica + selftest de
-   `ensamblar_corpus` (B1.1–B1.5), re-ensamblado KG-Reextraído-r1 sin API (B1.7). $0.
+3. **U-B1a** (carril B; condición de arranque **cumplida**: U-A0 cerrada en `40603a9`/`85d9fdb`
+   y U-C0.1 en `2977e69`): invariantes + guarda de merge cross-TO de `ensamblar_corpus` (B1.5),
+   E4 determinístico (B1.2), E5 esqueleto (B1.1), referencias cruzadas norma→norma (B1.3),
+   provenance rica (B1.4), cola humana flaggeada con recomputo de política (B1.6) y
+   re-ensamblado KG-Reextraído-r1 sin API (B1.7) — **alcance B1.1–B1.7**; B1.8 (fidelidad EV2
+   de r1) es unidad aparte con pre-registro. $0.
 
 ## 5. Decisiones que solo la autora puede tomar (esta semana)
 
