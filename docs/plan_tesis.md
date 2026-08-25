@@ -447,6 +447,23 @@ justificación técnica antes de ejecutar la unidad que la usa.
   lauda E2, el cronograma mueve B4.2–B4.4 detrás de B6.1–B6.2 y el riesgo a declarar es que lo
   «no negociable» del PPF queda atado a una unidad T2 recortable — en ese caso B4 sube a T1
   dentro del escalado y deja de ser recortable.
+- D-g **ABIERTA — se decide con los mentores**: ALCANCE DEL CORPUS EN LA TESIS. La pregunta
+  exacta: ¿el estudio se presenta y defiende sobre los cinco Textos Ordenados del subset, con el
+  escalado al corpus BCRA completo como capítulo/trabajo de escalabilidad (pre-defensa, D5), o la
+  tesis debe reformularse para que el corpus completo sea el objeto central? Contexto: la intro
+  (C1.1 tramo 1) justifica hoy los cinco TOs como «densidad realista + evaluación exhaustiva» —
+  esa oración lleva marcador `[PENDIENTE MENTORES — D-g]` en `docs/tesis/main.tex` y puede
+  cambiar según lo que se decida. D-g se conecta con D5 (scope del escalado como entregable
+  pre-defensa, pendiente de definición, B5.5) y con D-f (secuencia de la evaluación por
+  tripletas): las tres son la misma familia — qué rol juega el escalado en la tesis — y conviene
+  llevarlas JUNTAS a la reunión. **Sí bloquea**: la redacción final del cierre del párrafo 2 de
+  la intro y la formulación del objetivo general (C1.1 tramo de objetivos). **No bloquea**: el
+  resto de la escritura, A2.1, U-APP.
+
+**Agenda consolidada de la PRÓXIMA REUNIÓN DE MENTORES**: (1) D-g alcance del corpus; (2) D5
+scope del escalado (B5.5); (3) D-f secuencia de la evaluación por tripletas; (4) reclamo de la
+tesis de background de KG ofrecida (pendiente anotado en `main.tex`, Estado del arte); (5)
+resultado de B1.8 y laudo de promoción de r1 (`774acac` / `81587f9`) como informe de avance.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 

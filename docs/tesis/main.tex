@@ -113,20 +113,26 @@
 %     origen identificable (skill latex-udesa); lo no verificado queda como
 %     hueco marcado [TODO: fuente].
 %
-%   IDEA 1 (→ Motivación): los LLMs habilitaron la construcción de KGs a
-%     escala; por qué los KGs son buenos para conocimiento estructurado.
-%   IDEA 2 (→ Motivación / Definición del problema): limitaciones actuales
-%     de los LLMs — SOLO las que conectan con lo que esta tesis resuelve
-%     (alucinación con fuentes correctas, pérdida de estructura del
-%     documento, remisiones normativas rotas por chunking).
-%   IDEA 3 (→ Definición del problema): "en este trabajo se aborda..." —
-%     qué resolvemos exactamente, sobre qué corpus (5 TOs del BCRA).
-%   IDEA 4 (→ Definición del problema / Metodología en Desarrollo): overview
-%     de CÓMO: pipeline de extracción E0-E5, evaluación extrínseca sellada,
-%     atribución causal de fallas.
+%   IDEAS 1–4: REDACTADAS en el cuerpo (C1.1 tramo 1, tuneo de la autora
+%     aplicado) — ver Motivación y Definición del problema abajo.
 %   IDEA 5 (→ puede ser subsección propia o abrir el Desarrollo): el grafo
 %     en sí — schema, escala (6.529 nodos / 17.772 aristas / 16 relaciones (fe de erratas 6c5507b)
 %     en KG-Reextraído-r1, commit 185e042), FIGURA de una sección del grafo.
+%     Figura LAUDADA (encuadre anti-fusión: la cláusula del 125 % — seis
+%     variantes en cinco puntos, nodos separados con su punto de origen):
+%     figuras/figura_125_r1.svg (fuente vectorial) / .png (compilación).
+%     Descomentar al redactar la idea 5:
+%     \begin{figure}[htbp]
+%       \centering
+%       \includegraphics[width=\linewidth]{figuras/figura_125_r1.png}
+%       \caption{La cláusula del 125\,\% en KG-Reextraído-r1: seis variantes
+%         de la misma cláusula en cinco puntos del T.O. de Exterior y
+%         Cambios, representadas como nodos separados (anti-fusión), cada
+%         uno anclado a su punto de origen y con su vecindad. Fuente:
+%         \texttt{salida\_r1/kg.json} (sha \texttt{0226e947}), nodos del
+%         test T2; generación determinística.}
+%       \label{fig:clausula125}
+%     \end{figure}
 %   IDEA 6 (→ Contribuciones / Desarrollo): la evaluación — "los grafos son
 %     difíciles de evaluar; se desarrolló un método..." (fidelidad EV2 con
 %     juez calibrado, atribución causal determinística, evaluación
@@ -141,16 +147,72 @@
 
 \subsection{Motivación}
 % PPT: "Por qué es importante el área de estudio".
-% Lleva IDEAS 1 y 2 (primera mitad): LLMs + KGs; qué prometen para
-% dominios regulatorios; por qué el dominio BCRA importa (normativa
-% viva, interconectada, de cumplimiento obligatorio).
+
+% Párrafo 1 — idea 1. Citas: carta2023iterative, lu2026karma
+% (bibliografia.bib, verificadas contra primera página del PDF).
+Construir un grafo de conocimiento (knowledge graph, KG) sobre un corpus
+especializado exigía, hasta hace pocos años, equipos de expertos de dominio y
+plazos medidos en años de trabajo manual. Los modelos de lenguaje de gran
+escala (large language models, LLMs) cambiaron esa economía: la extracción de
+entidades y relaciones puede automatizarse a escala del corpus completo,
+reservando la supervisión humana para los puntos donde más rinde
+\cite{carta2023iterative, lu2026karma}. Un KG representa el conocimiento como
+entidades y relaciones explícitas, y esa explicitación lo vuelve apto para
+dominios donde la estructura importa tanto como el contenido: qué norma
+remite a cuál, qué excepción limita qué obligación. El dominio regulatorio es
+el caso natural de esa propiedad, porque la normativa es en sí misma una red:
+cada texto remite a otros, los exceptúa y los modifica.
+
+% Párrafo 2 — puente al caso BCRA. Sin números (decisión del esqueleto).
+La normativa del Banco Central de la República Argentina (BCRA) reúne esas
+características con particular intensidad. Es de cumplimiento obligatorio
+para las entidades del sistema financiero, de modo que una respuesta
+incorrecta sobre su contenido tiene costo regulatorio directo. Es normativa
+viva: los Textos Ordenados consolidan la versión vigente de cada materia y se
+actualizan con cada comunicación nueva. Es, además, profundamente
+interconectada: los puntos de un Texto Ordenado remiten a puntos de otros,
+condicionan operaciones definidas en terceros y establecen excepciones
+cruzadas.
+% [PENDIENTE MENTORES — D-g] Alcance del corpus: la justificación
+% de los cinco TOs se valida en reunión (ver D-g en el plan).
+% La oración puede cambiar según esa decisión.
+El presente trabajo toma como corpus cinco Textos Ordenados del BCRA,
+suficientes para que esa interconexión aparezca con densidad realista y
+acotados para permitir una evaluación exhaustiva.
 
 \subsection{Definición del problema}
 % PPT: "Qué falla, qué falta o qué se busca mejorar de forma explícita".
-% Lleva IDEAS 2 (segunda mitad), 3 y 4: las limitaciones concretas que
-% esta tesis ataca; el enunciado del problema (¿organizar el corpus como
-% KG mejora la fidelidad de un agente RAG frente a retrieval
-% tradicional?); overview del enfoque en un párrafo.
+
+% Párrafo 3 — idea 2: las DOS limitaciones que esta tesis ataca.
+% Evidencia interna de (ii) sin números en prosa (no anticipar idea 7):
+% mapa_fuentes_intro.md filas 4 (grounded != correct, frozen) y 5 (RT-C6-1
+% incorrecta con ver_nodo byte-idéntico).
+Los sistemas de generación aumentada por recuperación
+(retrieval-augmented generation, RAG) que operan sobre este tipo de corpus
+enfrentan dos limitaciones que este trabajo aborda. La primera es
+estructural: el enfoque estándar fragmenta los documentos en pasajes
+(chunking) y recupera los más afines a la consulta, con lo cual las
+remisiones normativas quedan reducidas a texto que el sistema no puede
+seguir: la excepción establecida en otro punto, la definición fijada por
+otra sección. La segunda es de otro orden: recuperar bien no garantiza
+responder bien. Un agente puede citar la fuente correcta y aun así contestar
+de manera incorrecta, porque la generación introduce errores que el anclaje
+en la fuente no previene; distinguir ese modo de falla del anterior exige un
+instrumento de evaluación que las métricas de recuperación no proveen.
+
+% Párrafo 4 — ideas 3+4: enunciado aprobado verbatim + overview del cómo.
+En este trabajo se investiga si organizar la normativa del BCRA como grafo
+de conocimiento mejora la fidelidad de un agente RAG frente a la
+recuperación tradicional por fragmentos, sobre cinco Textos Ordenados y con
+un método de evaluación que distingue si las fallas provienen del grafo o
+del agente. El enfoque comprende tres componentes. Primero, un pipeline de
+extracción por etapas construye el KG desde los documentos oficiales, con
+ensamblado reproducible y verificación en cada etapa. Segundo, la fidelidad
+de las respuestas se mide contra un conjunto de evaluación sellado antes de
+toda corrida, con un juez calibrado contra adjudicación humana. Tercero, una
+capa determinística de atribución causal clasifica cada falla según su
+origen: contenido ausente del grafo, navegación del agente o generación de
+la respuesta.
 
 \subsection{Estado del arte}
 % PPT: "Introduce y revisa los trabajos previos. Enmarca el trabajo en un

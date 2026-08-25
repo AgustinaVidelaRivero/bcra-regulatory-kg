@@ -27,6 +27,8 @@ del cierre de unidades debe excluir la portada.
 | 10 | Head-to-head KG-RAG vs RAG | **PENDIENTE de A2.2** — en la prosa: hueco `[TODO: A2.2]` | — |
 | 11 | Censo de fidelidad de r1: 31/40 anclas presentes (única recuperada `cla:3.5`; 7 granularidad + 2 contenedor, H24) | `data/experiment/ev2_r1/censo/censo_anclas_fidelidad_r1.json` | `6c5507b` |
 | 12 | Bake-off de embeddings: harrier 52/36 vs BM25 72/16 (literal@1/anti-léxica@1); modelo no elegible por licencia no supera al elegido | `data/experiment/bakeoff_embeddings/bakeoff_embeddings.md` §3 | `df9da34` |
+| 13 | Tabla definitiva de KG-Reextraído-r1: 6/26/8 (correcto/parcial/incorrecto sobre 40; vías 11 juez_base / 21 juez_enc / 5 adjudicación base / 3 adjudicación §7); dentro de la banda de no-señal vs KG-Refinado (5/26/9); P1–P5 6/6; juez vs autora 4/4 y 15/15 (con salvedades de `nota_episodios_adjudicacion.md`) | `data/experiment/ev2_r1/cierre/reporte_final_r1.md` | `774acac` |
+| 14 | Laudo de promoción: KG-Reextraído-r1 (`0226e947`) es el grafo VIGENTE — promoción del entregable con banda de no-señal declarada; costo anotado cobertura 69 vs 73; migración declarada por `plan_carga_r1.md` | `docs/laudo_promocion_r1_vigente.md` | `81587f9` |
 
 ## No verificables
 
