@@ -60,6 +60,25 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('v2') (provenance primaria mapeada a {source_doc, location}; dataclasses + merge del loader congelado)",
         "indice_fulltext": "nodos_fulltext_kg_reextraido",
     },
+    "KG_Reextraido_r1": {
+        "nombre_canonico": "KG-Reextraído-r1",
+        "label": "KG_Reextraido_r1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_v2" / "salida_r1" / "kg.json",
+        "sha256": "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a",
+        "commit_sellado": "185e042",
+        "commit_medicion_ev2": "774acac",
+        "laudo_promocion": "docs/laudo_promocion_r1_vigente.md",
+        "n_nodos": 6529,
+        "n_aristas": 17772,
+        "ev2_key": "r1",
+        # r1 no está en el dict GRAFOS de comun_ev2 (módulo sellado): su vista
+        # runtime se sirve por el registro en memoria de ev2_r1/code/comun_r1
+        # (reemplaza el despachador al importarse, sin editar módulos sellados;
+        # misma vista que vio el agente en la medición 774acac).
+        "requiere_registro_dir": EXPERIMENT_DIR / "ev2_r1" / "code",
+        "vista_runtime": "comun_ev2.cargar_runtime('r1') tras importar comun_r1 (registro en memoria, U-B1.8)",
+        "indice_fulltext": "nodos_fulltext_kg_reextraido_r1",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
@@ -87,7 +106,14 @@ def verificar_sha(clave: str) -> str:
 
 
 def cargar_vista_runtime(clave: str):
-    """KnowledgeGraph con la vista runtime EV2 del grafo (import de comun_ev2)."""
+    """KnowledgeGraph con la vista runtime EV2 del grafo (import de comun_ev2).
+    Si la entrada declara `requiere_registro_dir`, se importa antes el módulo
+    que registra su vista en memoria (r1: comun_r1, precedente U-B1.8)."""
+    reg = GRAFOS[clave].get("requiere_registro_dir")
+    if reg is not None:
+        if str(reg) not in sys.path:
+            sys.path.insert(0, str(reg))
+        import comun_r1  # noqa: F401,E402  (registra la vista de r1 al importarse)
     from comun_ev2 import cargar_runtime  # noqa: E402  (solo import)
     return cargar_runtime(GRAFOS[clave]["ev2_key"])
 
