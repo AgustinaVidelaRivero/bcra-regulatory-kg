@@ -22,25 +22,39 @@ citan solo entre paréntesis o cuando se transcribe un archivo o un commit.
 
 ## 1. Grafo vigente
 
-- **Nombre canónico:** **KG-Refinado (`26fac8b4`)** — alias `v3`,
-  `reensamblado_v3`; Gen. 2 del pipeline (extracción con esquema v2 +
-  re-ensamblado + correcciones C1–C7).
-- **Ruta:** `data/experiment/grafo_v2/reensamblado_v3/kg.json`.
-- **Tamaño:** 4.469 nodos / 8.073 aristas
-  (fuente: `python3 -c "import json; kg=json.load(open('data/experiment/grafo_v2/reensamblado_v3/kg.json')); print(len(kg['nodes']), len(kg['edges']))"`).
-- **sha256 (post-C7, sin cambios desde el 2026-08-03):**
-  `26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571`
-  (fuente: `shasum -a 256 data/experiment/grafo_v2/reensamblado_v3/kg.json`;
-  coincide con el sha aplicado que cierra
-  `data/backlog/retests/C7_retest_2026-08-03.md` y con el que EV2 verifica al
-  arrancar, `data/experiment/ev2_corrida/code/comun_ev2.py` dict `GRAFOS`).
-- **Registro como vigente:** entrada explícita `GRAFOS_EXPLICITOS` en
-  `app/main.py:193` (clave visible `v3_vigente`; promoción 2026-07-31,
-  comentario en `app/main.py:186-192`).
-- **KG-Reextraído NO fue promovido a vigente:** empató en fidelidad EV2 con
-  KG-Refinado (§2) y no pasó por el circuito de promoción; la decisión queda
-  para la primera release del pipeline completo (E4/E5, ver §5).
-- **Últimas correcciones aplicadas** (fuente: `data/backlog/backlog.jsonl`,
+- **Nombre canónico:** **KG-Reextraído-r1 (`0226e947`)** — alias `r1`,
+  `salida_r1`; Gen. 3 del pipeline + refinamiento r1 (pipeline E0–E5 completo
+  con Enmienda 01).
+- **Ruta:** `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json`.
+- **Tamaño:** 6.529 nodos / 17.772 aristas
+  (fuente: conteos sellados en `data/experiment/neo4j/grafos.py`, entrada
+  `KG_Reextraido_r1`; verificados contra Neo4j en U-MIG-r1:
+  `MATCH (n:KG_Reextraido_r1) RETURN count(n)` → 6.529, aristas del label
+  → 17.772).
+- **sha256:**
+  `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a`
+  (fuente: `shasum -a 256 data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json`;
+  commit de sellado `185e042`).
+- **Laudo de promoción:** `docs/laudo_promocion_r1_vigente.md`; sello de
+  medición EV2 `774acac` (fidelidad 6/26/8, dentro de la banda de no-señal
+  vs KG-Refinado 5/26/9).
+- **Registro como vigente:** PRIMERA entrada de `GRAFOS_EXPLICITOS` en
+  `app/main.py` (clave visible `r1_vigente`; adapter `r1_vista_runtime` en
+  `ADAPTER_KEYS`, que despacha a la vista runtime del registro
+  `data/experiment/neo4j/grafos.py`, precedente U-B1.8). La clave
+  `v3_vigente` no se borra.
+- **Neo4j:** cargado bajo el label `:KG_Reextraido_r1` con índice full-text
+  `nodos_fulltext_kg_reextraido_r1` (misma definición que los índices
+  existentes); carga y verificación post-carga U-MIG-r1
+  (`data/experiment/neo4j/plan_carga_r1.md`; equivalencia 454/454 paridad,
+  `data/experiment/neo4j/test_equivalencia_resultados_UMIGr1.json`).
+- **KG-Refinado (`26fac8b4`) pasa a grafo medido/sellado:** deja de ser el
+  vigente; NO se borra ni se descarga del contenedor (sigue cargado bajo
+  `:KG_Refinado`, 4.469/8.073, e índice `nodos_fulltext_kg_refinado`). Su
+  historia de correcciones C1–C7 y los hashes de referencia de C6 quedan
+  registrados abajo.
+- **Últimas correcciones aplicadas al KG-Refinado** (historia pre-promoción
+  de r1; fuente: `data/backlog/backlog.jsonl`,
   eventos `aplicacion`/`cambio_estado` con ts 2026-07-31 a 2026-08-03; sin
   correcciones nuevas desde entonces):
   - **BKL-0017** (C1) — restauración del criterio general 1.1 de Clasificación
@@ -84,7 +98,7 @@ citan solo entre paréntesis o cuando se transcribe un archivo o un commit.
     restaurados: edición de una sola `descripcion` de un solo nodo (cero
     nodos/aristas agregados); estado `verificado`; re-test determinístico
     **27/27** (`data/backlog/retests/C7_retest_2026-08-03.md`); sha256
-    posterior `26fac8b4…` (= sha del vigente).
+    posterior `26fac8b4…` (= sha de KG-Refinado).
 - **Hashes de referencia del `ver_nodo` de C6 (supersesión):** los vigentes,
   sellados en `data/backlog/retests/C6_retest_2026-08-03.md` (laudo de
   deslinde, commit `5b66d8b`), son
@@ -109,8 +123,13 @@ a los del commit de sellado de cada archivo).
 | Nombre canónico | Alias | Path del `kg.json` | sha256 (corto) | Nodos / aristas | Commit de sellado | Generación del pipeline |
 |---|---|---|---|---|---|---|
 | **KG-Base** | `run_3`, `run_3_ppf_core`, baseline de la Fase 2.3 | `data/experiment/run_3_ppf_core/kg.json` | `12c226e2` | 4.050 / 6.634 | `58581b6` (alta); ganador de la corrida congelada, `d56020e` | Gen. 1 — Fase 2.2, estrategia 3/5 (7 entidades / 12 relaciones), Haiku 4.5 |
-| **KG-Refinado** | `v3`, `reensamblado_v3`, vigente | `data/experiment/grafo_v2/reensamblado_v3/kg.json` | `26fac8b4` | 4.469 / 8.073 | `05984e1` (C7; origen `7faa03f` + C1–C7) | Gen. 2 — extracción esquema v2 + re-ensamblado + C1–C7; pre-Enmienda 01 |
+| **KG-Refinado** | `v3`, `reensamblado_v3`, ex-vigente (hasta U-MIG-r1) | `data/experiment/grafo_v2/reensamblado_v3/kg.json` | `26fac8b4` | 4.469 / 8.073 | `05984e1` (C7; origen `7faa03f` + C1–C7) | Gen. 2 — extracción esquema v2 + re-ensamblado + C1–C7; pre-Enmienda 01 |
 | **KG-Reextraído** | `v2`, `corpus_v2`, "grafo v2 FINAL" | `data/experiment/reextraccion_v2/corpus_v2/salida/kg.json` | `8e2eadee` | 6.178 / 11.415 | `5273c0c` (2026-08-12) | Gen. 3 — pipeline E0–E3 con Enmienda 01, desde los PDFs, sin heredar C1–C7; E4/E5 no ejecutados |
+
+Grafo adicional de EV2, posterior a la tabla canónica de `237fb8f`:
+**KG-Reextraído-r1** (`0226e947`, 6.529 / 17.772, sellado `185e042`, medición
+EV2 `774acac`) — el VIGENTE desde el laudo `docs/laudo_promocion_r1_vigente.md`
+(ver arriba, §1).
 
 Cuarto grafo con alias en colisión (fuera de EV2): `data/experiment/grafo_v2/kg.json`
 (medición sellada del escalón 1, sha `2c7487bb`, 3.872 / 7.231) — se lo
@@ -126,7 +145,7 @@ Fuente: `data/experiment/evaluacion_escalon1/corridas/resultados_1b_FINALES_2026
 | Grafo | EV1 (36 preguntas) |
 |---|---|
 | `grafo_v2` (medición sellada del escalón 1, sha `2c7487bb`) | 27/36 |
-| KG-Refinado (linaje `reensamblado_v3`, medido en su estado previo a C1–C7; el vigente `26fac8b4` ya incluye las siete) | 29/36 |
+| KG-Refinado (linaje `reensamblado_v3`, medido en su estado previo a C1–C7; KG-Refinado (`26fac8b4`) ya incluye las siete) | 29/36 |
 | KG-Base (`12c226e2`, referencia) | 31/36 |
 
 - Lectura sellada del 1b: `docs/lectura_escalon1b.md` (commit `e77b11f`). EV1
@@ -138,7 +157,7 @@ Fuente: `data/experiment/evaluacion_escalon1/corridas/resultados_1b_FINALES_2026
   laudo, ídem y `docs/spec_evaluacion_intrinseca.md` §8).
 - Nota de comparabilidad: la pasada 1 midió el v3 previo a las correcciones
   C1 a C7 (4.458 nodos / 8.044 aristas, `pasada1_resumen.md`
-  cabecera); el vigente ya incluye las siete (4.469 / 8.073, §1).
+  cabecera); KG-Refinado (`26fac8b4`) ya incluye las siete (4.469 / 8.073, §1).
 
 ### 2.b EV2 — CERRADO (commit de cierre `64de678`, 2026-08-17)
 

@@ -62,6 +62,14 @@ canónico KG-Reextraído-r1, ruta `salida_r1/kg.json`, sha `0226e947…`,
 de que KG-Refinado pasa a grafo medido/sellado (deja de ser vigente, no se
 borra ni se descarga del contenedor).
 
+## Fe de erratas (U-MIG-r1, fase 1)
+
+El paso 1 atribuía la creación del índice full-text a `cargar_kg.py`; la
+creación de índices vive en `indices.py` desde A1.1 (se ejecutó
+`indices.py --grafo KG_Reextraido_r1` como parte de la carga, sin cambios de
+código). Detectado y declarado por el ejecutor de U-MIG-r1; el resto del
+paso se ejecutó como estaba escrito.
+
 ## Qué NO hace este plan
 
 - No elige el brazo KG de A2.1 (pre-registro de A2.1, principio 7).

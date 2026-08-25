@@ -5,8 +5,9 @@ y endpoint GET /runs. U2: POST /chat envolviendo al GraphAgent del harness.
 U3: registro append-only de turnos y feedback (POST /feedback). H2: backend
 de inferencia configurable (API Anthropic o Bedrock, ver llm_backend.py) y
 registro por app/sessions/<usuario>/<session_id>.jsonl con turno derivado
-del archivo. Toda carga de grafos pasa por load_graph_from_path() del
-loader de la Fase 2.3; acá no se parsea ningún kg.json a mano.
+del archivo. Toda carga de grafos pasa por _cargar_grafo(): el loader de la
+Fase 2.3 (load_graph_from_path) para todos los grafos salvo r1, que usa la
+vista runtime del registro Neo4j; acá no se parsea ningún kg.json a mano.
 
 Arranque, desde la raíz del repo (modo local: requiere ANTHROPIC_API_KEY en
 el entorno para /chat; la app no lee ningún .env. Modo Bedrock: ver README):
@@ -181,6 +182,13 @@ ADAPTER_KEYS = {
     "run_3_ppf_core": "run_3",
     "run_4_schema_light": "run_4",
     "run_5_hybrid": "run_5",
+    # KG-Reextraído-r1: provenance primaria {to, archivo, punto} (formato
+    # KG-Reextraído), que el loader sellado no entiende. El valor especial
+    # "r1_vista_runtime" NO es un adapter_key del loader: _cargar_grafo() lo
+    # despacha a la vista runtime del registro Neo4j (grafos.cargar_vista_runtime
+    # de data/experiment/neo4j/, registro en memoria precedente U-B1.8) — la
+    # misma vista de la medición 774acac y del contenido servido por Neo4j.
+    "r1_vigente": "r1_vista_runtime",
 }
 
 # Grafos registrados EXPLÍCITAMENTE, listados ANTES de los descubiertos por glob.
@@ -191,8 +199,27 @@ ADAPTER_KEYS = {
 # explícito a propósito — NO generalizar el glob a dos niveles: un glob
 # recursivo descubriría kg.json que no son grafos promovidos.
 GRAFOS_EXPLICITOS = [
+    # Promoción a vigente (laudo docs/laudo_promocion_r1_vigente.md; sello de
+    # medición 774acac): KG-Reextraído-r1, sha256 0226e947…4196a, 6.529 nodos /
+    # 17.772 aristas. `v3_vigente` no se borra (pasa a grafo medido/sellado).
+    ("r1_vigente", EXPERIMENT_DIR / "reextraccion_v2" / "corpus_v2" / "salida_r1" / "kg.json"),
     ("v3_vigente", EXPERIMENT_DIR / "grafo_v2" / "reensamblado_v3" / "kg.json"),
 ]
+
+
+def _cargar_grafo(run_id: str, kg_path):
+    """Carga única de grafos de la app. El adapter especial "r1_vista_runtime"
+    despacha a la vista runtime del registro Neo4j (verifica el sha sellado
+    antes de servir); el resto va por load_graph_from_path() del loader."""
+    adapter_key = ADAPTER_KEYS.get(run_id)
+    if adapter_key == "r1_vista_runtime":
+        neo4j_dir = str(EXPERIMENT_DIR / "neo4j")
+        if neo4j_dir not in sys.path:
+            sys.path.insert(0, neo4j_dir)
+        from grafos import cargar_vista_runtime, verificar_sha  # noqa: E402
+        verificar_sha("KG_Reextraido_r1")
+        return cargar_vista_runtime("KG_Reextraido_r1")
+    return load_graph_from_path(kg_path, adapter_key=adapter_key)
 
 
 def _discover_runs() -> list:
@@ -211,7 +238,7 @@ def _discover_runs() -> list:
         vistos.add(run_id)
         ruta = str(kg_path.relative_to(REPO_ROOT))
         try:
-            kg = load_graph_from_path(kg_path, adapter_key=ADAPTER_KEYS.get(run_id))
+            kg = _cargar_grafo(run_id, kg_path)
             runs.append({"id": run_id, "ruta": ruta,
                          "nodos": len(kg.nodes), "aristas": len(kg.edges)})
         except Exception as e:
@@ -372,8 +399,7 @@ def post_chat(req: ChatRequest,
     with _CHAT_LOCK:
         agent = AGENTS.get(req.run_id)
         if agent is None:
-            kg = load_graph_from_path(REPO_ROOT / info["ruta"],
-                                      adapter_key=ADAPTER_KEYS.get(req.run_id))
+            kg = _cargar_grafo(req.run_id, REPO_ROOT / info["ruta"])
             agent = _ChatAgent(kg, client=LLM_CLIENT)
             AGENTS[req.run_id] = agent
 
