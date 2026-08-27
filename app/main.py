@@ -9,6 +9,16 @@ del archivo. Toda carga de grafos pasa por _cargar_grafo(): el loader de la
 Fase 2.3 (load_graph_from_path) para todos los grafos salvo r1, que usa la
 vista runtime del registro Neo4j; acá no se parsea ningún kg.json a mano.
 
+U-APP: (1) los grafos registrados en NEO4J_GRAFOS se sirven por defecto con
+GraphAgentNeo4j en modo 'fulltext' (retriever BM25 promovido por laudo A1.6,
+config sellada en el pre-registro 68c79dc), con el GraphIndex in-memory como
+FALLBACK DECLARADO si Neo4j no está disponible (campo `backend` en /runs y
+`backend_grafo` en el registro del turno; el flag
+APP_FORZAR_FALLBACK_GRAPHINDEX=1 fuerza el fallback para probarlo sin tumbar
+el contenedor). (2) Cada turno registrado suma un campo `usage` con los
+tokens crudos por llamada API y el agregado del turno, leídos de la traza
+del harness (QuestionTrace.api_calls); el costo en USD no se persiste.
+
 Arranque, desde la raíz del repo (modo local: requiere ANTHROPIC_API_KEY en
 el entorno para /chat; la app no lee ningún .env. Modo Bedrock: ver README):
     uvicorn app.main:app --port 8000
@@ -207,26 +217,67 @@ GRAFOS_EXPLICITOS = [
 ]
 
 
+NEO4J_DIR = EXPERIMENT_DIR / "neo4j"
+
+
 def _cargar_grafo(run_id: str, kg_path):
     """Carga única de grafos de la app. El adapter especial "r1_vista_runtime"
     despacha a la vista runtime del registro Neo4j (verifica el sha sellado
     antes de servir); el resto va por load_graph_from_path() del loader."""
     adapter_key = ADAPTER_KEYS.get(run_id)
     if adapter_key == "r1_vista_runtime":
-        neo4j_dir = str(EXPERIMENT_DIR / "neo4j")
-        if neo4j_dir not in sys.path:
-            sys.path.insert(0, neo4j_dir)
+        if str(NEO4J_DIR) not in sys.path:
+            sys.path.insert(0, str(NEO4J_DIR))
         from grafos import cargar_vista_runtime, verificar_sha  # noqa: E402
         verificar_sha("KG_Reextraido_r1")
         return cargar_vista_runtime("KG_Reextraido_r1")
     return load_graph_from_path(kg_path, adapter_key=adapter_key)
 
 
+# --- Backend de retrieval por grafo (U-APP) ----------------------------------
+# Grafos de la app con entrada en el registro Neo4j (neo4j/grafos.py): se
+# sirven contra su label con el índice full-text de su entrada. Los demás
+# (run_1..run_5, etc.) siguen en GraphIndex in-memory: no se cargan a Neo4j.
+NEO4J_GRAFOS = {
+    "r1_vigente": "KG_Reextraido_r1",
+    "v3_vigente": "KG_Refinado",
+}
+FLAG_FALLBACK_GRAFO = "APP_FORZAR_FALLBACK_GRAPHINDEX"
+
+
+def _conectar_neo4j():
+    """(driver, None) si Neo4j está disponible; (None, motivo) si no. Con
+    driver None los grafos de NEO4J_GRAFOS se sirven con GraphIndex y el
+    motivo queda declarado en /runs. El flag fuerza el fallback para probarlo
+    sin tumbar el contenedor."""
+    if (os.environ.get(FLAG_FALLBACK_GRAFO) or "").strip():
+        return None, f"fallback forzado por {FLAG_FALLBACK_GRAFO}"
+    try:
+        if str(NEO4J_DIR) not in sys.path:
+            sys.path.insert(0, str(NEO4J_DIR))
+        from conexion import abrir_driver  # noqa: E402
+        return abrir_driver(), None
+    except Exception as e:
+        return None, f"{type(e).__name__}: {e}"
+
+
+NEO4J_DRIVER, NEO4J_FALLBACK_MOTIVO = _conectar_neo4j()
+
+
+def _backend_de(run_id: str) -> str:
+    """Backend de retrieval con el que la app sirve este grafo."""
+    if run_id not in NEO4J_GRAFOS:
+        return "graphindex"
+    return "neo4j/fulltext" if NEO4J_DRIVER is not None else "graphindex/fallback"
+
+
 def _discover_runs() -> list:
-    """Un objeto {id, ruta, nodos, aristas} por grafo: primero los registrados
-    explícitamente (GRAFOS_EXPLICITOS), después un directorio por kg.json de
-    primer nivel; si un grafo no carga, el run entra como {id, ruta, error} sin
-    romper el arranque."""
+    """Un objeto {id, ruta, nodos, aristas, backend} por grafo: primero los
+    registrados explícitamente (GRAFOS_EXPLICITOS), después un directorio por
+    kg.json de primer nivel; si un grafo no carga, el run entra como
+    {id, ruta, error} sin romper el arranque. Los conteos salen SIEMPRE del
+    loader (aunque el backend de retrieval sea Neo4j): son la verificación
+    contra los conteos sellados."""
     runs = []
     vistos = set()
     candidatos = list(GRAFOS_EXPLICITOS) + [
@@ -239,18 +290,24 @@ def _discover_runs() -> list:
         ruta = str(kg_path.relative_to(REPO_ROOT))
         try:
             kg = _cargar_grafo(run_id, kg_path)
-            runs.append({"id": run_id, "ruta": ruta,
-                         "nodos": len(kg.nodes), "aristas": len(kg.edges)})
+            entrada = {"id": run_id, "ruta": ruta,
+                       "nodos": len(kg.nodes), "aristas": len(kg.edges)}
         except Exception as e:
-            runs.append({"id": run_id, "ruta": ruta,
-                         "error": f"{type(e).__name__}: {e}"})
+            entrada = {"id": run_id, "ruta": ruta,
+                       "error": f"{type(e).__name__}: {e}"}
+        entrada["backend"] = _backend_de(run_id)
+        if entrada["backend"] == "graphindex/fallback":
+            entrada["backend_motivo"] = NEO4J_FALLBACK_MOTIVO
+        runs.append(entrada)
     return runs
 
 
-class _ChatAgent(GraphAgent):
-    """GraphAgent que además registra cada tool call con su resultado COMPLETO
-    (tr.steps del harness trunca el output a 1200 chars; para los resúmenes de
-    /chat hace falta el dict entero)."""
+class _ToolLogMixin:
+    """Registra cada tool call con su resultado COMPLETO (tr.steps del harness
+    trunca el output a 1200 chars; para los resúmenes de /chat y el registro
+    del turno hace falta el dict entero). Mixin para componerlo tanto con el
+    GraphAgent in-memory como con GraphAgentNeo4j sin duplicar código del
+    harness: _run_tool delega en super() y solo anota."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -260,6 +317,66 @@ class _ChatAgent(GraphAgent):
         result = super()._run_tool(name, args)
         self.tool_log.append((name, args, result))
         return result
+
+
+class _ChatAgent(_ToolLogMixin, GraphAgent):
+    """Agente de /chat sobre el GraphIndex in-memory del harness."""
+
+
+_AGENTE_NEO4J_CLS = None
+
+
+def _clase_agente_neo4j():
+    """Clase del agente de /chat con backend Neo4j, definida perezosamente:
+    agente_neo4j solo se importa cuando el driver abrió (sin Neo4j la app
+    completa vive en fallback y este import nunca corre)."""
+    global _AGENTE_NEO4J_CLS
+    if _AGENTE_NEO4J_CLS is None:
+        if str(NEO4J_DIR) not in sys.path:
+            sys.path.insert(0, str(NEO4J_DIR))
+        from agente_neo4j import GraphAgentNeo4j  # noqa: E402
+
+        class _ChatAgentNeo4j(_ToolLogMixin, GraphAgentNeo4j):
+            """Agente de /chat con las 3 tools resueltas contra Neo4j."""
+
+        _AGENTE_NEO4J_CLS = _ChatAgentNeo4j
+    return _AGENTE_NEO4J_CLS
+
+
+def _crear_agente(run_id: str, info: dict):
+    """Agente de /chat para un run, según el backend declarado en su entrada
+    de /runs. Si la creación del agente Neo4j falla en runtime (p. ej. el
+    driver murió después del arranque), degrada a GraphIndex y lo declara
+    actualizando la entrada (fallback visible en /runs y en los turnos)."""
+    if info.get("backend") == "neo4j/fulltext":
+        try:
+            from neo4j_index import Neo4jIndex  # noqa: E402  (path ya insertado)
+            indice = Neo4jIndex(NEO4J_DRIVER, grafo=NEO4J_GRAFOS[run_id],
+                                modo="fulltext")
+            return _clase_agente_neo4j()(indice, client=LLM_CLIENT)
+        except Exception as e:
+            info["backend"] = "graphindex/fallback"
+            info["backend_motivo"] = f"{type(e).__name__}: {e}"
+    kg = _cargar_grafo(run_id, REPO_ROOT / info["ruta"])
+    return _ChatAgent(kg, client=LLM_CLIENT)
+
+
+def _usage_de(tr) -> dict:
+    """Usage CRUDO del turno, leído de la traza del harness: una entrada por
+    llamada API (QuestionTrace.api_calls: input/output/cache_read/cache_write/
+    stop_reason/latency_s) más el agregado del turno. El costo en USD NO se
+    persiste (las tarifas cambian): se computa afuera con precios declarados."""
+    return {
+        "por_llamada": [dict(c, modelo=MODEL_EFECTIVO) for c in tr.api_calls],
+        "total": {
+            "llamadas": len(tr.api_calls),
+            "input_tokens": tr.tokens_in,
+            "output_tokens": tr.tokens_out,
+            "cache_read": tr.cache_read,
+            "cache_write": tr.cache_write,
+            "modelo": MODEL_EFECTIVO,
+        },
+    }
 
 
 def _resumen_tool(name: str, result) -> str:
@@ -286,7 +403,7 @@ def _resumen_tool(name: str, result) -> str:
 app = FastAPI(title="bcra-regulatory-kg — app local")
 RUNS = _discover_runs()
 RUNS_BY_ID = {r["id"]: r for r in RUNS}
-AGENTS = {}  # run_id -> _ChatAgent, creado perezosamente en el primer /chat
+AGENTS = {}  # run_id -> agente (_ChatAgent o _ChatAgentNeo4j), perezoso en el primer /chat
 # tool_log es estado compartido por agente: serializamos /chat para no mezclarlo.
 _CHAT_LOCK = threading.Lock()
 
@@ -399,9 +516,10 @@ def post_chat(req: ChatRequest,
     with _CHAT_LOCK:
         agent = AGENTS.get(req.run_id)
         if agent is None:
-            kg = _cargar_grafo(req.run_id, REPO_ROOT / info["ruta"])
-            agent = _ChatAgent(kg, client=LLM_CLIENT)
+            agent = _crear_agente(req.run_id, info)
             AGENTS[req.run_id] = agent
+        # Tras _crear_agente: si hubo fallback en runtime, info ya lo declara.
+        backend_grafo = info.get("backend", "graphindex")
 
         agent.tool_log.clear()
         tr = agent.ask(session_id, req.pregunta)
@@ -430,10 +548,15 @@ def post_chat(req: ChatRequest,
             "turno": turno,
             "usuario": usuario,
             "run_id": req.run_id,
+            # `backend` es el backend de INFERENCIA (H2: anthropic/bedrock);
+            # `backend_grafo` es el backend de RETRIEVAL del grafo (U-APP).
             "backend": BACKEND,
+            "backend_grafo": backend_grafo,
             "modelo": MODEL_EFECTIVO,
             "pregunta": req.pregunta,
             "respuesta": respuesta,
+            # Tokens crudos por llamada API + agregado del turno (sin USD).
+            "usage": _usage_de(tr),
             # En el registro va el resultado COMPLETO de cada tool, sin truncar.
             "tools_llamadas": [
                 {"tool": name, "argumentos": args, "resultado": result}
@@ -450,6 +573,7 @@ def post_chat(req: ChatRequest,
         ],
         "session_id": session_id,
         "turno": turno,
+        "backend_grafo": backend_grafo,
     }
 
 

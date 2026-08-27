@@ -122,6 +122,21 @@ provenance múltiple (varias ubicaciones por nodo o arista), registrá su
 `adapter_key` en el dict `ADAPTER_KEYS` de `app/main.py`; si no, se carga
 con el adaptador nulo.
 
+### Backend de retrieval por grafo
+
+Los grafos con entrada en `NEO4J_GRAFOS` de `app/main.py` (hoy `r1_vigente`
+y `v3_vigente`, mapeados al registro `data/experiment/neo4j/grafos.py`) se
+sirven por defecto con el agente Neo4j en modo `fulltext` (retriever BM25
+sobre el índice Lucene del grafo). Requiere el paquete `neo4j` y el
+contenedor local arriba (`data/experiment/neo4j/docker-compose.yml`). Si
+Neo4j no está disponible al arrancar — o la creación del agente falla en
+runtime — la app sirve ese grafo con el `GraphIndex` in-memory del harness
+y lo DECLARA: `GET /runs` muestra `backend` por grafo (`neo4j/fulltext`,
+`graphindex` o `graphindex/fallback` + `backend_motivo`) y cada turno
+registra `backend_grafo`. Para probar el fallback sin tumbar el contenedor:
+`APP_FORZAR_FALLBACK_GRAPHINDEX=1`. Los grafos sin entrada (run_1..run_5,
+etc.) siguen en `GraphIndex`.
+
 ### Dónde quedan las sesiones
 
 En `app/sessions/<usuario>/<session_id>.jsonl` (un archivo por sesión,
@@ -130,7 +145,13 @@ usuario es el que corresponde al token; sin autenticación, es `local`.
 El registro es append-only: una línea JSON por turno y una por feedback,
 nunca se edita una línea ya escrita. Las líneas de turno guardan los
 resultados completos de las tools (sin truncar) más el backend e ID de
-modelo usados, así que sirven como traza íntegra de cada respuesta. Si el
+modelo usados, así que sirven como traza íntegra de cada respuesta.
+Además, cada turno persiste `usage` (tokens crudos por llamada API —
+input, output, cache_read, cache_write, modelo — y el agregado del turno;
+el costo en USD no se persiste porque las tarifas cambian: se computa
+afuera con precios declarados) y `backend_grafo` (con qué backend de
+retrieval se sirvió ese turno). Los jsonl anteriores a estos campos se
+siguen leyendo igual. Si el
 server se reinicia, la numeración de turnos de una sesión continúa desde
 el archivo existente. En el deploy hosteado, las sesiones se bajan a la
 máquina local por rsync (comando exacto en el runbook de
