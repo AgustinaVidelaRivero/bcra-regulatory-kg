@@ -152,6 +152,19 @@ negociable"; (b) caso de uso 1 explicabilidad agéntica — cero rastro en el re
    (cuánto rinde, con resultados sinceros sobre el grafo pre-corrección) y el **entregable**
    (el mejor grafo posible, post-evaluación, con las correcciones trazadas a los hallazgos
    que las motivaron). Nunca se presenta el segundo como si fuera el primero.
+10. **Conjunto de desarrollo vs conjunto de test.** Los cinco Textos Ordenados del subset son
+    el **conjunto de desarrollo** (train/eval) del proyecto: sobre ellos se itera, se ajusta el
+    algoritmo y se corren todas las evaluaciones de desarrollo — EV2, refinamiento, ablaciones,
+    tripletas —, sin límite de iteración y sin que eso comprometa la validez de la tesis. El
+    **corpus BCRA escalado es el conjunto de test** y el **objeto central de la tesis**: sobre
+    él se corre UNA evaluación final, pre-registrada antes de mirarla, sin iterar sobre sus
+    resultados. Consecuencia directa: presentar la tesis como un estudio sobre los cinco TOs
+    sería sobreajustar el documento; los experimentos del subset se presentan como lo que son
+    —el desarrollo y la validación del método— y el resultado que sostiene la tesis se mide
+    sobre el recurso final. El principio 7 (EV2 es examen) sigue rigiendo **dentro** del
+    conjunto de desarrollo: EV2 no se re-mide ni se ajusta mirando sus resultados. Origen:
+    marco establecido en la reunión de mentores del 26/08/2026; su aplicación a cada unidad
+    concreta se registra por laudo (D-g, D-f).
 
 Tiers: **T1** = sin esto la tesis no cierra · **T2** = la hace mucho mejor · **T3** = si sobra.
 
@@ -217,7 +230,7 @@ promoverse a vigente. Todo código puro salvo lo marcado.
 - [x] B1.7 (**HECHA en U-B1a**, `185e042` — `salida_r1/kg.json` sha `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a`, 6.529 nodos / 17.772 aristas, doble corrida byte-idéntica, 0 colgantes, T1–T7 7/7 (T2 ahora 6 nodos en 5 puntos incluido 7.11.5, que entró con la cola). Diff: +351 nodos; `referencia` 34→5.680 (5.645 de B1.3 + 1 TO→Comunicación que entró con la cola = +5.646; el «5.645 vs 5.646» del reporte son dos cantidades distintas, no un error)) (I, $0) Re-ensamblar → **KG-Reextraído-r1** (mismos crudos de E1/E3, sin API), tests de respuesta conocida ampliados (ver B2), sha sellado. Es la primera release que llega al gate de B2.6: hasta el laudo B3.1 las intrínsecas se computan y reportan en modo INFORMATIVO, no bloquean.
 - [x] B1.8 (**HECHA en U-B1.8**, sello `774acac` — tabla definitiva de r1 **6 correcto / 26 parcial / 8 incorrecto** al lado de las selladas (3/20/17 · 5/26/9 · 4/27/9); vías 11 juez_base / 21 juez_enc / 5 adjudicación base / 3 adjudicación §7; **P1–P5 6/6 cumplidas** (P1 31/40 en el borde exacto, laudo del censo; P2a ausencia 8<9 con granularidad 6<8; P2b 3<4 — la predicción central; P3 generación 19∈[18,24]; P4 techo 8∈[3,9] sin evidencia contra H17, interior rotado vista→alcanzabilidad; P5 incorrectos 8≤9); juez vs autora en muestra simétrica 4/4 y 15/15 con 0 sobre / 0 sub-acreditación (leído con la salvedad de `ev2_r1/adjudicacion/nota_episodios_adjudicacion.md`); atribución A0.2 (regla `40603a9`/`85d9fdb`): trazas base 8 ausencia / 7 alcanzabilidad / 1 vista / 19 generación / 5 correcto, los 8 incorrectos definitivos = 3 ausencia + 2 alcanzabilidad + 3 generación, replay estándar y fuerte 40/40 + 71/71; 3 desvíos del §7 declarados con evidencia (recuperación EV2F-029, retoma del juez por 503, wrapper de freno de retoma con guardia real); costo real USD 7,29 desde dbs vs ~$3 estimados, bajo tope escalonado laudado 3,5 + 5,5. **r1 es el primer grafo bajo 9 incorrectos y el de más correctos, pero dentro de la banda de no-señal contra KG-Refinado (6/26/8 vs 5/26/9; cobertura 69 vs 73)**. LAUDO DE PROMOCIÓN TOMADO 2026-08-25: r1 VIGENTE (`docs/laudo_promocion_r1_vigente.md`; migración declarada por `data/experiment/neo4j/plan_carga_r1.md`, tablero §1 se actualiza en el commit del switch); el brazo KG de A2.1 se decide en el pre-registro de A2.1 citando la tabla de `774acac`, no acá) (I, ~$3 → real 7,29) Fidelidad EV2 de KG-Reextraído-r1 (40 preguntas, mismo protocolo) → ¿supera a KG-Refinado? **Rige el principio 7**: KG-Reextraído-r1 quedó medido sobre EV2 una sola vez; B1.1–B1.7 se validan con regression suite y material propio (B2), nunca contra resultados de EV2. Insumo de la release r2 (nada se corrige en r1): 7 anclas de granularidad + 2 de contenedor del censo, más los pendientes de U-B1a.
 - [x] U-MIG-r1 (**HECHA**, ejecuta el laudo `81587f9` vía `data/experiment/neo4j/plan_carga_r1.md`) (I, ~USD 0,04) Migración del vigente: r1 cargado en Neo4j bajo `:KG_Reextraido_r1` (6.529/17.772, 0 colgantes, huella loader==Neo4j, equivalencia 454/454 paridad, labels vecinos intactos, índice full-text con la definición común); `r1_vigente` primera entrada de `GRAFOS_EXPLICITOS` con adapter `r1_vista_runtime` (`_cargar_grafo()` único punto de carga, `verificar_sha` antes de servir); `tablero.md` §1 actualizado (KG-Refinado → medido/sellado, sin borrarse ni descargarse). Smoke LLM (1 turno autorizado, ≈USD 0,04): cita `Punto 6.7` verificada verbatim contra el PDF; composición por navegación estructural (`ver_vecinos` → 3 obligaciones entrantes) **sobre aristas pre-existentes en KG-Reextraído** — dato para U-APP/A2, no evidencia del salto de aristas de r1 (matiz verificado por mesa contra ambos kg.json). Registros: contradicción de mandato (USD 0 vs smoke; error de redacción de mesa, resolución del ejecutor correcta), fe de erratas de `plan_carga_r1.md` (índices en `indices.py`).
-- [x] U-APP (**HECHA**, I, real USD 0,0285) **Deudas de la app saldadas**: (1) consecuencia app del laudo A1.6 (`89055c5`) implementada — `GraphAgentNeo4j` `modo='fulltext'` como default (`r1_vigente` y `v3_vigente` contra su label e índice; run_1..run_5 siguen GraphIndex), fallback declarado en DOS niveles (arranque y runtime, `backend`/`backend_motivo` en `/runs`, flag de prueba sin tumbar el contenedor), ambos estados demostrados y re-verificados por mesa; `_ToolLogMixin` conserva el registro de tool calls; cuarteto/`grafos.py`/`neo4j_index.py`/`llm_backend.py` byte-intactos (el harness ya capturaba usage por llamada — la instrumentación lee de la traza). (2) usage por turno en el jsonl de sesiones: tokens crudos por llamada + agregado, SIN USD hardcodeado, retrocompatible (formato viejo se sigue leyendo; `backend_grafo` aditivo, `backend` LLM intacto para `adaptador_sesiones.py`); 5 tests nuevos (`app/test_u_app.py`). Smoke con backend fulltext: misma pregunta que U-MIG-r1, costo REAL desde usage persistido USD 0,028509 (tope 0,10). En cola (cosmético, anotado): deduplicación de citas repetidas en la respuesta de la app. Dato de deploy: el venv hosteado no tiene driver `neo4j` → hasta instalarlo (+ servidor accesible) serviría en `graphindex/fallback` declarado — relevante para el pull al EC2.
+- [x] U-APP (**HECHA**, sello `dcab8e6`, I, real USD 0,028509) **Deudas de la app saldadas**: (1) consecuencia app del laudo A1.6 (`89055c5`) implementada — `GraphAgentNeo4j` `modo='fulltext'` como default (`r1_vigente` y `v3_vigente` contra su label e índice; run_1..run_5 siguen GraphIndex), fallback declarado en DOS niveles (arranque y runtime, `backend`/`backend_motivo` en `/runs`, flag de prueba sin tumbar el contenedor), ambos estados demostrados y re-verificados por mesa; `_ToolLogMixin` conserva el registro de tool calls; cuarteto/`grafos.py`/`neo4j_index.py`/`llm_backend.py` byte-intactos (el harness ya capturaba usage por llamada — la instrumentación lee de la traza). (2) usage por turno en el jsonl de sesiones: tokens crudos por llamada + agregado, SIN USD hardcodeado, retrocompatible (formato viejo se sigue leyendo; `backend_grafo` aditivo, `backend` LLM intacto para `adaptador_sesiones.py`); 5 tests nuevos (`app/test_u_app.py`). Smoke con backend fulltext: misma pregunta que U-MIG-r1, costo REAL desde usage persistido USD 0,028509 (tope 0,10). En cola (cosmético, anotado): deduplicación de citas repetidas en la respuesta de la app. **Deuda declarada (deploy)**: el venv del EC2 no tiene el driver `neo4j` → hasta instalarlo (+ servidor accesible) el deploy serviría en `graphindex/fallback` declarado; **acción: instalar el driver ANTES del pull, y smoke con backend Bedrock después del pull**. **Pendiente de mesa**: verificación cruzada por recomputo de U-APP contra disco en `dcab8e6` (unidad propia de la mesa revisora, no del ejecutor).
 - [ ] B1.9 (I, $0) **Capa de texto fuente indexada por provenance** — el grafo ya tiene el puntero exacto al chunk de E0 y hoy solo lo usa para citar. Indexar el **texto del chunk** y rutear los hits a los nodos que lo declaran en su provenance, como índice adicional del retriever (determinístico, sin LLM). Motivación medida (A1.4): 7 de las 20 fallas anti-léxicas son «nunca vista» porque la representación comprimida (label + descripción) perdió el vocabulario superficial que la pregunta usa. Se declara siempre como **brazo híbrido**, nunca como «el KG»; se mide sobre pares frescos (nunca EV2) y entra como tercer brazo de A2.
 - [ ] B1.10 (I, ~$0–2) **Embeddings sobre los nodos del KG** (índice denso HNSW en Neo4j) y **retriever híbrido BM25 + denso**, con `harrier-oss-v1-0.6b` (laudo A2.0b) y **pares frescos** (los v3 ya se usaron para medir y para elegir). Justificación medida, no intuición: A1.4 refutó P2 — lo léxico no cierra una brecha semántica; las 7 anclas «nunca vistas» son el blanco. Se mide sobre pares frescos (nunca EV2) con el mismo instrumental de A1.4, y si gana entra como configuración del brazo KG en A2. Complementa a B1.9 (texto fuente por provenance): uno recupera la superficie, el otro la semántica.
 **Pendientes de laudo que deja U-B1a (insumo de B1.8/B2 y de la release r2, principio 9 — nada de esto se corrige en r1):** (a) rangos «puntos X.1 a X.n»: hoy se expanden a todos los nodos de cada punto; alternativa rango → contenedor común con fallback a expansión; (b) 196 conflictos reales de properties (E4-LLM futuro); (c) 5 adjudicaciones cross-TO de contenido (4 Operacion + 1 Obligacion); (d) 41 `padre_sugerido` flaggeados; (e) recomputo de política de cola (79→68) como informativo. **Prerrequisito de carga en Neo4j**: entrada de r1 en `data/experiment/neo4j/grafos.py` (path `corpus_v2/salida_r1/kg.json`, sha `0226e947…`) antes de cualquier `cargar_kg.py`.
@@ -243,14 +256,7 @@ Objetivo: que "refinar" signifique arreglar el pipeline y re-correr, no editar e
 
 ### B4 · Evaluación intrínseca a nivel tripleta: precisión, importancia y recall (promesa "no negociable" del PPF) — T1 · S4–S5
 Objetivo: medir la **calidad de extracción** del grafo a nivel tripleta sin adjudicación manual
-masiva, con dos vías separadas y un juez LLM calibrado contra adjudicación humana. **Secuencia: DECISIÓN ABIERTA D-f (se lleva a la reunión de mentoría).** Dos escenarios, mismo
-instrumento: **(E1, recomendación del plan)** correr B4 primero sobre **KG-Reextraído-r1** (S4–S5)
-y reusarla sobre el gran grafo en B6.3 — argumentos: el PPF la declara no negociable y el
-escalado es T2 (lo primero que se recorta), y correrla sobre el subset deja el juez calibrado y
-el protocolo probado, de modo que sobre el gran grafo se repite a costo marginal; **(E2)** correr
-B4 una sola vez sobre el **grafo escalado** cuando se considere el mejor grafo posible —
-argumento: evaluar el objeto final y no un intermedio. Hasta el laudo, B4.1 (el diseño) avanza
-igual porque es idéntico en ambos escenarios; lo que espera es la **fecha de la corrida**. Reemplaza el diseño anterior de anotación ciega
+masiva, con dos vías separadas y un juez LLM calibrado contra adjudicación humana. **Secuencia: D-f, laudo firmado 27/08/2026** (`docs/laudo_D-f_secuencia_tripletas.md`; el planteo original ofrecía dos escenarios excluyentes E1/E2, superados por el principio 10): el instrumento se construye y valida sobre **KG-Reextraído-r1** —conjunto de desarrollo, donde se itera sin restricción y donde el juez queda calibrado y el protocolo probado— y la **medición que cuenta para la tesis** se corre una única vez sobre el **grafo escalado**, dentro de la evaluación final pre-registrada (B6.3), porque el objeto de la tesis es el recurso final. B4.1 (el diseño) avanza igual y debe declarar el doble rol. Reemplaza el diseño anterior de anotación ciega
 de tripletas gold sobre 25 unidades.
 - [ ] B4.1 (H+I, $0) **Diseño sellado** (`docs/preregistro_evaluacion_tripletas.md`): (a) **vía
   de precisión** — muestra aleatoria con semilla de **100 tripletas del grafo** (estratificada
@@ -289,21 +295,70 @@ de tripletas gold sobre 25 unidades.
 Si el tiempo no da: laudo escrito de reducción (50 tripletas de precisión, top-50 de recall)
 — nunca silencio. Depende de: B1 (KG-Reextraído-r1). Habilita: B2.6 (release r2), B6.3, C1.6.
 
-### B5 · Escalado: endurecimiento y prerrequisitos (issue #6, #11) — T2 · S4–S5
+### ESQ · Validación del esquema ANTES del escalado — **T1 · BLOQUEANTE de B5/B6**
+Origen: reunión de mentores del 26/08/2026. El esquema actual se diseñó mirando únicamente los
+cinco TOs del subset; antes de aplicarlo a todo el corpus hay que medir cuánto se le escapa,
+porque una vez escalado **volver atrás es inviable** (costo de re-extracción del corpus completo).
+Dos evaluaciones independientes sobre documentos **fuera del subset**, en este orden (la ciega
+primero, para que el análisis cualitativo no contamine el conteo), y un gate que las lee.
+- [ ] ESQ-1 (I, ~USD 15–20 **a estimar antes de autorizar**) **Test ciego de generalización del
+  esquema**: correr el extractor con el esquema vigente sobre **10 documentos nuevos** del corpus
+  (`data/raw`, selección por semilla declarada y registrada, disjunta del subset) y **contar
+  cuántas entidades y relaciones nuevas** aparecen que el esquema no contempla. Es ciego en el
+  sentido de que no se juzga cualitativamente el esquema: se cuenta deriva. Salida: tabla de
+  tipos fuera de esquema por documento + tasa de cobertura observada. **Fase de estimación de
+  costo con páginas reales y freno antes de gastar** (precedente U-B1.8).
+  **PUNTO DE DISEÑO — A RESOLVER EN EL MANDATO, antes de autorizar gasto**: el pipeline actual
+  restringe la salida a los tipos del esquema vigente; corrido así, el conteo de tipos fuera de
+  esquema es **cero por construcción** y el test devolvería un resultado tranquilizador y falso.
+  El modo de extracción de ESQ-1 debe **permitir salida fuera de esquema** — esquema como guía
+  con tipos abiertos, o dos pases (uno cerrado y uno de descubrimiento) —, y el mandato debe
+  **declarar cuál se usa y por qué**, con la evidencia de que el modo elegido efectivamente
+  reporta tipos no previstos (por ejemplo, verificado sobre un documento de control).
+  **CRITERIO DE LECTURA**: un resultado de cero tipos nuevos **NO se interpreta como buena
+  generalización** hasta haber verificado que el modo de extracción permitía reportarlos; sin esa
+  verificación, cero es un resultado nulo del instrumento, no un hallazgo sobre el esquema.
+  **Registro obligatorio**: los IDs de los 10 documentos quedan anotados en el archivo versionado
+  de exclusión `data/experiment/esq/documentos_excluidos_esq.json` (ver nota de alcance del
+  bloque).
+- [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema**: sobre **otros 10 documentos
+  random** (disjuntos de ESQ-1 y del subset), análisis en profundidad de si el esquema cubre las
+  relaciones que el texto exige — investigación cualitativa asistida, documento por documento,
+  con la evidencia textual de cada relación no cubierta. Salida: inventario de huecos del esquema
+  con cita al texto que los revela. **Registro obligatorio**: los IDs de sus 10 documentos se
+  anotan en el mismo archivo versionado de exclusión
+  `data/experiment/esq/documentos_excluidos_esq.json`.
+- [ ] ESQ-3 (H+I, $0) **Gate: lectura conjunta + retoques + laudo de esquema congelado**. Lee
+  ESQ-1 y ESQ-2, decide los **últimos retoques** del esquema (agregar/renombrar/fusionar tipos y
+  relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
+  pre-escalado, con sha, que es la que se aplica al corpus completo. **[LAUDO ESCRITO REQUERIDO —
+  toca compromisos del PPF/alcance]**. Ningún ítem de B5/B6 arranca sin este laudo.
+**Nota de alcance y fuga al conjunto de test (principio 10).** ESQ mide el **esquema**, no la
+calidad del grafo: no es una evaluación de fidelidad ni sustituye a B4, y **no consume el conjunto
+de preguntas del test** (no se evalúan respuestas sobre estos documentos, se inspecciona la
+extracción). Pero **sí traslada sus 20 documentos al conjunto de desarrollo a efectos del
+esquema**: ESQ-3 retoca el esquema en función de lo que esos documentos revelan, de modo que el
+esquema final ya los vio. Consecuencia obligatoria: los 20 documentos de ESQ-1 y ESQ-2 quedan
+**excluidos de la evaluación final** (B6.3) y sus IDs se registran en el archivo versionado
+`data/experiment/esq/documentos_excluidos_esq.json`, que B6.3 cita al construir su eval set. Los
+documentos siguen entrando al grafo escalado —lo que se excluye es su uso como material de
+evaluación final—, y esa exclusión se declara en el reporte de B6.3.
+
+### B5 · Escalado: endurecimiento y prerrequisitos (issue #6, #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S4–S5
 - [ ] B5.1 (I, $0) A1: parametrizar runner/E2/ensamblado por manifiesto (hoy cableado a 5 TOs; `censo_oraculo[to]` → KeyError; `LIMITACIONES_E0` hardcodeado; `ROL_POR_TO` con 5 keys); modo E2 sin oráculo.
 - [ ] B5.2 (I, $0) A3: regex de E0 (`Sección N[.:]`, `Índice` sin guiones con guarda) → paridad 5/5 byte a byte + selftest 57/57 obligatorios; health-check por TO (`(cid:NN)`, páginas sin Sección).
 - [ ] B5.3 (I, $0) A4/A5: `max_tokens` con reintento 16k→32k en el mismo pase; sub-chunking por ítems para TOs nuevos; no cerrar fase con errores reintentables; tope compartido entre clientes.
 - [ ] B5.4 (H+I) **Catálogo de sujetos v3** congelado (SNP: entidad girada/depositaria/receptora/originante; bancos centrales, FMI, BIS, CCP; rol de alcance por TO nuevo) → rota el prefijo cacheado de E1 (aceptado). A2 de la auditoría.
-- [ ] B5.5 (H) **Laudo D5**: corpus a escalar. Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora.
+- [ ] B5.5 (H) **Laudo D5**: corpus a escalar — **T1, NO RECORTABLE** desde la reunión del 26/08 (el escalado es el objeto central de la tesis, no un capítulo opcional: el laudo ya no decide *si* se escala sino *qué y en qué orden*). Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora. Prerrequisito adicional: laudo de esquema congelado (ESQ-3).
 - [ ] B5.6 (I, $0) Módulo de tablas (pdfplumber `extract_tables` con provenance, sin LLM) — RX-10 y montos invertidos; decide el destino del bloque RI.
 - [ ] B5.7 (I) Issue #6: documento de costos con tarifas reales + caching + experimento óptimo dentro de USD 200 (con B5.5). Laudo D4 warm-then-parallel (throughput: ~13 s/unidad → ~29 h secuenciales para 8.010).
 
-### B6 · Escalado: corrida por tandas (issue #11) — T2 · S6–S7 (máquina; humano mínimo)
+### B6 · Escalado: corrida por tandas (issue #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S6–S7 (máquina; humano mínimo)
 - [ ] B6.1 (I, ~$40) Tanda 1: 20 TOs digeribles (normativa general prioritaria), E0–E5, **gate de release de B2.6** (regression + shapes + intrínsecas + material propio) antes de ensamblar, carga en Neo4j, app sirviendo el grafo. Reporte: volúmenes, costo real vs estimado, incidencias. Es la primera ejecución del método de B2.8 de punta a punta sobre TOs nunca vistos.
 - [ ] B6.2 (I, ~$85) Tanda 2: resto de digeribles (48) si tanda 1 cierra sin sorpresas. Créditos AWS/Bedrock si aplica (`app/llm_backend.py` ya soporta Bedrock).
-- [ ] B6.3 (I, ~$5–15) Sanity funcional sobre el grafo escalado: 10 preguntas ciegas nuevas (protocolo U6) por instancia aislada, N=1, juez EV2 → solo descriptivo (no comparación); **más la evaluación intrínseca de B4 reusada** (mismo juez calibrado, misma regla de presencia, muestra nueva de tripletas y fragmentos del corpus escalado) → precisión/importancia/recall del gran grafo, comparables con r1 por construcción (en el escenario E2 de D-f, esta es la única corrida de B4 y se ejecuta con el alcance completo de B4.2–B4.4).
+- [ ] B6.3 (H+I, ~$25–40 **a estimar**) **EVALUACIÓN FINAL DE LA TESIS sobre el grafo escalado** — rediseñada por el principio 10 (era «sanity funcional descriptivo»). Es la medición del **conjunto de test**: se corre **una sola vez**, con **pre-registro sellado propio** (mismo molde que EV2 / A1.3: hipótesis, umbrales, criterios de lectura y tope de costo declarados ANTES de mirar resultado alguno). Componentes: (a) **eval set fresco sobre el corpus amplio** —preguntas nuevas con gold por criterios, selladas antes de correr, construidas sobre TOs **disjuntos del subset de desarrollo (los cinco TOs) Y de los 20 documentos de ESQ-1/ESQ-2** listados en `data/experiment/esq/documentos_excluidos_esq.json`, porque el esquema final se retocó mirándolos (ver nota de alcance del bloque ESQ); jamás EV2, que es material de desarrollo y está quemado. La disjunción se verifica contra ese archivo y se declara en el reporte—; (b) fidelidad con el juez calibrado + adjudicación humana simétrica; (c) atribución causal determinística A0.2; (d) **evaluación intrínseca por tripletas** con el instrumento ya validado sobre r1 (D-f): precisión, importancia y recall del gran grafo. Regla dura: si el resultado obliga a tocar el pipeline, el arreglo produce una **release posterior** y se declara como tal (principio 9) — no se re-corre esta evaluación para mejorar el número.
 - [ ] B6.4 (I) Cierre #11: reporte de escalado (vacío #5: costo, throughput, latencia).
-Condición de arranque: B1, B2, B5 cerrados y A2 en curso o cerrado. Si S6 llega sin B5 cerrado → **se recorta a tanda 1** o se descopa con laudo.
+Condición de arranque: **ESQ-3 laudado (esquema congelado)** + B1, B2, B5 cerrados y A2 en curso o cerrado. Si S6 llega sin B5 cerrado → se recorta a tanda 1 con laudo; **el escalado en sí ya no se descopa** (es el objeto central, D-g), lo que se ajusta es su alcance (D5/B5.5).
 
 ---
 
@@ -331,6 +386,11 @@ pasada puede ser asistida, pero se reescribe con voz propia y se revisa contra e
 capítulo de KG, pendiente de recibir como insumo de lectura.
 Capítulos (borrador → revisión → final), cada uno alimentado por un bloque:
 - [ ] C1.1 **Introducción** — estructura en ocho ideas (cada una un párrafo o dos): (1) los LLM habilitaron la construcción de KGs a escala y por qué los KGs importan para RAG; (2) limitaciones actuales, **solo las que este trabajo resuelve** (fidelidad no medida, comparación sin baseline justo, castellano/banca central, costo, evaluación intrínseca ciega a la sobre-fusión); (3) «acá se resuelve X, Y, Z»; (4) overview del método (corpus → esquema → E0–E5 → retrieval → evaluación bajo custodia → refinamiento por releases); (5) el grafo en sí (esquema, sujetos, provenance) con **una figura** de un subgrafo real; (6) la evaluación: «los grafos son difíciles de evaluar, por eso se desarrolló…» (juez de dos pasos, fidelidad por criterios, atribución causal, tripletas con importancia); (7) los números principales (EV2 3/20/17 · 5/26/9 · 4/27/9; ablación; head-to-head cuando exista); (8) lista de contribuciones. Pregunta + tres sub-preguntas + hallazgo rector quedan dentro de (3)/(6). **Primer borrador en S2**, antes de que haya más resultados: se actualiza después. (S2–S3)
+  - [x] C1.1 **tramo 1** (ideas 1–4: Motivación + Definición del problema) — redactado y sellado en `fffdbef` sobre esqueleto aprobado, con tuneo de la autora.
+  - [ ] C1.1 **tramo 1b — DESBLOQUEADO por D-g (reescritura de alcance)**: el cierre del párrafo 2 (hoy «cinco Textos Ordenados … densidad realista + evaluación exhaustiva», con marcador `[PENDIENTE MENTORES — D-g]`) y el enunciado del párrafo 4 (hoy «sobre cinco Textos Ordenados») se reescriben con el marco desarrollo/test: el objeto es el corpus regulatorio completo y los cinco TOs son el conjunto donde se construyó y validó el método. Se retira el marcador al aplicar. Borrador de mesa → tuneo de la autora (mismo circuito que el tramo 1).
+  - [ ] C1.1 **tramo de objetivos — DESBLOQUEADO por D-g**: el objetivo general se formula sobre el corpus completo (recurso final) y los específicos incluyen la validación del método sobre el conjunto de desarrollo.
+  - [ ] C1.1 **tramo de Estado del arte — DESBLOQUEADO**: el material de background llegó (ver U-RW y `docs/lecturas_reunion_2026-08-26.md`).
+- [ ] U-RW (I, $0) **Barrida de related work de *releases* de KG post-LLM, en cualquier disciplina** (compromiso de la reunión del 26/08). Encuadre que la motiva: esta tesis es **una tesis de recurso**, de modo que el trabajo relacionado relevante no es solo extracción de conocimiento en finanzas, sino trabajos que **publican un KG como artefacto** (medicina, alimentos, legal, cualquier dominio) y lo que hoy se considera metodológicamente exigible en un KG construido con LLMs. Insumos registrados en `docs/lecturas_reunion_2026-08-26.md`. Método: lectura en diagonal primero, luego selección de 3–4 para lectura en serio. Salida: mapa de lecturas + lista de puntos metodológicos a los que esta tesis debe responder (y qué de eso ya está cubierto). Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
 - [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3)
 - [ ] C1.4 **El método** — construcción y refinamiento de un KG regulatorio de punta a punta (sigue B2.8): pipeline E0–E5 (diseño, principios, enmienda 01 con P1–P3, costos, limitaciones) + ciclo de refinamiento por releases (B2.6) + retriever/backend + intake. Cada mecanismo con puntero al experimento que lo demuestra (§6). (S3–S4, cierra con B1/B2)
@@ -360,6 +420,13 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 | S7 (28 sep–4 oct) | — | B6.2–B6.4 | C1.7 |
 | S8 (5–11 oct) | buffer | buffer | C1.8–C1.9, C2 |
 | S9–S10 (12–26 oct) | — | — | C1.10 |
+
+**Reordenamiento por la reunión del 26/08** (el cronograma de arriba es previo y queda como
+referencia histórica): la ruta crítica pasa a ser **ESQ-1 → ESQ-2 → ESQ-3 → B5 → B6.1/B6.2 →
+B6.3 (evaluación final)**, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
+B4 sobre r1, B1.9/B1.10 y los casos de uso se re-encuadran como trabajo sobre el conjunto de
+desarrollo: siguen valiendo como experimentos de la tesis, pero ceden prioridad de calendario
+frente a ESQ y al escalado. El presupuesto de abajo no incorpora aún ESQ-1 (a estimar).
 
 Presupuesto API estimado del plan: A ≈ 105 (incluye A1.4 real **USD 11,19** de tope 20, A1.7 ~12, A2.0 ~0 en construcción, A2.5 condicional ~25) · B ≈ 137 (escalado 125 + resto + B1.10) · C 0 → ~USD 242
 (+ ~USD 30 de reserva)\*. El escalado usa el budget de #6 / créditos AWS.
@@ -433,37 +500,61 @@ existentes y se completa durante la escritura de C1.4; B2.6 (protocolo del ciclo
 Las decisiones D-a..D-e las toma la autora; cada una queda registrada como laudo escrito con
 justificación técnica antes de ejecutar la unidad que la usa.
 
-- D-a Caso de uso 1: descope escrito vs demo mínima (A2.4 / C0.4).
+- D-a Casos de uso: (i) explicabilidad agéntica — descope escrito vs demo mínima (A2.4 / C0.4); (ii) **log de operaciones → cadena causal**: valorado positivamente en la reunión del 26/08 y **estacionado por indicación de la misma reunión** como capítulo final independiente, a retomar después de la evaluación final del grafo escalado (no compite con la ruta crítica ESQ → escalado → evaluación final).
 - D-b Evaluación intrínseca a nivel tripleta (B4 rediseñada): alcance (100 tripletas de precisión, top-100 de recall), escala de importancia, regla de presencia y umbral de acuerdo del juez. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: B4 no arranca sin laudo redactado y fechado por la autora.
 - D-c Corpus a escalar (D5) y si el escalado entra o se recorta a tanda 1.
 - D-d Umbrales de intrínsecas pasada 2 (B3.1).
 - D-e **RESUELTA**: el plan vive en `docs/plan_tesis.md` (C0.2); issues por bloque abiertos en U-C0.1.
-- D-f **ABIERTA — se decide con los mentores**: ¿la evaluación intrínseca de tripletas (B4) se corre
-  primero sobre KG-Reextraído-r1 (E1, recomendación del plan) o una sola vez sobre el grafo
-  escalado (E2)? **No bloquea**: B4.1 (pre-registro), B1, B2, B5.1–B5.4, A2, C1. **Sí bloquea la
-  fecha de**: B4.2–B4.4 (la corrida y su lectura), B6.3 (reuso sobre el gran grafo, que en E2
-  pasa a ser la única corrida), y la **release r2** (grafo post-evaluación, principio 9: sin
-  evaluación previa no hay r2; en E2 la r2 sería la versión industrial del gran grafo). Si se
-  lauda E2, el cronograma mueve B4.2–B4.4 detrás de B6.1–B6.2 y el riesgo a declarar es que lo
-  «no negociable» del PPF queda atado a una unidad T2 recortable — en ese caso B4 sube a T1
-  dentro del escalado y deja de ser recortable.
-- D-g **ABIERTA — se decide con los mentores**: ALCANCE DEL CORPUS EN LA TESIS. La pregunta
-  exacta: ¿el estudio se presenta y defiende sobre los cinco Textos Ordenados del subset, con el
-  escalado al corpus BCRA completo como capítulo/trabajo de escalabilidad (pre-defensa, D5), o la
-  tesis debe reformularse para que el corpus completo sea el objeto central? Contexto: la intro
-  (C1.1 tramo 1) justifica hoy los cinco TOs como «densidad realista + evaluación exhaustiva» —
-  esa oración lleva marcador `[PENDIENTE MENTORES — D-g]` en `docs/tesis/main.tex` y puede
-  cambiar según lo que se decida. D-g se conecta con D5 (scope del escalado como entregable
-  pre-defensa, pendiente de definición, B5.5) y con D-f (secuencia de la evaluación por
-  tripletas): las tres son la misma familia — qué rol juega el escalado en la tesis — y conviene
-  llevarlas JUNTAS a la reunión. **Sí bloquea**: la redacción final del cierre del párrafo 2 de
-  la intro y la formulación del objetivo general (C1.1 tramo de objetivos). **No bloquea**: el
-  resto de la escritura, A2.1, U-APP.
+- D-f **RESUELTA — laudo firmado 27/08/2026** (borrador redactado: `docs/laudo_D-f_secuencia_tripletas.md`):
+  secuencia de la evaluación intrínseca de tripletas (B4). Dirección adoptada: el **instrumento**
+  de tripletas se construye y valida sobre KG-Reextraído-r1 —conjunto de desarrollo, donde se
+  itera sin restricción— y la **medición que cuenta para la tesis** se corre una única vez sobre
+  el grafo escalado, dentro de la evaluación final pre-registrada (B6.3). **Atribución**: es
+  aplicación del marco desarrollo/test del principio 10; la reunión del 26/08 **no trató
+  explícitamente** la secuencia de tripletas, de modo que esta aplicación específica es decisión
+  de la autora y se menciona como tal en el próximo informe de avance. **No bloquea**: B4.1
+  (pre-registro), B1, B2, B5.1–B5.4, A2, C1. **Sí ordena**: B4.2–B4.4 corren sobre r1 como
+  validación del instrumento (sin ser el resultado de la tesis), B6.3 incluye la corrida que
+  cuenta, y la **release r2** sigue el principio 9. **Checkbox de implementación (lección A1.6:
+  un laudo sin consecuencia implementada es una deuda silenciosa)**: [ ] B4.1 declara en su
+  pre-registro el doble rol (validación en r1 / medición en el escalado); [ ] B6.3 incorpora
+  tripletas como parte de la evaluación final pre-registrada.
+- D-g **RESUELTA — laudo firmado 27/08/2026** (borrador redactado: `docs/laudo_D-g_alcance_corpus.md`):
+  ALCANCE DEL CORPUS EN LA TESIS — **resuelta en la reunión de mentores del 26/08/2026**. El
+  **objeto central de la tesis es el KG escalado de la regulación del BCRA**; los cinco Textos
+  Ordenados del subset son el conjunto de desarrollo (train/eval) sobre el que se construyó y se
+  validó el método, y sus experimentos se presentan como tales. Fundamento tal como se planteó
+  en la reunión: sostener la tesis sobre los cinco TOs sería sobreajustar el documento; el
+  trabajo se centra en el recurso. Ver principio 10. **Consecuencias**: (a) la escritura queda
+  desbloqueada con esta dirección — el marcador `[PENDIENTE MENTORES — D-g]` de
+  `docs/tesis/main.tex` se resuelve reescribiendo el cierre del párrafo 2 y el enunciado del
+  párrafo 4, y el objetivo general se formula sobre el corpus completo; (b) el escalado deja de
+  ser un capítulo opcional y pasa a ser ruta crítica (B5/B6 re-tierados a T1); (c) antes de
+  escalar es obligatorio el bloque **ESQ** (validación del esquema), porque una vez escalado
+  volver atrás es inviable. **Checkbox de implementación (lección A1.6)**: [ ] reescritura de
+  P2/P4 y objetivo general en `main.tex` (C1.1 tramo 1b); [ ] B5/B6 re-tierados y ESQ como
+  bloqueante (aplicado en este plan); [ ] B6.3 rediseñada como evaluación final (aplicado en
+  este plan); [ ] mención del cambio de alcance en el próximo informe de avance.
 
-**Agenda consolidada de la PRÓXIMA REUNIÓN DE MENTORES**: (1) D-g alcance del corpus; (2) D5
-scope del escalado (B5.5); (3) D-f secuencia de la evaluación por tripletas; (4) reclamo de la
-tesis de background de KG ofrecida (pendiente anotado en `main.tex`, Estado del arte); (5)
-resultado de B1.8 y laudo de promoción de r1 (`774acac` / `81587f9`) como informe de avance.
+**Agenda de la reunión del 26/08/2026 — CUMPLIDA** (5/5): (1) D-g resuelta (alcance: el objeto
+central es el corpus escalado; los cinco TOs son desarrollo) → principio 10 + laudo pendiente de
+firma; (2) D5 deja de ser recortable: el scope del escalado pasa a ruta crítica, el laudo de
+corpus a escalar (B5.5) sigue pendiente pero ya no decide *si* se escala sino *en qué orden*; (3)
+D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora aplicando el principio
+10 (ver D-f); (4) material de background **recibido** (registrado en
+`docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
+arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
+
+**RUTA CRÍTICA vigente desde la reunión**: `ESQ-1 → ESQ-2 → ESQ-3 (retoques + esquema congelado)
+→ escalado (B5/B6) → evaluación final sobre el grafo escalado (B6.3, pre-registro propio)`.
+Todo lo demás —A2 (head-to-head), B1.9/B1.10, B4 sobre r1, casos de uso— es trabajo sobre el
+**conjunto de desarrollo**: valioso, se presenta como experimento, y no bloquea la ruta crítica.
+
+**Compromisos de la reunión pendientes de ejecución**: barrida de related work de *releases* de
+KG post-LLM en cualquier disciplina, con foco en trabajos que presentan un **recurso** como el de
+esta tesis (unidad U-RW, insumos en `docs/lecturas_reunion_2026-08-26.md`); y el caso de uso de
+**log de operaciones → cadena causal** queda **estacionado como capítulo final independiente**, a
+retomar después de la evaluación final (registrado en D-a.ii).
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
@@ -488,7 +579,7 @@ cierre se declara como mecanismo propuesto sin validar.
 | M-13 | Retriever BM25/Neo4j y tools v2 (retrieval ≠ estructura) | Ablación factorial 2×2 pre-registrada, 400 trazas: BM25 mejora lo literal por ranking (0,887→0,981) y **no cierra** la brecha anti-léxica (P2 refutada); tools v2 sin efecto medible (paginación 0/275); latencia p50/p95 por celda | `9e131bf` + `9141351` (backend y tools) + `68c79dc` (pre-registro) + corrida A1.4 (`data/experiment/ablacion_retrieval/corrida/resultados/`) | hecho |
 | M-14 | Intake de feedback de la app → backlog (Motor 2) | U6 (25 preguntas reales), BKL-0024/0025, cola de intake cerrada | `0d5fd10` (`scripts/adaptador_sesiones.py`); `b337152` (`exploracion/adjudicacion/u6_adjudicacion_humana.jsonl`); `data/backlog/intake/cola_intake.jsonl` | hecho |
 | M-15 | Comparación justa KG-RAG vs RAG sobre los mismos chunks de E0 | A2 head-to-head + Pareto, sobre el banco de M-21 (mismo agente y mismo prompt en los dos brazos) | — (depende de A2.0-gate y A2.0-banco) | **pendiente** |
-| M-16 | Escalado por tandas con gate de release y reporte de costo/throughput | B5–B6 (68 TOs digeribles) | — (prep `111ed19`, `escalado_prep/resumen_escalado.md`) | **pendiente / T2** |
+| M-16 | Escalado por tandas con gate de release y reporte de costo/throughput | B5–B6 (68 TOs digeribles), con ESQ-1/2/3 como prerrequisito bloqueante | — (prep `111ed19`, `escalado_prep/resumen_escalado.md`) | **pendiente / T1 — ruta crítica (D-g)** |
 | M-17 | Evaluación intrínseca a nivel tripleta sin anotación masiva: precisión con juicio de correctitud + importancia sobre muestra del grafo con evidencia; recall por ranking de importancia sobre tripletas extraídas de fragmentos; juez LLM calibrado contra adjudicación humana en tandas; adjudicación post hoc solo de ausencias | B4 sobre KG-Reextraído-r1 (sellado, principio 9); reuso sobre el grafo escalado en B6.3 | — | **pendiente** |
 | M-18 | Circuito de custodia revisor-ejecutor para investigación con agentes LLM: mandatos por unidad con criterios de aceptación, frenos declarados, laudos de la autora, pre-registro por commit, verificación de mesa contra archivos (nunca narrativa), errores de ambos lados detectados y documentados | Registros de desvíos declarados del período: sello tardío `9c44516`; pasada inválida de calibración documentada; commit tardío declarado en `b624865`. Destino en la tesis: C1.5 (metodología) + candidato a sección propia de contribuciones | `CLAUDE.md` (reglas del circuito, §4 a–h); mensaje de commit `9c44516` ("sello efectivo 2026-08-13… pre-registro válido"); `data/experiment/ev2_juez/calibracion/registro_calibracion.md` (commit `1a0ac5c`); mensaje de commit `b624865` ("commit tardío respecto del cierre de la unidad, detectado por la unidad §7") | hecho |
 | M-19 | Atribución causal de fallas determinística de primer nivel (presente→consultada→vista→generación, por replay de trazas, USD 0, reproducible al byte; abstención como columna cruzada) | EV2: 120 trazas base + 191 §7 atribuidas; perfiles de falla distintos en el empate 9-9; generación clase modal 17/25/21; techo de retrieval 14/7/6 (H1–H7) | `40603a9` (regla sellada pre-cómputo, `data/experiment/ev2_reporte/regla_atribucion.md`, selftest 24/24) + `85d9fdb` (`data/experiment/ev2_reporte/salida/atribucion_fallas.{json,md}`, doble corrida byte-idéntica) | hecho |
