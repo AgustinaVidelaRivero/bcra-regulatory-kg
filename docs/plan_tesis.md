@@ -552,8 +552,8 @@ justificación técnica antes de ejecutar la unidad que la usa.
   explícitamente a los mentores en el próximo informe de avance, para que puedan objetarlo.
 
 **Agenda de la reunión del 26/08/2026 — CUMPLIDA** (5/5): (1) D-g resuelta (alcance: el objeto
-central es el corpus escalado; los cinco TOs son desarrollo) → principio 10 + laudo pendiente de
-firma; (2) D5 deja de ser recortable: el scope del escalado pasa a ruta crítica, el laudo de
+central es el corpus escalado; los cinco TOs son desarrollo) → principio 10 + laudo firmado
+27/08/2026; (2) D5 deja de ser recortable: el scope del escalado pasa a ruta crítica, el laudo de
 corpus a escalar (B5.5) sigue pendiente pero ya no decide *si* se escala sino *en qué orden*; (3)
 D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora aplicando el principio
 10 (ver D-f); (4) material de background **recibido** (registrado en

@@ -51,7 +51,7 @@ Un laudo sin consecuencia implementada es una deuda silenciosa (lección de A1.6
 sobre la app quedó sin implementar hasta que una revisión la detectó). Este laudo se considera
 ejecutado cuando:
 
-- [ ] `docs/tesis/main.tex`: reescritura del cierre del párrafo 2 y del enunciado del párrafo 4
+- [x] `docs/tesis/main.tex`: reescritura del cierre del párrafo 2 y del enunciado del párrafo 4
       con el marco desarrollo/test, y **retiro del marcador** `[PENDIENTE MENTORES — D-g]`
       (C1.1 tramo 1b).
 - [ ] `docs/tesis/main.tex`: objetivo general formulado sobre el corpus completo; objetivos
