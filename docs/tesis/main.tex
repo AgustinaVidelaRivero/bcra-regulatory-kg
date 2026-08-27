@@ -154,7 +154,7 @@ Construir un grafo de conocimiento (knowledge graph, KG) sobre un corpus
 especializado exigía, hasta hace pocos años, equipos de expertos de dominio y
 plazos medidos en años de trabajo manual. Los modelos de lenguaje de gran
 escala (large language models, LLMs) cambiaron esa economía: la extracción de
-entidades y relaciones puede automatizarse a escala del corpus completo,
+entidades y relaciones puede automatizarse a escala de todo el corpus,
 reservando la supervisión humana para los puntos donde más rinde
 \cite{carta2023iterative, lu2026karma}. Un KG representa el conocimiento como
 entidades y relaciones explícitas, y esa explicitación lo vuelve apto para
@@ -173,12 +173,11 @@ actualizan con cada comunicación nueva. Es, además, profundamente
 interconectada: los puntos de un Texto Ordenado remiten a puntos de otros,
 condicionan operaciones definidas en terceros y establecen excepciones
 cruzadas.
-% [PENDIENTE MENTORES — D-g] Alcance del corpus: la justificación
-% de los cinco TOs se valida en reunión (ver D-g en el plan).
-% La oración puede cambiar según esa decisión.
-El presente trabajo toma como corpus cinco Textos Ordenados del BCRA,
-suficientes para que esa interconexión aparezca con densidad realista y
-acotados para permitir una evaluación exhaustiva.
+El presente trabajo construye un grafo de conocimiento sobre la normativa
+del BCRA como recurso. El método se desarrolla y se valida sobre un conjunto
+de desarrollo de cinco Textos Ordenados, elegidos por concentrar esa
+interconexión con densidad realista, y el recurso se construye y se evalúa
+a escala del corpus regulatorio.
 
 \subsection{Definición del problema}
 % PPT: "Qué falla, qué falta o qué se busca mejorar de forma explícita".
@@ -200,12 +199,17 @@ de manera incorrecta, porque la generación introduce errores que el anclaje
 en la fuente no previene; distinguir ese modo de falla del anterior exige un
 instrumento de evaluación que las métricas de recuperación no proveen.
 
-% Párrafo 4 — ideas 3+4: enunciado aprobado verbatim + overview del cómo.
-En este trabajo se investiga si organizar la normativa del BCRA como grafo
-de conocimiento mejora la fidelidad de un agente RAG frente a la
-recuperación tradicional por fragmentos, sobre cinco Textos Ordenados y con
-un método de evaluación que distingue si las fallas provienen del grafo o
-del agente. El enfoque comprende tres componentes. Primero, un pipeline de
+% Párrafo 4 — ideas 3+4: enunciado reformulado (el recurso y su fidelidad
+% como pregunta central; la comparación contra fragmentos baja a validación
+% de diseño sobre el conjunto de desarrollo) — ya no es el texto aprobado
+% originalmente + overview del cómo.
+El presente trabajo construye un grafo de conocimiento de la normativa del
+BCRA y evalúa su fidelidad como recurso para un agente RAG, con un método de
+evaluación que distingue si las fallas provienen del grafo o del agente. La
+decisión de estructurar el corpus como grafo, frente a la recuperación
+tradicional por fragmentos, se valida sobre un conjunto de desarrollo de
+cinco Textos Ordenados.
+El enfoque comprende tres componentes. Primero, un pipeline de
 extracción por etapas construye el KG desde los documentos oficiales, con
 ensamblado reproducible y verificación en cada etapa. Segundo, la fidelidad
 de las respuestas se mide contra un conjunto de evaluación sellado antes de
