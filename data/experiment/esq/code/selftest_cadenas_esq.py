@@ -125,6 +125,27 @@ def rel(predicado_propuesto=None, sujeto_propuesto=None, **extra):
 JQ_FILTRO = ('.validacion.relaciones[]? | .sujeto_propuesto | '
              'select(. != null and . != "")')
 
+# Mismo filtro sobre el bloque CRUDO. Fe de erratas
+# docs/fe_erratas_prerregistro_esq1_alcance.md (b): ESQ-1 mide sobre
+# tool_input_crudo, porque el validado descarta propuestas por motivos ajenos a
+# la propuesta y ese descarte correlaciona con la señal que ESQ-1 busca.
+JQ_FILTRO_CRUDO = ('.tool_input_crudo.relations[]? | .sujeto_propuesto | '
+                   'select(. != null and . != "")')
+
+PY_INDEPENDIENTE_CRUDO = r"""
+import json, sys
+vistas = []
+for ruta in sys.argv[1:]:
+    with open(ruta, encoding="utf-8") as fh:
+        for linea in fh:
+            if not linea.strip():
+                continue
+            rel = json.loads(linea)["tool_input_crudo"]["relations"]
+            vistas += [r["sujeto_propuesto"] for r in rel
+                       if r.get("sujeto_propuesto")]
+print(len(vistas), len(set(vistas)))
+"""
+
 PY_INDEPENDIENTE = r"""
 import json, sys
 vistas = []
@@ -140,20 +161,25 @@ print(len(vistas), len(set(vistas)))
 """
 
 
-def recomputo_independiente(rutas):
+def recomputo_independiente(rutas, bloque="validacion"):
     """(disparos, distintas) por un camino que no toca el instrumento.
 
+    `bloque`: "validacion" (lo que el instrumento sabe leer hoy) o
+    "tool_input_crudo" (de donde ESQ-1 debe medir, fe de erratas de alcance).
     Devuelve además el método usado, para poder declararlo en el reporte.
     """
+    filtro_jq = JQ_FILTRO if bloque == "validacion" else JQ_FILTRO_CRUDO
+    filtro_py = (PY_INDEPENDIENTE if bloque == "validacion"
+                 else PY_INDEPENDIENTE_CRUDO)
     rutas = [str(p) for p in rutas]
     jq = shutil.which("jq")
     if jq:
-        proc = subprocess.run([jq, "-r", JQ_FILTRO] + rutas,
+        proc = subprocess.run([jq, "-r", filtro_jq] + rutas,
                               capture_output=True, text=True)
         if proc.returncode == 0:
             salidas = [l for l in proc.stdout.split("\n") if l != ""]
             return len(salidas), len(set(salidas)), "jq"
-    proc = subprocess.run([sys.executable, "-c", PY_INDEPENDIENTE] + rutas,
+    proc = subprocess.run([sys.executable, "-c", filtro_py] + rutas,
                           capture_output=True, text=True)
     if proc.returncode != 0:
         raise RuntimeError(proc.stderr)
@@ -289,6 +315,37 @@ def main():
           len(lista_real) == distintas_ind)
     check("ANCLA: la salida en disco tiene una línea por cadena distinta",
           out_a.read_text(encoding="utf-8").count("\n") == len(lista_real))
+
+    # --- 7bis) ANCLA DEL BLOQUE CRUDO -------------------------------------- #
+    # Fe de erratas docs/fe_erratas_prerregistro_esq1_alcance.md (b): el número
+    # que ESQ-1 lee contra las bandas se computa sobre tool_input_crudo. El
+    # instrumento de 181e262 NO puede leer ese bloque todavía (CANALES lo tiene
+    # cableado a `validacion`, cadenas_esq.py:86-90 y :129), así que el ancla
+    # del crudo se verifica por dos caminos independientes del instrumento, y
+    # la limitación queda asertada abajo para que no pase inadvertida.
+    disparos_cru, distintas_cru, metodo_cru = recomputo_independiente(
+        JSONL_PRODUCCION, bloque="tool_input_crudo")
+    print(f"\n  ancla crudo — recomputo independiente ({metodo_cru}): "
+          f"disparos={disparos_cru} distintas={distintas_cru}")
+    print(f"  ancla validado — instrumento: distintas={len(lista_real)}")
+    print(f"  brecha crudo-validado: {disparos_cru - disparos_ind} disparos, "
+          f"{distintas_cru - len(lista_real)} cadena(s)\n")
+    check(f"ANCLA CRUDO: sujeto_propuesto sobre tool_input_crudo de los 5 jsonl "
+          f"de producción da 39 cadenas distintas ({metodo_cru}): "
+          f"{distintas_cru}", distintas_cru == 39)
+    check(f"ANCLA CRUDO: 56 disparos sobre tool_input_crudo: {disparos_cru}",
+          disparos_cru == 56)
+    check("BRECHA: el validado pierde exactamente 1 cadena distinta y 2 "
+          "disparos respecto del crudo (fe de erratas de alcance, (b))",
+          distintas_cru - len(lista_real) == 1
+          and disparos_cru - disparos_ind == 2)
+    check("LIMITACIÓN DECLARADA: el instrumento sólo expone canales del bloque "
+          "`validacion`; leer del crudo exige la extensión pendiente de la fe "
+          "de erratas (b), no sólo otra ruta",
+          set(ce.CANALES) == {"tipo_propuesto", "predicado_propuesto",
+                              "sujeto_propuesto"}
+          and all(c[0] in ("entidades", "relaciones")
+                  for c in ce.CANALES.values()))
 
     # --- bordes que hacen confiable al instrumento ------------------------- #
     fx_vacios = escribir_jsonl(
