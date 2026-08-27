@@ -338,6 +338,14 @@ primero, para que el análisis cualitativo no contamine el conteo), y un gate qu
   relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
   pre-escalado, con sha, que es la que se aplica al corpus completo. **[LAUDO ESCRITO REQUERIDO —
   toca compromisos del PPF/alcance]**. Ningún ítem de B5/B6 arranca sin este laudo.
+**Secuencia corregida para el bloque de régimen informativo** (U-B5.6-0; reemplaza el orden implícito «parser de tablas → decisión sobre el bloque», que la fe de erratas `docs/fe_erratas_D10_causa_regimen_informativo.md` desarma). Cuatro piezas, en este orden, cada una con su justificación propia:
+- [ ] ESQ-RI-1 (I, $0) **Modo de lectura sin raíz de sección**: la causa proximal del cero es la compuerta de rol de página de E0 (`e0_lib.py:206-207`: sin página de índice previa, todas las páginas quedan en `portada`), y 47 de 53 TOs están en esa condición. Desbloquea **44 de 53**. Es lo primero porque sin esto ninguna otra pieza puede siquiera medirse sobre el bloque. Caso aparte a tratar con remedio propio: 1 TO que sí llega a cuerpo y produce cero por no tener ninguna línea con formato de sección.
+- [ ] ESQ-RI-2 = **B5.6** (parser de tablas). Alcanza al 12,4 % de las palabras del bloque y a 23 de 53 TOs; **se construye igual aunque el bloque quede afuera**, por RX-10 sobre normativa general.
+- [ ] ESQ-RI-3 (H+I) **Extensión del esquema como pieza propia**, no como ajuste de otra unidad: sin ella la familia mayor del bloque —71 % de sus páginas— no tiene representación posible (ver hallazgo del modelo de datos, abajo). Requiere laudo, porque cambia el esquema.
+- [ ] ESQ-RI-4 **Ciclo ESQ del bloque** (su propio ESQ-1/ESQ-2/ESQ-3), exigido por el laudo `94bb7a7` §D10 antes de que el esquema se congele para esa familia.
+
+**HALLAZGO — el modelo de datos no admite hechos con valor (alcance propio, excede al régimen informativo).** Descubierto por U-B5.6-0 y verificado por mesa contra el tool schema. El esquema vigente no puede representar el contenido del bloque, y falta en **dos lugares independientes**: (a) **no hay tipo de entidad para el sujeto de una fila informativa** — los seis tipos son `Obligacion`, `Restriccion`, `Excepcion`, `Operacion` (deónticos y operacionales) más `TextoOrdenado` y `Comunicacion` (contenedores documentales), y una partida contable no es ninguno; forzarla es exactamente lo que el prompt de extracción prohíbe (`prompt_e1.py:134`: «Es preferible no extraer algo a forzarlo en una caja equivocada»); (b) **las relaciones no admiten valor** — el tool schema de `relations` no tiene campo `properties` y declara `additionalProperties: false` (`prompt_e1.py:232-257`), y los 12 predicados son binarios sin atributo, de modo que un hecho del tipo «esta partida pondera al 0 %» **no tiene dónde vivir**. Las entidades sí tienen `properties`; las relaciones no. **Esto no es una limitación del régimen informativo sino del modelo de datos**, y reaparece en cualquier norma que fije un valor —un ponderador, una alícuota, un plazo asociado a un caso—, incluida la normativa general ya extraída. **Candidato a conclusión de diseño de la tesis** (limitación bien argumentada = contribución, no disculpa): qué puede y qué no puede representar un KG de propiedad-valor sobre normativa cuantitativa, y qué costaría admitir hechos n-arios. Se decide su tratamiento en ESQ-RI-3 y en la escritura de C1.7.
+
 **Nota de alcance y fuga al conjunto de test (principio 10).** ESQ mide el **esquema**, no la
 calidad del grafo: no es una evaluación de fidelidad ni sustituye a B4, y **no consume el conjunto
 de preguntas del test** (no se evalúan respuestas sobre estos documentos, se inspecciona la
@@ -351,11 +359,11 @@ evaluación final—, y esa exclusión se declara en el reporte de B6.3.
 
 ### B5 · Escalado: endurecimiento y prerrequisitos (issue #6, #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S4–S5
 - [ ] B5.1 (I, $0) A1: parametrizar runner/E2/ensamblado por manifiesto (hoy cableado a 5 TOs; `censo_oraculo[to]` → KeyError; `LIMITACIONES_E0` hardcodeado; `ROL_POR_TO` con 5 keys); modo E2 sin oráculo. **Gancho de infraestructura (anotado, NO es compromiso de construirlo)**: la parametrización debe **contemplar la posibilidad** de construir un índice de fragmentos sobre el corpus escalado —el insumo que requeriría un eventual brazo comparativo en B6.3 (ver su regla de admisibilidad)—, porque dejar el gancho ahora es mucho más barato que agregarlo después. Si el brazo no se corre, el gancho queda sin usar y no cuesta nada.
-- [ ] B5.2 (I, $0) A3: regex de E0 (`Sección N[.:]`, `Índice` sin guiones con guarda) → paridad 5/5 byte a byte + selftest 57/57 obligatorios; health-check por TO (`(cid:NN)`, páginas sin Sección).
+- [ ] B5.2 (I, $0) A3: regex de E0 (`Sección N[.:]`, `Índice` sin guiones con guarda) → paridad 5/5 byte a byte + selftest 57/57 obligatorios; health-check por TO (`(cid:NN)`, páginas sin Sección). **CORRECCIÓN medida (U-B5.6-0, `docs/fe_erratas_D10_causa_regimen_informativo.md` §b): B5.2 NO desbloquea el bloque de régimen informativo.** En esos documentos la palabra que el regex busca no aparece —no hay marcador que relajar— y en un caso su única aparición es prosa sobre «índices de actualización», que un regex más laxo tomaría como marcador falso. B5.2 se mantiene por lo que fue escrita (paridad sobre normativa general y health-check); lo que desbloquea el bloque es el modo de lectura sin raíz de sección (ESQ-RI-1).
 - [ ] B5.3 (I, $0) A4/A5: `max_tokens` con reintento 16k→32k en el mismo pase; sub-chunking por ítems para TOs nuevos; no cerrar fase con errores reintentables; tope compartido entre clientes.
 - [ ] B5.4 (H+I) **Catálogo de sujetos v3** congelado (SNP: entidad girada/depositaria/receptora/originante; bancos centrales, FMI, BIS, CCP; rol de alcance por TO nuevo) → rota el prefijo cacheado de E1 (aceptado). A2 de la auditoría.
 - [ ] B5.5 (H) **Laudo D5**: corpus a escalar — **T1, NO RECORTABLE** desde la reunión del 26/08 (el escalado es el objeto central de la tesis, no un capítulo opcional: el laudo ya no decide *si* se escala sino *qué y en qué orden*). Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora. Prerrequisito adicional: laudo de esquema congelado (ESQ-3).
-- [ ] B5.6 (I, $0) Módulo de tablas (pdfplumber `extract_tables` con provenance, sin LLM) — RX-10 y montos invertidos; decide el destino del bloque RI.
+- [ ] B5.6 (I, $0) Módulo de tablas (pdfplumber `extract_tables` con provenance, sin LLM) — RX-10 y montos invertidos. **CORRECCIÓN medida (U-B5.6-0, fe de erratas §c): NO decide el destino del bloque de régimen informativo.** El parser alcanza a 23 de 53 TOs y al 12,4 % de las palabras del bloque: decide el de UNA de sus cinco familias estructurales. **Se construye igual y por sí solo**, porque RX-10 es un defecto de correctitud sobre **normativa general** —dos montos invertidos verificados— y ese defecto vive en el grafo que la tesis entrega. Su prioridad ya no depende de lo que se decida sobre el bloque.
 - [ ] B5.7 (I) Issue #6: documento de costos con tarifas reales + caching + experimento óptimo dentro de USD 200 (con B5.5). Laudo D4 warm-then-parallel (throughput: ~13 s/unidad → ~29 h secuenciales para 8.010).
 
 ### B6 · Escalado: corrida por tandas (issue #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S6–S7 (máquina; humano mínimo)
@@ -570,6 +578,18 @@ KG post-LLM en cualquier disciplina, con foco en trabajos que presentan un **rec
 esta tesis (unidad U-RW, insumos en `docs/lecturas_reunion_2026-08-26.md`); y el caso de uso de
 **log de operaciones → cadena causal** queda **estacionado como capítulo final independiente**, a
 retomar después de la evaluación final (registrado en D-a.ii).
+
+**AGENDA DE LA PRÓXIMA REUNIÓN DE MENTORES — punto del régimen informativo, en su forma nueva.**
+Reemplaza al punto anterior («¿se escala el bloque de régimen informativo o queda declarado
+fuera?»), que U-B5.6-0 dejó mal planteado: **ya no es una decisión binaria**. El bloque tiene
+**cinco familias estructurales con costos distintos**: dos se desbloquean con el modo de lectura
+sin raíz de sección (ESQ-RI-1, $0), una necesita el parser de tablas (B5.6, que hay que construir
+igual por RX-10 sobre normativa general), y **la mayor —71 % de las páginas del bloque— exige
+extender el esquema** (ESQ-RI-3), porque el modelo de datos no admite hechos con valor (ver
+hallazgo, bloque ESQ). La pregunta que va a la reunión es **hasta dónde se llega**, con los costos
+medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó el laudo `94bb7a7`
+§D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
+`data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
