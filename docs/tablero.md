@@ -462,6 +462,9 @@ anterior enumeraba:
   se escala) PENDIENTE** (`resumen_escalado.md` §6); prerrequisitos de
   endurecimiento del pipeline y análisis de costos (issue #6) son unidades
   del plan (issue #11).
+- **Carril ESQ (validación del esquema antes del escalado): EXISTE y es T1
+  bloqueante del escalado (B5/B6)** — ver el bloque ESQ del plan
+  (`docs/plan_tesis.md:303`).
 - **Comparación KG-RAG vs RAG tradicional** (pregunta de investigación,
   `README.md`; issue #12): pendiente; habilitada por EV2 cerrado y por el
   mapa causal de fallas (§2.b).

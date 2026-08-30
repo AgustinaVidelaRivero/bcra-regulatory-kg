@@ -23,19 +23,19 @@ primero, selección de 3–4 para lectura en serio después (unidad U-RW).
 
 | # | Insumo | Por qué entra | Estado |
 |---|---|---|---|
-| L3 | YAGO — DOI 10.1145/1242572.1242667 (WWW 2007) | Uno de los papers de KG más citados; **paper de recurso**, que es exactamente el género de esta tesis. Referencia de cómo se presenta un KG como artefacto (esquema, construcción, evaluación de calidad). | por leer |
-| L4 | YAGO2 — Hoffart, Suchanek, Berberich, Weikum; *Artificial Intelligence* 194 (2013); DOI 10.1016/j.artint.2012.06.001 | Versión extendida y revisada de L3 (el enlace firmado de las notas de la reunión venció: era una URL de descarga con expiración de minutos). Identificado por DOI, no por el enlace muerto. | por leer |
-| L5 | https://pure.mpg.de/rest/items/item_2077946/component/file_2077968/content | Insumo entregado en la reunión, del mismo repositorio institucional que la familia anterior. **Por identificar**: no se registra autoría ni título sin abrir el archivo. | por identificar |
-| L6 | https://pure.mpg.de/rest/items/item_1819068_3/component/file_1840695/content | Ídem L5. **Por identificar**. | por identificar |
+| L3 | YAGO — DOI 10.1145/1242572.1242667 (WWW 2007) | Uno de los papers de KG más citados; **paper de recurso**, que es exactamente el género de esta tesis. Referencia de cómo se presenta un KG como artefacto (esquema, construcción, evaluación de calidad). | leída en diagonal (U-RW) |
+| L4 | YAGO2 — Hoffart, Suchanek, Berberich, Weikum; *Artificial Intelligence* 194 (2013); DOI 10.1016/j.artint.2012.06.001 | Versión extendida y revisada de L3 (el enlace firmado de las notas de la reunión venció: era una URL de descarga con expiración de minutos). Identificado por DOI, no por el enlace muerto. | leída en diagonal (U-RW) |
+| L5 | https://pure.mpg.de/rest/items/item_2077946/component/file_2077968/content | Insumo entregado en la reunión, del mismo repositorio institucional que la familia anterior. **Por identificar**: no se registra autoría ni título sin abrir el archivo. | identificada: YAGO3 (Mahdisoltani, Biega, Suchanek; CIDR 2015); leída en diagonal (U-RW) |
+| L6 | https://pure.mpg.de/rest/items/item_1819068_3/component/file_1840695/content | Ídem L5. **Por identificar**. | identificado: reporte técnico MPI-I-2007-5-003 (dic. 2007, versión extendida de YAGO) |
 
 ## 3. KG con LLMs en otras disciplinas (barrida de releases, U-RW)
 
 | # | Insumo | Por qué entra | Estado |
 |---|---|---|---|
-| L7 | https://www.nature.com/articles/s41597-023-01960-3 | Release de KG en dominio médico. **Revisar con cuidado**: es de 2023, en el borde del cambio metodológico que trajeron los LLMs — sirve para separar lo pre-LLM de lo post-LLM. | por leer |
-| L8 | https://pmc.ncbi.nlm.nih.gov/articles/PMC12995551/ | Trabajo más actual del mismo dominio; contraste temporal con L7. | por leer |
-| L9 | https://arxiv.org/abs/2510.20345 | Construcción de KG asistida por LLMs (*LLM empowered KG construction*): metodología directamente comparable con el pipeline E0–E5 de esta tesis. | por leer |
-| L10 | https://www.dbpedia.org/about/ | Uno de los primeros KG publicados como recurso; interesa por sus **publicaciones recientes** (cómo un recurso veterano se adapta al escenario post-LLM). | por leer |
+| L7 | https://www.nature.com/articles/s41597-023-01960-3 | Release de KG en dominio médico. **Revisar con cuidado**: es de 2023, en el borde del cambio metodológico que trajeron los LLMs — sirve para separar lo pre-LLM de lo post-LLM. | leída en diagonal (U-RW): PrimeKG (Chandak, Huang, Zitnik; *Scientific Data* 10:67, 2023, DOI 10.1038/s41597-023-01960-3), género Data Descriptor con Technical Validation |
+| L8 | https://pmc.ncbi.nlm.nih.gov/articles/PMC12995551/ | Trabajo más actual del mismo dominio; contraste temporal con L7. | INACCESIBLE (reCAPTCHA); es review, no release: baja prioridad, descartada de lectura seria |
+| L9 | https://arxiv.org/abs/2510.20345 | Construcción de KG asistida por LLMs (*LLM empowered KG construction*): metodología directamente comparable con el pipeline E0–E5 de esta tesis. | leída en diagonal (U-RW) |
+| L10 | https://www.dbpedia.org/about/ | Uno de los primeros KG publicados como recurso; interesa por sus **publicaciones recientes** (cómo un recurso veterano se adapta al escenario post-LLM). | página de proyecto, no paper: usada solo como puerta |
 
 ## 4. Perfiles a seguir (no son citas)
 
