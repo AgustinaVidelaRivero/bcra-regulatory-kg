@@ -1,0 +1,24 @@
+# Cola de mejoras diferidas
+
+**Regla que gobierna esta cola.** Los defectos del **objeto medido** se corrigen
+**DESPUÉS de medir y ANTES de escalar** (principios 9 y 10 del plan: el objeto
+evaluado se sella; las correcciones producen una versión posterior, declarada). Solo
+se corrige antes de medir lo que rompe **el instrumento mismo** — un instrumento roto
+no mide, y arreglarlo no contamina nada (precedentes: el «cero por construcción» de
+U-ESQ-0, la lectura del crudo de la fe de erratas `7072626`).
+
+Este archivo es el **registro único** de lo encontrado y diferido bajo esa regla.
+Cada entrada: qué es · evidencia (commit o documento) · por qué se difirió · cuándo
+se resuelve (unidad o gate asignado). **Ningún gate de la ruta crítica cierra sin
+revisar esta cola** (checkboxes en ESQ-3 y B5.5, `docs/plan_tesis.md`).
+
+| # | Qué es | Evidencia | Por qué se difirió | Cuándo se resuelve |
+|---|---|---|---|---|
+| 1 | **Cortes por `max_tokens` en E1**: 7 de 1.769 registros del crudo con contenedor no-lista (4 `relations: null`, 3 `entities` como string); cuando el canal abierto corra, son registros que el instrumento no lee | decisión RESUELTA 28/08/2026 en `docs/plan_tesis.md` §5; asertado en el selftest de U-ESQ-1a-bis (`56c601d`) | elevarlos a error sería una decisión que el pre-registro sellado no tomó; la corrida de ESQ-1 reporta el conteo para que la pérdida sea visible | **B5.3** (reintento 16k→32k, remedio de fondo), post-ESQ-1 |
+| 2 | **304 `firma_invalida`** del conjunto de desarrollo, con el subconjunto de **196 (64 %)** que es el mismo pedido: ampliar el dominio de `aplica_a` a Operacion/Excepcion | laudo `docs/laudo_ESQ-1_diseno.md` §D8 (`94bb7a7`); medición en `data/experiment/esq/scoping_esq1.md` §3.2 | tocar la matriz dominio/rango antes de ESQ-1 sería retocar el esquema antes del test que debe informarlo | **ESQ-3** (laudado en D8: entran como insumo, con prioridad al subconjunto de 196) |
+| 3 | **`RECHAZO_PREDECLARADO` (V3) que reaparezcan** sobre material nuevo: conceptos que el esquema ya nombró y rechazó (p. ej. `regulado_por`) y que insisten | pre-registro `data/experiment/esq/prerregistro_esq1.md` §6 (`38be6e5`); regla V3 en `scoping_esq1.md` §7.5 | un concepto rechazado que reaparece con insistencia es un hallazgo sobre el esquema, no ruido; se cuenta, no se archiva, y no se resuelve antes de medir | **ESQ-3**, como **categoría con nombre** en el reporte |
+| 4 | **Lista «anotado sin tocar» de U-ESQ-1b** (canal abierto): lo que la implementación encuentre y no corrija | *(hueco: la unidad está EN VUELO; la referencia se completa con su freno y su commit)* | mismo principio: 1b implementa el instrumento, no arregla el pipeline | **ESQ-3** |
+| 5 | **El modelo de datos no admite hechos con valor**: sin tipo de entidad para el sujeto de una fila informativa; `relations` sin `properties` (`additionalProperties: false`) y 12 predicados binarios — «esta partida pondera al 0 %» no tiene dónde vivir. Excede al régimen informativo: reaparece en toda norma que fija un valor | hallazgo en `docs/plan_tesis.md` (bloque ESQ) y fe de erratas `fe1fe36`; verificado contra `prompt_e1.py:212-257` | cambiar el modelo de datos es un cambio de esquema mayor; hacerlo antes de ESQ-1 invalidaría el test de generalización del esquema vigente | **ESQ-RI-3** (extensión del esquema, con laudo) y **C1.7** (candidato a conclusión de diseño) |
+| 6 | **Hardcodeos del pipeline a 5 TOs**: `ROL_POR_TO` con 5 claves, `censo_oraculo[to]` → KeyError, `LIMITACIONES_E0` cableado | fila B5.1 de `docs/plan_tesis.md` | son del runner, no del esquema: corregirlos no informa a ESQ y ESQ no los necesita; se corrigen al endurecer para escalar | **B5.1** (parametrización por manifiesto), pre-escalado |
+| 7 | **Permanencia del canal abierto** (`tipo_propuesto`/`predicado_propuesto`): si queda en el pipeline de producción post-ESQ o fue solo instrumento de medición | laudo `94bb7a7` §D1 (modo (i), manteniendo los enums vigentes; la adopción es para el test) | decidirlo antes de ver qué produjo el canal sería decidir sin el dato que ESQ-1 genera | la decide **ESQ-3** |
+| 8 | **Insumos de la release r2** (el grafo medido no se corrige, principio 9): 7 anclas de granularidad + 2 de contenedor del censo de r1; pendientes de U-B1a — rangos «X.1 a X.n», 196 conflictos reales de properties (E4-LLM), 5 adjudicaciones cross-TO, 41 `padre_sugerido` flaggeados, recomputo de cola 79→68 | censo `6c5507b`; cierre B1.8 `774acac`; pendientes U-B1a en `docs/plan_tesis.md` (bloque B1) | r1 quedó sellado y medido en EV2; corregirlo rompería la trazabilidad medición→corrección (principio 9) | **release r2** del ciclo B2.6, post-evaluación; los cambios trazados a los hallazgos que los motivaron |
