@@ -82,7 +82,8 @@ crudo no puede fabricar un veredicto de «el esquema generaliza».
 instrumento de `181e262` tiene el bloque `validacion` **cableado**: su tabla `CANALES`
 mapea cada canal a `(contenedor dentro de validacion, campo)`
 (`cadenas_esq.py:86-90`) y la navegación hace `registro.get("validacion")`
-(`cadenas_esq.py:129`). Leer del crudo **no es sólo pasarle otra ruta**: requiere
+(`cadenas_esq.py:129`). *(Nota: U-ESQ-1a-bis movió esas líneas al ejecutar esta
+extensión; la cita refiere al estado del archivo en `181e262`.)* Leer del crudo **no es sólo pasarle otra ruta**: requiere
 agregar los canales del bloque `tool_input_crudo`. Es una extensión chica y de código
 puro, con su selftest, y queda como tarea previa a la corrida de ESQ-1. Mientras no
 exista, ningún número de ESQ-1 es computable bajo esta decisión.

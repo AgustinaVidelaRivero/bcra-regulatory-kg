@@ -306,26 +306,40 @@ cinco TOs del subset; antes de aplicarlo a todo el corpus hay que medir cuánto 
 porque una vez escalado **volver atrás es inviable** (costo de re-extracción del corpus completo).
 Dos evaluaciones independientes sobre documentos **fuera del subset**, en este orden (la ciega
 primero, para que el análisis cualitativo no contamine el conteo), y un gate que las lee.
-- [ ] ESQ-1 (I, ~USD 15–20 **a estimar antes de autorizar**) **Test ciego de generalización del
-  esquema**: correr el extractor con el esquema vigente sobre **10 documentos nuevos** del corpus
-  (`data/raw`, selección por semilla declarada y registrada, disjunta del subset) y **contar
-  cuántas entidades y relaciones nuevas** aparecen que el esquema no contempla. Es ciego en el
-  sentido de que no se juzga cualitativamente el esquema: se cuenta deriva. Salida: tabla de
-  tipos fuera de esquema por documento + tasa de cobertura observada. **Fase de estimación de
-  costo con páginas reales y freno antes de gastar** (precedente U-B1.8).
-  **PUNTO DE DISEÑO — A RESOLVER EN EL MANDATO, antes de autorizar gasto**: el pipeline actual
-  restringe la salida a los tipos del esquema vigente; corrido así, el conteo de tipos fuera de
-  esquema es **cero por construcción** y el test devolvería un resultado tranquilizador y falso.
-  El modo de extracción de ESQ-1 debe **permitir salida fuera de esquema** — esquema como guía
-  con tipos abiertos, o dos pases (uno cerrado y uno de descubrimiento) —, y el mandato debe
-  **declarar cuál se usa y por qué**, con la evidencia de que el modo elegido efectivamente
-  reporta tipos no previstos (por ejemplo, verificado sobre un documento de control).
-  **CRITERIO DE LECTURA**: un resultado de cero tipos nuevos **NO se interpreta como buena
-  generalización** hasta haber verificado que el modo de extracción permitía reportarlos; sin esa
-  verificación, cero es un resultado nulo del instrumento, no un hallazgo sobre el esquema.
-  **Registro obligatorio**: los IDs de los 10 documentos quedan anotados en el archivo versionado
-  de exclusión `data/experiment/esq/documentos_excluidos_esq.json` (ver nota de alcance del
-  bloque).
+- [~] ESQ-1 (I, **tope USD 9,00 laudado** — presupuesto 6,38, cota alta 7,14, a re-presupuestar
+  con el recargo medido del control, D7) **Test ciego de generalización del esquema** — diseño
+  LAUDADO en `docs/laudo_ESQ-1_diseno.md` (`94bb7a7`) y pre-registro SELLADO (`38be6e5`, cinco
+  predicciones P1–P5): correr el extractor en **modo (i) con canal abierto**
+  (`tipo_propuesto`/`predicado_propuesto`, calcados de `sujeto_propuesto`) sobre **10 documentos
+  nuevos** del universo **`escalado_prep/`** (corrección D3 del laudo: NO `data/raw` — allí 3.171
+  PDFs no cruzan contra el inventario y 62 de 152 TOs producen cero unidades), sorteo
+  estratificado con semilla 20260827 (762 unidades, 254 páginas), **lectura absoluta con brazo D
+  pareado** (20 unidades de desarrollo re-corridas sin el atajo del rol, D5). El punto de diseño
+  del «cero por construcción» quedó RESUELTO por el laudo D1 (canales cerrados: 0 de 8.009
+  entidades validadas y 2 de 11.827 relaciones crudas fuera de esquema; el único canal abierto
+  disparó 56/39 en crudo) y la fe de erratas `7072626` fijó que **la medición lee del bloque
+  crudo** (el validado descarta propuestas por motivos ajenos a la propuesta, sesgo hacia banda
+  A); se reportan los dos números y la brecha es un dato. Criterio de lectura sellado: bandas
+  §7.4 + regla de normalización §7.5 (D9, no calibradas); un cero solo se lee tras control
+  aprobado; banda A obliga a revisar el instrumento antes de aceptarla. **Registro obligatorio**:
+  los IDs de los 10+10 documentos al archivo versionado
+  `data/experiment/esq/documentos_excluidos_esq.json` (ver nota de alcance del bloque).
+  **Sub-unidades, secuencia fijada por el pre-registro `38be6e5` y corregida por `7072626`
+  (instrumento → canal abierto → control → corrida):**
+  - [x] U-ESQ-1a **instrumento de cadenas distintas** (HECHA, `181e262`): lista pelada sin
+    frecuencias/origen/spread, selftest 24/24 con ancla de datos reales.
+  - [x] U-ESQ-1a-bis **extensión a bloque crudo** (HECHA, `56c601d`):
+    `CANALES` por pares (bloque, canal), `--bloque` obligatorio sin default, selftest 52/52 con
+    anclas crudo 56/39 y validado 54/38, brecha exacta verificada, mutación de control del
+    centinela.
+  - [ ] U-ESQ-1b **canal abierto** (EN VUELO): `tipo_propuesto`/`predicado_propuesto` en prompt +
+    tool schema + normalización del validador (el validador NO filtra la medición: se lee del
+    crudo, fe de erratas `7072626`); namespace de caché aislado; rige
+    `docs/decisiones_caching_extraccion.md`.
+  - [ ] **Control de instrumento** (pendiente, previo a la corrida; D2): tres brazos A ≥10/20,
+    B ≥7/10, C ≤1/10 sobre unidades ya pagadas; devuelve el recargo medido para re-presupuestar
+    (D7). Sin control aprobado, ningún resultado de ESQ-1 es admisible.
+  - [ ] **Corrida ESQ-1** (tras control y re-presupuesto).
 - [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema**: sobre **otros 10 documentos
   random** (disjuntos de ESQ-1 y del subset), análisis en profundidad de si el esquema cubre las
   relaciones que el texto exige — investigación cualitativa asistida, documento por documento,
@@ -403,7 +417,7 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
   - [x] C1.1 **tramo 1b — HECHO**, sello `5ff8be7` (verificado por mesa el 27/08: marcador `[PENDIENTE MENTORES — D-g]` retirado de `main.tex` y párrafo 4 reformulado con el encuadre de recurso de D-h). Alcance original: el cierre del párrafo 2 (hoy «cinco Textos Ordenados … densidad realista + evaluación exhaustiva», con marcador `[PENDIENTE MENTORES — D-g]`) y el enunciado del párrafo 4 (hoy «sobre cinco Textos Ordenados») se reescriben con el marco desarrollo/test: el objeto es el corpus regulatorio completo y los cinco TOs son el conjunto donde se construyó y validó el método. Se retira el marcador al aplicar. Borrador de mesa → tuneo de la autora (mismo circuito que el tramo 1).
   - [ ] C1.1 **tramo de objetivos — DESBLOQUEADO por D-g**: el objetivo general se formula sobre el corpus completo (recurso final) y los específicos incluyen la validación del método sobre el conjunto de desarrollo.
   - [ ] C1.1 **tramo de Estado del arte — DESBLOQUEADO**: el material de background llegó (ver U-RW y `docs/lecturas_reunion_2026-08-26.md`).
-- [ ] U-RW (I, $0) **Barrida de related work de *releases* de KG post-LLM, en cualquier disciplina** (compromiso de la reunión del 26/08). Encuadre que la motiva: esta tesis es **una tesis de recurso**, de modo que el trabajo relacionado relevante no es solo extracción de conocimiento en finanzas, sino trabajos que **publican un KG como artefacto** (medicina, alimentos, legal, cualquier dominio) y lo que hoy se considera metodológicamente exigible en un KG construido con LLMs. Insumos registrados en `docs/lecturas_reunion_2026-08-26.md`. Método: lectura en diagonal primero, luego selección de 3–4 para lectura en serio. Salida: mapa de lecturas + lista de puntos metodológicos a los que esta tesis debe responder (y qué de eso ya está cubierto). Alimenta C1.2 y el Estado del arte.
+- [~] U-RW (I, $0) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso — importan los trabajos que publican un KG como artefacto en cualquier disciplina y lo metodológicamente exigible en un KG construido con LLMs). **Alcance re-partido en ejecución**: la unidad ejecutora fue de **solo descubrimiento** (tabla de hasta 15 candidatos nuevos con triage —qué recurso presenta / cómo declara haber evaluado—, con consultas de búsqueda auditables; ENTREGADA); la **lectura en diagonal de L1–L10 y el mapa de exigencias metodológicas los hizo la mesa** en sesión. **Pendientes**: (a) confirmación de las marcas del mapa por la autora; (b) **consolidación a archivo versionado** (`docs/mapa_related_work.md` + actualización de estados en `docs/lecturas_reunion_2026-08-26.md`). **RIESGO ANOTADO**: el material de la barrida y del mapa vive hoy en sesiones de instancias, no en el repo — si esas sesiones se pierden, se pierde el trabajo; la consolidación lo baja a `docs/` y es lo primero que se ejecuta al retomar este carril. Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
 - [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3)
 - [ ] C1.4 **El método** — construcción y refinamiento de un KG regulatorio de punta a punta (sigue B2.8): pipeline E0–E5 (diseño, principios, enmienda 01 con P1–P3, costos, limitaciones) + ciclo de refinamiento por releases (B2.6) + retriever/backend + intake. Cada mecanismo con puntero al experimento que lo demuestra (§6). (S3–S4, cierra con B1/B2)
@@ -558,6 +572,8 @@ justificación técnica antes de ejecutar la unidad que la usa.
   redacción del párrafo 4 de la introducción ya refleja este encuadre (C1.1 tramo 1b). **Riesgo
   declarado**: modifica el enunciado declarado en el PPF. **Acción comprometida**: [ ] mencionarlo
   explícitamente a los mentores en el próximo informe de avance, para que puedan objetarlo.
+
+- **RESUELTA (28/08/2026, por la autora) — contenedores no-lista del crudo:** 7 de 1.769 registros del crudo de desarrollo traen un contenedor con tipo distinto de lista (4 cortes por `max_tokens` con `relations: null`, 3 con `entities` como string; en `validacion` los 1.769 tienen ambos contenedores como lista; documentado y asertado en el selftest de U-ESQ-1a-bis). **Resolución**: se mantiene la tolerancia —elevarlos a error sería una decisión que el pre-registro no tomó—; el resumen de la corrida de ESQ-1 **DEBE reportar el conteo de contenedores no-lista**, para que la pérdida sea visible y no silenciosa (**requisito que entra al mandato de la corrida**); y B5.3 (reintento 16k→32k) queda como remedio de fondo de la causa.
 
 **Agenda de la reunión del 26/08/2026 — CUMPLIDA** (5/5): (1) D-g resuelta (alcance: el objeto
 central es el corpus escalado; los cinco TOs son desarrollo) → principio 10 + laudo firmado
