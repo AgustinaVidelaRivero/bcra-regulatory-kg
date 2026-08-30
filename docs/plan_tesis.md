@@ -332,11 +332,12 @@ primero, para que el análisis cualitativo no contamine el conteo), y un gate qu
     `CANALES` por pares (bloque, canal), `--bloque` obligatorio sin default, selftest 52/52 con
     anclas crudo 56/39 y validado 54/38, brecha exacta verificada, mutación de control del
     centinela.
-  - [ ] U-ESQ-1b **canal abierto** (EN VUELO): `tipo_propuesto`/`predicado_propuesto` en prompt +
-    tool schema + normalización del validador (el validador NO filtra la medición: se lee del
-    crudo, fe de erratas `7072626`); namespace de caché aislado; rige
-    `docs/decisiones_caching_extraccion.md`.
-  - [ ] **Control de instrumento** (pendiente, previo a la corrida; D2): tres brazos A ≥10/20,
+  - [x] U-ESQ-1b **canal abierto** (HECHA, `8f52f3b`): `tipo_propuesto`/`predicado_propuesto` en
+    prompt + tool schema + normalización del validador (el validador NO filtra la medición: se
+    lee del crudo, fe de erratas `7072626`); namespace de caché aislado; rige
+    `docs/decisiones_caching_extraccion.md`. Lista «anotado sin tocar» registrada en la entrada 4
+    de `docs/cola_mejoras_diferidas.md`.
+  - [ ] **U-ESQ-1c — Control de instrumento** (EN VUELO; previo a la corrida, D2): tres brazos A ≥10/20,
     B ≥7/10, C ≤1/10 sobre unidades ya pagadas; devuelve el recargo medido para re-presupuestar
     (D7). Sin control aprobado, ningún resultado de ESQ-1 es admisible.
   - [ ] **Corrida ESQ-1** (tras control y re-presupuesto).
