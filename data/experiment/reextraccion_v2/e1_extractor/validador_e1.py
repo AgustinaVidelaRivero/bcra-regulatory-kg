@@ -86,10 +86,18 @@ def _str_o_none(v):
     return None
 
 
-def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
+def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> ResultadoValidacion:
     """Valida el input del tool call de un chunk. Devuelve elementos aceptados
     (normalizados, con provenance completa {to, archivo, punto, rol_documental})
-    y rechazos con motivo registrado."""
+    y rechazos con motivo registrado.
+
+    canal_abierto (experimental, explícito, default False = comportamiento de
+    producción sin cambio alguno): habilita los campos tipo_propuesto (en
+    entidades, junto a type) y predicado_propuesto (en relaciones, junto a
+    predicate), calcados de sujeto_propuesto. Exclusión mutua exacta con
+    type/predicate; los enums no se relajan. Una propuesta transportada por un
+    elemento que este validador rechaza NO se pierde para la medición: vive en
+    tool_input_crudo (el validador no muta su input)."""
     res = ResultadoValidacion(chunk_id=chunk["id"])
     admitidos = set(puntos_admitidos(chunk))
 
@@ -131,13 +139,24 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
         label = _str_o_none(e.get("label"))
         punto = _str_o_none(e.get("punto"))
 
+        tipo_prop = _str_o_none(e.get("tipo_propuesto")) if canal_abierto else None
+
         if local_id is None:
             res.rechazos.append(_rechazo("entidad", "local_id_ausente", ref, e))
             continue
         if local_id in by_local:
             res.rechazos.append(_rechazo("entidad", "local_id_duplicado", f"{ref}: '{local_id}'", e))
             continue
-        if etype not in ENTITY_TYPES:
+        if tipo_prop is not None:
+            # Canal abierto: tipo propuesto fuera de esquema. Exclusión mutua
+            # exacta con type (calcada de sujeto_id/sujeto_propuesto): un tipo
+            # fuera de esquema jamás entra silencioso en el enum.
+            if etype is not None:
+                res.rechazos.append(_rechazo(
+                    "entidad", "tipo_canal_invalido",
+                    f"{ref} ({local_id}): requiere exactamente UNO de type/tipo_propuesto", e))
+                continue
+        elif etype not in ENTITY_TYPES:
             res.rechazos.append(_rechazo("entidad", "type_invalido", f"{ref}: '{etype}'", e))
             continue
         if label is None:
@@ -170,6 +189,12 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
                 "rol_documental": rol_documental_de_punto(chunk, punto),
             },
         }
+        if canal_abierto:
+            # junto a type, análogo a sujeto_propuesto en relaciones: la clave
+            # existe en TODA entidad validada de una corrida con canal abierto
+            # (None cuando la entidad usa el enum). Con el flag apagado la
+            # clave NO existe: salida byte-idéntica a producción.
+            norm["tipo_propuesto"] = tipo_prop
         by_local[local_id] = norm
         res.entidades.append(norm)
 
@@ -185,7 +210,16 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
             res.rechazos.append(_rechazo("relacion", "relacion_no_dict", ref, r))
             continue
         pred = r.get("predicate")
-        if pred not in PREDICATES:
+        pred_prop = _str_o_none(r.get("predicado_propuesto")) if canal_abierto else None
+        if pred_prop is not None:
+            # Canal abierto: predicado propuesto fuera de esquema. Exclusión
+            # mutua exacta con predicate (calcada de sujeto_id/sujeto_propuesto).
+            if pred is not None:
+                res.rechazos.append(_rechazo(
+                    "relacion", "predicado_canal_invalido",
+                    f"{ref}: requiere exactamente UNO de predicate/predicado_propuesto", r))
+                continue
+        elif pred not in PREDICATES:
             res.rechazos.append(_rechazo("relacion", "predicado_invalido", f"{ref}: '{pred}'", r))
             continue
 
@@ -205,7 +239,13 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
         sujeto_prop = _str_o_none(r.get("sujeto_propuesto"))
         padre_sug = _str_o_none(r.get("sujeto_propuesto_padre_sugerido"))
 
-        if pred in SUJETO_PREDICATES:
+        if pred_prop is not None:
+            # Predicado propuesto: no existe firma en DOMAIN_RANGE contra la
+            # cual validar (ni forma de saber si el extremo es un sujeto), así
+            # que extremos y sujeto_* pasan normalizados tal como vienen. El
+            # anclaje (`punto`) ya se validó arriba como en toda relación.
+            pass
+        elif pred in SUJETO_PREDICATES:
             # Slip predecible heredado del v2: extremo sujeto mandado además
             # en target (aplica_a) / source (ejecuta) → se ignora ese campo.
             if pred == "aplica_a":
@@ -267,7 +307,7 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
                     f"{ref}: {src_e['type']} --{pred}--> {tgt_e['type']}", r))
                 continue
 
-        res.relaciones.append({
+        rel_out = {
             "source": source,
             "target": target,
             "predicate": pred,
@@ -280,7 +320,14 @@ def validar_salida(tool_input, chunk: dict) -> ResultadoValidacion:
                 "punto": punto,
                 "rol_documental": rol_documental_de_punto(chunk, punto),
             },
-        })
+        }
+        if canal_abierto:
+            # junto a predicate, análogo a sujeto_propuesto: la clave existe
+            # en TODA relación validada de una corrida con canal abierto (None
+            # cuando la relación usa el enum). Con el flag apagado la clave NO
+            # existe: salida byte-idéntica a producción.
+            rel_out["predicado_propuesto"] = pred_prop
+        res.relaciones.append(rel_out)
 
     # --- Registro del tratamiento de flags (no rechaza: insumo de E3) ---
     if chunk_flaggeado(chunk):

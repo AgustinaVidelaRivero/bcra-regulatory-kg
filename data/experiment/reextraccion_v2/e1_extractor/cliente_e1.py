@@ -53,13 +53,16 @@ DB_PATH = BASE / "cache" / "e1_extraccion.db"
 CACHE_USAGE_LOG = REPO / "logs" / "cache_usage.jsonl"  # gitignoreado (logs/)
 
 
-def namespace_e1() -> str:
+def namespace_e1(canal_abierto: bool = False) -> str:
     """Namespace de la caché local: dominio + code-version propio + hash del
     prefijo estable + flag de thinking. El hash del prefijo hace explícito el
-    candado que la key del request ya da implícitamente."""
+    candado que la key del request ya da implícitamente. Con canal_abierto
+    (experimental, explícito) el hash es el del prefijo con canal abierto:
+    namespace DISTINTO → partición de caché; con el default False el
+    namespace es IDÉNTICO al de producción."""
     return lc.make_namespace(
         DOMAIN,
-        code_ver=f"{CODE_VER}-p{prompt_e1.PREFIJO_HASH}",
+        code_ver=f"{CODE_VER}-p{prompt_e1.prefijo_hash(canal_abierto)}",
         thinking=False,
     )
 
@@ -119,6 +122,7 @@ class ClienteE1Real:
         tope_usd: float,
         run_label: str,
         db_path: Path = DB_PATH,
+        canal_abierto: bool = False,
     ):
         if min(precio_in_por_mtok, precio_out_por_mtok,
                precio_cache_write_por_mtok, precio_cache_read_por_mtok) <= 0 or tope_usd <= 0:
@@ -134,7 +138,7 @@ class ClienteE1Real:
             anthropic.Anthropic(max_retries=3),
             domain=DOMAIN,
             db_path=db_path,
-            namespace=namespace_e1(),
+            namespace=namespace_e1(canal_abierto),
             thinking_enabled=False,
             run_label=run_label,
         )
@@ -203,12 +207,13 @@ class ClienteE1Real:
         self.cache.close()
 
 
-def extraer_chunk(cliente, chunk: dict, model: str) -> dict:
+def extraer_chunk(cliente, chunk: dict, model: str, canal_abierto: bool = False) -> dict:
     """Camino común stub/real: construye el request determinístico del chunk,
     llama al cliente inyectado y devuelve el tool input crudo (la validación
     es de validador_e1, separada). El cliente real recibe además doc= para el
-    log de usage (Decisión 3)."""
-    kwargs = prompt_e1.build_request_kwargs(chunk, model=model)
+    log de usage (Decisión 3). canal_abierto debe coincidir con el del cliente
+    real (mismo prefijo → mismo namespace); se pasa explícito, jamás se infiere."""
+    kwargs = prompt_e1.build_request_kwargs(chunk, model=model, canal_abierto=canal_abierto)
     if isinstance(cliente, ClienteE1Real):
         resp = cliente.create(doc=chunk["archivo"], **kwargs)
     else:

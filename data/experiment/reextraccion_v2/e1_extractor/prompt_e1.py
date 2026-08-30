@@ -23,6 +23,7 @@ sujetos (enum duro en el tool schema) y roles de alcance por TO.
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 
@@ -196,6 +197,35 @@ Llamá la herramienta `{NOMBRE_TOOL}` con el schema dado. Si el chunk no tiene c
 
 
 # ========================================================================== #
+# CANAL ABIERTO EXPERIMENTAL (flag explícito, apagado por defecto)           #
+# ========================================================================== #
+# Bloque ADITIVO para corridas con canal abierto (ESQ-1): se APPENDEA al
+# final del prefijo estable, sin tocar una letra del prefijo de producción.
+# Con canal_abierto=False (default en todo call site) el prefijo, el tool
+# schema y el hash son byte-idénticos a los de producción. Sin ejemplos de
+# valores propuestos: un ejemplo inventado sembraría cadenas en la medición.
+
+BLOQUE_CANAL_ABIERTO = """
+# CANAL ABIERTO EXPERIMENTAL: tipo_propuesto / predicado_propuesto
+
+Esta corrida habilita un canal de escape declarado, análogo a `sujeto_propuesto`. El esquema cerrado sigue vigente: los 6 tipos y los 12 predicados se usan SIEMPRE que el contenido encaje, con todas las reglas de arriba.
+
+- Si el chunk contiene contenido normativo CLARO que no encaja en NINGUNO de los 6 tipos de entidad, en lugar de omitirlo (regla 4), emití la entidad con `tipo_propuesto` (texto libre: nombre corto y canónico del tipo que proponés) y SIN `type`. `type` y `tipo_propuesto` son MUTUAMENTE EXCLUYENTES: exactamente uno de los dos. El resto de la entidad va igual (local_id, label, punto, properties).
+- Si una conexión normativa CLARA entre elementos del chunk no encaja en NINGÚN predicado de la lista de 12 (por vocabulario o por dominio/rango), en lugar de omitirla, emití la relación con `predicado_propuesto` (texto libre: nombre corto del predicado que proponés) y SIN `predicate`. `predicate` y `predicado_propuesto` son MUTUAMENTE EXCLUYENTES: exactamente uno de los dos. La relación lleva igual su `punto` y sus extremos.
+- NO uses el canal para variantes léxicas de lo que el esquema ya nombra: si encaja en el enum, va en el enum. NO fuerces una caja equivocada: ante la duda entre forzar y proponer, proponé.
+"""
+
+
+def prefijo_sistema(canal_abierto: bool = False) -> str:
+    """Texto del system: el de producción tal cual, o (canal abierto) el de
+    producción MÁS el bloque experimental appendeado. Estrictamente aditivo:
+    prefijo_sistema(True).startswith(PREFIJO_SISTEMA) siempre."""
+    if not canal_abierto:
+        return PREFIJO_SISTEMA
+    return PREFIJO_SISTEMA + BLOQUE_CANAL_ABIERTO
+
+
+# ========================================================================== #
 # TOOL SCHEMA (contrato estructurado — estable, parte del prefijo cacheado)  #
 # ========================================================================== #
 
@@ -269,14 +299,58 @@ TOOL_SCHEMA_E1 = {
 }
 
 
-def bloques_sistema() -> list[dict]:
+def _tool_schema_canal_abierto() -> dict:
+    """Tool schema de la corrida con canal abierto: el de producción MÁS los
+    dos campos propuestos, calcados de sujeto_propuesto. Los enums NO se
+    tocan (el canal convive con el catálogo, igual que sujeto_propuesto);
+    additionalProperties sigue False (los campos se DECLARAN, el schema no se
+    abre). `type`/`predicate` dejan de ser required SOLO acá: la exclusión
+    mutua exacta (uno de los dos) la exige el validador, como con
+    sujeto_id/sujeto_propuesto."""
+    schema = copy.deepcopy(TOOL_SCHEMA_E1)
+    ent = schema["input_schema"]["properties"]["entities"]["items"]
+    ent["properties"]["tipo_propuesto"] = {
+        "type": "string",
+        "description": (
+            "SOLO canal abierto: nombre corto y canónico del tipo de entidad "
+            "que proponés, cuando el contenido normativo NO encaja en ninguno "
+            "de los 6 tipos del enum. Mutuamente excluyente con type: "
+            "exactamente uno de los dos."
+        ),
+    }
+    ent["required"] = ["local_id", "label", "punto"]
+    rel = schema["input_schema"]["properties"]["relations"]["items"]
+    rel["properties"]["predicado_propuesto"] = {
+        "type": "string",
+        "description": (
+            "SOLO canal abierto: nombre corto del predicado que proponés, "
+            "cuando la conexión normativa NO encaja en ningún predicado del "
+            "enum (por vocabulario o por dominio/rango). Mutuamente "
+            "excluyente con predicate: exactamente uno de los dos."
+        ),
+    }
+    rel["required"] = ["punto"]
+    return schema
+
+
+TOOL_SCHEMA_E1_CANAL_ABIERTO = _tool_schema_canal_abierto()
+
+
+def tool_schema_e1(canal_abierto: bool = False) -> dict:
+    """Tool schema según el flag. Con el flag apagado devuelve EL MISMO objeto
+    de producción (byte-idéntico por construcción)."""
+    return TOOL_SCHEMA_E1_CANAL_ABIERTO if canal_abierto else TOOL_SCHEMA_E1
+
+
+def bloques_sistema(canal_abierto: bool = False) -> list[dict]:
     """`system` como lista de bloques con el breakpoint de caching declarado en
     el ÚLTIMO bloque del prefijo estable (Decisión 1). Nada variable por chunk
-    entra acá."""
+    entra acá — el flag canal_abierto no varía por chunk: es un prefijo
+    distinto, estable dentro de su corrida, con su propio namespace."""
     return [
         {
             "type": "text",
-            "text": PREFIJO_SISTEMA,
+            "text": prefijo_sistema(canal_abierto),
             "cache_control": {"type": "ephemeral"},
         }
     ]
@@ -289,6 +363,21 @@ PREFIJO_CANONICO = json.dumps(
     sort_keys=True, ensure_ascii=False, separators=(",", ":"),
 )
 PREFIJO_HASH = hashlib.sha256(PREFIJO_CANONICO.encode("utf-8")).hexdigest()[:12]
+
+# Huella del prefijo con canal abierto: DISTINTA por construcción → particiona
+# el namespace de caché (candado U-ESQ-0: prefijo nuevo, corrida se paga
+# completa; jamás pisa las keys de producción).
+PREFIJO_CANONICO_CANAL_ABIERTO = json.dumps(
+    {"system": bloques_sistema(canal_abierto=True),
+     "tools": [TOOL_SCHEMA_E1_CANAL_ABIERTO]},
+    sort_keys=True, ensure_ascii=False, separators=(",", ":"),
+)
+PREFIJO_HASH_CANAL_ABIERTO = hashlib.sha256(
+    PREFIJO_CANONICO_CANAL_ABIERTO.encode("utf-8")).hexdigest()[:12]
+
+
+def prefijo_hash(canal_abierto: bool = False) -> str:
+    return PREFIJO_HASH_CANAL_ABIERTO if canal_abierto else PREFIJO_HASH
 
 
 # ========================================================================== #
@@ -379,16 +468,19 @@ def build_user_message(chunk: dict) -> str:
     return "\n".join(partes)
 
 
-def build_request_kwargs(chunk: dict, model: str, max_tokens: int = MAX_OUTPUT_TOKENS) -> dict:
+def build_request_kwargs(chunk: dict, model: str, max_tokens: int = MAX_OUTPUT_TOKENS,
+                         canal_abierto: bool = False) -> dict:
     """Request completo para client.messages.create(**kwargs). Prefijo estable
     (system + tools + tool_choice) idéntico entre chunks; lo variable, solo en
     messages. Este dict es también la base de la key de caché local
-    (llm_cache.canonical_request)."""
+    (llm_cache.canonical_request). canal_abierto se pasa EXPLÍCITO por el call
+    site (default False = producción, byte-idéntico): no se infiere ni se
+    hereda de entorno."""
     return {
         "model": model,
         "max_tokens": max_tokens,
-        "system": bloques_sistema(),
-        "tools": [TOOL_SCHEMA_E1],
+        "system": bloques_sistema(canal_abierto),
+        "tools": [tool_schema_e1(canal_abierto)],
         "tool_choice": {"type": "tool", "name": NOMBRE_TOOL},
         "messages": [{"role": "user", "content": build_user_message(chunk)}],
     }
