@@ -84,7 +84,7 @@ aceptado por la mesa.
 Resumen de consultas de búsqueda: motor: WebSearch de la sesión original de
 U-RW (10 strings), más 17 accesos de verificación por WebFetch / lectura de
 PDF. Los strings exactos y el mapeo consulta → candidato están en el paquete
-de revisión de esa unidad (`consultas_busqueda_U-RW.md`). Franjas: A rindió
+de revisión de esa unidad (`docs/consultas_busqueda_U-RW.md`). Franjas: A rindió
 7 candidatos, concentrados en legal y biomédico (la consulta hacia
 alimentos/agricultura/materiales no rindió ningún release que sobreviviera
 al triage); B rindió 4, varios compartidos con A; C rindió 5, con la
