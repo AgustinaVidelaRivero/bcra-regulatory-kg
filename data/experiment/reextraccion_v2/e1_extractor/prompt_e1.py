@@ -306,8 +306,26 @@ def _tool_schema_canal_abierto() -> dict:
     additionalProperties sigue False (los campos se DECLARAN, el schema no se
     abre). `type`/`predicate` dejan de ser required SOLO acá: la exclusión
     mutua exacta (uno de los dos) la exige el validador, como con
-    sujeto_id/sujeto_propuesto."""
+    sujeto_id/sujeto_propuesto.
+
+    La `description` del tool se REEMPLAZA solo en este modo (adenda P1′,
+    entrada 4.ii de la cola de mejoras): la de producción anuncia «schema
+    cerrado v2» y contradecía al bloque del canal abierto del system. La
+    nueva describe los dos campos propuestos y su exclusión mutua, sin
+    ejemplos de valores de tipos ni de predicados (no sembrar)."""
     schema = copy.deepcopy(TOOL_SCHEMA_E1)
+    schema["description"] = (
+        "Extrae entidades y relaciones del chunk según el esquema v2 (6 tipos "
+        "de entidad, 12 predicados, catálogo cerrado de sujetos), con canal "
+        "abierto declarado: una entidad cuyo contenido normativo no encaja en "
+        "ningún type del enum lleva `tipo_propuesto` (texto libre) y SIN "
+        "`type`; una relación que no encaja en ningún predicate del enum "
+        "lleva `predicado_propuesto` (texto libre) y SIN `predicate`. "
+        "`type`/`tipo_propuesto` y `predicate`/`predicado_propuesto` son "
+        "mutuamente excluyentes: exactamente uno de cada par. Todo elemento "
+        "lleva `punto` (provenance a nivel unidad estructural, de la lista "
+        "admitida del chunk)."
+    )
     ent = schema["input_schema"]["properties"]["entities"]["items"]
     ent["properties"]["tipo_propuesto"] = {
         "type": "string",

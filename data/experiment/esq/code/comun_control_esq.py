@@ -105,8 +105,13 @@ FIRMAS_B = ("Operacion --aplica_a--> Sujeto", "Excepcion --aplica_a--> Sujeto")
 PRESUPUESTO_USD = 0.32
 TOPE_PARCIAL_USD = 0.50
 
-# Namespace esperado del modo abierto (verificado en 8f52f3b).
-PREFIJO_HASH_ABIERTO_ESPERADO = "bca492bbf7c8"
+# Namespace esperado del modo abierto. El hash cambió en U-ESQ-1d al
+# corregirse la description del tool en modo abierto (adenda P1′, entrada
+# 4.ii): el valor del control original (U-ESQ-1c, verificado en 8f52f3b) era
+# "bca492bbf7c8" y queda registrado en PREFIJO_HASH_ABIERTO_CONTROL_ORIGINAL
+# para leer el material persistido de esa corrida; el vigente es el nuevo.
+PREFIJO_HASH_ABIERTO_ESPERADO = "d923bf876580"
+PREFIJO_HASH_ABIERTO_CONTROL_ORIGINAL = "bca492bbf7c8"
 
 # Factores de producción sellados (scoping §5.2, recomputables con
 # factores_produccion()). Solo referencia para cruces; el código recomputa.

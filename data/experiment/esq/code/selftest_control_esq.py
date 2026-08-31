@@ -18,8 +18,9 @@ al instrumento:
      medido, y el re-presupuesto de la corrida de 762 unidades.
   3. FLAG ENCENDIDO EN LA REQUEST — sobre un chunk real: el system es el
      prefijo abierto (≠ cerrado), el tool schema declara tipo_propuesto y
-     predicado_propuesto (y el cerrado NO), el hash es bca492bbf7c8 y el
-     namespace es el particionado pbca492bbf7c8.
+     predicado_propuesto (y el cerrado NO), el hash es el vigente de
+     cc.PREFIJO_HASH_ABIERTO_ESPERADO y el namespace el particionado con ese
+     hash (U-ESQ-1d: era bca492bbf7c8 hasta la corrección de la description).
   4. SELECCIÓN — sobre el universo real: pools 74 (33/1/3/37) / 164 / C>0
      por TO; 40 únicas y disyuntas; estratos exactos; A⊆poolA, B⊆poolB∖A,
      C⊆poolC; determinismo; los 40 chunk_ids resuelven en E0 enm01; la
@@ -229,9 +230,13 @@ def main() -> int:
           guardas["namespace_particionado"] and guardas["tool_schema_tipo_propuesto"]
           and guardas["tool_schema_predicado_propuesto"]
           and guardas["system_es_prefijo_abierto"])
-    check("prefijo abierto bca492bbf7c8 y namespace pbca492bbf7c8",
-          guardas["prefijo_hash_abierto"] == "bca492bbf7c8"
-          and "pbca492bbf7c8" in guardas["namespace"])
+    # El hash esperado vive en cc.PREFIJO_HASH_ABIERTO_ESPERADO (U-ESQ-1d: la
+    # description corregida del modo abierto cambió el prefijo; el literal
+    # viejo bca492bbf7c8 quedó como PREFIJO_HASH_ABIERTO_CONTROL_ORIGINAL).
+    check(f"prefijo abierto {cc.PREFIJO_HASH_ABIERTO_ESPERADO} y namespace "
+          f"p{cc.PREFIJO_HASH_ABIERTO_ESPERADO}",
+          guardas["prefijo_hash_abierto"] == cc.PREFIJO_HASH_ABIERTO_ESPERADO
+          and f"p{cc.PREFIJO_HASH_ABIERTO_ESPERADO}" in guardas["namespace"])
     kw_off = prompt_e1.build_request_kwargs(chunk_real, model=cc.MODEL_E1)
     props_off = kw_off["tools"][0]["input_schema"]["properties"]
     check("CONTRASTE: la request con flag apagado NO trae los campos ni el "

@@ -6,7 +6,8 @@ abierto (canal_abierto=True en prefijo, tool schema, validador y namespace).
 Invoca el pipeline de extracción sin modificarlo (patrón del pre-registro §8):
 prompt_e1.build_request_kwargs / cliente_e1.ClienteE1Real / validador_e1, todos
 con el flag explícito. Namespace particionado por construcción
-(e1_extraccion|cv=e1-extractor-v1-pbca492bbf7c8|think=0): la caché de
+(e1_extraccion|cv=e1-extractor-v1-p<PREFIJO_HASH_ABIERTO_ESPERADO>|think=0;
+la corrida original U-ESQ-1c usó pbca492bbf7c8): la caché de
 producción no recibe una sola escritura; además la corrida usa .db PROPIA
 (esq/cache/esq_control.db, gitignorada) — doble aislamiento (scoping §2.5).
 
@@ -222,10 +223,16 @@ def persistir_orden(seleccion: list[dict], universo: dict, destino: Path) -> Pat
 
 
 def correr(cliente, seleccion: list[dict], salida: Path,
-           tope_parcial_usd: float, stub: bool) -> dict:
+           tope_parcial_usd: float, stub: bool,
+           por_id: dict[str, dict] | None = None,
+           jsonl_nombre: str = JSONL_CONTROL) -> dict:
+    """por_id/jsonl_nombre son inyectables para la re-corrida P1′ (U-ESQ-1d):
+    las unidades dopadas no viven en E0 sino en fixtures de control/. Con los
+    defaults el comportamiento es EXACTAMENTE el de U-ESQ-1c."""
     salida.mkdir(parents=True, exist_ok=True)
-    jsonl = salida / JSONL_CONTROL
-    por_id = chunks_por_id()
+    jsonl = salida / jsonl_nombre
+    if por_id is None:
+        por_id = chunks_por_id()
     faltan = [s["chunk_id"] for s in seleccion if s["chunk_id"] not in por_id]
     if faltan:
         raise Freno(f"chunks ausentes en E0_SALIDA_ENM01: {faltan}")
