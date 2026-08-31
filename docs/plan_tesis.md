@@ -357,13 +357,32 @@ primero, para que el análisis cualitativo no contamine el conteo), y un gate qu
     C 0/10 pasa. **Hallazgo central: deformación semántica** (ver abajo). Recargo D7 re-medido:
     **lectura GLOBAL adoptada por la autora como número PROVISORIO** (+18,6 % → re-presupuesto
     ESQ-1 USD 6,51; se reemplaza por el medido bajo el prefijo de O2).
-  - [ ] **U-ESQ-1e — O2: neutralización de los cierres** (POR DESPACHAR; adenda P1″ para firma en
-    `data/experiment/esq/adenda_prerregistro_esq1_P1ter.md`): cambio de UNA variable — los dos
-    cierres restantes del system reemplazados con textos sellados en la adenda, SOLO en modo
-    abierto; dopadas, umbrales, description y brazo C idénticos a P1′. Cierre de la escalera
-    declarado: si O2 da cero, el canal declarativo queda inviable y las alternativas son el modo
-    (ii) de U-ESQ-0 o protocolizar la deformación semántica en ESQ-2.
-  - [ ] **Corrida ESQ-1** (tras control aprobado y re-presupuesto).
+  - [x] **U-ESQ-1e — O2: neutralización de los cierres** (HECHA, sello `0e50e3d`; adenda P1″
+    sellada `6cb0121`): cambio de una sola variable verificado (fixtures por sha, diff del system
+    = exactamente los dos reemplazos, cerrado byte-idéntico). **P1″ FALSADA — A′ 0/10 (tipo 0/5,
+    predicado 0/5), C 0/10 pasa**: con los cierres neutralizados y la instrucción explícita de
+    emitir por el canal, el modelo volvió a forzar las 10 cláusulas. Sub-hallazgo: la deformación
+    es INESTABLE entre corridas (3/10 cambiaron de caja errónea; una perdió el umbral que la
+    corrida anterior había capturado). USD 0,18396. **ESCALERA CERRADA por adenda §5.c.**
+  - **DECLARACIÓN FORMAL (autora, 31/08/2026): ESQ-1 en modo (i) es IRREALIZABLE tal como fue
+    pre-registrado.** El pre-registro `38be6e5` queda **FALSADO-CERRADO**: P1, P1′ y P1″ falsadas
+    en escalera sellada (commits de U-ESQ-1c, `c25273f`, `0e50e3d`); P2–P5 nunca corrieron y
+    quedan sin leer; la demostración de la escalera —el canal declarativo es inviable con este
+    modelo y este prompt— es el resultado. Saga completa del control: USD 0,79 de tope 9,00. El
+    re-presupuesto D7 (lectura global 6,52, sostenida por la autora) queda como **número
+    dormido**: solo revive si el censo revive por la rama (a) del árbol de U-ESQ-2-cal.
+  - [ ] **U-ESQ-2-cal — Control del instrumento de descubrimiento (modo ii)** (POR DESPACHAR;
+    pre-registro NUEVO para firma en `data/experiment/esq/prerregistro_descubrimiento_cal.md` —
+    instrumento nuevo, examen nuevo, no adenda a `38be6e5`): descubrimiento como tarea principal,
+    calibrado contra la vara existente (10 dopadas de `c25273f` por sha + 10 limpias de C),
+    P-cal ≥7/10 y ≥3/5 por mitad, C ≤1/10, regla de conteo sellada con adjudicación de la autora
+    y duda-no-cuenta. **FINAL DE UN SOLO TIRO**: si no detecta las dopadas, la vía del censo por
+    LLM queda CERRADA, sin retoque. **ÁRBOL sellado**: (a) pasa → censo modo (ii) re-estimado y
+    laudado sobre el universo de ESQ-1, con ESQ-2 protocolizada como complemento (mide la
+    deformación, que el censo no mide); (b) falla → ESQ-2 protocolizada única vía. En ambas
+    ramas ESQ-3 decide con todo el material y recién ahí se escala. Tope parcial 0,50 (~0,2).
+  - [ ] **Censo o protocolización, según el árbol de U-ESQ-2-cal** (reemplaza a la «corrida
+    ESQ-1» del diseño original).
 
 **HALLAZGO — deformación semántica: conforme-al-esquema ≠ fiel (U-ESQ-1d; alcance propio, va a
 ESQ-3 y C1.7).** En el control P1′ el modelo leyó las 10 cláusulas plantadas y las extrajo
@@ -372,8 +391,11 @@ propuesta (canal desobedecido) — re-tipado semánticamente erróneo (sanción�
 presunción→Restriccion, facultad→Obligacion) y relaciones sin firma posible **nominalizadas
 como entidades válidas** conectadas con predicados válidos. El esquema no filtra el contenido
 que no encaja: **lo deforma en extracciones esquema-conformes**, invisibles justamente porque
-validan. Implicación declarada: el grafo de producción puede contener contenido fuera-de-esquema
-deformado en cajas válidas. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
+validan. **Sub-hallazgo (U-ESQ-1e, `0e50e3d`): la deformación es INESTABLE** — mismo modelo,
+misma unidad, distinta caja errónea entre corridas, con pérdida no determinística de detalles
+(un umbral capturado en una corrida desapareció en la siguiente): el contenido deformado no
+tiene siquiera una firma estable que lo delate. Implicación declarada: el grafo de producción
+puede contener contenido fuera-de-esquema deformado en cajas válidas. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
 fiel) y es candidato a resultado central del capítulo del esquema (C1.7), con su tratamiento
 operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
 - [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema**: sobre **otros 10 documentos
@@ -651,6 +673,14 @@ hallazgo, bloque ESQ). La pregunta que va a la reunión es **hasta dónde se lle
 medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó el laudo `94bb7a7`
 §D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
 `data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
+
+**AGENDA — punto INFORMADO (no de decisión): cierre de la escalera del control de ESQ-1.** Tres
+controles pre-registrados y falsados en escalera sellada (P1/P1′/P1″; commits de U-ESQ-1c,
+`c25273f`, `0e50e3d`) demostraron que el canal declarativo de escape es inviable con este modelo
+y este prompt: el extractor conforma al esquema todo lo que no encaja (deformación semántica,
+además inestable entre corridas). ESQ-1 modo (i) declarado irrealizable; decisión de la autora:
+calibrar el modo (ii) —descubrimiento puro— contra las dopadas selladas (U-ESQ-2-cal, final de
+un solo tiro y árbol declarado) antes de censar o protocolizar. Costo de toda la saga: USD 0,79.
 
 **AGENDA — punto nuevo: dos exigencias del related work que tocan alcance (decisión de los
 mentores, no compromisos; `docs/mapa_related_work.md` §2, exigencias 6 y 7).** (a) ¿Se valida el
