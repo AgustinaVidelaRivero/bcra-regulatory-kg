@@ -345,10 +345,37 @@ primero, para que el análisis cualitativo no contamine el conteo), y un gate qu
     lee del crudo, fe de erratas `7072626`); namespace de caché aislado; rige
     `docs/decisiones_caching_extraccion.md`. Lista «anotado sin tocar» registrada en la entrada 4
     de `docs/cola_mejoras_diferidas.md`.
-  - [ ] **U-ESQ-1c — Control de instrumento** (EN VUELO; previo a la corrida, D2): tres brazos A ≥10/20,
-    B ≥7/10, C ≤1/10 sobre unidades ya pagadas; devuelve el recargo medido para re-presupuestar
-    (D7). Sin control aprobado, ningún resultado de ESQ-1 es admisible.
-  - [ ] **Corrida ESQ-1** (tras control y re-presupuesto).
+  - [x] **U-ESQ-1c — Control de instrumento** (HECHA; commit de cierre + diagnóstico `d6527a6`):
+    **P1 FALSADA** — A 0/20 (≥10), B 3/10 (≥7), C 0/10 pasa; resultado NULO por banda sellada;
+    USD 0,4223. Diagnóstico (U-ESQ-1c-diag): comparabilidad verificada (modelo pineado),
+    clasificación MEZCLA — brazo A con premisa mala pre-declarada, brazo B con pool contaminado
+    por re-expresabilidad, bug objetivo de la description del tool.
+  - [x] **U-ESQ-1d — Control rediseñado P1′** (HECHA; adenda sellada `e68e861`; sello del cierre
+    `c25273f`): description corregida solo en modo
+    abierto (cerrado byte-idéntico), 10 dopadas aprobadas por la autora (1 reemplazo por colisión
+    con canal vecino), corrida USD 0,1836. **P1′ FALSADA** — A′ 0/10 (tipo 0/5, predicado 0/5),
+    C 0/10 pasa. **Hallazgo central: deformación semántica** (ver abajo). Recargo D7 re-medido:
+    **lectura GLOBAL adoptada por la autora como número PROVISORIO** (+18,6 % → re-presupuesto
+    ESQ-1 USD 6,51; se reemplaza por el medido bajo el prefijo de O2).
+  - [ ] **U-ESQ-1e — O2: neutralización de los cierres** (POR DESPACHAR; adenda P1″ para firma en
+    `data/experiment/esq/adenda_prerregistro_esq1_P1ter.md`): cambio de UNA variable — los dos
+    cierres restantes del system reemplazados con textos sellados en la adenda, SOLO en modo
+    abierto; dopadas, umbrales, description y brazo C idénticos a P1′. Cierre de la escalera
+    declarado: si O2 da cero, el canal declarativo queda inviable y las alternativas son el modo
+    (ii) de U-ESQ-0 o protocolizar la deformación semántica en ESQ-2.
+  - [ ] **Corrida ESQ-1** (tras control aprobado y re-presupuesto).
+
+**HALLAZGO — deformación semántica: conforme-al-esquema ≠ fiel (U-ESQ-1d; alcance propio, va a
+ESQ-3 y C1.7).** En el control P1′ el modelo leyó las 10 cláusulas plantadas y las extrajo
+TODAS forzadas dentro del esquema: ni una omisión (regla de omitir desobedecida) ni una
+propuesta (canal desobedecido) — re-tipado semánticamente erróneo (sanción→Excepcion,
+presunción→Restriccion, facultad→Obligacion) y relaciones sin firma posible **nominalizadas
+como entidades válidas** conectadas con predicados válidos. El esquema no filtra el contenido
+que no encaja: **lo deforma en extracciones esquema-conformes**, invisibles justamente porque
+validan. Implicación declarada: el grafo de producción puede contener contenido fuera-de-esquema
+deformado en cajas válidas. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
+fiel) y es candidato a resultado central del capítulo del esquema (C1.7), con su tratamiento
+operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
 - [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema**: sobre **otros 10 documentos
   random** (disjuntos de ESQ-1 y del subset), análisis en profundidad de si el esquema cubre las
   relaciones que el texto exige — investigación cualitativa asistida, documento por documento,
