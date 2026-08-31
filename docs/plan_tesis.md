@@ -263,7 +263,15 @@ Objetivo: que "refinar" signifique arreglar el pipeline y re-correr, no editar e
 Objetivo: medir la **calidad de extracción** del grafo a nivel tripleta sin adjudicación manual
 masiva, con dos vías separadas y un juez LLM calibrado contra adjudicación humana. **Secuencia: D-f, laudo firmado 27/08/2026** (`docs/laudo_D-f_secuencia_tripletas.md`; el planteo original ofrecía dos escenarios excluyentes E1/E2, superados por el principio 10): el instrumento se construye y valida sobre **KG-Reextraído-r1** —conjunto de desarrollo, donde se itera sin restricción y donde el juez queda calibrado y el protocolo probado— y la **medición que cuenta para la tesis** se corre una única vez sobre el **grafo escalado**, dentro de la evaluación final pre-registrada (B6.3), porque el objeto de la tesis es el recurso final. B4.1 (el diseño) avanza igual y debe declarar el doble rol. Reemplaza el diseño anterior de anotación ciega
 de tripletas gold sobre 25 unidades.
-- [ ] B4.1 (H+I, $0) **Diseño sellado** (`docs/preregistro_evaluacion_tripletas.md`): (a) **vía
+- [ ] B4.1 (H+I, $0) **Diseño sellado** (`docs/preregistro_evaluacion_tripletas.md`). **Dos
+  requisitos incorporados por decisión de la autora desde la consolidación de related work
+  (`docs/mapa_related_work.md` §2)**: el pre-registro DEBE incluir (i) **intervalos de Wilson
+  para toda proporción reportada** (exigencia 4 del mapa; precedente YAGO, Tabla 1 — robusto en
+  muestras chicas, y hoy el repo reporta fracciones peladas) y (ii) la **desagregación de la
+  precisión por etapa del pipeline E0–E5**, además de por tipo de relación y por TO (exigencia
+  5; la provenance de r1 —`chunk_id`, `paginas`, `estado_e3`— y el campo `capa_pipeline` de
+  B4.4 lo vuelven barato; precedente YAGO: precisión por heurística de extracción). Contenido:
+  (a) **vía
   de precisión** — muestra aleatoria con semilla de **100 tripletas del grafo** (estratificada
   por tipo de relación y por TO), presentadas como nodo–relación–nodo **+ evidencia** (el texto
   fuente que la provenance señala; con B1.4, chunk y páginas), con dos juicios por tripleta:
@@ -439,7 +447,7 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 - [ ] C1.10 Revisión integral + defensa (guion, banco de preguntas actualizado: Q8/Q16, puntos incómodos redactados). (S9–S10)
 
 ### C2 · Publicación y reproducibilidad — T2 · S8
-- [ ] C2.1 (I) Release etiquetado + Zenodo/DOI: KG (KG-Refinado y KG-Reextraído-r1 con sha), eval sets sellados (EV2 preguntas+criterios, pares sintéticos, U6), gold de tripletas, scripts de métricas/regression, README de reproducción. Cumple "público" del PPF.
+- [ ] C2.1 (I) Release etiquetado + Zenodo/DOI: KG (KG-Refinado y KG-Reextraído-r1 con sha), eval sets sellados (EV2 preguntas+criterios, pares sintéticos, U6), gold de tripletas, scripts de métricas/regression, README de reproducción. Cumple "público" del PPF. **Agregado por decisión de la autora (mapa de related work, exigencia 8): checklist FAIR explícito como parte del entregable** — licencia declarada, forma de acceso/endpoint y código publicados (precedente del KG legal del paper 04: RDF con CC-BY, endpoint y código).
 - [ ] C2.2 (I) `docs/ARQUITECTURA.md` snapshot final.
 
 ---
@@ -616,6 +624,16 @@ hallazgo, bloque ESQ). La pregunta que va a la reunión es **hasta dónde se lle
 medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó el laudo `94bb7a7`
 §D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
 `data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
+
+**AGENDA — punto nuevo: dos exigencias del related work que tocan alcance (decisión de los
+mentores, no compromisos; `docs/mapa_related_work.md` §2, exigencias 6 y 7).** (a) ¿Se valida el
+recurso contra **normativa posterior a la construcción**? Precedente PrimeKG: holdout temporal
+(40 terapias FDA posteriores al corte, verificando ausencia de fuga); el corpus vivo del BCRA la
+vuelve natural — la pregunta es si entra como parte de B6.3, como unidad propia, o queda como
+trabajo futuro declarado. (b) ¿Qué protocolo cubre el **cambio normativo** (el TO cambia: ¿qué
+pasa con el grafo?)? El circuito de releases de B2.8 cubre el refinamiento por defectos, no la
+actualización por cambio de fuente — el hueco es real y la pregunta es su tratamiento: ¿capítulo,
+unidad, o limitación declarada con el diseño escrito?
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
