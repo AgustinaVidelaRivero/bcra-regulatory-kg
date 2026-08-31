@@ -107,10 +107,14 @@ TOPE_PARCIAL_USD = 0.50
 
 # Namespace esperado del modo abierto. El hash cambió en U-ESQ-1d al
 # corregirse la description del tool en modo abierto (adenda P1′, entrada
-# 4.ii): el valor del control original (U-ESQ-1c, verificado en 8f52f3b) era
-# "bca492bbf7c8" y queda registrado en PREFIJO_HASH_ABIERTO_CONTROL_ORIGINAL
-# para leer el material persistido de esa corrida; el vigente es el nuevo.
-PREFIJO_HASH_ABIERTO_ESPERADO = "d923bf876580"
+# 4.ii) y cambió de nuevo en U-ESQ-1e al neutralizarse los dos cierres del
+# system en modo abierto (adenda P1″ §3). Los hashes de las corridas previas
+# quedan registrados como constantes para leer su material persistido:
+#   - control original (U-ESQ-1c, verificado en 8f52f3b): "bca492bbf7c8"
+#   - re-corrida P1′ (U-ESQ-1d, sellada en c25273f):       "d923bf876580"
+# El vigente es el de los cierres neutralizados.
+PREFIJO_HASH_ABIERTO_ESPERADO = "48cb397b79c5"
+PREFIJO_HASH_ABIERTO_P1BIS = "d923bf876580"
 PREFIJO_HASH_ABIERTO_CONTROL_ORIGINAL = "bca492bbf7c8"
 
 # Factores de producción sellados (scoping §5.2, recomputables con

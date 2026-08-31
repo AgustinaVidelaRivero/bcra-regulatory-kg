@@ -216,13 +216,49 @@ Esta corrida habilita un canal de escape declarado, análogo a `sujeto_propuesto
 """
 
 
+# Cierres del system neutralizados SOLO en modo abierto (adenda P1″,
+# data/experiment/esq/adenda_prerregistro_esq1_P1ter.md §3, sellada por
+# commit): los dos textos de producción se reemplazan por los sellados
+# verbatim en la adenda ÚNICAMENTE cuando canal_abierto=True. El texto de
+# producción (PREFIJO_SISTEMA y la rama con el flag apagado) no cambia una
+# letra. Las líneas envueltas del blockquote de la adenda se unen con espacio
+# (semántica markdown de soft-wrap); el selftest verifica la igualdad contra
+# el texto extraído de la adenda misma.
+CIERRE_CATALOGO_PROD = "TIPOS DE ENTIDAD VÁLIDOS (exactamente 6, ningún otro)"
+CIERRE_CATALOGO_ABIERTO = (
+    "TIPOS DE ENTIDAD DEL CATÁLOGO (6) — si un contenido normativo claro no "
+    "encaja en ninguno, NO lo fuerces: emitilo por el canal abierto "
+    "(`tipo_propuesto`)."
+)
+CIERRE_REGLA4_PROD = (
+    "**NO inventes tipos ni predicados fuera de las listas.** Si una idea no "
+    "encaja en los 6 tipos de entidad o 12 predicados, NO la incluyas. Es "
+    "preferible no extraer algo a forzarlo en una caja equivocada."
+)
+CIERRE_REGLA4_ABIERTO = (
+    "**NO fuerces contenido en cajas equivocadas.** Si una idea no encaja en "
+    "los 6 tipos de entidad o en los 12 predicados, NO la fuerces en el tipo "
+    "o predicado más parecido NI la omitas: emitila por el canal abierto "
+    "(`tipo_propuesto` para entidades, `predicado_propuesto` para "
+    "relaciones). Forzar una caja equivocada es peor que proponer."
+)
+
+
 def prefijo_sistema(canal_abierto: bool = False) -> str:
-    """Texto del system: el de producción tal cual, o (canal abierto) el de
-    producción MÁS el bloque experimental appendeado. Estrictamente aditivo:
-    prefijo_sistema(True).startswith(PREFIJO_SISTEMA) siempre."""
+    """Texto del system. Flag apagado: el de producción tal cual (byte-idéntico,
+    sin transformación alguna). Canal abierto (adenda P1″): el de producción
+    con los DOS cierres reemplazados por los textos sellados de la adenda §3,
+    MÁS el bloque experimental appendeado. Desde P1″ el modo abierto ya NO es
+    aditivo (adenda §5.b: se rompe la aditividad y ESQ-1 mide bajo un prompt
+    de medición distinto del de producción)."""
     if not canal_abierto:
         return PREFIJO_SISTEMA
-    return PREFIJO_SISTEMA + BLOQUE_CANAL_ABIERTO
+    assert PREFIJO_SISTEMA.count(CIERRE_CATALOGO_PROD) == 1
+    assert PREFIJO_SISTEMA.count(CIERRE_REGLA4_PROD) == 1
+    neutralizado = (PREFIJO_SISTEMA
+                    .replace(CIERRE_CATALOGO_PROD, CIERRE_CATALOGO_ABIERTO)
+                    .replace(CIERRE_REGLA4_PROD, CIERRE_REGLA4_ABIERTO))
+    return neutralizado + BLOQUE_CANAL_ABIERTO
 
 
 # ========================================================================== #
