@@ -371,18 +371,23 @@ primero, para que el análisis cualitativo no contamine el conteo), y un gate qu
     modelo y este prompt— es el resultado. Saga completa del control: USD 0,79 de tope 9,00. El
     re-presupuesto D7 (lectura global 6,52, sostenida por la autora) queda como **número
     dormido**: solo revive si el censo revive por la rama (a) del árbol de U-ESQ-2-cal.
-  - [ ] **U-ESQ-2-cal — Control del instrumento de descubrimiento (modo ii)** (POR DESPACHAR;
-    pre-registro NUEVO para firma en `data/experiment/esq/prerregistro_descubrimiento_cal.md` —
-    instrumento nuevo, examen nuevo, no adenda a `38be6e5`): descubrimiento como tarea principal,
-    calibrado contra la vara existente (10 dopadas de `c25273f` por sha + 10 limpias de C),
-    P-cal ≥7/10 y ≥3/5 por mitad, C ≤1/10, regla de conteo sellada con adjudicación de la autora
-    y duda-no-cuenta. **FINAL DE UN SOLO TIRO**: si no detecta las dopadas, la vía del censo por
-    LLM queda CERRADA, sin retoque. **ÁRBOL sellado**: (a) pasa → censo modo (ii) re-estimado y
-    laudado sobre el universo de ESQ-1, con ESQ-2 protocolizada como complemento (mide la
-    deformación, que el censo no mide); (b) falla → ESQ-2 protocolizada única vía. En ambas
-    ramas ESQ-3 decide con todo el material y recién ahí se escala. Tope parcial 0,50 (~0,2).
-  - [ ] **Censo o protocolización, según el árbol de U-ESQ-2-cal** (reemplaza a la «corrida
-    ESQ-1» del diseño original).
+  - [x] **U-ESQ-2-cal — Control del instrumento de descubrimiento (modo ii)** (HECHA, sello
+    `eadf4a5`; pre-registro `bca863f`): instrumento nuevo calibrado contra la vara sellada (10 dopadas de
+    `c25273f` por sha + 10 limpias de C), manifiesto del prompt aprobado por la autora con
+    contrato sha-bound, corrida 20/20 en USD 0,1297 de tope 0,50, modelo resuelto
+    `claude-haiku-4-5-20251001` en las 20 llamadas, adjudicación de la autora fila por fila
+    (`data/experiment/esq/control/adjudicacion_descubrimiento_cal.md`). **P-cal FALSADA por su
+    segunda mitad**: A′ 9/10 PASA (tipo 4/5, predicado 5/5, 0 cruces — capacidad demostrada:
+    el modelo ve y nombra lo plantado cuando descubrir es la única tarea) pero **C 7/10 con
+    espurias (umbral ≤1/10) NO PASA** — inunda de falsos positivos el texto limpio: un censo
+    habría SOBRECONTADO la deriva; el brazo C existía para esto. **RAMA (b) DECLARADA por el
+    árbol sellado: el censo por LLM queda CERRADO con este modelo, con DOBLE evidencia —
+    extrayendo deforma (escalera P1/P1′/P1″), descubriendo sobrecuenta (P-cal)**. El D7 global
+    6,52 pasa de dormido a **MUERTO**. Sub-hallazgo en limpias: facultades discrecionales
+    REALES en texto de producción (veedor, extensión de plazo, permiso adicional, códigos de
+    consolidación) — el hueco de potestades pasa de hipótesis plantada a hallazgo en corpus
+    real → C1.7 y ESQ-3.
+  - [x] **Resolución del árbol: RAMA (b)** — ESQ-2 protocolizada es la única vía; no hay censo.
 
 **HALLAZGO — deformación semántica: conforme-al-esquema ≠ fiel (U-ESQ-1d; alcance propio, va a
 ESQ-3 y C1.7).** En el control P1′ el modelo leyó las 10 cláusulas plantadas y las extrajo
@@ -395,14 +400,28 @@ validan. **Sub-hallazgo (U-ESQ-1e, `0e50e3d`): la deformación es INESTABLE** �
 misma unidad, distinta caja errónea entre corridas, con pérdida no determinística de detalles
 (un umbral capturado en una corrida desapareció en la siguiente): el contenido deformado no
 tiene siquiera una firma estable que lo delate. Implicación declarada: el grafo de producción
-puede contener contenido fuera-de-esquema deformado en cajas válidas. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
+puede contener contenido fuera-de-esquema deformado en cajas válidas. **Ampliación (U-ESQ-2-cal,
+adjudicación de la autora): el hueco de POTESTADES pasa de hipótesis plantada a hallazgo en
+producción** — facultades discrecionales reales de la autoridad detectadas en texto limpio del
+corpus (designación de veedor, extensión de plazo, permiso adicional, códigos de consolidación):
+la categoría deóntica de permiso/facultad no existe en el esquema y su contenido real está en el
+corpus → tratamiento en ESQ-3, conclusión de diseño en C1.7. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
 fiel) y es candidato a resultado central del capítulo del esquema (C1.7), con su tratamiento
 operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
-- [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema**: sobre **otros 10 documentos
-  random** (disjuntos de ESQ-1 y del subset), análisis en profundidad de si el esquema cubre las
-  relaciones que el texto exige — investigación cualitativa asistida, documento por documento,
-  con la evidencia textual de cada relación no cubierta. Salida: inventario de huecos del esquema
-  con cita al texto que los revela. **Registro obligatorio**: los IDs de sus 10 documentos se
+- [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema, PROTOCOLIZADO** — desde la
+  rama (b) del árbol de U-ESQ-2-cal es **la única vía** de evaluación de cobertura (el censo por
+  LLM quedó cerrado con doble evidencia). Sobre **otros 10 documentos random** (disjuntos de
+  ESQ-1 y del subset): análisis en profundidad, documento por documento, con la evidencia
+  textual de cada hueco. **Insumos del protocolo, ya medidos**: (a) las tres firmas de
+  deformación de la entrada 9 de `docs/cola_mejoras_diferidas.md` (descripciones de categorías
+  sin tipo propio; labels que nominalizan relaciones; variación de tipo entre extracciones);
+  (b) la lección de U-ESQ-2-cal sobre falsos positivos — el descubrimiento por LLM sobrecuenta
+  sobre texto limpio (properties, Restricciones cualitativas, Excepciones y Obligaciones
+  informativas se reportan como huecos sin serlo): el protocolo debe adjudicar cada candidato
+  contra el esquema real, nunca contar reportes crudos; (c) el hueco de potestades CONFIRMADO
+  en corpus real (facultades de la autoridad: veedor, extensión de plazo, permiso adicional,
+  códigos de consolidación) como primera familia a buscar. Salida: inventario de huecos con
+  cita al texto que los revela. **Registro obligatorio**: los IDs de sus 10 documentos se
   anotan en el mismo archivo versionado de exclusión
   `data/experiment/esq/documentos_excluidos_esq.json`.
 - [ ] ESQ-3 (H+I, $0) **Gate: lectura conjunta + retoques + laudo de esquema congelado**. Lee
@@ -674,13 +693,18 @@ medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó
 §D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
 `data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
 
-**AGENDA — punto INFORMADO (no de decisión): cierre de la escalera del control de ESQ-1.** Tres
-controles pre-registrados y falsados en escalera sellada (P1/P1′/P1″; commits de U-ESQ-1c,
-`c25273f`, `0e50e3d`) demostraron que el canal declarativo de escape es inviable con este modelo
-y este prompt: el extractor conforma al esquema todo lo que no encaja (deformación semántica,
-además inestable entre corridas). ESQ-1 modo (i) declarado irrealizable; decisión de la autora:
-calibrar el modo (ii) —descubrimiento puro— contra las dopadas selladas (U-ESQ-2-cal, final de
-un solo tiro y árbol declarado) antes de censar o protocolizar. Costo de toda la saga: USD 0,79.
+**AGENDA — punto INFORMADO (no de decisión): la historia completa del control de ESQ-1 —
+escalera + calibración + rama.** (1) Tres controles pre-registrados y falsados en escalera
+sellada (P1/P1′/P1″; commits de U-ESQ-1c, `c25273f`, `0e50e3d`): el canal declarativo es
+inviable — el extractor conforma al esquema todo lo que no encaja (deformación semántica,
+inestable entre corridas). (2) Calibración del modo (ii) con pre-registro nuevo (`bca863f`,
+final de un solo tiro): **P-cal falsada por su segunda mitad** — capacidad sí (A′ 9/10: el
+modelo ve y nombra lo plantado cuando descubrir es la única tarea), precisión no (C 7/10 con
+falsos positivos: un censo habría sobrecontado la deriva). (3) **Rama (b) del árbol sellado: el
+censo por LLM queda CERRADO con doble evidencia — extrayendo deforma, descubriendo
+sobrecuenta — y ESQ-2 protocolizada es la única vía.** Bonus del control: el hueco de
+potestades confirmado en corpus real. Costo total de la saga (escalera + calibración):
+USD 0,92 de tope 9,00.
 
 **AGENDA — punto nuevo: dos exigencias del related work que tocan alcance (decisión de los
 mentores, no compromisos; `docs/mapa_related_work.md` §2, exigencias 6 y 7).** (a) ¿Se valida el
