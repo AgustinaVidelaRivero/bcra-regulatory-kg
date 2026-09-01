@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v7 (2026-08-23)
+# Plan de cierre de la tesis — v9 (2026-08-31)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -40,6 +40,18 @@ v7 (2026-08-23) — cierre de U-B1a: **KG-Reextraído-r1** (sha `0226e947…`, 6
 7/7, muestra de 30 referencias inspeccionada 30/30 OK por la autora); B1.1–B1.7 hechas; fila de
 r1 en la nomenclatura; pendientes de laudo y tests de reglas de E4 anotados en B2; entrada r1
 en `neo4j/grafos.py` como prerrequisito de carga.
+v8 (2026-08-28) — reencuadre por la reunión de mentores del 26/08: principio 10 (los cinco TOs
+son conjunto de DESARROLLO; el corpus escalado es el conjunto de TEST y el objeto central);
+D-g/D-f resueltas por laudo firmado y D-h (tesis de recurso; la comparación baja a validación
+de diseño); bloque ESQ como T1 bloqueante del escalado con fuga al test cerrada
+(documentos_excluidos_esq.json); B5/B6 re-tierados a T1; B6.3 rediseñada como EVALUACIÓN FINAL
+con pre-registro propio; secuencia ESQ-RI para el régimen informativo con el hallazgo del
+modelo de datos (fe1fe36); U-RW y lecturas de la reunión; cola de mejoras diferidas creada.
+v9 (2026-08-31) — saga del control de esquema cerrada: escalera P1/P1′/P1″ falsada
+(U-ESQ-1c/1d/1e; canal declarativo inviable — deformación semántica, inestable), calibración
+del modo (ii) con P-cal falsada por su segunda mitad (U-ESQ-2-cal `eadf4a5`: capacidad sí,
+precisión no) → RAMA (b): censo por LLM CERRADO con doble evidencia, ESQ-2 protocolizada como
+única vía, D7 muerto; hueco de potestades confirmado en corpus real; ruta crítica reescrita.
 v6 (2026-08-23) — rediseño de la evaluación intrínseca y arranque de la escritura:
 principio 9 (el grafo evaluado se sella; las correcciones producen una versión posterior);
 B4 rediseñada como evaluación intrínseca a nivel tripleta con dos vías (precisión con juicio
@@ -503,7 +515,13 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
   - [x] C1.1 **tramo 1b — HECHO**, sello `5ff8be7` (verificado por mesa el 27/08: marcador `[PENDIENTE MENTORES — D-g]` retirado de `main.tex` y párrafo 4 reformulado con el encuadre de recurso de D-h). Alcance original: el cierre del párrafo 2 (hoy «cinco Textos Ordenados … densidad realista + evaluación exhaustiva», con marcador `[PENDIENTE MENTORES — D-g]`) y el enunciado del párrafo 4 (hoy «sobre cinco Textos Ordenados») se reescriben con el marco desarrollo/test: el objeto es el corpus regulatorio completo y los cinco TOs son el conjunto donde se construyó y validó el método. Se retira el marcador al aplicar. Borrador de mesa → tuneo de la autora (mismo circuito que el tramo 1).
   - [ ] C1.1 **tramo de objetivos — DESBLOQUEADO por D-g**: el objetivo general se formula sobre el corpus completo (recurso final) y los específicos incluyen la validación del método sobre el conjunto de desarrollo.
   - [ ] C1.1 **tramo de Estado del arte — DESBLOQUEADO**: el material de background llegó (ver U-RW y `docs/lecturas_reunion_2026-08-26.md`).
-- [~] U-RW (I, $0) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso — importan los trabajos que publican un KG como artefacto en cualquier disciplina y lo metodológicamente exigible en un KG construido con LLMs). **Alcance re-partido en ejecución**: la unidad ejecutora fue de **solo descubrimiento** (tabla de hasta 15 candidatos nuevos con triage —qué recurso presenta / cómo declara haber evaluado—, con consultas de búsqueda auditables; ENTREGADA); la **lectura en diagonal de L1–L10 y el mapa de exigencias metodológicas los hizo la mesa** en sesión. **Pendientes**: (a) confirmación de las marcas del mapa por la autora; (b) **consolidación a archivo versionado** (`docs/mapa_related_work.md` + actualización de estados en `docs/lecturas_reunion_2026-08-26.md`). **RIESGO ANOTADO**: el material de la barrida y del mapa vive hoy en sesiones de instancias, no en el repo — si esas sesiones se pierden, se pierde el trabajo; la consolidación lo baja a `docs/` y es lo primero que se ejecuta al retomar este carril. Alimenta C1.2 y el Estado del arte.
+- [~] U-INV **Inventario del recurso** (EN VUELO, sin pasar por revisión de mesa — fila mínima
+  para que la cola la vea; el detalle lo completa su propia revisión al cierre). Working set
+  declarado: `docs/tesis/inventario_recurso.md` (nuevo), `.gitignore` (línea
+  `!docs/tesis/inventario_recurso.md`), y ediciones en vuelo de `docs/tesis/main.tex` y
+  `docs/tesis/bibliografia.bib`. **Nada de ese working set viaja en commits de otras unidades**
+  (regla ya aplicada en los pases recientes: add por ruta explícita).
+- [x] U-RW (**HECHA y CONSOLIDADA**, `70352b8`) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso). Ejecutada en dos partes: unidad de solo-descubrimiento (tabla de candidatos con triage y consultas auditables) + lectura en diagonal y mapa de exigencias por la mesa. **Consolidada a `docs/mapa_related_work.md`** (§2: mapa de 10 exigencias con estado/evidencia/dónde-se-resuelve; §3 estados finales de lecturas; §4 candidatos; §5 selección para lectura en serio) y `docs/lecturas_reunion_2026-08-26.md` actualizado. **Marcas confirmadas por la autora y ya registradas en el plan** (Wilson + desagregación por etapa en B4.1; checklist FAIR en C2.1; exigencias 6 y 7 en la agenda de mentores). El riesgo de material-en-sesiones quedó resuelto por la consolidación. Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
 - [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3)
 - [ ] C1.4 **El método** — construcción y refinamiento de un KG regulatorio de punta a punta (sigue B2.8): pipeline E0–E5 (diseño, principios, enmienda 01 con P1–P3, costos, limitaciones) + ciclo de refinamiento por releases (B2.6) + retriever/backend + intake. Cada mecanismo con puntero al experimento que lo demuestra (§6). (S3–S4, cierra con B1/B2)
@@ -534,9 +552,10 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 | S8 (5–11 oct) | buffer | buffer | C1.8–C1.9, C2 |
 | S9–S10 (12–26 oct) | — | — | C1.10 |
 
-**Reordenamiento por la reunión del 26/08** (el cronograma de arriba es previo y queda como
-referencia histórica): la ruta crítica pasa a ser **ESQ-1 → ESQ-2 → ESQ-3 → B5 → B6.1/B6.2 →
-B6.3 (evaluación final)**, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
+**Reordenamiento por la reunión del 26/08, actualizado por la rama (b) de U-ESQ-2-cal** (el
+cronograma de arriba es previo y queda como referencia histórica): la ruta crítica es
+**ESQ-2 protocolizada → ESQ-3 → B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
+del diseño original ya no existe —, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
 B4 sobre r1, B1.9/B1.10 y los casos de uso se re-encuadran como trabajo sobre el conjunto de
 desarrollo: siguen valiendo como experimentos de la tesis, pero ceden prioridad de calendario
 frente a ESQ y al escalado. El presupuesto de abajo no incorpora aún ESQ-1 (a estimar).
@@ -670,10 +689,14 @@ D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora apl
 `docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
 arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
 
-**RUTA CRÍTICA vigente desde la reunión**: `ESQ-1 → ESQ-2 → ESQ-3 (retoques + esquema congelado)
-→ escalado (B5/B6) → evaluación final sobre el grafo escalado (B6.3, pre-registro propio)`.
-Todo lo demás —A2 (head-to-head), B1.9/B1.10, B4 sobre r1, casos de uso— es trabajo sobre el
-**conjunto de desarrollo**: valioso, se presenta como experimento, y no bloquea la ruta crítica.
+**RUTA CRÍTICA vigente (actualizada por la rama (b) del árbol de U-ESQ-2-cal, `eadf4a5`)**:
+`ESQ-2 protocolizada (única vía de cobertura; el censo por LLM quedó cerrado) → ESQ-3 (retoques
++ laudo de esquema congelado, con TODO el material: escalera, calibración, deformación,
+potestades, firmas de la cola) → escalado (B5/B6) → evaluación final sobre el grafo escalado
+(B6.3, pre-registro propio)`. La corrida ESQ-1 del diseño original ya no existe (modo (i)
+irrealizable, `38be6e5` falsado-cerrado). Todo lo demás —A2 (head-to-head), B1.9/B1.10, B4
+sobre r1, casos de uso— es trabajo sobre el **conjunto de desarrollo**: valioso, se presenta
+como experimento, y no bloquea la ruta crítica.
 
 **Compromisos de la reunión pendientes de ejecución**: barrida de related work de *releases* de
 KG post-LLM en cualquier disciplina, con foco en trabajos que presentan un **recurso** como el de
@@ -692,6 +715,17 @@ hallazgo, bloque ESQ). La pregunta que va a la reunión es **hasta dónde se lle
 medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó el laudo `94bb7a7`
 §D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
 `data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
+
+**PRÓXIMO INFORME DE AVANCE — todo lo comprometido, en un solo lugar (nada se evapora entre
+reuniones).** Menciones comprometidas por laudo, aún no cumplidas: (1) el **cambio de alcance**
+de D-g (el objeto central es el corpus escalado; checkbox del laudo `docs/laudo_D-g_alcance_corpus.md`);
+(2) el **encuadre de recurso** de D-h (la comparación baja a validación de diseño — modifica el
+enunciado del PPF; checkbox en D-h); (3) la **atribución** de D-f (la aplicación del marco
+desarrollo/test a las tripletas fue decisión de la autora, no tratada en la reunión; checkbox
+del laudo `docs/laudo_D-f_secuencia_tripletas.md`). Puntos de agenda acumulados abajo: régimen
+informativo familia-por-familia (pre-D5), exigencias 6 y 7 del related work, y la historia
+completa del control de ESQ-1 como informado. Al fijarse fecha: armar guion con la skill de
+reunión sobre este bloque.
 
 **AGENDA — punto INFORMADO (no de decisión): la historia completa del control de ESQ-1 —
 escalera + calibración + rama.** (1) Tres controles pre-registrados y falsados en escalera
