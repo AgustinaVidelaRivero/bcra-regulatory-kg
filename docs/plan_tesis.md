@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v9 (2026-08-31)
+# Plan de cierre de la tesis — v10 (2026-09-01)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -21,6 +21,11 @@ costo API estimado, dependencia, entregable sellado. Costos en USD.
 archivos): `966253e` dice que los laudos D-g y D-f quedan **pendientes de firma**, cuando ambos se
 **firmaron en el mismo acto** y ese commit ya los contiene firmados. El estado correcto es el de
 `docs/laudo_D-g_alcance_corpus.md` y `docs/laudo_D-f_secuencia_tripletas.md`.
+`8dea823` (laudo ESQ-2) contiene «/bin/zsh» donde el mensaje decía «$0» (expansión de shell al
+commitear con comillas dobles); el archivo `docs/laudo_ESQ-2_diseno.md` está intacto.
+`930f289` (fe de erratas de ranking ESQ-2) tiene dos artefactos cosméticos de pegado de terminal
+(«decada» por «de cada»; «0,Wilson» sin espacio); el archivo
+`data/experiment/esq/fe_erratas_prerregistro_esq2_ranking.md` está intacto.
 
 Changelog: v1 (2026-08-17) — plan inicial con revisión de mesa (nomenclatura canónica,
 laudos requeridos, principio 7, tarifas, cuello de botella de revisión, gate informativo de
@@ -52,6 +57,12 @@ v9 (2026-08-31) — saga del control de esquema cerrada: escalera P1/P1′/P1″
 del modo (ii) con P-cal falsada por su segunda mitad (U-ESQ-2-cal `eadf4a5`: capacidad sí,
 precisión no) → RAMA (b): censo por LLM CERRADO con doble evidencia, ESQ-2 protocolizada como
 única vía, D7 muerto; hueco de potestades confirmado en corpus real; ruta crítica reescrita.
+v10 (2026-09-01) — U-ESQ-2 ejecutada y cerrada (`a7788c1`, bajo laudo `8dea823` + pre-registro
+`2240c9c`): gate de paridad 10/10 USD 0, extracción E1-solo 762/762 a USD 4,1079, fe de erratas
+de ranking `930f289` (round-robin anidado disparador × TO, cegado de origen restaurado),
+worksheet de 75 fichas listo; corrección D4 del laudo derramada al plan (se queman 10
+documentos, no 20); ruta crítica: sigue la lectura de la autora → spot-check de mesa → tabla
+con Wilson → ESQ-3; fes de erratas de mensajes `8dea823` y `930f289` registradas.
 v6 (2026-08-23) — rediseño de la evaluación intrínseca y arranque de la escritura:
 principio 9 (el grafo evaluado se sella; las correcciones producen una versión posterior);
 B4 rediseñada como evaluación intrínseca a nivel tripleta con dos vías (precisión con juicio
@@ -420,22 +431,40 @@ la categoría deóntica de permiso/facultad no existe en el esquema y su conteni
 corpus → tratamiento en ESQ-3, conclusión de diseño en C1.7. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
 fiel) y es candidato a resultado central del capítulo del esquema (C1.7), con su tratamiento
 operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
-- [ ] ESQ-2 (I, $0 de extracción) **Test de cobertura del esquema, PROTOCOLIZADO** — desde la
-  rama (b) del árbol de U-ESQ-2-cal es **la única vía** de evaluación de cobertura (el censo por
-  LLM quedó cerrado con doble evidencia). Sobre **otros 10 documentos random** (disjuntos de
-  ESQ-1 y del subset): análisis en profundidad, documento por documento, con la evidencia
-  textual de cada hueco. **Insumos del protocolo, ya medidos**: (a) las tres firmas de
-  deformación de la entrada 9 de `docs/cola_mejoras_diferidas.md` (descripciones de categorías
-  sin tipo propio; labels que nominalizan relaciones; variación de tipo entre extracciones);
-  (b) la lección de U-ESQ-2-cal sobre falsos positivos — el descubrimiento por LLM sobrecuenta
-  sobre texto limpio (properties, Restricciones cualitativas, Excepciones y Obligaciones
-  informativas se reportan como huecos sin serlo): el protocolo debe adjudicar cada candidato
-  contra el esquema real, nunca contar reportes crudos; (c) el hueco de potestades CONFIRMADO
-  en corpus real (facultades de la autoridad: veedor, extensión de plazo, permiso adicional,
-  códigos de consolidación) como primera familia a buscar. Salida: inventario de huecos con
-  cita al texto que los revela. **Registro obligatorio**: los IDs de sus 10 documentos se
-  anotan en el mismo archivo versionado de exclusión
-  `data/experiment/esq/documentos_excluidos_esq.json`.
+- [~] ESQ-2 (H+I) **Test de cobertura del esquema, PROTOCOLIZADO** — desde la rama (b) del
+  árbol de U-ESQ-2-cal es **la única vía** de evaluación de cobertura (el censo por LLM quedó
+  cerrado con doble evidencia). Gobernado por tres documentos sellados: el laudo
+  `docs/laudo_ESQ-2_diseno.md` (`8dea823`: tope propio USD 6,50 del remanente D6; extracción
+  E1-solo PROVISIONAL pre-B5.4 con **cota superior de omisiones declarada**; corrección D4 —
+  el universo son **los 10 TOs del sorteo sellado de ESQ-1**, los 10 originales de ESQ-2
+  quedan VÍRGENES para B6.3: se queman 10 documentos, no 20), el pre-registro
+  `data/experiment/esq/prerregistro_esq2.md` (`2240c9c`: gate de paridad como precondición;
+  muestra 38 azarosas + 37 dirigidas; firmas (a)–(g) — que incorporan las tres firmas de la
+  entrada 9 de la cola, la lección de falsos positivos de U-ESQ-2-cal y las potestades como
+  familia (d); ficha pareada con DUDA como categoría propia; Wilson con alcance declarado solo
+  sobre la azarosa; criterio de decisión de ESQ-3 sellado NO CALIBRADO) y la fe de erratas de
+  ranking `data/experiment/esq/fe_erratas_prerregistro_esq2_ranking.md` (`930f289`).
+  - [x] **U-ESQ-2 — gate + extracción + muestra + fichas** (HECHA, sello `a7788c1`): gate de
+    paridad por caché **10/10 hits, 0 misses, USD 0** (validación recomputada == persistida);
+    extracción E1-solo **762/762 unidades** de los 10 TOs a **USD 4,1079** (estimación 5,04,
+    tope 6,50; modelo resuelto `claude-haiku-4-5-20251001` en las 762; db propia ignorada por
+    el `.gitignore` de `esq/` con 22 sellos sha256 versionados);
+    `documentos_excluidos_esq.json` creado (10 IDs, sha 10/10 contra manifest). Hallazgo de
+    ejecución: la regla de ranking sellada degeneró en **36/37 dirigidas en un solo TO**
+    (actgar, alfabéticamente primero en `chunk_id`); el ejecutor la implementó literal y
+    reportó sin desviarse → corregida por la fe de erratas `930f289` ANTES de toda lectura
+    (**round-robin anidado disparador × TO**; ventana declarada: cero fichas leídas, azarosa
+    intacta). Muestra final 75 = 38 azarosas (sorteo semilla 20260901, **reproducido
+    independientemente por la mesa**) + 37 dirigidas sobre los 10 TOs (máximo por TO 14/75,
+    cegado de origen restaurado); worksheet de 75 fichas auto-contenidas con 75/75 marcas null
+    y **sin marca de origen**; selftest 28/28 (incluye 5 checks anti-monopolio). **Saga ESQ
+    acumulada: USD 5,03 de tope 9,00.**
+  - [ ] **Lectura de la autora** (H, $0): tandas de 10–15 con
+    `data/experiment/esq/code/leer_fichas_esq2.py`; checkpoint de ritmo tras la primera tanda
+    (ajuste de N solo por laudo declarado) → **spot-check de mesa 10/75** → tabla de
+    resultados con Wilson (solo la azarosa generaliza; la dirigida se reporta aparte y nunca
+    promueve sola) → salida: inventario de huecos con cita al texto que los revela, insumo
+    directo de ESQ-3.
 - [ ] ESQ-3 (H+I, $0) **Gate: lectura conjunta + retoques + laudo de esquema congelado**. Lee
   ESQ-1 y ESQ-2, decide los **últimos retoques** del esquema (agregar/renombrar/fusionar tipos y
   relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
@@ -455,10 +484,13 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
 **Nota de alcance y fuga al conjunto de test (principio 10).** ESQ mide el **esquema**, no la
 calidad del grafo: no es una evaluación de fidelidad ni sustituye a B4, y **no consume el conjunto
 de preguntas del test** (no se evalúan respuestas sobre estos documentos, se inspecciona la
-extracción). Pero **sí traslada sus 20 documentos al conjunto de desarrollo a efectos del
+extracción). Pero **sí traslada sus documentos al conjunto de desarrollo a efectos del
 esquema**: ESQ-3 retoca el esquema en función de lo que esos documentos revelan, de modo que el
-esquema final ya los vio. Consecuencia obligatoria: los 20 documentos de ESQ-1 y ESQ-2 quedan
-**excluidos de la evaluación final** (B6.3) y sus IDs se registran en el archivo versionado
+esquema final ya los vio. **Corrección D4 del laudo `8dea823`**: ESQ-2 reutiliza los 10 TOs del
+sorteo sellado de ESQ-1 (universo que había quedado muerto sin correr) y los 10 originales de
+ESQ-2 quedan vírgenes — **se queman 10 documentos, no 20**. Consecuencia obligatoria: esos 10
+documentos quedan **excluidos de la evaluación final** (B6.3) y sus IDs se registran en el
+archivo versionado
 `data/experiment/esq/documentos_excluidos_esq.json`, que B6.3 cita al construir su eval set. Los
 documentos siguen entrando al grafo escalado —lo que se excluye es su uso como material de
 evaluación final—, y esa exclusión se declara en el reporte de B6.3.
@@ -481,7 +513,7 @@ y antes de escalar).
 ### B6 · Escalado: corrida por tandas (issue #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S6–S7 (máquina; humano mínimo)
 - [ ] B6.1 (I, ~$40) Tanda 1: 20 TOs digeribles (normativa general prioritaria), E0–E5, **gate de release de B2.6** (regression + shapes + intrínsecas + material propio) antes de ensamblar, carga en Neo4j, app sirviendo el grafo. Reporte: volúmenes, costo real vs estimado, incidencias. Es la primera ejecución del método de B2.8 de punta a punta sobre TOs nunca vistos.
 - [ ] B6.2 (I, ~$85) Tanda 2: resto de digeribles (48) si tanda 1 cierra sin sorpresas. Créditos AWS/Bedrock si aplica (`app/llm_backend.py` ya soporta Bedrock).
-- [ ] B6.3 (H+I, ~$25–40 **a estimar**) **EVALUACIÓN FINAL DE LA TESIS sobre el grafo escalado** — rediseñada por el principio 10 (era «sanity funcional descriptivo»). Es la medición del **conjunto de test**: se corre **una sola vez**, con **pre-registro sellado propio** (mismo molde que EV2 / A1.3: hipótesis, umbrales, criterios de lectura y tope de costo declarados ANTES de mirar resultado alguno). Componentes: (a) **eval set fresco sobre el corpus amplio** —preguntas nuevas con gold por criterios, selladas antes de correr, construidas sobre TOs **disjuntos del subset de desarrollo (los cinco TOs) Y de los 20 documentos de ESQ-1/ESQ-2** listados en `data/experiment/esq/documentos_excluidos_esq.json`, porque el esquema final se retocó mirándolos (ver nota de alcance del bloque ESQ); jamás EV2, que es material de desarrollo y está quemado. La disjunción se verifica contra ese archivo y se declara en el reporte—; (b) fidelidad con el juez calibrado + adjudicación humana simétrica; (c) atribución causal determinística A0.2; (d) **evaluación intrínseca por tripletas** con el instrumento ya validado sobre r1 (D-f): precisión, importancia y recall del gran grafo. **Sin brazo comparativo por defecto** (D-h: la tesis se enuncia como trabajo de recurso; la comparación contra recuperación por fragmentos es validación de diseño sobre el conjunto de desarrollo, no la pregunta central de la evaluación final). **Regla de admisibilidad de una eventual comparación sobre el grafo escalado — A DECIDIR EN EL MOMENTO DEL PRE-REGISTRO DE B6.3, no antes**: si se la quiere con **peso confirmatorio**, debe estar **declarada en el pre-registro sellado** de B6.3 (brazo, material, métrica y umbrales, antes de mirar nada); si se corre **después** de conocido el resultado de B6.3, se reporta explícitamente como **análisis exploratorio posterior** y **nunca al mismo nivel** que la evaluación confirmatoria. Regla dura: si el resultado obliga a tocar el pipeline, el arreglo produce una **release posterior** y se declara como tal (principio 9) — no se re-corre esta evaluación para mejorar el número.
+- [ ] B6.3 (H+I, ~$25–40 **a estimar**) **EVALUACIÓN FINAL DE LA TESIS sobre el grafo escalado** — rediseñada por el principio 10 (era «sanity funcional descriptivo»). Es la medición del **conjunto de test**: se corre **una sola vez**, con **pre-registro sellado propio** (mismo molde que EV2 / A1.3: hipótesis, umbrales, criterios de lectura y tope de costo declarados ANTES de mirar resultado alguno). Componentes: (a) **eval set fresco sobre el corpus amplio** —preguntas nuevas con gold por criterios, selladas antes de correr, construidas sobre TOs **disjuntos del subset de desarrollo (los cinco TOs) Y de los 10 documentos de ESQ-1/ESQ-2 (misma lista, corrección D4 del laudo `8dea823`)** listados en `data/experiment/esq/documentos_excluidos_esq.json` (creado en `a7788c1`, 10 IDs con sha256 verificados contra el manifest), porque el esquema final se retocó mirándolos (ver nota de alcance del bloque ESQ); jamás EV2, que es material de desarrollo y está quemado. La disjunción se verifica contra ese archivo y se declara en el reporte—; (b) fidelidad con el juez calibrado + adjudicación humana simétrica; (c) atribución causal determinística A0.2; (d) **evaluación intrínseca por tripletas** con el instrumento ya validado sobre r1 (D-f): precisión, importancia y recall del gran grafo. **Sin brazo comparativo por defecto** (D-h: la tesis se enuncia como trabajo de recurso; la comparación contra recuperación por fragmentos es validación de diseño sobre el conjunto de desarrollo, no la pregunta central de la evaluación final). **Regla de admisibilidad de una eventual comparación sobre el grafo escalado — A DECIDIR EN EL MOMENTO DEL PRE-REGISTRO DE B6.3, no antes**: si se la quiere con **peso confirmatorio**, debe estar **declarada en el pre-registro sellado** de B6.3 (brazo, material, métrica y umbrales, antes de mirar nada); si se corre **después** de conocido el resultado de B6.3, se reporta explícitamente como **análisis exploratorio posterior** y **nunca al mismo nivel** que la evaluación confirmatoria. Regla dura: si el resultado obliga a tocar el pipeline, el arreglo produce una **release posterior** y se declara como tal (principio 9) — no se re-corre esta evaluación para mejorar el número.
 - [ ] B6.4 (I) Cierre #11: reporte de escalado (vacío #5: costo, throughput, latencia).
 Condición de arranque: **ESQ-3 laudado (esquema congelado)** + B1, B2, B5 cerrados y A2 en curso o cerrado. Si S6 llega sin B5 cerrado → se recorta a tanda 1 con laudo; **el escalado en sí ya no se descopa** (es el objeto central, D-g), lo que se ajusta es su alcance (D5/B5.5).
 
@@ -554,7 +586,8 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 
 **Reordenamiento por la reunión del 26/08, actualizado por la rama (b) de U-ESQ-2-cal** (el
 cronograma de arriba es previo y queda como referencia histórica): la ruta crítica es
-**ESQ-2 protocolizada → ESQ-3 → B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
+**ESQ-2 protocolizada (U-ESQ-2 ejecutada `a7788c1`; resta la lectura de la autora) → ESQ-3 →
+B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
 del diseño original ya no existe —, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
 B4 sobre r1, B1.9/B1.10 y los casos de uso se re-encuadran como trabajo sobre el conjunto de
 desarrollo: siguen valiendo como experimentos de la tesis, pero ceden prioridad de calendario
@@ -689,8 +722,11 @@ D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora apl
 `docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
 arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
 
-**RUTA CRÍTICA vigente (actualizada por la rama (b) del árbol de U-ESQ-2-cal, `eadf4a5`)**:
-`ESQ-2 protocolizada (única vía de cobertura; el censo por LLM quedó cerrado) → ESQ-3 (retoques
+**RUTA CRÍTICA vigente (actualizada por el cierre de U-ESQ-2, `a7788c1`)**:
+`ESQ-2 protocolizada (única vía de cobertura; U-ESQ-2 EJECUTADA — gate 10/10, extracción
+762/762 a USD 4,1079, worksheet de 75 fichas listo con cegado restaurado por la fe de erratas
+930f289; resta: lectura de la autora en tandas de 10–15 con checkpoint de ritmo → spot-check
+de mesa 10/75 → tabla con Wilson) → ESQ-3 (retoques
 + laudo de esquema congelado, con TODO el material: escalera, calibración, deformación,
 potestades, firmas de la cola) → escalado (B5/B6) → evaluación final sobre el grafo escalado
 (B6.3, pre-registro propio)`. La corrida ESQ-1 del diseño original ya no existe (modo (i)
