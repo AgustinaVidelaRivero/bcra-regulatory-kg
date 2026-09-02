@@ -198,14 +198,14 @@ def leer_ficha(ficha, path, data):
     print("  Firmas (lista cerrada del pre-registro §4):")
     for k, txt in data["firmas_catalogo"].items():
         print(wrap(f"{k}) {txt}", indent="    "))
-    v = pedir("  marca [a-g=firma / n=ninguna / d=duda / q=salir]: ",
-              set("abcdefg") | {"n", "d", "q"})
+    v = pedir("  marca [a-g=firma / n=ninguna / ?=duda / q=salir]: ",
+              set("abcdefg") | {"n", "?", "q"})
     if v == "q":
         guardar(path, data)
         sys.exit(0)
     if v == "n":
         p["q2_deformacion"]["firma"] = "ninguna"
-    elif v == "d":
+    elif v == "?":
         p["q2_deformacion"]["firma"] = "duda"
         obs = pedir_texto("  nota de la duda (opcional): ")
         if obs:

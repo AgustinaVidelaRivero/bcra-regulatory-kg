@@ -126,3 +126,25 @@ lectura.
 Firmado por la autora, 02/09/2026. Las reglas fijadas acá (lectura
 conservadora de la sensibilidad, no-reconstrucción de campos truncados) son
 vinculantes para el análisis de ESQ-2 y para la lectura que haga ESQ-3.
+
+## Adenda — desvío (c): colisión de la tecla d en q2 (post-sello `685fc8a`)
+
+**FIRMADA por la autora — 02/09/2026.**
+
+El instrumento sellado en `a7788c1` tenía una colisión en P2: la tecla `d`
+estaba en la lista de firmas (a–g) y en la rama de duda, y la rama de duda
+ganaba — era imposible registrar la firma (d) por teclado. Detectado por la
+autora en la **ficha 15**, el primer intento de marcar (d) de la lectura, y
+declarado en sus observaciones contemporáneas; la marca de esa ficha se
+corrigió por **edición directa del worksheet** (única edición manual de la
+lectura, declarada acá: tras la edición, la ficha 15 quedó con **firma (d)**,
+y el conteo de 9 firmas (d) de la tabla de resultados la incluye) y el código
+se corrigió en el acto (`d`→`?` para duda; viaja con el commit de cierre del
+análisis como arreglo de instrumento-roto, regla de la cola). **Alcance
+verificado por mesa**: ventana de exposición fichas 1–14; única marca d/duda
+en la ventana: la duda de la ficha 5, adjudicada NO sospechosa por doble
+evidencia (nota de duda deliberada y auto-documentada sobre el rol
+cuarentenado D5; el flujo de duda pide una nota que delata la colisión, como
+ocurrió en la 15). Las 9 firmas (d) son todas post-detección. **Impacto sobre
+los resultados: ninguno** — en el peor caso contrafáctico la candidata (d)
+sumaría una azarosa (6→7); ninguna otra medida se mueve.
