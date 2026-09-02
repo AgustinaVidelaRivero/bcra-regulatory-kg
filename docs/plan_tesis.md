@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v10 (2026-09-01)
+# Plan de cierre de la tesis — v11 (2026-09-02)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -63,6 +63,12 @@ de ranking `930f289` (round-robin anidado disparador × TO, cegado de origen res
 worksheet de 75 fichas listo; corrección D4 del laudo derramada al plan (se queman 10
 documentos, no 20); ruta crítica: sigue la lectura de la autora → spot-check de mesa → tabla
 con Wilson → ESQ-3; fes de erratas de mensajes `8dea823` y `930f289` registradas.
+v11 (2026-09-02) — ESQ-2 COMPLETA: lectura de la autora 75/75 (`b2e9e90`), desvíos declarados
+con alcance medido (`685fc8a` + adenda), tabla de resultados aprobada (`bbac990`) — azarosa
+74 % [58, 85] parcial+no como cota superior, firma real 42 % [28, 58], dirigida enriquecida
+(57 %); candidatas por criterio sellado: (a) re-tipado (8 azarosas / los DIEZ TOs) y (d)
+potestades (6/5); (e) no promueve (0 azarosas; va a ESQ-3 por `fe1fe36` + entrada 5); ruta
+crítica: siguiente ESQ-3 (gate + laudo de esquema congelado).
 v6 (2026-08-23) — rediseño de la evaluación intrínseca y arranque de la escritura:
 principio 9 (el grafo evaluado se sella; las correcciones producen una versión posterior);
 B4 rediseñada como evaluación intrínseca a nivel tripleta con dos vías (precisión con juicio
@@ -431,7 +437,8 @@ la categoría deóntica de permiso/facultad no existe en el esquema y su conteni
 corpus → tratamiento en ESQ-3, conclusión de diseño en C1.7. Es el hermano del hallazgo rector (grounded ≠ correct → conforme ≠
 fiel) y es candidato a resultado central del capítulo del esquema (C1.7), con su tratamiento
 operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
-- [~] ESQ-2 (H+I) **Test de cobertura del esquema, PROTOCOLIZADO** — desde la rama (b) del
+- [x] ESQ-2 (H+I) **Test de cobertura del esquema, PROTOCOLIZADO — COMPLETA** (cierre del
+  análisis `bbac990`, 02/09/2026) — desde la rama (b) del
   árbol de U-ESQ-2-cal es **la única vía** de evaluación de cobertura (el censo por LLM quedó
   cerrado con doble evidencia). Gobernado por tres documentos sellados: el laudo
   `docs/laudo_ESQ-2_diseno.md` (`8dea823`: tope propio USD 6,50 del remanente D6; extracción
@@ -459,12 +466,29 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     cegado de origen restaurado); worksheet de 75 fichas auto-contenidas con 75/75 marcas null
     y **sin marca de origen**; selftest 28/28 (incluye 5 checks anti-monopolio). **Saga ESQ
     acumulada: USD 5,03 de tope 9,00.**
-  - [ ] **Lectura de la autora** (H, $0): tandas de 10–15 con
-    `data/experiment/esq/code/leer_fichas_esq2.py`; checkpoint de ritmo tras la primera tanda
-    (ajuste de N solo por laudo declarado) → **spot-check de mesa 10/75** → tabla de
-    resultados con Wilson (solo la azarosa generaliza; la dirigida se reporta aparte y nunca
-    promueve sola) → salida: inventario de huecos con cita al texto que los revela, insumo
-    directo de ESQ-3.
+  - [x] **Lectura de la autora + análisis** (HECHA; sellos `b2e9e90` lectura, `685fc8a`
+    desvíos, `bbac990` tabla + adenda): **75/75 fichas adjudicadas** contra el texto fuente
+    (mediana 3,7 min/ficha, ~10 h), con citas obligatorias completas y observaciones con
+    trazabilidad cruzada entre fichas; spot-check de mesa posterior e independiente **12
+    fichas, 0 discrepancias** (semillas `20260902` y `20260902:topup`). **Tres desvíos
+    declarados con alcance medido** (`desvios_lectura_esq2.md` + adenda): (a) lectura de un
+    asistente LLM visible en ~9 fichas del sorteo paralelo — doble tabla de sensibilidad,
+    ninguna medida cambia de banda; (b) truncamiento de 35 campos a ~1024 bytes — pérdida
+    declarada, NO reconstruida (sería post-hoc); (c) colisión de la tecla d en q2 — la rama
+    duda ganaba, así que ninguna firma (d) pudo ser anterior al arreglo; ventana fichas 1–14
+    con una sola duda adjudicada no sospechosa; el peor contrafáctico solo reforzaría (d).
+    **Tabla de resultados aprobada** (`tabla_resultados_esq2.md`): azarosa n=38 con Wilson —
+    parcial+no **74 % [58, 85]** (cota superior sin E3), no representado 13 % [6, 27], firma
+    real 42 % [28, 58]; dirigida n=37 aparte, enriquecida (57 % de firma real: los
+    disparadores funcionaron); 13 familias q3 en vocabulario controlado con fusiones
+    auditables (una rechazada por la autora con justificación) y columna ternaria
+    **E3 / ESQUEMA / EXTRACTOR-PIPELINE** anclada en las notas contemporáneas. **Criterio
+    sellado §6 sobre firmas**: (a) re-tipado **CANDIDATA** (8 azarosas, presente en los DIEZ
+    TOs — el hallazgo más disperso, transversal al par esquema-extractor) · (d) potestades
+    **CANDIDATA** (6 azarosas / 5 TOs) · (e) hechos con valor NO promueve (0 azarosas; llega
+    a ESQ-3 por `fe1fe36` y entrada 5 de la cola) · (c) y (g) residuo documentado · (b)
+    nominalización 0 apariciones. La tabla no aplica el criterio a las familias q3 ni
+    recomienda tratamiento: eso es ESQ-3.
 - [ ] ESQ-3 (H+I, $0) **Gate: lectura conjunta + retoques + laudo de esquema congelado**. Lee
   ESQ-1 y ESQ-2, decide los **últimos retoques** del esquema (agregar/renombrar/fusionar tipos y
   relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
@@ -586,8 +610,7 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 
 **Reordenamiento por la reunión del 26/08, actualizado por la rama (b) de U-ESQ-2-cal** (el
 cronograma de arriba es previo y queda como referencia histórica): la ruta crítica es
-**ESQ-2 protocolizada (U-ESQ-2 ejecutada `a7788c1`; resta la lectura de la autora) → ESQ-3 →
-B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
+**ESQ-2 COMPLETA (`bbac990`) → ESQ-3 → B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
 del diseño original ya no existe —, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
 B4 sobre r1, B1.9/B1.10 y los casos de uso se re-encuadran como trabajo sobre el conjunto de
 desarrollo: siguen valiendo como experimentos de la tesis, pero ceden prioridad de calendario
@@ -722,11 +745,9 @@ D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora apl
 `docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
 arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
 
-**RUTA CRÍTICA vigente (actualizada por el cierre de U-ESQ-2, `a7788c1`)**:
-`ESQ-2 protocolizada (única vía de cobertura; U-ESQ-2 EJECUTADA — gate 10/10, extracción
-762/762 a USD 4,1079, worksheet de 75 fichas listo con cegado restaurado por la fe de erratas
-930f289; resta: lectura de la autora en tandas de 10–15 con checkpoint de ritmo → spot-check
-de mesa 10/75 → tabla con Wilson) → ESQ-3 (retoques
+**RUTA CRÍTICA vigente (actualizada por el cierre completo de ESQ-2, `bbac990`)**:
+`ESQ-2 COMPLETA (cobertura medida: 74 % [58, 85] parcial+no en azarosa como cota superior;
+candidatas (a) y (d) por criterio sellado; tabla, desvíos y adenda sellados) → ESQ-3 (retoques
 + laudo de esquema congelado, con TODO el material: escalera, calibración, deformación,
 potestades, firmas de la cola) → escalado (B5/B6) → evaluación final sobre el grafo escalado
 (B6.3, pre-registro propio)`. La corrida ESQ-1 del diseño original ya no existe (modo (i)
