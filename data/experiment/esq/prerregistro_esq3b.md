@@ -177,3 +177,49 @@ rechazo fundado de la fusión tautológica, adjudicación del resultado
 intermedio). Las predicciones de §2, la selección y regla de regresión de
 §3 y el tope de §5 quedan sellados: ninguna se modifica después de la
 primera llamada de la corrida.
+
+## Adenda 1 — laudos del freno 1 de U-ESQ-3b (post-sello `01bf046`)
+
+**FIRMADA por la autora — 02/09/2026.** Corrige y completa por declaración,
+ANTES de toda llamada de la corrida (gasto a la fecha del freno 1:
+USD 0,00). Sellos del manifiesto del freno 1: prefijo retocado sha256
+`fc53fd8f8a2022c4…` (24.241 chars; producción `427f6473cc53bba5…`), hash
+de prefijo (system+tools) `4793d6152608` → `f0a421fb9466`, namespace
+`esq3b_pareado_e1|cv=esq3b-pareado-v1-pf0a421fb9466|think=0`.
+
+1. **Dominio de `establecida_en`**: `Condicion` y `Definicion` entran al
+   dominio junto con `Potestad` — **decisión de autora**, no de
+   implementación (deja de ser la decisión declarada unilateral del
+   ejecutor). Fundamento: analogía con el dominio de producción (todo tipo
+   de contenido ancla al TextoOrdenado) y no fabricar huérfanos por
+   construcción (defecto medido en la f. 40).
+2. **Brazo de regresión — fe de erratas del §3**: el «35» original era el
+   conteo bruto de fichas q2=ninguna del worksheet SIN aplicar la
+   exclusión del brazo objetivo; con la exclusión, la regla sellada
+   producía 22 y 35 era inalcanzable por construcción. **Regla
+   corregida**: el completado se abre a fichas **dirigidas** con
+   q2=ninguna, en orden de `chunk_id`, DESPUÉS de las azarosas, hasta 35;
+   con el worksheet actual eso da **26 unidades**. El ejecutor re-deriva y
+   re-persiste la selección con sha nuevo. La métrica (migración a caja
+   nueva), la predicción única y la regla de falla del §3 **no cambian**.
+3. **R6a — alcance del veredicto**: las unidades de las f. 62 y f. 65
+   quedan en el brazo objetivo como **corroboración sin predicción
+   sellada**: fila aparte en la tabla de resultados y NO cuentan para el
+   veredicto de R6a, que se adjudica **solo sobre la f. 44**.
+4. **R8 — reconciliación numérica (sin cambio de selección)**: las «11
+   tripletas» citadas (f. 39) son 9 `firma_invalida` + 2
+   `sujeto_extremo_invalido` (verificado por recomputo independiente de
+   mesa); R8 aplica a las 4 `aplica_a` con firma inválida — todas
+   `Operacion --aplica_a--> Sujeto` — en las unidades de las f. 21, 24,
+   32 y 66.
+5. **Cuestionario de las fichas pareadas — APROBADO**: las tres preguntas
+   del ejecutor (¿cambió la extracción? / fidelidad mejora–empeora–igual /
+   migración a caja nueva correcta–incorrecta), con **DUDA como respuesta
+   válida en las tres** (regla del §4: no cuenta para ningún lado, se
+   lista) y un campo de **observaciones libre por unidad** (patrón ESQ-2).
+   Sin campo de brazo, retoque ni origen.
+
+**Costo estimado actualizado**: 43 unidades a re-extraer (17 objetivo +
+26 regresión) ≈ **USD 0,35** contra tope USD 1,00 (fórmula del manifiesto
+del freno 1: lecturas por unidad ancladas en el usage real de ESQ-2 +
+techo de 4 escrituras de prefijo).
