@@ -520,12 +520,27 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     762 extracciones persistidas, con criterio de corte sellado en el mandato ANTES de mirar
     (≥15 unidades y ≥4 TOs; máx. 3 valores adicionales); el ejecutor frena con la tabla, la
     lista final la decide la autora con la mesa.
-  - [ ] **ESQ-3b — verificación pre-congelado** (H+I, tope propio USD 1,00): pre-registro
-    `data/experiment/esq/prerregistro_esq3b.md` (firma tras fijar la lista R9); dos brazos
-    sobre re-extracción pareada — OBJETIVO (predicciones selladas por retoque) y REGRESIÓN
-    (~35 unidades hoy bien tipadas; falla = migración a caja nueva adjudicada incorrecta;
-    regla sellada: si regresión falla, el retoque se revisa aunque el objetivo pase);
-    adjudicación de la autora con cegado (entrada 10) e instrumento arreglado (entrada 11).
+  - [~] **ESQ-3b — verificación pre-congelado** (H+I, tope propio USD 1,00): pre-registro
+    FIRMADO (`01bf046`, con §0 completo: lista R9 de dos valores, rechazo fundado de la
+    fusión tautológica, resultado INTERMEDIO adjudicado) + **Adenda 1** (`f1fe0d8`: dominio
+    de `establecida_en` por decisión de autora; fe de erratas de la regresión — 35 era
+    inalcanzable por construcción, regla corregida a completado con dirigidas q2=ninguna,
+    da 26; f. 62/65 corroboración sin predicción, veredicto R6a solo sobre f. 44;
+    reconciliación R8 = 9+2; cuestionario aprobado con DUDA y observaciones). U-ESQ-3b en
+    curso: freno 1 APROBADO (prefijo retocado sellado `f0a421fb9466`, 11 reemplazos con
+    regla de no-filtración; selección 17 objetivo + 26 regresión = 43, sha `9cb15ecf…`,
+    re-derivada independientemente por mesa; selftest 67/67) y **fase (d) autorizada**
+    (estimación USD 0,3465 de tope 1,00). **Cruce con el desvío (a) de ESQ-2, registrado
+    por mesa**: 2 unidades del brazo de regresión (`lavdin::1.1::intro`, `ayccef::3.4.1`)
+    provienen de fichas contaminadas — se marcan en la tabla de resultados y el reporte,
+    NUNCA en las fichas pareadas ni en la selección sellada (regla de autora: el cegado de
+    la lectura y el sha de la selección no se tocan; la marca de la autora manda y la
+    sensibilidad sin esas 2 es un recomputo de una línea si la regresión fallara en ellas).
+    Dos brazos sobre re-extracción pareada — OBJETIVO (predicciones selladas por retoque) y
+    REGRESIÓN (falla = migración a caja nueva adjudicada incorrecta; regla sellada: si
+    regresión falla, el retoque se revisa aunque el objetivo pase); adjudicación de la
+    autora con cegado (entrada 10) e instrumento arreglado (entrada 11, con notas de DUDA
+    por lector de textos largos).
   - [ ] **Laudo de esquema congelado** (H): con los dos brazos pasando — sha del esquema
     final, posición exigencia 10, política post-congelado. Ningún ítem de B5/B6 arranca sin
     este laudo.
