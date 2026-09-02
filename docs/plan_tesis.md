@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v11 (2026-09-02)
+# Plan de cierre de la tesis — v12 (2026-09-02)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -69,6 +69,14 @@ con alcance medido (`685fc8a` + adenda), tabla de resultados aprobada (`bbac990`
 (57 %); candidatas por criterio sellado: (a) re-tipado (8 azarosas / los DIEZ TOs) y (d)
 potestades (6/5); (e) no promueve (0 azarosas; va a ESQ-3 por `fe1fe36` + entrada 5); ruta
 crítica: siguiente ESQ-3 (gate + laudo de esquema congelado).
+v12 (2026-09-02) — ESQ-3 en curso: laudo ESQ-3a FIRMADO (`0a76549`) con la decisión madre
+(escalones 1–2 sí, 3 diferido, 4–5 rechazados con evidencia interna; exigencia 10:
+schema-based con vocabulario ampliado por medición), 9 retoques desagregados con predicción
+falsable, R4 invertido a regla de omisión y R6b rechazado en revisión de autora; cola:
+entradas 2 y 7 resueltas, 3 y 4 sin objeto, 5 pronunciada; riesgo 15/157 DECLARADO con punto
+CONSULTADO en la agenda de mentores (costo de la alternativa incluido); política
+post-congelado: ventana única en tanda 1. Fila ESQ-3 desplegada en cuatro sub-ítems
+(ESQ-3a [x] · U-R9-FREQ · ESQ-3b · laudo de congelado).
 v6 (2026-08-23) — rediseño de la evaluación intrínseca y arranque de la escritura:
 principio 9 (el grafo evaluado se sella; las correcciones producen una versión posterior);
 B4 rediseñada como evaluación intrínseca a nivel tripleta con dos vías (precisión con juicio
@@ -489,14 +497,47 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     a ESQ-3 por `fe1fe36` y entrada 5 de la cola) · (c) y (g) residuo documentado · (b)
     nominalización 0 apariciones. La tabla no aplica el criterio a las familias q3 ni
     recomienda tratamiento: eso es ESQ-3.
-- [ ] ESQ-3 (H+I, $0) **Gate: lectura conjunta + retoques + laudo de esquema congelado**. Lee
+- [~] ESQ-3 (H+I) **Gate: lectura conjunta + retoques + laudo de esquema congelado** — en dos
+  tiempos según `data/experiment/esq/esq3_estructura_borrador.md`.
+  - [x] **ESQ-3a — laudo de retoques** (FIRMADO 02/09/2026, sello `0a76549`,
+    `data/experiment/esq/laudo_ESQ-3a_retoques.md`): decisión madre — escalones 1 y 2 SÍ
+    (ampliación dentro del paradigma), 3 DIFERIDO a ESQ-RI-3/C1.7, 4 y 5 RECHAZADOS con
+    evidencia interna (canal abierto falsado dos veces; run_4 del frozen perdió contra el
+    esquema cerrado); posición exigencia 10: schema-based con vocabulario ampliado por
+    medición; cláusula de justificación por FIDELIDAD DEL RECURSO (ESQ-3b no evalúa
+    respuestas). Retoques aprobados, cada uno con predicción falsable propia: R1 Potestad ·
+    R2 Condicion + `condicion_de` · R3 Definicion (con delimitación y anti-atracción) ·
+    R5 partición sin tipo nuevo · R6a `exceptua_operacion` · R7 `descripcion` en Operacion ·
+    R8 dominio de `aplica_a` (RESUELVE entrada 2/D8) · R9 enum con `reporte_al_supervisor` +
+    análisis de frecuencia $0; R4 INVERTIDO a regla de omisión declarada de meta-normativo
+    (0 azarosas en el clúster; el tipo queda como alternativa promovible solo con evidencia
+    azarosa); R6b RECHAZADO (1 dirigida, 0 azarosas → residuo para r2). Cola: entrada 2
+    resuelta, 3 y 4 sin objeto, 7 resuelta (canal abierto SE RETIRA de producción), 5
+    pronunciada (diferida con limitación declarada), 9–11 revisadas. RIESGO DECLARADO
+    (15/157) con cinco mitigaciones + punto CONSULTADO en la agenda. Política post-congelado:
+    ventana única en tanda 1 de B6, muere al sellar el pre-registro de B6.3.
+  - [ ] **U-R9-FREQ** (I, $0): análisis de frecuencia del subtipo de Obligacion sobre las
+    762 extracciones persistidas, con criterio de corte sellado en el mandato ANTES de mirar
+    (≥15 unidades y ≥4 TOs; máx. 3 valores adicionales); el ejecutor frena con la tabla, la
+    lista final la decide la autora con la mesa.
+  - [ ] **ESQ-3b — verificación pre-congelado** (H+I, tope propio USD 1,00): pre-registro
+    `data/experiment/esq/prerregistro_esq3b.md` (firma tras fijar la lista R9); dos brazos
+    sobre re-extracción pareada — OBJETIVO (predicciones selladas por retoque) y REGRESIÓN
+    (~35 unidades hoy bien tipadas; falla = migración a caja nueva adjudicada incorrecta;
+    regla sellada: si regresión falla, el retoque se revisa aunque el objetivo pase);
+    adjudicación de la autora con cegado (entrada 10) e instrumento arreglado (entrada 11).
+  - [ ] **Laudo de esquema congelado** (H): con los dos brazos pasando — sha del esquema
+    final, posición exigencia 10, política post-congelado. Ningún ítem de B5/B6 arranca sin
+    este laudo.
+  Texto original del gate (referencia): lee
   ESQ-1 y ESQ-2, decide los **últimos retoques** del esquema (agregar/renombrar/fusionar tipos y
   relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
   pre-escalado, con sha, que es la que se aplica al corpus completo. **[LAUDO ESCRITO REQUERIDO —
   toca compromisos del PPF/alcance]**. Ningún ítem de B5/B6 arranca sin este laudo.
-  Checklist del gate: [ ] **cola de mejoras diferidas revisada** (`docs/cola_mejoras_diferidas.md`
-  — resuelve o re-difiere con destino explícito las entradas 2, 3, 4 y 7, y se pronuncia sobre
-  la 5).
+  Checklist del gate: [x] **cola de mejoras diferidas revisada — CUMPLIDO por ESQ-3a §6**
+  (`0a76549`: entrada 2 resuelta por R8, 3 y 4 cerradas sin objeto, 7 resuelta — el canal
+  abierto se retira —, 5 pronunciada; el derrame de esos estados al archivo de la cola queda
+  para el próximo pase de la cola).
 **Secuencia corregida para el bloque de régimen informativo** (U-B5.6-0; reemplaza el orden implícito «parser de tablas → decisión sobre el bloque», que la fe de erratas `docs/fe_erratas_D10_causa_regimen_informativo.md` desarma). Cuatro piezas, en este orden, cada una con su justificación propia:
 - [ ] ESQ-RI-1 (I, $0) **Modo de lectura sin raíz de sección**: la causa proximal del cero es la compuerta de rol de página de E0 (`e0_lib.py:206-207`: sin página de índice previa, todas las páginas quedan en `portada`), y 47 de 53 TOs están en esa condición. Desbloquea **44 de 53**. Es lo primero porque sin esto ninguna otra pieza puede siquiera medirse sobre el bloque. Caso aparte a tratar con remedio propio: 1 TO que sí llega a cuerpo y produce cero por no tener ninguna línea con formato de sección.
 - [ ] ESQ-RI-2 = **B5.6** (parser de tablas). Alcanza al 12,4 % de las palabras del bloque y a 23 de 53 TOs; **se construye igual aunque el bloque quede afuera**, por RX-10 sobre normativa general.
@@ -745,9 +786,12 @@ D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora apl
 `docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
 arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
 
-**RUTA CRÍTICA vigente (actualizada por el cierre completo de ESQ-2, `bbac990`)**:
+**RUTA CRÍTICA vigente (actualizada por el laudo ESQ-3a, `0a76549`)**:
 `ESQ-2 COMPLETA (cobertura medida: 74 % [58, 85] parcial+no en azarosa como cota superior;
-candidatas (a) y (d) por criterio sellado; tabla, desvíos y adenda sellados) → ESQ-3 (retoques
+candidatas (a) y (d) por criterio sellado; tabla, desvíos y adenda sellados) → ESQ-3 EN CURSO
+(ESQ-3a FIRMADA `0a76549` — 9 retoques aprobados con predicción propia, R4 como regla de
+omisión, R6b rechazado; resta: U-R9-FREQ ($0, criterio de corte sellado) → lista R9 de autora →
+pre-registro ESQ-3b firmado → corrida de dos brazos → laudo de esquema congelado) (retoques
 + laudo de esquema congelado, con TODO el material: escalera, calibración, deformación,
 potestades, firmas de la cola) → escalado (B5/B6) → evaluación final sobre el grafo escalado
 (B6.3, pre-registro propio)`. La corrida ESQ-1 del diseño original ya no existe (modo (i)
@@ -806,6 +850,17 @@ trabajo futuro declarado. (b) ¿Qué protocolo cubre el **cambio normativo** (el
 pasa con el grafo?)? El circuito de releases de B2.8 cubre el refinamiento por defectos, no la
 actualización por cambio de fuente — el hueco es real y la pregunta es su tratamiento: ¿capítulo,
 unidad, o limitación declarada con el diseño escrito?
+
+**AGENDA — punto CONSULTADO: riesgo de generalización del esquema (laudo ESQ-3a `0a76549`
+§7).** «El esquema final queda informado por 15 documentos de 157 (5 de diseño + 10 de ESQ-2,
+que pasan a desarrollo). Las mitigaciones son las cinco registradas en el laudo ESQ-3a §7 —
+dispersión de las candidatas ((a) en los 10 TOs; potestades en 5 TOs más confirmación
+independiente en `eadf4a5`), el criterio sellado que descartó lo débil, la naturaleza
+jurídico-genérica de los tipos que entran, el brazo de regresión de ESQ-3b, y la ventana de la
+tanda 1 de B6 como test de generalización sobre material virgen. ¿Alcanza, o recomiendan
+reservar TOs vírgenes adicionales como test de generalización del esquema ANTES del escalado?»
+Costo de la alternativa, para respuesta informada: ~5 TOs vírgenes ≈ 380 unidades ≈ USD 2,10 +
+~35–40 fichas de lectura (~4–5 h) + el pool de B6.3 baja de 142 a 137 TOs elegibles.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
