@@ -1,4 +1,4 @@
-# Plan de cierre de la tesis — v12 (2026-09-02)
+# Plan de cierre de la tesis — v13 (2026-09-03)
 
 Plan vivo, por bloques y sub-tareas. Es el documento que gobierna la cola de unidades del
 proyecto desde el 2026-08-17 (`docs/tablero.md` §5 lo referencia como cola vigente).
@@ -23,9 +23,9 @@ archivos): `966253e` dice que los laudos D-g y D-f quedan **pendientes de firma*
 `docs/laudo_D-g_alcance_corpus.md` y `docs/laudo_D-f_secuencia_tripletas.md`.
 `8dea823` (laudo ESQ-2) contiene «/bin/zsh» donde el mensaje decía «$0» (expansión de shell al
 commitear con comillas dobles); el archivo `docs/laudo_ESQ-2_diseno.md` está intacto.
-`930f289` (fe de erratas de ranking ESQ-2) tiene dos artefactos cosméticos de pegado de terminal
-(«decada» por «de cada»; «0,Wilson» sin espacio); el archivo
-`data/experiment/esq/fe_erratas_prerregistro_esq2_ranking.md` está intacto.
+Artefactos cosméticos de pegado de terminal (espacios comidos) en los mensajes de `930f289`,
+`01bf046`, `0c19dc8`, `40493c9` y `2593d4d`; los archivos están intactos en todos (lista
+consolidada también en el laudo de esquema congelado §8).
 
 Changelog: v1 (2026-08-17) — plan inicial con revisión de mesa (nomenclatura canónica,
 laudos requeridos, principio 7, tarifas, cuello de botella de revisión, gate informativo de
@@ -69,6 +69,16 @@ con alcance medido (`685fc8a` + adenda), tabla de resultados aprobada (`bbac990`
 (57 %); candidatas por criterio sellado: (a) re-tipado (8 azarosas / los DIEZ TOs) y (d)
 potestades (6/5); (e) no promueve (0 azarosas; va a ESQ-3 por `fe1fe36` + entrada 5); ruta
 crítica: siguiente ESQ-3 (gate + laudo de esquema congelado).
+v13 (2026-09-03) — **GATE ESQ-3 CERRADO**: laudo de esquema congelado FIRMADO (`2593d4d`) —
+esquema `1be8304e3d77` (9 tipos / 13 predicados / enum de 6 valores; sha del texto
+`e69feaaa…`), materializado por U-CONGELA y verificado por reconstrucción independiente;
+ESQ-3b en dos vueltas (regresión falló en v1 → delimitaciones revisadas → segunda regresión
+limpia para R1/R3; `requisito_de_estructura` retirado a r2 por el principio de gobierno);
+U-R9-FREQ con resultado intermedio adjudicado; exigencia 10 RESUELTA; ventana de tanda 1 con
+cinco vigilancias pre-declaradas; saga ESQ cerrada en USD 5,43 de 9,00. **RUTA CRÍTICA →
+B5.** Herencias derramadas: B5 (regla de rótulos TO, remisiones como criterio de aceptación
+de E3, validador de properties.tipo), B6.1 (vigilancias de la ventana), cola entrada 12
+(vocabulario retirado/diferido con casos de promoción), C1.7 (límites con tasas).
 v12 (2026-09-02) — ESQ-3 en curso: laudo ESQ-3a FIRMADO (`0a76549`) con la decisión madre
 (escalones 1–2 sí, 3 diferido, 4–5 rechazados con evidencia interna; exigencia 10:
 schema-based con vocabulario ampliado por medición), 9 retoques desagregados con predicción
@@ -497,7 +507,21 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     a ESQ-3 por `fe1fe36` y entrada 5 de la cola) · (c) y (g) residuo documentado · (b)
     nominalización 0 apariciones. La tabla no aplica el criterio a las familias q3 ni
     recomienda tratamiento: eso es ESQ-3.
-- [~] ESQ-3 (H+I) **Gate: lectura conjunta + retoques + laudo de esquema congelado** — en dos
+- [x] ESQ-3 (H+I) **Gate: lectura conjunta + retoques + laudo de esquema congelado — CERRADO**
+  (laudo de esquema congelado FIRMADO 03/09/2026, sello `2593d4d`,
+  `data/experiment/esq/laudo_esquema_congelado.md`). **Esquema congelado: 9 tipos / 13
+  predicados / enum de 6 valores — texto sha `e69feaaa…` (25.652 chars), hash system+tools
+  `1be8304e3d77`, tool schema byte-idéntico al v2; B5.4 lo integra tal cual y cualquier
+  diferencia invalida la corrida.** Materializado por U-CONGELA ($0, dos reemplazos con ancla
+  única, selftest 46/46, verificado por mesa por reconstrucción independiente). Lista final:
+  ENTRAN R1, R2-reducido (intra-chunk; strike 1-1 declarado), R3, R4, R5, R7, R8, R9-núcleo
+  (`reporte_al_supervisor`); FUERA con destino: `requisito_de_estructura` → r2 con caso de
+  promoción armado, R6a/R6b → r2, hechos-con-valor → ESQ-RI-3/C1.7. **Principio de gobierno
+  enunciado** (falsedad se retira / omisión con tasa se declara / nada sin verificar entra) y
+  **tabla de límites conocidos con tasas** (laudo §3). Exigencia 10 RESUELTA: schema-based
+  con vocabulario ampliado por medición y podado por regresión. **Ventana de tanda 1** con
+  cinco ítems de vigilancia pre-declarados (B6.1 los lee). Saga ESQ cerrada: **USD 5,43 de
+  tope 9,00**. — en dos
   tiempos según `data/experiment/esq/esq3_estructura_borrador.md`.
   - [x] **ESQ-3a — laudo de retoques** (FIRMADO 02/09/2026, sello `0a76549`,
     `data/experiment/esq/laudo_ESQ-3a_retoques.md`): decisión madre — escalones 1 y 2 SÍ
@@ -516,11 +540,22 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     pronunciada (diferida con limitación declarada), 9–11 revisadas. RIESGO DECLARADO
     (15/157) con cinco mitigaciones + punto CONSULTADO en la agenda. Política post-congelado:
     ventana única en tanda 1 de B6, muere al sellar el pre-registro de B6.3.
-  - [ ] **U-R9-FREQ** (I, $0): análisis de frecuencia del subtipo de Obligacion sobre las
-    762 extracciones persistidas, con criterio de corte sellado en el mandato ANTES de mirar
-    (≥15 unidades y ≥4 TOs; máx. 3 valores adicionales); el ejecutor frena con la tabla, la
-    lista final la decide la autora con la mesa.
-  - [~] **ESQ-3b — verificación pre-congelado** (H+I, tope propio USD 1,00): pre-registro
+  - [x] **U-R9-FREQ** (HECHA, `01bf046`): 977 Obligacion, «otra» 55,8 % corpus; criterio de
+    corte sellado antes de mirar; pasan 3 grupos; decisión de autora: DOS valores
+    (`reporte_al_supervisor` + `requisito_de_estructura`), fusión tautológica rechazada;
+    resultado INTERMEDIO adjudicado (cola larga 233/236 → C1.7).
+  - [x] **ESQ-3b — verificación pre-congelado, DOS VUELTAS** (costo total 0,2471 + 0,1567 =
+    USD 0,4038): vuelta 1 (`56b1a33`/`a5bdbd4`/`0c19dc8`) — 43 fichas pareadas, regresión
+    FALLA (3 migraciones incorrectas: R1×1, R3×2), desvío (b) declarado pre-lectura con regla
+    de sensibilidad; vuelta 2 (`40493c9`/`444b7f9` + tabla sellada) — delimitaciones
+    revisadas sin citar unidades (regla de no-filtración de dos niveles), 27 fichas (15
+    objetivo + 12 regresión FRESCA de las 687 no fichadas), R1/R3 con segunda regresión
+    limpia, R2 dispara su salida sellada, `requisito_de_estructura` falla su regla (3/5
+    objetadas en fresca), hallazgos: vaciamiento como modo de falla del parche, calidad no
+    monotónica, hipótesis léxica de Condicion degradada a tendencia, patrón chapeau-deber
+    ejecutado. Spot-checks de mesa y mesa revisora en ambas vueltas, 0 discrepancias.
+    Registro histórico del estado intermedio (freno 1 v1, cruce con el desvío (a)):
+    pre-registro
     FIRMADO (`01bf046`, con §0 completo: lista R9 de dos valores, rechazo fundado de la
     fusión tautológica, resultado INTERMEDIO adjudicado) + **Adenda 1** (`f1fe0d8`: dominio
     de `establecida_en` por decisión de autora; fe de erratas de la regresión — 35 era
@@ -541,9 +576,7 @@ operativo en ESQ-3 y la posible protocolización de detección en ESQ-2.
     regresión falla, el retoque se revisa aunque el objetivo pase); adjudicación de la
     autora con cegado (entrada 10) e instrumento arreglado (entrada 11, con notas de DUDA
     por lector de textos largos).
-  - [ ] **Laudo de esquema congelado** (H): con los dos brazos pasando — sha del esquema
-    final, posición exigencia 10, política post-congelado. Ningún ítem de B5/B6 arranca sin
-    este laudo.
+  - [x] **Laudo de esquema congelado** (FIRMADO, `2593d4d`) — ver cabecera de esta fila.
   Texto original del gate (referencia): lee
   ESQ-1 y ESQ-2, decide los **últimos retoques** del esquema (agregar/renombrar/fusionar tipos y
   relaciones, con su justificación) y emite el **laudo de esquema congelado**: versión final
@@ -585,13 +618,13 @@ y antes de escalar).
 - [ ] B5.1 (I, $0) A1: parametrizar runner/E2/ensamblado por manifiesto (hoy cableado a 5 TOs; `censo_oraculo[to]` → KeyError; `LIMITACIONES_E0` hardcodeado; `ROL_POR_TO` con 5 keys); modo E2 sin oráculo. **Gancho de infraestructura (anotado, NO es compromiso de construirlo)**: la parametrización debe **contemplar la posibilidad** de construir un índice de fragmentos sobre el corpus escalado —el insumo que requeriría un eventual brazo comparativo en B6.3 (ver su regla de admisibilidad)—, porque dejar el gancho ahora es mucho más barato que agregarlo después. Si el brazo no se corre, el gancho queda sin usar y no cuesta nada.
 - [ ] B5.2 (I, $0) A3: regex de E0 (`Sección N[.:]`, `Índice` sin guiones con guarda) → paridad 5/5 byte a byte + selftest 57/57 obligatorios; health-check por TO (`(cid:NN)`, páginas sin Sección). **CORRECCIÓN medida (U-B5.6-0, `docs/fe_erratas_D10_causa_regimen_informativo.md` §b): B5.2 NO desbloquea el bloque de régimen informativo.** En esos documentos la palabra que el regex busca no aparece —no hay marcador que relajar— y en un caso su única aparición es prosa sobre «índices de actualización», que un regex más laxo tomaría como marcador falso. B5.2 se mantiene por lo que fue escrita (paridad sobre normativa general y health-check); lo que desbloquea el bloque es el modo de lectura sin raíz de sección (ESQ-RI-1).
 - [ ] B5.3 (I, $0) A4/A5: `max_tokens` con reintento 16k→32k en el mismo pase; sub-chunking por ítems para TOs nuevos; no cerrar fase con errores reintentables; tope compartido entre clientes.
-- [ ] B5.4 (H+I) **Catálogo de sujetos v3** congelado (SNP: entidad girada/depositaria/receptora/originante; bancos centrales, FMI, BIS, CCP; rol de alcance por TO nuevo) → rota el prefijo cacheado de E1 (aceptado). A2 de la auditoría.
+- [ ] B5.4 (H+I) **Catálogo de sujetos v3** congelado (SNP: entidad girada/depositaria/receptora/originante; bancos centrales, FMI, BIS, CCP; rol de alcance por TO nuevo) → rota el prefijo cacheado de E1 (aceptado). A2 de la auditoría. **HERENCIA DEL LAUDO DE CONGELADO (`2593d4d` §4): B5.4 integra el prefijo congelado TAL CUAL (texto sha `e69feaaa…`, hash `1be8304e3d77`; el catálogo de sujetos es la única pieza que este laudo deja abierta) — cualquier diferencia con ese sha invalida la corrida que la contenga.** Herencias adicionales del laudo a este bloque: **regla de ensamblado — la unificación de nodos TO nunca se hace por rótulo** (riesgo de fusión medido en las lecturas); **remisiones intra-texto como criterio de aceptación de E3** (11/38 azarosas en ESQ-2); **endurecimiento del validador de `properties.tipo`** (hoy texto libre: `registro_contable` fuera de enum en producción).
 - [ ] B5.5 (H) **Laudo D5**: corpus a escalar — **T1, NO RECORTABLE** desde la reunión del 26/08 (el escalado es el objeto central de la tesis, no un capítulo opcional: el laudo ya no decide *si* se escala sino *qué y en qué orden*). Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora. Prerrequisito adicional: laudo de esquema congelado (ESQ-3). Checklist del gate: [ ] **cola de mejoras diferidas revisada** (`docs/cola_mejoras_diferidas.md` — las entradas 1 y 6 deben estar resueltas o re-diferidas con destino explícito antes de escalar; la 8 define el contenido de r2).
 - [ ] B5.6 (I, $0) Módulo de tablas (pdfplumber `extract_tables` con provenance, sin LLM) — RX-10 y montos invertidos. **CORRECCIÓN medida (U-B5.6-0, fe de erratas §c): NO decide el destino del bloque de régimen informativo.** El parser alcanza a 23 de 53 TOs y al 12,4 % de las palabras del bloque: decide el de UNA de sus cinco familias estructurales. **Se construye igual y por sí solo**, porque RX-10 es un defecto de correctitud sobre **normativa general** —dos montos invertidos verificados— y ese defecto vive en el grafo que la tesis entrega. Su prioridad ya no depende de lo que se decida sobre el bloque.
 - [ ] B5.7 (I) Issue #6: documento de costos con tarifas reales + caching + experimento óptimo dentro de USD 200 (con B5.5). Laudo D4 warm-then-parallel (throughput: ~13 s/unidad → ~29 h secuenciales para 8.010).
 
 ### B6 · Escalado: corrida por tandas (issue #11) — **T1** (ruta crítica desde la reunión del 26/08; era T2) · S6–S7 (máquina; humano mínimo)
-- [ ] B6.1 (I, ~$40) Tanda 1: 20 TOs digeribles (normativa general prioritaria), E0–E5, **gate de release de B2.6** (regression + shapes + intrínsecas + material propio) antes de ensamblar, carga en Neo4j, app sirviendo el grafo. Reporte: volúmenes, costo real vs estimado, incidencias. Es la primera ejecución del método de B2.8 de punta a punta sobre TOs nunca vistos.
+- [ ] B6.1 (I, ~$40) Tanda 1: 20 TOs digeribles (normativa general prioritaria), E0–E5, **gate de release de B2.6** (regression + shapes + intrínsecas + material propio) antes de ensamblar, carga en Neo4j, app sirviendo el grafo. Reporte: volúmenes, costo real vs estimado, incidencias. Es la primera ejecución del método de B2.8 de punta a punta sobre TOs nunca vistos. **VENTANA DE CORRECCIÓN DE ESQUEMA (laudo `2593d4d` §7)**: la tanda 1 es el test de generalización del esquema congelado; su reporte MIDE los cinco ítems de vigilancia pre-declarados — (1) migraciones tipo-Condicion contra la guarda de modalidad, (2) conteo de vaciamientos vs tasas del laudo §3, (3) duplicación de contenido entre cajas, (4) rótulos de TO (unificación solo por identidad documental), (5) emisiones residuales de vocabulario retirado (debe ser 0) — con muestreo a definir en su mandato; una clase nueva de falla DE ESQUEMA admite UN ciclo de corrección con laudo, siempre antes del pre-registro de B6.3.
 - [ ] B6.2 (I, ~$85) Tanda 2: resto de digeribles (48) si tanda 1 cierra sin sorpresas. Créditos AWS/Bedrock si aplica (`app/llm_backend.py` ya soporta Bedrock).
 - [ ] B6.3 (H+I, ~$25–40 **a estimar**) **EVALUACIÓN FINAL DE LA TESIS sobre el grafo escalado** — rediseñada por el principio 10 (era «sanity funcional descriptivo»). Es la medición del **conjunto de test**: se corre **una sola vez**, con **pre-registro sellado propio** (mismo molde que EV2 / A1.3: hipótesis, umbrales, criterios de lectura y tope de costo declarados ANTES de mirar resultado alguno). Componentes: (a) **eval set fresco sobre el corpus amplio** —preguntas nuevas con gold por criterios, selladas antes de correr, construidas sobre TOs **disjuntos del subset de desarrollo (los cinco TOs) Y de los 10 documentos de ESQ-1/ESQ-2 (misma lista, corrección D4 del laudo `8dea823`)** listados en `data/experiment/esq/documentos_excluidos_esq.json` (creado en `a7788c1`, 10 IDs con sha256 verificados contra el manifest), porque el esquema final se retocó mirándolos (ver nota de alcance del bloque ESQ); jamás EV2, que es material de desarrollo y está quemado. La disjunción se verifica contra ese archivo y se declara en el reporte—; (b) fidelidad con el juez calibrado + adjudicación humana simétrica; (c) atribución causal determinística A0.2; (d) **evaluación intrínseca por tripletas** con el instrumento ya validado sobre r1 (D-f): precisión, importancia y recall del gran grafo. **Sin brazo comparativo por defecto** (D-h: la tesis se enuncia como trabajo de recurso; la comparación contra recuperación por fragmentos es validación de diseño sobre el conjunto de desarrollo, no la pregunta central de la evaluación final). **Regla de admisibilidad de una eventual comparación sobre el grafo escalado — A DECIDIR EN EL MOMENTO DEL PRE-REGISTRO DE B6.3, no antes**: si se la quiere con **peso confirmatorio**, debe estar **declarada en el pre-registro sellado** de B6.3 (brazo, material, métrica y umbrales, antes de mirar nada); si se corre **después** de conocido el resultado de B6.3, se reporta explícitamente como **análisis exploratorio posterior** y **nunca al mismo nivel** que la evaluación confirmatoria. Regla dura: si el resultado obliga a tocar el pipeline, el arreglo produce una **release posterior** y se declara como tal (principio 9) — no se re-corre esta evaluación para mejorar el número.
 - [ ] B6.4 (I) Cierre #11: reporte de escalado (vacío #5: costo, throughput, latencia).
@@ -666,7 +699,7 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
 
 **Reordenamiento por la reunión del 26/08, actualizado por la rama (b) de U-ESQ-2-cal** (el
 cronograma de arriba es previo y queda como referencia histórica): la ruta crítica es
-**ESQ-2 COMPLETA (`bbac990`) → ESQ-3 → B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
+**ESQ CERRADO (esquema congelado `1be8304e3d77`, laudo `2593d4d`) → B5 → B6.1/B6.2 → B6.3 (evaluación final)** — la corrida ESQ-1
 del diseño original ya no existe —, y ESQ entra **antes** que cualquier ítem de escalado. A2 (head-to-head),
 B4 sobre r1, B1.9/B1.10 y los casos de uso se re-encuadran como trabajo sobre el conjunto de
 desarrollo: siguen valiendo como experimentos de la tesis, pero ceden prioridad de calendario
@@ -801,12 +834,14 @@ D-f **no fue tratada** en la reunión — se resuelve por laudo de la autora apl
 `docs/lecturas_reunion_2026-08-26.md`) → cierra el pedido vigente y habilita C1.2 / Estado del
 arte; (5) informe de avance presentado (B1.8 `774acac`, promoción `81587f9`).
 
-**RUTA CRÍTICA vigente (actualizada por el laudo ESQ-3a, `0a76549`)**:
-`ESQ-2 COMPLETA (cobertura medida: 74 % [58, 85] parcial+no en azarosa como cota superior;
-candidatas (a) y (d) por criterio sellado; tabla, desvíos y adenda sellados) → ESQ-3 EN CURSO
-(ESQ-3a FIRMADA `0a76549` — 9 retoques aprobados con predicción propia, R4 como regla de
-omisión, R6b rechazado; resta: U-R9-FREQ ($0, criterio de corte sellado) → lista R9 de autora →
-pre-registro ESQ-3b firmado → corrida de dos brazos → laudo de esquema congelado) (retoques
+**RUTA CRÍTICA vigente (actualizada por el laudo de esquema congelado, `2593d4d`)**:
+`GATE ESQ-3 CERRADO — esquema congelado hash `1be8304e3d77` (sha del texto `e69feaaa…`), que
+B5.4 integra tal cual — → **B5 (endurecimiento pre-escalado, SIGUIENTE)** con las herencias
+del laudo (regla de rótulos TO: unificación nunca por rótulo; remisiones como criterio de
+aceptación de E3; validador de properties.tipo) → B6.1 (tanda 1 = ventana de corrección con
+cinco vigilancias pre-declaradas, laudo §7) → B6.2 → B6.3 (evaluación final; su pre-registro
+mata la ventana)`. La historia del gate (referencia): ESQ-2 completa `bbac990` → ESQ-3a
+`0a76549` → ESQ-3b dos vueltas → U-CONGELA (retoques
 + laudo de esquema congelado, con TODO el material: escalera, calibración, deformación,
 potestades, firmas de la cola) → escalado (B5/B6) → evaluación final sobre el grafo escalado
 (B6.3, pre-registro propio)`. La corrida ESQ-1 del diseño original ya no existe (modo (i)
@@ -876,6 +911,11 @@ tanda 1 de B6 como test de generalización sobre material virgen. ¿Alcanza, o r
 reservar TOs vírgenes adicionales como test de generalización del esquema ANTES del escalado?»
 Costo de la alternativa, para respuesta informada: ~5 TOs vírgenes ≈ 380 unidades ≈ USD 2,10 +
 ~35–40 fichas de lectura (~4–5 h) + el pool de B6.3 baja de 142 a 137 TOs elegibles.
+**Actualización al cierre del gate (`2593d4d`)**: la pregunta sigue vigente para la reunión,
+ahora con la respuesta propia más fuerte — el esquema se congeló con verificación de dos
+vueltas (regresión fresca sobre material que no lo informó), un valor RETIRADO cuando el
+material fresco lo falsó, modos de falla con tasas medidas (laudo §3), y la ventana de tanda 1
+con cinco vigilancias pre-declaradas como quinta mitigación operativa.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
