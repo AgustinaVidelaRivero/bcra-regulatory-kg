@@ -665,6 +665,21 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
   declarado: `docs/tesis/inventario_recurso.md` (nuevo), `.gitignore` (línea
   `!docs/tesis/inventario_recurso.md`), y ediciones en vuelo de `docs/tesis/main.tex` y
   `docs/tesis/bibliografia.bib`. **Nada de ese working set viaja en commits de otras unidades**
+  **PENDIENTES PARA U-INV / escritura (registrados acá el 03/09 porque docs/tesis/ no se toca
+  desde otras unidades; los lee quien retome la escritura):** (i) `main.tex` tiene dos
+  menciones de «seis tipos de entidad y doce tipos de relación» (Propuesta y Contribución 1)
+  desactualizadas por el cierre del gate — el esquema congelado es **9 tipos / 13 predicados /
+  enum de 6 valores** (laudo `2593d4d`, sha `e69feaaa…`, hash `1be8304e3d77`); decisión de
+  redacción de la autora pendiente: Propuesta y Contribución 1 pasan a 9/13 (describen el
+  recurso final) y el capítulo 3 cuenta la evolución 6/12 → ESQ-2 → congelado; el corte prosa
+  «12 predicados + 5 relaciones de ensamblado» es de r1 y necesitará su equivalente v2.
+  (ii) El estado del arte dice que Meher et al. midieron «frente a GraphRAG»; la verificación
+  de los papers 05/06 estableció que el baseline NO es GraphRAG vainilla (lleva los siete
+  tipos + un ejemplo few-shot) — ajuste de una frase. (iii) Candidatos a integrar cuando
+  U-INV toque bibliografía (ambos verificados contra PDF, listos para el .bib): Laskar (R14)
+  en el primer vacío del estado del arte (evidencia positiva de que el juez sin calibrar
+  falla en dominio técnico) y Zhou/TextMineX (R5) en el mismo vacío o en el capítulo de
+  evaluación.
   (regla ya aplicada en los pases recientes: add por ruta explícita).
 - [x] U-RW (**HECHA y CONSOLIDADA**, `70352b8`) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso). Ejecutada en dos partes: unidad de solo-descubrimiento (tabla de candidatos con triage y consultas auditables) + lectura en diagonal y mapa de exigencias por la mesa. **Consolidada a `docs/mapa_related_work.md`** (§2: mapa de 10 exigencias con estado/evidencia/dónde-se-resuelve; §3 estados finales de lecturas; §4 candidatos; §5 selección para lectura en serio) y `docs/lecturas_reunion_2026-08-26.md` actualizado. **Marcas confirmadas por la autora y ya registradas en el plan** (Wilson + desagregación por etapa en B4.1; checklist FAIR en C2.1; exigencias 6 y 7 en la agenda de mentores). El riesgo de material-en-sesiones quedó resuelto por la consolidación. Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
@@ -900,6 +915,14 @@ trabajo futuro declarado. (b) ¿Qué protocolo cubre el **cambio normativo** (el
 pasa con el grafo?)? El circuito de releases de B2.8 cubre el refinamiento por defectos, no la
 actualización por cambio de fuente — el hueco es real y la pregunta es su tratamiento: ¿capítulo,
 unidad, o limitación declarada con el diseño escrito?
+**Insumo nuevo para las dos preguntas (análisis del grafo legislativo de EE.UU. — R3 del mapa —
+verificado contra el PDF por mesa revisora): la analogía U.S. Code / Textos Ordenados.** Ese
+trabajo EXCLUYE la compilación consolidada por inestable y modela las normas originales con
+aristas amends/abrogates; esta tesis eligió lo opuesto (TOs consolidados) porque el agente
+responde contra el texto VIGENTE que el usuario consulta. Las dos elecciones son defendibles
+por razones distintas, y el argumento contrario queda escrito ANTES de que un jurado pregunte
+«¿por qué TOs y no Comunicaciones?». Modelar las Comunicaciones como deltas (el equivalente de
+amends/abrogates) = **trabajo futuro explícito**, y es la respuesta natural a la exigencia 7.
 
 **AGENDA — punto CONSULTADO: riesgo de generalización del esquema (laudo ESQ-3a `0a76549`
 §7).** «El esquema final queda informado por 15 documentos de 157 (5 de diseño + 10 de ESQ-2,
