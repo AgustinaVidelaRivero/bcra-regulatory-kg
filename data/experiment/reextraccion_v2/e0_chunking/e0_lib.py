@@ -99,10 +99,27 @@ TOL_TOP = 2.0        # tolerancia de agrupamiento vertical de palabras en línea
 GAP_COL = 15.0       # hueco horizontal mínimo (pt) para contar frontera de columna (tablas)
 
 RE_MARCA_INDICE = re.compile(r"^-\s*[ÍI]ndice\s*[-–]?\s*$", re.IGNORECASE)
+# Variante SIN guiones del marcador de índice (B5.2; el subset solo usa la
+# forma con guiones). GUARDA contra falsos marcadores, en tres capas:
+# (1) línea entera — la palabra sola, sin prosa alrededor ni puntuación
+#     final: la mención en prosa ('… actualizables por algún índice.',
+#     medida en el corpus de escalado) no matchea;
+# (2) mayúscula inicial ESTRICTA (sin IGNORECASE): la línea envuelta
+#     'índice' en minúscula existe en el cuerpo de cap y con case-insensitive
+#     reclasificaría esa página como índice, perdiendo su contenido;
+# (3) posición de título — solo cuenta dentro de las primeras
+#     POS_MARCA_INDICE líneas de la página (los 11 marcadores con guiones
+#     medidos en el subset caen todos en las primeras 4).
+RE_MARCA_INDICE_SIN_GUIONES = re.compile(r"^[ÍI]ndice$")
+POS_MARCA_INDICE = 5
 MARCA_TABLA_ORIGEN = "NORMA DE ORIGEN"
 MARCA_HISTORIAL = "historial de la norma"
-RE_SECCION = re.compile(r"^Secci[oó]n\s+(\d+)\s*\.\s*(.*)$")
-RE_SECCION_EN_LINEA = re.compile(r"Secci[oó]n\s+(\d+)\s*\.\s*(.*)$")
+# separador del header de sección: punto (todo el subset) o dos puntos
+# (variante de escritura del corpus de escalado, B5.2). 'Secci[oó]n' queda
+# case-sensitive a propósito: las remisiones en prosa ('la sección 4…') no
+# abren sección.
+RE_SECCION = re.compile(r"^Secci[oó]n\s+(\d+)\s*[.:]\s*(.*)$")
+RE_SECCION_EN_LINEA = re.compile(r"Secci[oó]n\s+(\d+)\s*[.:]\s*(.*)$")
 GAP_TOP_TITULO = 16.0   # separación vertical máxima (pt) de la cola envuelta de un título de sección
 RE_NUM_TOKEN = re.compile(r"^(\d+(?:\.\d+)*)\.$")   # primer token de un header de punto
 # el BCRA a veces omite el punto final del label ('13.4.1 el pago…',
@@ -178,8 +195,10 @@ ROL_CUERPO = "cuerpo"
 
 def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
     """portada = antes de la primera página de índice; índice = marcador
-    '-Índice-' (variantes con espacio/guion largo) o continuación (página que
-    sigue a una de índice con ≥2 líneas 'Sección N.'); tabla_norma_origen =
+    '-Índice-' (variantes con espacio/guion largo), 'Índice' a línea entera
+    sin guiones (con la guarda de RE_MARCA_INDICE_SIN_GUIONES: mayúscula
+    inicial y primeras POS_MARCA_INDICE líneas de la página) o continuación
+    (página que sigue a una de índice con ≥2 líneas 'Sección N.'); tabla_norma_origen =
     contiene 'NORMA DE ORIGEN'; historial = desde la página cuyo primer
     contenido anuncia el historial de Comunicaciones de la norma (pegajoso
     hasta el próximo marcador explícito de otro rol); cuerpo = resto."""
@@ -192,7 +211,9 @@ def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
         if any(MARCA_TABLA_ORIGEN in t.upper() for t in textos):
             rol = ROL_TABLA
             en_historial = False
-        elif any(RE_MARCA_INDICE.match(t) for t in textos):
+        elif any(RE_MARCA_INDICE.match(t) for t in textos) \
+                or any(RE_MARCA_INDICE_SIN_GUIONES.match(t)
+                       for t in textos[:POS_MARCA_INDICE]):
             rol = ROL_INDICE
             visto_indice = True
             en_historial = False
@@ -856,7 +877,10 @@ def parsear_indice(paginas: list[list[Linea]], roles: list[str]) -> list[dict]:
         contenido, _desc, _sec = separar_encabezado_pie(lineas, capturar_seccion=False)
         for linea in contenido:
             t = linea.texto.strip()
-            if RE_MARCA_INDICE.match(t):
+            if RE_MARCA_INDICE.match(t) or RE_MARCA_INDICE_SIN_GUIONES.match(t):
+                # la variante sin guiones se salta en cualquier posición: en una
+                # página ya clasificada índice, 'Índice' a línea entera es el
+                # marcador (ninguna sección se titula así), no una entrada
                 continue
             m_sec = RE_SECCION.match(t)
             tokens = t.split()
