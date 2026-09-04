@@ -619,7 +619,7 @@ y antes de escalar).
 - [ ] B5.2 (I, $0) A3: regex de E0 (`Sección N[.:]`, `Índice` sin guiones con guarda) → paridad 5/5 byte a byte + selftest 57/57 obligatorios; health-check por TO (`(cid:NN)`, páginas sin Sección). **CORRECCIÓN medida (U-B5.6-0, `docs/fe_erratas_D10_causa_regimen_informativo.md` §b): B5.2 NO desbloquea el bloque de régimen informativo.** En esos documentos la palabra que el regex busca no aparece —no hay marcador que relajar— y en un caso su única aparición es prosa sobre «índices de actualización», que un regex más laxo tomaría como marcador falso. B5.2 se mantiene por lo que fue escrita (paridad sobre normativa general y health-check); lo que desbloquea el bloque es el modo de lectura sin raíz de sección (ESQ-RI-1). **DESVÍO ACEPTADO del laudo de coordinación con U-B5.1 (registro para sesiones futuras — la instrucción vieja NO rige)**: el ítem `TO_KEYS` de U-B5.1 se resolvió SIN editar `e0_lib.py` (el driver itera el manifiesto), la cola interna de rebase quedó VACÍA, y al cierre de U-B5.2 corresponde únicamente **re-correr `selftest_manifiesto.py` completo** (P2 depende de la conducta de `e0_lib`) — no hay rebase pendiente.
 - [ ] B5.3 (I, $0) A4/A5: `max_tokens` con reintento 16k→32k en el mismo pase; sub-chunking por ítems para TOs nuevos; no cerrar fase con errores reintentables; tope compartido entre clientes.
 - [ ] B5.4 (H+I) **Catálogo de sujetos v3** congelado (SNP: entidad girada/depositaria/receptora/originante; bancos centrales, FMI, BIS, CCP; rol de alcance por TO nuevo) → rota el prefijo cacheado de E1 (aceptado). A2 de la auditoría. **HERENCIA DEL LAUDO DE CONGELADO (`2593d4d` §4): B5.4 integra el prefijo congelado TAL CUAL (texto sha `e69feaaa…`, hash `1be8304e3d77`; el catálogo de sujetos es la única pieza que este laudo deja abierta) — cualquier diferencia con ese sha invalida la corrida que la contenga.** Herencias adicionales del laudo a este bloque: **regla de ensamblado — la unificación de nodos TO nunca se hace por rótulo** (riesgo de fusión medido en las lecturas); **remisiones intra-texto como criterio de aceptación de E3** (11/38 azarosas en ESQ-2); **endurecimiento del validador de `properties.tipo`** (hoy texto libre: `registro_contable` fuera de enum en producción).
-- [ ] B5.5 (H) **Laudo D5**: corpus a escalar — **T1, NO RECORTABLE** desde la reunión del 26/08 (el escalado es el objeto central de la tesis, no un capítulo opcional: el laudo ya no decide *si* se escala sino *qué y en qué orden*). Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora. Prerrequisito adicional: laudo de esquema congelado (ESQ-3). Checklist del gate: [ ] **cola de mejoras diferidas revisada** (`docs/cola_mejoras_diferidas.md` — las entradas 1 y 6 deben estar resueltas o re-diferidas con destino explícito antes de escalar; la 8 define el contenido de r2).
+- [ ] B5.5 (H) **Laudo D5**: corpus a escalar — **T1, NO RECORTABLE** desde la reunión del 26/08 (el escalado es el objeto central de la tesis, no un capítulo opcional: el laudo ya no decide *si* se escala sino *qué y en qué orden*). Recomendación: los 68 digeribles primero (2.009 pág., 6.340 unidades, ~USD 123); RI (53 TOs, 0 digeribles) como segunda vuelta si B5.6 lo habilita. **[LAUDO ESCRITO REQUERIDO — toca compromisos del PPF/alcance]**: no arranca sin laudo redactado y fechado por la autora. Prerrequisito adicional: laudo de esquema congelado (ESQ-3). Checklist del gate: [ ] **cola de mejoras diferidas revisada** (`docs/cola_mejoras_diferidas.md` — las entradas 1 y 6 deben estar resueltas o re-diferidas con destino explícito antes de escalar; la 8 define el contenido de r2). **ESTADO 04/09: laudo COMPLETO y pendiente de firma** — §5 incorporado con el insumo de la reunión (§5.1 validación por lectura de capítulo = gate del escalado; §5.2 exigencia 7 → U-JOB-ACT, exigencia 6 no tratada; §5.3 Rama B para el catálogo de sujetos, borrador de mesa; checklist §6 del laudo verificado: entrada 1 re-diferida a B5.3 en curso, entrada 6 resuelta por B5.1 `bcb936a`, entrada 8 constatada en cola 8/12).
 - [ ] B5.6 (I, $0) Módulo de tablas (pdfplumber `extract_tables` con provenance, sin LLM) — RX-10 y montos invertidos. **CORRECCIÓN medida (U-B5.6-0, fe de erratas §c): NO decide el destino del bloque de régimen informativo.** El parser alcanza a 23 de 53 TOs y al 12,4 % de las palabras del bloque: decide el de UNA de sus cinco familias estructurales. **Se construye igual y por sí solo**, porque RX-10 es un defecto de correctitud sobre **normativa general** —dos montos invertidos verificados— y ese defecto vive en el grafo que la tesis entrega. Su prioridad ya no depende de lo que se decida sobre el bloque.
 - [ ] B5.7 (I) Issue #6: documento de costos con tarifas reales + caching + experimento óptimo dentro de USD 200 (con B5.5). Laudo D4 warm-then-parallel (throughput: ~13 s/unidad → ~29 h secuenciales para 8.010).
 
@@ -692,7 +692,7 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
   (regla ya aplicada en los pases recientes: add por ruta explícita).
 - [x] U-RW (**HECHA y CONSOLIDADA**, `70352b8`) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso). Ejecutada en dos partes: unidad de solo-descubrimiento (tabla de candidatos con triage y consultas auditables) + lectura en diagonal y mapa de exigencias por la mesa. **Consolidada a `docs/mapa_related_work.md`** (§2: mapa de 10 exigencias con estado/evidencia/dónde-se-resuelve; §3 estados finales de lecturas; §4 candidatos; §5 selección para lectura en serio) y `docs/lecturas_reunion_2026-08-26.md` actualizado. **Marcas confirmadas por la autora y ya registradas en el plan** (Wilson + desagregación por etapa en B4.1; checklist FAIR en C2.1; exigencias 6 y 7 en la agenda de mentores). El riesgo de material-en-sesiones quedó resuelto por la consolidación. Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)
-- [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3)
+- [ ] C1.3 Corpus y esquema (2.1, 2.2, esquema v2, catálogo de sujetos, ejes A/B, herencia). (S2–S3) **EXPANDIDA Y PRIORIZADA por la reunión del 04/09 como U-CAP-ESQ** (ver bloque de la reunión): el capítulo suma la validación pre-escalado completa (falsación del test ciego, ESQ-2, ESQ-3, congelado, riesgo declarado) y pasa a ser el GATE de validación del escalado — los mentores validan metodología y esquema leyéndolo.
 - [ ] C1.4 **El método** — construcción y refinamiento de un KG regulatorio de punta a punta (sigue B2.8): pipeline E0–E5 (diseño, principios, enmienda 01 con P1–P3, costos, limitaciones) + ciclo de refinamiento por releases (B2.6) + retriever/backend + intake. Cada mecanismo con puntero al experimento que lo demuestra (§6). (S3–S4, cierra con B1/B2)
 - [ ] C1.5 Metodología de evaluación bajo custodia (pre-registro, sets ciegos, juez 2 pasos, juez de fidelidad por criterios, verificador v7', taxonomía, métricas intrínsecas, regression suite, backend/retrieval) + **los dos instrumentos declarados** (principio 8): harness congelado para lo sellado, banco Claude Code + MCP para el head-to-head, con el puente A1.7 y el adaptador de trazas que preserva la atribución. (S3–S5)
 - [ ] C1.6 Resultados: 2.3; escalón 1/1b; C1–C7; intrínsecas; EV2 (fidelidad+navegabilidad+atribución); ablación retrieval; head-to-head; gold tripletas; escalado. (S5–S8)
@@ -890,6 +890,12 @@ hallazgo, bloque ESQ). La pregunta que va a la reunión es **hasta dónde se lle
 medidos a la vista, familia por familia. Se lleva ANTES de laudar D5, como fijó el laudo `94bb7a7`
 §D10. Insumos: `docs/fe_erratas_D10_causa_regimen_informativo.md` y
 `data/experiment/escalado_prep/scoping_b5_6_tabular_reginf.md`.
+**[NO TRATADO en la reunión del 04/09 — SIGUE VIGENTE.** Compatibilidad con
+el laudo `94bb7a7` §D10 («antes de laudar D5»): B5.5 lauda el corpus de las
+tandas 1–2 (los 68 digeribles, base no disputada) y deja al bloque RI en su
+secuencia propia ya laudada (ESQ-RI-1→4); la decisión familia-por-familia
+del bloque sigue pendiente de mentores y condiciona la SEGUNDA vuelta, no
+la primera.]
 
 **PRÓXIMO INFORME DE AVANCE — todo lo comprometido, en un solo lugar (nada se evapora entre
 reuniones).** Menciones comprometidas por laudo, aún no cumplidas: (1) el **cambio de alcance**
@@ -902,6 +908,43 @@ informativo familia-por-familia (pre-D5), exigencias 6 y 7 del related work, y l
 completa del control de ESQ-1 como informado. Al fijarse fecha: armar guion con la skill de
 reunión sobre este bloque.
 
+**REUNIÓN DEL 04/09 — REALIZADA; registro y unidades derivadas.** Registro completo (mandatos
+técnicos, sin nombres): `docs/registro_reunion_mentores_2026-09-04.md`. Resultado central: **la
+validación externa del esquema toma la forma de LECTURA DEL CAPÍTULO** — se escribe completo el
+capítulo de esquema y validación pre-escalado, los mentores validan metodología y esquema
+leyéndolo, y con esa validación el esquema queda habilitado para escalar (cierra el punto
+CONSULTADO sin quemar TOs vírgenes). El laudo B5.5 quedó COMPLETO (§5 incorporado) y pendiente
+de firma. Unidades derivadas, todas $0:
+- [ ] **U-CAP-ESQ** (H+I, escritura) — capítulo de esquema y validación pre-escalado en el
+  informe; ES EL GATE DE VALIDACIÓN DEL ESCALADO. Circuito de la Introducción: esqueleto
+  aprobado por la autora → tramos → tuneo. **Guardarraíl del mandato**: las fuentes son
+  EXCLUSIVAMENTE los documentos sellados del carril ESQ (laudos ESQ-1/2/3a/congelado,
+  pre-registros, tablas de resultados, commits) — ningún material de sesión se cita; rigen
+  la skill de escritura y el mapa de fuentes propio (patrón `mapa_fuentes_intro.md`).
+  Absorbe el pendiente (i) de U-INV (evolución 6/12 → 9/13 contada en este capítulo).
+- [ ] **U-JOB-ACT** (I, $0 diseño) — job recurrente mensual de actualización: re-scraping
+  (el scraper idempotente con manifiesto ya existe en `src/`), tabla de deltas por sha con
+  procedencia documental, mapeo delta→provenance→partes afectadas del grafo, reporte mensual;
+  la ejecución de la actualización es release declarada (principio 9). Cumple la exigencia 7
+  («tiene que estar»). **SINERGIA ENDOSADA por mesa (se escribe en el diseño de la unidad):
+  el corpus congelado es de marzo de 2026 → la primera corrida produce el delta
+  marzo→presente, material post-corte que es el insumo natural de la exigencia 6 (validación
+  temporal, precedente PrimeKG); la decisión de usarlo así es de la autora (exigencia 6 no
+  tratada en la reunión).**
+- [ ] **U-PREP-CONTACTO** (H, $0) — guion de la reunión exploratoria con el contacto de la
+  industria (tips registrados: preguntas generales de procesos/compliance/proyectos/uso de
+  RAG; no forzar el caso de uso; grabar con permiso; volver después con propuesta). La
+  colaboración posterior alimenta B4 (anotación experta en dos modos — literal por tripleta /
+  conversacional con extracción de claims — con subsample y estadística; registro §3).
+- [ ] **U-EXP5** (I, $0) — investigación de metodología de evaluación del pipeline POR ETAPAS
+  (métrica de error por paso; exigencia 5, precedente YAGO por heurística) para PROPONER a
+  los mentores; destino B4.1.
+**Orden operativo acordado con la mesa**: U-CAP-ESQ primero (con U-JOB-ACT y U-EXP5 en
+paralelo, $0); escalado gateado a capítulo validado — sin atarlo a fechas de terceros; si se
+quiere apurar, tanda 1 solo post-confirmación de lectura; U-B5.3 se cierra cuando llegue su
+freno; la demo para la reunión con el contacto es la app sobre el grafo vigente (r1), no
+requiere el escalado.
+
 **AGENDA — punto INFORMADO (no de decisión): la historia completa del control de ESQ-1 —
 escalera + calibración + rama.** (1) Tres controles pre-registrados y falsados en escalera
 sellada (P1/P1′/P1″; commits de U-ESQ-1c, `c25273f`, `0e50e3d`): el canal declarativo es
@@ -913,7 +956,9 @@ falsos positivos: un censo habría sobrecontado la deriva). (3) **Rama (b) del �
 censo por LLM queda CERRADO con doble evidencia — extrayendo deforma, descubriendo
 sobrecuenta — y ESQ-2 protocolizada es la única vía.** Bonus del control: el hueco de
 potestades confirmado en corpus real. Costo total de la saga (escalera + calibración):
-USD 0,92 de tope 9,00.
+USD 0,92 de tope 9,00. **PRESENTADO en la reunión del 04/09 (dentro del relato completo de las
+evaluaciones del esquema, con aval registrado) — punto CUMPLIDO;** el detalle queda además
+comprometido por escrito en el capítulo de U-CAP-ESQ, que es donde los mentores lo validan.
 
 **AGENDA — punto nuevo: dos exigencias del related work que tocan alcance (decisión de los
 mentores, no compromisos; `docs/mapa_related_work.md` §2, exigencias 6 y 7).** (a) ¿Se valida el
@@ -932,6 +977,11 @@ responde contra el texto VIGENTE que el usuario consulta. Las dos elecciones son
 por razones distintas, y el argumento contrario queda escrito ANTES de que un jurado pregunte
 «¿por qué TOs y no Comunicaciones?». Modelar las Comunicaciones como deltas (el equivalente de
 amends/abrogates) = **trabajo futuro explícito**, y es la respuesta natural a la exigencia 7.
+**RESUELTO PARCIALMENTE el 04/09: la exigencia 7 pasa a compromiso con forma definida** (job
+mensual de re-scraping con deltas y mapeo por provenance — «tiene que estar»; unidad U-JOB-ACT,
+ver bloque de la reunión). **La exigencia 6 NO se trató**: queda como decisión de diseño de la
+autora, con el delta marzo→presente de la primera corrida del job como material candidato
+(sinergia endosada, registrada en la fila de U-JOB-ACT).
 
 **AGENDA — punto CONSULTADO: riesgo de generalización del esquema (laudo ESQ-3a `0a76549`
 §7).** «El esquema final queda informado por 15 documentos de 157 (5 de diseño + 10 de ESQ-2,
@@ -948,6 +998,10 @@ ahora con la respuesta propia más fuerte — el esquema se congeló con verific
 vueltas (regresión fresca sobre material que no lo informó), un valor RETIRADO cuando el
 material fresco lo falsó, modos de falla con tasas medidas (laudo §3), y la ventana de tanda 1
 con cinco vigilancias pre-declaradas como quinta mitigación operativa.
+**RESPONDIDO el 04/09, por otra vía: NO se ordenó test adicional** — la validación externa es
+la LECTURA DEL CAPÍTULO de esquema y validación pre-escalado (U-CAP-ESQ), que gatea el
+escalado; la ventana de tanda 1 sigue como mitigación operativa y el pool de B6.3 queda en 142
+elegibles. Incorporado como §5.1 del laudo B5.5 (pendiente de firma). Punto CERRADO.
 
 ## 6. Mapa de contribución: mecanismo → experimento que lo demuestra → estado
 
