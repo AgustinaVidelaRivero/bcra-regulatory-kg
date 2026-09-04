@@ -680,6 +680,15 @@ Capítulos (borrador → revisión → final), cada uno alimentado por un bloque
   en el primer vacío del estado del arte (evidencia positiva de que el juez sin calibrar
   falla en dominio técnico) y Zhou/TextMineX (R5) en el mismo vacío o en el capítulo de
   evaluación.
+- [~] U-BARRIDA-RELEASES (**EN VUELO en otra sesión** — fila mínima para que la cola la vea;
+  el detalle lo completa su propia revisión al cierre). Barrida de releases de KG post-LLM
+  del 03/09 (tarea de la reunión del 26/08). **Working set declarado**:
+  `docs/literatura/releases_kg_post_llm.md` (nuevo), el **§6 de `docs/mapa_related_work.md`**
+  (único hunk del mapa sin commitear — las filas verificadas del 03/09 se separaron por
+  staging parcial y viajaron en commit propio, por la regla de la autora de no dejar registros
+  sin sellar más de una jornada), y entradas en `docs/tesis/bibliografia.bib` + prosa en
+  `main.tex` (SOLAPADO con el working set de U-INV: coordinación obligatoria al cierre de
+  cualquiera de las dos). Nada de este working set viaja en commits de otras unidades.
   (regla ya aplicada en los pases recientes: add por ruta explícita).
 - [x] U-RW (**HECHA y CONSOLIDADA**, `70352b8`) **Related work de *releases* de KG post-LLM** (compromiso de la reunión del 26/08; encuadre: tesis de recurso). Ejecutada en dos partes: unidad de solo-descubrimiento (tabla de candidatos con triage y consultas auditables) + lectura en diagonal y mapa de exigencias por la mesa. **Consolidada a `docs/mapa_related_work.md`** (§2: mapa de 10 exigencias con estado/evidencia/dónde-se-resuelve; §3 estados finales de lecturas; §4 candidatos; §5 selección para lectura en serio) y `docs/lecturas_reunion_2026-08-26.md` actualizado. **Marcas confirmadas por la autora y ya registradas en el plan** (Wilson + desagregación por etapa en B4.1; checklist FAIR en C2.1; exigencias 6 y 7 en la agenda de mentores). El riesgo de material-en-sesiones quedó resuelto por la consolidación. Alimenta C1.2 y el Estado del arte.
 - [ ] C1.2 Marco teórico + literatura (00–09, 5 vacíos, playbook como contraste; nota "graph engineering"). (S2)

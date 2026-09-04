@@ -29,7 +29,7 @@ Referencias cruzadas detectadas durante la lectura crítica de los siete papers 
 ## Del Corro & Gemulla (2013) — *ClausIE: Clause-based open information extraction*
 
 **Por qué seguirlo:**
-1. Paper del mentor (Luciano del Corro); citarlo es de buena práctica académica y muestra continuidad metodológica con quien dirige la tesis.
+1. Citarlo es de buena práctica académica y muestra continuidad metodológica con la línea de trabajo en que esta tesis se inscribe (del Corro et al. como autores del sistema).
 2. ClauseIE es uno de los métodos OIE clásicos referenciados como heurística complementaria al pipeline LLM en el paper 01, y sigue siendo competitivo como baseline pre-LLM en regulación financiera.
 3. Comparar la calidad de tripletas extraídas por ClauseIE vs por un LLM moderno sobre el mismo corpus BCRA es un experimento limpio y barato que aporta una pieza concreta de evidencia.
 
@@ -128,3 +128,18 @@ Referencias cruzadas detectadas durante la lectura crítica de los siete papers 
 ## Comentario final sobre prioridades
 
 De estas once referencias, **tres son ineludibles** para mi PPF1: **GraphRAG** (Edge 2024) por ser el baseline competitivo más obvio, **RAG original** (Lewis 2020) por ser fundacional, y **ClauseIE** (Del Corro 2013) por la conexión metodológica + mentor. Las demás caen en orden: *Pan 2024 → Tamašauskaitė 2022 → Hogan 2022 → Lynx 2022 → LeKUBe 2024 → QA-RAG 2024 → Zhang & Soh 2024 → Kommineni 2024.* Si solo tengo tiempo para tres más allá del top, priorizo Pan (marco), Tamašauskaitė (metodología) y LeKUBe (versionado).
+
+---
+
+## Bibliografía derivada de Colombo & Cambria (VLDB-W 2025) — VERIFICAR CONTRA PDF antes de que entren al mapa
+
+Regla (post-episodio R12): ninguna de estas tres entra al mapa de related
+work sin verificación contra el PDF primario.
+
+1. **Colombo, Bernasconi y Ceri (2025)** — *Information Processing &
+   Management* 62(4), 104082: KG de la legislación italiana. Antecedente
+   directo del grafo legislativo de EE.UU. y probable evaluación de
+   calidad — el candidato más valioso de los tres.
+2. **Sadeghian et al. (2018)** — citado por el paper; verificar cuál es y
+   su relevancia real antes de registrar nada más que esta línea.
+3. **Anelli et al. (2023)** — ídem.
