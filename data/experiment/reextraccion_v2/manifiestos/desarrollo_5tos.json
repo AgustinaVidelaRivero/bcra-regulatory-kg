@@ -1,0 +1,208 @@
+{
+ "version": "1",
+ "nombre": "desarrollo_5tos",
+ "descripcion": "Corpus de desarrollo: los 5 Textos Ordenados del subset sellado (data/experiment/subset/), con oraculo del censo (mapa de territorio quemado) y limites de la corrida laudada de corpus_v2.",
+ "tos": [
+  {
+   "id": "pro",
+   "archivo": "TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+   "pdf": "data/experiment/subset/TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+   "sha256_pdf": "48564cc714daa9a8c8bbd7115dfe006307ca7cb1c3d78b106c52555fe75a12ec",
+   "rol_alcance": "Sujeto_rol_sujeto_obligado_proteccion",
+   "nombres_remision": [
+    "proteccion de los usuarios de servicios financieros",
+    "proteccion de usuarios de servicios financieros"
+   ]
+  },
+  {
+   "id": "cla",
+   "archivo": "TO_clasificacion_deudores_actual.pdf",
+   "pdf": "data/experiment/subset/TO_clasificacion_deudores_actual.pdf",
+   "sha256_pdf": "6e7f528d3fea7b756f15e1278eecd828f203f0651fc6f778212033de6a0883e2",
+   "rol_alcance": "Sujeto_rol_obligado_a_clasificar_clasificacion",
+   "nombres_remision": [
+    "clasificacion de deudores"
+   ]
+  },
+  {
+   "id": "ric",
+   "archivo": "TO_regimen_informativo_contable_mensual_actual.pdf",
+   "pdf": "data/experiment/subset/TO_regimen_informativo_contable_mensual_actual.pdf",
+   "sha256_pdf": "754c888ae6034f63eb04991c5cad441435b6bf6f8e8fb3669fd2bb279c3b35d5",
+   "rol_alcance": "Sujeto_rol_entidad_comprendida_reginf",
+   "nombres_remision": [
+    "regimen informativo contable mensual"
+   ]
+  },
+  {
+   "id": "cap",
+   "archivo": "TO_capitales_minimos_actual.pdf",
+   "pdf": "data/experiment/subset/TO_capitales_minimos_actual.pdf",
+   "sha256_pdf": "f6ab71be7783c4192e67c13ee84f1fc585c6ae5e05aa074961c9c59429280bb8",
+   "rol_alcance": "Sujeto_rol_alcance_capmin",
+   "nombres_remision": [
+    "capitales minimos"
+   ]
+  },
+  {
+   "id": "ext",
+   "archivo": "TO_exterior_cambios_actual.pdf",
+   "pdf": "data/experiment/subset/TO_exterior_cambios_actual.pdf",
+   "sha256_pdf": "baea7264918877da132acca5f7ec6df1a3a33fd5be77109b90360a3d586bc130",
+   "rol_alcance": "Sujeto_rol_entidad_autorizada_exterior",
+   "nombres_remision": [
+    "exterior y cambios"
+   ]
+  }
+ ],
+ "orden_corrida": [
+  "pro",
+  "cla",
+  "ric",
+  "cap",
+  "ext"
+ ],
+ "rutas": {
+  "e0_salida": "data/experiment/reextraccion_v2/e0_chunking/salida_enm01"
+ },
+ "oraculo": {
+  "mapa_territorio": "data/experiment/exploracion/mapa_territorio_quemado_5TOs_5sets.json",
+  "limitaciones_e0": [
+   {
+    "to": "cap",
+    "unidad": "S10",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "10.1",
+     "10.2",
+     "10.3"
+    ],
+    "cita": "el índice de cap anuncia las Secciones 10-12 sin desglosar puntos; el cuerpo SÍ tiene puntos numerados (censo_oraculo.md §cap)."
+   },
+   {
+    "to": "cap",
+    "unidad": "S11",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "11.1",
+     "11.2",
+     "11.3",
+     "11.4",
+     "11.5",
+     "11.6"
+    ],
+    "cita": "ídem S10 (censo_oraculo.md §cap)."
+   },
+   {
+    "to": "cap",
+    "unidad": "S12",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "12.1",
+     "12.2",
+     "12.3"
+    ],
+    "cita": "ídem S10 (censo_oraculo.md §cap)."
+   },
+   {
+    "to": "ext",
+    "unidad": "S1",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "1.1",
+     "1.2",
+     "1.3",
+     "1.4",
+     "1.5",
+     "1.6",
+     "1.7",
+     "1.8",
+     "1.9"
+    ],
+    "cita": "el índice de ext anuncia la Sección 1 sin desglosar; el cuerpo tiene 1.1-1.9 (censo_oraculo.md §ext)."
+   },
+   {
+    "to": "ric",
+    "unidad": "3.2",
+    "clase": "divergencia_documento_fuente",
+    "cubierta_por": [
+     "3.1.4"
+    ],
+    "cita": "el índice anuncia '3.2. Modelo de información'; el cuerpo lo rinde como 3.1.4 — único anunciado_sin_cuerpo de los 5 TOs; no se fabricó ningún chunk 3.2 (censo_oraculo.md §ric)."
+   },
+   {
+    "to": "ric",
+    "unidad": "4.4",
+    "clase": "defecto_documento_fuente",
+    "cubierta_por": [],
+    "cita": "el cuerpo NO contiene un header '4.4.': tras los cuadros de 4.3 aparecen directamente '4.4.3. Riesgo de cambio' y '4.4.4. Riesgo de posiciones en opciones', huérfanos de su padre. El parser los rechaza (padre_4.4_no_abierto, registrados en estructura_ric.json → rechazos_header) y su contenido queda como prosa del punto abierto precedente — no se fabrica un 4.4 inexistente (censo_oraculo.md §ric)."
+   },
+   {
+    "to": "ric",
+    "unidad": "S1",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "1.1",
+     "1.2"
+    ],
+    "cita": "granularidad del índice, misma clase que cap/ext (censo_oraculo.md §ric)."
+   },
+   {
+    "to": "ric",
+    "unidad": "S12",
+    "clase": "granularidad_indice",
+    "cubierta_por": [
+     "12.1",
+     "12.2",
+     "12.3",
+     "12.4"
+    ],
+    "cita": "granularidad del índice, misma clase que cap/ext (censo_oraculo.md §ric)."
+   }
+  ]
+ },
+ "limites": {
+  "tope_global_usd": 48.5,
+  "margen_unidad_usd": 0.35,
+  "estimado_usd": {
+   "pro": {
+    "e1": 0.897,
+    "e3": 1.205
+   },
+   "cla": {
+    "e1": 1.457,
+    "e3": 1.853
+   },
+   "ric": {
+    "e1": 0.772,
+    "e3": 1.093
+   },
+   "cap": {
+    "e1": 4.323,
+    "e3": 5.796
+   },
+   "ext": {
+    "e1": 7.419,
+    "e3": 9.779
+   }
+  },
+  "checkpoint_cada": {
+   "cap": 150,
+   "ext": 150
+  },
+  "chequeos_hits": [
+   {
+    "to": "pro",
+    "e1_max_usd": 0.01,
+    "e3_max_usd": 1.0
+   }
+  ]
+ },
+ "tests_respuesta_conocida": "dev5",
+ "sellos": {
+  "kg": "8e2eadee57b48e00ccb51ade9a953ba1469001fe089c45d97c4307ccf2725581",
+  "reporte_ensamblado": "98ee43e59c1e74bd6f83ac2aacf2531d2914e672a979ace4fc453830bff343ae",
+  "tests_respuesta_conocida": "5bf4ffd7a12fc7f5827b995d600b6d981d6cc773712d9ec2fb6c1560795160b5"
+ },
+ "indice_fragmentos": null
+}

@@ -67,6 +67,11 @@ from schema import (  # noqa: E402  (esquema v2, fuente única — igual que E1)
 
 TOS = ("cap", "cla", "ext", "pro", "ric")
 
+# Sentinel del modo sin oráculo (U-B5.1): un corpus sin mapa de territorio no
+# tiene censo-oráculo — se pasa este valor como `censo_oraculo` y el censo
+# emite nivel_mapa = {"modo": "sin_oraculo"} (el nivel_chunk corre completo).
+SIN_ORACULO = "SIN_ORACULO"
+
 # Tipos que NO cuentan como "nodo de contenido" para el censo estructural.
 # TextoOrdenado es meta documental (aparece en casi todo chunk y dedupea a un
 # nodo por documento): contarlo volvería vacuo el censo — BKL-0024 se detectó
@@ -556,7 +561,8 @@ def _cubre(puntos: set[str], unidad: str) -> bool:
 
 def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
                       fanin: dict, censo_oraculo: dict | None = None,
-                      aporte_por_chunk: dict[str, dict] | None = None) -> dict:
+                      aporte_por_chunk: dict[str, dict] | None = None,
+                      limitaciones: dict | None = None) -> dict:
     """Censo en dos niveles contra el mapa de E0.
 
     Nivel chunk (terminal): toda unidad chunkeada por E0 debe tener ≥1 nodo
@@ -570,6 +576,8 @@ def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
     """
     if censo_oraculo is None:
         censo_oraculo = cargar_censo_oraculo()
+    if limitaciones is None:
+        limitaciones = LIMITACIONES_E0
     puntos = _puntos_de_contenido(nodes)
     estados_fanin = fanin.get("estados", {})
 
@@ -619,14 +627,35 @@ def censo_estructural(to: str, chunks: list[dict], nodes: list[dict],
         })
 
     # --- Nivel mapa (oráculo) ---
-    oraculo_to = censo_oraculo[to]
+    if censo_oraculo == SIN_ORACULO:
+        # Corpus sin mapa de territorio (U-B5.1): no hay contra qué
+        # reconciliar — se declara el modo, jamás se inventa un oráculo.
+        return {
+            "to": to,
+            "criterio": "nodo de contenido = type no en "
+                        f"{list(TIPOS_NO_CONTENIDO)}; anclaje por provenance.punto "
+                        "(exacto a nivel chunk; exacto-o-descendiente a nivel mapa; "
+                        "mini-chunks por aporte propio del chunk id — enmienda 01)",
+            "nivel_chunk": {
+                "unidades": len(chunks),
+                "cubiertas": cubiertas_chunk,
+                "ausencias": ausencias_chunk,
+            },
+            "nivel_mapa": {"modo": "sin_oraculo"},
+        }
+    oraculo_to = censo_oraculo.get(to)
+    if oraculo_to is None:
+        raise ValueError(
+            f"censo-oráculo sin entrada para el TO '{to}': el oráculo declarado "
+            f"cubre {sorted(censo_oraculo)} — un TO fuera del oráculo corre con "
+            f"censo_oraculo=SIN_ORACULO (manifiesto sin mapa_territorio)")
     unidades_mapa = sorted(set(oraculo_to["coincidencias"]) | set(oraculo_to["solo_mapa"])
                            | set(oraculo_to["solo_parser"]))
     ausencias_mapa: list[dict] = []
     limitaciones_aplicadas: list[dict] = []
     cubiertas_mapa = 0
     for u in unidades_mapa:
-        lim = LIMITACIONES_E0.get((to, u))
+        lim = limitaciones.get((to, u))
         if _cubre(puntos, u):
             cubiertas_mapa += 1
             continue
@@ -683,7 +712,8 @@ class FanInError(RuntimeError):
 
 
 def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
-            censo_oraculo: dict | None = None, e0_dir: Path = E0_SALIDA) -> dict:
+            censo_oraculo: dict | None = None, e0_dir: Path = E0_SALIDA,
+            limitaciones: dict | None = None) -> dict:
     """Corrida E2 completa para un TO: guarda de fan-in → ensamblado → censo.
 
     Si el fan-in no es apto y no hay flag, aborta con FanInError ANTES de
@@ -702,7 +732,8 @@ def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
         censo_oraculo = cargar_censo_oraculo(e0_dir)
     ens = ensamblar(chunks, registros)
     censo = censo_estructural(to, chunks, ens["nodes"], fanin, censo_oraculo,
-                              aporte_por_chunk=ens["aporte_por_chunk"])
+                              aporte_por_chunk=ens["aporte_por_chunk"],
+                              limitaciones=limitaciones)
 
     grafo = {"nodes": ens["nodes"], "edges": ens["edges"]}
     grafo_json = json.dumps(grafo, ensure_ascii=False, indent=2)

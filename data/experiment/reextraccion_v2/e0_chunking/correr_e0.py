@@ -1,6 +1,12 @@
-"""Driver de E0: corre parser + chunker sobre los 5 TOs y escribe la salida.
+"""Driver de E0: corre parser + chunker sobre un corpus y escribe la salida.
 
-Uso: python3 correr_e0.py [--salida DIR]
+Uso: python3 correr_e0.py [--salida DIR] [--manifiesto RUTA]
+
+Sin --manifiesto: comportamiento legacy intacto (los 5 TOs del subset vía
+E0.TO_KEYS y el mapa de territorio quemado). Con --manifiesto (U-B5.1): los
+TOs, las rutas de PDF y el mapa-oráculo salen del manifiesto de corpus; con
+`oraculo.mapa_territorio: null` NO se construye censo_oraculo.json (modo sin
+oráculo — las etapas aguas abajo lo declaran, ver e2_lib.SIN_ORACULO).
 
 Salida (por defecto ./salida/):
   estructura_<to>.json   árbol estructural del cuerpo (mapa de E0)
@@ -30,8 +36,8 @@ SUBSET = REPO / "experiment" / "subset"
 MAPA = REPO / "experiment" / "exploracion" / "mapa_territorio_quemado_5TOs_5sets.json"
 
 
-def inventario_mapa() -> dict[str, list[str]]:
-    m = json.loads(MAPA.read_text(encoding="utf-8"))
+def inventario_mapa(mapa_path: Path = MAPA) -> dict[str, list[str]]:
+    m = json.loads(mapa_path.read_text(encoding="utf-8"))
     out: dict[str, list[str]] = {}
     for to, d in m["por_to"].items():
         unidades = []
@@ -42,9 +48,18 @@ def inventario_mapa() -> dict[str, list[str]]:
     return out
 
 
-def correr(salida: Path) -> dict:
+def correr(salida: Path, manifiesto=None) -> dict:
     salida.mkdir(parents=True, exist_ok=True)
-    mapa = inventario_mapa()
+    if manifiesto is None:
+        items = sorted(E0.TO_KEYS.items(), key=lambda kv: kv[1])
+        pdfs = {to: SUBSET / archivo for archivo, to in items}
+        mapa = inventario_mapa()
+    else:
+        items = sorted(((manifiesto.archivo_de(t), t) for t in manifiesto.ids),
+                       key=lambda kv: kv[1])
+        pdfs = {to: manifiesto.pdf_de(to) for _, to in items}
+        mapa = (inventario_mapa(manifiesto.mapa_territorio)
+                if manifiesto.tiene_oraculo else None)
     conteos: dict = {}
     divergencias: dict = {}
     censo: dict = {}
@@ -52,8 +67,8 @@ def correr(salida: Path) -> dict:
 
     correcciones: dict = {}
 
-    for archivo, to in sorted(E0.TO_KEYS.items(), key=lambda kv: kv[1]):
-        pdf = SUBSET / archivo
+    for archivo, to in items:
+        pdf = pdfs[to]
         paginas = E0.extraer_lineas(pdf)
         roles = E0.clasificar_paginas(paginas)
         res = E0.parsear_cuerpo(to, archivo, paginas, roles)
@@ -95,15 +110,16 @@ def correr(salida: Path) -> dict:
         divergencias[to] = div
         cobertura[to] = cob
 
-        inv_parser = E0.inventario_nivel_mapa(res)
-        inv_mapa = set(mapa[to])
-        censo[to] = {
-            "n_parser": len(inv_parser),
-            "n_mapa": len(inv_mapa),
-            "coincidencias": sorted(inv_parser & inv_mapa),
-            "solo_mapa": sorted(inv_mapa - inv_parser),
-            "solo_parser": sorted(inv_parser - inv_mapa),
-        }
+        if mapa is not None:
+            inv_parser = E0.inventario_nivel_mapa(res)
+            inv_mapa = set(mapa[to])
+            censo[to] = {
+                "n_parser": len(inv_parser),
+                "n_mapa": len(inv_mapa),
+                "coincidencias": sorted(inv_parser & inv_mapa),
+                "solo_mapa": sorted(inv_mapa - inv_parser),
+                "solo_parser": sorted(inv_parser - inv_mapa),
+            }
 
         terminales = [c for c in chunks if c["tipo"] != "mini_chunk"]
         minis = [c for c in chunks if c["tipo"] == "mini_chunk"]
@@ -145,8 +161,9 @@ def correr(salida: Path) -> dict:
 
     (salida / "divergencias_indice_cuerpo.json").write_text(
         json.dumps(divergencias, ensure_ascii=False, indent=1), encoding="utf-8")
-    (salida / "censo_oraculo.json").write_text(
-        json.dumps(censo, ensure_ascii=False, indent=1), encoding="utf-8")
+    if mapa is not None:
+        (salida / "censo_oraculo.json").write_text(
+            json.dumps(censo, ensure_ascii=False, indent=1), encoding="utf-8")
     (salida / "conteos.json").write_text(
         json.dumps(conteos, ensure_ascii=False, indent=1), encoding="utf-8")
     (salida / "cobertura.json").write_text(
@@ -164,6 +181,15 @@ def shas_salida(salida: Path) -> dict[str, str]:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--salida", default=str(Path(__file__).parent / "salida"))
+    ap.add_argument("--manifiesto", default=None,
+                    help="ruta a un manifiesto de corpus (U-B5.1); sin él, "
+                         "comportamiento legacy sobre los 5 TOs del subset")
     args = ap.parse_args()
-    conteos = correr(Path(args.salida))
+    man = None
+    if args.manifiesto:
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        import manifiesto_corpus
+        man = manifiesto_corpus.cargar(Path(args.manifiesto))
+    conteos = correr(Path(args.salida), manifiesto=man)
     print(json.dumps(conteos, ensure_ascii=False, indent=1))

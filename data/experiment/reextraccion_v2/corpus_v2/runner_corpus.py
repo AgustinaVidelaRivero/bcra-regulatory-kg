@@ -1,9 +1,17 @@
 """
-runner_corpus.py — Corrida del CORPUS COMPLETO (5 TOs) por el pipeline
-E1→E3 con la arquitectura enmendada (enmienda 01) y la política laudada A+B.
-Extiende los runners de la mini-recalibración enm01 con: multi-TO, reanudación
-idempotente por unidad persistida, checkpoints intra-TO, tope global duro y
-freno por proyección.
+runner_corpus.py — Corrida de UN CORPUS DECLARADO POR MANIFIESTO por el
+pipeline E1→E3 con la arquitectura enmendada (enmienda 01) y la política
+laudada A+B. Extiende los runners de la mini-recalibración enm01 con:
+multi-TO, reanudación idempotente por unidad persistida, checkpoints
+intra-TO, tope global duro y freno por proyección.
+
+U-B5.1: los TOs, el orden, la salida de E0, los límites (tope/estimados/
+checkpoints/chequeos de hits) y el modo del censo (con o sin oráculo) salen
+del manifiesto de corpus (--manifiesto; default: manifiestos/
+desarrollo_5tos.json, cuyos valores son EXACTAMENTE los que este módulo
+tenía cableados — paridad verificada en selftest_manifiesto.py). Modelos y
+precios siguen siendo materia de la autorización de cada corrida (laudo
+D-b del freno 1) y quedan como constantes de este módulo.
 
 Autorización vigente (FASE B de la unidad "corrida del corpus completo"):
   - TOPE DURO GLOBAL: USD 48,50 (estimación FASE A: USD 34,59 × 1,4).
@@ -56,6 +64,7 @@ REX = AQUI.parent
 sys.path.insert(0, str(REX / "e1_extractor"))
 sys.path.insert(0, str(REX / "e3_verificador"))
 sys.path.insert(0, str(REX / "e2_reduce"))
+sys.path.insert(0, str(REX))
 
 import comun_e1                     # noqa: E402
 import prompt_e1                    # noqa: E402
@@ -66,12 +75,10 @@ import prompt_e3                    # noqa: E402
 import cliente_e3                   # noqa: E402
 import ratchet_e3                   # noqa: E402
 import e2_lib                       # noqa: E402
+import manifiesto_corpus            # noqa: E402
 
-# ----------------------------- constantes laudadas ----------------------- #
-TOS_ORDEN = ("pro", "cla", "ric", "cap", "ext")
-TOPE_GLOBAL_USD = 48.50
-MARGEN_UNIDAD_USD = 0.35            # margen pre-unidad (precedente enm01)
-MAX_TOKENS_REINTENTO = 16384
+# --------------------- constantes de autorización por corrida ------------ #
+MAX_TOKENS_REINTENTO = 16384        # remedio de fondo (32k) en B5.3
 
 MODEL_E1 = "claude-haiku-4-5"
 P_E1 = dict(precio_in_por_mtok=1.00, precio_out_por_mtok=5.00,
@@ -80,25 +87,48 @@ MODEL_E3 = "claude-sonnet-5"
 P_E3 = dict(precio_in_por_mtok=2.00, precio_out_por_mtok=10.00,
             precio_cache_write_por_mtok=2.50, precio_cache_read_por_mtok=0.20)
 
-# Estimación FASE A (estimacion_corpus_faseA.json) por TO y fase, USD.
-# "e3" incluye los reintentos E1 (ocurren dentro de esa fase).
-ESTIMADO_USD = {
-    "pro": {"e1": 0.897, "e3": 1.205},
-    "cla": {"e1": 1.457, "e3": 1.853},
-    "ric": {"e1": 0.772, "e3": 1.093},
-    "cap": {"e1": 4.323, "e3": 5.796},
-    "ext": {"e1": 7.419, "e3": 9.779},
-}
-ESTIMADO_TOTAL_USD = round(sum(f["e1"] + f["e3"] for f in ESTIMADO_USD.values()), 3)
-
-CHECKPOINT_CADA = {"cap": 150, "ext": 150}   # intra-TO, mandato FASE B
-
-# Umbrales del chequeo de hits de pro (ver docstring)
-PRO_E1_GASTO_MAX = 0.01
-PRO_E3_GASTO_MAX = 1.00
-
 EVAL_DIR = comun_e3.REPO / "data" / "experiment" / "evaluacion"
 DB_REINTENTOS_E1 = REX / "e3_verificador" / "cache" / "e1_reintentos.db"
+
+# --------------------- configuración por manifiesto (U-B5.1) ------------- #
+MANIFIESTO_DEFAULT = REX / "manifiestos" / "desarrollo_5tos.json"
+
+MAN = None
+TOS_ORDEN: tuple[str, ...] = ()
+TOPE_GLOBAL_USD: float = 0.0
+MARGEN_UNIDAD_USD: float = 0.0      # margen pre-unidad (precedente enm01)
+ESTIMADO_USD: dict[str, dict] = {}
+ESTIMADO_TOTAL_USD: float = 0.0
+CHECKPOINT_CADA: dict[str, int] = {}
+CHEQUEOS_HITS: list[dict] = []
+E0_DIR: Path = comun_e1.E0_SALIDA_ENM01
+CENSO_ORACULO_ARG = None            # None = cargar del e0_dir; o SIN_ORACULO
+LIMITACIONES: dict | None = None
+
+
+def configurar(man) -> None:
+    """Fija el estado de módulo desde un manifiesto cargado. Se invoca al
+    importar (manifiesto de desarrollo — valores idénticos a los cableados
+    históricos) y de nuevo en main() con el --manifiesto de la corrida."""
+    global MAN, TOS_ORDEN, TOPE_GLOBAL_USD, MARGEN_UNIDAD_USD, ESTIMADO_USD, \
+        ESTIMADO_TOTAL_USD, CHECKPOINT_CADA, CHEQUEOS_HITS, E0_DIR, \
+        CENSO_ORACULO_ARG, LIMITACIONES
+    MAN = man
+    TOS_ORDEN = tuple(man.orden_corrida)
+    lim = man.limites
+    TOPE_GLOBAL_USD = lim["tope_global_usd"]
+    MARGEN_UNIDAD_USD = lim["margen_unidad_usd"]
+    ESTIMADO_USD = lim["estimado_usd"]
+    ESTIMADO_TOTAL_USD = round(
+        sum(f["e1"] + f["e3"] for f in ESTIMADO_USD.values()), 3)
+    CHECKPOINT_CADA = dict(lim["checkpoint_cada"])
+    CHEQUEOS_HITS = list(lim["chequeos_hits"])
+    E0_DIR = man.e0_salida
+    CENSO_ORACULO_ARG = None if man.tiene_oraculo else e2_lib.SIN_ORACULO
+    LIMITACIONES = man.limitaciones_e0()
+
+
+configurar(manifiesto_corpus.cargar(MANIFIESTO_DEFAULT))
 
 
 class Freno(RuntimeError):
@@ -345,7 +375,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     tdir.mkdir(parents=True, exist_ok=True)
     jsonl = tdir / "extracciones_e1.jsonl"
 
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=comun_e1.E0_SALIDA_ENM01)
+    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
     if limite:
         chunks = chunks[:limite]
     previos = cargar_jsonl_last_wins(jsonl)
@@ -423,7 +453,7 @@ def compactar_e1(to: str, salida: Path) -> Path:
     → compactado determinístico en orden documental, last-wins."""
     tdir = salida / to
     regs = cargar_jsonl_last_wins(tdir / "extracciones_e1.jsonl")
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=comun_e1.E0_SALIDA_ENM01)
+    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
     out = tdir / "extracciones_e1_compact.jsonl"
     with out.open("w", encoding="utf-8") as f:
         for c in chunks:
@@ -439,7 +469,7 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
     tdir = salida / to
     finales = tdir / "finales.jsonl"
 
-    chunks = comun_e3.cargar_chunks((to,), e0_dir=comun_e3.E0_SALIDA_ENM01)
+    chunks = comun_e3.cargar_chunks((to,), e0_dir=E0_DIR)
     if limite:
         chunks = chunks[:limite]
     unidades_corpus = {c["unidad"] for c in chunks}
@@ -516,7 +546,7 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     tdir = salida / to
     regs_e1 = cargar_jsonl_last_wins(tdir / "extracciones_e1_compact.jsonl")
     finales = cargar_jsonl_last_wins(tdir / "finales.jsonl")
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=comun_e1.E0_SALIDA_ENM01)
+    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
     if limite:
         chunks = chunks[:limite]
 
@@ -540,7 +570,8 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     # con --limite (solo pruebas) el fan-in es parcial por construcción; la
     # corrida real va SIN flag: un ausente inesperado aborta como debe.
     res = e2_lib.reducir(to, path_final, permitir_parcial=bool(limite),
-                         e0_dir=e2_lib.E0_SALIDA_ENM01)
+                         censo_oraculo=CENSO_ORACULO_ARG, e0_dir=E0_DIR,
+                         limitaciones=LIMITACIONES)
     (tdir / f"grafo_{to}.json").write_text(res["grafo_json"], encoding="utf-8")
     (tdir / f"reporte_e2_{to}.json").write_text(
         json.dumps(res["reporte"], ensure_ascii=False, indent=1), encoding="utf-8")
@@ -552,21 +583,25 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     return res["reporte"]
 
 
-# ----------------------------- chequeo pro ------------------------------- #
-def chequear_pro(estado: Estado, stub: bool) -> None:
+# ----------------------------- chequeo de hits --------------------------- #
+def chequear_hits(to: str, chk: dict, estado: Estado, stub: bool) -> None:
+    """Chequeo de hits declarado en el manifiesto (limites.chequeos_hits):
+    umbrales de gasto por fase para un TO cuyas llamadas deberían ser hits de
+    la caché local (precedente: pro en la corrida del corpus de desarrollo)."""
     if stub:
         return
-    g_e1 = estado.d["fases_cerradas"]["pro:e1"]["gasto_usd"]
-    g_e3 = estado.d["fases_cerradas"]["pro:e3"]["gasto_usd"]
-    if g_e1 > PRO_E1_GASTO_MAX:
-        raise Freno(f"pro:e1 gastó USD {g_e1:.4f} > {PRO_E1_GASTO_MAX} — se "
-                    f"esperaban ≈100% hits locales de enm01; algo cambió")
-    if g_e3 > PRO_E3_GASTO_MAX:
-        raise Freno(f"pro:e3 gastó USD {g_e3:.4f} > {PRO_E3_GASTO_MAX} — más "
+    e1_max, e3_max = chk["e1_max_usd"], chk["e3_max_usd"]
+    g_e1 = estado.d["fases_cerradas"][f"{to}:e1"]["gasto_usd"]
+    g_e3 = estado.d["fases_cerradas"][f"{to}:e3"]["gasto_usd"]
+    if g_e1 > e1_max:
+        raise Freno(f"{to}:e1 gastó USD {g_e1:.4f} > {e1_max} — se "
+                    f"esperaban ≈100% hits locales; algo cambió")
+    if g_e3 > e3_max:
+        raise Freno(f"{to}:e3 gastó USD {g_e3:.4f} > {e3_max} — más "
                     f"que el techo esperado de los ciclos de reintento nuevos "
                     f"bajo la política A+B; algo cambió")
-    print(f"[pro] chequeo de hits OK: e1=USD {g_e1:.4f} (≤{PRO_E1_GASTO_MAX}) "
-          f"e3=USD {g_e3:.4f} (≤{PRO_E3_GASTO_MAX})", flush=True)
+    print(f"[{to}] chequeo de hits OK: e1=USD {g_e1:.4f} (≤{e1_max}) "
+          f"e3=USD {g_e3:.4f} (≤{e3_max})", flush=True)
 
 
 # ----------------------------- main -------------------------------------- #
@@ -574,24 +609,35 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stub", action="store_true", help="clientes stub, offline")
     ap.add_argument("--autorizado-tope", type=float, default=None,
-                    help="eco de la autorización; debe ser 48.50 para corrida real")
+                    help="eco de la autorización; debe igualar el "
+                         "tope_global_usd del manifiesto para corrida real")
     ap.add_argument("--salida", type=Path, default=AQUI / "salida")
-    ap.add_argument("--tos", type=str, default=",".join(TOS_ORDEN))
+    ap.add_argument("--tos", type=str, default=None,
+                    help="subconjunto de TOs (default: todos, en el orden "
+                         "del manifiesto)")
     ap.add_argument("--limite", type=int, default=None,
                     help="solo primeras N unidades por TO (pruebas)")
     ap.add_argument("--abortar-tras", type=int, default=None,
                     help="sys.exit(9) tras N unidades por fase (prueba de reanudación)")
     ap.add_argument("--checkpoint-cada", type=int, default=None,
                     help="override del intervalo de checkpoint intra-TO")
+    ap.add_argument("--manifiesto", type=Path, default=MANIFIESTO_DEFAULT,
+                    help="manifiesto de corpus (U-B5.1); default: el de "
+                         "desarrollo (5 TOs)")
     args = ap.parse_args()
 
-    tos = [t.strip() for t in args.tos.split(",") if t.strip()]
+    if args.manifiesto != MANIFIESTO_DEFAULT:
+        configurar(manifiesto_corpus.cargar(args.manifiesto))
+
+    tos = ([t.strip() for t in args.tos.split(",") if t.strip()]
+           if args.tos else list(TOS_ORDEN))
     assert all(t in TOS_ORDEN for t in tos), tos
 
     if not args.stub:
         if args.autorizado_tope != TOPE_GLOBAL_USD:
             print(f"corrida real exige --autorizado-tope {TOPE_GLOBAL_USD} "
-                  f"(eco de la autorización de FASE B)")
+                  f"(eco de la autorización, igual al tope_global_usd del "
+                  f"manifiesto)")
             return 2
         from dotenv import load_dotenv
         load_dotenv(EVAL_DIR / ".env")
@@ -602,8 +648,9 @@ def main() -> int:
     args.salida.mkdir(parents=True, exist_ok=True)
     estado = Estado(args.salida)
     t0 = time.time()
-    print(f"corrida corpus_v2 | stub={args.stub} | tope global=USD "
-          f"{TOPE_GLOBAL_USD} | estimado=USD {ESTIMADO_TOTAL_USD} | orden={tos} "
+    print(f"corrida corpus_v2 | manifiesto={MAN.nombre} | stub={args.stub} "
+          f"| tope global=USD {TOPE_GLOBAL_USD} | estimado=USD "
+          f"{ESTIMADO_TOTAL_USD} | orden={tos} "
           f"| prefijos: E1 {prompt_e1.PREFIJO_HASH} E3 {prompt_e3.PREFIJO_HASH}",
           flush=True)
 
@@ -649,8 +696,9 @@ def main() -> int:
                     c1.close()
             # ------- E2 del TO (offline) + chequeos -------
             cerrar_e2(to, args.salida, args.limite)
-            if to == "pro":
-                chequear_pro(estado, args.stub)
+            for chk in CHEQUEOS_HITS:
+                if chk["to"] == to:
+                    chequear_hits(to, chk, estado, args.stub)
     except Freno as e:
         print(f"\nFRENO: {e}", flush=True)
         estado.persistir()

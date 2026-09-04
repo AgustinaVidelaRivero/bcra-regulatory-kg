@@ -13,9 +13,15 @@ Código puro, cero LLM. Reglas de merge (mismas que E2, extendidas cross-TO):
     (en la práctica: Sujetos del catálogo compartido).
   - Aristas con la misma (source, relation, target) se fusionan igual.
 
-Uso:  .venv/bin/python3 ensamblar_corpus.py [--salida DIR]
+Uso:  .venv/bin/python3 ensamblar_corpus.py [--salida DIR] [--manifiesto RUTA]
 Escribe: salida/kg.json, salida/reporte_ensamblado.json,
          salida/tests_respuesta_conocida.json
+
+U-B5.1: el orden de merge y la suite de tests de respuesta conocida salen del
+manifiesto de corpus (default: manifiestos/desarrollo_5tos.json — orden y
+suite idénticos a los históricos). Los tests son ESPECÍFICOS de cada corpus:
+un manifiesto con tests_respuesta_conocida null los saltea con nota explícita
+en el reporte (jamás se corre la suite de otro corpus en silencio).
 """
 
 from __future__ import annotations
@@ -30,8 +36,12 @@ from copy import deepcopy
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
+REX = AQUI.parent
+sys.path.insert(0, str(REX))
 
-TOS_ORDEN = ("pro", "cla", "ric", "cap", "ext")
+import manifiesto_corpus  # noqa: E402
+
+TOS_ORDEN = ("pro", "cla", "ric", "cap", "ext")  # default legacy (cadena r1)
 
 
 def _norm(s: str) -> str:
@@ -40,13 +50,15 @@ def _norm(s: str) -> str:
     return s.lower()
 
 
-def merge_grafos(grafos: dict[str, dict]) -> dict:
+def merge_grafos(grafos: dict[str, dict], orden: tuple | list | None = None) -> dict:
+    if orden is None:
+        orden = TOS_ORDEN  # forma de un argumento: la cadena r1 la importa tal cual
     nodes: dict[str, dict] = {}
     edges: dict[tuple, dict] = {}
     conflictos: list[dict] = []
     merges_nodo_cross_to: list[dict] = []
 
-    for to in TOS_ORDEN:
+    for to in orden:
         for n in grafos[to]["nodes"]:
             nid = n["id"]
             if nid not in nodes:
@@ -169,31 +181,30 @@ def tests_respuesta_conocida(kg: dict) -> dict:
     return res
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--salida", type=Path, default=AQUI / "salida")
-    args = ap.parse_args()
+# Suites de tests de respuesta conocida registradas: cada corpus declara la
+# suya en el manifiesto (o null = sin suite). "dev5" es la del desarrollo.
+SUITES = {"dev5": tests_respuesta_conocida}
 
-    grafos = {}
-    for to in TOS_ORDEN:
-        p = args.salida / to / f"grafo_{to}.json"
-        if not p.exists():
-            print(f"falta {p} — la corrida de {to} no cerró su E2")
-            return 1
-        grafos[to] = json.loads(p.read_text(encoding="utf-8"))
 
-    m = merge_grafos(grafos)
+def ensamblar(grafos: dict[str, dict], orden: tuple, suite: str | None) -> dict:
+    """Cómputo puro del ensamblado final: merge + tests + reporte. Compartido
+    entre main() y el selftest de paridad (que compara bytes sin escribir en
+    la salida sellada)."""
+    m = merge_grafos(grafos, orden)
     kg = {"nodes": m["nodes"], "edges": m["edges"]}
     kg_json = json.dumps(kg, ensure_ascii=False, indent=2)
-    (args.salida / "kg.json").write_text(kg_json, encoding="utf-8")
     sha = hashlib.sha256(kg_json.encode("utf-8")).hexdigest()
 
-    tests = tests_respuesta_conocida(kg)
-    (args.salida / "tests_respuesta_conocida.json").write_text(
-        json.dumps(tests, ensure_ascii=False, indent=1), encoding="utf-8")
+    if suite is not None:
+        tests = SUITES[suite](kg)
+        tests_reporte = {k: v["pass"] for k, v in tests.items()}
+    else:
+        tests = None
+        tests_reporte = ("sin_suite_declarada (tests_respuesta_conocida: null "
+                         "en el manifiesto — los tests son por corpus)")
 
     reporte = {
-        "orden_merge": list(TOS_ORDEN),
+        "orden_merge": list(orden),
         "nodes_total": len(kg["nodes"]),
         "edges_total": len(kg["edges"]),
         "nodes_by_type": dict(Counter(n["type"] for n in kg["nodes"]).most_common()),
@@ -203,8 +214,38 @@ def main() -> int:
         "merges_cross_to": m["merges_cross_to"],
         "conflictos_properties_cross_to": m["conflictos"],
         "sha256_kg": sha,
-        "tests_respuesta_conocida": {k: v["pass"] for k, v in tests.items()},
+        "tests_respuesta_conocida": tests_reporte,
     }
+    return {"kg_json": kg_json, "sha256_kg": sha, "tests": tests,
+            "reporte": reporte}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--salida", type=Path, default=AQUI / "salida")
+    ap.add_argument("--manifiesto", type=Path,
+                    default=REX / "manifiestos" / "desarrollo_5tos.json",
+                    help="manifiesto de corpus (U-B5.1); default: desarrollo")
+    args = ap.parse_args()
+
+    man = manifiesto_corpus.cargar(args.manifiesto)
+    orden = tuple(man.orden_corrida)
+
+    grafos = {}
+    for to in orden:
+        p = args.salida / to / f"grafo_{to}.json"
+        if not p.exists():
+            print(f"falta {p} — la corrida de {to} no cerró su E2")
+            return 1
+        grafos[to] = json.loads(p.read_text(encoding="utf-8"))
+
+    res = ensamblar(grafos, orden, man.tests_respuesta_conocida)
+    (args.salida / "kg.json").write_text(res["kg_json"], encoding="utf-8")
+    if res["tests"] is not None:
+        (args.salida / "tests_respuesta_conocida.json").write_text(
+            json.dumps(res["tests"], ensure_ascii=False, indent=1),
+            encoding="utf-8")
+    reporte = res["reporte"]
     (args.salida / "reporte_ensamblado.json").write_text(
         json.dumps(reporte, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: reporte[k] for k in
