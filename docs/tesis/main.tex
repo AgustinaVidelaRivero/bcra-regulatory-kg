@@ -13,6 +13,8 @@
 % --- Paquetes para Ciencia y Gráficos ---
 \usepackage{amsmath, amsfonts, amssymb} % Matemáticas
 \usepackage{graphicx} % Imágenes
+\usepackage{float}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
 \usepackage{booktabs} % Tablas profesionales
 \usepackage{hyperref} % Enlaces y marcadores
 \usepackage{csquotes} % Citas tipográficas (lo pide biblatex con babel)
@@ -100,156 +102,425 @@
 % territorio, (ii) conformar el nicho (vacío + problema), (iii) ocupar el
 % nicho (objetivos, método, resultados, estructura).
 %
-% MAPA DE LAS OCHO IDEAS (notas de reunión con el mentor; cada idea = un
-% párrafo, expandible a dos si hace falta; se reparten entre las
-% subsecciones como se indica abajo). Reglas de estilo acordadas:
-%   - UN PÁRRAFO UNA IDEA; una oración un concepto; cada párrafo conecta
-%     con el siguiente. SIN remate al final de cada párrafo.
-%   - Self-contained: lector técnico NO experto en NLP/KG tiene que poder
-%     leerla completa; el experto tiene que poder saltearse el background.
-%   - Visual: aprovechar que el KG se puede mostrar (figura de una sección
-%     del grafo en la idea 5).
-%   - Números solo parseados de archivos del repo, con corrida/commit de
-%     origen identificable (skill latex-udesa); lo no verificado queda como
-%     hueco marcado [TODO: fuente].
-%
-%   IDEAS 1–4: REDACTADAS en el cuerpo (C1.1 tramo 1, tuneo de la autora
-%     aplicado) — ver Motivación y Definición del problema abajo.
-%   IDEA 5 (→ puede ser subsección propia o abrir el Desarrollo): el grafo
-%     en sí — schema, escala (6.529 nodos / 17.772 aristas / 16 relaciones (fe de erratas 6c5507b)
-%     en KG-Reextraído-r1, commit 185e042), FIGURA de una sección del grafo.
-%     Figura LAUDADA (encuadre anti-fusión: la cláusula del 125 % — seis
-%     variantes en cinco puntos, nodos separados con su punto de origen):
-%     figuras/figura_125_r1.svg (fuente vectorial) / .png (compilación).
-%     Descomentar al redactar la idea 5:
-%     \begin{figure}[htbp]
-%       \centering
-%       \includegraphics[width=\linewidth]{figuras/figura_125_r1.png}
-%       \caption{La cláusula del 125\,\% en KG-Reextraído-r1: seis variantes
-%         de la misma cláusula en cinco puntos del T.O. de Exterior y
-%         Cambios, representadas como nodos separados (anti-fusión), cada
-%         uno anclado a su punto de origen y con su vecindad. Fuente:
-%         \texttt{salida\_r1/kg.json} (sha \texttt{0226e947}), nodos del
-%         test T2; generación determinística.}
-%       \label{fig:clausula125}
-%     \end{figure}
-%   IDEA 6 (→ Contribuciones / Desarrollo): la evaluación — "los grafos son
-%     difíciles de evaluar; se desarrolló un método..." (fidelidad EV2 con
-%     juez calibrado, atribución causal determinística, evaluación
-%     intrínseca por tripletas).
-%   IDEA 7 (→ Contribuciones, con moderación acá; el grueso al Desarrollo):
-%     números principales — "grounded ≠ correct" con sus cifras selladas
-%     [TODO: elegir 2-3 números, cada uno con su commit].
-%   IDEA 8 (→ Contribuciones): lista explícita de contribuciones.
+% Versión 3 (01/09). Estructura tomada de las referencias que pasó el
+% mentor (Gutter 1.1–1.3; YAGO/YAGO2 §1; Polonuer §1): la Motivación
+% habla del problema del mundo (ideas 1 y 2 de la reunión) y termina con
+% cómo tendría que ser el recurso; la propuesta, la figura, la evaluación
+% y los números (ideas 3 a 8) van en «Propuesta y contribuciones». Orden
+% de subsecciones: Motivación · Propuesta y contribuciones · Objetivos ·
+% Estado del arte · Organización (el de Gutter; validar con el mentor).
+% Reglas: términos definidos donde aparecen; un ":" por párrafo como
+% máximo; números solo en 1.1 (tamaño del corpus) y en la lista de 1.2
+% (cuatro). Todo número tiene fila en docs/tesis/mapa_fuentes_intro.md
+% (filas 15, 20, 16, 2, 17); los huecos son comentarios % [TODO].
 % ======================================================
 
 \section{Introducción}
 
 \subsection{Motivación}
-% PPT: "Por qué es importante el área de estudio".
 
-% Párrafo 1 — idea 1. Citas: carta2023iterative, lu2026karma
-% (bibliografia.bib, verificadas contra primera página del PDF).
-Construir un grafo de conocimiento (knowledge graph, KG) sobre un corpus
-especializado exigía, hasta hace pocos años, equipos de expertos de dominio y
-plazos medidos en años de trabajo manual. Los modelos de lenguaje de gran
-escala (large language models, LLMs) cambiaron esa economía: la extracción de
-entidades y relaciones puede automatizarse a escala de todo el corpus,
-reservando la supervisión humana para los puntos donde más rinde
-\cite{carta2023iterative, lu2026karma}. Un KG representa el conocimiento como
-entidades y relaciones explícitas, y esa explicitación lo vuelve apto para
-dominios donde la estructura importa tanto como el contenido: qué norma
-remite a cuál, qué excepción limita qué obligación. El dominio regulatorio es
-el caso natural de esa propiedad, porque la normativa es en sí misma una red:
-cada texto remite a otros, los exceptúa y los modifica.
+El cumplimiento de la normativa del Banco Central de la República
+Argentina (BCRA) es una tarea compleja para las entidades financieras, los
+profesionales del sector y los consumidores. El BCRA publica sus reglas en
+Textos Ordenados, documentos que consolidan todas las disposiciones
+vigentes sobre una materia y que se actualizan con cada comunicación
+nueva. Al momento del relevamiento, el índice oficial registraba 157
+Textos Ordenados, que suman 7.321 páginas. Esas reglas son de cumplimiento
+obligatorio, de modo que una respuesta equivocada sobre su contenido
+tiene consecuencias regulatorias directas.
+% Fuente: mapa fila 15. Apertura tomada de la PPF preliminar (§1).
 
-% Párrafo 2 — puente al caso BCRA. Sin números (decisión del esqueleto).
-La normativa del Banco Central de la República Argentina (BCRA) reúne esas
-características con particular intensidad. Es de cumplimiento obligatorio
-para las entidades del sistema financiero, de modo que una respuesta
-incorrecta sobre su contenido tiene costo regulatorio directo. Es normativa
-viva: los Textos Ordenados consolidan la versión vigente de cada materia y se
-actualizan con cada comunicación nueva. Es, además, profundamente
-interconectada: los puntos de un Texto Ordenado remiten a puntos de otros,
-condicionan operaciones definidas en terceros y establecen excepciones
-cruzadas.
-El presente trabajo construye un grafo de conocimiento sobre la normativa
-del BCRA como recurso. El método se desarrolla y se valida sobre un conjunto
-de desarrollo de cinco Textos Ordenados, elegidos por concentrar esa
-interconexión con densidad realista, y el recurso se construye y se evalúa
-a escala del corpus regulatorio.
+La dificultad no está solo en el volumen sino en cómo están escritas las
+reglas. Un punto de un Texto Ordenado remite a puntos de otros, condiciona
+operaciones definidas en un tercero y establece excepciones a reglas de un
+cuarto. Saber si una empresa puede pagar dividendos a sus accionistas del
+exterior, por ejemplo, exige leer el punto que lo autoriza y después los
+tres puntos a los que ese punto remite, uno de los cuales obliga a la
+entidad a verificar una declaración del cliente. Quien responde tiene que
+seguir esas remisiones, y tiene que poder citar el punto exacto que
+respalda cada afirmación, porque en este dominio una respuesta sin su
+fuente no sirve.
 
-\subsection{Definición del problema}
-% PPT: "Qué falla, qué falta o qué se busca mejorar de forma explícita".
+Los sistemas que hoy responden preguntas sobre colecciones de documentos
+siguen, en su mayoría, un enfoque llamado generación aumentada por
+recuperación (retrieval-augmented generation, RAG) \cite{lewis2020rag}. El sistema corta los documentos en fragmentos, busca los fragmentos más
+parecidos a la pregunta y pide a un modelo de lenguaje que redacte la
+respuesta a partir de ellos. Sobre un corpus como el del BCRA ese enfoque
+tiene dos limitaciones. La primera es que la búsqueda no sigue las
+remisiones. En el ejemplo anterior, el fragmento que contiene el punto que
+autoriza el pago de dividendos trae la frase que remite a los otros tres
+puntos, pero no el texto de esos puntos, que está en otro fragmento. Ese
+otro fragmento se recupera solo si se parece a la pregunta, y un punto que
+obliga a verificar una declaración del cliente no se parece a una pregunta
+sobre pago de dividendos. El sistema redacta entonces la respuesta sin las condiciones que la norma exige.
 
-% Párrafo 3 — idea 2: las DOS limitaciones que esta tesis ataca.
-% Evidencia interna de (ii) sin números en prosa (no anticipar idea 7):
-% mapa_fuentes_intro.md filas 4 (grounded != correct, frozen) y 5 (RT-C6-1
-% incorrecta con ver_nodo byte-idéntico).
-Los sistemas de generación aumentada por recuperación
-(retrieval-augmented generation, RAG) que operan sobre este tipo de corpus
-enfrentan dos limitaciones que este trabajo aborda. La primera es
-estructural: el enfoque estándar fragmenta los documentos en pasajes
-(chunking) y recupera los más afines a la consulta, con lo cual las
-remisiones normativas quedan reducidas a texto que el sistema no puede
-seguir: la excepción establecida en otro punto, la definición fijada por
-otra sección. La segunda es de otro orden: recuperar bien no garantiza
-responder bien. Un agente puede citar la fuente correcta y aun así contestar
-de manera incorrecta, porque la generación introduce errores que el anclaje
-en la fuente no previene; distinguir ese modo de falla del anterior exige un
-instrumento de evaluación que las métricas de recuperación no proveen.
+La segunda limitación es que recuperar el fragmento correcto no garantiza
+responder bien. La forma habitual de evaluar estos sistemas mira solo el
+primer paso, es decir, si entre lo recuperado estaba el fragmento
+correcto, y el segundo paso también puede fallar. El modelo puede tener el
+fragmento correcto y aun así redactar una respuesta equivocada, por
+ejemplo, omitiendo una condición que el fragmento sí incluía. Una
+evaluación que solo mira lo recuperado da esa respuesta por buena.
 
-% Párrafo 4 — ideas 3+4: enunciado reformulado (el recurso y su fidelidad
-% como pregunta central; la comparación contra fragmentos baja a validación
-% de diseño sobre el conjunto de desarrollo) — ya no es el texto aprobado
-% originalmente + overview del cómo.
-El presente trabajo construye un grafo de conocimiento de la normativa del
-BCRA y evalúa su fidelidad como recurso para un agente RAG, con un método de
-evaluación que distingue si las fallas provienen del grafo o del agente. La
-decisión de estructurar el corpus como grafo, frente a la recuperación
-tradicional por fragmentos, se valida sobre un conjunto de desarrollo de
-cinco Textos Ordenados.
-El enfoque comprende tres componentes. Primero, un pipeline de
-extracción por etapas construye el KG desde los documentos oficiales, con
-ensamblado reproducible y verificación en cada etapa. Segundo, la fidelidad
-de las respuestas se mide contra un conjunto de evaluación sellado antes de
-toda corrida, con un juez calibrado contra adjudicación humana. Tercero, una
-capa determinística de atribución causal clasifica cada falla según su
-origen: contenido ausente del grafo, navegación del agente o generación de
-la respuesta.
+Un grafo de conocimiento (knowledge graph, KG) es una forma de
+representar información que se ajusta a este problema. En lugar de
+documentos, el grafo contiene nodos, que representan elementos concretos
+como una norma, una operación o una entidad financiera, y aristas, que
+son relaciones con nombre entre dos nodos, como que una norma se aplica a
+una entidad o que un punto remite a otro. Las relaciones que en
+el texto están implícitas pasan a ser explícitas y se pueden recorrer.
+Construir un grafo así sobre un corpus especializado exigía hasta hace
+poco un trabajo manual considerable, y los grafos construidos a mano
+envejecen a medida que cambia lo que describen \cite{suchanek2007yago}.
+Los modelos de lenguaje de gran escala (large language models, LLM)
+cambiaron esa situación. Un modelo puede leer un texto y extraer de él entidades y relaciones, sea
+con un conjunto de tipos definido de antemano o dejando que el propio
+modelo los proponga \cite{carta2023iterative}, y varios modelos pueden
+encadenarse para extraer y verificar sobre colecciones grandes de
+documentos \cite{lu2025karma}.
+La automatización no elimina los errores de extracción, y por eso saber
+cuánto se puede confiar en el grafo resultante pasa a ser parte del
+problema.
 
-\subsection{Estado del arte}
-% PPT: "Introduce y revisa los trabajos previos. Enmarca el trabajo en un
-% escenario mayor. Señala vacíos, limitaciones, falta de respuestas".
-% Insumos: los papers del proyecto (KG-anchored IE, legal KGs, RAGulating
-% compliance, iterative zero-shot KG...) + la tesis con buen background de
-% KG que el mentor quedó en pasar [PENDIENTE: pedírsela].
-% Cada afirmación sobre la literatura lleva su cita [n] en el punto exacto.
+Un recurso que resolviera el problema planteado y sirviera para responder preguntas sobre esta normativa
+tendría que reunir tres propiedades. Tendría que cubrir el corpus completo
+y representar sus obligaciones, restricciones, excepciones y operaciones
+junto con los sujetos a los que se aplican. Tendría que conservar, para
+cada elemento, el punto del texto oficial del que proviene, y poder
+recorrerse siguiendo las remisiones en lugar de perderlas. Y tendría que
+publicarse acompañado de la evidencia de cuánto se puede confiar en él,
+tanto en su contenido como en las respuestas que se apoyan en él. Hasta
+donde se ha relevado, no existe un recurso público con esas propiedades
+para la regulación del BCRA.
+% Fuente de la oración de cierre: PPF preliminar §1 ("Hasta donde se ha
+% relevado, no existe un KG público...").
+% Respaldo de la oración de cierre: el párrafo final de 1.4 declara el
+% relevamiento (docs/consultas_busqueda_U-RW.md) y que no encontró recurso
+% previo. Resuelto 03/09.
+
+\subsection{Propuesta y contribuciones}
+\label{sec:contribuciones}
+
+Este trabajo construye ese recurso y el método para evaluarlo. El recurso
+es un grafo de conocimiento de la normativa del BCRA en el que cada elemento registra su procedencia en el texto oficial. Para responder preguntas se usa un agente, es decir, un modelo de lenguaje
+que consulta el grafo paso a paso con tres operaciones: buscar nodos por
+palabras, abrir un nodo y listar sus vecinos. La evaluación cubre tanto el contenido del grafo como las respuestas que
+se apoyan en él y, cuando una respuesta falla, determina si la falla se
+originó en el grafo o en el agente.
+
+El grafo se construye con un proceso por etapas. Cada Texto Ordenado se
+divide siguiendo su propia estructura de secciones y puntos. Un modelo de
+lenguaje extrae de cada parte las entidades y relaciones que admite un
+esquema fijo de nueve tipos de entidad y trece tipos de relación. Un segundo
+modelo revisa cada extracción contra el texto del que salió, devuelve a
+extraer lo que quedó incompleto y marca lo que aun así requiere revisión
+humana. Las partes se unen después en un único grafo mediante un
+procedimiento determinístico, de modo que, a partir de las mismas
+extracciones, el ensamblado produce siempre el mismo grafo. Sobre ese
+grafo ya ensamblado se resuelven las remisiones. Cada referencia que un
+punto hace a otro se convierte en una arista cuando el punto citado puede
+localizarse en el corpus, y queda registrada como no resuelta cuando no.
+El proceso se desarrolló sobre cinco Textos Ordenados, el conjunto de
+desarrollo, y el recurso final se construye sobre el corpus completo. El
+grafo que se evalúa se reporta tal como fue construido; las correcciones
+que la evaluación motive se incorporan en una versión posterior, que es la
+que se publica.
+% [TODO: escalado] cuando exista el grafo escalado, "el recurso final se
+% construye sobre el corpus completo" pasa a decir su escala.
+% La elección de esquema cerrado se justifica en el capítulo 3 (fase 2.2).
+% El alcance exacto del escalado depende del laudo D5 (pendiente; base no disputada: 68 TOs digeribles primero).
+
+El ejemplo del pago de dividendos de la Motivación muestra el problema en
+el corpus real. El punto que autoriza la operación no reproduce los
+requisitos que fijan los otros tres puntos, solamente los nombra, de modo
+que leerlo por separado no alcanza para saber qué se exige.
+
+La Figura~\ref{fig:norma_a_grafo} muestra los dos lados de ese ejemplo. En
+el panel superior está el texto tal como aparece en el Texto Ordenado, con
+la frase resaltada del punto 3.17.1.4 que remite a los otros tres puntos.
+En el panel inferior está el mismo contenido representado como grafo. Los
+nodos son las cosas que la normativa establece (la operación de pago de
+dividendos, la restricción que la condiciona, las tres obligaciones que
+hay que cumplir y el sujeto al que se aplican), y cada nodo indica de
+qué punto del texto proviene. Las tres aristas resaltadas son la remisión,
+que une el punto que la hace con cada uno de los puntos invocados.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figuras/figura_norma_a_grafo.png}
+  \caption[De la norma al grafo]{Un punto de la normativa y su
+    representación en el grafo. Arriba, el texto del punto 3.17.1.4 del
+    Texto Ordenado de Exterior y Cambios, con la frase que remite a otros
+    tres puntos resaltada, y el texto de esos tres puntos. Abajo, el mismo
+    contenido como grafo, donde cada nodo indica de qué punto proviene y
+    las tres aristas resaltadas son la remisión.}
+  \label{fig:norma_a_grafo}
+\end{figure}
+
+Un sistema que consulta el grafo recorre esas aristas y llega al contenido
+remitido, mientras que un sistema que recibe el fragmento de texto recibe
+la frase y no lo que la frase señala.
+
+Evaluar un grafo construido automáticamente es difícil porque no existe
+una versión correcta del grafo contra la cual compararlo. Este trabajo lo
+evalúa por dos caminos complementarios. El primero mira el contenido del
+grafo. Sobre una muestra de sus hechos, cada hecho se juzga contra el
+fragmento de texto del que dice provenir, por su corrección y por su
+importancia, siguiendo el precedente de los grafos de gran escala
+construidos automáticamente \cite{suchanek2007yago}. El segundo mira el
+uso. Un conjunto de preguntas con sus respuestas de referencia, fijado
+antes de correr cualquier experimento, mide la fidelidad de las respuestas
+del agente, y un modelo de lenguaje actúa como juez de esa fidelidad,
+validado contra una lectura humana independiente.
+
+Para cada respuesta fallida, un procedimiento determinístico sobre el
+registro de lo que el agente consultó establece si el contenido faltaba en
+el grafo, si el agente no llegó a él, si lo vio sin abrirlo, o si lo
+consultó y aun así respondió mal. Esa distinción es lo que permite saber
+si una falla se corrige mejorando el grafo o mejorando el agente.
+
+La comparación contra un sistema de recuperación por fragmentos se hace
+sobre el mismo corpus y con el mismo agente, cambiando únicamente aquello
+que el agente puede consultar.
+% [TODO] la evaluación intrínseca por tripletas y el head-to-head están
+% decididos (reunión 26/08) pero todavía no corridos. Si alguno no llega,
+% este bloque se recorta. Ningún número entra acá hasta que existan.
+
+Las contribuciones de este trabajo son cuatro.
+
+\begin{enumerate}
+  \item \textbf{Un grafo de conocimiento de la normativa del BCRA en el que cada nodo y cada arista registran su procedencia}, construido con un proceso por etapas bajo un esquema fijo de nueve tipos de entidad y trece tipos de relación, en dos
+    versiones separadas por diseño: la que se evalúa y se reporta tal
+    como fue construida, y la que incorpora las correcciones motivadas
+    por la evaluación y se publica. Capítulo~\ref{cap:construccion}.
+% Esquema congelado 04/09: gate ESQ-3 cerrado, 9 tipos / 13 predicados
+% (plan_tesis.md:72-73; redacción según 668-675). El capítulo 3 cuenta la
+% evolución 6/12 -> ESQ -> congelado; los tamaños del conjunto de
+% desarrollo (6.529/17.772) corresponden a la etapa 6/12.
+% [TODO: escala final del recurso cuando exista el grafo escalado]
+
+
+  \item \textbf{Un conjunto de evaluación para preguntas sobre normativa
+    del BCRA}, compuesto por 40 preguntas con sus respuestas de
+    referencia y 164 criterios de corrección, fijado antes de correr
+    cualquier experimento y utilizable con independencia del grafo.
+    Capítulo~\ref{cap:fidelidad}.
+% Fuente: mapa fila 16.
+
+  \item \textbf{Un método para evaluar un grafo de conocimiento
+    construido automáticamente y las respuestas que se apoyan en él},
+    que combina el juicio de una muestra de los hechos del grafo contra
+    el texto del que provienen, un juez automático validado contra una
+    lectura humana independiente (acuerdo en 11 de 12 respuestas) y un
+    procedimiento determinístico que atribuye cada falla a la ausencia
+    del contenido en el grafo, a que el agente no llegó a él, a que lo
+    vio sin abrirlo o a que lo consultó y aun así respondió mal.
+    Capítulos~\ref{cap:fidelidad} y~\ref{cap:atribucion}.
+% Fuente: mapa fila 2. El muestreo de hechos va sin número hasta que la
+% corrida exista.
+
+    \item \textbf{El hallazgo de que tener a la vista el contenido correcto
+    no garantiza responder bien.} Sobre el conjunto de desarrollo, entre
+    el 46\,\% y el 69\,\% de las respuestas fallidas, según la versión
+    del grafo, ocurrieron con el contenido correcto ya consultado por el
+    agente. Capítulo~\ref{cap:atribucion}.
+% Fuente: mapa fila 17 (17/37, 25/36, 21/36).
+\end{enumerate}
+% [TODO: contribuciones pendientes de resultados — no se listan hasta que
+% existan: evaluación sobre el corpus escalado (B6.3), resultado de la
+% comparación contra RAG por fragmentos (head-to-head) y resultado de la
+% evaluación intrínseca por tripletas. Los métodos de las dos últimas ya
+% se anuncian arriba; lo que falta es el resultado.]
 
 \subsection{Objetivos}
-% PPT: "Objetivo General (la meta macro) y Objetivos Específicos (los
-% pasos técnicos medibles para lograrlo)".
-% Fuente: PPF preliminar (mantener consistencia con lo ya declarado ahí;
-% si algo cambió de alcance, se declara la evolución, no se reescribe la
-% historia).
 
 \subsubsection{Objetivo general}
 
+Diseñar, construir y evaluar un grafo de conocimiento de la normativa del
+Banco Central de la República Argentina, con énfasis en la calidad del
+modelado y en la trazabilidad de cada elemento a su fuente normativa, y
+demostrar su utilidad mediante dos casos de uso aplicados: la
+reconstrucción de la cadena de normas que justifica una restricción
+operativa, y la comparación contra un sistema de recuperación por
+fragmentos sobre el mismo corpus.
 
 \subsubsection{Objetivos específicos}
 
+\begin{enumerate}
+  \item Diseñar un esquema de modelado que capture las entidades y las
+    relaciones propias de la normativa del BCRA, y validarlo
+    iterativamente sobre un conjunto de desarrollo acotado antes de
+    aplicarlo al corpus completo.
 
-\subsection{Contribuciones}
-% PPT: "Indicar el aporte novedoso del trabajo".
-% Lleva IDEAS 6, 7 y 8: el método de evaluación (juez calibrado +
-% atribución causal M-19), el hallazgo central ("grounded ≠ correct" con
-% 2-3 números sellados), los dos grafos (científico e industrial,
-% principio 9), y la lista explícita de contribuciones al final.
+  \item Construir el grafo sobre el corpus de Textos Ordenados del BCRA
+    mediante un proceso de extracción por etapas, garantizando que cada
+    nodo y cada arista registren el punto del texto oficial del que
+    provienen.
+
+  \item Construir un conjunto de evaluación para preguntas sobre la
+    normativa, con respuestas de referencia y criterios de corrección
+    explícitos, fijado antes de correr cualquier experimento.
+
+  \item Diseñar e implementar un método de evaluación que combine el
+    juicio de una muestra de los hechos del grafo contra el texto del que
+    provienen, la medición de la fidelidad de las respuestas de un agente
+    que consulta el grafo, y la atribución de cada falla al grafo o al
+    agente.
+
+  \item Comparar empíricamente el sistema construido sobre el grafo
+    contra un sistema de recuperación por fragmentos sobre el mismo
+    corpus, en términos de fidelidad de las respuestas y de
+    trazabilidad.
+
+  \item Implementar y evaluar un sistema que, dado un registro de
+    operaciones de una entidad o un cliente, reconstruya sobre el grafo
+    la cadena de normas que justifica una restricción operativa,
+    evaluado sobre escenarios de distintos dominios regulatorios.
+\end{enumerate}
+
+\subsection{Estado del arte}
+
+El problema de estructurar información de textos regulatorios para responder
+consultas es anterior a los modelos de lenguaje. Los sistemas de esa etapa
+encadenaban módulos especializados de reconocimiento de entidades
+nombradas \cite{lample2016neural}, etiquetado de roles semánticos
+\cite{he2017deep} y extracción de relaciones sin esquema previo
+\cite{delcorro2013clausie,etzioni2011open}. Khetan et al. aplicaron ese
+paradigma al Federal Register estadounidense, anclando la extracción a un
+esquema propio de la tarea con siete tipos de entidad para detectar cambios
+en umbrales regulatorios \cite{khetan2021kganchored}. Ese trabajo ilustra
+también el límite de la etapa, porque los propios autores señalan que
+cuantificar los resultados es difícil en el problema que abordan y validan
+el sistema de forma manual, sin reportar ninguna métrica.
+
+La generación aumentada por recuperación cambió ese panorama
+\cite{lewis2020rag}. Al condicionar la respuesta del modelo con texto
+recuperado de una base documental, redujo la dependencia del conocimiento
+almacenado en los parámetros y se volvió el enfoque dominante para responder
+preguntas sobre colecciones de documentos. El dominio regulatorio lo adoptó
+pronto. Kim y Min lo aplicaron a normativa farmacéutica recuperando por dos
+vías, una de ellas guiada por una respuesta hipotética que el modelo redacta
+antes de buscar \cite{kim2024qarag}. Hillebrand et al. lo llevaron a
+cumplimiento empresarial combinando búsqueda léxica y vectorial, sobre un
+conjunto de 124 consultas anotadas por expertos
+\cite{hillebrand2024ragchatbot}. La unidad de recuperación, sin embargo,
+sigue siendo el fragmento, y un fragmento no arrastra consigo aquello a lo
+que remite. En un corpus donde una regla se completa con lo que dicen otras, la
+recuperación por similitud entrega el texto que menciona la remisión y no
+el texto remitido, y dos puntos redactados casi igual, una regla y su
+excepción, pueden tener efectos opuestos que la similitud no distingue.
+
+Construir un grafo de conocimiento sobre un corpus especializado dejó de
+exigir anotación manual cuando la extracción pasó a hacerla un modelo de
+lenguaje. Carta et al. mostraron que un modelo puede extraer entidades y
+relaciones e inferir el esquema de forma iterativa sin ejemplos previos,
+aunque evalúan su propio sistema sin punto de comparación porque, según
+declaran, no existían herramientas establecidas que sirvieran de referencia
+\cite{carta2023iterative}.
+
+El dominio legal tiene un antecedente previo a los modelos generativos. La
+plataforma europea Lynx integró legislación, contratos y vocabularios de
+varias jurisdicciones e idiomas en un grafo de conocimiento legal
+consultable, con los métodos de la generación anterior
+\cite{morenoschneider2022lynx}. Con los modelos de lenguaje, el enfoque se
+combinó con esquemas cerrados. Li et al.
+definieron nueve tipos de entidad y dos de relación sobre derecho penal
+chino y ajustaron un modelo mediante prefix-tuning, reportando una mejora en
+la extracción respecto de modelos previos \cite{li2024jkem}. Meher et al.
+fijaron siete tipos sobre casos judiciales de contrabando de personas y
+midieron su aporte por la reducción de nodos duplicados y de nodos espurios
+frente a una implementación adaptada de GraphRAG \cite{edge2024graphrag}, que se ha vuelto la referencia para este tipo de comparación para este tipo de comparación
+\cite{meher2025corekg,meher2025linkkg}. d'Amato et al. publicaron un grafo
+sobre jurisprudencia del Tribunal Europeo de Derechos Humanos, comparando un
+procedimiento con ontología construida a mano contra uno basado en modelos
+de lenguaje \cite{damato2025legalkgvaw}. Colombo y Cambria construyeron un grafo de las
+leyes públicas de Estados Unidos cuyas aristas registran qué ley enmienda,
+deroga o cita a otra, evaluaron muestras de esa clasificación a mano y
+publicaron el grafo en un depósito con identificador permanente
+\cite{colombo2025legislative}. Ninguno de estos trabajos evalúa el grafo
+por las respuestas que permite dar, porque la evaluación se detiene en la
+calidad de la extracción o en la estructura del grafo resultante.
+
+El trabajo más cercano al presente es el de Agarwal et al., que construye un
+grafo sin esquema previo sobre regulación de la Food and Drug Administration
+estadounidense y lo integra a un sistema de recuperación
+\cite{agarwal2025ragulating}. Su evaluación es interna, con tripletas contra
+sin tripletas sobre el mismo sistema, y no incorpora ningún sistema
+independiente como referencia. El resumen del artículo afirma superar a los
+métodos convencionales sin que ninguna medición del propio trabajo lo
+respalde.
+
+El resultado publicado más favorable a los grafos es el de Arun et al., que
+sobre presentaciones financieras reportan una mejora cercana al 24\,\% en la
+corrección de las respuestas y una reducción cercana al 84\,\% en el consumo
+de tokens \cite{arun2025finreflectmultihop}. El término de comparación, sin
+embargo, no es un sistema de recuperación real sino una ventana de cinco
+páginas alrededor del fragmento relevante, y la corrección la juzga un
+modelo de lenguaje sin contraste humano. La evidencia de que un grafo mejora
+las respuestas existe, pero descansa sobre comparaciones cuyo punto de
+referencia es débil o construido para la ocasión.
+
+Publicar el grafo como recurso, y no solo el método que lo produjo, es una
+tradición que precede a los modelos de lenguaje. DBpedia se presentó
+reportando su escala, sus mecanismos de acceso y su licencia, sin ninguna
+evaluación formal de su contenido \cite{auer2007dbpedia}, maduró después
+como base multilingüe con ciclos de publicación regulares
+\cite{lehmann2015dbpedia}, y YAGO fijó el
+estándar siguiente al acompañar el recurso con la precisión medida sobre
+una muestra de sus hechos \cite{suchanek2007yago}. La biomedicina mantuvo
+viva esa tradición, con recursos que integran bases curadas
+\cite{chandak2023primekg} o que extraen la literatura con modelos
+preentrenados menores y se publican en un depósito permanente con licencia
+abierta \cite{zhang2025ikraph}. Los modelos de lenguaje de gran escala la
+extendieron a más disciplinas. En biología vegetal, un grafo extraído de
+más de 71.000 artículos publica cada arista vinculada a la publicación de
+la que proviene y reporta su precisión por muestreo manual
+\cite{lim2025plantconnectome}. En salud mental, un grafo construido con el
+mismo tipo de modelos reporta la exactitud que cuatro evaluadores expertos
+midieron sobre una muestra de sus tripletas \cite{gao2025mdkg}. En
+medicina, un grafo de casi tres millones de tripletas extraídas de
+resúmenes de PubMed publica cada tripleta con el identificador y la fecha
+del resumen del que proviene, y se distribuye con licencia abierta
+\cite{zhang2025medkgent}. Sobre noticias de desastres, el recurso se publica en un depósito con
+identificador permanente, licencia explícita y mil tripletas juzgadas por
+seis expertos \cite{ronco2026disaster}.
+
+No todas las publicaciones de recursos alcanzan ese estándar. Un grafo
+dinámico de noticias financieras se publicó evaluando su utilidad para
+predicción pero sin evaluar el contenido extraído \cite{li2024findkg}, y
+la materialización del conocimiento interno de un modelo en un grafo de
+cien millones de tripletas se publicó sin evidencia textual que respalde
+cada hecho, limitación que sus propios autores reconocen
+\cite{hu2025gptkb}. Las prácticas que separan a un grupo del otro son las
+que este trabajo adopta: procedencia por elemento, evaluación del
+contenido sobre una muestra juzgada contra la fuente, y publicación
+acompañada de la evidencia de cuánto se puede confiar en el recurso.
+
+De esta revisión surgen los vacíos que este trabajo aborda. Primero,
+ningún trabajo relevado, tampoco entre los que publican el grafo como
+recurso, mide con un instrumento validado contra juicio humano la
+fidelidad de las respuestas ni la exactitud con que citan su fuente, y las métricas automáticas disponibles
+\cite{es2024ragas,min2023factscore} no distinguen una falla del grafo de
+una falla de quien lo consulta. Segundo, las comparaciones entre grafos y
+recuperación por fragmentos carecen de un término de referencia fuerte e
+independiente, porque los resultados publicados comparan un sistema
+consigo mismo o contra referencias construidas para la ocasión. Tercero,
+en los trabajos de la etapa de los modelos de lenguaje los corpus
+evaluados están en inglés, con la única excepción del derecho penal chino
+\cite{li2024jkem}, sin evidencia sobre normativa en castellano. Cuarto, los costos de construcción y de consulta rara vez se
+reportan, lo que impide juzgar la viabilidad práctica de los sistemas
+propuestos. Los tres primeros vacíos se corresponden con las contribuciones de la Sección~\ref{sec:contribuciones}; el cuarto se atiende reportando el
+costo y la latencia de cada corrida. Por último, el relevamiento no
+encontró ningún grafo de conocimiento público de la normativa del BCRA,
+razón por la cual este trabajo se compara contra generaciones anteriores
+del propio recurso.
+% Fuente de la última oración: docs/consultas_busqueda_U-RW.md. Con esto
+% queda respaldado el "hasta donde se ha relevado" de la Motivación.
+% Decisión 03/09: el versionado temporal NO se enuncia como vacío (no se
+% cubre); va solo como trabajo futuro en Conclusiones.
 
 \subsection{Organización del informe}
-% PPT: "Explica la estructura del Informe". Un párrafo por capítulo, al
-% final, cuando la estructura del Desarrollo esté cerrada.
-
+% Al final, un párrafo por capítulo.
 
 % ======================================================
 % 2..N-2 DESARROLLO DEL PF
@@ -258,13 +529,61 @@ la respuesta.
 % Estructura tentativa (se decide con la autora y mentores; skill
 % latex-udesa: el orden narrativo NO lo decide una instancia):
 %   2. Marco teórico / background (qué es un KG, RAG, agentes con tools —
-%      self-contained para el lector técnico no experto)
+%      self-contained para el lector técnico no experto; esqueleto en
+%      docs/tesis/esqueleto_cap2_marco_teorico.md)
 %   3. Corpus y construcción del grafo (E0-E5, releases, principio 9)
+%      % para la tabla del capítulo de construcción — descomposición por
+%      % predicado de la release vigente (verificación U-C1.1-idea5,
+%      % parseo de salida_r1/kg.json, sha 0226e947, commit 185e042 + fe
+%      % de erratas 6c5507b): 9 predicados semánticos del esquema =
+%      % 6.887 aristas (aplica_a 3.254, regula 1.300, limita 1.041,
+%      % requiere 375, exceptua_obligacion 236, condiciona 234,
+%      % exceptua 184, prohibe 176, ejecuta 87) + 7 tipos estructurales
+%      % = 10.885 aristas (referencia 5.680 —de ellas 5.645 con
+%      % rol_fuente=referencia_cruzada—, establecida_en 5.082, y la
+%      % taxonomía del catálogo de sujetos: 123 = subclase_de 57,
+%      % padre_sugerido 41, miembro_de 17, instancia_de 7, parte_de 1).
+%      % El 12.º predicado del esquema (modificada_por) no registra
+%      % ocurrencias. Formato de la tabla: Relación | Dominio | Rango |
+%      % Aristas. El corte prosa vigente (esqueleto decisión 3) es
+%      % "12 predicados + 5 relaciones de ensamblado", no "9+7".
+%      % Números que salieron de la Introducción v3 y van a este
+%      % capítulo: procedencia 6.510/6.529 nodos y 17.690/17.772 aristas,
+%      % 19 nodos y 82 aristas de esqueleto (mapa fila 18); 5.680
+%      % remisiones (mapa fila 19); versión vigente 6/26/8 (mapa fila 13).
 %   4. Evaluación de fidelidad (EV2: diseño sellado, juez, resultados)
+%      % Números que salieron de la Introducción v3 y van acá: fidelidad
+%      % 3/20/17 · 5/26/9 · 4/27/9 (mapa fila 1); 164 criterios (fila
+%      % 16); 52/53 criterios del juez (fila 2).
 %   5. Atribución causal de fallas (M-19, clases, "grounded ≠ correct")
+%      % Números que salieron de la Introducción v3 y van acá: la tabla
+%      % completa 6/11/3/17 · 4/6/1/25 · 9/1/5/21 sobre 37/36/36 y las
+%      % fallas de recuperación 14/7/6 (mapa filas 17 y 3); la nota sobre
+%      % 12 correctas (fila 3) vs 11 no atribuibles (regla §1).
 %   6. Comparación KG vs RAG (banco Claude Code + MCP, head-to-head)
 %   7. Evaluación intrínseca por tripletas (B4)
 % ======================================================
+
+\section{Marco teórico}
+\label{cap:marco}
+
+\section{Corpus y construcción del grafo}
+\label{cap:construccion}
+
+\section{Evaluación de fidelidad}
+\label{cap:fidelidad}
+
+\section{Atribución causal de fallas}
+\label{cap:atribucion}
+
+\section{Comparación contra recuperación por fragmentos}
+\label{cap:comparacion}
+
+\section{Evaluación intrínseca del grafo}
+\label{cap:intrinseca}
+
+\section{Explicabilidad de restricciones operativas}
+\label{cap:explicabilidad} %--> cuando este hecho lo agrego a contribuciones
 
 
 \section{Conclusiones y trabajo futuro}
@@ -277,7 +596,9 @@ la respuesta.
 % Temas reales de esta tesis para trabajo futuro [TODO: validar lista]:
 % escalado al corpus BCRA completo, r2 con correcciones trazadas a
 % hallazgos, E4-LLM para los 196 conflictos persistidos, rangos→contenedor,
-% actualización incremental ante normativa nueva.
+% actualización incremental ante normativa nueva, y versionado temporal
+% (vigencias, norma que modifica o deroga a otra; modificada_por hoy con
+% 0 ocurrencias; sin preguntas as-of-date en el conjunto de evaluación).
 
 % --- BIBLIOGRAFIA ---
 \section{Bibliografía}

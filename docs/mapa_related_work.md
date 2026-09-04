@@ -107,3 +107,20 @@ siguiente**:
 
 Método declarado para la lectura en serio: **doble pasada independiente**
 (mesa e instancia, sin compartir contexto), divergencias como señal.
+
+## §6. Barrida complementaria: releases de KG post-LLM (03/09)
+
+Segunda barrida, enfocada en papers que publican el KG como recurso
+(tarea del mentor del 26/08), complementaria del descubrimiento R1–R15
+de §4: relevó DBpedia 2007/2015, PrimeKG, iKraph, PlantConnectome,
+MDKG, Disaster Storylines, FinDKG y GPTKB, y resolvió los seis punteros
+de la reunión. Registro completo, con tabla de prácticas de release,
+caveats de verificación y descartados:
+`docs/literatura/releases_kg_post_llm.md`. Las entradas biblatex están
+en `docs/tesis/bibliografia.bib`. Solapamiento con §4: R6 (MedKGent)
+y R3 fueron verificados contra fuente primaria el 03/09 y ya están CITADOS
+en 1.4 (versión de Overleaf, pendiente de sync al repo): MedKGent como
+release cuidadoso (grafo en Hugging Face, licencia MIT, procedencia por
+tripleta vía PMID) y R3 en el párrafo legal (publica su grafo en Zenodo,
+DOI 10.5281/zenodo.14858340); R3 sigue siendo además la referencia del
+trabajo futuro sobre versionado.
