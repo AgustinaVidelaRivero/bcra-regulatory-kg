@@ -64,6 +64,12 @@ h. REPORTE Y ARTEFACTOS: el reporte final de la unidad se redacta para ser
    paquete de revisión de la regla g, referenciado por nombre — no pegado
    en el reporte. Regla práctica: un bloque que supera ~40 líneas es
    artefacto, no reporte.
+i. CONTEOS: todo tally que aparezca en prosa (reportes, frenos, mensajes
+   de commit) se RECOMPUTA contra el artefacto que lo respalda ANTES de
+   escribirse — un desglose cuya suma no cierra, o un total sin desglose
+   verificable, es un defecto reportable. Lección de U-B5.1: un "33 ítems"
+   del freno resultó ser 25 numerados + una sección en prosa, y llegó
+   hasta el borrador del mensaje de commit antes de ser cazado.
 
 ## 4bis. Prompt caching en extracción
 
