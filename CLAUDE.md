@@ -70,6 +70,18 @@ i. CONTEOS: todo tally que aparezca en prosa (reportes, frenos, mensajes
    verificable, es un defecto reportable. Lección de U-B5.1: un "33 ítems"
    del freno resultó ser 25 numerados + una sección en prosa, y llegó
    hasta el borrador del mensaje de commit antes de ser cazado.
+j. ACCIONES DE LA AUTORA: ningún bloque, reporte, laudo, pase ni mensaje
+   de commit afirma como HECHA una acción que solo la autora ejecuta
+   (commit, despacho de mandato, firma) sin su confirmación explícita;
+   hasta esa confirmación se escribe como PENDIENTE o PREPARADA. Estas
+   acciones no dejan rastro verificable en el repo hasta consumarse, así
+   que la verificación contra archivos no las cubre: la confirmación de
+   la autora es la única evidencia admisible. Precedentes: el commit de
+   U-B5.1 (mensaje preparado, commit no corrido, detectado tarde por
+   git log) y el despacho fantasma de U-B5.3 (afirmado "en curso" desde
+   el 04/09, despachado recién el 05/09, con la afirmación falsa
+   arrastrada hasta un laudo firmado — fe de erratas
+   docs/fe_erratas_despacho_UB53.md).
 
 ## 4bis. Prompt caching en extracción
 
