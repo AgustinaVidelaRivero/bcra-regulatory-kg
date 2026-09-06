@@ -152,6 +152,22 @@ def main() -> None:
           v3.TOOL_SCHEMA_V3["input_schema"]["properties"]["relations"]["items"]["properties"]["sujeto_propuesto_padre_sugerido"]["enum"])
     check("snp_cec mapea a la clase CEC",
           v3.MAPEO_CLASE_V3.get("snp_cec") == ("Sujeto_camara_electronica_de_compensacion",))
+    # Laudo de cierre (06/09/2026) — H1a rename + H4a def dirigida + H2a guarda.
+    import re as _re
+    check("id viejo (entidad_originante a secas) AUSENTE del prefijo v3",
+          not _re.search(r"Sujeto_entidad_originante(?!_de_transferencia)", v3.PREFIJO_SISTEMA_V3))
+    check("id viejo AUSENTE de ambos enums",
+          "Sujeto_entidad_originante" not in enum_v3 and "Sujeto_entidad_originante" not in
+          v3.TOOL_SCHEMA_V3["input_schema"]["properties"]["relations"]["items"]["properties"]["sujeto_propuesto_padre_sugerido"]["enum"])
+    check("id nuevo presente en ambos enums y en el bloque",
+          "Sujeto_entidad_originante_de_transferencia" in enum_v3
+          and "Sujeto_entidad_originante_de_transferencia — " in v3.BLOQUE_CATALOGO_V3)
+    check("def y guarda del renombrado INTACTAS",
+          "NO es el originante de una securitización o fideicomiso: ese sujeto sigue en sujeto_propuesto"
+          in v3.BLOQUE_CATALOGO_V3)
+    check("def dirigida de sector_publico_no_financiero presente (H4a)",
+          "NO incluye entidades financieras públicas (bancos públicos) ni entidades autorizadas a operar como entidades financieras"
+          in v3.BLOQUE_CATALOGO_V3)
     n_def = sum(1 for l in v3.BLOQUE_CATALOGO_V3.split("\n") if l.startswith("  def: "))
     check("30 líneas def: (24 F1.3 + 6 posicionales F1.4)", n_def == 30, f"{n_def}")
     check("ROL_POR_TO_V3 = 5 dev + 66 nuevos", len(v3.ROL_POR_TO_V3) == 71, f"{len(v3.ROL_POR_TO_V3)}")
@@ -196,6 +212,10 @@ def main() -> None:
     m_clase = v3.build_user_message_v3(ch_clase)
     check("mensaje TO de clase: usa el id de clase",
           "Alcance de este TO: Sujeto_entidad_financiera" in m_clase, ch_clase["id"])
+    check("mensaje con rol: guarda de ejecuta presente (H2a)",
+          "NO es el ejecutor por defecto en ejecuta" in m_v3)
+    check("mensaje de clase: guarda de ejecuta presente (H2a)",
+          "NO es el ejecutor por defecto en ejecuta" in m_clase)
     ch_hueco = json.loads(
         (_REPO / "data/experiment/escalado_prep/e0_dry/docvig/chunks_docvig.json").read_text())[0]
     check("mensaje de hueco (docvig): SIN línea de alcance",

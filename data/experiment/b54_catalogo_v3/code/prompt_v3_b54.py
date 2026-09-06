@@ -18,7 +18,9 @@ DEMUESTRA selftest_prompt_v3_b54.py.
 Contenido del catálogo v3 (laudo F1.2/F1.3/F1.4/F1.5):
   - RETIROS (5, con lápida en catalogo_sujetos_v3.md): acreedor_del_exterior,
     autoridad_nacional_de_aplicacion, secretaria_de_{comercio,energia,transporte}.
-  - ADICIONES (7): entidad_{girada,depositaria,originante,receptora} (SNP),
+  - ADICIONES (7): entidad_{girada,depositaria,receptora} y
+    entidad_originante_de_transferencia (SNP; renombrada por el laudo de
+    cierre H1a, 06/09/2026 — def y guarda intactas),
     camara_electronica_de_compensacion (CEC, enmienda de alcance declarada en
     el laudo), banco_central_del_exterior, fmi. BIS NO entra (caso de promoción
     documentado en el artefacto del catálogo).
@@ -132,7 +134,8 @@ DEFINICIONES_V3: dict[str, str] = {
     "Sujeto_usuario_de_servicios_financieros": "ES la persona (humana o jurídica) destinataria final de un servicio financiero, en los términos de las normas de Protección de los usuarios.",
     "Sujeto_bcra": "ES el Banco Central de la República Argentina como autoridad. Las potestades de autorizar, reglamentar, fiscalizar o sancionar son SUYAS: se atribuyen a este id y nunca al sujeto regulado por la norma.",
     "Sujeto_sefyc": "ES la Superintendencia de Entidades Financieras y Cambiarias como órgano de supervisión (califica, inspecciona, sanciona).",
-    "Sujeto_sector_publico_no_financiero": "ES el conjunto Gobierno Nacional, provincias, municipios y CABA con sus entes controlados; no incluye a los bancos públicos (que son EF).",
+    # Def dirigida del laudo de cierre (H4a, cláusula F1.3): frontera reforzada.
+    "Sujeto_sector_publico_no_financiero": "ES el conjunto Gobierno Nacional, provincias, municipios y CABA con sus entes controlados; NO incluye entidades financieras públicas (bancos públicos) ni entidades autorizadas a operar como entidades financieras.",
     "Sujeto_sector_privado_no_financiero": "ES el residente del sector privado que no es entidad financiera ni ente público.",
     "Sujeto_fondo_comun_de_inversion": "ES el fondo como vehículo de inversión; es distinto de su sociedad gerente y de su depositaria.",
     "Sujeto_empresa_de_servicios_complementarios": "ES la empresa no financiera del perímetro de la entidad dedicada a actividades complementarias admitidas (normas de Servicios complementarios).",
@@ -153,9 +156,11 @@ ADICIONES_V3: tuple[dict, ...] = (
      "grupo": "## Sujetos regulados",
      "linea": "Sujeto_entidad_depositaria — Entidades depositarias (alias: entidad depositaria)",
      "def": "ES la entidad en la que se deposita el instrumento compensable y que lo presenta a la compensación."},
-    {"id": "Sujeto_entidad_originante", "nivel": "clase", "padre": "Sujeto_sujeto_regulado",
+    # Rename del laudo de cierre (H1a, 06/09/2026): entidad_originante →
+    # entidad_originante_de_transferencia; def y guarda INTACTAS, solo el id.
+    {"id": "Sujeto_entidad_originante_de_transferencia", "nivel": "clase", "padre": "Sujeto_sujeto_regulado",
      "grupo": "## Sujetos regulados",
-     "linea": "Sujeto_entidad_originante — Entidades originantes (alias: entidad originante)",
+     "linea": "Sujeto_entidad_originante_de_transferencia — Entidades originantes (alias: entidad originante)",
      "def": "ES la entidad que origina o ingresa la transacción al esquema de pago (transferencias, débitos directos, DEBIN). NO es el originante de una securitización o fideicomiso: ese sujeto sigue en sujeto_propuesto."},
     {"id": "Sujeto_entidad_receptora", "nivel": "clase", "padre": "Sujeto_sujeto_regulado",
      "grupo": "## Sujetos regulados",
@@ -476,7 +481,9 @@ def build_user_message_v3(chunk: dict) -> str:
         linea = (
             f"Alcance de este TO: {rol['rol_id']} = {{{miembros}}}. "
             f"Cuando la norma se dirija genéricamente a 'las entidades' / 'los sujetos obligados' / "
-            f"el colectivo del TO, usá {rol['rol_id']} como sujeto."
+            f"el colectivo del TO, usá {rol['rol_id']} como sujeto. "
+            f"Es el sujeto de aplica_a cuando la norma se dirige al colectivo; "
+            f"NO es el ejecutor por defecto en ejecuta."
         )
     else:
         # Mapeo a DOS clases (ri2_ci): variante declarada de la línea.
@@ -484,7 +491,9 @@ def build_user_message_v3(chunk: dict) -> str:
         linea = (
             f"Alcance de este TO: {{{miembros}}}. "
             f"Cuando la norma se dirija genéricamente a 'las entidades' / 'los sujetos obligados' / "
-            f"el colectivo del TO, usá {ids} como sujeto, según corresponda."
+            f"el colectivo del TO, usá {ids} como sujeto, según corresponda. "
+            f"Es el sujeto de aplica_a cuando la norma se dirige al colectivo; "
+            f"NO es el ejecutor por defecto en ejecuta."
         )
     # Inserción en la MISMA posición que producción: tras la línea de
     # "Puntos admitidos" y su línea en blanco.

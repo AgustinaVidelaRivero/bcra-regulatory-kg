@@ -17,14 +17,16 @@ espera de la integración post-B5.3.
 
 | qué | valor |
 |---|---|
-| sha256 del texto del prefijo v3 | `29af2e29880b8e435cc40a93913b911ae9db9d2feab43d06c9ecfca2e3652edf` |
-| hash canónico system+tools (namespace de caché) | `4ed889c74cb8` |
+| sha256 del texto del prefijo v3 | `35e88c2dd0a2920302c29005b08ab9689405606d4bd5fcf8fb7ce807b1a3c512` |
+| hash canónico system+tools (namespace de caché) | `54a111e2175f` |
 | base congelada (verificada por candado) | `e69feaaa04779bd6347cc9e3974d2c1749519f1230e70a0459e66f46517cd720` / `1be8304e3d77` |
-| tamaño | system 25.652 → 33.278 chars; tools 7.181 → 8.999; total +9.444 chars ≈ +2.871 tokens (+28,8 %; ratio 3,29 chars/token, ancla cw ESQ-2 = 9.983) |
-| costo del delta por corrida completa (6.340 unidades, claude-haiku-4-5) | cache reads +USD 1,82; write del prefijo USD 0,016 |
+| tamaño | system 25.652 → 33.370 chars; total ≈ +2.899 tokens (+29,1 %; ratio 3,29 chars/token, ancla cw ESQ-2 = 9.983) |
+| costo del delta por corrida completa (6.340 unidades, claude-haiku-4-5) | cache reads ≈ +USD 1,84; write del prefijo USD 0,016 |
 
-*(Sellos previos al mini-laudo del freno 2 —`852d247c905f…`/`f525c2923795`, 103 ids—
-superseded por la corrección de abajo; constan en el paquete del freno 2.)*
+*(Sellos superseded: `852d247c905f…`/`f525c2923795` con 103 ids — mini-laudo del
+freno 2, constan en el paquete f2; `29af2e29880b…`/`4ed889c74cb8` — sellado por
+`f19e978` y superseded por las correcciones del laudo de cierre de abajo,
+constan en los paquetes f2bis/f3.)*
 
 ## Composición (recomputada por el selftest — regla i)
 
@@ -64,8 +66,10 @@ r2 si reaparece demanda documental.
 
 7 entradas, cada una con su evidencia citada en `adiciones_0_3_post_f1.md`
 (freno 1) y su línea en el bloque v3: `Sujeto_entidad_girada`,
-`Sujeto_entidad_depositaria`, `Sujeto_entidad_originante` (con guarda
-anti-atracción contra el «originante» de securitización, en su `def:`),
+`Sujeto_entidad_depositaria`, `Sujeto_entidad_originante_de_transferencia`
+(nacida `Sujeto_entidad_originante` y renombrada por el laudo de cierre H1a —
+ver «Correcciones del laudo de cierre»; con guarda anti-atracción contra el
+«originante» de securitización, en su `def:`),
 `Sujeto_entidad_receptora`, `Sujeto_camara_electronica_de_compensacion`
 (CEC — enmienda de alcance de la autora declarada en el laudo),
 `Sujeto_banco_central_del_exterior`, `Sujeto_fmi`. CCP: duplicado reportado,
@@ -91,6 +95,20 @@ adicional del corpus escalado (las emisiones de `sujeto_propuesto` de la
 corrida de tandas 1–2 son la medición natural), o si la validación temporal /
 r2 lo trae con evidencia de alcance. Mientras tanto: `sujeto_propuesto` con
 `padre_sugerido = Sujeto_organismo_internacional` es la conducta esperada.
+
+**Evidencia agregada por la pareada (ficha 7, `cap::6.2.1.1`, adjudicada
+«otro» por la autora, 06/09/2026):** bajo el prefijo congelado el BIS
+sobrevivía como `sujeto_propuesto` («Banco de Pagos Internacionales», junto a
+«Otros soberanos»); bajo el v3 la unidad resolvió FMI/BCE/bancos centrales a
+sus ids nuevos pero el BIS —nombrado en la tabla del punto— **desapareció sin
+representación alguna** en vez de quedar propuesto (nota de la autora en la
+ficha: «la válvula existe para eso»). Doble lectura para la promoción: (i) el
+BIS sigue generando demanda documental real en material medido; (ii) su
+ausencia del catálogo hoy cuesta pérdida de representación, no solo un
+propuesto sin promover. Este caso alimenta además la **vigilancia (8) de
+tanda 1** (tasa de `sujeto_propuesto` del v3 contra la base 3,1 % de
+U-SUJ-FREQ, umbral a pre-declarar en el mandato de B6.1 — laudo de cierre
+H3b).
 
 ## Roles A2 (30) y mapeos a clase (36)
 
@@ -131,6 +149,39 @@ prefijo v3 y de ambos enums (checks propios del selftest); composición
 102 = 70 − 5 + 7 + 30, reparto `ROL_POR_TO_V3` 35 rol (5 dev + 30) / 36
 clase. El registro del hallazgo original (con la composición 103 laudada en
 fase 1) queda en el paquete del freno 2.
+
+## Correcciones del laudo de cierre (06/09/2026) — mini-ciclo consolidado
+
+`docs/laudo_B5.4_cierre_catalogo.md` (FIRMADO 06/09/2026; resoluciones
+H1(a) · H2(a)+(c) · H3(b) · H4(a)). Materializado en este artefacto:
+
+1. **H1(a) — RENAME (corrección del laudo de cierre, NO lápida):**
+   `Sujeto_entidad_originante` → `Sujeto_entidad_originante_de_transferencia`
+   en ambos enums y en el bloque v3; def y guarda intactas en su contenido.
+   Fundamento (laudo §3-H1): la violación mecánica de la guarda en
+   `cap::3.1.14::intro` (ficha 2) mostró que la superficie léxica del id es el
+   mecanismo de la atracción; el originante de securitización resuelve por la
+   válvula. La composición sigue en 102 (recomputada por el selftest).
+2. **H4(a) — def dirigida por la cláusula F1.3** (ficha 8, `ayccef::2.1`): la
+   línea `def:` de `Sujeto_sector_publico_no_financiero` refuerza su frontera —
+   «NO incluye entidades financieras públicas (bancos públicos) ni entidades
+   autorizadas a operar como entidades financieras». Nota de materialización:
+   el id ya tenía def (era uno de los 24 de F1.3); la corrección REEMPLAZA su
+   cláusula de frontera por la del laudo, conservando la parte positiva.
+3. **H2(a) — guarda del rol en el mensaje** (ficha 4, `cryl::1.3`): la línea
+   de alcance de `build_user_message_v3` suma «Es el sujeto de aplica_a cuando
+   la norma se dirige al colectivo; NO es el ejecutor por defecto en ejecuta»
+   (código del template, no el prefijo; aplicada a las dos variantes de la
+   línea — id único y dos clases). Complementada por la vigilancia (7) de
+   tanda 1 (H2c).
+4. **H3(b)** — sin cambio de artefacto: vigilancia (8) de tanda 1 con tasa
+   contra la base 3,1 % (ver el caso BIS, arriba).
+
+Verificación: checks nuevos del selftest (id viejo ausente de prefijo y enums
+con guarda de sub-cadena; id nuevo presente con def y guarda intactas; def
+H4a presente; guarda H2a en los mensajes con rol y con clase). Retests
+dirigidos del mini-ciclo: `predicciones_retest_miniciclo_b54.md` (selladas
+antes de correr) y `reporte_retest_miniciclo_b54.md`.
 
 ## Diferencias menores mandato/laudo ↔ materialización (regla d)
 
