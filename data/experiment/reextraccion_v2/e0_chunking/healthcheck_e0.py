@@ -35,6 +35,11 @@ Señales (las tres de la fila B5.2 del plan, más el invariante de cobertura):
      (líneas duplicadas o huérfanas). En el subset es siempre exacto; si acá
      falla, el troceo de ese TO no es confiable.
 
+Desde B5.8.1: si el camino vigente produce cero unidades, el chequeo
+reintenta con el modo de lectura sin raíz de sección (e0_lib, docstring del
+módulo) y lo declara en el campo `modo_lectura` del reporte ('vigente' /
+'sin_raiz'); las señales se computan sobre el parse que produjo unidades.
+
 Veredicto por TO: 'sano' si ninguna señal dispara; si no, la lista de
 señales disparadas. El veredicto es de LECTURA (dónde mirar antes de gastar
 en E1), no un gate: los umbrales vienen declarados de la banda de referencia
@@ -70,10 +75,32 @@ MARCA_CID = "(cid:"
 def health_check_to(pdf_path: Path, to: str | None = None,
                     umbral_chars: int = UMBRAL_CHARS_TERMINAL) -> dict:
     """Corre E0 completo (parser + reglas 1 y 2 + chunker, mismo orden que el
-    driver de producción) sobre un PDF y devuelve el reporte de señales."""
+    driver de producción) sobre un PDF y devuelve el reporte de señales.
+
+    Activación del modo sin raíz (B5.8.1, garantía estructural): si y solo si
+    el camino vigente produjo CERO unidades de extracción, se reintenta con
+    los roles derivados y `parsear_cuerpo(..., modo_sin_raiz=True)`; el campo
+    `modo_lectura` del reporte declara qué camino produjo las señales. Un TO
+    que produce unidades por el camino vigente jamás entra al modo nuevo."""
     to = to or E0.TO_KEYS.get(pdf_path.name, pdf_path.stem)
     paginas = E0.extraer_lineas(pdf_path)
     roles = E0.clasificar_paginas(paginas)
+
+    # --- parseo (idéntica secuencia a correr_e0.correr: reglas 1 y 2 aplicadas)
+    res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles)
+    res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
+    res.correccion_fronteras = E0.corregir_fronteras_intra_palabra(res)
+    chunks = E0.construir_chunks(res)
+    modo_lectura = "vigente"
+    if not chunks:
+        roles = E0.roles_para_modo_sin_raiz(paginas, roles)
+        res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles,
+                                modo_sin_raiz=True)
+        res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
+        res.correccion_fronteras = E0.corregir_fronteras_intra_palabra(res)
+        chunks = E0.construir_chunks(res)
+        modo_lectura = "sin_raiz"
+    cob = E0.verificar_cobertura(res)
 
     # --- señal 1: (cid:NN) sobre TODAS las líneas extraídas (todos los roles)
     lineas_cid: list[dict] = []
@@ -84,21 +111,18 @@ def health_check_to(pdf_path: Path, to: str | None = None,
                                    "texto": l.texto[:90]})
     paginas_cid = sorted({d["pagina"] for d in lineas_cid})
 
-    # --- parseo (idéntica secuencia a correr_e0.correr: reglas 1 y 2 aplicadas)
-    res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles)
-    res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
-    res.correccion_fronteras = E0.corregir_fronteras_intra_palabra(res)
-    chunks = E0.construir_chunks(res)
-    cob = E0.verificar_cobertura(res)
-
     # --- señal 2: páginas sin sección (tres grados)
     avisos_sin_seccion = [a for a in res.avisos
                           if a["tipo"] == "pagina_cuerpo_sin_seccion"]
     n_cuerpo = roles.count(E0.ROL_CUERPO)
+    # el preámbulo sintético '0' del modo sin raíz NO cuenta como raíz de
+    # lectura: un TO cuyo único nodo es el preámbulo sigue sin estructura
+    secciones_efectivas = [s for s in res.secciones
+                           if not (s.sintetica and s.numero == "0")]
     sin_seccion = {
         "paginas_cuerpo": n_cuerpo,
         "sin_pagina_de_cuerpo": n_cuerpo == 0,
-        "secciones_parseadas": len(res.secciones),
+        "secciones_parseadas": len(secciones_efectivas),
         "avisos_pagina_cuerpo_sin_seccion": len(avisos_sin_seccion),
         "paginas": [a["pagina"] for a in avisos_sin_seccion],
     }
@@ -131,7 +155,7 @@ def health_check_to(pdf_path: Path, to: str | None = None,
     disparadas = []
     if lineas_cid:
         disparadas.append("cid")
-    if sin_seccion["sin_pagina_de_cuerpo"] or not res.secciones \
+    if sin_seccion["sin_pagina_de_cuerpo"] or not secciones_efectivas \
             or avisos_sin_seccion:
         disparadas.append("paginas_sin_seccion")
     if anomalas:
@@ -143,6 +167,7 @@ def health_check_to(pdf_path: Path, to: str | None = None,
         "to": to,
         "archivo": pdf_path.name,
         "paginas": len(paginas),
+        "modo_lectura": modo_lectura,
         "roles_pagina": {r: roles.count(r) for r in sorted(set(roles))},
         "unidades_extraccion": len(chunks),
         "senales": senales,

@@ -70,6 +70,46 @@ de origen y el rol documental, nunca del orden de emisión. Emisión
 interleaved en orden documental: intro antes de los hijos, intersticial en su
 hueco, cierre después. Ver `construir_chunks`.
 
+MODO DE LECTURA SIN RAÍZ DE SECCIÓN (unidad B5.8.1, diseño
+docs/diseno_B5.8_segmentacion_universal.md §2): para los TOs cuyo camino
+vigente produce CERO unidades (compuerta de rol de página cerrada por falta
+de índice — familia a del censo B5.8.0 — o cuerpo sin ninguna línea
+'Sección N.' — familia c), `parsear_cuerpo(..., modo_sin_raiz=True)` deriva
+la raíz de lectura de la propia espina de puntos:
+
+  * raíz EXPLÍCITA: un label de profundidad 1 ('N. Título') abre un nodo
+    sección sintético N, con cuatro guardas ancladas a casos medidos del
+    censo: (G0) no es un banner repetido de encabezado (línea numerada que
+    se repite en la zona de título de ≥MIN_PAGS_BANNER páginas: el
+    «17. BASE DE DATOS PADRÓN» de ri_bdp encabeza las 3 páginas y no es
+    espina); (G1) el resto tiene forma de título (arranca en mayúscula:
+    rechaza la referencia envuelta '1. de las normas sobre…'); (G2)
+    monotonía estricta (N mayor que la última raíz/sección abierta: los
+    ítems '1.'/'2.' de las listas internas de ri_cr reinician numeración y
+    quedan rechazados; los saltos hacia adelante se aceptan y se REPORTAN);
+    (G3) columna no más profunda que la de las raíces ya aceptadas
+    (las enumeraciones internas corren a la derecha del margen de raíz).
+  * raíz IMPLÍCITA: un label de profundidad 2 con forma de título cuyo
+    primer componente no coincide con la raíz abierta (arranque medido de
+    ri_niif: '2.1. Disposiciones generales…' sin ningún '2.' previo) abre
+    la sección sintética de su componente raíz, bajo las mismas guardas de
+    monotonía y columna; profundidad ≥3 jamás abre raíz (la referencia
+    envuelta medida de ri_dsf p.1 '2.1.4. de las normas…' queda rechazada).
+  * PREÁMBULO: el contenido previo a la primera raíz se ancla a un nodo
+    sección sintético '0' (título 'Preámbulo') — nada queda huérfano y la
+    cobertura de cero pérdida se sostiene.
+  * PÁGINAS DE REGISTRO: una página de cuerpo cuya densidad de líneas
+    ficha/código supera DENS_REGISTRO_MIN pasa al rol `ficha_registro` y
+    queda FUERA del parseo de prosa, declarada en los roles (cuerpos
+    ficha/lista de manual y ri2_pm — decisión 3 del mandato B5.8.1 — y
+    páginas de listado de códigos de ri_laft; su destino es el parser de
+    registros/tablas, no la espina).
+
+GARANTÍA ESTRUCTURAL DE NO-CAMBIO: el modo se activa SOLO en los call
+sites que comprobaron cero unidades por el camino vigente
+(healthcheck_e0 y el runner de B5.8.1); con `modo_sin_raiz=False` (el
+default de todos los call sites vigentes) ninguna rama nueva se ejecuta.
+
 Sin llamadas a LLM: código determinístico puro.
 """
 
@@ -136,6 +176,29 @@ RE_NUMERICO = re.compile(r"^-?[\d.,]+%?$")
 
 MAX_RAIZ = 30        # un primer componente mayor es cita de Comunicación, no punto
 
+# --------- modo de lectura sin raíz de sección (B5.8.1; ver docstring) ---------
+# Campos de ficha de registro: formas medidas en manual (scoping U-B5.6-0 §1.4,
+# 'Capítulo/Rubro/Imputación…' con inicial mayúscula) y en ri2_pm p.50/120/300
+# ('CAPITULO ACTIVO', 'SUB-RUBRO … Código', 'IMPUTACION …', sostenidas).
+RE_FICHA_REGISTRO = re.compile(
+    r"^(Cap[ií]tulo|CAP[IÍ]TULO|Rubro|RUBRO|SUB-?RUBRO|Moneda|MONEDA|RESIDENCIA"
+    r"|Otros Atributos|OTROS ATRIBUTOS|Imputaci[oó]n|IMPUTACI[OÓ]N|Incluye|INCLUYE)\b")
+# fila de lista de códigos cortos (scoping §1.4: plandecuentas '311106 Cuentas
+# corrientes…'; mismas filas medidas en ri_laft p.13-20)
+RE_LISTA_CODIGO = re.compile(r"^\d{6}(?:\.\d+)?\s+\D")
+# código de cuenta largo del plan/manual de ri2_pm (medidos: '102011ARS0000101',
+# '3060000000000001'); se busca en cualquier posición (aparece fusionado al
+# final de la fila: 'Títulos públicos - Con cotización 102011ARS0100101')
+RE_CODIGO_CUENTA = re.compile(r"(?<![\dA-Z])\d{6}(?:[A-Z]{3}|\d{3})\d{7}(?![\dA-Z])")
+DENS_REGISTRO_MIN = 0.30   # fracción de líneas ficha/código que vuelca la página
+                           # (medido: cuerpo de manual 0,32-0,91; su preámbulo 0,00-0,11)
+MIN_PAGS_BANNER = 3        # una línea numerada de zona de título repetida en esta
+                           # cantidad de páginas es banner de encabezado, no espina
+POS_ZONA_BANNER = 6        # zona de detección de banners (líneas iniciales de página)
+# forma de título de una raíz (guarda G1): misma clase que el chequeo de
+# `titulo_mayuscula` del parser vigente
+RE_TITULO_RAIZ = re.compile(r'^[A-ZÁÉÍÓÚÜÑ"“\'(«]')
+
 
 # ------------------------------------------------------------------- líneas
 
@@ -191,6 +254,7 @@ ROL_INDICE = "indice"
 ROL_TABLA = "tabla_norma_origen"
 ROL_HISTORIAL = "historial"
 ROL_CUERPO = "cuerpo"
+ROL_REGISTRO = "ficha_registro"   # solo lo asigna el modo sin raíz (B5.8.1)
 
 
 def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
@@ -232,6 +296,84 @@ def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
     return roles
 
 
+# ------------------- modo sin raíz: roles derivados y banners (B5.8.1) -------------------
+
+def _clave_banner(texto: str) -> tuple[str, str] | None:
+    """Clave de identidad de una línea numerada candidata a banner: su token
+    numérico y los primeros 25 caracteres del resto (los banners largos se
+    envuelven distinto según la página — 'INFORMACION INSTITUCIONAL DE
+    ENTIDADES' vs '… DE ENTIDADES FINANCIERAS Y', medidos en ri_ii_31_12_19 —
+    pero comparten número y arranque)."""
+    tokens = texto.split()
+    if not tokens:
+        return None
+    m = RE_NUM_TOKEN.match(tokens[0]) or RE_NUM_TOKEN_SIN_PUNTO.match(tokens[0])
+    if not m:
+        return None
+    resto = texto[len(tokens[0]):].strip()
+    if not resto:
+        return None
+    return (m.group(1), resto[:25])
+
+
+def detectar_banners(paginas: list[list[Linea]]) -> set[tuple[str, str]]:
+    """Líneas numeradas EN MAYÚSCULAS SOSTENIDAS de la zona de título
+    (primeras POS_ZONA_BANNER líneas) que se repiten en ≥MIN_PAGS_BANNER
+    páginas: encabezado corrido del TO, no espina (caso medido: '17. BASE DE
+    DATOS PADRÓN (R.I. – B.P.)' abre las 3 páginas de ri_bdp; la espina real
+    corre en '1.'/'2.'/'3.'). La forma de mayúsculas es parte de la
+    definición: las líneas de campo en minúscula que se repiten al tope de
+    página ('1. Entidad responsable.' encabeza los datos de cada apartado de
+    ri_secoexpo) son espina genuina, no banner. En TOs de 1-2 páginas ninguna
+    línea alcanza el umbral y nada se marca."""
+    paginas_por_clave: dict[tuple[str, str], set[int]] = {}
+    for pi, lineas in enumerate(paginas, start=1):
+        for l in lineas[:POS_ZONA_BANNER]:
+            t = l.texto.strip()
+            if not _es_titulo_mayusculas(t):
+                continue
+            clave = _clave_banner(t)
+            if clave is not None:
+                paginas_por_clave.setdefault(clave, set()).add(pi)
+    return {c for c, ps in paginas_por_clave.items() if len(ps) >= MIN_PAGS_BANNER}
+
+
+def marcar_paginas_registro(paginas: list[list[Linea]], roles: list[str]) -> list[str]:
+    """Página de cuerpo cuya fracción de líneas ficha/código alcanza
+    DENS_REGISTRO_MIN → rol `ficha_registro` (fuera del parseo de prosa,
+    declarada en los conteos de roles). Las páginas de prosa con una mención
+    aislada ('Incluye…' en un párrafo) quedan muy por debajo del umbral."""
+    out = list(roles)
+    for i, (lineas, rol) in enumerate(zip(paginas, roles)):
+        if rol != ROL_CUERPO:
+            continue
+        no_vacias = registro = 0
+        for l in lineas:
+            t = l.texto.strip()
+            if not t:
+                continue
+            no_vacias += 1
+            if RE_FICHA_REGISTRO.match(t) or RE_LISTA_CODIGO.match(t) \
+                    or RE_CODIGO_CUENTA.search(t):
+                registro += 1
+        if no_vacias and registro / no_vacias >= DENS_REGISTRO_MIN:
+            out[i] = ROL_REGISTRO
+    return out
+
+
+def roles_para_modo_sin_raiz(paginas: list[list[Linea]],
+                             roles: list[str]) -> list[str]:
+    """Roles de página del modo sin raíz. Familia a (censo B5.8.0): sin página
+    de índice la clasificación vigente dejó todo en `portada` — esas páginas
+    pasan a `cuerpo` (historial, tabla de origen e índice conservan su rol tal
+    cual). Familia c: la compuerta vigente ya produjo cuerpo y los roles se
+    respetan sin cambio. En ambos casos se aplica después la compuerta de
+    páginas de registro."""
+    if not any(r == ROL_CUERPO for r in roles):
+        roles = [ROL_CUERPO if r == ROL_PORTADA else r for r in roles]
+    return marcar_paginas_registro(paginas, roles)
+
+
 # ------------------------------------------------- encabezados y pies (cuerpo)
 
 def _es_titulo_mayusculas(texto: str) -> bool:
@@ -242,6 +384,7 @@ def _es_titulo_mayusculas(texto: str) -> bool:
 
 
 def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
+                           labels_preservables: set | None = None,
                            ) -> tuple[list[Linea], list[Linea], str | None]:
     """Devuelve (contenido, descartadas, seccion_corrida).
 
@@ -249,7 +392,15 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     mayúsculas, contienen 'B.C.R.A.' o —solo si capturar_seccion— son la línea
     corrida 'Sección N. …' (que se captura como metadata de página; en páginas
     de índice una línea 'Sección N.' es una ENTRADA, no encabezado). Pie:
-    desde el final, las que matchean los patrones de RE_PIE."""
+    desde el final, las que matchean los patrones de RE_PIE.
+
+    `labels_preservables` (solo lo pasa el modo sin raíz de B5.8.1): con un
+    set de claves de banner, una línea numerada en mayúsculas sostenidas de la
+    zona de encabezado se CONSERVA como contenido salvo que sea banner
+    repetido — las raíces genuinas de la espina van en mayúsculas en varios
+    TOs medidos ('1. DATOS GENERALES' de ri_ii_31_12_19) y el descarte
+    genérico de títulos las perdería; los banners ('17. BASE DE DATOS
+    PADRÓN…') siguen descartándose como hasta ahora."""
     descartadas: list[Linea] = []
     contenido = list(lineas)
     seccion_corrida: str | None = None
@@ -278,7 +429,10 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             ultima_top_seccion = contenido[0].top
             descartadas.append(contenido.pop(0))
             quitadas += 1
-        elif "B.C.R.A." in t or _es_titulo_mayusculas(t):
+        elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
+                                 and not (labels_preservables is not None
+                                          and _clave_banner(t) is not None
+                                          and _clave_banner(t) not in labels_preservables)):
             descartadas.append(contenido.pop(0))
             quitadas += 1
         elif seccion_corrida is not None and ultima_top_seccion is not None \
@@ -312,6 +466,7 @@ class Nodo:
     segmentos: list[list[Linea]] = field(default_factory=list)
     hijos: list["Nodo"] = field(default_factory=list)
     padre: "Nodo | None" = None
+    sintetica: bool = False      # raíz del modo sin raíz (B5.8.1); jamás en vigente
 
     def profundidad(self) -> int:
         return self.numero.count(".") + 1 if self.tipo == "punto" else 0
@@ -331,6 +486,7 @@ class ResultadoParseo:
     lineas_huerfanas: int = 0
     reasignaciones_continuidad: list[dict] = field(default_factory=list)
     correccion_fronteras: dict = field(default_factory=dict)
+    modo_lectura: str = "vigente"   # "sin_raiz" solo cuando parsea el modo B5.8.1
 
 
 def _componentes(num: str) -> list[int]:
@@ -338,7 +494,12 @@ def _componentes(num: str) -> list[int]:
 
 
 def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
-                   roles: list[str]) -> ResultadoParseo:
+                   roles: list[str], modo_sin_raiz: bool = False) -> ResultadoParseo:
+    """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+    comportamiento es el histórico. Con True rige además la gramática de
+    raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
+    módulo): SOLO debe invocarse así tras comprobar que el camino vigente
+    produjo cero unidades para el TO."""
     secciones: list[Nodo] = []
     rechazos: list[dict] = []
     saltos: list[dict] = []
@@ -348,6 +509,12 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
     n_contenido = 0
     n_paginas_cuerpo = 0
     n_huerfanas = 0
+
+    # estado del modo sin raíz (inerte con modo_sin_raiz=False)
+    banners = detectar_banners(paginas) if modo_sin_raiz else set()
+    nodo_preambulo: Nodo | None = None
+    ultima_raiz_num: int | None = None   # última raíz/sección abierta (monotonía G2)
+    col_raiz: float | None = None        # columna mínima de raíz explícita aceptada (G3)
 
     def cerrar_hasta(nodo: Nodo | None) -> None:
         """Deja la pila abierta hasta `nodo` inclusive (None → vacía)."""
@@ -364,13 +531,17 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         if rol != ROL_CUERPO:
             continue
         n_paginas_cuerpo += 1
-        contenido, descartadas, seccion_corrida = separar_encabezado_pie(lineas)
+        contenido, descartadas, seccion_corrida = separar_encabezado_pie(
+            lineas, labels_preservables=banners if modo_sin_raiz else None)
         for d in descartadas:
             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
 
         if seccion_corrida is None:
-            avisos.append({"tipo": "pagina_cuerpo_sin_seccion", "pagina": pi,
-                           "primeras_lineas": [l.texto for l in contenido[:3]]})
+            if not modo_sin_raiz:
+                # en el modo sin raíz la ausencia de 'Sección N.' es la condición
+                # de entrada del TO, no una anomalía por página
+                avisos.append({"tipo": "pagina_cuerpo_sin_seccion", "pagina": pi,
+                               "primeras_lineas": [l.texto for l in contenido[:3]]})
             # las líneas siguen el flujo del punto abierto (página de continuación
             # con encabezado anómalo); no se tiran.
         else:
@@ -389,14 +560,26 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                                    "a": num_sec, "pagina": pi})
                 secciones.append(sec)
                 pila.append(sec)
+                if modo_sin_raiz:
+                    ultima_raiz_num = int(num_sec)
 
         if not pila:
-            if contenido:
-                n_huerfanas += len(contenido)
-                avisos.append({"tipo": "contenido_antes_de_seccion", "pagina": pi,
-                               "n_lineas": len(contenido),
-                               "lineas": [l.texto for l in contenido[:3]]})
-            continue
+            if not modo_sin_raiz:
+                if contenido:
+                    n_huerfanas += len(contenido)
+                    avisos.append({"tipo": "contenido_antes_de_seccion", "pagina": pi,
+                                   "n_lineas": len(contenido),
+                                   "lineas": [l.texto for l in contenido[:3]]})
+                continue
+            if not contenido:
+                continue
+            # modo sin raíz: nada queda huérfano — el contenido previo a la
+            # primera raíz ancla en el preámbulo sintético '0'
+            if nodo_preambulo is None:
+                nodo_preambulo = Nodo(tipo="seccion", numero="0",
+                                      titulo="Preámbulo", pagina=pi, sintetica=True)
+                secciones.insert(0, nodo_preambulo)
+            pila.append(nodo_preambulo)
 
         seccion = pila[0]
         ultima_fue_label = False
@@ -410,7 +593,68 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
             if not m_num and tokens:
                 m_num = RE_NUM_TOKEN_SIN_PUNTO.match(tokens[0])
 
+            if m_num and modo_sin_raiz:
+                # ------- gramática de raíces sintéticas (B5.8.1; docstring) -------
+                comp_r = _componentes(m_num.group(1))
+                partes = linea.texto.split(None, 1)
+                resto_r = partes[1] if len(partes) > 1 else ""
+                titulo_may_r = bool(RE_TITULO_RAIZ.match(resto_r)) if resto_r else False
+                if comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 1:
+                    # raíz EXPLÍCITA: guardas G0-G3
+                    motivo_raiz = None
+                    if _clave_banner(linea.texto.strip()) in banners:
+                        motivo_raiz = "raiz_banner_repetido"
+                    elif not titulo_may_r:
+                        motivo_raiz = "raiz_sin_forma_de_titulo"
+                    elif ultima_raiz_num is not None and comp_r[0] <= ultima_raiz_num:
+                        motivo_raiz = f"raiz_{comp_r[0]}_no_sucede_a_{ultima_raiz_num}"
+                    elif col_raiz is not None and linea.x0 > col_raiz + TOL_X:
+                        motivo_raiz = (f"raiz_en_columna_profunda_{linea.x0}"
+                                       f"_vs_{col_raiz}")
+                    if motivo_raiz is None:
+                        if ultima_raiz_num is not None \
+                                and comp_r[0] != ultima_raiz_num + 1:
+                            saltos.append({"tipo": "salto_raiz", "de": ultima_raiz_num,
+                                           "a": comp_r[0], "pagina": linea.pagina})
+                        cerrar_hasta(None)
+                        raiz = Nodo(tipo="seccion", numero=str(comp_r[0]),
+                                    titulo=resto_r, pagina=linea.pagina,
+                                    label_x0=linea.x0, linea_label=linea,
+                                    sintetica=True)
+                        secciones.append(raiz)
+                        pila.append(raiz)
+                        ultima_raiz_num = comp_r[0]
+                        col_raiz = (linea.x0 if col_raiz is None
+                                    else min(col_raiz, linea.x0))
+                        ultima_fue_label = False
+                        continue
+                    rechazos.append({"pagina": linea.pagina, "x0": linea.x0,
+                                     "texto": linea.texto[:120],
+                                     "motivo": motivo_raiz})
+                    m_num = None    # sigue como prosa (registro único del rechazo)
+                elif comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 2 \
+                        and str(comp_r[0]) != pila[0].numero and titulo_may_r \
+                        and (ultima_raiz_num is None or comp_r[0] > ultima_raiz_num):
+                    # raíz IMPLÍCITA en profundidad 2 (arranque medido de ri_niif);
+                    # el punto en sí se valida después por la cadena vigente
+                    raiz_previa = next((s for s in reversed(secciones)
+                                        if s is not nodo_preambulo), None)
+                    if not (raiz_previa is not None
+                            and raiz_previa.col_hijos is not None
+                            and linea.x0 > raiz_previa.col_hijos + TOL_X):
+                        if ultima_raiz_num is not None \
+                                and comp_r[0] != ultima_raiz_num + 1:
+                            saltos.append({"tipo": "salto_raiz", "de": ultima_raiz_num,
+                                           "a": comp_r[0], "pagina": linea.pagina})
+                        cerrar_hasta(None)
+                        raiz = Nodo(tipo="seccion", numero=str(comp_r[0]),
+                                    titulo="", pagina=linea.pagina, sintetica=True)
+                        secciones.append(raiz)
+                        pila.append(raiz)
+                        ultima_raiz_num = comp_r[0]
+
             if m_num:
+                seccion = pila[0]   # las raíces sintéticas cambian pila a mitad de página
                 num = m_num.group(1)
                 comp = _componentes(num)
                 resto = linea.texto.split(None, 1)
@@ -573,6 +817,11 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                 and abs(linea.x0 - profundo.segmentos[-1][-1].x0) > TOL_X
             anexar(profundo, linea, nuevo_segmento=nuevo)
 
+    if modo_sin_raiz and nodo_preambulo is not None \
+            and not nodo_preambulo.segmentos and not nodo_preambulo.hijos:
+        # el preámbulo se creó pero la primera línea abrió raíz: no materializa
+        secciones.remove(nodo_preambulo)
+
     accounting = {
         "lineas_descartadas_encabezado_pie": len(acc_descartes),
         "detalle_descartes": acc_descartes,
@@ -582,6 +831,7 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         saltos_numeracion=saltos, avisos=avisos, accounting=accounting,
         lineas_contenido=n_contenido, paginas_cuerpo=n_paginas_cuerpo,
         lineas_huerfanas=n_huerfanas,
+        modo_lectura="sin_raiz" if modo_sin_raiz else "vigente",
     )
 
 
@@ -1055,6 +1305,11 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
     chunks: list[dict] = []
 
     def _titulo_linea(a: Nodo) -> str:
+        if a.sintetica:
+            # raíz del modo sin raíz (B5.8.1): el documento no dice 'Sección';
+            # el encabezado reproduce el estilo del label real ('17. BASE…'),
+            # la raíz implícita lleva su número solo y el preámbulo su título
+            return a.titulo if a.numero == "0" else f"{a.numero}. {a.titulo}".rstrip()
         return (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
                 else f"{a.numero}. {a.titulo}")
 
@@ -1146,8 +1401,14 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
                 lineas.extend(s)
             if nodo.tipo == "seccion":
                 unidad = f"S{nodo.numero}"
-                encabezado = f"Sección {nodo.numero}. {nodo.titulo}"
-                texto_propio = "\n".join([encabezado] + [l.texto for l in lineas])
+                if nodo.sintetica and nodo.linea_label is not None:
+                    # raíz explícita del modo sin raíz: la línea del label ya
+                    # encabeza `lineas` tal como está en el documento — no se
+                    # fabrica un encabezado que la duplique
+                    texto_propio = "\n".join(l.texto for l in lineas)
+                else:
+                    encabezado = _titulo_linea(nodo)
+                    texto_propio = "\n".join([encabezado] + [l.texto for l in lineas])
             else:
                 unidad = nodo.numero
                 texto_propio = "\n".join(l.texto for l in lineas)
@@ -1256,7 +1517,7 @@ def verificar_cobertura(res: ResultadoParseo) -> dict:
 
 def serializar_estructura(res: ResultadoParseo) -> dict:
     def ser(n: Nodo) -> dict:
-        return {
+        d = {
             "tipo": n.tipo, "numero": n.numero, "titulo": n.titulo,
             "pagina": n.pagina, "label_x0": n.label_x0, "text_col": n.text_col,
             "segmentos": [
@@ -1267,7 +1528,12 @@ def serializar_estructura(res: ResultadoParseo) -> dict:
             ],
             "hijos": [ser(h) for h in n.hijos],
         }
+        if n.sintetica:
+            d["sintetica"] = True   # clave condicional: los artefactos vigentes
+        return d                    # quedan byte-idénticos
     return {
+        **({"modo_lectura": res.modo_lectura}
+           if res.modo_lectura != "vigente" else {}),
         "to": res.to, "archivo": res.archivo,
         "paginas_cuerpo": res.paginas_cuerpo,
         "lineas_contenido": res.lineas_contenido,
