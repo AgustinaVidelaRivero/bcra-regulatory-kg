@@ -110,6 +110,61 @@ sites que comprobaron cero unidades por el camino vigente
 (healthcheck_e0 y el runner de B5.8.1); con `modo_sin_raiz=False` (el
 default de todos los call sites vigentes) ninguna rama nueva se ejecuta.
 
+REGLAS DE MARCADOR POR FAMILIA (unidad B5.8.2; censo B5.8.0 familias
+b_idx/b_sec): `marcadores_b582=True` (parámetro de `clasificar_paginas`,
+`parsear_cuerpo` y `parsear_indice`; False por default en todos los call
+sites vigentes) habilita las variantes de marcador MEDIDAS en el censo:
+
+  * MARCADOR DE ÍNDICE (RE_MARCA_INDICE_B582; misma guarda de tres capas
+    que B5.2 — línea entera, mayúscula inicial estricta, zona de título
+    POS_MARCA_INDICE): 'INDICE'/'ÍNDICE' en mayúsculas sostenidas
+    (nmaeef p.1, ri_dcpc p.1-2, ri_msrl p.1, ri_psp p.1), 'Índice -' con
+    guion solo a la derecha (consyr p.2) y '– Índice –' con guion largo
+    (seguef p.2). Contraejemplos medidos que NO matchean: '3.7.2. Indice
+    a utilizar' (ri_dcpc p.24: numeración adelante, no es línea-marcador),
+    la prosa de ri_dcpc p.10 ('…actualizables por algún índice.') y la
+    línea envuelta 'índice' en minúscula del cuerpo de cap (B5.2). La
+    heurística de continuación de índice (n_secc >= 2) NO se extiende a
+    las variantes: en ri_dcpc p.3 el encabezado 'SECCION 1 – MARCO
+    CONTABLE' aparece DOS veces en la zona de título y la página de
+    cuerpo se clasificaría índice (contraejemplo medido).
+  * ENCABEZADO DE SECCIÓN VARIANTE (solo capturado en la zona de
+    encabezado de página, igual que el vigente): 'SECCION/SECCIÓN
+    <n|romano> – Título' en mayúsculas (RE_SECCION_B582_CAPS; ri_dcpc
+    'SECCION 1 - MARCO CONTABLE', ri_psp 'SECCIÓN I – INSTRUCCIONES
+    GENERALES') y 'Sección <letra|romano> [.:-–] Título' (RE_SECCION_
+    B582_LETRA; reqcac 'Sección A – Introducción' en cuerpo y 'Sección
+    A. Introducción' en índice; ri_psp índice 'Sección I – …'). El
+    número de sección queda VERBATIM ('C', 'I'); la continuidad se
+    evalúa por familias de interpretación (letra/romano/número:
+    reqcac A→B→C sin saltos aun siendo C también romano; ri_psp IV→VI
+    con salto_seccion reportado) y los puntos bajo una sección no
+    numérica quedan rechazados como fuera_de_seccion (registrados,
+    nunca en silencio). La cola envuelta de título queda DESACTIVADA
+    para secciones matcheadas por variante: los títulos medidos caben
+    en una línea, y en reqcac p.3 la prosa inmediata (interlineado
+    < GAP_TOP_TITULO) se pegaría al título. Contraejemplos que NO
+    matchean: 'Sección Punto Párrafo Com. Anexo…' (seguef p.19: sin
+    separador tras el token) y 'la sección 4…' (remisión en prosa,
+    minúscula — guarda heredada del vigente).
+  * BANNER DE PÁGINA DE CAJA MIXTA (detectar_banners_texto): una línea
+    de la zona de título repetida VERBATIM en >=MIN_PAGS_BANNER páginas
+    se descarta como encabezado (reqcac p.2-10: 'Requisitos Operativos
+    Mínimos…' / 'Casas y Agencias de Cambio' — sin este descarte el
+    escaneo de encabezado corta en la primera línea mixta y nunca llega
+    a la línea de sección). El chequeo de sección corre ANTES del
+    descarte: 'SECCION 3 – CRITERIOS GENERALES' se repite en 20 páginas
+    de ri_dcpc y ES el encabezado corrido de su sección.
+
+  Misma garantía estructural que B5.8.1: los call sites (healthcheck_e0
+  y el runner de B5.8.2) solo pasan `marcadores_b582=True` tras
+  comprobar cero unidades por el camino vigente; con el default False
+  ninguna rama nueva se ejecuta. Casos medidos protegidos por la
+  compuerta: ri_pspapt y ri_psprca (familia a, secundaria b_sec) llevan
+  'SECCION <romano> –' en zona de título, pero sin página de índice
+  ninguna página llega a cuerpo en la etapa de marcadores y su camino
+  sigue siendo el de B5.8.1, byte-idéntico.
+
 Sin llamadas a LLM: código determinístico puro.
 """
 
@@ -199,6 +254,35 @@ POS_ZONA_BANNER = 6        # zona de detección de banners (líneas iniciales de
 # `titulo_mayuscula` del parser vigente
 RE_TITULO_RAIZ = re.compile(r'^[A-ZÁÉÍÓÚÜÑ"“\'(«]')
 
+# --------- reglas de marcador por familia (B5.8.2; ver docstring) ---------
+# Variantes de marcador de índice MEDIDAS (censo B5.8.0, familia b_idx):
+# mayúsculas sostenidas ('INDICE' nmaeef p.1 / ri_dcpc p.1-2 / ri_psp p.1,
+# 'ÍNDICE' ri_msrl p.1), guion solo a la derecha ('Índice -' consyr p.2) y
+# guion largo a ambos lados ('– Índice –' seguef p.2). Línea entera y
+# mayúscula inicial ESTRICTA (sin IGNORECASE), como la guarda B5.2; la capa
+# posicional (POS_MARCA_INDICE) la aplican los call sites.
+RE_MARCA_INDICE_B582 = re.compile(
+    r"^(?:[ÍI]NDICE|[ÍI]ndice\s*[-–—]|[–—]\s*[ÍI]ndice\s*[-–—]?)$")
+# Encabezado de sección variante (censo familias b_idx/b_sec). CAPS: separador
+# guion/guion largo, número arábigo (ri_dcpc 'SECCION 1 - MARCO CONTABLE') o
+# romano (ri_psp 'SECCIÓN I – INSTRUCCIONES GENERALES'); el separador [.:] en
+# mayúsculas no está medido y queda fuera. LETRA: 'Sección' con inicial
+# mayúscula + letra sola o romano + separador punto/dos puntos/guion (reqcac
+# cuerpo 'Sección A – Introducción' / 'Sección B - Controles…' e índice
+# 'Sección A. Introducción'; ri_psp índice 'Sección I – …'). Sin separador no
+# hay match ('Sección Punto Párrafo…' de seguef p.19); 'sección' minúscula
+# (remisión en prosa) tampoco.
+RE_SECCION_B582_CAPS = re.compile(r"^SECCI[OÓ]N\s+(\d+|[IVX]{1,6})\s*[-–—]\s*(.*)$")
+RE_SECCION_B582_LETRA = re.compile(r"^Secci[oó]n\s+([A-Z]{1,6})\s*[.:\-–—]\s*(.*)$")
+
+
+def _match_seccion_b582(texto: str) -> tuple[str, str] | None:
+    """(numero VERBATIM, título) si la línea es un encabezado de sección en
+    alguna variante B5.8.2; None si no. Solo la consultan los caminos con
+    `marcadores_b582=True` (el vigente RE_SECCION se chequea siempre antes)."""
+    m = RE_SECCION_B582_CAPS.match(texto) or RE_SECCION_B582_LETRA.match(texto)
+    return (m.group(1), m.group(2).strip()) if m else None
+
 
 # ------------------------------------------------------------------- líneas
 
@@ -257,7 +341,8 @@ ROL_CUERPO = "cuerpo"
 ROL_REGISTRO = "ficha_registro"   # solo lo asigna el modo sin raíz (B5.8.1)
 
 
-def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
+def clasificar_paginas(paginas: list[list[Linea]],
+                       marcadores_b582: bool = False) -> list[str]:
     """portada = antes de la primera página de índice; índice = marcador
     '-Índice-' (variantes con espacio/guion largo), 'Índice' a línea entera
     sin guiones (con la guarda de RE_MARCA_INDICE_SIN_GUIONES: mayúscula
@@ -265,7 +350,13 @@ def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
     (página que sigue a una de índice con ≥2 líneas 'Sección N.'); tabla_norma_origen =
     contiene 'NORMA DE ORIGEN'; historial = desde la página cuyo primer
     contenido anuncia el historial de Comunicaciones de la norma (pegajoso
-    hasta el próximo marcador explícito de otro rol); cuerpo = resto."""
+    hasta el próximo marcador explícito de otro rol); cuerpo = resto.
+
+    Con `marcadores_b582=True` (B5.8.2; SOLO tras comprobar cero unidades por
+    el camino vigente) el marcador de índice admite además las variantes
+    medidas de RE_MARCA_INDICE_B582, con la misma guarda posicional. La
+    heurística de continuación (n_secc >= 2) NO se extiende: ver docstring
+    del módulo (contraejemplo ri_dcpc p.3)."""
     roles: list[str] = []
     visto_indice = False
     en_historial = False
@@ -277,7 +368,10 @@ def clasificar_paginas(paginas: list[list[Linea]]) -> list[str]:
             en_historial = False
         elif any(RE_MARCA_INDICE.match(t) for t in textos) \
                 or any(RE_MARCA_INDICE_SIN_GUIONES.match(t)
-                       for t in textos[:POS_MARCA_INDICE]):
+                       for t in textos[:POS_MARCA_INDICE]) \
+                or (marcadores_b582
+                    and any(RE_MARCA_INDICE_B582.match(t)
+                            for t in textos[:POS_MARCA_INDICE])):
             rol = ROL_INDICE
             visto_indice = True
             en_historial = False
@@ -338,6 +432,27 @@ def detectar_banners(paginas: list[list[Linea]]) -> set[tuple[str, str]]:
     return {c for c, ps in paginas_por_clave.items() if len(ps) >= MIN_PAGS_BANNER}
 
 
+def detectar_banners_texto(paginas: list[list[Linea]]) -> set[str]:
+    """B5.8.2 — banner de página de caja mixta: líneas de la zona de título
+    (primeras POS_ZONA_BANNER) repetidas VERBATIM en ≥MIN_PAGS_BANNER páginas.
+    A diferencia de `detectar_banners` (B5.8.1: líneas NUMERADAS en mayúsculas
+    sostenidas), acá la identidad es el texto completo y sin requisito de
+    forma: el banner medido de reqcac ('Requisitos Operativos Mínimos de
+    Tecnología…' / 'Casas y Agencias de Cambio', p.2-10) va en caja mixta y
+    el descarte vigente de títulos en mayúsculas no lo alcanza. Solo lo
+    consumen los caminos con `marcadores_b582=True`, y el chequeo de sección
+    de `separar_encabezado_pie` corre ANTES del descarte (contraejemplo:
+    'SECCION 3 – CRITERIOS GENERALES' se repite en 20 páginas de ri_dcpc y
+    ES el encabezado corrido de su sección)."""
+    por_texto: dict[str, set[int]] = {}
+    for pi, lineas in enumerate(paginas, start=1):
+        for l in lineas[:POS_ZONA_BANNER]:
+            t = l.texto.strip()
+            if t:
+                por_texto.setdefault(t, set()).add(pi)
+    return {t for t, ps in por_texto.items() if len(ps) >= MIN_PAGS_BANNER}
+
+
 def marcar_paginas_registro(paginas: list[list[Linea]], roles: list[str]) -> list[str]:
     """Página de cuerpo cuya fracción de líneas ficha/código alcanza
     DENS_REGISTRO_MIN → rol `ficha_registro` (fuera del parseo de prosa,
@@ -385,6 +500,8 @@ def _es_titulo_mayusculas(texto: str) -> bool:
 
 def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
                            labels_preservables: set | None = None,
+                           seccion_b582: bool = False,
+                           banners_texto: set | None = None,
                            ) -> tuple[list[Linea], list[Linea], str | None]:
     """Devuelve (contenido, descartadas, seccion_corrida).
 
@@ -400,7 +517,16 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     repetido — las raíces genuinas de la espina van en mayúsculas en varios
     TOs medidos ('1. DATOS GENERALES' de ri_ii_31_12_19) y el descarte
     genérico de títulos las perdería; los banners ('17. BASE DE DATOS
-    PADRÓN…') siguen descartándose como hasta ahora."""
+    PADRÓN…') siguen descartándose como hasta ahora.
+
+    `seccion_b582` y `banners_texto` (solo los pasan los caminos B5.8.2, ver
+    docstring del módulo): con seccion_b582, una línea de la zona que matchea
+    una variante de sección (RE_SECCION_B582_*) se captura como
+    seccion_corrida SIN cola envuelta (títulos medidos completos en una
+    línea; en reqcac p.3 la prosa inmediata se pegaría al título); con
+    banners_texto, una línea de la zona repetida verbatim en
+    ≥MIN_PAGS_BANNER páginas se descarta como encabezado — DESPUÉS de los
+    chequeos de sección, que tienen precedencia."""
     descartadas: list[Linea] = []
     contenido = list(lineas)
     seccion_corrida: str | None = None
@@ -416,6 +542,9 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
         t = contenido[0].texto.strip()
         m = RE_SECCION.match(t)
         m_en_linea = RE_SECCION_EN_LINEA.search(t) if "B.C.R.A." in t else None
+        m_b582 = (_match_seccion_b582(t)
+                  if seccion_b582 and capturar_seccion and seccion_corrida is None
+                  else None)
         if m and capturar_seccion and seccion_corrida is None:
             # la línea 'Sección N. …' puede contener 'B.C.R.A.' en su TÍTULO
             # (ric Sección 7), por eso se chequea antes que el descarte genérico
@@ -429,10 +558,21 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             ultima_top_seccion = contenido[0].top
             descartadas.append(contenido.pop(0))
             quitadas += 1
+        elif m_b582 is not None:
+            # sección por variante B5.8.2 — cola envuelta DESACTIVADA
+            # (ultima_top_seccion queda en None; ver docstring)
+            seccion_corrida = t
+            descartadas.append(contenido.pop(0))
+            quitadas += 1
         elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
                                  and not (labels_preservables is not None
                                           and _clave_banner(t) is not None
                                           and _clave_banner(t) not in labels_preservables)):
+            descartadas.append(contenido.pop(0))
+            quitadas += 1
+        elif banners_texto is not None and t in banners_texto:
+            # banner de página de caja mixta (B5.8.2): repetido verbatim en
+            # la zona de título de ≥MIN_PAGS_BANNER páginas
             descartadas.append(contenido.pop(0))
             quitadas += 1
         elif seccion_corrida is not None and ultima_top_seccion is not None \
@@ -494,12 +634,18 @@ def _componentes(num: str) -> list[int]:
 
 
 def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
-                   roles: list[str], modo_sin_raiz: bool = False) -> ResultadoParseo:
+                   roles: list[str], modo_sin_raiz: bool = False,
+                   marcadores_b582: bool = False) -> ResultadoParseo:
     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
     comportamiento es el histórico. Con True rige además la gramática de
     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
     módulo): SOLO debe invocarse así tras comprobar que el camino vigente
-    produjo cero unidades para el TO."""
+    produjo cero unidades para el TO.
+
+    Con `marcadores_b582=True` (B5.8.2; misma condición de activación, y
+    nunca combinado con modo_sin_raiz en los call sites) rigen además las
+    variantes de encabezado de sección y el descarte de banner de caja mixta
+    (ver docstring del módulo)."""
     secciones: list[Nodo] = []
     rechazos: list[dict] = []
     saltos: list[dict] = []
@@ -515,6 +661,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
     nodo_preambulo: Nodo | None = None
     ultima_raiz_num: int | None = None   # última raíz/sección abierta (monotonía G2)
     col_raiz: float | None = None        # columna mínima de raíz explícita aceptada (G3)
+    # estado B5.8.2 (inerte con marcadores_b582=False)
+    banners_texto = detectar_banners_texto(paginas) if marcadores_b582 else None
 
     def cerrar_hasta(nodo: Nodo | None) -> None:
         """Deja la pila abierta hasta `nodo` inclusive (None → vacía)."""
@@ -532,7 +680,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
             continue
         n_paginas_cuerpo += 1
         contenido, descartadas, seccion_corrida = separar_encabezado_pie(
-            lineas, labels_preservables=banners if modo_sin_raiz else None)
+            lineas, labels_preservables=banners if modo_sin_raiz else None,
+            seccion_b582=marcadores_b582, banners_texto=banners_texto)
         for d in descartadas:
             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
 
@@ -546,7 +695,12 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
             # con encabezado anómalo); no se tiran.
         else:
             m = RE_SECCION.match(seccion_corrida)
-            num_sec, titulo_sec = m.group(1), m.group(2).strip()
+            if m:
+                num_sec, titulo_sec = m.group(1), m.group(2).strip()
+            else:
+                # solo alcanzable con marcadores_b582=True: la línea fue
+                # capturada por una variante B5.8.2 (número VERBATIM: 'C', 'I')
+                num_sec, titulo_sec = _match_seccion_b582(seccion_corrida)
             actual = pila[0] if pila else None
             if actual is None or actual.numero != num_sec:
                 # arranca una sección nueva
@@ -555,9 +709,17 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                                    "pagina": pi})
                 cerrar_hasta(None)
                 sec = Nodo(tipo="seccion", numero=num_sec, titulo=titulo_sec, pagina=pi)
-                if secciones and _componentes(num_sec)[0] != _componentes(secciones[-1].numero)[0] + 1:
-                    saltos.append({"tipo": "salto_seccion", "de": secciones[-1].numero,
-                                   "a": num_sec, "pagina": pi})
+                if secciones:
+                    previa_num = secciones[-1].numero
+                    if num_sec.isdigit() and previa_num.isdigit():
+                        if _componentes(num_sec)[0] != _componentes(previa_num)[0] + 1:
+                            saltos.append({"tipo": "salto_seccion", "de": previa_num,
+                                           "a": num_sec, "pagina": pi})
+                    elif not _es_sucesor_seccion(previa_num, num_sec):
+                        # numeración no numérica (B5.8.2): sucesión por familias
+                        # de interpretación (letra/romano/número)
+                        saltos.append({"tipo": "salto_seccion", "de": previa_num,
+                                       "a": num_sec, "pagina": pi})
                 secciones.append(sec)
                 pila.append(sec)
                 if modo_sin_raiz:
@@ -831,7 +993,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         saltos_numeracion=saltos, avisos=avisos, accounting=accounting,
         lineas_contenido=n_contenido, paginas_cuerpo=n_paginas_cuerpo,
         lineas_huerfanas=n_huerfanas,
-        modo_lectura="sin_raiz" if modo_sin_raiz else "vigente",
+        modo_lectura=("sin_raiz" if modo_sin_raiz
+                      else "marcadores" if marcadores_b582 else "vigente"),
     )
 
 
@@ -874,6 +1037,47 @@ def _interpretaciones(token: str) -> set[tuple[str, int]]:
 def _es_sucesor(previo: str, candidato: str) -> bool:
     inter_c = _interpretaciones(candidato)
     return any((f, v + 1) in inter_c for f, v in _interpretaciones(previo))
+
+
+# ----- numeración de sección no numérica (B5.8.2: letras y romanos) -----
+
+_ROMANOS_MAY = {_romano(n).upper(): n for n in range(1, 40)}
+
+
+def _interpretaciones_seccion(num: str) -> set[tuple[str, int]]:
+    """Familias en las que un número de sección B5.8.2 es un valor: número
+    arábigo, romano canónico en mayúsculas (1–39) o letra sola A–Z. Un token
+    puede vivir en varias ('C' es letra 3; 'I' es romano 1 y letra 9): la
+    sucesión se resuelve en `_es_sucesor_seccion` exigiendo UNA familia común
+    (reqcac A→B→C avanza por letras; ri_psp IV→VI no tiene sucesor y el
+    salto se reporta). Mismo patrón que `_interpretaciones` (regla 1)."""
+    out: set[tuple[str, int]] = set()
+    if num.isdigit():
+        out.add(("numero", int(num)))
+    if num in _ROMANOS_MAY:
+        out.add(("romano", _ROMANOS_MAY[num]))
+    if len(num) == 1 and "A" <= num <= "Z":
+        out.add(("letra", ord(num) - ord("A") + 1))
+    return out
+
+
+def _es_sucesor_seccion(previo: str, candidato: str) -> bool:
+    inter_c = _interpretaciones_seccion(candidato)
+    return any((f, v + 1) in inter_c for f, v in _interpretaciones_seccion(previo))
+
+
+def _orden_componente_seccion(x: str) -> int:
+    """Clave de orden de un componente de numeración para reportes (B5.8.2:
+    admite letras y romanos; para dígitos es int(x), idéntico al orden
+    histórico). Ante ambigüedad usa la interpretación de menor valor ('C' →
+    3, 'I' → 1); un token fuera de toda familia ordena al final por su primer
+    carácter (determinístico)."""
+    if x.isdigit():
+        return int(x)
+    interps = _interpretaciones_seccion(x)
+    if interps:
+        return min(v for _, v in interps)
+    return 10000 + (ord(x[0]) if x else 0)
 
 
 def _ultimo_marcador_propio(nodo: Nodo) -> str | None:
@@ -1116,23 +1320,33 @@ def corregir_fronteras_intra_palabra(res: ResultadoParseo) -> dict:
 
 # -------------------------------------------------------------------- índice
 
-def parsear_indice(paginas: list[list[Linea]], roles: list[str]) -> list[dict]:
+def parsear_indice(paginas: list[list[Linea]], roles: list[str],
+                   marcadores_b582: bool = False) -> list[dict]:
     """Entradas del índice: {tipo: seccion|punto|otro, numero, titulo, pagina}.
     Los títulos envueltos en varias líneas se re-unen (una línea sin numeración
-    continúa la entrada previa)."""
+    continúa la entrada previa). Con `marcadores_b582=True` (B5.8.2) las
+    variantes de marcador de índice se saltan como marcador, las entradas de
+    sección variante ('Sección A. Introducción' de reqcac, 'SECCION 1 - …' de
+    ri_dcpc) se leen como entradas de sección, y el banner de caja mixta se
+    descarta como encabezado."""
     entradas: list[dict] = []
+    banners_texto = detectar_banners_texto(paginas) if marcadores_b582 else None
     for lineas, rol in zip(paginas, roles):
         if rol != ROL_INDICE:
             continue
-        contenido, _desc, _sec = separar_encabezado_pie(lineas, capturar_seccion=False)
+        contenido, _desc, _sec = separar_encabezado_pie(
+            lineas, capturar_seccion=False, banners_texto=banners_texto)
         for linea in contenido:
             t = linea.texto.strip()
-            if RE_MARCA_INDICE.match(t) or RE_MARCA_INDICE_SIN_GUIONES.match(t):
+            if RE_MARCA_INDICE.match(t) or RE_MARCA_INDICE_SIN_GUIONES.match(t) \
+                    or (marcadores_b582 and RE_MARCA_INDICE_B582.match(t)):
                 # la variante sin guiones se salta en cualquier posición: en una
                 # página ya clasificada índice, 'Índice' a línea entera es el
                 # marcador (ninguna sección se titula así), no una entrada
                 continue
             m_sec = RE_SECCION.match(t)
+            sec_b582 = (_match_seccion_b582(t)
+                        if marcadores_b582 and not m_sec else None)
             tokens = t.split()
             m_num = RE_NUM_TOKEN.match(tokens[0]) if tokens else None
             if not m_num and tokens and re.match(r"^\d+(\.\d+)*$", tokens[0]) and len(tokens) > 1:
@@ -1140,6 +1354,9 @@ def parsear_indice(paginas: list[list[Linea]], roles: list[str]) -> list[dict]:
             if m_sec:
                 entradas.append({"tipo": "seccion", "numero": m_sec.group(1),
                                  "titulo": m_sec.group(2).strip(), "pagina": linea.pagina})
+            elif sec_b582 is not None:
+                entradas.append({"tipo": "seccion", "numero": sec_b582[0],
+                                 "titulo": sec_b582[1], "pagina": linea.pagina})
             elif m_num and int(m_num.group(1).split(".")[0]) <= MAX_RAIZ:
                 entradas.append({"tipo": "punto", "numero": m_num.group(1),
                                  "titulo": t[len(tokens[0]):].strip(), "pagina": linea.pagina})
@@ -1190,7 +1407,10 @@ def divergencias_indice_cuerpo(res: ResultadoParseo, indice: list[dict]) -> dict
                                            "pagina_cuerpo": s.pagina})
 
     def _clave(d):
-        return [int(x) for x in d["numero"].lstrip("S").split(".")]
+        # _orden_componente_seccion == int(x) para dígitos (orden histórico
+        # intacto); letras y romanos (B5.8.2) ordenan por su interpretación
+        return [_orden_componente_seccion(x)
+                for x in d["numero"].lstrip("S").split(".")]
     return {
         "to": res.to,
         "profundidad_declarada_indice": profundidad_indice,

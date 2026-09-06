@@ -40,6 +40,16 @@ reintenta con el modo de lectura sin raíz de sección (e0_lib, docstring del
 módulo) y lo declara en el campo `modo_lectura` del reporte ('vigente' /
 'sin_raiz'); las señales se computan sobre el parse que produjo unidades.
 
+Desde B5.8.2: entre ambos caminos se intercala el reintento con las reglas
+de marcador por familia (variantes medidas de índice y de sección; e0_lib,
+docstring del módulo). Escalera completa: vigente → marcadores → sin raíz,
+cada etapa SOLO si la anterior produjo cero unidades; `modo_lectura` declara
+la etapa que produjo las señales ('vigente' / 'marcadores' / 'sin_raiz') y
+la clave condicional `indice_b582` (solo presente cuando las variantes de
+marcador reclasificaron páginas) deja constancia de los roles nuevos. Para
+un TO sin variantes de marcador la etapa intermedia no cambia nada y el
+reporte es byte-idéntico al de B5.8.1.
+
 Veredicto por TO: 'sano' si ninguna señal dispara; si no, la lista de
 señales disparadas. El veredicto es de LECTURA (dónde mirar antes de gastar
 en E1), no un gate: los umbrales vienen declarados de la banda de referencia
@@ -77,29 +87,46 @@ def health_check_to(pdf_path: Path, to: str | None = None,
     """Corre E0 completo (parser + reglas 1 y 2 + chunker, mismo orden que el
     driver de producción) sobre un PDF y devuelve el reporte de señales.
 
-    Activación del modo sin raíz (B5.8.1, garantía estructural): si y solo si
-    el camino vigente produjo CERO unidades de extracción, se reintenta con
-    los roles derivados y `parsear_cuerpo(..., modo_sin_raiz=True)`; el campo
-    `modo_lectura` del reporte declara qué camino produjo las señales. Un TO
-    que produce unidades por el camino vigente jamás entra al modo nuevo."""
+    Activación escalonada (garantía estructural de B5.8.1, heredada por
+    B5.8.2): cada etapa corre si y solo si la anterior produjo CERO unidades
+    de extracción — vigente → marcadores (variantes B5.8.2, sobre los roles
+    reclasificados con las variantes de índice) → sin raíz (roles derivados
+    sobre esa misma clasificación; para un TO sin variantes de marcador es
+    exactamente la etapa de B5.8.1). El campo `modo_lectura` declara qué
+    etapa produjo las señales. Un TO que produce unidades por el camino
+    vigente jamás entra a ninguna etapa nueva."""
     to = to or E0.TO_KEYS.get(pdf_path.name, pdf_path.stem)
     paginas = E0.extraer_lineas(pdf_path)
     roles = E0.clasificar_paginas(paginas)
 
-    # --- parseo (idéntica secuencia a correr_e0.correr: reglas 1 y 2 aplicadas)
-    res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles)
-    res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
-    res.correccion_fronteras = E0.corregir_fronteras_intra_palabra(res)
-    chunks = E0.construir_chunks(res)
-    modo_lectura = "vigente"
-    if not chunks:
-        roles = E0.roles_para_modo_sin_raiz(paginas, roles)
-        res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles,
-                                modo_sin_raiz=True)
+    def _pipeline(res: "E0.ResultadoParseo") -> list[dict]:
         res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
         res.correccion_fronteras = E0.corregir_fronteras_intra_palabra(res)
-        chunks = E0.construir_chunks(res)
-        modo_lectura = "sin_raiz"
+        return E0.construir_chunks(res)
+
+    # --- parseo (idéntica secuencia a correr_e0.correr: reglas 1 y 2 aplicadas)
+    res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles)
+    chunks = _pipeline(res)
+    modo_lectura = "vigente"
+    indice_b582 = False
+    if not chunks:
+        # etapa B5.8.2: variantes de marcador medidas
+        roles_m = E0.clasificar_paginas(paginas, marcadores_b582=True)
+        indice_b582 = roles_m != roles
+        res_m = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles_m,
+                                  marcadores_b582=True)
+        chunks_m = _pipeline(res_m)
+        if chunks_m:
+            res, chunks, roles = res_m, chunks_m, roles_m
+            modo_lectura = "marcadores"
+        else:
+            # etapa B5.8.1 sobre la clasificación de marcadores (idéntica a
+            # la histórica cuando roles_m == roles, es decir, sin variantes)
+            roles = E0.roles_para_modo_sin_raiz(paginas, roles_m)
+            res = E0.parsear_cuerpo(to, pdf_path.name, paginas, roles,
+                                    modo_sin_raiz=True)
+            chunks = _pipeline(res)
+            modo_lectura = "sin_raiz"
     cob = E0.verificar_cobertura(res)
 
     # --- señal 1: (cid:NN) sobre TODAS las líneas extraídas (todos los roles)
@@ -168,6 +195,9 @@ def health_check_to(pdf_path: Path, to: str | None = None,
         "archivo": pdf_path.name,
         "paginas": len(paginas),
         "modo_lectura": modo_lectura,
+        # clave condicional (patrón `sintetica` de serializar_estructura): los
+        # reportes de TOs sin variantes de marcador quedan byte-idénticos
+        **({"indice_b582": True} if indice_b582 else {}),
         "roles_pagina": {r: roles.count(r) for r in sorted(set(roles))},
         "unidades_extraccion": len(chunks),
         "senales": senales,
