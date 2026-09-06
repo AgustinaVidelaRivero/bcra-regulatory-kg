@@ -38,6 +38,7 @@ AQUI = Path(__file__).resolve().parent                   # reextraccion_v2/
 REPO = AQUI.parents[2]                                   # raíz del repo
 MANIFIESTOS_DIR = AQUI / "manifiestos"
 GRAFO_V2_CODE = REPO / "data" / "experiment" / "grafo_v2" / "code"
+E1_DIR = AQUI / "e1_extractor"
 
 VERSIONES_CONOCIDAS = ("1",)
 
@@ -62,6 +63,10 @@ class Manifiesto:
         self.orden_corrida: list[str] = list(datos["orden_corrida"])
         self.ids: list[str] = [t["id"] for t in self.tos]
         self._por_id: dict[str, dict] = {t["id"]: t for t in self.tos}
+        # U-CABLE-V3: perfil de extracción E1 del corpus. Campo OPCIONAL:
+        # ausente = el perfil de desarrollo vigente (el manifiesto dev no se
+        # edita); el corpus escalado declara "v3_b54".
+        self.perfil_e1: str = datos.get("perfil_e1") or "produccion_dev"
 
     # ------------------------------ accessors ---------------------------- #
     def to_de(self, tid: str) -> dict:
@@ -132,29 +137,55 @@ def _err(msg: str) -> None:
     raise ErrorManifiesto(msg)
 
 
-def _validar_roles_contra_catalogo(tos: list[dict]) -> None:
-    """Consistencia manifiesto ↔ catálogo de sujetos (fuente única). El
-    catálogo se importa solo lectura vía schema.py (mismo camino que E1)."""
-    if str(GRAFO_V2_CODE) not in sys.path:
-        sys.path.insert(0, str(GRAFO_V2_CODE))
-    from schema import ROL_POR_TO  # import diferido: solo lectura del catálogo
+def _validar_roles_contra_catalogo(tos: list[dict],
+                                   nombre_perfil: str = "produccion_dev") -> None:
+    """Consistencia manifiesto ↔ catálogo de sujetos del PERFIL del corpus
+    (fuente única: schema.py para el perfil de desarrollo; el módulo v3
+    sellado, vía perfil_e1, para "v3_b54"). Solo lectura.
+
+    Reglas del modo v3 (U-CABLE-V3, decisión 2 — el campo rol_id de un mapeo
+    a clase porta un id de CLASE y se lee como «sujeto por defecto del TO»):
+      - entrada con rol_id (rol A2 o clase única): rol_alcance == rol_id;
+      - entrada con rol_id null y clase_ids (ri2_ci): rol_alcance declara la
+        LISTA exacta de clase_ids (única forma admitida de lista);
+      - TO sin entrada (huecos docvig/fimipyme y desconocidos): rol_alcance
+        null obligatorio."""
+    if nombre_perfil == "produccion_dev":
+        if str(GRAFO_V2_CODE) not in sys.path:
+            sys.path.insert(0, str(GRAFO_V2_CODE))
+        from schema import ROL_POR_TO  # import diferido: solo lectura del catálogo
+        rol_por_to = ROL_POR_TO
+    else:
+        if str(E1_DIR) not in sys.path:
+            sys.path.insert(0, str(E1_DIR))
+        import perfil_e1  # import diferido: candados del perfil corren acá
+        rol_por_to = perfil_e1.perfil(nombre_perfil).rol_por_to
 
     for t in tos:
-        rol_cat = ROL_POR_TO.get(t["archivo"])
+        rol_cat = rol_por_to.get(t["archivo"])
         declarado = t["rol_alcance"]
         if declarado is None and rol_cat is not None:
             _err(f"TO '{t['id']}': rol_alcance null pero el catálogo declara "
-                 f"el rol '{rol_cat['rol_id']}' para {t['archivo']} — un rol "
-                 f"del catálogo no se silencia por manifiesto")
+                 f"'{rol_cat.get('rol_id') or rol_cat.get('clase_ids')}' para "
+                 f"{t['archivo']} — una entrada del catálogo no se silencia "
+                 f"por manifiesto")
         if declarado is not None and rol_cat is None:
             _err(f"TO '{t['id']}': rol_alcance '{declarado}' declarado pero el "
-                 f"catálogo NO tiene rol para {t['archivo']} — la tabla TO→rol "
-                 f"del catálogo la puebla B5.4; hasta entonces este TO declara "
-                 f"rol_alcance null")
-        if declarado is not None and rol_cat is not None \
-                and declarado != rol_cat["rol_id"]:
-            _err(f"TO '{t['id']}': rol_alcance '{declarado}' ≠ rol del catálogo "
-                 f"'{rol_cat['rol_id']}' para {t['archivo']}")
+                 f"catálogo del perfil '{nombre_perfil}' no declara rol para "
+                 f"{t['archivo']} — o el manifiesto declara rol_alcance null o "
+                 f"el TO entra al catálogo por su circuito de refinamiento")
+        if declarado is not None and rol_cat is not None:
+            if rol_cat.get("rol_id"):
+                if declarado != rol_cat["rol_id"]:
+                    _err(f"TO '{t['id']}': rol_alcance '{declarado}' ≠ rol del "
+                         f"catálogo '{rol_cat['rol_id']}' para {t['archivo']}")
+            else:
+                # Mapeo a DOS clases (ri2_ci): la declaración es la lista exacta.
+                if declarado != rol_cat.get("clase_ids"):
+                    _err(f"TO '{t['id']}': rol_alcance {declarado!r} ≠ clase_ids "
+                         f"del catálogo {rol_cat.get('clase_ids')!r} para "
+                         f"{t['archivo']} (entrada sin rol único: se declara la "
+                         f"lista exacta)")
 
 
 def cargar(path: Path | str, verificar_sha: bool = True,
@@ -202,9 +233,21 @@ def cargar(path: Path | str, verificar_sha: bool = True,
         _err(f"orden_corrida no es permutación exacta de los ids: "
              f"orden={orden} ids={sorted(ids)}")
 
-    # 4. roles contra el catálogo (fuente única)
+    # 3bis. perfil de extracción (U-CABLE-V3): campo opcional; un valor fuera
+    # del registro de perfiles frena SIEMPRE (aunque validar_roles sea False:
+    # es un typo del manifiesto, no una consulta al catálogo). El import es
+    # barato: perfil_e1 no carga nada pesado a nivel módulo.
+    nombre_perfil = d.get("perfil_e1") or "produccion_dev"
+    if str(E1_DIR) not in sys.path:
+        sys.path.insert(0, str(E1_DIR))
+    import perfil_e1
+    if nombre_perfil not in perfil_e1.PERFILES_CONOCIDOS:
+        _err(f"perfil_e1 desconocido: {nombre_perfil!r} (conocidos: "
+             f"{perfil_e1.PERFILES_CONOCIDOS})")
+
+    # 4. roles contra el catálogo del perfil (fuente única)
     if validar_roles:
-        _validar_roles_contra_catalogo(tos)
+        _validar_roles_contra_catalogo(tos, nombre_perfil)
 
     # 5. oráculo y limitaciones
     ora = d.get("oraculo") or {}

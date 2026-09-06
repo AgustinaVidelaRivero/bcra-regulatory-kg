@@ -238,7 +238,8 @@ def guarda_fanin(chunks: list[dict], registros: list[dict]) -> dict:
 # T1 — Ensamblador: extracciones-por-chunk → grafo
 # =========================================================================
 
-def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
+def ensamblar(chunks: list[dict], registros: list[dict],
+              esquema=None, labels_catalogo: dict | None = None) -> dict:
     """Ensambla el grafo desde los registros ACEPTADOS de E1.
 
     Determinístico: los registros se procesan en el orden documental de E0
@@ -246,10 +247,23 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
     contenido (slug+sha). Dedup EXACTO por (type, slug); provenances
     acumuladas con dedup exacto; conflictos de properties se resuelven
     first-write-wins EN ORDEN DOCUMENTAL y quedan registrados (insumo E4).
-    """
+
+    esquema / labels_catalogo (U-CABLE-V3): vocabulario y labels del PERFIL
+    de la corrida. Defaults None = schema v2 + esquema_v2_clases.json, byte a
+    byte el comportamiento sellado. En modo v3 el vocabulario es el congelado
+    (9 tipos / 13 predicados / catálogo de 102) y los labels salen del bloque
+    de catálogo v3; un sujeto que igual cayera al fallback (label=id) queda
+    CONTADO en stats (registro visible, no rechazo — la clave solo aparece si
+    hubo casos, así el reporte dev no cambia)."""
+    _ent_types = ENTITY_TYPES if esquema is None else esquema.entity_types
+    _preds = PREDICATES if esquema is None else esquema.predicates
+    _suj_preds = SUJETO_PREDICATES if esquema is None else esquema.sujeto_predicates
+    _suj_set = SUJETOS_CATALOGO_SET if esquema is None else esquema.sujetos_catalogo_set
+    _firma = is_valid_triple if esquema is None else esquema.firma_valida
+
     orden_e0 = {c["id"]: i for i, c in enumerate(chunks)}
     chunk_por_id = {c["id"]: c for c in chunks}
-    labels_cat = _labels_catalogo()
+    labels_cat = labels_catalogo if labels_catalogo is not None else _labels_catalogo()
 
     aceptados = []
     for reg in registros:
@@ -311,7 +325,7 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
                 aporte["contenido_propio"] += 1
             else:
                 aporte["contenido_herencia"] += 1
-            if etype not in ENTITY_TYPES:
+            if etype not in _ent_types:
                 # E1 ya validó types; esto solo puede dispararse con insumos
                 # corruptos — se registra, no se ensambla en silencio.
                 rechazos_e2.append({"chunk_id": cid, "motivo": "type_invalido",
@@ -349,6 +363,11 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
         def nodo_sujeto(sujeto_id: str, prov: dict) -> str:
             info = labels_cat.get(sujeto_id, {})
             if sujeto_id not in nodes_by_id:
+                if not info:
+                    # Fallback label=id: en dev no ocurre (catálogo completo);
+                    # en v3 sería un gap del perfil — contado, no silenciado.
+                    stats["sujetos_sin_label_catalogo"] = \
+                        stats.get("sujetos_sin_label_catalogo", 0) + 1
                 nodes_by_id[sujeto_id] = {
                     "id": sujeto_id, "type": "Sujeto",
                     "label": info.get("label", sujeto_id),
@@ -404,12 +423,12 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
             stats["relaciones_in"] += 1
             pred = r["predicate"]
             prov = r["provenance"]
-            if pred not in PREDICATES:
+            if pred not in _preds:
                 rechazos_e2.append({"chunk_id": cid, "motivo": "predicado_invalido",
                                     "detalle": str(pred)})
                 continue
 
-            if pred in SUJETO_PREDICATES:
+            if pred in _suj_preds:
                 extremo_local = r.get("source") if pred == "aplica_a" else r.get("target")
                 ent_gid = local_to_global.get(extremo_local)
                 if ent_gid is None or ent_gid not in nodes_by_id:
@@ -417,9 +436,9 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
                                         "detalle": f"{pred}: extremo '{extremo_local}'"})
                     continue
                 ent_type = nodes_by_id[ent_gid]["type"]
-                firma_ok = (is_valid_triple(ent_type, pred, "Sujeto")
+                firma_ok = (_firma(ent_type, pred, "Sujeto")
                             if pred == "aplica_a"
-                            else is_valid_triple("Sujeto", pred, ent_type))
+                            else _firma("Sujeto", pred, ent_type))
                 if not firma_ok:
                     rechazos_e2.append({"chunk_id": cid, "motivo": "firma_invalida",
                                         "detalle": f"{ent_type} --{pred}--> Sujeto"
@@ -428,7 +447,7 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
                     continue
                 sujeto_id = r.get("sujeto_id")
                 if sujeto_id:
-                    if sujeto_id not in SUJETOS_CATALOGO_SET:
+                    if sujeto_id not in _suj_set:
                         rechazos_e2.append({"chunk_id": cid,
                                             "motivo": "sujeto_id_fuera_de_catalogo",
                                             "detalle": str(sujeto_id)})
@@ -454,8 +473,8 @@ def ensamblar(chunks: list[dict], registros: list[dict]) -> dict:
                                     "detalle": f"{pred}: source='{r.get('source')}' "
                                                f"target='{r.get('target')}'"})
                 continue
-            if not is_valid_triple(nodes_by_id[src_gid]["type"], pred,
-                                   nodes_by_id[tgt_gid]["type"]):
+            if not _firma(nodes_by_id[src_gid]["type"], pred,
+                          nodes_by_id[tgt_gid]["type"]):
                 rechazos_e2.append({
                     "chunk_id": cid, "motivo": "firma_invalida",
                     "detalle": f"{nodes_by_id[src_gid]['type']} --{pred}--> "
@@ -713,7 +732,8 @@ class FanInError(RuntimeError):
 
 def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
             censo_oraculo: dict | None = None, e0_dir: Path = E0_SALIDA,
-            limitaciones: dict | None = None) -> dict:
+            limitaciones: dict | None = None,
+            esquema=None, labels_catalogo: dict | None = None) -> dict:
     """Corrida E2 completa para un TO: guarda de fan-in → ensamblado → censo.
 
     Si el fan-in no es apto y no hay flag, aborta con FanInError ANTES de
@@ -721,6 +741,8 @@ def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
     E1 no abortan: están contabilizados y aparecen en el censo. `e0_dir`
     selecciona la salida de E0 (sellada por default; enm01 para la corrida de
     la enmienda, cuyo mapa incluye los mini-chunks como unidades esperadas).
+    `esquema`/`labels_catalogo` (U-CABLE-V3): ver ensamblar(); defaults None =
+    comportamiento sellado byte-idéntico.
     """
     chunks = cargar_chunks_e0(to, e0_dir=e0_dir)
     registros = cargar_extracciones(extracciones_path)
@@ -730,7 +752,8 @@ def reducir(to: str, extracciones_path: Path, permitir_parcial: bool = False,
 
     if censo_oraculo is None:
         censo_oraculo = cargar_censo_oraculo(e0_dir)
-    ens = ensamblar(chunks, registros)
+    ens = ensamblar(chunks, registros, esquema=esquema,
+                    labels_catalogo=labels_catalogo)
     censo = censo_estructural(to, chunks, ens["nodes"], fanin, censo_oraculo,
                               aporte_por_chunk=ens["aporte_por_chunk"],
                               limitaciones=limitaciones)

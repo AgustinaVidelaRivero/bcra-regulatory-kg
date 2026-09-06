@@ -225,7 +225,8 @@ def bloque_feedback(faltantes: list[dict], intento: int) -> str:
 
 def build_reextraccion_kwargs(chunk: dict, faltantes: list[dict], model: str,
                               intento: int = 1,
-                              max_tokens_reintento: int | None = None) -> dict:
+                              max_tokens_reintento: int | None = None,
+                              perfil=None) -> dict:
     """Request de re-extracción: el request E1 canónico del chunk con el
     bloque de feedback ANEXADO al mensaje de usuario. El prefijo (system +
     tools + tool_choice) queda byte-idéntico al de la primera pasada: el
@@ -235,8 +236,16 @@ def build_reextraccion_kwargs(chunk: dict, faltantes: list[dict], model: str,
     base de E1 está sellado con su techo propio y no se toca). Un reintento
     que COMPLETA una extracción incompleta puede necesitar más salida que la
     primera pasada; max_tokens no integra el prefijo cacheado, así que
-    cambiarlo no invalida el caché."""
-    kwargs = prompt_e1.build_request_kwargs(chunk, model=model)
+    cambiarlo no invalida el caché.
+
+    perfil (U-CABLE-V3): perfil E1 de la corrida (perfil_e1.PerfilE1). El
+    reintento debe construirse con el MISMO prefijo que la fase E1 de su
+    corrida (en una corrida v3, re-extraer con el prefijo dev mezclaría
+    prefijos dentro de la unidad). None = prompt_e1 de producción dev, byte a
+    byte el comportamiento sellado."""
+    _build = prompt_e1.build_request_kwargs if perfil is None \
+        else perfil.build_request_kwargs
+    kwargs = _build(chunk, model=model)
     if max_tokens_reintento is not None:
         kwargs["max_tokens"] = max_tokens_reintento
     mensaje = kwargs["messages"][0]["content"] + "\n\n" + bloque_feedback(faltantes, intento)
@@ -246,11 +255,15 @@ def build_reextraccion_kwargs(chunk: dict, faltantes: list[dict], model: str,
 
 def reextraer_chunk(cliente_extractor, chunk: dict, faltantes: list[dict],
                     model: str, intento: int = 1,
-                    max_tokens_reintento: int | None = None) -> dict:
+                    max_tokens_reintento: int | None = None,
+                    perfil=None) -> dict:
     """Ejecuta la re-extracción con el cliente E1 inyectado (stub u real) y
-    devuelve el tool input crudo + la re-validación E1."""
+    devuelve el tool input crudo + la re-validación E1. `perfil` (U-CABLE-V3):
+    ver build_reextraccion_kwargs; la re-validación usa el esquema del perfil
+    (None = validación de producción dev, byte-idéntica)."""
     kwargs = build_reextraccion_kwargs(chunk, faltantes, model=model, intento=intento,
-                                       max_tokens_reintento=max_tokens_reintento)
+                                       max_tokens_reintento=max_tokens_reintento,
+                                       perfil=perfil)
     if isinstance(cliente_extractor, cliente_e1.ClienteE1Real):
         resp = cliente_extractor.create(doc=chunk["archivo"], **kwargs)
     else:
@@ -262,7 +275,9 @@ def reextraer_chunk(cliente_extractor, chunk: dict, faltantes: list[dict],
             tool_use = block
             break
     tool_input = tool_use.input if tool_use is not None else None
-    validacion = (validador_e1.validar_salida(tool_input, chunk).as_dict()
+    esquema = None if perfil is None else perfil.esquema
+    validacion = (validador_e1.validar_salida(tool_input, chunk,
+                                              esquema=esquema).as_dict()
                   if tool_input is not None else None)
     return {
         "chunk_id": chunk["id"],
@@ -323,7 +338,8 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
                   cliente_extractor, model_e3: str, model_e1: str,
                   registro: RegistroE3 | None = None,
                   max_tokens_reintento: int | None = None,
-                  unidades_corpus: set[str] | None = None) -> dict:
+                  unidades_corpus: set[str] | None = None,
+                  perfil=None) -> dict:
     """Ejecuta el ciclo E3 completo de una unidad:
 
       verificación → (si faltantes BLOQUEANTES) re-extracción con feedback →
@@ -392,7 +408,8 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
         reex = reextraer_chunk(cliente_extractor, chunk,
                                ev_actual["bloqueantes_utilizables"],
                                model=model_e1, intento=intento,
-                               max_tokens_reintento=max_tokens_reintento)
+                               max_tokens_reintento=max_tokens_reintento,
+                               perfil=perfil)
         expediente["reintentos"].append(reex)
         if reex["error"] is not None or reex["validacion"] is None or any(
                 r["nivel"] == "chunk" for r in reex["validacion"]["rechazos"]):

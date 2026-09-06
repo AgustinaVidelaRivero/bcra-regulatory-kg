@@ -110,6 +110,9 @@ def p1_loader(tmp: Path) -> "MC.Manifiesto":
           man.ids == ["pro", "cla", "ric", "cap", "ext"]
           and man.orden_corrida == ["pro", "cla", "ric", "cap", "ext"]
           and man.tiene_oraculo and man.tests_respuesta_conocida == "dev5")
+    check("P1 perfil_e1 ausente = default produccion_dev (U-CABLE-V3: el "
+          "manifiesto dev no se edita)",
+          man.perfil_e1 == "produccion_dev")
 
     base = json.loads(MANIFIESTO_DEV.read_text(encoding="utf-8"))
     casos = [
@@ -122,14 +125,22 @@ def p1_loader(tmp: Path) -> "MC.Manifiesto":
         ("rol distinto del catálogo", "fx_rol_dif",
          lambda d: d["tos"][0].update(rol_alcance="Sujeto_rol_alcance_capmin"),
          "≠ rol del catálogo"),
-        ("rol declarado sin rol en catálogo (gap B5.4)", "fx_rol_gap",
+        # U-CABLE-V3 (candado C6 versionado con justificación): B5.4 ya pobló
+        # la tabla TO→rol; el mensaje del gap dejó de decir "puebla B5.4" y
+        # ahora exige null o el circuito de refinamiento. El caso adversarial
+        # sigue siendo el mismo; solo cambia el fragmento esperado.
+        ("rol declarado sin rol en catálogo", "fx_rol_gap",
          lambda d: (d["tos"].append({**d["tos"][0], "id": "zzz",
                                      "archivo": "TO_fantasma.pdf",
                                      "rol_alcance": "Sujeto_rol_fantasma"}),
                     d["orden_corrida"].append("zzz"),
                     d["limites"]["estimado_usd"].update(
                         zzz={"e1": 0.0, "e3": 0.0})),
-         "puebla B5.4"),
+         "no declara rol"),
+        # U-CABLE-V3: el campo perfil_e1 con valor fuera del registro frena.
+        ("perfil_e1 desconocido", "fx_perfil",
+         lambda d: d.update(perfil_e1="v9_inexistente"),
+         "perfil_e1 desconocido"),
         ("limitaciones sin oráculo", "fx_lim_sin_ora",
          lambda d: d["oraculo"].update(mapa_territorio=None),
          "sin oráculo"),

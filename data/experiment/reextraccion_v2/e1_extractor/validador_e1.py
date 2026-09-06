@@ -86,7 +86,8 @@ def _str_o_none(v):
     return None
 
 
-def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> ResultadoValidacion:
+def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
+                   esquema=None) -> ResultadoValidacion:
     """Valida el input del tool call de un chunk. Devuelve elementos aceptados
     (normalizados, con provenance completa {to, archivo, punto, rol_documental})
     y rechazos con motivo registrado.
@@ -97,9 +98,39 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
     predicate), calcados de sujeto_propuesto. Exclusión mutua exacta con
     type/predicate; los enums no se relajan. Una propuesta transportada por un
     elemento que este validador rechaza NO se pierde para la medición: vive en
-    tool_input_crudo (el validador no muta su input)."""
+    tool_input_crudo (el validador no muta su input).
+
+    esquema (U-CABLE-V3): vocabulario inyectado (perfil_e1.EsquemaValidacion)
+    contra el que se validan types, predicados, firmas y sujeto_id. Con el
+    default None el comportamiento es EXACTAMENTE el de producción (los
+    imports de schema v2 de arriba). En modo v3 el esquema es el CONGELADO
+    completo (9 tipos / 13 predicados / catálogo de 102) y además rige la
+    normalización de Obligacion.properties.tipo: un valor fuera del enum de 6
+    se normaliza a "otra" con contador visible en metricas — REGISTRO, NO
+    RECHAZO (resolución 2 del freno 1; vigilancia (5) del laudo de congelado
+    con contador separado para el valor retirado requisito_de_estructura)."""
+    _ent_types = ENTITY_TYPES if esquema is None else esquema.entity_types
+    _preds = PREDICATES if esquema is None else esquema.predicates
+    _suj_preds = SUJETO_PREDICATES if esquema is None else esquema.sujeto_predicates
+    _suj_set = SUJETOS_CATALOGO_SET if esquema is None else esquema.sujetos_catalogo_set
+    _firma = is_valid_triple if esquema is None else esquema.firma_valida
+    _tipo_enum = None if esquema is None else esquema.obligacion_tipo_enum
+    _tipo_retirados = () if esquema is None else esquema.obligacion_tipo_retirados
+    contador_tipo = {"norm": 0, "retirado": 0}
+
     res = ResultadoValidacion(chunk_id=chunk["id"])
     admitidos = set(puntos_admitidos(chunk))
+
+    def _fin(n_ent: int, n_rel: int) -> ResultadoValidacion:
+        res.metricas = _metricas(res, n_ent, n_rel)
+        if _tipo_enum is not None:
+            # Contadores SIEMPRE visibles en modo v3 (el "= 0" es el resultado
+            # esperado de la vigilancia y debe verse); NUNCA presentes con
+            # esquema None (salida dev byte-idéntica).
+            res.metricas["tipo_obligacion_normalizados"] = contador_tipo["norm"]
+            res.metricas["tipo_obligacion_requisito_de_estructura"] = \
+                contador_tipo["retirado"]
+        return res
 
     # --- Nivel chunk: estructura ---
     if isinstance(tool_input, str):
@@ -107,12 +138,10 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
             tool_input = json.loads(tool_input)
         except json.JSONDecodeError as e:
             res.rechazos.append(_rechazo("chunk", "salida_no_parseable", f"JSON inválido: {e}"))
-            res.metricas = _metricas(res, 0, 0)
-            return res
+            return _fin(0, 0)
     if not isinstance(tool_input, dict):
         res.rechazos.append(_rechazo("chunk", "salida_no_dict", f"tipo {type(tool_input).__name__}"))
-        res.metricas = _metricas(res, 0, 0)
-        return res
+        return _fin(0, 0)
 
     entities = _coerce_lista(tool_input.get("entities"))
     relations = _coerce_lista(tool_input.get("relations"))
@@ -120,8 +149,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
         res.rechazos.append(_rechazo(
             "chunk", "entities_o_relations_invalidos",
             "entities/relations ausentes o no-lista (ni siquiera como string JSON)"))
-        res.metricas = _metricas(res, 0, 0)
-        return res
+        return _fin(0, 0)
 
     omisiones = tool_input.get("omisiones_no_prosa") or []
     if isinstance(omisiones, list):
@@ -156,7 +184,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                     "entidad", "tipo_canal_invalido",
                     f"{ref} ({local_id}): requiere exactamente UNO de type/tipo_propuesto", e))
                 continue
-        elif etype not in ENTITY_TYPES:
+        elif etype not in _ent_types:
             res.rechazos.append(_rechazo("entidad", "type_invalido", f"{ref}: '{etype}'", e))
             continue
         if label is None:
@@ -176,6 +204,21 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
             {str(k): ("" if v is None else str(v)) for k, v in props_in.items()}
             if isinstance(props_in, dict) else {}
         )
+
+        # Resolución 2 del freno 1 de U-CABLE-V3 (SOLO modo v3): un valor de
+        # Obligacion.properties.tipo fuera del enum congelado se normaliza a
+        # "otra" y se CUENTA — registro, no rechazo; el valor retirado
+        # requisito_de_estructura lleva contador separado (vigilancia (5)).
+        if (_tipo_enum is not None and etype == "Obligacion"
+                and "tipo" in props and props["tipo"] not in _tipo_enum):
+            original = props["tipo"]
+            props["tipo"] = "otra"
+            contador_tipo["norm"] += 1
+            if original in _tipo_retirados:
+                contador_tipo["retirado"] += 1
+            res.advertencias.append({
+                "tipo": "tipo_obligacion_fuera_de_enum", "local_id": local_id,
+                "detalle": f"'{original}' normalizado a 'otra' (registro, no rechazo)"})
 
         norm = {
             "local_id": local_id,
@@ -219,7 +262,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                     "relacion", "predicado_canal_invalido",
                     f"{ref}: requiere exactamente UNO de predicate/predicado_propuesto", r))
                 continue
-        elif pred not in PREDICATES:
+        elif pred not in _preds:
             res.rechazos.append(_rechazo("relacion", "predicado_invalido", f"{ref}: '{pred}'", r))
             continue
 
@@ -245,7 +288,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
             # que extremos y sujeto_* pasan normalizados tal como vienen. El
             # anclaje (`punto`) ya se validó arriba como en toda relación.
             pass
-        elif pred in SUJETO_PREDICATES:
+        elif pred in _suj_preds:
             # Slip predecible heredado del v2: extremo sujeto mandado además
             # en target (aplica_a) / source (ejecuta) → se ignora ese campo.
             if pred == "aplica_a":
@@ -258,7 +301,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                     "relacion", "sujeto_extremo_invalido",
                     f"{ref} ({pred}): requiere exactamente UNO de sujeto_id/sujeto_propuesto", r))
                 continue
-            if sujeto_id is not None and sujeto_id not in SUJETOS_CATALOGO_SET:
+            if sujeto_id is not None and sujeto_id not in _suj_set:
                 res.rechazos.append(_rechazo(
                     "relacion", "sujeto_id_fuera_de_catalogo", f"{ref}: '{sujeto_id}'", r))
                 continue
@@ -266,7 +309,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                 res.rechazos.append(_rechazo(
                     "relacion", "padre_sugerido_sin_propuesto", ref, r))
                 continue
-            if padre_sug is not None and padre_sug not in SUJETOS_CATALOGO_SET:
+            if padre_sug is not None and padre_sug not in _suj_set:
                 padre_sug = None  # pista inválida: se anula, no invalida la relación
 
             extremo_chunk = source if pred == "aplica_a" else target
@@ -281,7 +324,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                     "relacion", "ref_colgante", f"{ref} ({pred}): {campo}='{extremo_chunk}'", r))
                 continue
             src_t, tgt_t = (ent["type"], "Sujeto") if pred == "aplica_a" else ("Sujeto", ent["type"])
-            if not is_valid_triple(src_t, pred, tgt_t):
+            if not _firma(src_t, pred, tgt_t):
                 res.rechazos.append(_rechazo(
                     "relacion", "firma_invalida", f"{ref}: {src_t} --{pred}--> {tgt_t}", r))
                 continue
@@ -289,7 +332,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
             if sujeto_id or sujeto_prop or padre_sug:
                 res.rechazos.append(_rechazo(
                     "relacion", "sujeto_en_predicado_no_sujeto",
-                    f"{ref}: sujeto_* solo vale en {SUJETO_PREDICATES}, no en {pred}", r))
+                    f"{ref}: sujeto_* solo vale en {_suj_preds}, no en {pred}", r))
                 continue
             if source is None or target is None:
                 res.rechazos.append(_rechazo(
@@ -301,7 +344,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                     "relacion", "ref_colgante",
                     f"{ref} ({pred}): source='{source}' target='{target}'", r))
                 continue
-            if not is_valid_triple(src_e["type"], pred, tgt_e["type"]):
+            if not _firma(src_e["type"], pred, tgt_e["type"]):
                 res.rechazos.append(_rechazo(
                     "relacion", "firma_invalida",
                     f"{ref}: {src_e['type']} --{pred}--> {tgt_e['type']}", r))
@@ -341,8 +384,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False) -> Resu
                 "tipo": "flag_vacio_sin_registro",
                 "detalle": "chunk flaggeado sin extracción y sin omisiones registradas"})
 
-    res.metricas = _metricas(res, len(entities), len(relations))
-    return res
+    return _fin(len(entities), len(relations))
 
 
 def _metricas(res: ResultadoValidacion, n_ent_in: int, n_rel_in: int) -> dict:

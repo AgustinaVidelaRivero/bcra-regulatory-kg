@@ -60,16 +60,23 @@ CACHE_USAGE_LOG = REPO / "logs" / "cache_usage.jsonl"  # gitignoreado (logs/)
 MAX_TOKENS_REINTENTO_CORTE = 32768
 
 
-def namespace_e1(canal_abierto: bool = False) -> str:
+def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None) -> str:
     """Namespace de la caché local: dominio + code-version propio + hash del
     prefijo estable + flag de thinking. El hash del prefijo hace explícito el
     candado que la key del request ya da implícitamente. Con canal_abierto
     (experimental, explícito) el hash es el del prefijo con canal abierto:
-    namespace DISTINTO → partición de caché; con el default False el
-    namespace es IDÉNTICO al de producción."""
+    namespace DISTINTO → partición de caché; con los defaults el namespace es
+    IDÉNTICO al de producción.
+
+    prefijo_hash (U-CABLE-V3): hash del prefijo del PERFIL de la corrida
+    (p. ej. el del prefijo v3 sellado). None = el de producción dev, byte a
+    byte el namespace histórico. Un hash distinto particiona la caché con el
+    MISMO patrón; las keys viejas de la db no se tocan (never-pay-twice)."""
+    if prefijo_hash is None:
+        prefijo_hash = prompt_e1.prefijo_hash(canal_abierto)
     return lc.make_namespace(
         DOMAIN,
-        code_ver=f"{CODE_VER}-p{prompt_e1.prefijo_hash(canal_abierto)}",
+        code_ver=f"{CODE_VER}-p{prefijo_hash}",
         thinking=False,
     )
 
@@ -131,6 +138,7 @@ class ClienteE1Real:
         db_path: Path = DB_PATH,
         canal_abierto: bool = False,
         guardian=None,
+        prefijo_hash: str | None = None,
     ):
         if min(precio_in_por_mtok, precio_out_por_mtok,
                precio_cache_write_por_mtok, precio_cache_read_por_mtok) <= 0 or tope_usd <= 0:
@@ -146,7 +154,7 @@ class ClienteE1Real:
             anthropic.Anthropic(max_retries=3),
             domain=DOMAIN,
             db_path=db_path,
-            namespace=namespace_e1(canal_abierto),
+            namespace=namespace_e1(canal_abierto, prefijo_hash=prefijo_hash),
             thinking_enabled=False,
             run_label=run_label,
         )

@@ -68,6 +68,7 @@ sys.path.insert(0, str(REX))
 
 import comun_e1                     # noqa: E402
 import prompt_e1                    # noqa: E402
+import perfil_e1                    # noqa: E402  (U-CABLE-V3: perfiles E1)
 import cliente_e1                   # noqa: E402
 import validador_e1                 # noqa: E402
 import comun_e3                     # noqa: E402
@@ -109,16 +110,21 @@ CHEQUEOS_HITS: list[dict] = []
 E0_DIR: Path = comun_e1.E0_SALIDA_ENM01
 CENSO_ORACULO_ARG = None            # None = cargar del e0_dir; o SIN_ORACULO
 LIMITACIONES: dict | None = None
+PERFIL = None                       # U-CABLE-V3: perfil E1 del manifiesto
 
 
 def configurar(man) -> None:
     """Fija el estado de módulo desde un manifiesto cargado. Se invoca al
     importar (manifiesto de desarrollo — valores idénticos a los cableados
-    históricos) y de nuevo en main() con el --manifiesto de la corrida."""
+    históricos) y de nuevo en main() con el --manifiesto de la corrida.
+    U-CABLE-V3: acá se construye el PERFIL de extracción declarado por el
+    manifiesto — los candados del perfil v3 (sha/hash del sello) corren en
+    este punto, antes de toda llamada."""
     global MAN, TOS_ORDEN, TOPE_GLOBAL_USD, MARGEN_UNIDAD_USD, ESTIMADO_USD, \
         ESTIMADO_TOTAL_USD, CHECKPOINT_CADA, CHEQUEOS_HITS, E0_DIR, \
-        CENSO_ORACULO_ARG, LIMITACIONES
+        CENSO_ORACULO_ARG, LIMITACIONES, PERFIL
     MAN = man
+    PERFIL = perfil_e1.perfil(man.perfil_e1)
     TOS_ORDEN = tuple(man.orden_corrida)
     lim = man.limites
     TOPE_GLOBAL_USD = lim["tope_global_usd"]
@@ -210,9 +216,18 @@ class StubE1Corpus:
         self.llamadas_hit = 0
         self.gasto_usd = 0.0
         self.chunk_ids_llamados: list[str] = []
+        # U-CABLE-V3 (solo diagnóstico de selftest): sha256 del texto del
+        # system de cada request recibido. No entra en resumen() ni en ningún
+        # artefacto persistido — la huella golden no lo ve.
+        self.system_shas: list[str] = []
 
     def create(self, doc=None, **kwargs):
         self.llamadas += 1
+        sysb = kwargs.get("system")
+        if isinstance(sysb, list) and sysb and isinstance(sysb[0], dict):
+            import hashlib
+            self.system_shas.append(
+                hashlib.sha256(sysb[0].get("text", "").encode("utf-8")).hexdigest())
         msg = kwargs["messages"][0]["content"]
         # el punto propio viene en el mensaje canónico; lo recuperamos del
         # renglón "Punto del chunk:" (hijo) / "Unidad de origen:" (mini)
@@ -451,7 +466,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         if estado.gasto_global() + MARGEN_UNIDAD_USD > TOPE_GLOBAL_USD:
             raise Freno(f"tope global antes de {c['id']}: gasto USD "
                         f"{estado.gasto_global():.4f} + margen {MARGEN_UNIDAD_USD}")
-        kwargs = prompt_e1.build_request_kwargs(c, model=MODEL_E1)
+        kwargs = PERFIL.build_request_kwargs(c, model=MODEL_E1)
         # U-B5.3 decisión 1: ante corte por max_tokens, UNA re-llamada en el
         # mismo pase con 32k. El camino sin corte pasa kwargs tal cual.
         par, err = llamar_con_reintentos_api(
@@ -477,7 +492,8 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             usage, stop, tool_input = {"input_tokens": 0, "output_tokens": 0,
                                        "cache_write_tokens": 0,
                                        "cache_read_tokens": 0}, None, None
-        val = (validador_e1.validar_salida(tool_input, c).as_dict()
+        val = (validador_e1.validar_salida(tool_input, c,
+                                           esquema=PERFIL.esquema).as_dict()
                if tool_input is not None else None)
         reg = {
             "chunk_id": c["id"], "unidad": c["unidad"], "tipo_unidad": c["tipo"],
@@ -530,6 +546,17 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     resumen = {"n_unidades": len(chunks),
                "cliente": cliente.resumen(),
                "gasto_fase_usd": round(gasto_previo + cliente.gasto_usd, 4)}
+    if PERFIL.esquema is not None and PERFIL.esquema.obligacion_tipo_enum is not None:
+        # U-CABLE-V3 resolución 2 (vigilancia (5) del laudo de congelado):
+        # suma visible de las normalizaciones de Obligacion.properties.tipo.
+        # SOLO en modo v3 — el resumen dev queda byte-idéntico.
+        n_norm = n_ret = 0
+        for r in finales_e1.values():
+            m = ((r.get("validacion") or {}).get("metricas") or {})
+            n_norm += m.get("tipo_obligacion_normalizados", 0)
+            n_ret += m.get("tipo_obligacion_requisito_de_estructura", 0)
+        resumen["tipo_obligacion_normalizados"] = n_norm
+        resumen["tipo_obligacion_requisito_de_estructura"] = n_ret
     if reintentos_corte:
         resumen["reintentos_corte"] = reintentos_corte
     if definitivos:
@@ -592,7 +619,7 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
                 c, val, cliente_verificador=cli_e3, cliente_extractor=cli_e1r,
                 model_e3=MODEL_E3, model_e1=MODEL_E1, registro=registro,
                 max_tokens_reintento=MAX_TOKENS_REINTENTO,
-                unidades_corpus=unidades_corpus),
+                unidades_corpus=unidades_corpus, perfil=PERFIL),
             c["id"])
         if exp is None:
             raise Freno(f"{key}: ciclo de ratchet de {c['id']} falló tras "
@@ -667,7 +694,8 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     # corrida real va SIN flag: un ausente inesperado aborta como debe.
     res = e2_lib.reducir(to, path_final, permitir_parcial=bool(limite),
                          censo_oraculo=CENSO_ORACULO_ARG, e0_dir=E0_DIR,
-                         limitaciones=LIMITACIONES)
+                         limitaciones=LIMITACIONES, esquema=PERFIL.esquema,
+                         labels_catalogo=PERFIL.labels_catalogo)
     (tdir / f"grafo_{to}.json").write_text(res["grafo_json"], encoding="utf-8")
     (tdir / f"reporte_e2_{to}.json").write_text(
         json.dumps(res["reporte"], ensure_ascii=False, indent=1), encoding="utf-8")
@@ -754,7 +782,8 @@ def main() -> int:
     print(f"corrida corpus_v2 | manifiesto={MAN.nombre} | stub={args.stub} "
           f"| tope global=USD {TOPE_GLOBAL_USD} | estimado=USD "
           f"{ESTIMADO_TOTAL_USD} | orden={tos} "
-          f"| prefijos: E1 {prompt_e1.PREFIJO_HASH} E3 {prompt_e3.PREFIJO_HASH}",
+          f"| perfil E1 {PERFIL.nombre} "
+          f"| prefijos: E1 {PERFIL.prefijo_hash} E3 {prompt_e3.PREFIJO_HASH}",
           flush=True)
 
     try:
@@ -770,7 +799,8 @@ def main() -> int:
                     restante = TOPE_GLOBAL_USD - estado.gasto_global()
                     cli = cliente_e1.ClienteE1Real(
                         **P_E1, tope_usd=round(restante, 4),
-                        run_label=f"corpus_{to}_e1", guardian=guardian)
+                        run_label=f"corpus_{to}_e1", guardian=guardian,
+                        prefijo_hash=PERFIL.prefijo_hash_para_namespace)
                 try:
                     fase_e1(to, cli, estado, args.salida, args.limite,
                             args.abortar_tras, ck)
@@ -790,7 +820,8 @@ def main() -> int:
                     c1 = cliente_e1.ClienteE1Real(
                         **P_E1, tope_usd=round(restante, 4),
                         run_label=f"corpus_{to}_reintentos_e1",
-                        db_path=DB_REINTENTOS_E1, guardian=guardian)
+                        db_path=DB_REINTENTOS_E1, guardian=guardian,
+                        prefijo_hash=PERFIL.prefijo_hash_para_namespace)
                 try:
                     fase_e3(to, c3, c1, estado, args.salida, args.limite,
                             args.abortar_tras, ck)
