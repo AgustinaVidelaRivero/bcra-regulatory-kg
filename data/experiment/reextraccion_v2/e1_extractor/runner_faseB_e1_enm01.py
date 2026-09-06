@@ -76,8 +76,12 @@ def main() -> int:
         for i, chunk in enumerate(chunks, 1):
             kwargs = prompt_e1.build_request_kwargs(chunk, model=MODEL)
             err = None
+            cortado = None
             try:
-                resp = cliente.create(doc=chunk["archivo"], **kwargs)
+                # U-B5.3 decisión 1: ante corte por max_tokens, UNA re-llamada
+                # con 32k en el mismo pase; sin corte, kwargs viaja tal cual.
+                resp, cortado = cliente_e1.crear_con_reintento_corte(
+                    cliente, kwargs, doc=chunk["archivo"])
             except cliente_e1.TopeExcedido as e:
                 print(f"FRENO POR TOPE en chunk {chunk['id']}: {e}", flush=True)
                 err = f"tope_excedido: {e}"
@@ -100,10 +104,11 @@ def main() -> int:
                     if getattr(b, "type", None) == "tool_use":
                         tool_input = b.input
                         break
-                if tool_input is None:
+                if stop_reason == "max_tokens":
+                    # el reintento también cortó: error definitivo (decisión 5)
+                    err = "max_tokens_hit_tras_reintento"
+                elif tool_input is None:
                     err = f"no_tool_use stop_reason={stop_reason}"
-                elif stop_reason == "max_tokens":
-                    err = "max_tokens_hit"
             else:
                 usage = {"input_tokens": 0, "output_tokens": 0,
                          "cache_write_tokens": 0, "cache_read_tokens": 0}
@@ -124,6 +129,13 @@ def main() -> int:
                 "tool_input_crudo": tool_input,
                 "validacion": val,
             }
+            if cortado is not None:
+                # decisión 2: ambos intentos persistidos (el crudo íntegro del
+                # intento 1 ya está en la db por write-through).
+                reg["reintento_corte"] = {
+                    "max_tokens_reintento": cliente_e1.MAX_TOKENS_REINTENTO_CORTE,
+                    "intento_1": cliente_e1.resumen_intento(cortado),
+                }
             registros.append(reg)
             jf.write(json.dumps(reg, ensure_ascii=False) + "\n")
             jf.flush()
@@ -141,6 +153,11 @@ def main() -> int:
     ok = [r for r in registros if r["error"] is None and r["validacion"] is not None]
     tot_u = {k: sum(r["usage"][k] for r in registros) for k in
              ("input_tokens", "output_tokens", "cache_write_tokens", "cache_read_tokens")}
+    for r in registros:
+        rc = r.get("reintento_corte")
+        if rc:  # el intento cortado también se pagó: entra al usage total (D2)
+            for k in tot_u:
+                tot_u[k] += rc["intento_1"]["usage"][k]
     gasto = {
         "input_usd": tot_u["input_tokens"] / 1e6 * P_IN,
         "output_usd": tot_u["output_tokens"] / 1e6 * P_OUT,

@@ -19,13 +19,20 @@ Salida (por defecto ./salida/):
   correcciones.json      reglas post-parseo: reasignaciones por continuidad de
                          enumeración (regla 1) y fronteras intra-palabra
                          corridas (regla 2), con conteos antes/después
+  sub_chunking.json      SOLO si alguna unidad superó el umbral C8 (U-B5.3):
+                         particiones por ítems y unidades no particionables
+                         declaradas; en el subset de desarrollo no se emite
+                         (0 unidades sobre el umbral) y la salida es
+                         byte-idéntica a la histórica
 """
 
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
+import re
 import statistics
 from pathlib import Path
 
@@ -34,6 +41,159 @@ import e0_lib as E0
 REPO = Path(__file__).resolve().parents[3]
 SUBSET = REPO / "experiment" / "subset"
 MAPA = REPO / "experiment" / "exploracion" / "mapa_territorio_quemado_5TOs_5sets.json"
+
+
+# ------------------------------------------------------------ sub-chunking
+# U-B5.3 decisión 6 — partición por ítems de unidades que exceden el umbral
+# de tamaño, SOLO relevante para TOs nuevos: el peor terminal del subset de
+# desarrollo mide exactamente 26.182 chars (criterio C8 de la banda de
+# referencia, escalado_prep/reporte_generalizacion.md §2, mismo valor que
+# healthcheck_e0.UMBRAL_CHARS_TERMINAL) y el corte es ESTRICTO (>), así que
+# ninguna unidad de desarrollo se toca y la salida dev queda byte-idéntica.
+# Medición sobre el corpus de escalado (152 TOs de e0_dry): 6/6.670
+# terminales superan el umbral (27.161–126.723 chars), todos de TOs
+# "necesita reglas" — 0 en los 68 digeribles. Mecánica: se detectan ítems de
+# lista por marcadores al inicio de línea, se agrupan bloques consecutivos
+# hasta un objetivo de tamaño y el chapeau (texto previo al primer ítem)
+# queda en el texto de la parte 1 y viaja como HERENCIA (tramos encabezado +
+# intro, patrón E0) en las partes siguientes. Una unidad sobre el umbral SIN
+# ítems detectables NO se particiona y queda declarada en sub_chunking.json
+# (nunca en silencio).
+UMBRAL_CHARS_SUBCHUNK = 26182            # == C8; > estricto preserva dev
+OBJETIVO_CHARS_PARTE = UMBRAL_CHARS_SUBCHUNK // 2   # 13.091
+MIN_ITEMS_SUBCHUNK = 3
+
+# familias de marcador de ítem, por precedencia de matcheo por línea
+FAMILIAS_ITEM = [
+    ("num", re.compile(r"^\d+(?:\.\d+)*\.(?:\s|$)")),      # "2.", "1.5.1. …"
+    ("inciso", re.compile(r"^[a-zñ]\)(?:\s|$)")),          # "a) …"
+    ("romano", re.compile(r"^[ivxlcdm]{2,}\)(?:\s|$)")),   # "ii) …"
+    ("guion", re.compile(r"^[-–—•]\s")),                   # "— …"
+]
+
+
+def _particionar_texto(texto: str) -> dict | None:
+    """Partición por ítems del texto propio de una unidad. La línea 0 (label/
+    título) nunca es marcador. Devuelve chapeau + grupos (cada uno ≤ objetivo
+    salvo bloque único mayor) o None si no hay familia con MIN_ITEMS líneas.
+    Invariante: chapeau + grupos reconstruyen el texto línea a línea (cero
+    pérdida, mismo principio que verificar_cobertura)."""
+    lineas = texto.split("\n")
+    conteo: dict[str, list[int]] = {f: [] for f, _ in FAMILIAS_ITEM}
+    for i, l in enumerate(lineas[1:], start=1):
+        s = l.strip()
+        for fam, pat in FAMILIAS_ITEM:
+            if pat.match(s):
+                conteo[fam].append(i)
+                break
+    familia = max(conteo, key=lambda f: len(conteo[f]))
+    indices = conteo[familia]
+    if len(indices) < MIN_ITEMS_SUBCHUNK:
+        return None
+    chapeau = "\n".join(lineas[:indices[0]])
+    bloques = ["\n".join(lineas[i0:(indices[j + 1] if j + 1 < len(indices)
+                                    else len(lineas))])
+               for j, i0 in enumerate(indices)]
+    grupos: list[str] = []
+    actual: list[str] = []
+    tam = 0
+    for b in bloques:
+        if actual and tam + len(b) + 1 > OBJETIVO_CHARS_PARTE:
+            grupos.append("\n".join(actual))
+            actual, tam = [], 0
+        actual.append(b)
+        tam += len(b) + 1
+    if actual:
+        grupos.append("\n".join(actual))
+    if len(grupos) < 2:
+        return None  # partir en 1 no remedia nada: se declara, no se parte
+    return {"chapeau": chapeau, "grupos": grupos, "familia": familia,
+            "n_items": len(indices)}
+
+
+def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
+    """Materializa las partes de una unidad particionada. La parte 1 lleva el
+    chapeau en su TEXTO (es la unidad responsable de su contenido normativo);
+    las partes 2..n lo reciben como herencia (tramos `encabezado` + `intro`
+    con unidad_origen = la unidad, patrón E0: el contexto ancla, la unidad
+    extrae). `unidad` no cambia: la provenance de los elementos extraídos
+    sigue anclando en la unidad documental real. Flags y páginas se heredan
+    de la unidad completa (conservador, declarado)."""
+    chapeau, grupos = part["chapeau"], part["grupos"]
+    lineas_chapeau = chapeau.split("\n")
+    tramos_chapeau = [{"tipo": "encabezado", "unidad_origen": c["unidad"],
+                       "texto": lineas_chapeau[0], "paginas": list(c["paginas"])}]
+    resto = "\n".join(lineas_chapeau[1:])
+    if resto.strip():
+        tramos_chapeau.append({"tipo": "intro", "unidad_origen": c["unidad"],
+                               "texto": resto, "paginas": list(c["paginas"])})
+    n = len(grupos)
+    out = []
+    for k, g in enumerate(grupos, start=1):
+        texto = (chapeau + "\n" + g) if k == 1 else g
+        herencia = copy.deepcopy(c["herencia"])
+        if k > 1:
+            herencia += copy.deepcopy(tramos_chapeau)
+        texto_herencia = "\n".join(t["texto"] for t in herencia)
+        completo = (texto_herencia + "\n" + texto) if texto_herencia else texto
+        out.append({
+            "id": f"{c['id']}::parte{k}",
+            "to": c["to"],
+            "archivo": c["archivo"],
+            "unidad": c["unidad"],
+            "titulo": f"{c['titulo']} (parte {k}/{n})",
+            "tipo": c["tipo"],
+            "paginas": list(c["paginas"]),
+            "texto": texto,
+            "chars_propio": len(texto),
+            "chars_completo": len(completo),
+            "herencia": herencia,
+            "flags": copy.deepcopy(c["flags"]),
+            "sub_chunk": {"parte": k, "de": n,
+                          "id_unidad_completa": c["id"],
+                          "chars_unidad_completa": c["chars_propio"],
+                          "familia_items": part["familia"]},
+            "sha256_propio": hashlib.sha256(texto.encode("utf-8")).hexdigest(),
+            "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
+        })
+    return out
+
+
+def subdividir_unidades_grandes(chunks: list[dict],
+                                umbral: int = UMBRAL_CHARS_SUBCHUNK) -> tuple[list[dict], dict]:
+    """Aplica la partición a los chunks terminales cuyo texto propio EXCEDE el
+    umbral (estricto). Los demás pasan tal cual (mismos objetos: con 0
+    unidades sobre el umbral la salida serializada es byte-idéntica).
+    Devuelve (chunks, reporte) con particiones y no-particionables."""
+    out: list[dict] = []
+    particiones: list[dict] = []
+    no_particionables: list[dict] = []
+    for c in chunks:
+        if c.get("tipo") == "mini_chunk" or c["chars_propio"] <= umbral:
+            out.append(c)
+            continue
+        part = _particionar_texto(c["texto"])
+        if part is None:
+            out.append(c)
+            no_particionables.append({
+                "id": c["id"], "chars_propio": c["chars_propio"],
+                "motivo": "sin_items_detectables"})
+            continue
+        subs = _sub_chunks_de(c, part)
+        out.extend(subs)
+        particiones.append({
+            "id": c["id"], "chars_propio": c["chars_propio"],
+            "familia_items": part["familia"], "n_items": part["n_items"],
+            "n_partes": len(subs),
+            "partes": [{"id": s["id"], "chars_propio": s["chars_propio"]}
+                       for s in subs],
+            "partes_sobre_umbral": [s["id"] for s in subs
+                                    if s["chars_propio"] > umbral]})
+    reporte = {"umbral_chars": umbral,
+               "objetivo_chars_parte": OBJETIVO_CHARS_PARTE,
+               "particiones": particiones,
+               "no_particionables": no_particionables}
+    return out, reporte
 
 
 def inventario_mapa(mapa_path: Path = MAPA) -> dict[str, list[str]]:
@@ -66,6 +226,7 @@ def correr(salida: Path, manifiesto=None) -> dict:
     cobertura: dict = {}
 
     correcciones: dict = {}
+    sub_chunking: dict = {}
 
     for archivo, to in items:
         pdf = pdfs[to]
@@ -96,6 +257,11 @@ def correr(salida: Path, manifiesto=None) -> dict:
         }
         indice = E0.parsear_indice(paginas, roles)
         chunks = E0.construir_chunks(res)
+        # U-B5.3 decisión 6: partición por ítems de unidades sobre el umbral
+        # C8 (identidad en el subset de desarrollo: 0 unidades lo superan).
+        chunks, rep_sub = subdividir_unidades_grandes(chunks)
+        if rep_sub["particiones"] or rep_sub["no_particionables"]:
+            sub_chunking[to] = rep_sub
         div = E0.divergencias_indice_cuerpo(res, indice)
         cob = E0.verificar_cobertura(res)
 
@@ -170,6 +336,10 @@ def correr(salida: Path, manifiesto=None) -> dict:
         json.dumps(cobertura, ensure_ascii=False, indent=1), encoding="utf-8")
     (salida / "correcciones.json").write_text(
         json.dumps(correcciones, ensure_ascii=False, indent=1), encoding="utf-8")
+    if sub_chunking:  # solo si hubo unidades sobre el umbral (jamás en dev)
+        (salida / "sub_chunking.json").write_text(
+            json.dumps(sub_chunking, ensure_ascii=False, indent=1),
+            encoding="utf-8")
     return conteos
 
 

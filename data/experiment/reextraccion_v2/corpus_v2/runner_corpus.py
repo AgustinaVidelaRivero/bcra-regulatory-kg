@@ -78,7 +78,12 @@ import e2_lib                       # noqa: E402
 import manifiesto_corpus            # noqa: E402
 
 # --------------------- constantes de autorización por corrida ------------ #
-MAX_TOKENS_REINTENTO = 16384        # remedio de fondo (32k) en B5.3
+# Techo del reintento del RATCHET E3 (re-extracción con feedback). Se
+# MANTIENE en 16.384 (U-B5.3 decisión 3: cambiarlo alteraría los kwargs de
+# requests de unidades que no cortan y rompería never-pay-twice). El remedio
+# de fondo de los cortes por max_tokens es el reintento por corte de la fase
+# E1 con 32.768 (cliente_e1.MAX_TOKENS_REINTENTO_CORTE, U-B5.3 decisión 1).
+MAX_TOKENS_REINTENTO = 16384
 
 MODEL_E1 = "claude-haiku-4-5"
 P_E1 = dict(precio_in_por_mtok=1.00, precio_out_por_mtok=5.00,
@@ -133,6 +138,46 @@ configurar(manifiesto_corpus.cargar(MANIFIESTO_DEFAULT))
 
 class Freno(RuntimeError):
     pass
+
+
+class PresupuestoCompartido:
+    """Guardián de presupuesto COMÚN a todos los clientes LLM de una corrida
+    (U-B5.3 decisión 8): hasta esta unidad cada CachingClient cortaba solo por
+    su tope propio, y una fase con dos clientes (E3 + reintentos E1, ambos
+    construidos con tope_usd = remanente) podía comprometer hasta el doble del
+    remanente antes del chequeo pre-unidad. Cada miss se registra acá; el
+    chequeo pre-llamada de cada cliente proyecta sobre el gasto COMBINADO y el
+    freno es duro (TopeExcedido del cliente que lo detecta, antes de tocar la
+    red). Estado persistido con escritura atómica (temp+rename) tras cada
+    registro: reconstruir sobre la misma salida reanuda con el gasto previo
+    cargado. El tope configurado por la corrida MANDA sobre el del archivo
+    (la diferencia se reporta, no se adopta)."""
+
+    def __init__(self, tope_usd: float, path: Path):
+        if tope_usd <= 0:
+            raise ValueError("tope compartido debe ser positivo")
+        self.tope_usd = tope_usd
+        self.path = Path(path)
+        self.gasto_usd = 0.0
+        if self.path.exists():
+            d = json.loads(self.path.read_text(encoding="utf-8"))
+            self.gasto_usd = float(d["gasto_usd"])
+            if d.get("tope_usd") != tope_usd:
+                print(f"[presupuesto compartido] tope persistido "
+                      f"{d.get('tope_usd')} ≠ configurado {tope_usd}: manda "
+                      f"el configurado", flush=True)
+
+    def excedido(self, proyeccion_usd: float) -> bool:
+        return self.gasto_usd + proyeccion_usd > self.tope_usd
+
+    def registrar(self, delta_usd: float) -> None:
+        self.gasto_usd += delta_usd
+        tmp = self.path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps({"tope_usd": self.tope_usd,
+                                   "gasto_usd": round(self.gasto_usd, 6)},
+                                  ensure_ascii=False, indent=1),
+                       encoding="utf-8")
+        os.replace(tmp, self.path)
 
 
 # ----------------------------- stubs offline ----------------------------- #
@@ -348,6 +393,20 @@ def checkpoint(salida: Path, estado: Estado, to: str, fase: str,
 
 
 # ----------------------------- fase E1 ----------------------------------- #
+# Error REINTENTABLE dentro del pase (U-B5.3 decisión 5): el marcador que el
+# runner pre-B5.3 dejaba al cortar sin reintentar. El código nuevo reintenta
+# en el acto y nunca lo escribe; puede aparecer en jsonl de corridas viejas
+# reanudadas (esas unidades se re-llaman al reanudar: no están en hechas_ok).
+ERROR_REINTENTABLE = "max_tokens_hit"
+
+
+def reintentables_pendientes(regs: dict[str, dict]) -> list[str]:
+    """chunk_ids con error reintentable en el último registro persistido: un
+    pase NO se declara terminado con estos pendientes (decisión 5)."""
+    return sorted(cid for cid, r in regs.items()
+                  if r.get("error") == ERROR_REINTENTABLE)
+
+
 def llamar_con_reintentos_api(fn, descripcion: str, max_intentos: int = 3):
     """Reintento ante errores transitorios de API (la corrida es desatendida).
     TopeExcedido NO se reintenta: es freno."""
@@ -393,8 +452,12 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             raise Freno(f"tope global antes de {c['id']}: gasto USD "
                         f"{estado.gasto_global():.4f} + margen {MARGEN_UNIDAD_USD}")
         kwargs = prompt_e1.build_request_kwargs(c, model=MODEL_E1)
-        resp, err = llamar_con_reintentos_api(
-            lambda: cliente.create(doc=c["archivo"], **kwargs), c["id"])
+        # U-B5.3 decisión 1: ante corte por max_tokens, UNA re-llamada en el
+        # mismo pase con 32k. El camino sin corte pasa kwargs tal cual.
+        par, err = llamar_con_reintentos_api(
+            lambda: cliente_e1.crear_con_reintento_corte(
+                cliente, kwargs, doc=c["archivo"]), c["id"])
+        resp, cortado = par if par is not None else (None, None)
         if resp is not None:
             u = resp.usage
             usage = {"input_tokens": getattr(u, "input_tokens", 0) or 0,
@@ -404,20 +467,30 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             stop = getattr(resp, "stop_reason", None)
             tool_input = next((b.input for b in resp.content
                                if getattr(b, "type", None) == "tool_use"), None)
-            if tool_input is None:
+            if stop == "max_tokens":
+                # el reintento también cortó: error DEFINITIVO contabilizado
+                # (decisión 5) — nunca queda como reintentable pendiente.
+                err = "max_tokens_hit_tras_reintento"
+            elif tool_input is None:
                 err = f"no_tool_use stop_reason={stop}"
-            elif stop == "max_tokens":
-                err = "max_tokens_hit"
         else:
             usage, stop, tool_input = {"input_tokens": 0, "output_tokens": 0,
                                        "cache_write_tokens": 0,
                                        "cache_read_tokens": 0}, None, None
         val = (validador_e1.validar_salida(tool_input, c).as_dict()
                if tool_input is not None else None)
-        append_jsonl(jsonl, {
+        reg = {
             "chunk_id": c["id"], "unidad": c["unidad"], "tipo_unidad": c["tipo"],
             "titulo": c["titulo"], "stop_reason": stop, "error": err,
-            "usage": usage, "tool_input_crudo": tool_input, "validacion": val})
+            "usage": usage, "tool_input_crudo": tool_input, "validacion": val}
+        if cortado is not None:
+            # decisión 2: AMBOS intentos persistidos íntegros — el crudo
+            # completo del intento 1 ya está en la db (write-through); acá
+            # queda su proyección jsonl junto al intento efectivo.
+            reg["reintento_corte"] = {
+                "max_tokens_reintento": cliente_e1.MAX_TOKENS_REINTENTO_CORTE,
+                "intento_1": cliente_e1.resumen_intento(cortado)}
+        append_jsonl(jsonl, reg)
         procesadas += 1
         hechas_este_proceso += 1
         estado.tick(cliente.gasto_usd, procesadas)
@@ -425,9 +498,10 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         if errores_consecutivos > 5:
             raise Freno(f"{key}: más de 5 errores de API consecutivos "
                         f"(último: {err}) — problema sistémico, se frena")
-        if procesadas % 25 == 0 or err:
+        if procesadas % 25 == 0 or err or cortado is not None:
             print(f"[{key} {procesadas}/{len(chunks)}] {c['id']:<28s} "
                   f"gasto_fase=USD {gasto_previo + cliente.gasto_usd:.4f}"
+                  + (" REINTENTO_CORTE" if cortado is not None else "")
                   + (f" ERROR {err}" if err else ""), flush=True)
         if checkpoint_cada and procesadas % checkpoint_cada == 0:
             checkpoint(salida, estado, to, "e1", procesadas, len(chunks),
@@ -437,9 +511,31 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
                   f"de este proceso", flush=True)
             sys.exit(9)
 
+    # Cierre del pase (U-B5.3 decisión 5): sin reintentables pendientes; los
+    # errores definitivos quedan contabilizados en el resumen (nunca en
+    # silencio). Las claves nuevas del resumen solo aparecen si hubo casos:
+    # una corrida sin cortes produce un resumen byte-idéntico al histórico.
+    ids_corrida = {c["id"] for c in chunks}
+    finales_e1 = {cid: r for cid, r in cargar_jsonl_last_wins(jsonl).items()
+                  if cid in ids_corrida}
+    pendientes_corte = reintentables_pendientes(finales_e1)
+    if pendientes_corte:
+        raise Freno(f"{key}: {len(pendientes_corte)} unidades con corte por "
+                    f"max_tokens sin reintentar ({pendientes_corte[:5]}) — un "
+                    f"pase no cierra con reintentables pendientes; relanzar "
+                    f"reanuda y las reintenta")
+    definitivos = [{"chunk_id": cid, "error": r["error"]}
+                   for cid, r in sorted(finales_e1.items()) if r.get("error")]
+    reintentos_corte = sum(1 for r in finales_e1.values() if "reintento_corte" in r)
     resumen = {"n_unidades": len(chunks),
                "cliente": cliente.resumen(),
                "gasto_fase_usd": round(gasto_previo + cliente.gasto_usd, 4)}
+    if reintentos_corte:
+        resumen["reintentos_corte"] = reintentos_corte
+    if definitivos:
+        resumen["errores_definitivos"] = definitivos
+        print(f"[{key}] {len(definitivos)} errores definitivos "
+              f"contabilizados en resumen_e1.json", flush=True)
     (tdir / "resumen_e1.json").write_text(
         json.dumps(resumen, ensure_ascii=False, indent=1), encoding="utf-8")
     estado.cerrar_fase(key, {"gasto_usd": resumen["gasto_fase_usd"],
@@ -647,6 +743,13 @@ def main() -> int:
 
     args.salida.mkdir(parents=True, exist_ok=True)
     estado = Estado(args.salida)
+    # U-B5.3 decisión 8: tope COMPARTIDO entre todos los clientes de la
+    # corrida (E1, E3 y reintentos E1), con estado persistido para reanudar.
+    # El tope es el global del manifiesto; en stub no hay clientes reales.
+    guardian = None
+    if not args.stub:
+        guardian = PresupuestoCompartido(
+            TOPE_GLOBAL_USD, args.salida / "presupuesto_compartido.json")
     t0 = time.time()
     print(f"corrida corpus_v2 | manifiesto={MAN.nombre} | stub={args.stub} "
           f"| tope global=USD {TOPE_GLOBAL_USD} | estimado=USD "
@@ -667,7 +770,7 @@ def main() -> int:
                     restante = TOPE_GLOBAL_USD - estado.gasto_global()
                     cli = cliente_e1.ClienteE1Real(
                         **P_E1, tope_usd=round(restante, 4),
-                        run_label=f"corpus_{to}_e1")
+                        run_label=f"corpus_{to}_e1", guardian=guardian)
                 try:
                     fase_e1(to, cli, estado, args.salida, args.limite,
                             args.abortar_tras, ck)
@@ -683,11 +786,11 @@ def main() -> int:
                     restante = TOPE_GLOBAL_USD - estado.gasto_global()
                     c3 = cliente_e3.ClienteE3Real(
                         **P_E3, tope_usd=round(restante, 4),
-                        run_label=f"corpus_{to}_e3")
+                        run_label=f"corpus_{to}_e3", guardian=guardian)
                     c1 = cliente_e1.ClienteE1Real(
                         **P_E1, tope_usd=round(restante, 4),
                         run_label=f"corpus_{to}_reintentos_e1",
-                        db_path=DB_REINTENTOS_E1)
+                        db_path=DB_REINTENTOS_E1, guardian=guardian)
                 try:
                     fase_e3(to, c3, c1, estado, args.salida, args.limite,
                             args.abortar_tras, ck)
@@ -699,7 +802,9 @@ def main() -> int:
             for chk in CHEQUEOS_HITS:
                 if chk["to"] == to:
                     chequear_hits(to, chk, estado, args.stub)
-    except Freno as e:
+    except (Freno, cliente_e1.TopeExcedido, cliente_e3.TopeExcedido) as e:
+        # el tope compartido (decisión 8) frena duro con TopeExcedido desde
+        # cualquier cliente; se trata como Freno: estado persistido, salida 3.
         print(f"\nFRENO: {e}", flush=True)
         estado.persistir()
         return 3

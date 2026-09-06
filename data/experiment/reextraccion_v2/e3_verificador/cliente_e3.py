@@ -118,6 +118,7 @@ class ClienteE3Real:
         tope_usd: float,
         run_label: str,
         db_path: Path = DB_PATH,
+        guardian=None,
     ):
         if min(precio_in_por_mtok, precio_out_por_mtok,
                precio_cache_write_por_mtok, precio_cache_read_por_mtok) <= 0 or tope_usd <= 0:
@@ -140,6 +141,10 @@ class ClienteE3Real:
         self.gasto_usd = 0.0  # solo misses (fórmula D2)
         self.llamadas = 0
         self.llamadas_hit = 0
+        # Guardián de presupuesto COMPARTIDO entre los clientes de una corrida
+        # (U-B5.3 decisión 8; duck-typed: .excedido(p)/.registrar(d)/.gasto_usd/
+        # .tope_usd). None = solo el tope propio, comportamiento previo intacto.
+        self.guardian = guardian
         # Proyección conservadora de una llamada fría para el chequeo de tope:
         # prefijo completo (con calibradores) como cache write + variable
         # holgada + salida máxima.
@@ -169,6 +174,12 @@ class ClienteE3Real:
             raise TopeExcedido(
                 f"gasto acumulado USD {self.gasto_usd:.4f} + proyección "
                 f"{self._proyeccion_usd:.4f} supera el tope {self.tope_usd:.2f}")
+        if self.guardian is not None and self.guardian.excedido(self._proyeccion_usd):
+            raise TopeExcedido(
+                f"presupuesto COMPARTIDO agotado: gasto combinado USD "
+                f"{self.guardian.gasto_usd:.4f} + proyección "
+                f"{self._proyeccion_usd:.4f} supera el tope compartido "
+                f"{self.guardian.tope_usd:.2f}")
         antes = dict(self.cache._stats)
         resp = self.cache.messages.create(**kwargs)
         despues = self.cache._stats
@@ -180,16 +191,19 @@ class ClienteE3Real:
             d_out = despues["tokens_out"] - antes["tokens_out"]
             d_cw = despues["cache_write"] - antes["cache_write"]
             d_cr = despues["cache_read"] - antes["cache_read"]
-            self.gasto_usd += (
+            delta_usd = (
                 d_in * self.p_in + d_out * self.p_out
                 + d_cw * self.p_cw + d_cr * self.p_cr
             ) / 1e6
+            self.gasto_usd += delta_usd
+            if self.guardian is not None:
+                self.guardian.registrar(delta_usd)
         else:
             self.llamadas_hit += 1
         return resp
 
     def resumen(self) -> dict:
-        return {
+        d = {
             "llamadas": self.llamadas,
             "hits_cache_local": self.llamadas_hit,
             "gasto_usd_real": round(self.gasto_usd, 4),
@@ -198,6 +212,12 @@ class ClienteE3Real:
                                  "cache_write": self.p_cw, "cache_read": self.p_cr},
             "cache_stats": self.cache.stats(),
         }
+        if self.guardian is not None:
+            d["presupuesto_compartido"] = {
+                "tope_usd": self.guardian.tope_usd,
+                "gasto_combinado_usd": round(self.guardian.gasto_usd, 4),
+            }
+        return d
 
     def close(self) -> None:
         self.cache.close()
