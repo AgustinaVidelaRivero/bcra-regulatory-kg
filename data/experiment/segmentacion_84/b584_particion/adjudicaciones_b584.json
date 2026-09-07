@@ -556,8 +556,8 @@
     "fallas": [],
     "flags": []
    },
-   "adjudicacion": "reconocido_con_senales_declaradas",
-   "criterio": "S3 veredicto censal «segmentable con regla de familia b» (afinado no construido: B5.8.2 cerró con cero reglas b_pts, declarado a B5.8.4) + S2 evaluar() sobre unidades emitidas + S6 rinde + S5 señales declaradas (lectura, no gate)"
+   "adjudicacion": "reconocido_pleno_digerible",
+   "criterio": "curado por B5.2; evaluar sellado: digerible, cero fallas, salud sana (S2 + S5; fila de la revisión del freno) + S3 veredicto censal «segmentable con regla de familia b» (afinado no construido: B5.8.2 cerró con cero reglas b_pts, declarado a B5.8.4) + S2 evaluar() sobre unidades emitidas + S6 rinde + S5 señales declaradas (lectura, no gate)"
   },
   {
    "to": "snp_cheq",
@@ -729,6 +729,199 @@
    "criterio": "S3 veredicto censal «segmentable con regla de familia b» (afinado no construido: B5.8.2 cerró con cero reglas b_pts, declarado a B5.8.4) + S2 evaluar() sobre unidades emitidas + S6 rinde + S5 señales declaradas (lectura, no gate)"
   }
  ],
+ "a_diferencias_c_vs_censo": {
+  "nota": "por qué difieren: el sellado censal cita e0_dry PRE-B5.2 y sin sub-chunking; la re-corrida mide el camino vigente de HEAD (cambios de B5.2 posteriores al sellado) sobre las unidades EMITIDAS (post sub-chunking de U-B5.3, que hereda flags de forma conservadora y declarada). Los caminos sellados quedaron byte-idénticos (batería dev/68/ESQ): los deltas viven solo en TOs nunca sellados.",
+  "filas": [
+   {
+    "to": "ri_cc",
+    "c_sellado": [
+     "C4",
+     "C5",
+     "C7"
+    ],
+    "c_b584": [
+     "C4",
+     "C5",
+     "C6",
+     "C7"
+    ],
+    "causas": [
+     "parse_vigente_post_sellado_B5.2",
+     "sub_chunking_UB53"
+    ],
+    "medicion": {
+     "unidades": [
+      33,
+      36
+     ],
+     "secciones": [
+      6,
+      7
+     ],
+     "rechazos": [
+      61,
+      61
+     ],
+     "avisos": [
+      54,
+      54
+     ],
+     "anunciado_sin_cuerpo": [
+      16,
+      16
+     ],
+     "pct_tabular": [
+      18.18,
+      22.22
+     ],
+     "max_chars_terminal": [
+      10132,
+      17875
+     ],
+     "particiones": 1
+    }
+   },
+   {
+    "to": "ri_rml",
+    "c_sellado": [
+     "C4",
+     "C6",
+     "C7",
+     "C8"
+    ],
+    "c_b584": [
+     "C4",
+     "C6",
+     "C7"
+    ],
+    "causas": [
+     "sub_chunking_UB53"
+    ],
+    "medicion": {
+     "unidades": [
+      27,
+      32
+     ],
+     "secciones": [
+      6,
+      6
+     ],
+     "rechazos": [
+      128,
+      128
+     ],
+     "avisos": [
+      10,
+      10
+     ],
+     "anunciado_sin_cuerpo": [
+      0,
+      0
+     ],
+     "pct_tabular": [
+      44.44,
+      53.12
+     ],
+     "max_chars_terminal": [
+      65711,
+      12578
+     ],
+     "particiones": 1
+    }
+   },
+   {
+    "to": "rmgcti",
+    "c_sellado": [
+     "C4",
+     "C5",
+     "C7"
+    ],
+    "c_b584": [],
+    "causas": [
+     "parse_vigente_post_sellado_B5.2"
+    ],
+    "medicion": {
+     "unidades": [
+      32,
+      81
+     ],
+     "secciones": [
+      6,
+      12
+     ],
+     "rechazos": [
+      52,
+      2
+     ],
+     "avisos": [
+      31,
+      0
+     ],
+     "anunciado_sin_cuerpo": [
+      34,
+      0
+     ],
+     "pct_tabular": [
+      0.0,
+      0.0
+     ],
+     "max_chars_terminal": [
+      18491,
+      11244
+     ],
+     "particiones": 0
+    }
+   },
+   {
+    "to": "snp_dd",
+    "c_sellado": [
+     "C4",
+     "C5",
+     "C7",
+     "C8"
+    ],
+    "c_b584": [
+     "C4",
+     "C5",
+     "C7"
+    ],
+    "causas": [
+     "sub_chunking_UB53"
+    ],
+    "medicion": {
+     "unidades": [
+      53,
+      56
+     ],
+     "secciones": [
+      6,
+      6
+     ],
+     "rechazos": [
+      144,
+      144
+     ],
+     "avisos": [
+      46,
+      46
+     ],
+     "anunciado_sin_cuerpo": [
+      13,
+      13
+     ],
+     "pct_tabular": [
+      5.66,
+      10.71
+     ],
+     "max_chars_terminal": [
+      41031,
+      12994
+     ],
+     "particiones": 1
+    }
+   }
+  ]
+ },
  "b_ri_tsa": {
   "to": "ri_tsa",
   "categoria": "RI",
@@ -1665,5 +1858,25 @@
   ],
   "total_unidades_reales": 2007,
   "con_salud_verde": 12
+ },
+ "resolucion_r2_rinden": {
+  "definicion": "rinde (S6, medición del runner) = unidades_extraccion > 0 y raices_de_lectura > 0 (raíces no sintéticas-0)",
+  "rinden_total": 142,
+  "cruce_clase_rinde": {
+   "no_segmentable_declarado|rinde=False": 9,
+   "no_segmentable_declarado|rinde=True": 3,
+   "parcial_declarado|rinde=True": 2,
+   "reconocido_pleno|rinde=False": 1,
+   "reconocido_pleno|rinde=True": 137
+  },
+  "plenos_sin_rinde": [
+   "ri_acsf"
+  ],
+  "no_segmentables_con_rinde": [
+   "ri_chr",
+   "ri_pspii",
+   "ri_rem"
+  ],
+  "lectura": "142 = 137 reconocidos plenos con rinde=True + 2 parciales (manual, ri2_pm: rinden con su preámbulo) + 3 no segmentables con rinde técnico (el hallazgo de 3.e); 138 plenos = 137 + ri_acsf (rinde=False en prosa: su única unidad E0 es el S0 sin raíz; reconocido por su vía TABULAR)"
  }
 }

@@ -148,13 +148,15 @@ A("")
 A("Los 22 producen unidades por el camino VIGENTE (jamás entran a las "
   "etapas nuevas; columna `vigente_confirmado` en el JSON). El afinado "
   "opcional de B5.8.2 no se construyó (cerró con cero reglas b_pts): las "
-  "fallas C* remanentes quedan DECLARADAS, no remediadas.")
+  "fallas C* remanentes quedan DECLARADAS, no remediadas. El único "
+  "`reconocido_pleno_digerible` quedó CURADO por las reglas B5.2 vigentes "
+  "(evaluar sellado: digerible, cero fallas, salud sana — fila corregida "
+  "en la revisión del freno).")
 A("")
 A("```bash")
-A("python3 -c \"import json; a=json.load(open('" + BASE
+A("python3 -c \"import json,collections; a=json.load(open('" + BASE
   + "/adjudicaciones_b584.json'))['a_bpts']; "
-  "print(len(a), sum(1 for f in a if f['adjudicacion']=="
-  "'reconocido_con_senales_declaradas'), "
+  "print(len(a), dict(collections.Counter(f['adjudicacion'] for f in a)), "
   "sum(1 for f in a if f['marginal_censo']))\"")
 A("```")
 A("")

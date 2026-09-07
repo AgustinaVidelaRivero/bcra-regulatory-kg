@@ -78,17 +78,17 @@ python3 -c "import json; c=json.load(open('data/experiment/segmentacion_84/censo
 | ri_gerc | RI | 8 | 15 | C4 | C4 | sano | no | reconocido_con_senales_declaradas |
 | ri_pgn | RI | 19 | 19 | C6,C7 | C6,C7 | sano | sí | reconocido_con_senales_declaradas |
 | ri_rml | RI | 77 | 32 | C4,C6,C7,C8 | C4,C6,C7 | paginas_sin_seccion,unidades_anomalas_por_tamano | no | reconocido_con_senales_declaradas |
-| rmgcti | no-RI | 58 | 81 | C4,C5,C7 | — | sano | no | reconocido_con_senales_declaradas |
+| rmgcti | no-RI | 58 | 81 | C4,C5,C7 | — | sano | no | reconocido_pleno_digerible |
 | snp_cheq | no-RI | 159 | 528 | C4 | C4 | cid | no | reconocido_con_senales_declaradas |
 | snp_dd | no-RI | 68 | 56 | C4,C5,C7,C8 | C4,C5,C7 | paginas_sin_seccion,unidades_anomalas_por_tamano | no | reconocido_con_senales_declaradas |
 | snp_mep | no-RI | 50 | 46 | C5,C8 | C5,C8 | unidades_anomalas_por_tamano | no | reconocido_con_senales_declaradas |
 | snp_tr | no-RI | 62 | 89 | C4,C5 | C4,C5 | sano | no | reconocido_con_senales_declaradas |
 | venliq | no-RI | 10 | 16 | C5 | C5 | cid,paginas_sin_seccion | no | reconocido_con_senales_declaradas |
 
-Los 22 producen unidades por el camino VIGENTE (jamás entran a las etapas nuevas; columna `vigente_confirmado` en el JSON). El afinado opcional de B5.8.2 no se construyó (cerró con cero reglas b_pts): las fallas C* remanentes quedan DECLARADAS, no remediadas.
+Los 22 producen unidades por el camino VIGENTE (jamás entran a las etapas nuevas; columna `vigente_confirmado` en el JSON). El afinado opcional de B5.8.2 no se construyó (cerró con cero reglas b_pts): las fallas C* remanentes quedan DECLARADAS, no remediadas. El único `reconocido_pleno_digerible` quedó CURADO por las reglas B5.2 vigentes (evaluar sellado: digerible, cero fallas, salud sana — fila corregida en la revisión del freno).
 
 ```bash
-python3 -c "import json; a=json.load(open('data/experiment/segmentacion_84/b584_particion/adjudicaciones_b584.json'))['a_bpts']; print(len(a), sum(1 for f in a if f['adjudicacion']=='reconocido_con_senales_declaradas'), sum(1 for f in a if f['marginal_censo']))"
+python3 -c "import json,collections; a=json.load(open('data/experiment/segmentacion_84/b584_particion/adjudicaciones_b584.json'))['a_bpts']; print(len(a), dict(collections.Counter(f['adjudicacion'] for f in a)), sum(1 for f in a if f['marginal_censo']))"
 ```
 
 ### 3.b ri_tsa — verificación de la re-corrida (B5.2) y su partición

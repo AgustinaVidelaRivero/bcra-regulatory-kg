@@ -171,12 +171,14 @@ for to in sorted(g5):
     # con cero reglas b_pts, declarado a B5.8.4): queda como límite.
     reconocido = (c["rinde"] and c["cobertura_exacta"]
                   and not c["activado_por_cero_unidades"])
-    # resolución de la revisión del freno (R1): un b_pts que en la re-corrida
-    # no falla NINGÚN umbral C* y tiene salud sana no tiene señales que
-    # declarar — la etiqueta con-señales le quedaría corta; se adjudica con
-    # el mismo criterio sellado (S2 digerible + S5 sano), sin criterio nuevo.
-    sin_senales = (ev["veredicto_evaluar"] == "digerible"
-                   and conteos[to]["healthcheck_veredicto"] == "sano")
+    # corrección de la revisión del freno (fila dictada por la autora sobre
+    # la resolución R1): un b_pts que en la re-corrida sale DIGERIBLE por el
+    # evaluar() sellado (cero fallas) y con salud sana quedó CURADO por las
+    # reglas B5.2 vigentes — se adjudica pleno-digerible con el mismo
+    # criterio sellado (S2 + S5), sin criterio nuevo. Caso medido: rmgcti.
+    digerible = (ev["veredicto_evaluar"] == "digerible"
+                 and not ev["fallas"]
+                 and conteos[to]["healthcheck_veredicto"] == "sano")
     filas_a.append({
         **base(to),
         "familia": "b_pts",
@@ -184,11 +186,12 @@ for to in sorted(g5):
         "vigente_confirmado": not c["activado_por_cero_unidades"],
         "fallas_selladas_censo": fallas_sell,
         "evaluar_b584": ev,
-        "adjudicacion": ("reconocido_pleno_sin_senales" if reconocido and sin_senales
+        "adjudicacion": ("reconocido_pleno_digerible" if reconocido and digerible
                          else "reconocido_con_senales_declaradas" if reconocido
                          else "REVISAR"),
-        "criterio": (("S2 evaluar() digerible en la re-corrida + S5 salud sana "
-                      "(cero señales que declarar) + " if sin_senales else "")
+        "criterio": (("curado por B5.2; evaluar sellado: digerible, cero "
+                      "fallas, salud sana (S2 + S5; fila de la revisión del "
+                      "freno) + " if digerible else "")
                      + ("S3 veredicto censal «segmentable hoy (umbral marginal) — "
                         "adjudicar en B5.8.4 sin regla nueva»" if marginal else
                         "S3 veredicto censal «segmentable con regla de familia b» "
@@ -525,7 +528,7 @@ print("re-laudo tanda 2:", len(filas_relaudo), "TOs no-RI,",
       adj["tabla_relaudo_tanda2"]["con_salud_verde"], "con salud verde")
 from collections import Counter as _C
 print("b_pts:", dict(_C(f["adjudicacion"] for f in filas_a)),
-      "| sin señales:", [f["to"] for f in filas_a
-                         if f["adjudicacion"] == "reconocido_pleno_sin_senales"])
+      "| plenos digeribles:", [f["to"] for f in filas_a
+                               if f["adjudicacion"] == "reconocido_pleno_digerible"])
 print("diferencias C* vs censo:", [(d["to"], d["causas"]) for d in difs_c])
 print("R2:", adj["resolucion_r2_rinden"]["cruce_clase_rinde"])
