@@ -1,12 +1,35 @@
 #!/usr/bin/env python3
 """Validador de shapes v0 (capas 1 y 2) para los kg.json del experimento.
 
-Reglas determinísticas (sin LLM) S1-S12 sobre la estructura del grafo.
+Reglas determinísticas (sin LLM) S1-S12 y S15 sobre la estructura del grafo.
 El kg.json de entrada es SOLO LECTURA: este script no lo modifica jamás.
-Solo escribe el reporte Markdown indicado por --out (default: reports/).
+Lo único que escribe es el reporte Markdown indicado por --out, y solo si esa
+opción se pasa.
 
 Uso:
     python3 scripts/shapes_validator.py [--kg RUTA] [--out RUTA]
+                                        [--excepciones RUTA]
+
+`--out` NO tiene default: sin esa opción el validador reporta por consola y no
+escribe archivo alguno. Antes apuntaba a un reporte commiteado del repo y lo
+sobrescribía en silencio (ver el comentario de DEFAULT_OUT).
+
+S15 (U-ESQ-V3) es la guarda de la taxonomía de roles: un rol sin aristas
+`miembro_de` entrantes es un nodo aislado del árbol, y las normas del TO que
+lo declara dejan de ser alcanzables por navegación taxonómica — el mecanismo
+que el capítulo del esquema presenta como aporte del grafo frente al
+fragmento. Su tercera cláusula obliga a que la deuda quede VISIBLE Y CONTADA:
+los roles sin miembro adjudicable se declaran en una lista, y el validador
+compara la cuenta declarada contra la medida.
+
+`--excepciones` apunta al artefacto que declara esa lista (el bloque
+`excepciones_s15` de un esquema de clases, p. ej.
+`data/experiment/esq_v3_miembros/esquema_v3_clases.json`). SIN esa opción la
+lista declarada es vacía y cualquier rol huérfano es FAIL, que es el
+comportamiento seguro por defecto.
+
+S13, S14, S16 y S17 NO están implementadas y no se inventan: el orden de
+reporte es la lista explícita S1..S12 + S15, sin huecos silenciosos.
 
 Solo stdlib (sin dependencias de terceros).
 """
@@ -23,10 +46,19 @@ DEFAULT_KG = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "data", "experiment", "run_3_ppf_core", "kg.json",
 )
-DEFAULT_OUT = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "reports", "shapes_run_3_v0.md",
-)
+# SIN default de salida (U-ESQ-V3). Hasta acá el default era
+# reports/shapes_run_3_v0.md, un reporte COMMITEADO: correr la herramienta sin
+# --out sobrescribía un artefacto del repo en silencio. El incidente está
+# registrado desde el 02/08/2026 (data/backlog/retests/C3_retest_2026-08-02.md
+# §Incidente: «escritura fuera del mandato, revertida con git checkout») y
+# volvió a dispararse sobre el mismo archivo durante U-ESQ-V3. El checklist de
+# un gate obliga a quien lo lee; el default obliga a cualquiera que corra la
+# herramienta, así que el arreglo va acá.
+#
+# Sin --out el validador NO escribe: reporta por consola y listo. Es el mismo
+# criterio que ya había adoptado la adaptación v2 de esta herramienta
+# (data/experiment/grafo_v2/code/shapes_v2.py: `--out default=None`).
+DEFAULT_OUT = None
 
 RELACIONES_12 = {
     "aplica_a", "regula", "prohibe", "limita", "exceptua",
@@ -51,6 +83,42 @@ FIRMAS = {
 }
 
 UNIDADES_REGULATORIAS = ("Obligacion", "Restriccion", "Excepcion")
+
+# S15 — orden de reporte. S13, S14, S16 y S17 no están implementadas: la lista
+# es explícita para que su ausencia se lea, en vez de esconderse en un range().
+ORDEN_SHAPES = [f"S{i}" for i in range(1, 13)] + ["S15"]
+SHAPES_NO_IMPLEMENTADAS = ("S13", "S14", "S16", "S17")
+
+
+def cargar_excepciones_s15(ruta):
+    """Lee el bloque `excepciones_s15` del artefacto indicado.
+
+    Devuelve (ids_declarados, total_declarado, por_causa, defecto). `defecto`
+    describe un problema del propio artefacto (ilegible, sin bloque, cuenta
+    interna inconsistente) y hace fallar S15: una lista de excepciones que no
+    se puede leer no es una deuda declarada."""
+    if not ruta:
+        return set(), 0, {}, None
+    try:
+        with open(ruta, encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception as e:
+        return set(), 0, {}, f"no se pudo leer {ruta}: {e}"
+    bloque = d.get("excepciones_s15")
+    if not isinstance(bloque, dict):
+        return set(), 0, {}, f"{ruta} no declara un bloque 'excepciones_s15'"
+    filas = bloque.get("roles") or []
+    ids = {r.get("rol_id") for r in filas if r.get("rol_id")}
+    total = bloque.get("total")
+    por_causa = bloque.get("por_causa") or {}
+    if total != len(filas):
+        return ids, total, por_causa, (
+            f"el artefacto se contradice: declara total={total} y lista {len(filas)} roles")
+    if por_causa and sum(por_causa.values()) != len(filas):
+        return ids, total, por_causa, (
+            f"el artefacto se contradice: la suma por causa ({sum(por_causa.values())}) "
+            f"no reproduce el total listado ({len(filas)})")
+    return ids, total, por_causa, None
 
 
 def norm(s):
@@ -79,7 +147,12 @@ def check_provenance(prov):
 def main():
     ap = argparse.ArgumentParser(description="Validador de shapes v0 (capas 1 y 2)")
     ap.add_argument("--kg", default=DEFAULT_KG, help="Ruta al kg.json (solo lectura)")
-    ap.add_argument("--out", default=DEFAULT_OUT, help="Ruta del reporte Markdown")
+    ap.add_argument("--out", default=DEFAULT_OUT,
+                    help="Ruta del reporte Markdown. SIN default: si no se pasa, el "
+                         "validador reporta por consola y no escribe ningún archivo.")
+    ap.add_argument("--excepciones", default=None,
+                    help="Artefacto con el bloque 'excepciones_s15' (S15). Sin esta opción "
+                         "la lista declarada es vacía y todo rol huérfano es FAIL.")
     args = ap.parse_args()
 
     with open(args.kg, encoding="utf-8") as f:
@@ -321,10 +394,75 @@ def main():
         [f"    - {i}" for i in sin_exc],
     )
 
+    # ---------- S15 (U-ESQ-V3) ----------
+    # Todo rol tiene miembro_de no vacío O figura en la lista declarada de
+    # roles sin miembro adjudicable; los miembros son clases del árbol; y el
+    # validador REPORTA la lista con su cuenta.
+    decl_ids, decl_total, decl_causa, decl_defecto = cargar_excepciones_s15(args.excepciones)
+
+    roles = [n for n in nodes if (n.get("properties") or {}).get("nivel") == "rol"]
+    miembros_de = defaultdict(list)
+    for e in edges:
+        if norm(e["relation"]) == "miembro_de":
+            miembros_de[e["target"]].append(e["source"])
+
+    huerfanos = sorted(r["id"] for r in roles if not miembros_de.get(r["id"]))
+    no_declarados = [r for r in huerfanos if r not in decl_ids]
+    declarados_con_miembro = sorted(i for i in decl_ids if miembros_de.get(i))
+
+    # Segunda cláusula: el miembro es una clase del árbol. Sobre el grafo
+    # vigente los 17 miembros son de nivel 'clase' (medido), y la adjudicación
+    # de U-ESQ-V3 rechazó por laudo los candidatos de nivel instancia, así que
+    # la regla describe lo que el grafo efectivamente tiene.
+    miembros_no_clase = []
+    for rol_id, ms in sorted(miembros_de.items()):
+        for m in ms:
+            n = node_by_id.get(m)
+            niv = (n.get("properties") or {}).get("nivel") if n else None
+            if niv != "clase":
+                miembros_no_clase.append(
+                    f"{m} --miembro_de--> {rol_id} (nivel del miembro: {niv or 'inexistente'})")
+
+    cuenta_ok = (decl_total == len(huerfanos)) if args.excepciones else True
+
+    viol_s15 = []
+    if decl_defecto:
+        viol_s15.append(f"lista de excepciones inválida: {decl_defecto}")
+    viol_s15 += [f"rol huérfano NO declarado: {i}" for i in no_declarados]
+    viol_s15 += [f"miembro que no es clase del árbol: {x}" for x in miembros_no_clase]
+    if not cuenta_ok:
+        viol_s15.append(
+            f"la cuenta declarada ({decl_total}) no coincide con la medida "
+            f"({len(huerfanos)} roles huérfanos en el grafo)")
+
+    detalle_s15 = list(viol_s15)
+    if decl_ids:
+        detalle_s15.append("")
+        detalle_s15.append(f"Lista declarada ({decl_total} roles"
+                           + (f"; por causa: {decl_causa}" if decl_causa else "") + "):")
+        detalle_s15 += [f"    - {i}" + ("  [YA TIENE MIEMBRO: declaración obsoleta]"
+                                        if i in declarados_con_miembro else "")
+                        for i in sorted(decl_ids)]
+
+    registrar(
+        "S15",
+        "ERROR — Todo rol tiene miembro_de no vacío O figura en la lista declarada de roles sin "
+        "miembro adjudicable; los miembros son clases del árbol; la cuenta declarada coincide "
+        "con la medida.",
+        "PASS" if not viol_s15 else "FAIL",
+        f"{len(roles)} roles, {sum(len(v) for v in miembros_de.values())} aristas miembro_de; "
+        f"{len(huerfanos)} huérfanos ({len(huerfanos) - len(no_declarados)} declarados, "
+        f"{len(no_declarados)} sin declarar); {len(miembros_no_clase)} miembros que no son clase."
+        + (f" Lista declarada: {decl_total}" + (f" ({decl_causa})" if decl_causa else "") + "."
+           if args.excepciones else " Sin lista declarada (--excepciones no fue pasada)."),
+        detalle_s15,
+    )
+
     # ---------- Reporte ----------
-    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    if args.out:
+        os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     fecha = datetime.date.today().isoformat()
-    orden = [f"S{i}" for i in range(1, 13)]
+    orden = list(ORDEN_SHAPES)
     lineas = [
         "# Validador de shapes v0 — capas 1 y 2",
         "",
@@ -346,8 +484,15 @@ def main():
         r = resultados[rid]
         lineas.append(f"| {rid} | {r['result']} | {r['resumen']} |")
     lineas.append("")
-    with open(args.out, "w", encoding="utf-8") as f:
-        f.write("\n".join(lineas))
+    lineas += [
+        f"## Shapes no implementadas: {', '.join(SHAPES_NO_IMPLEMENTADAS)}",
+        "",
+        "Se declaran para que su ausencia se lea. No se inventan: implementarlas es otra unidad.",
+        "",
+    ]
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write("\n".join(lineas))
 
     # ---------- Consola ----------
     print(f"Grafo: {args.kg}")
@@ -362,7 +507,10 @@ def main():
     for rid in orden:
         r = resultados[rid]
         print(f"{rid:6s} {r['result']:10s} {r['resumen']}")
-    print(f"\nReporte escrito en: {os.path.abspath(args.out)}")
+    if args.out:
+        print(f"\nReporte escrito en: {os.path.abspath(args.out)}")
+    else:
+        print("\n(sin --out: no se escribió ningún archivo)")
 
 
 if __name__ == "__main__":
