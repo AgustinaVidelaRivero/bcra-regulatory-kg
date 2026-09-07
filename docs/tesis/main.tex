@@ -9,6 +9,7 @@
 \usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm,marginparwidth=1.75cm]{geometry}
 \usepackage{setspace}
 \onehalfspacing % Interlineado 1.5
+\setlength{\emergencystretch}{3em}
 
 % --- Paquetes para Ciencia y Gráficos ---
 \usepackage{amsmath, amsfonts, amssymb} % Matemáticas
@@ -227,7 +228,7 @@ que la evaluación motive se incorporan en una versión posterior, que es la
 que se publica.
 % [TODO: escalado] cuando exista el grafo escalado, "el recurso final se
 % construye sobre el corpus completo" pasa a decir su escala.
-% La elección de esquema cerrado se justifica en el capítulo 3 (fase 2.2).
+% La elección de esquema cerrado se justifica en el capítulo~\ref{cap:esquema}
 % El alcance exacto del escalado depende del laudo D5 (pendiente; base no disputada: 68 TOs digeribles primero).
 
 El ejemplo del pago de dividendos de la Motivación muestra el problema en
@@ -567,8 +568,102 @@ del propio recurso.
 \section{Marco teórico}
 \label{cap:marco}
 
-\section{Corpus y construcción del grafo}
+\section{Diseño y validación del esquema del grafo}
+\label{cap:esquema}
+
+El grafo representa la normativa mediante un vocabulario fijo de tipos de entidad y de relación, el esquema, y la calidad del recurso depende de que ese vocabulario capture lo que la norma efectivamente dice. Con un esquema cerrado, todo desajuste entre el vocabulario y el texto se manifiesta como una omisión o como una deformación silenciosa, y por eso el esquema se puso a prueba antes de construir el recurso a escala. Este capítulo presenta ese esquema, el catálogo de sujetos que lo acompaña, y el procedimiento con el que ambos se pusieron a prueba fuera del conjunto de desarrollo.
+
+\subsection{La unidad de extracción y la partición del corpus}
+
+Un Texto Ordenado consolida en un único documento las disposiciones vigentes sobre una materia. Cada uno se organiza en secciones numeradas que se subdividen en puntos, y los puntos se numeran de forma jerárquica: en los cinco Textos Ordenados del conjunto de desarrollo la numeración llega a cuatro niveles. Esa numeración es el sistema de direcciones del corpus, porque una norma que remite a otra cita el punto y no la página, y la cita que respalda una respuesta sobre esta normativa se da en esos mismos términos.
+
+La unidad sobre la que trabaja la extracción es el punto terminal, el que ya no se subdivide, acompañado de la cadena estructural que lo contiene: el encabezado de su sección, los encabezados de los puntos intermedios y los párrafos introductorios y de cierre del punto contenedor. Cada unidad presenta al modelo el texto del punto terminal precedido por esa cadena, de modo que el punto se lee en su contexto y no como fragmento suelto. La razón del diseño es que esa prosa sin numerar porta condiciones que el punto terminal presupone, y en una versión anterior del proceso su contenido se perdía en la extracción mientras que el de los sub-puntos numerados se conservaba.
+
+Los puntos contenedores que tienen prosa propia aportan además una unidad separada, la unidad estructural, cuyo texto principal es esa prosa, de modo que ningún párrafo del documento quede fuera del proceso. Unas y otras (de punto terminal y estructurales) son las unidades de extracción, y con ellas se miden tanto el volumen del corpus como el costo de procesarlo.
+
+Al momento del relevamiento el índice oficial registraba 157 Textos Ordenados. Cinco de ellos forman el conjunto de desarrollo sobre el que se construyó y se validó el método: Protección de los usuarios de servicios financieros, Clasificación de deudores, Capitales mínimos de las entidades financieras, Exterior y cambios, y el régimen informativo de exigencia e integración de capitales mínimos. La selección buscó diversidad de materia (cinco dominios regulatorios distintos), de estructura (cuatro documentos de normativa general y uno de régimen informativo, de forma más tabular) y de tamaño (de 40 a 204 páginas). En conjunto suman 564 páginas y 1.763 unidades de extracción.
+
+Los 152 restantes son el universo a escalar y suman 6.757 páginas y 8.010 unidades de extracción; como los Textos Ordenados se actualizan con cada comunicación, cada archivo descargado quedó inventariado con su huella criptográfica (sha256), que fija sobre qué versión exacta de cada documento trabaja este proyecto.
+
+No todos los documentos de ese universo se dejan segmentar por igual. En 68 Textos Ordenados, que reúnen 2.009 páginas y 6.340 unidades de extracción, la segmentación vigente reconoce la estructura del documento; los 84 restantes requieren reglas de parseo todavía no escritas, y en 62 de ellos la segmentación no produce ninguna unidad. La partición se resuelve con criterios mecánicos sobre el resultado de la segmentación, sin intervención de un modelo de lenguaje. El escalado del recurso comienza por esos 68 Textos Ordenados y avanza sobre los restantes a medida que se escriben sus reglas de parseo.
+
+\subsection{El esquema de partida}
+
+El esquema del que parte la validación fija seis tipos de entidad que el extractor puede emitir. Tres recogen el contenido deóntico de la norma (lo que manda, prohíbe o exime), \texttt{Obligacion}, \texttt{Restriccion} y \texttt{Excepcion}; uno el acto regulado, \texttt{Operacion}; y dos el anclaje documental, \texttt{TextoOrdenado} y \texttt{Comunicacion}.
+
+Esos tipos no se fijaron de antemano. Un conjunto inicial de entidades candidatas se contrastó con el corpus mediante un análisis sin modelo de lenguaje sobre una muestra de comunicaciones y tres Textos Ordenados completos, que midió con qué frecuencia el texto nombra cada candidata, relevó el vocabulario con que las normas se relacionan entre sí y examinó cómo se organiza internamente un Texto Ordenado. De esa lectura del corpus salieron dos decisiones. La jerarquía documental quedó fuera del vocabulario de entidades, porque un punto es la dirección de una norma y no una norma; el punto 3.17.1.4, por ejemplo, no es un nodo del grafo sino el dato de procedencia del nodo que representa la restricción que ese punto establece. Y la obligación entró como tipo propio. La restricción y la excepción cubren lo que la norma prohíbe, limita o exime, pero no lo que la norma manda hacer. Ese deber positivo (presentar información, calcular un ratio, clasificar a un deudor) es masivo en el corpus, y sin un tipo que lo represente esas normas no tendrían nodo posible. Textos Ordenados enteros, como el régimen informativo, están hechos de deberes de esa clase.
+
+A los seis tipos se suma un séptimo tipo de nodo, \texttt{Sujeto}, que representa a quién se dirige la norma: las entidades financieras, una clase particular de ellas, o un organismo como el propio BCRA. Es la respuesta a la pregunta central del cumplimiento, a quién aplica cada regla, y un mismo sujeto aparece en el texto bajo formas distintas, \enquote{banco}, \enquote{bancos}, \enquote{entidades bancarias}, que extraídas libremente producirían un nodo por cada forma.
+
+Una versión anterior del esquema extraía los sujetos así, como un tipo de entidad más, y un censo del grafo construido con ella midió el resultado. Ese tipo contenía todos los sujetos del dominio aplastados en uno solo, y el 68\,\% de las relaciones que vinculan una norma con su sujeto apuntaba a un único nodo genérico.
+
+Por eso el sujeto existe en el grafo pero no en el vocabulario del extractor. Los sujetos provienen de un catálogo cerrado que se entrega al modelo junto con sus instrucciones, y cuando una relación requiere un sujeto, el modelo elige una entrada de ese catálogo en lugar de crear el nodo; si ninguna corresponde, propone una en texto libre que no entra al catálogo por sí sola. Ese catálogo y su construcción se tratan más adelante en este capítulo.
+
+Sobre esos tipos el esquema define doce tipos de relación, o predicados: \texttt{establecida\_en}, \texttt{referencia}, \texttt{modificada\_por}, \texttt{aplica\_a}, \texttt{regula}, \texttt{exceptua}, \texttt{exceptua\_obligacion}, \texttt{prohibe}, \texttt{limita}, \texttt{ejecuta}, \texttt{requiere} y \texttt{condiciona}. Cada relación declara su dominio y su rango, es decir, qué tipo de nodo admite en cada extremo, de modo que \texttt{aplica\_a} solo puede ir de una obligación o una restricción a un sujeto, \texttt{exceptua} solo de una excepción a una restricción, y \texttt{establecida\_en} solo de una obligación, una restricción, una excepción o una operación al Texto Ordenado que la contiene. Los desdoblamientos responden a consultas previstas, y por eso \texttt{prohibe} y \texttt{limita} se separan, para que una pregunta como cuáles operaciones están totalmente prohibidas pueda responderse sin confundir prohibiciones con límites cuantitativos. 
+
+Esa matriz de dominio y rango, que la Figura~\ref{fig:esquema_partida} dibuja, no es documentación sino control. Al unir las extracciones en un único grafo, el ensamblado (capítulo~\ref{cap:construccion}) rechaza toda tripleta cuya firma (el par de tipos que la relación conecta) no figure en la matriz, de modo que una relación bien formada pero imposible en el esquema no ingresa al grafo por esa vía.
+
+El control existe porque el extractor es un modelo de lenguaje y, entre relaciones correctas, produce relaciones bien formadas que el esquema no admite. Verificar la firma es una comprobación determinística, sin modelo, y cada relación rechazada queda registrada con la firma que intentó y con la salida íntegra del modelo al lado, de modo que el rechazo es recontable en cualquier momento. Sobre el conjunto de desarrollo la matriz rechazó 304 relaciones. De ellas, 196 tenían la misma forma, una operación o una excepción que se aplica a un sujeto, que el esquema de partida no admitía porque \texttt{aplica\_a} solo podía salir de una obligación o una restricción; un rechazo que se repite con esa regularidad señala un límite del esquema y no un error del extractor, y ese registro fue uno de los insumos de la validación que sigue.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figuras/figura_esquema_partida.png}
+  \caption[El esquema de partida]{El esquema de partida, el que se sometió a validación. Cada caja es un tipo de entidad, agrupado según su función; cada flecha es una
+    relación, desde los tipos que admite como origen hacia los que admite
+    como destino, y las flechas de una misma relación confluyen en un
+    trazo con su nombre. El sujeto proviene de un catálogo cerrado y no lo
+    emite el extractor.}
+  \label{fig:esquema_partida}
+\end{figure}
+
+\subsection{La elección del paradigma cerrado} 
+
+El esquema es cerrado en un sentido preciso: el extractor no propone vocabulario, elige dentro de uno fijo, y lo que no entra en ese vocabulario no entra al grafo. La alternativa, que la literatura llama schema-light o schema-free~\cite{bian2025survey}, deja que el modelo proponga los tipos y las relaciones que le parezcan pertinentes en cada texto.
+
+El esquema cerrado se eligió por comparación. Un experimento construyó cinco grafos en paralelo sobre el conjunto de desarrollo, con el mismo modelo de extracción, el mismo formato de salida con procedencia obligatoria y las mismas reglas de modelado, variando solo la estrategia de esquema. La primera siguió una receta genérica de extracción de grafos, sin adaptación al dominio, con 10 tipos de entidad y relaciones libres. La segunda tomó de la literatura un vocabulario controlado de 12 tipos y 23 relaciones. La tercera es el esquema cerrado de 7 tipos y 12 relaciones del que deriva el de partida, con dominio y rango estrictos. La cuarta dejó que el modelo propusiera tipos y relaciones en cada texto, sin vocabulario previo, y terminó con 858 tipos de entidad y 1.578 relaciones distintas. La quinta fijó un núcleo de 4 tipos y 5 relaciones y dejó el resto emergente.
+
+Los cinco grafos se evaluaron con el mismo agente que usa el resto de este trabajo, con sus tres operaciones sobre el grafo y un máximo de 15 consultas por pregunta, y un conjunto de 23 preguntas, anterior e independiente del conjunto de evaluación del capítulo~\ref{cap:fidelidad}, redactadas a partir del texto fuente sin mirar los grafos y fijadas antes de correr la evaluación. De las 23, 10 piden un dato directo, 5 exigen combinar varias normas, 4 requieren seguir una restricción hasta su excepción, y 4 no tienen respuesta en el corpus y miden si el sistema se abstiene. Cada pregunta se corrió tres veces por grafo, y un modelo de lenguaje, calibrado previamente contra veredictos humanos en 12 de 12 casos de prueba, juzgó cada respuesta contra su referencia, con adjudicación humana de las afirmaciones que el juez no pudo verificar contra el texto. Se midieron la corrección de las respuestas, la estabilidad entre repeticiones, la precisión de la cita (a nivel de punto, de página o ausente) y la frecuencia con que el agente agotó su límite de consultas.
+La Tabla~\ref{tab:cinco_estrategias} resume el resultado.
+
+\begin{table}[H]
+  \centering
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{@{}lrrrrr@{}}
+    \toprule
+    Estrategia & \shortstack[r]{Tipos /\\relaciones} & Correctas & Estables
+      & \shortstack[r]{Citas\\a punto} & \shortstack[r]{Límite\\agotado} \\
+    \midrule
+    Receta genérica         & 10 / libres  & 13 & 76 (83\,\%) &  0 & 33 (48\,\%) \\
+    Vocabulario controlado  & 12 / 23      & 15 & 78 (85\,\%) & 12 & 26 (38\,\%) \\
+    Esquema cerrado         & 7 / 12       & 16 & 86 (93\,\%) & 20 & 26 (38\,\%) \\
+    Emergente               & 858 / 1.578  & 15 & 79 (86\,\%) & 14 & 34 (49\,\%) \\
+    Híbrido                 & 20 / 511     & 13 & 79 (86\,\%) & 19 & 34 (49\,\%) \\
+    \bottomrule
+  \end{tabular}
+  \caption[Comparación de cinco estrategias de esquema]{Comparación de
+    cinco estrategias de esquema sobre el conjunto de desarrollo.
+    Correctas sobre las 19 preguntas con respuesta; estables sobre las 92
+    combinaciones pregunta-dimensión, unánimes en las tres repeticiones;
+    citas a nivel de punto sobre 23 preguntas; límite agotado sobre las
+    69 corridas.}
+  \label{tab:cinco_estrategias}
+\end{table}
+
+El esquema cerrado obtuvo el máximo o empató en cada una de las cuatro medidas de la tabla, y fue el único sin errores en las preguntas que siguen una restricción hasta su excepción. Por tipo de pregunta el resultado no es uniforme: en las de dato directo el esquema emergente acertó las 10 frente a 9 del cerrado, y las que combinan varias normas fueron el punto débil de las cinco estrategias, con 3 de 5 correctas para el ganador. La elección no depende de cómo se ponderen las medidas, porque el cerrado no es inferior en ninguna, y las medidas en las que las estrategias sí se separaron, la estabilidad entre repeticiones, la cita a nivel de punto y el agotamiento del límite, son las que importan para un sistema que debe responder igual cada vez y citar el punto exacto. El conjunto de preguntas es pequeño, y esta comparación se toma como evidencia de diseño, no como resultado de la tesis.
+
+La evidencia externa apunta en la misma dirección. En un pipeline de extracción sobre reportes operativos de desminado humanitario, guiar al modelo con una ontología de 160 tipos de entidad y 86 relaciones mejoró la exactitud de la extracción hasta un 44,2\,\%, redujo las alucinaciones un 22,5\,\% y mejoró la adherencia al formato un 20,9\,\% frente a extraer sin esa guía \cite{zhou2025textminex}.
+
+Durante la validación se evaluó frente al esquema de partida un menú de cinco ampliaciones posibles: ampliar los valores admitidos de los campos de lista cerrada; gregar tipos y relaciones para el contenido que quedaba sin caja; permitir atributos en las relaciones; separar un núcleo fijo de una zona de extensión libre; y pasar a schema-light pleno. Las dos primeras se admitieron porque amplían el vocabulario sin salir del paradigma cerrado, la tercera se difirió a una etapa posterior del trabajo, y las dos últimas se rechazaron.
+
+El rechazo de la zona de extensión y del schema-light pleno se apoya en evidencia y no en preferencia. Una zona de extensión es un canal abierto en producción, y el comportamiento del extractor frente a un canal abierto se puso a prueba de forma directa, con el resultado que se presenta más adelante en este capítulo; el schema-light pleno ya había corrido como una de las cinco estrategias y había perdido.
+
+Este esquema de partida es el que se sometió a validación antes de escalar. Lo que sigue describe el catálogo del que salen los sujetos, el procedimiento con que se puso a prueba el esquema fuera del conjunto de desarrollo, y los cambios que ese procedimiento produjo hasta el esquema congelado con el que se construye el recurso.
+
+\section{Construcción del grafo}
 \label{cap:construccion}
+
+
 
 \section{Evaluación de fidelidad}
 \label{cap:fidelidad}
