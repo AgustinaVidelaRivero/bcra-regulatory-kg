@@ -14,6 +14,13 @@ Introducción escrita, y la existencia de un contacto de la industria
 bancaria dispuesto a colaborar. Recepción general: aval al material
 presentado; los mandatos siguen.
 
+> **FE DE ERRATAS (07/09/2026, firmada —
+> `docs/fe_erratas_fecha_corpus_congelado.md`):** las dos menciones de «marzo
+> de 2026» de este registro son ERRÓNEAS. El corpus se descargó en
+> **2026-05-07/10** (los 5 TOs del conjunto de desarrollo) y se inventarió en
+> **2026-08-13** (los 152). Este registro no se edita en su cuerpo: la fe de
+> erratas lo supersede en ese punto.
+
 ## 1. Gate de validación del esquema: lectura del capítulo (reemplaza toda alternativa experimental)
 
 Mandato: escribir en el informe (Overleaf) el **capítulo de esquema y

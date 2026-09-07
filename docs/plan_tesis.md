@@ -945,10 +945,38 @@ de firma. Unidades derivadas, todas $0:
   procedencia documental, mapeo delta→provenance→partes afectadas del grafo, reporte mensual;
   la ejecución de la actualización es release declarada (principio 9). Cumple la exigencia 7
   («tiene que estar»). **SINERGIA ENDOSADA por mesa (se escribe en el diseño de la unidad):
-  el corpus congelado es de marzo de 2026 → la primera corrida produce el delta
-  marzo→presente, material post-corte que es el insumo natural de la exigencia 6 (validación
+  el corpus congelado produce, en la primera corrida, el delta desde su descarga hasta el
+  presente — material post-corte que es el insumo natural de la exigencia 6 (validación
   temporal, precedente PrimeKG); la decisión de usarlo así es de la autora (exigencia 6 no
-  tratada en la reunión).**
+  tratada en la reunión).** **FE DE ERRATAS 07/09 (`docs/fe_erratas_fecha_corpus_congelado.md`,
+  FIRMADA): la fecha «marzo de 2026» que esta fila y otros dos documentos afirmaban NO tiene
+  respaldo — la escribió la instancia del plan por inferencia y el repositorio la contradice
+  (primer commit 2026-04-26). Fechas REALES ancladas en artefactos: **2026-05-07/10 para los 5
+  TOs del conjunto de desarrollo** (`fecha_descarga` de `data/raw/manifiesto.csv`) y
+  **2026-08-13 para los 152** (commit de alta `111ed19`). Consecuencia: la ventana de delta es
+  de ~4 meses para los 5 y ~3,5 semanas para los 152, de modo que si aparece delta se apoyará
+  en los 5 —ventana larga y los únicos que el grafo cubre— y un delta chico o nulo es el
+  resultado esperable, no un fracaso del instrumento. El laudo B5.5 §5.2 (firmado) no se edita:
+  esta fe de erratas lo supersede en ese punto.
+  **DESPACHADA 07/09 en DOS FASES (freno entre medio; fase 2 no arranca sin aprobación).
+  ALCANCE VERIFICADO por la instancia del plan y mostrado en el mandato: la vigilancia
+  cubre 157 TOs = 152 (sha en `escalado_prep/manifest_pdfs.sha256` y `descarga_log.json`,
+  6.757 pág) + 5 del conjunto de desarrollo (sha en
+  `reextraccion_v2/manifiestos/desarrollo_5tos.json`, campo `sha256_pdf`, 564 pág) —
+  HALLAZGO: los 5 del subset NO están en el manifiesto sellado de escalado_prep, así que un
+  job que solo mirara ese archivo dejaría ciegos justamente los documentos sobre los que se
+  construyó y validó el método; 6.757+564 = 7.321 páginas == el par 157/7.321 impreso en la
+  Motivación del informe. Índice crudo: 103+55 = 158 entradas con 1 duplicado → 157 únicas.
+  DOS REGLAS DURAS del mandato: (1) el inventario sellado es SOLO LECTURA — el job compara y
+  REPORTA el delta, nunca reescribe, porque esos artefactos respaldan números ya impresos en
+  el capítulo y su actualización es decisión de la autora con laudo; (2) la sinergia con la
+  exigencia 6 es ENTREGABLE NOMBRADO (`delta_inicial_vs_descarga_original`), no subproducto.
+  DOS AGREGADOS DE MESA al despachar: (a) COTA DE ALCANCE — la unidad entrega el mecanismo
+  más la evidencia de UNA corrida, NO un servicio en producción: sin cron, demonios,
+  monitoreo ni alertas; la periodicidad se diseña y se declara operable, y cuándo se dispara
+  es decisión de la autora; (b) entregable nombrado `delta_conjunto_desarrollo` en la fase 2,
+  aparte y al frente del reporte, hayan cambiado o no los 5 TOs (con sha anterior y actual si
+  cambiaron; declaración explícita de identidad si no).**
 - [ ] **U-PREP-CONTACTO** (H, $0) — guion de la reunión exploratoria con el contacto de la
   industria (tips registrados: preguntas generales de procesos/compliance/proyectos/uso de
   RAG; no forzar el caso de uso; grabar con permiso; volver después con propuesta). La
