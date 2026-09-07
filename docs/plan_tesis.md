@@ -977,6 +977,34 @@ de firma. Unidades derivadas, todas $0:
   es decisión de la autora; (b) entregable nombrado `delta_conjunto_desarrollo` en la fase 2,
   aparte y al frente del reporte, hayan cambiado o no los 5 TOs (con sha anterior y actual si
   cambiaron; declaración explícita de identidad si no).**
+  **CERRADA 07/09 (fases 1 y 2, USD 0; revisiones coincidentes). Exigencia 7 CUMPLIDA con
+  mecanismo MÁS medición** (no «trabajo futuro»: el job está construido y corrido, y el
+  material posterior al corte está identificado, fechado y mapeado a nodos). Primera corrida
+  2026-09-07: 157/157 verificados, cero fallidos, cero altas y cero bajas (el índice volvió
+  byte-idéntico al sellado). **HALLAZGO MAYOR: tres de los cinco TOs del conjunto de
+  desarrollo cambiaron en la fuente** (capmin 204→206 páginas, con procedencia declarada que
+  pasa de la Com. «A» 8418 al 09/04/26 a la «A» 8463 al 31/07/26; cladeu y ri_cm también),
+  y ocho de los 152 en su ventana de ~3,5 semanas. **No invalida nada: el grafo se construyó
+  sobre los PDFs congelados por sha y los 157 siguen intactos en disco** (verificado por la
+  instancia del plan: 152/152 contra `manifest_pdfs.sha256` y 5/5 contra el manifiesto de
+  desarrollo). Lo que cambió es qué publica hoy la fuente: es la validación empírica del
+  propio diseño (congelar por sha y registrar procedencia). **CÓMO SE CUENTA EL HALLAZGO
+  (regla de la autora, vinculante para el capítulo y todo registro): «tres de los cinco»,
+  NUNCA un porcentaje —n=5 y los cinco no son muestra al azar: se eligieron por materia y
+  tamaño—; y NO se combina con el 8 de 152, porque son ventanas distintas y no se promedian.
+  No se deriva de acá ninguna tasa de churn del corpus.** Dos hallazgos metodológicos
+  registrados: cinco de los once documentos modificados NO anuncian su propio cambio (mismo
+  número de comunicación y misma fecha declarada, distinto sha — lo que cambió fue la tabla
+  de origen), de modo que la señal debe ser el sha del contenido y no la cabecera HTTP ni lo
+  que el documento declara de sí mismo; y el diff por página es localizador, no comparador
+  semántico (alineación por secuencia verificada por la instancia del plan: capmin usa
+  `difflib.SequenceMatcher` con bloques localizados, cero páginas marcadas por ruido de pie
+  de versión, y el criterio sobre-marca antes que sub-marcar). **DECISIÓN DE LA AUTORA sobre
+  el delta (opción b afinada): la exigencia 7 queda CUMPLIDA con mecanismo más medición; la
+  exigencia 6 queda ABIERTA con su material YA LOCALIZADO** (los tres TOs modificados del
+  conjunto de desarrollo son los que el grafo cubre, con procedencia fechada y mapeo fino a
+  nodos y aristas) — no es trabajo futuro a secas. **El corpus NO se actualiza** (principio 9
+  y regla dura del inventario solo-lectura): toda actualización es laudo de la autora.
 - [ ] **U-PREP-CONTACTO** (H, $0) — guion de la reunión exploratoria con el contacto de la
   industria (tips registrados: preguntas generales de procesos/compliance/proyectos/uso de
   RAG; no forzar el caso de uso; grabar con permiso; volver después con propuesta). La
