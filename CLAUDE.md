@@ -70,6 +70,18 @@ i. CONTEOS: todo tally que aparezca en prosa (reportes, frenos, mensajes
    verificable, es un defecto reportable. Lección de U-B5.1: un "33 ítems"
    del freno resultó ser 25 numerados + una sección en prosa, y llegó
    hasta el borrador del mensaje de commit antes de ser cazado.
+   AMPLIACIÓN (07/09/2026): la regla se extiende de los tallies a TODA
+   AFIRMACIÓN FÁCTICA SOBRE EL MUNDO que entre a un laudo, registro o
+   mandato — fechas de adquisición, procedencia de un artefacto,
+   versiones, autoría de un dato: cada una lleva su ancla (archivo,
+   comando o commit que la respalda) o se marca EN EL PROPIO TEXTO como
+   NO VERIFICADA, con esas palabras. Un dato que se atenúa
+   ("aproximadamente marzo", "hacia mayo") sigue leyéndose como hecho:
+   el hedge no reemplaza la marca. Un dato sin ancla es defecto
+   reportable aunque suene correcto. Precedente: "marzo de 2026" se
+   propagó a tres documentos, uno de ellos un laudo FIRMADO, porque
+   nadie le pidió su ancla — y el ancla estaba a un comando de
+   distancia (docs/fe_erratas_fecha_corpus_congelado.md).
 j. ACCIONES DE LA AUTORA: ningún bloque, reporte, laudo, pase ni mensaje
    de commit afirma como HECHA una acción que solo la autora ejecuta
    (commit, despacho de mandato, firma) sin su confirmación explícita;
