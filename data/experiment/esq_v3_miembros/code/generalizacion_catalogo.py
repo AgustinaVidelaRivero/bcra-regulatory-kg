@@ -65,6 +65,30 @@ def _clasificar(to: str, c: dict, rescates: frozenset) -> str:
     return "veraz"
 
 
+def _solapamiento() -> dict:
+    """Cuánto del material medido NO es fresco.
+
+    Los TOs de ESQ-2 informaron el catálogo con el que acá se los mide, así
+    que la advertencia de no-comparabilidad tiene que decirlo con nombre y
+    número en vez de dejar «30 TOs frescos» sin calificar. Se computa, no se
+    escribe a mano, por la misma razón que el resto del artefacto.
+    """
+    q = {d["id"] for d in json.loads(
+        (C.EXPERIMENT / "esq" / "documentos_excluidos_esq.json").read_text(
+            encoding="utf-8"))["documentos"]}
+    cs = _colectivos()
+    tos = {to for to, _ in cs}
+    comunes = sorted(tos & q)
+    return {
+        "fuente": "data/experiment/esq/documentos_excluidos_esq.json",
+        "tos_medidos": len(tos),
+        "tos_de_esq2": comunes,
+        "n_tos_de_esq2": len(comunes),
+        "n_tos_frescos": len(tos) - len(comunes),
+        "colectivos_de_esq2": sum(1 for to, _ in cs if to in q),
+    }
+
+
 def medir() -> dict:
     cs = _colectivos()
     total = len(cs)
@@ -94,11 +118,13 @@ def medir() -> dict:
             "cierra": veraz + descarte == total,
         }
     return {"unidad": "U-ESQ-V3", "comando": COMANDO,
-            "denominador": total, "escenarios": out}
+            "denominador": total, "escenarios": out,
+            "solapamiento": _solapamiento()}
 
 
 def render_md(m: dict) -> str:
     ad = next(v for v in m["escenarios"].values() if v["adoptada"])
+    sol = m["solapamiento"]
     L = [
         "# U-ESQ-V3 — Generalización del catálogo de sujetos a TOs frescos",
         "",
@@ -167,15 +193,25 @@ def render_md(m: dict) -> str:
         "",
         "## Advertencia que viaja con la cifra",
         "",
-        "**NO es comparable con el 96,9 % de cobertura del catálogo que ya está en el tramo 2 "
-        "del capítulo (`main.tex:679`).** Difieren en cuatro cosas:",
+        "**NO es comparable con la cifra de cobertura del catálogo que ya está en el tramo 2 "
+        "del capítulo**: la subsección «El catálogo de sujetos», donde se publica la tasa de "
+        "`sujeto_propuesto` —124 de 4.029 relaciones con sujeto, el 3,1 %— cuyo complemento es "
+        "una cobertura de 3.905/4.029 = 96,9 %. Se la nombra por su contenido y por el título "
+        "de su subsección, no por un número de línea de `main.tex`: la prosa del capítulo se "
+        "mueve y la referencia de línea se vence. Difieren en cuatro cosas:",
         "",
         "1. **Denominador:** 4.029 relaciones con sujeto EMITIDAS, contra "
         f"{m['denominador']} colectivos NOMBRADOS en cláusulas de alcance.",
         "2. **Unidad:** una mención individual, contra un colectivo — que muchas veces es una "
         "unión de varios sujetos.",
-        "3. **Material:** desarrollo más los diez de cobertura, contra 30 TOs frescos del "
-        "escalado.",
+        f"3. **Material, y NO son conjuntos disjuntos:** desarrollo más los diez de cobertura, "
+        f"contra los {sol['tos_medidos']} TOs del escalado que se miden acá — de los cuales "
+        f"**{sol['n_tos_de_esq2']} son de esos diez** ({', '.join('`' + t + '`' for t in sol['tos_de_esq2'])}) "
+        f"y aportan **{sol['colectivos_de_esq2']} de los {m['denominador']}** colectivos. El "
+        f"rótulo «frescos» vale para los otros {sol['n_tos_frescos']}: esos "
+        f"{sol['n_tos_de_esq2']} ya informaron el catálogo con el que se los mide, de modo que "
+        "en esa porción la cifra no mide generalización sino ajuste, y si sesga, sesga **hacia "
+        "arriba**.",
         "4. **Y el que muerde:** el 96,9 % cuenta lo que el extractor **eligió emitir**. Un "
         "colectivo sin id puede no llegar nunca a producir una relación con sujeto y caer fuera "
         "de ese denominador — **la cifra baja puede explicar en parte por qué la alta es alta**.",

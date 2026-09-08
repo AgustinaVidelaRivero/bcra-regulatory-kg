@@ -287,6 +287,71 @@ extracción ≈ USD 2,10 (por unidad promedio de ESQ-2) + ~35–40 fichas de
 lectura de la autora (~4–5 h) + **quema 5 documentos más del conjunto de
 test** (el pool de B6.3 pasa de 142 a 137 TOs elegibles).
 
+**LIMITACIÓN AGREGADA — 08/09/2026** (agregado posterior a la firma del
+laudo; entrada nueva, ninguna de las anteriores se modifica).
+**FIRMADO por la autora — Agustina Videla Rivero, 08/09/2026.**
+
+*Qué limita*: la **mitigación 4** («El brazo de regresión de ESQ-3b: la
+atracción se mide antes de congelar») y, con ella, toda lectura de la
+regresión fresca como evidencia de generalización.
+
+**La regresión fresca de ESQ-3b vuelta 2 es fresca a nivel UNIDAD, no a nivel
+DOCUMENTO.** Sus 12 unidades salen del pool de las 687 unidades extraídas y no
+fichadas **de ESQ-2**, es decir de los **mismos diez documentos** cuya lectura
+informó los retoques que la regresión verifica. El sorteo es estratificado por
+TO con mínimo 1 por TO, de modo que los diez documentos están representados
+por construcción: 2 de `ayccef`, 2 de `expaef` y 1 de cada uno de los ocho
+restantes. Fresco es el texto de cada unidad, que ninguna ficha había mirado;
+no es fresco el documento del que sale, ni su materia, ni su redacción, ni el
+patrón de extracción que ese documento induce.
+
+*Evidencia*: `data/experiment/esq/prerregistro_esq3b_v2.md` §0 (sellado
+`40493c9`) declara el pool como «las **687 unidades extraídas y NO fichadas**
+de ESQ-2»; el reparto por TO y las 12 unidades elegidas constan en
+`data/experiment/esq/cobertura/orden/seleccion_brazos_esq3b_v2.json`, campo
+`regresion_fresca` (`pool_n` 687, `cuotas_por_to`, `brazo_base` = «extracción
+de ESQ-2»).
+
+```bash
+python3 -c "
+import json,collections
+d=json.load(open('data/experiment/esq/cobertura/orden/seleccion_brazos_esq3b_v2.json'))['regresion_fresca']
+print(d['n_unidades'], d['pool_n'], sorted(d['cuotas_por_to'].items()))
+print(collections.Counter(u['to'] for u in d['unidades']))
+"
+```
+
+*Por qué importa*: el §3 del pre-registro v2 declara que «la generalización la
+miden la **regresión fresca** (12 unidades que jamás informaron ajuste alguno)
+y la **ventana de la tanda 1 de B6**». Las **dos** vías tienen la misma clase
+de limitación de documento — la de la tanda 1 está registrada en
+`data/experiment/esq/fe_erratas_laudo_esquema_congelado_virgenes.md` —, y el
+riesgo declarado en la cabecera de este §7 («nunca fue probado sobre material
+que no lo informó») queda por lo tanto **menos mitigado de lo que la lista de
+cinco sugiere**.
+
+*Qué NO se debilita*: los **retiros**. `requisito_de_estructura` salió del
+esquema congelado porque falló 3 de 5 en la regresión fresca; fallar sobre
+material cercano es al menos tan malo como fallar sobre material lejano, de
+modo que el retiro se sostiene igual o con más razón. La métrica de regresión,
+los strikes y el balance de R2 tampoco cambian: son mediciones sobre las
+unidades efectivamente corridas.
+
+*Qué SÍ se debilita*: las lecturas **positivas** de generalización apoyadas en
+la fresca — señaladamente la de R9-núcleo en el laudo de esquema congelado
+(«primera señal de generalización positiva: 3 emisiones en material fresco») y
+la de R2 («ejecutó el patrón chapeau-deber completo en material fresco»). Un
+acierto sobre unidades de los mismos diez documentos es evidencia de que el
+retoque no se rompe cerca; no es evidencia de que viaje lejos. Corresponde
+decir «material no fichado de los diez de ESQ-2» donde hoy dice «material
+fresco».
+
+*Registro previo*: `docs/plan_tesis.md:1086` describe la regresión fresca como
+«sobre material que no lo informó». Eso es la descripción del **diseño** —
+ninguna de las 12 unidades informó un ajuste—, no el registro de su límite, y
+por eso hace falta esta entrada: el diseño es correcto y el alcance de lo que
+prueba es menor que el que la frase sugiere.
+
 ## §8. Política post-congelado (opción (ii), decidida acá)
 
 **Ventana única de corrección en la tanda 1 de B6**: la tanda 1 (20 TOs)

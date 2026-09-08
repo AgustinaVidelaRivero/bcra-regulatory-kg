@@ -61,11 +61,11 @@ Sobre la cifra adoptada, el hueco **no es homogéneo**: son dos problemas opuest
 
 ## Advertencia que viaja con la cifra
 
-**NO es comparable con el 96,9 % de cobertura del catálogo que ya está en el tramo 2 del capítulo (`main.tex:679`).** Difieren en cuatro cosas:
+**NO es comparable con la cifra de cobertura del catálogo que ya está en el tramo 2 del capítulo**: la subsección «El catálogo de sujetos», donde se publica la tasa de `sujeto_propuesto` —124 de 4.029 relaciones con sujeto, el 3,1 %— cuyo complemento es una cobertura de 3.905/4.029 = 96,9 %. Se la nombra por su contenido y por el título de su subsección, no por un número de línea de `main.tex`: la prosa del capítulo se mueve y la referencia de línea se vence. Difieren en cuatro cosas:
 
 1. **Denominador:** 4.029 relaciones con sujeto EMITIDAS, contra 69 colectivos NOMBRADOS en cláusulas de alcance.
 2. **Unidad:** una mención individual, contra un colectivo — que muchas veces es una unión de varios sujetos.
-3. **Material:** desarrollo más los diez de cobertura, contra 30 TOs frescos del escalado.
+3. **Material, y NO son conjuntos disjuntos:** desarrollo más los diez de cobertura, contra los 30 TOs del escalado que se miden acá — de los cuales **5 son de esos diez** (`adrei`, `cryl`, `ctacor`, `lavdin`, `traval`) y aportan **13 de los 69** colectivos. El rótulo «frescos» vale para los otros 25: esos 5 ya informaron el catálogo con el que se los mide, de modo que en esa porción la cifra no mide generalización sino ajuste, y si sesga, sesga **hacia arriba**.
 4. **Y el que muerde:** el 96,9 % cuenta lo que el extractor **eligió emitir**. Un colectivo sin id puede no llegar nunca a producir una relación con sujeto y caer fuera de ese denominador — **la cifra baja puede explicar en parte por qué la alta es alta**.
 
 **Las dos cifras no van juntas en el capítulo sin este párrafo.**
