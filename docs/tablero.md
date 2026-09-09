@@ -5,6 +5,19 @@ los dos commits del 08/08 posteriores al tablero anterior) — se actualiza por
 laudo al cierre de cada semana; entre cierres, el estado real es `git log` +
 `data/backlog/backlog.jsonl`.
 
+> **Aviso de vigencia parcial (sin laudo; pendiente de la próxima actualización
+> por laudo).** El §1 sigue vigente en cuanto al grafo: KG-Reextraído-r1 es el
+> vigente y ningún grafo nuevo se construyó desde entonces. Lo que este tablero
+> NO incorpora es que **el esquema avanzó dos generaciones por delante del
+> grafo**: el vocabulario vigente es el esquema congelado de 9 tipos / 13
+> predicados (laudo `data/experiment/esq/laudo_esquema_congelado.md`, commit
+> `2593d4d`, 03/09/2026) con el catálogo de sujetos v3 de 102 ids
+> (`data/experiment/b54_catalogo_v3/catalogo_sujetos_v3.md`, commit `d3f2214`,
+> 06/09/2026), cableado a producción como perfil `v3_b54` (commit `d61c491`).
+> Ese esquema todavía no extrajo ningún grafo: su primera corrida es la tanda 1
+> (B6.1). Los conteos de esquema que aparezcan más abajo son de la generación
+> v2, la que construyó r1.
+
 Generado sobre HEAD `85d9fdba70621008e2e7c2f94677891d6250c46d` (working tree
 limpio: `git status --porcelain` vacío al momento de generar, con la única
 excepción de los tres archivos de esta unidad — este tablero, `docs/INDICE.md`

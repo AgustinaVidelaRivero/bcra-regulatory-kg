@@ -24,13 +24,22 @@ juez LLM calibrado contra adjudicación humana, atribución determinística de f
 por replay de trazas. Hallazgo rector: **grounded ≠ correct** — una respuesta anclada
 en el grafo puede seguir siendo incorrecta contra la norma.
 
-**Los tres grafos** (nombres canónicos y shas en `docs/nomenclatura_grafos.md`):
+**Los cuatro grafos** (nombres canónicos y shas en `docs/nomenclatura_grafos.md`):
 
 | Grafo | Qué es | Path |
 |---|---|---|
 | **KG-Base** (`12c226e2`) | ganador de la Fase 2.3 entre 5 estrategias de schema (7 entidades / 12 relaciones), baseline congelado | `data/experiment/run_3_ppf_core/kg.json` |
-| **KG-Refinado** (`26fac8b4`) | extracción con esquema v2 + re-ensamblado + siete correcciones selladas (C1–C7); **grafo vigente** de la app | `data/experiment/grafo_v2/reensamblado_v3/kg.json` |
+| **KG-Refinado** (`26fac8b4`) | extracción con esquema v2 + re-ensamblado + siete correcciones selladas (C1–C7); grafo medido/sellado | `data/experiment/grafo_v2/reensamblado_v3/kg.json` |
 | **KG-Reextraído** (`8e2eadee`) | re-extracción desde los PDFs con el pipeline E0–E3 (Enmienda 01), sin heredar C1–C7 | `data/experiment/reextraccion_v2/corpus_v2/salida/kg.json` |
+| **KG-Reextraído-r1** (`0226e947`) | pipeline E0–E5 completo con Enmienda 01 (esqueleto, referencias norma→norma, provenance rica); 6.529 nodos / 17.772 aristas; **grafo vigente** de la app y de Neo4j (laudo `docs/laudo_promocion_r1_vigente.md`) | `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json` |
+
+El **esquema** avanzó por delante del grafo: el vocabulario vigente es el **esquema
+congelado** (9 tipos / 13 predicados, laudo `data/experiment/esq/laudo_esquema_congelado.md`,
+commit `2593d4d`) con el **catálogo de sujetos v3** de 102 ids
+(`data/experiment/b54_catalogo_v3/catalogo_sujetos_v3.md`), ya cableado a producción
+como perfil de extracción `v3_b54`. Todavía no extrajo ningún grafo: su primera
+corrida es la tanda 1 (B6.1). KG-Reextraído-r1 se construyó con el esquema v2
+anterior (6 tipos / 12 predicados, catálogo de 70).
 
 **Resultado central de EV2** (40 preguntas ciegas × 3 grafos, 164 criterios con cita
 verbatim, juez validado 11/12 contra adjudicación humana; commit `64de678`, reporte

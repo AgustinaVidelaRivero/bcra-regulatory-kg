@@ -17,7 +17,7 @@
 
 ### 1.0 Por qué un árbol, y por qué ahora
 
-El diagnóstico de los mentores (Luciano: "al esquema le falta la capa de clases; en un KG las clases son casi más importantes que las entidades"; Micaela: subclases explícitas + reglas por nivel + validación determinística) dejó de ser una opinión de diseño el 14/07/2026, cuando el censo del grafo congelado lo convirtió en defecto medido:
+El diagnóstico de la revisión académica —falta una capa de clases, porque en un KG las clases pesan tanto como las entidades para navegar y agrupar; y hacen falta subclases explícitas, reglas por nivel de abstracción y validación determinística— dejó de ser una opinión de diseño el 14/07/2026, cuando el censo del grafo congelado lo convirtió en defecto medido:
 
 1. **El type `EntidadFinanciera` de run_3 no contiene entidades financieras: contiene el universo completo de sujetos del dominio, aplastado.** Entre sus 130 nodos están el BCRA (#72), gobiernos locales (#73), organismos internacionales (#44), personas humanas (#22), residentes (#88), no residentes (#94), deudores (#96), MiPyMEs (#23), importadores (#70), exportadores (#95) y usuarios de servicios financieros (#122). Es la clase raíz **Sujeto** con la etiqueta equivocada y cero estructura interna.
 2. **El 68% de las aristas `aplica_a` (991 de 1.464) termina en un único nodo genérico, "Sujetos obligados" (#65).** Dos tercios de la conectividad normativa del grafo no informa a *cuál* de los sujetos aplica cada norma. El grafo ya intentó representar el rol "sujeto obligado" — informalmente, sin miembros y sin herencia.
@@ -228,7 +228,7 @@ Fuente: censo Claude Code 14/07/2026 (P1), lista completa verificada (130/130). 
 | Subsidiarias | #48, #49 | duplicado con **label y categoria cruzados entre sí** — caso testigo de contenido_kg |
 | Originante | #24, #27 | duplicado (genérico / entidad financiera originante) |
 
-**Lectura para la Sección 3:** la regla de unicidad ("no puede haber dos nodos con label normalizado equivalente dentro de la misma clase") tendría al menos 17 clusters de detección inmediata sobre el grafo congelado — la validación determinística de Micaela tiene retorno medible desde el día uno.
+**Lectura para la Sección 3:** la regla de unicidad ("no puede haber dos nodos con label normalizado equivalente dentro de la misma clase") tendría al menos 17 clusters de detección inmediata sobre el grafo congelado — la validación determinística tiene retorno medible desde el día uno.
 
 ## Anexo 1.C — Duplicados del operador de cambio en run_5 (evidencia original, actualizada)
 
@@ -257,9 +257,9 @@ El censo encontró **4** nodos (no 3, como se registró originalmente): `entidad
 | `referencia` (558) | TextoOrdenado → Comunicación | El TO cita la comunicación de origen | Capa documental, sin cambios |
 | `modificada_por` (57) | TextoOrdenado → Comunicación | La comunicación modifica al TO | Capa documental, sin cambios |
 
-### 2.2 La pregunta de Micaela, respondida con el grafo
+### 2.2 La ambigüedad entre «regula» y «recae en», respondida con el grafo
 
-*"¿La obligación REGULA la operación o RECAE EN la operación?"* — El esquema ya separa las dos cosas, pero con nombres que no lo explicitan: **"recae en" es `aplica_a` y apunta al sujeto** (quién cumple); **`regula` apunta a la operación** (qué gobierna). La unidad normativa es un nodo con dos brazos: sujeto y operación. La confusión de Micaela es señal de que la documentación del esquema debe declarar esta lectura — y el censo muestra dónde la semántica sí está genuinamente borrosa: las tres relaciones que comparten la firma Restricción→Operación (`regula` 33, `limita` 570, `prohíbe` 131) y las dos que comparten Obligación→Operación (`regula` 683, `condiciona` 178). Para esas, las definiciones operativas de 2.1 son el criterio de asignación; las 33 `regula` desde Restricción son la población candidata a auditoría (¿debieron ser limita/prohíbe?) — auditable a mano, son 33.
+*"¿La obligación REGULA la operación o RECAE EN la operación?"* — El esquema ya separa las dos cosas, pero con nombres que no lo explicitan: **"recae en" es `aplica_a` y apunta al sujeto** (quién cumple); **`regula` apunta a la operación** (qué gobierna). La unidad normativa es un nodo con dos brazos: sujeto y operación. Esa ambigüedad es señal de que la documentación del esquema debe declarar esta lectura — y el censo muestra dónde la semántica sí está genuinamente borrosa: las tres relaciones que comparten la firma Restricción→Operación (`regula` 33, `limita` 570, `prohíbe` 131) y las dos que comparten Obligación→Operación (`regula` 683, `condiciona` 178). Para esas, las definiciones operativas de 2.1 son el criterio de asignación; las 33 `regula` desde Restricción son la población candidata a auditoría (¿debieron ser limita/prohíbe?) — auditable a mano, son 33.
 
 ### 2.3 Relaciones nuevas que exige la jerarquía + regla de herencia
 
@@ -287,7 +287,7 @@ Las muestras del censo revelan que el nodo genérico "Sujetos obligados" recibe 
 
 ## Sección 3 — Shapes caseras v0
 
-Reglas de validación determinística sobre el kg.json, sin LLM (el pedido de Micaela: "no apoyarse siempre en LLMs para evaluar; te ayuda a ver dónde iterar"). Organizadas en tres capas según su estado esperado hoy — la estructura importa: la capa 1 protege lo que ya está bien, la capa 2 tiene presa medida, la capa 3 es la que el diseño habilita.
+Reglas de validación determinística sobre el kg.json, sin LLM (exigencia de la revisión: no apoyarse siempre en LLMs para evaluar, porque un control determinístico muestra dónde iterar). Organizadas en tres capas según su estado esperado hoy — la estructura importa: la capa 1 protege lo que ya está bien, la capa 2 tiene presa medida, la capa 3 es la que el diseño habilita.
 
 **Capa 1 — Invariantes que hoy PASAN (guardia de regresión para todo refinamiento futuro):**
 
@@ -349,11 +349,11 @@ El esquema v2 no requiere rediseño para escalar: requiere **crecimiento aditivo
 
 ---
 
-## Sección 5 — Memo RDF/SHACL (1 página, para Luciano y Micaela)
+## Sección 5 — Memo RDF/SHACL (1 página, para la revisión académica)
 
 **Asunto: qué tomamos de sus sugerencias y por qué esta vía no rompe el experimento**
 
-**Lo que pidieron.** Luciano: una capa de clases — "en un KG las clases son casi más importantes que las entidades: te permiten navegar y agrupar"; distinguir clase de entidad; organismos regulatorios como tipo propio. Micaela: subclases explícitas al estilo RDF/ontologías, reglas por nivel de abstracción, y validación determinística tipo SHACL para no depender siempre de LLMs al evaluar.
+**Lo que se pidió.** Por el lado del diseño: una capa de clases —en un KG las clases pesan tanto como las entidades porque permiten navegar y agrupar—, distinguir clase de entidad, y organismos regulatorios como tipo propio. Por el lado de la formalización: subclases explícitas al estilo RDF/ontologías, reglas por nivel de abstracción, y validación determinística tipo SHACL para no depender siempre de LLMs al evaluar.
 
 **Por qué no migramos a RDF ahora.** El experimento central de la tesis compara la fidelidad del RAG con y sin la organización en KG, sobre un harness y una eval congelados. Migrar el sustrato a RDF/SPARQL en medio de la medición confundiría la variable central: cualquier cambio de fidelidad sería inatribuible (¿fue la jerarquía o el cambio de motor?). Además el agente actual usa 3 tools léxicas sobre JSON, no SPARQL.
 
@@ -363,35 +363,35 @@ El esquema v2 no requiere rediseño para escalar: requiere **crecimiento aditivo
 (c) **Export unidireccional a RDF** con rdflib + validación pySHACL, como anexo formal citable — el pipeline no lo toca.
 (d) **Migración total a RDF: trabajo futuro documentado.**
 
-**Qué se gana.** Navegación y agrupación por clases (pedido de Luciano); reglas por nivel — la exigencia básica se cuelga de Banco, no de EntidadFinanciera (pedido de Micaela); validación determinística con retorno inmediato: las violaciones ya están contadas sobre el grafo congelado; y una capa de evidencia nueva para el verificador (varias fallas del dev set instancian defectos que las shapes detectan).
+**Qué se gana.** Navegación y agrupación por clases (primera exigencia); reglas por nivel — la exigencia básica se cuelga de Banco, no de EntidadFinanciera (segunda exigencia); validación determinística con retorno inmediato: las violaciones ya están contadas sobre el grafo congelado; y una capa de evidencia nueva para el verificador (varias fallas del dev set instancian defectos que las shapes detectan).
 
 **Qué se pierde (y se declara).** Razonamiento OWL nativo e inferencia automática de herencia (se implementa ad hoc y acotada); SPARQL; y las shapes solo validan *forma*: los casi-duplicados con labels distintos requieren similitud + revisión humana y quedan en el pipeline de refinamiento, no en la validación.
 
-**Qué les pedimos en la reunión.** Los laudos de la Sección 6 — en particular, en qué punto del pipeline entra el esquema (pregunta L4, la decisión de diseño experimental más importante de esta etapa).
+**Qué queda a laudo.** Los puntos de la Sección 6 — en particular, en qué punto del pipeline entra el esquema (pregunta D4, la decisión de diseño experimental más importante de esta etapa).
 
 ---
 
-## Sección 6 — Preguntas abiertas para la reunión
+## Sección 6 — Preguntas abiertas, pendientes de laudo
 
-### Para Luciano (diseño)
+### Preguntas de diseño
 
-- **L1.** Excepción sin `aplica_a` (0/258 en el grafo): ¿es diseño correcto (el sujeto se hereda de la unidad exceptuada, regla de herencia 3) o es un faltante del esquema a cubrir en el refinamiento?
-- **L2.** Unidades regulatorias sin sujeto explícito (medido: 458 Obligaciones y 297 Restricciones sin `aplica_a` — el 37% y 36% de cada type): ¿defecto de extracción o casos legítimos (normas auto-referidas al TO)? Define si S11 es ERROR o WARN. Dato conexo: 27 Excepciones no exceptúan nada ni tienen sujeto (S12) — huérfanas totales.
-- **L3.** Tres ramas del árbol pendientes de laudo: sujetos del exterior (¿subclases o atributo `jurisdicción`?), vehículos (fideicomisos, SPE, FCI: ¿rama propia "Estructura"?), y perímetro de supervisión consolidada (aseguradoras, bursátiles, controlantes).
-- **L4 — LA decisión de esta etapa: ¿dónde entra el esquema v2 al pipeline?** Opciones con costos:
+- **D1.** Excepción sin `aplica_a` (0/258 en el grafo): ¿es diseño correcto (el sujeto se hereda de la unidad exceptuada, regla de herencia 3) o es un faltante del esquema a cubrir en el refinamiento?
+- **D2.** Unidades regulatorias sin sujeto explícito (medido: 458 Obligaciones y 297 Restricciones sin `aplica_a` — el 37% y 36% de cada type): ¿defecto de extracción o casos legítimos (normas auto-referidas al TO)? Define si S11 es ERROR o WARN. Dato conexo: 27 Excepciones no exceptúan nada ni tienen sujeto (S12) — huérfanas totales.
+- **D3.** Tres ramas del árbol pendientes de laudo: sujetos del exterior (¿subclases o atributo `jurisdicción`?), vehículos (fideicomisos, SPE, FCI: ¿rama propia "Estructura"?), y perímetro de supervisión consolidada (aseguradoras, bursátiles, controlantes).
+- **D4 — LA decisión de esta etapa: ¿dónde entra el esquema v2 al pipeline?** Opciones con costos:
   - **Camino 1 — refinamiento aditivo sobre `run_3_refinamiento`:** se agrega la capa de clases al grafo ya extraído (~40 nodos Clase + ~130 `instancia_de` pre-resueltos, cero aristas existentes modificadas). Mide el efecto de la jerarquía **aislado** (misma extracción, una variable). Las tools léxicas navegan los nodos Clase sin tocar el harness congelado; solo se actualiza la skill del agente. Piloto sobre un TO acotado antes del grafo completo (loops baratos).
   - **Camino 2 — re-extracción desde los PDFs con esquema v2:** el grafo "final" nace con clases, pero cambia todo a la vez (extracción no determinística) → el efecto de la jerarquía queda confundido. Caro en tiempo con defensa en noviembre.
   - **Camino 3 (recomendación) — secuencial:** camino 1 para la tesis; camino 2 como trabajo futuro o capítulo extra solo si el 1 da señal y hay calendario.
-- **L5.** Las 991 `aplica_a` al nodo genérico "Sujetos obligados": ¿el re-target (A+) queda como trabajo futuro condicionado, como proponemos, o quieren un piloto acotado (p. ej. solo las de CapMin)?
-- **L6.** N de repeticiones para la comparación baseline vs refinamiento (el caché colapsa repeticiones; la frozen eval usó N=3 sin caché) — [laudo compartido con Juan].
+- **D5.** Las 991 `aplica_a` al nodo genérico "Sujetos obligados": ¿el re-target (A+) queda como trabajo futuro condicionado, como proponemos, o quieren un piloto acotado (p. ej. solo las de CapMin)?
+- **D6.** N de repeticiones para la comparación baseline vs refinamiento (el caché colapsa repeticiones; la frozen eval usó N=3 sin caché) — [laudo compartido con Juan].
 
-### Para Micaela (formales)
+### Preguntas de formalización
 
-- **M1.** Regla de herencia v1 (descenso por subclase, membresía de roles, bloqueo por excepción, sin ascenso, sin cruce de disyunciones): ¿le ve huecos formales? ¿Conviene documentar la correspondencia con rdfs:subClassOf / owl:disjointWith en el anexo RDF?
-- **M2.** Roles por-TO como clases-unión (owl:unionOf en el export): ¿es la formalización correcta para "sujeto obligado ≠ entidad comprendida", dado el hallazgo de contaminación de vocabulario entre TOs (Sección 2.4)?
-- **M3.** Shapes capa 2: ¿el criterio ERROR/WARN por regla le parece bien asignado? En particular S11 (sujeto explícito) y S18 (limita sin umbral).
-- **M4.** Estados vs. clases: modelamos `situación` (1..6) y `cartera` del deudor como atributos con dominio cerrado, no como subclases (mutabilidad, Clasificación 7.3). ¿Consistente con la práctica ontológica que ella recomienda?
-- **M5.** Export RDF: ¿alcanza rdflib + pySHACL como anexo citable, o sugiere un perfil concreto (SHACL core vs SHACL-SPARQL) para las 18 reglas?
+- **FM1.** Regla de herencia v1 (descenso por subclase, membresía de roles, bloqueo por excepción, sin ascenso, sin cruce de disyunciones): ¿le ve huecos formales? ¿Conviene documentar la correspondencia con rdfs:subClassOf / owl:disjointWith en el anexo RDF?
+- **FM2.** Roles por-TO como clases-unión (owl:unionOf en el export): ¿es la formalización correcta para "sujeto obligado ≠ entidad comprendida", dado el hallazgo de contaminación de vocabulario entre TOs (Sección 2.4)?
+- **FM3.** Shapes capa 2: ¿el criterio ERROR/WARN por regla le parece bien asignado? En particular S11 (sujeto explícito) y S18 (limita sin umbral).
+- **FM4.** Estados vs. clases: modelamos `situación` (1..6) y `cartera` del deudor como atributos con dominio cerrado, no como subclases (mutabilidad, Clasificación 7.3). ¿Consistente con la práctica ontológica que ella recomienda?
+- **FM5.** Export RDF: ¿alcanza rdflib + pySHACL como anexo citable, o sugiere un perfil concreto (SHACL core vs SHACL-SPARQL) para las 18 reglas?
 
 ### Ya laudado que se informa (no se consulta)
 
