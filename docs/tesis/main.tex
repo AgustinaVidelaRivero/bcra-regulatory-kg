@@ -20,6 +20,7 @@
 \usepackage{hyperref} % Enlaces y marcadores
 \usepackage{csquotes} % Citas tipográficas (lo pide biblatex con babel)
 \hypersetup{hidelinks} % sin recuadros de color en índice y citas
+\usepackage{xltabular}
 
 % --- Configuración de Bibliografía ---
 % Convención (Clase7 + skill latex-udesa): IEEE, numerada por orden de
@@ -122,21 +123,11 @@
 
 \subsection{Motivación}
 
-El cumplimiento de la normativa del Banco Central de la República
-Argentina (BCRA) es una tarea compleja para las entidades financieras, los
-profesionales del sector y los consumidores. El BCRA publica sus reglas en
-Textos Ordenados, documentos que consolidan todas las disposiciones
-vigentes sobre una materia y que se actualizan con cada comunicación
-nueva. Al momento del relevamiento, el índice oficial registraba 157
-Textos Ordenados, que suman 7.321 páginas. Esas reglas son de cumplimiento
-obligatorio, de modo que una respuesta equivocada sobre su contenido
-tiene consecuencias regulatorias directas.
+Las entidades financieras, profesionales, y consumidores argentinos deben asegurarse de cumplir la normativa dispuesta por el Banco Central de la República Argentina (BCRA). Este organismo publica sus reglas en documentos que consolidan todas las disposiciones vigentes sobre una materia, llamados Textos Ordenados, y que se actualizan con cada comunicación
+nueva. Al momento del relevamiento, el índice oficial registraba 157 Textos Ordenados, que suman 7.321 páginas. Esas reglas son de cumplimiento obligatorio, de modo que una respuesta equivocada sobre su contenido tiene consecuencias regulatorias directas.
 % Fuente: mapa fila 15. Apertura tomada de la PPF preliminar (§1).
 
-La dificultad no está solo en el volumen sino en cómo están escritas las
-reglas. Un punto de un Texto Ordenado remite a puntos de otros, condiciona
-operaciones definidas en un tercero y establece excepciones a reglas de un
-cuarto. Saber si una empresa puede pagar dividendos a sus accionistas del
+La dificultad no está solo en el volumen sino en cómo están escritas las reglas. Un punto de un Texto Ordenado remite a puntos de otros, condiciona operaciones definidas en un tercero y establece excepciones a reglas de un cuarto. Saber si una empresa puede pagar dividendos a sus accionistas del
 exterior, por ejemplo, exige leer el punto que lo autoriza y después los
 tres puntos a los que ese punto remite, uno de los cuales obliga a la
 entidad a verificar una declaración del cliente. Quien responde tiene que
@@ -204,30 +195,12 @@ para la regulación del BCRA.
 \subsection{Propuesta y contribuciones}
 \label{sec:contribuciones}
 
-Este trabajo construye ese recurso y el método para evaluarlo. El recurso
-es un grafo de conocimiento de la normativa del BCRA en el que cada elemento registra su procedencia en el texto oficial. Para responder preguntas se usa un agente, es decir, un modelo de lenguaje
-que consulta el grafo paso a paso con tres operaciones: buscar nodos por
-palabras, abrir un nodo y listar sus vecinos. La evaluación cubre tanto el contenido del grafo como las respuestas que
-se apoyan en él y, cuando una respuesta falla, determina si la falla se
-originó en el grafo o en el agente.
+Este trabajo construye ese recurso y el método para evaluarlo. El recurso es un grafo de conocimiento de la normativa del BCRA en el que cada elemento registra su procedencia en el texto oficial. Para responder preguntas se usa un agente, es decir, un modelo de lenguaje que consulta el grafo paso a paso con tres operaciones: buscar nodos por palabras, abrir un nodo y listar sus vecinos. La evaluación cubre tanto el contenido del grafo como las respuestas que se apoyan en él y, cuando una respuesta falla, determina si la falla se originó en el grafo o en el agente.
 
-El grafo se construye con un proceso por etapas. Cada Texto Ordenado se
-divide siguiendo su propia estructura de secciones y puntos. Un modelo de
-lenguaje extrae de cada parte las entidades y relaciones que admite un
-esquema fijo de nueve tipos de entidad y trece tipos de relación. Un segundo
-modelo revisa cada extracción contra el texto del que salió, devuelve a
-extraer lo que quedó incompleto y marca lo que aun así requiere revisión
-humana. Las partes se unen después en un único grafo mediante un
-procedimiento determinístico, de modo que, a partir de las mismas
-extracciones, el ensamblado produce siempre el mismo grafo. Sobre ese
-grafo ya ensamblado se resuelven las remisiones. Cada referencia que un
-punto hace a otro se convierte en una arista cuando el punto citado puede
-localizarse en el corpus, y queda registrada como no resuelta cuando no.
-El proceso se desarrolló sobre cinco Textos Ordenados, el conjunto de
-desarrollo, y el recurso final se construye sobre el corpus completo. El
-grafo que se evalúa se reporta tal como fue construido; las correcciones
-que la evaluación motive se incorporan en una versión posterior, que es la
-que se publica.
+El grafo se construye con un proceso por etapas. Cada Texto Ordenado se divide siguiendo su propia estructura de secciones y puntos. Un modelo de lenguaje extrae de cada parte las entidades y relaciones que admite un esquema fijo de nueve tipos de entidad y trece tipos de relación. Un segundo
+modelo revisa cada extracción contra el texto del que salió, devuelve a extraer lo que quedó incompleto y marca lo que aun así requiere revisión humana. Las partes se unen después en un único grafo mediante un procedimiento determinístico, de modo que, a partir de las mismas extracciones, el ensamblado produce siempre el mismo grafo. Sobre ese grafo ya ensamblado se resuelven las remisiones. Cada referencia que un
+punto hace a otro se convierte en una arista cuando el punto citado puede localizarse en el corpus, y queda registrada como no resuelta cuando no.
+El proceso se desarrolló sobre cinco Textos Ordenados, el conjunto de desarrollo, y el recurso final se construye sobre el corpus completo. El grafo que se evalúa se reporta tal como fue construido; las correcciones que la evaluación motive se incorporan en una versión posterior, que es la que se publica.
 % [TODO: escalado] cuando exista el grafo escalado, "el recurso final se
 % construye sobre el corpus completo" pasa a decir su escala.
 % La elección de esquema cerrado se justifica en el capítulo~\ref{cap:esquema}
@@ -573,66 +546,88 @@ del propio recurso.
 \section{Diseño y validación del esquema del grafo}
 \label{cap:esquema}
 
-El grafo representa la normativa mediante un vocabulario fijo de tipos de entidad y de relación, el esquema, y la calidad del recurso depende de que ese vocabulario capture lo que la norma efectivamente dice. Con un esquema cerrado, todo desajuste entre el vocabulario y el texto se manifiesta como una omisión o como una deformación silenciosa, y por eso el esquema se puso a prueba antes de construir el recurso a escala. Este capítulo presenta ese esquema, el catálogo de sujetos que lo acompaña, y el procedimiento con el que ambos se pusieron a prueba fuera del conjunto de desarrollo.
+El grafo representa la normativa mediante un vocabulario fijo de tipos de entidad y de relación, el esquema, y la calidad del recurso depende de que ese vocabulario capture lo que la norma efectivamente dice. Con un esquema cerrado, todo desajuste entre el vocabulario y el texto se manifiesta como una omisión o como una deformación silenciosa, y por eso el esquema se puso a prueba antes de construir el recurso a escala. El capítulo describe primero el material sobre el que se trabaja, la unidad de extracción, la separación entre los documentos con los que se construyó el método y los que se reservaron para probarlo, y la segmentación del universo que queda por escalar. Presenta después el esquema de partida, las razones por las que el vocabulario es cerrado y el catálogo de sujetos que lo acompaña. Y termina con el procedimiento con el que ambos se pusieron a prueba fuera del conjunto de desarrollo, la medición de cobertura que produjo, los cambios que de ella salieron y los límites con los que el esquema quedó congelado.
 
-\subsection{La unidad de extracción y la partición del corpus}
+\subsection{El corpus y la unidad de extracción}
 
-Un Texto Ordenado consolida en un único documento las disposiciones vigentes sobre una materia. Cada uno se organiza en secciones numeradas que se subdividen en puntos, y los puntos se numeran de forma jerárquica: en los cinco Textos Ordenados del conjunto de desarrollo la numeración llega a cuatro niveles. Esa numeración es el sistema de direcciones del corpus, porque una norma que remite a otra cita el punto y no la página, y la cita que respalda una respuesta sobre esta normativa se da en esos mismos términos.
+Como se mencionó anteriormente, el BCRA denomina como Textos Ordenados a los documentos que consolidan las disposiciones vigentes sobre una materia. Lo que consolida son comunicaciones, que es el instrumento con el que el BCRA dicta y modifica su normativa, y por eso cada Texto Ordenado declara hasta qué comunicación está actualizado. Las comunicaciones se publican en series identificadas por una letra, y este trabajo usa las de las series «A» y «B». Las de la serie «A» son las que dictan y modifican normativa, y las de la serie «B» son en su mayoría informativas. La diferencia se mide sobre el propio corpus descargado. Entre las 1.666 comunicaciones «A» aparece alguna forma dispositiva, como \enquote{se establece}, \enquote{deberán} o \enquote{no podrán}, en el 72\,\%, y entre las 1.301 de la serie «B» solo en el 17\,\%.
+
+Cada Texto Ordenado se organiza en secciones numeradas que se subdividen en puntos, y los puntos se numeran de forma jerárquica: en los cinco Textos Ordenados del conjunto de desarrollo la numeración llega a cuatro niveles. Esa numeración es el sistema de direcciones del corpus, porque una norma que remite a otra cita el punto y no la página, y la cita que respalda una respuesta sobre esta normativa se da en esos mismos términos.
 
 La unidad sobre la que trabaja la extracción es el punto terminal, el que ya no se subdivide, acompañado de la cadena estructural que lo contiene: el encabezado de su sección, los encabezados de los puntos intermedios y los párrafos introductorios y de cierre del punto contenedor. Cada unidad presenta al modelo el texto del punto terminal precedido por esa cadena, de modo que el punto se lee en su contexto y no como fragmento suelto. La razón del diseño es que esa prosa sin numerar porta condiciones que el punto terminal presupone, y en una versión anterior del proceso su contenido se perdía en la extracción mientras que el de los sub-puntos numerados se conservaba.
 
-Los puntos contenedores que tienen prosa propia aportan además una unidad separada, la unidad estructural, cuyo texto principal es esa prosa, de modo que ningún párrafo del documento quede fuera del proceso. Unas y otras (de punto terminal y estructurales) son las unidades de extracción, y con ellas se miden tanto el volumen del corpus como el costo de procesarlo.
+Los puntos contenedores que tienen prosa propia aportan además una unidad separada, la unidad estructural, cuyo texto principal es esa prosa, de modo que ningún párrafo del documento quede fuera del proceso. Unas y otras son las unidades de extracción, y con ellas se miden tanto el volumen del corpus como el costo de procesarlo.
 
-Al momento del relevamiento el índice oficial registraba 157 Textos Ordenados. Cinco de ellos forman el conjunto de desarrollo sobre el que se construyó y se validó el método: Protección de los usuarios de servicios financieros, Clasificación de deudores, Capitales mínimos de las entidades financieras, Exterior y cambios, y el régimen informativo de exigencia e integración de capitales mínimos. La selección buscó diversidad de materia (cinco dominios regulatorios distintos), de estructura (cuatro documentos de normativa general y uno de régimen informativo, de forma más tabular) y de tamaño (de 40 a 204 páginas). En conjunto suman 564 páginas y 1.763 unidades de extracción.
+Al momento del relevamiento el índice oficial registraba 157 Textos Ordenados. Como se actualizan con cada comunicación, cada archivo descargado quedó inventariado con su huella criptográfica (sha256), que fija sobre qué versión exacta de cada documento trabaja este proyecto.
 
-Los 152 restantes son el universo a escalar y suman 6.757 páginas; como los Textos Ordenados se actualizan con cada comunicación, cada archivo descargado quedó inventariado con su huella criptográfica (sha256), que fija sobre qué versión exacta de cada documento trabaja este proyecto.
+\subsection{Los conjuntos de desarrollo y de prueba}
 
-Diez de esos 152 documentos no esperaron al escalado y forman el conjunto de prueba. Se eligieron con un sorteo estratificado y una semilla registrada, y se extrajeron antes que el resto para medir el esquema fuera del conjunto de desarrollo. El esquema que esa medición puso a prueba ya estaba sellado en el repositorio seis semanas antes del sorteo, de modo que no pudo decidirse a partir de ellos. Lo que la medición reveló sí produjo los cambios que llevan hasta el esquema congelado, y por eso los diez son material reservado para el esquema de partida y material de diseño para el congelado.
+Cinco Textos Ordenados forman el conjunto de desarrollo, sobre el que se construyó el método: Protección de los usuarios de servicios financieros, Clasificación de deudores, Capitales mínimos de las entidades financieras, Exterior y cambios, y el régimen informativo de exigencia e integración de capitales mínimos. La selección buscó diversidad de materia (cinco dominios regulatorios distintos), de estructura (cuatro documentos de normativa general y uno de régimen informativo, de forma más tabular) y de tamaño (de 40 a 204 páginas). En conjunto suman 564 páginas y 1.763 unidades de extracción.
 
-No todos los documentos de ese universo se dejan segmentar por igual. En 68 Textos Ordenados la segmentación reconoce la estructura sin reglas adicionales. Los 84 restantes marcan su estructura de otras maneras, con variantes del marcador de índice o de sección, o con el contenido dispuesto en tablas, y para incorporarlos se escribieron reglas de parseo propias. Esas reglas se escribieron bajo una exigencia que se verificó documento por documento: la segmentación ya obtenida no podía cambiar, y el resultado de cada documento ya procesado resultó idéntico al anterior.
+Diez de los 152 Textos Ordenados que quedan no esperaron al escalado y forman el conjunto de prueba. Salieron de un sorteo estratificado con una semilla registrada que apartó veinte documentos en dos listas disjuntas de diez, y se extrajeron antes que el resto para medir el esquema fuera del conjunto de desarrollo; la otra lista quedó reservada y sin tocar. El esquema que esa medición puso a prueba quedó sellado en el repositorio el 18 de julio de 2026, cuarenta días antes de que se fijaran el sorteo y su semilla, de modo que no pudo decidirse a partir de ellos.
 
-Con esas reglas, el universo a escalar produce 9.324 unidades de extracción, y sus documentos quedan en tres grupos según cuánto de su contenido está escrito como puntos normativos numerados. En 138 Textos Ordenados, que suman 4.183 páginas, esa forma cubre el documento entero y la segmentación produce 9.266 unidades. Dos son en su mayor parte fichas y listados de registro, de modo que solo su parte articulada se segmenta: concentran 2.413 páginas, más de un tercio del universo, y aportan 46 unidades. Los 12 restantes no tienen contenido articulado que segmentar, y la segmentación devuelve el documento sin descomponer; suman 161 páginas, el 2,4\,\% del universo, y quedan declarados no segmentables con la causa registrada en cada caso. La partición se resuelve con criterios mecánicos sobre el resultado de la segmentación, sin intervención de un modelo de lenguaje. Lo que la segmentación no descompone no produce unidades por esa vía, y ese contenido queda contado y declarado documento por documento.
+Esa anterioridad les da a los diez dos papeles distintos, y conviene separarlos. Frente al esquema de partida son material reservado, porque no intervinieron en él y la medición sobre ellos es por eso una prueba legítima. Frente al esquema congelado no lo son, porque los cambios que llevan de uno a otro salieron de esa misma medición. Evaluar el esquema congelado exige documentos que no hayan participado de nada de esto, y la subsección~\ref{sec:limites} vuelve sobre ese punto.
 
-Que un documento no se deje segmentar no significa que no contenga norma. Nueve de esos doce se midieron por otra vía, tomando la página como unidad y como procedencia en lugar del punto numerado que no tienen. Las 77 unidades de prosa quedaron adjudicadas para ingresar al grafo, con su residuo declarado documento por documento, y en 18 de ellas la extracción identifica un destinatario, el 23,4\,\%. Las 114 de planilla quedaron medidas y fuera, para una etapa posterior. Ninguna de las 77 está todavía en el grafo: ingresan al ensamblar el corpus escalado.
+\subsection{La segmentación del universo a escalar}
+\label{sec:segmentacion}
 
-Los tres documentos restantes quedan fuera, y no por la misma razón. Dos no prescriben, se leyeron y se adjudicaron como texto de referencia, sin obligaciones ni restricciones que extraer. El tercero sí prescribe, y queda fuera por la razón contraria. Tiene numeración propia que la segmentación reconoce solo en parte, y tratarlo por página le daría una procedencia más gruesa que la que el documento admite.
+Los 152 documentos restantes suman 6.757 páginas, y no todos se dejan segmentar por igual. En 68 la segmentación reconoce la estructura sin reglas adicionales, y los 84 restantes la marcan de otras maneras, con variantes del marcador de índice o de sección, o con el contenido dispuesto en tablas, de modo que para incorporarlos se escribieron reglas de parseo propias.
+
+Esas reglas se escribieron bajo una exigencia verificada documento por documento, la de que la segmentación ya obtenida no cambiara, y el resultado de cada documento ya procesado resultó idéntico al anterior. Con ellas el universo a escalar produce 9.324 unidades de extracción, repartidas en tres grupos según cuánto de su contenido está escrito como puntos normativos numerados. En 138 documentos, que suman 4.183 páginas, esa forma cubre el documento entero y la segmentación produce 9.266 unidades. Dos son en su mayor parte fichas y listados de registro, de modo que solo su parte articulada se segmenta: concentran 2.413 páginas, más de un tercio del universo, y aportan 46 unidades. Los 12 restantes no tienen contenido articulado que descomponer, suman 161 páginas, el 2,4\,\% del universo, y quedan declarados no segmentables con la causa registrada en cada caso. Aportan entre los doce otras doce unidades, cada una un documento devuelto sin descomponer, y con ellas los tres grupos suman las 9.324.
+
+Esos doce no quedaron afuera del recurso. Nueve se recuperaron tomando la página como unidad y como procedencia, y la subsección~\ref{sec:cobertura_no_segmentables} trata esa vía y su resultado.
 
 \subsection{El esquema de partida}
+\label{sec:esquema_partida}
 
 El esquema del que parte la validación fija seis tipos de entidad que el extractor puede emitir. Tres recogen el contenido deóntico de la norma (lo que manda, prohíbe o exime), \texttt{Obligacion}, \texttt{Restriccion} y \texttt{Excepcion}; uno el acto regulado, \texttt{Operacion}; y dos el anclaje documental, \texttt{TextoOrdenado} y \texttt{Comunicacion}.
 
-Esos tipos no se fijaron de antemano. Un conjunto inicial de entidades candidatas se contrastó con el corpus mediante un análisis sin modelo de lenguaje sobre una muestra de comunicaciones y tres Textos Ordenados completos, que midió con qué frecuencia el texto nombra cada candidata, relevó el vocabulario con que las normas se relacionan entre sí y examinó cómo se organiza internamente un Texto Ordenado. De esa lectura del corpus salieron dos decisiones. La jerarquía documental quedó fuera del vocabulario de entidades, porque un punto es la dirección de una norma y no una norma; el punto 3.17.1.4, por ejemplo, no es un nodo del grafo sino el dato de procedencia del nodo que representa la restricción que ese punto establece. Y la obligación entró como tipo propio. La restricción y la excepción cubren lo que la norma prohíbe, limita o exime, pero no lo que la norma manda hacer. Ese deber positivo (presentar información, calcular un ratio, clasificar a un deudor) es masivo en el corpus, y sin un tipo que lo represente esas normas no tendrían nodo posible. Textos Ordenados enteros, como el régimen informativo, están hechos de deberes de esa clase.
+Esos tipos no se fijaron de antemano. Un conjunto inicial de entidades candidatas se contrastó con el corpus mediante tres mediciones sin modelo de lenguaje, cada una sobre su propio material. La frecuencia con que el texto nombra cada candidata se midió sobre 150 comunicaciones sorteadas con semilla registrada, cien de la serie «A» y cincuenta de la «B». El vocabulario con que las normas se relacionan entre sí se relevó solo sobre las cien de la serie «A», que son las que dictan y modifican. Y la organización interna de un Texto Ordenado se examinó sobre tres documentos completos, dos del conjunto de desarrollo y un tercero, el de garantías, que no pertenece a ninguno de los dos. De esa lectura del corpus salieron dos decisiones. La jerarquía documental quedó fuera del vocabulario de entidades, porque un punto es la dirección de una norma y no una norma; el punto 3.17.1.4, por ejemplo, no es un nodo del grafo sino el dato de procedencia del nodo que representa la restricción que ese punto establece. Y la obligación entró como tipo propio. La restricción y la excepción cubren lo que la norma prohíbe, limita o exime, pero no lo que la norma manda hacer. Ese deber positivo (presentar información, calcular un ratio, clasificar a un deudor) es masivo en el corpus, y sin un tipo que lo represente esas normas no tendrían nodo posible. Textos Ordenados enteros, como el régimen informativo, están hechos de deberes de esa clase.
 
-A los seis tipos se suma un séptimo tipo de nodo, \texttt{Sujeto}, que representa a quién se dirige la norma: las entidades financieras, una clase particular de ellas, o un organismo como el propio BCRA. Es la respuesta a la pregunta central del cumplimiento, a quién aplica cada regla, y un mismo sujeto aparece en el texto bajo formas distintas, \enquote{banco}, \enquote{bancos}, \enquote{entidades bancarias}, que extraídas libremente producirían un nodo por cada forma.
+A los seis tipos se suma un séptimo tipo de nodo, \texttt{Sujeto}, que representa a quién se dirige la norma: las entidades financieras, una clase particular de ellas, o un organismo como el propio BCRA. Es la respuesta a la pregunta central del cumplimiento, a quién aplica cada regla, y un mismo sujeto aparece en el texto bajo formas distintas, \enquote{banco}, \enquote{bancos}, \enquote{entidades bancarias}. Extraerlos libremente no da control sobre la granularidad en ninguna de las dos direcciones, porque algunos se parten en tantos nodos como formas tiene el texto y el resto se apelmaza en un nodo genérico.
 
-Una versión anterior del esquema extraía los sujetos así, como un tipo de entidad más, y un censo del grafo construido con ella midió el resultado. Ese tipo contenía todos los sujetos del dominio aplastados en uno solo, y 991 de las 1.464 relaciones que vinculan una norma con su sujeto apuntaban a un único nodo genérico. Un grafo así registra que la norma tiene destinatario y no permite averiguar cuál.
+Una versión anterior del esquema los extraía así, como un tipo de entidad más, y un censo del grafo construido con ella midió las dos cosas. Ese grafo llegó a 130 nodos de sujeto, de los cuales solo trece superan las diez relaciones, y al mismo tiempo un único nodo genérico concentra 991 de las 1.464 que unen una norma con su destinatario. Un grafo así registra que la norma tiene destinatario y no permite averiguar cuál.
 
-Por eso el sujeto existe en el grafo pero no en el vocabulario del extractor: sale de un catálogo cerrado que se entrega al modelo junto con sus instrucciones, y que se trata más adelante en este capítulo.
+Por eso el sujeto existe en el grafo pero no en el vocabulario del extractor. Sale de un catálogo cerrado que se entrega al modelo junto con sus instrucciones, y el modelo no lo emite como una entidad más: elige una entrada del catálogo y escribe su identificador en un campo aparte de la relación. La arista que une la norma con el nodo de sujeto la construye después el ensamblado a partir de ese campo, y solo si el par de tipos figura en la matriz. El catálogo se trata en la subsección~\ref{sec:catalogo}. El esquema queda entonces con siete tipos de nodo, de los que el extractor emite seis.
 
-Sobre esos tipos el esquema define doce tipos de relación, o predicados: \texttt{establecida\_en}, \texttt{referencia}, \texttt{modificada\_por}, \texttt{aplica\_a}, \texttt{regula}, \texttt{exceptua}, \texttt{exceptua\_obligacion}, \texttt{prohibe}, \texttt{limita}, \texttt{ejecuta}, \texttt{requiere} y \texttt{condiciona}. Cada relación declara su dominio y su rango, es decir, qué tipo de nodo admite en cada extremo, de modo que \texttt{aplica\_a} solo puede ir de una obligación o una restricción a un sujeto, \texttt{exceptua} solo de una excepción a una restricción, y \texttt{establecida\_en} solo de una obligación, una restricción, una excepción o una operación al Texto Ordenado que la contiene. Los desdoblamientos responden a consultas previstas, y por eso \texttt{prohibe} y \texttt{limita} se separan, para que una pregunta como cuáles operaciones están totalmente prohibidas pueda responderse sin confundir prohibiciones con límites cuantitativos. 
+Cada uno de los tipos que el extractor emite lleva además un conjunto de propiedades. Tres de ellas admiten solo valores de una lista enumerada, el tipo de comunicación, el tipo de restricción y el tipo de obligación, y el resto es texto libre. Ese cierre no es del mismo orden que el de los tipos. La lista de tipos está declarada en el esquema de la herramienta con la que se llama al modelo, y el modelo no puede emitir un valor que no esté en ella. Las listas de valores de propiedad, en cambio, se comunican en las instrucciones y ningún control las verifica.
+
+Sobre esos tipos el esquema define doce tipos de relación, o predicados: \texttt{establecida\_en}, \texttt{referencia}, \texttt{modificada\_por}, \texttt{aplica\_a}, \texttt{regula}, \texttt{exceptua}, \texttt{exceptua\_obligacion}, \texttt{prohibe}, \texttt{limita}, \texttt{ejecuta}, \texttt{requiere} y \texttt{condiciona}. Cada relación declara su dominio y su rango, es decir, qué tipo de nodo admite en cada extremo, de modo que \texttt{aplica\_a} solo puede ir de una obligación o una restricción a un sujeto, \texttt{exceptua} solo de una excepción a una restricción, y \texttt{establecida\_en} solo de una obligación, una restricción, una excepción o una operación al Texto Ordenado que la contiene. Los desdoblamientos responden a consultas previstas, y por eso \texttt{prohibe} y \texttt{limita} se separan, para que una pregunta como cuáles operaciones están totalmente prohibidas pueda responderse sin confundir prohibiciones con límites cuantitativos. Solo dos de las doce llevan sujeto, \texttt{aplica\_a} y \texttt{ejecuta}, y son las únicas donde el extremo de sujeto se resuelve por un identificador del catálogo en lugar de por una entidad extraída del texto.
 
 Esa matriz de dominio y rango, que la Figura~\ref{fig:esquema_partida} dibuja, no es documentación sino control. Al unir las extracciones en un único grafo, el ensamblado (capítulo~\ref{cap:construccion}) rechaza toda tripleta cuya firma (el par de tipos que la relación conecta) no figure en la matriz, de modo que una relación bien formada pero imposible en el esquema no ingresa al grafo por esa vía.
 
-El control existe porque el extractor es un modelo de lenguaje y, entre relaciones correctas, produce relaciones bien formadas que el esquema no admite. Verificar la firma es una comprobación determinística, sin modelo, y cada relación rechazada queda registrada con la firma que intentó y con la salida íntegra del modelo al lado, de modo que el rechazo es recontable en cualquier momento. Sobre el conjunto de desarrollo la matriz rechazó 304 relaciones. De ellas, 196 tenían la misma forma, una operación o una excepción que se aplica a un sujeto, que el esquema de partida no admitía porque \texttt{aplica\_a} solo podía salir de una obligación o una restricción; un rechazo que se repite con esa regularidad señala un límite del esquema y no un error del extractor, y ese registro fue uno de los insumos de la validación que sigue.
+El control existe porque el extractor es un modelo de lenguaje y, entre relaciones correctas, produce relaciones bien formadas que el esquema no admite. Verificar la firma es una comprobación determinística, sin modelo, y cada relación rechazada queda registrada con la firma que intentó y con la salida íntegra del modelo al lado, de modo que el rechazo es recontable en cualquier momento. Sobre el conjunto de desarrollo la matriz rechazó 304 relaciones, repartidas en 29 firmas. Dos de ellas concentran 196 y son la misma forma con distinto origen, una operación o una excepción que se aplica a un sujeto, que el esquema de partida no admitía porque \texttt{aplica\_a} solo podía salir de una obligación o una restricción. Un segundo grupo de 44 tiene el mismo carácter, una excepción que exceptúa algo que no es una restricción, y las 64 restantes se dispersan en 22 firmas sin que ninguna llegue a diez relaciones. Un rechazo que se repite con esa regularidad señala un límite del esquema y no un error del extractor, y los dos grupos entraron como insumo a la validación que sigue.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\linewidth]{figuras/figura_esquema_partida.png}
-  \caption[El esquema de partida]{El esquema de partida, el que se sometió a validación. Cada caja es un tipo de entidad, agrupado según su función; cada flecha es una
-    relación, desde los tipos que admite como origen hacia los que admite
-    como destino, y las flechas de una misma relación confluyen en un
-    trazo con su nombre. El sujeto proviene de un catálogo cerrado y no lo
-    emite el extractor.}
+  \caption[El esquema de partida]{El esquema de partida, el que se sometió a validación. Cada caja es un tipo de entidad, agrupado según su función, y cada flecha es un par dominio-rango admitido, desde el tipo que la relación acepta como origen hacia el que acepta como destino. Las diecisiete flechas expanden las doce relaciones del esquema, porque una misma relación admite más de un par. El sujeto proviene de un catálogo cerrado y no lo emite el extractor.}
   \label{fig:esquema_partida}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figuras/figura_ejemplo_extraccion.png}
+  \caption[Una unidad de extracción y su salida]{Una unidad de extracción y lo
+    que el extractor produce a partir de ella. A la izquierda, el texto
+    oficial, con la cadena de encabezados que sitúa al punto en gris y el punto
+    terminal, que es la unidad, en negro. A la derecha, la salida: las
+    entidades y las relaciones que el esquema admite, los campos de la
+    obligación y, en cada fila, el punto del que proviene. El sujeto va con
+    borde punteado porque no es una entidad que el extractor emita, sino una
+    entrada del catálogo elegida en un campo de la relación. Esta misma
+    disposición, el texto de un lado y la salida del otro, es la ficha con la
+    que se midió la cobertura en la subsección~\ref{sec:cobertura}.}
+  \label{fig:figura_ejemplo_extraccion}
 \end{figure}
 
 \subsection{La elección del paradigma cerrado} 
 
 El esquema es cerrado en un sentido preciso: el extractor no propone vocabulario, elige dentro de uno fijo, y lo que no entra en ese vocabulario no entra al grafo. La alternativa, que la literatura llama schema-light o schema-free~\cite{bian2025survey}, deja que el modelo proponga los tipos y las relaciones que le parezcan pertinentes en cada texto.
 
-El esquema cerrado se eligió por comparación. Un experimento construyó cinco grafos en paralelo sobre el conjunto de desarrollo, con el mismo modelo de extracción, el mismo formato de salida con procedencia obligatoria y las mismas reglas de modelado, variando solo la estrategia de esquema. La primera siguió una receta genérica de extracción de grafos, sin adaptación al dominio, con 10 tipos de entidad y relaciones libres. La segunda tomó de la literatura un vocabulario controlado de 12 tipos y 23 relaciones. La tercera es el esquema cerrado de 7 tipos y 12 relaciones del que deriva el de partida, con dominio y rango estrictos. La cuarta dejó que el modelo propusiera tipos y relaciones en cada texto, sin vocabulario previo, y terminó con 858 tipos de entidad y 1.578 relaciones distintas. La quinta fijó un núcleo de 4 tipos y 5 relaciones y dejó el resto emergente.
+El esquema cerrado se eligió por comparación. Un experimento construyó cinco grafos en paralelo sobre el conjunto de desarrollo, con el mismo modelo de extracción, el mismo formato de salida con procedencia obligatoria y las mismas reglas de modelado, variando solo la estrategia de esquema. La primera siguió una guía de referencia para construir grafos con modelos de lenguaje~\cite{anthropic2026cookbook}, conservando su método completo y reemplazando solo los tipos de entidad, porque los que la guía propone pertenecen al dominio biográfico y no al regulatorio; quedó con 10 tipos y las relaciones libres. La segunda tomó un vocabulario controlado de 12 tipos y 23 relaciones, armado con los aportes de dos trabajos sobre extracción de grafos en dominios regulados~\cite{arun2025finreflect,agarwal2025ragulating}, dos estándares de representación de normativa~\cite{hoekstra2007lkif,palmirani2018akomantoso} y el modelo de procedencia del W3C~\cite{lebo2013provo}. La tercera es el esquema de partida descrito en la subsección anterior, con sus 7 tipos, sus 12 relaciones y su dominio y rango estrictos. La cuarta dejó que el modelo propusiera tipos y relaciones en cada texto, sin vocabulario previo, y terminó con 858 tipos de entidad y 1.578 relaciones distintas. La quinta fijó un núcleo de 4 tipos y 5 relaciones y dejó el resto emergente.
 
-Los cinco grafos se evaluaron con el mismo agente que usa el resto de este trabajo, con sus tres operaciones sobre el grafo y un máximo de 15 consultas por pregunta, y un conjunto de 23 preguntas, anterior e independiente del conjunto de evaluación del capítulo~\ref{cap:fidelidad}, redactadas a partir del texto fuente sin mirar los grafos y fijadas antes de correr la evaluación. De las 23, 10 piden un dato directo, 5 exigen combinar varias normas, 4 requieren seguir una restricción hasta su excepción, y 4 no tienen respuesta en el corpus y miden si el sistema se abstiene. Cada pregunta se corrió tres veces por grafo. Un modelo de lenguaje, calibrado previamente contra veredictos humanos en 12 de 12 casos de prueba, juzgó cada respuesta contra su referencia, con adjudicación humana de las afirmaciones que el juez no pudo verificar contra el texto. Se midieron la corrección de las respuestas, la estabilidad entre repeticiones, la precisión de la cita (a nivel de punto, de página o ausente) y la frecuencia con que el agente agotó su límite de consultas.
+Los cinco grafos se evaluaron con el mismo agente que usa el resto de este trabajo, descrito en el capítulo~\ref{cap:fidelidad}, con las tres operaciones sobre el grafo que allí se detallan y un máximo de 15 consultas por pregunta, y un conjunto de 23 preguntas, anterior e independiente del conjunto de evaluación del capítulo~\ref{cap:fidelidad}, redactadas a partir del texto fuente sin mirar los grafos y fijadas antes de correr la evaluación. De las 23, 10 piden un dato directo, 5 exigen combinar varias normas, 4 requieren seguir una restricción hasta su excepción, y 4 no tienen respuesta en el corpus y miden si el sistema se abstiene. Cada pregunta se corrió tres veces por grafo. Un modelo de lenguaje, calibrado previamente contra veredictos humanos en 12 de 12 casos de prueba, juzgó cada respuesta contra su referencia, con adjudicación humana de las afirmaciones que el juez no pudo verificar contra el texto. Se midieron la corrección de las respuestas, la estabilidad entre repeticiones, la precisión de la cita (a nivel de punto, de página o ausente) y la frecuencia con que el agente agotó su límite de consultas.
 La Tabla~\ref{tab:cinco_estrategias} resume el resultado.
 
 \begin{table}[H]
@@ -660,25 +655,30 @@ La Tabla~\ref{tab:cinco_estrategias} resume el resultado.
   \label{tab:cinco_estrategias}
 \end{table}
 
-El esquema cerrado obtuvo el máximo o empató en cada una de las cuatro medidas de la tabla, y fue el único sin errores en las preguntas que siguen una restricción hasta su excepción. Por tipo de pregunta el resultado no es uniforme: en las de dato directo el esquema emergente acertó las 10 frente a 9 del cerrado, y las que combinan varias normas fueron el punto débil de las cinco estrategias, con 3 de 5 correctas para el ganador. La elección no depende de cómo se ponderen las medidas, porque el cerrado no es inferior en ninguna, y las medidas en las que las estrategias sí se separaron, la estabilidad entre repeticiones, la cita a nivel de punto y el agotamiento del límite, son las que importan para un sistema que debe responder igual cada vez y citar el punto exacto. El conjunto de preguntas es pequeño, y esta comparación se toma como evidencia de diseño, no como resultado de la tesis.
+El esquema cerrado obtuvo el máximo o empató en cada una de las cuatro medidas de la tabla. Fue además el único sin errores en las cuatro preguntas que siguen una restricción hasta su excepción. Por tipo de pregunta el resultado no es uniforme: en las de dato directo el esquema emergente acertó las 10 frente a 9 del cerrado, y las que combinan varias normas fueron el punto débil de las cinco estrategias, con 3 de 5 correctas para el ganador. La elección no depende de cómo se ponderen las medidas, porque el cerrado no es inferior en ninguna, y las medidas en las que las estrategias sí se separaron, la estabilidad entre repeticiones, la cita a nivel de punto y el agotamiento del límite, son las que importan para un sistema que debe responder igual cada vez y citar el punto exacto. La separación más nítida está ahí, porque la receta genérica no produjo una sola cita a nivel de punto en las 23 preguntas, de modo que sin un esquema que reserve lugar para la procedencia la respuesta no queda auditable. El conjunto de preguntas es pequeño, y esta comparación se toma como evidencia de diseño, no como resultado de la tesis.
 
-La evidencia externa apunta en la misma dirección. En un pipeline de extracción sobre reportes operativos de desminado humanitario, guiar al modelo con una ontología de 160 tipos de entidad y 86 relaciones mejoró la exactitud de la extracción hasta un 44,2\,\%, redujo las alucinaciones un 22,5\,\% y mejoró la adherencia al formato un 20,9\,\% frente a extraer sin esa guía \cite{zhou2025textminex}.
+La comparación mide respuestas, y hay una razón que no depende de ellas. El entregable de este trabajo es el grafo, y un grafo con 858 tipos de entidad y 1.578 relaciones distintas no es un recurso que se pueda consultar, mantener ni actualizar. Cada consulta tendría que anticipar con qué nombre quedó escrita cada relación, y cada incorporación de normativa nueva podría traer tipos que ninguna consulta anterior contempla, de modo que el mecanismo de actualización que este trabajo propone no tendría contra qué comparar lo que llega. El vocabulario cerrado paga por adelantado el costo de decidir qué se puede decir, y a cambio le da al recurso una forma estable.
 
-Durante la validación se evaluó frente al esquema de partida un menú de cinco ampliaciones posibles: ampliar los valores admitidos de los campos de lista cerrada; agregar tipos y relaciones para el contenido que quedaba sin caja; permitir atributos en las relaciones; separar un núcleo fijo de una zona de extensión libre; y pasar a schema-light pleno. Las dos primeras se admitieron porque amplían el vocabulario sin salir del paradigma cerrado, la tercera se difirió a una etapa posterior del trabajo, y las dos últimas se rechazaron.
+La evidencia externa apunta en la misma dirección. En un pipeline de extracción sobre reportes operativos de desminado humanitario, guiar al modelo con una ontología de 160 tipos de entidad y 86 relaciones mejoró la exactitud de la extracción hasta un 44,2\,\%, redujo las alucinaciones hasta un 22,5\,\% y mejoró la adherencia al formato hasta un 20,9\,\%, en los tres casos frente a la peor de las configuraciones sin esa guía \cite{zhou2025textminex}.
 
-El rechazo de la zona de extensión y del schema-light pleno se apoya en evidencia y no en preferencia. Una zona de extensión es un canal abierto en producción, y el comportamiento del extractor frente a un canal abierto se puso a prueba de forma directa, con el resultado que se presenta más adelante en este capítulo; el schema-light pleno ya había corrido como una de las cinco estrategias y había perdido.
+Dentro del paradigma cerrado quedan dos alternativas de diseño que este trabajo consideró y descartó, y las dos ya habían corrido en la comparación anterior. La primera es fijar un núcleo de tipos obligatorios y habilitar junto a él una zona de extensión libre, que es la estrategia híbrida de la Tabla~\ref{tab:cinco_estrategias}. La segunda es pasar a \emph{schema-light} pleno, esto es, dar el esquema como orientación y no como restricción, que es la estrategia emergente. Ninguna de las dos superó al esquema cerrado en ninguna de las cuatro medidas. A eso se suma lo que se observó del extractor frente a un canal abierto, que es lo que una zona de extensión es en producción. El modelo no propone vocabulario nuevo sino que deforma el contenido dentro de las cajas que ya tiene, y lo hace de manera inestable. El mecanismo de descubrimiento, además, sobrecuenta: de diez propuestas revisadas a mano, siete resultaron falsos positivos; el procedimiento con que se hizo esa prueba se describe en la subsección~\ref{sec:procedimiento}.
 
-Este esquema de partida es el que se sometió a validación antes de escalar. Lo que sigue describe el catálogo del que salen los sujetos, el procedimiento con que se puso a prueba el esquema fuera del conjunto de desarrollo, y los cambios que ese procedimiento produjo hasta el esquema congelado con el que se construye el recurso.
+Un esquema cerrado que resulta corto se amplía por enmienda declarada, no se abre por diseño. Las ampliaciones que este trabajo evaluó, y las que efectivamente adoptó, se documentan más adelante en este capítulo.
+
+Lo que se sometió a validación antes de escalar es el paradigma cerrado y este esquema concreto tomados juntos. Las secciones que siguen describen el catálogo del que salen los sujetos, el procedimiento con que se los puso a prueba fuera del conjunto de desarrollo, y los cambios que ese procedimiento produjo hasta el esquema congelado con el que se construye el recurso.
 
 \subsection{El catálogo de sujetos}
+\label{sec:catalogo}
 
 El catálogo del que salen esos sujetos no es una lista plana. Los destinatarios de la norma están a distintos niveles de generalidad: una regla dirigida a las entidades financieras alcanza también a los bancos comerciales, que están comprendidos en ellas, y una consulta que ignore esa relación devuelve media respuesta. El catálogo declara esa pertenencia, y es por eso un vocabulario con estructura.
 
 La norma nombra a sus destinatarios de tres maneras, y el catálogo tiene una forma de entrada para cada una. A veces nombra a un grupo, las entidades financieras o los bancos comerciales, y para eso está la clase, que declara además su clase madre y arma con eso el árbol. A veces nombra a un organismo único, el BCRA o su Superintendencia, y para eso está la instancia, que cuelga de una clase y no tiene nada debajo. Y muchas veces no nombra a nadie. Dice \enquote{las entidades comprendidas} y remite a un punto de su cabecera donde declaró una sola vez a quién se dirige, y para eso está el rol de alcance.
 
-El catálogo lleva versiones propias porque crece con el corpus, mientras el esquema se mantiene fijo. Crece entre una versión y la siguiente, por decisión y no durante la extracción, de modo que el modelo nunca amplía la lista de la que elige. La versión con la que corrió la validación reúne 70 entradas: 58 clases, 7 instancias y 5 roles de alcance, uno por cada documento del conjunto de desarrollo.
+El catálogo lleva versiones propias porque crece con el corpus, mientras el esquema se mantiene fijo. Crece entre una versión y la siguiente, por decisión y no durante la extracción, de modo que el modelo nunca amplía la lista de la que elige. La versión con la que corrió la validación reúne 70 entradas: 58 clases, 7 instancias y 5 roles de alcance, uno por cada documento del conjunto de desarrollo. Las clases cuelgan de una raíz común y se reparten en cuatro ramas, según el sujeto sea uno de los regulados, una contraparte de la operación, un organismo público o una estructura jurídica sin personalidad propia.
 
-Esas entradas no viven solo en el texto que se le entrega al modelo. Cada una es también un nodo del grafo, y los vínculos que declaran se escriben como 82 aristas: 57 de subclase, 7 de instancia, 17 de pertenencia a un rol y 1 de dependencia entre dos organismos. La jerarquía queda así dentro del grafo y no en una tabla que haya que consultar aparte, y se recorre con las mismas operaciones que cualquier otra relación.
+Esas entradas no viven solo en el texto que se le entrega al modelo. Cada una es también un nodo del grafo, y los vínculos que declaran se escriben como 82 aristas de cuatro clases: 57 de \texttt{subclase\_de}, 7 de \texttt{instancia\_de}, 17 de \texttt{miembro\_de} y una de \texttt{parte\_de}, la que ata la Superintendencia al Banco Central. Ninguna de las cuatro forma parte del vocabulario que el extractor emite. Las escribe el ensamblado al cargar el catálogo, y por eso no están entre las doce relaciones que declara el esquema.
+
+Lo que el modelo ve del catálogo no es el árbol. Recibe la lista de entradas con su etiqueta y sus alias, agrupadas por familia, y su instrucción es elegir exactamente la que el texto nombra, sin subir ni bajar por la jerarquía. Las relaciones de pertenencia no viajan en esa lista. Viven en el grafo, y son las que después permiten que una consulta por los bancos comerciales llegue a una norma dirigida a las entidades financieras. De los cinco roles de alcance el modelo ve los cinco a la vez, y solo se le dice de qué clases se compone el del documento que está procesando.
 
 El rol y el árbol de clases se encadenan. Un punto del articulado puede exigir algo sin decir a quién, porque apunta al rol que el documento declaró una vez en su cabecera. Ese rol se compone, entre otras clases, de las entidades financieras, y los bancos comerciales cuelgan de los bancos, que cuelgan de las entidades financieras. Una consulta por los bancos comerciales llega así a una obligación que no los nombra en ningún punto, y la Figura~\ref{fig:catalogo} recorre ese camino sobre un caso real.
 
@@ -700,11 +700,11 @@ El rol y el árbol de clases se encadenan. Un punto del articulado puede exigir 
   \label{fig:catalogo}
 \end{figure}
 
-Los cinco roles de alcance responden a un patrón de la regulación. Un Texto Ordenado fija a quién se dirige una sola vez, en un punto de su cabecera, y lo nombra ahí con una fórmula colectiva, \enquote{entidades comprendidas}, \enquote{entidades alcanzadas}, \enquote{sujetos obligados}, a la que el resto del articulado se remite sin volver a enumerarla. Cada rol toma esa fórmula como etiqueta, registra ese punto como procedencia y declara de qué clases del catálogo se compone el colectivo, que son las 17 aristas de pertenencia ya contadas.
+Los cinco roles de alcance responden a un patrón de la regulación. Un Texto Ordenado fija a quién se dirige una sola vez, en un punto de su cabecera que en adelante se llama el pasaje de alcance, y lo nombra ahí con una fórmula colectiva, \enquote{entidades comprendidas}, \enquote{entidades alcanzadas}, \enquote{sujetos obligados}, a la que el resto del articulado se remite sin volver a enumerarla. Cada rol toma esa fórmula como etiqueta, registra ese punto como procedencia y declara de qué clases del catálogo se compone el colectivo, que son las 17 aristas de pertenencia ya contadas.
 
-Lo que la Figura~\ref{fig:catalogo} muestra en un caso es el caso habitual. En el conjunto de desarrollo hay 3.302 relaciones que unen una norma con su destinatario, y 2.766 de ellas, el 83,8\,\%, apuntan a un rol de alcance. La cifra describe al corpus antes que al recurso; los puntos del articulado casi nunca repiten a quién obligan, y el mecanismo del rol existe porque la regulación se escribe así.
+Lo que la Figura~\ref{fig:catalogo} muestra en un caso es el caso habitual. En el conjunto de desarrollo, ya con el catálogo en uso, hay 3.302 relaciones que unen una norma con su destinatario, y 2.766 de ellas, el 83,8\,\%, apuntan a un rol de alcance. La cifra describe al corpus antes que al recurso; los puntos del articulado casi nunca repiten a quién obligan, y el mecanismo del rol existe porque la regulación se escribe así.
 
-Lo que el rol aporta se ve cuando falta. Los diez documentos del conjunto de prueba se extrajeron sin rol propio, porque el rol solo existía para los cinco de desarrollo. El modelo no falla ni deja el sujeto vacío, y resuelve 657 de sus 727 relaciones con sujeto contra una entrada del catálogo. Lo que hace es aplanar, ya que 423 de esas relaciones terminan en la clase más amplia que encuentra, la de las entidades financieras, aunque la norma se dirigiera a un grupo más acotado. Es la misma pérdida que midió el censo de la subsección anterior, más chica pero de la misma forma. Y en 18 casos el modelo elige el rol de otro documento, que sigue en su lista aunque no le corresponda.
+Lo que el rol aporta se ve cuando falta. Los diez documentos del conjunto de prueba se extrajeron sin rol propio, porque el rol solo existía para los cinco de desarrollo. El modelo no falla ni deja el sujeto vacío, y resuelve 657 de sus 727 relaciones con sujeto contra una entrada del catálogo. Lo que hace es aplanar, ya que 423 de esas relaciones terminan en la clase más amplia que encuentra, la de las entidades financieras, aunque la norma se dirigiera a un grupo más acotado. Es la misma pérdida que midió el censo del esquema de partida, más chica pero de la misma forma. Y en 18 casos el modelo elige el rol de otro documento, que sigue en su lista aunque no le corresponda.
 
 El catálogo es cerrado pero no obligatorio. Cuando ninguna entrada corresponde, el modelo escribe el sujeto en un campo aparte, \texttt{sujeto\_propuesto}, y esa propuesta queda en cuarentena, registrada con su texto y sin ingresar al catálogo. Sobre las 4.029 relaciones con sujeto medidas en el conjunto de desarrollo y en los diez del conjunto de prueba, 124 tomaron esa vía, el 3,1\,\%. La tasa no es pareja entre los dos conjuntos: en desarrollo, donde cada documento tiene su rol declarado, es del 1,6\,\%; en los diez de prueba, sin rol propio, sube al 9,6\,\%.
 
@@ -712,17 +712,16 @@ Ese campo existe porque la alternativa borra el problema. Forzar al modelo a ele
 
 Las 124 propuestas son esa evidencia, y podían significar que al catálogo le faltaban entradas. Un mismo sujeto aparece escrito de maneras distintas, así que primero se agruparon por el sustantivo que las encabeza, con un procedimiento mecánico y sin modelo de lenguaje. El corte para que un grupo entrara al catálogo se fijó antes de mirar la distribución: aparecer en al menos 20 unidades de extracción, en al menos 5 documentos y en al menos 2 de los diez de prueba. Fijarlo de antemano evita elegir después el umbral que da el resultado esperado. Ningún grupo lo alcanzó, ni lo alcanza con los umbrales más bajos que la propia medición reporta como control.
 
-El catálogo que se aplica al corpus escalado es una extensión de este, y no creció por la cuarentena. Antes de extraer los documentos que se sumaban se leyó el pasaje de alcance de cada uno, y de ahí salió qué entradas hacían falta. De los 68 documentos del corpus de extracción, 36 se dirigen a una clase que el catálogo ya tenía y 30 recibieron un rol de alcance propio; los dos restantes quedaron declarados sin entrada, con el campo de propuesta abierto. Se sumaron además siete sujetos nuevos, cada uno con su evidencia citada en el texto, y se retiraron cinco entradas sin uso medido: el catálogo escalado queda en 102 entradas.
-
-La extensión no cubre todo lo que los documentos nuevos nombran. Al declarar a quién se dirigen, esos 30 documentos mencionan 69 grupos distintos, y solo 34 tienen en el catálogo una clase que les corresponda: el 49,3\,\%. Cinco de esos 30 documentos son del conjunto de prueba, y aportan 13 de los 69 grupos. De los 35 restantes, 26 nombran algo que el catálogo no contempla, y los otros 9 lo contemplan a un nivel de generalidad distinto. Doce de los 30 roles quedan por eso sin miembros declarados, sea porque el grupo no tiene entrada o porque aplanarlo a una clase más amplia se rechazó, y cada caso está registrado con su causa.
+El catálogo con el que se validó el esquema queda entonces en esas 70 entradas. Volvió a crecer al incorporar el resto del corpus, y el capítulo~\ref{cap:construccion} trata esa extensión, lo que deja sin cubrir y qué documentos del conjunto de prueba intervinieron en ella.
 
 \subsection{El procedimiento de validación}
+\label{sec:procedimiento}
 
 El esquema y el catálogo se pusieron a prueba sobre los diez documentos del conjunto de prueba, y la primera pregunta de esa prueba no fue cuánto acierta el extractor sino qué contenido de la norma no tiene lugar en el vocabulario. Un esquema cerrado no puede responderla por sí solo, porque aquello que no admite no produce salida y por lo tanto no deja rastro que contar. Hacía falta un instrumento que le diera al extractor un lugar donde escribir lo que no entra. Se ensayaron dos y ninguno pasó su control, pero el modo en que fallaron dice algo sobre el extractor que la medición posterior confirmó.
 
 El primero fue el canal abierto. Son dos campos adicionales, uno para el tipo de entidad y otro para el tipo de relación, con la misma forma que el campo aparte del sujeto ya descrito. El modelo sigue eligiendo dentro del vocabulario cerrado, y cuando un contenido normativo claro no cabe en ninguna caja lo escribe en esos campos en lugar de forzarlo o de callarlo.
 
-El catálogo de sujetos ya tenía un campo de ese tipo. El modelo lo usa cuando ninguna entrada corresponde, y sobre el conjunto de desarrollo lo usó 56 veces, con 39 expresiones distintas. Los tipos de entidad y de relación no tenían nada equivalente, de modo que sobre ellos no había manera de saber cuánto quedaba afuera.
+El catálogo de sujetos ya tenía un campo de ese tipo. El modelo lo usa cuando ninguna entrada corresponde, y sobre el conjunto de desarrollo lo emitió 56 veces, con 39 expresiones distintas, de las que 54 sobrevivieron a la validación y son las que contó la subsección anterior. Los tipos de entidad y de relación no tenían nada equivalente, de modo que sobre ellos no había manera de saber cuánto quedaba afuera.
 
 Antes de usar el canal para medir nada hubo que probar que funciona. Si la medición diera cero, ese cero admitiría dos lecturas incompatibles, que el esquema alcanza para todo y que el modelo nunca escribe en el canal, y ninguna medición posterior las separa. Por eso quedó escrito, antes de la primera corrida, que sin un control aprobado ningún resultado sería admisible, ni un cero ni un número distinto de cero. Se corrieron cuatro, y la Tabla~\ref{tab:controles} los reúne con su material, lo que cada uno exigía y lo que produjo.
 
@@ -742,22 +741,20 @@ Antes de usar el canal para medir nada hubo que probar que funciona. Si la medic
     Segundo & 10 unidades dopadas & $\geq$7 & 0 \\
             & 10 limpias & $\leq$1 & 0 \\
     \addlinespace
-    Tercero & 10 dopadas, con las dos frases de cierre neutralizadas & $\geq$7 & 0 \\
+    Tercero & 10 dopadas, con las dos frases que compiten con el canal reemplazadas & $\geq$7 & 0 \\
             & 10 limpias & $\leq$1 & 0 \\
     \addlinespace
-    Cuarto & 10 dopadas, por lectura en lugar del canal & $\geq$7 & 9 \\
+    Cuarto & 10 dopadas, leídas por la consulta separada & $\geq$7 & 9 \\
            & 10 limpias & $\leq$1 & 7 \\
     \bottomrule
   \end{tabularx}
-  \caption[Los cuatro controles del canal]{Los cuatro controles corridos
-    antes de admitir cualquier medición del canal, con el umbral declarado
-    de cada grupo antes de la corrida y el número de unidades observado.
+  \caption[Los cuatro controles]{Los cuatro controles corridos antes de admitir cualquier medición automática de lo que el esquema no cubre. Los tres primeros prueban el canal abierto y el cuarto calibra la consulta separada.
     Los grupos donde el canal tenía que escribir llevan un piso y los
     grupos limpios un techo. Cada control se corrió solo después de que
-    el anterior fallara de una forma determinada. El grupo limpio cambia
+    el anterior fallara de una forma determinada. Los dos primeros grupos del primer control resultaron mal construidos, por las razones que la subsección explica, y sus cifras no miden lo que el control se proponía medir. El grupo limpio cambia
     de papel en el cuarto: en los tres primeros acota cuántas veces el
     canal escribe donde no corresponde, y en el cuarto cuántos hallazgos
-    falsos produce la lectura.}
+    falsos produce la lectura. El grupo de diez unidades limpias es el mismo en los cuatro controles.}
   \label{tab:controles}
 \end{table}
 
@@ -769,17 +766,19 @@ El control falló, pero antes de concluir nada sobre el canal hubo que revisar e
 
 El grupo de las diez unidades con una relación rechazada tenía otro problema. Esas unidades se eligieron porque en una corrida anterior el modelo había producido en ellas relaciones que la matriz rechazó, y el modelo no repite exactamente su conducta entre corridas. Al volver a correrlas esos rechazos iban a bajar por sí solos, hubiera canal abierto o no, de modo que el número de ese grupo no diría nada sobre lo que se quería probar. Hacía falta un control cuyo resultado esperado no dependiera de nada que el modelo hubiera hecho antes.
 
-El control siguiente se construyó plantando el problema. A diez unidades reales del conjunto de desarrollo se les añadió, a cada una, exactamente una cláusula normativa en prosa, redactada para no caber en el esquema y verosímil como texto del BCRA. Cinco piden un tipo de entidad que el vocabulario no tiene, como una sanción de multa o una facultad discrecional del supervisor, y las otras cinco una relación que la matriz no admite. Esas son las unidades dopadas. El contenido plantado se aprobó antes de la corrida, y ni las cláusulas ni sus conceptos aparecen en las instrucciones del extractor ni en ningún ejemplo. Junto a ellas se conservaron las diez unidades limpias del control anterior, y el umbral exigía además que los aciertos se repartieran entre las dos mitades.
+El control siguiente se construyó plantando el problema. A diez unidades reales del conjunto de desarrollo se les añadió, a cada una, exactamente una cláusula normativa en prosa, redactada para no caber en el esquema y verosímil como texto del BCRA. Cinco piden un tipo de entidad que el vocabulario no tiene, como una sanción de multa o una facultad discrecional del supervisor, y las otras cinco una relación que la matriz no admite. Esas son las unidades dopadas. El contenido plantado se aprobó antes de la corrida, y ni las cláusulas ni sus conceptos aparecen en las instrucciones del extractor ni en ningún ejemplo. Junto con el material se corrigió también la descripción del campo en el esquema de la herramienta, que era uno de los textos del prompt que competían con el canal, de modo que entre el primer control y este cambiaron dos cosas.
 
 El canal no se usó una sola vez, y el registro de la corrida dice qué ocurrió en lugar de eso. El modelo leyó las diez cláusulas plantadas y las extrajo todas dentro del esquema, sin declarar una sola omisión.
 
-Quedaba una explicación en pie, que el propio texto de instrucciones suprimiera el canal. Ese texto insiste en no inventar tipos ni relaciones y en preferir no extraer antes que forzar una caja, y esa insistencia compite con el canal que se ofrece unas líneas más abajo. Se reemplazaron dos de esas frases, solo en el modo de medición, dejando idénticas las diez unidades dopadas, los umbrales y el grupo de unidades limpias, de modo que entre una corrida y la otra cambiara una sola cosa. El resultado no cambió, y las 20 unidades comparadas una a una contra la corrida anterior no registran una sola diferencia. Antes de esa corrida estaba fijado que sería la última: si volvía a dar cero, el canal quedaba declarado inviable y no habría un tercer ajuste del lenguaje. Fijarlo de antemano evita seguir retocando las instrucciones hasta que el modelo escriba en el canal.
+Ese silencio llama la atención porque el mismo mecanismo funciona para los sujetos, y con la misma instrucción. Tanto el campo del sujeto como los dos del canal piden explícitamente proponer antes que forzar. Lo que los distingue es lo que tienen enfrente. El canal se ofrece dentro de un texto que encabeza la lista declarando que los tipos son seis y ningún otro, y que entre sus reglas no negociables pide no inventar y preferir no extraer antes que forzar una caja. El campo de sujeto no compite con nada de eso.
+
+Se reemplazaron dos de esas frases, solo en el modo de medición, dejando idénticas las diez unidades dopadas, los umbrales y el grupo de unidades limpias, de modo que entre una corrida y la otra cambiara una sola cosa. El resultado no cambió, y las 20 unidades comparadas una a una contra la corrida anterior no registran una sola diferencia. El precio de ese control quedó declarado: con los cierres neutralizados el modo de medición deja de ser el de producción más un agregado, y pasa a ser un prompt distinto. Antes de esa corrida estaba fijado que sería la última: si volvía a dar cero, el canal quedaba declarado inviable y no habría un tercer ajuste del lenguaje. Fijarlo de antemano evita seguir retocando las instrucciones hasta que el modelo escriba en el canal. Neutralizados los cierres, la asimetría entre los dos campos queda sin explicación medida.
 
 El segundo instrumento es la consulta separada. En lugar de pedirle al extractor que extraiga y de paso avise, se le pregunta a un modelo, en una llamada aparte y sin pedirle que extraiga nada, qué contenido normativo de la unidad no encaja en el esquema. Antes de censar el corpus con ella se la calibró contra la misma vara, las diez unidades dopadas y las diez limpias, con los mismos umbrales, y esa calibración es el cuarto control de la tabla.
 
 Sobre las dopadas el instrumento funciona. Detecta 9 de las 10 cláusulas plantadas, cita el pasaje y explica por qué no encaja, y en ningún caso confunde un tipo faltante con una relación faltante. Sobre las diez unidades limpias señala contenido fuera del esquema en 7, y en las 7 lo señalado es contenido que el esquema sí representa, como restricciones cualitativas, excepciones y deberes de informar. En el grupo limpio se admitía como máximo una detección, y hubo siete.
 
-Los dos instrumentos fallaron por razones opuestas. El canal abierto no declara nunca, ni siquiera cuando el contenido plantado no cabe de ninguna manera, y la consulta separada declara de más, porque señala como faltante contenido que el esquema sí representa. La vía del censo automático quedó cerrada con la misma regla de un solo intento con la que había arrancado, y la cobertura se midió leyendo las unidades una por una. La Figura~\ref{fig:controles} recorre los cuatro controles en el orden en que se corrieron, y sobre cada flecha lleva el motivo por el que después de uno hubo otro.
+Los dos instrumentos fallaron por razones opuestas. El canal abierto no declara nunca, ni siquiera cuando el contenido plantado no cabe de ninguna manera, y la consulta separada declara de más, porque señala como faltante contenido que el esquema sí representa. La vía del censo automático quedó cerrada por una regla propia de un solo intento, declarada antes de la calibración con la misma forma que la del canal, y la cobertura se midió leyendo las unidades una por una. La Figura~\ref{fig:controles} recorre los cuatro controles en el orden en que se corrieron, y sobre cada flecha lleva el motivo por el que después de uno hubo otro.
 
 \begin{figure}[H]
   \centering
@@ -795,25 +794,24 @@ Los dos instrumentos fallaron por razones opuestas. El canal abierto no declara 
   \label{fig:controles}
 \end{figure}
 
-La escalera dejó, de todos modos, una observación sobre el extractor. Ninguna de las diez cláusulas plantadas se omitió ni se declaró, y todas se extrajeron dentro del esquema. El contenido que no cabe en el vocabulario no desaparece de la salida, ingresa forzado en las cajas que hay.
+La escalera dejó, de todos modos, una observación sobre el extractor. El contenido que no cabe en el vocabulario no desaparece de la salida, ingresa forzado en las cajas que hay.
 
 La consulta separada dejó otra. Entre lo que señaló sobre texto de producción hubo cuatro detecciones ciertas, dos de ellas facultades discrecionales del supervisor, que es la categoría plantada como hipótesis en una de las unidades dopadas. La medición que sigue volvió a encontrarla por lectura sobre texto real.
 
 \subsection{La medición de cobertura sobre el conjunto de prueba}
+\label{sec:cobertura}
 
-Cerradas las dos vías automáticas, la cobertura del esquema se midió leyendo unidad por unidad. El instrumento es una ficha por unidad, con el texto oficial de la norma de un lado, junto con la cadena de encabezados que la contiene, y del otro lo que el extractor produjo a partir de él. Sobre cada ficha se responden tres preguntas: si el contenido normativo está representado, qué deformación hay cuando la hay, y qué quedó sin extraer.
+Cerradas las dos vías automáticas, la cobertura del esquema se midió leyendo unidad por unidad. El instrumento es una ficha por unidad como la de la Figura~\ref{fig:figura_ejemplo_extraccion}, con el texto oficial de la norma de un lado, junto con la cadena de encabezados que la contiene, y del otro lo que el extractor produjo a partir de él. Sobre cada ficha se responden tres preguntas: si el contenido normativo está representado, qué deformación hay cuando la hay, y qué quedó sin extraer.
 
-El material son los diez documentos del conjunto de prueba, 762 unidades de extracción sobre 254 páginas, y dos condiciones de esa extracción gobiernan cómo se leen las cifras. La primera es que corrió solo la etapa del extractor. El proceso completo incluye después una segunda pasada, en la que otro modelo compara lo extraído contra el texto del que salió y vuelve a extraer lo que falta, de modo que esa pasada solo puede agregar contenido representado y nunca quitarlo. Toda cifra de contenido no representado es por eso una cota superior de la que daría el proceso completo: lo que falta puede ser menos que lo medido, nunca más. La segunda condición es que esos documentos se extrajeron sin rol de alcance propio, tal como ya se describió. Sin esos roles, el campo aparte del sujeto se dispara por una carencia conocida de esta corrida y no por un hueco del vocabulario, y sus disparos no permiten distinguir una causa de la otra. La cobertura de los sujetos queda por eso fuera de esta medición, y ninguna de las cifras que siguen habla de ella.
+El material son los diez documentos del conjunto de prueba, 762 unidades de extracción sobre 254 páginas, y dos condiciones de esa extracción gobiernan cómo se leen las cifras. La primera es que corrió solo la etapa del extractor, sin el verificador que después compara lo extraído contra el texto del que salió y vuelve a extraer la unidad cuando encuentra contenido sin representar. El pre-registro selló por eso que el conteo de omisiones de esta medición es una cota superior del que daría el proceso completo. Esa cota alcanza a las omisiones y no al resto de las cifras, y no es estricta, porque la re-extracción reemplaza a la primera pasada en lugar de sumarse a ella y puede perder contenido que la primera sí había representado. La segunda condición es que esos documentos se extrajeron sin rol de alcance propio. Sin esos roles el campo aparte del sujeto se dispara por una carencia conocida de esta corrida y no por un hueco del vocabulario, y sus disparos no permiten distinguir una causa de la otra, de modo que la cobertura de los sujetos queda fuera de esta medición y ninguna de las cifras que siguen habla de ella.
 
-La lectura y la adjudicación de las 75 fichas las hizo la autora de este trabajo, en tandas de diez a quince y con una regla de adjudicación sellada antes de empezar. Estas 75 fichas leídas, provienen de dos orígenes distintos. Treinta y ocho salieron de un sorteo estratificado por documento. Las 762 unidades se separaron según el documento del que provienen, y a cada uno le tocaron tantas fichas como le correspondían por su tamaño, con un piso de dos para que ninguno quedara sin representación; dentro de cada documento las unidades se sortearon con semilla registrada. Esa es la muestra que generaliza, y la única sobre la que se calculan intervalos de confianza.
+La lectura y la adjudicación de las 75 fichas las hizo la autora de este trabajo, en tandas de diez a quince y con una regla de adjudicación sellada antes de empezar. Las fichas vienen de dos muestras. Treinta y ocho salieron de un sorteo estratificado por documento, en el que a cada uno le tocaron tantas fichas como le correspondían por su tamaño, con un piso de dos para que ninguno quedara sin representación, y dentro de cada documento las unidades se sortearon con semilla registrada. Esa es la muestra que generaliza, y la única sobre la que se calculan intervalos.
 
-Las otras 37 se eligieron a propósito, buscando problemas. Sobre la extracción completa se computaron cuatro señales mecánicas, cada una un rastro de que el extractor forzó contenido dentro del vocabulario disponible: una relación escrita como si fuera una entidad, el campo de tipo resuelto con el valor genérico en lugar de uno específico, entidades que no quedaron conectadas con ninguna otra más allá de la norma donde están escritas, y unidades con una cantidad de elementos muy fuera de lo común. Cada señal marca muchas más unidades de las que se pueden leer, de modo que una regla de selección, declarada antes de mirar ninguna, decide cuáles de las marcadas entran a las 37. Como se eligieron por sospechosas, esta muestra tiene más problemas que el promedio por construcción, así que no generaliza, se reporta aparte y sin intervalos, y por criterio sellado de antemano no alcanza por sí sola para incorporar ninguna categoría nueva al esquema.
+La muestra azarosa dice con qué frecuencia aparece cada problema, pero un problema poco frecuente puede no salir sorteado ni una vez en 38 fichas. Por eso se armó una segunda muestra de 37 fichas, elegida a propósito entre las unidades que más probablemente tuvieran algo mal. Para encontrarlas sin leerlas se computaron cuatro señales sobre la extracción completa, y cada una es un síntoma mecánico de que el extractor forzó contenido en una caja que no le correspondía. Una relación escrita como si fuera una entidad indica que el predicado que hacía falta no existía. El campo de tipo resuelto con el valor genérico indica que ningún valor específico servía. Una entidad que no quedó conectada con ninguna otra, más allá de la norma donde está escrita, indica que su vínculo no tenía cómo expresarse. Y una unidad con una cantidad de elementos muy fuera de lo común indica que se descompuso mal.
 
-La lectura se rodeó de precauciones contra sus propios sesgos. La ficha muestra la extracción cruda del modelo y no la salida del validador, porque los rechazos del validador por sujeto harían visible la falta del rol de alcance, que es una condición conocida de esta corrida y no un hueco del esquema. Por el mismo motivo esa falta quedó excluida de las cuatro señales mecánicas.
+Cada señal marca muchas más unidades de las que se pueden leer, así que una regla fijada antes de mirar ninguna decide cuáles de las marcadas entran a las 37, para que no se elijan después las que se ven más jugosas. Esa regla, tal como se selló, no funcionó, y el defecto y su corrección se declaran más abajo con el resto de los desvíos. Lo que esta muestra aporta es encontrar lo que el azar puede no ver, y lo que no puede dar son frecuencias: como se eligió por sospechosa, tiene más problemas que el promedio por construcción, se reporta aparte y sin intervalos, y por criterio sellado de antemano no alcanza por sí sola para incorporar ninguna categoría nueva al esquema.
 
-Las otras dos precauciones recaen sobre quien lee. Las fichas no dicen de qué muestra provienen y se leen en un orden aleatorizado con semilla registrada, de modo que ninguna se lee sabiendo que fue elegida por sospechosa. Y la duda es una categoría propia en las tres preguntas, así que una ficha difícil se marca como dudosa en lugar de forzar una respuesta, y no infla ni el resultado que dice que el esquema alcanza ni el que dice que no.
-
-El diseño de la lectura, la regla con la que se resolvería cada ficha y el criterio con el que después se decidiría qué ampliar del esquema quedaron sellados antes de leer una sola ficha.
+La lectura se rodeó de tres precauciones. La ficha muestra la extracción cruda del modelo y no la salida del validador, porque los rechazos del validador por sujeto harían visible la falta del rol de alcance, y por el mismo motivo esa falta quedó excluida de las cuatro señales mecánicas. Las fichas no dicen de qué muestra provienen y se leen en un orden aleatorizado con semilla registrada, de modo que ninguna se lee sabiendo que fue elegida por sospechosa. Y la duda es una categoría propia en las tres preguntas, así que una ficha difícil se marca como dudosa en lugar de forzar una respuesta, y no infla ni el resultado que dice que el esquema alcanza ni el que dice que no.
 
 Sobre las 38 fichas azarosas, 10 unidades quedaron representadas por completo, 23 de forma parcial y 5 no quedaron representadas, y la Tabla~\ref{tab:cobertura} reúne esas cifras junto con las de deformación y omisión. En tres de cada cuatro unidades el contenido normativo no queda representado por completo, y en algo más de una de cada diez no queda representado en absoluto.
 
@@ -839,15 +837,14 @@ Sobre las 38 fichas azarosas, 10 unidades quedaron representadas por completo, 2
     Remisión normativa sin arista posible & 11 de 38 & 29 & 17--45 \\
     \bottomrule
   \end{tabularx}
-  \caption[Cobertura del esquema sobre la muestra azarosa]{Resultados
-    sobre las 38 fichas de la muestra azarosa del conjunto de prueba.
-    Los intervalos son de Wilson al 95\,\% \cite{wilson1927}, elegido en
-    lugar del intervalo normal porque con muestras de este tamaño y
-    proporciones cercanas a los extremos el normal cubre menos de lo que
-    declara \cite{brown2001}. Valen solo para esta muestra, que es la
-    única sorteada. Las dos cifras de representación son cotas
-    superiores, porque la etapa de revisión del proceso completo no
-    corrió.}
+  \caption[Cobertura del esquema sobre la muestra azarosa]{Resultados sobre las
+    38 fichas de la muestra azarosa del conjunto de prueba. Los intervalos son
+    de Wilson al 95\,\% \cite{wilson1927}, elegido en lugar del intervalo
+    normal porque con muestras de este tamaño y proporciones cercanas a los
+    extremos el normal cubre menos de lo que declara \cite{brown2001}. Valen
+    solo para esta muestra, que es la única sorteada. La etapa de verificación
+    del proceso completo no corrió, de modo que las cifras describen la salida
+    del extractor y no la del recurso final.}
   \label{tab:cobertura}
 \end{table}
 
@@ -855,34 +852,224 @@ La deformación se contó aparte de la omisión, porque son fallas distintas. Un
 
 La muestra dirigida encontró más deformación que el azar, 21 de sus 37 fichas contra 16 de 38, de modo que las cuatro señales mecánicas hicieron lo que se esperaba de ellas. Aportó además el único registro de un patrón que la azarosa no vio ninguna vez, el de los hechos con valor aplastados, umbrales y plazos de los que depende que la norma se aplique y que quedan escritos dentro de la prosa de la descripción en lugar de un campo propio, en 4 fichas de 4 documentos distintos. Por el criterio sellado de antemano, esa evidencia no alcanza por sí sola para incorporar el patrón al esquema.
 
-Las omisiones no tenían categorías predefinidas. Quien leía anotaba con etiquetas libres lo que faltaba, y esas 15 etiquetas crudas se agruparon después en familias, con el criterio de fusión declarado caso por caso. La familia más frecuente es la remisión normativa sin arista posible, presente en 9 de los diez documentos.
+Las omisiones no tenían categorías predefinidas. Quien leía anotaba con etiquetas libres lo que faltaba, y esas 15 etiquetas crudas se agruparon después en trece familias, con el criterio de fusión declarado caso por caso. La familia más frecuente es la remisión normativa sin arista posible, presente en 9 de los diez documentos.
 
-Cada familia quedó anotada con su destino, tomado de las notas que la lectura dejó en cada ficha y no decidido después de ver los resultados agregados. Un destino posible es que la resuelva el armado del grafo, otro que exija ampliar el esquema, y otro que sea deuda del extractor y no del vocabulario.
+Cada familia quedó anotada con su destino, tomado de las notas que la lectura dejó en cada ficha y no decidido después de ver los resultados agregados. Un destino posible es que la resuelva el armado del grafo, otro que exija ampliar el esquema, y otro que sea deuda del extractor y no del vocabulario. Ese destino dice qué haría falta para cubrir una familia, no si se la va a cubrir. Eso lo decide un criterio aparte, sellado antes de leer, según el cual una familia queda como candidata a ampliar el esquema si aparece en al menos 3 de las 38 fichas azarosas o en al menos 3 de los diez documentos contando las dos muestras, y queda como residuo documentado si no alcanza ninguna de las dos vías. La muestra dirigida puede corroborar una candidata y nunca promoverla por sí sola. La decisión se toma en la sección siguiente.
 
-Ese destino dice qué haría falta para cubrir una familia, no si se la va a cubrir. Eso lo decide un criterio aparte, sellado antes de leer: una familia queda como candidata a ampliar el esquema si aparece en al menos 3 de las 38 fichas azarosas, o en al menos 3 de los diez documentos contando las dos muestras, y queda como residuo documentado si no alcanza ninguna de las dos vías. La muestra dirigida puede corroborar una candidata y nunca promoverla por sí sola. La decisión se toma en la sección siguiente.
+El procedimiento tuvo cuatro desvíos, los cuatro declarados con su tratamiento. El primero ocurrió antes de leer una sola ficha. La regla de selección de la muestra dirigida ordenaba las unidades marcadas por su identificador y tomaba las primeras de la lista, y como el identificador de una unidad empieza por el de su documento, ordenar por identificador equivale a agrupar por documento. El documento que va primero en el alfabeto encabezaba las cuatro listas con 70 marcas sobre 44 unidades distintas, para 37 lugares, y las 37 fichas quedaron compuestas por 36 unidades de ese único documento. El defecto se detectó antes de leer la primera ficha, y la corrección quedó asentada por escrito con la regla anterior y la que la reemplaza, que alterna entre las cuatro señales y entre los documentos en lugar de vaciar una lista antes de pasar a la siguiente. La muestra azarosa no se tocó, porque nunca dependió de esta regla, y la dirigida que efectivamente se leyó quedó repartida entre los diez documentos, con un máximo de cinco fichas por documento.
 
-El procedimiento tuvo cuatro desvíos, los cuatro declarados con su tratamiento. El primero ocurrió antes de leer una sola ficha: la regla de selección de la muestra dirigida, tal como se selló, no funcionó. Ordenaba las unidades marcadas por su identificador y tomaba las primeras de la lista. Como el identificador de una unidad empieza por el de su documento, ordenar por identificador equivale a agrupar por documento, y el documento que va primero en el alfabeto encabezaba las cuatro listas con 70 marcas sobre 44 unidades distintas, para 37 lugares. Las 37 fichas quedaron compuestas por 36 unidades de ese único documento, y la muestra dejó de representar al corpus.
+El segundo es que diez fichas no se leyeron a ciegas, porque la decisión se tomó con la lectura de un asistente automático sobre la misma unidad a la vista. El desvío quedó anotado ficha por ficha durante la propia lectura, pero la regla que trata a esas diez como contaminadas se fijó después del hecho, y por eso el recómputo se reporta junto a las cifras originales y no en su lugar. Cuatro de las diez pertenecen a la muestra azarosa, y recomputadas las 34 restantes las tres cifras de cabecera de la Tabla~\ref{tab:cobertura} pasan del 74 al 71\,\% en representación parcial o nula, del 13 al 12\,\% en representación nula y del 42 al 38\,\% en deformación. Ninguna se mueve lo suficiente como para cambiar una conclusión.
 
-El defecto se detectó antes de leer la primera ficha, y la corrección quedó asentada por escrito con la regla anterior y la que la reemplaza. La regla corregida alterna entre las cuatro señales y entre los documentos, en lugar de vaciar una lista antes de pasar a la siguiente. La muestra azarosa no se tocó, porque nunca dependió de esta regla. La muestra dirigida que efectivamente se leyó quedó repartida entre los diez documentos, con un máximo de cinco fichas por documento.
+Los dos últimos son fallas del instrumento de lectura. Uno truncó 36 campos de análisis complementario por el límite de línea de la terminal, sin afectar las marcas de las tres preguntas ni las citas textuales, que están completas en las 75 fichas. El otro es una colisión de teclas que hacía imposible registrar el patrón de las potestades, detectada en la ficha 15, la primera donde hizo falta marcarlo, de modo que la ventana en riesgo son las fichas 1 a 14. En esas catorce hay una sola marca que pudo haberse perdido, y se adjudicó que no lo era porque la nota que la acompaña explica la duda por otro motivo. En el peor caso las potestades pasarían de seis fichas azarosas a siete, y ninguna otra cifra se mueve.
 
-El segundo desvío es que diez fichas no se leyeron a ciegas. En ellas la decisión se tomó con la lectura de un asistente automático sobre la misma unidad a la vista, de modo que el juicio no fue independiente, y el desvío quedó anotado ficha por ficha durante la propia lectura. La regla que trata a esas diez como contaminadas se fijó después del hecho, y por eso el recómputo se reporta junto a las cifras originales y no en su lugar.
+Las limitaciones de la medición están en su tamaño, en su material y en quién leyó. Con 38 fichas azarosas los intervalos son anchos, de modo que la muestra dimensiona magnitudes gruesas y no diferencias finas, y los estratos por documento dan cobertura del corpus y no comparación entre documentos. Y las 75 fichas las leyó una sola persona, que es además la autora del esquema que se estaba midiendo, de modo que el juicio no es independiente del interés en el resultado. Contra eso operan las tres precauciones ya descritas, y ninguna de las tres reemplaza a un segundo lector.
 
-De esas diez fichas, cuatro pertenecen a la muestra azarosa. Recomputadas las 34 restantes, las tres cifras de cabecera de la Tabla~\ref{tab:cobertura} pasan del 74 al 71\,\% en representación parcial o nula, del 13 al 12\,\% en representación nula y del 42 al 38\,\% en deformación. Ninguna se mueve lo suficiente como para cambiar una conclusión. El diseño preveía además una re-lectura independiente de parte de las fichas, que cubrió 12 y no encontró una sola discrepancia.
+Hay una limitación más, de otra clase. Los diez documentos no intervinieron en el esquema de partida, y por eso esta medición es una prueba legítima de ese esquema. Pero los cambios que la medición produzca van a salir de ellos, así que el esquema resultante ya habrá visto este material. Evaluar ese esquema resultante exige documentos que no hayan participado de nada de esto, y la subsección~\ref{sec:limites} vuelve sobre ese punto con el material que el mismo sorteo reservó para eso.
 
-El tercer desvío truncó 36 campos de texto largo en 1.023 bytes, por el límite de línea de la terminal en la que se leyó. Lo que se perdió es prosa de análisis complementario; las marcas de las tres preguntas y las citas textuales están completas en las 75 fichas. La pérdida se declara y no se repone, porque reescribir esos análisis después de haber visto los resultados agregados daría una justificación construida a posteriori en lugar de la lectura del momento.
+\subsection{La enmienda del esquema}
 
-El cuarto desvío es una colisión de teclas del instrumento de lectura, que hacía imposible registrar el patrón de las potestades. Se detectó en la primera ficha donde hizo falta marcarlo, la número 15, así que la ventana en riesgo son las fichas 1 a 14. En esas catorce hay una sola marca que pudo haberse perdido, y quedó adjudicada.
+La medición produjo dos clases de resultado, una por cada una de las dos últimas preguntas de la ficha: los patrones de deformación, que clasifican lo que quedó representado de forma incorrecta, y las familias de omisión, que clasifican lo que quedó sin extraer. Son dos clasificaciones paralelas y ninguna está contenida en la otra. El criterio sellado antes de leer decide sobre unas y otras. Esta subsección lo aplica, establece qué haría falta para cubrir cada resultado promovido, propone con eso los cambios al esquema, y los somete a una prueba que decide cuáles quedan. Entra al esquema lo que el criterio promovió y cuyo remedio es vocabulario nuevo, porque no todo lo promovido lo pide, y lo demás queda como residuo documentado o como límite conocido del esquema.
 
-Las limitaciones de la medición están en su tamaño y en su material. Con 38 fichas azarosas los intervalos son anchos, de modo que la muestra dimensiona magnitudes gruesas y no diferencias finas, y los estratos por documento dan cobertura del corpus y no comparación entre documentos.
+\subsubsection*{Los patrones de deformación}
 
-Hay una limitación más, de otra clase. Los diez documentos no intervinieron en el esquema de partida, y por eso esta medición es una prueba legítima de ese esquema. Pero los cambios que la medición produzca van a salir de ellos, así que el esquema resultante ya habrá visto este material. Evaluar ese esquema resultante exige documentos que no hayan participado de nada de esto.
+El criterio se aplica primero a los patrones. Son seis, de una lista cerrada fijada antes de leer. Dos lo superan por las dos vías a la vez, la de al menos tres fichas azarosas y la de al menos tres documentos. El re-tipado semántico aparece en ocho fichas azarosas y en los diez documentos, y las potestades y facultades en seis fichas azarosas y en cinco documentos. La inconsistencia entre repeticiones y la categoría residual de otras deformaciones aparecen una vez cada una y en un solo documento, de modo que quedan como residuo documentado. La nominalización no apareció ninguna vez, pese a que una de las cuatro señales mecánicas la buscaba.
 
+El patrón de los hechos con valor aplastados satisface una de las dos vías y aun así no se promueve. Se lo marca cuando la unidad porta un umbral, un plazo o un monto del que depende que la norma se aplique y la extracción lo deja dentro de la prosa de la descripción en lugar de darle un campo propio. Aparece en cuatro documentos, que es lo que pide la segunda vía, pero sus cuatro fichas salen de la muestra dirigida y ninguna del azar, y una candidata no se promueve solo con la dirigida. De esas cuatro, además, tres son casos donde ningún campo del esquema admite el valor y la cuarta es un campo que existía y el extractor no usó, de modo que solo tres dicen algo sobre el vocabulario.
 
+Que el criterio no lo promueva no lo saca de la decisión, porque no era la primera vez que aparecía: un hallazgo anterior sobre el modelo de datos, hecho sobre otro material y previo a la lectura, ya había establecido que un hecho que fija un valor no tiene dónde vivir, porque las relaciones no admiten atributos y no hay un tipo de entidad para el sujeto de ese hecho. La decisión no fue ampliar el esquema. El cambio que el patrón pide, permitir atributos en las relaciones, quedó diferido a la etapa de escalado y a la conclusión de diseño de este informe, y el propio laudo declara que ese cambio tampoco cubriría el caso en que el hecho tiene más de un valor. El esquema congelado queda por eso con una limitación escrita, la de no representar hechos con valor n-arios, los que atan un sujeto, una relación y un valor y no caben en una arista que une dos nodos.
+
+\subsubsection*{Las familias de omisión}
+
+Las familias de omisión pasan por el mismo criterio. Son trece, las que quedaron al agrupar las etiquetas libres con que se anotó cada ficha, y el criterio deja siete como candidatas y seis como residuo documentado. Que una familia sea candidata dice que merece tratamiento y todavía no dice cuál, porque cada una lleva anotado, desde la ficha en que se la vio, qué haría falta para cubrirla. Dos de las siete piden vínculos entre cosas que el esquema ya sabe nombrar, la remisión entre normas y el enlace entre unidades de un mismo documento, de modo que se resuelven al armar el grafo y no piden vocabulario. Una tercera es deuda del extractor y no del esquema, la pérdida del contenido del encabezado heredado. Las cuatro restantes no se cubren sin tocar el vocabulario.
+
+De esas cuatro, dos piden un tipo nuevo, una pide una relación nueva y la cuarta no pide nada propio. La potestad omitida pide un tipo para el contenido que habilita, que el esquema de partida no tenía porque sus tres tipos deónticos cubren el deber, la prohibición y la exención, y no el permiso. La definición sin fuerza deóntica pide un tipo para el término definido cuando lo definido no es un acto ni una prescripción, sino una clase, un conjunto, un concepto o un parámetro. La relación faltante en la matriz de dominio y rango pide un vínculo que vaya de la excepción a la operación exceptuada. La consecuencia sin vínculo a su condición se representa con vocabulario que las otras tres ya traen, porque la consecuencia que prohíbe entra como restricción y la que deja margen a la autoridad entra como potestad.
+
+\subsubsection*{Los cambios propuestos}
+
+Las dos clasificaciones se tocan en un punto. El re-tipado semántico, el patrón de deformación más extendido, no nombra por sí solo ningún tipo faltante: es lo que se ve cuando falta uno, porque el contenido entra igual y entra donde no corresponde, de modo que sus fichas son el mejor indicio de qué vocabulario falta. En tres de las ocho fichas azarosas con ese patrón lo re-tipado es una potestad, una consecuencia y el antecedente de una salvedad escrito como un deber autónomo. Las dos primeras confirman familias de omisión que ya eran candidatas, y de la tercera sale el tercer tipo nuevo, la condición, junto con la relación que la ata a la norma que condiciona.
+
+Tres cambios más se hicieron sin agregar tipos ni relaciones, y no todos llegan por la vía de las familias candidatas. El dominio de la relación que une una norma con su destinatario se amplía al acto regulado y a la excepción, que es la forma de rechazo que la matriz repetía sobre el conjunto de desarrollo, las 196 tripletas anteriores a esta lectura ya contadas en la subsección~\ref{sec:esquema_partida}. El acto regulado recibe un campo de descripción, del que era el único tipo sin él. La familia que lo motiva había quedado como residuo documentado y el cambio entró igual, porque un campo no es vocabulario nuevo y el criterio gobierna el vocabulario. Y la enumeración de tipos de la obligación suma el reporte al supervisor, cuya ausencia hacía que un reporte al organismo de supervisión quedara etiquetado como comunicación al cliente, es decir, que el grafo afirmara algo que la norma no dice.
+
+El contenido meta-normativo recibe el tratamiento opuesto. Es el que predica sobre el significado o el alcance jurídico de un acto y no sobre conducta, y el criterio lo dejó como residuo documentado porque la lectura azarosa no lo vio ninguna vez. La dirigida sí lo vio, forzado tres veces de tres maneras distintas, una de ellas como una prohibición que la norma no establece. Se resolvió sin agregar vocabulario, declarando que ese contenido no se extrae. Las dos salidas no son equivalentes. Un tipo nuevo manda la afirmación falsa a un lugar más adecuado, pero la deja en el grafo. La omisión la saca, y lo que se pierde queda contado en la cifra de contenido no representado, que ya se lee como cota superior.
+
+Cada tipo nuevo suma además su arista de procedencia al Texto Ordenado, y la potestad suma también su acceso al sujeto. Esas cuatro flechas no responden a un hallazgo de la medición sino a la simetría del esquema, porque un tipo sin ancla documental quedaría huérfano por construcción. Sin contarlas, el esquema propuesto suma tres tipos, dos relaciones, una ampliación de dominio, un campo, dos valores de enumeración y una regla que deja un contenido fuera de alcance. Lo que sigue es la prueba que decide cuáles de esos cambios quedan.
+
+\subsubsection*{La prueba de los cambios}
+
+Ninguno de estos cambios entró al esquema sin probarse. La prueba consiste en volver a extraer un conjunto de unidades con el esquema retocado y comparar cada salida con la que el esquema de partida había producido sobre esa misma unidad. La comparación va unidad por unidad, y cada diferencia se adjudica contra el texto de la norma.
+
+Las unidades se reparten en dos grupos que hacen preguntas opuestas. El grupo objetivo reúne unidades donde la lectura había visto el problema y responde si el cambio arregla lo que decía que iba a arreglar, porque cada cambio lleva una predicción escrita antes de correr y anclada en una unidad concreta. El grupo de regresión reúne unidades que el esquema de partida ya resolvía bien y responde lo contrario, si el vocabulario nuevo se lleva contenido que no le corresponde. La regla que ata las dos preguntas también quedó sellada de antemano, y dice que si la regresión falla el cambio vuelve a revisión aunque su predicción se haya cumplido.
+
+La primera vuelta corrió 43 unidades, 17 del grupo objetivo y 26 del de regresión. Las predicciones del objetivo se cumplieron en su mayoría y la regresión falló. Tres unidades que el esquema de partida tipaba bien salieron re-tipadas en un tipo nuevo, una en potestad y dos en definición, y las tres quedaron adjudicadas como incorrectas contra el texto.
+
+Por la regla sellada, la potestad y la definición volvieron a revisión. Lo que había fallado no era la existencia de los tipos sino su borde, porque estaban atrayendo contenido que el esquema de partida ya resolvía bien, y las tres unidades mal tipadas son las que muestran por dónde pasaba ese borde. A cada uno de los dos se le escribió con más precisión qué queda adentro y qué queda afuera, sin tocar el contenido que la medición había pedido cubrir.
+
+Antes de correr de nuevo se escribió una regla más, según la cual un cambio que falla su segunda regresión queda fuera sin tercera oportunidad. Sin un tope, el ajuste puede repetirse hasta que la regresión pase, y lo que se obtiene con eso no es un esquema mejor sino un esquema acomodado a las unidades con que se lo probó.
+
+La segunda vuelta corrió 27 unidades, 12 de ellas de regresión. Esas 12 se sortearon entre las 687 unidades que la lectura nunca había mirado, aunque salen de los mismos diez documentos, de modo que lo nuevo es el texto de cada unidad y no el documento del que viene. En esas 12 el vocabulario nuevo apareció dos veces, las dos como condición, una adjudicada correcta y la otra incorrecta. La potestad y la definición no aparecieron ninguna vez, así que no hubo segunda falla y los dos tipos entraron al esquema.
+
+Ese resultado dice menos de lo que parece. Los dos tipos pasaron porque no volvieron a fallar y no porque hayan acertado, ya que en esas doce unidades no tuvieron ocasión de aparecer.
+
+La condición es el caso difícil. El umbral de la regresión estaba sellado en una sola migración incorrecta, y la condición tuvo una: una obligación que el texto enuncia como deber apareció re-tipada como condición, y se adjudicó incorrecta porque la caja se decide por la modalidad del enunciado y «deberán» no es «siempre que». Su regresión falló, entonces, y por la regla debería haber vuelto a revisión. Entró igual, con el alcance reducido que su condición de salida tenía sellado de antemano y con la falla registrada como residuo. Lo que decidió no fue el recuento de fallas sino el principio de gobierno del esquema, que retira lo que produce una afirmación falsa en campo estructurado y acepta con residuo declarado lo que produce un error con tasa medida. La condición tuvo una emisión correcta y una incorrecta; el valor de enumeración que sí se retiró tuvo tres objetadas de cinco. El mismo strike, dos veredictos, separados por lo que cada error hace en el grafo y no por cuántos hubo.
+
+No todo lo que se probó sobrevivió a las dos vueltas. La relación de la excepción hacia la operación exceptuada no se emitió una sola vez en las 43 unidades de la primera vuelta, y la unidad donde se la esperaba resolvió el mismo contenido con la condición nueva, así que quedó fuera. El alcance reducido de la condición viene además de que su predicción principal, la de una condición que remite a otra unidad, falló las dos veces que se corrió. Y otro valor de la enumeración, que nombraba el deber de disponer de una estructura permanente, se retiró después de que tres de sus emisiones sobre unidades no leídas quedaran objetadas contra el texto.
+
+Con eso el esquema queda con los tres tipos nuevos, una de las dos relaciones propuestas, la ampliación de dominio, el campo de descripción, un valor de enumeración y la regla de omisión. Cayeron la relación de la excepción hacia la operación exceptuada y el segundo valor de la enumeración, y la condición entró con el alcance recortado.
+
+\subsection{El esquema congelado y sus límites}
+\label{sec:limites}
+
+El esquema congelado fija nueve tipos de entidad que el extractor puede emitir, tres más que el de partida, y deja el sujeto fuera de esa lista porque sigue saliendo del catálogo. Sobre esos tipos define trece relaciones con su dominio y su rango, y la matriz que las expande pasa de diecisiete pares a veintiséis. Lleva además el campo de descripción en el acto regulado, la enumeración de seis valores para el tipo de la obligación, y una regla que declara que el contenido meta-normativo no se extrae. La Figura~\ref{fig:esquema_congelado} lo dibuja con el mismo trazado que la Figura~\ref{fig:esquema_partida}, para que las dos se lean una contra otra, y resalta lo que cambió. El texto de instrucciones que implementa este esquema quedó sellado con su huella criptográfica, que identifica la versión exacta aplicada al corpus completo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figuras/figura_esquema_congelado.png}
+  \caption[El esquema congelado]{El esquema congelado, el que se aplica al
+    corpus completo. Mismo trazado y mismas convenciones que la
+    Figura~\ref{fig:esquema_partida}, para leerlas una contra otra. En trazo
+    grueso y color aparte va lo que la enmienda agregó: los tres tipos
+    nuevos, las tres flechas de \texttt{condicion\_de} y las seis
+    ampliaciones de dominio, tres de \texttt{establecida\_en} y tres de
+    \texttt{aplica\_a}. De las 26 flechas que expanden las trece relaciones
+    de la matriz, 9 son nuevas respecto del esquema de partida. El sujeto
+    sigue proviniendo del catálogo cerrado y no lo emite el extractor.}
+  \label{fig:esquema_congelado}
+\end{figure}
+
+Que los límites se escriban en lugar de resolverse responde a una distinción fijada antes de aplicarla, la misma que en la subsección anterior separó a la condición del valor de enumeración que se retiró. Una omisión queda a la vista y se cuenta en la cifra de contenido no representado. Una afirmación falsa que respeta el vocabulario es invisible, justamente porque valida. Por eso ningún cambio que produjera la segunda quedó en el esquema, y sí quedaron, con el residuo declarado, los que solo dejan la primera. La Tabla~\ref{tab:limites} reúne los ocho límites del vocabulario, con lo que se midió de cada uno y el destino que se le asignó.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{xltabular}{\textwidth}{@{}c >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X l@{}}
+  \toprule
+   & Límite declarado & Lo que se midió & Destino \\
+  \midrule
+  \endfirsthead
+  \toprule
+   & Límite declarado & Lo que se midió & Destino \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{4}{r@{}}{\itshape continúa en la página siguiente} \\
+  \endfoot
+  \bottomrule
+  \caption[Límites declarados del esquema congelado]{Los ocho límites del
+    vocabulario que el esquema congelado declara, con la medición y el
+    destino de cada uno. El laudo que lo congela declara además límites del ensamblado del grafo, que no son del vocabulario y quedan fuera de esta tabla. Las cifras de las dos vueltas de verificación se refieren a
+    las 43 unidades de la primera y a las 27 de la segunda, y las de la
+    regresión de la segunda vuelta a sus 12 unidades. El límite 7 se
+    documenta por casos y no por tasa, porque no hay un denominador
+    registrado para él.}
+  \label{tab:limites}
+  \endlastfoot
+  1 & No representa hechos con valor n-arios, los que atan un sujeto, una
+      relación y un valor, como los umbrales y plazos de los que depende que
+      una norma se aplique
+    & Cuatro fichas en cuatro documentos, las cuatro de la muestra dirigida
+      y ninguna de la azarosa; en tres ningún campo del esquema admite el
+      valor y en la cuarta el campo existía y el extractor no lo usó
+    & conclusión \\
+  \addlinespace
+  2 & La condición solo cubre el supuesto enunciado dentro de la misma
+      unidad
+    & Su predicción principal, una condición que remite a otra unidad,
+      falló en las dos vueltas
+    & versión posterior \\
+  \addlinespace
+  3 & El vocabulario nuevo puede curar una deformación convirtiéndola en
+      omisión
+    & 2 unidades vacías con contenido normativo sobre las 43 de la primera
+      vuelta y 2 sobre las 27 de la segunda
+    & vigilancia \\
+  \addlinespace
+  4 & La regla de omisión del contenido meta-normativo falla en las dos
+      direcciones
+    & La misma cláusula interpretativa produjo una prohibición inexistente
+      en las 2 corridas medidas, y una unidad de disposiciones transitorias
+      quedó omitida con costo
+    & conclusión \\
+  \addlinespace
+  5 & Un enunciado cuya modalidad es un deber puede migrar a la condición
+    & 1 migración incorrecta sobre las 12 unidades de la regresión de la
+      segunda vuelta, contra 1 emisión correcta en el mismo grupo
+    & vigilancia \\
+  \addlinespace
+  6 & El mismo contenido puede quedar escrito en dos cajas
+    & Documentada en la primera vuelta y persistente en la segunda sobre la
+      misma unidad, pese a la cláusula que la prohíbe
+    & vigilancia \\
+  \addlinespace
+  7 & La calidad de una emisión no se conserva entre corridas aunque el
+      tipo sí
+    & Un término definido truncado a la mitad, dos contenidos heterogéneos
+      fundidos en uno y una unidad que perdió las 12 relaciones que
+      colgaban de un mismo acto regulado
+    & conclusión \\
+  \addlinespace
+  8 & Las obligaciones del corpus no se dejan tipar con una lista cerrada
+    & 233 de los 236 grupos de obligaciones sin tipo asignado quedan bajo
+      el corte de frecuencia fijado antes de mirarlos
+    & conclusión \\
+\end{xltabular}
+\endgroup
+
+El límite 3 lo introdujo la propia enmienda. Cuando una caja nueva deja de atraer contenido que no le corresponde, el extractor no siempre lo lleva a la caja correcta y a veces no lo extrae, de modo que la deformación se convierte en omisión. Dos unidades de las 43 de la primera vuelta y dos de las 27 de la segunda quedaron con la sola referencia al documento pese a portar contenido normativo, y una de esas cuatro es la unidad donde se había medido la atracción que el ajuste venía a corregir.
+
+Los tres destinos de la tabla comprometen cosas distintas. Un ítem de vigilancia es un conteo que se repite sobre la primera tanda del escalado y se reporta con ella, contra las tasas medidas acá como línea de base. Ninguno lleva umbral, porque lo que puede reabrir el esquema no es que un conteo suba sino que la tanda revele una clase de falla que este capítulo no vio. Una conclusión de diseño es un límite que este trabajo no resuelve y argumenta como tal en el capítulo final. Y el alcance de la condición queda para una versión posterior del esquema, con su remedio declarado en la etapa del verificador y no en la del extractor.
+
+Queda un riesgo que ninguno de esos límites cubre. El esquema congelado está informado por 15 de los 157 Textos Ordenados, los 5 del conjunto de desarrollo y los 10 del conjunto de prueba, y no se lo probó sobre material que no haya intervenido en él. El riesgo quedó declarado por escrito al congelar el esquema, junto con las razones por las que se lo consideró aceptable.
+
+Tres de esas razones se sostienen. Los dos patrones que el criterio promovió aparecen en cinco y en diez documentos, así que ningún tipo nuevo persigue una aparición aislada. El criterio sellado descartó lo débil, y los patrones y las familias que aparecieron una sola vez quedaron como residuo en lugar de convertirse en vocabulario. Y los tres tipos que entraron son categorías del derecho antes que rasgos de estos documentos, lo que hace menos probable que sean idiosincrasias de los quince leídos.
+
+Las otras dos razones prometían más de lo que prueban, y la corrección quedó registrada. La primera decía que la regresión de la segunda vuelta se había corrido sobre material fresco. Lo es a nivel de unidad, porque ninguna ficha había mirado esas doce, pero no a nivel de documento, porque salen de los mismos diez que informaron los cambios. Lo que esa regresión muestra es que las cajas nuevas no atraen contenido indebido en documentos que el esquema ya conocía; no dice qué harían en documentos que nunca vio. La segunda decía que la primera tanda del escalado sería el test de generalización. Lo es solo si sus documentos se eligen entre los 58 que quedan al sacar los diez del conjunto de prueba de los 68 que la segmentación reconoce sin reglas adicionales; con cualquier otro recorte vuelve a entrar material que ya intervino en el esquema.
+
+Para el catálogo de sujetos no hay recorte que sirva. Los 68 documentos de ese grupo tienen todos su pasaje de alcance leído y su entrada de catálogo escrita a partir de esa lectura, de modo que ninguno es material no visto para el catálogo. La subsección~\ref{sec:extension_catalogo} vuelve sobre ese punto con el catálogo escalado.
 
 \section{Construcción del grafo}
 \label{cap:construccion}
 
+\subsection{La extensión del catálogo de sujetos}
+\label{sec:extension_catalogo}
 
+El catálogo con el que se validó el esquema tiene 70 entradas y cubre los cinco documentos del conjunto de desarrollo. Antes de extraer el resto del corpus hubo que extenderlo, y la extensión no salió de las propuestas que el modelo había dejado en cuarentena sino de leer los documentos. Se leyó el pasaje de alcance de cada uno de los 68 cuya estructura la segmentación reconoce sin reglas adicionales. En 36 ese pasaje nombra una clase que el catálogo ya tenía, y el documento se mapeó a ella. En 30 nombra un colectivo que ninguna clase cubre sola, y el documento recibió un rol de alcance propio. Los dos restantes quedaron declarados sin entrada, con el campo de propuesta abierto. Se sumaron además siete sujetos nuevos, cada uno con su evidencia citada en el texto, y se retiraron cinco entradas sin uso medido, de modo que el catálogo escalado queda en 102 entradas. Los doce documentos no segmentables no entraron en ese reparto y no tienen rol propio.
+
+La extensión no cubre todo lo que los documentos nuevos nombran. Al declarar a quién se dirigen, esos 30 documentos mencionan 69 grupos distintos, y solo 34 tienen en el catálogo una clase que les corresponda, el 49,3\,\%. De los 35 restantes, 26 nombran algo que el catálogo no contempla y los otros 9 lo contemplan a un nivel de generalidad distinto. Doce de los 30 roles quedan por eso sin miembros declarados, sea porque el grupo no tiene entrada o porque aplanarlo a una clase más amplia se rechazó, y cada caso está registrado con su causa.
+
+Esta extensión tiene un costo declarado. Los diez documentos del conjunto de prueba están entre esos 68, así que a los diez se les leyó el pasaje de alcance y de esa lectura salió su entrada de catálogo; cinco recibieron además un rol propio, y aportan 13 de los 69 grupos. Material reservado para medir el esquema intervino por esa vía en la construcción del catálogo con el que se extrae el corpus completo, y por eso la subsección~\ref{sec:limites} declara que el catálogo no puede evaluarse sobre ninguno de esos documentos.
+
+\subsection{Los documentos no segmentables}
+\label{sec:cobertura_no_segmentables}
+
+Que un documento no se deje segmentar no significa que no contenga norma. De los doce declarados no segmentables en la subsección~\ref{sec:segmentacion}, nueve se cortaron por página en lugar de por punto, con la página como unidad y como procedencia. Eso dio 77 unidades de prosa y 114 de planilla. Las de prosa ingresan al grafo al ensamblar el corpus escalado y reemplazan a las diez unidades sin estructura que esos nueve documentos aportaban al conteo de la subsección~\ref{sec:segmentacion}, con lo que el recurso pasa de 9.324 unidades a 9.391. Las de planilla quedan medidas y fuera, para una etapa posterior. Los tres documentos restantes quedan afuera por razones distintas. Dos no prescriben, y se adjudicaron como texto de referencia sin obligaciones ni restricciones que extraer. El tercero sí prescribe, pero tiene numeración propia que la segmentación reconoce solo en parte, y tratarlo por página le daría una procedencia más gruesa que la que el documento admite.
+
+\subsection{La extracción a escala}
+\label{sec:extraccion_escala}
+% Pendiente de la primera tanda del escalado sobre los 68 documentos.
+% Alimenta: reporte de tanda 1, con los ítems de vigilancia de la
+% Tabla~\ref{tab:limites} medidos contra sus tasas de línea de base.
+
+\subsection{El ensamblado y el verificador}
+\label{sec:ensamblado}
+% Pendiente. Alimenta: rechazos por firma en E2, nodos de sujeto, cola
+% humana; comportamiento de E3 en desarrollo (330 unidades re-extraídas,
+% 61 con menos entidades o relaciones que la primera pasada, 80 a cola).
+
+\subsection{El grafo resultante}
+\label{sec:grafo_resultante}
+% Pendiente. Alimenta: kg.json de la tanda, nodos y aristas por tipo.
+
+\subsection{Las guardas selladas}
+\label{sec:guardas}
+
+El escalado lleva predicciones selladas antes de correr, y la primera que se resolvió fue sobre las 77 unidades de prosa de los documentos no segmentables. Esas unidades se extrajeron con el esquema congelado y el catálogo de 102 entradas, y sin rol de alcance propio, porque sus documentos no lo tienen. Antes de extraerlas quedó fijado un piso: la fracción de unidades con al menos una arista hacia su destinatario no podía caer por debajo del 42,9\,\%, que son las 33 de las 77 en cuyo texto aparece literalmente un sujeto del catálogo. La consecuencia de no alcanzarlo también estaba declarada, y era que la prosa ingresara igual, con la tasa de cada documento publicada contra su propia tasa literal y sin excluir ningún documento. La medición dio 13 de 77, el 16,9\,\%, y la predicción falló.
+
+La adjudicación posterior mostró que el piso estaba mal especificado. Se había fijado contando esas 33 menciones léxicas como si todas fueran destinatarios de la norma, y la lectura caso por caso encontró que la mayoría no lo era, sino definiciones, remisiones y menciones de paso. Sobre los destinatarios que el texto efectivamente da, las 77 unidades aportan 18. De las trece unidades que habían emitido arista, una quedó sin ninguna, porque las dos que llevaba ataban la norma a un sujeto que el pasaje no obliga, y una afirmación de esa clase es falsa en un campo estructurado, de modo que se retiró en lugar de aceptarse con residuo. Quedan 12 unidades con destinatario emitido sobre los 18 que el texto da, el 66,7\,\%, y seis sin el destinatario que su propio texto nombraba.
+
+La revisión de esta guarda encontró además dos defectos de especificación que la adjudicación no había visto. El piso se calculó contando menciones contra el catálogo de 70 entradas, mientras la extracción corrió con el de 102. Y el techo del intervalo, 53,1\,\%, se tomó del conjunto de desarrollo, cuyos cinco documentos llevan rol de alcance, mientras estos nueve corrieron sin rol, y el diseño de la validación ya había dejado escrito que una tasa con rol y una sin rol no son comparables. Ninguno de los dos cambia el 12 de 18, que se leyó contra el texto y no contra el intervalo, pero los dos muestran que la predicción sellada tenía más de un error.
+
+El ancla mal especificada se descubrió porque estaba sellada y la predicción falló contra una guarda. Con un umbral elegido después de ver los datos, la medición habría pasado sin que nadie advirtiera que contaba definiciones como destinatarios, que comparaba contra un catálogo distinto del que corrió, ni que tomaba su techo de una población que no se le parece.
 
 \section{Evaluación de fidelidad}
 \label{cap:fidelidad}
