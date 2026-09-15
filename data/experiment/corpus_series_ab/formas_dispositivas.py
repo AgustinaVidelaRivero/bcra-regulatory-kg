@@ -49,7 +49,7 @@ SERIES = (
 )
 FORMAS = ("se establece", "deberán", "no podrán")
 # Valor que afirma la prosa (docs/tesis/main.tex §3.1), por serie, en %.
-PROSA = {"A": 72.0, "B": 17.0}
+PROSA = {"A": 63.0, "B": 9.0}
 
 
 def normalizar(texto: str) -> str:
@@ -174,8 +174,6 @@ def principal() -> int:
     L.append("Artefacto de respaldo de `docs/tesis/main.tex` §3.1 (fila 146 de "
              "`docs/tesis/mapa_fuentes_cap_esquema.md`). Generado por "
              "`data/experiment/corpus_series_ab/formas_dispositivas.py`.\n")
-    L.append(f"- Generado: {ahora}")
-    L.append(f"- HEAD del repo al generar: `{head}`")
     L.append(f"- Comando (desde la raíz del repo): `{comando}`\n")
 
     L.append("## Formas buscadas\n")
@@ -257,10 +255,10 @@ def principal() -> int:
                  f"{pct(r['con_alguna_palabra'], r['presentes'])} |")
     L.append("")
 
-    L.append("## (C) Diferencia contra la prosa\n")
-    L.append("La prosa de `docs/tesis/main.tex` §3.1 afirma 72 % (serie A) y "
-             "17 % (serie B). Diferencia = tasa computada − prosa, en puntos "
-             "porcentuales.\n")
+    L.append("## (C) Contraste con la prosa vigente de §3.1\n")
+    L.append(f"La prosa de `docs/tesis/main.tex` §3.1 afirma {PROSA['A']:.0f} % "
+             f"(serie A) y {PROSA['B']:.0f} % (serie B). Diferencia = tasa "
+             "computada − prosa, en puntos porcentuales.\n")
     L.append("| Serie | Prosa | Computada | Diferencia (p.p.) | Redondeo entero coincide |")
     L.append("|---|---:|---:|---:|---|")
     for serie, r in resultados.items():
@@ -284,6 +282,8 @@ def principal() -> int:
               f"vacío {len(r['sin_texto'])}; con alguna forma {r['con_alguna']} "
               f"/ {r['presentes']} = {pct(r['con_alguna'], r['presentes'])} "
               f"(prosa {PROSA[serie]:.0f} %)")
+    print(f"Generado: {ahora}")
+    print(f"HEAD del repo al generar: {head}")
     print(f"Reporte escrito en {REPORTE.relative_to(RAIZ)}")
     return 0
 

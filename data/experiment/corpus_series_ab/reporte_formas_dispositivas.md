@@ -2,8 +2,6 @@
 
 Artefacto de respaldo de `docs/tesis/main.tex` §3.1 (fila 146 de `docs/tesis/mapa_fuentes_cap_esquema.md`). Generado por `data/experiment/corpus_series_ab/formas_dispositivas.py`.
 
-- Generado: 2026-09-14T16:37:16-03:00
-- HEAD del repo al generar: `0e55fb1574482ce0f683ef6347b51f3d3bb508c9`
 - Comando (desde la raíz del repo): `python3 data/experiment/corpus_series_ab/formas_dispositivas.py`
 
 ## Formas buscadas
@@ -53,13 +51,13 @@ Sensibilidad (solo informativa; no es el criterio del mandato): mismas cadenas e
 | A | 1044 | 1666 | 62,7 % |
 | B | 121 | 1301 | 9,3 % |
 
-## (C) Diferencia contra la prosa
+## (C) Contraste con la prosa vigente de §3.1
 
-La prosa de `docs/tesis/main.tex` §3.1 afirma 72 % (serie A) y 17 % (serie B). Diferencia = tasa computada − prosa, en puntos porcentuales.
+La prosa de `docs/tesis/main.tex` §3.1 afirma 63 % (serie A) y 9 % (serie B). Diferencia = tasa computada − prosa, en puntos porcentuales.
 
 | Serie | Prosa | Computada | Diferencia (p.p.) | Redondeo entero coincide |
 |---|---:|---:|---:|---|
-| A | 72 % | 63,0 % | -9,0 | NO |
-| B | 17 % | 9,4 % | -7,6 | NO |
+| A | 63 % | 63,0 % | -0,0 | sí |
+| B | 9 % | 9,4 % | +0,4 | sí |
 
 Este artefacto no corrige la prosa: informa el número que produce el criterio declarado arriba.
