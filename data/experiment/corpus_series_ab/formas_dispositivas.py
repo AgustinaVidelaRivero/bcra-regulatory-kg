@@ -2,9 +2,10 @@
 """Tasa de formas dispositivas en las comunicaciones «A» y «B» del corpus.
 
 Artefacto de respaldo de la afirmación de docs/tesis/main.tex §3.1 (fila 146
-de docs/tesis/mapa_fuentes_cap_esquema.md): «entre las 1.666 comunicaciones
-"A" aparece alguna forma dispositiva, como "se establece", "deberán" o
-"no podrán", en el 72 %, y entre las 1.301 de la serie "B" solo en el 17 %».
+de docs/tesis/mapa_fuentes_cap_esquema.md): «se cuentan tres formas
+dispositivas, "se establece", "deberán" y "no podrán"; alguna de las tres
+aparece en el 63 % de las 1.666 comunicaciones "A" y en el 9 % de las 1.301 de
+la serie "B"».
 
 Criterio (fijado por el mandato de la unidad, no por este script):
   - Universo: filas de data/raw/manifiesto.csv cuyo `archivo_local` cae bajo
