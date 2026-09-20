@@ -388,21 +388,22 @@ puntos. Escrituras: el generador, el PNG y esta sección.
 
 `docs/tesis/figuras/generar_figura_proceso_extraccion.py`, copiado del paquete
 de U-FIG-PROC (origen sha `76aaedb1…`, §1) y modificado; sha del archivo en el
-repo en la versión final (§8.f):
-`dc0fcd4b37c4f0a5b66feb6aa8fbc6cf4bd207db78d1a38ffc6dc97a68694d73`
-(761 líneas; el origen tenía 613; el primer redibujo, `5121a248…`, tenía 740;
-la versión con el retoque 1, revertida, `076f58fe…`). Diferencia contra el
-origen: 296 líneas en 28 hunks (`diff origen repo | grep -c "^[<>]"` y
+repo en la versión FINAL CERRADA (§8.h):
+`fd301e81a2f26244b936e2ccac485a89fd4493540c2161f5dfc78b63a6ec71c1`
+(703 líneas; el origen tenía 613; versiones intermedias: primer redibujo
+`5121a248…`, retoque 1 revertido `076f58fe…`, lazos con fila de tipos
+`dc0fcd4b…`, tres nodos con franja inferior `31773007…`). Diferencia contra el
+origen: 222 líneas en 19 hunks (`diff origen repo | grep -c "^[<>]"` y
 `grep -c "^[0-9]"`), todos dentro de:
 docstring (nota sobre la consulta al grafo), imports (`hashlib`, `json`),
 constantes `RAIZ`/`KG`/`KG_SHA256`, el bloque de datos del panel
-(`NODOS_FIGURA`, `ARISTAS_FIGURA`, `ETIQUETAS_CORTAS`, `provenances`,
-`cargar_grafo`), las constantes de la fila «Tipo de nodo» de la leyenda, las
-constantes de geometría del panel y `dibujar_grafo`, la firma de `componer`, el
-bloque de la leyenda dentro de `componer` y `main`. Paleta, tipografía, tamaños
-de letra, elementos (a)–(f), flechas de proceso y exportación a PNG: sin
-cambio. El comentario «Los puntos son ficticios» (origen `:121-124`) y el
-bloque `NODOS` tipeado (`:125-129`) ya no existen.
+(`NODOS_FIGURA`, `ARISTAS_FIGURA`, `NOMBRE_TIPO`, `provenances`,
+`cargar_grafo`), las constantes de geometría del panel y `dibujar_grafo`, la
+firma de `componer` y `main`. Paleta, tipografía, tamaños de letra, leyenda,
+elementos (a)–(f), flechas de proceso y exportación a PNG: sin cambio. El
+comentario «Los puntos son ficticios» (origen `:121-124`) y el bloque `NODOS`
+tipeado (`:125-129`) ya no existen. (Los párrafos que siguen en 8.a–8.c
+describen el primer redibujo de cuatro nodos; la versión final está en 8.g.)
 
 Cómo toma los datos (`cargar_grafo`): lee `kg.json`, **frena si su sha256 no es
 `0226e947…`**; cada nodo se busca por (documento `ext`, tipo, punto de
@@ -440,21 +441,21 @@ líneas.
 
 ### 8.d Salida y reproducibilidad
 
-| Medida | Antes (U-FIG-PROC) | Primer redibujo | Con retoque 1 (revertido) | **FINAL** (§8.f) |
-|---|---|---|---|---|
-| sha256 del PNG | `45b805d26e40538d8ee919935f1b8d60fc10cc4a85d74af2828fd62e68fd535f` | `44e56349d97ae5ee87bc9d58c014072c452a9a781805cc00c280615abe9378ad` | `02f48bb5…` | `91141f17285a7916236ef10742927161d6ebb9c0c5bfda0a1244a2c69357b1d5` |
-| sha256 del SVG | `8b8ced5e98c388843554f55ee53662b29a7c1e5ab891cd7a331b804d552fa7a8` | `a4d041d5bdc4e539daa101b9670903c0bb33d3d5369ebd231e4ccdd229be771a` | `c983c81c…` | `9227513e0116ea896b448efe0bbe9a9878e72c0e918cfa5430d70c4df90fd611` |
-| Lienzo (unidades) | 720 × 698 | 720 × 795 | 720 × 802 | 720 × 823 |
-| PNG (px, 300 dpi) | 1506 × 1460 | 1506 × 1664 | 1506 × 1678 | 1506 × 1721 |
-| Impresa | 12,75 × 12,36 cm | 12,75 × 14,08 cm | 12,75 × 14,20 cm | 12,75 × 14,57 cm |
-| Letra mínima impresa | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px), sin cambio |
+| Medida | Antes (U-FIG-PROC) | Primer redibujo (4 nodos) | Con retoque 1 (revertido) | Lazos + fila de tipos (§8.f, superada) | 3 nodos con franja inferior (§8.g, superada) | **FINAL CERRADA** (§8.h) |
+|---|---|---|---|---|---|---|
+| sha256 del PNG | `45b805d26e40538d8ee919935f1b8d60fc10cc4a85d74af2828fd62e68fd535f` | `44e56349…` | `02f48bb5…` | `91141f17…` | `78db3cf9…` | `cec84227c57ba610acb3a1f65795e35085a62b5cb9a207e4609d6b96c445c8d6` |
+| sha256 del SVG | `8b8ced5e98c388843554f55ee53662b29a7c1e5ab891cd7a331b804d552fa7a8` | `a4d041d5…` | `c983c81c…` | `9227513e…` | `a367ee36…` | `d27cb6dca65e98a808aa09f73dbd23593d4ebb6f5201d375f752e79fd43d0c43` |
+| Lienzo (unidades) | 720 × 698 | 720 × 795 | 720 × 802 | 720 × 823 | 720 × 698 | **720 × 665** |
+| PNG (px, 300 dpi) | 1506 × 1460 | 1506 × 1664 | 1506 × 1678 | 1506 × 1721 | 1506 × 1460 | **1506 × 1392** |
+| Impresa | 12,75 × 12,36 cm | 12,75 × 14,08 cm | 12,75 × 14,20 cm | 12,75 × 14,57 cm | 12,75 × 12,36 cm | **12,75 × 11,78 cm** |
+| Letra mínima impresa | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px) | 9,04 pt (18 px), sin cambio |
+| Textos medidos / fallas | — | 53 / 0 | 58 / 0 | 58 / 0 | 42 / 0 | 42 / 0 |
 
 Tres corridas con `PYTHONHASHSEED` 0, 1 y 12345 producen el mismo SVG y el
 mismo PNG (sha idénticos en las tres; comando y salida en el paquete,
 `salida_tres_corridas_UFIGPROCV.txt`). `--verificar` con métricas reales de
-Helvetica sobre la versión final: 58 textos medidos, 0 fallas (ninguno bajo
-9 pt, fuera de su caja, fuera del lienzo ni superpuesto); el primer redibujo
-medía 53, y los cinco nuevos son la fila «Tipo de nodo» de la leyenda. Comando:
+Helvetica sobre la versión final: 42 textos medidos, 0 fallas (ninguno bajo
+9 pt, fuera de su caja, fuera del lienzo ni superpuesto). Comando:
 
 ```
 PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_proceso_extraccion.py --verificar
@@ -463,9 +464,10 @@ for s in 0 1 12345; do PYTHONHASHSEED=$s PYTHONDONTWRITEBYTECODE=1 python3 docs/
 
 ### 8.e Desvíos y observaciones declarados en la primera versión del redibujo
 
-1. **El lienzo creció** (698 → 795 unidades; 12,36 → 14,08 cm impresos; en la
-   versión final de §8.f, 823 y 14,57 cm por la fila nueva de la leyenda).
-   Causa: cuatro nodos con tres líneas
+1. **El lienzo creció** (698 → 795 unidades; 12,36 → 14,08 cm impresos; la
+   versión de §8.f llegó a 823 y 14,57 cm por la fila nueva de la leyenda; la
+   de §8.g vuelve a 698 y 12,36 cm; la FINAL CERRADA de §8.h queda en 665 y
+   11,78 cm). Causa: cuatro nodos con tres líneas
    de etiqueta más el punto, a la letra mínima de 9 pt, dentro de un panel cuyo
    ancho (296 unidades) fija la fila (e)-(f)-(g). Nodos de 132 × 90 (antes
    116 × 50) en dos columnas y dos filas. Ancho, letra y paleta sin cambio.
@@ -529,6 +531,116 @@ tres (96): de ahí las 28 unidades más de lienzo respecto del primer redibujo
 
 **Retoque 3 (conservado).** `docs/tesis/figuras/figura_proceso_extraccion.svg`
 queda en el repo (sha en §8.d).
+
+### 8.g Revisión final: vuelta a la composición original con procedencia real (18/09/2026)
+
+**Decisión de la mesa.** El panel «Grafo» vuelve a la composición original de
+U-FIG-PROC: tres nodos en triángulo con el nombre del tipo como rótulo y
+«punto N» debajo, pero con procedencia real. Nodos: Restricción del punto
+3.17.1.4 (`…8355c7`), Operación del punto 3.17.1.4 (`…59fccf`, la que
+`figura_norma_a_grafo` rotula «Pago de dividendos a no residentes»,
+`generar_figura_norma_a_grafo.py:33,63`) y Obligación del punto 3.4.2
+(`…ed6cf9`). Aristas: Restricción —limita→ Operación (gris) y Restricción
+—remite a→ Obligación (naranja, `referencia_cruzada`), ambas resueltas por
+consulta a `kg.json`. Sin arista «requiere». Leyenda: la de dos filas
+original, sin la fila «Tipo de nodo». Lienzo del tamaño original si entra.
+
+**Motivo (síntesis de las tres revisiones).** El defecto que abrió esta unidad
+era la procedencia ficticia de los rótulos (§3), no la composición. El redibujo
+de cuatro nodos con etiquetas del grafo obligó a concesiones que la mesa fue
+revisando una por una: etiquetas de tres líneas y nodos de 90 de alto, un
+lienzo 14 % a 18 % más alto, una fila de tipos en la leyenda para explicar el
+color, y rótulos de arista que no entran entre las columnas ni se leen bien
+separados de la flecha (§8.e–8.f). Tres nodos reales del mismo subgrafo de
+dividendos muestran lo que la figura tiene que mostrar (cada nodo conserva su
+punto; la remisión resuelta es una arista) con la composición, el rótulo por
+tipo, la leyenda y el lienzo de la versión original.
+
+**Los tres nodos (resueltos por el generador, no tipeados; salida completa en
+el paquete, `salida_generador_redibujo_UFIGPROCV.txt`):**
+
+| Clave | Rótulo dibujado | id | Etiqueta en el grafo | Procedencia rotulada | Otras provenances |
+|---|---|---|---|---|---|
+| R | Restricción / punto 3.17.1.4 | `Restriccion_pagos_de_utilidades_y_dividendos_a_accionistas_no_residentes_en_la_medida_que_se_8355c7` | «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos» | `ext::3.17.1.4`, punto_propio, p. 50 | `ext::3.18.1.2`, punto_propio, p. 53 |
+| O | Obligación / punto 3.4.2 | `Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_firmada_por_el_representante_ed6cf9` | «Declaración jurada representante legal» | `ext::3.4.2`, punto_propio, p. 17 | `ext::9.3.12.2`, punto_propio, p. 128 |
+| OP | Operación / punto 3.17.1.4 | `Operacion_pagos_utilidades_dividendos_accionistas_no_residentes_59fccf` | «Pagos utilidades dividendos accionistas no residentes» | `ext::3.17.1.4`, punto_propio, p. 50 | — |
+
+Cada búsqueda por (documento `ext`, tipo, punto con rol `punto_propio`) da
+exactamente un nodo (comando: el propio generador frena si no; comprobación
+independiente en el paquete, `salida_generador_redibujo_UFIGPROCV.txt`).
+
+**Las dos aristas:**
+
+| Arista dibujada | Índice en `kg['edges']` | Origen | Relación | Destino | `rol_fuente` | Detalle |
+|---|---|---|---|---|---|---|
+| «limita» (gris, diagonal a la derecha) | `[16669]` | `…8355c7` (R) | `limita` | `…59fccf` (OP) | ninguno | firma (Restricción, limita, Operación) admitida, `prompt_esq3b.py:172` |
+| «remite a» (naranja, diagonal a la izquierda) | `[16670]` | `…8355c7` (R) | `referencia` | `…ed6cf9` (O) | `referencia_cruzada` | `clase = interna`, `destino = ext::3.4.2`, `via = nodos_del_punto` |
+
+En `kg.json` no existe ninguna arista entre `…59fccf` y `…ed6cf9` en ningún
+sentido (`[(i, e['relation']) for i, e in enumerate(E) if {e['source'],
+e['target']} == {OP, O}]` → `[]`), así que la composición sin «requiere» es
+además la única fiel para estos tres nodos.
+
+**Generador.** El bloque de datos pasa a tres nodos y dos aristas;
+`FIRMAS_ADMITIDAS` queda con la única firma de extracción dibujada; el rótulo
+del nodo es `NOMBRE_TIPO[tipo]` en la primera línea y «punto N» en negrita en
+la segunda, como en el origen; desaparecen `ETIQUETAS_CORTAS`, `MAX_ETIQUETA`,
+`LINEAS_ETIQUETA` y las constantes de la fila de tipos de la leyenda; la
+etiqueta que el nodo tiene en el grafo se imprime al correr y no se dibuja.
+`dibujar_grafo` vuelve al trazado original (diagonales desde la Restricción
+con el rótulo al costado) y frena si una arista no sale de la Restricción.
+La leyenda vuelve al bloque original de dos filas (68 de alto). Candado de
+sha sobre `kg.json` y comprobaciones de nodos y aristas: sin cambio.
+
+**Geometría y un desvío declarado.** `Y_NODOS` 40, `H_NODO` 50, `SEP_NODOS`
+52 como en el origen. **`W_NODO` pasa de 116 a 132** porque «punto 3.17.1.4»
+en negrita mide 120,0 unidades a 18 px (métricas reales de Helvetica; el
+origen dibujaba «punto 2.5.1») y no entra en los 106 útiles del nodo original;
+los dos nodos de abajo quedan a 12 unidades entre sí (antes 44:
+296 − 2 × 10 − 2 × W_NODO). En esta versión la franja de
+33 unidades bajo los nodos que en el origen ocupaba el lazo de «requiere» se
+conservó como margen inferior del panel (`BANDA_INFERIOR = 22 + 11`) para que
+`ALTO_GRAFO` siguiera en 235 y el lienzo midiera exactamente lo que medía:
+720 × 698, 1506 × 1460 px, 12,75 × 12,36 cm; la mesa la quitó en el ajuste
+final (§8.h).
+
+**Salida de esta versión (superada por §8.h).** PNG `78db3cf9…`, SVG
+`a367ee36…` (completos en §8.d); tres corridas con `PYTHONHASHSEED` 0, 1 y
+12345 con sha idénticos; `--verificar`: 42 textos, 0 fallas. Respecto del PNG
+original `45b805d2…`: mismo lienzo y misma leyenda; cambian los puntos
+rotulados (3.17.1.4, 3.4.2, 3.17.1.4 en lugar de 2.5.1, 3.4.2, 2.5.2), el
+ancho de los nodos y la ausencia del lazo «requiere».
+
+### 8.h Ajuste final y cierre de la unidad (18/09/2026)
+
+La mesa aprobó como final la versión de §8.g con un ajuste cosmético: quitar la
+franja vacía bajo los nodos del panel «Grafo». Cambio en el generador: la
+constante `BANDA_INFERIOR` desaparece y `ALTO_GRAFO = Y_NODOS + 2 * H_NODO +
+SEP_NODOS + 10` = 202 (antes 235); el panel termina 10 unidades debajo de la
+fila inferior de nodos. Nada más cambia: nodos, aristas, rótulos, leyenda,
+paleta y letra son los de §8.g.
+
+| Medida | Valor final |
+|---|---|
+| Generador | `fd301e81a2f26244b936e2ccac485a89fd4493540c2161f5dfc78b63a6ec71c1` (703 líneas; 222 líneas en 19 hunks contra el origen) |
+| PNG | `cec84227c57ba610acb3a1f65795e35085a62b5cb9a207e4609d6b96c445c8d6`, 1506 × 1392 px, 300 dpi |
+| SVG | `d27cb6dca65e98a808aa09f73dbd23593d4ebb6f5201d375f752e79fd43d0c43`, lienzo 720 × 665 |
+| Impresa | 12,75 × 11,78 cm (el original medía 12,36 de alto) |
+| Reproducibilidad | tres corridas con `PYTHONHASHSEED` 0, 1 y 12345: mismo SVG y mismo PNG (`salida_tres_corridas_UFIGPROCV.txt`) |
+| Verificación de medidas | 42 textos, 0 fallas, letra mínima 9,04 pt (`salida_generador_redibujo_UFIGPROCV.txt`) |
+
+Comando de regeneración y verificación, desde la raíz del repo:
+
+```
+PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_proceso_extraccion.py --verificar
+for s in 0 1 12345; do PYTHONHASHSEED=$s PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_proceso_extraccion.py >/dev/null; shasum -a 256 docs/tesis/figuras/figura_proceso_extraccion.png; done
+```
+
+Con este ajuste la unidad U-FIG-PROC-V queda CERRADA en lo que depende del
+ejecutor. Escrituras en el repo: `docs/tesis/figuras/generar_figura_proceso_extraccion.py`,
+`docs/tesis/figuras/figura_proceso_extraccion.png`,
+`docs/tesis/figuras/figura_proceso_extraccion.svg` y este reporte. Commit:
+PENDIENTE de la autora.
 
 ---
 

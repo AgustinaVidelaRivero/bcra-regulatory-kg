@@ -12,12 +12,13 @@ generación es determinística (dos corridas producen el mismo SVG byte a byte).
 El PNG se exporta con rsvg-convert al ancho físico de la figura a 300 dpi, y
 el script le graba la densidad en el encabezado.
 
-Los cuatro nodos y las tres aristas del panel «Grafo» no se tipean: se toman
-del grafo r1 (kg.json) por consulta —documento, tipo y punto de procedencia de
+Los tres nodos y las dos aristas del panel «Grafo» no se tipean: se toman del
+grafo r1 (kg.json) por consulta —documento, tipo y punto de procedencia de
 cada nodo; origen, relación y destino de cada arista— y el script comprueba al
 generar que el archivo es el sellado, que cada búsqueda da exactamente un nodo
-con esa procedencia y que cada arista existe con ese tipo. Etiquetas: las del
-grafo, acortadas a 40 caracteres como en la figura «de la norma al grafo».
+con esa procedencia y que cada arista existe con ese tipo. Cada nodo se rotula
+con el nombre de su tipo y su punto de procedencia; la etiqueta que el nodo
+tiene en el grafo se imprime al correr.
 
 Uso:
     PYTHONDONTWRITEBYTECODE=1 python3 generar_figura_proceso_extraccion.py
@@ -132,63 +133,47 @@ SALIDA_VUELVE = "vuelve a extraer"
 SALIDA_MARCADO = ["marcado para", "revisión humana"]
 LEYENDA = [(MODELO, "Etapa que ejecuta un modelo de lenguaje"),
            (DETERMINISTICA, "Etapa determinística")]
-# Fila de tipos de nodo de la leyenda, con la función y el orden de la de
-# generar_figura_norma_a_grafo.py (dibujar_leyenda: rótulo en negrita y una
-# muestra de color por tipo), a la tipografía y tamaño de esta figura.
-LEYENDA_TIPOS = "Tipo de nodo"
-TIPOS_LEYENDA = ["Restriccion", "Obligacion", "Operacion", "Sujeto"]
-NOMBRE_TIPO = {"Restriccion": "Restricción", "Obligacion": "Obligación",
-               "Operacion": "Operación", "Sujeto": "Sujeto"}
 
-# Nodos del panel «Grafo»: el subgrafo de los dividendos del Texto Ordenado de
-# Exterior y Cambios (reports/verificacion_figura_proceso.md §5.c). Cada nodo se
+# Nodos del panel «Grafo»: tres nodos del subgrafo de los dividendos del Texto
+# Ordenado de Exterior y Cambios (reports/verificacion_figura_proceso.md §5.c y
+# §8.g), los mismos que la figura «de la norma al grafo» usa como restricción de
+# origen, operación limitada y una de las obligaciones remitidas. Cada nodo se
 # identifica por (documento, tipo, punto de procedencia con rol punto_propio);
 # la búsqueda en kg.json debe dar exactamente un nodo, del que salen el id, la
-# etiqueta y el punto que se rotula. Los nodos de tipo Sujeto quedan fuera: son
-# de catálogo y no tienen un punto propio único.
+# etiqueta y el punto que se rotula. Tres nodos y no cuatro: los nodos de tipo
+# Sujeto son de catálogo y no tienen un punto propio único, así que no pueden
+# llevar el rótulo de procedencia que la figura quiere mostrar.
 TO_FIGURA = "ext"
 NODOS_FIGURA = [
-    ("R1", "Restriccion", "3.17.1.4"),   # remite a los requisitos 3.4.1 a 3.4.3
-    ("R2", "Restriccion", "3.4.2"),      # limita el giro de dividendos
-    ("OP", "Operacion", "3.4.2"),        # giro de dividendos al exterior
+    ("R", "Restriccion", "3.17.1.4"),    # requisitos para pagar dividendos
     ("O", "Obligacion", "3.4.2"),        # declaración jurada del representante
+    ("OP", "Operacion", "3.17.1.4"),     # pago de dividendos a no residentes
 ]
 
 # Aristas del panel, con la relación tal como está en el grafo y su clase.
-# Las de clase "extraccion" son firmas (tipo de origen, relación, tipo de
-# destino) admitidas por la matriz de dominio y rango del esquema congelado:
+# La de clase "extraccion" es una firma (tipo de origen, relación, tipo de
+# destino) admitida por la matriz de dominio y rango del esquema congelado:
 # DOMAIN_RANGE_CONGELADO, data/experiment/esq/code/prompt_congelado.py:97-99,
-# que hereda sin cambios las filas de data/experiment/esq/code/prompt_esq3b.py
-# :172 (limita) y :174 (requiere). La de clase "remision" no sale de la
-# extracción: es la arista que produce la resolución de remisiones (relación
-# `referencia` con rol_fuente = referencia_cruzada,
+# que hereda sin cambios la fila de data/experiment/esq/code/prompt_esq3b.py
+# :172 (limita). La de clase "remision" no sale de la extracción: es la arista
+# que produce la resolución de remisiones (relación `referencia` con
+# rol_fuente = referencia_cruzada,
 # data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py:231-234), y por
 # eso no se coteja contra esa matriz sino contra ese rol_fuente. Cada arista
 # debe existir en kg.json con ese origen, esa relación y ese destino.
 FIRMAS_ADMITIDAS = {
     ("Restriccion", "limita", "Operacion"),
-    ("Operacion", "requiere", "Obligacion"),
 }
-ARISTAS_FIGURA = [("R2", "limita", "OP", "extraccion"),
-                  ("OP", "requiere", "O", "extraccion"),
-                  ("R1", "referencia", "O", "remision")]
+ARISTAS_FIGURA = [("R", "limita", "OP", "extraccion"),
+                  ("R", "referencia", "O", "remision")]
 ROL_REMISION = "referencia_cruzada"
 # Predicados en castellano legible, como en generar_figura_norma_a_grafo.py.
 CASTELLANO = {"referencia": "remite a"}
 LEYENDA_REMISION = "remisión resuelta entre puntos"
-
-# Etiquetas acortadas a MAX_ETIQUETA caracteres, por sufijo de id, con la misma
-# regla que generar_figura_norma_a_grafo.py (ETIQUETAS_CORTAS). La de 8355c7 es
-# la de esa figura; las otras tres son nuevas porque esos nodos no están allí
-# o porque su etiqueta original no entra en tres líneas de esta caja.
-ETIQUETAS_CORTAS = {
-    "8355c7": "Requisitos para pagar dividendos",
-    "459761": "No supera lo aprobado en asamblea",
-    "c53c4e": "Giro de dividendos al exterior",
-    "ed6cf9": "Declaración jurada del representante",
-}
-MAX_ETIQUETA = 40
-LINEAS_ETIQUETA = 3            # líneas de etiqueta por nodo; el script frena si no entra
+# Rótulo de cada nodo: el nombre de su tipo (primera línea) y «punto N»
+# (segunda línea, en negrita).
+NOMBRE_TIPO = {"Restriccion": "Restricción", "Obligacion": "Obligación",
+               "Operacion": "Operación", "Sujeto": "Sujeto"}
 
 
 def provenances(elem):
@@ -227,15 +212,8 @@ def cargar_grafo():
             raise SystemExit(f"nodo {clave}: ({TO_FIGURA}, {tipo}, {punto}) da "
                              f"{len(cands)} nodos, no uno: {[n['id'] for n in cands]}")
         n = cands[0]
-        original = n.get("label", "")
-        corta = original
-        for suf, etiqueta in ETIQUETAS_CORTAS.items():
-            if n["id"].endswith(suf):
-                corta = etiqueta
-        if len(corta) > MAX_ETIQUETA:
-            raise SystemExit(f"nodo {clave}: la etiqueta {corta!r} supera {MAX_ETIQUETA} caracteres")
         nodos[clave] = {"id": n["id"], "tipo": tipo, "punto": punto,
-                        "etiqueta_original": original, "etiqueta": corta}
+                        "etiqueta": n.get("label", "")}
 
     aristas = []
     for a, rel, b, clase in ARISTAS_FIGURA:
@@ -433,72 +411,55 @@ def dibujar_documento(partes, x, y, w, h):
         yy += IL_TITULO
 
 
-# Cuatro nodos en dos columnas y dos filas: las dos Restricciones a la
-# izquierda, la Operación arriba a la derecha y la Obligación abajo a la
-# derecha. Cada nodo lleva tres líneas de etiqueta y, debajo, en negrita, el
-# punto del que proviene. Las dos aristas horizontales pasan por fuera de la
-# banda de nodos (la de arriba por encima, la de abajo por debajo) con el
-# rótulo sobre su tramo horizontal; la vertical une las dos cajas de la derecha
-# con el rótulo a su izquierda. El rótulo no cabe entre las columnas: el ancho
-# de nodo lo fija «punto 3.17.1.4» en negrita (120 unidades a 18 px) y dos
-# nodos de 132 dejan menos de 42 («limita») entre sí; separado de una flecha
-# recta, el rótulo se lee peor que sobre el tramo horizontal del lazo.
-W_NODO, H_NODO = 132, 90
-IL_NODO = 21                     # interlínea dentro del nodo
-PAD_NODO = 8                     # margen entre el nodo y el borde del contenedor
-Y_NODOS, SEP_NODOS = 40, 36      # arranque de la banda superior y separación entre filas
-BAJADA = 22                      # distancia de los tramos horizontales a los nodos
-ALTO_GRAFO = Y_NODOS + 11 + BAJADA + 2 * H_NODO + SEP_NODOS + BAJADA + 11 + 10
+# Composición original de la figura: la Restricción arriba, centrada; la
+# Obligación abajo a la izquierda y la Operación abajo a la derecha; las dos
+# aristas salen de la Restricción en diagonal con el rótulo al costado. El ancho
+# de nodo era 116 y pasa a 132 porque «punto 3.17.1.4» en negrita mide 120
+# unidades a 18 px. Sin la arista «requiere», el panel termina 10 unidades
+# debajo de la fila inferior de nodos.
+W_NODO, H_NODO = 132, 50
+Y_NODOS, SEP_NODOS = 40, 52      # arranque de los nodos y separación entre filas
+ALTO_GRAFO = Y_NODOS + 2 * H_NODO + SEP_NODOS + 10
 
 
 def dibujar_grafo(partes, x, y, w, h, nodos, aristas):
-    """(g) Contenedor neutro con el rótulo, los cuatro nodos del subgrafo de
-    los dividendos y las tres aristas con el nombre de su relación."""
+    """(g) Contenedor neutro con el rótulo, los tres nodos en triángulo y las
+    dos aristas con el nombre de su relación."""
     caja(partes, x, y, w, h, ELEMENTOS["g"]["clase"])
     cx = x + w / 2.0
     texto(partes, cx, y + 27, ELEMENTOS["g"]["rotulo"][0], FS_TITULO, True,
           TINTA, w - 2 * PAD_X, "(g) rótulo")
-    y_arriba = y + Y_NODOS + 11                  # tramo horizontal de «limita»
-    y_sup = y_arriba + BAJADA
+    y_sup = y + Y_NODOS
     y_inf = y_sup + H_NODO + SEP_NODOS
-    y_abajo = y_inf + H_NODO + BAJADA            # tramo horizontal de «remite a»
-    x_izq = x + PAD_NODO
-    x_der = x + w - PAD_NODO - W_NODO
-    pos = {"R2": (x_izq, y_sup), "OP": (x_der, y_sup),
-           "R1": (x_izq, y_inf), "O": (x_der, y_inf)}
+    pos = {
+        "R": (cx - W_NODO / 2.0, y_sup),
+        "O": (x + PAD_X, y_inf),
+        "OP": (x + w - PAD_X - W_NODO, y_inf),
+    }
     cxn = {k: px + W_NODO / 2.0 for k, (px, _) in pos.items()}
-    fondo = ELEMENTOS["g"]["clase"]["relleno"]
+    y_rot = (y_sup + H_NODO + y_inf) / 2.0          # centro de la franja entre filas
 
     for ar_ in aristas:
         a, b, rel, clase = ar_["a"], ar_["b"], ar_["rotulo"], ar_["clase"]
+        if a != "R":
+            raise SystemExit(f"arista {a}-{b}: esta composición solo traza aristas "
+                             f"que salen de la Restricción")
         remision = clase == "remision"
         color = ACENTO if remision else GRIS_ARISTA
         grosor = "2.6" if remision else "1.6"
         marcador = "arA" if remision else "arG"
         relleno = ACENTO_TEXTO if remision else GRIS_ROTULO
-        contexto = f"(g) arista {a}-{b} ({clase})"
-        ancho_rot = ancho(rel, FS_SUB, remision)
-        (xa, ya), (xb, yb) = pos[a], pos[b]
-        if ya == yb:
-            # Misma fila: sale por el borde exterior (arriba en la fila de
-            # arriba, abajo en la de abajo), cruza y entra por el mismo borde.
-            arriba = ya == y_sup
-            y_tramo = y_arriba if arriba else y_abajo
-            y_borde = ya if arriba else ya + H_NODO
-            fin = y_borde - 2 if arriba else y_borde + 2
-            trazo(partes, [(cxn[a], y_borde), (cxn[a], y_tramo),
-                           (cxn[b], y_tramo), (cxn[b], fin)], color, grosor, marcador)
-            xm = (cxn[a] + cxn[b]) / 2.0
-            partes.append(f'<rect x="{f(xm - ancho_rot / 2.0 - 6)}" y="{f(y_tramo - 11)}" '
-                          f'width="{f(ancho_rot + 12)}" height="22" fill="{fondo}"/>')
-            texto(partes, xm, y_tramo + 6, rel, FS_SUB, remision, relleno, None, contexto)
-        else:
-            # Misma columna: vertical de la caja de arriba a la de abajo; el
-            # rótulo va a la izquierda del trazo, centrado en la franja.
-            trazo(partes, [(cxn[a], ya + H_NODO), (cxn[b], yb - 2)], color, grosor, marcador)
-            ym = (ya + H_NODO + yb) / 2.0
-            texto(partes, cxn[a] - 8 - ancho_rot / 2.0, ym + 6, rel, FS_SUB, remision,
-                  relleno, None, contexto)
+        # Diagonal desde el borde inferior de la Restricción; el rótulo va del
+        # lado de afuera, a 8 unidades del trazo a la altura de su base.
+        lado = -1 if cxn[b] < cx else +1
+        p0 = (cx + lado * 24, y_sup + H_NODO)
+        p1 = (cxn[b] - lado * 16, y_inf - 2)
+        trazo(partes, [p0, p1], color, grosor, marcador)
+        t = (y_rot + 11 - p0[1]) / (p1[1] - p0[1])
+        x_trazo = p0[0] + (p1[0] - p0[0]) * t
+        ar = ancho(rel, FS_SUB, remision)
+        texto(partes, x_trazo + lado * (8 + ar / 2.0), y_rot + 6, rel, FS_SUB,
+              remision, relleno, None, f"(g) arista {a}-{b} ({clase})")
 
     for clave, _, _ in NODOS_FIGURA:
         nodo = nodos[clave]
@@ -507,17 +468,10 @@ def dibujar_grafo(partes, x, y, w, h, nodos, aristas):
                       f'fill="{COLOR_TIPO[nodo["tipo"]]}" fill-opacity="0.95" '
                       f'stroke="black" stroke-width="1.4" rx="7"/>')
         ncx = px + W_NODO / 2.0
-        lineas = envolver(nodo["etiqueta"], FS_SUB, W_NODO - 10 - HOLGURA)
-        if len(lineas) > LINEAS_ETIQUETA:
-            raise SystemExit(f"nodo {clave}: la etiqueta {nodo['etiqueta']!r} ocupa "
-                             f"{len(lineas)} líneas, más de {LINEAS_ETIQUETA}")
-        yy = py + 20
-        for linea in lineas:
-            texto(partes, ncx, yy, linea, FS_SUB, False, "white", W_NODO - 10,
-                  f"(g) nodo {clave} etiqueta")
-            yy += IL_NODO
-        texto(partes, ncx, py + 20 + LINEAS_ETIQUETA * IL_NODO, "punto " + nodo["punto"],
-              FS_SUB, True, "white", W_NODO - 10, f"(g) nodo {clave} punto")
+        texto(partes, ncx, py + 21, NOMBRE_TIPO[nodo["tipo"]], FS_SUB, False, "white",
+              W_NODO - 10, f"(g) nodo {clave} rótulo")
+        texto(partes, ncx, py + 42, "punto " + nodo["punto"], FS_SUB, True, "white",
+              W_NODO - 10, f"(g) nodo {clave} punto")
 
 
 def componer(nodos, aristas):
@@ -585,31 +539,20 @@ def componer(nodos, aristas):
 
     # ---- leyenda ----------------------------------------------------------- #
     y_ley = y2 + hg + 20
-    h_ley = 96
+    h_ley = 68
     partes.append(f'<rect x="{f(MARGEN)}" y="{f(y_ley)}" width="{f(W - 2 * MARGEN)}" '
                   f'height="{h_ley}" fill="white" stroke="#e2e2e2" rx="5"/>')
-    # Fila 1: tipos de nodo (rótulo en negrita y una muestra de color por tipo).
-    xx = MARGEN + 18
-    texto_izq(partes, xx, y_ley + 26, LEYENDA_TIPOS, FS_SUB, True, TINTA, "leyenda")
-    xx += ancho(LEYENDA_TIPOS, FS_SUB, True) + 26
-    for t in TIPOS_LEYENDA:
-        partes.append(f'<rect x="{f(xx)}" y="{f(y_ley + 12)}" width="24" height="16" '
-                      f'fill="{COLOR_TIPO[t]}" rx="3"/>')
-        texto_izq(partes, xx + 33, y_ley + 26, NOMBRE_TIPO[t], FS_SUB, False, TINTA, "leyenda")
-        xx += 33 + ancho(NOMBRE_TIPO[t], FS_SUB) + 26
-    # Fila 2: clases de etapa.
     xx = MARGEN + 18
     for clase, rotulo in LEYENDA:
-        partes.append(f'<rect x="{f(xx)}" y="{f(y_ley + 40)}" width="24" height="16" '
+        partes.append(f'<rect x="{f(xx)}" y="{f(y_ley + 12)}" width="24" height="16" '
                       f'fill="{clase["relleno"]}" stroke="{clase["borde"]}" '
                       f'stroke-width="1.6" rx="3"/>')
-        texto_izq(partes, xx + 33, y_ley + 54, rotulo, FS_SUB, False, TINTA, "leyenda")
+        texto_izq(partes, xx + 33, y_ley + 26, rotulo, FS_SUB, False, TINTA, "leyenda")
         xx += 33 + ancho(rotulo, FS_SUB) + 40
-    # Fila 3: la arista de remisión.
-    xx, y_fl = MARGEN + 18, y_ley + 76
+    xx, y_fl = MARGEN + 18, y_ley + 48
     partes.append(f'<path d="M{f(xx)},{f(y_fl)} L{f(xx + 44)},{f(y_fl)}" fill="none" '
                   f'stroke="{ACENTO}" stroke-width="2.6" marker-end="url(#arA)"/>')
-    texto_izq(partes, xx + 58, y_ley + 82, LEYENDA_REMISION, FS_SUB, True,
+    texto_izq(partes, xx + 58, y_ley + 54, LEYENDA_REMISION, FS_SUB, True,
               ACENTO_TEXTO, "leyenda")
     alto_total = y_ley + h_ley + MARGEN
 
@@ -736,8 +679,7 @@ def main():
     for clave, _, _ in NODOS_FIGURA:
         n = nodos[clave]
         print(f"  nodo {clave:2s} {n['tipo']:11s} punto {n['punto']:9s} {n['id']}")
-        if n["etiqueta"] != n["etiqueta_original"]:
-            print(f"          etiqueta {n['etiqueta_original']!r} -> {n['etiqueta']!r}")
+        print(f"          etiqueta en el grafo: {n['etiqueta']!r}")
     for a in aristas:
         print(f"  arista kg['edges'][{a['indice']}]  {a['a']} --{a['relacion']}--> {a['b']}  "
               f"({a['clase']}; rótulo {a['rotulo']!r})")
