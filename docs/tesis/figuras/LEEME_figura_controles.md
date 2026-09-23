@@ -58,7 +58,7 @@ pdffonts docs/tesis/figuras/figura_controles.pdf
 **Reproducibilidad: el SVG sí, el PDF no, y el invariante que sí sirve.**
 
 El **SVG es byte-reproducible**: corridas repetidas dan el mismo sha256
-(`259986e9…`) —no hay fechas, ni aleatoriedad, ni rutas absolutas, y toda
+(`55d81d67…`) —no hay fechas, ni aleatoriedad, ni rutas absolutas, y toda
 iteración va sobre listas declaradas—. El script corre además desde cualquier
 cwd (probado desde `/tmp`, con salida idéntica).
 
@@ -78,7 +78,7 @@ que es lo que efectivamente se imprime. Su sha256 es idéntico en las doce
 corridas:
 
 ```
-f50b86bd585764a9a8d9054c09ad86aa375a6bedf5810af48456093e7575dac0
+fa09a94ecfe19d90c6cd2f0c5a3f6fdf12fd8a2f55e108143d6df5aa0f8eb75d
 ```
 
 ```bash
@@ -304,3 +304,5 @@ libre a la figura, esa guarda habría que escribirla.
 En `bloque_latex_figura_controles.tex`. Va **al final de §3.5**, después del
 último párrafo de la subsección. **La inserción es de la autora**: esta unidad
 no toca `main.tex`.
+
+**Historial** — 23/09/2026: en la franja inferior, «conjunto de prueba» pasa a «conjunto de validación» (constante `SALIDA_SUB`, única cadena cambiada). Sellos: sha256 del SVG `259986e9e3335ddd77c574f30f2f67485004f9594cc3f3b7f977f79357ad4058` → `55d81d6715f29e898c6b9766a59ac0ea23d9f9dbc8628169543da06bad6d67ee`; sha256 del stream de contenido del PDF `f50b86bd585764a9a8d9054c09ad86aa375a6bedf5810af48456093e7575dac0` → `fa09a94ecfe19d90c6cd2f0c5a3f6fdf12fd8a2f55e108143d6df5aa0f8eb75d`.

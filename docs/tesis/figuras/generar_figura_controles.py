@@ -327,7 +327,7 @@ CARRIL_CORTE = "el papel cambia acá"
 
 SALIDA_TIT = "MEDICIÓN DE COBERTURA POR LECTURA"
 SALIDA_SUB = ("una ficha por unidad sobre los diez documentos del "
-              "conjunto de prueba")
+              "conjunto de validación")
 
 PIE = "los cuatro controles corren sobre el conjunto de desarrollo"
 
