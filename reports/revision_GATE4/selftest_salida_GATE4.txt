@@ -1,0 +1,72 @@
+== SELFTEST runner_ev2_neo4j (gate 4) — $0, sin API ==
+  python 3.10.13 | outdir /private/tmp/claude-501/-Users-agustinavidelarivero-INGENIERIA-IA-TESIS-bcra-regulatory-kg/a62a1fb8-2b52-4f8b-8165-556122e0af57/scratchpad/selftest_gate4 | db base /private/tmp/claude-501/-Users-agustinavidelarivero-INGENIERIA-IA-TESIS-bcra-regulatory-kg/a62a1fb8-2b52-4f8b-8165-556122e0af57/scratchpad/selftest_gate4_db/selftest.db
+  sello OK  fd267e833866…  data/experiment/evaluacion/harness.py
+  sello OK  c4b067f914cb…  data/experiment/ev2_corrida/code/runner_ev2.py
+  sello OK  403a9b429596…  data/experiment/neo4j/agente_neo4j.py
+  sello OK  5f38db1b915c…  data/experiment/neo4j/neo4j_index.py
+  [PASS] sellos: harness / runner_ev2 / agente_neo4j / neo4j_index con el sha del mandato
+  [PASS] referencia: EV2F-001.json de C1 cargada (claves meta/trace de comparación)
+
+== BLOQUE (i) OFFLINE — sin Neo4j, sin API ==
+  [PASS] gating: aborta sin ninguno de los dos (exit 2, 'ABORTADO', nada escrito)
+  [PASS] gating: aborta solo --autorizado-fase-b (exit 2, 'ABORTADO', nada escrito)
+  [PASS] gating: aborta solo --tope (exit 2, 'ABORTADO', nada escrito)
+  [PASS] gating: con --autorizado-fase-b sin --tope no aparece salida de Neo4j ni de sellos
+  [PASS] casos: 40 de fidelidad en el orden sellado de C1 (semilla orden-ev2-r1)
+== EV2 tanda 0 · KG_Reextraido_r1 (selftest_offline) · backend neo4j modo=fulltext índice=nodos_fulltext_kg_reextraido_r1 — 2 casos, N=1 ==
+  [1/2] EV2F-010 tools=3 parse_ok=True hits=0/4 costo=$0.01320
+  [2/2] EV2F-016 tools=15 parse_ok=True hits=0/16 costo=$0.05280
+  -> 2 trazas en /private/tmp/claude-501/-Users-agustinavidelarivero-INGENIERIA-IA-TESIS-bcra-regulatory-kg/a62a1fb8-2b52-4f8b-8165-556122e0af57/scratchpad/selftest_gate4/offline | costo $0.0660
+  [PASS] runner: 2 casos corridos, resumen persistido
+  [PASS] traza: claves de primer nivel == EV2F-001 de C1
+  [PASS] traza: meta == claves de C1 (sin u_b18) + backend + model_segun_api, exactas
+  [PASS] traza: trace == vars(QuestionTrace), mismas claves que C1
+  [PASS] traza: steps_full[i] y raw_turns_agent[i] con las claves de C1
+  [PASS] traza: lo que leen juez v1 y ucita2 está y tiene la forma de C1
+  [PASS] traza: meta valores base (unidad, grafo, kg_path, kg_sha256, model/temperature/max del harness)
+  [PASS] steps_full: 1:1 con trace.steps en ambos casos (n/tool/input/chars/prefijo)
+  [PASS] steps_full: outputs vienen del stub (ver_nodo del id pedido, con provenances)
+  [PASS] citas: la cita vista es fiel (citations_unseen_raw/normalized vacías)
+  [PASS] meta.model_segun_api == [raw.model del cliente falso] (≠ harness.MODEL)
+  [PASS] raw_turns_agent: 1:1 con trace.api_calls (crudos íntegros de cada llamada)
+  [PASS] meta.backend: backend neo4j, grafo, nombre canónico, sha r1, modo fulltext, índice
+  [PASS] tope: el cliente falso pidió 16 tool calls; el harness cortó en 15 con hit_tool_limit
+  [PASS] tope: caso 1 no tocó el límite (hit_tool_limit falso, 3 tool calls)
+  [PASS] namespace: contiene sha del grafo, modo e índice; único en la db; == make_namespace esperado
+  [PASS] namespace: distinto del de C1 (graph_fingerprint de 16 hex del loader)
+  [PASS] caché: db solo con dominio 'agent'
+== EV2 tanda 0 · KG_Reextraido_r1 (selftest_casos) · backend neo4j modo=fulltext índice=nodos_fulltext_kg_reextraido_r1 — 1 casos, N=1 ==
+  [1/1] NUEVA-001 tools=1 parse_ok=True hits=0/2 costo=$0.00660
+  -> 1 trazas en /private/tmp/claude-501/-Users-agustinavidelarivero-INGENIERIA-IA-TESIS-bcra-regulatory-kg/a62a1fb8-2b52-4f8b-8165-556122e0af57/scratchpad/selftest_gate4/casos_alt | costo $0.0066
+  [PASS] --casos: JSON alternativo {caso_id, eje, pregunta} corre; semilla_orden None; fuente con sha
+  [PASS] --casos: JSON sin las tres claves es rechazado
+  [PASS] guarda: índice con modo distinto de --modo es rechazado
+
+== BLOQUE (ii) INTEGRACIÓN — Neo4j real, sin API ==
+$ docker ps --filter name=neo4j --format {{.Names}}	{{.Status}}
+neo4j-bcra-kg-compose	Up 5 weeks (healthy)
+  consulta directa: 'asociación mutual' -> q_lucene='asociacion mutual' total=4
+      25.1949  Excepcion_no_aplican_estas_normas_a_las_asociaciones_mutuales_o_cooperativas_a0051e  | Excepción asociaciones mutuales y cooperativas
+       6.8517  Obligacion_otros_proveedores_no_financieros_de_credito_alcanzados_por_las_normas_sobre_prov_5f95b9  | Sujeción a normas protección usuarios — PNFC
+       6.7925  Obligacion_la_asociacion_denunciante_debera_acreditar_su_condicion_de_entidad_reconocida_y__e18731  | Acreditación condición y cumplimiento recaudos
+       2.4246  Obligacion_la_gerencia_principal_de_proteccion_al_usuario_de_servicios_financieros_tramitar_e9c7e0  | Tramitación denuncias incumplimientos interés general
+== EV2 tanda 0 · KG_Reextraido_r1 (selftest_integracion) · backend neo4j modo=fulltext índice=nodos_fulltext_kg_reextraido_r1 — 1 casos, N=1 ==
+  [1/1] EV2F-008 tools=3 parse_ok=True hits=0/4 costo=$0.01320
+  -> 1 trazas en /private/tmp/claude-501/-Users-agustinavidelarivero-INGENIERIA-IA-TESIS-bcra-regulatory-kg/a62a1fb8-2b52-4f8b-8165-556122e0af57/scratchpad/selftest_gate4/integracion | costo $0.0132
+  [PASS] integración: guion consumido (4 llamadas) y 1 caso corrido
+  [PASS] integración: buscar_nodos capturado viene de Neo4j — primer id == consulta directa, mismo total
+  [PASS] integración: buscar_nodos capturado == Neo4jIndex.buscar_nodos directo (byte-idéntico)
+  [PASS] integración: ver_nodo capturado == nodo de Neo4j (mismo id, provenances no vacías)
+  [PASS] integración: ver_vecinos capturado responde por el mismo id con conteos de Neo4j
+  [PASS] integración: trace.seen_provenances no vacío
+  [PASS] integración: sha256 del grafo en meta.backend == 0226e947… (registro) == KG_Meta en Neo4j
+  [PASS] integración: meta.backend modo fulltext + índice de r1; model_segun_api del cliente falso
+  [PASS] integración: steps_full 1:1 con trace.steps; claves de meta exactas
+  [PASS] integración: namespace con sha + modo + índice
+  [PASS] integración: cita tomada de la provenance vista es fiel (citations_unseen_normalized vacía)
+  [PASS] repo: ningún .json/.db/.pyc/__pycache__ bajo data/experiment/ev2_tanda0
+  [PASS] sellos idénticos al cierre
+
+  41/41 checks OK
+  bloque (ii): CORRIDO
+  RESULTADO: PASS

@@ -1,0 +1,26 @@
+usage: runner_ev2_neo4j.py [-h] --grafo
+                           {KG_Refinado,KG_Reextraido,KG_Reextraido_r1}
+                           [--modo {fulltext}] --label LABEL [--casos CASOS]
+                           [--outdir OUTDIR] [--db DB] [--autorizado-fase-b]
+                           [--tope TOPE]
+
+EV2 (fidelidad, firma v1) sobre GraphAgentNeo4j — celdas C2/C4 de la tanda 0.
+Modo real gateado: exige --autorizado-fase-b y --tope.
+
+options:
+  -h, --help            show this help message and exit
+  --grafo {KG_Refinado,KG_Reextraido,KG_Reextraido_r1}
+                        clave del registro data/experiment/neo4j/grafos.py
+  --modo {fulltext}     modo de Neo4jIndex (único admitido: fulltext, pre-
+                        registro A3.1)
+  --label LABEL         etiqueta de la corrida (trazas/<label>/,
+                        cache/<label>.db)
+  --casos CASOS         JSON alternativo [{caso_id, eje, pregunta}, ...];
+                        default: los 40 casos de fidelidad de EV2 en el orden
+                        sellado de C1
+  --outdir OUTDIR       directorio de trazas (default
+                        data/experiment/ev2_tanda0/trazas/<label>)
+  --db DB               db de caché (default
+                        data/experiment/ev2_tanda0/cache/<label>.db)
+  --autorizado-fase-b   declara que la corrida real fue autorizada con tope
+  --tope TOPE           tope USD de ESTA corrida
