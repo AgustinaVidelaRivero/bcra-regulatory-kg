@@ -1,0 +1,50 @@
+# manifest.txt — reports/revision_UB21_diag/ (U-B2.1 fase 1, re-diagnóstico, 2026-09-26)
+# HEAD: 610f655  (mandatos: U-B2.1 fase 1 re-diagnóstico (inventario para la regression suite, salidas en reports/revision_UB21_diag/), firmado el 26/09)
+
+## sha256 y descripción (una línea por archivo; shasum -a 256)
+a06e46873df6aa60a3784bfe71801cf841f6b3eba458f2455be06ee11e9ba6a8  inventario_B21_fase1.md  — pieza a — inventario de 46 ítems (12 BKL cerrados + 12 RT + T1–T7/I1–I5 + 10 reglas E4): afirma, grafo/sha, evidencia, cambio, forma, convertibilidad, retriever, condición; solapamientos; E4 verbatim; hallazgos
+2ca30f084a6547bed02c9f4f58a009b5a83d854e5ded454fb339beac10f7949c  tabla_resumen_B21_fase1.md  — pieza b — conteos recomputados contra la pieza a (46; 19/23/4; retriever 15) y comparación fila por fila contra la decisión 5 (coincide / HALLAZGO)
+ecadd575405c465348fa3174da1748aeefdb116c1b0c680fcd4caf2e08c61bfb  lo_que_no_esta_B21_fase1.md  — pieza c — 17 ids del backlog con estado efectivo triaged, contados y listados, fuera del inventario
+ddc3fb59edd0c6a5b88349079b0e80296aead9adcb37d462cd6d5d6c090440a9  estado_backlog_B21_fase1.py  — pieza d — reconstrucción del estado efectivo por id de backlog.jsonl (última línea con estado); solo lectura
+eff59e68a9f8884aa6a7728d76374b42cf7510bb1b4ec3f234c0064f9d95dc70  estado_backlog_B21_fase1_salida.txt  — salida de la pieza d: 74 líneas / 29 ids / 12 verificado / 17 triaged / 0 ids RT-
+2b3ed7384fd282ae45f5112d53aa2a5091d68be6c2972ce3d3a218bbf1996320  sonda_T1_T7_cuatro_grafos_UB21.py  — pieza e — T1–T7 (r1_tests.correr_tests importado) + I3–I5 (r1_invariantes) sobre los cuatro grafos; compara con los sellados
+bf2f1e8dac1d941a02f6fdb46d91d7b9503b66835094da0431dd25938161d4c9  sonda_T1_T7_cuatro_grafos_UB21_salida.txt  — salida: matriz pass por grafo; r1 recomputado == sellado (dict completo)
+161c6e86253ec19148779af5322546994654159d7f25edc74825fad6c9c2a390  sonda_anclas_C1_C7_UB21.py  — pieza e — anclas de C1–C7 y BKL-0024/0025 direccionadas sin id (archivo, punto ∈ provenances, tipo, cadena) más chequeo por id
+33e7a0a2285ee32e5df2c4f7e384cad39b17b7c6bfc9f7595e6bcb5607f451d5  sonda_anclas_C1_C7_UB21_salida.txt  — salida: 26 comprobaciones por grafo y matriz
+0e507c184b4cd130c929e71a914063476e582324638c72c3aa73cb659682370f  sonda_ranks_buscar_nodos_UB21.py  — pieza e (tercera) — ranks en buscar_nodos con GraphIndex in-memory (harness.py importado) para 27 consultas selladas + posición en ver_vecinos (C4 e)
+414d3fc42f27d0e20e85122c9d18d7e1669f875785a627cb73d814797e829241  sonda_ranks_buscar_nodos_UB21_salida.txt  — salida: KG-Refinado 27/27 coincide; línea de base observada en los otros tres
+
+## Cómo se corrió (desde la raíz del repo)
+PYTHONDONTWRITEBYTECODE=1 python3 reports/revision_UB21_diag/estado_backlog_B21_fase1.py > reports/revision_UB21_diag/estado_backlog_B21_fase1_salida.txt
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21.py > reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt
+PYTHONDONTWRITEBYTECODE=1 python3 reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py > reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21_salida.txt
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 reports/revision_UB21_diag/sonda_ranks_buscar_nodos_UB21.py > reports/revision_UB21_diag/sonda_ranks_buscar_nodos_UB21_salida.txt
+
+## Determinismo: segunda corrida de los cuatro scripts al scratchpad y cmp contra las salidas guardadas
+cmp: byte-idéntico  estado_backlog_B21_fase1_salida.txt
+cmp: byte-idéntico  sonda_T1_T7_cuatro_grafos_UB21_salida.txt
+cmp: byte-idéntico  sonda_anclas_C1_C7_UB21_salida.txt
+cmp: byte-idéntico  sonda_ranks_buscar_nodos_UB21_salida.txt
+
+## Recuento por columna de la matriz de anclas (parseo de ancho fijo: check [0:46], columnas de 18)
+checks: 26
+KG-Base            PASS=2 FAIL=14 N/A=10  (FAIL en: …)
+KG-Refinado        PASS=25 FAIL=1 N/A=0  (FAIL en: ['C4.8_padre_sugerido_flaggeadas(gen3)'])
+KG-Reextraido      PASS=10 FAIL=13 N/A=3  (FAIL en: …)
+KG-Reextraido-r1   PASS=12 FAIL=11 N/A=3  (FAIL en: …)
+
+## Estado del árbol de trabajo (git status --short)
+ M docs/plan_tesis.md
+?? adjudicar.py
+?? reports/revision_UB21_diag/
+
+## __pycache__ / .pyc nuevos en el repo tras todas las corridas (diff contra la línea de base tomada antes de correr nada)
+sin .pyc nuevos (2213 preexistentes, todos bajo __pycache__/ ignorado por .gitignore:2)
+
+## Grep de convenciones sobre el directorio (CLAUDE.md §5: cero nombres propios, decisiones sin origen conversacional; excluye este manifest, que contiene los patrones)
+$ grep -rniwE 'slack|e-?mail|correo|whatsapp|mentor|tutor|profesor|director|reunión' --exclude=manifest.txt reports/revision_UB21_diag/ | wc -l
+0
+$ grep -rniE 'según (dijo|me |comentó)|@[a-z]' --exclude=manifest.txt reports/revision_UB21_diag/ | wc -l
+0
+$ grep -rci <nombre, apellido y usuario de mail de la autora; patrón no transcripto para no escribirlos> reports/revision_UB21_diag/ (suma de coincidencias)
+0
