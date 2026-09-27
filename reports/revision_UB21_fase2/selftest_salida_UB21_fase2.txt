@@ -1,0 +1,92 @@
+$ PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_regression_kg.py   # python3 = Python 3.12.13; corrida del cierre, fixture 696f3f94…
+  OK   adaptador gen2: anclas desde location «Punto 1.2.» + additional_provenance — {('TO_capitales_minimos_actual.pdf', '1.2'), ('TO_clasificacion_deudores_actual.pdf', '6.5.2')}
+  OK   adaptador gen3: anclas desde provenances[].archivo/punto — {('TO_capitales_minimos_actual.pdf', '1.2')}
+  OK   adaptador: formato detectado gen2 / gen3
+  OK   adaptador: provenances() nunca usa solo provenance[0]
+  OK   adaptador: cuarentena booleana True → True
+  OK   adaptador: cuarentena cadena "true" → True
+  OK   adaptador: cuarentena "false" / None / False → False
+  OK   adaptador: detectar_generacion
+  OK   F1 pasa: nodo presente por (archivo, punto, tipo, cadena)
+  OK   F1 contraejemplo: cadena ausente → sin nodo
+  OK   F1 contraejemplo: tipo distinto → sin nodo
+  OK   F1: no_contiene excluye
+  OK   F1: acentos y mayúsculas normalizados
+  OK   F2 pasa: ancla (archivo, punto) presente en cualquier provenance
+  OK   F2 pasa: prefijo_punto acepta 6.5.2 para 6.5
+  OK   F2 contraejemplo: punto ausente
+  OK   F2 contraejemplo: 1.2 no es prefijo de 1.25
+  OK   F3 pasa: umbral 5.000 → resuelto
+  OK   F3 contraejemplo: umbral 2.500 → persiste
+  OK   F3: sin umbral → no_aplicable (no PASS vacuo)
+  OK   F3: sin nodo → no_aplicable
+  OK   F4 pasa: arista por id destino
+  OK   F4 pasa: arista por tipo destino
+  OK   F4 contraejemplo: relación ausente
+  OK   F4 contraejemplo: destino de otro tipo
+  OK   F5 pasa: rank 1-based del primer id objetivo
+  OK   F5 contraejemplo: objetivo fuera de la ventana pedida → None
+  OK   F5: el limite declarado ≥ rank esperado lo hace visible (bancos 13)
+  OK   F5: tope 50 del harness
+  OK   F5: coincide_sellado con rank numérico
+  OK   F5: limite 13 declarado → en ventana y coincide
+  OK   F5: esperado None = fuera del top-10 → coincide si ausente
+  OK   F5 contraejemplo: esperado None pero rank 2 → no coincide
+  OK   F5: alcanzabilidad cuenta solo objetivos con rank sellado numérico
+  OK   F5 contraejemplo: objetivo fuera de ventana → alcanzabilidad falla
+  OK   T7 laudada: subclase_de desde propuesto a catálogo → pasa — []
+  OK   T7 flaggeada: subclase_de desde propuesto → falla
+  OK   T7 flaggeada: padre_sugerido a catálogo → pasa (41/41 en r1)
+  OK   T7: cuarentena cadena "true" (gen 3) → pasa
+  OK   T7: cuarentena booleana True (gen 2) → pasa (sin los 11 falsos FAIL)
+  OK   T7 contraejemplo: cuarentena "false" → «sin cuarentena=true»
+  OK   T7 contraejemplo: padre_sugerido fuera de catálogo + Sujeto fuera de catálogo
+  OK   T7 laudada contraejemplo: subclase_de a id fuera de catálogo → falla
+  OK   T7: sin Sujetos → no_aplicable (vacuo)
+  OK   BKL-0019 laudada: subclase_de presente en todos los presentes → resuelto
+  OK   BKL-0019 flaggeada: sin padre_sugerido → persiste
+  OK   BKL-0019: ninguno de los 8 presente → no_aplicable
+  OK   T4: la referencia excluye cuarentena_laudada (4 relaciones de esqueleto → 3 triplas)
+  OK   T4: la referencia pasa contra sí misma (KG-Refinado 90 → 82)
+  OK   T4: grafo sin la laudada pasa igual (r1: 82)
+  OK   T4 contraejemplo: falta una tripla de esqueleto → falla
+  OK   T4 contraejemplo: tripla de esqueleto de más (no laudada) → falla por conteo
+  OK   T4 contraejemplo: falta un nodo de esqueleto
+  OK   T4 vía Contexto: resuelto
+  OK   T4: grafo sin ninguna arista de esqueleto → no_aplicable
+  OK   T5 pasa: arista referencia localizada por anclas + evidencia
+  OK   T5 contraejemplo: misma tripla con otra evidencia → persiste
+  OK   T5: sin aristas referencia con evidencia → no_aplicable
+  OK   I3 contraejemplo: ids y triplas duplicados → persiste
+  OK   I3 pasa
+  OK   I4 pasa
+  OK   I4 contraejemplo: arista colgante → persiste
+  OK   I5 pasa (gen 2 con solo `provenance`, gen 3 con `provenances`)
+  OK   I5 contraejemplo: nodo sin provenance → persiste
+  OK   E4-a6 pasa: alias_resueltos re-resuelve a su portador; propuesto ambiguo sigue en cuarentena
+  OK   E4-a6 contraejemplo: alias resuelto que re-resuelve ambiguo → persiste
+  OK   E4-a1 contraejemplo: propuesto resoluble por label_exacto no resuelto → persiste
+  OK   E4-a1 pasa: sin propuestos resolubles
+  OK   E4-a1: sin propuestos → no_aplicable
+  OK   regresión: estado medido ≠ esperado cuenta como regresión
+  OK   regresión: «persiste» esperado no es fallo; null = NO VERIFICADA no computa
+  OK   regresión: código de salida 1 con regresión, 0 sin ella
+  OK   regresión: ranks sellados esperados que no coinciden → regresión RANKS_SELLADOS
+  OK   partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10
+  OK   los 4 no convertibles tienen estado fijo no_aplicable
+  OK   los cinco verificado sin evento de aplicación llevan la nota
+  OK   todo test declara forma, direccionamiento y evidencia con path
+  OK   end-to-end: regresión contra fixture sintética → código de salida 1 — rc=1
+  OK   end-to-end: --out escribe .md y .json
+  OK   end-to-end: la salida registra la regresión I4 y la NO VERIFICADA I5
+  OK   end-to-end: sin --esperado no computa regresión → 0
+  OK   end-to-end: fixture coincidente → 0
+  OK   end-to-end: entrada de línea de base observada no computa regresión → 0
+  OK   end-to-end: parámetros distintos de la fixture → no computa, código 2
+  OK   end-to-end: --generacion contradice el formato detectado → SystemExit
+
+selftest_regression_kg: 85/85 casos OK
+exit: 0
+
+$ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 scripts/selftest_regression_kg.py | tail -1   # Python 3.10.13
+selftest_regression_kg: 85/85 casos OK

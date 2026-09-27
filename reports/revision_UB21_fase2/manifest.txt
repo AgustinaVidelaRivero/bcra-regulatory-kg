@@ -1,0 +1,71 @@
+manifest.txt — paquete de revisión revision_UB21_fase2/ (U-B2.1 fase 2, regression suite), 2026-09-27, estado al cierre con las decisiones 3 y 4 de la autora. sha256 (shasum -a 256) y una línea por archivo.
+Archivos del repo (nuevos, sin commit):
+  87a57b6d80d443a325a53bdf0ed83b06029812a1e7a9608f52c203831d2b4edb  scripts/regression_kg.py
+  728985c820041e3db045b1ace260d9e4b1d40b9a1e1ebbec80faf6bc2093e922  scripts/selftest_regression_kg.py
+  696f3f941e0d64c3a2def37159d45f7814b546f9d461f6727f43db3eda160f5e  scripts/regression_kg_esperado.json
+
+Archivos del paquete (32):
+58a5abd264a04e33d273a53591b83699037e270401634f4e3468211e0239d984  aplicar_decisiones_cierre_UB21_fase2.py
+    auxiliar que aplicó las decisiones 3 (T2 de KG-Refinado a esperado con lo medido) y 4 (línea de base → esperado por observación) sobre la fixture, verificando que nada más cambiara
+f921cb3eabf9d4086fb43d53082ea9e6f1cd33b4aca4f966c9ec61740c9b7d95  aplicar_decisiones_cierre_UB21_fase2_salida.txt
+    salida de la aplicación de 3 y 4: sha antes 61dc48c1… / después 696f3f94…, conteos por grafo, verificación
+52ebe529ef79c89b565c9cab1fdf574bb57222d19c850ff4d525b6686e8a23b7  corrida_KG-Base_stdout_UB21_fase2.txt
+    stdout de la corrida final sobre KG-Base
+73d29050aa78933d901ce9e5c3fa3cf86c557f7948af23bd83dd1e725016fc29  corrida_KG-Reextraido_stdout_UB21_fase2.txt
+    stdout de la corrida final sobre KG-Reextraído
+eed14917b000302ce6c144091665f693c6a1b9a80e51f1fcd5bf67354bcea9e2  corrida_KG-Refinado_stdout_UB21_fase2.txt
+    stdout de la corrida final sobre KG-Refinado
+e7620559c0c512cd2e0da0df553803368748a2fd2d9b060fcd3a34e15e8de246  corrida_r1_stdout_UB21_fase2.txt
+    stdout de la corrida final sobre r1 (rutas del scratchpad reemplazadas por <scratchpad>)
+71d674e1ca837f4871c1df7d60537d15a792ace87cb8be4d470eb1a2365981d7  cotejo_T1_T7_r1_vs_sellado_UB21_fase2.py
+    script del cotejo de batería 1 (valores T1–T7 de la suite vs tests_respuesta_conocida_r1.json), sin rutas absolutas
+34ee17cf04d14a6f0860df52c62bd1d9099cf0debb18080c09b8dea40994aa7c  cotejo_T1_T7_r1_vs_sellado_UB21_fase2.txt
+    salida del cotejo: 28/28 campos iguales; C2 persiste, C7 resuelto; cláusula de mutuales ausente en r1 (byte-idéntica al recomputarla sobre el JSON final)
+3ef2f9f2e4b01c400535d8670ce22c2a62c1b58f8ad8e03d0cc4363ef79c5a29  determinismo_doble_corrida_r1_UB21_fase2.txt
+    batería 5: cmp y sha256 de las dobles corridas sobre r1 (par A contra la fixture 8d77…, par B contra la 61dc…), byte-idénticas; la repetición sobre la fixture final 696f… también fue byte-idéntica (7f52a9d2…)
+2052a10f8e7bff5d8dc80890360060e21823c10d80bffb4a7e522980391f92cf  determinismo_r1_corridaA1_fixture8d77_UB21_fase2.json
+    corrida A1 sobre r1 contra la fixture en su estado A (antes de registrar f.2)
+820ed9797f075e2d3cd0aed84ebb0f5d3227b6274c97e44b704dda7a16f1d752  determinismo_r1_corridaA1_fixture8d77_UB21_fase2.md
+    reporte .md de la corrida A1
+2052a10f8e7bff5d8dc80890360060e21823c10d80bffb4a7e522980391f92cf  determinismo_r1_corridaA2_fixture8d77_UB21_fase2.json
+    corrida A2 (byte-idéntica a A1)
+820ed9797f075e2d3cd0aed84ebb0f5d3227b6274c97e44b704dda7a16f1d752  determinismo_r1_corridaA2_fixture8d77_UB21_fase2.md
+    reporte .md de la corrida A2
+b5188d5d356248137828a7dcf28f34595fd8dcd4022fe1d5bcac069a8dadea14  determinismo_r1_corridaB2_fixture61dc_UB21_fase2.json
+    corrida B2 sobre r1 contra la fixture 61dc… (byte-idéntica a la B1 de entonces)
+2a9403be0be082c452e5c81f8425770493927a06f7ed7b92f514fee3e583f450  determinismo_r1_corridaB2_fixture61dc_UB21_fase2.md
+    reporte .md de la corrida B2
+2c8fe8327074fe928b69cc2df84ca6fb1e0f82eb88e4cf4b07151888af76f764  diff_tres_archivos_nuevos_UB21_fase2.diff
+    git diff --no-index /dev/null de los tres archivos nuevos en el estado previo al cierre (la fixture cambió después por las decisiones 3 y 4: ver la copia final y aplicar_decisiones_cierre_*)
+09574d28d9c8a8df7b823f0b9cf69d22b7aa662f50a5ce938b5792e8c49a0b49  estado_arbol_UB21_fase2.txt
+    git status, git diff --stat, ls, chequeos de .pyc contra la línea de base (tres momentos), sha256 de las zonas selladas leídas, HEAD y la modificación ajena de docs/plan_tesis.md (usuario del sistema reemplazado por <usuario>)
+14046af94eae788ce166c3c0eab8a9b73551f345b75227ea2c40477bf4f24bc4  fixture_sha256_antes_despues_UB21_fase2.txt
+    sha256 de la fixture en A (antes de la primera corrida), B (tras f.2), C (tras la última corrida de la batería) y D (tras las decisiones 3 y 4 del cierre, con fecha); subárbol estado_esperado en cada momento
+35e0691b4207bc61e017f74c3ecf46734e0fcb26e248420c2e1ef6beafeeda20  grep_convenciones_UB21_fase2.txt
+    grep de convenciones sobre el paquete y los tres archivos nuevos, con los comandos y sus salidas (todo en cero)
+f3326030febcf44ce099c2541ba35dfe32c155b574f9fef327eaca76aed363bb  pyc_linea_base_inicio_unidad_UB21_fase2.txt
+    línea de base de __pycache__/.pyc tomada al inicio de la unidad (286 entradas), contra la que se comparó al cierre
+10ce83f218781b4d3c668241e601dda26e9e176b29a69ee1ba6eecaec1a5f0de  registrar_linea_base_observada_UB21_fase2.py
+    auxiliar que registró la parte f.2 desde los JSON de KG-Base y KG-Reextraído (idempotente; verificaba que f.1 no cambiara), sin rutas absolutas
+a27899669f33e643d0e58837a1fd0979ece31c0a46d4866ba71d8cdbe8c6a593  registro_linea_base_observada_UB21_fase2.txt
+    salida del registro de f.2 (sha del subárbol f.1 antes/después iguales; sha B de la fixture)
+460d2f2c36d330326552583d0c2847812a3809a068e0f84c0207fe7e2ab4c520  regression_KG-Base_UB21_fase2.json
+    JSON del reporte anterior
+b30c094ca5a2e6b9e64d9bc4a7f3455158eeb989e605078a79e9a23a77dcbcdd  regression_KG-Base_UB21_fase2.md
+    reporte final sobre KG-Base run_3 (gen 2 de provenance, v2, laudada); 7/13/26, 0 regresiones contra el esperado por observación
+7a6a31b320697b77f9dd8f23efba99e2e6fa0feff3cab6d9102c5a4f823d2196  regression_KG-Reextraido_UB21_fase2.json
+    JSON del reporte anterior
+0243ac5df33c5cadbbd38897daa30ceef759d960b9e5c510fb758a2404a7d299  regression_KG-Reextraido_UB21_fase2.md
+    reporte final sobre KG-Reextraído salida (gen 3, v2, flaggeada); 16/19/11, 0 regresiones contra el esperado por observación
+e04b42bab003b188703777a6a5df22821f3f635dbc7c44c158da00685db2b06c  regression_KG-Refinado_UB21_fase2.json
+    JSON del reporte anterior
+f6a6b4b93f654eeb519e897d26e3eaed3b2a8b37ce54de275a93d2eef033020f  regression_KG-Refinado_UB21_fase2.md
+    reporte final sobre KG-Refinado (gen 2, v2, laudada; esqueleto de referencia = él mismo); 37/0/9, 27/27 y 75/75 ranks sellados, 0 regresiones (T2 ya esperado)
+696f3f941e0d64c3a2def37159d45f7814b546f9d461f6727f43db3eda160f5e  regression_kg_esperado_fixture_final_UB21_fase2.json
+    copia de cortesía de scripts/regression_kg_esperado.json en su estado final (sha256 696f3f94…; T2 y la línea de base promovidas a esperado)
+7f52a9d2b02e04ebe74c76f365279c40d07b737561a75a6692d49d3ed2b346a2  regression_r1_UB21_fase2.json
+    JSON del reporte anterior (ítems con subchecks, valores y ranks; regresión 0)
+3dff030737188bf84f009fd82fdcc199adc730892fe8906629dc42f37b3dfb76  regression_r1_UB21_fase2.md
+    reporte final de la suite sobre KG-Reextraído-r1 (gen 3, catálogo v2, flaggeada) contra la fixture 696f3f94…; 27/10/9, 0 regresiones
+16c8d1017840fb49209312f92f0143804f3c16fbb83660af5fb5576947cc678f  selftest_salida_UB21_fase2.txt
+    batería 6: salida completa de scripts/selftest_regression_kg.py al cierre, con python3 3.12 (85/85) y .venv 3.10 (85/85)

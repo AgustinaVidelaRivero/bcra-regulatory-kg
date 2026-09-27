@@ -1,0 +1,15 @@
+sha256 de la fixture en tres momentos (pieza f):
+  A antes de la primera corrida (f.1 completa, f.2 placeholder): 8d77f8aa8306ae4a97cbc8be1dc88a9778d1eb3c21e08b4e0f990d4c2d14f9e6  (registro: corrida_*_stdout de la primera tanda y determinismo par A)
+  B tras registrar f.2 (registro_linea_base_observada_UB21_fase2.txt): 61dc48c1ff3cfe364227034c2f881010262f135748515b2c03219d5b439fcbea
+  C después de la última corrida: 61dc48c1ff3cfe364227034c2f881010262f135748515b2c03219d5b439fcbea
+  subárbol estado_esperado (f.1), canónico, ahora: b1d458bc34f5ab23d6c1bfc4951674d21d809d4d8295e070f1de05ebcd38e90b
+  subárbol estado_esperado (f.1) en A (salida de la escritura de la fixture): b1d458bc34f5ab23d6c1bfc4951674d21d809d4d8295e070f1de05ebcd38e90b
+  Lectura: B == C (la fixture no cambió después de la última corrida); A != B únicamente por la parte f.2, registrada después de correr como manda la pieza f.2; el subárbol f.1 es idéntico en A, B y C.
+
+Cierre de U-B2.1 fase 2 (2026-09-27), decisiones 3 y 4 de la autora aplicadas con aplicar_decisiones_cierre_UB21_fase2.py (salida en aplicar_decisiones_cierre_UB21_fase2_salida.txt):
+  (3) T2 de KG-Refinado: null (NO VERIFICADA) → resuelto, con la evidencia de la corrida de la suite (5 nodos, 5 puntos distintos ['3.17','3.5','7.11','7.5','7.8']; el freno anterior transcribió por error «4 puntos»).
+  (4) KG-Base y KG-Reextraído: de linea_de_base_observada a estado_esperado, cada valor rotulado «esperado por observación», sin evidencia independiente.
+  D sha256 de la fixture tras 3 y 4 (2026-09-27): 696f3f941e0d64c3a2def37159d45f7814b546f9d461f6727f43db3eda160f5e
+  subárbol estado_esperado (canónico) tras 3 y 4: 69b463852be6c1e7faba2aeae55a4cd3e04c78064527fb287bf4aac84cf64355
+  Verificación (script de aplicación): r1 intacto; KG-Refinado intacto salvo T2; las dos entradas nuevas copian los estados de regression_KG-Base_UB21_fase2.json y regression_KG-Reextraido_UB21_fase2.json.
+  Corrida final de los cuatro grafos con --esperado contra D: 0 regresiones en los cuatro (corrida_*_stdout_UB21_fase2.txt); selftest 85/85.

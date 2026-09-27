@@ -1,0 +1,20 @@
+Determinismo (batería 5): doble corrida sobre r1, mismos argumentos (gen 3, catálogo v2, flaggeada, esqueleto-referencia KG-Refinado).
+Par A: corridas A1 y A2 contra la fixture en su estado A (sha256 8d77f8aa…, antes de registrar f.2). Par B: corridas B1 (= regression_r1_UB21_fase2) y B2 contra la fixture final (sha256 61dc48c1…).
+
+$ cmp determinismo_r1_corridaA1_fixture8d77_UB21_fase2.json determinismo_r1_corridaA2_fixture8d77_UB21_fase2.json
+(sin salida: byte-idénticos)
+$ cmp regression_r1_UB21_fase2.json determinismo_r1_corridaB2_fixture61dc_UB21_fase2.json
+(sin salida: byte-idénticos)
+$ cmp regression_r1_UB21_fase2.md determinismo_r1_corridaB2_fixture61dc_UB21_fase2.md
+(sin salida: byte-idénticos)
+$ shasum -a 256
+2052a10f8e7bff5d8dc80890360060e21823c10d80bffb4a7e522980391f92cf  determinismo_r1_corridaA1_fixture8d77_UB21_fase2.json
+2052a10f8e7bff5d8dc80890360060e21823c10d80bffb4a7e522980391f92cf  determinismo_r1_corridaA2_fixture8d77_UB21_fase2.json
+b5188d5d356248137828a7dcf28f34595fd8dcd4022fe1d5bcac069a8dadea14  regression_r1_UB21_fase2.json
+b5188d5d356248137828a7dcf28f34595fd8dcd4022fe1d5bcac069a8dadea14  determinismo_r1_corridaB2_fixture61dc_UB21_fase2.json
+2a9403be0be082c452e5c81f8425770493927a06f7ed7b92f514fee3e583f450  regression_r1_UB21_fase2.md
+2a9403be0be082c452e5c81f8425770493927a06f7ed7b92f514fee3e583f450  determinismo_r1_corridaB2_fixture61dc_UB21_fase2.md
+
+Nota: los pares A y B difieren entre sí solo en el campo regresion.fixture_sha256 (8d77… contra 61dc…), porque la fixture incorporó la parte f.2 entre ambos; el subárbol estado_esperado es el mismo (b1d458bc…).
+$ diff <(jq 'del(.regresion.fixture_sha256)' A1) <(jq 'del(.regresion.fixture_sha256)' B1)  — equivalente en python:
+A1 == B1 salvo fixture_sha256: True
