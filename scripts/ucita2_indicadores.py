@@ -51,6 +51,23 @@ consecutivas producen un JSON byte-idéntico.
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py --selftest
   PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py
+
+Parametrización (gate 6 de la fase 2 de B6.0; extensión aditiva). Sin
+argumentos el comportamiento es idéntico al descripto arriba. Argumentos
+nuevos, cada uno con default igual a la constante que reemplaza:
+  --gold RUTA · --manifiesto RUTA · --e0 DIRECTORIO · --trazas DIRECTORIO ·
+  --tandas T1 [T2 ...] · --out-json RUTA · --out-md RUTA
+Los TOs se leen del manifiesto (ids ordenados alfabéticamente). Los candados
+de sha de insumos (SHA_ESPERADOS) y de digest de tandas (DIGEST_ESPERADOS)
+rigen solo cuando gold, manifiesto, e0, trazas y tandas son los defaults; con
+argumentos distintos el JSON registra el sha256 de cada insumo y el digest de
+cada tanda como «medido, sin esperado» y no frena por ellos (el harness
+congelado se verifica siempre: no es un parámetro). La conciliación con las
+cifras de U-CITA rige solo con las tandas default; con otras, la sección se
+emite vacía y rotulada «sin conciliación», y los conteos descriptivos por
+tanda van en `resumen_por_tanda`. En modo parametrizado el JSON suma la clave
+`parametrizacion` (argumentos resueltos, sha256 del script, régimen de
+candados y de conciliación); en modo default no se agrega ninguna clave.
 """
 
 from __future__ import annotations
@@ -138,36 +155,79 @@ def sha256_file(p: Path) -> str:
     return h.hexdigest()
 
 
-def archivos_tanda(tanda: str) -> list:
-    return sorted((TRAZAS_DIR / tanda).glob("EV2F-*.json"), key=lambda p: p.name)
+def archivos_tanda(tanda: str, trazas_dir: Path = TRAZAS_DIR) -> list:
+    return sorted((trazas_dir / tanda).glob("EV2F-*.json"), key=lambda p: p.name)
 
 
-def digest_tanda(tanda: str) -> str:
+def digest_tanda(tanda: str, trazas_dir: Path = TRAZAS_DIR) -> str:
     h = hashlib.sha256()
-    for p in archivos_tanda(tanda):
+    for p in archivos_tanda(tanda, trazas_dir):
         h.update(f"{sha256_file(p)}  {p.name}\n".encode("utf-8"))
     return h.hexdigest()
 
 
-def verificar_insumos(momento: str) -> dict:
-    """Recalcula los sha de la decisión 2; aborta ante cualquier diferencia."""
-    res, fallas = {}, []
-    for clave, (ruta, esperado) in SHA_ESPERADOS.items():
-        obtenido = sha256_file(ruta)
-        res[clave] = {"ruta": str(ruta.relative_to(REPO)), "sha256_esperado": esperado, "sha256": obtenido}
-        if obtenido != esperado:
-            fallas.append(f"{clave} ({ruta.relative_to(REPO)}): esperado {esperado}, obtenido {obtenido}")
-    for tanda, esperado in DIGEST_ESPERADOS.items():
-        obtenido = digest_tanda(tanda)
-        res[f"digest_{tanda}"] = {"ruta": str((TRAZAS_DIR / tanda).relative_to(REPO)),
-                                  "sha256_esperado": esperado, "sha256": obtenido,
-                                  "n_archivos": len(archivos_tanda(tanda))}
-        if obtenido != esperado:
-            fallas.append(f"digest {tanda}: esperado {esperado}, obtenido {obtenido}")
-    if fallas:
-        raise SystemExit(f"ABORTO ({momento}): sha de insumos distintos de la decisión 2:\n  "
-                         + "\n  ".join(fallas))
-    print(f"[sha {momento}] {len(res)} insumos (8 archivos + 4 digests de tanda) coinciden con la decisión 2: OK")
+def _ruta_legible(p: Path) -> str:
+    """Ruta relativa al repo cuando está adentro; absoluta si no (scratchpad)."""
+    try:
+        return str(p.resolve().relative_to(REPO))
+    except ValueError:
+        return str(p.resolve())
+
+
+def _tos_del_manifiesto(manifiesto_path: Path) -> tuple:
+    m = json.loads(manifiesto_path.read_text(encoding="utf-8"))
+    return tuple(sorted(t["id"] for t in m["tos"]))
+
+
+def verificar_insumos(momento: str, cfg: dict | None = None) -> dict:
+    """Recalcula los sha de la decisión 2; aborta ante cualquier diferencia.
+
+    Con `cfg` en modo parametrizado (algún insumo o la lista de tandas distinta
+    del default) los sha y digests se MIDEN y se registran sin esperado; solo
+    el harness congelado conserva su candado (no es un parámetro)."""
+    if cfg is None or cfg["modo_default"]:
+        res, fallas = {}, []
+        for clave, (ruta, esperado) in SHA_ESPERADOS.items():
+            obtenido = sha256_file(ruta)
+            res[clave] = {"ruta": str(ruta.relative_to(REPO)), "sha256_esperado": esperado, "sha256": obtenido}
+            if obtenido != esperado:
+                fallas.append(f"{clave} ({ruta.relative_to(REPO)}): esperado {esperado}, obtenido {obtenido}")
+        for tanda, esperado in DIGEST_ESPERADOS.items():
+            obtenido = digest_tanda(tanda)
+            res[f"digest_{tanda}"] = {"ruta": str((TRAZAS_DIR / tanda).relative_to(REPO)),
+                                      "sha256_esperado": esperado, "sha256": obtenido,
+                                      "n_archivos": len(archivos_tanda(tanda))}
+            if obtenido != esperado:
+                fallas.append(f"digest {tanda}: esperado {esperado}, obtenido {obtenido}")
+        if fallas:
+            raise SystemExit(f"ABORTO ({momento}): sha de insumos distintos de la decisión 2:\n  "
+                             + "\n  ".join(fallas))
+        print(f"[sha {momento}] {len(res)} insumos (8 archivos + 4 digests de tanda) coinciden con la decisión 2: OK")
+        return res
+
+    # Modo parametrizado: medido, sin esperado (salvo el harness congelado).
+    res = {}
+    archivos = {"gold": cfg["gold"], "manifiesto": cfg["manifiesto"]}
+    for to in cfg["tos"]:
+        archivos[f"e0_{to}"] = cfg["e0"] / f"estructura_{to}.json"
+    for clave, ruta in archivos.items():
+        res[clave] = {"ruta": _ruta_legible(ruta), "sha256_esperado": None, "sha256": sha256_file(ruta),
+                      "estado": "medido, sin esperado"}
+    esperado_h = SHA_ESPERADOS["harness"][1]
+    obtenido_h = sha256_file(HARNESS_PATH)
+    res["harness"] = {"ruta": str(HARNESS_PATH.relative_to(REPO)), "sha256_esperado": esperado_h,
+                      "sha256": obtenido_h, "estado": "candado vigente (harness congelado, no parametrizable)"}
+    if obtenido_h != esperado_h:
+        raise SystemExit(f"ABORTO ({momento}): harness congelado con sha256 distinto del esperado: {obtenido_h}")
+    for tanda in cfg["tandas"]:
+        n = len(archivos_tanda(tanda, cfg["trazas"]))
+        if n == 0:
+            raise SystemExit(f"ABORTO ({momento}): la tanda {tanda!r} no tiene archivos EV2F-*.json en {cfg['trazas']}")
+        res[f"digest_{tanda}"] = {"ruta": _ruta_legible(cfg["trazas"] / tanda), "sha256_esperado": None,
+                                  "sha256": digest_tanda(tanda, cfg["trazas"]), "n_archivos": n,
+                                  "estado": "medido, sin esperado"}
+    print(f"[sha {momento}] modo parametrizado: {len(archivos)} archivos + {len(cfg['tandas'])} digests de tanda "
+          f"medidos sin esperado; harness congelado verificado: OK")
     return res
 
 
@@ -220,18 +280,24 @@ def cargar_indice(ruta: Path) -> dict:
             "profundidad_max": prof, "archivo": e.get("archivo"), "to": e.get("to")}
 
 
-def cargar_contexto(cita_fiel, norm_loc) -> dict:
-    m = json.loads(MANIFIESTO_PATH.read_text(encoding="utf-8"))
+def cargar_contexto(cita_fiel, norm_loc, cfg: dict | None = None) -> dict:
+    manifiesto_path = MANIFIESTO_PATH if cfg is None else cfg["manifiesto"]
+    e0_dir = E0_DIR if cfg is None else cfg["e0"]
+    gold_path = GOLD_PATH if cfg is None else cfg["gold"]
+    m = json.loads(manifiesto_path.read_text(encoding="utf-8"))
     doc2to = {t["archivo"]: t["id"] for t in m["tos"]}
     to2doc = {t["id"]: t["archivo"] for t in m["tos"]}
+    # Los TOs se leen del manifiesto (ids ordenados alfabéticamente; con el
+    # manifiesto default coincide con la tupla TOS).
+    tos = tuple(sorted(to2doc))
     indices = {}
-    for to in TOS:
-        idx = cargar_indice(E0_DIR / f"estructura_{to}.json")
+    for to in tos:
+        idx = cargar_indice(e0_dir / f"estructura_{to}.json")
         if idx["archivo"] != to2doc.get(to) or idx["to"] != to:
             raise SystemExit(f"ABORTO: índice E0 de {to} no coincide con el manifiesto "
                              f"({idx['to']!r}, {idx['archivo']!r} vs {to2doc.get(to)!r})")
         indices[to] = idx
-    g = json.loads(GOLD_PATH.read_text(encoding="utf-8"))
+    g = json.loads(gold_path.read_text(encoding="utf-8"))
     gold = {}
     for p in g["preguntas"]:
         anclas = p["gold"]["ancla"]
@@ -242,7 +308,7 @@ def cargar_contexto(cita_fiel, norm_loc) -> dict:
             raise SystemExit(f"ABORTO: {p['id']} ancla {anclas[0]!r} no coincide con to={p['to']!r}")
         gold[p["id"]] = {"ancla": anclas[0], "to": to, "punto": punto}
     return {"manifiesto": doc2to, "indices": indices, "gold": gold,
-            "cita_fiel": cita_fiel, "norm_loc": norm_loc}
+            "cita_fiel": cita_fiel, "norm_loc": norm_loc, "tos": tos}
 
 
 def verificar_anclas(ctx: dict) -> dict:
@@ -438,36 +504,60 @@ def agregar(filas: list) -> dict:
     return out
 
 
+def _contar_tanda(ft: list) -> dict:
+    """Conteos descriptivos de una tanda (los mismos que concilia U-CITA)."""
+    nf = {}
+    for f in ft:
+        if f["citas_no_fundadas"]:
+            nf[f["id"]] = len(f["citas_no_fundadas"])
+    return {"trazas": len(ft),
+            "citas_totales": sum(f["n_citas"] or 0 for f in ft),
+            "citas_parseables": sum(f["n_parseables"] or 0 for f in ft),
+            "respuestas_con_cita_parseable": sum(1 for f in ft if (f["n_parseables"] or 0) > 0),
+            "abstenciones": sum(1 for f in ft if f["grupo"] == "abstencion"),
+            "contenido": sum(1 for f in ft if f["grupo"] == "contenido"),
+            "sin_json": sum(1 for f in ft if f["grupo"] == "sin_json"),
+            "sin_citas": sum(1 for f in ft if f["ind1_cita_fundada"] == SIN_CITAS),
+            "citas_no_fundadas_normalizada": sum(len(f["citas_no_fundadas"]) for f in ft),
+            "citas_no_fundadas_byte_exacta": sum(len(f["citas_no_fundadas_byte_exacta"]) for f in ft),
+            "trazas_con_citas_no_fundadas": nf,
+            "citas_no_existentes": sum(len(f["citas_no_existentes"]) for f in ft),
+            "citas_fuera_de_indice": sum(len(f["citas_fuera_de_indice"]) for f in ft),
+            "citas_no_parseables": sum(len(f["citas_no_parseables"]) for f in ft),
+            "control_ind1_discrepancias": sum(1 for f in ft if not f["control_ind1"]["ok"]),
+            "control_ind1_trazas_con_discrepancia": [f["id"] for f in ft if not f["control_ind1"]["ok"]]}
+
+
 def conciliar(filas: list) -> dict:
+    """Conciliación con las cifras de U-CITA: rige solo con las tandas default."""
     por_tanda, diferencias = {}, []
     for tanda in TANDAS:
         ft = [f for f in filas if f["tanda"] == tanda]
-        nf = {}
-        for f in ft:
-            if f["citas_no_fundadas"]:
-                nf[f["id"]] = len(f["citas_no_fundadas"])
-        c = {"trazas": len(ft),
-             "citas_totales": sum(f["n_citas"] or 0 for f in ft),
-             "citas_parseables": sum(f["n_parseables"] or 0 for f in ft),
-             "respuestas_con_cita_parseable": sum(1 for f in ft if (f["n_parseables"] or 0) > 0),
-             "abstenciones": sum(1 for f in ft if f["grupo"] == "abstencion"),
-             "contenido": sum(1 for f in ft if f["grupo"] == "contenido"),
-             "sin_json": sum(1 for f in ft if f["grupo"] == "sin_json"),
-             "sin_citas": sum(1 for f in ft if f["ind1_cita_fundada"] == SIN_CITAS),
-             "citas_no_fundadas_normalizada": sum(len(f["citas_no_fundadas"]) for f in ft),
-             "citas_no_fundadas_byte_exacta": sum(len(f["citas_no_fundadas_byte_exacta"]) for f in ft),
-             "trazas_con_citas_no_fundadas": nf,
-             "citas_no_existentes": sum(len(f["citas_no_existentes"]) for f in ft),
-             "citas_fuera_de_indice": sum(len(f["citas_fuera_de_indice"]) for f in ft),
-             "citas_no_parseables": sum(len(f["citas_no_parseables"]) for f in ft),
-             "control_ind1_discrepancias": sum(1 for f in ft if not f["control_ind1"]["ok"]),
-             "control_ind1_trazas_con_discrepancia": [f["id"] for f in ft if not f["control_ind1"]["ok"]]}
+        c = _contar_tanda(ft)
         por_tanda[tanda] = c
         for clave, esperados in ESPERADO_UCITA.items():
             if tanda in esperados and c[clave] != esperados[tanda]:
                 diferencias.append({"tanda": tanda, "medida": clave,
                                     "esperado": esperados[tanda], "computado": c[clave]})
     return {"por_tanda": por_tanda, "esperado_ucita": ESPERADO_UCITA, "diferencias": diferencias,
+            "control_ind1_discrepancias_total": sum(c["control_ind1_discrepancias"] for c in por_tanda.values())}
+
+
+SIN_CONCILIACION = "sin conciliación"
+
+
+def sin_conciliacion(tandas: tuple) -> dict:
+    """Sección de conciliación vacía y rotulada, para tandas distintas de las default."""
+    return {"estado": SIN_CONCILIACION,
+            "motivo": f"las cifras de U-CITA (reports/inventario_UCITA.md §4-§5) solo aplican a las tandas "
+                      f"default {list(TANDAS)}; tandas de esta corrida: {list(tandas)}",
+            "por_tanda": {}, "esperado_ucita": {}, "diferencias": []}
+
+
+def resumen_por_tanda(filas: list, tandas: tuple) -> dict:
+    """Conteos descriptivos por tanda (modo parametrizado; sin cifra esperada)."""
+    por_tanda = {tanda: _contar_tanda([f for f in filas if f["tanda"] == tanda]) for tanda in tandas}
+    return {"por_tanda": por_tanda,
             "control_ind1_discrepancias_total": sum(c["control_ind1_discrepancias"] for c in por_tanda.values())}
 
 
@@ -492,19 +582,36 @@ def _fmt_cita(c: dict) -> str:
     return f"`{c.get('source_doc')}` / `{c.get('location')}`"
 
 
-def render_md(datos: dict, sha_json: str) -> str:
+def render_md(datos: dict, sha_json: str, cfg: dict | None = None) -> str:
+    parametrizado = "parametrizacion" in datos
+    tos = sorted(datos["indice_e0"])            # = TOS con el manifiesto default
+    tandas = list(datos["agregados"])           # el JSON en disco está con sort_keys
+    out_json_legible = "reports/ucita2_indicadores.json" if cfg is None else _ruta_legible(cfg["out_json"])
     L = []
-    L += ["# U-CITA-2 — indicadores de exactitud de cita sobre KG-Reextraído-r1",
-          "",
-          "Validación en desarrollo del componente «exactitud de cita» de B6.3: tres",
-          "indicadores determinísticos por respuesta, sin juez ni API (USD 0), sobre las",
-          "cuatro tandas de trazas de `data/experiment/ev2_r1/trazas/`. Se reporta por",
-          "tanda, sin pool; la base es la tabla principal y las tres re-corridas son",
-          "replicación. No es resultado de la tesis, no cruza con veredictos del juez ni",
-          "con atribuciones. Este archivo se deriva de `reports/ucita2_indicadores.json`",
-          "(generado por `scripts/ucita2_indicadores.py`), nunca al revés; los conteos se",
-          "recomputan desde el JSON al renderizar.",
-          "",
+    if not parametrizado:
+        L += ["# U-CITA-2 — indicadores de exactitud de cita sobre KG-Reextraído-r1",
+              "",
+              "Validación en desarrollo del componente «exactitud de cita» de B6.3: tres",
+              "indicadores determinísticos por respuesta, sin juez ni API (USD 0), sobre las",
+              "cuatro tandas de trazas de `data/experiment/ev2_r1/trazas/`. Se reporta por",
+              "tanda, sin pool; la base es la tabla principal y las tres re-corridas son",
+              "replicación. No es resultado de la tesis, no cruza con veredictos del juez ni",
+              "con atribuciones. Este archivo se deriva de `reports/ucita2_indicadores.json`",
+              "(generado por `scripts/ucita2_indicadores.py`), nunca al revés; los conteos se",
+              "recomputan desde el JSON al renderizar."]
+    else:
+        p = datos["parametrizacion"]
+        L += ["# Indicadores de exactitud de cita — corrida parametrizada",
+              "",
+              "Tres indicadores determinísticos por respuesta, sin juez ni API (USD 0), sobre",
+              f"las tandas {', '.join(f'`{t}`' for t in tandas)} de `{p['argumentos']['trazas']}`.",
+              "Se reporta por tanda, sin pool. No es resultado de la tesis, no cruza con",
+              "veredictos del juez ni con atribuciones. Este archivo se deriva de",
+              f"`{out_json_legible}` (generado por `scripts/ucita2_indicadores.py`, sha256",
+              f"`{p['script_sha256']}`), nunca al revés; los conteos se recomputan desde el JSON.",
+              "",
+              f"Régimen de candados: {p['candados']}. Conciliación: {p['conciliacion']}."]
+    L += ["",
           "## 1. Definiciones aplicadas",
           ""]
     for k, v in datos["definiciones"].items():
@@ -513,14 +620,17 @@ def render_md(datos: dict, sha_json: str) -> str:
           "| clave | ruta | sha256 | inicio = cierre |", "|---|---|---|---|"]
     for clave in sorted(datos["insumos"]):
         i = datos["insumos"][clave]
-        igual = "sí" if i["sha256"] == i["sha256_cierre"] == i["sha256_esperado"] else "NO"
+        if i.get("sha256_esperado") is None:
+            igual = "sí (medido, sin esperado)" if i["sha256"] == i["sha256_cierre"] else "NO"
+        else:
+            igual = "sí" if i["sha256"] == i["sha256_cierre"] == i["sha256_esperado"] else "NO"
         extra = f" ({i['n_archivos']} archivos)" if "n_archivos" in i else ""
         L.append(f"| {clave} | `{i['ruta']}`{extra} | `{i['sha256']}` | {igual} |")
     L += ["", "Funciones `_cita_fiel` y `_norm_loc` importadas de `data/experiment/evaluacion/harness.py`",
           "(sin modificarlo; ruta y sha verificados en la importación).", "",
           "## 3. Índice E0 por TO (decisión 5)", "",
           "| TO | archivo | nodos | `numero` distintos | profundidad máxima |", "|---|---|---|---|---|"]
-    for to in TOS:
+    for to in tos:
         i = datos["indice_e0"][to]
         L.append(f"| {to} | `{i['archivo']}` | {i['n_nodos']} | {i['n_numeros_distintos']} | {i['profundidad_max']} |")
     a = datos["anclas_en_indice"]
@@ -529,7 +639,7 @@ def render_md(datos: dict, sha_json: str) -> str:
         L += ["No resueltas: " + ", ".join(f"{x['id']} ({x['ancla']})" for x in a["no_resueltas"])]
 
     L += ["", "## 4. Resultados por tanda (decisión 8: tres tablas por tanda; la de contenido es la principal)"]
-    for k_t, tanda in enumerate(TANDAS, start=1):
+    for k_t, tanda in enumerate(tandas, start=1):
         ag = datos["agregados"][tanda]
         filas = [f for f in datos["filas"] if f["tanda"] == tanda]
         L += ["", f"### 4.{k_t} Tanda `{tanda}` — {len(filas)} trazas", ""]
@@ -571,12 +681,6 @@ def render_md(datos: dict, sha_json: str) -> str:
         L.append(f"- Respuestas `sin_json`: {len(sj)}" + (" — " + ", ".join(sj) if sj else "."))
 
     conc = datos["conciliacion"]
-    L += ["", "## 5. Conciliación con U-CITA (criterios b, c, d)", "",
-          "Cifras previas: `reports/inventario_UCITA.md` §4 (trazas, citas parseables,",
-          "respuestas con cita parseable, abstenciones de la base) y §5 (citas no vistas).",
-          "Las re-corridas no traen cifra previa de abstenciones: se reporta el conteo.", "",
-          "| medida | ev2_r1_base | ev2_r1_enc_r1 | ev2_r1_enc_r2 | ev2_r1_enc_r3 |",
-          "|---|---|---|---|---|"]
     medidas = [("trazas", "trazas"), ("citas_totales", "citas totales"),
                ("citas_parseables", "citas parseables"),
                ("respuestas_con_cita_parseable", "respuestas con ≥ 1 cita parseable"),
@@ -587,27 +691,53 @@ def render_md(datos: dict, sha_json: str) -> str:
                ("citas_no_existentes", "citas no existentes"), ("citas_fuera_de_indice", "citas fuera_de_indice"),
                ("citas_no_parseables", "citas no parseables"),
                ("control_ind1_discrepancias", "control indicador 1: trazas con discrepancia")]
-    for k, nombre in medidas:
-        celdas = []
+    if conc.get("estado") != SIN_CONCILIACION:
+        L += ["", "## 5. Conciliación con U-CITA (criterios b, c, d)", "",
+              "Cifras previas: `reports/inventario_UCITA.md` §4 (trazas, citas parseables,",
+              "respuestas con cita parseable, abstenciones de la base) y §5 (citas no vistas).",
+              "Las re-corridas no traen cifra previa de abstenciones: se reporta el conteo.", "",
+              "| medida | " + " | ".join(TANDAS) + " |",
+              "|---|" + "---|" * len(TANDAS)]
+        for k, nombre in medidas:
+            celdas = []
+            for tanda in TANDAS:
+                v = conc["por_tanda"][tanda][k]
+                esp = ESPERADO_UCITA.get(k, {}).get(tanda)
+                celdas.append(f"{v}" + (f" (U-CITA: {esp})" if esp is not None and esp != v else (" ✓" if esp is not None else "")))
+            L.append(f"| {nombre} | " + " | ".join(celdas) + " |")
+        L += ["", "«✓» = coincide con la cifra de U-CITA; entre paréntesis, la cifra de U-CITA cuando difiere; sin marca, sin cifra previa.", ""]
+        L.append("Trazas con citas no fundadas (normalizada), por tanda:")
         for tanda in TANDAS:
-            v = conc["por_tanda"][tanda][k]
-            esp = ESPERADO_UCITA.get(k, {}).get(tanda)
-            celdas.append(f"{v}" + (f" (U-CITA: {esp})" if esp is not None and esp != v else (" ✓" if esp is not None else "")))
-        L.append(f"| {nombre} | " + " | ".join(celdas) + " |")
-    L += ["", "«✓» = coincide con la cifra de U-CITA; entre paréntesis, la cifra de U-CITA cuando difiere; sin marca, sin cifra previa.", ""]
-    L.append("Trazas con citas no fundadas (normalizada), por tanda:")
-    for tanda in TANDAS:
-        nf = conc["por_tanda"][tanda]["trazas_con_citas_no_fundadas"]
-        L.append(f"- {tanda}: " + (", ".join(f"{k} ({v})" for k, v in sorted(nf.items())) if nf else "ninguna"))
-    L += ["", f"Diferencias con las cifras de U-CITA: {len(conc['diferencias'])}" + ("" if conc["diferencias"] else ".")]
-    for d in conc["diferencias"]:
-        L.append(f"- {d['tanda']} · {d['medida']}: U-CITA {d['esperado']}, computado {d['computado']}")
-    L += ["", f"Control del indicador 1 (recómputo vs. `citations_unseen_normalized` / `citations_unseen_raw` persistidos): "
-          f"**{conc['control_ind1_discrepancias_total']} discrepancias** en {sum(c['trazas'] for c in conc['por_tanda'].values())} trazas."]
+            nf = conc["por_tanda"][tanda]["trazas_con_citas_no_fundadas"]
+            L.append(f"- {tanda}: " + (", ".join(f"{k} ({v})" for k, v in sorted(nf.items())) if nf else "ninguna"))
+        L += ["", f"Diferencias con las cifras de U-CITA: {len(conc['diferencias'])}" + ("" if conc["diferencias"] else ".")]
+        for d in conc["diferencias"]:
+            L.append(f"- {d['tanda']} · {d['medida']}: U-CITA {d['esperado']}, computado {d['computado']}")
+        L += ["", f"Control del indicador 1 (recómputo vs. `citations_unseen_normalized` / `citations_unseen_raw` persistidos): "
+              f"**{conc['control_ind1_discrepancias_total']} discrepancias** en {sum(c['trazas'] for c in conc['por_tanda'].values())} trazas."]
+    else:
+        res = datos["resumen_por_tanda"]
+        L += ["", "## 5. Conciliación con U-CITA: sin conciliación", "",
+              f"{conc['motivo']}.", "",
+              "### 5.1 Resumen descriptivo por tanda (sin cifra esperada)", "",
+              "| medida | " + " | ".join(tandas) + " |",
+              "|---|" + "---|" * len(tandas)]
+        for k, nombre in medidas:
+            L.append(f"| {nombre} | " + " | ".join(str(res["por_tanda"][tanda][k]) for tanda in tandas) + " |")
+        L += ["", "Trazas con citas no fundadas (normalizada), por tanda:"]
+        for tanda in tandas:
+            nf = res["por_tanda"][tanda]["trazas_con_citas_no_fundadas"]
+            L.append(f"- {tanda}: " + (", ".join(f"{k} ({v})" for k, v in sorted(nf.items())) if nf else "ninguna"))
+        L += ["", f"Control del indicador 1 (recómputo vs. `citations_unseen_normalized` / `citations_unseen_raw` persistidos): "
+              f"**{res['control_ind1_discrepancias_total']} discrepancias** en {sum(c['trazas'] for c in res['por_tanda'].values())} trazas."]
+    if cfg is None or cfg["comando"] is None:
+        comando = "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py"
+    else:
+        comando = cfg["comando"]
     L += ["", "## 6. Salidas y reproducción", "",
-          f"- `reports/ucita2_indicadores.json` — sha256 `{sha_json}` (este .md se renderiza desde ese archivo).",
+          f"- `{out_json_legible}` — sha256 `{sha_json}` (este .md se renderiza desde ese archivo).",
           "- Comando (desde la raíz del repo):", "", "```",
-          "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py", "```", "",
+          comando, "```", "",
           "- Selftest de respuesta conocida: `PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py --selftest`.",
           "- Determinismo: el JSON no lleva timestamps; dos corridas consecutivas producen el mismo sha256.",
           ""]
@@ -758,18 +888,24 @@ DEFINICIONES = {
 }
 
 
-def correr() -> int:
-    insumos_inicio = verificar_insumos("inicio")
+def correr(cfg: dict | None = None) -> int:
+    modo_default = cfg is None or cfg["modo_default"]
+    tandas = TANDAS if cfg is None else cfg["tandas"]
+    trazas_dir = TRAZAS_DIR if cfg is None else cfg["trazas"]
+    out_json = OUT_JSON if cfg is None else cfg["out_json"]
+    out_md = OUT_MD if cfg is None else cfg["out_md"]
+
+    insumos_inicio = verificar_insumos("inicio", cfg)
     cita_fiel, norm_loc = importar_harness()
-    ctx = cargar_contexto(cita_fiel, norm_loc)
+    ctx = cargar_contexto(cita_fiel, norm_loc, cfg)
     anclas = verificar_anclas(ctx)
     print(f"[anclas] {anclas['resueltas']} de {anclas['total']} anclas del gold resuelven en el índice E0 de su TO")
     if anclas["no_resueltas"]:
         print("[anclas] NO RESUELTAS: " + ", ".join(f"{x['id']} {x['ancla']}" for x in anclas["no_resueltas"]))
 
     filas = []
-    for tanda in TANDAS:
-        for p in archivos_tanda(tanda):
+    for tanda in tandas:
+        for p in archivos_tanda(tanda, trazas_dir):
             doc = json.loads(p.read_text(encoding="utf-8"))
             tr = doc["trace"]
             meta = doc.get("meta") or {}
@@ -779,37 +915,63 @@ def correr() -> int:
             filas.append(evaluar_traza(tanda, tr, ctx))
     filas.sort(key=lambda f: (f["tanda"], f["id"]))
     agregados = agregar(filas)
-    conc = conciliar(filas)
-    insumos_cierre = verificar_insumos("cierre")
+    concilia = tuple(tandas) == TANDAS          # la conciliación rige solo con las tandas default
+    conc = conciliar(filas) if concilia else sin_conciliacion(tuple(tandas))
+    insumos_cierre = verificar_insumos("cierre", cfg)
 
     insumos = {}
     for k, v in insumos_inicio.items():
         insumos[k] = dict(v)
         insumos[k]["sha256_cierre"] = insumos_cierre[k]["sha256"]
+    if not modo_default:
+        cambiados = [k for k in insumos if insumos[k]["sha256"] != insumos[k]["sha256_cierre"]]
+        if cambiados:
+            raise SystemExit(f"ABORTO: insumos modificados durante la corrida (inicio ≠ cierre): {cambiados}")
+    if modo_default:
+        descripcion = ("Indicadores determinísticos de exactitud de cita sobre las 112 trazas de KG-Reextraído-r1 "
+                       "(ev2_r1: base 40, enc_r1 24, enc_r2 24, enc_r3 24), por tanda, sin juez ni API.")
+    else:
+        n_por_tanda = ", ".join(f"{t} {sum(1 for f in filas if f['tanda'] == t)}" for t in tandas)
+        descripcion = (f"Indicadores determinísticos de exactitud de cita sobre {len(filas)} trazas "
+                       f"({n_por_tanda}), por tanda, sin juez ni API. Corrida parametrizada: ver `parametrizacion`.")
     salida = {
         "unidad": "U-CITA-2",
-        "descripcion": "Indicadores determinísticos de exactitud de cita sobre las 112 trazas de KG-Reextraído-r1 "
-                       "(ev2_r1: base 40, enc_r1 24, enc_r2 24, enc_r3 24), por tanda, sin juez ni API.",
+        "descripcion": descripcion,
         "script": "scripts/ucita2_indicadores.py",
         "definiciones": DEFINICIONES,
         "insumos": insumos,
-        "indice_e0": {to: {k: v for k, v in ctx["indices"][to].items() if k != "numeros"} for to in TOS},
+        "indice_e0": {to: {k: v for k, v in ctx["indices"][to].items() if k != "numeros"} for to in ctx["tos"]},
         "anclas_en_indice": anclas,
         "conciliacion": conc,
         "agregados": agregados,
         "filas": filas,
     }
-    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps(salida, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-    sha_json = sha256_file(OUT_JSON)
-    datos = json.loads(OUT_JSON.read_text(encoding="utf-8"))   # el .md se deriva del JSON en disco
-    OUT_MD.write_text(render_md(datos, sha_json), encoding="utf-8")
-    verificar_insumos("post-escritura")
+    if not modo_default:
+        salida["parametrizacion"] = {
+            "modo": "parametrizado",
+            "script_sha256": sha256_file(Path(__file__).resolve()),
+            "argumentos": {"gold": _ruta_legible(cfg["gold"]), "manifiesto": _ruta_legible(cfg["manifiesto"]),
+                           "e0": _ruta_legible(cfg["e0"]), "trazas": _ruta_legible(cfg["trazas"]),
+                           "tandas": list(tandas), "tos": list(ctx["tos"]),
+                           "out_json": _ruta_legible(out_json), "out_md": _ruta_legible(out_md)},
+            "candados": "medidos, sin esperado (argumentos distintos de los defaults); harness congelado verificado",
+            "conciliacion": ("rige (tandas default)" if concilia
+                             else f"{SIN_CONCILIACION} (tandas distintas de las default)"),
+        }
+    if not concilia:
+        salida["resumen_por_tanda"] = resumen_por_tanda(filas, tuple(tandas))
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(json.dumps(salida, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    sha_json = sha256_file(out_json)
+    datos = json.loads(out_json.read_text(encoding="utf-8"))   # el .md se deriva del JSON en disco
+    out_md.write_text(render_md(datos, sha_json, cfg), encoding="utf-8")
+    verificar_insumos("post-escritura", cfg)
 
-    print(f"[salida] {OUT_JSON.relative_to(REPO)} sha256 {sha_json}")
-    print(f"[salida] {OUT_MD.relative_to(REPO)} sha256 {sha256_file(OUT_MD)}")
-    for tanda in TANDAS:
-        c = conc["por_tanda"][tanda]
+    print(f"[salida] {_ruta_legible(out_json)} sha256 {sha_json}")
+    print(f"[salida] {_ruta_legible(out_md)} sha256 {sha256_file(out_md)}")
+    resumen = conc if concilia else salida["resumen_por_tanda"]
+    for tanda in tandas:
+        c = resumen["por_tanda"][tanda]
         ag = agregados[tanda]["contenido"]
         print(f"[{tanda}] trazas {c['trazas']} · citas {c['citas_totales']} (parseables {c['citas_parseables']}) · "
               f"resp. con cita parseable {c['respuestas_con_cita_parseable']} · contenido {c['contenido']} · "
@@ -819,15 +981,50 @@ def correr() -> int:
               f"ind2 {ag['ind2_cita_existente'][SI]} (fuera_de_indice {ag['ind2_cita_existente'][FUERA]}) · "
               f"ind3 {ag['ind3_cita_al_ancla'][SI]} · ancestro {ag['info_cita_ancestro_del_ancla'][SI]} · "
               f"sin_citas {ag['ind1_cita_fundada'][SIN_CITAS]}")
-    print(f"[conciliación] diferencias con U-CITA: {len(conc['diferencias'])}"
-          + ("".join(f"\n    {d}" for d in conc["diferencias"])))
-    print(f"[control ind.1] discrepancias totales: {conc['control_ind1_discrepancias_total']}")
+    if concilia:
+        print(f"[conciliación] diferencias con U-CITA: {len(conc['diferencias'])}"
+              + ("".join(f"\n    {d}" for d in conc["diferencias"])))
+    else:
+        print(f"[conciliación] {SIN_CONCILIACION}: {conc['motivo']}")
+    print(f"[control ind.1] discrepancias totales: {resumen['control_ind1_discrepancias_total']}")
     return 0
+
+
+def _config_desde_args(args, argv: list) -> dict | None:
+    """Configuración de la corrida. Devuelve None cuando no se pasó ningún
+    argumento (comportamiento idéntico al original). `modo_default` es True
+    cuando gold, manifiesto, e0, trazas y tandas son los defaults (las salidas
+    no cuentan): en ese modo rigen los candados y la conciliación."""
+    if not argv:
+        return None
+    gold, manifiesto, e0, trazas = (Path(args.gold), Path(args.manifiesto), Path(args.e0), Path(args.trazas))
+    tandas = tuple(args.tandas) if args.tandas else TANDAS
+    modo_default = (gold.resolve() == GOLD_PATH.resolve() and manifiesto.resolve() == MANIFIESTO_PATH.resolve()
+                    and e0.resolve() == E0_DIR.resolve() and trazas.resolve() == TRAZAS_DIR.resolve()
+                    and tandas == TANDAS)
+    for nombre, p in (("--gold", gold), ("--manifiesto", manifiesto)):
+        if not p.is_file():
+            raise SystemExit(f"ABORTO: {nombre} no es un archivo: {p}")
+    for nombre, p in (("--e0", e0), ("--trazas", trazas)):
+        if not p.is_dir():
+            raise SystemExit(f"ABORTO: {nombre} no es un directorio: {p}")
+    return {"gold": gold, "manifiesto": manifiesto, "e0": e0, "trazas": trazas, "tandas": tandas,
+            "tos": _tos_del_manifiesto(manifiesto),
+            "out_json": Path(args.out_json), "out_md": Path(args.out_md), "modo_default": modo_default,
+            "comando": "PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/ucita2_indicadores.py " + " ".join(argv)}
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="U-CITA-2: indicadores de exactitud de cita (determinístico, USD 0).")
     ap.add_argument("--selftest", action="store_true", help="corre solo el selftest de respuesta conocida")
+    ap.add_argument("--gold", default=str(GOLD_PATH), help="gold EV2 (default: el sellado de U-CITA-2)")
+    ap.add_argument("--manifiesto", default=str(MANIFIESTO_PATH), help="manifiesto del corpus (TOs y archivos)")
+    ap.add_argument("--e0", default=str(E0_DIR), help="directorio de salida de E0 con estructura_<to>.json")
+    ap.add_argument("--trazas", default=str(TRAZAS_DIR), help="directorio con un subdirectorio por tanda")
+    ap.add_argument("--tandas", nargs="+", default=None, metavar="TANDA",
+                    help=f"tandas a evaluar (default: {' '.join(TANDAS)})")
+    ap.add_argument("--out-json", default=str(OUT_JSON), help="ruta del JSON de salida")
+    ap.add_argument("--out-md", default=str(OUT_MD), help="ruta del .md de salida (derivado del JSON)")
     args = ap.parse_args()
     if args.selftest:
         verificar_insumos("inicio")
@@ -835,7 +1032,7 @@ def main() -> int:
         rc = selftest(cita_fiel, norm_loc)
         verificar_insumos("cierre")
         return rc
-    return correr()
+    return correr(_config_desde_args(args, sys.argv[1:]))
 
 
 if __name__ == "__main__":

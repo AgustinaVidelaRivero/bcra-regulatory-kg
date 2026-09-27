@@ -31,10 +31,36 @@ caché en el formato de cache_v2 ni vocabulario de roles aplicable).
 
 Uso:
     .venv/bin/python scripts/metricas_intrinsecas.py
+
+Generación 3 (gate 6 de la fase 2 de B6.0; extensión aditiva). Sin argumentos
+el comportamiento es idéntico al descripto arriba. Con:
+    .venv/bin/python scripts/metricas_intrinsecas.py --gen3 --kg RUTA --nombre NOMBRE
+        --e0 DIRECTORIO [--manifiesto RUTA] [--sha256-esperado HEX]
+        [--reensamblar-r1] [--out-dir DIRECTORIO]
+mide UN solo grafo de generación 3 (pipeline E0–E5 de reextraccion_v2) y
+escribe <out-dir>/<NOMBRE>.json (default data/experiment/metricas_intrinsecas/)
+con la misma estructura de claves que los JSON existentes más `adaptador_gen3`.
+M1, M2, M4, M5, M6, M8 y M9 se computan con el MISMO código (medir_grafo);
+M3, M7 y M10 solo con insumos declarados en `adaptador_gen3` (path:línea):
+  - M3: no_computable. `provenances` acumula fuentes con dedup exacto
+    (e2_lib.py:294-297), no menciones; el conteo de menciones pre-fusión no
+    persiste en kg.json ni en la salida de E0.
+  - M7 / M10: rol documental = rol de la página del PDF del manifiesto en la
+    que empieza el chunk (chunks_<to>.json[].paginas[0], 1-based), clasificada
+    por chunk_roles.roles_de_pagina (el vocabulario REAL de la spec §4 M7);
+    atribución nodo→chunk = nodes[].provenances[].chunk_id (+ chunks_emisores),
+    principal = nodes[].provenance.chunk_id. Sin PDF en el manifiesto (o sin
+    manifiesto), M7 y M10 quedan no_computable.
+Custodia (spec §9, método U0): el grafo se acepta si su sha256 coincide con
+--sha256-esperado (el registrado en el repo para ese grafo); con
+--reensamblar-r1 además se re-ensambla r1 en memoria (ensamblar_r1.correr con
+r1_comun.SALIDA_R1 redirigida a /tmp, sin editar esos módulos) y se compara
+por igualdad de ids de nodos y triplas, como custodia_v2/custodia_v3.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import math
@@ -597,10 +623,448 @@ def medir_grafo(nombre: str, kg_path: Path,
 
 
 # ----------------------------------------------------------------------------
+# Generación 3 (gate 6 de la fase 2 de B6.0): un solo grafo, adaptador declarado
+# ----------------------------------------------------------------------------
+
+REX_CORPUS_V2 = REPO / "data" / "experiment" / "reextraccion_v2" / "corpus_v2"
+
+MOTIVO_M3_GEN3 = (
+    "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente "
+    "(e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, "
+    "así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; "
+    "el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida "
+    "de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo "
+    "verificable, no_computable")
+
+MOTIVO_SIN_PDF_GEN3 = (
+    "generación 3: el rol documental (vocabulario de chunk_roles.py: cuerpo, indice, "
+    "tabla_norma_origen) se obtiene clasificando las páginas del PDF de cada TO; el manifiesto no "
+    "trae ruta de PDF (o no se pasó --manifiesto), así que no hay rol atribuible")
+
+
+def _ruta_legible(p: Path) -> str:
+    """Ruta relativa al repo cuando está adentro; absoluta si no (temporales)."""
+    try:
+        return str(Path(p).resolve().relative_to(REPO))
+    except ValueError:
+        return str(Path(p).resolve())
+
+
+class _PathConRelativa(type(Path())):
+    """Path cuyo relative_to devuelve una ruta legible fija. Permite pasar a
+    medir_grafo (que hace kg_path.relative_to(REPO)) un kg fuera del repo sin
+    tocar esa función."""
+
+    def relative_to(self, *other):  # noqa: D401
+        return Path(self.__dict__["_relativa"])
+
+
+def _path_con_relativa(p: Path) -> Path:
+    q = _PathConRelativa(p)
+    q.__dict__["_relativa"] = _ruta_legible(p)
+    return q
+
+
+def _conteo(valores) -> dict[str, int]:
+    out: dict[str, int] = {}
+    for v in valores:
+        k = "<ausente>" if v is None else str(v)
+        out[k] = out.get(k, 0) + 1
+    return dict(sorted(out.items()))
+
+
+def cargar_tos_gen3(manifiesto: Path | None, e0_dir: Path) -> list[dict]:
+    """TOs a medir. Con manifiesto: id, archivo, pdf y sha256_pdf de cada
+    entrada de `tos` (manifiestos/desarrollo_5tos.json). Sin manifiesto: los
+    chunks_<to>.json presentes en E0, sin PDF (→ M7/M10 no_computable)."""
+    if manifiesto is not None:
+        m = json.loads(manifiesto.read_text(encoding="utf-8"))
+        tos = []
+        for t in m["tos"]:
+            pdf = Path(t["pdf"]) if t.get("pdf") else None
+            if pdf is not None and not pdf.is_absolute():
+                pdf = REPO / pdf
+            tos.append({"id": t["id"], "archivo": t.get("archivo"), "pdf": pdf,
+                        "sha256_pdf": t.get("sha256_pdf")})
+        return sorted(tos, key=lambda t: t["id"])
+    return [{"id": p.stem[len("chunks_"):], "archivo": None, "pdf": None, "sha256_pdf": None}
+            for p in sorted(e0_dir.glob("chunks_*.json"))]
+
+
+def cargar_chunks_gen3(e0_dir: Path, tos: list[dict]) -> dict[str, dict]:
+    """Chunks de E0 de los TOs a medir: chunks_<to>.json (lista de chunks con
+    id, to, tipo, rol_bloque?, paginas 1-based, flags)."""
+    chunks: dict[str, dict] = {}
+    for t in tos:
+        p = e0_dir / f"chunks_{t['id']}.json"
+        if not p.is_file():
+            raise RuntimeError(f"E0 sin chunks_{t['id']}.json en {e0_dir}; FRENO.")
+        for c in json.loads(p.read_text(encoding="utf-8")):
+            if c["id"] in chunks:
+                raise RuntimeError(f"chunk_id repetido en E0: {c['id']}; FRENO.")
+            chunks[c["id"]] = c
+    if not chunks:
+        raise RuntimeError(f"E0 sin chunks en {e0_dir}; FRENO.")
+    return chunks
+
+
+def roles_chunks_gen3(chunks: dict[str, dict], tos: list[dict]) -> dict[str, Any] | None:
+    """Rol documental de cada chunk de E0 con el vocabulario REAL de la spec
+    (§4 M7: chunk_roles.py): rol de la página del PDF en la que EMPIEZA el
+    chunk (paginas[0], 1-based; e0_lib.py:291,309) según
+    chunk_roles.roles_de_pagina (chunk_roles.py:52-68), espejo de
+    _rol_en_offset sobre el inicio del chunk (chunk_roles.py:71-75, :110).
+    Devuelve None si algún TO no trae PDF. El PDF se verifica contra
+    sha256_pdf del manifiesto cuando existe."""
+    if any(t["pdf"] is None for t in tos):
+        return None
+    rol_por_chunk: dict[str, str] = {}
+    paginas_por_rol: dict[str, Any] = {}
+    mixtos: list[dict[str, Any]] = []
+    pdfs: dict[str, Any] = {}
+    for t in tos:
+        pdf = t["pdf"]
+        if not pdf.is_file():
+            raise RuntimeError(f"PDF del manifiesto no encontrado para {t['id']}: {pdf}; FRENO.")
+        sha = sha256_file(pdf)
+        coincide = (t["sha256_pdf"] is None) or (sha == t["sha256_pdf"])
+        pdfs[t["id"]] = {"ruta": _ruta_legible(pdf), "sha256": sha,
+                         "sha256_manifiesto": t["sha256_pdf"], "coincide": coincide}
+        if not coincide:
+            raise RuntimeError(f"PDF de {t['id']} con sha256 distinto del manifiesto "
+                               f"({sha} vs {t['sha256_pdf']}); FRENO.")
+        roles = [p.rol for p in CR.roles_de_pagina(pdf)]
+        paginas_por_rol[t["id"]] = {"paginas": len(roles), "por_rol": _conteo(roles)}
+        for c in chunks.values():
+            if c.get("to") != t["id"]:
+                continue
+            pags = c.get("paginas") or []
+            if not pags:
+                raise RuntimeError(f"chunk {c['id']} sin campo paginas; FRENO.")
+            rs = [roles[p - 1] if 1 <= p <= len(roles) else None for p in pags]
+            if any(r is None for r in rs):
+                raise RuntimeError(f"chunk {c['id']}: página fuera del PDF ({pags}, {len(roles)} páginas); FRENO.")
+            rol_por_chunk[c["id"]] = rs[0]
+            if len(set(rs)) > 1:
+                mixtos.append({"chunk_id": c["id"], "paginas": list(pags), "roles": rs})
+    sin_rol = sorted(cid for cid in chunks if cid not in rol_por_chunk)
+    if sin_rol:
+        raise RuntimeError(f"{len(sin_rol)} chunks de E0 sin TO en el manifiesto (p. ej. {sin_rol[:3]}); FRENO.")
+    return {"rol_por_chunk": rol_por_chunk, "paginas_por_rol_por_to": paginas_por_rol,
+            "chunks_por_rol": _conteo(rol_por_chunk.values()), "chunks_con_paginas_mixtas": mixtos,
+            "pdfs": pdfs}
+
+
+def atribucion_gen3(nodes: list[dict], chunks: dict[str, dict]) -> dict[str, Any]:
+    """Atribución nodo→chunk de generación 3: nodes[].provenances[].chunk_id
+    (r1_provenance.py:1-30, :75-88) más chunks_emisores (herencia con varios
+    emisores); chunk principal = nodes[].provenance.chunk_id (e2_lib.py:360,
+    first-write en orden documental). Todo chunk_id debe existir en E0."""
+    nodos_por_chunk: dict[str, set[str]] = {}
+    principal: dict[str, str | None] = {}
+    fuera: set[str] = set()
+    n_prov = n_con = n_sin = 0
+    for n in nodes:
+        principal[n["id"]] = (n.get("provenance") or {}).get("chunk_id")
+        for p in n.get("provenances") or []:
+            n_prov += 1
+            cid = p.get("chunk_id")
+            if cid is None:
+                n_sin += 1
+                continue
+            n_con += 1
+            if cid not in chunks:
+                fuera.add(cid)
+            nodos_por_chunk.setdefault(cid, set()).add(n["id"])
+            for em in p.get("chunks_emisores") or []:
+                if em not in chunks:
+                    fuera.add(em)
+                nodos_por_chunk.setdefault(em, set()).add(n["id"])
+    if fuera:
+        raise RuntimeError(
+            f"Atribución gen 3 inválida: {len(fuera)} chunk_id de provenances no existen en E0 "
+            f"(primeros: {sorted(fuera)[:5]}). El E0 indicado no es el de este grafo; FRENO.")
+    prov_multi = sum(1 for n in nodes if len(n.get("provenances") or []) > 1)
+    suma_menos_uno = sum(max(len(n.get("provenances") or []) - 1, 0) for n in nodes)
+    return {"nodos_por_chunk": nodos_por_chunk, "principal": principal,
+            "provenances_totales": n_prov, "provenances_con_chunk_id": n_con,
+            "provenances_sin_chunk_id": n_sin,
+            "nodos_sin_chunk_principal": sum(1 for v in principal.values() if v is None),
+            "chunk_ids_fuera_de_e0": 0, "chunks_con_algun_nodo": len(nodos_por_chunk),
+            "rol_documental_provenances": _conteo(p.get("rol_documental")
+                                                  for n in nodes for p in (n.get("provenances") or [])),
+            "nodos_con_mas_de_una_provenance": prov_multi, "suma_provenances_menos_uno": suma_menos_uno}
+
+
+def custodia_gen3(nombre: str, kg_path: Path, sha_esperado: str | None,
+                  reensamblar_r1: bool) -> dict[str, Any]:
+    """Custodia de generación 3 (spec §9, método U0). Por sha256: el archivo
+    debe coincidir con el esperado declarado (el registrado en el repo para
+    ese grafo). Con --reensamblar-r1: se re-ensambla r1 EN MEMORIA con
+    ensamblar_r1.correr(con_cola=True, hasta="final", escribir_salida=False),
+    con r1_comun.SALIDA_R1 redirigida a TMP_DIR (monkeypatch del atributo de
+    módulo: ensamblar_r1.escribir lo resuelve en tiempo de llamada y con
+    escribir_salida=False no escribe nada), y se compara por igualdad de ids
+    de nodos y triplas (mismo _comparar que custodia_v2/custodia_v3)."""
+    sha = sha256_file(kg_path)
+    nodes_f, edges_f = cargar_kg(kg_path)
+    ent: dict[str, Any] = {"grafo": nombre, "custodia": None, "metodo": None,
+                           "sha256_medido": sha, "sha256_esperado": sha_esperado,
+                           "nodos": len(nodes_f), "aristas_triples": len(edges_f)}
+    if sha_esperado is not None and sha.lower() != sha_esperado.lower():
+        raise RuntimeError(
+            f"CUSTODIA FALLIDA ({nombre}): sha256 del kg {sha} ≠ esperado {sha_esperado}; FRENO.")
+    if sha_esperado is None:
+        ent["custodia"] = "SHA256_MEDIDO_SIN_ESPERADO"
+        ent["metodo"] = "sha256 medido, sin esperado declarado"
+        ent["limitacion"] = ("sin --sha256-esperado el grafo no se contrasta con el registrado en el repo; "
+                             "la medición vale solo para el archivo con este sha256")
+    else:
+        ent["custodia"] = "OK"
+        ent["metodo"] = "sha256"
+    if reensamblar_r1:
+        if str(REX_CORPUS_V2) not in sys.path:
+            sys.path.insert(0, str(REX_CORPUS_V2))
+        import r1_comun as C  # noqa: E402  (módulo real, importado sin modificación)
+        import ensamblar_r1 as ER  # noqa: E402
+        out = TMP_DIR / "r1"
+        out.mkdir(parents=True, exist_ok=True)
+        original = C.SALIDA_R1
+        try:
+            C.SALIDA_R1 = out
+            estado = ER.correr(con_cola=True, hasta="final", escribir_salida=False)
+        finally:
+            C.SALIDA_R1 = original
+        (out / "kg.json").write_text(estado["kg_json"], encoding="utf-8")  # artefacto de custodia, fuera del repo
+        kr = json.loads(estado["kg_json"])
+        _comparar(nombre, kr["nodes"], kr["edges"], nodes_f, edges_f)  # aborta si difieren
+        ent["metodo"] = ("sha256 + reensamblado r1" if sha_esperado is not None
+                         else "sha256 medido sin esperado + reensamblado r1")
+        ent["custodia"] = "OK"
+        if sha_esperado is not None:
+            ent.pop("limitacion", None)
+        ent["reensamblado"] = {
+            "ensamblador": "ensamblar_r1.correr(con_cola=True, hasta='final', escribir_salida=False)",
+            "salida_redirigida": str(out), "sha256_reensamblado": estado["sha256"],
+            "byte_identico_al_kg": estado["sha256"] == sha, "ids_iguales": True, "triplas_iguales": True,
+            "nodos_reensamblado": len(kr["nodes"]), "aristas_triples_reensamblado": len(kr["edges"]),
+        }
+    return ent
+
+
+def medir_grafo_gen3(nombre: str, kg_path: Path, chunks: dict[str, dict],
+                     roles: dict[str, Any] | None, atr: dict[str, Any],
+                     e0_dir: Path, manifiesto: Path | None, tos: list[dict]) -> dict[str, Any]:
+    """M1, M2, M4, M5, M6, M8, M9 con medir_grafo (mismo código); M3, M7 y M10
+    reemplazados por el adaptador de generación 3, declarado en `adaptador_gen3`."""
+    rep = medir_grafo(nombre, _path_con_relativa(kg_path), None, None, None, None)
+    N = rep["nodos_totales"]
+    met = rep["metricas"]
+
+    met["M3_tasa_conflacion"] = _no_computable(MOTIVO_M3_GEN3)
+
+    if roles is None:
+        met["M7_tasa_ruido_por_rol"] = _no_computable(MOTIVO_SIN_PDF_GEN3)
+        met["M10_chunks_mudos"] = _no_computable(MOTIVO_SIN_PDF_GEN3)
+        m7_decl: dict[str, Any] = {"status": "no_computable", "motivo": MOTIVO_SIN_PDF_GEN3}
+        m10_decl: dict[str, Any] = {"status": "no_computable", "motivo": MOTIVO_SIN_PDF_GEN3}
+    else:
+        rol_chunk = roles["rol_por_chunk"]
+        rol_de_nodo = {nid: (rol_chunk.get(cid) if cid is not None else None)
+                       for nid, cid in atr["principal"].items()}
+        m7_detalle: dict[str, int] = {}
+        m7_nodos: list[str] = []
+        for nid in sorted(rol_de_nodo):
+            rol = rol_de_nodo[nid]
+            if rol in ROLES_NO_NORMATIVOS:
+                m7_detalle[rol] = m7_detalle.get(rol, 0) + 1
+                m7_nodos.append(nid)
+        nodos_alguna_prov_no_normativa = len({
+            nid for cid, s in atr["nodos_por_chunk"].items()
+            if rol_chunk.get(cid) in ROLES_NO_NORMATIVOS for nid in s})
+        m7_num = len(m7_nodos)
+        met["M7_tasa_ruido_por_rol"] = _met(
+            round(m7_num / N, 6), m7_num, N,
+            "nodos cuyo chunk principal (nodes[].provenance.chunk_id) tiene rol documental no "
+            "normativo (indice, tabla_norma_origen; rol normativo = cuerpo — vocabulario real de "
+            "chunk_roles.py, aplicado a la página inicial del chunk de E0); nodos sin chunk "
+            "principal (esqueleto) no cuentan en el numerador",
+            "inferior (no captura cáscaras nacidas de chunks normativos)", {
+                "por_rol": m7_detalle,
+                "nodos": m7_nodos,
+                "nodos_sin_chunk_principal_excluidos": atr["nodos_sin_chunk_principal"],
+                "nodos_con_alguna_provenance_no_normativa": nodos_alguna_prov_no_normativa,
+                "rol": "bloqueante en la pasada 2; especie del backlog: cascara",
+            })
+        universo = sorted(cid for cid, rol in rol_chunk.items() if rol == CR.ROL_CUERPO)
+        mudos = [cid for cid in universo if cid not in atr["nodos_por_chunk"]]
+        excluidos = _conteo(rol for cid, rol in rol_chunk.items() if rol != CR.ROL_CUERPO)
+        universo_por_to = _conteo(chunks[cid].get("to") for cid in universo)
+        met["M10_chunks_mudos"] = _met(
+            round(len(mudos) / len(universo), 6) if universo else None, len(mudos), len(universo),
+            "chunk activo = chunk de chunks_<to>.json de E0 (entrada de E1) de los TOs del manifiesto "
+            "cuya página inicial es de rol cuerpo (spec §4 M10; mismo clasificador que M7); mudo = "
+            "ningún nodo del grafo lo rastrea en provenances[].chunk_id ni en provenances[]."
+            "chunks_emisores; denominador = chunks activos (aguas arriba del ensamblado)",
+            "exacta", {
+                "mudos_detalle": [{"chunk_id": cid, "to": chunks[cid].get("to"), "tipo": chunks[cid].get("tipo"),
+                                   "rol_bloque": chunks[cid].get("rol_bloque"),
+                                   "paginas": list(chunks[cid].get("paginas") or [])} for cid in mudos],
+                "universo_por_to": universo_por_to,
+                "chunks_excluidos_del_universo_por_rol": excluidos,
+                "dirección_de_mejora": "cero",
+                "rol": "bloqueante en la pasada 2",
+            })
+        m7_decl = {"status": "computable",
+                   "insumos": ["nodes[].provenance.chunk_id (chunk principal; e2_lib.py:360 first-write en orden "
+                               "documental; chunk_id agregado por r1_provenance.py:75-88)",
+                               "chunks_<to>.json[].paginas (1-based; e0_lib.py:291, :309, :1604, :1646)",
+                               "chunk_roles.roles_de_pagina(pdf del manifiesto) (chunk_roles.py:52-68)"],
+                   "convencion_gen3": "rol del chunk = rol de su primera página (espejo de _rol_en_offset "
+                                      "sobre el inicio del chunk, chunk_roles.py:71-75, :110); nodos con "
+                                      "provenance.rol_documental = esqueleto (chunk_id None; "
+                                      "r1_e5_esqueleto.py:69) fuera del numerador, dentro del denominador"}
+        m10_decl = {"status": "computable",
+                    "insumos": ["chunks_<to>.json de E0 de los TOs del manifiesto (universo aguas arriba: "
+                                "E0 es la entrada de E1; e2_lib.py:15-31 guarda de fan-in)",
+                                "rol de página como en M7",
+                                "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88)"],
+                    "convencion_gen3": "un chunk aporta si aparece como chunk_id o dentro de chunks_emisores "
+                                       "de alguna provenance de algún nodo; universo = chunks de rol cuerpo"}
+
+    rep["adaptador_gen3"] = {
+        "descripcion": "Declaración de insumos de generación 3 para M3, M7 y M10 (decisión 2 del mandato "
+                       "del gate 6). Fórmulas de la spec intactas; M1, M2, M4, M5, M6, M8 y M9 con el "
+                       "mismo código que los grafos de generaciones 1 y 2.",
+        "e0_dir": _ruta_legible(e0_dir),
+        "manifiesto": _ruta_legible(manifiesto) if manifiesto is not None else None,
+        "tos": [t["id"] for t in tos],
+        "pdfs": roles["pdfs"] if roles is not None else None,
+        "chunks_e0": {"total": len(chunks), "por_to": _conteo(c.get("to") for c in chunks.values()),
+                      "campo_paginas": "chunks_<to>.json[].paginas, 1-based (e0_lib.py:291, :309)",
+                      "vocabulario_observado": {"tipo": _conteo(c.get("tipo") for c in chunks.values()),
+                                                "rol_bloque": _conteo(c.get("rol_bloque") for c in chunks.values()),
+                                                "flags.contenido_tabular": _conteo(
+                                                    bool((c.get("flags") or {}).get("contenido_tabular"))
+                                                    for c in chunks.values())}},
+        "rol_documental": ({"metodo": "chunk_roles.roles_de_pagina(pdf) sobre la primera página de cada chunk",
+                            "paginas_por_rol_por_to": roles["paginas_por_rol_por_to"],
+                            "chunks_por_rol": roles["chunks_por_rol"],
+                            "chunks_con_paginas_mixtas": roles["chunks_con_paginas_mixtas"],
+                            "nota_e0": "E0 solo parsea páginas de rol cuerpo (e0_lib.py:678-680) con "
+                                       "marcadores equivalentes a los de chunk_roles.py (e0_lib.py:196-210, "
+                                       ":344-390); el vocabulario de E0 (tipo, rol_bloque, "
+                                       "provenance.rol_documental) no contiene indice ni tabla_norma_origen"}
+                           if roles is not None else {"status": "no_computable", "motivo": MOTIVO_SIN_PDF_GEN3}),
+        "atribucion_nodo_chunk": {
+            "campo": "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88); "
+                     "principal = nodes[].provenance.chunk_id (e2_lib.py:360)",
+            **{k: atr[k] for k in ("provenances_totales", "provenances_con_chunk_id", "provenances_sin_chunk_id",
+                                   "nodos_sin_chunk_principal", "chunk_ids_fuera_de_e0", "chunks_con_algun_nodo",
+                                   "rol_documental_provenances")}},
+        "M3": {"status": "no_computable", "motivo": MOTIVO_M3_GEN3,
+               "observacion_no_es_la_metrica": {
+                   "nodos_con_mas_de_una_provenance": atr["nodos_con_mas_de_una_provenance"],
+                   "suma_provenances_menos_uno": atr["suma_provenances_menos_uno"],
+                   "nota": "cuenta fuentes (to, punto, rol) distintas fusionadas por nodo, no menciones; "
+                           "se registra para el laudo de la autora, no sustituye a M3"}},
+        "M7": m7_decl,
+        "M10": m10_decl,
+    }
+    return rep
+
+
+def main_gen3(args) -> int:
+    import rapidfuzz
+
+    kg_path = Path(args.kg).resolve()
+    e0_dir = Path(args.e0).resolve()
+    manifiesto = Path(args.manifiesto).resolve() if args.manifiesto else None
+    out_dir = Path(args.out_dir).resolve() if args.out_dir else OUT_DIR
+    nombre = args.nombre
+    if not kg_path.is_file():
+        raise SystemExit(f"ABORTO: --kg no es un archivo: {kg_path}")
+    if not e0_dir.is_dir():
+        raise SystemExit(f"ABORTO: --e0 no es un directorio: {e0_dir}")
+    if manifiesto is not None and not manifiesto.is_file():
+        raise SystemExit(f"ABORTO: --manifiesto no es un archivo: {manifiesto}")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", nombre or ""):
+        raise SystemExit("ABORTO: --nombre debe ser un identificador de archivo simple")
+
+    print(f"== Custodia gen 3 ({nombre}) ==", flush=True)
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
+    cust = custodia_gen3(nombre, kg_path, args.sha256_esperado, args.reensamblar_r1)
+    print(f"  {cust['grafo']}: {cust['custodia']} [{cust['metodo']}] "
+          f"({cust['nodos']} nodos, {cust['aristas_triples']} triples; sha256 {cust['sha256_medido'][:12]}…)",
+          flush=True)
+
+    print("== E0, roles documentales y atribución nodo→chunk ==", flush=True)
+    tos = cargar_tos_gen3(manifiesto, e0_dir)
+    chunks = cargar_chunks_gen3(e0_dir, tos)
+    roles = roles_chunks_gen3(chunks, tos)
+    nodes, _ = cargar_kg(kg_path)
+    atr = atribucion_gen3(nodes, chunks)
+    print(f"  {len(chunks)} chunks de E0 en {len(tos)} TOs; roles: "
+          f"{roles['chunks_por_rol'] if roles else 'sin PDF (M7/M10 no_computable)'}; "
+          f"provenances con chunk_id {atr['provenances_con_chunk_id']}, sin chunk_id {atr['provenances_sin_chunk_id']}",
+          flush=True)
+
+    print("== Métricas ==", flush=True)
+    meta = {
+        "spec": str(SPEC.relative_to(REPO)),
+        "spec_commit_sellado": SPEC_COMMIT,
+        "spec_sha256": sha256_file(SPEC),
+        "script_sha256": sha256_file(Path(__file__)),
+        "rapidfuzz_version": rapidfuzz.__version__,
+        "umbral_similitud": UMBRAL_SIMILITUD,
+        "fecha": date.today().isoformat(),
+        "custodia": [cust],
+    }
+    rep = medir_grafo_gen3(nombre, kg_path, chunks, roles, atr, e0_dir, manifiesto, tos)
+    rep = {**meta, **rep}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = out_dir / f"{nombre}.json"
+    out.write_text(json.dumps(rep, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"  -> {_ruta_legible(out)}", flush=True)
+    for k, v in rep["metricas"].items():
+        if "valor" in v:
+            print(f"  {k}: {v['valor']} ({v['numerador']}/{v['denominador']})", flush=True)
+        else:
+            print(f"  {k}: {v.get('status')}", flush=True)
+    return 0
+
+
+def _parse_args(argv: list[str]):
+    ap = argparse.ArgumentParser(
+        description="Métricas intrínsecas M1–M10 (spec docs/spec_evaluacion_intrinseca.md). Sin argumentos: "
+                    "los tres grafos cableados (generaciones 1 y 2). Con --gen3: un grafo de generación 3.")
+    ap.add_argument("--gen3", action="store_true", help="medir un solo grafo de generación 3")
+    ap.add_argument("--kg", help="ruta del kg.json (gen 3)")
+    ap.add_argument("--nombre", help="nombre del grafo; el JSON sale como <out-dir>/<nombre>.json")
+    ap.add_argument("--e0", help="directorio de salida de E0 con chunks_<to>.json")
+    ap.add_argument("--manifiesto", default=None, help="manifiesto del corpus (tos: id, archivo, pdf, sha256_pdf)")
+    ap.add_argument("--sha256-esperado", default=None, help="sha256 del kg registrado en el repo para ese grafo")
+    ap.add_argument("--reensamblar-r1", action="store_true",
+                    help="custodia adicional: re-ensamblar r1 en memoria y comparar ids/triplas")
+    ap.add_argument("--out-dir", default=None, help="directorio de salida (default data/experiment/metricas_intrinsecas)")
+    args = ap.parse_args(argv)
+    if args.gen3 and not (args.kg and args.nombre and args.e0):
+        ap.error("--gen3 requiere --kg, --nombre y --e0")
+    if not args.gen3 and any([args.kg, args.nombre, args.e0, args.manifiesto, args.sha256_esperado,
+                              args.reensamblar_r1, args.out_dir]):
+        ap.error("los argumentos de generación 3 requieren --gen3; sin argumentos se miden los tres grafos cableados")
+    return args
+
+
+# ----------------------------------------------------------------------------
 # main
 # ----------------------------------------------------------------------------
 
 def main() -> int:
+    args = _parse_args(sys.argv[1:])
+    if args.gen3:
+        return main_gen3(args)
+
     import rapidfuzz
 
     print("== Custodia (método U0): el ensamblador real reproduce el kg congelado ==",
