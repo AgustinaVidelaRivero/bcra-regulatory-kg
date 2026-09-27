@@ -31,7 +31,8 @@ Modos (exactamente uno):
                pregunta) vía CachingClient y escribe <out-dir>/tipo_pregunta_control_tanda0.json
                con tokens y costo calculado dentro del artefacto. Exige --tope-usd.
   --comparar   sin llamadas: compara el control con la clasificación de la autora
-               (--autora, --sha-autora) y con tipo_previsto del JSON de preguntas
+               (--autora, --sha-autora; csv con columnas orden,id,tipo,nota o la hoja
+               completa con tipo y nota rellenados) y con tipo_previsto del JSON de preguntas
                (--previsto, --sha-previsto); escribe <out-dir>/comparacion_tanda0.json con
                tres tablas (modelo vs autora, modelo vs previsto, autora vs previsto) y la
                lista de desacuerdos. No hay resultado esperado declarado: toda diferencia
@@ -193,14 +194,23 @@ def main():
 
         with open(autora_path, encoding="utf-8", newline="") as f:
             rd = csv.DictReader(f)
-            if rd.fieldnames != COLUMNAS_AUTORA:
-                sys.exit(f"FRENO: columnas del csv de la autora {rd.fieldnames} distintas de {COLUMNAS_AUTORA}")
+            if rd.fieldnames not in (COLUMNAS_AUTORA, COLUMNAS_HOJA):
+                sys.exit(f"FRENO: columnas del csv de la autora {rd.fieldnames} distintas de {COLUMNAS_AUTORA} "
+                         f"y de la hoja {COLUMNAS_HOJA}")
+            formato_autora = "hoja completa con tipo y nota" if rd.fieldnames == COLUMNAS_HOJA else "orden,id,tipo,nota"
             au_rows = list(rd)
         if len(au_rows) != a.n:
             sys.exit(f"FRENO: el csv de la autora tiene {len(au_rows)} filas; --n {a.n}")
         ea = {int(r["orden"]): r for r in au_rows}
         if {o: r["id"] for o, r in ea.items()} != esperado_ordenes:
             sys.exit("FRENO: (orden, id) del csv de la autora no coinciden con la hoja")
+        if rd.fieldnames == COLUMNAS_HOJA:
+            # la hoja rellenada debe ser la hoja: toda columna salvo tipo y nota coincide fila a fila
+            hoja_por_orden = {int(r["orden"]): r for r in rows}
+            for o, r in ea.items():
+                for col in COLUMNAS_HOJA[:-2]:
+                    if r[col] != hoja_por_orden[o][col]:
+                        sys.exit(f"FRENO: columna {col!r} del csv de la autora difiere de la hoja en orden {o}")
 
         qs = json.loads(previsto_path.read_text(encoding="utf-8"))["preguntas"]
         prev = {q["id"]: q["tipo_previsto"] for q in qs}
@@ -243,14 +253,15 @@ def main():
                                        ("autora_vs_previsto", ta != tp)) if cond]
             if pares:
                 desacuerdos.append({"orden": o, "id": em[o]["id"], "tipo_modelo": tm, "tipo_autora": ta,
-                                    "tipo_previsto": tp, "nota_modelo": em[o]["nota"], "desacuerdo_en": pares})
+                                    "tipo_previsto": tp, "nota_modelo": em[o]["nota"],
+                                    "nota_autora": ea[o]["nota"], "desacuerdo_en": pares})
         salida = {
             "fecha": date.today().isoformat(),
             "resultado_esperado": "no declarado: toda diferencia se reporta, nada se corrige; la adjudicación es de la autora",
             "n": a.n,
             "insumos": {
                 "control": {"ruta": rel(OUT), "sha256": sha256(OUT)},
-                "autora": {"ruta": rel(autora_path), "sha256": sa},
+                "autora": {"ruta": rel(autora_path), "sha256": sa, "formato": formato_autora},
                 "previsto": {"ruta": rel(previsto_path), "sha256": sp},
                 "hoja": {"ruta": rel(hoja_path), "sha256": sh},
                 "regla": {"ruta": rel(regla_path), "sha256": sr},
@@ -278,6 +289,7 @@ def main():
             print(f"  orden {d['orden']:>2} {d['id']}: modelo={d['tipo_modelo']!r} autora={d['tipo_autora']!r} "
                   f"previsto={d['tipo_previsto']!r} | {', '.join(d['desacuerdo_en'])}")
             print(f"    nota del modelo: {d['nota_modelo']}")
+            print(f"    nota de la autora: {d['nota_autora']}")
         print("\n[Avisos] tipos fuera del conjunto de la regla:", len(avisos))
         for av in avisos:
             print(f"  orden {av['orden']:>2} {av['id']} {av['fuente']}: {av['tipo']!r}")
