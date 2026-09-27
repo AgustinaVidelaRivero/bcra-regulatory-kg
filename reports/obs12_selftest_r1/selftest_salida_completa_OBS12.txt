@@ -1,0 +1,45 @@
+Bloque (i): grafo sintético
+  OK   universo: resta referencia y esqueleto (arriba y en provenance), conserva padre_sugerido
+  OK   orden: tripla (source, relation, target) lexicográfico y estable
+  OK   triplas_duplicadas: cuenta 1 y detalla la tripla con veces=2
+  OK   sortear: índices ascendentes iguales a random.Random(semilla).sample(range(n), k)
+  OK   CLI con --n 7 (universo completo): NO ENCONTRADO x2, textos_no_encontrados=2, textos y herencia correctos
+  OK   CLI con --n 3 (default de k es 30 > n=7: exige --n): índices del sorteo y k
+  OK   byte-identidad: dos corridas con los mismos argumentos dan el mismo JSON (otro --out y mismo --out)
+  OK   semillas distintas dan índices distintos (n=7, k=3, semillas 1 y 2)
+  OK   sin --out: código 2, mensaje y nada escrito
+  OK   --n mayor que el universo: código 2 y nada escrito
+  OK   --kg inexistente: código 2
+  OK   --help: código 0 y lista las cinco opciones
+  OK   --e0 inexistente: no frena, todos los textos NO ENCONTRADO
+Bloque (ii): r1 (data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json)
+       sha256 0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a  data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json
+  OK   sha256 de r1 kg.json = 0226e947…
+       kg: data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json
+       sha256 kg: 0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a
+       semilla: 20260927  k: 30
+       total 17772  referencia 5680  esqueleto 82  solapamiento 0  n 12010
+       triplas_duplicadas: 0
+       indices: [115, 200, 1159, 1168, 1270, 1750, 1973, 2184, 2334, 3031, 3215, 3913, 4162, 4792, 5095, 5131, 5754, 5920, 6626, 7628, 7971, 8111, 8265, 8531, 8821, 10078, 10277, 10433, 10884, 11167]
+       relaciones_en_muestra: {'establecida_en': 11, 'aplica_a': 8, 'regula': 6, 'limita': 3, 'condiciona': 1, 'exceptua': 1}
+       e0: data/experiment/reextraccion_v2/e0_chunking/salida_enm01 (data/experiment/reextraccion_v2/e0_chunking/salida_enm01)
+       textos_no_encontrados: 0
+       escrito: reports/obs12_selftest_r1/muestra_obs12.json
+       escrito: reports/obs12_selftest_r1/muestra_obs12.md
+  OK   primera corrida (semilla 20260927, --out reports/obs12_selftest_r1/): código 0
+       sha256 corrida 1: 183275a84835766aaa6fab36148371e279921a315eadf1900f83c9f7e6e24ff2
+       sha256 corrida 2: 183275a84835766aaa6fab36148371e279921a315eadf1900f83c9f7e6e24ff2
+       cmp: código 0, salida ''
+  OK   segunda corrida: JSON byte-idéntico (cmp sin salida y sha256 iguales)
+  OK   n = 12010 (total 17772 − referencia 5680 − esqueleto 82) y triplas_duplicadas = 0
+  OK   30 índices distintos, ascendentes, iguales a la decisión 8 del mandato
+  OK   ninguna arista de la muestra con relation == 'referencia' ni rol_fuente == 'esqueleto'
+  OK   textos_no_encontrados = 0 y el literal NO ENCONTRADO no aparece en el JSON
+  OK   distribución de relaciones = decisión 8 (establecida_en 11, aplica_a 8, regula 6, limita 3, exceptua 1, condiciona 1)
+  OK   el md existe, lleva sha y semilla en el encabezado y numera 1..30
+  OK   --out contiene exactamente los dos archivos de salida
+
+Bloque (i): 13/13 casos OK
+Bloque (ii): 10/10 casos OK
+TOTAL: 23/23 casos OK
+SELFTEST EN VERDE
