@@ -1,0 +1,157 @@
+{
+ "unidad": "U-TANDA0-2A-DIR",
+ "etapas": {
+  "D2": {
+   "etapa": "D2",
+   "filtro": {
+    "access_log.run_label": [
+     "tanda0_dirigida_e1",
+     "tanda0_dirigida_e3",
+     "tanda0_dirigida_reint"
+    ]
+   },
+   "fuente": "cache.model (id devuelto por la API) + request_json (temperature) de las dbs de llm_cache; access_log por run_label",
+   "dbs": {
+    "e1": "data/experiment/reextraccion_v2/e1_extractor/cache/e1_extraccion.db",
+    "e3": "data/experiment/reextraccion_v2/e3_verificador/cache/e3_verificacion.db",
+    "reint": "data/experiment/reextraccion_v2/e3_verificador/cache/e1_reintentos.db"
+   },
+   "modelos_en_codigo": {
+    "E1": "claude-haiku-4-5 (runner_corpus.py:89)",
+    "E3": "claude-sonnet-5 (runner_corpus.py:92)"
+   },
+   "agregado_por_modelo": [
+    {
+     "db": "e1",
+     "modelo_segun_api": "claude-haiku-4-5-20251001",
+     "modelo_pedido": "claude-haiku-4-5",
+     "n_misses": 3
+    },
+    {
+     "db": "e3",
+     "modelo_segun_api": "claude-sonnet-5",
+     "modelo_pedido": "claude-sonnet-5",
+     "n_misses": 4
+    },
+    {
+     "db": "reint",
+     "modelo_segun_api": "claude-haiku-4-5-20251001",
+     "modelo_pedido": "claude-haiku-4-5",
+     "n_misses": 1
+    }
+   ],
+   "temperatura_por_db": [
+    {
+     "db": "e1",
+     "temperatura": "default del proveedor",
+     "n_misses": 3
+    },
+    {
+     "db": "e3",
+     "temperatura": "default del proveedor",
+     "n_misses": 4
+    },
+    {
+     "db": "reint",
+     "temperatura": "default del proveedor",
+     "n_misses": 1
+    }
+   ],
+   "namespaces": [
+    {
+     "db": "e1",
+     "namespace": "e1_extraccion|cv=e1-extractor-v1-p54a111e2175f|think=0",
+     "n_misses": 3
+    },
+    {
+     "db": "e3",
+     "namespace": "e3_verificacion|cv=e3-verificador-v1-p21a836c7de6d|think=0",
+     "n_misses": 4
+    },
+    {
+     "db": "reint",
+     "namespace": "e1_extraccion|cv=e1-extractor-v1-p54a111e2175f|think=0",
+     "n_misses": 1
+    }
+   ],
+   "via": "API Anthropic directa (anthropic.Anthropic(max_retries=3) envuelto en llm_cache.CachingClient)",
+   "n_llamadas_total": 8,
+   "n_hits": 0,
+   "n_misses": 8,
+   "por_llamada": [
+    [
+     "2026-09-28T11:38:13.316307",
+     "tanda0_dirigida_e1",
+     "1cf1dec42fdd",
+     "claude-haiku-4-5-20251001",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:39:53.868995",
+     "tanda0_dirigida_e1",
+     "c24a3408e356",
+     "claude-haiku-4-5-20251001",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:41:04.981275",
+     "tanda0_dirigida_e1",
+     "c31208517f53",
+     "claude-haiku-4-5-20251001",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:38:29.380066",
+     "tanda0_dirigida_e3",
+     "52518546ef05",
+     "claude-sonnet-5",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:40:03.382100",
+     "tanda0_dirigida_e3",
+     "47262c661927",
+     "claude-sonnet-5",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:41:11.804932",
+     "tanda0_dirigida_e3",
+     "b8bd0ca79fc0",
+     "claude-sonnet-5",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:42:35.424542",
+     "tanda0_dirigida_e3",
+     "f82be9df4d81",
+     "claude-sonnet-5",
+     "default del proveedor",
+     0
+    ],
+    [
+     "2026-09-28T11:42:27.827156",
+     "tanda0_dirigida_reint",
+     "f6dca44ed3f8",
+     "claude-haiku-4-5-20251001",
+     "default del proveedor",
+     0
+    ]
+   ],
+   "por_llamada_columnas": [
+    "ts",
+    "run_label",
+    "key12",
+    "modelo_segun_api",
+    "temperatura(None=hit)",
+    "hit"
+   ]
+  }
+ }
+}
