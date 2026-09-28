@@ -1,0 +1,165 @@
+aristas 17772  nodos 6529  R = Restriccion_pagos_de_utilidades_y_dividendos_a_accionistas_no_residentes_en_la_medida_que_se_8355c7
+paridad de orden Neo4j vs GraphIndex (nodos consultados): 24/24 idénticos
+
+PASO 2 — aristas de R: 10 salientes, 0 entrantes
+  saliente #1   aplica_a           Sujeto         terior  «Entidades autorizadas a operar en cambios (Exterior)»  <-- 3.4.x ['3.4.1', '3.4.2', '3.4.3']
+        kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646
+        agente: Punto 1.2
+        R en ver_vecinos del otro extremo: entrantes #983 de 1016 — FUERA DEL TOPE
+  saliente #2   establecida_en     TextoOrdenado  al_pdf  «Texto Ordenado de Exterior y Cambios»  <-- 3.4.x ['3.4.1', '3.4.2', '3.4.3']
+        kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973
+        agente: Punto 1.1
+        R en ver_vecinos del otro extremo: entrantes #2244 de 2331 — FUERA DEL TOPE
+  saliente #3   limita             Operacion      c7ec69  «Pago de utilidades y dividendos a accionistas no residentes»
+        kg: ext 3.18.1.2 (punto_propio)
+        agente: Punto 3.18.1.2
+        R en ver_vecinos del otro extremo: entrantes #1 de 1
+  saliente #4   limita             Operacion      59fccf  «Pagos utilidades dividendos accionistas no residentes»  <-- Operacion de 3.17.1.4
+        kg: ext 3.17.1.4 (punto_propio)
+        agente: Punto 3.17.1.4
+        R en ver_vecinos del otro extremo: entrantes #1 de 1
+  saliente #5   referencia         Obligacion     ed6cf9  «Declaración jurada representante legal»  <-- 3.4.x ['3.4.2']
+        kg: ext 3.4.2 (punto_propio); ext 9.3.12.2 (punto_propio)
+        agente: Punto 3.4.2
+        R en ver_vecinos del otro extremo: entrantes #2 de 2
+  saliente #6   referencia         Obligacion     6514f0  «Verificación de cumplimiento declaración de activos y pasivos externos»  <-- 3.4.x ['3.4.3']
+        kg: ext 3.4.3 (punto_propio); ext 9.3.12.3 (punto_propio)
+        agente: Punto 3.4.3
+        R en ver_vecinos del otro extremo: entrantes #2 de 2
+  saliente #7   referencia         Obligacion     999fbd  «Balances cerrados y auditados»  <-- 3.4.x ['3.4.1']
+        kg: ext 3.4.1 (punto_propio)
+        agente: Punto 3.4.1
+        R en ver_vecinos del otro extremo: entrantes #2 de 2
+  saliente #8   referencia         Operacion      31f15a  «Giro de utilidades y dividendos al exterior»  <-- 3.4.x ['3.4.3']
+        kg: ext 3.4.3 (punto_propio)
+        agente: Punto 3.4.3
+        R en ver_vecinos del otro extremo: entrantes #2 de 2
+  saliente #9   referencia         Operacion      c53c4e  «Giro divisas utilidades dividendos exterior»  <-- 3.4.x ['3.4.2']
+        kg: ext 3.4.2 (punto_propio)
+        agente: Punto 3.4.2
+        R en ver_vecinos del otro extremo: entrantes #2 de 2
+  saliente #10  referencia         Restriccion    459761  «Monto total no supere distribución asamblea»  <-- 3.4.x ['3.4.2']
+        kg: ext 3.4.2 (punto_propio)
+        agente: Punto 3.4.2
+        R en ver_vecinos del otro extremo: entrantes #1 de 1
+
+PASO 3 — caminos más cortos (≤3 aristas, no dirigidos) hasta R
+
+  [1] Obligacion c7c9fe «Nominar entidad financiera responsable de certificaciones»  largo 2  caminos más cortos: 1
+    camino 1:
+      c7c9fe -[establecida_en]-> al_pdf  (desde c7c9fe: salientes #2 de 3)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [2] Obligacion ee826c «Poseer Certificación Decreto 277/22 producción incremental»  largo 2  caminos más cortos: 1
+    camino 1:
+      ee826c -[establecida_en]-> al_pdf  (desde ee826c: salientes #1 de 1)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [3] Obligacion dd9e4c «Certificación Decreto 277/22 — producción incremental»  largo 2  caminos más cortos: 2
+    camino 1:
+      dd9e4c -[aplica_a]-> terior  (desde dd9e4c: salientes #1 de 3)
+        -> Sujeto terior «Entidades autorizadas a operar en cambios (Exterior)»  kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646 | agente: Punto 1.2
+      8355c7 -[aplica_a]-> terior  (desde terior: entrantes #983 de 1016 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 2:
+      dd9e4c -[establecida_en]-> al_pdf  (desde dd9e4c: salientes #2 de 3)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [4] Restriccion a320f8 «Certificación Decreto 277/22 — acceso divisas petróleo/gas»  largo 2  caminos más cortos: 2
+    camino 1:
+      a320f8 -[aplica_a]-> terior  (desde a320f8: salientes #1 de 3)
+        -> Sujeto terior «Entidades autorizadas a operar en cambios (Exterior)»  kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646 | agente: Punto 1.2
+      8355c7 -[aplica_a]-> terior  (desde terior: entrantes #983 de 1016 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 2:
+      a320f8 -[establecida_en]-> al_pdf  (desde a320f8: salientes #2 de 3)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [5] Sujeto al_de_ «beneficiarios del Régimen de acceso a divisas para la producción incremental de petróleo (RADPIP) y/o Régimen de acceso a divisas para la producción incremental de gas natural (RADPIGN)»  largo 3  caminos más cortos: 1
+    camino 1:
+      c7c9fe -[aplica_a]-> al_de_  (desde al_de_: entrantes #1 de 1)
+        -> Obligacion c7c9fe «Nominar entidad financiera responsable de certificaciones»  kg: ext 3.17.2 (bloque_intro) | agente: Punto 3.17.2
+      c7c9fe -[establecida_en]-> al_pdf  (desde c7c9fe: salientes #2 de 3)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [6] Obligacion 828a41 «Presentación Certificación Decreto 277/22»  largo 2  caminos más cortos: 1
+    camino 1:
+      828a41 -[establecida_en]-> al_pdf  (desde 828a41: salientes #2 de 2)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [7] Obligacion 7f6c84 «Cliente debe contar con Certificación Decreto 277/22»  largo 2  caminos más cortos: 2
+    camino 1:
+      7f6c84 -[aplica_a]-> terior  (desde 7f6c84: salientes #1 de 2)
+        -> Sujeto terior «Entidades autorizadas a operar en cambios (Exterior)»  kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646 | agente: Punto 1.2
+      8355c7 -[aplica_a]-> terior  (desde terior: entrantes #983 de 1016 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 2:
+      7f6c84 -[establecida_en]-> al_pdf  (desde 7f6c84: salientes #2 de 2)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [8] Restriccion 382d71 «Límite monto certificación acceso cambios»  largo 2  caminos más cortos: 1
+    camino 1:
+      382d71 -[establecida_en]-> al_pdf  (desde 382d71: salientes #1 de 2)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [9] Excepcion 0e5193 «Excepción Certificación regímenes acceso divisas Decreto 277/22»  largo 3  caminos más cortos: 5
+    camino 1:
+      0e5193 -[exceptua]-> b0d324  (desde 0e5193: salientes #1 de 1)
+        -> Restriccion b0d324 «Límite 40% — capital refinanciado 09/10/20 a 31/12/23»  kg: ext 3.5.1.12 (punto_propio); ext 7.9.1.9 (punto_propio) | agente: Punto 3.5.1.12
+      b0d324 -[aplica_a]-> terior  (desde b0d324: salientes #1 de 4)
+        -> Sujeto terior «Entidades autorizadas a operar en cambios (Exterior)»  kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646 | agente: Punto 1.2
+      8355c7 -[aplica_a]-> terior  (desde terior: entrantes #983 de 1016 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 2:
+      bfe79d -[referencia]-> 0e5193  (desde 0e5193: entrantes #2 de 2)
+        -> Restriccion bfe79d «Parámetros refinanciación punto 7.9.1.9 requeridos»  kg: ext 7.9.1.10 (punto_propio) | agente: Punto 7.9.1.10
+      bfe79d -[aplica_a]-> terior  (desde bfe79d: salientes #1 de 14)
+        -> Sujeto terior «Entidades autorizadas a operar en cambios (Exterior)»  kg: ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); ext 1.6 (punto_propio); … total 646 | agente: Punto 1.2
+      8355c7 -[aplica_a]-> terior  (desde terior: entrantes #983 de 1016 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 3:
+      0e5193 -[exceptua]-> b0d324  (desde 0e5193: salientes #1 de 1)
+        -> Restriccion b0d324 «Límite 40% — capital refinanciado 09/10/20 a 31/12/23»  kg: ext 3.5.1.12 (punto_propio); ext 7.9.1.9 (punto_propio) | agente: Punto 3.5.1.12
+      b0d324 -[establecida_en]-> al_pdf  (desde b0d324: salientes #2 de 4)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 4:
+      811a07 -[referencia]-> 0e5193  (desde 0e5193: entrantes #1 de 2)
+        -> Restriccion 811a07 «Parámetros refinanciación punto 7.9.1.9»  kg: ext 7.9.1.11 (punto_propio) | agente: Punto 7.9.1.11
+      811a07 -[establecida_en]-> al_pdf  (desde 811a07: salientes #1 de 12)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+    camino 5:
+      bfe79d -[referencia]-> 0e5193  (desde 0e5193: entrantes #2 de 2)
+        -> Restriccion bfe79d «Parámetros refinanciación punto 7.9.1.9 requeridos»  kg: ext 7.9.1.10 (punto_propio) | agente: Punto 7.9.1.10
+      bfe79d -[establecida_en]-> al_pdf  (desde bfe79d: salientes #2 de 14)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+  [10] Obligacion e03ac5 «Cliente debe poseer Certificación Decreto 277/22»  largo 2  caminos más cortos: 1
+    camino 1:
+      e03ac5 -[establecida_en]-> al_pdf  (desde e03ac5: salientes #1 de 2)
+        -> TextoOrdenado al_pdf «Texto Ordenado de Exterior y Cambios»  kg: ext 1.1 (punto_propio); ext 1.2 (punto_propio); ext 1.3 (punto_propio); ext 1.4 (punto_propio); … total 973 | agente: Punto 1.1
+      8355c7 -[establecida_en]-> al_pdf  (desde al_pdf: entrantes #2244 de 2331 — FUERA DEL TOPE)
+        -> Restriccion 8355c7 «Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos»  kg: ext 3.17.1.4 (punto_propio); ext 3.18.1.2 (punto_propio) | agente: Punto 3.17.1.4
+
+JSON: /tmp/u_inv_ejemplo/uinvrec_vecinos_caminos_resultado.json  sha256 bd1b98bbebaad5b4fcccd6782d1273f7123f658847868139e82c057e5a771284
