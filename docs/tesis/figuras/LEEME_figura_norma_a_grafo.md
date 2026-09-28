@@ -1,252 +1,183 @@
-# figura_norma_a_grafo — registro de generación
+# figura_norma_a_grafo — registro de generación (Figura 1.1)
 
-Figura «de la norma al grafo» para la Introducción. Caso: candidato 1 de la
-sección I de `docs/tesis/inventario_recurso.md` — pregunta EV2F-013, par de
-puntos `ext:3.17.1.4 → ext:3.4.3` del Texto Ordenado de Exterior y Cambios.
+Figura «de la norma al grafo» para la Introducción, con el ejemplo del préstamo:
+el punto 5.1.1.1 del Texto Ordenado de Clasificación de deudores, que remite al
+punto 3.7 («importe de referencia»). Arriba, «En el texto»: en gris, la frase de
+la unidad 5.1.1 que encabeza la lista de excepciones; debajo y con sangría, el
+punto 5.1.1.1 completo, con resaltada la frase «dos veces el importe de
+referencia establecido en el punto 3.7.»; una línea «[…]»; y, de nuevo al nivel
+de la frase, el punto 3.7 completo. Abajo, «En el grafo»: los cinco nodos y las
+cuatro aristas que la extracción produjo a partir de esos dos puntos.
 
-Generada el 2026-09-01 en unidad de SOLO LECTURA sobre los datos; las únicas
-escrituras son el script, el SVG, el PNG y este archivo. Esta versión corrige
-la anterior en tres cosas: la correspondencia texto↔nodo del punto 3.4.2, la
-composición (paneles apilados) y el número de aristas dibujadas.
+Historia: generada el 2026-09-28 en U-FIG-EJEMPLO, que reemplazó la versión del
+ejemplo de los dividendos (Exterior y Cambios, puntos 3.17.1.4 y 3.4.1 a 3.4.3:
+SVG, PNG y LEEME del commit `2f511ba`, generador del commit `f050fcd`); ajustada
+el mismo día en U-FIG-EJEMPLO-AJUSTE (§6). La versión de U-FIG-EJEMPLO no llegó a
+commitearse: al cierre del ajuste, `git status` mostraba estos archivos como
+modificados respecto de esos commits.
 
-## 1. Comando de generación
+## 1. Comandos de generación
 
 ```bash
-python3 docs/tesis/figuras/generar_figura_norma_a_grafo.py
-```
-
-Escribe `figura_norma_a_grafo.svg` (860 × 1035). El PNG se exporta aparte:
-
-```bash
+PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py
+PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_norma_a_grafo.py
 rsvg-convert -z 2 -f png -o docs/tesis/figuras/figura_norma_a_grafo.png docs/tesis/figuras/figura_norma_a_grafo.svg
 ```
 
-`rsvg-convert` es la única herramienta externa, y solo para el PNG (1720 × 2070
-px). El SVG se produce con Python de la biblioteca estándar, sin dependencias:
-el script escribe el marcado a mano, igual que el de la figura de la cláusula
-del 125 %, del que copia tipografía (`Helvetica,Arial,sans-serif`), paleta por
-tipo de nodo y estilo de leyenda.
+El primero escribe `ejemplo_prestamo_datos.json` (común a las figuras 1.1, 1.2,
+1.3 y 2.1); el segundo escribe `figura_norma_a_grafo.svg` (860 × 973); el
+tercero exporta el PNG (1720 × 1946 px). `rsvg-convert` 2.62.3 es la única
+herramienta externa. El generador no tiene valores del ejemplo escritos a mano:
+textos, nodos y aristas se leen del JSON, y el script comprueba contra `kg.json`
+(sha256 declarado en el JSON) que cada nodo (id, tipo, etiqueta, punto) y cada
+arista (índice, origen, relación, destino) estén en el grafo; si algo falta, se
+detiene sin dibujar.
 
-## 2. Fuentes y sellos
+## 2. Grafo, pregunta y fuentes
+
+- Grafo: KG-Reextraído-r1,
+  `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json`, sha256
+  `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a`.
+- Pregunta del ejemplo (no aparece en esta figura; es la de la Figura 1.2): «Para
+  una entidad financiera, ¿qué condiciones hacen que los créditos para consumo o
+  vivienda deban clasificarse en la cartera comercial?»
+
+| Archivo | Papel | sha256 |
+|---|---|---|
+| `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json` | nodos y aristas | `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a` |
+| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_cla.json` | textos de la norma | `98808886a406d8321c678836a55f92eea983d594d95358dd21ceb537487ac0b1` |
+| `docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py` | escribe el JSON | `4c3a441972d27304b6d58d0664dbc15b893bce7ad3e7d2d49afad947f51eeea7` |
+| `docs/tesis/figuras/ejemplo_prestamo_datos.json` | datos de la figura | `25ab7b4c0d76fd735244fe0fecc17ceaba1b0e8bfd2312e7aa3cbd5c849672a2` |
+| `docs/tesis/figuras/generar_figura_norma_a_grafo.py` | generador | `9b0e45a299a0a078d250ccc999d192cbb83038bd8c00baa6bd8972d021b73f3d` |
+
+Mediciones del ejemplo, versionadas en `reports/` (ver §7): `reports/u_inv_ejemplo/`
+(commit `24e0116`), `reports/u_med_ejemplo/` (commit `200462f`) y
+`reports/u_inv_candidatos/` (commit `791166d`; según el mensaje de ese commit,
+la búsqueda sistemática del ejemplo conductor que eligió cla::5.1.1.1 → cla::3.7).
+Antes de versionarse estaban en `/tmp/u_inv_ejemplo/`, `/tmp/u_med_ejemplo/` y
+`/tmp/u_inv_candidatos/`; esas rutas quedan solo como historia.
+
+Salidas:
 
 | Archivo | sha256 |
 |---|---|
-| `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json` | `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida/chunks_ext.json` | `ef910fd589a4a5540d8b7b7e23cbbcc983292c9eb272df36f46ed22aafcbd9c4` |
+| `figura_norma_a_grafo.svg` | `d43f7247d2c06bda27dd64f1d34fcd3ec56401b511b7cfa60a7817ef3940e251` |
+| `figura_norma_a_grafo.png` | `7d26338468810ebc4b1c88f98dcc6cd616f62fe8b0b8cb3137bffb56619dc65c` |
 
-Salidas de esta corrida:
+Generación determinística verificada: el JSON, el SVG y el PNG dan el mismo
+sha256 con `PYTHONHASHSEED` 0, 1, 2 y 3.
 
-| Archivo | sha256 |
-|---|---|
-| `figura_norma_a_grafo.svg` | `a2d85ec100407fab760e05798538fcbc15428532703ffc72b8fa923169c1ecfc` |
-| `figura_norma_a_grafo.png` | `eca4edfe298b94c4ca94810a443c0f39a8a358155ea1bdddd75ee3adf8825631` |
+## 3. Textos de la norma
 
-Generación determinística verificada: dos corridas consecutivas producen el
-mismo SVG, y también lo hacen tres corridas con `PYTHONHASHSEED` distinto
-(1, 2, 3), de modo que el resultado no depende del orden de iteración de
-diccionarios ni conjuntos.
+Del campo `texto` de los fragmentos E0 de `chunks_cla.json`, con los cortes de
+línea quitados y las palabras partidas por guion al final de línea reunidas
+(una sola en los tres textos: «pro-ductiva» → «productiva», en 5.1.1.1). Nada
+más se cambia: el texto empieza con su número de punto y su título, tal como
+está en el fragmento. El extractor guarda en el JSON, para cada punto, el campo
+original (`texto_campo`) junto al texto de la figura.
 
-## 3. El punto 3.4.2 contiene dos disposiciones
+- **5.1.1** (en gris, sin recuadro): «5.1.1. Cartera comercial. Abarca todas las
+  financiaciones comprendidas, con excepción de las siguientes:». No hay un
+  fragmento `cla::5.1.1`: la frase se compone con el encabezado heredado
+  «5.1.1. Cartera comercial.» y el texto del bloque intro `cla::5.1.1::intro`
+  («Abarca todas las financiaciones comprendidas, con excepción de las
+  siguientes:»), que en el texto completo del fragmento son dos líneas. El
+  extractor comprueba que esas dos piezas son las mismas que encabezan, en su
+  herencia, a `cla::5.1.1.1`.
+- **5.1.1.1** (recuadro con borde de acento, con sangría): texto completo, 4 líneas.
+- **«[…]»** (en gris): marca de texto del documento que no se muestra; no sale
+  del JSON, es un elemento de la composición (`OMISION`).
+- **3.7** (recuadro, al nivel de la frase de 5.1.1): texto completo, 3 líneas.
 
-Texto completo de la unidad de extracción `ext::3.4.2`
-(`TO_exterior_cambios_actual.pdf`, página 17, 452 caracteres):
+## 4. Nodos dibujados (5)
 
-```
-3.4.2. El monto total abonado por este concepto a accionistas no residentes, incluido el pago
-cuyo curso se está solicitando, no supere el monto en moneda local que les
-corresponda según la distribución determinada por la asamblea de accionistas.
-La entidad deberá contar con una declaración jurada firmada por el representante legal
-de la empresa residente o un apoderado con facultades suficientes para asumir este
-compromiso en nombre de la empresa.
-```
-
-Son **dos disposiciones**, y la extracción produjo un nodo de contenido por
-cada una:
-
-| Oración | Nodo extraído |
-|---|---|
-| (1) «El monto total abonado por este concepto… según la distribución determinada por la asamblea de accionistas.» | **Restricción** «Monto total no supere distribución asamblea» (`…459761`) |
-| (2) «La entidad deberá contar con una declaración jurada firmada por el representante legal… en nombre de la empresa.» | **Obligación** «Declaración jurada representante legal» (`…ed6cf9`) |
-
-Nodos con procedencia de rol `punto_propio` en `ext:3.4.2` — los cinco, con la
-oración de la que provienen:
-
-| Tipo | Etiqueta | id | Proviene de |
-|---|---|---|---|
-| Obligacion | Declaración jurada representante legal | `Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_firmada_por_el_representante_ed6cf9` | oración (2) |
-| Restriccion | Monto total no supere distribución asamblea | `Restriccion_el_monto_total_abonado_por_este_concepto_a_accionistas_no_residentes_incluido_el_459761` | oración (1) |
-| Operacion | Giro divisas utilidades dividendos exterior | `Operacion_giro_divisas_utilidades_dividendos_exterior_c53c4e` | ninguna en particular: nombra la operación que el punto regula, y su id no cita el texto |
-| Sujeto | Entidades autorizadas a operar en cambios (Exterior) | `Sujeto_rol_entidad_autorizada_exterior` | nodo de catálogo (aparece en 478 puntos) |
-| TextoOrdenado | Texto Ordenado de Exterior y Cambios | `TextoOrdenado_to_exterior_cambios_actual_pdf` | nodo de estructura (aparece en 782 puntos) |
-
-**Consecuencia y corrección.** El nodo que la figura dibuja para 3.4.2 es la
-obligación de la declaración jurada, que proviene de la oración (2). La versión
-anterior de la figura mostraba en el recuadro la primera línea del punto, que
-pertenece a la oración (1): el texto y el nodo no se correspondían. Ahora el
-recuadro muestra la oración (2) completa, precedida de `[…]` para señalar que el
-punto tiene texto anterior que no se muestra.
-
-## 4. Verificación de correspondencia texto ↔ nodo, para los cuatro puntos
-
-El script comprueba, antes de dibujar, que el fragmento mostrado en cada
-recuadro corresponde al nodo rotulado con ese número y no a otra disposición del
-mismo punto. La medida es la fracción de las palabras del id del nodo —que el
-extractor deriva del texto de la disposición— presentes en el fragmento
-mostrado. Se exige cobertura ≥ 0,75 y que supere a la de cualquier otra
-disposición del mismo punto; si no, el script se detiene y no escribe la figura.
-
-| Punto | Nodo dibujado | Cobertura del nodo dibujado | Mejor de las otras disposiciones | Resultado |
+| Clave en el JSON | Tipo | Punto rotulado | Etiqueta en el grafo | id |
 |---|---|---|---|---|
-| 3.17.1.4 | Restricción `…8355c7` | 1,00 | 0,00 | OK |
-| 3.4.1 | Obligación `…999fbd` | 0,82 | 0,00 (no hay otra) | OK |
-| 3.4.2 | Obligación `…ed6cf9` | 1,00 | 0,31 (restricción `…459761`) | OK |
-| 3.4.3 | Obligación `…6514f0` | 0,93 | 0,00 (no hay otra) | OK |
+| restriccion_monto | Restriccion | 5.1.1.1 | Créditos consumo/vivienda — monto supera dos veces importe referencia | `Restriccion_los_creditos_para_consumo_o_vivienda_que_superen_el_equivalente_a_dos_veces_el_i_f682b1` |
+| obligacion_3_7 | Obligacion | 3.7 | Considerar importe de referencia — ventas anuales Micro Comercio | `Obligacion_el_importe_a_considerar_sera_el_nivel_maximo_del_valor_de_ventas_totales_anuales_7f1ae2` |
+| operacion | Operacion | 5.1.1.1 | Inclusión en cartera comercial — créditos consumo/vivienda | `Operacion_inclusion_en_cartera_comercial_creditos_consumo_vivienda_2644e8` |
+| sujeto | Sujeto | (sin número) | Obligados a clasificar deudores (Clasificación) | `Sujeto_rol_obligado_a_clasificar_clasificacion` |
+| restriccion_repago | Restriccion | 5.1.1.1 | Crédito — repago no vinculado a ingresos fijos, vinculado a actividad productiva | `Restriccion_creditos_cuyo_repago_no_se_encuentre_vinculado_a_ingresos_fijos_o_periodicos_del_a5e44e` |
 
-La cobertura de 3.4.1 es 0,82 y no 1,00 porque el extractor reformuló el verbo
-al construir el nodo: la norma dice «correspondan» y la etiqueta del nodo dice
-«deben corresponder». El texto mostrado es el de la norma, sin cambios.
+Los cuatro nodos de contenido tienen una sola procedencia con rol
+`punto_propio`, la del punto con que se rotulan (el extractor se detiene si no).
+El sujeto se dibuja sin número: es un nodo de catálogo con 91 procedencias
+`punto_propio` distintas (primaria `cla::1.1`; 3.7 entre ellas), recuento del
+extractor sobre las claves (documento, punto, rol) sin repetir. El Paso 2 de
+U-MED-EJEMPLO-2 registra 102 procedencias para el mismo nodo porque cuenta
+todas las entradas de su lista `provenances`, de cualquier rol: 91
+`punto_propio` + 7 `bloque_intro` + 2 `bloque_cierre` + 1
+`herencia_encabezado` + 1 `esqueleto` = 102.
 
-Fragmento mostrado en cada recuadro:
+Etiquetas: las del grafo, completas y sin traducir, envueltas a 40 caracteres
+por línea como máximo (la más larga dibujada tiene 40). Tipos en la leyenda
+escritos como en el código, sin tildes. Foco: los nodos Restriccion y
+Obligacion, opacos con texto blanco; la Operacion y el Sujeto, translúcidos con
+texto oscuro, como contexto.
 
-- **3.17.1.4** — el punto completo (una sola disposición, la que origina la
-  restricción dibujada; contiene la frase de remisión resaltada).
-- **3.4.1** — el punto completo: tiene una sola oración y una sola disposición,
-  de modo que la línea mostrada ya es la que origina el nodo dibujado.
-- **3.4.2** — la oración (2), precedida de `[…]`. El recorte es por el comienzo,
-  no por el final: lo que se omite es la disposición anterior.
-- **3.4.3** — el punto completo (una sola disposición de contenido normativo).
+## 5. Aristas dibujadas (4)
 
-## 5. Composición y tamaño de letra impreso
+Cada una se comprueba en `kg.json` por su índice en `kg['edges']`.
 
-Paneles apilados a ancho completo: arriba «En el texto», abajo «En el grafo», y
-la leyenda al pie. La figura es más alta que ancha.
+| Índice | Origen | Relación | Destino | Clase en la figura |
+|---|---|---|---|---|
+| 15773 | restriccion_monto | referencia | obligacion_3_7 | resaltada («remisión de un punto a otro»); `rol_fuente = referencia_cruzada` |
+| 15772 | restriccion_monto | limita | operacion | gris |
+| 12389 | restriccion_repago | limita | operacion | gris |
+| 3941 | obligacion_3_7 | aplica_a | sujeto | gris |
 
-| Magnitud | Valor |
-|---|---|
-| Ancho del SVG | 860 px |
-| Alto del SVG | 1035 px |
-| Relación alto/ancho | 1,20 |
-| PNG exportado | 1720 × 2070 px |
+Los nombres de relación se escriben como en el grafo (`referencia`, `limita`,
+`aplica_a`), sin traducir.
 
-Cálculo del tamaño de letra impreso. A 15 cm de ancho de página, el ancho
-disponible es 15 cm × 28,3465 pt/cm = **425,2 pt**, de modo que un texto de
-`N` píxeles en un SVG de 860 px de ancho se imprime a `N × 425,2 / 860` puntos:
+## 6. Composición y tamaño de letra
 
-| Elemento | Tamaño en el SVG | Tamaño impreso a 15 cm |
-|---|---|---|
-| **Texto de los recuadros** | **17 px** | **8,41 pt** (mínimo exigido: 8 pt) |
-| Encabezado de recuadro («Punto 3.4.2») | 15 px | 7,42 pt |
-| Etiqueta de nodo | 15 px | 7,42 pt |
-| Rótulo de arista | 13 px | 6,43 pt |
-| Leyenda | 13 px | 6,43 pt |
+- Paneles apilados a ancho completo, leyenda al pie. Sin título, subtítulo, pie
+  de fuente ni nombres internos en el texto visible.
+- **Panel de texto (ajuste U-FIG-EJEMPLO-AJUSTE).** La frase de 5.1.1 termina en
+  «con excepción de las siguientes:»; con los dos recuadros debajo y al mismo
+  nivel, un lector que no conoce la numeración leería el 3.7 como una segunda
+  excepción. La composición lo impide (tabla `COMPOSICION_TEXTO`): el recuadro
+  de 5.1.1.1 va con 32 px de sangría bajo la frase, como elemento de la lista; el
+  de 3.7 vuelve al nivel de la frase, precedido por la línea «[…]», que marca
+  texto del documento no mostrado. Textos, resaltado y panel del grafo no
+  cambian; el panel del grafo baja 31 px porque el de texto crece (SVG 942 → 973
+  px de alto).
+- Panel del grafo en dos columnas y tres filas (tabla `DISPOSICION`): la
+  restricción del monto y la obligación del 3.7 arriba, unidas por la arista
+  resaltada; la operación en el medio, limitada desde arriba y desde abajo por
+  las dos restricciones; el sujeto debajo de la obligación.
+- El número de punto va en negrita al comienzo de cada texto, donde el texto lo
+  trae; los recuadros no llevan encabezado «Punto N».
+- La negrita (número de punto y frase resaltada) se mide con la tabla de anchos
+  de Helvetica Bold al envolver y al ubicar el rectángulo del resaltado.
+- Tamaños: a 15 cm de ancho, texto de los recuadros 17 px → 8,41 pt; etiqueta
+  de nodo 15 px → 7,42 pt; rótulo de arista y leyenda 13 px → 6,43 pt.
+- Verificación geométrica (script fuera del repositorio, en el paquete de
+  revisión de U-FIG-EJEMPLO-AJUSTE, con métricas reales de Helvetica): 38
+  textos, 5 nodos, 6 trazos con flecha; ningún texto se superpone con otro ni
+  pisa un nodo, ningún trazo atraviesa un nodo.
 
-El ancho de 860 px es el que hace que el texto de los recuadros supere los 8 pt:
-con la misma letra de 17 px, cualquier ancho mayor que 903 px lo dejaría por
-debajo del mínimo.
+## 7. Búsquedas del ejemplo (contexto, no dibujadas en esta figura)
 
-## 6. Nodos dibujados (6)
+Resultados copiados en `ejemplo_prestamo_datos.json` desde `reports/u_med_ejemplo/`
+(commit `200462f`; antes en `/tmp/u_med_ejemplo/`):
 
-Se quitó el nodo del Texto Ordenado.
-
-| Ref. | Tipo | Punto rotulado | id |
-|---|---|---|---|
-| R | Restriccion | 3.17.1.4 | `Restriccion_pagos_de_utilidades_y_dividendos_a_accionistas_no_residentes_en_la_medida_que_se_8355c7` |
-| O1 | Obligacion | 3.4.1 | `Obligacion_las_utilidades_y_dividendos_deben_corresponder_a_balances_cerrados_y_auditados_999fbd` |
-| O2 | Obligacion | 3.4.2 | `Obligacion_la_entidad_debera_contar_con_una_declaracion_jurada_firmada_por_el_representante_ed6cf9` |
-| O3 | Obligacion | 3.4.3 | `Obligacion_la_entidad_debera_verificar_que_el_cliente_haya_dado_cumplimiento_en_caso_de_cor_6514f0` |
-| OP | Operacion | 3.17.1.4 | `Operacion_pagos_utilidades_dividendos_accionistas_no_residentes_59fccf` |
-| SU | Sujeto | (sin punto) | `Sujeto_rol_entidad_autorizada_exterior` |
-
-Tres de los cinco nodos de contenido están anclados además en otro punto del
-Texto Ordenado: la restricción `…8355c7` en 3.18.1.2, la obligación `…ed6cf9` en
-9.3.12.2 y la obligación `…6514f0` en 9.3.12.3. El mismo elemento normativo
-aparece literalmente en más de un lugar y el ensamblado lo representa con un
-solo nodo de procedencia múltiple; la figura rotula cada uno con el punto que
-corresponde a este caso. El sujeto no lleva número de punto porque figura con
-rol `punto_propio` en 478 puntos: es un nodo de catálogo, no un elemento
-extraído de un punto.
-
-## 7. Aristas dibujadas (5)
-
-Cada una se comprueba contra `kg.json` antes de dibujar: si alguna no existiera
-en el grafo, el script se detiene.
-
-| Clase | Origen | Predicado (en la figura) | Destino |
-|---|---|---|---|
-| **resaltada** | R | remite a | O1 |
-| **resaltada** | R | remite a | O2 |
-| **resaltada** | R | remite a | O3 |
-| gris | R | limita | OP |
-| gris | R | se aplica a | SU |
-
-Quedaron fuera, respecto de la versión anterior: las cuatro `establecida en`
-hacia el Texto Ordenado (junto con ese nodo) y tres de las cuatro `se aplica a`
-—las de las tres obligaciones al sujeto—, de modo que del contexto queda una
-sola arista de cada clase. Todas siguen existiendo en el grafo; no se muestran.
-Traducción de predicados: `referencia` → «remite a», `aplica_a` → «se aplica
-a», `limita` → «limita».
-
-## 8. Etiquetas acortadas
-
-Máximo 40 caracteres por línea visible. La línea más larga de la figura
-terminada tiene 38 caracteres.
-
-| Nodo | Etiqueta original en el grafo (largo) | Etiqueta dibujada (largo) |
-|---|---|---|
-| R | `Requisitos puntos 3.4.1 a 3.4.3 — utilidades dividendos` (55) | `Requisitos para pagar dividendos` (32) |
-| O3 | `Verificación de cumplimiento declaración de activos y pasivos externos` (70) | `Verificación del Relevamiento externo` (37) |
-| OP | `Pagos utilidades dividendos accionistas no residentes` (53) | `Pago de dividendos a no residentes` (34) |
-| SU | `Entidades autorizadas a operar en cambios (Exterior)` (52) | `Entidades autorizadas en cambios` (32) |
-| O1 | `Balances cerrados y auditados` (29) | sin cambio |
-| O2 | `Declaración jurada representante legal` (38) | sin cambio |
-
-Lo que la abreviatura de R deja fuera («puntos 3.4.1 a 3.4.3») sigue visible en
-la figura por otras dos vías: las tres aristas «remite a» hacia los nodos
-rotulados 3.4.1, 3.4.2 y 3.4.3, y la frase resaltada del panel de texto.
-
-## 9. Otras decisiones de composición
-
-- **Sin título general ni subtítulo** dentro de la imagen: el caption del `.tex`
-  los reemplaza. Tampoco hay pie de fuente, nombres de archivo, sellos ni
-  nombres internos de grafos en ninguna parte visible.
-- **Orden de los recuadros**: numérico —3.17.1.4, 3.4.1, 3.4.2, 3.4.3— para que
-  coincida con el orden vertical de los nodos del panel del grafo.
-- **Verbatim**: el texto sale del campo `texto` de las unidades de extracción de
-  `chunks_ext.json`, sin cambiar ninguna palabra ni signo. Lo único que se
-  altera es el punto de corte de línea: los saltos del PDF se unen y el texto se
-  vuelve a envolver al ancho del recuadro. El número de punto se muestra como
-  encabezado del recuadro en lugar de repetirse dentro del párrafo. Cada
-  fragmento se verifica carácter por carácter contra el texto de la unidad antes
-  de dibujar.
-- **Resaltado**: la frase «en la medida que se verifiquen los requisitos
-  previstos en los puntos 3.4.1. a 3.4.3.» va sobre fondo de acento y en
-  negrita, y el recuadro de 3.17.1.4 lleva borde del mismo color. Las tres
-  aristas de remisión usan ese mismo acento (`#e07b39`, el naranja de la paleta
-  compartida). El rectángulo del resaltado se ubica con las métricas de ancho de
-  Helvetica incluidas en el script, sin librerías de tipografía.
-- **Trazado de las aristas**: qué aristas existen se lee del grafo; cómo se
-  dibujan es decisión de la figura, declarada en la tabla `RUTAS` del script.
-  Con cinco aristas y seis nodos ninguna cruza por encima de una caja.
-- **Formas**: los nodos son cajas redondeadas y no círculos como en la figura de
-  la cláusula del 125 %: las etiquetas de dos líneas de hasta 40 caracteres no
-  entran en un círculo legible. Tipografía, paleta por tipo de nodo, convención
-  de foco (nodos del caso opacos con texto blanco, contexto translúcido con
-  texto oscuro) y formato de leyenda se mantienen iguales a esa figura.
-- **Leyenda**: banda propia al pie, en dos filas —tipos de nodo y clases de
-  arista—, con los cuatro tipos de nodo que aparecen. Ya no incluye el tipo
-  Texto Ordenado, ausente de esta versión.
-
-## 10. Verificaciones ejecutadas
-
-- Correspondencia texto↔nodo comprobada para los cuatro puntos (tabla de §4); el
-  script aborta si alguna falla.
-- Seis cajas de nodo y cinco aristas en el SVG (contadas sobre el marcado, sin
-  contar las dos muestras de la leyenda); tres de las cinco son remisiones
-  resaltadas.
-- Sin nombres internos en el texto visible del SVG: `Reextra`, `sha`, `test` y
-  `.json` dan cero coincidencias sobre el contenido de los elementos `<text>` y
-  `<tspan>`.
-- Línea de etiqueta más larga: 38 caracteres (máximo admitido 40).
-- Texto de los recuadros a 15 cm de ancho: 8,41 pt (mínimo exigido 8 pt).
-- Dos corridas consecutivas y tres con distinta semilla de hash producen el
-  mismo SVG (sha256 `a2d85ec1…`).
+- Búsqueda léxica sobre los 1.763 fragmentos, variante A (la de la Figura 1.2,
+  recalculada por el extractor con `busqueda_lexica_fragmentos.py`): 5.1.1.1 en
+  el puesto 2 y 3.7 en el 1.523; reproduce
+  `reports/u_med_ejemplo/umed2_analista_paso1_resultado.json` (sha256
+  `a69c44b00a7f4920d1a4e5224167e6edacf4b7153d004d2185050cb2387f5408`, línea 11
+  de `reports/u_med_ejemplo/umed_manifest.txt`).
+- Variante B (palabras vacías y raíces de Snowball para español), del mismo
+  archivo: 5.1.1.1 en el puesto 5; 3.7 sin puntaje (ningún término en común).
+  La lista de palabras vacías que usó está en
+  `reports/u_med_ejemplo/umed2_analista_nltk_data/corpora/stopwords/spanish`
+  (sha256 `6125eadf28ba664a60bf4296147bcbd40b80be93670056fdb229960ac15e2310`,
+  igual a la línea 30 de `reports/u_med_ejemplo/umed2_analista_nltk_data_listado.sha256`).
+- Búsqueda sobre nodos (índice de texto completo
+  `nodos_fulltext_kg_reextraido_r1`, 2.346 nodos con coincidencia), de
+  `reports/u_med_ejemplo/umed2_analista_paso3_resultado.json` (sha256
+  `047e6f6e80b6b88e300cfb090bd2223ea967de8c9cbea9e10f9c04a9c168a3cd`, línea 18
+  del mismo manifiesto): nodos de 5.1.1.1 en los puestos 2 (operación), 4
+  (restricción del monto) y 156 (restricción del repago); ningún nodo de 3.7
+  tiene coincidencia.

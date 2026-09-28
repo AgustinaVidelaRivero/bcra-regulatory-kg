@@ -2,39 +2,44 @@
 """Figura «la misma pregunta con dos formas de consultar» para la Introducción.
 
 Dos columnas bajo una pregunta común. Izquierda, «Recuperación por fragmentos»:
-los cuatro puntos del ejemplo como fragmentos, cada uno con su número y la
-etiqueta corta de su nodo, el recuperado enmarcado (con la frase de remisión
-resaltada) y los no recuperados en gris; debajo, la respuesta que se puede
-redactar solo con lo recuperado. Derecha, «Consulta del grafo»: buscar, abrir el
-nodo del punto 3.17.1.4 y seguir las aristas de remisión; debajo, la respuesta
-con cada condición y su punto.
+los dos puntos del ejemplo del préstamo como fragmentos —5.1.1.1, recuperado,
+con la frase que remite al punto 3.7 resaltada; 3.7, en gris, fuera de lo
+recuperado— con su puesto en la búsqueda léxica, y una línea con los otros
+cuatro fragmentos del top-5; debajo, la respuesta que se puede redactar solo con
+lo recuperado. Derecha, «Consulta del grafo»: buscar, abrir el nodo de la
+restricción del monto y seguir sus aristas —referencia hasta la obligación del
+punto 3.7 y limita hasta la operación, que la otra restricción del punto 5.1.1.1
+también limita—; debajo, la respuesta con cada condición y su punto.
 
-Versión compacta: el alto del PNG está acotado (ALTO_MAX_PNG_PX) para que la
-figura impresa a 12,75 cm ocupe menos de media página con el texto corrido a
-7 pt o más; el script se detiene sin escribir si no lo cumple.
+El lado derecho muestra el camino que el grafo pone al alcance desde el nodo
+encontrado; no es la traza de una corrida del agente.
 
-Misma técnica que generar_figura_norma_a_grafo.py, del que IMPORTA las fuentes,
-la frase de remisión y los textos de los puntos (nada se retipea), la
-verificación de aristas contra el grafo, las métricas de Helvetica, la paleta y
+Todos los datos del ejemplo (pregunta, textos, puestos de la búsqueda, nodos y
+aristas) se leen de ejemplo_prestamo_datos.json, que escribe
+extraer_datos_ejemplo_prestamo.py. Escritos a mano quedan solo los textos de
+las dos respuestas (RESPUESTA_*).
+
+Misma técnica que generar_figura_norma_a_grafo.py, del que IMPORTA la carga y
+verificación de los datos contra kg.json, las métricas de Helvetica, la paleta y
 la leyenda. El SVG se escribe a mano y se exporta a PNG con rsvg-convert, sin
 dejar el SVG en el repo (se pasa por stdin). Generación determinística.
 
 Uso:
-    python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py
-    python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --svg RUTA
-    .venv/bin/python docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --verificar-busqueda
+    PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py
+    PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --svg RUTA
+    PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --verificar-busqueda
 """
 
 import sys
 
 sys.dont_write_bytecode = True  # importar al generador hermano no deja __pycache__
 
-import argparse
-import hashlib
-import os
-import struct
-import subprocess
-import zlib
+import argparse  # noqa: E402
+import hashlib  # noqa: E402
+import os  # noqa: E402
+import struct  # noqa: E402
+import subprocess  # noqa: E402
+import zlib  # noqa: E402
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
@@ -45,35 +50,44 @@ SALIDA_PNG = os.path.join(AQUI, "figura_fragmentos_vs_grafo.png")
 # --------------------------------------------------------------------------- #
 # Contenido                                                                    #
 # --------------------------------------------------------------------------- #
-PREGUNTA = ("¿Puede una empresa pagar dividendos a accionistas del exterior? "
-            "¿Qué requisitos debe cumplir?")
+# Recuperación por fragmentos: lo recuperado es el top-5 de la búsqueda léxica
+# (busqueda_lexica_fragmentos.py, variante A); los puestos se leen del JSON.
+LIMITE_RECUPERACION = 5
+FRAGMENTOS = ["cla::5.1.1.1", "cla::3.7"]    # en este orden, de arriba abajo
+SUBTITULO_FRAGMENTOS = "Los dos puntos del ejemplo"
+ETIQUETA_RECUPERADO = "recuperado · puesto {puesto}"
+ETIQUETA_NO_RECUPERADO = "fuera de lo recuperado · puesto {puesto}"
+ETIQUETA_RESTO = "resto del top-5: {unidades}"
 
-# Resultado de la búsqueda por texto completo que sirve la app (Neo4jIndex en
-# modo 'fulltext', índice Lucene/BM25 `nodos_fulltext_kg_reextraido_r1`,
-# limite=10) con PREGUNTA como consulta. Cada par es (punto, recuperado):
-# el orden es el de primera aparición del punto en el ranking (mejor posición
-# de un nodo de contenido con punto propio en ese punto) y «recuperado» es que
-# esa posición esté entre los diez primeros. Se reproduce, con Neo4j levantado,
-# con la opción --verificar-busqueda, que detiene el script si ya no coincide.
-LIMITE_BUSQUEDA = 10
-RESULTADO_BUSQUEDA = [
-    ("3.17.1.4", True),
-    ("3.4.3", False),
-    ("3.4.2", False),
-    ("3.4.1", False),
+# Consulta del grafo: el nodo que se abre y las aristas que se siguen, por su
+# clave en el JSON; cada arista debe estar en el JSON (y este, en kg.json).
+NODO_ENCONTRADO = "restriccion_monto"
+ARISTAS_CONSULTA = [
+    ("restriccion_monto", "referencia", "obligacion_3_7"),
+    ("restriccion_monto", "limita", "operacion"),
+    ("restriccion_repago", "limita", "operacion"),
 ]
-SUBTITULO_FRAGMENTOS = "Los cuatro puntos del ejemplo"
-ETIQUETA_RECUPERADO = "recuperado"
-ETIQUETA_NO_RECUPERADO = "fuera de lo recuperado"
-OMISION = "[…] "     # la frase de remisión es un recorte del punto 3.17.1.4
+NODOS_ALCANZADOS = ["obligacion_3_7", "operacion", "restriccion_repago"]
 
-# Nodo que la figura rotula con cada punto (el mismo de «de la norma al grafo»).
-CLAVE_DE_PUNTO = {"3.17.1.4": "R", "3.4.1": "O1", "3.4.2": "O2", "3.4.3": "O3"}
-
-# Los nodos de contexto (operación y sujeto) se dibujan atenuados, como en la
-# figura «de la norma al grafo», para que la leyenda compartida nombre solo
-# cosas que la figura muestra.
-DIBUJAR_CONTEXTO = True
+# Respuestas: los únicos textos del ejemplo escritos a mano en la figura.
+RESPUESTA_IZQUIERDA = ("Pasan a la cartera comercial si superan dos veces el importe de "
+                       "referencia establecido en el punto 3.7 y su repago depende de la "
+                       "actividad productiva o comercial del cliente (punto 5.1.1.1).")
+RESPUESTA_IZQUIERDA_FALTA = "el importe de referencia (punto 3.7): no recuperado"
+RESPUESTA_DERECHA = ("Pasan a la cartera comercial si se cumplen las dos condiciones "
+                     "del punto 5.1.1.1:")
+# (nodo del que sale la condición, texto, sangría). La fila se escribe
+# «punto · texto», con el punto del nodo leído del JSON y la franja del color de
+# su tipo. Las condiciones son dos; la fila del 3.7 no es una tercera sino la
+# precisión de la del monto, y va con sangría debajo de ella.
+SANGRIA_FILA = 24
+RESPUESTA_DERECHA_FILAS = [
+    ("restriccion_monto", "superan dos veces el importe de referencia", 0),
+    ("obligacion_3_7", "el importe de referencia es el nivel máximo de ventas anuales "
+                       "de la categoría Micro del sector Comercio (Ley 24.467)", SANGRIA_FILA),
+    ("restriccion_repago", "su repago depende de la actividad productiva o comercial, "
+                           "no de ingresos fijos", 0),
+]
 
 # --------------------------------------------------------------------------- #
 # Geometría. Mismo ancho en píxeles que la figura «de la norma al grafo»; la    #
@@ -103,7 +117,10 @@ PASO_ROTULO = 17                     # interlínea de la pregunta en la búsqued
 ANCHO_IMPRESO_CM = 12.75
 DPI = 300
 ANCHO_PNG_PX = int(round(ANCHO_IMPRESO_CM / 2.54 * DPI))   # 1506
-ALTO_MAX_PNG_PX = 1700
+# Tope de alto: 1700 px en la versión anterior; el contenido de este ejemplo
+# (textos completos de los dos puntos, etiquetas sin abreviar) no entra, y el
+# contenido no se recorta: el tope sube a 1850 px.
+ALTO_MAX_PNG_PX = 1850
 PT_MIN_TEXTO = 7.0
 
 GRIS_TEXTO_APAGADO = "#9a9a9a"
@@ -112,42 +129,16 @@ FONDO_APAGADO = "#f1f1f1"
 COLOR_FLUJO = "#555"
 
 ancho, envolver, esc, f = base.ancho, base.envolver, base.esc, base.f
+ancho_negrita = base.ancho_negrita
 
 
 def puntos_impresos(px):
     return px * (ANCHO_IMPRESO_CM * base.PT_POR_CM) / W
 
 
-# Anchos de Helvetica Bold (unidades/1000 em) donde difieren de la redonda. En
-# una columna angosta el 4 % con que el generador hermano aproxima la negrita
-# queda corto (la minúscula es ~10 % más ancha) y la frase resaltada desbordaba
-# el recuadro: acá la negrita se mide con su propia tabla.
-_WB = {"!": 333, '"': 474, "&": 722, "'": 238, ":": 333, ";": 333, "?": 611, "@": 975,
-       "A": 722, "B": 722, "J": 556, "K": 722, "L": 611,
-       "b": 611, "c": 556, "d": 611, "f": 333, "g": 611, "h": 611, "i": 278, "j": 278,
-       "k": 556, "l": 278, "m": 889, "n": 611, "o": 611, "p": 611, "q": 611, "r": 389,
-       "s": 556, "t": 333, "u": 611, "v": 556, "w": 778, "x": 556, "y": 556,
-       "í": 278, "ó": 611, "ú": 611, "ñ": 611, "ü": 611}
-
-
-def ancho_negrita(texto, fs):
-    return sum(_WB.get(c, base._W.get(c, 556)) for c in texto) / 1000.0 * fs
-
-
-def envolver_negrita(texto, fs, ancho_max):
-    """Mismo envoltorio por palabras que base.envolver, medido en negrita."""
-    lineas, actual, inicio, cursor = [], "", 0, 0
-    for palabra in texto.split(" "):
-        cand = palabra if not actual else actual + " " + palabra
-        if actual and ancho_negrita(cand, fs) > ancho_max:
-            lineas.append((actual, inicio))
-            inicio, actual = cursor, palabra
-        else:
-            actual = cand
-        cursor += len(palabra) + 1
-    if actual:
-        lineas.append((actual, inicio))
-    return lineas
+def miles(n):
+    """Entero con punto de miles: 1523 -> «1.523»."""
+    return f"{n:,}".replace(",", ".")
 
 
 # --------------------------------------------------------------------------- #
@@ -163,130 +154,131 @@ def flecha_flujo(x, y1, y2):
             f'stroke-width="1.5" marker-end="url(#arF)"/>')
 
 
-# Fragmento compacto: encabezado con el número y el estado, debajo la etiqueta
-# corta del nodo de ese punto; el recuperado agrega la frase de remisión.
-LINEA_ENCABEZADO = 26      # del borde superior a la línea base del encabezado
-LINEA_ETIQUETA = 50        # ídem, a la línea base de la etiqueta
-ALTO_FRAGMENTO = 62
-SALTO_FRASE = 28           # de la etiqueta a la primera línea de la frase
-GAP_FRAGMENTOS = 12        # mínimo; crece hasta GAP_FRAGMENTOS_MAX si la columna sobra
-GAP_FRAGMENTOS_MAX = 26
+def texto_estilado(partes, texto, estilo, lineas, x, y, tinta, tinta_resaltado):
+    """Dibuja `lineas` (de base.envolver_estilos) con el número de punto en
+    negrita y el tramo resaltado sobre fondo de acento. `y` es la primera línea
+    base."""
+    for linea, desplazamiento in lineas:
+        segmentos, actual, marca = [], "", None
+        for k, ch in enumerate(linea):
+            m = estilo[desplazamiento + k]
+            if marca is None:
+                marca = m
+            if m != marca:
+                segmentos.append((actual, marca))
+                actual, marca = "", m
+            actual += ch
+        if actual:
+            segmentos.append((actual, marca))
+        xc = x
+        for seg, m in segmentos:
+            aseg = ancho_negrita(seg, FS_TEXTO) if m else ancho(seg, FS_TEXTO)
+            if m == "R" and seg.strip():
+                partes.append(f'<rect x="{f(xc - 1)}" y="{f(y - FS_TEXTO + 2)}" '
+                              f'width="{f(aseg + 2)}" height="{f(FS_TEXTO + 5)}" '
+                              f'fill="{base.ACENTO}" opacity="0.26" rx="2"/>')
+            xc += aseg
+        tspans = ""
+        for seg, m in segmentos:
+            if m == "R":
+                tspans += f'<tspan font-weight="bold" fill="{tinta_resaltado}">{esc(seg)}</tspan>'
+            elif m == "N":
+                tspans += f'<tspan font-weight="bold">{esc(seg)}</tspan>'
+            else:
+                tspans += f'<tspan>{esc(seg)}</tspan>'
+        partes.append(f'<text x="{f(x)}" y="{f(y)}" font-size="{FS_TEXTO}" fill="{tinta}" '
+                      f'xml:space="preserve">{tspans}</text>')
+        y += INTERLINEA
+
+
+# Fragmento: la marca de estado en la primera línea y debajo el texto del punto,
+# que empieza con su número (en negrita); el recuperado lleva además la frase
+# de remisión resaltada.
+LINEA_MARCA = 24           # del borde superior a la línea base de la marca
+SALTO_TEXTO = 28           # de la marca a la primera línea del texto
+PIE_FRAGMENTO = 12         # de la última línea del texto al borde inferior
+GAP_FRAGMENTOS = 12
 ALTO_SUBTITULO = 22
+ALTO_RESTO = 30
 
 
-def frase_de(bloque):
-    """Frase de remisión del fragmento recuperado, tomada del generador hermano y
-    comprobada contra el texto del punto; None si el punto no remite."""
-    if not bloque["resaltar"]:
-        return None
-    if bloque["resaltar"] not in bloque["texto"]:
-        raise SystemExit(f"la frase resaltada no está en el texto del punto {bloque['punto']}")
-    return OMISION + bloque["resaltar"]
+def bloque_fragmento(datos, cid, recuperado):
+    t = datos["textos"][cid]
+    b = {"texto": t["texto"], "unidad": t["unidad"],
+         "resaltar": datos["textos"]["frase_resaltada"] if recuperado else None}
+    if b["resaltar"] and b["resaltar"] not in b["texto"]:
+        raise SystemExit(f"la frase resaltada no está en el texto de {cid}")
+    return b
 
 
-def lineas_frase(bloque, w, recuperado):
-    frase = frase_de(bloque) if recuperado else None
-    return envolver_negrita(frase, FS_TEXTO, w - 2 * PAD) if frase else []
+def lineas_fragmento(b, w):
+    return base.envolver_estilos(b["texto"], base.estilo_de(b), FS_TEXTO, w - 2 * PAD)
 
 
-def alto_fragmento(bloque, w, recuperado):
-    n = len(lineas_frase(bloque, w, recuperado))
-    if not n:
-        return ALTO_FRAGMENTO
-    return LINEA_ETIQUETA + SALTO_FRASE + (n - 1) * INTERLINEA + 16
+def alto_fragmento(b, w):
+    return LINEA_MARCA + SALTO_TEXTO + (len(lineas_fragmento(b, w)) - 1) * INTERLINEA + PIE_FRAGMENTO
 
 
-def dibujar_fragmento(bloque, etiqueta, x, y, w, recuperado):
+def dibujar_fragmento(b, puesto, recuperado, x, y, w):
     partes = []
-    alto = alto_fragmento(bloque, w, recuperado)
+    alto = alto_fragmento(b, w)
     if recuperado:
         partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(alto)}" '
                       f'fill="white" stroke="#333" stroke-width="1.8" rx="4"/>')
+        partes.append(f'<text x="{f(x + PAD)}" y="{f(y + LINEA_MARCA)}" '
+                      f'font-size="{FS_ROTULO}" font-weight="bold" fill="#333">'
+                      f'{esc(ETIQUETA_RECUPERADO.format(puesto=miles(puesto)))}</text>')
     else:
         partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(alto)}" '
                       f'fill="{FONDO_APAGADO}" stroke="{GRIS_BORDE_APAGADO}" '
                       f'stroke-width="1.0" stroke-dasharray="5,4" rx="4"/>')
-    y_enc = y + LINEA_ENCABEZADO
-    partes.append(f'<text x="{f(x + PAD)}" y="{f(y_enc)}" font-size="{FS_ENCABEZADO}" '
-                  f'font-weight="bold" fill="{"#333" if recuperado else GRIS_TEXTO_APAGADO}">'
-                  f'Punto {esc(bloque["punto"])}</text>')
-    if recuperado:
-        partes.append(f'<text x="{f(x + w - PAD)}" y="{f(y_enc)}" text-anchor="end" '
-                      f'font-size="{FS_ROTULO}" font-weight="bold" fill="#333">'
-                      f'{esc(ETIQUETA_RECUPERADO)}</text>')
-    else:
-        partes.append(f'<text x="{f(x + w - PAD)}" y="{f(y_enc)}" text-anchor="end" '
+        partes.append(f'<text x="{f(x + PAD)}" y="{f(y + LINEA_MARCA)}" '
                       f'font-size="{FS_ROTULO}" font-style="italic" fill="{base.GRIS_ROTULO}">'
-                      f'{esc(ETIQUETA_NO_RECUPERADO)}</text>')
-    if ancho(etiqueta, FS_TEXTO) > w - 2 * PAD:
-        raise SystemExit(f"la etiqueta de {bloque['punto']} no entra en una línea")
-    partes.append(f'<text x="{f(x + PAD)}" y="{f(y + LINEA_ETIQUETA)}" font-size="{FS_TEXTO}" '
-                  f'fill="{"#1f1f1f" if recuperado else GRIS_TEXTO_APAGADO}">{esc(etiqueta)}</text>')
-
-    # Frase de remisión: todo resaltado salvo la marca de omisión inicial.
-    yl = y + LINEA_ETIQUETA + SALTO_FRASE
-    for linea, desplazamiento in lineas_frase(bloque, w, recuperado):
-        corte = max(0, len(OMISION) - desplazamiento)
-        previo, marcado = linea[:corte], linea[corte:]
-        xc = x + PAD + ancho(previo, FS_TEXTO)
-        partes.append(f'<rect x="{f(xc - 1)}" y="{f(yl - FS_TEXTO + 2)}" '
-                      f'width="{f(ancho_negrita(marcado, FS_TEXTO) + 2)}" height="{f(FS_TEXTO + 5)}" '
-                      f'fill="{base.ACENTO}" opacity="0.26" rx="2"/>')
-        tspans = (f'<tspan>{esc(previo)}</tspan>' if previo else "")
-        tspans += (f'<tspan font-weight="bold" fill="{base.ACENTO_TEXTO}">{esc(marcado)}</tspan>')
-        partes.append(f'<text x="{f(x + PAD)}" y="{f(yl)}" font-size="{FS_TEXTO}" '
-                      f'fill="#1f1f1f" xml:space="preserve">{tspans}</text>')
-        yl += INTERLINEA
+                      f'{esc(ETIQUETA_NO_RECUPERADO.format(puesto=miles(puesto)))}</text>')
+    texto_estilado(partes, b["texto"], base.estilo_de(b), lineas_fragmento(b, w),
+                   x + PAD, y + LINEA_MARCA + SALTO_TEXTO,
+                   "#1f1f1f" if recuperado else GRIS_TEXTO_APAGADO, base.ACENTO_TEXTO)
     return partes, alto
 
 
-def alto_columna_fragmentos(bloques, estado):
+def alto_columna_fragmentos(bloques):
     w = ANCHO_COL - 2 * PAD
     total = PAD_V + ALTO_SUBTITULO
-    total += sum(alto_fragmento(b, w, estado[b["punto"]]) for b in bloques)
+    total += sum(alto_fragmento(b, w) for b, _, _ in bloques)
     total += GAP_FRAGMENTOS * (len(bloques) - 1)
-    return total + PAD_V
+    return total + ALTO_RESTO + PAD_V
 
 
-def dibujar_columna_fragmentos(bloques, etiquetas, estado, x0, y0, alto):
+def dibujar_columna_fragmentos(bloques, resto, x0, y0, alto):
     partes = [panel(x0, y0, ANCHO_COL, alto)]
     partes.append(f'<text x="{f(x0 + PAD)}" y="{f(y0 + PAD_V + 12)}" font-size="{FS_ROTULO}" '
                   f'font-weight="bold" fill="#444">{esc(SUBTITULO_FRAGMENTOS)}</text>')
-    # Si la columna de enfrente es más alta, los recuadros se separan un poco
-    # más (hasta un tope) en vez de dejar todo el sobrante al pie.
-    sobrante = alto - alto_columna_fragmentos(bloques, estado)
-    gap = min(GAP_FRAGMENTOS_MAX, GAP_FRAGMENTOS + sobrante / (len(bloques) - 1))
     y = y0 + PAD_V + ALTO_SUBTITULO
-    for b in bloques:
-        piezas, h = dibujar_fragmento(b, etiquetas[b["punto"]], x0 + PAD, y,
-                                      ANCHO_COL - 2 * PAD, estado[b["punto"]])
+    for b, puesto, recuperado in bloques:
+        piezas, h = dibujar_fragmento(b, puesto, recuperado, x0 + PAD, y, ANCHO_COL - 2 * PAD)
         partes += piezas
-        y += h + gap
+        y += h + GAP_FRAGMENTOS
+    linea = ETIQUETA_RESTO.format(unidades=" · ".join(resto))
+    if ancho(linea, FS_ROTULO) > ANCHO_COL - 2 * PAD:
+        raise SystemExit("la línea del resto del top-5 no entra en la columna")
+    partes.append(f'<text x="{f(x0 + PAD)}" y="{f(y - GAP_FRAGMENTOS + ALTO_RESTO - 6)}" '
+                  f'font-size="{FS_ROTULO}" fill="#444">{esc(linea)}</text>')
     return partes
 
 
-def lineas_nodo(nodos, nid, w):
-    """Líneas de texto de un nodo: el número de punto (si lo tiene) y la
-    etiqueta corta envuelta al ancho de la caja."""
-    corta, _ = base.etiqueta_de(nodos, nid)
-    punto = base.punto_de_la_figura(nodos[nid])
-    lineas = [(punto, True)] if punto else []
-    lineas += [(linea, False) for linea, _ in envolver(corta, FS_NODO, w - 22)]
-    return lineas
+def alto_nodo(nodo, w):
+    return len(base.lineas_nodo(nodo, w - 22, FS_NODO)) * PASO_NODO + 8
 
 
-def alto_nodo(nodos, nid, w):
-    return len(lineas_nodo(nodos, nid, w)) * PASO_NODO + 8
-
-
-def dibujar_nodo(nodos, nid, cx, cy, w, h, focal):
+def dibujar_nodo(nodo, cx, cy, w, h):
     """Mismo estilo de nodo que la figura «de la norma al grafo»."""
-    color = base.COLOR_TIPO[nodos[nid]["type"]]
+    focal = nodo["type"] in base.TIPOS_FOCALES
+    color = base.COLOR_TIPO[nodo["type"]]
     partes = [f'<rect x="{f(cx - w / 2)}" y="{f(cy - h / 2)}" width="{f(w)}" height="{f(h)}" '
               f'fill="{color}" fill-opacity="{"0.95" if focal else "0.45"}" '
               f'stroke="{"black" if focal else "#777"}" '
               f'stroke-width="{"1.8" if focal else "1.1"}" rx="7"/>']
-    lineas = lineas_nodo(nodos, nid, w)
+    lineas = base.lineas_nodo(nodo, w - 22, FS_NODO)
     ytxt = cy - (len(lineas) - 1) * PASO_NODO / 2.0 + 6
     for linea, es_punto in lineas:
         partes.append(f'<text x="{f(cx)}" y="{f(ytxt)}" text-anchor="middle" '
@@ -298,49 +290,55 @@ def dibujar_nodo(nodos, nid, cx, cy, w, h, focal):
 
 # Disposición del panel de la consulta (coordenadas relativas a su esquina).
 # Las alturas salen del número de líneas de cada elemento; solo los anchos y
-# las separaciones son fijos. Los nodos remitidos son anchos para que la
-# mayoría de las etiquetas entren en una sola línea.
+# las separaciones son fijos.
 X_PILDORA, ANCHO_PILDORA = 14, 368
 X_R, ANCHO_R = 14, 320
-X_NODO, ANCHO_NODO = 102, 280
-TRONCO_REMISION = 38     # x del tronco del que salen las tres remisiones
-TRONCO_CONTEXTO = 22     # x del tronco de las aristas de contexto
+# El tramo horizontal de la arista referencia (de TRONCO_REMISION a X_NODO)
+# tiene que alojar su rótulo en negrita, más largo que el «remite a» anterior.
+X_NODO, ANCHO_NODO = 118, 264
+TRONCO_REMISION = 34     # x del tronco de la arista referencia
+TRONCO_CONTEXTO = 20     # x del tronco de la arista limita que sale del nodo abierto
 X_FLECHA_BUSQUEDA = 300
 SALTO_PASO = 18          # de un elemento a la línea base del rótulo del paso siguiente
 BAJO_PASO = 8            # del rótulo del paso al elemento que encabeza
 GAP_NODOS = 6
-GAP_CONTEXTO = 10
+GAP_VERTICAL = 40        # entre dos nodos unidos por una arista vertical
 
 
-def disposicion_grafo(nodos, ids):
+def disposicion_grafo(datos):
     """Posiciones verticales del panel de la consulta y su alto total."""
-    claves_ctx = ["OP", "SU"] if DIBUJAR_CONTEXTO else []
+    nodos = datos["grafo"]["nodos"]
     d = {"pasos": {}, "cajas": {}}
     y = PAD_V + 13
     d["pasos"][1] = (PAD + 4, y)
-    lineas = envolver(PREGUNTA, FS_ROTULO, ANCHO_PILDORA - 44)
+    lineas = envolver(datos["pregunta"], FS_ROTULO, ANCHO_PILDORA - 44)
     y += BAJO_PASO
     d["pildora"] = {"y": y, "h": len(lineas) * PASO_ROTULO + 12, "lineas": lineas}
     y += d["pildora"]["h"] + SALTO_PASO
     d["pasos"][2] = (PAD + 4, y)
     y += BAJO_PASO
-    h = alto_nodo(nodos, ids["R"], ANCHO_R)
-    d["cajas"]["R"] = {"cx": X_R + ANCHO_R / 2.0, "cy": y + h / 2.0, "w": ANCHO_R, "h": h, "focal": True}
+    h = alto_nodo(nodos[NODO_ENCONTRADO], ANCHO_R)
+    d["cajas"][NODO_ENCONTRADO] = {"cx": X_R + ANCHO_R / 2.0, "cy": y + h / 2.0,
+                                   "w": ANCHO_R, "h": h}
     y += h + SALTO_PASO
     d["pasos"][3] = (X_NODO, y)
     y += BAJO_PASO
-    for i, clave in enumerate(["O1", "O2", "O3"] + claves_ctx):
-        if clave == "OP":
-            y += GAP_CONTEXTO - GAP_NODOS
-        h = alto_nodo(nodos, ids[clave], ANCHO_NODO)
+    anterior = None
+    for clave in NODOS_ALCANZADOS:
+        if anterior is not None:
+            vertical = any(a == clave and b == anterior for a, _, b in ARISTAS_CONSULTA)
+            y += GAP_VERTICAL if vertical else GAP_NODOS
+        h = alto_nodo(nodos[clave], ANCHO_NODO)
         d["cajas"][clave] = {"cx": X_NODO + ANCHO_NODO / 2.0, "cy": y + h / 2.0,
-                             "w": ANCHO_NODO, "h": h, "focal": clave.startswith("O")}
-        y += h + GAP_NODOS
-    d["alto"] = y - GAP_NODOS + PAD_V
+                             "w": ANCHO_NODO, "h": h}
+        y += h
+        anterior = clave
+    d["alto"] = y + PAD_V
     return d
 
 
-def dibujar_columna_grafo(nodos, ids, aristas, disp, x0, y0, alto):
+def dibujar_columna_grafo(datos, disp, x0, y0, alto):
+    nodos = datos["grafo"]["nodos"]
     partes = [panel(x0, y0, ANCHO_COL, alto)]
     cajas = disp["cajas"]
 
@@ -362,36 +360,43 @@ def dibujar_columna_grafo(nodos, ids, aristas, disp, x0, y0, alto):
         yl += PASO_ROTULO
 
     # Paso 2: abrir el nodo encontrado.
-    r = cajas["R"]
+    r = cajas[NODO_ENCONTRADO]
     partes.append(paso(2, "2 · Abrir el nodo encontrado"))
     partes.append(flecha_flujo(x0 + X_FLECHA_BUSQUEDA, y0 + p["y"] + p["h"],
                                y0 + r["cy"] - r["h"] / 2.0 - 3))
 
-    # Paso 3: seguir las remisiones. La existencia de cada arista ya fue
-    # comprobada contra el grafo por base.cargar(); acá solo se traza.
-    partes.append(paso(3, "3 · Seguir las aristas «remite a»"))
-    por_id = {ids[k]: k for k in ids}
+    # Paso 3: seguir las aristas. Las que salen del nodo abierto bajan por un
+    # tronco a la izquierda y entran por el costado del nodo de destino; la que
+    # une dos nodos alcanzados va en vertical entre ellos.
+    partes.append(paso(3, "3 · Seguir las aristas"))
     y_salida = y0 + r["cy"] + r["h"] / 2.0
     rotulos = []
-    for origen, relacion, destino in aristas:
-        ka, kb = por_id[origen], por_id[destino]
-        remision = (relacion == "referencia")
-        if not remision and not DIBUJAR_CONTEXTO:
-            continue
-        if ka != "R" or kb not in cajas:
-            raise SystemExit(f"arista sin trazado definido: {ka} -> {kb} ({relacion})")
-        caja = cajas[kb]
-        tx = x0 + (TRONCO_REMISION if remision else TRONCO_CONTEXTO)
-        x_llegada = x0 + caja["cx"] - caja["w"] / 2.0 - 2
-        cy = y0 + caja["cy"]
+    for origen, relacion, destino in ARISTAS_CONSULTA:
+        remision = (relacion == base.RELACION_RESALTADA)
         color = base.ACENTO if remision else base.GRIS_ARISTA
         extra = "" if remision else ' stroke-dasharray="4,4"'
-        partes.append(f'<path d="M{f(tx)},{f(y_salida)} L{f(tx)},{f(cy)} L{f(x_llegada)},{f(cy)}" '
-                      f'fill="none" stroke="{color}" stroke-width="{"2.6" if remision else "1.5"}"'
-                      f'{extra} stroke-linejoin="round" '
+        cb = cajas[destino]
+        if origen == NODO_ENCONTRADO:
+            tx = x0 + (TRONCO_REMISION if remision else TRONCO_CONTEXTO)
+            x_llegada = x0 + cb["cx"] - cb["w"] / 2.0 - 2
+            cy = y0 + cb["cy"]
+            d = f"M{f(tx)},{f(y_salida)} L{f(tx)},{f(cy)} L{f(x_llegada)},{f(cy)}"
+            rotulos.append(((tx + x_llegada) / 2.0, cy - 12, relacion, remision))
+            at =ancho_negrita(relacion, FS_ROTULO) if remision else ancho(relacion, FS_ROTULO)
+            if at + 8 > x_llegada - tx:
+                raise SystemExit(f"el rótulo {relacion!r} no entra en el tramo horizontal")
+        else:
+            ca = cajas[origen]
+            if ca["cx"] != cb["cx"]:
+                raise SystemExit(f"arista sin trazado definido: {origen} -> {destino}")
+            x = x0 + ca["cx"]
+            y_ini = y0 + ca["cy"] - ca["h"] / 2.0
+            y_fin = y0 + cb["cy"] + cb["h"] / 2.0 + 2
+            d = f"M{f(x)},{f(y_ini)} L{f(x)},{f(y_fin)}"
+            rotulos.append((x, (y_ini + y_fin) / 2.0 + 5, relacion, remision))
+        partes.append(f'<path d="{d}" fill="none" stroke="{color}" '
+                      f'stroke-width="{"2.6" if remision else "1.5"}"{extra} stroke-linejoin="round" '
                       f'marker-end="url(#{"arA" if remision else "arG"})"/>')
-        rotulos.append(((tx + x_llegada) / 2.0, cy - 12,
-                        base.CASTELLANO.get(relacion, relacion), remision))
     for mx, my, texto, remision in rotulos:
         at = ancho_negrita(texto, FS_ROTULO) if remision else ancho(texto, FS_ROTULO)
         partes.append(f'<rect x="{f(mx - at / 2 - 1)}" y="{f(my - FS_ROTULO + 1)}" '
@@ -403,8 +408,7 @@ def dibujar_columna_grafo(nodos, ids, aristas, disp, x0, y0, alto):
                       f'{esc(texto)}</text>')
 
     for clave, c in cajas.items():
-        partes += dibujar_nodo(nodos, ids[clave], x0 + c["cx"], y0 + c["cy"],
-                               c["w"], c["h"], c["focal"])
+        partes += dibujar_nodo(nodos[clave], x0 + c["cx"], y0 + c["cy"], c["w"], c["h"])
     return partes
 
 
@@ -413,81 +417,75 @@ def dibujar_columna_grafo(nodos, ids, aristas, disp, x0, y0, alto):
 # --------------------------------------------------------------------------- #
 ALTO_FILA = 26
 GAP_FILA = 4
+X_TEXTO_FILA = 14       # del borde de la fila al texto (a la derecha de la franja)
+X_TEXTO_FALTA = 34      # ídem, a la derecha de la cruz
 
 
-def textos_respuesta(nodos, ids):
-    """La respuesta de cada columna, armada con lo que esa columna obtuvo: a la
-    izquierda, la frase de remisión del único fragmento recuperado; a la
-    derecha, la etiqueta de cada nodo alcanzado por una arista de remisión."""
-    izquierda = (f"Sí, {base.FRASE_RESALTADA.rstrip('.')} "
-                 f"(punto {base.PUNTO_ORIGEN}).")
-    derecha = f"Sí, si se cumplen las condiciones a las que remite el punto {base.PUNTO_ORIGEN}:"
-    condiciones = []
-    for punto in base.PUNTOS_DESTINO:
-        corta, _ = base.etiqueta_de(nodos, ids[CLAVE_DE_PUNTO[punto]])
-        condiciones.append((punto, corta))
-    return izquierda, derecha, condiciones
+def filas_derecha(datos):
+    """(texto de la fila, largo del número de punto, tipo del nodo, sangría)."""
+    nodos = datos["grafo"]["nodos"]
+    filas = []
+    for clave, texto, sangria in RESPUESTA_DERECHA_FILAS:
+        punto = nodos[clave]["punto"]
+        filas.append((f"{punto} · {texto}", len(punto), nodos[clave]["type"], sangria))
+    return filas
 
 
-def alto_respuesta(entradas):
-    ancho_txt = ANCHO_COL - 2 * PAD
-    n = max(len(envolver(t, FS_TEXTO, ancho_txt)) for t in entradas)
-    alto = (PAD_V + FS_ENCABEZADO + 6 + n * INTERLINEA + 6
-            + 3 * (ALTO_FILA + GAP_FILA) - GAP_FILA + PAD_V)
-    return alto, n
+def lineas_fila(texto, n_negrita, x_texto, sangria=0):
+    estilo = ["N"] * n_negrita + [""] * (len(texto) - n_negrita)
+    return base.envolver_estilos(texto, estilo, FS_TEXTO,
+                                 ANCHO_COL - 2 * PAD - sangria - x_texto - 6), estilo
 
 
-def dibujar_respuesta(titulo, entrada, filas, completas, n_lineas, x0, y0, alto):
+def alto_filas(filas, x_texto):
+    return sum(ALTO_FILA + (len(lineas_fila(t, n, x_texto, sg)[0]) - 1) * INTERLINEA + GAP_FILA
+               for t, n, _, sg in filas) - GAP_FILA
+
+
+def alto_respuesta(entrada, filas, x_texto):
+    n = len(envolver(entrada, FS_TEXTO, ANCHO_COL - 2 * PAD))
+    return (PAD_V + FS_ENCABEZADO + 6 + n * INTERLINEA + 6
+            + alto_filas(filas, x_texto) + PAD_V)
+
+
+def dibujar_respuesta(titulo, entrada, filas, completas, x0, y0, alto):
     partes = [panel(x0, y0, ANCHO_COL, alto)]
     partes.append(f'<text x="{f(x0 + PAD)}" y="{f(y0 + PAD_V + FS_ENCABEZADO - 2)}" '
                   f'font-size="{FS_ENCABEZADO}" font-weight="bold" fill="#333">{esc(titulo)}</text>')
     yl = y0 + PAD_V + FS_ENCABEZADO + 6 + FS_TEXTO
-    for linea, _ in envolver(entrada, FS_TEXTO, ANCHO_COL - 2 * PAD):
+    lineas = envolver(entrada, FS_TEXTO, ANCHO_COL - 2 * PAD)
+    for linea, _ in lineas:
         partes.append(f'<text x="{f(x0 + PAD)}" y="{f(yl)}" font-size="{FS_TEXTO}" '
                       f'fill="#1f1f1f">{esc(linea)}</text>')
         yl += INTERLINEA
-    y = y0 + PAD_V + FS_ENCABEZADO + 6 + n_lineas * INTERLINEA + 6
-    x, w = x0 + PAD, ANCHO_COL - 2 * PAD
-    for punto, etiqueta in filas:
+    y = y0 + PAD_V + FS_ENCABEZADO + 6 + len(lineas) * INTERLINEA + 6
+    x_texto = X_TEXTO_FILA if completas else X_TEXTO_FALTA
+    for texto, n_negrita, tipo, sangria in filas:
+        x, w = x0 + PAD + sangria, ANCHO_COL - 2 * PAD - sangria
+        lf, estilo = lineas_fila(texto, n_negrita, x_texto, sangria)
+        h = ALTO_FILA + (len(lf) - 1) * INTERLINEA
         y_txt = y + ALTO_FILA / 2.0 + 6
         if completas:
-            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(ALTO_FILA)}" '
+            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" '
                           f'fill="white" stroke="#d8d8d8" rx="4"/>')
-            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="6" height="{f(ALTO_FILA)}" '
-                          f'fill="{base.COLOR_TIPO["Obligacion"]}" rx="2"/>')
-            x_etq = x + 14 + ancho_negrita(punto, FS_TEXTO) + 8
-            if x_etq + ancho(etiqueta, FS_TEXTO) > x + w - 6:
-                raise SystemExit(f"la condición de {punto} no entra en una línea")
-            partes.append(f'<text x="{f(x + 14)}" y="{f(y_txt)}" font-size="{FS_TEXTO}" '
-                          f'font-weight="bold" fill="#1f1f1f">{esc(punto)}</text>')
-            partes.append(f'<text x="{f(x_etq)}" y="{f(y_txt)}" font-size="{FS_TEXTO}" '
-                          f'fill="#1f1f1f">{esc(etiqueta)}</text>')
+            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="6" height="{f(h)}" '
+                          f'fill="{base.COLOR_TIPO[tipo]}" rx="2"/>')
+            texto_estilado(partes, texto, estilo, lf, x + x_texto, y_txt, "#1f1f1f",
+                           base.ACENTO_TEXTO)
         else:
             cy = y + ALTO_FILA / 2.0
-            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(ALTO_FILA)}" '
+            partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" '
                           f'fill="none" stroke="{GRIS_BORDE_APAGADO}" stroke-width="1.2" '
                           f'stroke-dasharray="5,4" rx="4"/>')
             for dx1, dy1, dx2, dy2 in [(-5, -5, 5, 5), (-5, 5, 5, -5)]:
                 partes.append(f'<path d="M{f(x + 19 + dx1)},{f(cy + dy1)} L{f(x + 19 + dx2)},{f(cy + dy2)}" '
                               f'stroke="{base.GRIS_ROTULO}" stroke-width="2"/>')
-            partes.append(f'<text x="{f(x + 34)}" y="{f(y_txt)}" font-size="{FS_TEXTO}" '
-                          f'font-style="italic" fill="{base.GRIS_ROTULO}">'
-                          f'condición del punto {esc(punto)}: omitida</text>')
-        y += ALTO_FILA + GAP_FILA
+            for linea, _ in lf:
+                partes.append(f'<text x="{f(x + x_texto)}" y="{f(y_txt)}" font-size="{FS_TEXTO}" '
+                              f'font-style="italic" fill="{base.GRIS_ROTULO}">{esc(linea)}</text>')
+                y_txt += INTERLINEA
+        y += h + GAP_FILA
     return partes
-
-
-def dibujar_leyenda(nodos, ids, y0, alto):
-    """La leyenda de la figura «de la norma al grafo» (misma función, mismo
-    contenido), con la letra al tamaño de los rótulos de esta figura. El tamaño
-    es una constante de módulo del generador hermano: se sustituye solo durante
-    la llamada."""
-    original = base.FS_LEYENDA
-    base.FS_LEYENDA = FS_LEYENDA
-    try:
-        return base.dibujar_leyenda(nodos, ids, y0, alto)
-    finally:
-        base.FS_LEYENDA = original
 
 
 # --------------------------------------------------------------------------- #
@@ -529,50 +527,26 @@ def exportar_png(svg):
 
 
 # --------------------------------------------------------------------------- #
-# Verificación opcional de RESULTADO_BUSQUEDA contra la búsqueda de la app      #
+# Verificación opcional de los puestos contra la búsqueda léxica               #
 # --------------------------------------------------------------------------- #
-def verificar_busqueda(nodos):
-    """Corre la misma búsqueda que sirve la app (solo lectura; requiere Neo4j y
-    el driver) y comprueba el orden y el estado declarados en RESULTADO_BUSQUEDA."""
-    sys.path.insert(0, os.path.join(base.RAIZ, "data/experiment/neo4j"))
-    from conexion import abrir_driver
-    from neo4j_index import Neo4jIndex
-    from harness import _tokens
-
-    driver = abrir_driver()
-    indice = Neo4jIndex(driver, grafo="KG_Reextraido_r1", modo="fulltext")
-    top = indice.buscar_nodos(PREGUNTA, limite=LIMITE_BUSQUEDA)["resultados"]
-    with driver.session() as sesion:
-        ranking = [fila["id"] for fila in sesion.run(
-            f"CALL db.index.fulltext.queryNodes('{indice.indice}', $q) YIELD node, score "
-            "RETURN node.id AS id ORDER BY score DESC, size(node.label) ASC, node.id ASC",
-            q=" ".join(_tokens(PREGUNTA)))]
-    driver.close()
-    if ranking[:LIMITE_BUSQUEDA] != [r["id"] for r in top]:
-        raise SystemExit("el ranking completo no coincide con la llamada de la app")
-
-    def posicion(punto):
-        for i, nid in enumerate(ranking, start=1):
-            nodo = nodos.get(nid)
-            if (nodo and nodo["type"] in base.TIPOS_CON_PUNTO
-                    and any(p.get("to") == "ext" and p.get("punto") == punto
-                            and p.get("rol_documental") == "punto_propio"
-                            for p in base.provenances(nodo))):
-                return i
-        return None
-
-    print(f"\nBÚSQUEDA (índice {indice.indice}, {len(ranking)} resultados con coincidencia)")
-    medido = []
-    for punto, _ in RESULTADO_BUSQUEDA:
-        pos = posicion(punto)
-        medido.append((punto, pos))
-        print(f"  punto {punto:9s} primera aparición: "
-              f"{pos if pos is not None else 'NO APARECE'}")
-    orden = sorted(medido, key=lambda t: (t[1] is None, t[1]))
-    esperado = [(p, pos is not None and pos <= LIMITE_BUSQUEDA) for p, pos in orden]
-    if esperado != RESULTADO_BUSQUEDA:
-        raise SystemExit(f"RESULTADO_BUSQUEDA ya no coincide con la búsqueda: {esperado}")
-    print("  --> RESULTADO_BUSQUEDA coincide con la búsqueda de la app.")
+def verificar_busqueda(datos):
+    """Vuelve a correr la búsqueda léxica sobre los fragmentos de E0 (solo
+    lectura, sin Neo4j ni API) y comprueba el top-5 y los puestos del JSON."""
+    import busqueda_lexica_fragmentos as bl
+    ids, textos, shas = bl.cargar_fragmentos()
+    orden, rango, *_ = bl.bm25(ids, textos, datos["pregunta"])
+    bf = datos["busqueda_fragmentos"]
+    if shas != bf["sha256_insumos"]:
+        raise SystemExit("los fragmentos de E0 no son los del JSON")
+    top = [ids[i] for i, _ in orden[:LIMITE_RECUPERACION]]
+    if top != [t["chunk_id"] for t in bf["top5"]]:
+        raise SystemExit(f"el top-5 ya no coincide con el JSON: {top}")
+    for cid in FRAGMENTOS:
+        if rango.get(cid) != bf["objetivos"][cid]["rango"]:
+            raise SystemExit(f"el puesto de {cid} ya no coincide con el JSON: {rango.get(cid)}")
+    print(f"\nBÚSQUEDA (BM25 sobre {len(ids)} fragmentos, recalculada): top-5 {top}; "
+          + ", ".join(f"{cid} puesto {rango.get(cid)}" for cid in FRAGMENTOS)
+          + "\n  --> coincide con ejemplo_prestamo_datos.json.")
 
 
 # --------------------------------------------------------------------------- #
@@ -582,47 +556,51 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--svg", metavar="RUTA", help="guarda además el SVG en RUTA")
     ap.add_argument("--verificar-busqueda", action="store_true",
-                    help="comprueba RESULTADO_BUSQUEDA contra Neo4j antes de dibujar")
+                    help="recalcula la búsqueda léxica y la compara con el JSON antes de dibujar")
     args = ap.parse_args()
 
     if puntos_impresos(FS_TEXTO) < PT_MIN_TEXTO:
         raise SystemExit("el texto corrido imprimiría por debajo del mínimo")
 
-    nodos, ids, chunks, aristas = base.cargar()
+    datos = base.cargar_datos()
     if args.verificar_busqueda:
-        verificar_busqueda(nodos)
+        verificar_busqueda(datos)
+    nodos = datos["grafo"]["nodos"]
+    en_json = {(a["origen"], a["relation"], a["destino"]) for a in datos["grafo"]["aristas"]}
+    for arista in ARISTAS_CONSULTA:
+        if arista not in en_json:
+            raise SystemExit(f"arista de la consulta ausente del JSON: {arista}")
 
-    por_punto = {b["punto"]: b for b in base.bloques_texto(chunks)}
-    if sorted(por_punto) != sorted(p for p, _ in RESULTADO_BUSQUEDA):
-        raise SystemExit("RESULTADO_BUSQUEDA no cubre exactamente los cuatro puntos")
-    bloques = [por_punto[p] for p, _ in RESULTADO_BUSQUEDA]
-    estado = dict(RESULTADO_BUSQUEDA)
+    # Fragmentos: puesto y estado de cada uno, y el resto del top-5.
+    bf = datos["busqueda_fragmentos"]
+    if len(bf["top5"]) != LIMITE_RECUPERACION:
+        raise SystemExit("el JSON no trae el top-5 completo")
+    bloques = []
+    for cid in FRAGMENTOS:
+        puesto = bf["objetivos"][cid]["rango"]
+        recuperado = puesto is not None and puesto <= LIMITE_RECUPERACION
+        bloques.append((bloque_fragmento(datos, cid, recuperado), puesto, recuperado))
+    resto = [t["unidad"] for t in bf["top5"] if t["chunk_id"] not in FRAGMENTOS]
+    if len(resto) != LIMITE_RECUPERACION - sum(1 for _, _, r in bloques if r):
+        raise SystemExit("el resto del top-5 no suma cinco con los fragmentos recuperados")
 
-    # La etiqueta de cada fragmento es la del nodo que la figura rotula con ese
-    # punto; se comprueba que ese nodo provenga del punto y que su texto sea el
-    # de la disposición que lo origina (misma verificación del generador hermano).
-    etiquetas = {}
-    for punto, clave in CLAVE_DE_PUNTO.items():
-        if base.punto_de_la_figura(nodos[ids[clave]]) != punto:
-            raise SystemExit(f"el nodo {clave} no proviene del punto {punto}")
-        etiquetas[punto], _ = base.etiqueta_de(nodos, ids[clave])
-    filas = base.verificar_correspondencia(nodos, ids, list(por_punto.values()),
-                                           base.nodos_por_punto(nodos))
-    if not all(fila["ok"] for fila in filas):
-        raise SystemExit("FALLA: algún punto no corresponde al nodo dibujado")
-
-    resp_izq, resp_der, condiciones = textos_respuesta(nodos, ids)
+    filas_izq = [(RESPUESTA_IZQUIERDA_FALTA, 0, None, 0)]
+    filas_der = filas_derecha(datos)
 
     # Alturas.
-    lineas_pregunta = [q if q.endswith("?") else q + "?" for q in PREGUNTA.split("? ")]
+    ancho_pregunta = ANCHO_TOTAL - 2 * PAD
+    pregunta = datos["pregunta"]
+    lineas_pregunta = base.envolver_estilos(pregunta, ["N"] * len(pregunta), FS_TEXTO,
+                                            ancho_pregunta)
     alto_pregunta = 8 + FS_ROTULO + 3 + len(lineas_pregunta) * INTERLINEA + 4
     y_pregunta = MARGEN_V
     y_titulos = y_pregunta + alto_pregunta + 34
     y_cols = y_titulos + 9
-    disp = disposicion_grafo(nodos, ids)
-    alto_cols = max(alto_columna_fragmentos(bloques, estado), disp["alto"])
+    disp = disposicion_grafo(datos)
+    alto_cols = max(alto_columna_fragmentos(bloques), disp["alto"])
     y_resp = y_cols + alto_cols + 18
-    alto_resp, n_lineas = alto_respuesta([resp_izq, resp_der])
+    alto_resp = max(alto_respuesta(RESPUESTA_IZQUIERDA, filas_izq, X_TEXTO_FALTA),
+                    alto_respuesta(RESPUESTA_DERECHA, filas_der, X_TEXTO_FILA))
     y_leyenda = y_resp + alto_resp + 8
     alto_leyenda = 70
     alto_total = y_leyenda + alto_leyenda + MARGEN_V
@@ -648,7 +626,7 @@ def main():
                f'font-size="{FS_ROTULO}" font-weight="bold" fill="{base.GRIS_ROTULO}">'
                f'La misma pregunta</text>')
     yl = y_pregunta + 8 + FS_ROTULO + 3 + FS_TEXTO
-    for linea in lineas_pregunta:
+    for linea, _ in lineas_pregunta:
         out.append(f'<text x="{f(W / 2.0)}" y="{f(yl)}" text-anchor="middle" font-size="{FS_TEXTO}" '
                    f'font-weight="bold" fill="#1f1f1f">{esc(linea)}</text>')
         yl += INTERLINEA
@@ -659,18 +637,19 @@ def main():
         out.append(f'<text x="{f(x_col + ANCHO_COL / 2.0)}" y="{f(y_titulos)}" text-anchor="middle" '
                    f'font-size="{FS_TITULO}" font-weight="bold">{esc(titulo)}</text>')
 
-    out += dibujar_columna_fragmentos(bloques, etiquetas, estado, x_izq, y_cols, alto_cols)
-    out += dibujar_columna_grafo(nodos, ids, aristas, disp, x_der, y_cols, alto_cols)
+    out += dibujar_columna_fragmentos(bloques, resto, x_izq, y_cols, alto_cols)
+    out += dibujar_columna_grafo(datos, disp, x_der, y_cols, alto_cols)
 
     for x_col in (x_izq, x_der):
         out.append(flecha_flujo(x_col + ANCHO_COL / 2.0, y_cols + alto_cols, y_resp - 3))
-    sin_condiciones = [(punto, None) for punto, _ in condiciones]
-    out += dibujar_respuesta("Respuesta con lo recuperado", resp_izq, sin_condiciones,
-                             False, n_lineas, x_izq, y_resp, alto_resp)
-    out += dibujar_respuesta("Respuesta con lo consultado", resp_der, condiciones,
-                             True, n_lineas, x_der, y_resp, alto_resp)
+    out += dibujar_respuesta("Respuesta con lo recuperado", RESPUESTA_IZQUIERDA, filas_izq,
+                             False, x_izq, y_resp, alto_resp)
+    out += dibujar_respuesta("Respuesta con lo consultado", RESPUESTA_DERECHA, filas_der,
+                             True, x_der, y_resp, alto_resp)
 
-    out += dibujar_leyenda(nodos, ids, y_leyenda, alto_leyenda)
+    dibujados = [NODO_ENCONTRADO] + NODOS_ALCANZADOS
+    out += base.dibujar_leyenda(base.tipos_presentes(nodos, dibujados), y_leyenda,
+                                alto_leyenda, FS_LEYENDA)
     out.append('</svg>')
     svg = "\n".join(out) + "\n"
 
@@ -686,27 +665,27 @@ def main():
     print(f"sha256 SVG: {hashlib.sha256(svg.encode('utf-8')).hexdigest()}   "
           f"({W} x {f(alto_total)} px)")
     print(f"Impresa a {ANCHO_IMPRESO_CM} cm de ancho:")
-    for nombre, px in [("texto corrido: pregunta, etiquetas de fragmento, frase, respuestas", FS_TEXTO),
+    for nombre, px in [("texto corrido: pregunta, fragmentos, respuestas", FS_TEXTO),
                        ("títulos de columna", FS_TITULO),
-                       ("encabezados de recuadro y etiquetas de nodo", FS_NODO),
-                       ("rótulos de estado, de paso y de arista; pregunta en la búsqueda", FS_ROTULO),
+                       ("encabezados de respuesta y etiquetas de nodo", FS_NODO),
+                       ("marcas, pasos, rótulos de arista; pregunta en la búsqueda", FS_ROTULO),
                        ("leyenda", FS_LEYENDA)]:
-        print(f"    {nombre:68s} {px:4.1f} px -> {puntos_impresos(px):5.2f} pt")
-    print("\nFRAGMENTOS (orden de la búsqueda)")
-    for b in bloques:
-        print(f"  punto {b['punto']:9s} {'RECUPERADO   ' if estado[b['punto']] else 'no recuperado'} "
-              f"{etiquetas[b['punto']]!r}")
+        print(f"    {nombre:60s} {px:4.1f} px -> {puntos_impresos(px):5.2f} pt")
+    print(f"\nalto de las columnas: fragmentos {alto_columna_fragmentos(bloques):.0f}, "
+          f"consulta {disp['alto']:.0f}")
+    print("\nFRAGMENTOS")
+    for b, puesto, recuperado in bloques:
+        print(f"  {b['unidad']:9s} {'RECUPERADO   ' if recuperado else 'no recuperado'} puesto {miles(puesto)}")
+    print(f"  resto del top-5: {resto}")
     print("\nARISTAS DIBUJADAS")
-    por_id = {ids[k]: k for k in ids}
-    for o, r, d in aristas:
-        if r != "referencia" and not DIBUJAR_CONTEXTO:
-            continue
-        print(f"  {por_id[o]:3s} --{base.CASTELLANO.get(r, r):12s}--> {por_id[d]:3s}")
+    for o, r, d in ARISTAS_CONSULTA:
+        print(f"  {o} --{r}--> {d}")
     print("\nRESPUESTAS")
-    print(f"  izquierda: {resp_izq}")
-    print(f"  derecha:   {resp_der}")
-    for punto, etiqueta in condiciones:
-        print(f"             - {punto}  {etiqueta}")
+    print(f"  izquierda: {RESPUESTA_IZQUIERDA}")
+    print(f"             ✗ {RESPUESTA_IZQUIERDA_FALTA}")
+    print(f"  derecha:   {RESPUESTA_DERECHA}")
+    for texto, _, tipo, sangria in filas_der:
+        print(f"             - {'  ' if sangria else ''}{texto}   [{tipo}; sangría {sangria} px]")
 
 
 if __name__ == "__main__":

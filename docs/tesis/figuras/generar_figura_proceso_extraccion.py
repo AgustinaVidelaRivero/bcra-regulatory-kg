@@ -12,13 +12,15 @@ generación es determinística (dos corridas producen el mismo SVG byte a byte).
 El PNG se exporta con rsvg-convert al ancho físico de la figura a 300 dpi, y
 el script le graba la densidad en el encabezado.
 
-Los tres nodos y las dos aristas del panel «Grafo» no se tipean: se toman del
-grafo r1 (kg.json) por consulta —documento, tipo y punto de procedencia de
-cada nodo; origen, relación y destino de cada arista— y el script comprueba al
-generar que el archivo es el sellado, que cada búsqueda da exactamente un nodo
-con esa procedencia y que cada arista existe con ese tipo. Cada nodo se rotula
-con el nombre de su tipo y su punto de procedencia; la etiqueta que el nodo
-tiene en el grafo se imprime al correr.
+Los tres nodos y las dos aristas del panel «Grafo» no se tipean: se leen de
+ejemplo_prestamo_datos.json (ejemplo del préstamo, que escribe
+extraer_datos_ejemplo_prestamo.py) y el script comprueba al generar, contra el
+grafo r1 (kg.json), que el archivo es el sellado, que cada nodo está con ese
+tipo y ese punto de procedencia y que cada arista existe exactamente una vez
+con ese origen, esa relación y ese destino. Cada nodo se rotula con su tipo,
+escrito como en el código, y su punto de procedencia; cada arista, con el
+nombre de la relación tal como está en el grafo. La etiqueta que el nodo tiene
+en el grafo se imprime al correr.
 
 Uso:
     PYTHONDONTWRITEBYTECODE=1 python3 generar_figura_proceso_extraccion.py
@@ -40,6 +42,7 @@ import sys
 import zlib
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
+DATOS = os.path.join(AQUI, "ejemplo_prestamo_datos.json")
 SALIDA_SVG = os.path.join(AQUI, "figura_proceso_extraccion.svg")
 SALIDA_PNG = os.path.join(AQUI, "figura_proceso_extraccion.png")
 RAIZ = os.path.abspath(os.path.join(AQUI, "..", "..", ".."))
@@ -134,20 +137,19 @@ SALIDA_MARCADO = ["marcado para", "revisión humana"]
 LEYENDA = [(MODELO, "Etapa que ejecuta un modelo de lenguaje"),
            (DETERMINISTICA, "Etapa determinística")]
 
-# Nodos del panel «Grafo»: tres nodos del subgrafo de los dividendos del Texto
-# Ordenado de Exterior y Cambios (reports/verificacion_figura_proceso.md §5.c y
-# §8.g), los mismos que la figura «de la norma al grafo» usa como restricción de
-# origen, operación limitada y una de las obligaciones remitidas. Cada nodo se
-# identifica por (documento, tipo, punto de procedencia con rol punto_propio);
-# la búsqueda en kg.json debe dar exactamente un nodo, del que salen el id, la
-# etiqueta y el punto que se rotula. Tres nodos y no cuatro: los nodos de tipo
-# Sujeto son de catálogo y no tienen un punto propio único, así que no pueden
-# llevar el rótulo de procedencia que la figura quiere mostrar.
-TO_FIGURA = "ext"
+# Nodos del panel «Grafo»: tres nodos del ejemplo del préstamo, los mismos que
+# la figura «de la norma al grafo» dibuja como restricción del monto (punto
+# 5.1.1.1), obligación a la que remite (punto 3.7) y operación que limita
+# (punto 5.1.1.1). Cada nodo se toma por su clave en ejemplo_prestamo_datos.json,
+# de donde salen el id, el tipo y el punto que se rotula; el script comprueba en
+# kg.json que el nodo exista con ese tipo y ese punto como procedencia
+# punto_propio. Tres nodos y no cuatro: los nodos de tipo Sujeto son de
+# catálogo y no tienen un punto propio único, así que no pueden llevar el
+# rótulo de procedencia que la figura quiere mostrar.
 NODOS_FIGURA = [
-    ("R", "Restriccion", "3.17.1.4"),    # requisitos para pagar dividendos
-    ("O", "Obligacion", "3.4.2"),        # declaración jurada del representante
-    ("OP", "Operacion", "3.17.1.4"),     # pago de dividendos a no residentes
+    ("R", "restriccion_monto"),     # monto que supera dos veces el importe de referencia
+    ("O", "obligacion_3_7"),        # importe de referencia
+    ("OP", "operacion"),            # inclusión en cartera comercial
 ]
 
 # Aristas del panel, con la relación tal como está en el grafo y su clase.
@@ -167,13 +169,12 @@ FIRMAS_ADMITIDAS = {
 ARISTAS_FIGURA = [("R", "limita", "OP", "extraccion"),
                   ("R", "referencia", "O", "remision")]
 ROL_REMISION = "referencia_cruzada"
-# Predicados en castellano legible, como en generar_figura_norma_a_grafo.py.
-CASTELLANO = {"referencia": "remite a"}
-LEYENDA_REMISION = "remisión resuelta entre puntos"
-# Rótulo de cada nodo: el nombre de su tipo (primera línea) y «punto N»
-# (segunda línea, en negrita).
-NOMBRE_TIPO = {"Restriccion": "Restricción", "Obligacion": "Obligación",
-               "Operacion": "Operación", "Sujeto": "Sujeto"}
+# Rótulo de cada arista: el nombre de la relación tal como está en el grafo.
+# El mismo texto que la leyenda de las figuras «de la norma al grafo» y «la
+# misma pregunta con dos formas de consultar».
+LEYENDA_REMISION = "remisión de un punto a otro"
+# Rótulo de cada nodo: su tipo, escrito como en el código (primera línea), y
+# «punto N» (segunda línea, en negrita).
 
 
 def provenances(elem):
@@ -189,30 +190,36 @@ def provenances(elem):
 
 
 def cargar_grafo():
-    """Lee kg.json, comprueba su sha y resuelve los nodos y aristas del panel.
+    """Lee los nodos del JSON del ejemplo, comprueba el sha de kg.json y
+    resuelve en él los nodos y aristas del panel.
 
-    Devuelve (nodos, aristas): `nodos` mapea clave -> dict con id, tipo, punto,
-    etiqueta original y etiqueta a dibujar; `aristas` es una lista de dicts con
-    origen, destino, relación, rótulo, clase e índice de la arista en
-    kg['edges'] (las aristas del grafo no tienen id propio).
+    Devuelve (nodos, aristas): `nodos` mapea clave -> dict con id, tipo, punto
+    y etiqueta del grafo; `aristas` es una lista de dicts con origen, destino,
+    relación, rótulo, clase e índice de la arista en kg['edges'] (las aristas
+    del grafo no tienen id propio).
     """
+    with open(DATOS, encoding="utf-8") as fh:
+        datos = json.load(fh)
+    if datos["fuentes"]["kg"]["sha256"] != KG_SHA256:
+        raise SystemExit("el JSON del ejemplo se extrajo de otro kg.json")
     with open(KG, "rb") as fh:
         crudo = fh.read()
     sha = hashlib.sha256(crudo).hexdigest()
     if sha != KG_SHA256:
         raise SystemExit(f"kg.json no es el verificado: sha {sha[:12]}… ≠ {KG_SHA256[:12]}…")
     kg = json.loads(crudo.decode("utf-8"))
+    por_id = {n["id"]: n for n in kg["nodes"]}
 
     nodos = {}
-    for clave, tipo, punto in NODOS_FIGURA:
-        cands = [n for n in kg["nodes"] if n["type"] == tipo and any(
-            p.get("to") == TO_FIGURA and p.get("punto") == punto
-            and p.get("rol_documental") == "punto_propio" for p in provenances(n))]
-        if len(cands) != 1:
-            raise SystemExit(f"nodo {clave}: ({TO_FIGURA}, {tipo}, {punto}) da "
-                             f"{len(cands)} nodos, no uno: {[n['id'] for n in cands]}")
-        n = cands[0]
-        nodos[clave] = {"id": n["id"], "tipo": tipo, "punto": punto,
+    for clave, clave_json in NODOS_FIGURA:
+        dn = datos["grafo"]["nodos"][clave_json]
+        n = por_id.get(dn["id"])
+        if n is None or n["type"] != dn["type"] or not any(
+                p.get("punto") == dn["punto"] and p.get("rol_documental") == "punto_propio"
+                for p in provenances(n)):
+            raise SystemExit(f"nodo {clave}: {dn['id']} no está en kg.json con tipo "
+                             f"{dn['type']} y punto {dn['punto']}")
+        nodos[clave] = {"id": n["id"], "tipo": n["type"], "punto": dn["punto"],
                         "etiqueta": n.get("label", "")}
 
     aristas = []
@@ -232,7 +239,7 @@ def cargar_grafo():
                 raise SystemExit(f"arista fuera de la matriz del esquema: {a} {rel} {b}")
             if e.get("rol_fuente") is not None:
                 raise SystemExit(f"arista {a} {rel} {b}: rol_fuente inesperado {e.get('rol_fuente')!r}")
-        aristas.append({"a": a, "b": b, "relacion": rel, "rotulo": CASTELLANO.get(rel, rel),
+        aristas.append({"a": a, "b": b, "relacion": rel, "rotulo": rel,
                         "clase": clase, "indice": i})
     return nodos, aristas
 
@@ -414,9 +421,9 @@ def dibujar_documento(partes, x, y, w, h):
 # Composición original de la figura: la Restricción arriba, centrada; la
 # Obligación abajo a la izquierda y la Operación abajo a la derecha; las dos
 # aristas salen de la Restricción en diagonal con el rótulo al costado. El ancho
-# de nodo era 116 y pasa a 132 porque «punto 3.17.1.4» en negrita mide 120
-# unidades a 18 px. Sin la arista «requiere», el panel termina 10 unidades
-# debajo de la fila inferior de nodos.
+# de nodo era 116 y pasó a 132 para que entrara «punto 3.17.1.4» en negrita
+# (120 unidades a 18 px) en el ejemplo anterior. Sin la arista «requiere», el
+# panel termina 10 unidades debajo de la fila inferior de nodos.
 W_NODO, H_NODO = 132, 50
 Y_NODOS, SEP_NODOS = 40, 52      # arranque de los nodos y separación entre filas
 ALTO_GRAFO = Y_NODOS + 2 * H_NODO + SEP_NODOS + 10
@@ -461,14 +468,14 @@ def dibujar_grafo(partes, x, y, w, h, nodos, aristas):
         texto(partes, x_trazo + lado * (8 + ar / 2.0), y_rot + 6, rel, FS_SUB,
               remision, relleno, None, f"(g) arista {a}-{b} ({clase})")
 
-    for clave, _, _ in NODOS_FIGURA:
+    for clave, _ in NODOS_FIGURA:
         nodo = nodos[clave]
         px, py = pos[clave]
         partes.append(f'<rect x="{f(px)}" y="{f(py)}" width="{W_NODO}" height="{H_NODO}" '
                       f'fill="{COLOR_TIPO[nodo["tipo"]]}" fill-opacity="0.95" '
                       f'stroke="black" stroke-width="1.4" rx="7"/>')
         ncx = px + W_NODO / 2.0
-        texto(partes, ncx, py + 21, NOMBRE_TIPO[nodo["tipo"]], FS_SUB, False, "white",
+        texto(partes, ncx, py + 21, nodo["tipo"], FS_SUB, False, "white",
               W_NODO - 10, f"(g) nodo {clave} rótulo")
         texto(partes, ncx, py + 42, "punto " + nodo["punto"], FS_SUB, True, "white",
               W_NODO - 10, f"(g) nodo {clave} punto")
@@ -676,7 +683,9 @@ def verificar(alto_total):
 def main():
     nodos, aristas = cargar_grafo()
     print(f"GRAFO: {os.path.relpath(KG, RAIZ)}   sha256 {KG_SHA256[:12]}… (comprobado)")
-    for clave, _, _ in NODOS_FIGURA:
+    print(f"DATOS: {os.path.relpath(DATOS, RAIZ)}   sha256 "
+          f"{hashlib.sha256(open(DATOS, 'rb').read()).hexdigest()}")
+    for clave, _ in NODOS_FIGURA:
         n = nodos[clave]
         print(f"  nodo {clave:2s} {n['tipo']:11s} punto {n['punto']:9s} {n['id']}")
         print(f"          etiqueta en el grafo: {n['etiqueta']!r}")

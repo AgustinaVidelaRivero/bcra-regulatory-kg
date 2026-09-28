@@ -1,33 +1,35 @@
 #!/usr/bin/env python3
 """Figura «anatomía de una tripleta» para el marco teórico (§2.1.1).
 
-Una sola tripleta real del grafo r1: la Restricción del punto 3.17.1.4 del
-Texto Ordenado de Exterior y Cambios —limita→ la Operación del mismo punto.
-Dos nodos con su etiqueta corta y «punto N», la arista con el nombre de la
-relación tal como está en el grafo, y tres llamadas en gris que nombran las
-partes de la tripleta: nodo de origen, relación (nombre y dirección) y nodo de
-destino. Sin leyenda.
+Una sola tripleta real del grafo r1, del ejemplo del préstamo: la Restriccion
+del monto del punto 5.1.1.1 del Texto Ordenado de Clasificación de deudores
+—limita→ la Operacion del mismo punto. Dos nodos con su etiqueta del grafo,
+completa, y «punto N», la arista con el nombre de la relación tal como está en
+el grafo, y tres llamadas en gris que nombran las partes de la tripleta: nodo
+de origen, relación (nombre y dirección) y nodo de destino, con el tipo escrito
+como en el código. Sin leyenda.
 
 La arista es de extracción, no de remisión: se dibuja en trazo continuo con el
 gris oscuro de la paleta compartida, porque el naranja está reservado a las
 remisiones en las figuras de la Introducción.
 
 Reutiliza por importación, de generar_figura_norma_a_grafo.py: la paleta por
-tipo de nodo, los grises, la tipografía, la tabla de métricas de Helvetica, el
-envoltorio de texto y las etiquetas cortas de los nodos; y de
+tipo de nodo, los grises, la tipografía, la tabla de métricas de Helvetica y el
+envoltorio de etiquetas; y de
 generar_figura_proceso_extraccion.py: el ancho impreso de 12,75 cm con su
 lienzo de 720 unidades, la exportación a PNG a 300 dpi con la densidad
 grabada y el medidor con métricas reales de Helvetica.
 
-Los dos nodos y la arista no se tipean: se resuelven por consulta a kg.json
-con las mismas comprobaciones que la figura del proceso: el archivo debe ser
-el sellado (candado de sha256); cada búsqueda por (documento, tipo, punto de
-procedencia con rol punto_propio) debe dar exactamente un nodo; la arista
-(origen, relación, destino) debe existir exactamente una vez, en el índice
-esperado, con una firma (tipo de origen, relación, tipo de destino) admitida
-por la matriz de dominio y rango del esquema congelado y sin rol_fuente (las
-aristas de la resolución de remisiones llevan rol_fuente = referencia_cruzada
-y no son de extracción). Lo resuelto se imprime al correr.
+Los dos nodos y la arista no se tipean: se leen de ejemplo_prestamo_datos.json
+(que escribe extraer_datos_ejemplo_prestamo.py) y se comprueban en kg.json con
+las mismas verificaciones que la figura del proceso: el archivo debe ser el
+sellado (candado de sha256); cada nodo debe estar con ese tipo y ese punto de
+procedencia con rol punto_propio; la arista (origen, relación, destino) debe
+existir exactamente una vez, en el índice que declara el JSON, con una firma
+(tipo de origen, relación, tipo de destino) admitida por la matriz de dominio y
+rango del esquema congelado y sin rol_fuente (las aristas de la resolución de
+remisiones llevan rol_fuente = referencia_cruzada y no son de extracción). Lo
+resuelto se imprime al correr.
 
 Uso (desde cualquier directorio):
     PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_tripleta.py
@@ -52,6 +54,7 @@ sys.path.insert(0, AQUI)
 import generar_figura_norma_a_grafo as base          # noqa: E402
 import generar_figura_proceso_extraccion as proc     # noqa: E402
 
+DATOS = os.path.join(AQUI, "ejemplo_prestamo_datos.json")
 SALIDA_SVG = os.path.join(AQUI, "figura_tripleta.svg")
 SALIDA_PNG = os.path.join(AQUI, "figura_tripleta.png")
 RAIZ = os.path.abspath(os.path.join(AQUI, "..", "..", ".."))
@@ -98,18 +101,16 @@ IL_NODO = 21          # interlínea dentro del nodo
 # --------------------------------------------------------------------------- #
 # Contenido                                                                    #
 # --------------------------------------------------------------------------- #
-TO_FIGURA = "ext"
-# (clave, tipo, punto de procedencia con rol punto_propio). La búsqueda en
-# kg.json debe dar exactamente un nodo, del que salen id, etiqueta y punto.
+# (clave en la figura, clave del nodo en ejemplo_prestamo_datos.json). Del JSON
+# salen id, tipo, etiqueta y punto; el nodo debe estar así en kg.json.
 NODOS_FIGURA = [
-    ("R", "Restriccion", "3.17.1.4"),   # nodo de origen
-    ("OP", "Operacion", "3.17.1.4"),    # nodo de destino
+    ("R", "restriccion_monto"),   # nodo de origen
+    ("OP", "operacion"),          # nodo de destino
 ]
 # (origen, relación en el grafo, destino). Debe existir exactamente una arista
-# así en kg.json, en el índice esperado de kg['edges'] (las aristas del grafo
-# no tienen id propio).
+# así en kg.json, en el índice de kg['edges'] que declara el JSON (las aristas
+# del grafo no tienen id propio).
 ARISTA_FIGURA = ("R", "limita", "OP")
-INDICE_ARISTA = 16669
 # Clase de la arista y su comprobación. "extraccion": la firma (tipo de
 # origen, relación, tipo de destino) debe estar en la matriz de dominio y rango
 # del esquema congelado (DOMAIN_RANGE_CONGELADO,
@@ -126,56 +127,62 @@ ROL_REMISION = "referencia_cruzada"
 # Rótulo de la arista: el nombre de la relación tal como está en el grafo (la
 # figura muestra la anatomía de la tripleta, no su lectura en castellano).
 ROTULO_ARISTA = "limita"
-# Las tres llamadas, en gris. Los dos nodos toman tipo y punto de lo resuelto.
+# Las tres llamadas, en gris. Los dos nodos toman tipo (escrito como en el
+# código) y punto de lo resuelto.
 LLAMADA_ORIGEN = "nodo de origen · tipo {tipo} · punto {punto}"
 LLAMADA_RELACION = "relación · nombre y dirección"
 LLAMADA_DESTINO = "nodo de destino · tipo {tipo} · punto {punto}"
-NOMBRE_TIPO = {"Restriccion": "Restricción", "Obligacion": "Obligación",
-               "Operacion": "Operación", "Sujeto": "Sujeto"}
-LINEAS_ETIQUETA = 2   # una etiqueta corta entra en una o dos líneas
+LINEAS_ETIQUETA = 3   # la etiqueta del grafo, sin abreviar, entra en tres líneas
 
 
 def cargar_grafo():
-    """Lee kg.json, comprueba su sha y resuelve los dos nodos y la arista.
+    """Lee los nodos y la arista del JSON del ejemplo, comprueba el sha de
+    kg.json y los resuelve en él.
 
     Devuelve (nodos, arista): `nodos` mapea clave -> dict con id, tipo, punto,
-    etiqueta del grafo, etiqueta a dibujar y demás puntos propios; `arista` es
-    un dict con origen, destino, relación, índice en kg['edges'], rol_fuente
-    tal como figura (o su ausencia), procedencia y propiedades.
+    etiqueta del grafo y demás puntos propios; `arista` es un dict con origen,
+    destino, relación, índice en kg['edges'], rol_fuente tal como figura (o su
+    ausencia), procedencia y propiedades.
     """
+    with open(DATOS, encoding="utf-8") as fh:
+        datos = json.load(fh)
+    if datos["fuentes"]["kg"]["sha256"] != KG_SHA256:
+        raise SystemExit("el JSON del ejemplo se extrajo de otro kg.json")
     with open(KG, "rb") as fh:
         crudo = fh.read()
     sha = hashlib.sha256(crudo).hexdigest()
     if sha != KG_SHA256:
         raise SystemExit(f"kg.json no es el verificado: sha {sha[:12]}… ≠ {KG_SHA256[:12]}…")
     kg = json.loads(crudo.decode("utf-8"))
+    por_id = {n["id"]: n for n in kg["nodes"]}
 
-    nodos = {}
-    for clave, tipo, punto in NODOS_FIGURA:
-        cands = [n for n in kg["nodes"] if n["type"] == tipo and any(
-            p.get("to") == TO_FIGURA and p.get("punto") == punto
-            and p.get("rol_documental") == "punto_propio" for p in base.provenances(n))]
-        if len(cands) != 1:
-            raise SystemExit(f"nodo {clave}: ({TO_FIGURA}, {tipo}, {punto}) da "
-                             f"{len(cands)} nodos, no uno: {[n['id'] for n in cands]}")
-        n = cands[0]
-        corta, original = base.etiqueta_de({n["id"]: n}, n["id"])
-        if len(corta) > base.MAX_ETIQUETA:
-            raise SystemExit(f"nodo {clave}: etiqueta de {len(corta)} caracteres, "
-                             f"máximo {base.MAX_ETIQUETA}")
-        nodos[clave] = {"id": n["id"], "tipo": tipo, "punto": punto,
-                        "etiqueta": original, "corta": corta,
+    nodos, clave_json = {}, dict(NODOS_FIGURA)
+    for clave, cj in NODOS_FIGURA:
+        dn = datos["grafo"]["nodos"][cj]
+        n = por_id.get(dn["id"])
+        punto = dn["punto"]
+        if n is None or n["type"] != dn["type"] or n.get("label") != dn["label"] \
+                or punto not in base.puntos_propios(n):
+            raise SystemExit(f"nodo {clave}: {dn['id']} no está en kg.json con tipo "
+                             f"{dn['type']}, esa etiqueta y punto {punto}")
+        nodos[clave] = {"id": n["id"], "tipo": n["type"], "punto": punto,
+                        "etiqueta": n["label"],
                         "otros_puntos": [p for p in base.puntos_propios(n) if p != punto]}
 
     a, rel, b = ARISTA_FIGURA
+    en_json = [x for x in datos["grafo"]["aristas"]
+               if (x["origen"], x["relation"], x["destino"]) == (clave_json[a], rel, clave_json[b])]
+    if len(en_json) != 1:
+        raise SystemExit(f"arista {a} {rel} {b}: {len(en_json)} entradas en el JSON, no una")
+    indice_esperado = en_json[0]["indice"]
     ida, idb = nodos[a]["id"], nodos[b]["id"]
     hits = [(i, e) for i, e in enumerate(kg["edges"])
             if e["source"] == ida and e["target"] == idb and e["relation"] == rel]
     if len(hits) != 1:
         raise SystemExit(f"arista {a} {rel} {b}: {len(hits)} coincidencias en kg.json, no una")
     i, e = hits[0]
-    if i != INDICE_ARISTA:
-        raise SystemExit(f"arista {a} {rel} {b}: índice {i} en kg['edges'], esperado {INDICE_ARISTA}")
+    if i != indice_esperado:
+        raise SystemExit(f"arista {a} {rel} {b}: índice {i} en kg['edges'], esperado {indice_esperado}")
     if CLASE_ARISTA == "remision":
         if e.get("rol_fuente") != ROL_REMISION:
             raise SystemExit(f"arista {a} {rel} {b}: rol_fuente {e.get('rol_fuente')!r} "
@@ -233,11 +240,14 @@ HOLGURA_LLAMADA = 5     # aire entre la línea de llamada y el texto o el nodo
 
 
 def lineas_nodo(nodo):
-    """Líneas de texto del nodo: la etiqueta corta envuelta y «punto N»."""
-    lineas = [(l, False) for l, _ in envolver(nodo["corta"], FS_NODO, W_NODO - 2 * PAD_NODO)]
+    """Líneas de texto del nodo: la etiqueta del grafo envuelta y «punto N»."""
+    lineas = [(l, False) for l in base.envolver_etiqueta(nodo["etiqueta"], FS_NODO,
+                                                          W_NODO - 2 * PAD_NODO)]
     if len(lineas) > LINEAS_ETIQUETA:
-        raise SystemExit(f"la etiqueta {nodo['corta']!r} ocupa {len(lineas)} líneas, "
+        raise SystemExit(f"la etiqueta {nodo['etiqueta']!r} ocupa {len(lineas)} líneas, "
                          f"máximo {LINEAS_ETIQUETA}")
+    if " ".join(l for l, _ in lineas) != nodo["etiqueta"]:
+        raise SystemExit(f"la etiqueta dibujada no es la del grafo: {nodo['etiqueta']!r}")
     lineas.append(("punto " + nodo["punto"], True))
     return lineas
 
@@ -246,7 +256,7 @@ def componer(nodos, arista):
     del REGISTRO[:]
     del CAJAS_NODO[:]
     partes = []
-    n_lineas = max(len(lineas_nodo(nodos[k])) for k, _, _ in NODOS_FIGURA)
+    n_lineas = max(len(lineas_nodo(nodos[k])) for k, _ in NODOS_FIGURA)
     h_nodo = 2 * PAD_NODO + n_lineas * IL_NODO
 
     # Fila superior: las dos llamadas de los nodos y sus líneas de llamada.
@@ -260,7 +270,7 @@ def componer(nodos, arista):
             ("R", LLAMADA_ORIGEN, MARGEN, "start"),
             ("OP", LLAMADA_DESTINO, W - MARGEN, "end")):
         nodo = nodos[clave]
-        s = llamada.format(tipo=NOMBRE_TIPO[nodo["tipo"]], punto=nodo["punto"])
+        s = llamada.format(tipo=nodo["tipo"], punto=nodo["punto"])
         texto(partes, x_txt, y_llam, s, FS_LLAMADA, False, GRIS_ROTULO, anclaje,
               W - 2 * MARGEN, None, f"llamada {clave}")
         linea(partes, centro[clave], y_llam + HOLGURA_LLAMADA,
@@ -275,7 +285,7 @@ def componer(nodos, arista):
           x1 - x0 - 2 * HOLGURA_LLAMADA, None, "rótulo de la arista")
 
     # Los dos nodos: caja del color de su tipo, etiqueta y «punto N» en blanco.
-    for clave, _, _ in NODOS_FIGURA:
+    for clave, _ in NODOS_FIGURA:
         nodo = nodos[clave]
         px = pos[clave]
         partes.append(f'<rect x="{f(px)}" y="{f(y_nodo)}" width="{f(W_NODO)}" '
@@ -370,13 +380,14 @@ def verificar(alto_total):
 def main():
     nodos, arista = cargar_grafo()
     print(f"GRAFO: {os.path.relpath(KG, RAIZ)}   sha256 {KG_SHA256[:12]}… (comprobado)")
-    for clave, _, _ in NODOS_FIGURA:
+    print(f"DATOS: {os.path.relpath(DATOS, RAIZ)}   sha256 "
+          f"{hashlib.sha256(open(DATOS, 'rb').read()).hexdigest()}")
+    for clave, _ in NODOS_FIGURA:
         n = nodos[clave]
         otros = f"  (además en {', '.join(n['otros_puntos'])})" if n["otros_puntos"] else ""
         print(f"  nodo {clave:2s} {n['tipo']:11s} punto {n['punto']:9s} {n['id']}{otros}")
-        marca = "" if n["corta"] == n["etiqueta"] else f"  (acortada de {len(n['etiqueta'])})"
-        print(f"          etiqueta en el grafo: {n['etiqueta']!r}")
-        print(f"          etiqueta dibujada [{len(n['corta'])}]: {n['corta']!r}{marca}")
+        print(f"          etiqueta en el grafo, dibujada completa [{len(n['etiqueta'])}]: "
+              f"{n['etiqueta']!r}")
     pv = arista["provenance"]
     print(f"  arista kg['edges'][{arista['indice']}]  {arista['a']} --{arista['relacion']}--> "
           f"{arista['b']}  clase {arista['clase']}  rol_fuente {arista['rol_fuente']}")
