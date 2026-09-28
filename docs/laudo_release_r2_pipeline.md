@@ -320,6 +320,7 @@ la fase 2a (E6); la lectura de la fase 2b.
 
 | Hallazgo | Fuente | capa_pipeline | Módulos | Sellos | ¿Entra a r2? | Prueba | Costo |
 |---|---|---|---|---|---|---|---|
+| Bajo el prompt v3, `cap::4.2.1.2` entró a 16.384: 11.925 tokens de salida y `stop_reason` `tool_use`; en r1, con el prompt v2, había cortado a 16.384. Las otras dos entraron con 8.371 y 9.212. La opción (a) de `BKL-0030` (reintento a 16.384) podría bastar sin partición. No es garantía: E1 corre sin temperatura fija (decisión 7 del pre-registro) y otra muestra de la misma unidad puede cortar. | U-TANDA0-2A-DIR, D2 (`5fc7d3a`): `corpus_tanda0/salida_dirigida/reextraccion_dirigida.json`; `e1_extraccion.db`, `run_label` `tanda0_dirigida_e1` | E1 | `cliente_e1.py:60` | cerrado por el circuito | Informa la elección de la §1.1 entre (a) sola y (a) con partición; decide la autora al firmar | Los tres casos de la §1.1 | USD 0 para estas tres si el request de r2 coincide con el de la dirigida (misma clave, verificado por la mesa el 28/09); la dirigida costó USD 0,461274 |
 | | | | | | | | |
 
 ---
