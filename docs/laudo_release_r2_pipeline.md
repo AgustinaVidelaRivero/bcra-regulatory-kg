@@ -1,0 +1,340 @@
+BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA
+
+# Laudo de la release r2 del pipeline
+
+**Estado:** borrador redactado el 2026-09-28, mientras corre la tanda 0. Se firma
+al cierre de la tanda 0 (reporte de la fase 2a y lectura de la fase 2b), después
+de completar la §4 con los hallazgos de esa lectura.
+
+**Qué es r2.** La primera release del pipeline según el protocolo de B2.6: cada
+cambio nace de una entrada de backlog con `capa_pipeline`, se implementa en una
+unidad propia con mandato y freno, pasa un gate de release y produce un grafo
+versionado (KG-Reextraído-r2). Rige el principio 9: los grafos ya evaluados
+(r1 y los ensamblados de la tanda 0) no se corrigen; r2 es una versión
+posterior. La tanda 1 (B6.1) corre con r2 y no arranca sin ella.
+
+**Qué no es.** r2 no toca el esquema congelado (laudo `2593d4d`) ni el prefijo
+de E1 (prompt congelado `e69feaaa…` y catálogo v3 `35e88c2dd0a2…`). Todo
+candidato que los toque queda fuera de este laudo y se marca como tal en la §1.
+
+**Regla de implementación común a todos los candidatos.** Ningún cambio
+reemplaza el camino actual: entra detrás del perfil o del manifiesto, con el
+camino por defecto byte-idéntico al que produjo r1 y la tanda 0. Precedentes:
+U-CABLE-V3 (perfil `produccion_dev` byte-idéntico por defecto), U-B5.3 (camino
+sin corte byte-idéntico, selftest de manifiesto con 0 misses proyectados) y el
+gate 6 (argumentos con default igual al comportamiento actual). Así r1 y la
+tanda 0 siguen reproducibles con el código de r2.
+
+---
+
+## §1. Candidatos
+
+Selección. El campo `release_candidata: "r2"` existe hoy solo en `BKL-0030` y
+`BKL-0031` (`data/backlog/backlog.jsonl`, recontado el 28/09: dos entradas).
+Los candidatos 3 a 5 son los que la autora nombró el 28/09. La §1.6 lista lo
+que el repo destina a r2 por escrito sin tener el campo; cada uno lleva una
+recomendación y la decisión es de la autora al firmar.
+
+Vocabulario de sellos. «Sellado §3» = zona sellada de CLAUDE.md §3 (incluye el
+cuarteto `llm_cache.py`). «Cerrado por el circuito» = módulo del pipeline
+commiteado que produjo r1 y la tanda 0; el mandato U-TANDA0-2A (decisión 2)
+prohíbe editarlo durante la tanda 0; este laudo, firmado, autoriza editarlo
+solo dentro del mandato de su unidad y bajo la regla común de arriba.
+
+Tarifa de referencia para costos: la corrida de E2 de la tanda 0 costó
+USD 40,3495 por 2.434 unidades (`ad6d5ad`,
+`corpus_tanda0/salida/presupuesto_compartido.json`), es decir USD 0,0166 por
+unidad con E1, E3 y reintentos.
+
+### Resumen
+
+| # | Candidato | capa_pipeline | Sellos | Costo de API |
+|--:|---|---|---|---|
+| 1 | `BKL-0030` reintento por corte y partición | E1, E0 | cerrados por el circuito; `llm_cache.py` no se toca | de 0 a menos de USD 1 |
+| 2 | `BKL-0031` detector de duplicados y fusión de forma | ensamblado | script nuevo; el paso 3 toca un módulo cerrado | 0 |
+| 3 | `BKL-0006` / RX-10: cablear el parser de tablas | E0 | cerrados por el circuito; el parser no se edita | NO MEDIDO; censo en USD 0 primero |
+| 4 | `cuarentena` booleana contra `"true"` | ensamblado (test T7) | cerrado por el circuito | 0 |
+| 5 | Cláusula de mutuales (RT-C6) | E1-prompt | el remedio de raíz toca el prefijo | 0 con la opción recomendada |
+
+### §1.1 `BKL-0030` — Reintento por corte y partición de la unidad
+
+- **Defecto.** El reintento de U-B5.3 re-llama a 32.768 (`cliente_e1.py:60`)
+  y el SDK 0.100.0 lo rechaza antes de enviarlo (`_base_client.py:731-740`).
+  Tres unidades de cap quedaron sin extraer en E2 de la tanda 0; en r1,
+  `cap::4.2.1.2` cortó también a 16.384 y es el único chunk mudo (M10 =
+  1/1.763).
+- **Cambio.** (a) Que el reintento llegue a la API: constante a 16.384
+  (460,8 s, bajo la guarda) o timeout explícito en el constructor del cliente
+  (`cliente_e1.py:154`; la guarda solo actúa sin timeout explícito,
+  `resources/messages/messages.py:984`; la duración real de un request de
+  32.768 sin streaming NO ESTÁ VERIFICADA). Streaming descartado: exige tocar
+  `llm_cache.py` (sellado §3). (b) Cuando no alcance, partir la unidad con la
+  mecánica de sub-chunking de E0 (`correr_e0.py:114-160`), disparada por
+  «corte tras reintento» y no por tamaño; `cap::4.2.1.2` mide exactamente el
+  umbral C8 de 26.182 caracteres, que se aplica en estricto (`:62`). E2 acepta
+  las partes (`<id>::parteK`) en lugar de la unidad; la provenance sigue en la
+  unidad documental real.
+- **Módulos.** `cliente_e1.py`, `runner_corpus.py` (fase E1, `:469-510`),
+  `correr_e0.py`, `e2_lib.py` (fan-in), `selftest_ub53.py`. Rigen
+  `docs/decisiones_caching_extraccion.md` decisiones 1 a 3.
+- **Prueba de aceptación.** Casos `cap::3.1.14.1`, `cap::4.2.1.2`,
+  `cap::4.3.3.1`: las tres llegan a E3 o quedan partidas y ensambladas bajo su
+  unidad; cero unidades con error definitivo por corte en la corrida de r2; M10
+  en 0 sobre los TOs de desarrollo; camino sin corte byte-idéntico
+  (`selftest_manifiesto.py` P3, P4 y P7; `selftest_ub53.py`).
+- **Costo.** Con (a) a 16.384 el request del reintento es el mismo que armó la
+  re-extracción dirigida de la tanda 0 (mandato U-TANDA0-2A-DIR, `825be18`),
+  así que sus respuestas salen de la caché a USD 0 si las claves coinciden
+  (verificable con `llm_cache.compute_key`, como D1.c de ese mandato). La
+  partición paga solo las partes de `cap::4.2.1.2`: menos de USD 1, NO MEDIDO.
+
+### §1.2 `BKL-0031` — Detector de candidatos a duplicado y fusión solo de forma
+
+- **Defecto.** El ensamblado funde solo por identidad exacta (`e2_lib.py:22`,
+  `:247-248`; `ensamblar_corpus.py:9-14`; guarda B1.5 en
+  `r1_invariantes.py:16-21`). Cota superior en r1, sin adjudicar: M1 =
+  3.538/6.529 y M2 = 1.785/6.529
+  (`data/experiment/metricas_intrinsecas/kg_reextraido_r1.json`, sha256
+  `d1fa3ee0…`). La duplicación entre cajas ya tiene destino r2 en
+  `laudo_esquema_congelado.md:96`.
+- **Cambio, en tres pasos con freno entre cada uno.** (1) Detector de solo
+  lectura en la etapa de ensamblado: mismo tipo, mismo sujeto, texto similar
+  por RapidFuzz (protocolo de M1/M2, `scripts/metricas_intrinsecas.py:96`,
+  `:144-160`), mismo documento o documentos unidos por una arista
+  `referencia`; reporta pares con su diff y no funde. (2) Adjudicación por
+  muestra con semilla, a cargo de la autora, con intervalo de Wilson. (3) Solo
+  si la tasa lo justifica (umbral: casilla de la firma), regla de fusión para
+  diferencias de forma que nunca actúa si el diff toca números, plazos,
+  porcentajes, fechas o sujetos; provenances acumuladas como en la fusión
+  exacta.
+- **Módulos.** Paso 1: script nuevo, ningún módulo editado. Paso 3:
+  `r1_e4.py` (E4 determinístico, `:179-180`) o una etapa nueva del
+  ensamblado, en convivencia con la guarda B1.5; cerrados por el circuito.
+- **Prueba de aceptación.** Paso 1: reporte reproducible por comando y
+  sellado sobre r1 y sobre los ensamblados de la tanda 0. Paso 2: muestra
+  adjudicada con precisión de candidatos. Paso 3: M1 y M2 bajan contra la
+  línea de base de r1; selftest con pares adversariales en el que ninguna
+  fusión toca valores; suite y shapes sin regresiones.
+- **Costo.** USD 0 (determinístico) más el tiempo de la autora en el paso 2.
+
+### §1.3 `BKL-0006` / RX-10 — Cablear el parser de tablas a E0
+
+- **Defecto.** La linealización de pdfplumber invierte pares de tablas del
+  articulado; en capmin 1.2 quedan Bancos 2.500 / Restantes 5.000 en r1
+  (fila B2.1, pendiente (1) y (1bis); `docs/backlog_reextraccion.md:267-284`).
+  El parser `e0_tablas.py` (B5.8.3, `d4e4e0a`) reconstruye el testigo
+  correctamente (`data/experiment/segmentacion_84/b583_tablas/reporte_b583.md:16`:
+  Bancos 5.000 / Restantes 2.500, pérdida 0,0), pero ningún módulo del
+  pipeline de extracción lo invoca: hoy lo consumen solo los scripts de censo
+  de B5.8.3, B5.8.4, U-COB-A y su selftest.
+- **Cambio.** E0 serializa las tablas detectadas por `e0_tablas.py` en el
+  texto del chunk con pares por columna. El formato de serialización es
+  decisión de diseño de la unidad, con freno.
+- **Módulos.** `e0_lib.py` / `correr_e0.py` (cerrados por el circuito);
+  `e0_tablas.py` se importa sin editarse.
+- **Prueba de aceptación.** El test convertido de C2 en la suite
+  (`C2.tabla_1_2`) pasa de «persiste» a «resuelto»; en toda tabla cableada,
+  verificación por multiconjunto (regla R-VERIF de B5.8.3) sin pérdida; los
+  chunks sin tabla quedan byte-idénticos.
+- **Costo.** NO MEDIDO. B5.8.3 midió 30 TOs del escalado y el testigo de
+  capmin, no los diez de la tanda 0. Todo chunk cuyo texto cambie paga E1 y E3
+  de nuevo (tarifa de referencia USD 0,0166 por unidad). Primer paso de la
+  unidad: censo en USD 0 de los chunks de los diez TOs que el cableado
+  modifica, y la cuenta de costo con ese número antes de gastar.
+
+### §1.4 `cuarentena` booleana contra `"true"`
+
+- **Defecto.** Generación 2 guarda `cuarentena` como booleano
+  (`grafo_v2/code/assemble.py:298`) y generación 3 como string `"true"`
+  (`e2_lib.py:388`). El test T7 de r1 compara con la string
+  (`r1_tests.py:68`) y marca 11 «sin cuarentena=true» en KG-Refinado que no
+  son defecto (`reports/revision_UB21_diag/inventario_B21_fase1.md:262`).
+  Las shapes ya aceptan las dos formas (`scripts/shapes_validator.py:360-363`,
+  `en_cuarentena`) y la suite las normaliza por generación (B2.1 fase 2,
+  decisión 3). La app y los módulos de Neo4j no leen el campo (grep sin
+  resultados en `app/` y `data/experiment/neo4j/`).
+- **Cambio recomendado.** T7 lee la cuarentena con el mismo criterio que
+  `en_cuarentena`. El grafo no cambia. Alternativa descartada: que E2 escriba
+  booleano, porque cambia el sha de todos los grafos de generación 3 y rompe
+  T7 sobre ellos.
+- **Módulos.** `r1_tests.py` (cadena r1, cerrado por el circuito).
+- **Prueba de aceptación.** T7 sobre KG-Refinado deja de marcar los 11 por
+  formato y conserva las 8 `subclase_de` desde propuestos (contradicción C4/T7
+  real, fuera de este cambio); T7 sobre r1 sin cambio de veredicto.
+- **Costo.** USD 0.
+- **Backlog.** Sin entrada todavía («candidata al backlog», changelog del
+  27/09 del re-diagnóstico de B2.1). La entrada se escribe al firmar.
+
+### §1.5 Cláusula de mutuales (RT-C6)
+
+- **Defecto.** El punto 1.1.2.5 de protección dice «excepto que se trate de
+  asociaciones mutuales o cooperativas, por las financiaciones que otorguen»
+  (`e0_chunking/salida_tanda0/chunks_pro.json`, `pro::1.1.2.5`). En r1 la
+  Excepción dice «No aplican estas normas a las asociaciones mutuales o
+  cooperativas», sin la cláusula
+  (`Excepcion_no_aplican_estas_normas_a_las_asociaciones_mutuales_o_cooperativas_a0051e`).
+  La suite lo reporta como informativo en RT-C6-1
+  (`reports/revision_UB21_fase2/regression_KG-Reextraido_UB21_fase2.json`,
+  «cláusula … (informativa)=AUSENTE»). Especie: amputación. La excepción queda
+  más ancha que la norma.
+- **Opciones.** (a) Regla de calificadores en el prompt de E1: toca el prefijo
+  congelado, exige enmienda al laudo `2593d4d` y re-extracción completa (E2 de
+  la tanda 0 costó USD 40,35); fuera de r2. (b) Criterio nuevo en el
+  verificador E3: rota el namespace de E3 y re-verifica todo (E3 y reintentos
+  de la tanda 0: USD 22,28). (c) **Recomendada:** en r2 la cláusula pasa de
+  informativa a test que documenta la persistencia, y el remedio de raíz se
+  agrupa con otros cambios de prompt en una release posterior (B2.6: «los
+  cambios de prompt/catálogo se agrupan en releases»).
+- **Módulos.** Con (c): `scripts/regression_kg.py` y una entrada nueva de la
+  fixture. El pipeline no cambia.
+- **Prueba de aceptación.** Con (c): el test existe, da «persiste» en r1 y en
+  r2, y figura en el reporte del gate.
+- **Costo.** USD 0 con (c).
+- **Backlog.** Sin entrada todavía («candidata al backlog», changelog del
+  27/09 del cierre de B2.1). La entrada se escribe al firmar, con
+  `capa_pipeline` E1-prompt.
+
+### §1.6 Otros destinos r2 escritos en el repo, sin el campo
+
+| Ítem | Ancla | Toca | Recomendación |
+|---|---|---|---|
+| Completar `esquema_v3_clases.json` con los seis ids del perfil (102 / 101) | fila B6.0 fase 2a, hallazgo E1: «laudo para r2» | catálogo JSON; no el prefijo de E1 | **entra**: USD 0; S19 queda sin el FAIL conocido |
+| Doble conteo del checkpoint de cierre | fila B6.0 fase 2a, hallazgo del runner; `runner_corpus.py:356-372` | runner | **entra** con el candidato 1: USD 0 |
+| Guarda de modalidad (deber emitido como `Condicion`) | `laudo_esquema_congelado.md:97`: «candidata r2» | prompt, probablemente | **no entra** salvo que la lectura de la vigilancia (1) en la tanda 0 lo pida (§4) |
+| Pendientes de U-B1a: rangos, 196 conflictos de properties, 5 cross-TO, 41 `padre_sugerido`, política de cola | párrafo «Pendientes de laudo que deja U-B1a» del bloque B1: «insumo de la release r2» | ensamblado | **decide la autora**; el (d) se cruza con el candidato 4 |
+| R6b | fila ESQ-3 del plan (retoques): «residuo para r2» | esquema | **no entra**: el esquema congelado se modifica solo por la vía de A8 |
+| `BKL-0028` y `BKL-0029` | backlog | prefijo de E1 | **no entra**: rotan el prefijo y re-extraen todo |
+| S20 (`verificacion_informativa`) | hallazgo S20 del bloque B2 | nada | **no entra**: en E2 de la tanda 0, `ext::10.4.3.1` dio `tipo_obligacion_normalizados` 0 y la Obligación salió como `presentacion_informativa`; por la regla asentada el 27/09 es residuo de la generación anterior, y r2 se regenera en modo v3 |
+
+---
+
+## §2. Orden y dependencias
+
+Precondiciones: cierre de la tanda 0 y de U-TANDA0-2A-DIR (sus respuestas en
+caché alimentan el candidato 1); copia de resguardo de las dbs de caché (§3.2).
+
+1. **Candidato 1 (`BKL-0030`)**, casos de prueba `cap::3.1.14.1`,
+   `cap::4.2.1.2`, `cap::4.3.3.1`. Va primero porque cambia salidas de E1 que
+   todo lo de abajo consume. Viaja con él el doble conteo del checkpoint.
+2. **Candidato 3 (RX-10)**. También cambia texto de chunks de E0. Si el
+   cableado modifica el texto de alguna de las tres unidades de cap, la prueba
+   del candidato 1 se repite sobre el texto nuevo.
+3. **Candidato 4 (cuarentena)**. USD 0 e independiente; va antes del 2 porque
+   el detector y la suite leen el campo.
+4. **Completar el catálogo JSON** (§1.6, si entra). USD 0; antes del gate.
+5. **Candidato 2 (`BKL-0031`)**: paso 1 sobre el grafo candidato de r2, ya
+   con los cambios de arriba; paso 2 por la autora; paso 3 solo si la tasa lo
+   justifica.
+6. **Candidato 5 (mutuales)**: el test entra a la suite en cualquier momento
+   antes del gate.
+7. **Corrida única de r2** sobre el corpus que se fije al firmar, con la
+   proyección de misses de la §3.2 antes de gastar.
+8. **Gate de release** (§3.1) y **versionado**: KG-Reextraído-r2 con sha,
+   tabla de la suite, reporte de shapes, intrínsecas y costo; entrada en
+   `data/experiment/neo4j/grafos.py`.
+
+Cada candidato es una unidad con mandato propio y freno. La corrida del paso 7
+es la única que materializa r2; las unidades prueban sobre sus casos.
+
+---
+
+## §3. Gate de release y preservación de la caché
+
+### §3.1 Gate
+
+Si cualquiera de los tres primeros puntos falla, r2 no sale.
+
+1. **Shapes con perfil congelado.** `scripts/shapes_validator.py --perfil
+   congelado --kg <kg de r2> --excepciones
+   data/experiment/esq_v3_miembros/esquema_v3_clases.json --out <ruta
+   versionada de r2, fechada>`. Bloqueantes en PASS: S1–S6, S15, S19 y S20
+   (`shapes_validator.py:156`). S19 admite el FAIL conocido por los seis ids
+   solo si el catálogo JSON no se completó.
+2. **Regression suite con la fixture `696f3f94…`**
+   (`scripts/regression_kg_esperado.json`, `2012832`).
+   `scripts/regression_kg.py --kg <kg de r2> --generacion 3 --catalogo
+   esquema_v3_clases.json --politica-cuarentena <la de r2> --esperado
+   scripts/regression_kg_esperado.json --out <ruta versionada>`. La fixture
+   elige la entrada por `kg_sha256` (su `_convencion`), así que r2 necesita una
+   entrada propia sellada por la autora ANTES de correr el gate (decisión 6bis
+   de B2.1): el estado esperado de r1 ítem por ítem, cambiado solo en los que
+   un candidato resuelve (`C2.tabla_1_2` con el candidato 3; T7 con el 4; la
+   cláusula de RT-C6 según la opción del 5). Criterio: 0 regresiones. La
+   fixture cambia de sha; el nuevo se registra en el plan.
+3. **Contadores de E1** en la corrida de r2: vocabulario retirado = 0
+   (pre-registro de la tanda 0, paso 5); `tipo_obligacion_normalizados`
+   reportado.
+4. **Intrínsecas de generación 3**, en modo informativo hasta el laudo B3.1
+   (B2.6): `scripts/metricas_intrinsecas.py --gen3 --kg <kg de r2> --nombre
+   KG-Reextraido-r2 --e0 <salida de E0> --manifiesto <manifiesto de r2>`,
+   contra la línea de base de r1 (`d1fa3ee0…`). Las métricas atadas a un
+   candidato son aceptación de su unidad, no umbral general: M10 (candidato 1)
+   y M1/M2 (paso 3 del candidato 2).
+5. **Indicadores de cita** (gate 6), informativos, con `python3` 3.12.
+6. **Reproducibilidad.** Con el código de r2 y el perfil por defecto, el
+   ensamblado de desarrollo reproduce `8e2eadee…` y `0226e947…` byte a byte, y
+   los selftests del pipeline siguen en verde.
+7. **Nunca EV2** (principio 7; B2.6).
+
+### §3.2 Re-extraer paga solo lo que cambió
+
+La clave de caché es sha256 del namespace más el request canónico, que hashea
+todos los kwargs (`data/experiment/evaluacion/llm_cache.py:110-126`). El
+namespace de E1 lleva el hash del prefijo (tanda 0:
+`e1_extraccion|cv=e1-extractor-v1-p54a111e2175f|think=0`) y el de E3 su
+versión de prompt (`e3_verificacion|cv=e3-verificador-v1-p21a836c7de6d|think=0`).
+
+1. **Ningún cambio al prefijo de E1 ni al prompt de E3 en r2.** Con eso, todo
+   chunk con texto igual arma el mismo request y sale de la caché a USD 0.
+2. **Cambios de E0** (candidatos 1b y 3) alteran solo el texto de los chunks
+   afectados: esos pagan E1 y, como cambia su salida, E3.
+3. **Cambios de E2 y del ensamblado** (candidatos 2 y 4, catálogo JSON) no
+   llaman a la API.
+4. **Reintento del candidato 1** a 16.384: el mismo request que la dirigida de
+   la tanda 0, así que sale de la caché.
+5. **Proyección de misses antes de pagar**, con el patrón de
+   `data/experiment/reextraccion_v2/selftest_manifiesto.py:209-246` (claves
+   computadas sin llamar a la API y buscadas en la caché). Las claves de E3
+   dependen de las salidas de E1, así que se proyectan después de resolver E1
+   desde la caché. La lista de misses proyectados debe coincidir con los
+   chunks declarados como afectados; un miss de más es deriva de clave y FRENO
+   sin gastar.
+6. **Las dbs de caché no se versionan** (`.gitignore` de `e1_extractor/` y
+   `e3_verificador/`; `e1_extraccion.db` pesa 185 MB): antes de la corrida de
+   r2 se hace una copia de resguardo fuera del repo. Perderlas obliga a pagar
+   de nuevo la extracción (E2 de la tanda 0: USD 40,35) y, como E1 corre sin
+   temperatura fijada (decisión 7 del pre-registro), la nueva salida no sería
+   la misma.
+7. Rigen las decisiones 1 a 4 de `docs/decisiones_caching_extraccion.md`
+   (prefijo con breakpoint, costo con la fórmula de caching, usage logueado en
+   todo call site nuevo, corridas con prefijo idéntico en secuencia).
+
+---
+
+## §4. Hallazgos de la tanda 0 que se suman al cierre
+
+Se completa al cerrar la tanda 0, antes de firmar. Fuentes previstas: las
+incorrectas de la observación (12), que van al backlog con `capa_pipeline` para
+r2 (enmienda `8e13be3`); la lectura de las vigilancias (1) a (9); el reporte de
+la fase 2a (E6); la lectura de la fase 2b.
+
+| Hallazgo | Fuente | capa_pipeline | Módulos | Sellos | ¿Entra a r2? | Prueba | Costo |
+|---|---|---|---|---|---|---|---|
+| | | | | | | | |
+
+---
+
+## §5. Decisiones de la autora a la firma
+
+1. Qué candidatos de la §1.6 entran.
+2. Opción del candidato 5 (recomendada: c).
+3. Umbral del paso 3 del candidato 2 (tasa de candidatos correctos que
+   justifica la regla de fusión).
+4. Sobre qué corpus se materializa r2: los cinco TOs de desarrollo, como r1, o
+   los diez de la tanda 0.
+5. Tope de gasto de la release, con el censo del candidato 3 ya hecho.
+6. Política de cuarentena que declara la entrada de r2 en la fixture.
+
+## Firma
+
+Pendiente.
