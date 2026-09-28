@@ -79,6 +79,39 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('r1') tras importar comun_r1 (registro en memoria, U-B1.8)",
         "indice_fulltext": "nodos_fulltext_kg_reextraido_r1",
     },
+    # Tanda 0 (B6.0 fase 2a, U-TANDA0-2A E3.c): grafos r1 re-ensamblados con el
+    # esquema congelado y perfil v3_b54. Su vista runtime la registra en memoria
+    # data/experiment/tanda0/code/comun_tanda0.py, que cargar_vista_runtime importa
+    # por el campo requiere_registro_modulo (opción B, autorizada por la autora el
+    # 28/09/2026).
+    "KG_Tanda0_Desarrollo_r1": {
+        "nombre_canonico": "KG-Tanda0-Desarrollo-r1",
+        "label": "KG_Tanda0_Desarrollo_r1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_desarrollo" / "r1" / "kg.json",
+        "sha256": "eab2fdd01dec4dad026d596a793919e666920fab127d7efb14b5b00857ae64ef",
+        "commit_sellado": "1b8916c",
+        "n_nodos": 6378,
+        "n_aristas": 15007,
+        "ev2_key": "tanda0_ens_desarrollo",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda0" / "code",
+        "requiere_registro_modulo": "comun_tanda0",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_desarrollo') tras importar tanda0/code/comun_tanda0 (registro en memoria, patrón comun_r1)",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r1",
+    },
+    "KG_Tanda0_Diez_r1": {
+        "nombre_canonico": "KG-Tanda0-Diez-r1",
+        "label": "KG_Tanda0_Diez_r1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_diez" / "r1" / "kg.json",
+        "sha256": "dd42d6d9c0c8379da90ec4ed4e4659157a960a0d1ceaf8af5a008bdd9cad9010",
+        "commit_sellado": "1b8916c",
+        "n_nodos": 8256,
+        "n_aristas": 18932,
+        "ev2_key": "tanda0_ens_diez",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda0" / "code",
+        "requiere_registro_modulo": "comun_tanda0",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez') tras importar tanda0/code/comun_tanda0 (registro en memoria, patrón comun_r1)",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r1",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
@@ -113,7 +146,9 @@ def cargar_vista_runtime(clave: str):
     if reg is not None:
         if str(reg) not in sys.path:
             sys.path.insert(0, str(reg))
-        import comun_r1  # noqa: F401,E402  (registra la vista de r1 al importarse)
+        import importlib  # noqa: E402
+        # default comun_r1: comportamiento idéntico para las entradas existentes
+        importlib.import_module(GRAFOS[clave].get("requiere_registro_modulo", "comun_r1"))
     from comun_ev2 import cargar_runtime  # noqa: E402  (solo import)
     return cargar_runtime(GRAFOS[clave]["ev2_key"])
 

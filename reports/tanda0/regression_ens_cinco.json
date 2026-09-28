@@ -1,0 +1,1803 @@
+{
+ "suite": "scripts/regression_kg.py (U-B2.1 fase 2)",
+ "parametros": {
+  "kg": "data/experiment/reextraccion_v2/corpus_tanda0/ens_cinco/r1/kg.json",
+  "kg_sha256": "4097d4fd3f300cb1c2cf09bef59e3ccb9a30b1de18334e6230102a5a3106d00a",
+  "n_nodes": 1979,
+  "n_edges": 3983,
+  "generacion": 3,
+  "generacion_detectada": 3,
+  "catalogo": "data/experiment/esq_v3_miembros/esquema_v3_clases.json",
+  "catalogo_version": "3.0",
+  "catalogo_sha256": "dad88cc92afc53e922989cad84eb68b2ef142b66c221f2a566e7fb5da1bcfd36",
+  "politica_cuarentena": "flaggeada",
+  "esqueleto_referencia": "/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/grafo_v2/reensamblado_v3/kg.json",
+  "esqueleto_referencia_sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571",
+  "harness_sha256": "fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e",
+  "loader_sha256": "5aba8b7a0aa46e8d5c4c83b33884b8cae7d0a099884a7d3bc935de4d3097af8b",
+  "particion": {
+   "items": 46,
+   "convertibles": 19,
+   "con_condicion": 23,
+   "no_convertibles": 4,
+   "retriever": 15,
+   "por_grupo": {
+    "i-BKL": 12,
+    "i-RT": 12,
+    "ii": 12,
+    "iii": 10
+   }
+  },
+  "solo": null
+ },
+ "resumen": {
+  "items": 46,
+  "resuelto": 11,
+  "persiste": 22,
+  "no_aplicable": 13
+ },
+ "ranks_sellados": {
+  "consultas": 19,
+  "consultas_coinciden_sellado": 3,
+  "objetivos": 63,
+  "objetivos_coinciden_sellado": 17,
+  "objetivos_en_ventana": 11,
+  "objetivos_ausentes": 41
+ },
+ "items": [
+  {
+   "id": "BKL-0017",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F1 + F4 ×2 + F5 ×3 (limite 10)",
+   "direccionamiento": "(TO_clasificacion, 1.1, Obligacion, «los clientes de la entidad (tanto residentes en el pais»)",
+   "evidencia": "data/backlog/retests/C1_retest_2026-07-31.md:33-44 (4/4; ranks 1/1/3 :42-44); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:100-111; reports/revision_UB21_diag/inventario_B21_fase1.md:99",
+   "estado": "persiste",
+   "detalle": "sin Obligacion anclada en cla 1.1 con la frase del criterio general",
+   "subchecks": {
+    "nodo_1_1": false
+   }
+  },
+  {
+   "id": "BKL-0006",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F3 (montos de la tabla) + F4 (exceptua → restantes) + F5 ×2 informativo (limite 10 / 13)",
+   "direccionamiento": "(TO_capitales, 1.2, cualquier tipo, «exigencia basica» + «bancos» / «restantes entidades»); Excepcion por (cap, 1.2, Excepcion, «cajas de credito cooperativas»)",
+   "evidencia": "data/backlog/retests/C2_retest_2026-07-31.md:51-63 ((1)-(4) PASS; (5) informativo :59-63); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:114-134; reports/revision_UB21_diag/inventario_B21_fase1.md:100",
+   "nota": "los ids viejos/nuevos del retest (3) son ids de contenido: excluidos del estado por la decisión 1",
+   "estado": "no_aplicable",
+   "detalle": "sin nodos anclados en cap 1.2 con «exigencia básica»: tabla del 1.2 no extraída",
+   "subchecks": {}
+  },
+  {
+   "id": "BKL-0023",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F3 (properties.umbral)",
+   "direccionamiento": "(TO_capitales, 1.2, Restriccion, «companias financieras que realicen, en forma directa, operaciones de comercio exterior»)",
+   "evidencia": "data/backlog/retests/C3_retest_2026-08-02.md:30-37 ((a)-(d) 4/4); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:146-155; reports/revision_UB21_diag/inventario_B21_fase1.md:101",
+   "nota": "sin nodo o sin umbral → no_aplicable, nunca PASS vacuo (pieza e)",
+   "estado": "no_aplicable",
+   "detalle": "ninguna Restriccion anclada en cap 1.2 con la oración de compañías financieras"
+  },
+  {
+   "id": "BKL-0019",
+   "grupo": "i-BKL",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F4 ×8 (subclase_de si laudada / padre_sugerido si flaggeada) + F4 ausente (excluida, laudada)",
+   "direccionamiento": "8 sujetos por label normalizado de cuarentena.json (o id de cuarentena C4_retest:35-42) → padre laudado (id de catálogo); ver_vecinos (e) reducido a arista presente",
+   "evidencia": "data/backlog/retests/C4_retest_2026-08-02.md:35-42 (tabla), :52-58 ((a)-(e) 5/5); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:158-190; reports/revision_UB21_diag/inventario_B21_fase1.md:102",
+   "estado": "no_aplicable",
+   "detalle": "ninguno de los 8 sujetos propuestos está en el grafo (por label ni por id de cuarentena)",
+   "valores": {
+    "presentes": 0
+   }
+  },
+  {
+   "id": "BKL-0004",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F1 ×9 + F4 (8 regula + 9 establecida_en) + F5 ×8 (7 consultas + proxy RT-C5-4; limite 10)",
+   "direccionamiento": "(TO_clasificacion, 6.5 / 6.5.1 / 6.5.2 / 6.5.2.1 / 6.5.2.2 / 6.5.2.3 / 6.5.3 / 6.5.4 / 6.5.5, cualquier tipo, frase del título)",
+   "evidencia": "data/backlog/retests/C5_retest_2026-08-02.md:56-66 (32/32), :68-74 (proxy RT-4); data/backlog/propuestas/E4_enumeracion_65.md:283-289 (ranks); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:193-226; reports/revision_UB21_diag/inventario_B21_fase1.md:103",
+   "estado": "persiste",
+   "detalle": "nodos 0/9 -> N1@6.5:0 N2@6.5.1:0 N3@6.5.2:0 N4@6.5.2.1:0 N5@6.5.2.2:0 N6@6.5.2.3:0 N7@6.5.3:0 N8@6.5.4:0 N9@6.5.5:0; sin N1: aristas no evaluables; objetivos en ventana=0/30",
+   "subchecks": {
+    "9_nodos_por_ancla_y_frase": false,
+    "alcanzable_en_ventana": false
+   },
+   "valores": {
+    "nodos": 0
+   },
+   "ranks": [
+    {
+     "consulta": "niveles clasificación deudores cartera comercial",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N7",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N9",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N2",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 6,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N3",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 8,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "seguimiento especial deudores",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N4",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 3,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N6",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N5",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N3",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 6,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "punto 6.5 niveles clasificación",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N7",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N9",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 3,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N2",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N8",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N3",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 6,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "situaciones que integran el seguimiento especial",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N3",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 7,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "cinco categorías cartera comercial",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N7",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 7,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N9",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 8,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N2",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 9,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N4",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 10,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "en negociación o con acuerdos de refinanciación",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N5",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N3",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "situación normal cartera comercial",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E4_enumeracion_65.md:283-289 (retest C5 (c) 7/7 en top-10, C5_retest_2026-08-02.md:65)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N2",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N4",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 3,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N6",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C5.N5",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "reclasificación en tratamiento especial refinanciación",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/retests/C5_retest_2026-08-02.md:70-72 (proxy RT-C5-4, consulta plausible mínima)",
+     "objetivos": [
+      {
+       "objetivo": "C5.N6",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "BKL-0003",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F1 + F4 ×2 + F4 ausente (a Sujeto) + F5 ×11 (N1 + controles rol/pnfc; limite 10)",
+   "direccionamiento": "(TO_proteccion, 1.1.2.5, Excepcion, «mutuales o cooperativas»); controles por id de catálogo Sujeto_rol_sujeto_obligado_proteccion / Sujeto_proveedor_no_financiero_de_credito",
+   "evidencia": "data/backlog/retests/C6_retest_2026-08-03.md:52-62 (38/38); data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (ranks); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:229-254; reports/revision_UB21_diag/inventario_B21_fase1.md:104",
+   "estado": "persiste",
+   "detalle": "Excepcion=0 []; objetivos en ventana=8/16",
+   "subchecks": {
+    "excepcion_1_1_2_5_mutuales": false,
+    "alcanzable_en_ventana": false
+   },
+   "ranks": [
+    {
+     "consulta": "asociación mutual financiaciones proveedor no financiero crédito",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "sujeto obligado protección usuarios servicios financieros",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 2,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 7,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "proveedor no financiero crédito",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "asociación mutual",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "definición proveedor no financiero crédito PNFC",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "proveedor no financiero crédito comercios empresas personas jurídicas",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "exclusión excluido no alcanzado no incluido sujeto obligado",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 6,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 4,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "mutuales cooperativas sujeto obligado protección usuarios",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "excepción asociaciones mutuales cooperativas",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "cooperativa que otorga financiaciones protección de usuarios",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 5,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      }
+     ]
+    },
+    {
+     "consulta": "asociaciones mutuales proveedores no financieros de crédito",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/propuestas/E3_salvedad_mutuales.md:288-298 (columna post; — = fuera del top-10; retest C6 (c) 14/14, C6_retest_2026-08-03.md:61)",
+     "objetivos": [
+      {
+       "objetivo": "C6.N1",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.rol",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": null,
+       "rank_esperado_sellado": null,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": true,
+       "cuenta_para_estado": true
+      },
+      {
+       "objetivo": "C6.pnfc",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "BKL-0005",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F3 (dos calificadores en descripcion) + F5 ×3 (limite 10)",
+   "direccionamiento": "(TO_regimen_informativo, 7.1, Obligacion, «para el calculo del importe correspondiente al mes n»)",
+   "evidencia": "data/backlog/retests/C7_retest_2026-08-03.md:67-78 (27/27; ranks :78); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:257-264; reports/revision_UB21_diag/inventario_B21_fase1.md:105",
+   "estado": "no_aplicable",
+   "detalle": "sin portador: ninguna Obligacion anclada en ric 7.1 con «para el cálculo del importe correspondiente al mes n»"
+  },
+  {
+   "id": "BKL-0007",
+   "grupo": "i-BKL",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "= BKL-0017 (sin test propio)",
+   "direccionamiento": "= BKL-0017",
+   "evidencia": "data/backlog/backlog.jsonl líneas 42 y 46 (cerrada por referencia); reports/revision_UB21_diag/inventario_B21_fase1.md:106, §5.9 :269",
+   "nota": "defecto confirmado, no corrección aplicada",
+   "estado": "persiste",
+   "detalle": "= BKL-0017 (cerrada por referencia; defecto confirmado, no corrección aplicada): sin Obligacion anclada en cla 1.1 con la frase del criterio general",
+   "subchecks": {
+    "nodo_1_1": false
+   }
+  },
+  {
+   "id": "BKL-0026",
+   "grupo": "i-BKL",
+   "convertibilidad": "no convertible",
+   "retriever": "no",
+   "forma": "ninguna (no convertible)",
+   "direccionamiento": "—",
+   "evidencia": "reports/revision_UB21_diag/inventario_B21_fase1.md:107; data/backlog/retests/C6_retest_2026-08-03.md:99-103",
+   "nota": "defecto confirmado, no corrección aplicada",
+   "estado": "no_aplicable",
+   "detalle": "no convertible: conducta del agente (paráfrasis invertida del verbatim con ver_nodo byte-idéntico, RT-C6-1 vs RT-C6-2, 3/3 en N=3); no es observable con una comprobación determinística sobre un kg.json (inventario_B21_fase1.md:107). El nodo objetivo se testea en BKL-0003. defecto confirmado, no corrección aplicada."
+  },
+  {
+   "id": "BKL-0027",
+   "grupo": "i-BKL",
+   "convertibilidad": "no convertible",
+   "retriever": "no",
+   "forma": "ninguna (no convertible)",
+   "direccionamiento": "—",
+   "evidencia": "reports/revision_UB21_diag/inventario_B21_fase1.md:108; data/backlog/retests/C6_retest_2026-08-03.md:104-108",
+   "nota": "defecto confirmado, no corrección aplicada",
+   "estado": "no_aplicable",
+   "detalle": "no convertible: conducta del agente (pidió ver_vecinos salientes de un rol que solo tiene miembro_de entrantes, RT-C6-3); la estructura del rol se testea en RT-C6-3 (inventario_B21_fase1.md:108). defecto confirmado, no corrección aplicada."
+  },
+  {
+   "id": "BKL-0028",
+   "grupo": "i-BKL",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 sobre el catálogo parametrizado (ids «del exterior» separados; sin alias del exterior en los domésticos) + F1 en el grafo",
+   "direccionamiento": "ids de catálogo Sujeto_entidad_financiera / Sujeto_banco / Sujeto_entidad_cambiaria",
+   "evidencia": "reports/revision_UB21_diag/inventario_B21_fase1.md:109 (backlog línea 73)",
+   "nota": "defecto confirmado, no corrección aplicada",
+   "estado": "persiste",
+   "detalle": "catálogo v3: alias «del exterior» en ['Sujeto_entidad_financiera', 'Sujeto_banco', 'Sujeto_entidad_cambiaria']; ids separados []; presentes en el grafo []. defecto confirmado, no corrección aplicada.",
+   "valores": {
+    "catalogo_version": "3.0",
+    "ids_con_alias_del_exterior": [
+     "Sujeto_entidad_financiera",
+     "Sujeto_banco",
+     "Sujeto_entidad_cambiaria"
+    ],
+    "ids_separados_del_exterior": [],
+    "ids_separados_presentes_en_grafo": []
+   }
+  },
+  {
+   "id": "BKL-0029",
+   "grupo": "i-BKL",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F4 (miembro_de del rol de convca → id nuevo del catálogo)",
+   "direccionamiento": "id de catálogo Sujeto_rol_alcance_convca; cobertura de convca por provenance",
+   "evidencia": "reports/revision_UB21_diag/inventario_B21_fase1.md:110 (backlog línea 74)",
+   "nota": "defecto confirmado, no corrección aplicada; no_aplicable en todo grafo que no cubra convca (pieza e)",
+   "estado": "persiste",
+   "detalle": "ids candidatos en catálogo=[]; miembro_de del rol=['Sujeto_entidad_financiera']; residuo colectivo_operativo_sin_id=True. defecto confirmado, no corrección aplicada.",
+   "valores": {
+    "candidatos": [],
+    "miembros": [
+     "Sujeto_entidad_financiera"
+    ]
+   }
+  },
+  {
+   "id": "RT-C5-1",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F3 (valor: cinco categorías en N1)",
+   "direccionamiento": "N1 de C5",
+   "evidencia": "data/backlog/propuestas/E4_enumeracion_65.md:227-230; C5_retest:66 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:111",
+   "nota": "solo valor (decisión 5)",
+   "estado": "persiste",
+   "detalle": "sin N1 (Obligacion del 6.5 con el encabezado): el gold no está en el grafo"
+  },
+  {
+   "id": "RT-C5-2",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F3 (valor: tres situaciones en N3)",
+   "direccionamiento": "N3 de C5",
+   "evidencia": "data/backlog/propuestas/E4_enumeracion_65.md:231-234; C5_retest:66 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:112",
+   "nota": "solo valor (decisión 5)",
+   "estado": "persiste",
+   "detalle": "sin N3 (nodo del 6.5.2 «seguimiento especial»): el gold no está en el grafo"
+  },
+  {
+   "id": "RT-C5-3",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F3 (valor: «antes de los 60 días … mora» en N5)",
+   "direccionamiento": "N5 de C5",
+   "evidencia": "data/backlog/propuestas/E4_enumeracion_65.md:235-238; C5_retest:66 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:113",
+   "nota": "solo valor (decisión 5)",
+   "estado": "persiste",
+   "detalle": "sin N5 (nodo del 6.5.2.2): el gold no está en el grafo"
+  },
+  {
+   "id": "RT-C5-4",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F3 (valor: primera vez / primera cuota / única vez en N6)",
+   "direccionamiento": "N6 de C5",
+   "evidencia": "data/backlog/propuestas/E4_enumeracion_65.md:239-242; C5_retest:66-74 (d, observación RT-4); reports/revision_UB21_diag/inventario_B21_fase1.md:114",
+   "nota": "solo valor (decisión 5); su consulta proxy se evalúa en BKL-0004",
+   "estado": "persiste",
+   "detalle": "sin N6 (nodo del 6.5.2.3): el gold no está en el grafo"
+  },
+  {
+   "id": "RT-C5-5",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F2 (nodo con «riesgo medio» anclado en 7.2 exacto) + F3 (N1 sin niveles del 7.2)",
+   "direccionamiento": "(TO_clasificacion, 7.2 exacto, cualquier tipo, «riesgo medio»); N1 de C5",
+   "evidencia": "data/backlog/propuestas/E4_enumeracion_65.md:243-247; C5_retest:66 (d); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:219-226; reports/revision_UB21_diag/inventario_B21_fase1.md:115, §5.7 :267",
+   "estado": "no_aplicable",
+   "detalle": "sin nodos con punto exactamente 7.2 de Clasificación: el proxy falla por ancla, no por contenido (inventario_B21_fase1.md:267, §5.7; decisión 5)",
+   "valores": {
+    "nodos_en_7_2": 0
+   }
+  },
+  {
+   "id": "RT-C6-1",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F3 (valor en N1)",
+   "direccionamiento": "N1 de C6",
+   "evidencia": "data/backlog/propuestas/E3_salvedad_mutuales.md:151-156; C6_retest:62 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:116",
+   "nota": "solo valor (decisión 5)",
+   "estado": "persiste",
+   "detalle": "RT-C6-1: sin Excepcion anclada en pro 1.1.2.5 con «mutuales o cooperativas»"
+  },
+  {
+   "id": "RT-C6-2",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F3 (valor en N1; = RT-C6-1)",
+   "direccionamiento": "N1 de C6",
+   "evidencia": "data/backlog/propuestas/E3_salvedad_mutuales.md:157-164; C6_retest:62 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:117",
+   "nota": "solo valor (decisión 5)",
+   "estado": "persiste",
+   "detalle": "RT-C6-2 (= RT-C6-1 en la parte de valor): sin Excepcion anclada en pro 1.1.2.5 con «mutuales o cooperativas»"
+  },
+  {
+   "id": "RT-C6-3",
+   "grupo": "i-RT",
+   "convertibilidad": "con condición",
+   "retriever": "sí",
+   "forma": "F4 ×n (miembro_de entrantes = miembros del rol en el catálogo)",
+   "direccionamiento": "id de catálogo Sujeto_rol_sujeto_obligado_proteccion",
+   "evidencia": "data/backlog/propuestas/E3_salvedad_mutuales.md:165-174; C6_retest:62 (RT-3); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:246-252; reports/revision_UB21_diag/inventario_B21_fase1.md:118",
+   "nota": "solo valor/estructura (decisión 5)",
+   "estado": "resuelto",
+   "detalle": "miembro_de entrantes=7 esperados(catálogo)=7; faltan=[] sobran=[]",
+   "valores": {
+    "n_miembro_de": 7,
+    "n_esperados": 7
+   }
+  },
+  {
+   "id": "RT-C6-4",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F4 (emisoras --miembro_de--> rol) + F4 ausente (N1 ↔ Sujeto)",
+   "direccionamiento": "ids de catálogo; N1 de C6",
+   "evidencia": "data/backlog/propuestas/E3_salvedad_mutuales.md:175-179; C6_retest:62 (RT-4); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:241-253; reports/revision_UB21_diag/inventario_B21_fase1.md:119",
+   "estado": "resuelto",
+   "detalle": "emisoras→rol=True; N1=ausente (sub-check no aplicable)",
+   "subchecks": {
+    "emisoras_miembro_de_rol": true
+   }
+  },
+  {
+   "id": "RT-C7-1",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F3 (valor: ambos calificadores en el portador)",
+   "direccionamiento": "portador de C7",
+   "evidencia": "data/backlog/retests/C7_retest_2026-08-03.md:78 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:120, §5.8 :268",
+   "nota": "solo valor (decisión 5); su consulta se evalúa en BKL-0005",
+   "estado": "no_aplicable",
+   "detalle": "RT-C7-1: sin portador del 7.1 (Obligacion con «para el cálculo del importe correspondiente al mes n»)"
+  },
+  {
+   "id": "RT-C7-2",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F3 (valor: calificador de la RPC)",
+   "direccionamiento": "portador de C7",
+   "evidencia": "data/backlog/retests/C7_retest_2026-08-03.md:78 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:121",
+   "nota": "solo valor (decisión 5); su consulta se evalúa en BKL-0005",
+   "estado": "no_aplicable",
+   "detalle": "RT-C7-2: sin portador del 7.1 (Obligacion con «para el cálculo del importe correspondiente al mes n»)"
+  },
+  {
+   "id": "RT-C7-3",
+   "grupo": "i-RT",
+   "convertibilidad": "convertible",
+   "retriever": "sí",
+   "forma": "F3 (valor: calificador de la franquicia)",
+   "direccionamiento": "portador de C7",
+   "evidencia": "data/backlog/retests/C7_retest_2026-08-03.md:78 (d); reports/revision_UB21_diag/inventario_B21_fase1.md:122",
+   "nota": "solo valor (decisión 5); su consulta se evalúa en BKL-0005",
+   "estado": "no_aplicable",
+   "detalle": "RT-C7-3: sin portador del 7.1 (Obligacion con «para el cálculo del importe correspondiente al mes n»)"
+  },
+  {
+   "id": "T1",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F2 + F3",
+   "direccionamiento": "(TO_exterior, 3.9 y 3.9.x, cualquier tipo, «200»)",
+   "evidencia": "data/experiment/reextraccion_v2/corpus_v2/ensamblar_corpus.py:237-249 (reescrito sobre el adaptador); salida_r1/tests_respuesta_conocida_r1.json:2-4; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:52; reports/revision_UB21_diag/inventario_B21_fase1.md:128",
+   "estado": "persiste",
+   "detalle": "anclados_3_9=0 puntos=[] con_usd_200=0",
+   "valores": {
+    "pass": false,
+    "nodos_anclados_3_9": 0,
+    "puntos": [],
+    "nodos_con_usd_200": []
+   }
+  },
+  {
+   "id": "T2",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F1 (conteo) + F2 (conteo de puntos)",
+   "direccionamiento": "(TO_exterior, cualquier punto, cualquier tipo, «125 %» o «125%»)",
+   "evidencia": "ensamblar_corpus.py:251-265 (reescrito sobre el adaptador); tests_respuesta_conocida_r1.json:20-22; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:53; reports/revision_UB21_diag/inventario_B21_fase1.md:129",
+   "estado": "persiste",
+   "detalle": "nodos_separados_ext=0 puntos_distintos=[]",
+   "valores": {
+    "pass": false,
+    "n_nodos_separados_ext": 0,
+    "puntos_distintos": [],
+    "nodos": []
+   }
+  },
+  {
+   "id": "T3",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F2 + F3",
+   "direccionamiento": "(TO_proteccion, 1.1.2.5, cualquier tipo, «mutual» o «cooperativ»)",
+   "evidencia": "ensamblar_corpus.py:267-280 (reescrito sobre el adaptador); tests_respuesta_conocida_r1.json:75-77; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:54; reports/revision_UB21_diag/inventario_B21_fase1.md:130",
+   "estado": "persiste",
+   "detalle": "anclados_1_1_2_5=0 con_salvedad=0 de_los_cuales_excepcion=0",
+   "valores": {
+    "pass": false,
+    "nodos_anclados": 0,
+    "nodos_con_salvedad": [],
+    "de_los_cuales_excepcion": 0
+   }
+  },
+  {
+   "id": "T4",
+   "grupo": "ii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 + F4 (paridad de esqueleto contra --esqueleto-referencia, decisión 8)",
+   "direccionamiento": "nodos rol_fuente=esqueleto y aristas de relaciones de esqueleto de la referencia, menos rol_fuente=cuarentena_laudada",
+   "evidencia": "data/experiment/reextraccion_v2/corpus_v2/r1_tests.py:30-42; tests_respuesta_conocida_r1.json:92-96; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:27,55; reports/revision_UB21_diag/inventario_B21_fase1.md:131, §5.1 :261",
+   "estado": "persiste",
+   "detalle": "esqueleto_esperados=70 faltan_nodos=0 aristas_esqueleto_en_grafo=117 (excluidas cuarentena_laudada=0) referencia=82 faltan_triplas=0",
+   "valores": {
+    "pass": false,
+    "nodos_esqueleto_esperados": 70,
+    "faltan_nodos": [],
+    "aristas_esqueleto_referencia": 82,
+    "aristas_excluidas_referencia_cuarentena_laudada": 8,
+    "aristas_esqueleto_en_grafo": 117,
+    "aristas_excluidas_grafo_cuarentena_laudada": 0,
+    "aristas_relaciones_esqueleto_total_grafo": 117,
+    "faltan_triplas": [],
+    "esqueleto_referencia": {
+     "ruta": "/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/grafo_v2/reensamblado_v3/kg.json",
+     "sha256": "26fac8b49f6c08c1aa364b47273d36958d831f240d4e6b4ee7700b6a0bff3571"
+    }
+   }
+  },
+  {
+   "id": "T5",
+   "grupo": "ii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F4 + F3 (properties.evidencia)",
+   "direccionamiento": "(ancla origen, ancla destino, evidencia verbatim) de salida_r1/referencias_muestra30_inspeccionada_A2.json (sha256 4dbc2d30…)",
+   "evidencia": "r1_tests.py:44-54; tests_respuesta_conocida_r1.json:99-101; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:56; reports/revision_UB21_diag/inventario_B21_fase1.md:132",
+   "estado": "persiste",
+   "detalle": "n_muestra=30 fallas=30 (presente_con_otra_evidencia=0, ausente=30)",
+   "valores": {
+    "pass": false,
+    "n_muestra": 30,
+    "fallas": [
+     {
+      "n": 1,
+      "source_ancla": "ext::7.5.2",
+      "target_ancla": "ext::9.3.5",
+      "presente": false
+     },
+     {
+      "n": 2,
+      "source_ancla": "ext::3.5.6.5",
+      "target_ancla": "ext::14.2.1",
+      "presente": false
+     },
+     {
+      "n": 3,
+      "source_ancla": "ext::3.3.2",
+      "target_ancla": "ext::14.2.1",
+      "presente": false
+     },
+     {
+      "n": 4,
+      "source_ancla": "ext::3.6.1.3",
+      "target_ancla": "ext::3.5",
+      "presente": false
+     },
+     {
+      "n": 5,
+      "source_ancla": "ext::3.16.3.5",
+      "target_ancla": "ext::3.16.3.1",
+      "presente": false
+     },
+     {
+      "n": 6,
+      "source_ancla": "ext::14.2.1",
+      "target_ancla": "ext::3.3",
+      "presente": false
+     },
+     {
+      "n": 7,
+      "source_ancla": "ric::3.1.2",
+      "target_ancla": "cap::2.13",
+      "presente": false
+     },
+     {
+      "n": 8,
+      "source_ancla": "cap::3.1.3",
+      "target_ancla": "cap::3.1.12",
+      "presente": false
+     },
+     {
+      "n": 9,
+      "source_ancla": "pro::2.3.5.1",
+      "target_ancla": "pro::3.1.6",
+      "presente": false
+     },
+     {
+      "n": 10,
+      "source_ancla": "ext::14.2.1.9",
+      "target_ancla": "ext::3.6",
+      "presente": false
+     },
+     {
+      "n": 11,
+      "source_ancla": "ext::8.5.19.2",
+      "target_ancla": "ext::8.5.6",
+      "presente": false
+     },
+     {
+      "n": 12,
+      "source_ancla": "ext::8.5.20.3",
+      "target_ancla": "ext::8.5.10",
+      "presente": false
+     },
+     {
+      "n": 13,
+      "source_ancla": "ext::3.16.3.6",
+      "target_ancla": "ext::3.16.3.2",
+      "presente": false
+     },
+     {
+      "n": 14,
+      "source_ancla": "cap::2.8.3.2",
+      "target_ancla": "cap::S5",
+      "presente": false
+     },
+     {
+      "n": 15,
+      "source_ancla": "ext::S3",
+      "target_ancla": "ext::3.14",
+      "presente": false
+     },
+     {
+      "n": 16,
+      "source_ancla": "cap::2.9.1",
+      "target_ancla": "cap::2.12.8.1",
+      "presente": false
+     },
+     {
+      "n": 17,
+      "source_ancla": "cap::2.9.1",
+      "target_ancla": "cap::2.12.8.2",
+      "presente": false
+     },
+     {
+      "n": 18,
+      "source_ancla": "pro::2.3.4",
+      "target_ancla": "pro::2.3.2.1",
+      "presente": false
+     },
+     {
+      "n": 19,
+      "source_ancla": "cap::3.1.11.3",
+      "target_ancla": "cap::3.1.14",
+      "presente": false
+     },
+     {
+      "n": 20,
+      "source_ancla": "cla::7.2.5",
+      "target_ancla": "cla::6.5.5.8",
+      "presente": false
+     },
+     {
+      "n": 21,
+      "source_ancla": "ext::13.4.6",
+      "target_ancla": "ext::4.4",
+      "presente": false
+     },
+     {
+      "n": 22,
+      "source_ancla": "cap::3.1.14",
+      "target_ancla": "cap::3.1.14.1",
+      "presente": false
+     },
+     {
+      "n": 23,
+      "source_ancla": "ext::9.3.8",
+      "target_ancla": "ext::9.3",
+      "presente": false
+     },
+     {
+      "n": 24,
+      "source_ancla": "ext::10.10.1",
+      "target_ancla": "ext::10.6.6",
+      "presente": false
+     },
+     {
+      "n": 25,
+      "source_ancla": "cap::5.3.2.2",
+      "target_ancla": "cap::5.3.1.2",
+      "presente": false
+     },
+     {
+      "n": 26,
+      "source_ancla": "ext::4.8.3",
+      "target_ancla": "ext::4.4",
+      "presente": false
+     },
+     {
+      "n": 27,
+      "source_ancla": "ext::4.8.3",
+      "target_ancla": "ext::4.5",
+      "presente": false
+     },
+     {
+      "n": 28,
+      "source_ancla": "ext::3.5.1.10",
+      "target_ancla": "ext::7.11.1.3",
+      "presente": false
+     },
+     {
+      "n": 29,
+      "source_ancla": "ext::4.3.2.3",
+      "target_ancla": "ext::4.5",
+      "presente": false
+     },
+     {
+      "n": 30,
+      "source_ancla": "ext::8.5.21",
+      "target_ancla": "ext::14.1.1",
+      "presente": false
+     }
+    ],
+    "aristas_referencia_con_evidencia": 518
+   }
+  },
+  {
+   "id": "T6",
+   "grupo": "ii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1",
+   "direccionamiento": "TextoOrdenado_<e2_lib.slugify_full(archivo de E0 por TO)>",
+   "evidencia": "r1_tests.py:56-61; tests_respuesta_conocida_r1.json:104-105; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:57; reports/revision_UB21_diag/inventario_B21_fase1.md:133",
+   "estado": "persiste",
+   "detalle": "n=5 fuera_del_esperado=['TextoOrdenado_ctacte_pdf', 'TextoOrdenado_docvig_pdf', 'TextoOrdenado_lingob_pdf', 'TextoOrdenado_pagjub_pdf', 'TextoOrdenado_polcre_pdf'] faltan=['TextoOrdenado_to_capitales_minimos_actual_pdf', 'TextoOrdenado_to_clasificacion_deudores_actual_pdf', 'TextoOrdenado_to_exterior_cambios_actual_pdf', 'TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf', 'TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf']",
+   "valores": {
+    "pass": false,
+    "n": 5,
+    "ids": [
+     "TextoOrdenado_ctacte_pdf",
+     "TextoOrdenado_docvig_pdf",
+     "TextoOrdenado_lingob_pdf",
+     "TextoOrdenado_pagjub_pdf",
+     "TextoOrdenado_polcre_pdf"
+    ],
+    "ids_esperados": [
+     "TextoOrdenado_to_capitales_minimos_actual_pdf",
+     "TextoOrdenado_to_clasificacion_deudores_actual_pdf",
+     "TextoOrdenado_to_exterior_cambios_actual_pdf",
+     "TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf",
+     "TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf"
+    ]
+   }
+  },
+  {
+   "id": "T7",
+   "grupo": "ii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F3 + F4 + F4 ausente (política de cuarentena, decisión 3)",
+   "direccionamiento": "Sujetos con nivel=propuesto; catálogo parametrizado",
+   "evidencia": "r1_tests.py:63-82; tests_respuesta_conocida_r1.json:115-118; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:30,58; reports/revision_UB21_diag/inventario_B21_fase1.md:134, §5.2 :262",
+   "estado": "persiste",
+   "detalle": "politica=flaggeada propuestos=11 aristas_padre_sugerido=11 malos=0 {} fuera_catalogo_no_propuestos=2",
+   "valores": {
+    "pass": false,
+    "politica": "flaggeada",
+    "n_sujetos": 114,
+    "n_propuestos": 11,
+    "n_padre_sugerido": 11,
+    "malos": [],
+    "sujetos_fuera_catalogo_no_propuestos": [
+     "Sujeto_entidad_depositaria",
+     "Sujeto_entidad_girada"
+    ]
+   }
+  },
+  {
+   "id": "I1",
+   "grupo": "ii",
+   "convertibilidad": "no convertible",
+   "retriever": "no",
+   "forma": "ninguna (no convertible)",
+   "direccionamiento": "—",
+   "evidencia": "data/experiment/reextraccion_v2/corpus_v2/r1_invariantes.py:7,62-68; reports/revision_UB21_diag/inventario_B21_fase1.md:135",
+   "estado": "no_aplicable",
+   "detalle": "no convertible: conservación de nodos Σ pre-merge − merges = finales exige los grafos pre-merge (salida/<to>/grafo_<to>.json) y los conteos de merge, que solo existen para la cadena r1 (inventario_B21_fase1.md:135)"
+  },
+  {
+   "id": "I2",
+   "grupo": "ii",
+   "convertibilidad": "no convertible",
+   "retriever": "no",
+   "forma": "ninguna (no convertible)",
+   "direccionamiento": "—",
+   "evidencia": "r1_invariantes.py:8,69-70; reports/revision_UB21_diag/inventario_B21_fase1.md:136",
+   "estado": "no_aplicable",
+   "detalle": "no convertible: conservación de aristas, ídem I1 (inventario_B21_fase1.md:136)"
+  },
+  {
+   "id": "I3",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F1 (conteo: unicidad de ids y de triplas)",
+   "direccionamiento": "JSON crudo",
+   "evidencia": "r1_invariantes.py:9,72-77; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:60; reports/revision_UB21_diag/inventario_B21_fase1.md:137",
+   "estado": "resuelto",
+   "detalle": "nodes=1979 edges=3983 ids_duplicados=0 triplas_duplicadas=0",
+   "valores": {
+    "nodes": 1979,
+    "edges": 3983,
+    "ids_duplicados": 0,
+    "triplas_duplicadas": 0
+   }
+  },
+  {
+   "id": "I4",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F4 (cero colgantes)",
+   "direccionamiento": "JSON crudo",
+   "evidencia": "r1_invariantes.py:10,79-81; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:61; reports/revision_UB21_diag/inventario_B21_fase1.md:138",
+   "estado": "resuelto",
+   "detalle": "colgantes=0",
+   "valores": {
+    "aristas_colgantes": 0
+   }
+  },
+  {
+   "id": "I5",
+   "grupo": "ii",
+   "convertibilidad": "convertible",
+   "retriever": "no",
+   "forma": "F2 (al menos una provenance por nodo y arista, adaptador)",
+   "direccionamiento": "JSON crudo",
+   "evidencia": "r1_invariantes.py:11-12,83-90; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:62; reports/revision_UB21_diag/inventario_B21_fase1.md:139",
+   "estado": "resuelto",
+   "detalle": "nodos_sin=0 aristas_sin=0",
+   "valores": {
+    "nodos_sin_provenance": 0,
+    "aristas_sin_provenance": 0
+   }
+  },
+  {
+   "id": "E4-a1",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (ningún propuesto residual resoluble por label_exacto)",
+   "direccionamiento": "Sujetos propuestos; r1_e4.indice_catalogo / resolver_label sobre el catálogo parametrizado",
+   "evidencia": "data/experiment/reextraccion_v2/corpus_v2/r1_e4.py:10,89,101; reports/revision_UB21_diag/inventario_B21_fase1.md:167, §4 :234-250",
+   "estado": "resuelto",
+   "detalle": "propuestos=11 con candidato label_exacto=0 resolubles no resueltos=0 []",
+   "valores": {
+    "n_propuestos": 11,
+    "resolubles": []
+   }
+  },
+  {
+   "id": "E4-a2",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (alias_exacto)",
+   "direccionamiento": "ídem",
+   "evidencia": "r1_e4.py:11,92-93,102; reports/revision_UB21_diag/inventario_B21_fase1.md:168, §4",
+   "estado": "resuelto",
+   "detalle": "propuestos=11 con candidato alias_exacto=0 resolubles no resueltos=0 []",
+   "valores": {
+    "n_propuestos": 11,
+    "resolubles": []
+   }
+  },
+  {
+   "id": "E4-a3",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (id_slug; e2_lib.slugify_full importado)",
+   "direccionamiento": "ídem",
+   "evidencia": "r1_e4.py:12,90,103; data/experiment/reextraccion_v2/e2_reduce/e2_lib.py:90; reports/revision_UB21_diag/inventario_B21_fase1.md:169, §4",
+   "estado": "resuelto",
+   "detalle": "propuestos=11 con candidato id_slug=0 resolubles no resueltos=0 []",
+   "valores": {
+    "n_propuestos": 11,
+    "resolubles": []
+   }
+  },
+  {
+   "id": "E4-a4",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (label_singularizado)",
+   "direccionamiento": "ídem",
+   "evidencia": "r1_e4.py:13-14,53-58,91,104; reports/revision_UB21_diag/inventario_B21_fase1.md:170, §4",
+   "estado": "resuelto",
+   "detalle": "propuestos=11 con candidato label_singularizado=0 resolubles no resueltos=0 []",
+   "valores": {
+    "n_propuestos": 11,
+    "resolubles": []
+   }
+  },
+  {
+   "id": "E4-a5",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (alias_en_parentesis) + F3 (padre_sugerido)",
+   "direccionamiento": "ídem",
+   "evidencia": "r1_e4.py:15-17,108-112; reports/revision_UB21_diag/inventario_B21_fase1.md:171, §4",
+   "estado": "resuelto",
+   "detalle": "propuestos=11 con candidato alias_en_parentesis=0 resolubles no resueltos=0 []; propuestos con padre_sugerido=11",
+   "valores": {
+    "n_propuestos": 11,
+    "resolubles": []
+   }
+  },
+  {
+   "id": "E4-a6",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 ausente (claves ambiguas / alias_resueltos que re-resuelven sin ambigüedad)",
+   "direccionamiento": "ídem + Sujetos con properties.alias_resueltos",
+   "evidencia": "r1_e4.py:7-9,79-84,113-117; reports/revision_UB21_diag/inventario_B21_fase1.md:172, §4",
+   "estado": "resuelto",
+   "detalle": "claves ambiguas del índice=4; propuestos residuales con motivo ambiguo=0/11; alias_resueltos re-resueltos=1/1 malos=[]",
+   "valores": {
+    "claves_ambiguas": 4,
+    "ambiguos_residuales": 0,
+    "malos": []
+   }
+  },
+  {
+   "id": "E4-a7",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F3 (cuarentena=true normalizada) + F1 (todo Sujeto no propuesto ∈ catálogo)",
+   "direccionamiento": "Sujetos; catálogo parametrizado",
+   "evidencia": "r1_e4.py:18-19,141-147; reports/revision_UB21_diag/inventario_B21_fase1.md:173",
+   "estado": "persiste",
+   "detalle": "propuestos=11 sin_cuarentena_true=0 con_id_de_catalogo=0 sujetos_fuera_catalogo_no_propuestos=2",
+   "valores": {
+    "n_propuestos": 11,
+    "sin_cuarentena": [],
+    "fuera": [
+     "Sujeto_entidad_depositaria",
+     "Sujeto_entidad_girada"
+    ]
+   }
+  },
+  {
+   "id": "E4-a8",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F3 (alias_resueltos en ids de catálogo) + F1 ausente + F4 ausente; parte pre-E4 no_aplicable",
+   "direccionamiento": "ids de catálogo de salida_r1/e4_propuestos.json (estado resuelto)",
+   "evidencia": "r1_e4.py:20-24,152-171,178-202; salida_r1/e4_propuestos.json; reports/revision_UB21_diag/inventario_B21_fase1.md:174, §4 :248",
+   "estado": "persiste",
+   "detalle": "alias_resueltos en 0/3 ids de catálogo; propuestos resueltos aún presentes=0; provenances acumuladas y dedup: no observables sin el grafo pre-E4 (no_aplicable parcial)",
+   "subchecks": {
+    "alias_en_Sujeto_entidad_de_contraparte_central": false,
+    "ausente_Sujeto_propuesto_entidad_de_contraparte_": true,
+    "alias_en_Sujeto_importador": false,
+    "ausente_Sujeto_propuesto_importador": true,
+    "alias_en_Sujeto_vpu_rigi": false,
+    "ausente_Sujeto_propuesto_vehiculos_de_proyecto_u": true
+   },
+   "valores": {
+    "remap": [
+     [
+      "Sujeto_propuesto_entidad_de_contraparte_central_ccp",
+      "Sujeto_entidad_de_contraparte_central",
+      "Entidad de contraparte central (CCP)"
+     ],
+     [
+      "Sujeto_propuesto_importador",
+      "Sujeto_importador",
+      "importador"
+     ],
+     [
+      "Sujeto_propuesto_vehiculos_de_proyecto_unico_vpu_adheridos_al_rigi",
+      "Sujeto_vpu_rigi",
+      "Vehículos de Proyecto Único (VPU) adheridos al RIGI"
+     ]
+    ],
+    "portadores": {
+     "Sujeto_persona_juridica": [
+      "Persona jurídica"
+     ]
+    }
+   }
+  },
+  {
+   "id": "E4-b",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "F1 (= T6) + F3 (properties.archivo ∈ archivos de E0)",
+   "direccionamiento": "TextoOrdenado",
+   "evidencia": "r1_e4.py:26-30,208-250; salida_r1/e4_texto_ordenado.json; reports/revision_UB21_diag/inventario_B21_fase1.md:175, §4",
+   "estado": "persiste",
+   "detalle": "TextoOrdenado=5; con properties.archivo en el conjunto de E0: 0/5; fuera=[('TextoOrdenado_ctacte_pdf', 'ctacte.pdf'), ('TextoOrdenado_docvig_pdf', 'docvig.pdf'), ('TextoOrdenado_lingob_pdf', 'lingob.pdf'), ('TextoOrdenado_pagjub_pdf', 'pagjub.pdf'), ('TextoOrdenado_polcre_pdf', 'polcre.pdf')]; T6=persiste",
+   "valores": {
+    "n": 5,
+    "fuera": [
+     [
+      "TextoOrdenado_ctacte_pdf",
+      "ctacte.pdf"
+     ],
+     [
+      "TextoOrdenado_docvig_pdf",
+      "docvig.pdf"
+     ],
+     [
+      "TextoOrdenado_lingob_pdf",
+      "lingob.pdf"
+     ],
+     [
+      "TextoOrdenado_pagjub_pdf",
+      "pagjub.pdf"
+     ],
+     [
+      "TextoOrdenado_polcre_pdf",
+      "polcre.pdf"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "E4-c",
+   "grupo": "iii",
+   "convertibilidad": "con condición",
+   "retriever": "no",
+   "forma": "ninguna directa (no observable sobre un kg.json)",
+   "direccionamiento": "—",
+   "evidencia": "r1_e4.py:32-36,256-291; salida_r1/e4_conflictos.json; reports/revision_UB21_diag/inventario_B21_fase1.md:176",
+   "estado": "no_aplicable",
+   "detalle": "solo observable con el registro de conflictos (salida_r1/e4_conflictos.json) o los grafos pre-E4: los conflictos de properties no se persisten en el kg.json; el proxy débil (un solo valor de materia/version por TextoOrdenado) no es la regla (inventario_B21_fase1.md:176). Informativo: TextoOrdenado=5, materia=['Cuentas a la vista', 'Gobierno societario', 'Pago de beneficios ANSES', 'Política general de crédito', 'documentos de identidad']"
+  }
+ ],
+ "regresion": null
+}

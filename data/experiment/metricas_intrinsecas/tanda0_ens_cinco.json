@@ -1,0 +1,351 @@
+{
+  "spec": "docs/spec_evaluacion_intrinseca.md",
+  "spec_commit_sellado": "cdf90e6",
+  "spec_sha256": "8bedc6339a741cd754f2c16eeb55e8e27da9b090360dd5039dc19800f8128548",
+  "script_sha256": "618dcee93480184fbaf5d7def4f2059b88c2fc68f7cf599d65ad65331ddc92bf",
+  "rapidfuzz_version": "3.14.5",
+  "umbral_similitud": 75.0,
+  "fecha": "2026-09-28",
+  "custodia": [
+    {
+      "grafo": "tanda0_ens_cinco",
+      "custodia": "OK",
+      "metodo": "sha256",
+      "sha256_medido": "4097d4fd3f300cb1c2cf09bef59e3ccb9a30b1de18334e6230102a5a3106d00a",
+      "sha256_esperado": "4097d4fd3f300cb1c2cf09bef59e3ccb9a30b1de18334e6230102a5a3106d00a",
+      "nodos": 1979,
+      "aristas_triples": 3983
+    }
+  ],
+  "grafo": "tanda0_ens_cinco",
+  "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_cinco/r1/kg.json",
+  "nodos_totales": 1979,
+  "metricas": {
+    "M1_tasa_duplicacion_publicada": {
+      "valor": 0.342597,
+      "numerador": 678,
+      "denominador": 1979,
+      "convencion": "partial_ratio RapidFuzz sobre label crudo, pares intra-tipo >= 75, componentes conexas, Σ(|C|-1) / nodos totales ([05] §5.1, etapa 1)",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 2,
+          "Condicion": 28,
+          "Definicion": 22,
+          "Excepcion": 6,
+          "Obligacion": 156,
+          "Operacion": 358,
+          "Potestad": 4,
+          "Restriccion": 25,
+          "Sujeto": 77
+        },
+        "labels_vacios": 0,
+        "rol": "descriptiva; DECLARADA INFLADA para este corpus (spec §5.b)"
+      }
+    },
+    "M2_tasa_duplicacion_gate": {
+      "valor": 0.133906,
+      "numerador": 265,
+      "denominador": 1979,
+      "convencion": "ratio RapidFuzz (Levenshtein normalizado, cadenas completas) sobre label con normalización de superficie (minúsculas, sin tildes, colapso de espacios/puntuación), >= 75, mismo clustering que M1",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Condicion": 10,
+          "Definicion": 6,
+          "Excepcion": 2,
+          "Obligacion": 38,
+          "Operacion": 175,
+          "Potestad": 2,
+          "Restriccion": 15,
+          "Sujeto": 17
+        },
+        "labels_vacios_tras_normalizar": 0,
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M3_tasa_conflacion": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable"
+    },
+    "M4_average_degree": {
+      "valor": 4.025265,
+      "numerador": 7966,
+      "denominador": 1979,
+      "convencion": "aristas deduplicadas por triple exacto (source, target, relation); grado = entrantes + salientes; self-loops aportan 2; average = Σ grados / nodos",
+      "cota": "exacta",
+      "notas": {
+        "aristas_unicas": 3983,
+        "aristas_repetidas_removidas": 0,
+        "self_loops": 0,
+        "aristas_dangling": 0,
+        "ids_de_nodo_duplicados": 0,
+        "rol": "descriptiva; NO se reporta sin M6"
+      }
+    },
+    "M5_avg_shortest_path": {
+      "valor": 3.659463,
+      "numerador": 13779854,
+      "denominador": 3765540,
+      "convencion": "BFS no ponderado sobre la versión no dirigida del grafo de aristas únicas, solo componente conexa mayor, promedio sobre pares ordenados distintos; nodos fuera de la componente mayor excluidos y reportados vía M9",
+      "cota": "exacta",
+      "notas": {
+        "n_componente_mayor": 1941,
+        "nodos_fuera_de_lcc": 38,
+        "rol": "descriptiva; NO se reporta sin M6 ni M9"
+      }
+    },
+    "M6_concentracion_de_grado": {
+      "valor": {
+        "grado_max": 1008,
+        "participacion_top1pct": 0.360156,
+        "gini_grado": 0.555455
+      },
+      "numerador": 2869,
+      "denominador": 7966,
+      "convencion": "top 1% = techo(0.01·N) nodos de mayor grado; participación = Σ grados top / Σ grados; Gini sobre la distribución de grados de M4",
+      "cota": "exacta",
+      "notas": {
+        "k_top1pct": 20,
+        "rol": "descriptiva de reporte OBLIGATORIO junto a M4 y M5; especie del backlog: hub_contaminado"
+      }
+    },
+    "M7_tasa_ruido_por_rol": {
+      "valor": 0.0,
+      "numerador": 0,
+      "denominador": 1979,
+      "convencion": "nodos cuyo chunk principal (nodes[].provenance.chunk_id) tiene rol documental no normativo (indice, tabla_norma_origen; rol normativo = cuerpo — vocabulario real de chunk_roles.py, aplicado a la página inicial del chunk de E0); nodos sin chunk principal (esqueleto) no cuentan en el numerador",
+      "cota": "inferior (no captura cáscaras nacidas de chunks normativos)",
+      "notas": {
+        "por_rol": {},
+        "nodos": [],
+        "nodos_sin_chunk_principal_excluidos": 85,
+        "nodos_con_alguna_provenance_no_normativa": 0,
+        "rol": "bloqueante en la pasada 2; especie del backlog: cascara"
+      }
+    },
+    "M8_densidad": {
+      "valor": 0.00101751,
+      "numerador": 3983,
+      "denominador": 3914462,
+      "convencion": "densidad de grafo dirigido simple: aristas únicas sin self-loops / N·(N-1)",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva"
+      }
+    },
+    "M9_nodos_aislados_y_componentes": {
+      "valor": {
+        "nodos_aislados": 38,
+        "componentes_conexas": 39,
+        "fraccion_en_componente_mayor": 0.980798
+      },
+      "numerador": 1941,
+      "denominador": 1979,
+      "convencion": "versión no dirigida del grafo de aristas únicas; aislados = grado 0; fracción = nodos de la componente mayor / nodos totales",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva; reporte obligatorio junto a M5"
+      }
+    },
+    "M10_chunks_mudos": {
+      "valor": 0.00149,
+      "numerador": 1,
+      "denominador": 671,
+      "convencion": "chunk activo = chunk de chunks_<to>.json de E0 (entrada de E1) de los TOs del manifiesto cuya página inicial es de rol cuerpo (spec §4 M10; mismo clasificador que M7); mudo = ningún nodo del grafo lo rastrea en provenances[].chunk_id ni en provenances[].chunks_emisores; denominador = chunks activos (aguas arriba del ensamblado)",
+      "cota": "exacta",
+      "notas": {
+        "mudos_detalle": [
+          {
+            "chunk_id": "ctacte::5.6.1",
+            "to": "ctacte",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              33
+            ]
+          }
+        ],
+        "universo_por_to": {
+          "ctacte": 388,
+          "docvig": 31,
+          "lingob": 139,
+          "pagjub": 52,
+          "polcre": 61
+        },
+        "chunks_excluidos_del_universo_por_rol": {},
+        "dirección_de_mejora": "cero",
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M11_cobertura_CQ": {
+      "status": "no_medida_en_esta_unidad",
+      "motivo": "régimen especial de la spec §6: medición única y separada sobre el set quemado; jamás objetivo de optimización"
+    }
+  },
+  "adaptador_gen3": {
+    "descripcion": "Declaración de insumos de generación 3 para M3, M7 y M10 (decisión 2 del mandato del gate 6). Fórmulas de la spec intactas; M1, M2, M4, M5, M6, M8 y M9 con el mismo código que los grafos de generaciones 1 y 2.",
+    "e0_dir": "data/experiment/reextraccion_v2/e0_chunking/salida_tanda0",
+    "manifiesto": "data/experiment/reextraccion_v2/manifiestos/tanda0_ens_cinco.json",
+    "tos": [
+      "ctacte",
+      "docvig",
+      "lingob",
+      "pagjub",
+      "polcre"
+    ],
+    "pdfs": {
+      "ctacte": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ctacte.pdf",
+        "sha256": "06969a2cafb898a7eee888fb524271947290006bc0824b4d50e62fc4bd465a3f",
+        "sha256_manifiesto": "06969a2cafb898a7eee888fb524271947290006bc0824b4d50e62fc4bd465a3f",
+        "coincide": true
+      },
+      "docvig": {
+        "ruta": "data/experiment/escalado_prep/pdfs/docvig.pdf",
+        "sha256": "d2d8a0d39d69be8f99eac8aab243142fea370108aa15ad0db3879480f83afb61",
+        "sha256_manifiesto": "d2d8a0d39d69be8f99eac8aab243142fea370108aa15ad0db3879480f83afb61",
+        "coincide": true
+      },
+      "lingob": {
+        "ruta": "data/experiment/escalado_prep/pdfs/lingob.pdf",
+        "sha256": "e3c7d7b3e689e8e9ebf67da6e3f29498718f5e4ab7bf5b56f50bc8813a6ab3b0",
+        "sha256_manifiesto": "e3c7d7b3e689e8e9ebf67da6e3f29498718f5e4ab7bf5b56f50bc8813a6ab3b0",
+        "coincide": true
+      },
+      "pagjub": {
+        "ruta": "data/experiment/escalado_prep/pdfs/pagjub.pdf",
+        "sha256": "908445f273415d29780d19a86e19fddb7d6d75c541b381ef66eb48776474d997",
+        "sha256_manifiesto": "908445f273415d29780d19a86e19fddb7d6d75c541b381ef66eb48776474d997",
+        "coincide": true
+      },
+      "polcre": {
+        "ruta": "data/experiment/escalado_prep/pdfs/polcre.pdf",
+        "sha256": "7b94ea5d8d5f99baacfff7787bf11f94cba23cc0d406261bdcb2764edd409b04",
+        "sha256_manifiesto": "7b94ea5d8d5f99baacfff7787bf11f94cba23cc0d406261bdcb2764edd409b04",
+        "coincide": true
+      }
+    },
+    "chunks_e0": {
+      "total": 671,
+      "por_to": {
+        "ctacte": 388,
+        "docvig": 31,
+        "lingob": 139,
+        "pagjub": 52,
+        "polcre": 61
+      },
+      "campo_paginas": "chunks_<to>.json[].paginas, 1-based (e0_lib.py:291, :309)",
+      "vocabulario_observado": {
+        "tipo": {
+          "mini_chunk": 90,
+          "punto_terminal": 577,
+          "seccion_sin_puntos": 4
+        },
+        "rol_bloque": {
+          "<ausente>": 581,
+          "chapeau_seccion": 2,
+          "cierre": 18,
+          "intro": 70
+        },
+        "flags.contenido_tabular": {
+          "False": 671
+        }
+      }
+    },
+    "rol_documental": {
+      "metodo": "chunk_roles.roles_de_pagina(pdf) sobre la primera página de cada chunk",
+      "paginas_por_rol_por_to": {
+        "ctacte": {
+          "paginas": 86,
+          "por_rol": {
+            "cuerpo": 73,
+            "indice": 3,
+            "tabla_norma_origen": 10
+          }
+        },
+        "docvig": {
+          "paginas": 14,
+          "por_rol": {
+            "cuerpo": 12,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "lingob": {
+          "paginas": 24,
+          "por_rol": {
+            "cuerpo": 22,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "pagjub": {
+          "paginas": 16,
+          "por_rol": {
+            "cuerpo": 13,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        },
+        "polcre": {
+          "paginas": 32,
+          "por_rol": {
+            "cuerpo": 28,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        }
+      },
+      "chunks_por_rol": {
+        "cuerpo": 671
+      },
+      "chunks_con_paginas_mixtas": [],
+      "nota_e0": "E0 solo parsea páginas de rol cuerpo (e0_lib.py:678-680) con marcadores equivalentes a los de chunk_roles.py (e0_lib.py:196-210, :344-390); el vocabulario de E0 (tipo, rol_bloque, provenance.rol_documental) no contiene indice ni tabla_norma_origen"
+    },
+    "atribucion_nodo_chunk": {
+      "campo": "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88); principal = nodes[].provenance.chunk_id (e2_lib.py:360)",
+      "provenances_totales": 3288,
+      "provenances_con_chunk_id": 3187,
+      "provenances_sin_chunk_id": 101,
+      "nodos_sin_chunk_principal": 85,
+      "chunk_ids_fuera_de_e0": 0,
+      "chunks_con_algun_nodo": 670,
+      "rol_documental_provenances": {
+        "bloque_chapeau_seccion": 11,
+        "bloque_cierre": 99,
+        "bloque_intro": 261,
+        "esqueleto": 101,
+        "herencia_encabezado": 53,
+        "punto_propio": 2763
+      }
+    },
+    "M3": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable",
+      "observacion_no_es_la_metrica": {
+        "nodos_con_mas_de_una_provenance": 60,
+        "suma_provenances_menos_uno": 1309,
+        "nota": "cuenta fuentes (to, punto, rol) distintas fusionadas por nodo, no menciones; se registra para el laudo de la autora, no sustituye a M3"
+      }
+    },
+    "M7": {
+      "status": "computable",
+      "insumos": [
+        "nodes[].provenance.chunk_id (chunk principal; e2_lib.py:360 first-write en orden documental; chunk_id agregado por r1_provenance.py:75-88)",
+        "chunks_<to>.json[].paginas (1-based; e0_lib.py:291, :309, :1604, :1646)",
+        "chunk_roles.roles_de_pagina(pdf del manifiesto) (chunk_roles.py:52-68)"
+      ],
+      "convencion_gen3": "rol del chunk = rol de su primera página (espejo de _rol_en_offset sobre el inicio del chunk, chunk_roles.py:71-75, :110); nodos con provenance.rol_documental = esqueleto (chunk_id None; r1_e5_esqueleto.py:69) fuera del numerador, dentro del denominador"
+    },
+    "M10": {
+      "status": "computable",
+      "insumos": [
+        "chunks_<to>.json de E0 de los TOs del manifiesto (universo aguas arriba: E0 es la entrada de E1; e2_lib.py:15-31 guarda de fan-in)",
+        "rol de página como en M7",
+        "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88)"
+      ],
+      "convencion_gen3": "un chunk aporta si aparece como chunk_id o dentro de chunks_emisores de alguna provenance de algún nodo; universo = chunks de rol cuerpo"
+    }
+  }
+}

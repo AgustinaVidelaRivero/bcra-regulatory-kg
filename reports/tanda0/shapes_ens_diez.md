@@ -1,0 +1,3539 @@
+# Validador de shapes — perfil congelado
+
+- **Grafo:** `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez/r1/kg.json`
+- **sha256 del grafo:** `dd42d6d9c0c8379da90ec4ed4e4659157a960a0d1ceaf8af5a008bdd9cad9010`
+- **Fecha:** 2026-09-28
+- **Nodos:** 8256
+- **Aristas:** 18932
+- **Perfil:** congelado
+- **Vocabulario:** `/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/esq/code/prompt_congelado.py` — sha256 del prefijo `e69feaaa04779bd6347cc9e3974d2c1749519f1230e70a0459e66f46517cd720` (hash system+tools `1be8304e3d77`); 9 tipos, 13 predicados, enum Obligacion.tipo de 6 (retirados: requisito_de_estructura)
+- **Catálogo de sujetos:** `data/experiment/esq_v3_miembros/esquema_v3_clases.json` — 101 ids (66 clases, 35 roles)
+- **Veredicto global: NO PASA** — bloqueantes en FAIL: S19
+
+## Bloqueantes
+
+### S1 — PASS
+
+Toda arista usa una relación admitida por el perfil congelado: los 13 predicados de PREDICATES_CONGELADO ∪ las 4 de esqueleto (subclase_de/miembro_de/instancia_de/parte_de) ∪ padre_sugerido (nombre normalizado).
+
+**Resultado:** 18932/18932 aristas con relación admitida (18 relaciones admitidas); 0 violaciones.
+
+Sin violaciones.
+
+### S2 — PASS
+
+Integridad referencial: origen y destino de toda arista existen como nodos.
+
+**Resultado:** 0 aristas colgantes sobre 18932.
+
+Sin violaciones.
+
+### S3 — PASS
+
+Toda arista respeta las firmas del perfil congelado: DOMAIN_RANGE_CONGELADO (Sujeto como pseudo-tipo) ∪ esqueleto solo Sujeto->Sujeto ∪ referencia nodo->nodo solo si rol_fuente=referencia_cruzada ∪ padre_sugerido solo de Sujeto propuesto a Sujeto clase|rol. La referencia TextoOrdenado->Comunicacion sigue por la matriz.
+
+**Resultado:** 18932/18932 aristas conformes a firma; 0 violaciones. Evaluadas: 13967 por matriz, 117 de esqueleto, 29 padre_sugerido; 4819 referencias nodo->nodo admitidas por rol_fuente.
+
+Sin violaciones.
+
+### S4 — PASS
+
+Todo nodo y toda arista tienen provenance dict con al menos {to, archivo, punto, rol_documental}, provenances lista no vacía con provenance == provenances[0]; para rol_documental distinto de esqueleto, to y archivo no vacíos (para esqueleto se admiten to nulo, chunk_id nulo y paginas vacía).
+
+**Resultado:** Nodos OK: 8256/8256. Aristas OK: 18932/18932. Violaciones: 0.
+
+Sin violaciones.
+
+### S5 — PASS
+
+Todo provenance.punto (de nodo y de arista) es una string no vacía.
+
+**Resultado:** Nodos con punto: 8256/8256. Aristas: 18932/18932. Violaciones: 0.
+
+Sin violaciones.
+
+### S6 — PASS
+
+Todo provenance.archivo pertenece a {properties.archivo de los nodos TextoOrdenado} ∪ {archivo de las provenances con rol_documental=esqueleto}; nada codificado a mano.
+
+**Resultado:** Archivos válidos (41): TextoOrdenado ['TO_capitales_minimos_actual.pdf', 'TO_clasificacion_deudores_actual.pdf', 'TO_exterior_cambios_actual.pdf', 'TO_proteccion_usuarios_servicios_financieros_actual.pdf', 'TO_regimen_informativo_contable_mensual_actual.pdf', 'ctacte.pdf', 'docvig.pdf', 'lingob.pdf', 'pagjub.pdf', 'polcre.pdf'] ∪ esqueleto ['adrei.pdf', 'autenf.pdf', 'ccbcra.pdf', 'convca.pdf', 'cryl.pdf', 'ctacor.pdf', 'depaho.pdf', 'efemin.pdf', 'esquema_v2_clases.json', 'esquema_v3_clases.json', 'fabcra.pdf', 'icmecma.pdf', 'lavdin.pdf', 'ordcom.pdf', 'osapsa.pdf', 'pfmipyme.pdf', 'pimf.pdf', 'ratiofn.pdf', 'rdbcra.pdf', 'repefe.pdf', 'retype.pdf', 'rmrtsd.pdf', 'rrci.pdf', 'servco.pdf', 'snp_atm.pdf', 'snp_debin.pdf', 'snp_psp.pdf', 'snp_spd.pdf', 'snp_tr_nc.pdf', 'supcon.pdf', 'traval.pdf']. Violaciones: 0.
+
+Sin violaciones.
+
+### S15 — PASS
+
+ERROR — Todo rol tiene miembro_de no vacío O figura en la lista declarada de roles sin miembro adjudicable; los miembros son clases del árbol; la cuenta declarada coincide con la medida.
+
+**Resultado:** 35 roles, 51 aristas miembro_de; 12 huérfanos (12 declarados, 0 sin declarar); 0 miembros que no son clase. Lista declarada: 12 ({'sin_id_en_catalogo': 6, 'aplanamiento_rechazado': 5, 'instancia_rechazada': 1}).
+
+```
+
+Lista declarada (12 roles; por causa: {'sin_id_en_catalogo': 6, 'aplanamiento_rechazado': 5, 'instancia_rechazada': 1}):
+    - Sujeto_rol_alcance_adrei
+    - Sujeto_rol_alcance_autenf
+    - Sujeto_rol_alcance_ordcom
+    - Sujeto_rol_alcance_pagjub
+    - Sujeto_rol_alcance_pfmipyme
+    - Sujeto_rol_alcance_pimf
+    - Sujeto_rol_alcance_ratiofn
+    - Sujeto_rol_alcance_rdbcra
+    - Sujeto_rol_alcance_repefe
+    - Sujeto_rol_alcance_retype
+    - Sujeto_rol_alcance_snp_atm
+    - Sujeto_rol_alcance_traval
+```
+
+### S19 — FAIL
+
+ERROR — Catálogo de sujetos: todo Sujeto tiene nivel ∈ {clase, instancia, rol, propuesto}; si nivel ≠ propuesto, su id está en el catálogo (clases ∪ roles) del artefacto de --excepciones; si nivel = propuesto, tiene properties.cuarentena y properties.padre_sugerido.
+
+**Resultado:** 137 Sujetos ({'clase': 64, 'instancia': 8, 'propuesto': 30, 'rol': 35}); catálogo de 101 ids; 6 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+
+```
+Sujeto_banco_central_del_exterior (nivel clase): id fuera del catálogo
+Sujeto_entidad_depositaria (nivel clase): id fuera del catálogo
+Sujeto_entidad_girada (nivel clase): id fuera del catálogo
+Sujeto_entidad_originante_de_transferencia (nivel clase): id fuera del catálogo
+Sujeto_entidad_receptora (nivel clase): id fuera del catálogo
+Sujeto_fmi (nivel instancia): id fuera del catálogo
+```
+
+### S20 — PASS
+
+ERROR — Enum de Obligacion.tipo: para todo nodo Obligacion, properties.tipo ∈ {presentacion_informativa|calculo|asignacion|comunicacion_a_cliente|reporte_al_supervisor|otra}. Valores retirados (requisito_de_estructura) y otros valores fuera del enum se cuentan por separado; bloqueante si cualquiera de los dos es distinto de 0.
+
+**Resultado:** 2367/2367 Obligaciones con tipo en el enum. Valores retirados: 0 ({}). Otros valores fuera del enum: 0 ({}).
+
+Sin violaciones.
+
+## Informativas
+
+### S7 — FAIL
+
+ERROR — Unicidad exacta: no puede haber dos nodos con el mismo (type, label normalizado).
+
+**Resultado:** 20 grupos violatorios (43 nodos involucrados).
+
+```
+[Definicion] 'fc — componente financiero' (2 nodos):
+    - Definicion_fc_componente_financiero_c0b0c7  (label: 'FC — componente financiero')
+    - Definicion_fc_componente_financiero_c0b0c7__cap  (label: 'FC — Componente financiero')
+[Definicion] 'ildc — componente de intereses, arrendamientos y dividendos' (2 nodos):
+    - Definicion_ildc_componente_de_intereses_arrendamientos_y_dividendos_e0af9c  (label: 'ILDC — componente de intereses, arrendamientos y dividendos')
+    - Definicion_ildc_componente_de_intereses_arrendamientos_y_dividendos_e0af9c__cap  (label: 'ILDC — Componente de intereses, arrendamientos y dividendos')
+[Definicion] 'rm — resultado monetario total' (2 nodos):
+    - Definicion_rm_resultado_monetario_total_92bf2a  (label: 'RM — resultado monetario total')
+    - Definicion_rm_resultado_monetario_total_92bf2a__cap  (label: 'RM — Resultado monetario total')
+[Definicion] 'sc — componente de servicios' (2 nodos):
+    - Definicion_sc_componente_de_servicios_69ff56  (label: 'SC — componente de servicios')
+    - Definicion_sc_componente_de_servicios_69ff56__cap  (label: 'SC — Componente de servicios')
+[Obligacion] 'acreditar comisiones en cuenta corriente' (2 nodos):
+    - Obligacion_acreditar_en_la_cuenta_corriente_de_la_entidad_participante_las_comisiones_recon_385120  (label: 'Acreditar comisiones en cuenta corriente')
+    - Obligacion_el_bcra_procedera_a_acreditar_en_la_cuenta_corriente_de_la_entidad_participante__01caa5  (label: 'Acreditar comisiones en cuenta corriente')
+[Obligacion] 'confeccionar boletos de cambio a nombre propio' (3 nodos):
+    - Obligacion_las_entidades_deberan_confeccionar_boletos_de_cambio_a_nombre_propio_cuando_corr_b86fdc  (label: 'Confeccionar boletos de cambio a nombre propio')
+    - Obligacion_las_entidades_deberan_confeccionar_boletos_de_cambio_a_nombre_propio_cuando_las__2d5cfc  (label: 'Confeccionar boletos de cambio a nombre propio')
+    - Obligacion_las_entidades_deberan_confeccionar_boletos_de_cambio_a_nombre_propio_cuando_las__73a3c3  (label: 'Confeccionar boletos de cambio a nombre propio')
+[Obligacion] 'conformidad previa bcra — acceso mercado cambios' (2 nodos):
+    - Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_a1f06e  (label: 'Conformidad previa BCRA — acceso mercado cambios')
+    - Obligacion_se_requerira_la_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_78b4e0  (label: 'Conformidad previa BCRA — acceso mercado cambios')
+[Obligacion] 'conformidad previa del bcra requerida' (3 nodos):
+    - Obligacion_los_deudores_de_capital_e_intereses_vencidos_con_contrapartes_vinculadas_estan_s_0dea89  (label: 'Conformidad previa del BCRA requerida')
+    - Obligacion_quedan_sujetos_a_la_conformidad_previa_del_bcra_a7dffd  (label: 'Conformidad previa del BCRA requerida')
+    - Obligacion_se_requerira_la_conformidad_previa_del_bcra_en_caso_de_tratarse_de_prefinanciaci_d461c3  (label: 'Conformidad previa del BCRA requerida')
+[Obligacion] 'conservar documentacion respaldatoria' (2 nodos):
+    - Obligacion_conservar_la_documentacion_respaldatoria_a_fin_de_dar_de_baja_o_modificar_el_per_e2eab6  (label: 'Conservar documentación respaldatoria')
+    - Obligacion_debera_obrar_en_poder_del_sujeto_obligado_la_documentacion_respaldatoria_de_las__be0705  (label: 'Conservar documentación respaldatoria')
+[Obligacion] 'ratificar personalmente denuncia en sucursal' (2 nodos):
+    - Obligacion_ratificar_personalmente_en_el_dia_la_denuncia_en_cualquier_sucursal_de_la_entida_be9b6f  (label: 'Ratificar personalmente denuncia en sucursal')
+    - Obligacion_ratificar_personalmente_en_el_dia_la_denuncia_en_cualquier_sucursal_de_la_entida_f6eff7  (label: 'Ratificar personalmente denuncia en sucursal')
+[Obligacion] 'realizar boleto de venta de cambio' (3 nodos):
+    - Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_de_la_empresa_q_409706  (label: 'Realizar boleto de venta de cambio')
+    - Obligacion_la_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_cliente_por_e8b8c5  (label: 'Realizar boleto de venta de cambio')
+    - Obligacion_la_mencionada_entidad_debera_realizar_un_boleto_de_venta_de_cambio_a_nombre_del__80969b  (label: 'Realizar boleto de venta de cambio')
+[Obligacion] 'verificacion de cumplimiento de condiciones' (2 nodos):
+    - Obligacion_la_entidad_encargada_del_seguimiento_debera_verificar_el_cumplimiento_de_las_sig_fb54c0  (label: 'Verificación de cumplimiento de condiciones')
+    - Obligacion_la_entidad_responsable_debera_verificar_el_cumplimiento_de_las_condiciones_estip_eb4197  (label: 'Verificación de cumplimiento de condiciones')
+[Operacion] 'financiacion a importadores del exterior' (2 nodos):
+    - Operacion_financiacion_a_importadores_del_exterior_e50e77  (label: 'Financiación a importadores del exterior')
+    - Operacion_financiacion_a_importadores_del_exterior_e50e77__polcre  (label: 'Financiación a importadores del exterior')
+[Operacion] 'financiaciones a clientes agricolas no mipyme' (2 nodos):
+    - Operacion_financiaciones_a_clientes_agricolas_no_mipyme_5faf23  (label: 'Financiaciones a clientes agrícolas no MiPyME')
+    - Operacion_financiaciones_a_clientes_agricolas_no_mipyme_5faf23__cap  (label: 'Financiaciones a clientes agrícolas no MiPyME')
+[Operacion] 'presentacion de declaracion jurada' (2 nodos):
+    - Operacion_presentacion_de_declaracion_jurada_3380c7  (label: 'Presentación de declaración jurada')
+    - Operacion_presentacion_de_declaracion_jurada_3380c7__pagjub  (label: 'Presentación de declaración jurada')
+[Restriccion] 'falta de especificacion — carencia de valor como cheque' (2 nodos):
+    - Restriccion_el_titulo_respecto_del_que_falta_la_orden_pura_y_simple_de_pagar_una_suma_determ_81749a  (label: 'Falta de especificación — carencia de valor como cheque')
+    - Restriccion_el_titulo_respecto_del_que_falte_la_especificacion_de_la_fecha_de_pago_segun_art_e4b468  (label: 'Falta de especificación — carencia de valor como cheque')
+[Restriccion] 'permanencia minima 180 dias con credito adicional' (2 nodos):
+    - Restriccion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_20668c  (label: 'Permanencia mínima 180 días con crédito adicional')
+    - Restriccion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_3d8a29  (label: 'Permanencia mínima 180 días con crédito adicional')
+[Restriccion] 'ponderador 150% — deuda subordinada' (2 nodos):
+    - Restriccion_exposiciones_a_deuda_subordinada_ponderador_de_riesgo_del_150_3fbc00  (label: 'Ponderador 150% — Deuda subordinada')
+    - Restriccion_ponderador_de_riesgo_del_150_para_deuda_subordinada_e_instrumentos_de_capital_qu_5f2b2d  (label: 'Ponderador 150% — deuda subordinada')
+[Restriccion] 'prohibicion de nuevas presentaciones — titulos rechazados' (2 nodos):
+    - Restriccion_los_titulos_devueltos_por_falta_de_especificaciones_incluida_la_falta_de_numero__472e6e  (label: 'Prohibición de nuevas presentaciones — títulos rechazados')
+    - Restriccion_los_titulos_devueltos_por_falta_de_especificaciones_no_podran_ser_objeto_de_nuev_d5c604  (label: 'Prohibición de nuevas presentaciones — títulos rechazados')
+[Sujeto] 'entidades financieras del grupo 1' (2 nodos):
+    - Sujeto_propuesto_entidades_financieras_del_grupo_1  (label: 'Entidades financieras del grupo 1')
+    - Sujeto_propuesto_entidades_financieras_del_grupo_1__cap  (label: 'Entidades financieras del grupo 1')
+```
+
+### S8 — WARN
+
+WARN — Colisión de label normalizado entre types distintos.
+
+**Resultado:** 33 grupos con el mismo label normalizado en types distintos.
+
+```
+'acceso al mercado de cambios' (2 nodos):
+    - [Condicion] Condicion_acceso_al_mercado_de_cambios_b8c486
+    - [Operacion] Operacion_acceso_al_mercado_de_cambios_b8c486
+'acceso al mercado de cambios para pagos de servicios de no residentes' (2 nodos):
+    - [Operacion] Operacion_acceso_al_mercado_de_cambios_para_pagos_de_servicios_de_no_residentes_279ff0
+    - [Potestad] Potestad_acceso_al_mercado_de_cambios_para_pagos_de_servicios_de_no_residentes_279ff0
+'alta gerencia' (2 nodos):
+    - [Definicion] Definicion_alta_gerencia_9cd93f
+    - [Sujeto] Sujeto_propuesto_alta_gerencia
+'anticipo de exportaciones de bienes liquidado' (2 nodos):
+    - [Definicion] Definicion_anticipo_de_exportaciones_de_bienes_liquidado_d62044
+    - [Operacion] Operacion_anticipo_de_exportaciones_de_bienes_liquidado_d62044
+'anticipo de fondos propios del exterior' (2 nodos):
+    - [Condicion] Condicion_anticipo_de_fondos_propios_del_exterior_f7e482
+    - [Operacion] Operacion_anticipo_de_fondos_propios_del_exterior_f7e482
+'autoaseguramiento riesgos fallecimiento invalidez' (2 nodos):
+    - [Operacion] Operacion_autoaseguramiento_riesgos_fallecimiento_invalidez_f87002
+    - [Potestad] Potestad_autoaseguramiento_riesgos_fallecimiento_invalidez_f87002
+'cancelacion de capital/intereses con divisas' (2 nodos):
+    - [Condicion] Condicion_cancelacion_de_capital_intereses_con_divisas_28e145
+    - [Operacion] Operacion_cancelacion_de_capital_intereses_con_divisas_28e145
+'clasificacion de deudores' (2 nodos):
+    - [Operacion] Operacion_clasificacion_de_deudores_82042f
+    - [TextoOrdenado] TextoOrdenado_to_clasificacion_deudores_actual_pdf
+'clasificacion de deudores segun mora' (2 nodos):
+    - [Obligacion] Obligacion_las_empresas_no_financieras_emisoras_de_tarjetas_de_credito_y_o_compra_y_los_otr_964cd4
+    - [Operacion] Operacion_clasificacion_de_deudores_segun_mora_595d13
+'clasificacion en irrecuperable por falta de evaluacion' (2 nodos):
+    - [Obligacion] Obligacion_correspondera_clasificar_en_la_categoria_de_irrecuperable_a_los_clientes_que_cua_f0f916
+    - [Restriccion] Restriccion_los_clientes_se_clasificaran_en_categoria_irrecuperable_en_caso_de_no_efectuarse_d813e7
+'clientes' (2 nodos):
+    - [Definicion] Definicion_clientes_3a7bd8
+    - [Sujeto] Sujeto_cliente
+'comunicacion fehaciente de certificaciones emitidas' (2 nodos):
+    - [Condicion] Condicion_comunicacion_fehaciente_de_certificaciones_emitidas_9294e5
+    - [Operacion] Operacion_comunicacion_fehaciente_de_certificaciones_emitidas_9294e5
+'confeccion dos boletos sin movimiento pesos' (2 nodos):
+    - [Condicion] Condicion_confeccion_dos_boletos_sin_movimiento_pesos_dc7e1e
+    - [Obligacion] Obligacion_a_los_efectos_del_registro_de_estas_operaciones_se_deberan_confeccionar_dos_bole_c5741f
+'conformidad previa bcra — acceso mercado de cambios' (2 nodos):
+    - [Obligacion] Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_fa264b
+    - [Restriccion] Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_bb3e1e
+'conformidad previa del bcra' (2 nodos):
+    - [Condicion] Condicion_conformidad_previa_del_bcra_d05c19
+    - [Obligacion] Obligacion_se_requerira_la_conformidad_previa_del_bcra_25f4a5
+'emision de certificaciones de aplicacion' (2 nodos):
+    - [Operacion] Operacion_emision_de_certificaciones_de_aplicacion_bf0334
+    - [Potestad] Potestad_emision_de_certificaciones_de_aplicacion_bf0334
+'exposiciones en situacion de incumplimiento' (2 nodos):
+    - [Definicion] Definicion_exposiciones_en_situacion_de_incumplimiento_104f61
+    - [Operacion] Operacion_exposiciones_en_situacion_de_incumplimiento_104f61
+'extension plazo ingreso liquidacion divisas' (2 nodos):
+    - [Operacion] Operacion_extension_plazo_ingreso_liquidacion_divisas_d523f1
+    - [Potestad] Potestad_extension_plazo_ingreso_liquidacion_divisas_d523f1
+'financiacion especializada grandes proyectos infraestructura' (2 nodos):
+    - [Definicion] Definicion_financiacion_especializada_grandes_proyectos_infraestructura_91c15f
+    - [Operacion] Operacion_financiacion_especializada_grandes_proyectos_infraestructura_91c15f
+'gobiernos locales' (2 nodos):
+    - [Definicion] Definicion_gobiernos_locales_bcdf2d
+    - [Sujeto] Sujeto_gobierno_local
+'ingreso y liquidacion de divisas por exportacion' (2 nodos):
+    - [Obligacion] Obligacion_ambas_partes_documentante_y_propietario_de_la_mercaderia_son_responsables_del_cu_caffb3
+    - [Operacion] Operacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa
+'nuevos aportes de inversion directa de no residentes' (2 nodos):
+    - [Condicion] Condicion_nuevos_aportes_de_inversion_directa_de_no_residentes_3fcab3
+    - [Operacion] Operacion_nuevos_aportes_de_inversion_directa_de_no_residentes_3fcab3
+'opciones sobre acciones' (2 nodos):
+    - [Condicion] Condicion_opciones_sobre_acciones_30e016
+    - [Operacion] Operacion_opciones_sobre_acciones_30e016
+'operacion propia alcanzada por obligacion de ingreso y liquidacion' (2 nodos):
+    - [Condicion] Condicion_operacion_propia_alcanzada_por_obligacion_de_ingreso_y_liquidacion_58449b
+    - [Operacion] Operacion_operacion_propia_alcanzada_por_obligacion_de_ingreso_y_liquidacion_58449b
+'pago a la vista de cheques' (2 nodos):
+    - [Obligacion] Obligacion_pagar_a_la_vista_excepto_en_los_casos_a_que_se_refiere_el_punto_1_5_2_8_segundo__e66bb1
+    - [Operacion] Operacion_pago_a_la_vista_de_cheques_994ac8
+'pago de beneficios anses' (2 nodos):
+    - [Operacion] Operacion_pago_de_beneficios_anses_5e43b5
+    - [TextoOrdenado] TextoOrdenado_pagjub_pdf
+'posicion general de cambios (pgc)' (2 nodos):
+    - [Definicion] Definicion_posicion_general_de_cambios_pgc_4fc69a
+    - [Operacion] Operacion_posicion_general_de_cambios_pgc_4fc69a
+'presentacion de documento de viaje mercosur' (2 nodos):
+    - [Obligacion] Obligacion_documento_de_viaje_admitido_por_la_decision_mercosur_en_vigencia_2ecadd
+    - [Operacion] Operacion_presentacion_de_documento_de_viaje_mercosur_be2ab6
+'reclasificacion al nivel inmediato superior' (2 nodos):
+    - [Obligacion] Obligacion_los_clientes_cuyas_deudas_hayan_sido_refinanciadas_mediante_obligaciones_de_pago_3834c0
+    - [Operacion] Operacion_reclasificacion_al_nivel_inmediato_superior_052195
+'reconocimiento cobertura riesgo credito' (2 nodos):
+    - [Obligacion] Obligacion_a_los_efectos_del_reconocimiento_de_la_cobertura_del_riesgo_de_credito_se_tendra_eabc19
+    - [Operacion] Operacion_reconocimiento_cobertura_riesgo_credito_69e3dd
+'reconocimiento de intereses sobre saldos acreedores' (2 nodos):
+    - [Operacion] Operacion_reconocimiento_de_intereses_sobre_saldos_acreedores_ecab11
+    - [Potestad] Potestad_reconocimiento_de_intereses_sobre_saldos_acreedores_ecab11
+'titulizacion tradicional' (2 nodos):
+    - [Definicion] Definicion_titulizacion_tradicional_6f56d4
+    - [Operacion] Operacion_titulizacion_tradicional_6f56d4
+'vida promedio minima de 1 ano' (2 nodos):
+    - [Condicion] Condicion_vida_promedio_minima_de_1_ano_be8ec7
+    - [Restriccion] Restriccion_su_vida_promedio_sea_no_inferior_a_1_un_ano_considerando_los_vencimientos_de_cap_0d7f3c
+```
+
+### S9 — PASS
+
+ERROR — Descripción canónica: ningún nodo tiene a la vez 'descripcion' y 'description'.
+
+**Resultado:** 0 nodos con ambas keys.
+
+```
+Tabla por type (usa cada key / ambas / ninguna):
+  Comunicacion: descripcion=0, description=0, ambas=0, ninguna=22 (total 22)
+  Condicion: descripcion=1383, description=0, ambas=0, ninguna=0 (total 1383)
+  Definicion: descripcion=618, description=0, ambas=0, ninguna=0 (total 618)
+  Excepcion: descripcion=405, description=0, ambas=0, ninguna=0 (total 405)
+  Obligacion: descripcion=2367, description=0, ambas=0, ninguna=0 (total 2367)
+  Operacion: descripcion=2047, description=0, ambas=0, ninguna=0 (total 2047)
+  Potestad: descripcion=471, description=0, ambas=0, ninguna=0 (total 471)
+  Restriccion: descripcion=796, description=0, ambas=0, ninguna=0 (total 796)
+  Sujeto: descripcion=0, description=0, ambas=0, ninguna=137 (total 137)
+  TextoOrdenado: descripcion=0, description=0, ambas=0, ninguna=10 (total 10)
+
+Nodos con AMBAS keys (0):
+```
+
+### S10 — FAIL
+
+ERROR — Todo nodo del dominio congelado de establecida_en (Condicion/Definicion/Excepcion/Obligacion/Operacion/Potestad/Restriccion) tiene >=1 arista saliente establecida_en.
+
+**Resultado:** Sin establecida_en: Condicion=111, Definicion=15, Excepcion=4, Obligacion=1, Operacion=403, Potestad=0, Restriccion=1 (total 535).
+
+```
+Condicion: 111 sin establecida_en
+    - Condicion_acceso_al_mercado_de_cambios_con_anterioridad_maxima_de_3_dias_habiles_abffd5
+    - Condicion_afectacion_de_solvencia_y_o_liquidez_de_la_entidad_adf5c6
+    - Condicion_aplicacion_a_permisos_de_embarque_posteriores_b1b557
+    - Condicion_aplicacion_disposiciones_punto_7_3_8438cc
+    - Condicion_ausencia_de_obligacion_para_el_emisor_0dedb9
+    - Condicion_avales_o_garantias_totales_moneda_extranjera_9122cd
+    - Condicion_balances_cerrados_y_auditados_elegibles_segun_4_6_2_62c43b
+    - Condicion_bien_importado_enviado_sin_cargo_c319dc
+    - Condicion_bienes_donados_con_anterioridad_al_registro_aduanero_4b8650
+    - Condicion_calificacion_como_deuda_comercial_ab85ee
+    - Condicion_cancelacion_de_capital_intereses_con_divisas_28e145
+    - Condicion_casas_operativas_en_puertos_aeropuertos_terminales_7b08cc
+    - Condicion_certificacion_decreto_277_22_regimen_petroleo_gas_cb6c0c
+    - Condicion_cheque_con_faltas_de_ortografia_2afd5e
+    - Condicion_cheques_de_pago_diferido_emitidos_antes_de_solicitud_76e7aa
+    - Condicion_cheques_librados_sobre_cuentas_de_personas_juridicas_60b6c7
+    - Condicion_clasificacion_en_grupo_2_y_pertenencia_a_grupos_b_c_c33241
+    - Condicion_cliente_posee_certificacion_decreto_277_22_549135
+    - Condicion_cliente_sea_beneficiario_directo_decreto_277_22_d4ff8d
+    - Condicion_cobro_de_exportacion_liquidado_en_mercado_de_cambios_6c2c42
+    - Condicion_concurso_preventivo_del_librador_declarado_judicialmente_ea91d8
+    - Condicion_condicion_dimensiones_complejidad_importancia_y_perfil_de_riesgo_de_la_entidad_17426d
+    - Condicion_consistencia_con_politica_de_incentivos_8c4453
+    - Condicion_contrato_vigente_al_31_08_19_66e18c
+    - Condicion_contratos_de_venta_en_firme_moneda_extranjera_e05324
+    - Condicion_controlante_es_compania_holding_no_financiera_65965b
+    - Condicion_criterios_de_inclusion_en_pnc_49d563
+    - Condicion_cumplimiento_de_condiciones_posteriores_acceso_mercado_cambios_471d38
+    - Condicion_cumplimiento_de_requisitos_para_exencion_de_capital_833dc4
+    - Condicion_cumplimiento_de_totalidad_de_condiciones_para_emitir_certificaciones_4c47a7
+    - Condicion_cumplimiento_previo_puntos_7_2_2_y_o_7_2_3_0960f1
+    - Condicion_cumplimiento_requisitos_punto_8_3_2_cfa269
+    - Condicion_cumplimiento_totalidad_de_condiciones_siguientes_156df6
+    - Condicion_declaracion_judicial_de_concurso_preventivo_del_librador_dccda7
+    - Condicion_decretos_492_23_549_23_597_23_28_23_divisas_liquidadas_y_titulos_valores_7d33d4
+    - Condicion_defectos_formales_no_corregidos_en_tiempo_y_forma_03904a
+    - Condicion_demostracion_ingreso_y_liquidacion_de_divisas_92ec7a
+    - Condicion_derecho_residual_sobre_activos_68e1c0
+    - Condicion_desembolso_a_partir_de_01_09_19_58e9da
+    - Condicion_determinacion_diaria_riesgo_de_mercado_7ac1bf
+    - Condicion_deudores_con_solicitud_concurso_preventivo_o_acuerdo_preventivo_extrajudicial_0b9ad2
+    - Condicion_dictamen_de_auditor_disponible_c29c5f
+    - Condicion_disponibilidad_de_documentacion_para_verificacion_c10a01
+    - Condicion_documentacion_de_condiciones_al_otorgamiento_9043ec
+    - Condicion_documentacion_que_avala_deuda_pendiente_utilidades_dividendos_auditados_15ece9
+    - Condicion_elegibilidad_conforme_a_punto_4_7_35c14f
+    - Condicion_elegibilidad_conforme_al_punto_4_5_3a8647
+    - Condicion_en_el_curso_del_ejercicio_economico_4ddfbf
+    - Condicion_en_los_demas_casos_b60ae8
+    - Condicion_endeudamientos_punto_7_9_desde_07_01_21_d3fa03
+    - Condicion_endoso_sin_especificaciones_de_5_1_4_292eb1
+    - Condicion_endosos_que_excedan_limite_establecido_e329fc
+    - Condicion_exclusion_de_pnb_f67903
+    - Condicion_existencia_de_conflicto_de_intereses_5f5757
+    - Condicion_exportacion_no_susceptible_de_contravalor_en_divisas_65aff6
+    - Condicion_exportaciones_bienes_posiciones_arancelarias_1003_90_10_1003_90_80_1007_90_00_ca_9164c8
+    - Condicion_exportaciones_oficializadas_a_partir_del_02_09_19_a679d5
+    - Condicion_exportadores_que_opten_por_el_mecanismo_deacd5
+    - Condicion_grupo_a_segun_clasificacion_autoridades_4521ad
+    - Condicion_hubiera_compensacion_por_quita_de_perdidas_df3a73
+    - Condicion_incapaces_declarados_judicialmente_a8b341
+    - Condicion_inclusion_de_subsidiarias_exterior_por_recursos_pais_48fa07
+    - Condicion_inscripcion_en_registro_nacional_de_beneficiarios_del_regimen_0767f6
+    - Condicion_liquidados_en_mercado_de_cambios_9d3241
+    - Condicion_mayores_de_75_anos_al_31_12_14_d50022
+    - Condicion_modificacion_negativa_en_central_de_deudores_por_otro_acreedor_6645ca
+    - Condicion_monto_supera_dos_veces_importe_referencia_3_7_4362a8
+    - Condicion_no_alcanzado_por_excepciones_precedentes_2f2b8b
+    - Condicion_no_amortizacion_del_instrumento_6ef61f
+    - Condicion_no_disponibilidad_de_lta_ni_mba_42b8b8
+    - Condicion_no_inclusion_previa_en_co_82076f
+    - Condicion_no_suscripcion_de_documentos_rechazados_0ff39c
+    - Condicion_nominacion_en_permiso_de_embarque_02cbe7
+    - Condicion_observancia_criterios_punto_8_3_5_5e23f9
+    - Condicion_ocurrencia_de_eventos_punto_8_3_4_4_cbdb06
+    - Condicion_omision_de_informe_de_pago_de_multas_90915f
+    - Condicion_opciones_sobre_acciones_30e016
+    - Condicion_operacion_comprendida_en_situaciones_punto_8_5_3ff19d
+    - Condicion_operacion_concertada_en_entidad_distinta_a_la_del_cliente_41d3f9
+    - Condicion_operaciones_individuales_por_pesos_conforme_normas_08499e
+    - Condicion_operaciones_relativas_al_fideicomiso_0b3c5c
+    - Condicion_otorgamiento_anterior_a_prestacion_del_servicio_12f6f5
+    - Condicion_otorgamiento_posterior_a_prestacion_del_servicio_316011
+    - Condicion_otras_imputaciones_admitidas_en_cumplimiento_1a8272
+    - Condicion_perdida_o_robo_de_tarjeta_fcf462
+    - Condicion_pertenencia_a_grupos_a_b_c_sin_ser_g_sib_ad4614
+    - Condicion_plazo_10_dias_habiles_sin_respuesta_81d329
+    - Condicion_plazo_hasta_31_12_27_804a28
+    - Condicion_posfinanciaciones_cubren_totalidad_sin_certificacion_puntos_9_3_4_y_9_3_5_19bf36
+    - Condicion_prefinanciacion_parcial_posfinanciaciones_cubren_resto_60380b
+    - Condicion_prefinanciacion_total_monto_pendiente_ingresado_3a8481
+    - Condicion_prefinanciaciones_exportaciones_punto_7_8_5_689e01
+    - Condicion_presentacion_realizada_y_aceptada_hasta_vencimiento_periodo_9520d9
+    - Condicion_prestamo_con_garantia_hipotecaria_o_prendaria_e1cd17
+    - Condicion_recepcion_de_respuesta_insatisfactoria_o_vencimiento_sin_respuesta_18466b
+    - Condicion_repago_vinculado_a_actividad_productiva_comercial_1e08d1
+    - Condicion_requerimiento_de_quiebra_no_declarada_dcceb0
+    - Condicion_servicio_de_fletes_por_importacion_de_bienes_s30_aab20d
+    - Condicion_servicio_mediante_flujo_de_fondos_en_exterior_7c1f9f
+    - Condicion_sin_garantias_punto_4_1_1_to_financiamiento_sp_no_financiero_dd8f3e
+    - Condicion_solicitud_a_permisos_de_embarque_desde_02_09_19_b37a94
+    - Condicion_solicitud_concurso_preventivo_o_acuerdo_preventivo_extrajudicial_3a9a30
+    - Condicion_solicitud_de_aplicacion_a_permisos_de_embarque_5d1b3f
+    - Condicion_sujeto_a_condiciones_punto_1_5_2_3_7666d3
+    - Condicion_supervision_consolidada_de_subsidiaria_0db1df
+    - Condicion_usuario_recibe_respuesta_no_satisfactoria_5fa655
+    - Condicion_vencimiento_del_capital_e_intereses_d69dfd
+    - Condicion_verificacion_condiciones_previstas_en_cada_caso_115264
+    - Condicion_verificacion_cumplimiento_de_recaudos_9e410e
+    - Condicion_verificacion_de_situaciones_de_excepcion_44e9c7
+    - Condicion_vida_promedio_minima_gracia_capital_prefinanciaciones_e92056
+Definicion: 15 sin establecida_en
+    - Definicion_activos_computables_a_77e865
+    - Definicion_activos_ponderados_por_riesgo_de_credito_apr_a76d92
+    - Definicion_aplicacion_de_divisas_de_cobros_de_exportaciones_e304aa
+    - Definicion_causa_de_fuerza_mayor_impedimento_insalvable_b05d3a
+    - Definicion_exigencia_de_capital_por_riesgo_de_credito_c_147d58
+    - Definicion_factor_de_conversion_crediticia_ccf_d37e5c
+    - Definicion_factor_k_calificacion_de_la_entidad_18f747
+    - Definicion_incremento_por_excesos_inversiones_significativas_a492c2
+    - Definicion_mipyme_que_no_se_ajustan_criterios_2_8_3_d65188
+    - Definicion_opciones_sobre_productos_basicos_b0baf5
+    - Definicion_operaciones_de_entrega_contra_pago_fallidas_dvp_d4037d
+    - Definicion_operaciones_sin_entrega_contra_pago_no_dvp_08d91d
+    - Definicion_partidas_fuera_de_balance_pfb_6de81f
+    - Definicion_riesgo_de_credito_de_contraparte_en_derivados_rcd_7e2962
+    - Definicion_rpc_sobre_base_consolidada_cf4890
+Excepcion: 4 sin establecida_en
+    - Excepcion_aquellos_productos_que_no_contengan_soja_estan_exceptuados_de_la_posicion_arance_759640
+    - Excepcion_el_maiz_pisingallo_esta_exceptuado_de_la_posicion_arancelaria_1005_90_10_ec7848
+    - Excepcion_sin_perjuicio_de_los_conceptos_que_deban_trasladar_a_los_clientes_por_tributos_r_ab7589
+    - Excepcion_sin_perjuicio_de_los_servicios_adicionales_para_facilitar_la_carga_masiva_de_dic_c4c7e6
+Obligacion: 1 sin establecida_en
+    - Obligacion_la_entidad_podra_dar_acceso_al_mercado_de_cambios_para_el_pago_al_exterior_en_la_c825a3
+Operacion: 403 sin establecida_en
+    - Operacion_absorcion_de_perdidas_instrumentos_d873e6
+    - Operacion_accesibilidad_puntos_de_atencion_usuario_d1215d
+    - Operacion_acceso_al_mercado_de_cambio_operaciones_s3_1_a_s3_15_f2f0d5
+    - Operacion_acceso_al_mercado_de_cambios_fideicomisos_144617
+    - Operacion_acceso_al_mercado_de_cambios_pago_servicios_no_residentes_4e2bf8
+    - Operacion_acceso_al_mercado_de_cambios_para_pago_diferido_ad26af
+    - Operacion_acceso_al_mercado_de_cambios_para_pago_exterior_ff3848
+    - Operacion_acceso_diario_mercado_cambios_compra_moneda_extranjera_c39577
+    - Operacion_acceso_mercado_cambios_cancelacion_obligaciones_en_moneda_extranjera_ce63dd
+    - Operacion_acreditacion_a_cuenta_de_anses_a60951
+    - Operacion_acreditacion_de_fondos_en_cuentas_de_corresponsalia_df1e9d
+    - Operacion_acreditacion_de_fondos_en_cuentas_locales_332567
+    - Operacion_acreditacion_de_importes_en_el_dia_09b87b
+    - Operacion_acreditacion_de_resultado_de_liquidacion_de_cambios_en_cuenta_local_cee6ab
+    - Operacion_acreditacion_en_cuentas_en_moneda_extranjera_9a83ed
+    - Operacion_adhesion_al_rigi_por_vpu_8fe38f
+    - Operacion_adquisicion_de_bienes_medico_sanitarios_para_donacion_610685
+    - Operacion_adquisicion_de_certificados_de_depositos_argentinos_representativos_de_acciones__75deba
+    - Operacion_adquisicion_de_titulos_valores_representativos_de_deuda_privada_emitida_en_juris_c2f3ca
+    - Operacion_adquisicion_en_el_pais_de_titulos_valores_emitidos_por_no_residentes_con_liquida_132ccb
+    - Operacion_afectacion_de_importaciones_por_solicitud_particular_o_courier_aaee67
+    - Operacion_afectacion_de_oficializacion_a_pago_con_ingreso_aduanero_pendiente_39858a
+    - Operacion_agrupacion_de_financiaciones_comerciales_con_creditos_consumo_vivienda_18c542
+    - Operacion_ajuste_de_valuacion_productos_complejos_ce7239
+    - Operacion_alteracion_de_tasas_comisiones_y_cargos_9853cf
+    - Operacion_anticipo_por_pago_de_jubilaciones_y_pensiones_76070c
+    - Operacion_anticipos_al_fondo_de_garantia_depositos_df1acb
+    - Operacion_anticipos_cursados_por_sml_a_partir_02_09_19_2883e1
+    - Operacion_apertura_de_cuentas_a_la_vista_443444
+    - Operacion_apertura_de_cuentas_no_presencial_64eef3
+    - Operacion_apertura_de_cuentas_por_personas_inhabilitadas_f25a52
+    - Operacion_aplicacion_cobros_exportaciones_servicios_6b5107
+    - Operacion_aplicacion_de_capacidad_de_prestamo_de_depositos_04d844
+    - Operacion_aplicacion_de_divisas_de_cobros_a_cancelacion_de_vencimientos_16a6b1
+    - Operacion_aplicacion_de_recursos_propios_liquidos_193f03
+    - Operacion_aplicacion_de_tecnicas_de_cobertura_del_riesgo_de_credito_2c4eb9
+    - Operacion_aplicacion_financiamiento_instrumentos_deuda_tesoro_e1881e
+    - Operacion_arrendamientos_financieros_da0039
+    - Operacion_aseguramiento_de_instrumentos_en_ca_ac2fcc
+    - Operacion_asignacion_de_ponderador_de_riesgo_a_exposiciones_en_moneda_extranjera_e98b52
+    - Operacion_asignacion_de_ponderadores_a_exposiciones_10e9f3
+    - Operacion_atencion_de_cheques_con_defecto_formal_cantidad_4410a3
+    - Operacion_atencion_de_financiaciones_con_fondos_de_lineas_asignadas_47b8c8
+    - Operacion_autoaseguramiento_riesgos_fallecimiento_invalidez_f87002
+    - Operacion_boleto_de_compra_venta_de_cambio_988448
+    - Operacion_boleto_de_venta_de_cambio_adjudicacion_bonos_bopreal_2b2b24
+    - Operacion_boleto_de_venta_de_cambio_para_utilidades_9bf919
+    - Operacion_boleto_de_venta_de_cambio_por_bonos_bopreal_073365
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_tipo_de_cambio_6c7e1d
+    - Operacion_calculo_de_exigencia_riesgo_general_tasa_interes_0f47e7
+    - Operacion_calculo_de_exposicion_riesgo_tipo_de_cambio_tasa_0ed0d3
+    - Operacion_calculo_de_previsiones_sobre_tenencias_3b7c91
+    - Operacion_calculo_del_bi_a_nivel_consolidado_cfa5fc
+    - Operacion_calculo_del_bi_a_nivel_individual_813f8f
+    - Operacion_calculo_del_bi_a_nivel_subconsolidado_4253dc
+    - Operacion_calculo_exigencia_capital_riesgo_de_tasa_interes_ef04b8
+    - Operacion_calificacion_de_deudor_10a6b6
+    - Operacion_cancelacion_de_anticipos_de_exportacion_con_fondos_de_cobros_350dc7
+    - Operacion_cancelacion_de_autorizaciones_para_girar_a26106
+    - Operacion_cancelacion_de_capital_e_intereses_endeudamiento_financiero_8fe0b6
+    - Operacion_cancelacion_de_garantias_importaciones_de_bienes_fd33e7
+    - Operacion_cancelacion_del_capital_de_financiacion_4d8439
+    - Operacion_canje_de_moneda_extranjera_por_pen_a2b943
+    - Operacion_canje_de_titulos_valores_emitidos_por_residentes_por_activos_externos_d36ef3
+    - Operacion_capacitacion_y_entrenamiento_de_ejecutivos_y_directivos_20f15b
+    - Operacion_celebracion_de_acuerdos_sobre_prelacion_en_cobro_7804fa
+    - Operacion_cheques_comunes_y_de_pago_diferido_vencidos_2ed72f
+    - Operacion_cheques_de_pago_diferido_registrados_con_defectos_formales_23ea28
+    - Operacion_cheques_firmados_por_todos_los_titulares_220f8a
+    - Operacion_cierre_de_cuenta_6cadbb
+    - Operacion_cierre_de_cuentas_96c948
+    - Operacion_cierre_de_cuentas_de_inhabilitados_65d5df
+    - Operacion_clasificacion_de_deudores_segun_mora_595d13
+    - Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92
+    - Operacion_clasificacion_deudores_creditos_fideicomitidos_2c30f7
+    - Operacion_clasificacion_en_grupo_1_o_grupo_2_7315bb
+    - Operacion_clasificacion_titulos_publicos_rendimiento_dual_179b67
+    - Operacion_cobro_comision_y_cargo_operaciones_a8e152
+    - Operacion_cobro_comisiones_cargos_seguros_saldo_deudor_423c45
+    - Operacion_cobro_de_comisiones_por_reporte_de_circunstancias_3c02ce
+    - Operacion_cobro_de_exportaciones_de_bienes_o_servicios_e15530
+    - Operacion_cobro_de_utilidades_y_dividendos_desde_01_09_19_c5637e
+    - Operacion_cobro_en_divisas_por_exportacion_de_bienes_ebe7d2
+    - Operacion_cobros_de_exportaciones_de_bienes_en_proyectos_de_inversion_04be00
+    - Operacion_cobros_por_siniestros_de_cobertura_exportacion_d9a434
+    - Operacion_comercio_exterior_directo_9f55d2
+    - Operacion_compensacion_posiciones_compradas_vendidas_47f747
+    - Operacion_compra_de_cartera_creditos_6cef4a
+    - Operacion_compra_de_instrumentos_93181f
+    - Operacion_compra_de_instrumentos_para_pnc_11f556
+    - Operacion_compra_de_moneda_extranjera_4818a4
+    - Operacion_compra_de_obligaciones_negociables_de_emision_propia_b51c73
+    - Operacion_compra_titulos_valores_mercado_secundario_4d0bef
+    - Operacion_compra_venta_moneda_extranjera_en_caracter_de_cliente_c40d38
+    - Operacion_compras_en_cuotas_de_pasajes_al_exterior_22570e
+    - Operacion_compraventa_titulos_valores_liquidacion_moneda_extranjera_ca0b73
+    - Operacion_computo_exposiciones_dolar_linked_0ec467
+    - Operacion_computo_resultado_positivo_ultimo_ejercicio_8e5c8a
+    - Operacion_comunicacion_al_bcra_de_rechazos_de_cheques_f94818
+    - Operacion_comunicacion_de_modificacion_baja_de_rechazo_al_bcra_39db45
+    - Operacion_comunicacion_de_rechazo_al_tenedor_1fe229
+    - Operacion_comunicacion_de_saldo_al_cuentacorrentista_fae6f0
+    - Operacion_comunicacion_inmediata_de_contingencia_743b3d
+    - Operacion_comunicacion_rechazo_al_bcra_189044
+    - Operacion_comunicacion_rechazo_al_librador_y_avalistas_bd21f6
+    - Operacion_concertacion_de_cambio_sobre_fondos_acreditados_572532
+    - Operacion_concertacion_de_titulos_valores_en_el_pais_28bf13
+    - Operacion_confeccion_boletos_de_cambio_a_nombre_propio_89711d
+    - Operacion_confeccion_de_boleto_de_venta_importaciones_de_bienes_22aefb
+    - Operacion_confeccion_de_boletos_sin_movimiento_de_pesos_aff787
+    - Operacion_consideracion_de_instrumentos_cer_a_tasa_fija_3131fc
+    - Operacion_consignacion_de_informacion_al_dorso_de_cheques_d59483
+    - Operacion_consignacion_exigencia_riesgo_general_acciones_b1e838
+    - Operacion_constitucion_del_legajo_del_deudor_85a6d2
+    - Operacion_contratacion_seguro_sobre_saldo_deudor_7a0636
+    - Operacion_contrato_a_termino_de_moneda_oro_ba0b0b
+    - Operacion_conversion_de_compromisos_en_equivalentes_crediticios_3664b4
+    - Operacion_creacion_de_cheque_con_firmas_multiples_ba7ce5
+    - Operacion_cuantificacion_de_exposicion_por_moneda_320d78
+    - Operacion_cuentas_corrientes_y_especiales_en_bcra_6c80a4
+    - Operacion_cumplido_de_embarque_permiso_definitivo_c6d27a
+    - Operacion_cumplimiento_de_requerimientos_legajo_unico_financiero_y_economico_df59a6
+    - Operacion_cumplimiento_parcial_total_seguimiento_permiso_embarque_7dc5c0
+    - Operacion_custodia_de_titulos_representativos_de_inversiones_a2192e
+    - Operacion_debito_de_importes_de_ordenes_de_pago_inconsistentes_e670ba
+    - Operacion_debito_de_penalidades_de_cuenta_corriente_40ec27
+    - Operacion_debitos_automaticos_sobre_cuentas_216901
+    - Operacion_debitos_sin_autorizacion_previa_5335ea
+    - Operacion_declaracion_de_incumplimiento_y_liquidacion_de_garantia_be62c9
+    - Operacion_declaracion_de_operacion_en_relevamiento_1917ae
+    - Operacion_declaracion_de_operacion_en_relevamiento_de_activos_y_pasivos_externos_0449d7
+    - Operacion_defectos_de_aplicacion_netos_en_efectivo_cba64e
+    - Operacion_deposito_al_bcra_en_pesos_fuente_de_fondos_en_pesos_438fe7
+    - Operacion_deposito_de_cheques_en_plazos_de_compensacion_f4b417
+    - Operacion_deposito_de_echeq_en_dolares_estadounidenses_647d40
+    - Operacion_deposito_de_garantias_de_futuros_y_opciones_2fa004
+    - Operacion_deposito_electronico_de_cheques_e4cb2c
+    - Operacion_deposito_en_casa_girada_con_constancia_identificatoria_af3e7d
+    - Operacion_deposito_por_transferencia_ordenada_por_entidad_4dc733
+    - Operacion_deposito_u_operacion_con_echeq_ca293f
+    - Operacion_depositos_en_cuenta_especial_de_regularizacion_monedas_extranjeras_dc971c
+    - Operacion_depositos_en_cuentas_especiales_financiacion_de_exportaciones_95e322
+    - Operacion_depositos_mediante_cajeros_automaticos_273683
+    - Operacion_derivado_otc_261a55
+    - Operacion_designacion_de_entidad_financiera_local_5c7ab3
+    - Operacion_designacion_de_entidad_financiera_local_seguimiento_operacion_exportacion_6657ee
+    - Operacion_destinaciones_suspensivas_exportaciones_temporarias_969431
+    - Operacion_deteccion_de_transferencias_con_informacion_incompleta_c647cd
+    - Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837
+    - Operacion_determinacion_exigencia_riesgo_de_mercado_a00f32
+    - Operacion_determinacion_montos_pendientes_facturacion_en_monedas_distintas_cac557
+    - Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39
+    - Operacion_direccion_de_actividades_y_negocios_2ce9a7
+    - Operacion_disponibilidad_de_informacion_sobre_actividades_f2da83
+    - Operacion_disponibilidad_publica_de_informacion_sobre_actividades_8e6a11
+    - Operacion_efectivo_pago_del_beneficio_001d45
+    - Operacion_elaboracion_programas_trabajo_e_informes_auditoria_a402c1
+    - Operacion_eliminacion_de_cotitular_de_cuenta_52dbc7
+    - Operacion_emision_certificaciones_acceso_mercado_de_cambios_bba520
+    - Operacion_emision_de_certificaciones_acceso_mercado_cambios_2ca44b
+    - Operacion_emision_de_certificaciones_de_acceso_a_divisas_f9529e
+    - Operacion_emision_de_cheque_c50f16
+    - Operacion_emision_de_cheque_no_a_la_orden_para_movimiento_de_fondos_e75db2
+    - Operacion_emision_de_cheques_6cacff
+    - Operacion_emision_de_cheques_comunes_dd9423
+    - Operacion_emision_de_cheques_en_pesos_o_usd_143065
+    - Operacion_emision_de_cheques_por_personas_inhabilitadas_828f10
+    - Operacion_emision_de_constancia_de_operacion_8ad94c
+    - Operacion_emision_y_cobro_de_cheques_de_pago_diferido_9adeda
+    - Operacion_emision_y_presentacion_de_cheques_1f5d1a
+    - Operacion_endoso_de_cheques_648af4
+    - Operacion_entrega_copia_dni_al_legajo_f2a1d8
+    - Operacion_entrega_de_billetes_o_acreditacion_de_fondos_e91290
+    - Operacion_entrega_de_fondos_locales_o_activos_locales_para_recibir_activos_externos_198895
+    - Operacion_entrega_de_tarjetas_magneticas_c89025
+    - Operacion_envio_de_informacion_sobre_movimientos_y_cheques_00617c
+    - Operacion_envio_partida_39000000_periodo_julio_2015_4091a8
+    - Operacion_establecimiento_de_comite_lavado_de_activos_y_financiamiento_del_terrorismo_e5c850
+    - Operacion_estimacion_de_riesgos_por_combinacion_de_posiciones_1ce95f
+    - Operacion_estrategia_de_negociacion_documentada_d1e6fe
+    - Operacion_evaluacion_de_codigo_de_gobierno_societario_21418b
+    - Operacion_evaluacion_diaria_de_parametros_en_valuacion_a_modelo_572bc3
+    - Operacion_exclusion_de_exposiciones_subyacentes_del_calculo_de_activos_ponderados_49f137
+    - Operacion_exhibicion_de_documento_anterior_bfbc29
+    - Operacion_exhibicion_dni_m_o_dni_d_post_rectificacion_0444ac
+    - Operacion_exportacion_de_bienes_por_vpu_rigi_5645aa
+    - Operacion_exportacion_de_efectos_personales_52dacb
+    - Operacion_exportacion_de_valores_mediante_regimen_ec51_d397cc
+    - Operacion_exposicion_a_entidades_financieras_corto_plazo_3ff5fb
+    - Operacion_exposicion_a_entidades_financieras_demas_9e45d0
+    - Operacion_exposicion_crediticia_con_cobertura_de_riesgo_de_credito_c4140c
+    - Operacion_exposicion_frente_contraparte_individual_772d37
+    - Operacion_exposicion_garantia_hipotecaria_inmuebles_comerciales_87bb5f
+    - Operacion_exposiciones_a_acciones_4baa91
+    - Operacion_exposiciones_con_entidades_de_contraparte_central_3e7288
+    - Operacion_exposiciones_minoristas_normativas_no_transaccionales_f44033
+    - Operacion_extracciones_a_traves_de_cajeros_automaticos_47772f
+    - Operacion_falta_de_firma_del_librador_7c504b
+    - Operacion_financiacion_de_proyectos_inversion_nacional_4e01cd
+    - Operacion_financiacion_mipyme_y_actividad_profesional_9b7954
+    - Operacion_financiacion_u_otorgamiento_de_garantia_anterior_a_13_12_23_459923
+    - Operacion_financiaciones_a_mipymes_534b02
+    - Operacion_financiaciones_asociadas_a_importaciones_de_bienes_a3239b
+    - Operacion_financiaciones_rotativas_revolving_bc8efb
+    - Operacion_gestion_activa_de_posiciones_b4502e
+    - Operacion_gestion_de_cobro_por_tercero_cheque_al_portador_o_nominal_41dcea
+    - Operacion_gestion_de_echeq_514051
+    - Operacion_identificacion_evaluacion_monitoreo_control_y_mitigacion_de_riesgos_b095a3
+    - Operacion_imputacion_a_capacidad_de_prestamo_depositos_moneda_extranjera_49ff53
+    - Operacion_inclusion_de_instrumentos_en_pnc_e94b0a
+    - Operacion_inclusion_de_posiciones_en_cartera_de_negociacion_bc636b
+    - Operacion_incorporacion_de_dividendo_cupon_con_reajuste_2c7f67
+    - Operacion_incorporacion_de_inmuebles_al_patrimonio_42a508
+    - Operacion_incremento_tenencias_moneda_extranjera_ab92a1
+    - Operacion_informacion_de_exposiciones_fuera_de_balance_bf3ab2
+    - Operacion_informacion_de_exposiciones_sft_4dce44
+    - Operacion_informar_al_bcra_reclamo_no_respondido_629163
+    - Operacion_informe_total_de_letras_hipotecarias_escriturales_6576c1
+    - Operacion_ingreso_contravalor_exportacion_en_divisas_0ce029
+    - Operacion_ingreso_y_liquidacion_cobros_exportaciones_bf3a95
+    - Operacion_ingreso_y_liquidacion_de_cobros_de_exportacion_cc95e6
+    - Operacion_ingreso_y_liquidacion_de_divisas_dc00d4
+    - Operacion_ingreso_y_liquidacion_de_divisas_exportacion_concentrados_minerales_b6dc1e
+    - Operacion_ingreso_y_liquidacion_de_divisas_exportacion_precios_revisables_099c9f
+    - Operacion_ingreso_y_liquidacion_titulos_deuda_exterior_6ad647
+    - Operacion_inhabilitacion_de_cuentacorrentistas_4c01ff
+    - Operacion_inhabilitacion_zfi_ingreso_zona_franca_1c89d4
+    - Operacion_interaccion_con_red_de_cajeros_automaticos_96c01d
+    - Operacion_inversion_en_emision_con_calificacion_ae98cf
+    - Operacion_liberacion_de_echeq_3cdc48
+    - Operacion_libramiento_de_cheques_por_ordenante_34c96f
+    - Operacion_libramiento_visualizacion_gestion_echeq_9bc437
+    - Operacion_liquidacion_de_activos_no_imprescindibles_b2d088
+    - Operacion_liquidacion_de_fondos_moneda_extranjera_4c9a77
+    - Operacion_liquidacion_de_incentivos_economicos_fbadf9
+    - Operacion_liquidacion_de_la_rendicion_de_cuentas_d7f07b
+    - Operacion_liquidacion_de_montos_por_exportador_84980c
+    - Operacion_liquidacion_en_pesos_en_el_pais_bb8004
+    - Operacion_liquidacion_simultanea_de_cobros_anticipados_o_prefinanciaciones_e778a8
+    - Operacion_mantencion_en_custodia_de_activos_garantia_c730dc
+    - Operacion_mantener_posicion_neta_en_productos_basicos_5436ed
+    - Operacion_mantener_posiciones_en_moneda_extranjera_908af4
+    - Operacion_mantener_transferencias_pendientes_de_liquidacion_eed0ce
+    - Operacion_mantenimiento_del_registro_de_reintegros_de_importes_dec4ce
+    - Operacion_medicion_sistema_derivados_tasas_interes_4d7e69
+    - Operacion_modificacion_condiciones_contratadas_61bd5f
+    - Operacion_monitoreo_de_operaciones_290854
+    - Operacion_muestras_bajo_ley_22_415_articulos_560_565_77ad22
+    - Operacion_negociacion_contravalor_exportacion_en_mercado_de_cambios_3956ab
+    - Operacion_no_registracion_de_cheques_de_pago_diferido_57bd1c
+    - Operacion_obtencion_constancia_cuil_de_renaper_o_anses_deaeb7
+    - Operacion_obtencion_copia_documento_de_identidad_con_cuil_92997e
+    - Operacion_obtencion_electronica_directa_de_constancia_cuit_cdi_de_arca_14af7e
+    - Operacion_oferta_de_suscripcion_de_bonos_bopreal_en_nombre_del_cliente_66a5e9
+    - Operacion_opciones_sobre_acciones_30e016
+    - Operacion_operacion_con_ccp_no_calificada_dbde8f
+    - Operacion_operacion_con_qccp_16a95e
+    - Operacion_operacion_de_cambio_305a62
+    - Operacion_operacion_de_reembarco_7f2ddd
+    - Operacion_operacion_en_mercado_de_cambios_1718c1
+    - Operacion_operacion_encuadrada_en_decreto_492_23_560ae8
+    - Operacion_operaciones_al_contado_con_titulos_oro_o_moneda_extranjera_9dc774
+    - Operacion_operaciones_comprendidas_puntos_7_9_y_7_10_3028df
+    - Operacion_operaciones_con_derivados_cartera_de_negociacion_688397
+    - Operacion_operaciones_cursadas_sml_paraguay_uruguay_1c31f5
+    - Operacion_operaciones_de_cambio_65a95e
+    - Operacion_operaciones_de_cambio_canje_y_o_arbitraje_221389
+    - Operacion_operaciones_de_cambio_entre_entidades_7d061b
+    - Operacion_operaciones_de_financiamiento_con_aplicacion_de_divisas_d8b9bb
+    - Operacion_operaciones_de_importadores_no_regularizadas_0e7f22
+    - Operacion_operaciones_de_pase_repo_eb6ce7
+    - Operacion_operaciones_de_titulos_valores_por_diferencia_b86001
+    - Operacion_operaciones_en_terminales_puntos_de_venta_7627ce
+    - Operacion_operaciones_exporta_simple_8b5fe4
+    - Operacion_operaciones_financiadas_deuda_por_importacion_de_bienes_42fab2
+    - Operacion_originacion_de_creditos_entidad_14367d
+    - Operacion_otorgamiento_asistencia_financiera_a_controlante_ce1e2d
+    - Operacion_otorgamiento_de_aval_sobre_cheques_diferidos_7593ac
+    - Operacion_otorgamiento_de_financiaciones_a_personas_humanas_f27564
+    - Operacion_otorgamiento_de_financiaciones_sector_publico_no_financiero_de6a1d
+    - Operacion_otorgamiento_de_garantias_a_residentes_en_exterior_6fa98b
+    - Operacion_otorgamiento_de_nuevas_financiaciones_996921
+    - Operacion_otorgamiento_de_prestamos_hipotecarios_9bd23d
+    - Operacion_pago_a_la_vista_de_cheques_994ac8
+    - Operacion_pago_a_la_vista_de_cheques_de_pago_diferido_788bb6
+    - Operacion_pago_de_beneficios_anses_5e43b5
+    - Operacion_pago_de_cheque_de_pago_diferido_e58469
+    - Operacion_pago_de_cheques_3a6175
+    - Operacion_pago_de_endeudamientos_financieros_con_demostracion_de_ingreso_aduanero_a9414a
+    - Operacion_pago_de_importacion_con_imputacion_al_despacho_4bc19a
+    - Operacion_pago_de_intereses_de_deuda_comercial_por_importacion_28276f
+    - Operacion_pago_de_multas_por_clientela_8044ba
+    - Operacion_pago_de_servicio_no_comprendido_por_contraparte_vinculada_657f17
+    - Operacion_pago_de_servicio_no_residente_9454ac
+    - Operacion_pago_titulos_deuda_capital_e_intereses_0abd8a
+    - Operacion_pagos_al_exterior_por_tarjetas_de_credito_compra_debito_o_prepagas_e06914
+    - Operacion_participacion_en_redes_de_cajeros_automaticos_2b11c3
+    - Operacion_pasivos_por_derivados_a_valor_razonable_931aca
+    - Operacion_pnb_calculo_del_patrimonio_neto_basico_d773d4
+    - Operacion_ponderacion_de_inversion_en_fondo_8e1470
+    - Operacion_ponderacion_de_posiciones_por_sensibilidad_a_tasas_4ba0ad
+    - Operacion_ponderacion_por_riesgo_evaluaciones_externas_cf5300
+    - Operacion_posicion_general_de_cambios_pgc_4fc69a
+    - Operacion_posicion_ponderada_por_delta_db8c3b
+    - Operacion_posicion_ponderada_por_delta_opciones_sobre_productos_basicos_d53348
+    - Operacion_posiciones_en_opciones_contado_9a54d6
+    - Operacion_posiciones_en_opciones_termino_714c96
+    - Operacion_prefinanciaciones_de_exportaciones_fondeo_exterior_21b543
+    - Operacion_presentacion_al_cobro_o_deposito_de_cheque_pago_diferido_6140d4
+    - Operacion_presentacion_de_cheque_af29cc
+    - Operacion_presentacion_de_cheques_836940
+    - Operacion_presentacion_de_devolucion_camara_compensadora_31de30
+    - Operacion_presentacion_de_titulos_devueltos_f01e8a
+    - Operacion_presentacion_de_titulos_sin_fecha_de_creacion_d299a0
+    - Operacion_prestamos_al_fondo_de_garantia_depositos_575218
+    - Operacion_prestamos_personales_6fdfb3
+    - Operacion_prestamos_prendarios_c851b6
+    - Operacion_prevencion_conflictos_de_intereses_403c59
+    - Operacion_publicacion_de_tasa_de_interes_efectiva_anual_b294ae
+    - Operacion_publicacion_de_uva_y_uvi_2c0786
+    - Operacion_publicacion_paginas_internet_home_banking_accesible_5b9daa
+    - Operacion_realizacion_de_actividades_mediante_estructuras_societarias_o_jurisdicciones_ext_6411c8
+    - Operacion_recategorizacion_del_deudor_c577ea
+    - Operacion_recepcion_de_cuadernos_de_cheques_f4fe64
+    - Operacion_rechazo_de_cheque_con_autorizacion_verbal_422211
+    - Operacion_rechazo_de_cheque_por_orden_judicial_510b14
+    - Operacion_rechazo_de_cheques_e_informacion_de_identificacion_4ba2a7
+    - Operacion_rechazo_de_cheques_sin_percepcion_de_multas_254eeb
+    - Operacion_rechazo_de_pago_cheques_nominativos_cdf851
+    - Operacion_rechazo_de_registracion_cheques_pago_diferido_15e2b7
+    - Operacion_recompra_de_instrumentos_propios_9a5947
+    - Operacion_reconocimiento_de_intereses_sobre_saldos_acreedores_ecab11
+    - Operacion_refinanciacion_deuda_comercial_importacion_3c43ab
+    - Operacion_registracion_de_cheques_9375f0
+    - Operacion_registracion_de_cheques_de_pago_diferido_b760f1
+    - Operacion_registracion_de_cheques_diferidos_da95c8
+    - Operacion_registrar_en_sepaimpo_baja_de_diferencia_de_valor_aduanero_bee529
+    - Operacion_registro_cambiario_operaciones_propias_d7382f
+    - Operacion_registro_de_cheques_de_pago_diferido_ce6a07
+    - Operacion_registro_de_denuncias_ante_instancias_judiciales_y_o_administrativas_328d18
+    - Operacion_registro_de_imputaciones_al_seguimiento_5ae7ae
+    - Operacion_registro_de_operaciones_cambiarias_f6b0f6
+    - Operacion_registro_de_operaciones_propias_en_fecha_de_efecto_1edd92
+    - Operacion_relevamiento_de_activos_y_pasivos_externos_declaracion_ef80ec
+    - Operacion_remision_cheque_rechazado_al_juzgado_8b8383
+    - Operacion_remision_de_cheque_rechazado_al_juzgado_bfcff5
+    - Operacion_rendicion_de_cuentas_presentacion_tardia_2be202
+    - Operacion_renovacion_de_equipos_e_instalaciones_en_puntos_de_atencion_aeb57d
+    - Operacion_repago_de_financiaciones_92394a
+    - Operacion_repatriacion_aportes_inversion_directa_vpu_rigi_a501c6
+    - Operacion_reporte_de_exposiciones_por_derivados_ffe32c
+    - Operacion_reporte_de_ingreso_bruto_del_periodo_e972a3
+    - Operacion_reporte_de_prorroga_en_sepaimpo_8327f3
+    - Operacion_reporte_en_sepaimpo_de_circunstancias_modificatorias_c5f2ff
+    - Operacion_reporte_sepaimpo_afectaciones_despachos_importacion_0286df
+    - Operacion_reporte_sepaimpo_zfe_con_transferencia_aduanera_06321a
+    - Operacion_representacion_ante_camara_electronica_compensacion_e77be6
+    - Operacion_rescision_relaciones_contractuales_boton_baja_8f9e65
+    - Operacion_restitucion_de_capital_48a922
+    - Operacion_retiro_de_tarjeta_magnetica_3a985e
+    - Operacion_retitulizacion_8cc287
+    - Operacion_revision_exhaustiva_esquema_medicion_riesgo_mercado_aa3850
+    - Operacion_revocacion_de_aceptacion_de_producto_o_servicio_f08bf6
+    - Operacion_revocacion_de_autorizaciones_para_librar_cheques_346e4b
+    - Operacion_seguimiento_de_negociaciones_de_divisas_por_exportaciones_c212a9
+    - Operacion_seguimiento_de_operaciones_para_proyectos_punto_7_9_2_311ff3
+    - Operacion_seguimiento_de_pago_con_ingreso_aduanero_pendiente_8dada3
+    - Operacion_seguimiento_de_pagos_registro_aduanero_ab8ef8
+    - Operacion_seguimiento_ejecucion_proyecto_financiacion_6433fd
+    - Operacion_seguimiento_periodico_aplicacion_medicion_riesgo_eeac2c
+    - Operacion_seguimiento_permisos_de_embarques_en_el_exterior_c82ddc
+    - Operacion_seleccion_de_calificaciones_para_exposicion_455555
+    - Operacion_solicitud_de_declaracion_jurada_debida_diligencia_ocde_cf4312
+    - Operacion_solicitud_de_productos_o_servicios_financieros_3520fd
+    - Operacion_suscripcion_bopreal_por_importadores_d218dc
+    - Operacion_suscripcion_de_bopreal_por_importadores_12cfe7
+    - Operacion_tarea_de_clasificacion_71550f
+    - Operacion_tenencia_de_efectivo_en_caja_transito_y_cajeros_automaticos_d44d8d
+    - Operacion_transferencia_de_cheques_diferidos_para_negociacion_bursatil_8523f7
+    - Operacion_transferencia_de_cheques_mediante_endoso_eae465
+    - Operacion_transferencia_de_responsabilidad_a_terceros_c0954a
+    - Operacion_transferencia_de_titulos_valores_a_entidades_depositarias_del_exterior_5edfa0
+    - Operacion_transferencia_directa_de_fondos_a_cuenta_local_del_cliente_bfe94d
+    - Operacion_transferencia_moneda_cuenta_misma_moneda_1627c8
+    - Operacion_transmision_de_certificado_por_endoso_6ff931
+    - Operacion_transmision_integra_de_echeq_al_repositorio_c8cba5
+    - Operacion_tratamiento_de_opciones_0f920f
+    - Operacion_tratamiento_de_posiciones_en_fondos_20c13b
+    - Operacion_uso_de_nombre_apellido_rectificado_genero_499e51
+    - Operacion_uso_de_tarjetas_magneticas_en_cajeros_automaticos_1361d1
+    - Operacion_uso_del_enfoque_estandarizado_para_ponderadores_de_titulizacion_0929c6
+    - Operacion_utilizacion_de_calificaciones_crediticias_ecai_4d0878
+    - Operacion_utilizacion_de_fondos_de_pgc_para_pagos_a_proveedores_bb9393
+    - Operacion_utilizacion_de_instrumentos_y_metodologia_de_pago_29c114
+    - Operacion_valuacion_a_mercado_de_posiciones_0b9aa4
+    - Operacion_valuacion_a_modelo_7696c2
+    - Operacion_valuacion_de_posiciones_menos_liquidas_c103fd
+    - Operacion_valuacion_diaria_a_precios_de_mercado_34c4b8
+    - Operacion_venta_de_titulos_valores_con_liquidacion_en_moneda_extranjera_4af05a
+    - Operacion_verificacion_de_secuencia_numerica_de_cheques_y_formulas_a0b2a4
+    - Operacion_verificacion_independiente_de_precios_datos_a31d4d
+    - Operacion_verificacion_previa_a_certificacion_c5f0b6
+    - Operacion_vigilancia_del_sistema_de_incentivos_economicos_92765a
+Potestad: 0 sin establecida_en
+Restriccion: 1 sin establecida_en
+    - Restriccion_dichas_operaciones_deberan_haber_sido_autorizadas_por_la_aduana_ce30ec
+```
+
+### S11 — WARN
+
+WARN — Todo nodo del dominio congelado de aplica_a (Excepcion/Obligacion/Operacion/Potestad/Restriccion) tiene >=1 arista saliente aplica_a.
+
+**Resultado:** Sin aplica_a: Excepcion=283, Obligacion=222, Operacion=1506, Potestad=98, Restriccion=201 (total 2310).
+
+```
+Excepcion: 283 sin aplica_a
+    - Excepcion_a_esos_efectos_no_se_considerara_refinanciacion_la_asistencia_que_se_otorgue_a_l_094220
+    - Excepcion_a_excepcion_de_las_opciones_sobre_acciones_e_indices_bursatiles_que_se_tratan_en_9008eb
+    - Excepcion_a_excepcion_de_los_casos_en_que_la_falta_de_pago_del_importador_se_origine_en_un_96f781
+    - Excepcion_a_fin_de_ser_excluidas_de_la_central_de_cheques_rechazados_y_o_de_la_central_de__aa36bc
+    - Excepcion_aplicacion_de_exigencia_adicional_de_2_puede_extenderse_a_posiciones_opuestas_en_27e086
+    - Excepcion_aquellos_productos_que_no_contengan_soja_estan_exceptuados_de_la_posicion_arance_759640
+    - Excepcion_asistencia_crediticia_concedida_a_traves_de_las_sucursales_o_subsidiarias_en_el__62ba49
+    - Excepcion_bancos_u_otras_instituciones_financieras_del_exterior_sujetos_a_supervision_sobr_27d789
+    - Excepcion_casa_matriz_de_las_sucursales_locales_de_bancos_del_exterior_o_sus_filiales_y_su_16ff44
+    - Excepcion_cheques_librados_a_favor_de_los_titulares_de_las_cuentas_sobre_las_que_se_giren__0595fc
+    - Excepcion_con_excepcion_de_los_casos_contemplados_en_el_punto_4_1_ee5f41
+    - Excepcion_con_la_expresa_autorizacion_del_titular_de_la_cuenta_corriente_se_libera_la_obli_6b56b8
+    - Excepcion_cuando_al_menos_se_haya_cumplido_con_el_pago_sin_haber_incurrido_en_atrasos_supe_89d1dc
+    - Excepcion_cuando_el_cliente_sea_un_vehiculo_de_proyecto_unico_adherido_al_rigi_que_haya_de_f05a0e
+    - Excepcion_cuando_el_cliente_sea_un_vpu_adherido_al_rigi_que_cumple_con_la_declaracion_de_i_47757d
+    - Excepcion_cuando_el_cva_no_sea_aplicable_tampoco_lo_sera_el_factor_de_1_5_3cb0ee
+    - Excepcion_cuando_el_cva_no_sea_aplicable_tampoco_lo_sera_el_factor_de_1_5_tal_es_el_caso_d_06b3ab
+    - Excepcion_cuando_la_entidad_emplee_para_la_gestion_de_dichas_posiciones_el_valor_actual_ne_25bad8
+    - Excepcion_cuando_las_cuentas_esten_abiertas_a_nombre_de_personas_juridicas_podra_establece_648d8b
+    - Excepcion_cuando_los_adelantos_superen_el_limite_autorizado_y_o_no_sean_cancelados_en_los__e88d46
+    - Excepcion_cuando_no_corresponda_evaluar_la_capacidad_de_repago_del_deudor_por_encontrarse__d3fe80
+    - Excepcion_cuando_no_sea_exigible_la_inscripcion_en_el_registro_publico_de_comercio_por_no__8972d4
+    - Excepcion_cuando_se_trate_de_modificaciones_en_los_valores_de_comisiones_y_o_cargos_debida_354c27
+    - Excepcion_cuando_una_entidad_financiera_compre_proteccion_crediticia_a_traves_de_un_swap_d_34d77e
+    - Excepcion_de_existir_prueba_en_contrario_del_pais_de_domicilio_aplicara_el_punto_2_1_2_2ebd0e
+    - Excepcion_dicho_pago_no_exime_a_la_entidad_de_las_responsabilidades_civiles_que_pudieren_c_a2081e
+    - Excepcion_dichos_recaudos_se_consideraran_cumplidos_en_los_casos_en_que_la_gestion_de_pres_7791d9
+    - Excepcion_el_acceso_al_mercado_de_cambios_antes_de_lo_indicado_no_requerira_conformidad_pr_66d277
+    - Excepcion_el_acceso_tambien_podra_ser_dado_a_los_fideicomisos_constituidos_en_el_pais_para_5d0667
+    - Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos_07108d
+    - Excepcion_el_cliente_puede_demostrar_que_no_puede_cancelar_de_dicha_forma_por_causas_ajena_b3ac8b
+    - Excepcion_el_importe_resultante_luego_de_realizar_el_ajuste_por_volatilidad_sera_inferior__f98a24
+    - Excepcion_el_importe_resultante_luego_de_realizar_el_ajuste_por_volatilidad_sera_superior__ee3cd8
+    - Excepcion_el_limite_del_40_no_aplica_cuando_el_deudor_contaba_con_una_certificacion_de_aum_61017d
+    - Excepcion_el_limite_del_40_no_aplica_cuando_el_deudor_contaba_con_una_certificacion_por_lo_6f6efa
+    - Excepcion_el_limite_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_el__9e3e38
+    - Excepcion_el_limite_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_el__e57969
+    - Excepcion_el_limite_se_incrementa_a_usd_200_dolares_estadounidenses_doscientos_por_operaci_e23f5b
+    - Excepcion_el_maiz_pisingallo_esta_exceptuado_de_la_posicion_arancelaria_1005_90_10_ec7848
+    - Excepcion_el_plazo_no_resulta_aplicable_a_las_ventas_que_se_realicen_con_liquidacion_contr_5d773c
+    - Excepcion_el_plazo_para_realizar_la_denuncia_se_contara_a_partir_de_la_fecha_en_que_tomo_c_e0cc89
+    - Excepcion_el_punto_3_16_3_solo_sera_aplicable_para_clientes_que_no_sean_personas_humanas_r_8eb1c7
+    - Excepcion_el_rechazo_por_la_causal_de_presentacion_anterior_a_fecha_de_pago_no_impide_una__f52fda
+    - Excepcion_el_requisito_de_conformidad_previa_del_bcra_no_resultara_aplicable_cuando_el_pag_ff2ebb
+    - Excepcion_el_requisito_de_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_844961
+    - Excepcion_el_requisito_no_se_aplicara_a_las_financiaciones_a_personas_humanas_que_esten_ga_542dcf
+    - Excepcion_el_requisito_no_se_aplicara_a_los_inmuebles_rurales_3f7f16
+    - Excepcion_ello_independientemente_de_las_comisiones_y_o_cargos_que_correspondan_por_la_ges_41df3f
+    - Excepcion_ello_salvo_que_por_aplicacion_de_otras_pautas_corresponda_categorizarlo_en_el_ni_c4fdb3
+    - Excepcion_en_caso_de_no_disponer_de_la_documentacion_de_capitalizacion_el_cliente_debera_p_7a14ba
+    - Excepcion_en_caso_de_no_disponer_de_la_documentacion_que_avale_la_capitalizacion_definitiv_c06b07
+    - Excepcion_en_caso_de_no_efectuarse_la_evaluacion_cualquiera_sea_el_motivo_estos_clientes_s_c3508c
+    - Excepcion_en_caso_de_no_existir_dicha_jerarquia_la_pertinente_presentacion_estara_a_cargo__80a40c
+    - Excepcion_en_caso_de_que_alguna_de_las_personas_detallada_en_el_punto_3_16_3_3_sea_un_ente_f154a6
+    - Excepcion_en_caso_de_que_el_trimestre_de_referencia_sea_el_cuarto_de_2022_del_monto_dispon_5a5aaa
+    - Excepcion_en_caso_de_que_la_operacion_haya_sido_liquidada_por_mas_de_una_entidad_cada_una__8dcf54
+    - Excepcion_en_caso_de_quiebra_o_liquidacion_5f1107
+    - Excepcion_en_casos_de_datos_provenientes_de_liquidaciones_forzadas_ventas_criticas_o_merca_5f3a22
+    - Excepcion_en_el_caso_de_operaciones_comprendidas_en_el_punto_7_11_1_6_tambien_se_admitira__0ff115
+    - Excepcion_en_el_caso_de_operaciones_fuera_del_horario_de_atencion_de_las_entidades_financi_152ab4
+    - Excepcion_en_el_supuesto_de_adulteracion_el_rechazo_del_cheque_no_se_comunicara_cuando_exi_48b261
+    - Excepcion_en_la_medida_en_que_la_seleccion_no_sea_discrecional_la_incorporacion_de_credito_88f1bd
+    - Excepcion_en_los_casos_de_deudores_por_servicios_publicos_o_por_tarjetas_de_credito_no_ser_1a9be7
+    - Excepcion_es_optativo_cuando_el_saldo_de_deuda_sea_inferior_al_monto_establecido_en_el_pun_cfefc8
+    - Excepcion_estan_exceptuados_de_la_exigencia_de_presentacion_de_declaracion_jurada_los_deud_c50138
+    - Excepcion_estan_exceptuados_los_inmuebles_adquiridos_mediante_subasta_judicial_del_requisi_cd463c
+    - Excepcion_este_requisito_complementario_no_resultara_aplicable_cuando_el_acceso_al_mercado_a37d5b
+    - Excepcion_este_requisito_no_resultara_aplicable_cuando_el_cliente_sea_un_vehiculo_de_proye_a93c99
+    - Excepcion_este_requisito_no_resultara_aplicable_cuando_la_operacion_encuadre_en_alguna_de__245502
+    - Excepcion_este_requisito_no_resultara_aplicable_cuando_la_operacion_encuadre_en_alguna_de__479eca
+    - Excepcion_este_requisito_no_resultara_aplicable_cuando_se_cumpla_la_totalidad_de_las_sigui_5225c8
+    - Excepcion_este_requisito_no_resultara_aplicable_si_el_cliente_es_un_vehiculo_de_proyecto_u_c9b38b
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_el_sector_publico_ccacb4
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_las_personas_juridicas_que_tengan_a_su_f111bf
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_los_fideicomisos_constituidos_con_apor_8a3a5d
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_todas_las_organizaciones_empresariales_259fb4
+    - Excepcion_excepcion_de_la_restriccion_cuando_el_registro_o_custodia_se_encuentre_a_cargo_d_b39aba
+    - Excepcion_excepcion_de_liquidacion_de_cobros_de_exportaciones_de_bienes_y_servicios_para_l_f74c40
+    - Excepcion_excepto_cuando_la_entidad_lo_obtenga_en_forma_electronica_o_digital_conforme_a_l_e133ce
+    - Excepcion_excepto_cuando_la_garantia_cubra_unicamente_el_capital_en_cuyo_caso_se_considera_e7e79f
+    - Excepcion_excepto_cuando_la_gestion_de_cobro_sea_realizada_por_una_entidad_financiera_no_a_4058e9
+    - Excepcion_excepto_cuando_se_empleen_boletas_de_deposito_282797
+    - Excepcion_excepto_en_caso_de_liquidacion_de_la_entidad_cuando_asi_correspondiese_67b9db
+    - Excepcion_excepto_en_los_casos_previstos_en_el_segundo_parrafo_del_punto_2_1_2_y_en_los_pu_cc4193
+    - Excepcion_excepto_para_aquellos_casos_en_que_expresamente_se_prevea_la_posibilidad_de_que__5efbf5
+    - Excepcion_excepto_para_la_cancelacion_en_el_pais_a_partir_de_su_vencimiento_de_capital_e_i_00f42b
+    - Excepcion_excepto_que_la_repatriacion_se_concrete_a_partir_de_un_canje_y_o_arbitraje_con_l_95a84a
+    - Excepcion_excepto_que_se_observe_en_materia_de_comisiones_y_o_cargos_las_mismas_condicione_7b89fd
+    - Excepcion_excepto_que_se_trate_de_asociaciones_mutuales_o_cooperativas_77ba7b
+    - Excepcion_excepto_que_se_trate_de_las_exposiciones_a_que_se_refieren_los_puntos_2_12_2_2_y_a28f78
+    - Excepcion_excepto_que_se_trate_de_operaciones_contra_cable_que_utilicen_cuentas_de_tercero_94db55
+    - Excepcion_financiaciones_que_cuenten_con_aval_de_banco_del_exterior_que_cumpla_con_lo_prev_28ec86
+    - Excepcion_financiaciones_vinculadas_a_operaciones_de_comercio_exterior_5b1891
+    - Excepcion_financiaciones_vinculadas_a_operaciones_de_compraventa_de_titulos_valores_concer_ecd05b
+    - Excepcion_garantias_otorgadas_a_favor_del_bcra_y_por_obligaciones_directas_quedan_excluida_84a127
+    - Excepcion_haberse_dispuesto_medidas_cautelares_sobre_los_fondos_destinados_para_el_pago_de_daf62d
+    - Excepcion_incluso_cuando_no_se_cumplan_los_requisitos_establecidos_para_el_acceso_del_clie_2d53ed
+    - Excepcion_insuficiencia_de_fondos_de_no_haberse_dispuesto_la_medida_cautelar_conforme_a_lo_6aa0c9
+    - Excepcion_la_cobertura_del_riesgo_de_credito_que_tenga_un_plazo_de_vencimiento_original_in_3fa3a4
+    - Excepcion_la_conformidad_previa_del_bcra_no_sera_requerida_cuando_se_trate_de_un_endeudami_d83205
+    - Excepcion_la_conformidad_previa_no_aplica_cuando_adicionalmente_a_los_restantes_requisitos_ac6434
+    - Excepcion_la_constancia_de_aceptacion_por_parte_de_esta_ultima_liberara_a_la_entidad_previ_85f668
+    - Excepcion_la_constancia_de_aceptacion_por_parte_de_la_nueva_entidad_libera_a_la_entidad_pr_a8cae7
+    - Excepcion_la_correspondiente_a_las_sucursales_de_los_bancos_extranjeros_que_debera_remitir_d28a5f
+    - Excepcion_la_devolucion_del_documento_no_aplica_cuando_la_entidad_otorgue_su_aval_f89156
+    - Excepcion_la_ead_de_un_conjunto_de_neteo_que_solo_comprende_opciones_vendidas_podra_ser_ce_f01deb
+    - Excepcion_la_exigencia_maxima_de_capital_para_las_entidades_financieras_originantes_previs_404fbd
+    - Excepcion_la_exportacion_a_consumo_de_bienes_que_conforman_el_equipaje_no_acompanado_expor_0e92a5
+    - Excepcion_la_falta_de_firma_del_librador_no_determina_la_carencia_de_valor_como_cheque_cua_58850b
+    - Excepcion_la_falta_de_recepcion_por_parte_del_librador_o_del_cuentacorrentista_de_los_avis_6f5b56
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_38a389
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_443e52
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_44ff95
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_7acd7f
+    - Excepcion_la_liquidacion_de_las_divisas_remitidas_a_la_entidad_local_por_la_contraparte_pa_8fa4b6
+    - Excepcion_la_obligacion_no_aplicara_cuando_se_trate_de_modificaciones_en_el_numero_de_docu_bf163e
+    - Excepcion_la_operacion_de_exportacion_a_consumo_con_destinacion_de_importacion_temporaria__306331
+    - Excepcion_la_parte_de_la_exposicion_cubierta_estara_sujeta_a_un_minimo_del_20_salvo_lo_dis_b994aa
+    - Excepcion_la_perdida_de_beneficios_y_o_baja_de_restantes_productos_o_servicios_no_aplica_a_713024
+    - Excepcion_la_permanencia_de_180_dias_no_aplica_cuando_por_aplicacion_de_otras_pautas_corre_3bf3b9
+    - Excepcion_la_presencia_de_una_opcion_de_exclusion_no_originara_exigencia_de_capital_alguna_d48441
+    - Excepcion_la_prohibicion_de_instalacion_de_oficinas_de_representacion_en_el_exterior_no_ap_f8c069
+    - Excepcion_la_reduccion_en_las_tasas_de_interes_pactadas_no_se_considera_indicador_de_alto__b05dcf
+    - Excepcion_las_asistencias_asi_otorgadas_no_seran_consideradas_a_los_fines_a_que_se_refiere_8c9c02
+    - Excepcion_las_asistencias_otorgadas_en_las_condiciones_a_que_se_refiere_el_segundo_parrafo_281f02
+    - Excepcion_las_disposiciones_sobre_reintegro_no_aplicaran_en_la_medida_en_que_se_opongan_a__c3890a
+    - Excepcion_las_entidades_no_observaran_esta_exigencia_de_capital_cuando_se_trate_de_operaci_68acbe
+    - Excepcion_las_exportaciones_correspondientes_a_los_capitulos_26_excepto_las_posiciones_260_ba043b
+    - Excepcion_las_exportaciones_embarcadas_dentro_del_ano_de_plazo_quedan_exceptuadas_del_0_ce_e36d4f
+    - Excepcion_las_exportaciones_embarcadas_luego_del_plazo_de_1_un_ano_quedan_exceptuadas_del__d08aa8
+    - Excepcion_las_exportaciones_embarcadas_luego_del_plazo_de_2_dos_anos_quedan_exceptuadas_de_5673e9
+    - Excepcion_las_exportaciones_embarcadas_luego_del_plazo_de_3_tres_anos_quedan_exceptuadas_d_d7c760
+    - Excepcion_las_garantias_otorgadas_a_favor_del_banco_central_de_la_republica_argentina_esta_9e4e74
+    - Excepcion_las_importaciones_realizadas_por_empresas_que_presten_servicios_de_aeronavegacio_ff3a3a
+    - Excepcion_las_inversiones_en_acciones_estructuradas_con_el_objeto_de_replicar_la_realidad__493ee2
+    - Excepcion_las_liquidaciones_encuadradas_en_la_operatoria_con_titulos_valores_por_cuenta_y__5fac23
+    - Excepcion_las_modificaciones_en_el_nombre_y_o_apellido_de_las_personas_fisicas_o_en_otros__4fe2e3
+    - Excepcion_las_modificaciones_que_resulten_economicamente_mas_beneficiosas_para_el_usuario__e0be92
+    - Excepcion_las_operaciones_aduaneras_bajo_regimen_de_muestras_articulos_560_al_565_de_la_le_e5eb72
+    - Excepcion_las_operaciones_aduaneras_por_ventajas_aduaneras_u_otras_situaciones_previstas_e_0fdbc1
+    - Excepcion_las_operaciones_aduaneras_que_se_detallan_en_el_punto_8_5_17_estan_exceptuadas_d_70c445
+    - Excepcion_las_operaciones_correspondientes_a_regimen_de_franquicia_diplomatica_articulos_5_9be3ad
+    - Excepcion_las_operaciones_de_financiacion_con_titulos_valores_securities_financing_transac_193d2c
+    - Excepcion_las_operaciones_seran_consideradas_como_sin_garantia_821fbd
+    - Excepcion_las_posiciones_que_esten_compensadas_con_instrumentos_identicos_quedan_exceptuad_1ad2c5
+    - Excepcion_las_primas_por_opciones_de_compra_y_de_venta_tomadas_estan_excluidas_de_las_fina_601305
+    - Excepcion_las_siguientes_garantias_otorgadas_por_obligaciones_directas_2d6334
+    - Excepcion_las_ventas_con_liquidacion_en_moneda_extranjera_en_el_exterior_o_las_transferenc_65b899
+    - Excepcion_las_ventas_con_liquidacion_en_moneda_extranjera_en_el_pais_o_en_el_exterior_de_l_8640b8
+    - Excepcion_lo_previsto_en_este_parrafo_no_sera_de_aplicacion_cuando_el_cliente_reuna_la_con_0cac32
+    - Excepcion_los_cheques_emitidos_con_anterioridad_a_la_pertinente_notificacion_de_cierre_ser_c450c1
+    - Excepcion_los_deudores_en_situacion_irregular_no_seran_clasificados_en_la_categoria_irrecu_8b5ca9
+    - Excepcion_los_endeudamientos_desembolsados_con_anterioridad_al_01_09_19_58ccea
+    - Excepcion_los_gastos_podran_ser_trasladados_al_cuentacorrentista_cuando_el_pedido_de_modif_30fc7b
+    - Excepcion_los_instrumentos_tlac_computables_como_responsabilidad_patrimonial_computable_co_e8e08e
+    - Excepcion_los_limites_maximos_y_minimos_establecidos_sobre_las_tasas_de_interes_no_seran_c_4cd6ed
+    - Excepcion_los_margenes_acordados_para_los_descubiertos_en_cuenta_corriente_y_los_limites_d_352a28
+    - Excepcion_los_permisos_que_revistan_la_condicion_de_incumplido_en_gestion_de_cobro_no_sera_1f9eff
+    - Excepcion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_785175
+    - Excepcion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_86f431
+    - Excepcion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene_47f91f
+    - Excepcion_los_titulos_valores_emitidos_por_la_contraparte_o_un_vinculado_a_ella_no_son_adm_9cdcc8
+    - Excepcion_no_alcanza_la_exigencia_de_documentacion_en_braille_a_comprobantes_por_operacion_42da08
+    - Excepcion_no_aplica_el_plazo_maximo_de_10_dias_cuando_i_se_trata_de_la_situacion_prevista__e44770
+    - Excepcion_no_aplica_en_los_casos_a_que_se_refiere_el_punto_1_5_2_8_segundo_parrafo_172a80
+    - Excepcion_no_aplica_la_conformidad_previa_del_bcra_cuando_la_operacion_encuadre_en_alguna__7ec7f5
+    - Excepcion_no_aplica_la_obligacion_de_informar_al_bcra_en_la_situacion_prevista_en_los_dos__1efc3e
+    - Excepcion_no_aplicara_el_requisito_de_conformidad_previa_del_bcra_para_las_operaciones_de__5c83ee
+    - Excepcion_no_aplicara_la_clasificacion_obligatoria_de_irrecuperable_en_el_caso_de_deudores_46f4b3
+    - Excepcion_no_corresponde_el_pago_cuando_se_trate_de_rechazos_producidos_entre_la_fecha_de__16f6a1
+    - Excepcion_no_corresponde_la_presentacion_de_esas_declaraciones_juradas_por_cada_una_de_las_8e76e4
+    - Excepcion_no_correspondera_la_comunicacion_al_bcra_de_los_rechazos_motivados_por_falsifica_ba82ed
+    - Excepcion_no_deberan_considerarse_aquellos_bienes_que_cuenten_con_las_ventajas_aduaneras_e_82e991
+    - Excepcion_no_deberan_considerarse_las_exportaciones_a_consumo_con_despacho_de_importacion__f7e250
+    - Excepcion_no_deberan_considerarse_los_bienes_exportados_a_traves_de_operaciones_exceptuada_1823a8
+    - Excepcion_no_es_necesario_contar_con_la_conformidad_previa_del_bcra_para_dar_acceso_al_mer_be1e4a
+    - Excepcion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_y_qu_726a0d
+    - Excepcion_no_implica_la_inclusion_en_la_causal_a_que_se_refiere_el_punto_9_1_2_a809ff
+    - Excepcion_no_procedera_la_inclusion_respecto_de_apoderados_para_el_uso_de_la_cuenta_corrie_811545
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_cancelaciones_d_867faa
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__0dd713
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__3a02a7
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__449b40
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__a0f1f6
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__ad7a24
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_pro_2a4c62
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_pagos_al_exteri_6641b5
+    - Excepcion_no_resultara_aplicable_el_requisito_de_conformidad_previa_del_bcra_cuando_el_cli_b87ef0
+    - Excepcion_no_resultara_aplicable_el_requisito_de_conformidad_previa_del_bcra_cuando_la_ope_969407
+    - Excepcion_no_se_considerara_error_el_rechazo_del_cheque_respecto_del_cual_haya_mediado_aut_52b4bc
+    - Excepcion_no_se_consideraran_comprendidas_en_la_definicion_de_nuevas_financiaciones_o_refi_22a599
+    - Excepcion_no_se_consideraran_las_exportaciones_industriales_comprendidas_en_acuerdos_inter_c85d60
+    - Excepcion_no_se_consideraran_las_inversiones_obligatorias_que_deban_realizar_las_sucursale_cf01f5
+    - Excepcion_no_se_consideraran_refinanciaciones_otorgadas_a_productores_cuando_ello_resulte__965708
+    - Excepcion_no_se_deberan_computar_los_montos_de_instrumentos_con_vinculacion_crediticia_u_o_53d74c
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_bancos_u_otr_e0dca7
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_la_casa_matr_db0767
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_otros_bancos_d51f60
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_sucursales_y_4a5524
+    - Excepcion_no_se_deduciran_los_saldos_que_con_caracter_transitorio_y_circunstancial_se_orig_c04097
+    - Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d
+    - Excepcion_no_se_incluyen_las_operaciones_de_pase_que_no_hayan_podido_liquidarse_en_el_comp_8540a9
+    - Excepcion_no_se_incluyen_los_ingresos_de_importaciones_temporarias_sin_giro_de_divisas_96c979
+    - Excepcion_no_se_incluyen_los_registros_aduaneros_por_importaciones_suspensivas_de_deposito_e1f518
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_para_acceso_al_mercado_de_cambios_cua_1fc6c3
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_para_la_operatoria_con_derivados_cuan_2454c1
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_si_tal_requisito_estuviese_vigente_al_598ad0
+    - Excepcion_no_sera_aplicable_en_el_caso_de_financiaciones_otorgadas_a_traves_de_la_suscripc_4a7f8b
+    - Excepcion_no_sera_de_aplicacion_en_las_operaciones_con_contrapartes_a_las_cuales_el_bcra_l_3ff724
+    - Excepcion_no_sera_necesaria_la_presentacion_del_documento_anterior_47ab11
+    - Excepcion_operaciones_aduaneras_de_envios_de_asistencia_y_salvamento_estan_exceptuadas_del_04d0f6
+    - Excepcion_operaciones_aduaneras_exceptuadas_del_seguimiento_por_regimen_de_corredores_de_c_4b50cd
+    - Excepcion_operaciones_aduaneras_realizadas_mediante_medios_de_transporte_de_guerra_segurid_cfd702
+    - Excepcion_otros_bancos_del_exterior_autorizados_a_intervenir_en_los_regimenes_de_convenios_3dec9c
+    - Excepcion_para_fondos_percibidos_o_acreditados_en_exterior_se_considera_cumplimentado_ingr_1867b0
+    - Excepcion_para_vpu_rigi_que_declararon_ante_la_autoridad_de_aplicacion_intencion_de_usar_b_045fa6
+    - Excepcion_pases_activos_de_dolares_estadounidenses_y_de_titulos_valores_publicos_nacionale_c3b75d
+    - Excepcion_podran_cumplimentar_el_requisito_de_cuil_obteniendo_una_copia_simple_en_papel_o__d87a86
+    - Excepcion_por_la_porcion_que_corresponda_a_una_capitalizacion_de_intereses_prevista_en_el__930258
+    - Excepcion_quedan_excluidas_de_la_operacion_s06_viajes_las_operaciones_asociadas_a_retiros__9b13dc
+    - Excepcion_quedan_excluidos_aquellos_defectos_de_aplicacion_que_se_originen_en_operaciones__0510cf
+    - Excepcion_quedan_excluidos_de_la_definicion_de_divisas_en_moneda_extranjera_las_monedas_y__10bce6
+    - Excepcion_ratio_de_apalancamiento_mantiene_la_consolidacion_3_como_excepcion_a_la_suspensi_3353b3
+    - Excepcion_regimen_de_donacion_de_organos_y_sangre_humana_resolucion_384_97_de_la_administr_398f3c
+    - Excepcion_resultara_aplicable_lo_dispuesto_en_el_punto_14_1_4_fc0e21
+    - Excepcion_resultaran_de_aplicacion_las_disposiciones_sobre_extravio_sustraccion_o_adultera_a08c1d
+    - Excepcion_salvo_decision_de_autoridad_competente_que_obligue_al_cierre_inmediato_c9d545
+    - Excepcion_salvo_lo_previsto_en_el_apartado_12_2_3_2_2e4f79
+    - Excepcion_salvo_que_el_cliente_cuente_con_una_declaracion_jurada_en_la_que_deje_constancia_a2dd53
+    - Excepcion_salvo_que_la_operacion_quedase_comprendida_en_la_situacion_prevista_en_el_punto__4eb9c3
+    - Excepcion_salvo_que_por_aplicacion_de_otras_pautas_corresponda_categorizarlo_en_el_nivel_i_4baf2d
+    - Excepcion_salvo_que_resulte_aplicable_el_procedimiento_de_truncamiento_en_cuyo_caso_se_est_ebd2e2
+    - Excepcion_salvo_que_se_tratara_de_un_cheque_girado_entre_distintos_establecimientos_de_un__96ec1c
+    - Excepcion_salvo_que_se_trate_de_evaluaciones_privadas_7d221e
+    - Excepcion_salvo_que_se_utilicen_escrituras_mecanizadas_de_seguridad_e01ac3
+    - Excepcion_salvo_situaciones_de_fuerza_mayor_ajenas_a_la_voluntad_del_importador_se_exceptu_2aff62
+    - Excepcion_se_admitira_unicamente_el_crecimiento_originado_por_el_devengamiento_de_interese_c5e160
+    - Excepcion_se_exceptua_de_la_prohibicion_general_el_pago_en_el_pais_a_partir_de_su_vencimie_c59cb1
+    - Excepcion_se_exceptua_la_prohibicion_cuando_se_trate_de_inversiones_en_titulos_publicos_ex_6792e8
+    - Excepcion_se_exceptua_la_prohibicion_para_la_cancelacion_en_el_pais_a_partir_del_vencimien_e0453a
+    - Excepcion_se_exceptuan_cuando_los_cheques_se_depositen_en_la_caja_de_valores_s_a_para_ser__01f444
+    - Excepcion_se_exceptuan_de_la_limitacion_los_endosos_que_las_entidades_financieras_realicen_7ad0de
+    - Excepcion_se_exceptuan_los_endosos_a_favor_del_bcra_cb7ccc
+    - Excepcion_se_exceptuan_los_endosos_efectuados_en_los_echeq_c256ed
+    - Excepcion_se_excluiran_del_monto_de_ventas_totales_aquellas_realizadas_por_la_empresa_en_e_2ec8f1
+    - Excepcion_se_excluye_del_tratamiento_previsto_en_los_acapites_i_y_ii_a_las_lineas_continge_7f73c9
+    - Excepcion_se_excluyen_las_exposiciones_previstas_en_el_punto_2_11_0db7e7
+    - Excepcion_se_excluyen_los_casos_en_que_las_acciones_se_refieren_a_la_discusion_sobre_otros_7f986a
+    - Excepcion_se_excluyen_tanto_las_estructuras_en_las_que_se_utilizan_los_flujos_de_efectivo__8b64d2
+    - Excepcion_se_observara_lo_establecido_en_el_acapite_i_aplicacion_de_obligacion_presentar_p_f5a32c
+    - Excepcion_se_permite_la_liquidacion_mediante_deposito_en_cuentas_de_terceros_cuando_se_tra_b28140
+    - Excepcion_se_podra_excluir_del_computo_de_la_exigencia_de_capital_por_riesgo_general_de_me_4d4487
+    - Excepcion_se_presenten_irregularidades_en_la_cadena_de_endosos_c098cd
+    - Excepcion_se_produzca_un_evento_idiosincrasico_y_extraordinario_del_que_resulte_una_reducc_2671c5
+    - Excepcion_se_realicen_ajustes_por_razones_objetivas_012af3
+    - Excepcion_se_realicen_mejoras_de_caracter_permanente_en_el_inmueble_que_incrementen_su_val_e075cd
+    - Excepcion_se_trata_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_con_una_vi_7b26cc
+    - Excepcion_se_trate_de_operaciones_propias_de_las_entidades_financieras_locales_8f1285
+    - Excepcion_se_trate_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_que_encuad_5123f9
+    - Excepcion_se_trate_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_que_tenga__6d9414
+    - Excepcion_se_verifique_la_situacion_prevista_en_el_segundo_parrafo_del_punto_6_4_6_1_insuf_510979
+    - Excepcion_si_el_cliente_es_beneficiario_directo_del_decreto_277_22_el_valor_de_los_benefic_b2187f
+    - Excepcion_si_es_necesario_llegar_al_50_de_cobertura_del_primer_semestre_se_completara_con__6fba09
+    - Excepcion_si_existiesen_fondos_destinados_al_pago_de_fletes_de_importaciones_de_bienes_no__b1c3f1
+    - Excepcion_si_no_se_cumple_al_menos_una_de_las_dos_condiciones_senaladas_registro_de_export_2557ec
+    - Excepcion_sin_la_conformidad_previa_requerida_en_el_punto_3_3_3_bdd9fc
+    - Excepcion_sin_la_conformidad_previa_requerida_en_el_punto_3_3_3_para_pagos_de_intereses_de_67bd78
+    - Excepcion_sin_necesidad_de_contar_con_la_conformidad_previa_del_bcra_si_tal_requisito_estu_5ed237
+    - Excepcion_sin_necesidad_de_contar_con_la_conformidad_previa_del_bcra_si_tal_requisito_estu_cbe2a1
+    - Excepcion_sin_perjuicio_de_la_eventual_aplicacion_de_los_motivos_de_rechazo_previstos_en_l_a2b7a7
+    - Excepcion_sin_perjuicio_de_lo_anterior_estan_exceptuadas_las_deudas_que_reunan_todas_las_c_0979ca
+    - Excepcion_sin_perjuicio_de_lo_previsto_en_los_puntos_5_1_a_5_3_de_las_normas_sobre_autoriz_d73ea4
+    - Excepcion_sin_perjuicio_de_los_conceptos_que_deban_trasladar_a_los_clientes_por_tributos_r_ab7589
+    - Excepcion_sin_perjuicio_de_los_servicios_adicionales_para_facilitar_la_carga_masiva_de_dic_c4c7e6
+    - Excepcion_sin_perjuicio_de_su_informacion_segun_las_normas_que_se_establezcan_en_los_regim_393199
+    - Excepcion_sin_perjuicio_del_pago_parcial_que_podra_efectuar_la_entidad_conforme_a_lo_dispu_cedb2b
+    - Excepcion_sucursales_y_subsidiarias_de_entidades_financieras_locales_sujetas_al_regimen_de_fba41c
+    - Excepcion_tambien_se_podra_computar_el_valor_de_los_fletes_que_conste_en_la_documentacion__915d5c
+    - Excepcion_tampoco_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a__31f94a
+    - Excepcion_titulos_de_deuda_con_registro_publico_en_el_pais_comprendidos_en_el_punto_3_5_qu_b472af
+    - Excepcion_transferencias_realizadas_por_representaciones_en_el_pais_de_tribunales_autorida_567116
+    - Excepcion_unicamente_se_admitira_la_constitucion_de_las_garantias_en_cuentas_abiertas_en_e_b69359
+    - Excepcion_valores_a_favor_de_terceros_destinados_al_pago_de_sueldos_y_otras_retribuciones__f31349
+Obligacion: 222 sin aplica_a
+    - Obligacion_a_efectos_de_generar_confianza_respecto_tanto_de_la_exactitud_de_lo_informado_so_3c5e87
+    - Obligacion_a_fin_de_asegurar_que_los_fiduciarios_y_administradores_tengan_amplia_experienci_528433
+    - Obligacion_a_fin_de_asistir_a_los_inversores_en_la_realizacion_de_un_apropiado_proceso_de_d_ad659b
+    - Obligacion_a_las_categorias_bcra_gobierno_nacional_gobiernos_provinciales_municipales_y_de__24c12e
+    - Obligacion_a_los_efectos_del_reconocimiento_de_la_cobertura_del_riesgo_de_credito_se_tendra_eabc19
+    - Obligacion_a_partir_de_su_incorporacion_al_seguimiento_resultaran_de_aplicacion_las_normas__a95037
+    - Obligacion_acompanar_la_documentacion_que_acredite_el_reclamo_informado_o_indicar_su_locali_bda289
+    - Obligacion_adicionalmente_al_momento_de_la_inclusion_del_activo_en_la_cartera_de_subyacente_410493
+    - Obligacion_adicionalmente_se_insertara_alguna_de_las_siguientes_expresiones_en_procuracion__57172c
+    - Obligacion_adjuntar_copia_simple_o_imagen_del_documento_de_identificacion_del_presentante_y_559b15
+    - Obligacion_al_calcular_la_exigencia_maxima_de_capital_se_deducira_el_total_de_las_ganancias_d126fd
+    - Obligacion_analisis_adecuado_de_la_situacion_economica_y_financiera_del_deudor_b0d38d
+    - Obligacion_asesorara_al_directorio_sobre_los_riesgos_de_la_entidad_f71ea4
+    - Obligacion_bajo_el_mba_el_apalancamiento_se_medira_usando_el_maximo_apalancamiento_permitid_90e45c
+    - Obligacion_calculo_de_la_exposicion_a_las_operaciones_de_financiacion_con_titulos_valores_c_509ac5
+    - Obligacion_certificacion_judicial_en_original_que_acredite_haber_efectuado_la_pertinente_de_1dcd97
+    - Obligacion_confeccion_de_las_declaraciones_juradas_previstas_en_los_puntos_3_16_3_1_y_3_16__c61376
+    - Obligacion_constancia_de_las_publicaciones_que_hagan_saber_el_inicio_del_tramite_falencial__50bb66
+    - Obligacion_constatar_tanto_en_los_cheques_librados_en_formato_papel_como_en_los_certificado_70814c
+    - Obligacion_controlar_que_los_niveles_gerenciales_tomen_los_pasos_necesarios_para_identifica_152bee
+    - Obligacion_correspondera_considerarlas_como_exposiciones_a_empresas_del_sector_privado_no_f_1b6795
+    - Obligacion_cualquier_valor_excedente_de_las_acciones_que_componen_la_canasta_por_encima_del_09810c
+    - Obligacion_cuando_el_ingreso_corresponda_a_exportaciones_a_paraguay_o_a_uruguay_facturadas__1cf384
+    - Obligacion_cuando_esos_estandares_se_vean_afectados_por_cambios_el_originante_debera_comuni_310422
+    - Obligacion_cuando_existe_saldo_deudor_el_cierre_debera_al_menos_poder_ser_realizado_en_form_649f63
+    - Obligacion_cuenten_con_una_certificacion_de_incremento_de_exportaciones_asociadas_a_la_econ_bc363c
+    - Obligacion_dando_orientacion_a_los_usuarios_de_servicios_financieros_sobre_la_manera_de_can_30e385
+    - Obligacion_de_corresponder_debera_informarse_toda_condicion_o_evento_que_pueda_retrasar_o_i_3106a1
+    - Obligacion_de_haberse_realizado_el_pago_en_moneda_extranjera_documentacion_por_la_cual_se_l_d6ed16
+    - Obligacion_de_haberse_realizado_el_pago_en_moneda_extranjera_se_requerira_certificacion_de__821f64
+    - Obligacion_de_tratarse_de_documentos_expedidos_en_lengua_no_espanola_se_requerira_que_se_lo_495e94
+    - Obligacion_debe_contarse_con_la_certificacion_de_afectacion_emitida_por_la_entidad_encargad_3e0a6b
+    - Obligacion_debera_abonarse_la_suma_de_90_por_cada_modificacion_de_computo_en_la_central_de__984436
+    - Obligacion_debera_asegurarse_la_continuidad_de_los_derechos_y_obligaciones_referidos_a_dich_b961cb
+    - Obligacion_debera_demostrarse_ante_la_entidad_encargada_del_seguimiento_de_ese_pago_y_por_h_e83888
+    - Obligacion_debera_identificarse_claramente_a_las_partes_responsables_de_determinar_si_ocurr_02ca09
+    - Obligacion_debera_ofrecerse_la_utilizacion_de_mecanismos_electronicos_simples_eficaces_e_in_3dc8dd
+    - Obligacion_debera_tenerse_en_cuenta_lo_dispuesto_en_el_punto_4_3_959514
+    - Obligacion_deberian_incluirse_disposiciones_que_contemplen_el_reemplazo_de_los_administrado_ac41d1
+    - Obligacion_debiendo_cumplirse_con_los_requisitos_aplicables_para_formacion_de_activos_exter_5e1f02
+    - Obligacion_debiendose_verificarse_los_restantes_requisitos_habituales_144514
+    - Obligacion_del_50_de_las_ganancias_de_las_entidades_financieras_controladas_en_la_proporcio_f873e6
+    - Obligacion_demostrar_el_registro_de_ingreso_aduanero_de_los_bienes_dentro_de_los_90_noventa_ca0427
+    - Obligacion_documento_de_viaje_admitido_por_la_decision_mercosur_en_vigencia_2ecadd
+    - Obligacion_documento_que_lo_identifique_en_el_pais_de_residencia_expedido_de_conformidad_co_e3c3a0
+    - Obligacion_efectuar_el_seguimiento_de_los_permisos_de_embarques_cuyos_cobros_se_mantengan_e_68295c
+    - Obligacion_el_acceso_al_mercado_de_cambios_con_anterioridad_al_vencimiento_requerira_la_con_bb6877
+    - Obligacion_el_aviso_debe_consignar_el_caracter_con_el_que_fue_impuesto_d6a60a
+    - Obligacion_el_banco_central_de_la_republica_argentina_publicara_periodicamente_el_valor_dia_7c841a
+    - Obligacion_el_bcra_debe_debitar_de_la_cuenta_corriente_de_la_entidad_participante_el_import_9323d6
+    - Obligacion_el_bcra_procedera_a_debitar_de_la_cuenta_corriente_de_la_entidad_participante_el_cae03c
+    - Obligacion_el_bcra_procesara_el_cierre_de_las_rendiciones_de_cuentas_pendientes_de_las_enti_6a70fd
+    - Obligacion_el_boleto_de_compra_se_confeccionara_por_un_codigo_de_concepto_que_identifique_q_5f5af7
+    - Obligacion_el_boleto_de_venta_se_confeccionara_por_el_monto_correspondiente_con_el_codigo_d_7e212d
+    - Obligacion_el_calculo_de_k_ccp_debera_hacerse_como_minimo_con_periodicidad_trimestral_b53c8e
+    - Obligacion_el_certificado_sera_transmisible_ilimitadamente_por_endoso_en_identicas_condicio_01ffc1
+    - Obligacion_el_cliente_cumple_la_totalidad_de_las_condiciones_estipuladas_en_cada_caso_09b51b
+    - Obligacion_el_cliente_debe_contar_con_una_certificacion_por_los_regimenes_de_acceso_a_divis_96245a
+    - Obligacion_el_cliente_debe_haber_actualizado_la_declaracion_jurada_previamente_presentada_s_69bb44
+    - Obligacion_el_cliente_debe_haber_presentado_declaracion_jurada_sobre_si_reviste_o_no_el_car_1d5add
+    - Obligacion_el_cliente_debera_firmar_una_declaracion_jurada_en_la_que_se_compromete_a_ingres_d44789
+    - Obligacion_el_cliente_debera_presentar_un_documento_de_identidad_admitido_en_las_normas_sob_1469e2
+    - Obligacion_el_cliente_que_acceda_al_mercado_de_cambios_usando_este_mecanismo_debera_nominar_05a72a
+    - Obligacion_el_comite_de_auditoria_debera_coordinar_los_esfuerzos_de_las_auditorias_externa__ebf1b3
+    - Obligacion_el_comite_debe_vigilar_el_diseno_del_sistema_de_incentivos_economicos_al_persona_0cc044
+    - Obligacion_el_contrato_de_fideicomiso_debera_incluir_el_modo_de_sustitucion_del_fiduciario__2d8c47
+    - Obligacion_el_desempeno_se_debera_verificar_durante_un_periodo_minimo_de_5_anos_en_el_caso__c1101b
+    - Obligacion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_2a4a32
+    - Obligacion_el_documento_a_cobrar_o_derecho_de_credito_transferido_no_es_objeto_de_litigios__4d8930
+    - Obligacion_el_documento_debe_contar_en_su_caso_con_certificacion_notarial_040a8f
+    - Obligacion_el_documento_debe_presentarse_legalizado_consularmente_o_por_el_sistema_de_apost_846bf4
+    - Obligacion_el_estado_financiero_debera_contar_con_la_intervencion_del_auditor_externo_previ_2ac274
+    - Obligacion_el_estado_financiero_debera_estar_acompanado_de_un_informe_especial_del_auditor__f61b44
+    - Obligacion_el_estado_financiero_debera_haber_sido_previamente_presentados_ante_el_bcra_c1d20c
+    - Obligacion_el_excedente_de_rpc_atribuible_a_los_inversores_minoritarios_resultara_de_multip_b1408b
+    - Obligacion_el_exportador_debe_aportar_constancia_de_la_presentacion_efectuada_para_obtener__32d529
+    - Obligacion_el_exportador_debera_presentar_una_declaracion_jurada_en_la_cual_identifique_el__9d6ad6
+    - Obligacion_el_fiduciario_o_administrador_debera_en_todo_momento_actuar_en_forma_razonable_p_fd753d
+    - Obligacion_el_interviniente_a_quien_le_corresponde_el_anadido_debera_firmar_abarcando_tanto_2229fa
+    - Obligacion_el_monto_maximo_de_las_certificaciones_para_el_exportador_sera_informado_a_las_e_65f47a
+    - Obligacion_el_obligado_al_pago_no_cuenta_con_un_historial_de_credito_desfavorable_en_algun__5077ef
+    - Obligacion_el_obligado_al_pago_no_cuenta_con_una_evaluacion_de_una_agencia_de_calificacion__ef52dd
+    - Obligacion_el_obligado_al_pago_no_ha_sido_sometido_a_un_proceso_de_quiebra_o_de_reestructur_5f06eb
+    - Obligacion_el_otorgamiento_de_asistencia_con_metodo_especifico_de_evaluacion_no_obsta_a_que_accdb2
+    - Obligacion_el_plazo_tambien_sera_aplicable_para_las_operaciones_que_correspondan_a_las_tran_37633e
+    - Obligacion_el_ponderador_de_riesgo_que_corresponda_a_la_contraparte_se_aplicara_a_la_suma_d_c7f5a1
+    - Obligacion_el_riesgo_de_tasa_de_interes_del_derivado_se_computara_conforme_a_lo_indicado_en_12e671
+    - Obligacion_el_sistema_online_tomara_en_consideracion_exclusivamente_los_ingresos_de_divisas_cb1a83
+    - Obligacion_en_caso_de_corresponder_los_instrumentos_que_permitan_a_quien_se_presenta_actuar_3f8963
+    - Obligacion_en_caso_de_levantarse_el_pedido_de_quiebra_el_deudor_podra_ser_reclasificado_en__b3416e
+    - Obligacion_en_caso_de_no_contar_con_la_documentacion_de_capitalizacion_definitiva_el_vpu_de_2c4fed
+    - Obligacion_en_caso_de_no_disponer_de_la_documentacion_de_capitalizacion_definitiva_el_vpu_d_5c127e
+    - Obligacion_en_caso_de_que_al_momento_de_concretarse_el_acceso_el_cliente_no_cuente_con_la_d_6d0f06
+    - Obligacion_en_caso_de_que_el_vpu_contemple_la_posibilidad_de_aplicar_cobros_de_exportacione_700fdf
+    - Obligacion_en_caso_de_tratarse_de_la_repatriacion_de_un_cobro_de_capital_la_entidad_debera__158d35
+    - Obligacion_en_defecto_de_la_demostracion_del_registro_de_ingreso_aduanero_proceder_al_reing_7859c8
+    - Obligacion_en_el_caso_de_carteras_atomizadas_tales_documentos_o_derechos_deberan_ser_origin_92c9cc
+    - Obligacion_en_el_caso_de_deudores_que_hayan_solicitado_el_concurso_preventivo_correspondera_f93148
+    - Obligacion_en_el_caso_de_que_la_legislacion_aplicable_a_la_titulizacion_no_se_ajuste_a_los__6e4723
+    - Obligacion_en_estos_dos_ultimos_casos_deberan_observarse_los_requisitos_incluidos_en_el_pun_624d9c
+    - Obligacion_en_las_clausulas_del_contrato_de_cuenta_corriente_debera_preverse_que_los_debito_b97c7c
+    - Obligacion_en_los_demas_aspectos_vinculados_a_la_figura_del_endoso_rige_lo_dispuesto_en_la__4d862e
+    - Obligacion_esos_dispositivos_deberan_informar_previamente_al_cliente_las_operaciones_admiti_7ae550
+    - Obligacion_existencia_del_registro_de_ingreso_aduanero_a_su_nombre_o_a_nombre_de_un_tercero_c39060
+    - Obligacion_factura_comercial_emitida_por_el_comprador_a_su_cliente_en_el_exterior_donde_con_f4e582
+    - Obligacion_haya_liquidado_los_montos_cubiertos_por_la_compania_de_seguro_por_el_credito_imp_3f52f9
+    - Obligacion_identico_criterio_se_aplicara_para_la_determinacion_del_periodo_de_mantenimiento_d07a3c
+    - Obligacion_la_alta_gerencia_como_una_buena_practica_sera_responsable_de_e1d834
+    - Obligacion_la_asociacion_denunciante_debera_acreditar_su_condicion_de_entidad_reconocida_y__e18731
+    - Obligacion_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo__c7362c
+    - Obligacion_la_constancia_de_la_comunicacion_de_adhesion_podra_quedar_en_poder_de_la_empresa_8ff859
+    - Obligacion_la_declaracion_jurada_debera_estar_firmada_por_el_representante_legal_de_la_empr_a642ce
+    - Obligacion_la_documentacion_debera_estar_legalizada_por_autoridad_consular_o_conforme_a_lo__f765b2
+    - Obligacion_la_emision_de_una_certificacion_por_parte_de_la_entidad_implica_que_a_la_fecha_d_90cbe3
+    - Obligacion_la_entidad_cuente_con_documentacion_que_acredite_el_efectivo_ingreso_de_la_inver_d441f7
+    - Obligacion_la_entidad_cuente_con_una_declaracion_jurada_del_cliente_en_la_cual_deje_constan_e6542c
+    - Obligacion_la_entidad_debe_verificar_que_el_deudor_hubiese_tenido_acceso_para_realizar_el_p_3285a3
+    - Obligacion_la_entidad_debera_certificar_por_los_mecanismos_establecidos_que_se_ha_cumplido__cd13a3
+    - Obligacion_la_entidad_debera_verificar_en_el_sistema_online_implementado_por_el_bcra_que_el_af6a6e
+    - Obligacion_la_entidad_encargada_del_seguimiento_del_zfi_en_el_sepaimpo_debe_emitir_la_corre_4179d8
+    - Obligacion_la_entidad_financiera_ha_concretado_el_registro_de_la_financiacion_ante_el_bcra__511fbf
+    - Obligacion_la_entidad_interviniente_cuenta_con_una_declaracion_jurada_del_exportador_en_la__6e306f
+    - Obligacion_la_entidad_interviniente_debe_contar_con_i_declaracion_jurada_del_exportador_ii__9f6f71
+    - Obligacion_la_entidad_interviniente_debera_contar_con_una_certificacion_de_la_entidad_encar_057261
+    - Obligacion_la_entidad_podra_considerar_cumplimentado_parcial_o_totalmente_el_seguimiento_de_c5e605
+    - Obligacion_la_entidad_podra_dar_acceso_al_mercado_de_cambios_para_el_pago_al_exterior_en_la_c825a3
+    - Obligacion_la_entidad_responsable_debera_verificar_el_cumplimiento_de_las_condiciones_estip_eb4197
+    - Obligacion_la_entidad_verifico_que_las_cantidades_y_descripciones_de_la_mercaderia_de_la_fa_617e32
+    - Obligacion_la_exigencia_maxima_agregada_para_todas_las_posiciones_en_la_misma_titulizacion__19ec1c
+    - Obligacion_la_forma_de_la_remuneracion_de_quienes_tengan_responsabilidad_fiduciaria_deberia_367df7
+    - Obligacion_la_gerencia_principal_de_proteccion_al_usuario_de_servicios_financieros_tramitar_e9c7e0
+    - Obligacion_la_informacion_que_surja_del_legajo_unico_financiero_y_economico_establecido_por_bde4ac
+    - Obligacion_la_liquidacion_en_el_mercado_de_cambios_de_las_divisas_asociadas_a_la_devolucion_5a59b1
+    - Obligacion_la_precancelacion_de_capital_e_intereses_sea_efectuada_en_manera_simultanea_con__e591b9
+    - Obligacion_la_proporcion_del_incentivo_economico_diferido_no_percibido_se_ajustara_en_funci_98e106
+    - Obligacion_la_solicitud_de_autorizacion_de_aportes_de_capital_con_los_instrumentos_a_que_se_99999d
+    - Obligacion_la_tasa_de_interes_se_calculara_sobre_el_equivalente_en_pesos_que_surja_de_aplic_df226b
+    - Obligacion_las_certificaciones_tendran_una_validez_de_10_diez_dias_habiles_a_contar_desde_l_d35163
+    - Obligacion_las_disposiciones_de_esta_seccion_tienen_como_objetivo_reducir_los_estimulos_hac_fed77c
+    - Obligacion_las_entidades_adheridas_al_sistema_deberan_reportar_las_cotizaciones_comprador_y_83a221
+    - Obligacion_las_entidades_conservaran_constancia_escrita_de_la_notificacion_a_los_clientes_s_bfaf9b
+    - Obligacion_las_entidades_deberan_observar_el_procedimiento_detallado_en_los_puntos_9_2_1_1__48f1fd
+    - Obligacion_las_entidades_del_grupo_a_calcularan_el_componente_adicional_por_las_opciones_au_6c7952
+    - Obligacion_las_exposiciones_con_garantia_hipotecaria_clasificadas_como_normativas_deberan_c_d77ede
+    - Obligacion_las_fechas_de_corte_de_los_datos_deberan_estar_en_linea_con_las_utilizadas_para__cb2148
+    - Obligacion_las_normas_del_pais_donde_este_situada_la_casa_matriz_o_entidad_controlante_defi_5111cc
+    - Obligacion_las_operaciones_de_cambio_en_divisas_extranjeras_deberan_sujetarse_a_los_requisi_c38e87
+    - Obligacion_las_participaciones_seran_netas_de_las_previsiones_por_riesgo_de_desvalorizacion_0101f3
+    - Obligacion_las_politicas_procedimientos_y_controles_de_gestion_de_riesgos_deberan_estar_bie_ab5989
+    - Obligacion_las_posiciones_compradas_y_vendidas_en_la_misma_especie_podran_computarse_en_ter_278273
+    - Obligacion_las_subsidiarias_en_el_exterior_quedaran_comprendidas_en_la_medida_en_que_ellas__67d8a3
+    - Obligacion_liquidacion_de_los_cobros_de_exportaciones_de_bienes_y_servicios_419658
+    - Obligacion_lo_cual_sera_acreditado_mediante_copia_con_legalizacion_consular_de_la_normativa_1ccff9
+    - Obligacion_los_aportes_se_deberan_registrar_a_su_valor_contable_capital_intereses_ajustes_d_c721ef
+    - Obligacion_los_auditores_externos_tienen_el_deber_de_ejercer_la_debida_diligencia_profesion_b23f1b
+    - Obligacion_los_beneficiarios_gozaran_de_un_trato_diferencial_como_clientes_con_prioridad_de_4bf42b
+    - Obligacion_los_beneficiarios_tendran_acceso_a_todas_las_cajas_de_la_casa_o_sucursal_donde_l_4377c6
+    - Obligacion_los_boletos_deberan_quedar_registrados_independientemente_de_cual_sea_el_momento_7da1ec
+    - Obligacion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedaran_sujetos_a_la_confor_53709a
+    - Obligacion_los_cobros_no_aplicados_y_las_quitas_concedidas_en_forma_previa_a_la_refinanciac_933805
+    - Obligacion_los_cobros_y_los_pagos_asociados_a_esta_operatoria_deberan_ser_cursados_utilizan_8170d1
+    - Obligacion_los_conceptos_registrados_en_pfb_deben_convertirse_en_equivalentes_crediticios_m_a13b46
+    - Obligacion_los_documentos_a_cobrar_o_derechos_de_credito_titulizados_deberan_satisfacer_cri_5da44e
+    - Obligacion_los_flujos_de_fondos_nocionales_netos_sujetos_a_reapreciacion_en_cada_banda_temp_6cbae0
+    - Obligacion_los_flujos_de_fondos_nocionales_sujetos_a_reapreciacion_se_deben_asignar_a_sus_c_581fe9
+    - Obligacion_los_flujos_de_fondos_nocionales_sujetos_a_reapreciacion_se_deben_asignar_a_sus_c_ed092d
+    - Obligacion_los_importes_se_consignaran_en_valores_absolutos_772029
+    - Obligacion_los_pagos_por_adelantado_y_o_anticipos_efectuados_en_oportunidad_de_la_refinanci_0ae80a
+    - Obligacion_luego_de_la_citada_refinanciacion_y_a_los_fines_de_la_clasificacion_debera_tener_75f9b8
+    - Obligacion_no_ha_utilizado_ya_este_mecanismo_por_estos_fondos_cobrados_en_el_pais_bf40c2
+    - Obligacion_no_obstante_en_el_caso_de_futuros_en_los_que_el_subyacente_sea_un_titulo_de_deud_e67ac8
+    - Obligacion_no_sera_obligatoria_para_el_cliente_la_entrega_de_las_constancias_del_cuit_cuil__f0df0b
+    - Obligacion_obligacion_de_confidencialidad_a_que_se_refieren_las_leyes_de_entidades_financie_9565ec
+    - Obligacion_obligacion_de_ingreso_y_o_liquidacion_del_contravalor_en_divisas_por_exportacion_5f4273
+    - Obligacion_obligacion_de_liquidacion_de_cobros_de_exportaciones_de_bienes_e46b88
+    - Obligacion_obligacion_de_liquidacion_los_cobros_de_exportaciones_de_servicios_9f3885
+    - Obligacion_operada_la_liquidacion_del_seguro_la_documentacion_respectiva_se_completara_con__be0a2b
+    - Obligacion_para_adoptar_la_decision_de_aportes_de_capital_la_asamblea_tuvo_a_su_disposicion_898ff9
+    - Obligacion_para_asegurar_total_transparencia_hacia_los_inversores_las_obligaciones_contract_751858
+    - Obligacion_para_el_resto_de_las_exposiciones_el_desempeno_debera_verificarse_durante_7_anos_b6e9d1
+    - Obligacion_para_mejorar_la_transparencia_y_claridad_sobre_todos_los_ingresos_egresos_y_dema_05a681
+    - Obligacion_pasaporte_del_pais_de_origen_71c048
+    - Obligacion_pasaporte_del_pais_de_origen_de_corresponder_visado_por_autoridad_consular_argen_a387da
+    - Obligacion_permitir_la_compensacion_de_las_perdidas_y_ganancias_resultantes_de_las_operacio_332503
+    - Obligacion_permitir_la_rapida_liquidacion_o_compensacion_de_los_activos_admitidos_en_garant_7bc08a
+    - Obligacion_presentacion_de_fotocopias_autenticadas_por_escribano_publico_de_los_documentos__ab60fc
+    - Obligacion_proporcionar_a_la_parte_que_no_se_encuentra_en_situacion_de_incumplimiento_el_de_fabb23
+    - Obligacion_proveer_conjuntamente_con_la_presentacion_los_datos_de_identificacion_del_reclam_8627f0
+    - Obligacion_que_a_la_entidad_interviniente_le_conste_que_el_comprador_argentino_ha_liquidado_d85f08
+    - Obligacion_que_la_sefyc_se_expida_al_respecto_seran_de_10_dias_habiles_951e2a
+    - Obligacion_quedan_sometidos_sin_derecho_a_reclamo_alguno_los_interesados_3c2b6f
+    - Obligacion_revision_periodica_de_su_situacion_en_cuanto_a_las_condiciones_objetivas_y_subje_9dfd1a
+    - Obligacion_se_ajustara_a_los_terminos_de_la_pertinente_disposicion_d17145
+    - Obligacion_se_aplicara_lo_previsto_por_el_articulo_261_de_la_ley_19_550_bb22ec
+    - Obligacion_se_computara_el_importe_que_surja_de_aplicar_a_los_valores_contables_de_los_inst_3ff6c5
+    - Obligacion_se_debera_admitir_como_minimo_la_utilizacion_de_la_banca_por_internet_home_banki_eee0b8
+    - Obligacion_se_debera_evaluar_si_los_sistemas_de_informacion_y_las_funciones_de_reporte_son__8cf04e
+    - Obligacion_se_debera_suministrar_al_menos_trimestralmente_durante_la_vida_de_la_titulizacio_5b615a
+    - Obligacion_se_demostrara_con_cualquiera_de_las_siguientes_alternativas_05c68a
+    - Obligacion_se_demuestre_el_registro_de_ingreso_aduanero_de_bienes_por_un_valor_equivalente__83f4d5
+    - Obligacion_se_determinara_teniendo_en_cuenta_lo_dispuesto_en_las_normas_sobre_capitales_min_31e534
+    - Obligacion_se_reconocera_la_cobertura_del_riesgo_de_credito_mediante_la_utilizacion_de_las__83ebb5
+    - Obligacion_se_remitiran_las_presentaciones_recibidas_a_las_autoridades_administrativas_con__cce371
+    - Obligacion_se_verifiquen_la_totalidad_de_las_condiciones_previstas_en_cada_caso_para_que_la_19a5cb
+    - Obligacion_sera_de_aplicacion_lo_previsto_en_la_seccion_6_segun_corresponda_y_complementari_f8f83b
+    - Obligacion_si_el_exportador_considera_que_existen_errores_en_la_forma_en_que_un_permiso_de__53ab2c
+    - Obligacion_si_el_siniestro_fue_liquidado_en_moneda_local_copia_del_extracto_bancario_donde__10cca0
+    - Obligacion_si_el_siniestro_fue_liquidado_en_moneda_local_copia_del_resumen_de_cuenta_de_dep_7b892a
+    - Obligacion_si_hubiera_compensacion_a_los_tenedores_de_estos_instrumentos_por_la_quita_reali_ecb75f
+    - Obligacion_si_la_aplicacion_del_desembolso_en_divisas_fuese_posterior_a_la_fecha_del_regist_73e319
+    - Obligacion_si_la_financiacion_fue_otorgada_por_el_propio_proveedor_el_boleto_se_registrara__11e25f
+    - Obligacion_si_para_proceder_a_la_liquidacion_de_la_proteccion_crediticia_fuera_necesario_qu_940370
+    - Obligacion_sobre_los_conceptos_a_y_pfb_se_aplicaran_los_ponderadores_de_riesgo_de_contrapar_3e752d
+    - Obligacion_solo_se_requerira_la_exhibicion_del_dni_m_o_dni_d_expedido_con_posterioridad_a_l_ce22b2
+    - Obligacion_su_observancia_se_computara_a_base_de_los_saldos_registrados_al_ultimo_dia_de_ca_292d1b
+    - Obligacion_tanto_en_la_oferta_inicial_como_en_la_documentacion_contractual_deberia_incluirs_cc0ae3
+    - Obligacion_tanto_los_directores_independientes_como_aquellos_que_no_reunan_esa_condicion_pe_ebc4d0
+    - Obligacion_tasa_de_interes_sera_calculada_sobre_el_equivalente_que_surja_de_aplicar_lo_prev_9e4273
+    - Obligacion_todo_mandato_se_entendera_subsistente_hasta_tanto_su_revocacion_se_notifique_feh_b15d3e
+    - Obligacion_todo_riesgo_de_tipo_de_cambio_que_surja_de_posiciones_compensadas_debera_computa_bbd6ec
+    - Obligacion_toma_conocimiento_de_que_no_tendra_acceso_al_mercado_de_cambios_para_repatriar_e_b1b61f
+    - Obligacion_verificar_la_firma_del_presentante_que_debera_insertarse_con_caracter_de_recibo_b64f02
+Operacion: 1506 sin aplica_a
+    - Operacion_abono_a_los_fondos_al_librador_cecc5d
+    - Operacion_absorcion_de_perdidas_instrumentos_d873e6
+    - Operacion_accesibilidad_puntos_de_atencion_usuario_d1215d
+    - Operacion_acceso_a_divisas_produccion_incremental_petroleo_gas_19c086
+    - Operacion_acceso_a_mercado_cambios_prestamos_financieros_exterior_contrapartes_vinculadas_2764d3
+    - Operacion_acceso_a_mercado_de_cambios_con_certificacion_ca24a0
+    - Operacion_acceso_a_mercado_de_cambios_endeudamiento_9950c3
+    - Operacion_acceso_a_mercado_de_cambios_titulos_deuda_exterior_99ae4e
+    - Operacion_acceso_al_mercado_cambios_formacion_activos_externos_522a22
+    - Operacion_acceso_al_mercado_de_cambio_operaciones_s3_1_a_s3_15_f2f0d5
+    - Operacion_acceso_al_mercado_de_cambios_b8c486
+    - Operacion_acceso_al_mercado_de_cambios_compra_de_moneda_extranjera_8c2013
+    - Operacion_acceso_al_mercado_de_cambios_fideicomisos_144617
+    - Operacion_acceso_al_mercado_de_cambios_garantias_financieras_8bb13b
+    - Operacion_acceso_al_mercado_de_cambios_garantias_y_avales_2dc854
+    - Operacion_acceso_al_mercado_de_cambios_importaciones_5a5d0a
+    - Operacion_acceso_al_mercado_de_cambios_otras_compras_de_bienes_75b52d
+    - Operacion_acceso_al_mercado_de_cambios_pago_anticipado_de_importaciones_6dd329
+    - Operacion_acceso_al_mercado_de_cambios_pago_importaciones_2e8c59
+    - Operacion_acceso_al_mercado_de_cambios_pago_medicamentos_e47e9d
+    - Operacion_acceso_al_mercado_de_cambios_pago_medicamentos_pendiente_ceb32b
+    - Operacion_acceso_al_mercado_de_cambios_pago_servicios_no_residentes_4e2bf8
+    - Operacion_acceso_al_mercado_de_cambios_pagos_aduaneros_pendientes_428f98
+    - Operacion_acceso_al_mercado_de_cambios_pagos_de_importaciones_b90e84
+    - Operacion_acceso_al_mercado_de_cambios_pagos_de_intereses_764d73
+    - Operacion_acceso_al_mercado_de_cambios_pagos_por_importaciones_daebe5
+    - Operacion_acceso_al_mercado_de_cambios_para_importaciones_temporales_139551
+    - Operacion_acceso_al_mercado_de_cambios_para_pago_diferido_ad26af
+    - Operacion_acceso_al_mercado_de_cambios_para_pago_exterior_ff3848
+    - Operacion_acceso_al_mercado_de_cambios_para_pagos_de_servicios_9cef10
+    - Operacion_acceso_al_mercado_de_cambios_por_egresos_vpu_rigi_c1b1b1
+    - Operacion_acceso_cambios_titulos_deuda_ars_suscriptos_exterior_a68bae
+    - Operacion_acceso_diario_mercado_cambios_compra_moneda_extranjera_c39577
+    - Operacion_acceso_mercado_cambios_cancelacion_obligaciones_en_moneda_extranjera_ce63dd
+    - Operacion_acceso_mercado_cambios_egresos_vpu_ce1319
+    - Operacion_aceleracion_de_devolucion_de_pagos_futuros_7d06c4
+    - Operacion_aceptacion_de_presentacion_sin_inconsistencias_86851e
+    - Operacion_aceptacion_de_presentacion_tardia_e7bd41
+    - Operacion_acreditacion_a_cuenta_de_anses_a60951
+    - Operacion_acreditacion_de_categoria_de_residencia_9ebec5
+    - Operacion_acreditacion_de_cuenta_de_anses_26f486
+    - Operacion_acreditacion_de_fondos_en_cuentas_de_corresponsalia_df1e9d
+    - Operacion_acreditacion_de_fondos_en_cuentas_locales_332567
+    - Operacion_acreditacion_de_importe_total_de_instrucciones_5b5386
+    - Operacion_acreditacion_de_importes_en_el_dia_09b87b
+    - Operacion_acreditacion_de_nuevos_beneficios_y_otros_conceptos_3d8eda
+    - Operacion_acreditacion_de_resultado_de_liquidacion_de_cambios_en_cuenta_local_cee6ab
+    - Operacion_acreditacion_en_cuenta_transitoria_bcra_3eb4fd
+    - Operacion_acreditacion_en_cuentas_en_moneda_extranjera_9a83ed
+    - Operacion_actividades_realizadas_estructura_compleja_cc68c1
+    - Operacion_actuacion_como_agente_de_pago_en_la_republica_argentina_85ef04
+    - Operacion_actualizacion_de_saldos_mediante_cer_096e98
+    - Operacion_acuerdo_y_desembolso_de_financiaciones_en_pesos_2fc758
+    - Operacion_acumulacion_de_cobros_de_exportaciones_de_servicios_b8262c
+    - Operacion_acumulacion_de_cobros_de_exportaciones_en_cuentas_82a9da
+    - Operacion_acumulacion_de_fondos_en_cuentas_del_exterior_y_o_del_pais_4d42b6
+    - Operacion_acumulacion_de_fondos_en_cuentas_exterior_pais_60854b
+    - Operacion_adelantos_en_cuenta_corriente_889211
+    - Operacion_adhesion_al_rigi_por_vpu_8fe38f
+    - Operacion_adhesion_al_servicio_de_debito_automatico_empresa_prestadora_ente_recaudador_e2fd0a
+    - Operacion_adhesion_selectiva_a_productos_en_contrato_multiproducto_5e58d8
+    - Operacion_administracion_de_central_de_cheques_denunciados_extraviados_sustraidos_adultera_901c1c
+    - Operacion_administracion_de_central_de_cheques_rechazados_4daf92
+    - Operacion_administracion_de_central_de_cuentacorrentistas_inhabilitados_ebf3d1
+    - Operacion_adquisicion_de_bienes_medico_sanitarios_para_donacion_610685
+    - Operacion_adquisicion_de_certificados_de_depositos_argentinos_representativos_de_acciones__75deba
+    - Operacion_adquisicion_de_tarjetas_de_regalo_exterior_47d17b
+    - Operacion_adquisicion_de_titulos_valores_con_liquidacion_extranjera_ecea73
+    - Operacion_adquisicion_de_titulos_valores_representativos_de_deuda_privada_emitida_en_juris_c2f3ca
+    - Operacion_adquisicion_en_el_pais_de_titulos_valores_emitidos_por_no_residentes_con_liquida_132ccb
+    - Operacion_adquisicion_joyas_piedras_preciosas_metales_df6ba7
+    - Operacion_adquisicion_titulos_valores_suscripcion_primaria_dc707d
+    - Operacion_adquisiciones_de_entidades_financieras_fc4c7a
+    - Operacion_adulteracion_de_cheques_d78211
+    - Operacion_adulteracion_de_cheques_y_documentos_2e1d01
+    - Operacion_adulteracion_o_falsificacion_de_cheque_o_firmas_8a9da9
+    - Operacion_afectacion_de_importaciones_por_solicitud_particular_o_courier_aaee67
+    - Operacion_afectacion_de_oficializacion_a_pago_con_ingreso_aduanero_pendiente_39858a
+    - Operacion_afectacion_de_registro_aduanero_oficializacion_importacion_sepaimpo_429942
+    - Operacion_aforo_de_activos_recibidos_en_garantia_7fd8c6
+    - Operacion_agregado_de_hojas_para_transmision_garantia_7bae64
+    - Operacion_agrupacion_de_adicionales_por_entidad_derivados_de_credito_9c298a
+    - Operacion_agrupacion_de_financiaciones_comerciales_con_creditos_consumo_vivienda_18c542
+    - Operacion_agrupamiento_de_financiaciones_comerciales_con_creditos_de_consumo_o_vivienda_0f2001
+    - Operacion_ajuste_de_valores_corrientes_posiciones_menos_liquidas_ea4042
+    - Operacion_ajuste_de_valuacion_productos_complejos_ce7239
+    - Operacion_alquiler_de_cajas_de_seguridad_9f7062
+    - Operacion_alteracion_de_tasas_comisiones_y_cargos_9853cf
+    - Operacion_analisis_y_modificacion_de_clasificacion_de_deudor_eb956c
+    - Operacion_anticipo_de_exportacion_documentado_en_moneda_de_destino_6f7be4
+    - Operacion_anticipo_de_exportaciones_de_bienes_liquidado_d62044
+    - Operacion_anticipo_por_pago_de_jubilaciones_y_pensiones_76070c
+    - Operacion_anticipos_al_fondo_de_garantia_depositos_df1acb
+    - Operacion_anticipos_cursados_por_sml_a_partir_02_09_19_2883e1
+    - Operacion_anticipos_de_efectivo_agente_de_pago_titulizacion_c89e6c
+    - Operacion_anticipos_y_prefinanciaciones_de_exportacion_5d8ce2
+    - Operacion_anticipos_y_prefinanciaciones_de_exportaciones_del_exterior_109801
+    - Operacion_apertura_de_cuenta_a_agrupaciones_politicas_aliadas_64bc0b
+    - Operacion_apertura_de_cuenta_corriente_39abbe
+    - Operacion_apertura_de_cuenta_corriente_bancaria_8effda
+    - Operacion_apertura_de_cuentas_a_la_vista_443444
+    - Operacion_apertura_de_cuentas_componentes_o_representantes_legales_cec9a6
+    - Operacion_apertura_de_cuentas_no_presencial_64eef3
+    - Operacion_apertura_de_cuentas_por_personas_inhabilitadas_f25a52
+    - Operacion_apertura_no_presencial_cuenta_personas_juridicas_fc2329
+    - Operacion_apertura_no_presencial_de_cuentas_electronicas_d2b308
+    - Operacion_aplicacion_cobros_exportaciones_servicios_6b5107
+    - Operacion_aplicacion_de_ajuste_delta_regulatorio_21f0c4
+    - Operacion_aplicacion_de_calificacion_a_creditos_quirografarios_7f28db
+    - Operacion_aplicacion_de_capacidad_de_prestamo_de_depositos_04d844
+    - Operacion_aplicacion_de_capacidad_de_prestamo_en_me_a_importaciones_4d39c5
+    - Operacion_aplicacion_de_divisas_a_operaciones_de_exportacion_3551f1
+    - Operacion_aplicacion_de_divisas_a_operaciones_de_financiacion_d4996b
+    - Operacion_aplicacion_de_divisas_de_anticipos_a_cancelacion_de_prefinanciaciones_0ac48e
+    - Operacion_aplicacion_de_divisas_de_cobros_a_cancelacion_de_vencimientos_16a6b1
+    - Operacion_aplicacion_de_divisas_de_cobros_cancelacion_de_vencimientos_5f020e
+    - Operacion_aplicacion_de_divisas_de_exportacion_de_bienes_e85f19
+    - Operacion_aplicacion_de_divisas_para_cobros_exportacion_741268
+    - Operacion_aplicacion_de_divisas_por_cobros_exportaciones_cancelacion_deuda_86d9a9
+    - Operacion_aplicacion_de_evaluacion_de_credito_de_alta_calidad_8ad920
+    - Operacion_aplicacion_de_factor_de_volatilidad_edec25
+    - Operacion_aplicacion_de_fondos_en_moneda_extranjera_contra_moneda_local_d06ca7
+    - Operacion_aplicacion_de_ponderador_de_baja_calificacion_aa9c74
+    - Operacion_aplicacion_de_recursos_propios_liquidos_193f03
+    - Operacion_aplicacion_de_tecnica_activos_como_garantia_d99e7a
+    - Operacion_aplicacion_de_tecnicas_de_cobertura_del_riesgo_de_credito_2c4eb9
+    - Operacion_aplicacion_de_tratamiento_sector_publico_no_financiero_de0171
+    - Operacion_aplicacion_divisas_cancelacion_servicios_prestamo_cd43c8
+    - Operacion_aplicacion_factor_conversion_crediticia_3d81e8
+    - Operacion_aplicacion_financiamiento_instrumentos_deuda_tesoro_e1881e
+    - Operacion_aplicacion_metodologia_estandar_a_equivalente_delta_71629e
+    - Operacion_aplicacion_ponderador_riesgo_contraparte_6afcd2
+    - Operacion_aplicacion_tasas_en_operaciones_de_financiacion_2d942c
+    - Operacion_aportacion_a_agrupaciones_politicas_o_fondo_partidario_929d1c
+    - Operacion_aporte_de_inversion_extranjera_directa_b244ff
+    - Operacion_aportes_de_capital_en_efectivo_c56c6c
+    - Operacion_aprobacion_de_operaciones_y_nuevos_productos_b2cfdd
+    - Operacion_arbitraje_sin_debito_de_moneda_extranjera_81bbd5
+    - Operacion_arbitraje_sin_transferencia_al_exterior_9a73b4
+    - Operacion_arrendamiento_financiero_leasing_4ad213
+    - Operacion_arrendamientos_financieros_da0039
+    - Operacion_aseguramiento_de_instrumentos_en_ca_ac2fcc
+    - Operacion_asentamiento_en_rccr_consultas_y_reclamos_dac9bf
+    - Operacion_asignacion_a_bandas_temporales_posiciones_delta_deuda_interes_0b6387
+    - Operacion_asignacion_aporte_fondo_garantia_por_subcuenta_8cb4ed
+    - Operacion_asignacion_de_calificaciones_crediticias_b1543f
+    - Operacion_asignacion_de_calificaciones_ecai_a_ponderadores_0a94a2
+    - Operacion_asignacion_de_derivados_sobre_bases_a_conjuntos_especificos_cf4333
+    - Operacion_asignacion_de_derivados_sobre_volatilidad_a_conjuntos_especificos_46739e
+    - Operacion_asignacion_de_exposicion_al_grado_c_d3e41a
+    - Operacion_asignacion_de_niveles_de_calidad_crediticia_eaf388
+    - Operacion_asignacion_de_ponderador_de_riesgo_a_exposiciones_en_moneda_extranjera_e98b52
+    - Operacion_asignacion_de_ponderadores_a_exposiciones_10e9f3
+    - Operacion_asignacion_margen_inicial_integrado_a_exposiciones_d7529f
+    - Operacion_asignacion_perdidas_definitiva_mecanismo_quita_bb18bf
+    - Operacion_asistencia_crediticia_otorgada_en_el_mes_ba9f08
+    - Operacion_asistencia_financiera_a_personas_vinculadas_1a702c
+    - Operacion_asuncion_de_pago_futuro_por_garante_1dd3d0
+    - Operacion_atencion_a_usuarios_con_discapacidad_auditiva_del_habla_466303
+    - Operacion_atencion_de_cheques_al_cobro_0499c7
+    - Operacion_atencion_de_cheques_con_defecto_formal_cantidad_4410a3
+    - Operacion_atencion_de_financiaciones_con_fondos_de_lineas_asignadas_47b8c8
+    - Operacion_auditoria_externa_conclusion_sobre_estados_financieros_8b1e58
+    - Operacion_aumento_exportaciones_bienes_2023_077a4f
+    - Operacion_autoaseguramiento_riesgos_fallecimiento_invalidez_f87002
+    - Operacion_autorizacion_de_sobregiro_en_cuenta_corriente_bancaria_3a2586
+    - Operacion_aval_de_cheque_pago_diferido_por_banco_87123d
+    - Operacion_avales_sobre_cheques_de_pago_diferido_982cee
+    - Operacion_bloqueo_o_inhabilitacion_de_productos_servicios_por_seguridad_c2714c
+    - Operacion_boleto_compra_a19_aplicacion_fondos_dccc99
+    - Operacion_boleto_de_cambio_de_venta_importaciones_bc5385
+    - Operacion_boleto_de_compra_venta_de_cambio_988448
+    - Operacion_boleto_de_compra_y_o_venta_de_cambio_54c880
+    - Operacion_boleto_de_venta_con_constancia_de_pago_de_fletes_1b1f21
+    - Operacion_boleto_de_venta_de_cambio_adjudicacion_bonos_bopreal_2b2b24
+    - Operacion_boleto_de_venta_de_cambio_bopreal_8e69da
+    - Operacion_boleto_de_venta_de_cambio_para_utilidades_9bf919
+    - Operacion_boleto_de_venta_de_cambio_por_bonos_bopreal_073365
+    - Operacion_boleto_garantias_exportaciones_bienes_servicios_63ec95
+    - Operacion_boleto_venta_cancelacion_servicio_deuda_fe1228
+    - Operacion_calculo_activos_ponderados_por_riesgo_bc1489
+    - Operacion_calculo_comparativo_fob_anos_t_y_t_1_c71712
+    - Operacion_calculo_cr_operaciones_con_margen_variacion_b6bfc5
+    - Operacion_calculo_cr_operaciones_sin_margen_variacion_491247
+    - Operacion_calculo_de_activos_ponderados_por_riesgo_64a8bb
+    - Operacion_calculo_de_adicional_para_derivados_de_tasa_de_interes_e97c1b
+    - Operacion_calculo_de_adicional_para_derivados_de_tipo_de_cambio_8a965b
+    - Operacion_calculo_de_compensacion_a_nivel_de_entidad_derivados_de_credito_497337
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_credito_3430df
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_mercado_6f686a
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_tasa_bandas_de_plazo_0c39e5
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_de_tipo_de_cambio_6c7e1d
+    - Operacion_calculo_de_exigencia_de_capital_por_riesgo_especifico_de_emisor_d04ead
+    - Operacion_calculo_de_exigencia_por_riesgo_de_credito_00b696
+    - Operacion_calculo_de_exigencia_riesgo_general_tasa_interes_0f47e7
+    - Operacion_calculo_de_exigencias_capital_riesgo_tasa_interes_468b15
+    - Operacion_calculo_de_exposicion_ajustada_por_crc_8ce3eb
+    - Operacion_calculo_de_exposicion_riesgo_tipo_de_cambio_tasa_0ed0d3
+    - Operacion_calculo_de_factor_plazo_por_tipo_de_operacion_05047d
+    - Operacion_calculo_de_intereses_sobre_capital_en_pesos_423bab
+    - Operacion_calculo_de_nocional_ajustado_para_derivados_fx_294149
+    - Operacion_calculo_de_nocional_ajustado_para_derivados_sobre_acciones_y_commodities_cfac6f
+    - Operacion_calculo_de_nocional_efectivo_para_derivados_fx_469b46
+    - Operacion_calculo_de_nocional_efectivo_por_banda_temporal_tasa_de_interes_cde4a1
+    - Operacion_calculo_de_posicion_neta_total_8e39af
+    - Operacion_calculo_de_previsiones_regulatorias_373550
+    - Operacion_calculo_de_previsiones_sobre_tenencias_3b7c91
+    - Operacion_calculo_de_rpc_mediante_inclusion_diferencia_prevision_niif_9_11f33d
+    - Operacion_calculo_de_tasa_de_interes_efectiva_anual_142d89
+    - Operacion_calculo_de_tipos_de_cambio_minoristas_de_referencia_afb412
+    - Operacion_calculo_de_vu_opciones_sobre_acciones_indices_oro_divisas_8492ab
+    - Operacion_calculo_de_vu_opciones_sobre_tasas_bonos_86e1a3
+    - Operacion_calculo_del_activo_ponderado_por_riesgo_24c877
+    - Operacion_calculo_del_bi_a_nivel_consolidado_cfa5fc
+    - Operacion_calculo_del_bi_a_nivel_individual_813f8f
+    - Operacion_calculo_del_bi_a_nivel_subconsolidado_4253dc
+    - Operacion_calculo_del_costo_financiero_total_4df7e7
+    - Operacion_calculo_del_indicador_de_negocio_bi_a56544
+    - Operacion_calculo_delta_neto_opciones_oro_monedas_b3d553
+    - Operacion_calculo_e_informacion_del_bic_2e706c
+    - Operacion_calculo_ead_derivados_con_sa_ccr_edb20f
+    - Operacion_calculo_ead_por_netting_set_6628f0
+    - Operacion_calculo_ead_sft_24acd4
+    - Operacion_calculo_epf_operaciones_con_margen_variacion_9ef918
+    - Operacion_calculo_epf_operaciones_sin_margen_variacion_627247
+    - Operacion_calculo_equivalente_delta_metodo_delta_plus_ac03f4
+    - Operacion_calculo_eve0_valor_economico_escenario_base_f54a0d
+    - Operacion_calculo_eve_estandarizada_6af9d5
+    - Operacion_calculo_eve_valor_economico_del_patrimonio_2900c8
+    - Operacion_calculo_excedente_atribuible_accionistas_minoritarios_347688
+    - Operacion_calculo_exigencia_capital_exposiciones_ccp_no_calificadas_7cf1a6
+    - Operacion_calculo_exigencia_capital_minimo_riesgo_operacional_14fce4
+    - Operacion_calculo_exigencia_capital_opciones_129ee8
+    - Operacion_calculo_exigencia_capital_riesgo_de_tasa_interes_ef04b8
+    - Operacion_calculo_exigencia_capital_riesgo_operacional_mes_1_f92a63
+    - Operacion_calculo_exigencia_capital_riesgo_operacional_mes_37_en_adelante_4798fb
+    - Operacion_calculo_exigencia_capital_riesgo_operacional_meses_2_a_36_b100fb
+    - Operacion_calculo_exigencia_de_capital_minimo_por_riesgo_operacional_dc3acb
+    - Operacion_calculo_exigencia_por_riesgo_general_de_tasa_7d9295
+    - Operacion_calculo_exigencia_riesgo_de_mercado_base_individual_consolidado_4b7110
+    - Operacion_calculo_exigencia_riesgo_de_mercado_posiciones_ultimo_dia_19731f
+    - Operacion_calculo_exigencia_riesgo_posiciones_opciones_4515fd
+    - Operacion_calculo_flujos_fondos_netos_2c5025
+    - Operacion_calculo_importe_reconocido_capital_ordinario_306d10
+    - Operacion_calculo_kao_opciones_automaticas_sobre_tasas_2c4a1a
+    - Operacion_calculo_limite_concentracion_exposiciones_22a237
+    - Operacion_calculo_maxima_perdida_posible_posicion_comprada_ff0fae
+    - Operacion_calculo_maxima_perdida_posible_posicion_vendida_50432c
+    - Operacion_calculo_requerimiento_capital_hipotetico_ccp_a72ae4
+    - Operacion_calculo_riesgo_tasa_interes_cartera_eve_estandarizada_9d4104
+    - Operacion_calculo_riesgo_tasa_interes_cartera_inversion_eve_c5ebb8
+    - Operacion_calculo_suma_perdidas_agregacion_por_escenario_a86e1b
+    - Operacion_calculo_total_exigencia_riesgo_tasa_especifico_80231e
+    - Operacion_calculo_variacion_eve_resta_escenarios_8342a5
+    - Operacion_calculo_y_pago_de_intereses_2bb65e
+    - Operacion_calificacion_crediticia_por_ecai_2951e6
+    - Operacion_calificacion_de_deudor_10a6b6
+    - Operacion_cambio_de_clave_pin_por_usuario_b70e3c
+    - Operacion_cambio_de_domicilio_o_correo_contacto_e6f6ad
+    - Operacion_canalizacion_de_operaciones_sml_3daa7e
+    - Operacion_canalizacion_mediante_compraventa_de_titulos_valores_f89e00
+    - Operacion_cancelacion_al_exterior_de_deudas_no_comerciales_de_importacion_b39ff5
+    - Operacion_cancelacion_al_vencimiento_de_endeudamientos_financieros_9a5961
+    - Operacion_cancelacion_capital_e_intereses_endeudamiento_financiero_exterior_5579c2
+    - Operacion_cancelacion_capital_e_intereses_endeudamientos_6c4f2b
+    - Operacion_cancelacion_cartas_credito_letras_avaladas_garantizando_importaciones_26be92
+    - Operacion_cancelacion_consumos_tarjeta_extranjera_3b537d
+    - Operacion_cancelacion_de_anticipos_de_exportacion_con_fondos_de_cobros_350dc7
+    - Operacion_cancelacion_de_autorizaciones_para_girar_a26106
+    - Operacion_cancelacion_de_capital_e_intereses_endeudamiento_financiero_8fe0b6
+    - Operacion_cancelacion_de_capital_e_intereses_endeudamientos_financieros_ef116a
+    - Operacion_cancelacion_de_capital_intereses_con_divisas_28e145
+    - Operacion_cancelacion_de_consumos_en_moneda_extranjera_895150
+    - Operacion_cancelacion_de_deuda_por_operacion_financiada_2f6d75
+    - Operacion_cancelacion_de_deudas_por_operaciones_financiadas_internacionales_077563
+    - Operacion_cancelacion_de_endeudamientos_financieros_a3eaa6
+    - Operacion_cancelacion_de_financiaciones_en_moneda_extranjera_669f07
+    - Operacion_cancelacion_de_garantias_comerciales_importaciones_5fd9dd
+    - Operacion_cancelacion_de_garantias_importaciones_de_bienes_fd33e7
+    - Operacion_cancelacion_de_lineas_de_credito_financiacion_comercio_exterior_24e83e
+    - Operacion_cancelacion_de_lineas_de_credito_importaciones_de_bienes_6059ed
+    - Operacion_cancelacion_de_multas_por_rechazos_41dbce
+    - Operacion_cancelacion_de_servicios_de_capital_e_intereses_f6c6e7
+    - Operacion_cancelacion_de_servicios_de_titulos_valores_a5f346
+    - Operacion_cancelacion_del_capital_de_financiacion_4d8439
+    - Operacion_cancelacion_deudas_comerciales_importacion_bienes_b3c635
+    - Operacion_cancelacion_en_pais_vencimiento_capital_e_intereses_93e620
+    - Operacion_canje_de_moneda_extranjera_por_pen_a2b943
+    - Operacion_canje_de_titulos_valores_emitidos_por_residentes_por_activos_externos_d36ef3
+    - Operacion_canje_y_arbitraje_con_clientes_2e4818
+    - Operacion_canje_y_o_arbitraje_bopreal_755b55
+    - Operacion_canje_y_o_arbitraje_con_fondos_en_moneda_extranjera_79af90
+    - Operacion_canje_y_o_arbitraje_fondos_bopreal_325782
+    - Operacion_canjes_de_instrumentos_cambios_8aec4e
+    - Operacion_canjes_y_arbitrajes_con_clientes_4a86e3
+    - Operacion_canjes_y_arbitrajes_con_clientes_ingresos_divisas_exterior_213553
+    - Operacion_capacitacion_y_entrenamiento_de_ejecutivos_y_directivos_20f15b
+    - Operacion_capitalizacion_depositos_e_intermediacion_financiera_0aadd6
+    - Operacion_ccf_100_compromisos_de_adquisicion_de_activos_7b64fc
+    - Operacion_ccf_100_sustitutos_crediticios_directos_e8777c
+    - Operacion_ccf_100_ventas_de_activos_con_recompra_94b55c
+    - Operacion_ccf_10_compromisos_cancelables_discrecional_dca238
+    - Operacion_ccf_20_cartas_de_credito_comercial_corto_plazo_60a604
+    - Operacion_ccf_40_lineas_de_credito_comprometidas_0a7f01
+    - Operacion_ccf_50_lineas_de_emision_de_titulos_nif_ruf_d74f48
+    - Operacion_ccf_50_partidas_contingentes_comerciales_89bd5a
+    - Operacion_celebracion_de_acuerdos_sobre_prelacion_en_cobro_7804fa
+    - Operacion_certificacion_cumplimiento_elegibilidad_proyecto_916f86
+    - Operacion_certificacion_de_afectacion_en_sepaimpo_97dd5c
+    - Operacion_certificacion_de_aplicacion_de_divisas_a_cancelacion_35793d
+    - Operacion_certificacion_de_aplicacion_pago_de_dividendos_ff7b1b
+    - Operacion_certificacion_de_beneficios_decreto_277_22_utilizados_por_cliente_70652f
+    - Operacion_certificacion_de_cheque_3c9fac
+    - Operacion_certificacion_de_incumplido_en_gestion_de_cobro_3e809f
+    - Operacion_certificacion_de_vinculacion_de_exportaciones_a_proyecto_aprobado_808813
+    - Operacion_certificacion_emitida_por_entidad_liquidadora_sobre_no_emision_de_certificacione_6603cf
+    - Operacion_cesion_sin_recurso_en_entidad_del_exterior_c93d89
+    - Operacion_cheque_certificado_36f3da
+    - Operacion_cheque_certificado_emision_becfc5
+    - Operacion_cheques_comunes_y_de_pago_diferido_vencidos_2ed72f
+    - Operacion_cheques_de_pago_diferido_registrados_con_defectos_formales_23ea28
+    - Operacion_cheques_firmados_por_todos_los_titulares_220f8a
+    - Operacion_cierre_de_cuenta_6cadbb
+    - Operacion_cierre_de_cuenta_corriente_a948b4
+    - Operacion_cierre_de_cuenta_transferencia_fondos_remanentes_75623f
+    - Operacion_cierre_de_cuentas_96c948
+    - Operacion_cierre_de_cuentas_de_inhabilitados_65d5df
+    - Operacion_cierre_de_rendiciones_de_cuentas_a8b1e4
+    - Operacion_clasificacion_de_deudor_con_insolvencia_5e1b78
+    - Operacion_clasificacion_de_deudores_82042f
+    - Operacion_clasificacion_de_deudores_por_mora_5d5ac5
+    - Operacion_clasificacion_de_deudores_por_sgr_y_fondos_de_garantia_c74cac
+    - Operacion_clasificacion_de_deudores_segun_mora_595d13
+    - Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92
+    - Operacion_clasificacion_deudores_creditos_fideicomitidos_2c30f7
+    - Operacion_clasificacion_en_categoria_alto_riesgo_de_insolvencia_1adb85
+    - Operacion_clasificacion_en_grupo_1_o_grupo_2_7315bb
+    - Operacion_clasificacion_titulos_publicos_rendimiento_dual_179b67
+    - Operacion_cobertura_de_pagos_por_garantia_b508c3
+    - Operacion_cobertura_del_riesgo_de_credito_en_evaluacion_de_emision_d06438
+    - Operacion_cobertura_mediante_activos_admitidos_como_garantia_bbfa32
+    - Operacion_cobranza_anticipada_de_exportacion_de_bienes_6d7e86
+    - Operacion_cobro_comision_y_cargo_operaciones_a8e152
+    - Operacion_cobro_comisiones_cargos_seguros_saldo_deudor_423c45
+    - Operacion_cobro_de_comisiones_por_reporte_de_circunstancias_3c02ce
+    - Operacion_cobro_de_comisiones_y_cargos_a_usuarios_acccac
+    - Operacion_cobro_de_exportacion_con_demostracion_de_gestion_sin_gestion_judicial_c4a227
+    - Operacion_cobro_de_exportacion_de_bienes_con_liquidacion_en_mercado_7ce7b2
+    - Operacion_cobro_de_exportacion_de_servicios_por_persona_humana_2884d8
+    - Operacion_cobro_de_exportacion_documentado_en_moneda_de_destino_eb0227
+    - Operacion_cobro_de_exportaciones_de_bienes_o_servicios_e15530
+    - Operacion_cobro_de_exportaciones_de_bienes_y_servicios_b612da
+    - Operacion_cobro_de_exportaciones_regimen_fomento_decreto_234_21_8776a6
+    - Operacion_cobro_de_utilidades_y_dividendos_desde_01_09_19_c5637e
+    - Operacion_cobro_en_divisas_por_exportacion_de_bienes_ebe7d2
+    - Operacion_cobro_exportacion_bienes_exceptuado_5c2aa2
+    - Operacion_cobro_exportaciones_bienes_beneficiarios_economia_conocimiento_875a70
+    - Operacion_cobro_local_por_exportacion_3425c3
+    - Operacion_cobro_servicios_no_conexos_sml_paraguay_y_uruguay_d5db45
+    - Operacion_cobros_de_exportaciones_de_bienes_73b35d
+    - Operacion_cobros_de_exportaciones_de_bienes_en_proyectos_de_inversion_04be00
+    - Operacion_cobros_de_exportaciones_de_servicios_economia_conocimiento_8052da
+    - Operacion_cobros_elegibles_mecanismo_7_10_depositados_17536a
+    - Operacion_cobros_exportaciones_bienes_6a95b1
+    - Operacion_cobros_exportaciones_bienes_mercado_de_cambios_7557be
+    - Operacion_cobros_exportaciones_de_bienes_cc7695
+    - Operacion_cobros_locales_por_exportaciones_a_medios_transporte_bandera_extranjera_6c6fcc
+    - Operacion_cobros_por_siniestros_de_cobertura_exportacion_d9a434
+    - Operacion_cobros_turismo_internacional_no_residentes_43a4fc
+    - Operacion_comercio_exterior_directo_9f55d2
+    - Operacion_compensacion_de_componentes_sistematicos_derivados_de_credito_6ff74a
+    - Operacion_compensacion_entre_tipos_de_commodities_dentro_de_conjunto_8e77d6
+    - Operacion_compensacion_parcial_correlacion_negativa_94780b
+    - Operacion_compensacion_posiciones_compradas_vendidas_47f747
+    - Operacion_compensaciones_horizontales_posiciones_netas_ee4986
+    - Operacion_composicion_de_cuadernos_cheques_comunes_y_diferidos_70e3e1
+    - Operacion_compra_de_bienes_revendidos_al_exterior_sin_paso_por_pais_5d9310
+    - Operacion_compra_de_cartera_creditos_6cef4a
+    - Operacion_compra_de_cartera_creditos_minoristas_930297
+    - Operacion_compra_de_fondos_y_pago_de_bonos_bopreal_e25e97
+    - Operacion_compra_de_instrumentos_93181f
+    - Operacion_compra_de_instrumentos_para_pnc_11f556
+    - Operacion_compra_de_moneda_extranjera_4818a4
+    - Operacion_compra_de_moneda_extranjera_anticipada_44812f
+    - Operacion_compra_de_moneda_extranjera_con_debito_cuenta_local_cf9764
+    - Operacion_compra_de_moneda_extranjera_con_tarjeta_de_compra_cb3e92
+    - Operacion_compra_de_moneda_extranjera_con_tarjeta_de_credito_dde703
+    - Operacion_compra_de_moneda_extranjera_con_tarjeta_prepaga_79aa43
+    - Operacion_compra_de_moneda_extranjera_garantia_de_servicios_de_deuda_externa_fd8f7c
+    - Operacion_compra_de_moneda_extranjera_garantias_de_endeudamiento_c1cc9d
+    - Operacion_compra_de_moneda_extranjera_para_garantias_6f3257
+    - Operacion_compra_de_obligaciones_negociables_de_emision_propia_b51c73
+    - Operacion_compra_moneda_extranjera_clientes_no_residentes_161194
+    - Operacion_compra_moneda_extranjera_para_garantias_8e8d15
+    - Operacion_compra_o_cesion_de_financiaciones_7c0f78
+    - Operacion_compra_titulos_valores_mercado_secundario_4d0bef
+    - Operacion_compra_venta_moneda_extranjera_en_caracter_de_cliente_c40d38
+    - Operacion_compra_y_venta_de_contratos_de_opciones_e7649e
+    - Operacion_compras_en_cuotas_de_pasajes_al_exterior_22570e
+    - Operacion_compraventa_titulos_valores_con_liquidacion_moneda_extranjera_y_venta_moneda_loc_6d946b
+    - Operacion_compraventa_titulos_valores_liquidacion_moneda_extranjera_ca0b73
+    - Operacion_comprobacion_de_rechazo_de_cheque_07ba39
+    - Operacion_compromiso_de_presentacion_dentro_de_365_dias_desde_inicio_de_tramite_87f530
+    - Operacion_computo_como_capital_participaciones_minoritarias_consolidadas_331b1c
+    - Operacion_computo_de_aportes_en_especie_en_mercado_cambios_13689b
+    - Operacion_computo_de_exigencia_capital_por_riesgo_credito_eb9eaf
+    - Operacion_computo_de_exigencia_de_capital_por_riesgo_de_credito_de_contraparte_eeacd7
+    - Operacion_computo_exigencia_capital_derivados_acciones_6fc56f
+    - Operacion_computo_exposicion_total_bruta_229ef1
+    - Operacion_computo_exposiciones_dolar_linked_0ec467
+    - Operacion_computo_resultado_positivo_ultimo_ejercicio_8e5c8a
+    - Operacion_comunicacion_al_bcra_de_rechazos_de_cheques_f94818
+    - Operacion_comunicacion_al_bcra_de_rechazos_f744de
+    - Operacion_comunicacion_de_clasificacion_de_deudor_a_cliente_4b4635
+    - Operacion_comunicacion_de_modificacion_baja_de_rechazo_al_bcra_39db45
+    - Operacion_comunicacion_de_rechazo_al_tenedor_1fe229
+    - Operacion_comunicacion_de_saldo_al_cuentacorrentista_fae6f0
+    - Operacion_comunicacion_fehaciente_de_certificaciones_emitidas_9294e5
+    - Operacion_comunicacion_inmediata_de_contingencia_743b3d
+    - Operacion_comunicacion_rechazo_al_bcra_189044
+    - Operacion_comunicacion_rechazo_al_librador_y_avalistas_bd21f6
+    - Operacion_concertacion_de_cambio_sobre_fondos_acreditados_572532
+    - Operacion_concertacion_de_titulos_valores_en_el_pais_28bf13
+    - Operacion_condonacion_de_deuda_del_acreedor_a4900a
+    - Operacion_confeccion_boleto_cambio_a19_depositos_191124
+    - Operacion_confeccion_boletos_de_cambio_a_nombre_propio_89711d
+    - Operacion_confeccion_de_boleto_de_venta_importaciones_de_bienes_22aefb
+    - Operacion_confeccion_de_boletos_sin_movimiento_de_pesos_aff787
+    - Operacion_consideracion_de_exportacion_no_generadora_de_contravalor_aa8b22
+    - Operacion_consideracion_de_incidencia_de_grupo_de_contrapartes_conectadas_90abc8
+    - Operacion_consideracion_de_instrumentos_cer_a_tasa_fija_3131fc
+    - Operacion_consignacion_de_denominacion_de_cuenta_en_rechazo_259e1a
+    - Operacion_consignacion_de_informacion_al_dorso_de_cheques_d59483
+    - Operacion_consignacion_del_motivo_de_rechazo_del_cheque_88379f
+    - Operacion_consignacion_en_partida_60500000_para_neutralizacion_88ccaa
+    - Operacion_consignacion_exigencia_riesgo_especifico_tasa_interes_848889
+    - Operacion_consignacion_exigencia_riesgo_general_acciones_b1e838
+    - Operacion_consignacion_judicial_de_cheques_rechazados_d33e1b
+    - Operacion_consignacion_judicial_del_importe_de_multa_b1005b
+    - Operacion_consolidacion_de_bases_para_capitales_minimos_e28adb
+    - Operacion_consolidacion_de_posiciones_en_sucursales_y_subsidiarias_a1eedc
+    - Operacion_constatacion_de_certificado_de_inversion_para_exportacion_12ea40
+    - Operacion_constitucion_del_legajo_del_deudor_85a6d2
+    - Operacion_consulta_del_regimen_de_transparencia_dd23cd
+    - Operacion_contratacion_de_productos_y_servicios_a_distancia_115307
+    - Operacion_contratacion_de_seguros_accesorios_a_servicios_financieros_32d06e
+    - Operacion_contratacion_seguro_sobre_saldo_deudor_7a0636
+    - Operacion_contrato_a_termino_de_moneda_oro_ba0b0b
+    - Operacion_convenio_de_pago_por_concordato_o_arreglo_privado_816f60
+    - Operacion_conversion_de_compromisos_en_equivalentes_crediticios_3664b4
+    - Operacion_conversion_de_moneda_extranjera_a_pesos_34693e
+    - Operacion_conversion_de_posicion_neta_a_pesos_1b3591
+    - Operacion_conversion_de_swaps_apalancados_a_nocionales_no_apalancados_2483aa
+    - Operacion_conversion_instrumento_en_acciones_ordinarias_06ff00
+    - Operacion_correccion_de_problemas_identificados_d1152f
+    - Operacion_creacion_de_cheque_con_firmas_multiples_ba7ce5
+    - Operacion_crecimiento_de_depositos_c29e52
+    - Operacion_credito_adicional_post_refinanciacion_91d562
+    - Operacion_credito_por_internet_e0963d
+    - Operacion_credito_por_orden_telefonica_f7e811
+    - Operacion_credito_por_transferencia_electronica_b5597b
+    - Operacion_creditos_a_residentes_exterior_desfases_de_liquidacion_2e3633
+    - Operacion_creditos_documentarios_853778
+    - Operacion_creditos_documentarios_utilizados_pago_diferido_da2551
+    - Operacion_creditos_frente_al_bcra_7476b8
+    - Operacion_creditos_internos_en_cuentas_c1e98d
+    - Operacion_creditos_por_arrendamientos_financieros_72a28a
+    - Operacion_creditos_vivienda_propia_compra_construccion_o_refaccion_9bef1a
+    - Operacion_cuantificacion_de_exposicion_por_moneda_320d78
+    - Operacion_cuentas_a_la_vista_en_bancos_del_exterior_ca97e1
+    - Operacion_cuentas_corrientes_y_especiales_en_bcra_6c80a4
+    - Operacion_cuentas_de_corresponsalia_en_bancos_del_exterior_1335da
+    - Operacion_cumplido_de_embarque_permiso_definitivo_c6d27a
+    - Operacion_cumplimiento_de_requerimientos_legajo_unico_financiero_y_economico_df59a6
+    - Operacion_cumplimiento_parcial_total_seguimiento_permiso_embarque_7dc5c0
+    - Operacion_cumplimiento_seguimiento_exportacion_decreto_929_13_07516a
+    - Operacion_cursamiento_de_cheque_a_entidad_girada_2aad10
+    - Operacion_custodia_de_titulos_representativos_de_inversiones_a2192e
+    - Operacion_dar_aviso_de_adulteracion_de_cheque_electronico_caf952
+    - Operacion_dar_aviso_de_extravio_de_cheque_emitido_en_papel_cc1d4b
+    - Operacion_dar_aviso_de_extravio_de_formulas_de_cheques_9ca48a
+    - Operacion_debito_al_momento_de_presentacion_ade7d0
+    - Operacion_debito_automatico_de_resumen_de_tarjeta_70fd25
+    - Operacion_debito_de_cuenta_corriente_5d0731
+    - Operacion_debito_de_cuenta_corriente_de_entidad_participante_a022db
+    - Operacion_debito_de_cuenta_corriente_entidad_participante_7ae441
+    - Operacion_debito_de_cuenta_corriente_ordenes_impagas_972745
+    - Operacion_debito_de_importe_generando_saldo_deudor_a7a570
+    - Operacion_debito_de_importes_de_ordenes_de_pago_inconsistentes_e670ba
+    - Operacion_debito_de_multas_por_rechazo_de_cheques_3192fb
+    - Operacion_debito_de_penalidades_de_cuenta_corriente_40ec27
+    - Operacion_debito_indebido_de_comisiones_y_o_cargos_971da4
+    - Operacion_debitos_automaticos_sobre_cuentas_216901
+    - Operacion_debitos_internos_29af09
+    - Operacion_debitos_por_cheques_cancelatorios_b7c52e
+    - Operacion_debitos_sin_autorizacion_previa_5335ea
+    - Operacion_declaracion_de_incumplimiento_y_liquidacion_de_garantia_be62c9
+    - Operacion_declaracion_de_operacion_en_relevamiento_1917ae
+    - Operacion_declaracion_de_operacion_en_relevamiento_de_activos_y_pasivos_externos_0449d7
+    - Operacion_declaracion_jurada_cliente_activos_externos_liquidos_f1daa9
+    - Operacion_deduccion_de_importes_de_activos_de_rpc_5f0068
+    - Operacion_deduccion_de_titulos_de_gobiernos_extranjeros_33fe07
+    - Operacion_defectos_de_aplicacion_netos_en_efectivo_cba64e
+    - Operacion_delegacion_de_actividades_en_terceros_1a17eb
+    - Operacion_demas_posiciones_de_titulizacion_fuera_de_balance_1048e4
+    - Operacion_denuncia_de_extravio_sustraccion_o_adulteracion_f08c5d
+    - Operacion_denuncia_de_incumplido_permiso_30291e
+    - Operacion_deposito_al_bcra_en_pesos_fuente_de_fondos_en_pesos_438fe7
+    - Operacion_deposito_cheque_caja_de_valores_negociacion_cc4530
+    - Operacion_deposito_cheque_en_entidad_receptora_3261a2
+    - Operacion_deposito_de_certificados_en_cuenta_20b843
+    - Operacion_deposito_de_cheques_en_plazos_de_compensacion_f4b417
+    - Operacion_deposito_de_echeq_5082ae
+    - Operacion_deposito_de_echeq_en_dolares_estadounidenses_647d40
+    - Operacion_deposito_de_efectivo_en_pesos_463472
+    - Operacion_deposito_de_efectivo_o_cheques_01c34d
+    - Operacion_deposito_de_garantias_de_futuros_y_opciones_2fa004
+    - Operacion_deposito_electronico_de_cheques_e4cb2c
+    - Operacion_deposito_en_casa_girada_con_constancia_identificatoria_af3e7d
+    - Operacion_deposito_en_cuenta_especial_de_cheques_diferidos_4284b2
+    - Operacion_deposito_fondos_en_cuentas_exterior_844127
+    - Operacion_deposito_por_transferencia_ordenada_por_entidad_4dc733
+    - Operacion_deposito_u_operacion_con_echeq_ca293f
+    - Operacion_depositos_a_plazo_fijo_en_entidades_del_exterior_494e61
+    - Operacion_depositos_en_cuenta_especial_de_regularizacion_monedas_extranjeras_dc971c
+    - Operacion_depositos_en_cuentas_especiales_financiacion_de_exportaciones_95e322
+    - Operacion_depositos_en_moneda_extranjera_financiacion_28cc03
+    - Operacion_depositos_mediante_cajeros_automaticos_273683
+    - Operacion_depositos_plazo_riesgo_retiro_anticipado_bab2db
+    - Operacion_depositos_por_ventanilla_o_cajeros_automaticos_49464d
+    - Operacion_derivado_otc_261a55
+    - Operacion_derivados_de_credito_cobertura_de_obligaciones_63a309
+    - Operacion_desarrollo_aplicacion_reproduccion_firmas_digitalizadas_cbee12
+    - Operacion_descubiertos_en_cuenta_corriente_a47c89
+    - Operacion_descuento_de_operacion_en_entidad_exterior_f4c930
+    - Operacion_desembolso_en_divisas_por_financiacion_exterior_47f602
+    - Operacion_desembolsos_de_fondos_financiacion_20c454
+    - Operacion_desembolsos_en_divisas_para_importaciones_bb410c
+    - Operacion_desembolsos_simultaneos_por_mercado_de_cambios_a9531e
+    - Operacion_designacion_de_entidad_financiera_local_5c7ab3
+    - Operacion_designacion_de_entidad_financiera_local_seguimiento_operacion_exportacion_6657ee
+    - Operacion_destinaciones_suspensivas_exportaciones_temporarias_969431
+    - Operacion_deteccion_de_transferencias_con_informacion_incompleta_c647cd
+    - Operacion_determinacion_cva_ajuste_de_valuacion_credito_e1bdd2
+    - Operacion_determinacion_de_la_rpc_en_fusion_6e4bdd
+    - Operacion_determinacion_de_nocional_para_operaciones_sin_nocional_claramente_definido_ac6464
+    - Operacion_determinacion_de_ponderadores_de_riesgo_e2260f
+    - Operacion_determinacion_de_responsabilidad_patrimonial_computable_f90837
+    - Operacion_determinacion_del_requisito_de_capital_52da79
+    - Operacion_determinacion_diaria_integracion_capital_74f137
+    - Operacion_determinacion_ead_contraparte_derivados_344877
+    - Operacion_determinacion_excedente_capital_ordinario_9c2a28
+    - Operacion_determinacion_exigencia_capital_riesgo_credito_3d2a1e
+    - Operacion_determinacion_exigencia_riesgo_de_mercado_a00f32
+    - Operacion_determinacion_exigencia_riesgo_mercado_calculo_maximo_c87cbb
+    - Operacion_determinacion_importe_posicion_abierta_neta_moneda_2b051d
+    - Operacion_determinacion_incluso_exclusion_cartera_negociacion_817ccc
+    - Operacion_determinacion_montos_pendientes_facturacion_en_monedas_distintas_cac557
+    - Operacion_determinacion_participacion_maxima_multiples_tramos_e819f0
+    - Operacion_determinacion_participacion_maxima_tramo_unico_17c862
+    - Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39
+    - Operacion_devolucion_de_chequeras_con_datos_anteriores_84ecf7
+    - Operacion_devolucion_de_cheques_a_libradores_dae122
+    - Operacion_devolucion_de_echeq_al_librador_por_tenedor_4c6f48
+    - Operacion_devolucion_de_fondos_del_exterior_pago_con_registro_aduanero_pendiente_5bfc79
+    - Operacion_devolucion_de_operaciones_cursadas_por_sml_432a11
+    - Operacion_devolucion_fondos_al_emisor_285a51
+    - Operacion_devoluciones_de_pagos_anticipados_f15e84
+    - Operacion_direccion_de_actividades_y_negocios_2ce9a7
+    - Operacion_diseno_de_nuevos_productos_y_servicios_369a28
+    - Operacion_diseno_del_sistema_de_incentivos_economicos_al_personal_56a391
+    - Operacion_disponibilidad_de_informacion_sobre_actividades_f2da83
+    - Operacion_disponibilidad_publica_de_informacion_sobre_actividades_8e6a11
+    - Operacion_distribucion_de_dividendos_en_efectivo_3be1a3
+    - Operacion_diversificacion_de_cartera_minorista_889e0d
+    - Operacion_division_de_exposicion_entre_tecnicas_crc_b20552
+    - Operacion_division_de_riesgo_en_componentes_derivados_sobre_acciones_a95627
+    - Operacion_division_de_riesgo_en_componentes_derivados_sobre_commodities_ed6293
+    - Operacion_efectivo_pago_del_beneficio_001d45
+    - Operacion_egreso_por_mercado_de_cambios_con_regimen_de_acceso_a_divisas_900f82
+    - Operacion_egresos_de_fondos_al_exterior_verificacion_de_cuits_dd6b7e
+    - Operacion_egresos_por_mercado_de_cambios_e8a13a
+    - Operacion_ejercicio_de_opcion_como_respaldo_crediticio_implicito_4f3618
+    - Operacion_ejercicio_de_opcion_de_exclusion_e086f2
+    - Operacion_elaboracion_de_boleto_global_diario_dcd97f
+    - Operacion_elaboracion_de_reportes_atencion_al_usuario_fe26fd
+    - Operacion_elaboracion_programas_trabajo_e_informes_auditoria_a402c1
+    - Operacion_elaboracion_y_provision_de_nomina_de_deudores_morosos_802e7d
+    - Operacion_eliminacion_de_cotitular_de_cuenta_52dbc7
+    - Operacion_emision_certificacion_afectacion_sepaimpo_aee1f9
+    - Operacion_emision_certificacion_de_aplicacion_capital_e_intereses_60aef5
+    - Operacion_emision_certificaciones_acceso_mercado_de_cambios_bba520
+    - Operacion_emision_certificaciones_de_aplicacion_de_divisas_7623b4
+    - Operacion_emision_certificado_nominativo_transferible_97100d
+    - Operacion_emision_cheques_firmas_electronicas_digitalizadas_38a3e1
+    - Operacion_emision_cheques_papel_reproduccion_firmas_electronica_8be4d3
+    - Operacion_emision_de_cartas_de_credito_adf0c0
+    - Operacion_emision_de_certificacion_aumento_exportaciones_bienes_50628f
+    - Operacion_emision_de_certificacion_de_cumplido_b96564
+    - Operacion_emision_de_certificacion_de_ingreso_y_liquidacion_de_divisas_e7963c
+    - Operacion_emision_de_certificacion_por_posfinanciaciones_32f096
+    - Operacion_emision_de_certificaciones_acceso_mercado_cambios_2ca44b
+    - Operacion_emision_de_certificaciones_aplicacion_divisas_607b72
+    - Operacion_emision_de_certificaciones_de_acceso_a_divisas_f9529e
+    - Operacion_emision_de_certificaciones_de_acceso_al_mercado_de_cambios_dfbda2
+    - Operacion_emision_de_certificaciones_de_aplicacion_de_cobros_d78c73
+    - Operacion_emision_de_certificaciones_de_aumento_de_exportaciones_414e35
+    - Operacion_emision_de_certificaciones_de_aumento_exportaciones_e1473a
+    - Operacion_emision_de_certificaciones_de_divisas_37cc99
+    - Operacion_emision_de_certificaciones_detalles_de_seguimiento_d5a48a
+    - Operacion_emision_de_certificado_para_ejercicio_de_acciones_civiles_f202a4
+    - Operacion_emision_de_cheque_c50f16
+    - Operacion_emision_de_cheque_de_pago_diferido_no_registrado_1e40e0
+    - Operacion_emision_de_cheque_no_a_la_orden_para_movimiento_de_fondos_e75db2
+    - Operacion_emision_de_cheques_6cacff
+    - Operacion_emision_de_cheques_comunes_dd9423
+    - Operacion_emision_de_cheques_de_pago_diferido_47a688
+    - Operacion_emision_de_cheques_en_formato_papel_con_reproduccion_digital_7e191d
+    - Operacion_emision_de_cheques_en_pesos_o_usd_143065
+    - Operacion_emision_de_cheques_formato_papel_92cd41
+    - Operacion_emision_de_cheques_por_personas_inhabilitadas_828f10
+    - Operacion_emision_de_constancia_de_consulta_o_reclamo_07991f
+    - Operacion_emision_de_constancia_de_operacion_8ad94c
+    - Operacion_emision_de_garantia_por_pedido_residente_e0003f
+    - Operacion_emision_de_instrumentos_en_pnc_8a0afe
+    - Operacion_emision_de_letras_avaladas_3ad992
+    - Operacion_emision_de_nota_de_credito_28812a
+    - Operacion_emision_de_nota_escrita_con_resolucion_ab54c7
+    - Operacion_emision_de_nuevas_acciones_d687a0
+    - Operacion_emision_de_titulos_de_deuda_1d989c
+    - Operacion_emision_de_titulos_de_deuda_7_11_1_5_y_7_11_1_6_e4e9c4
+    - Operacion_emision_de_titulos_de_deuda_con_registro_exterior_e4f3e2
+    - Operacion_emision_de_titulos_de_deuda_exterior_registro_pais_acceso_cambios_61b9a9
+    - Operacion_emision_de_titulos_de_deuda_post_01_09_19_para_refinanciar_0f67fb
+    - Operacion_emision_titulos_deuda_moneda_extranjera_8d61fd
+    - Operacion_emision_titulos_deuda_moneda_extranjera_con_registro_publico_2d9c48
+    - Operacion_emision_y_cobro_de_cheques_de_pago_diferido_9adeda
+    - Operacion_emision_y_entrega_de_formula_de_certificacion_1dd04d
+    - Operacion_emision_y_presentacion_de_cheques_1f5d1a
+    - Operacion_empleo_de_tecnicas_de_cobertura_operaciones_sinteticas_c2ed8d
+    - Operacion_enajenacion_de_activos_no_financieros_no_producidos_fd9001
+    - Operacion_encomienda_de_clasificacion_al_sector_de_creditos_f7e0db
+    - Operacion_endeudamientos_con_el_exterior_en_moneda_extranjera_7fc030
+    - Operacion_endeudamientos_financieros_con_el_exterior_2c221d
+    - Operacion_endoso_11ba72
+    - Operacion_endoso_a_favor_del_bcra_7d8af7
+    - Operacion_endoso_de_cheques_648af4
+    - Operacion_endoso_en_echeq_027661
+    - Operacion_endoso_para_obtencion_de_financiacion_a381c7
+    - Operacion_entrega_copia_dni_al_legajo_f2a1d8
+    - Operacion_entrega_de_billetes_o_acreditacion_de_fondos_e91290
+    - Operacion_entrega_de_billetes_o_fondos_formacion_de_activos_externos_d08166
+    - Operacion_entrega_de_fondos_locales_o_activos_locales_para_recibir_activos_externos_198895
+    - Operacion_entrega_de_instrumentos_en_mercado_de_cambios_110541
+    - Operacion_entrega_de_tarjetas_magneticas_c89025
+    - Operacion_envio_de_informacion_sobre_movimientos_y_cheques_00617c
+    - Operacion_envio_partida_39000000_periodo_julio_2015_4091a8
+    - Operacion_envios_asistencia_y_salvamento_ley_22_415_95f5fd
+    - Operacion_establecimiento_de_comite_lavado_de_activos_y_financiamiento_del_terrorismo_e5c850
+    - Operacion_estimacion_de_riesgos_por_combinacion_de_posiciones_1ce95f
+    - Operacion_estrategia_de_negociacion_documentada_d1e6fe
+    - Operacion_evaluacion_de_capacidad_de_repago_d42960
+    - Operacion_evaluacion_de_codigo_de_gobierno_societario_21418b
+    - Operacion_evaluacion_de_riesgos_de_la_entidad_2f697b
+    - Operacion_evaluacion_de_sujetos_de_credito_con_apertura_de_legajo_78e678
+    - Operacion_evaluacion_diaria_de_parametros_en_valuacion_a_modelo_572bc3
+    - Operacion_evaluacion_gestion_directorio_y_renovacion_alta_gerencia_d0b9e8
+    - Operacion_evaluacion_procesos_control_interno_94aa0c
+    - Operacion_exceso_de_margenes_de_credito_por_lineas_especificas_bef38b
+    - Operacion_exclusion_de_central_de_inhabilitados_fab64b
+    - Operacion_exclusion_de_conceptos_deducibles_del_computo_rm_d96734
+    - Operacion_exclusion_de_exposiciones_subyacentes_del_calculo_de_activos_ponderados_49f137
+    - Operacion_exclusion_de_futuros_y_forwards_con_subyacentes_aad2ae
+    - Operacion_exclusion_operaciones_discontinuadas_del_bi_3aa389
+    - Operacion_exhibicion_de_documento_anterior_bfbc29
+    - Operacion_exhibicion_dni_d_en_formato_credencial_virtual_8985e2
+    - Operacion_exhibicion_dni_m_o_dni_d_post_rectificacion_0444ac
+    - Operacion_exigencia_capital_derivado_enesimo_incumplimiento_n_1_2d4c08
+    - Operacion_exigencia_de_capital_por_commodities_1dac48
+    - Operacion_exigencia_de_capital_por_tipo_de_cambio_aaeaf4
+    - Operacion_exportacion_a_consumo_con_importacion_temporaria_1588aa
+    - Operacion_exportacion_a_consumo_de_automotores_3ad5fc
+    - Operacion_exportacion_a_consumo_radicacion_exterior_9e2590
+    - Operacion_exportacion_aae_a_areas_francas_nacionales_56afe6
+    - Operacion_exportacion_comprendida_decreto_443_23_e3f93b
+    - Operacion_exportacion_de_bienes_0026b2
+    - Operacion_exportacion_de_bienes_por_vpu_rigi_5645aa
+    - Operacion_exportacion_de_valores_mediante_regimen_ec51_d397cc
+    - Operacion_exportacion_desde_territorio_nacional_continental_al_area_franca_325703
+    - Operacion_exportaciones_bienes_con_fines_promocionales_74ed90
+    - Operacion_exportaciones_territorio_continental_a_area_aduanera_especial_e3b8f4
+    - Operacion_exposicion_a_bmd_que_cumplen_criterios_de_admisibilidad_9a5a9c
+    - Operacion_exposicion_a_entidades_financieras_corto_plazo_3ff5fb
+    - Operacion_exposicion_a_entidades_financieras_demas_9e45d0
+    - Operacion_exposicion_crediticia_con_cobertura_de_riesgo_de_credito_c4140c
+    - Operacion_exposicion_frente_contraparte_individual_772d37
+    - Operacion_exposicion_garantia_hipotecaria_inmuebles_comerciales_87bb5f
+    - Operacion_exposiciones_a_acciones_4baa91
+    - Operacion_exposiciones_a_bancos_multilaterales_de_desarrollo_919e2d
+    - Operacion_exposiciones_a_ccp_b3994e
+    - Operacion_exposiciones_a_empresas_03f0db
+    - Operacion_exposiciones_a_entidades_financieras_481fc3
+    - Operacion_exposiciones_a_instrumentos_014c82
+    - Operacion_exposiciones_a_instrumentos_deuda_subordinada_719f82
+    - Operacion_exposiciones_a_instrumentos_participaciones_en_capital_3a77b8
+    - Operacion_exposiciones_con_entidades_de_contraparte_central_3e7288
+    - Operacion_exposiciones_con_garantia_hipotecaria_e1cab3
+    - Operacion_exposiciones_en_el_activo_codigo_45110000_bb7888
+    - Operacion_exposiciones_en_situacion_de_incumplimiento_104f61
+    - Operacion_exposiciones_garantizadas_por_sgr_o_fondo_publico_9fec24
+    - Operacion_exposiciones_minoristas_82110c
+    - Operacion_exposiciones_minoristas_normativas_no_transaccionales_f44033
+    - Operacion_extension_al_portador_de_cheque_de_pago_diferido_c72ebd
+    - Operacion_extension_de_contragarantias_exterior_991c53
+    - Operacion_extension_de_plazo_de_prestamo_uvi_e6e225
+    - Operacion_extension_del_plazo_120_dias_corridos_996935
+    - Operacion_extension_del_plazo_hasta_plazo_previsto_en_punto_7_1_1_4_8e468f
+    - Operacion_extension_plazo_ingreso_liquidacion_divisas_d523f1
+    - Operacion_extraccion_de_efectivo_en_cajero_automatico_8d8d06
+    - Operacion_extracciones_a_traves_de_cajeros_automaticos_47772f
+    - Operacion_extravio_de_cheques_y_documentos_e17067
+    - Operacion_facilidades_adicionales_margenes_vigentes_acordados_60351e
+    - Operacion_facilidades_de_liquidez_titulizacion_9e9de2
+    - Operacion_falsificacion_de_cheques_2b8840
+    - Operacion_falta_de_firma_del_librador_7c504b
+    - Operacion_financiacion_comercial_de_importacion_53c0f5
+    - Operacion_financiacion_comercial_importacion_de_bienes_dee2df
+    - Operacion_financiacion_comercial_para_importacion_de_bienes_de_capital_110ddf
+    - Operacion_financiacion_computada_como_ingresada_y_liquidada_6d2187
+    - Operacion_financiacion_con_titulos_valores_susceptibles_de_aforo_nulo_7dcf86
+    - Operacion_financiacion_de_consumos_en_moneda_extranjera_con_tarjetas_8303ec
+    - Operacion_financiacion_de_exportaciones_24e773
+    - Operacion_financiacion_de_importaciones_con_aplicacion_a_cobros_exportaciones_2bc642
+    - Operacion_financiacion_de_operaciones_de_comercio_exterior_d19145
+    - Operacion_financiacion_de_prestadores_de_servicios_exportados_9dab89
+    - Operacion_financiacion_de_proveedores_de_servicios_de_exportacion_71f51a
+    - Operacion_financiacion_de_proyectos_inversion_ganaderia_bovina_66ab3e
+    - Operacion_financiacion_de_proyectos_inversion_nacional_4e01cd
+    - Operacion_financiacion_de_unidades_de_vivienda_uvi_1c1cab
+    - Operacion_financiacion_de_uva_cer_ley_25_827_756c14
+    - Operacion_financiacion_en_cuotas_de_compras_de_clientes_310e5c
+    - Operacion_financiacion_especializada_grandes_proyectos_infraestructura_91c15f
+    - Operacion_financiacion_mipyme_y_actividad_profesional_9b7954
+    - Operacion_financiacion_u_otorgamiento_de_garantia_anterior_a_13_12_23_459923
+    - Operacion_financiaciones_a_clientes_agricolas_no_mipyme_5faf23
+    - Operacion_financiaciones_a_clientes_agricolas_no_mipyme_5faf23__cap
+    - Operacion_financiaciones_a_exportadores_con_flujo_futuro_de_ingresos_be9e60
+    - Operacion_financiaciones_a_mipymes_534b02
+    - Operacion_financiaciones_a_productores_bienes_exportacion_984579
+    - Operacion_financiaciones_a_proveedores_de_bienes_y_servicios_proceso_productivo_3bbeee
+    - Operacion_financiaciones_asociadas_a_importaciones_de_bienes_a3239b
+    - Operacion_financiaciones_asociadas_a_importaciones_habilitadas_633f47
+    - Operacion_financiaciones_comerciales_en_moneda_extranjera_503e01
+    - Operacion_financiaciones_comerciales_pagos_a_vista_importaciones_bienes_25e0ce
+    - Operacion_financiaciones_comerciales_pagos_diferidos_importaciones_bienes_c7b77f
+    - Operacion_financiaciones_con_amortizacion_periodica_personas_humanas_07ab20
+    - Operacion_financiaciones_con_garantias_en_moneda_extranjera_11bef7
+    - Operacion_financiaciones_con_garantias_preferidas_a_ca48e7
+    - Operacion_financiaciones_de_exportaciones_f060f3
+    - Operacion_financiaciones_de_importaciones_de_bienes_656436
+    - Operacion_financiaciones_destinos_no_previstos_2_1_1_a_2_1_6_6d6ec0
+    - Operacion_financiaciones_directas_11e86a
+    - Operacion_financiaciones_en_moneda_extranjera_por_ef_locales_9acfec
+    - Operacion_financiaciones_financieras_pagos_a_vista_importaciones_bienes_c97af4
+    - Operacion_financiaciones_financieras_pagos_diferidos_importaciones_bienes_574b0f
+    - Operacion_financiaciones_pagos_importaciones_bienes_52489b
+    - Operacion_financiaciones_rotativas_revolving_bc8efb
+    - Operacion_financiaciones_sin_responsabilidad_cedente_con_seguros_credito_e33570
+    - Operacion_financiamiento_con_destino_comercio_exterior_7a28bb
+    - Operacion_financiamiento_exportacion_a909a6
+    - Operacion_financiamiento_sector_publico_no_financiero_2f41c7
+    - Operacion_firma_electronica_en_echeq_39abe8
+    - Operacion_funcion_de_auditoria_externa_3cb938
+    - Operacion_funcion_de_auditoria_interna_b303ae
+    - Operacion_futuro_sobre_indice_de_bonos_corporativos_2e8039
+    - Operacion_futuros_y_contratos_a_termino_combinacion_de_posiciones_e92395
+    - Operacion_garantia_hipotecaria_con_inmueble_terminado_0e5a68
+    - Operacion_gestion_activa_de_posiciones_b4502e
+    - Operacion_gestion_activa_posiciones_cartera_negociacion_0e621d
+    - Operacion_gestion_de_cobro_por_agencia_de_recupero_6de780
+    - Operacion_gestion_de_cobro_por_aseguradora_da7121
+    - Operacion_gestion_de_cobro_por_tercero_cheque_al_portador_o_nominal_41dcea
+    - Operacion_gestion_de_echeq_514051
+    - Operacion_gestion_de_operaciones_y_riesgos_eba575
+    - Operacion_gestion_de_registro_formato_papel_a6b85b
+    - Operacion_gestion_de_riesgos_de_mercado_9e360a
+    - Operacion_giro_sobre_el_librador_0e2548
+    - Operacion_giros_en_descubierto_a88209
+    - Operacion_habilitacion_de_nueva_entidad_para_emision_de_certificaciones_bebac7
+    - Operacion_identificacion_de_denunciantes_mediante_documentos_40e459
+    - Operacion_identificacion_de_presentante_cheque_papel_6a3d2c
+    - Operacion_identificacion_evaluacion_monitoreo_control_y_mitigacion_de_riesgos_b095a3
+    - Operacion_identificacion_por_codigo_de_comision_nacional_de_valores_514cb4
+    - Operacion_implementacion_procedimientos_gobierno_corporativo_4bd8aa
+    - Operacion_importacion_posiciones_arancelarias_ncm_8802_f58c9c
+    - Operacion_imposibilitar_uso_de_productos_servicios_por_medidas_de_seguridad_15e35f
+    - Operacion_imputacion_a_capacidad_de_prestamo_depositos_moneda_extranjera_49ff53
+    - Operacion_imputacion_cumplimiento_seguimiento_permiso_rigi_4ab19b
+    - Operacion_imputacion_de_credito_al_tercero_principal_pagador_avalista_o_codeudor_bd92ec
+    - Operacion_imputacion_de_creditos_cedidos_sin_responsabilidad_f629f9
+    - Operacion_imputacion_de_financiaciones_incorporadas_12bd29
+    - Operacion_imputacion_de_liquidaciones_a_permiso_embarque_03fd5b
+    - Operacion_imputacion_de_multas_por_demora_en_entrega_824513
+    - Operacion_imputacion_exportacion_temporal_con_perdida_de_valor_b02aaa
+    - Operacion_imputacion_gastos_colocacion_bienes_exterior_2fd647
+    - Operacion_imputacion_oficializacion_a_excepcion_de_ingreso_y_liquidacion_26d489
+    - Operacion_inclusion_de_instrumentos_en_pnc_e94b0a
+    - Operacion_inclusion_de_posiciones_en_cartera_de_negociacion_bc636b
+    - Operacion_inclusion_en_central_de_cheques_denunciados_b68f29
+    - Operacion_inclusion_en_central_de_cuentacorrentistas_inhabilitados_18cee7
+    - Operacion_inclusion_en_central_de_inhabilitados_579dc0
+    - Operacion_incorporacion_de_carteras_por_titulos_o_participaciones_59dbe7
+    - Operacion_incorporacion_de_dividendo_cupon_con_reajuste_2c7f67
+    - Operacion_incorporacion_de_inmuebles_al_patrimonio_42a508
+    - Operacion_incorporacion_en_centrales_de_cheques_rechazados_e_inhabilitados_7fff4f
+    - Operacion_incremento_tenencias_moneda_extranjera_ab92a1
+    - Operacion_incumplimiento_del_capital_minimo_exigido_58cfb3
+    - Operacion_informacion_de_exposiciones_fuera_de_balance_bf3ab2
+    - Operacion_informacion_de_exposiciones_sft_4dce44
+    - Operacion_informacion_de_incumplimientos_activos_inmovilizados_3e5a14
+    - Operacion_informacion_de_incumplimientos_derivados_sobre_commodities_00b289
+    - Operacion_informacion_de_incumplimientos_graduacion_del_credito_aab62c
+    - Operacion_informacion_de_incumplimientos_grandes_exposiciones_f447b0
+    - Operacion_informacion_de_incumplimientos_sector_publico_no_financiero_4c3db2
+    - Operacion_informacion_del_ratio_de_apalancamiento_958bfc
+    - Operacion_informar_reduccion_exigencia_en_partida_36000001_862a12
+    - Operacion_informar_reduccion_exigencia_en_partida_36000004_5b7f27
+    - Operacion_informe_auditoria_externa_sobre_cumplimiento_iosco_cpmi_74d848
+    - Operacion_informe_mensual_informacion_posiciones_y_exigencia_f6c688
+    - Operacion_informe_total_de_letras_hipotecarias_escriturales_6576c1
+    - Operacion_ingreso_contravalor_exportacion_en_divisas_0ce029
+    - Operacion_ingreso_de_anticipos_prefinanciaciones_y_posfinanciaciones_del_exterior_3bcbe7
+    - Operacion_ingreso_de_bienes_con_despacho_a_plaza_por_solicitud_particular_o_courier_be40df
+    - Operacion_ingreso_de_divisas_por_mercado_de_cambios_bbfa94
+    - Operacion_ingreso_de_fondos_divisas_destino_beneficiarios_finales_b414f5
+    - Operacion_ingreso_de_recuperos_de_seguro_en_mercado_de_cambios_2c2e57
+    - Operacion_ingreso_y_liquidacion_cobros_exportaciones_bf3a95
+    - Operacion_ingreso_y_liquidacion_de_cobros_de_exportacion_cc95e6
+    - Operacion_ingreso_y_liquidacion_de_cobros_de_exportaciones_fd7234
+    - Operacion_ingreso_y_liquidacion_de_contravalor_en_divisas_d8486c
+    - Operacion_ingreso_y_liquidacion_de_divisas_dc00d4
+    - Operacion_ingreso_y_liquidacion_de_divisas_de_exportacion_cd242d
+    - Operacion_ingreso_y_liquidacion_de_divisas_en_mercado_de_cambios_a2158d
+    - Operacion_ingreso_y_liquidacion_de_divisas_exportacion_concentrados_minerales_b6dc1e
+    - Operacion_ingreso_y_liquidacion_de_divisas_exportacion_precios_revisables_099c9f
+    - Operacion_ingreso_y_liquidacion_de_divisas_financiacion_importacion_2dea6e
+    - Operacion_ingreso_y_liquidacion_de_divisas_por_exportacion_6e62aa
+    - Operacion_ingreso_y_liquidacion_divisas_mercado_cambios_f79465
+    - Operacion_ingreso_y_liquidacion_en_mercado_de_cambios_4fb095
+    - Operacion_ingreso_y_liquidacion_titulos_deuda_exterior_6ad647
+    - Operacion_inhabilitacion_de_cuentacorrentistas_4c01ff
+    - Operacion_inhabilitacion_zfi_ingreso_zona_franca_1c89d4
+    - Operacion_insercion_de_firma_en_cheque_para_cobro_o_deposito_761507
+    - Operacion_instalacion_de_oficinas_de_representacion_en_exterior_0e801f
+    - Operacion_instalacion_de_sucursales_en_el_exterior_7a7180
+    - Operacion_instrumento_con_obligacion_diferible_indefinidamente_548434
+    - Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02
+    - Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378
+    - Operacion_integracion_de_exigencia_basica_capital_e446e9
+    - Operacion_interaccion_con_red_de_cajeros_automaticos_96c01d
+    - Operacion_intermediacion_de_contratos_de_seguros_generales_1c7073
+    - Operacion_inversion_en_emision_con_calificacion_ae98cf
+    - Operacion_legalizacion_de_documentacion_autoridad_consular_o_convenio_de_la_haya_af32b3
+    - Operacion_letras_aceptadas_pago_diferido_9cc923
+    - Operacion_letras_y_notas_del_bcra_en_usd_3f1a26
+    - Operacion_leyenda_en_devolucion_sin_registrar_647831
+    - Operacion_liberacion_de_echeq_3cdc48
+    - Operacion_libra_de_cheque_en_formato_papel_1dab7d
+    - Operacion_libra_de_cheque_por_medios_electronicos_8ce589
+    - Operacion_libracion_de_echeq_alegado_adulterado_905882
+    - Operacion_libramiento_cheques_por_medios_electronicos_echeq_a00814
+    - Operacion_libramiento_de_cheques_por_medios_electronicos_a29146
+    - Operacion_libramiento_de_cheques_por_ordenante_34c96f
+    - Operacion_libramiento_de_cheques_por_titulares_75e120
+    - Operacion_libramiento_visualizacion_gestion_echeq_9bc437
+    - Operacion_libramiento_y_o_gestion_de_echeq_3b1d76
+    - Operacion_limites_de_compra_tarjeta_de_credito_ade36c
+    - Operacion_lineas_de_credito_a_bancos_del_exterior_facilitar_exportaciones_86d363
+    - Operacion_liquidacion_de_activos_no_imprescindibles_b2d088
+    - Operacion_liquidacion_de_divisas_por_cobro_de_exportaciones_ed86ac
+    - Operacion_liquidacion_de_divisas_por_cobros_de_exportacion_fc5c43
+    - Operacion_liquidacion_de_divisas_por_procesadores_de_pagos_e5ce30
+    - Operacion_liquidacion_de_financiaciones_en_moneda_extranjera_d050b0
+    - Operacion_liquidacion_de_fondos_moneda_extranjera_4c9a77
+    - Operacion_liquidacion_de_incentivos_economicos_fbadf9
+    - Operacion_liquidacion_de_la_rendicion_de_cuentas_d7f07b
+    - Operacion_liquidacion_de_montos_por_exportador_84980c
+    - Operacion_liquidacion_de_seguro_de_mercaderia_siniestrada_0f734c
+    - Operacion_liquidacion_divisas_devolucion_pagos_importaciones_f1e2ef
+    - Operacion_liquidacion_divisas_exportaciones_4d4afa
+    - Operacion_liquidacion_en_mercado_cambios_servicios_financieros_e32a15
+    - Operacion_liquidacion_en_mercado_de_cambios_d7d852
+    - Operacion_liquidacion_en_pesos_en_el_pais_bb8004
+    - Operacion_liquidacion_moneda_extranjera_exportacion_49a3b1
+    - Operacion_liquidacion_simultanea_cobros_anticipados_exportacion_74f96c
+    - Operacion_liquidacion_simultanea_de_cobros_anticipados_o_prefinanciaciones_e778a8
+    - Operacion_liquidacion_simultanea_de_financiaciones_en_moneda_extranjera_3b1b32
+    - Operacion_liquidacion_ventas_titulos_valores_fb2856
+    - Operacion_liquidaciones_nuevas_de_anticipos_y_prefinanciaciones_4d46e5
+    - Operacion_llevanza_del_legajo_en_medios_magneticos_electronicos_u_otros_82e4a0
+    - Operacion_mantencion_en_custodia_de_activos_garantia_c730dc
+    - Operacion_mantener_posicion_neta_en_productos_basicos_5436ed
+    - Operacion_mantener_posiciones_en_acciones_139550
+    - Operacion_mantener_posiciones_en_commodities_2cffc9
+    - Operacion_mantener_posiciones_en_moneda_extranjera_908af4
+    - Operacion_mantener_transferencias_pendientes_de_liquidacion_eed0ce
+    - Operacion_mantenimiento_del_registro_de_reintegros_de_importes_dec4ce
+    - Operacion_material_promocional_regimen_aduanero_b7433e
+    - Operacion_medicion_de_riesgo_especifico_en_titulos_valores_0a63af
+    - Operacion_medicion_de_riesgo_general_de_mercado_en_titulos_valores_184a5e
+    - Operacion_medicion_sistema_derivados_tasas_interes_4d7e69
+    - Operacion_medios_de_comunicacion_cambios_negativos_clasificacion_f7a20b
+    - Operacion_metodo_sustitucion_ponderadores_e11e83
+    - Operacion_modificacion_condiciones_contratadas_61bd5f
+    - Operacion_modificacion_de_clasificacion_en_la_central_de_deudores_c89e2b
+    - Operacion_modificacion_de_computo_en_central_de_cheques_rechazados_462cd3
+    - Operacion_modificacion_de_comunicaciones_de_rechazo_a2506c
+    - Operacion_modificacion_de_condiciones_de_cuenta_corriente_be52c3
+    - Operacion_modificacion_de_entidad_nominada_emision_certificaciones_e38003
+    - Operacion_modificacion_de_entidad_nominada_para_emision_de_certificaciones_538b55
+    - Operacion_modificacion_de_productos_y_servicios_existentes_eb2e10
+    - Operacion_modificacion_de_sistema_aprobado_42a6a7
+    - Operacion_modificacion_del_numero_de_dni_103764
+    - Operacion_modificacion_nombre_y_o_apellido_88e879
+    - Operacion_monitoreo_de_operaciones_290854
+    - Operacion_movimientos_de_fondos_derivados_rendicion_ff9b77
+    - Operacion_movimientos_de_fondos_segun_presentacion_aceptada_5e3e58
+    - Operacion_muestras_bajo_ley_22_415_articulos_560_565_77ad22
+    - Operacion_multiplicador_de_epf_factor_de_garantia_en_exceso_55f905
+    - Operacion_negociacion_bursatil_de_cheques_de_pago_diferido_7ce672
+    - Operacion_negociacion_contravalor_exportacion_en_mercado_de_cambios_3956ab
+    - Operacion_negociacion_de_acciones_compradas_o_vendidas_06e61b
+    - Operacion_negociacion_de_cheques_diferidos_af0737
+    - Operacion_neteamiento_derivado_accion_identico_22c970
+    - Operacion_no_emision_de_comprobante_en_cajero_8448bf
+    - Operacion_no_registracion_de_cheques_de_pago_diferido_57bd1c
+    - Operacion_nominacion_de_entidad_financiera_para_certificacion_de_exportaciones_e5d888
+    - Operacion_notificacion_sefyc_de_ajuste_de_previsiones_05b1d2
+    - Operacion_nuevos_aportes_de_inversion_directa_de_no_residentes_3fcab3
+    - Operacion_nuevos_endeudamientos_financieros_comprendidos_en_3_5_16e777
+    - Operacion_obligaciones_me_entre_residentes_52e312
+    - Operacion_obligaciones_negociables_516ebb
+    - Operacion_obtencion_constancia_cuil_de_renaper_o_anses_deaeb7
+    - Operacion_obtencion_copia_documento_de_identidad_con_cuil_92997e
+    - Operacion_obtencion_de_certificacion_de_auditor_externo_bfcb16
+    - Operacion_obtencion_de_proteccion_crediticia_maxima_prelacion_6565a2
+    - Operacion_obtencion_de_proteccion_crediticia_tramos_subordinados_c420ac
+    - Operacion_obtencion_electronica_directa_de_constancia_cuit_cdi_de_arca_14af7e
+    - Operacion_oferta_de_suscripcion_de_bonos_bopreal_en_nombre_del_cliente_66a5e9
+    - Operacion_oficializacion_del_despacho_de_importacion_a75d61
+    - Operacion_opciones_sobre_acciones_30e016
+    - Operacion_operacion_aduanera_regimen_bara_9e3521
+    - Operacion_operacion_aduanera_regimen_vmi1_0a1237
+    - Operacion_operacion_cobertura_tasa_de_interes_residente_dd9715
+    - Operacion_operacion_con_activo_efectivo_o_titulos_instrumentos_bcra_con_aforo_af8394
+    - Operacion_operacion_con_ccp_no_calificada_dbde8f
+    - Operacion_operacion_con_qccp_16a95e
+    - Operacion_operacion_de_cambio_305a62
+    - Operacion_operacion_de_egreso_para_vpu_rigi_9e4134
+    - Operacion_operacion_de_pase_en_cartera_de_negociacion_f293b1
+    - Operacion_operacion_de_reembarco_7f2ddd
+    - Operacion_operacion_en_mercado_de_cambios_1718c1
+    - Operacion_operacion_encuadrada_en_decreto_492_23_560ae8
+    - Operacion_operacion_propia_alcanzada_por_obligacion_de_ingreso_y_liquidacion_58449b
+    - Operacion_operaciones_a_traves_de_cajeros_automaticos_63fb57
+    - Operacion_operaciones_aduaneras_guerra_seguridad_policia_0fbbb1
+    - Operacion_operaciones_aduaneras_por_ventajas_arancelarias_11f7c3
+    - Operacion_operaciones_al_contado_a_liquidar_no_fallidas_f258f5
+    - Operacion_operaciones_al_contado_con_titulos_oro_o_moneda_extranjera_9dc774
+    - Operacion_operaciones_comprendidas_puntos_7_9_y_7_10_3028df
+    - Operacion_operaciones_con_derivados_cartera_de_negociacion_688397
+    - Operacion_operaciones_con_derivados_no_comprendidas_0e5406
+    - Operacion_operaciones_con_derivados_otc_o_mercados_regulados_6e6186
+    - Operacion_operaciones_con_ejercicio_de_opcion_exportador_a6d576
+    - Operacion_operaciones_con_subsidiarias_y_vinculados_add23d
+    - Operacion_operaciones_con_titulos_valores_pendientes_de_liquidacion_54ad52
+    - Operacion_operaciones_con_titulos_valores_y_otros_activos_43240a
+    - Operacion_operaciones_cursadas_sml_paraguay_uruguay_1c31f5
+    - Operacion_operaciones_de_anticipos_y_prefinanciaciones_del_exterior_1404cf
+    - Operacion_operaciones_de_cambio_65a95e
+    - Operacion_operaciones_de_cambio_canje_y_o_arbitraje_221389
+    - Operacion_operaciones_de_cambio_entre_entidades_7d061b
+    - Operacion_operaciones_de_financiamiento_con_aplicacion_de_divisas_d8b9bb
+    - Operacion_operaciones_de_importadores_no_regularizadas_0e7f22
+    - Operacion_operaciones_de_negociacion_con_ccp_44e6c1
+    - Operacion_operaciones_de_pase_repo_eb6ce7
+    - Operacion_operaciones_de_titulos_valores_por_diferencia_b86001
+    - Operacion_operaciones_derivados_financieros_residentes_no_autorizados_17f156
+    - Operacion_operaciones_dvp_entrega_contra_pago_con_riesgo_de_exposicion_positiva_0aeba9
+    - Operacion_operaciones_dvp_fallidas_a8ff95
+    - Operacion_operaciones_en_terminales_puntos_de_venta_7627ce
+    - Operacion_operaciones_exporta_simple_8b5fe4
+    - Operacion_operaciones_financiadas_deuda_por_importacion_de_bienes_42fab2
+    - Operacion_operaciones_no_dvp_05da87
+    - Operacion_operaciones_no_dvp_entrega_unilateral_sin_contrapartida_simultanea_3e2d84
+    - Operacion_operaciones_no_dvp_incumplimiento_quinto_dia_99133a
+    - Operacion_operaciones_no_dvp_prestamo_111b2d
+    - Operacion_operaciones_por_ventanilla_ebfe32
+    - Operacion_operaciones_sujetas_a_neteo_bilateral_valido_4667fb
+    - Operacion_operaciones_sujetas_a_novacion_bb83f9
+    - Operacion_operar_con_directores_administradores_y_vinculados_967f5e
+    - Operacion_operatoria_con_derivados_4f0c87
+    - Operacion_originacion_de_creditos_entidad_14367d
+    - Operacion_originacion_directa_o_indirecta_de_exposiciones_fcf50e
+    - Operacion_otorgamiento_asistencia_financiera_a_controlante_ce1e2d
+    - Operacion_otorgamiento_certificacion_cumplido_0187f5
+    - Operacion_otorgamiento_de_asistencia_financiera_evaluacion_especifica_382302
+    - Operacion_otorgamiento_de_aval_sobre_cheques_diferidos_7593ac
+    - Operacion_otorgamiento_de_financiaciones_sector_publico_no_financiero_de6a1d
+    - Operacion_otorgamiento_de_garantias_84c90b
+    - Operacion_otorgamiento_de_garantias_a_residentes_en_exterior_6fa98b
+    - Operacion_otorgamiento_de_garantias_financieras_e7259a
+    - Operacion_otorgamiento_de_garantias_localmente_6e87d1
+    - Operacion_otorgamiento_de_incentivos_economicos_al_personal_1475cd
+    - Operacion_otorgamiento_de_nuevas_financiaciones_996921
+    - Operacion_otorgamiento_de_prestamo_pesos_variable_e4718d
+    - Operacion_otorgamiento_de_prestamos_con_garantia_hipotecaria_7a77f8
+    - Operacion_otorgamiento_de_prestamos_hipotecarios_9bd23d
+    - Operacion_otorgamiento_de_prorrogas_para_documentacion_aduanera_siniestrada_e60fed
+    - Operacion_otra_retransferencia_de_fondos_00c399
+    - Operacion_otros_creditos_acordados_b71050
+    - Operacion_pago_a_la_vista_contra_documentacion_de_embarque_967ea8
+    - Operacion_pago_a_la_vista_de_cheques_994ac8
+    - Operacion_pago_a_la_vista_de_cheques_de_pago_diferido_788bb6
+    - Operacion_pago_a_la_vista_de_importaciones_de_bienes_bc4c79
+    - Operacion_pago_al_exterior_bienes_deposito_franco_bd6e5f
+    - Operacion_pago_al_exterior_bienes_importados_obras_infraestructura_ebbfc5
+    - Operacion_pago_al_exterior_de_importaciones_por_solicitud_particular_o_courier_dbb562
+    - Operacion_pago_al_exterior_importacion_desde_zona_franca_880425
+    - Operacion_pago_al_exterior_importaciones_zonas_francas_transferencia_aduanera_9109a8
+    - Operacion_pago_anticipado_a_la_vista_diferido_importacion_bienes_6a9e15
+    - Operacion_pago_anticipado_de_importaciones_de_bienes_9a731f
+    - Operacion_pago_anticipado_importacion_bienes_aduanero_pendiente_47c4f1
+    - Operacion_pago_anticipado_importaciones_bienes_f433a5
+    - Operacion_pago_capital_e_intereses_moneda_extranjera_126f50
+    - Operacion_pago_capital_e_intereses_titulos_deuda_moneda_extranjera_74c4e1
+    - Operacion_pago_capital_endeudamiento_financiero_exterior_9edfd4
+    - Operacion_pago_capital_intereses_titulos_deuda_registro_publico_ce0ad1
+    - Operacion_pago_de_beneficios_anses_5e43b5
+    - Operacion_pago_de_capital_adeudado_porcion_compensable_d41f0c
+    - Operacion_pago_de_capital_de_deudas_comerciales_por_importacion_bf8525
+    - Operacion_pago_de_capital_e_intereses_con_contrapartes_vinculadas_5e3b7b
+    - Operacion_pago_de_capital_e_intereses_de_deudas_por_importacion_f140bb
+    - Operacion_pago_de_capital_e_intereses_endeudamiento_financiero_exterior_b07ad6
+    - Operacion_pago_de_capital_e_intereses_endeudamientos_222456
+    - Operacion_pago_de_capital_e_intereses_endeudamientos_financieros_1adc36
+    - Operacion_pago_de_capital_financiaciones_locales_rigi_defa7a
+    - Operacion_pago_de_cheque_2a306d
+    - Operacion_pago_de_cheque_cruzado_1b1710
+    - Operacion_pago_de_cheque_de_pago_diferido_e58469
+    - Operacion_pago_de_cheques_3a6175
+    - Operacion_pago_de_cheques_de_ventanilla_1373fd
+    - Operacion_pago_de_deuda_comercial_al_exterior_con_condicion_cumplida_8f599b
+    - Operacion_pago_de_deudas_comerciales_por_importaciones_eb72a4
+    - Operacion_pago_de_deudas_de_bienes_o_servicios_en_cambios_c92cb1
+    - Operacion_pago_de_deudas_por_servicios_de_no_residentes_116c6c
+    - Operacion_pago_de_endeudamientos_financieros_con_demostracion_de_ingreso_aduanero_a9414a
+    - Operacion_pago_de_fletes_exportacion_con_cumplido_embarque_dc0eb1
+    - Operacion_pago_de_fletes_importacion_s30_8bf9cb
+    - Operacion_pago_de_honorarios_participaciones_y_gratificaciones_2352a1
+    - Operacion_pago_de_importacion_con_imputacion_al_despacho_4bc19a
+    - Operacion_pago_de_importaciones_con_ingreso_aduanero_pendiente_c82d08
+    - Operacion_pago_de_importaciones_con_registro_de_ingreso_aduanero_pendiente_45589e
+    - Operacion_pago_de_importaciones_de_bienes_62e021
+    - Operacion_pago_de_importaciones_de_bienes_ferroviarios_31066c
+    - Operacion_pago_de_importaciones_de_bienes_mediante_cambios_bc79c1
+    - Operacion_pago_de_incentivo_economico_variable_diferido_732465
+    - Operacion_pago_de_incentivos_economicos_al_personal_c0a655
+    - Operacion_pago_de_intereses_compensatorios_deudas_con_contrapartes_vinculadas_1e8917
+    - Operacion_pago_de_intereses_con_acceso_mercado_cambios_7f8aea
+    - Operacion_pago_de_intereses_de_deuda_comercial_por_importacion_28276f
+    - Operacion_pago_de_intereses_deuda_comercial_importacion_ea238a
+    - Operacion_pago_de_intereses_deudas_comerciales_5919f6
+    - Operacion_pago_de_intereses_devengados_porcion_compensable_61dd48
+    - Operacion_pago_de_intereses_devengados_sin_atrasos_superiores_a_31_dias_8aba2d
+    - Operacion_pago_de_intereses_financiaciones_rigi_cf2d1b
+    - Operacion_pago_de_intereses_y_capital_financiaciones_rigi_07d28d
+    - Operacion_pago_de_multas_por_clientela_8044ba
+    - Operacion_pago_de_oficializacion_de_importacion_4ef9d5
+    - Operacion_pago_de_oficializacion_de_importacion_no_comprendida_f359ab
+    - Operacion_pago_de_ordenes_de_beneficios_anses_cad97b
+    - Operacion_pago_de_otros_servicios_de_salud_628b2b
+    - Operacion_pago_de_pagares_con_oferta_publica_emitidos_bajo_cnv_fd274b
+    - Operacion_pago_de_prestamos_1dedfd
+    - Operacion_pago_de_punitorios_y_equivalentes_deudas_con_contrapartes_vinculadas_66ae16
+    - Operacion_pago_de_servicio_audiovisual_y_conexo_5a991f
+    - Operacion_pago_de_servicio_con_contraparte_vinculada_0284f0
+    - Operacion_pago_de_servicio_de_salud_asistencia_al_viajero_67799b
+    - Operacion_pago_de_servicio_de_transporte_de_pasajeros_3dec76
+    - Operacion_pago_de_servicio_de_viajes_aaf499
+    - Operacion_pago_de_servicio_del_gobierno_93ec27
+    - Operacion_pago_de_servicios_de_no_residentes_8c6a60
+    - Operacion_pago_de_servicios_no_conexos_al_comercio_exterior_3eab71
+    - Operacion_pago_de_servicios_personales_culturales_y_recreativos_b91cd2
+    - Operacion_pago_de_servicios_prestados_por_no_residentes_452fae
+    - Operacion_pago_de_utilidades_y_dividendos_a_accionistas_no_residentes_c7ec69
+    - Operacion_pago_de_utilidades_y_dividendos_accionistas_no_residentes_dcf15f
+    - Operacion_pago_de_valores_de_deuda_fiduciaria_39c480
+    - Operacion_pago_deuda_importacion_bienes_no_comercial_b12910
+    - Operacion_pago_deudas_moneda_extranjera_entre_residentes_cd0b55
+    - Operacion_pago_diferido_importacion_bienes_con_registro_ingreso_04a2f8
+    - Operacion_pago_en_efectivo_de_cheques_e129b8
+    - Operacion_pago_exterior_insumos_hidrocarburos_offshore_2e3a78
+    - Operacion_pago_fletes_importacion_no_incluidos_compra_e93515
+    - Operacion_pago_importaciones_bienes_servicios_moneda_local_ff24d5
+    - Operacion_pago_mediante_canje_y_o_arbitraje_23cc48
+    - Operacion_pago_pagares_oferta_publica_cnv_capital_e_intereses_f2000e
+    - Operacion_pago_por_compra_venta_no_presencial_de_bienes_18f10e
+    - Operacion_pago_por_consumo_con_tarjeta_debito_servicios_digitales_no_asociados_a_viajes_853ea7
+    - Operacion_pago_por_otro_medio_convenido_816153
+    - Operacion_pago_por_retiros_consumos_con_tarjeta_debito_otros_s36_d6b83d
+    - Operacion_pago_proporcional_fondos_parcialmente_liquidados_237f45
+    - Operacion_pago_unico_de_garantia_por_garante_e6925b
+    - Operacion_pago_utilidades_y_dividendos_auditados_5439fa
+    - Operacion_pagos_al_exterior_adquisicion_criptoactivos_6e8219
+    - Operacion_pagos_al_exterior_por_tarjetas_de_credito_compra_debito_o_prepagas_e06914
+    - Operacion_pagos_anticipados_al_exterior_previos_a_entrega_0649a2
+    - Operacion_pagos_anticipados_vista_diferidos_de_importaciones_c0f4bd
+    - Operacion_pagos_capital_e_intereses_endeudamientos_financieros_fba987
+    - Operacion_pagos_capital_intereses_endeudamientos_financieros_5bd018
+    - Operacion_pagos_capital_intereses_titulos_deuda_emitidos_bf55d2
+    - Operacion_pagos_contra_presentacion_documentacion_embarque_b0f5cd
+    - Operacion_pagos_de_capital_e_intereses_de_endeudamientos_b3e6c0
+    - Operacion_pagos_de_capital_intereses_titulos_deuda_exterior_a8b506
+    - Operacion_pagos_de_importaciones_y_compras_de_bienes_al_exterior_faebce
+    - Operacion_pagos_de_servicios_prestados_por_no_residentes_3cc0f4
+    - Operacion_pagos_en_el_exterior_con_fondos_de_libre_disponibilidad_9451e0
+    - Operacion_pagos_importaciones_argentinas_documentados_en_pesos_bd1158
+    - Operacion_pagos_importaciones_sin_registro_aduanero_pendiente_c94d3a
+    - Operacion_pagos_otros_endeudamientos_financieros_exterior_50e778
+    - Operacion_pagos_por_importaciones_de_bienes_y_servicios_sml_bb3be9
+    - Operacion_pagos_por_servicios_capital_de_prestamos_financieros_8f0c4b
+    - Operacion_pagos_refinanciaciones_punto_3_5_fb7bc6
+    - Operacion_pagos_refinanciaciones_titulos_no_punto_3_5_1f60f0
+    - Operacion_pagos_titulos_deuda_en_me_pagaderos_en_pais_c93000
+    - Operacion_participacion_en_entidades_financieras_del_exterior_8123bb
+    - Operacion_participacion_en_juegos_de_azar_y_apuestas_075f34
+    - Operacion_participacion_en_redes_de_cajeros_automaticos_2b11c3
+    - Operacion_participacion_vinculacion_con_empresa_cajeros_e60ea3
+    - Operacion_partidas_pendientes_de_imputacion_saldos_deudores_1bbd89
+    - Operacion_pase_con_ponderador_0_participante_esencial_85623e
+    - Operacion_pase_con_ponderador_10_contraparte_no_esencial_d60987
+    - Operacion_pases_y_cauciones_bursatiles_tomadas_en_pesos_7ccdb7
+    - Operacion_pasivos_por_derivados_a_valor_razonable_931aca
+    - Operacion_patrocinio_de_programa_abcp_o_titulizacion_b0c05a
+    - Operacion_percepcion_de_comisiones_cajero_automatico_277e95
+    - Operacion_pnb_calculo_del_patrimonio_neto_basico_d773d4
+    - Operacion_ponderacion_de_activos_en_fondos_78daac
+    - Operacion_ponderacion_de_exposiciones_incumplidas_835d02
+    - Operacion_ponderacion_de_inversion_en_fondo_8e1470
+    - Operacion_ponderacion_de_posiciones_de_titulizacion_d20c47
+    - Operacion_ponderacion_de_posiciones_por_sensibilidad_a_tasas_4ba0ad
+    - Operacion_ponderacion_por_riesgo_evaluaciones_externas_cf5300
+    - Operacion_ponderacion_por_riesgo_exposiciones_moneda_extranjera_95a1e2
+    - Operacion_ponderacion_por_riesgo_exposiciones_moneda_nacional_5cb0f0
+    - Operacion_posfinanciacion_de_exportaciones_de_bienes_liquidada_f5a9e8
+    - Operacion_posfinanciacion_del_exterior_por_descuentos_f8ab7c
+    - Operacion_posicion_comprada_subyacente_y_comprada_put_434584
+    - Operacion_posicion_general_de_cambios_pgc_4fc69a
+    - Operacion_posicion_ponderada_por_delta_db8c3b
+    - Operacion_posicion_ponderada_por_delta_opciones_sobre_productos_basicos_d53348
+    - Operacion_posicion_vendida_subyacente_y_comprada_call_ecf9e7
+    - Operacion_posicionamiento_en_titulos_riesgo_especifico_fc9008
+    - Operacion_posiciones_brutas_en_bandas_temporales_7e9386
+    - Operacion_posiciones_de_titulizacion_0f745e
+    - Operacion_posiciones_en_instrumentos_de_negociacion_33841b
+    - Operacion_posiciones_en_monedas_extranjeras_y_commodities_91b8ae
+    - Operacion_posiciones_en_opciones_contado_9a54d6
+    - Operacion_posiciones_en_opciones_termino_714c96
+    - Operacion_posiciones_susceptibles_estandarizacion_tasa_fija_1cdaa5
+    - Operacion_posiciones_susceptibles_estandarizacion_tasa_variable_e0ddab
+    - Operacion_posiciones_titulizacion_cartera_negociacion_ff63a8
+    - Operacion_precancelacion_de_capital_e_intereses_de_titulo_de_deuda_18ec3d
+    - Operacion_precancelacion_de_capital_e_intereses_vpu_rigi_777640
+    - Operacion_precancelacion_de_financiaciones_bcca11
+    - Operacion_precancelacion_de_intereses_canje_de_titulos_9cd821
+    - Operacion_precancelacion_intereses_deudas_comerciales_302e84
+    - Operacion_prefinanciacion_de_exportaciones_directas_d6d123
+    - Operacion_prefinanciacion_de_exportaciones_fb472c
+    - Operacion_prefinanciacion_de_exportaciones_liquidada_b7e7ac
+    - Operacion_prefinanciaciones_de_exportaciones_1e0cb8
+    - Operacion_presentacion_a_registro_de_cheques_0f95f8
+    - Operacion_presentacion_al_cobro_cheque_en_formato_papel_19a208
+    - Operacion_presentacion_al_cobro_de_cheques_510eec
+    - Operacion_presentacion_al_cobro_de_dpf_a76156
+    - Operacion_presentacion_al_cobro_de_echeq_c766b6
+    - Operacion_presentacion_al_cobro_o_deposito_de_cheque_pago_diferido_6140d4
+    - Operacion_presentacion_cheque_cobro_endosos_c0a9e9
+    - Operacion_presentacion_cheque_para_cobro_3dcb57
+    - Operacion_presentacion_constancia_cuit_6ac1e6
+    - Operacion_presentacion_de_certificados_al_cobro_f41b1d
+    - Operacion_presentacion_de_cheque_af29cc
+    - Operacion_presentacion_de_cheque_mediante_depositaria_37c3ac
+    - Operacion_presentacion_de_cheque_papel_al_cobro_a00f84
+    - Operacion_presentacion_de_cheque_sin_especificaciones_requeridas_3d65e7
+    - Operacion_presentacion_de_cheques_836940
+    - Operacion_presentacion_de_cheques_al_cobro_1355fc
+    - Operacion_presentacion_de_datos_identificatorios_aea2f8
+    - Operacion_presentacion_de_declaracion_jurada_3380c7
+    - Operacion_presentacion_de_declaracion_jurada_3380c7__pagjub
+    - Operacion_presentacion_de_devolucion_camara_compensadora_31de30
+    - Operacion_presentacion_de_documentacion_de_capitalizacion_definitiva_56b351
+    - Operacion_presentacion_de_documento_de_identidad_35714b
+    - Operacion_presentacion_de_documento_de_viaje_mercosur_be2ab6
+    - Operacion_presentacion_de_fases_rendicion_cuentas_4cf6a8
+    - Operacion_presentacion_de_informacion_rendicion_de_cuentas_4b1114
+    - Operacion_presentacion_de_informes_al_bcra_5fc76c
+    - Operacion_presentacion_de_libreta_de_enrolamiento_9874e4
+    - Operacion_presentacion_de_nota_con_datos_minimos_5725a8
+    - Operacion_presentacion_de_nota_de_designacion_al_bcra_0b6b85
+    - Operacion_presentacion_de_pasaporte_del_pais_de_origen_b199ab
+    - Operacion_presentacion_de_plan_de_regularizacion_b1bab6
+    - Operacion_presentacion_de_reclamo_ante_bcra_8a05b2
+    - Operacion_presentacion_de_rendicion_de_cuentas_b26ee5
+    - Operacion_presentacion_de_reporte_sobre_consultas_y_reclamos_07528d
+    - Operacion_presentacion_de_titulo_como_cheque_c6f02e
+    - Operacion_presentacion_de_titulos_devueltos_f01e8a
+    - Operacion_presentacion_de_titulos_sin_fecha_de_creacion_d299a0
+    - Operacion_presentacion_declaracion_jurada_cliente_accesorios_y_repuestos_f51907
+    - Operacion_presentacion_declaracion_jurada_rendicion_cuentas_c46e93
+    - Operacion_presentacion_del_cartular_o_certificado_para_ejercicio_de_acciones_civiles_f33669
+    - Operacion_presentacion_documentacion_comercial_por_exportador_668e4c
+    - Operacion_presentacion_documento_nacional_de_identidad_digital_ceed70
+    - Operacion_presentacion_electronica_de_cheques_al_cobro_155bae
+    - Operacion_presentacion_instrumento_constitutivo_sas_499c56
+    - Operacion_presentacion_por_mandatario_888151
+    - Operacion_presentacion_rendicion_de_cuentas_periodo_tardio_1676e6
+    - Operacion_prestacion_de_servicios_por_contrapartes_vinculadas_cb949e
+    - Operacion_prestamos_al_fondo_de_garantia_depositos_575218
+    - Operacion_prestamos_financieros_liquidados_en_mercado_de_cambios_6fe80a
+    - Operacion_prestamos_financieros_otorgados_por_contrapartes_vinculadas_a21d1e
+    - Operacion_prestamos_interfinancieros_imputacion_6f2e6a
+    - Operacion_prestamos_personales_6fdfb3
+    - Operacion_prestamos_personales_preacordados_9973c8
+    - Operacion_prestamos_prendarios_c851b6
+    - Operacion_prestamos_tasa_fija_riesgo_cancelacion_anticipada_4a1bad
+    - Operacion_prestamos_uva_cartera_comercial_0edfd2
+    - Operacion_prevencion_conflictos_de_intereses_403c59
+    - Operacion_primas_por_opciones_de_compra_y_venta_tomadas_00e0b7
+    - Operacion_procesamiento_de_informacion_de_presentacion_6ac656
+    - Operacion_procesamiento_de_informacion_rendicion_cuentas_544df2
+    - Operacion_programa_abcp_con_facilidad_de_liquidez_5b761d
+    - Operacion_provision_banca_por_internet_y_banca_movil_accesibles_028cc8
+    - Operacion_provision_de_proteccion_crediticia_total_o_proporcional_1c5bce
+    - Operacion_provision_informacion_para_computo_exigencia_capital_fondos_garantia_0374fe
+    - Operacion_publicacion_de_cotizaciones_en_portal_bcra_721502
+    - Operacion_publicacion_de_modelos_de_contratos_de_adhesion_87b56d
+    - Operacion_publicacion_de_tasa_de_interes_efectiva_anual_b294ae
+    - Operacion_publicacion_de_uva_y_uvi_2c0786
+    - Operacion_publicidad_de_productos_y_o_servicios_financieros_8d4af3
+    - Operacion_radicacion_de_cuenta_abierta_no_presencial_8e4535
+    - Operacion_realizacion_de_actividades_mediante_estructuras_societarias_o_jurisdicciones_ext_6411c8
+    - Operacion_realizacion_de_auditoria_externa_b2d66c
+    - Operacion_realizacion_de_operaciones_cambiarias_en_el_exterior_30ca6f
+    - Operacion_realizacion_de_operaciones_diarias_984295
+    - Operacion_recategorizacion_de_deudor_e91b27
+    - Operacion_recategorizacion_del_deudor_c577ea
+    - Operacion_recepcion_de_cuadernos_de_cheques_f4fe64
+    - Operacion_recepcion_de_denuncia_de_extravio_bancaria_213316
+    - Operacion_rechazo_cheque_defectos_formales_599818
+    - Operacion_rechazo_cheque_insuficiencia_fondos_dedc32
+    - Operacion_rechazo_de_cheque_207cc3
+    - Operacion_rechazo_de_cheque_comun_o_diferido_a36303
+    - Operacion_rechazo_de_cheque_con_autorizacion_verbal_422211
+    - Operacion_rechazo_de_cheque_por_orden_judicial_510b14
+    - Operacion_rechazo_de_cheque_por_plazo_vencido_8a9566
+    - Operacion_rechazo_de_cheques_171a7c
+    - Operacion_rechazo_de_cheques_e_informacion_de_identificacion_4ba2a7
+    - Operacion_rechazo_de_cheques_por_suspension_de_servicio_de_pago_2d9fda
+    - Operacion_rechazo_de_cheques_sin_percepcion_de_multas_254eeb
+    - Operacion_rechazo_de_pago_cheques_nominativos_cdf851
+    - Operacion_rechazo_de_registracion_cheques_pago_diferido_15e2b7
+    - Operacion_rechazo_de_registracion_de_cheque_c58de6
+    - Operacion_rechazo_echeq_dolares_estadounidenses_e7daec
+    - Operacion_rechazo_registracion_cheque_diferido_a909be
+    - Operacion_reclasificacion_de_deudor_07ccfb
+    - Operacion_reclasificacion_del_deudor_a5593d
+    - Operacion_recompra_de_instrumentos_propios_9a5947
+    - Operacion_reconocimiento_de_conceptos_de_otros_resultados_integrales_996c22
+    - Operacion_reconocimiento_de_intereses_sobre_saldos_acreedores_ecab11
+    - Operacion_reconocimiento_de_tasas_de_interes_613a08
+    - Operacion_reconocimiento_participacion_minoritaria_capital_ordinario_6fdddd
+    - Operacion_rectificacion_datos_documentos_compensables_f7b2e2
+    - Operacion_rectificacion_de_datos_de_identificacion_5210d9
+    - Operacion_rectificacion_de_documentos_de_identidad_05f84f
+    - Operacion_rectificacion_registral_de_sexo_nombre_ley_26_743_f6a4a6
+    - Operacion_recuperacion_de_identidad_resolucion_judicial_bfcf03
+    - Operacion_redescuento_de_documentos_en_otras_entidades_financieras_e4739c
+    - Operacion_reduccion_o_transferencia_del_riesgo_de_credito_fbdadf
+    - Operacion_reduccion_posiciones_activos_financieros_e9c491
+    - Operacion_reembolso_de_capital_en_pesos_equivalentes_90baf8
+    - Operacion_reembolso_de_capital_en_uvi_eae046
+    - Operacion_reemplazo_de_tarjetas_de_debito_e73b43
+    - Operacion_reevaluacion_de_clasificacion_de_deudores_1d2671
+    - Operacion_refinanciacion_de_deuda_obligaciones_periodicas_93e02d
+    - Operacion_refinanciacion_del_capital_adeudado_8bd9fb
+    - Operacion_refinanciacion_deuda_comercial_importacion_3c43ab
+    - Operacion_refinanciamiento_deuda_titulos_publicos_exterior_2fc8b1
+    - Operacion_reformulacion_de_derivados_a_valor_razonable_cero_0ff31c
+    - Operacion_regimen_de_exportacion_en_consignacion_0d6162
+    - Operacion_regimen_de_rancho_medios_transporte_bandera_nacional_02ce92
+    - Operacion_registracion_de_cheques_9375f0
+    - Operacion_registracion_de_cheques_de_pago_diferido_b760f1
+    - Operacion_registracion_de_cheques_diferidos_da95c8
+    - Operacion_registrar_en_sepaimpo_baja_de_diferencia_de_valor_aduanero_bee529
+    - Operacion_registro_ante_bcra_enmarque_financiacion_a9c2a4
+    - Operacion_registro_cambiario_operaciones_propias_d7382f
+    - Operacion_registro_de_caps_floors_combinacion_bono_variable_y_opciones_europeas_631e12
+    - Operacion_registro_de_cheque_de_pago_diferido_50f333
+    - Operacion_registro_de_cheques_de_pago_diferido_ce6a07
+    - Operacion_registro_de_denuncias_ante_instancias_judiciales_y_o_administrativas_328d18
+    - Operacion_registro_de_importes_en_miles_de_pesos_7a8d76
+    - Operacion_registro_de_imputaciones_al_seguimiento_5ae7ae
+    - Operacion_registro_de_liquidaciones_de_divisas_por_devoluciones_0e4a71
+    - Operacion_registro_de_novedad_en_repositorio_echeq_ab3fde
+    - Operacion_registro_de_operacion_con_cliente_eca8ed
+    - Operacion_registro_de_operaciones_cambiarias_f6b0f6
+    - Operacion_registro_de_operaciones_con_boletos_sin_movimiento_fa57d8
+    - Operacion_registro_de_operaciones_propias_en_fecha_de_efecto_1edd92
+    - Operacion_registro_de_permiso_en_condicion_incumplido_ba9369
+    - Operacion_registro_de_tenencias_de_instrumentos_tlac_78f227
+    - Operacion_registro_de_vencimientos_de_capital_603f3d
+    - Operacion_registro_del_cheque_de_pago_diferido_9eb22a
+    - Operacion_registro_en_cuenta_corriente_o_cuenta_especial_eacb55
+    - Operacion_registro_rioc_seguimiento_operaciones_cambios_b3aebb
+    - Operacion_registro_y_seguimiento_de_importaciones_de_bienes_de_capital_cec494
+    - Operacion_rehabilitacion_de_productos_y_servicios_3a62d9
+    - Operacion_reimportacion_mercaderia_rechazada_en_destino_c45172
+    - Operacion_relevamiento_de_activos_y_pasivos_externos_declaracion_ef80ec
+    - Operacion_remision_a_traves_de_casa_central_11058a
+    - Operacion_remision_cheque_rechazado_al_juzgado_8b8383
+    - Operacion_remision_de_ayuda_familiar_4f9dc9
+    - Operacion_remision_de_cheque_rechazado_al_juzgado_bfcff5
+    - Operacion_remision_de_datos_en_rioc_9bf525
+    - Operacion_remision_de_informaciones_contables_a_sefyc_5142c3
+    - Operacion_rendicion_de_cuentas_presentacion_tardia_2be202
+    - Operacion_rendicion_de_ordenes_de_pago_de_beneficios_anses_f3a839
+    - Operacion_renovacion_de_equipos_e_instalaciones_en_puntos_de_atencion_aeb57d
+    - Operacion_repago_de_financiaciones_92394a
+    - Operacion_repatriacion_aportes_inversion_directa_vpu_rigi_a501c6
+    - Operacion_repatriacion_de_aportes_inversion_directa_2580cf
+    - Operacion_repatriacion_de_inversion_directa_reduccion_de_capital_95fe9c
+    - Operacion_repatriacion_inversiones_directas_aplicacion_divisas_a2c3d1
+    - Operacion_repatriacion_inversiones_directas_no_residentes_2bdd03
+    - Operacion_repatriacion_inversiones_no_residentes_6dd1c3
+    - Operacion_repatriaciones_capital_e_inversiones_directas_b07cf4
+    - Operacion_reporte_al_bcra_de_cambio_de_entidad_seguimiento_8b5c98
+    - Operacion_reporte_de_cotizaciones_comprador_y_vendedor_c7cc0f
+    - Operacion_reporte_de_exposiciones_por_derivados_ffe32c
+    - Operacion_reporte_de_ingreso_bruto_del_periodo_e972a3
+    - Operacion_reporte_de_prorroga_en_sepaimpo_8327f3
+    - Operacion_reporte_en_sepaimpo_de_circunstancias_modificatorias_c5f2ff
+    - Operacion_reporte_sepaimpo_afectaciones_despachos_importacion_0286df
+    - Operacion_reporte_sepaimpo_zfe_con_transferencia_aduanera_06321a
+    - Operacion_reposicion_de_capital_bc6dc6
+    - Operacion_representacion_ante_camara_electronica_compensacion_e77be6
+    - Operacion_reproduccion_de_firmas_digitalizadas_para_libramiento_de_cheques_a1b02c
+    - Operacion_rescate_de_instrumento_897ea5
+    - Operacion_rescate_de_instrumentos_del_ca_450b3b
+    - Operacion_rescision_relaciones_contractuales_boton_baja_8f9e65
+    - Operacion_restitucion_de_capital_48a922
+    - Operacion_retencion_de_cheque_de_pago_diferido_e55273
+    - Operacion_retencion_de_tarjeta_en_cajero_automatico_b9ece1
+    - Operacion_retencion_impositiva_destino_exterior_f2b8e7
+    - Operacion_retiro_de_fondos_cuentas_corrientes_especiales_e2972c
+    - Operacion_retiro_de_tarjeta_magnetica_3a985e
+    - Operacion_retitulizacion_8cc287
+    - Operacion_retransferencia_fondos_a_corresponsales_5b24e4
+    - Operacion_reversion_de_debitos_debito_automatico_3d9935
+    - Operacion_revision_de_cartera_comercial_b58aa2
+    - Operacion_revision_exhaustiva_esquema_medicion_riesgo_mercado_aa3850
+    - Operacion_revision_periodica_de_estrategias_y_politicas_789cd6
+    - Operacion_revocacion_de_aceptacion_de_producto_o_servicio_f08bf6
+    - Operacion_revocacion_de_autorizaciones_para_librar_cheques_346e4b
+    - Operacion_segregacion_aportes_fondo_garantia_por_tipo_producto_f580da
+    - Operacion_seguimiento_anticipos_financiaciones_exportacion_40f298
+    - Operacion_seguimiento_de_actividades_de_gestion_de_riesgos_c5564c
+    - Operacion_seguimiento_de_fondos_pendientes_de_aplicacion_2bf6f2
+    - Operacion_seguimiento_de_negociaciones_de_divisas_por_exportaciones_c212a9
+    - Operacion_seguimiento_de_oficializaciones_de_importacion_15fa75
+    - Operacion_seguimiento_de_oficializaciones_de_importacion_por_entidad_nominada_b653eb
+    - Operacion_seguimiento_de_operaciones_para_proyectos_punto_7_9_2_311ff3
+    - Operacion_seguimiento_de_pago_con_ingreso_aduanero_pendiente_8dada3
+    - Operacion_seguimiento_de_pagos_de_importaciones_sepaimpo_e80d19
+    - Operacion_seguimiento_de_pagos_registro_aduanero_ab8ef8
+    - Operacion_seguimiento_de_permiso_de_embarque_fe0266
+    - Operacion_seguimiento_de_permisos_de_embarques_71618d
+    - Operacion_seguimiento_ejecucion_proyecto_financiacion_6433fd
+    - Operacion_seguimiento_negociaciones_secoexpo_db2a13
+    - Operacion_seguimiento_periodico_aplicacion_medicion_riesgo_eeac2c
+    - Operacion_seguimiento_permisos_de_embarques_en_el_exterior_c82ddc
+    - Operacion_seleccion_alternativa_de_entidad_nominada_por_primer_ingreso_9dce1e
+    - Operacion_seleccion_de_calificaciones_para_exposicion_455555
+    - Operacion_seleccion_de_entidad_nominada_por_exportacion_e53ec6
+    - Operacion_seleccion_inicial_de_entidad_nominada_cf3073
+    - Operacion_seleccion_inicial_de_entidad_nominada_por_exportador_144778
+    - Operacion_separacion_y_agregacion_de_operaciones_por_conjunto_de_cobertura_9ad803
+    - Operacion_sistema_de_incentivos_economicos_al_personal_2ce27a
+    - Operacion_sistema_de_retribuciones_y_sistema_de_incentivos_economicos_6b4bb5
+    - Operacion_solicitud_de_declaracion_jurada_debida_diligencia_ocde_cf4312
+    - Operacion_solicitud_de_exclusion_de_la_central_ced256
+    - Operacion_solicitud_de_productos_o_servicios_financieros_3520fd
+    - Operacion_subrogacion_de_derechos_de_cobro_por_aseguradora_8a2df0
+    - Operacion_suministro_de_datos_cheques_de_pago_diferido_1e6869
+    - Operacion_suministro_de_informacion_de_atributos_juridicos_y_representantes_de_persona_jur_182da3
+    - Operacion_suministro_de_informacion_de_identidad_y_datos_personales_de_persona_humana_9930bf
+    - Operacion_supervision_consolidada_de_entidades_financieras_a00b1d
+    - Operacion_suscripcion_bopreal_no_residentes_602ad0
+    - Operacion_suscripcion_bopreal_por_deuda_pendiente_2adc56
+    - Operacion_suscripcion_bopreal_por_importadores_d218dc
+    - Operacion_suscripcion_bopreal_por_importadores_servicios_94b293
+    - Operacion_suscripcion_bopreal_por_utilidades_dividendos_5c082b
+    - Operacion_suscripcion_de_bonos_para_reconstruccion_de_argentina_libre_bopreal_d620a7
+    - Operacion_suscripcion_de_bopreal_a24f7f
+    - Operacion_suscripcion_de_bopreal_por_deudores_eeabbe
+    - Operacion_suspension_de_debito_debito_automatico_8239ad
+    - Operacion_suspension_de_operaciones_en_divisas_400827
+    - Operacion_sustraccion_de_cheques_y_documentos_861ea8
+    - Operacion_swap_descripcion_activo_subyacente_0940d1
+    - Operacion_swap_especificacion_activo_comprado_vendido_1ac520
+    - Operacion_swap_informacion_de_nocional_17f2a9
+    - Operacion_swap_precio_pactado_tramo_fijo_9a3792
+    - Operacion_tarea_de_clasificacion_71550f
+    - Operacion_tenencia_de_activos_posiciones_compradas_y_vendidas_a974ed
+    - Operacion_tenencia_de_efectivo_en_caja_transito_y_cajeros_automaticos_d44d8d
+    - Operacion_tenencia_de_instrumentos_tlac_684a59
+    - Operacion_tenencia_de_oro_amonedado_o_barras_buena_entrega_028209
+    - Operacion_tenencia_de_titulos_de_credito_fisicamente_fuera_de_la_entidad_965909
+    - Operacion_tenencia_de_titulos_valores_del_exterior_e03e90
+    - Operacion_titulizacion_con_facilidades_de_credito_rotativas_5c63c1
+    - Operacion_titulizacion_con_opcion_de_exclusion_incompleta_01496e
+    - Operacion_titulizacion_sintetica_con_adquisicion_de_proteccion_bea652
+    - Operacion_titulizacion_sintetica_con_compra_de_proteccion_por_tramos_39e0ab
+    - Operacion_titulizacion_tradicional_6f56d4
+    - Operacion_titulizacion_tradicional_con_posicion_de_maxima_preferencia_e4c1b2
+    - Operacion_tramite_aduanero_por_ingreso_de_bienes_a_zonas_francas_60d69c
+    - Operacion_transferencia_al_exterior_de_fondos_no_residente_acreedor_vpu_b845cc
+    - Operacion_transferencia_bonos_bopreal_a_depositarios_en_exterior_90eb82
+    - Operacion_transferencia_de_cheques_de_pago_diferido_para_negociacion_bursatil_fb6f47
+    - Operacion_transferencia_de_cheques_diferidos_para_negociacion_bursatil_8523f7
+    - Operacion_transferencia_de_cheques_mediante_endoso_eae465
+    - Operacion_transferencia_de_fondos_a_cuentas_en_psp_546d15
+    - Operacion_transferencia_de_fondos_a_saldos_inmovilizados_59a8ec
+    - Operacion_transferencia_de_fondos_con_informacion_del_beneficiario_a66d8a
+    - Operacion_transferencia_de_responsabilidad_a_terceros_c0954a
+    - Operacion_transferencia_de_riesgo_de_exposicion_en_tramos_e49548
+    - Operacion_transferencia_de_saldos_de_depositos_282eb9
+    - Operacion_transferencia_de_titulos_valores_a_entidades_depositarias_del_exterior_5edfa0
+    - Operacion_transferencia_directa_de_fondos_a_cuenta_local_del_cliente_bfe94d
+    - Operacion_transferencia_fondos_a_cuentas_inversion_administradores_exterior_a94a89
+    - Operacion_transferencia_moneda_cuenta_misma_moneda_1627c8
+    - Operacion_transferencia_moneda_extranjera_representaciones_diplomaticas_b4e508
+    - Operacion_transferencia_real_de_activos_titulizacion_c2537f
+    - Operacion_transferencia_titulos_valores_a_depositarios_exterior_9a393f
+    - Operacion_transferencias_con_destino_a_cuentas_a_la_vista_para_uso_judicial_d1c05c
+    - Operacion_transferencias_desde_cuentas_a_la_vista_para_uso_judicial_2ae517
+    - Operacion_transferencias_ordenadas_por_cuentacorrentista_6dd714
+    - Operacion_transformacion_de_entidades_financieras_2a8c78
+    - Operacion_transmision_de_certificado_por_endoso_6ff931
+    - Operacion_transmision_endoso_a_otros_sujetos_b3557c
+    - Operacion_transmision_integra_de_echeq_al_repositorio_c8cba5
+    - Operacion_tratamiento_acciones_preferidas_convertibles_05e94d
+    - Operacion_tratamiento_de_exposiciones_subyacentes_titulizacion_tradicional_cb8889
+    - Operacion_tratamiento_de_opciones_0f920f
+    - Operacion_tratamiento_de_posiciones_en_fondos_20c13b
+    - Operacion_tratamiento_de_titulos_bopreal_post_recompra_3e549b
+    - Operacion_tratamiento_depositos_sin_vencimiento_f3656a
+    - Operacion_tratamiento_proporcional_de_cobertura_de_riesgo_de_credito_72f2ec
+    - Operacion_tratamiento_segun_punto_3_1_13_3_6aff6d
+    - Operacion_tratamiento_titulos_vendidos_recomprados_pase_pasivo_2f38da
+    - Operacion_tratamiento_y_resolucion_de_consultas_y_reclamos_f61064
+    - Operacion_uso_de_cajeros_automaticos_fb3600
+    - Operacion_uso_de_cheques_en_cuentas_corrientes_247103
+    - Operacion_uso_de_nombre_apellido_rectificado_genero_499e51
+    - Operacion_uso_de_tarjetas_magneticas_en_cajeros_automaticos_1361d1
+    - Operacion_uso_del_enfoque_estandarizado_para_ponderadores_de_titulizacion_0929c6
+    - Operacion_utilizacion_de_calificaciones_crediticias_ecai_4d0878
+    - Operacion_utilizacion_de_fondos_de_pgc_para_pagos_a_proveedores_bb9393
+    - Operacion_utilizacion_de_garantias_en_cobertura_de_riesgo_d37883
+    - Operacion_utilizacion_de_instrumentos_y_metodologia_de_pago_29c114
+    - Operacion_utilizacion_de_subcuentas_3da36b
+    - Operacion_utilizacion_de_tecnologia_para_reproduccion_de_firmas_digitalizadas_ec4cc0
+    - Operacion_valuacion_a_mercado_de_posiciones_0b9aa4
+    - Operacion_valuacion_a_mercado_o_a_modelo_de_posiciones_8cdc20
+    - Operacion_valuacion_a_modelo_7696c2
+    - Operacion_valuacion_de_posiciones_menos_liquidas_c103fd
+    - Operacion_valuacion_diaria_a_precios_de_mercado_34c4b8
+    - Operacion_valuacion_posiciones_a_termino_moneda_extranjera_y_oro_4e7d52
+    - Operacion_venta_bonos_bopreal_con_liquidacion_en_moneda_extranjera_6553d5
+    - Operacion_venta_con_obligacion_de_recompra_bopreal_60f4d5
+    - Operacion_venta_de_cheques_de_mostrador_4ed52b
+    - Operacion_venta_de_cheques_de_pago_financiero_4725d0
+    - Operacion_venta_de_divisas_con_debito_en_cuentas_e8a4d4
+    - Operacion_venta_de_titulos_valores_con_liquidacion_en_moneda_extranjera_4af05a
+    - Operacion_venta_de_titulos_valores_contra_cable_en_exterior_554147
+    - Operacion_venta_interna_de_bienes_previo_al_registro_aduanero_598fbb
+    - Operacion_venta_titulos_valores_con_liquidacion_moneda_extranjera_exterior_8bd351
+    - Operacion_venta_titulos_valores_mercado_secundario_64b088
+    - Operacion_verificacion_consistencia_con_registros_aduaneros_99ecc2
+    - Operacion_verificacion_de_condiciones_para_operaciones_de_exportacion_c651d4
+    - Operacion_verificacion_de_identidad_de_presentantes_22c750
+    - Operacion_verificacion_de_secuencia_numerica_de_cheques_y_formulas_a0b2a4
+    - Operacion_verificacion_destinacion_exportacion_ante_aduana_94e920
+    - Operacion_verificacion_independiente_de_precios_datos_a31d4d
+    - Operacion_verificacion_previa_a_certificacion_c5f0b6
+    - Operacion_vigilancia_del_sistema_de_incentivos_economicos_92765a
+Potestad: 98 sin aplica_a
+    - Potestad_acceso_mercado_cambios_para_pagos_de_servicios_860420
+    - Potestad_acceso_precancelacion_lineas_credito_financiacion_precancelada_deudor_f51a74
+    - Potestad_admision_de_pago_desde_fecha_estimada_de_embarque_para_emisiones_posteriores_a_1_a59224
+    - Potestad_admision_pago_a_vista_desde_fecha_embarque_mas_15_dias_5954c1
+    - Potestad_admision_unificacion_registro_firmas_en_tarjeta_unica_eca724
+    - Potestad_alcance_de_efectos_de_la_autorizacion_otorgada_564c5b
+    - Potestad_alta_gerencia_adopcion_de_decisiones_gerenciales_6f2b4d
+    - Potestad_aplicacion_ampliada_hasta_40_anual_de_permisos_ce3f97
+    - Potestad_aplicacion_de_tratamiento_otc_a_estructura_multinivel_9d1cb1
+    - Potestad_aplicacion_de_valor_k_por_defecto_5f35e7
+    - Potestad_asignacion_de_ponderador_especifico_partidas_12100000_y_1222000_de1f85
+    - Potestad_autoridad_aplicacion_fija_terminos_cobros_divisas_636776
+    - Potestad_autoridad_competente_ordena_modificacion_dni_6c4dab
+    - Potestad_autorizacion_del_bcra_para_operaciones_de_cambio_524f52
+    - Potestad_autorizacion_previa_de_aportes_en_titulos_valores_86816f
+    - Potestad_autorizar_conformidad_incremento_tenencias_a29645
+    - Potestad_bcra_abrira_cuentas_corrientes_especiales_1fd2b6
+    - Potestad_bcra_determina_qccp_en_jurisdiccion_sin_principios_3dda58
+    - Potestad_buena_practica_miembros_independientes_con_gestion_de_riesgos_4e6586
+    - Potestad_cancelacion_intereses_desde_fecha_financiacion_cdb8fb
+    - Potestad_cliente_puede_ser_reclasificado_por_unica_vez_387ef4
+    - Potestad_compensacion_de_lados_diferentes_de_swaps_aa015a
+    - Potestad_computar_valor_fletes_documentacion_transporte_55adf5
+    - Potestad_computo_del_plazo_en_periodo_de_no_utilizacion_59830c
+    - Potestad_computo_plazo_como_periodo_no_utilizacion_beneficio_f409a5
+    - Potestad_comunicacion_de_caracteristicas_de_seguimiento_b958d5
+    - Potestad_conformidad_previa_del_bcra_acceso_anticipado_f184f5
+    - Potestad_consideracion_alternativa_fondos_acreditados_en_exterior_c89867
+    - Potestad_considerar_operacion_garantizada_por_agencia_oficial_credito_61180b
+    - Potestad_decision_direccion_general_de_aduanas_6079eb
+    - Potestad_derecho_a_informacion_clara_y_accesible_5718e3
+    - Potestad_derecho_a_libertad_de_eleccion_0e7caa
+    - Potestad_derecho_a_proteccion_de_seguridad_e_intereses_economicos_9214fc
+    - Potestad_derecho_a_trato_equitativo_y_digno_af1abc
+    - Potestad_descalce_en_obligacion_de_determinacion_de_evento_de_credito_49dab5
+    - Potestad_descalce_entre_obligacion_subyacente_y_de_referencia_f0e638
+    - Potestad_designacion_de_veedor_por_sefyc_59d4f4
+    - Potestad_dni_d_en_formato_credencial_virtual_para_dispositivos_moviles_cc7e75
+    - Potestad_encargo_a_organismo_externo_evaluacion_b15633
+    - Potestad_encomendar_tarea_de_clasificacion_cd8d09
+    - Potestad_entidades_podran_dar_acceso_pago_intereses_y_capital_operaciones_14_2_1_2d0249
+    - Potestad_entidades_podran_dar_acceso_pagos_capital_porcion_proporcional_fondos_parciales_a1632f
+    - Potestad_entidades_podran_dar_acceso_pagos_intereses_porcion_proporcional_fondos_parciale_78b380
+    - Potestad_exclusion_de_responsabilidad_por_inconsistencias_en_datos_c45322
+    - Potestad_exigencia_de_otros_comites_normas_bcra_29b0f1
+    - Potestad_extension_plazo_operaciones_contraparte_vinculada_86271a
+    - Potestad_facultad_criterio_de_imputacion_de_conceptos_a_cancelacion_8000d2
+    - Potestad_facultad_de_cliente_certificado_de_acceder_a_divisas_329a6a
+    - Potestad_facultad_de_otorgar_acceso_mercado_de_cambios_79f6e7
+    - Potestad_facultad_de_solicitar_certificacion_03252f
+    - Potestad_facultad_metodos_especificos_de_evaluacion_de_capacidad_a99896
+    - Potestad_fiduciario_o_administrador_no_financiero_basarse_en_regimen_de_supervision_a85624
+    - Potestad_fondos_en_cuentas_de_entidades_financieras_del_exterior_807afa
+    - Potestad_implementacion_de_programas_de_capacitacion_comite_de_auditoria_45a642
+    - Potestad_inclusion_diversa_de_exposiciones_subyacentes_0df182
+    - Potestad_inclusion_en_partida_12700000_ajuste_niif_no_asignado_7ec3c1
+    - Potestad_liberacion_de_pagos_a_cargo_de_arca_certificacion_cb5c3f
+    - Potestad_libertad_de_pacto_en_tipo_de_cambio_5700b7
+    - Potestad_mantencion_de_negociabilidad_cheque_imputado_endosado_5d640c
+    - Potestad_mantenimiento_de_clasificacion_en_planillas_separadas_4e0255
+    - Potestad_medios_de_presentacion_presencial_o_electronico_6c3094
+    - Potestad_modificacion_posterior_de_entidad_nominada_c59ede
+    - Potestad_obligacion_de_referencia_distinta_en_liquidacion_efectivo_a4702f
+    - Potestad_opcion_de_admitir_negociacion_bursatil_de_cheques_4ae791
+    - Potestad_opcion_de_solicitar_datos_en_momento_de_solicitud_de_credito_62b7d7
+    - Potestad_opcion_rescision_sin_cargo_antes_de_vigencia_c7fb23
+    - Potestad_pago_fletes_a_partir_embarque_punto_10_10_2_1_45193a
+    - Potestad_permitir_al_cliente_prefinanciaciones_con_fondeo_c37fc4
+    - Potestad_potestad_bcra_debito_por_falseamiento_ca728f
+    - Potestad_potestad_de_los_clientes_para_suscribir_bopreal_98762b
+    - Potestad_potestad_de_tomar_concepto_de_condicion_de_compra_para_valor_735f7f
+    - Potestad_reclasificacion_a_nivel_superior_si_otras_deudas_cumplen_condiciones_dedb2d
+    - Potestad_reclasificacion_a_nivel_superior_tras_pago_de_3_cuotas_sin_atraso_326eb7
+    - Potestad_reclasificacion_a_niveles_superiores_94a65e
+    - Potestad_reclasificacion_a_niveles_superiores_si_se_levanta_pedido_de_quiebra_aa5236
+    - Potestad_reclasificacion_a_situacion_normal_por_cumplimiento_de_convenios_62b993
+    - Potestad_reclasificacion_a_situacion_normal_tras_pago_de_intereses_671259
+    - Potestad_reclasificacion_inicial_sujeta_a_no_objecion_sefyc_cf54f8
+    - Potestad_reconocimiento_parcial_cuando_reestructuracion_no_contemplada_1c6550
+    - Potestad_recordatorios_periodicos_posteriores_recomendaciones_325d86
+    - Potestad_reducir_exigencia_de_capital_de_manera_proporcional_3cddb6
+    - Potestad_reimputacion_de_cobros_bienes_reemplazados_8fa14d
+    - Potestad_requerir_certificado_echeq_rechazado_079427
+    - Potestad_requerir_registro_de_cheque_diferido_en_forma_directa_7542ed
+    - Potestad_resolucion_de_procedimiento_segun_seccion_7_041edc
+    - Potestad_sefyc_disponer_exclusiones_en_materia_deductiva_4cc944
+    - Potestad_seguimiento_del_estado_de_presentacion_15ed94
+    - Potestad_seleccion_posterior_de_entidad_a5652f
+    - Potestad_solicitar_ampliacion_de_plazo_hasta_quinto_dia_habil_b13311
+    - Potestad_solicitar_nota_escrita_con_resolucion_037317
+    - Potestad_solicitud_de_conformidad_bcra_ampliacion_mayor_547317
+    - Potestad_supervision_de_actuacion_de_sujetos_obligados_066a51
+    - Potestad_suscripcion_bopreal_hasta_monto_de_deuda_a5526f
+    - Potestad_tenedor_legitimado_presentar_echeq_al_cobro_a66ad2
+    - Potestad_uso_de_garantias_acumuladas_para_pago_de_servicios_b2c723
+    - Potestad_utilizacion_de_correo_electronico_para_notificacion_50a4da
+    - Potestad_validez_instrumentos_compensables_emitidos_con_datos_anteriores_885701
+    - Potestad_verificacion_de_no_distorsion_de_saldos_86b708
+Restriccion: 201 sin aplica_a
+    - Restriccion_0_cero_por_ciento_de_obligacion_de_ingreso_y_o_liquidacion_del_contravalor_en_di_f2fcbe
+    - Restriccion_100_ciento_por_ciento_de_obligacion_de_ingreso_y_o_liquidacion_del_contravalor_e_802f62
+    - Restriccion_10_diez_por_ciento_cuando_corresponda_a_bienes_que_tienen_asignado_un_plazo_de_6_3018ea
+    - Restriccion_20_veinte_por_ciento_de_obligacion_de_ingreso_y_o_liquidacion_del_contravalor_en_953b43
+    - Restriccion_40_cuarenta_por_ciento_de_obligacion_de_ingreso_y_o_liquidacion_del_contravalor__bafafd
+    - Restriccion_5_cinco_por_ciento_cuando_corresponda_a_bienes_que_tienen_asignado_un_plazo_de_3_1ef8a5
+    - Restriccion_a_los_efectos_del_cumplimiento_del_citado_punto_se_debera_contar_con_calificacio_f798ea
+    - Restriccion_a_razon_de_un_maximo_mensual_equivalente_al_10_diez_por_ciento_del_monto_total_d_326d88
+    - Restriccion_al_momento_de_la_evaluacion_no_debera_existir_evidencia_que_indique_la_posibilid_991cda
+    - Restriccion_banco_de_pagos_internacionales_fondo_monetario_internacional_banco_central_europ_660fc4
+    - Restriccion_contener_endosos_que_excedan_el_limite_establecido_en_el_punto_5_1_1_c8ec92
+    - Restriccion_cuando_el_futuro_o_forward_permita_entregar_una_gama_de_instrumentos_la_exclusio_978ab5
+    - Restriccion_cuando_la_entidad_tenga_multiples_posiciones_a_riesgo_en_instrumentos_de_credito_b725c8
+    - Restriccion_cuando_la_suma_de_los_requisitos_de_capital_de_una_entidad_financiera_por_exposi_57128b
+    - Restriccion_cuando_se_cumple_compensacion_integra_de_ambos_lados_ningun_lado_de_la_operacion_fd4569
+    - Restriccion_cuando_se_referencie_a_un_unico_deudor_sf_credito_se_determina_en_funcion_de_su__722bb8
+    - Restriccion_cuando_se_trate_de_depositos_y_otras_obligaciones_por_intermediacion_financiera__a32e9d
+    - Restriccion_cuando_se_trate_de_futuros_la_exclusion_solo_procedera_si_los_nocionales_e_instr_bf1f12
+    - Restriccion_cuando_se_verifica_compensacion_de_riesgo_especifico_en_operaciones_de_cobertura_0f717e
+    - Restriccion_derivados_que_hagan_referencia_a_indice_de_acciones_se_tratan_como_si_hicieran_r_879036
+    - Restriccion_derivados_que_hagan_referencia_a_indices_de_credito_se_consideran_como_si_hicier_9fd94f
+    - Restriccion_dicha_comprobacion_podra_efectuarse_una_vez_transcurrido_el_citado_termino_de_10_1ae498
+    - Restriccion_dichas_operaciones_deberan_haber_sido_autorizadas_por_la_aduana_ce30ec
+    - Restriccion_el_acceso_al_mercado_de_cambios_debera_producirse_una_vez_transcurridos_como_min_2aebbd
+    - Restriccion_el_acceso_al_mercado_de_cambios_debera_producirse_una_vez_transcurridos_como_min_b4b1e8
+    - Restriccion_el_acceso_al_mercado_de_cambios_debera_producirse_una_vez_transcurridos_como_min_ed397a
+    - Restriccion_el_acceso_al_mercado_de_cambios_no_podra_exceder_el_monto_de_la_certificacion_de_5dfaba
+    - Restriccion_el_acceso_al_mercado_de_cambios_para_la_repatriacion_de_inversiones_de_no_reside_7694fd
+    - Restriccion_el_acceso_al_mercado_de_cambios_se_produce_no_antes_de_los_2_dos_anos_corridos_c_bdbaa6
+    - Restriccion_el_agregado_de_hojas_solo_procedera_por_razones_de_espacio_b5aa6a
+    - Restriccion_el_ajuste_por_apalancamiento_al_requisito_de_capital_por_participacion_en_fondo__9a48f0
+    - Restriccion_el_bcra_debitara_de_la_cuenta_corriente_de_la_entidad_el_importe_correspondiente_8a7823
+    - Restriccion_el_bcra_debitara_de_la_cuenta_corriente_de_la_entidad_una_multa_equivalente_al_d_672770
+    - Restriccion_el_cliente_no_ha_utilizado_este_mecanismo_por_un_monto_superior_al_equivalente_d_74540d
+    - Restriccion_el_cuentacorrentista_quedara_incurso_en_la_situacion_a_que_se_refiere_el_punto_8_1cabdb
+    - Restriccion_el_cumplimiento_de_obligaciones_tiene_lugar_cuando_no_se_recurra_a_nuevas_financ_dceff4
+    - Restriccion_el_doble_del_periodo_de_riesgo_de_margen_para_conjuntos_de_neteo_con_disputas_pe_f0a2c9
+    - Restriccion_el_exceso_a_los_limites_para_la_afectacion_de_activos_en_garantia_segun_lo_dispu_24c1a7
+    - Restriccion_el_importador_no_haya_hecho_uso_de_esta_alternativa_por_un_monto_mayor_al_equiva_1ec81b
+    - Restriccion_el_inversor_no_tendra_ningun_derecho_a_acelerar_la_devolucion_de_los_pagos_futur_01ba3e
+    - Restriccion_el_lapso_convenido_no_podra_superar_los_5_dias_habiles_bancarios_337a9b
+    - Restriccion_el_monto_acumulado_de_las_certificaciones_aplicadas_no_supera_el_monto_del_aport_36bed5
+    - Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_debe_ser_625a05
+    - Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_podra_ex_65b4ef
+    - Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_de_los_nuevos_titulos_en_ningu_22d5f3
+    - Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_de_los_nuevos_titulos_en_ningu_232721
+    - Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_2b3a27
+    - Restriccion_el_monto_acumulado_de_los_vencimientos_de_capital_del_nuevo_endeudamiento_en_nin_35a634
+    - Restriccion_el_monto_total_abonado_por_este_mecanismo_no_supere_el_equivalente_al_5_cinco_po_364993
+    - Restriccion_el_monto_total_de_deudas_abonadas_en_el_mes_calendario_bajo_este_mecanismo_no_su_6314ed
+    - Restriccion_el_pago_debia_resultar_elegible_de_acuerdo_con_lo_dispuesto_en_el_punto_4_6_1_00e525
+    - Restriccion_el_pago_no_supere_el_equivalente_al_50_cincuenta_por_ciento_del_monto_liquidado__24b432
+    - Restriccion_el_periodo_de_plazo_regulatorio_no_podra_ser_menor_que_10_dias_habiles_2867d7
+    - Restriccion_el_ponderador_aplicable_a_las_coberturas_provistas_por_swaps_de_incumplimiento_c_04dd3b
+    - Restriccion_el_ponderador_aplicable_a_las_coberturas_provistas_por_swaps_de_incumplimiento_c_6220b8
+    - Restriccion_el_ponderador_de_riesgo_de_la_parte_de_la_exposicion_cubierta_podra_ser_inferior_388dc2
+    - Restriccion_el_ponderador_de_riesgo_de_las_exposiciones_a_entidades_financieras_no_puede_ser_6ce272
+    - Restriccion_el_ponderador_de_riesgo_se_aplica_al_55_del_valor_del_inmueble_la_porcion_que_no_6aa79f
+    - Restriccion_el_ponderador_de_riesgo_sera_del_150_o_el_que_resulte_de_multiplicar_por_1_5_el__13e584
+    - Restriccion_el_ponderador_sera_de_10_para_coberturas_por_swaps_de_incumplimiento_crediticio__efe8c2
+    - Restriccion_el_presente_punto_detalla_el_computo_de_la_exigencia_de_capital_para_cubrir_ries_ecc9d9
+    - Restriccion_el_producto_del_ponderador_de_riesgo_promedio_del_fondo_y_el_apalancamiento_del__022c73
+    - Restriccion_el_programa_de_encuadramiento_no_debera_superar_los_6_meses_de_plazo_para_cumpli_9ec761
+    - Restriccion_el_rechazo_total_de_la_presentacion_procedera_toda_vez_que_se_observen_por_lo_me_a677d6
+    - Restriccion_el_tratamiento_en_el_marco_de_la_ley_de_emergencia_agropecuaria_no_podra_implica_caf6f2
+    - Restriccion_el_valor_de_mercado_de_estas_operaciones_no_supere_a_la_diferencia_entre_el_valo_e7573f
+    - Restriccion_el_valor_de_mercado_de_otras_ventas_de_titulos_valores_no_debe_superar_la_difere_151436
+    - Restriccion_el_valor_nominal_de_los_nuevos_titulos_entregados_en_concepto_de_prima_de_partic_1096cd
+    - Restriccion_en_caso_de_que_las_modificaciones_se_originen_en_un_error_operativo_que_afecte_e_829c88
+    - Restriccion_en_defecto_de_presentacion_al_cobro_el_echeq_quedara_pendiente_hasta_la_fecha_de_c67862
+    - Restriccion_en_derivados_de_credito_de_enesimo_incumplimiento_con_n_mayor_que_1_no_se_permit_7198e4
+    - Restriccion_en_el_caso_de_que_el_cliente_no_sea_una_persona_humana_y_se_haya_constituido_has_ea2aed
+    - Restriccion_en_el_caso_de_que_el_monto_adeudado_fuera_superior_a_usd_25_000_5c4a89
+    - Restriccion_en_el_caso_de_una_extraccion_con_una_tarjeta_prepaga_sera_de_aplicacion_el_limit_4db68c
+    - Restriccion_en_la_medida_en_que_dichas_cartas_de_credito_sean_irrestrictas_779f0d
+    - Restriccion_en_ningun_caso_el_registro_del_cheque_podra_demorarse_mas_de_15_dias_corridos_6a090a
+    - Restriccion_en_un_derivado_con_intercambios_multiples_del_principal_el_nocional_se_multiplic_4ea6d6
+    - Restriccion_endeudamientos_financieros_comprendidos_en_el_punto_3_5_8858f3
+    - Restriccion_esa_certificacion_mantendra_vigencia_durante_90_dias_corridos_desde_la_fecha_a_l_39bbb0
+    - Restriccion_esta_alternativa_solo_sera_valida_en_la_medida_que_en_el_ano_calendario_consider_c4b37d
+    - Restriccion_esta_reduccion_de_la_ead_por_las_perdidas_por_cva_incurridas_no_se_aplica_para_l_bf9bf9
+    - Restriccion_hasta_un_tope_de_usd_5_000_dolares_estadounidenses_cinco_mil_aad5b8
+    - Restriccion_la_aceptacion_de_cheques_no_procede_cuando_medie_orden_judicial_en_contrario_ab456e
+    - Restriccion_la_aceptacion_de_presentaciones_efectuadas_durante_el_periodo_de_presentacion_ta_8f7818
+    - Restriccion_la_cantidad_de_registros_con_inconsistencias_en_alguno_de_los_archivos_supera_el_4cbdc1
+    - Restriccion_la_capitalizacion_de_deuda_no_podra_implicar_una_limitacion_o_suspension_al_dere_0e48dc
+    - Restriccion_la_certificacion_de_auditor_externo_es_requerida_cuando_el_monto_a_imputar_super_f26f2e
+    - Restriccion_la_cuenta_de_terceros_no_debe_encontrarse_radicada_en_paises_o_territorios_donde_16b298
+    - Restriccion_la_denuncia_de_extravio_sustraccion_o_adulteracion_genera_la_imposibilidad_de_pr_143ee4
+    - Restriccion_la_deuda_del_cliente_por_todo_concepto_mas_el_importe_de_la_financiacion_solicit_5fe2f9
+    - Restriccion_la_ead_para_un_conjunto_de_neteo_con_margenes_de_variacion_tendra_como_limite_su_b18cd5
+    - Restriccion_la_emision_de_estas_certificaciones_solo_se_podra_realizar_una_vez_inhabilitado__391ffd
+    - Restriccion_la_entidad_del_exterior_sobre_la_cual_se_gira_el_cable_no_debera_estar_constitui_0c4eaa
+    - Restriccion_la_extension_de_los_plazos_no_podra_superar_los_365_trescientos_sesenta_y_cinco__735a75
+    - Restriccion_la_extension_de_los_plazos_no_podra_superar_los_545_quinientos_cuarenta_y_cinco__a7603b
+    - Restriccion_la_fecha_de_pago_no_puede_exceder_un_plazo_de_360_dias_en_los_cheques_de_pago_di_225b7c
+    - Restriccion_la_imputacion_de_multas_solo_procede_cuando_existen_demoras_del_exportador_en_la_347966
+    - Restriccion_la_nueva_clave_o_contrasena_personal_password_pin_seleccionada_por_el_usuario_no_841919
+    - Restriccion_la_nueva_deuda_financiera_no_podra_anticipar_vencimientos_respecto_de_la_deuda_c_76ea58
+    - Restriccion_la_nueva_deuda_no_implique_la_realizacion_de_pagos_antes_de_la_fecha_en_que_el_c_1b632a
+    - Restriccion_la_opcion_de_exclusion_no_este_estructurada_con_el_fin_de_evitar_que_los_inverso_531e31
+    - Restriccion_la_operacion_podra_incluir_bienes_que_no_revistan_la_condicion_de_bien_de_capita_0433f7
+    - Restriccion_la_operacion_podra_permanecer_en_gestion_de_cobro_mientras_se_demuestre_la_vigen_1823fc
+    - Restriccion_la_perdida_por_cva_se_calcula_sin_compensar_con_los_ajustes_de_valuacion_del_deb_791735
+    - Restriccion_la_recategorizacion_del_deudor_se_efectuara_a_partir_del_mes_siguiente_al_de_pue_c542f8
+    - Restriccion_la_recategorizacion_se_efectuara_al_menos_en_la_categoria_inmediata_superior_a_a_2a6965
+    - Restriccion_la_retencion_del_cheque_de_pago_diferido_no_podra_exceder_de_5_dias_corridos_con_8f8308
+    - Restriccion_la_sola_existencia_de_5_000_operaciones_o_mas_en_un_conjunto_de_neteo_no_determi_c7f14e
+    - Restriccion_la_suscripcion_local_no_supere_el_25_veinticinco_por_ciento_de_la_suscripcion_to_ed7e2b
+    - Restriccion_la_tacha_de_la_leyenda_de_cheque_para_acreditar_en_cuenta_se_tendra_por_no_hecha_6664c4
+    - Restriccion_la_titulizacion_no_contiene_clausulas_mediante_las_cuales_la_entidad_financiera__0790eb
+    - Restriccion_la_titulizacion_no_contiene_clausulas_mediante_las_cuales_se_aumente_el_rendimie_8b2e2e
+    - Restriccion_la_titulizacion_no_contiene_clausulas_mediante_las_cuales_se_obligue_a_la_origin_5bae34
+    - Restriccion_las_acciones_preferidas_no_convertibles_quedan_excluidas_de_la_exigencia_de_capi_07be56
+    - Restriccion_las_calificaciones_crediticias_efectuadas_por_ecai_solo_podran_ser_utilizadas_pa_9bdc22
+    - Restriccion_las_facilidades_adicionales_sobre_margenes_vigentes_no_se_consideraran_nuevas_fi_577b50
+    - Restriccion_las_franquicias_deberan_ser_ponderadas_por_riesgo_al_1250_4dae5a
+    - Restriccion_las_operaciones_bilaterales_con_un_acuerdo_de_margen_de_variacion_unidireccional_7a2251
+    - Restriccion_las_operaciones_que_impliquen_la_importacion_de_billetes_de_pesos_argentinos_que_a5f6a2
+    - Restriccion_las_participaciones_en_entidades_financieras_del_exterior_son_deducibles_6912de
+    - Restriccion_las_participaciones_en_entidades_financieras_se_deducen_excepto_cuando_rijan_fra_97dab6
+    - Restriccion_las_presentaciones_rechazadas_por_los_citados_motivos_se_consideraran_no_efectua_0ca7a1
+    - Restriccion_las_reservas_a_integrar_con_ingresos_futuros_provenientes_de_los_activos_subyace_350dc9
+    - Restriccion_las_retribuciones_deben_ser_determinadas_sobre_la_base_de_sumas_fijas_que_no_est_64361c
+    - Restriccion_los_adelantos_previstos_en_el_punto_3_2_5_de_las_normas_sobre_financiamiento_al__07859e
+    - Restriccion_los_adelantos_previstos_en_el_punto_3_2_5_de_las_normas_sobre_financiamiento_al__ab3d82
+    - Restriccion_los_arreglos_privados_deben_contar_con_la_opinion_del_auditor_externo_cuando_aun_6b2359
+    - Restriccion_los_cheques_de_pago_diferido_transferidos_para_negociacion_en_bolsas_de_comercio_942a1b
+    - Restriccion_los_clientes_se_clasificaran_en_categoria_irrecuperable_en_caso_de_no_efectuarse_d813e7
+    - Restriccion_los_contratos_con_clausulas_de_abandono_o_ruptura_walkaway_clauses_clausulas_que_150653
+    - Restriccion_los_documentos_a_cobrar_y_creditos_transferidos_luego_de_la_fecha_en_que_se_conc_dd83c0
+    - Restriccion_los_endeudamientos_financieros_y_o_aportes_de_inversion_extranjera_directa_no_po_1ed79b
+    - Restriccion_los_estandares_no_deberan_ser_menos_rigurosos_que_aquellos_aplicados_a_los_activ_bfa0dc
+    - Restriccion_los_excesos_de_margenes_de_credito_por_lineas_especificas_no_seran_considerados__72cdc2
+    - Restriccion_los_instrumentos_no_deben_estar_ya_incluidos_en_el_co_capital_ordinario_e9f5fc
+    - Restriccion_los_nuevos_titulos_de_deuda_contemplen_como_minimo_1_un_ano_de_gracia_para_el_pa_6a0573
+    - Restriccion_los_pagos_elegibles_solo_se_consideran_comprendidos_en_los_puntos_4_8_1_1_y_4_8__cf06a7
+    - Restriccion_los_swaps_de_monedas_y_tasas_de_interes_los_fras_los_forwards_de_moneda_y_los_fu_f205a7
+    - Restriccion_monto_maximo_de_usd_50_dolares_estadounidenses_cincuenta_por_operacion_de_adelan_300e47
+    - Restriccion_monto_minimo_de_60_000_pesos_sesenta_mil_por_dia_en_una_unica_extraccion_en_caje_7090bd
+    - Restriccion_no_computar_las_operaciones_de_financiacion_con_titulos_valores_sft_96b61c
+    - Restriccion_no_computar_los_conceptos_correspondientes_a_derivados_0cd729
+    - Restriccion_no_correspondera_la_comunicacion_al_bcra_de_los_rechazos_48aa51
+    - Restriccion_no_deben_considerarse_activos_externos_liquidos_disponibles_a_aquellos_fondos_de_65bf0f
+    - Restriccion_no_divulgar_el_numero_de_clave_personal_1d5dfa
+    - Restriccion_no_escribir_el_numero_de_clave_personal_en_la_tarjeta_magnetica_provista_o_en_un_b8e447
+    - Restriccion_no_estan_sujetas_a_estas_normas_las_concertaciones_y_cancelaciones_de_operacione_da9700
+    - Restriccion_no_se_han_acompanado_los_soportes_con_los_archivos_requeridos_o_ellos_no_pueden__a816f2
+    - Restriccion_no_se_incluyen_clausulas_de_amortizacion_anticipada_que_de_acuerdo_con_lo_previs_b33472
+    - Restriccion_no_se_incluyen_opciones_de_rescision_o_eventos_desencadenantes_de_la_extincion_d_cc7cdd
+    - Restriccion_no_se_permitira_la_exclusion_o_compensacion_de_posiciones_en_diferentes_monedas__33c0da
+    - Restriccion_no_se_podran_efectuar_mejoras_en_las_clasificaciones_de_los_clientes_si_los_mism_73384b
+    - Restriccion_obligacion_de_ingreso_y_o_liquidacion_por_la_totalidad_del_contravalor_en_divisa_c22bf4
+    - Restriccion_para_el_calculo_de_las_variables_a_y_d_la_sobrecolateralizacion_y_los_fondos_int_037f02
+    - Restriccion_para_operaciones_sin_margen_de_variacion_el_horizonte_temporal_minimo_sera_el_me_9a7808
+    - Restriccion_periodo_de_riesgo_de_margen_minimo_de_20_dias_habiles_para_conjuntos_de_neteo_cu_c54809
+    - Restriccion_periodo_de_riesgo_de_margen_mpor_minimo_de_5_dias_habiles_para_operaciones_de_de_4bc03c
+    - Restriccion_periodo_de_riesgo_de_margen_mpor_minimo_de_al_menos_10_dias_habiles_para_operaci_f98756
+    - Restriccion_ponderador_de_riesgo_de_85_para_exposiciones_a_mipyme_que_no_se_ajustan_a_los_cr_e04ca9
+    - Restriccion_ponderador_de_riesgo_del_100_para_exposiciones_a_entes_del_sector_publico_no_fin_594e09
+    - Restriccion_ponderador_de_riesgo_del_100_para_exposiciones_a_entes_del_sector_publico_no_fin_bb84dc
+    - Restriccion_ponderador_de_riesgo_del_100_para_exposiciones_a_entes_del_sector_publico_no_fin_fdd808
+    - Restriccion_ponderador_de_riesgo_del_150_para_exposiciones_a_entes_del_sector_publico_no_fin_cdec34
+    - Restriccion_ponderador_de_riesgo_del_20_para_exposiciones_a_entes_del_sector_publico_no_fina_adb135
+    - Restriccion_ponderador_de_riesgo_del_50_para_exposiciones_a_entes_del_sector_publico_no_fina_50d555
+    - Restriccion_ponderador_de_riesgo_general_para_exposiciones_a_entidades_financieras_grado_a_4_cf0766
+    - Restriccion_ponderador_de_riesgo_general_para_exposiciones_a_entidades_financieras_grado_b_7_9d42f5
+    - Restriccion_ponderador_de_riesgo_general_para_exposiciones_a_entidades_financieras_grado_c_1_0839a1
+    - Restriccion_ponderador_de_riesgo_para_exposiciones_de_corto_plazo_a_entidades_financieras_gr_5fcc70
+    - Restriccion_ponderador_de_riesgo_para_exposiciones_de_corto_plazo_a_entidades_financieras_gr_612642
+    - Restriccion_ponderador_de_riesgo_para_exposiciones_de_corto_plazo_a_entidades_financieras_gr_835157
+    - Restriccion_que_la_acreditacion_de_los_fondos_se_efectue_en_forma_inmediata_a_simple_requeri_13d907
+    - Restriccion_queda_exceptuada_de_la_excepcion_la_cancelacion_de_giros_en_descubierto_en_cuent_6e2284
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_11_meses_1_a_12_5c996c
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_14_meses_1_a_12_17691d
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_17_meses_1_a_12_a94feb
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_20_entidades_grupo_a_meses_1_a_12_b1f293
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_5_meses_1_a_12_e85bca
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_7_meses_1_a_12_79b0c7
+    - Restriccion_reduccion_por_aplicacion_del_limite_del_8_meses_1_a_12_7f9d0b
+    - Restriccion_repatriaciones_de_inversiones_directas_de_no_residentes_hasta_el_monto_de_los_ap_e7a2b1
+    - Restriccion_requiriendo_a_ese_efecto_calificacion_internacional_de_riesgo_investment_grade_bae8f9
+    - Restriccion_respecto_del_apoyo_crediticio_que_no_supere_el_55_del_valor_del_inmueble_se_apli_a0cf33
+    - Restriccion_se_aplicara_el_ponderador_de_riesgo_del_75_para_las_exposiciones_a_personas_huma_404b4d
+    - Restriccion_se_aplicara_el_ponderador_de_riesgo_del_85_para_las_exposiciones_a_mipyme_f0b6c9
+    - Restriccion_se_aplicara_ponderador_de_10_a_entidades_del_exterior_que_no_cumplan_con_lo_prev_06b5bf
+    - Restriccion_se_aplicaran_los_ponderadores_previstos_en_el_punto_2_12_para_el_resto_de_las_ex_7656a4
+    - Restriccion_se_autorizara_el_libramiento_de_echeq_por_un_importe_global_maximo_en_funcion_de_4e1d99
+    - Restriccion_se_establece_ponderador_de_0_para_el_sector_publico_no_financiero_y_banco_centra_e84a44
+    - Restriccion_se_establece_ponderador_de_3_para_el_resto_de_las_contrapartes_excepto_que_se_tr_709fc2
+    - Restriccion_se_establece_un_minimo_de_0_al_efecto_de_evitar_que_el_costo_de_reposicion_sea_n_c10035
+    - Restriccion_se_permite_compensacion_integra_de_operaciones_de_una_entidad_pero_solo_se_permi_30caf1
+    - Restriccion_se_reconoce_proteccion_crediticia_de_empresas_con_grado_de_inversion_de_acuerdo__e03067
+    - Restriccion_si_se_pudiera_aplicar_mas_de_un_ponderador_a_una_exposicion_determinada_se_deber_320028
+    - Restriccion_si_un_fondo_de_garantia_respalda_productos_sujetos_a_riesgo_de_liquidacion_y_pro_875df9
+    - Restriccion_sobre_el_importe_que_supere_el_55_del_valor_del_inmueble_se_aplicara_el_ponderad_73fe4a
+    - Restriccion_solo_la_parte_de_las_reservas_que_este_sujeta_a_la_absorcion_de_perdidas_y_propo_87e946
+    - Restriccion_son_nulos_el_endoso_del_girado_073aaf
+    - Restriccion_son_nulos_el_endoso_parcial_54eacd
+    - Restriccion_su_vida_promedio_sea_no_inferior_a_1_un_ano_considerando_los_vencimientos_de_cap_0d7f3c
+    - Restriccion_unicamente_el_destinatario_del_pago_puede_endosarlo_eff063
+```
+
+### S12 — FAIL
+
+ERROR — Toda Excepcion tiene >=1 arista saliente exceptua o exceptua_obligacion.
+
+**Resultado:** 218 Excepciones sin salida exceptua/exceptua_obligacion.
+
+```
+    - Excepcion_a_esos_efectos_no_se_considerara_refinanciacion_la_asistencia_que_se_otorgue_a_l_094220
+    - Excepcion_a_fin_de_ser_excluidas_de_la_central_de_cheques_rechazados_y_o_de_la_central_de__aa36bc
+    - Excepcion_acceso_al_mercado_de_cambios_incluso_cuando_no_se_cumplan_los_requisitos_estable_8f0447
+    - Excepcion_anticipos_por_pago_de_jubilaciones_y_pensiones_estan_excluidos_de_las_financiaci_6406c0
+    - Excepcion_anticipos_y_prestamos_al_fondo_de_garantia_de_los_depositos_estan_excluidos_de_l_49cf28
+    - Excepcion_aplicacion_de_exigencia_adicional_de_2_puede_extenderse_a_posiciones_opuestas_en_27e086
+    - Excepcion_calculo_del_riesgo_de_tasa_de_interes_en_la_cartera_de_inversion_tendra_frecuenc_7cb7b1
+    - Excepcion_contenga_endosos_tachados_o_que_carezcan_de_los_requisitos_formales_establecidos_424d07
+    - Excepcion_contractualmente_no_estuviera_previsto_que_una_facilidad_de_liquidez_cubra_activ_304203
+    - Excepcion_cuando_al_menos_se_haya_cumplido_con_el_pago_sin_haber_incurrido_en_atrasos_supe_89d1dc
+    - Excepcion_cuando_el_cliente_sea_un_vehiculo_de_proyecto_unico_adherido_al_rigi_que_haya_de_f05a0e
+    - Excepcion_cuando_en_estos_casos_sea_factible_el_computo_de_la_crc_su_reconocimiento_sera_p_1dab4a
+    - Excepcion_cuando_existan_obstaculos_para_la_rapida_repatriacion_de_beneficios_desde_una_su_ff5c17
+    - Excepcion_cuando_la_cantidad_escrita_en_letras_difiriese_de_la_expresada_en_numeros_se_est_20af1c
+    - Excepcion_cuando_los_adelantos_superen_el_limite_autorizado_y_o_no_sean_cancelados_en_los__e88d46
+    - Excepcion_cuando_no_corresponda_evaluar_la_capacidad_de_repago_del_deudor_por_encontrarse__d3fe80
+    - Excepcion_datos_complementarios_vinculados_al_calculo_de_la_exigencia_por_riesgo_de_mercad_a25c22
+    - Excepcion_dicho_pago_no_exime_a_la_entidad_de_las_responsabilidades_civiles_que_pudieren_c_a2081e
+    - Excepcion_el_acceso_al_mercado_de_cambios_antes_de_lo_indicado_no_requerira_conformidad_pr_66d277
+    - Excepcion_el_acceso_al_mercado_de_cambios_antes_de_lo_indicado_se_permite_en_el_caso_de_pr_961e69
+    - Excepcion_el_acceso_tambien_podra_ser_dado_a_los_fideicomisos_constituidos_en_el_pais_para_5d0667
+    - Excepcion_el_bcra_establezca_que_se_debe_hacer_una_reduccion_generalizada_del_valor_si_pos_07108d
+    - Excepcion_el_pago_es_concretado_mediante_canje_y_o_arbitraje_con_fondos_depositados_en_cue_459506
+    - Excepcion_el_plazo_no_resulta_aplicable_a_las_ventas_que_se_realicen_con_liquidacion_contr_5d773c
+    - Excepcion_el_plazo_para_realizar_la_denuncia_se_contara_a_partir_de_la_fecha_en_que_tomo_c_e0cc89
+    - Excepcion_el_punto_3_16_3_solo_sera_aplicable_para_clientes_que_no_sean_personas_humanas_r_8eb1c7
+    - Excepcion_el_requisito_de_conformidad_previa_del_bcra_no_resultara_aplicable_cuando_se_cum_9bf70d
+    - Excepcion_el_requisito_de_conformidad_previa_del_bcra_para_el_acceso_al_mercado_de_cambios_844961
+    - Excepcion_el_requisito_de_ingreso_y_liquidacion_de_divisas_se_considera_cumplimentado_para_f6bafc
+    - Excepcion_en_caso_de_afectacion_de_la_solvencia_y_o_liquidez_de_la_entidad_se_tenga_por_no_49f140
+    - Excepcion_en_caso_de_no_efectuarse_la_evaluacion_cualquiera_sea_el_motivo_estos_clientes_s_c3508c
+    - Excepcion_en_caso_de_no_existir_dicha_jerarquia_la_pertinente_presentacion_estara_a_cargo__80a40c
+    - Excepcion_en_caso_de_que_alguna_de_las_personas_detallada_en_el_punto_3_16_3_3_sea_un_ente_f154a6
+    - Excepcion_en_caso_de_que_la_operacion_haya_sido_liquidada_por_mas_de_una_entidad_cada_una__8dcf54
+    - Excepcion_en_casos_de_datos_provenientes_de_liquidaciones_forzadas_ventas_criticas_o_merca_5f3a22
+    - Excepcion_en_cuanto_a_las_exportaciones_desde_el_territorio_nacional_continental_al_area_f_e1d724
+    - Excepcion_en_el_caso_de_operaciones_comprendidas_en_el_punto_7_11_1_6_tambien_se_admitira__0ff115
+    - Excepcion_en_el_caso_de_que_las_entidades_financieras_no_ejercieran_esa_opcion_corresponde_093eca
+    - Excepcion_en_el_supuesto_de_adulteracion_el_rechazo_del_cheque_no_se_comunicara_cuando_exi_48b261
+    - Excepcion_en_estos_casos_los_usuarios_de_servicios_financieros_pueden_requerir_y_recibir_i_31201f
+    - Excepcion_en_estrategias_donde_la_entidad_asuma_posicion_contraria_en_exactamente_el_mismo_c0da4b
+    - Excepcion_en_los_casos_en_que_la_entidad_financiera_cuente_en_todos_los_citados_aspectos_c_16aa72
+    - Excepcion_en_los_casos_en_que_la_entidad_financiera_cuente_en_todos_los_citados_aspectos_c_84a589
+    - Excepcion_este_requerimiento_no_sera_de_aplicacion_para_el_caso_de_exposiciones_a_gobierno_c2b283
+    - Excepcion_este_requisito_no_resultara_aplicable_cuando_se_cumpla_la_totalidad_de_las_sigui_5225c8
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_el_sector_publico_ccacb4
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_las_personas_juridicas_que_tengan_a_su_f111bf
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_los_fideicomisos_constituidos_con_apor_8a3a5d
+    - Excepcion_este_requisito_no_sera_de_aplicacion_para_todas_las_organizaciones_empresariales_259fb4
+    - Excepcion_excepcion_a_la_prohibicion_de_acceso_al_mercado_de_cambios_para_pagos_de_obligac_65f7f2
+    - Excepcion_excepcion_de_liquidacion_de_cobros_de_exportaciones_de_bienes_y_servicios_para_l_f74c40
+    - Excepcion_excepto_cuando_la_garantia_cubra_unicamente_el_capital_en_cuyo_caso_se_considera_e7e79f
+    - Excepcion_excepto_para_aquellos_casos_en_que_expresamente_se_prevea_la_posibilidad_de_que__5efbf5
+    - Excepcion_excepto_que_la_repatriacion_se_concrete_a_partir_de_un_canje_y_o_arbitraje_con_l_95a84a
+    - Excepcion_excepto_que_se_trate_de_asociaciones_mutuales_o_cooperativas_77ba7b
+    - Excepcion_exencion_de_ingreso_de_divisas_para_exportaciones_del_area_aduanera_especial_al__3621e8
+    - Excepcion_exportacion_a_consumo_de_automotores_de_fabricacion_nacional_sus_partes_y_piezas_a73c7e
+    - Excepcion_exportaciones_a_zonas_francas_nacionales_estan_exceptuadas_del_seguimiento_de_pe_5a0eb7
+    - Excepcion_exportaciones_de_bienes_enviados_al_exterior_con_fines_promocionales_estan_excep_8b4631
+    - Excepcion_exportaciones_desde_el_territorio_nacional_continental_al_area_aduanera_especial_2fa363
+    - Excepcion_financiaciones_y_avales_fianzas_y_otras_responsabilidades_otorgados_por_subsidia_2e6847
+    - Excepcion_financiaciones_y_avales_fianzas_y_otras_responsabilidades_otorgados_por_sucursal_d0c266
+    - Excepcion_garantias_otorgadas_a_favor_del_bcra_y_por_obligaciones_directas_quedan_excluida_84a127
+    - Excepcion_haberse_dispuesto_medidas_cautelares_sobre_los_fondos_destinados_para_el_pago_de_daf62d
+    - Excepcion_incluso_cuando_no_se_cumplan_los_requisitos_establecidos_para_el_acceso_del_clie_2d53ed
+    - Excepcion_informacion_sobre_ratio_de_apalancamiento_seccion_10_tendra_frecuencia_trimestra_381d25
+    - Excepcion_la_cancelacion_de_pagos_en_concepto_de_dividendos_o_intereses_no_debera_constitu_e65078
+    - Excepcion_la_cobertura_del_riesgo_de_credito_que_tenga_un_plazo_de_vencimiento_original_in_3fa3a4
+    - Excepcion_la_conformidad_previa_del_bcra_no_sera_requerida_cuando_se_trate_de_un_endeudami_d83205
+    - Excepcion_la_constancia_de_aceptacion_por_parte_de_esta_ultima_liberara_a_la_entidad_previ_85f668
+    - Excepcion_la_constancia_de_aceptacion_por_parte_de_la_nueva_entidad_libera_a_la_entidad_pr_a8cae7
+    - Excepcion_la_delegacion_no_afecta_las_responsabilidades_que_les_caben_a_los_funcionarios_d_340460
+    - Excepcion_la_ead_de_un_conjunto_de_neteo_que_solo_comprende_opciones_vendidas_podra_ser_ce_f01deb
+    - Excepcion_la_entrega_de_activos_locales_con_el_objeto_de_cancelar_una_deuda_con_una_agenci_9a96c2
+    - Excepcion_la_exigencia_maxima_de_capital_para_las_entidades_financieras_originantes_previs_404fbd
+    - Excepcion_la_exportacion_a_consumo_de_bienes_que_conforman_el_equipaje_no_acompanado_expor_0e92a5
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_38a389
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_443e52
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_44ff95
+    - Excepcion_la_limitacion_del_40_no_aplica_cuando_por_un_monto_igual_o_superior_al_excedente_7acd7f
+    - Excepcion_la_parte_de_la_exposicion_cubierta_estara_sujeta_a_un_minimo_del_20_salvo_lo_dis_b994aa
+    - Excepcion_la_perdida_de_beneficios_y_o_baja_de_restantes_productos_o_servicios_no_aplica_a_713024
+    - Excepcion_la_permanencia_de_180_dias_no_aplica_cuando_por_aplicacion_de_otras_pautas_corre_3bf3b9
+    - Excepcion_la_precancelacion_de_capital_e_intereses_de_un_titulo_de_deuda_comprendido_en_el_1989e6
+    - Excepcion_la_presencia_de_una_opcion_de_exclusion_no_originara_exigencia_de_capital_alguna_d48441
+    - Excepcion_la_presente_reduccion_de_exigencia_regira_para_entidades_del_grupo_2_que_pertene_056165
+    - Excepcion_la_prohibicion_de_acceso_al_mercado_de_cambios_no_aplica_cuando_el_pago_se_concr_f082d4
+    - Excepcion_la_reduccion_en_las_tasas_de_interes_pactadas_no_se_considera_indicador_de_alto__b05dcf
+    - Excepcion_las_asistencias_asi_otorgadas_no_seran_consideradas_a_los_fines_a_que_se_refiere_8c9c02
+    - Excepcion_las_cajas_de_credito_cooperativas_estan_exceptuadas_de_las_exigencias_de_capital_241e7a
+    - Excepcion_las_destinaciones_suspensivas_de_exportaciones_temporarias_articulos_349_a_373_d_3e641a
+    - Excepcion_las_exportaciones_correspondientes_a_los_capitulos_26_excepto_las_posiciones_260_ba043b
+    - Excepcion_las_exportaciones_de_valores_billetes_monedas_etc_mediante_el_regimen_ec51_estan_9a5df3
+    - Excepcion_las_garantias_otorgadas_a_favor_del_banco_central_de_la_republica_argentina_esta_9e4e74
+    - Excepcion_las_inversiones_en_acciones_estructuradas_con_el_objeto_de_replicar_la_realidad__493ee2
+    - Excepcion_las_modificaciones_en_el_nombre_y_o_apellido_de_las_personas_fisicas_o_en_otros__4fe2e3
+    - Excepcion_las_operaciones_aduaneras_bajo_regimen_de_muestras_articulos_560_al_565_de_la_le_e5eb72
+    - Excepcion_las_operaciones_aduaneras_por_ventajas_aduaneras_u_otras_situaciones_previstas_e_0fdbc1
+    - Excepcion_las_operaciones_correspondientes_a_regimen_de_franquicia_diplomatica_articulos_5_9be3ad
+    - Excepcion_las_operaciones_de_trasbordo_conforme_a_articulos_410_a_416_de_la_ley_22_415_que_9bb9f9
+    - Excepcion_las_operaciones_seran_consideradas_como_sin_garantia_821fbd
+    - Excepcion_las_personas_juridicas_inscriptas_en_el_registro_nacional_de_beneficiarios_del_r_12093b
+    - Excepcion_las_primas_por_opciones_de_compra_y_de_venta_tomadas_estan_excluidas_de_las_fina_601305
+    - Excepcion_las_siguientes_garantias_otorgadas_por_obligaciones_directas_2d6334
+    - Excepcion_las_transferencias_de_titulos_valores_a_entidades_depositarias_del_exterior_real_e63e97
+    - Excepcion_las_ventas_con_liquidacion_en_moneda_extranjera_en_el_exterior_o_las_transferenc_65b899
+    - Excepcion_las_ventas_con_liquidacion_en_moneda_extranjera_en_el_pais_o_en_el_exterior_de_l_8640b8
+    - Excepcion_las_ventas_de_titulos_valores_con_liquidacion_en_moneda_extranjera_en_el_pais_o__e24588
+    - Excepcion_liberacion_de_la_obligacion_de_secreto_y_reserva_a_que_se_refieren_las_leyes_de__a3f751
+    - Excepcion_los_cheques_en_los_casos_previstos_en_el_punto_6_2_no_son_susceptibles_de_rechaz_a2b1ce
+    - Excepcion_los_clientes_no_deberan_tener_en_cuenta_en_las_declaraciones_juradas_indicadas_l_6ef6a3
+    - Excepcion_los_clientes_que_hayan_adquirido_bonos_bopreal_en_una_suscripcion_primaria_no_de_1ffd51
+    - Excepcion_los_cobros_por_la_prestacion_de_servicios_a_un_no_residente_por_parte_de_un_vpu__e4192b
+    - Excepcion_los_creditos_frente_al_banco_central_de_la_republica_argentina_estan_excluidos_d_e74d0f
+    - Excepcion_los_defectos_originados_en_el_computo_del_50_en_lugar_del_100_de_los_resultados__7ff311
+    - Excepcion_los_deudores_en_situacion_irregular_no_seran_clasificados_en_la_categoria_irrecu_8b5ca9
+    - Excepcion_los_endeudamientos_desembolsados_con_anterioridad_al_01_09_19_58ccea
+    - Excepcion_los_permisos_que_revistan_la_condicion_de_incumplido_en_gestion_de_cobro_no_sera_1f9eff
+    - Excepcion_los_requisitos_previstos_en_los_puntos_4_3_2_1_y_4_3_2_2_no_resultaran_aplicable_86f431
+    - Excepcion_los_sobregiros_en_cuenta_corriente_bancaria_por_importes_que_excedan_los_margene_47f91f
+    - Excepcion_no_aplica_el_plazo_maximo_de_10_dias_cuando_i_se_trata_de_la_situacion_prevista__e44770
+    - Excepcion_no_aplica_la_deduccion_a_titulos_valores_e_instrumentos_de_deuda_ya_contemplados_77aaef
+    - Excepcion_no_corresponde_la_presentacion_de_esas_declaraciones_juradas_por_cada_una_de_las_8e76e4
+    - Excepcion_no_correspondera_el_rechazo_de_solicitudes_de_financiacion_por_el_solo_dato_de_l_1c0089
+    - Excepcion_no_correspondera_la_comunicacion_al_bcra_de_los_rechazos_cuando_se_haya_declarad_6b4948
+    - Excepcion_no_correspondera_la_comunicacion_al_bcra_de_los_rechazos_motivados_por_el_pago_d_6ac373
+    - Excepcion_no_correspondera_la_comunicacion_al_bcra_de_los_rechazos_motivados_por_falsifica_ba82ed
+    - Excepcion_no_correspondera_la_evaluacion_de_la_capacidad_de_repago_respecto_de_las_financi_f8c68e
+    - Excepcion_no_deberan_considerarse_aquellos_bienes_que_cuenten_con_las_ventajas_aduaneras_e_82e991
+    - Excepcion_no_deberan_considerarse_las_exportaciones_a_consumo_con_despacho_de_importacion__f7e250
+    - Excepcion_no_deberan_considerarse_los_bienes_exportados_a_traves_de_operaciones_exceptuada_1823a8
+    - Excepcion_no_es_necesaria_la_conformidad_previa_del_bcra_para_dar_acceso_al_cliente_vpu_ad_5e1321
+    - Excepcion_no_es_necesario_contar_con_la_conformidad_previa_del_bcra_para_dar_acceso_al_mer_be1e4a
+    - Excepcion_no_estan_comprendidas_las_exposiciones_originadas_en_operaciones_al_contado_y_qu_726a0d
+    - Excepcion_no_implica_la_inclusion_en_la_causal_a_que_se_refiere_el_punto_9_1_2_a809ff
+    - Excepcion_no_procedera_la_inclusion_respecto_de_apoderados_para_el_uso_de_la_cuenta_corrie_811545
+    - Excepcion_no_resulta_aplicable_la_declaracion_jurada_para_aquellas_operaciones_de_egresos__48e48b
+    - Excepcion_no_resulta_aplicable_la_declaracion_jurada_para_cancelaciones_de_financiaciones__443d70
+    - Excepcion_no_resulta_aplicable_la_declaracion_jurada_para_las_repatriaciones_de_inversione_199d25
+    - Excepcion_no_resulta_aplicable_la_declaracion_jurada_para_operaciones_comprendidas_en_el_p_78b615
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_cancelaciones_d_867faa
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__0dd713
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__3a02a7
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__449b40
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__a0f1f6
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__ad7a24
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_pro_2a4c62
+    - Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_pagos_al_exteri_6641b5
+    - Excepcion_no_resultara_aplicable_el_requisito_de_conformidad_previa_del_bcra_cuando_la_ope_969407
+    - Excepcion_no_resultara_exigible_la_liquidacion_en_el_mercado_de_cambios_de_los_fondos_en_m_82db21
+    - Excepcion_no_se_considerara_error_el_rechazo_del_cheque_respecto_del_cual_haya_mediado_aut_52b4bc
+    - Excepcion_no_se_consideraran_comprendidas_en_la_definicion_de_nuevas_financiaciones_o_refi_22a599
+    - Excepcion_no_se_consideraran_las_exportaciones_industriales_comprendidas_en_acuerdos_inter_c85d60
+    - Excepcion_no_se_consideraran_refinanciaciones_otorgadas_a_productores_cuando_ello_resulte__965708
+    - Excepcion_no_se_deberan_computar_los_montos_de_instrumentos_con_vinculacion_crediticia_u_o_53d74c
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_bancos_u_otr_e0dca7
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_la_casa_matr_db0767
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_otros_bancos_d51f60
+    - Excepcion_no_se_deduciran_los_saldos_en_cuentas_de_corresponsalia_respecto_de_sucursales_y_4a5524
+    - Excepcion_no_se_deduciran_los_saldos_que_con_caracter_transitorio_y_circunstancial_se_orig_c04097
+    - Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d
+    - Excepcion_no_se_incluyen_los_ingresos_de_importaciones_temporarias_sin_giro_de_divisas_96c979
+    - Excepcion_no_se_incluyen_los_registros_aduaneros_por_importaciones_suspensivas_de_deposito_e1f518
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_para_acceso_al_mercado_de_cambios_cua_1fc6c3
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_para_acceso_al_mercado_de_cambios_par_011259
+    - Excepcion_no_se_requiere_conformidad_previa_del_bcra_si_tal_requisito_estuviese_vigente_al_598ad0
+    - Excepcion_no_sera_aplicable_en_el_caso_de_financiaciones_otorgadas_a_traves_de_la_suscripc_4a7f8b
+    - Excepcion_no_sera_de_aplicacion_en_las_operaciones_con_contrapartes_a_las_cuales_el_bcra_l_3ff724
+    - Excepcion_operaciones_aduaneras_de_envios_de_asistencia_y_salvamento_estan_exceptuadas_del_04d0f6
+    - Excepcion_operaciones_aduaneras_de_los_subregimenes_bara_y_vmi1_en_el_marco_de_la_operator_750e68
+    - Excepcion_operaciones_aduaneras_exceptuadas_del_seguimiento_por_regimen_de_corredores_de_c_4b50cd
+    - Excepcion_operaciones_aduaneras_realizadas_mediante_medios_de_transporte_de_guerra_segurid_cfd702
+    - Excepcion_operaciones_de_reembarco_consignadas_mediante_los_subregimenes_re01_re04_re05_re_ebdb0b
+    - Excepcion_operaciones_en_regimen_de_exportacion_en_consignacion_estan_exceptuadas_del_segu_1106b0
+    - Excepcion_organismos_internacionales_e_instituciones_que_cumplan_funciones_de_agencias_ofi_21e04e
+    - Excepcion_para_fondos_percibidos_o_acreditados_en_exterior_se_considera_cumplimentado_ingr_1867b0
+    - Excepcion_para_ser_reconocida_no_es_requisito_que_una_ecai_evalue_empresas_en_mas_de_un_pa_167442
+    - Excepcion_quedan_exceptuados_de_la_obligacion_de_liquidacion_los_cobros_de_exportaciones_d_c3761f
+    - Excepcion_quedan_excluidas_de_la_operacion_s06_viajes_las_operaciones_asociadas_a_retiros__9b13dc
+    - Excepcion_quedan_excluidos_de_la_definicion_de_divisas_en_moneda_extranjera_las_monedas_y__10bce6
+    - Excepcion_quedaran_exceptuados_de_la_obligacion_de_liquidacion_en_la_medida_que_ingresen_d_a00029
+    - Excepcion_quedaran_exceptuados_de_la_obligacion_de_liquidacion_los_cobros_de_exportaciones_6328b3
+    - Excepcion_quedaran_exceptuados_de_la_obligacion_de_liquidacion_los_cobros_de_exportaciones_b6267c
+    - Excepcion_regimen_de_donacion_de_organos_y_sangre_humana_resolucion_384_97_de_la_administr_398f3c
+    - Excepcion_regimen_de_equipaje_articulos_488_al_505_de_la_ley_22_415_operacion_exceptuada_d_576881
+    - Excepcion_regimen_de_rancho_articulos_506_al_516_de_la_ley_22_415_en_medios_de_transporte__e2113e
+    - Excepcion_resultara_aplicable_lo_dispuesto_en_el_punto_14_1_4_fc0e21
+    - Excepcion_resultaran_de_aplicacion_las_disposiciones_sobre_extravio_sustraccion_o_adultera_a08c1d
+    - Excepcion_salvo_decision_de_autoridad_competente_que_obligue_al_cierre_inmediato_c9d545
+    - Excepcion_se_admitira_que_el_legajo_del_cliente_se_encuentre_en_un_lugar_distinto_del_de_r_9566e3
+    - Excepcion_se_considera_cumplimentado_el_requisito_de_ingreso_y_liquidacion_de_divisas_por__e77a83
+    - Excepcion_se_exceptua_la_prohibicion_cuando_se_trate_de_inversiones_en_titulos_publicos_ex_6792e8
+    - Excepcion_se_exceptuan_de_las_limitaciones_establecidas_en_este_punto_las_sucesivas_transm_9f4f1a
+    - Excepcion_se_excluiran_del_monto_de_ventas_totales_aquellas_realizadas_por_la_empresa_en_e_2ec8f1
+    - Excepcion_se_excluyen_las_exposiciones_previstas_en_el_punto_2_11_0db7e7
+    - Excepcion_se_excluyen_los_casos_en_que_las_acciones_se_refieren_a_la_discusion_sobre_otros_7f986a
+    - Excepcion_se_excluyen_tanto_las_estructuras_en_las_que_se_utilizan_los_flujos_de_efectivo__8b64d2
+    - Excepcion_se_observara_lo_establecido_en_el_acapite_i_aplicacion_de_obligacion_presentar_p_f5a32c
+    - Excepcion_se_permite_la_liquidacion_mediante_deposito_en_cuentas_de_terceros_cuando_se_tra_b28140
+    - Excepcion_se_podran_excluir_las_posiciones_opuestas_por_el_mismo_importe_en_una_misma_espe_88b271
+    - Excepcion_se_podran_excluir_los_derivados_swaps_forwards_futuros_y_forward_rate_agreements_cac1a4
+    - Excepcion_se_presumira_conformidad_con_el_movimiento_registrado_en_el_banco_cuando_no_hay__ad154b
+    - Excepcion_se_produzca_un_evento_idiosincrasico_y_extraordinario_del_que_resulte_una_reducc_2671c5
+    - Excepcion_se_realicen_ajustes_por_razones_objetivas_012af3
+    - Excepcion_se_realicen_mejoras_de_caracter_permanente_en_el_inmueble_que_incrementen_su_val_e075cd
+    - Excepcion_se_trata_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_con_una_vi_7b26cc
+    - Excepcion_se_trate_de_operaciones_propias_de_las_entidades_financieras_locales_8f1285
+    - Excepcion_si_existiesen_fondos_destinados_al_pago_de_fletes_de_importaciones_de_bienes_no__b1c3f1
+    - Excepcion_si_no_se_cumple_al_menos_una_de_las_dos_condiciones_senaladas_registro_de_export_2557ec
+    - Excepcion_sin_la_conformidad_previa_requerida_en_el_punto_3_3_3_bdd9fc
+    - Excepcion_sin_la_conformidad_previa_requerida_en_el_punto_3_3_3_para_pagos_de_intereses_de_67bd78
+    - Excepcion_sin_necesidad_de_contar_con_la_conformidad_previa_del_bcra_si_tal_requisito_estu_047a80
+    - Excepcion_sin_necesidad_de_contar_con_la_conformidad_previa_del_bcra_si_tal_requisito_estu_5ed237
+    - Excepcion_sin_necesidad_de_contar_con_la_conformidad_previa_del_bcra_si_tal_requisito_estu_cbe2a1
+    - Excepcion_sin_perjuicio_del_cumplimiento_en_forma_individual_las_entidades_financieras_con_6bd82f
+    - Excepcion_sin_tener_en_cuenta_las_limitaciones_cuantitativas_previstas_en_los_puntos_2_1_9_7919c7
+    - Excepcion_tampoco_se_consideraran_dentro_de_ese_concepto_las_refinanciaciones_otorgadas_a__31f94a
+    - Excepcion_unicamente_se_admitira_la_constitucion_de_las_garantias_en_cuentas_abiertas_en_e_b69359
+```
+
+### S21 — WARN
+
+INFORMATIVA — Coherencia de referencias nodo->nodo (rol_fuente=referencia_cruzada): properties.destino sin el prefijo <to>:: pertenece al CONJUNTO {p.punto for p in provenances} del nodo destino (nunca solo provenance[0]); desglose por properties.via.
+
+**Resultado:** 4819 referencias nodo->nodo ({'nodos_del_punto': 4805, 'texto_ordenado': 14}); 14 incoherentes (por via: {'texto_ordenado': 14}).
+
+```
+idx 3850: Obligacion_a_los_efectos_de_la_aplicacion_de_las_presentes_disposiciones_debera_cumplirse_c_b64371 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 4883: Obligacion_deberan_observar_las_disposiciones_de_las_normas_sobre_proteccion_de_los_usuario_e9df63 -> TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf destino='pro::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1.1', '1.1.2.1', '1.1.2.2', '1.1.2.3', '1.1.2.4']...
+idx 5231: Obligacion_el_cliente_debera_presentar_un_documento_de_identidad_admitido_en_las_normas_sob_1469e2 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 6443: Obligacion_esta_informacion_debera_incluir_clasificacion_promedio_de_los_deudores_conforme__050ce1 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 6689: Obligacion_indicar_nombre_apellido_numero_de_documento_de_identificacion_valido_conforme_a__791ad3 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 8224: Obligacion_las_entidades_financieras_comprendidas_exclusivamente_sus_casas_en_el_pais_obser_6ccac0 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 8236: Obligacion_las_entidades_financieras_controlantes_sujetas_a_supervision_consolidada_observa_8bde79 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 9750: Obligacion_presentacion_de_fotocopias_autenticadas_por_escribano_publico_de_los_documentos__ab60fc -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 9753: Obligacion_presentacion_de_tipo_y_numero_del_documento_para_establecer_su_identificacion_se_f6fcb1 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 10051: Obligacion_se_debera_consignar_al_dorso_la_firma_y_aclaracion_o_en_el_correspondiente_regis_5b4640 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 10116: Obligacion_se_determinara_teniendo_en_cuenta_lo_dispuesto_en_las_normas_sobre_capitales_min_31e534 -> TextoOrdenado_to_capitales_minimos_actual_pdf destino='cap::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.4.1']...
+idx 12644: Operacion_financiacion_de_importacion_de_bienes_de_capital_3c985a -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 14987: Operacion_tenencia_de_oro_amonedado_o_barras_buena_entrega_028209 -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 14990: Operacion_tenencia_de_oro_amonedado_o_en_barras_40484d -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='texto_ordenado': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+```
+
+### S22 — PASS
+
+INFORMATIVA — Coherencia de padre_sugerido: el destino de la arista es properties.padre_sugerido del origen y el origen está en cuarentena.
+
+**Resultado:** 29 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena).
+
+Sin violaciones.
+
+### S23 — WARN
+
+INFORMATIVA — aplica_a hacia sujetos en cuarentena: aristas aplica_a cuyo destino es un Sujeto de nivel propuesto (conteo; nunca bloqueante).
+
+**Resultado:** 3887 aristas aplica_a; 48 hacia Sujetos propuestos (30 destinos distintos).
+
+```
+idx 3501: Excepcion_representaciones_diplomaticas_y_consulares_y_personal_diplomatico_acreditado_en__a615c4 -> Sujeto_propuesto_personal_diplomatico_acreditado
+idx 3502: Excepcion_representaciones_diplomaticas_y_consulares_y_personal_diplomatico_acreditado_en__a615c4 -> Sujeto_propuesto_representaciones_diplomaticas_y_consulares
+idx 3575: Excepcion_se_exceptuan_de_la_citada_limitacion_aquellos_endosos_efectuados_en_los_echeq_3c10fe -> Sujeto_propuesto_echeq
+idx 3587: Excepcion_se_exceptuan_de_las_limitaciones_establecidas_en_este_punto_cuando_los_cheques_s_8bb009 -> Sujeto_propuesto_caja_de_valores_s_a
+idx 3971: Obligacion_acompanar_la_nomina_de_los_cheques_comunes_y_de_pago_diferido_librados_a_la_fech_bd0f7f -> Sujeto_propuesto_cuentacorrentista
+idx 4115: Obligacion_asegurar_que_el_directorio_reciba_informacion_relevante_integra_y_oportuna_que_l_133f73 -> Sujeto_propuesto_alta_gerencia
+idx 4554: Obligacion_cuenten_con_politicas_y_practicas_de_uso_tendientes_a_garantizar_que_sus_cliente_47bb6b -> Sujeto_propuesto_empresas_del_grupo_economico_de_la_procesadora_de_pagos
+idx 4570: Obligacion_cumplir_con_los_objetivos_estrategicos_fijados_por_el_directorio_46a3f8 -> Sujeto_propuesto_alta_gerencia
+idx 5025: Obligacion_devolver_los_no_utilizados_d29410 -> Sujeto_propuesto_cuentacorrentista
+idx 5155: Obligacion_el_beneficiario_debera_nominar_una_unica_entidad_financiera_local_que_sera_la_re_1198a5 -> Sujeto_propuesto_beneficiario_de_certificaciones_de_incremento_de_exportaciones
+idx 5201: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_adquir_329840 -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5203: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_adquir_dd59e5 -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5205: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_adquir_ec8cf7 -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5207: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_concer_a7197b -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5209: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_entreg_8290e2 -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5211: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_realiz_94d011 -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5213: Obligacion_el_cliente_debe_dejar_constancia_mediante_declaracion_jurada_de_que_no_ha_realiz_aa652b -> Sujeto_propuesto_cliente_que_no_es_persona_humana_residente
+idx 5511: Obligacion_el_originante_fiduciario_debera_divulgar_toda_la_informacion_necesaria_respecto__eae837 -> Sujeto_propuesto_originante_fiduciario
+idx 5548: Obligacion_el_presentante_debera_acreditar_su_categoria_de_residencia_su_vigencia_y_el_tiem_f1c047 -> Sujeto_propuesto_presentante
+idx 5826: Obligacion_en_base_a_la_informacion_provista_el_inversor_debera_realizar_sus_propias_evalua_5c4c39 -> Sujeto_propuesto_inversor
+idx 5828: Obligacion_en_base_a_la_informacion_provista_el_inversor_debera_realizar_sus_propias_evalua_99f491 -> Sujeto_propuesto_inversor
+idx 6259: Obligacion_en_las_entidades_financieras_publicas_la_definicion_de_la_politica_en_funcion_de_501edc -> Sujeto_propuesto_entidades_financieras_publicas
+idx 6359: Obligacion_en_todos_los_casos_debera_acreditarse_la_categoria_de_residencia_su_vigencia_y_e_0871f4 -> Sujeto_propuesto_extranjeros_con_residencia_permanente_o_temporaria
+idx 6639: Obligacion_implementar_las_politicas_procedimientos_procesos_y_controles_necesarios_para_ge_97575e -> Sujeto_propuesto_alta_gerencia
+idx 6711: Obligacion_informar_los_anulados_24175b -> Sujeto_propuesto_cuentacorrentista
+idx 8011: Obligacion_las_empresas_administradoras_de_las_redes_de_cajeros_automaticos_y_las_entidades_6be3de -> Sujeto_propuesto_empresas_administradoras_de_redes_de_cajeros_automaticos
+idx 8357: Obligacion_las_entidades_financieras_del_grupo_1_deberan_asignar_a_las_exposiciones_minoris_43df27 -> Sujeto_propuesto_entidades_financieras_del_grupo_1
+idx 8656: Obligacion_las_personas_que_hayan_sido_incorporadas_a_la_central_de_cheques_rechazados_y_o__491251 -> Sujeto_propuesto_personas_que_hayan_sido_incorporadas_a_las_centrales
+idx 8717: Obligacion_las_restantes_operaciones_de_derivados_financieros_que_quieran_ser_cursadas_con__bab4e8 -> Sujeto_propuesto_residentes_que_no_sean_entidades_autorizadas_a_operar_en_cambios
+idx 8754: Obligacion_los_administradores_de_las_carteras_crediticias_deberan_suministrar_la_informaci_d5b89e -> Sujeto_propuesto_administradores_de_carteras_crediticias
+idx 8820: Obligacion_los_beneficiarios_del_regimen_de_acceso_a_divisas_para_la_produccion_incremental_4f2ec9 -> Sujeto_propuesto_beneficiarios_del_regimen_de_acceso_a_divisas_para_la_produccion_incremental_de_
+idx 9155: Obligacion_los_integrantes_de_la_alta_gerencia_deberan_ejercer_el_control_apropiado_del_per_d69406 -> Sujeto_propuesto_integrantes_de_la_alta_gerencia
+idx 9157: Obligacion_los_integrantes_de_la_alta_gerencia_deberan_gestionar_el_negocio_bajo_su_supervi_2f0813 -> Sujeto_propuesto_integrantes_de_la_alta_gerencia
+idx 9159: Obligacion_los_integrantes_de_la_alta_gerencia_deberan_tener_la_idoneidad_y_experiencia_nec_3381c3 -> Sujeto_propuesto_integrantes_de_la_alta_gerencia
+idx 9165: Obligacion_los_inversores_y_tenedores_de_las_posiciones_de_titulizacion_deberan_tener_en_cu_95c13e -> Sujeto_propuesto_inversores_y_tenedores
+idx 9581: Obligacion_para_las_entidades_del_grupo_a_aplicar_lo_establecido_en_el_punto_5_4_2_3_i_de_l_85c9ce -> Sujeto_propuesto_entidades_del_grupo_a
+idx 9589: Obligacion_para_las_posiciones_retenidas_en_las_que_el_originante_haya_transferido_el_riesg_61aaf9 -> Sujeto_propuesto_originante
+idx 10305: Obligacion_si_como_resultado_del_proceso_de_debida_diligencia_llevado_a_cabo_por_las_entida_bbd6ad -> Sujeto_propuesto_entidades_financieras_del_grupo_1
+idx 10525: Obligacion_todas_las_empresas_del_grupo_economico_de_la_procesadora_de_pagos_incluyendo_la__9bca6b -> Sujeto_propuesto_empresas_del_grupo_economico_de_la_procesadora_de_pagos
+idx 11789: Operacion_compra_de_moneda_extranjera_para_formacion_de_activos_externos_1ef9de -> Sujeto_propuesto_personas_juridicas_que_no_sean_entidades_autorizadas_a_operar_en_cambios
+idx 12458: Operacion_exclusion_de_inhabilitados_de_base_de_datos_cc5e08 -> Sujeto_propuesto_personas_inhabilitadas_por_decision_judicial_o_por_motivos_legales
+idx 13343: Operacion_operatoria_con_derivados_en_moneda_extranjera_b85390 -> Sujeto_propuesto_personas_juridicas_que_no_sean_entidades_autorizadas_a_operar_en_cambios
+idx 14401: Operacion_presentacion_de_dni_para_identificacion_16dca8 -> Sujeto_propuesto_extranjeros_con_residencia_permanente_o_temporaria
+idx 14887: Operacion_suscripcion_bopreal_por_utilidades_y_dividendos_2ea962 -> Sujeto_propuesto_clientes_no_residentes
+idx 15383: Potestad_aplicacion_a_centrales_de_deposito_de_valores_9736e4 -> Sujeto_propuesto_centrales_locales_de_deposito_colectivo_de_valores
+idx 17549: Restriccion_las_restantes_entidades_salvo_bancos_y_cajas_de_credito_cooperativas_deberan_man_3b1ce0 -> Sujeto_propuesto_restantes_entidades
+idx 18249: Restriccion_ponderador_de_riesgo_del_150_para_deuda_subordinada_e_instrumentos_de_capital_qu_5f2b2d -> Sujeto_propuesto_entidades_financieras_del_grupo_1__cap
+idx 18268: Restriccion_ponderador_de_riesgo_del_250_para_acciones_a9c31f -> Sujeto_propuesto_entidades_financieras_del_grupo_1__cap
+```
+
+## Tabla resumen
+
+| Severidad | Regla | Resultado | Resumen |
+|---|---|---|---|
+| bloqueante | S1 | PASS | 18932/18932 aristas con relación admitida (18 relaciones admitidas); 0 violaciones. |
+| bloqueante | S2 | PASS | 0 aristas colgantes sobre 18932. |
+| bloqueante | S3 | PASS | 18932/18932 aristas conformes a firma; 0 violaciones. Evaluadas: 13967 por matriz, 117 de esqueleto, 29 padre_sugerido; 4819 referencias nodo->nodo admitidas por rol_fuente. |
+| bloqueante | S4 | PASS | Nodos OK: 8256/8256. Aristas OK: 18932/18932. Violaciones: 0. |
+| bloqueante | S5 | PASS | Nodos con punto: 8256/8256. Aristas: 18932/18932. Violaciones: 0. |
+| bloqueante | S6 | PASS | Archivos válidos (41): TextoOrdenado ['TO_capitales_minimos_actual.pdf', 'TO_clasificacion_deudores_actual.pdf', 'TO_exterior_cambios_actual.pdf', 'TO_proteccion_usuarios_servicios_financieros_actual.pdf', 'TO_regimen_informativo_contable_mensual_actual.pdf', 'ctacte.pdf', 'docvig.pdf', 'lingob.pdf', 'pagjub.pdf', 'polcre.pdf'] ∪ esqueleto ['adrei.pdf', 'autenf.pdf', 'ccbcra.pdf', 'convca.pdf', 'cryl.pdf', 'ctacor.pdf', 'depaho.pdf', 'efemin.pdf', 'esquema_v2_clases.json', 'esquema_v3_clases.json', 'fabcra.pdf', 'icmecma.pdf', 'lavdin.pdf', 'ordcom.pdf', 'osapsa.pdf', 'pfmipyme.pdf', 'pimf.pdf', 'ratiofn.pdf', 'rdbcra.pdf', 'repefe.pdf', 'retype.pdf', 'rmrtsd.pdf', 'rrci.pdf', 'servco.pdf', 'snp_atm.pdf', 'snp_debin.pdf', 'snp_psp.pdf', 'snp_spd.pdf', 'snp_tr_nc.pdf', 'supcon.pdf', 'traval.pdf']. Violaciones: 0. |
+| bloqueante | S15 | PASS | 35 roles, 51 aristas miembro_de; 12 huérfanos (12 declarados, 0 sin declarar); 0 miembros que no son clase. Lista declarada: 12 ({'sin_id_en_catalogo': 6, 'aplanamiento_rechazado': 5, 'instancia_rechazada': 1}). |
+| bloqueante | S19 | FAIL | 137 Sujetos ({'clase': 64, 'instancia': 8, 'propuesto': 30, 'rol': 35}); catálogo de 101 ids; 6 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos. |
+| bloqueante | S20 | PASS | 2367/2367 Obligaciones con tipo en el enum. Valores retirados: 0 ({}). Otros valores fuera del enum: 0 ({}). |
+| informativa | S7 | FAIL | 20 grupos violatorios (43 nodos involucrados). |
+| informativa | S8 | WARN | 33 grupos con el mismo label normalizado en types distintos. |
+| informativa | S9 | PASS | 0 nodos con ambas keys. |
+| informativa | S10 | FAIL | Sin establecida_en: Condicion=111, Definicion=15, Excepcion=4, Obligacion=1, Operacion=403, Potestad=0, Restriccion=1 (total 535). |
+| informativa | S11 | WARN | Sin aplica_a: Excepcion=283, Obligacion=222, Operacion=1506, Potestad=98, Restriccion=201 (total 2310). |
+| informativa | S12 | FAIL | 218 Excepciones sin salida exceptua/exceptua_obligacion. |
+| informativa | S21 | WARN | 4819 referencias nodo->nodo ({'nodos_del_punto': 4805, 'texto_ordenado': 14}); 14 incoherentes (por via: {'texto_ordenado': 14}). |
+| informativa | S22 | PASS | 29 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena). |
+| informativa | S23 | WARN | 3887 aristas aplica_a; 48 hacia Sujetos propuestos (30 destinos distintos). |
+
+**Veredicto global: NO PASA**
+
+## Numeración de las shapes nuevas del perfil
+
+- S19: Catálogo de sujetos (bloqueante): todo Sujeto tiene nivel válido; si no es propuesto, su id está en el catálogo; si es propuesto, tiene cuarentena y padre_sugerido.
+- S20: Enum de Obligacion.tipo (bloqueante): todo Obligacion.tipo está en el enum congelado; conteos separados de valores retirados y de otros valores fuera del enum.
+- S21: Coherencia de referencias nodo→nodo (informativa): destino sin prefijo <to>:: pertenece al conjunto de puntos del nodo destino; desglose por via.
+- S22: Coherencia de padre_sugerido (informativa): destino de la arista = properties.padre_sugerido del origen y el origen está en cuarentena.
+- S23: aplica_a hacia sujetos en cuarentena (informativa): aristas aplica_a cuyo destino es Sujeto de nivel propuesto.
+
+## Fuera del perfil
+
+- S13, S14, S16, S17: no implementadas (se declaran para que su ausencia se lea; no se inventan).
+- S18: número ya declarado en docs/esquema_v2_diseño.md con otro enunciado (umbral de limita); no se reutiliza.
