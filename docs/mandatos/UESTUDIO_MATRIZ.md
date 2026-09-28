@@ -1,0 +1,13 @@
+FIRMADO por la autora — 2026-09-28
+
+MANDATO U-ESTUDIO-MATRIZ — Efecto y verdad de las relaciones rechazadas por la matriz congelada (solo lectura, USD 0)
+
+Contexto. U-AUDIT-TIPOS-V3 (reports/u_audit_tipos_v3/) desglosó los 982 rechazos firma_invalida de E1 de la tanda 0: cumplen la matriz congelada y son revalidables desde la salida cruda (982/982; 110 con el crudo del reintento en e3_verificador/cache/e1_reintentos.db). La autora decide si ampliar la matriz por predicado. Para eso necesita dos cosas: el efecto de cada ampliación sobre el grafo, y una muestra para juzgar si esas relaciones son verdaderas.
+
+Rol: instancia ejecutora fresca, SOLO LECTURA. Escribe solo en /tmp/u_estudio_matriz/. Sin API. Neo4j solo MATCH/RETURN si hace falta. No toca data/experiment/ev2_tanda0/ (corrida en curso). Las dbs de caché se abren solo con immutable=1. No se lee docs/tesis/main.tex. PYTHONDONTWRITEBYTECODE=1. Git solo status, log y show.
+
+1. Candidatos: cada par (origen, predicado, destino) con 10 o más rechazos en reports/u_audit_tipos_v3/p4_resumen.json, más una variante agrupada por predicado (por ejemplo, condicion_de con rango + Operacion y Potestad). Para cada candidato, revalidar desde el crudo con la matriz congelada ampliada solo en ese punto (prompt_congelado como base; la ampliación en memoria, sin editar el archivo) y reportar: relaciones que pasarían a válidas; en KG-Tanda0-Desarrollo-r1, nodos hoy aislados que dejarían de estarlo; fragmentos afectados (los que habría que re-verificar en E3) y su costo estimado con la tarifa de E3 de la tanda 0.
+2. Muestra para la autora: 60 relaciones rechazadas, estratificadas por los pares candidatos en proporción a su frecuencia (mínimo 5 por par), con semilla 20260928 y random.Random(semilla).sample sobre cada estrato ordenado por (to, chunk_id, idx). Para cada una, en un CSV: id de muestra, par, chunk_id, el texto del fragmento de E0, la entidad origen y la destino tal como las emitió el extractor (tipo, etiqueta, descripción), el predicado, y columnas vacías «veredicto» (correcta / incorrecta / no decidible) y «nota». El CSV no lleva ninguna columna que anticipe el veredicto.
+3. Reporte: la tabla del punto 1, el procedimiento de la muestra con los conteos por estrato, y los sha256 de todo lo escrito en /tmp/u_estudio_matriz/ en un manifest.txt. Lo que no se pueda calcular, NO ENCONTRADO con la razón.
+
+Criterio de aceptación: git status igual al inicio; nada escrito fuera de /tmp/u_estudio_matriz/; revalidación de control: con la matriz congelada sin ampliar, los 982 siguen inválidos. Nada escrito lleva nombres de personas. FRENO al terminar.
