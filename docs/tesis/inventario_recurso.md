@@ -257,8 +257,17 @@ todavía laudo commiteado.
   cierre.
 - `data/experiment/esq/documentos_excluidos_esq.json` (registro
   obligatorio de los 10+10 documentos de ESQ-1/ESQ-2): **citado en el
-  plan, no existe en el filesystem** (`ls` falla). Bloquea la
-  construcción del eval set de B6.3 tal como está escrita.
+  plan; existe en el filesystem**, agregado en `a7788c1` (2026-09-01),
+  sha256 `6b4404367a08eddb8a7714bb69e8ab6ea0a16210da742bb9a8d049936fd44e1b`,
+  lista 10 documentos.
+  [Corrección 28/09/2026, U-FIX-DOCS: decía «**citado en el plan, no
+  existe en el filesystem** (`ls` falla). Bloquea la construcción del
+  eval set de B6.3 tal como está escrita.» Lo correcto: el archivo existe;
+  evidencia: `git log --diff-filter=A --format='%h %ad' --date=short --
+  data/experiment/esq/documentos_excluidos_esq.json` → `a7788c1
+  2026-09-01`; `shasum -a 256` → `6b440436…`; `len(documentos)` → 10
+  (ayccef, expaef, opefci, adrei, cryl, actgar, prevmi, lavdin, traval,
+  ctacor). El bloqueo declarado dependía de la inexistencia y no aplica.]
 - Checkboxes de los laudos: los 7 de `docs/laudo_ESQ-1_diseno.md`
   (líneas 132–141) están todos `[ ]` (incluidos «control ejecutado y
   aprobado ANTES de ESQ-1» y «frontera RI a mentores ANTES de laudar
@@ -330,7 +339,14 @@ desarrollo; el eval set de test (B6.3) no existe todavía.
   set propio; el plan declara que reutiliza «mismo juez de fidelidad EV2,
   mismas 40 preguntas». Pre-registro y corrida sin marcar (`[ ]`).
 - **Eval set fresco de B6.3** (el del conjunto de test): no existe; su
-  precondición (`documentos_excluidos_esq.json`) tampoco.
+  precondición (`documentos_excluidos_esq.json`) sí existe: agregado en
+  `a7788c1` (2026-09-01), sha256 `6b4404367a08…`, lista 10 documentos.
+  [Corrección 28/09/2026, U-FIX-DOCS: decía «su precondición
+  (`documentos_excluidos_esq.json`) tampoco». Lo correcto: el archivo
+  existe; evidencia: `git log --diff-filter=A` → `a7788c1 2026-09-01`,
+  `shasum -a 256` → `6b4404367a08eddb8a7714bb69e8ab6ea0a16210da742bb9a8d049936fd44e1b`,
+  10 entradas en `documentos`. Que el eval set fresco no exista sigue
+  vigente.]
 
 ---
 
