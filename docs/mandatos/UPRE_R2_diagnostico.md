@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA
+FIRMADO por la autora — 2026-09-29
 
 MANDATO — U-PRE-R2-DIAG: DIAGNÓSTICO PREVIO A LA FIRMA DEL LAUDO DE r2.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar. Unidad en DOS
