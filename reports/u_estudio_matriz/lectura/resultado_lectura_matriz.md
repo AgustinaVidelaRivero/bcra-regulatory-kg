@@ -94,6 +94,11 @@ Total de la lectura: 105 filas, 92 correctas, 12 incorrectas, 1 no decidible.
 aristas entre dos nodos con la misma descripción, que la nota de la autora
 describe como una arista del punto «consigo misma»: C22 y M56–M59. No es parte
 del criterio.
+Una sexta fila también tiene origen y destino con la misma descripción y está
+leída como **correcta**: M50 (Excepcion `exceptua_obligacion` → Operacion,
+`ext::8.5.17.25`, con etiquetas distintas). Una regla que retirara estas aristas
+sin revisión habría retirado una correcta en esta muestra (agregado el
+29/09/2026).
 
 ## Contexto, no criterio: precisión de la observación (12)
 

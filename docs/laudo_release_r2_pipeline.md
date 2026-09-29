@@ -344,6 +344,13 @@ la fase 2a (E6); la lectura de la fase 2b.
    los diez de la tanda 0.
 5. Tope de gasto de la release, con el censo del candidato 3 ya hecho.
 6. Política de cuarentena que declara la entrada de r2 en la fixture.
+7. Si el gate suma una muestra de precisión de aristas de extracción sobre
+   KG-Reextraído-r2, con el método de la observación (12) (enmienda `8e13be3`
+   §2.1: 30 aristas sorteadas, lectura contra el texto, Wilson al 95 %), como
+   evidencia de mejora que no usa EV2 (§3.1, punto 7). Con 40 preguntas por
+   celda, EV2 no distingue celdas (tabla pre-adjudicación de E5 de la tanda 0,
+   `reports/tanda0/tabla_celdas_E5.json`). Agregado el 29/09/2026 desde el
+   checklist previo al escalado.
 
 ## Firma
 
