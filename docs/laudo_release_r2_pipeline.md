@@ -275,6 +275,11 @@ Si cualquiera de los tres primeros puntos falla, r2 no sale.
    ensamblado de desarrollo reproduce `8e2eadee…` y `0226e947…` byte a byte, y
    los selftests del pipeline siguen en verde.
 7. **Nunca EV2** (principio 7; B2.6).
+8. **Tablero de correcciones** (`docs/tablero_correcciones.md`). Al cerrar el gate
+   se llena su columna «después de r2» con el mismo comando de cada fila, y cada
+   meta queda cumplida o con su residuo declarado. No bloquea la salida de r2: es
+   condición de la tanda 1 (`docs/checklist_pre_escalado.md`, «Orden y condiciones
+   de la tanda 1»). Agregado el 29/09/2026.
 
 ### §3.2 Re-extraer paga solo lo que cambió
 

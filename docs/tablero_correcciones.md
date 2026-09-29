@@ -1,0 +1,88 @@
+# Tablero de correcciones: síntomas de la tanda 0, su corrección y su prueba
+
+Tablero único que conecta cada síntoma medido en la tanda 0 con la corrección
+que lo ataca y con la forma de volver a medirlo. Lo escribí el 29/09/2026
+sobre HEAD `05465e9`. Es condición de la tanda 1: la columna «después de r2»
+completa, con cada meta cumplida o su residuo declarado (laudo de r2, §3.1,
+punto 8; `docs/checklist_pre_escalado.md`, «Orden y condiciones de la tanda
+1»). Las columnas «después de r2» y «tanda 1» se llenan al cerrar esas
+unidades, con el mismo comando.
+
+**Grafos y celdas.**
+
+| Nombre | Grafo | sha256 | Celdas |
+|---|---|---|---|
+| r1 | KG-Reextraído-r1 | `0226e947…` | C1 (memoria) y C2 (Neo4j) |
+| desarrollo | KG-Tanda0-Desarrollo-r1 | `eab2fdd0…` | C3 (memoria) y C4 (Neo4j) |
+| cinco | ensamblado de la tanda 0 sola | `4097d4fd…` | — |
+| diez | KG-Tanda0-Diez-r1 | `dd42d6d9…` | C5 (memoria) |
+
+**Reglas.**
+- Las corridas del agente sobre preguntas de desarrollo son diagnóstico, no
+  resultado: EV2 no se re-mide como resultado (principio 7; plan, fila A1.8),
+  y el gate de r2 nunca usa EV2 (laudo §3.1, punto 7).
+- Toda cifra sale del comando indicado entre corchetes (sección
+  «Comandos»).
+- Donde no hay meta definida, dice «DECISIÓN ABIERTA de la autora».
+
+## Tablero
+
+| Síntoma | Métrica y cómo se calcula | Valor en r1 | Valor en la tanda 0 | Meta | Corrección que lo ataca | Cómo se re-mide y costo | Después de r2 | Tanda 1 |
+|---|---|---|---|---|---|---|---|---|
+| **Observación (10):** extracción más magra | Aristas de extracción por unidad, solo las que emite el extractor: (total − `referencia` − `rol_fuente` esqueleto − `establecida_en` derivadas por el ensamblado) / unidades del `kg.json` [c1]. Las `establecida_en` derivadas (si esa corrección entra en r2) se identifican por el `rol_fuente` propio que declare la unidad que las derive; hoy no existen y los valores no cambian. Como en el pre-registro, la resta incluye las `cuarentena_flaggeada` (`padre_sugerido` de E5): 41 en r1, 18 en desarrollo, 11 en cinco y 29 en diez | 6,81 (12.010 / 1.763) | desarrollo 6,03 (10.634 / 1.763); cinco 4,99 (3.345 / 671); diez 5,74 (13.979 / 2.434) | Referencia: las bandas pre-registradas, 6,81 a 8,0 en desarrollo y 5,0 a 8,0 en cinco (predicciones, no metas). Meta para r2: DECISIÓN ABIERTA de la autora. **Propuesta, a confirmar con los mentores (no es meta):** volver al nivel de r1 en desarrollo, 6,81 | Matriz congelada (checklist X1, X11; plan `:727`); `establecida_en` derivada (laudo §4, nodos aislados); cambios de prompt (X4, X5; fuera de r2) | Matriz y `establecida_en`: revalidación desde el crudo y re-ensamblado, USD 0 (re-verificar en E3, cota del orden de USD 4, plan `:727`). Prompt: re-extracción (referencia: E2 de la tanda 0, USD 40,35) | | |
+| **Observación (11):** menos remisiones entre documentos | `aristas_cross_to` del reporte de ensamblado, y menciones [c2] | 188 (1.089 menciones) | desarrollo 124 (783); cinco 3 (169); diez 186 (952) | Referencia: desarrollo 188 ± 20; diez mayor que 188 (predicciones). Meta para r2: DECISIÓN ABIERTA de la autora. **Propuesta, a confirmar con los mentores (no es meta):** volver al nivel de r1 en desarrollo, 188 | H1 y H4, remisiones por paráfrasis y procedencia de las remisiones (laudo §4) | Re-ensamblado, USD 0 | | |
+| **Aristas `referencia` por tipo de origen:** ninguna sale de Condicion, Potestad ni Definicion | Aristas `referencia` cuyo origen es de esos tres tipos [c3] | 0 (r1 no tiene nodos Condicion) | 0 en desarrollo, cinco y diez | Laudo §4, H1 y H4: re-ensamblar el desarrollo da +3.687 aristas, 0 perdidas, y la remisión de `cla::5.1.1.1` al `cla::3.7` | H1 y H4 (laudo §4) | Re-ensamblado, USD 0 | | |
+| **Condiciones aisladas** | Nodos Condicion sin ninguna arista, y aislados por tipo [c3] | No aplica: 0 nodos Condicion. Aislados de todo tipo: 105 | desarrollo 35 de 1.178 Condicion (94 aislados en total); cinco 7 de 205 (38); diez 42 de 1.383 (120) | Laudo §4: cero nodos de contenido sin `establecida_en`; el resto de los aislados, declarado por causa | `establecida_en` derivada de la procedencia (laudo §4, decisión abierta); matriz, rango de `condicion_de` (X1, X11) | Re-ensamblado, USD 0; la matriz, como en la observación (10) | | |
+| **Remisiones falsas por paráfrasis** | Aristas `referencia` de `cap::8.2.3.3` hacia nodos de `cap::6.5.1` [c3] | 0 | desarrollo 9; diez 9; cinco no aplica (no tiene cap) | Laudo §4: detección sobre el texto de E0; `cap::8.2.3.3` llega a `cla::6.5.1` y `cla::7.2.1`; cuántas remisiones cambian de destino en diez | Remisiones falsas por paráfrasis (laudo §4; plan `:383`, punto 3) | Re-ensamblado, USD 0 | | |
+| **Test del ejemplo `cla::5.1.1.1`** | La Operacion con sus dos condiciones unidas y la remisión al `cla::3.7`; test nuevo de la suite, todavía no escrito [c4] | Se cumple (recorrido de la mesa en U-CONS-EJEMPLO-Y-BUSQUEDA, A3) | desarrollo: persiste (ídem); diez: NO MEDIDO | Laudo §4: «resuelto» sobre el grafo de r2 | Test nuevo, con entrada de la fixture sellada por la autora (laudo §4); H1 y H4; condiciones aisladas | Suite, USD 0 | | |
+| **Regresiones de la suite contra r1** | Estados de los 46 ítems (resuelto / persiste / no aplica) contra la entrada de r1 de la fixture (`696f3f94…`) [c4] | Entrada de r1: 27 / 10 / 9 | desarrollo 22 / 16 / 8, con 6 ítems de resuelto a persiste (E4-a7, E4-a8, T2, T4, T5, T7); cinco 11 / 22 / 13 y diez 20 / 18 / 8, informativos | Laudo §3.1, punto 2: 0 regresiones contra la entrada de r2 sellada por la autora | U-PRE-R2-DIAG, D1 (checklist R27; `docs/mandatos/UPRE_R2_diagnostico.md`) | Suite sobre el `kg.json` de r2, USD 0 | | |
+| **Patrón de navegación (a):** ancla vista por `referencia` sin abrir | Trazas y nodos en que un nodo que porta el ancla aparece como vecino por `referencia` y nunca recibe `ver_nodo` (trazas base y §7) [c5] | C2: 4 trazas y 20 nodos de 112 trazas; C1: NO MEDIDO | C3 0 de 96; C4 2 trazas y 5 nodos de 101; C5 0 de 43 | DECISIÓN ABIERTA de la autora (criterio de aceptación de A1.8) | A1.8: instrucción de abrir los destinos de las remisiones (checklist N5) | Corrida del agente sobre preguntas de desarrollo: agente base, entre USD 1,21 y 1,30 por celda de 40 preguntas (E5) | | |
+| **Patrón de navegación (b):** vecinos solo salientes sobre una Operacion con restricciones entrantes | Llamadas a `ver_vecinos` salientes sobre esa Operacion, y trazas con esa llamada [c5] | C2: 22 llamadas en 19 trazas; C1: NO MEDIDO | C3 12 en 11; C4 16 en 12; C5 4 en 4 | DECISIÓN ABIERTA de la autora; el patrón se declaró sistemático el 29/09 | A1.8: vecinos en las dos direcciones o entrantes normativas marcadas, e instrucciones (checklist N3, N5) | Corrida del agente, como en (a) | | |
+| **Tope de herramientas alcanzado** | Trazas base con `hit_tool_limit` (tope de 15) [c6] | C1 28 de 40; C2 23 de 40 | C3 27 de 40; C4 17 de 40; C5 11 de 20 | DECISIÓN ABIERTA de la autora | A1.8: tope de llamadas y herramientas (checklist N5) | Corrida del agente, como en (a) | | |
+| **Incorrectas de la observación (12), por capa** | Muestra de 30 aristas de extracción leídas contra el texto; lectura asistida, instancia de modelo revisada por la autora [c7] | Sin línea de base | cinco: 25 correctas de 30 (Wilson 0,664–0,927); incorrectas: 4 `E1-prompt` y 1 `catálogo` | DECISIÓN ABIERTA de la autora | `E1-prompt`: `BKL-0032`, `BKL-0033`, `BKL-0035` y `BKL-0036`, fuera de r2 (X5). `catálogo`: `BKL-0034` (X6). En r2: muestra de precisión sobre r2 (laudo §5, decisión 7; checklist R24) | Nueva muestra de 30 aristas con el método de (12); quién lee se decide antes (checklist P15, Q12); USD 0 si lee una persona | | |
+| **Clases de falla A0.2** | Clase de la traza representativa de cada par definitivo parcial o incorrecto: ausencia / estaba y no se navegó / generación [c8] | C1 8 / 8 / 18; C2 6 / 2 / 23 | C3 8 / 7 / 15; C4 9 / 3 / 17; C5 0 / 4 / 8 | DECISIÓN ABIERTA de la autora | Ausencias: candidatos de r2 según U-PRE-R2-DIAG, D2 (R27). Navegación: A1.8 (N3, N5). Generación: instrucciones de respuesta (N8) | Corrida del agente con juez N=3 y §7 sobre preguntas de desarrollo, entre USD 6,14 y 6,66 por celda de 40 (E5); atribución, USD 0 | | |
+| **Unidades cortadas o mudas** | M10, chunks mudos sobre unidades de E0 [c9] | 1 de 1.763 | desarrollo 3 de 1.763; cinco 1 de 671; diez 4 de 2.434 | `BKL-0030`: cero unidades con error definitivo por corte; M10 en 0 sobre los TOs de desarrollo | Reintento por corte y partición (laudo §1.1, `BKL-0030`) | Re-extracción dirigida de las unidades afectadas; menos de USD 1 (laudo §1, resumen) | | |
+
+## Comandos
+
+Todos con `PYTHONDONTWRITEBYTECODE=1`, desde la raíz del repo.
+
+- **[c1]** Observación (10), para cada `kg.json` de la tabla de grafos. `DERIVADAS`
+  es el conjunto de valores de `rol_fuente` que la unidad de r2 declare para las
+  `establecida_en` derivadas por el ensamblado; hoy está vacío:
+  `python3 -c "import json;DERIVADAS=set();k=json.load(open(RUTA));E=k['edges'];rf=lambda e:e.get('rol_fuente') or (e.get('properties') or {}).get('rol_fuente');print(sum(1 for e in E if e.get('relation')!='referencia' and rf(e)!='esqueleto' and not (e.get('relation')=='establecida_en' and rf(e) in DERIVADAS)))"`,
+  dividido por las unidades de E0 (1.763, 671 y 2.434). Con `DERIVADAS` vacío
+  da los mismos valores que la resta del pre-registro (r1: 12.010, línea de base
+  de `docs/preregistro_tanda0.md:481`). La variante estricta, que deja fuera
+  también las `cuarentena_flaggeada`, daría 11.969 en r1 (6,79), 10.616 en
+  desarrollo (6,02), 3.334 en cinco (4,97) y 13.950 en diez (5,73).
+- **[c2]** Observación (11): la clave `referencias` de
+  `reporte_ensamblado_r1.json` de cada ensamblado (en r1,
+  `corpus_v2/salida_r1/`), con el comando de `docs/preregistro_tanda0.md`
+  §A4.2.
+- **[c3]** Sobre cada `kg.json`: aristas `referencia` por tipo del nodo de
+  origen; nodos sin ninguna arista, por tipo; y aristas `referencia` cuyo
+  origen tiene procedencia en `cap::8.2.3.3` y cuyo destino la tiene en
+  `cap::6.5.1` o debajo. Recomputado por la mesa el 29/09/2026 con un script
+  de una sola pasada; se reescribe tal cual al llenar las columnas nuevas.
+- **[c4]** Suite: `scripts/regression_kg.py` sin `--esperado`, con salida en
+  `reports/tanda0/regression_ens_*.json`; entrada de r1 en
+  `scripts/regression_kg_esperado.json`, clave
+  `estado_esperado.KG-Reextraido-r1`; comparación en
+  `reports/tanda0/lectura_e6_tanda0.md`. El test de `cla::5.1.1.1` no existe
+  todavía: sus valores vienen del recorrido de la mesa, fuente citada en el
+  laudo §4.
+- **[c5]** `reports/tanda0/atribucion_tanda0.json`, clave
+  `celdas.C<n>.patrones_plan_punto_4`; para C1 la clave no existe (NO MEDIDO).
+- **[c6]** Trazas base, `trace.hit_tool_limit`: C2 a C5 en
+  `data/experiment/ev2_tanda0/trazas/ev2_c*_*/`; C1 en
+  `data/experiment/ev2_r1/trazas/ev2_r1_base/`.
+- **[c7]** `reports/tanda0/obs12_lectura/veredictos_obs12.csv` y
+  `fila_obs12.md`.
+- **[c8]** `reports/tanda0/atribucion_tanda0.json`, claves
+  `c1.lectura_plan_punto_3` y `celdas.C<n>.pares_definitivos.lectura_plan_punto_3`.
+- **[c9]** `reports/tanda0/lectura_e6_tanda0.json`, clave
+  `intrinsecas.<grafo>.M10_chunks_mudos`, multiplicada por las unidades.
+- **Costos citados:** `reports/tanda0/tabla_celdas_E5.json`,
+  `celdas.C<n>.gasto`; en la columna de las corridas del agente, el rango es
+  el del gasto `agente_base` de C2 a C4.

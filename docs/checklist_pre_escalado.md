@@ -13,6 +13,8 @@ Actualizada otra vez el 29/09/2026: desvíos declarados por la autora sobre qui�
 leyó y adjudicó (P1, P15, X11, Q12).
 Actualizada el 29/09/2026 con el cierre de la fase 2a (P1 a P5, P10, P16, N3, N8,
 R27).
+Actualizada el 29/09/2026: fase 2b cerrada (P16) y tablero de correcciones como
+condición (4) de la tanda 1 (R28).
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -42,6 +44,9 @@ los mentores. La tanda 1 depende de tres condiciones:
 3. La decisión de la autora con los mentores sobre el cambio de prefijo: X1
    (matriz), X2 (prompt), X3 (ventana del §7) y X4 (cuándo va la release de
    prompt), con X11 (si la lectura asistida de la matriz alcanza).
+4. El tablero de correcciones (`docs/tablero_correcciones.md`) con la columna
+   «después de r2» completa y cada meta cumplida o con su residuo declarado (R28;
+   laudo de r2, §3.1, punto 8). Agregada el 29/09/2026.
 
 ## 0. Precondiciones y operación del escalado
 
@@ -62,7 +67,7 @@ los mentores. La tanda 1 depende de tres condiciones:
 | P13 | La tanda 1 pasa por r1: mecánica a fijar en el mandato | `:746`; precedente, gate 1 de la tanda 0 (`47c9283`) | registrado | No |
 | P14 | Observaciones (10), (11) y (12) de la tanda 1 contra sus líneas de base | `:747`, `:748` | registrado | No |
 | P15 | Tanda 1: definir de antemano quién lee y adjudica (vigilancias, observaciones y muestras): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
-| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:729`; `reports/tanda0/reporte_fase2b.md` | hecho el 29/09, sin commit: reporte de 2b preparado; 2b cierra con el commit de la autora | No: commit de la autora |
+| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:729`; `reports/tanda0/reporte_fase2b.md` | hecho: `05465e9`; fase 2b cerrada | No |
 
 ## 1. r2 sin prefijo
 
@@ -97,6 +102,7 @@ Avanza en paralelo con la lectura del capítulo una vez cerrada la tanda 0.
 | R25 | Tests de la observación (12): se revisan después de r2, direccionados por (chunk_id, relación, tipo de destino) | `:729` | decidido (28/09) | No |
 | R26 | Gate de release y versionado de KG-Reextraído-r2. **Condición (2) de la tanda 1** | laudo §3.1; `:382` pasos (3) y (4) | registrado | No |
 | R27 | Unidad previa a la firma de r2: diagnóstico de los seis ítems de la suite que pasan de resuelto a persiste (E4-a7, E4-a8, T2, T4, T5, T7) y cruce de cada ausencia de C1 a C4 con los candidatos del §4 y con los rechazos de la matriz | `docs/mandatos/UPRE_R2_diagnostico.md`; `:382` | registrado (BORRADOR) | Sí: firma y despacho |
+| R28 | Tablero de correcciones: la columna «después de r2» completa, con cada meta cumplida o su residuo declarado. **Condición (4) de la tanda 1** | `docs/tablero_correcciones.md`; laudo §3.1, punto 8 | registrado; metas abiertas en siete filas | Sí: las metas marcadas DECISIÓN ABIERTA |
 
 ## 2. Cambio de prefijo con enmienda
 
